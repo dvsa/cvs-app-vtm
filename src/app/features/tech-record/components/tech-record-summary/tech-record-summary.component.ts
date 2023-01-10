@@ -101,7 +101,7 @@ export class TechRecordSummaryComponent implements OnInit {
             this.vehicleTechRecordCalculated = data;
             this.normaliseVehicleTechRecordAxles();
           })
-      : (this.vehicleTechRecordCalculated = { ...this.vehicleTechRecord, reasonForCreation: '' });
+      : (this.vehicleTechRecordCalculated = { ...this.vehicleTechRecord });
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
@@ -124,7 +124,14 @@ export class TechRecordSummaryComponent implements OnInit {
       this.setBrakesForces();
     }
 
-    this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length ?? 0;
+    if (
+      this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ||
+      this.vehicleTechRecord.vehicleType === VehicleTypes.HGV ||
+      this.vehicleTechRecord.vehicleType === VehicleTypes.TRL
+    ) {
+      this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length ?? 0;
+    }
+
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
     this.formChange.emit();
   }
@@ -228,25 +235,12 @@ export class TechRecordSummaryComponent implements OnInit {
   generateAxleObject(vehicleType: VehicleTypes, axleNumber: number): Axle {
     const weights =
       vehicleType === VehicleTypes.PSV
-        ? {
-            kerbWeight: null,
-            ladenWeight: null,
-            gbWeight: null,
-            designWeight: null
-          }
-        : {
-            gbWeight: null,
-            eecWeight: null,
-            designWeight: null
-          };
+        ? { kerbWeight: null, ladenWeight: null, gbWeight: null, designWeight: null }
+        : { gbWeight: null, eecWeight: null, designWeight: null };
 
     const tyres = { tyreSize: null, speedCategorySymbol: null, fitmentCode: null, dataTrAxles: null, plyRating: null, tyreCode: null };
 
-    return {
-      axleNumber,
-      weights,
-      tyres
-    };
+    return { axleNumber, weights, tyres };
   }
 
   setBodyFields(): void {

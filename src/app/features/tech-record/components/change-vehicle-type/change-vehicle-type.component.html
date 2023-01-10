@@ -33,7 +33,7 @@
       [label]="form.meta.children![0].label"
       [formControlName]="form.meta.children![0].name"
       [options]="vehicleTypeOptions"
-      (ngModelChange)="ngOnChanges($event)"
+      (ngModelChange)="ngOnChanges()"
     ></app-select>
 
     <div *ngIf="selectVehicleType.value !== vehicleTechRecord!.techRecord[0].vehicleType && selectVehicleType.value !== ''">

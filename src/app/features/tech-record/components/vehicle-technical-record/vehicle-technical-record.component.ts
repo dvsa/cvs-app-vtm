@@ -83,17 +83,20 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const customSections = [this.summary.body.form, this.summary.dimensions.form, this.summary.tyres.form, this.summary.weights.form];
-
     const type = this.vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.vehicleType;
 
-    if (type === VehicleTypes.PSV) {
-      customSections.push(this.summary.psvBrakes!.form);
-    } else if (type === VehicleTypes.TRL) {
-      customSections.push(this.summary.trlBrakes!.form);
-    }
+    const commonCustomSections = [this.summary.body.form, this.summary.dimensions.form, this.summary.tyres.form, this.summary.weights.form];
 
-    return customSections;
+    switch (type) {
+      case VehicleTypes.PSV:
+        return [...commonCustomSections, this.summary.psvBrakes!.form];
+      case VehicleTypes.HGV:
+        return commonCustomSections;
+      case VehicleTypes.TRL:
+        return [...commonCustomSections, this.summary.trlBrakes!.form];
+      default:
+        return [];
+    }
   }
 
   getActions(techRecord?: TechRecordModel): TechRecordActions {

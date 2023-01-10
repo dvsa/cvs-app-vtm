@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TechRecord } from '@api/vehicle';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
@@ -22,7 +22,7 @@ export class TechRecordTitleComponent implements OnInit {
   queryableRecordActions: string[] = [];
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
 
-  constructor(private router: Router, private technicalRecordService: TechnicalRecordService, private store: Store) {}
+  constructor(private route: ActivatedRoute, private router: Router, private technicalRecordService: TechnicalRecordService, private store: Store) {}
 
   ngOnInit(): void {
     this.queryableRecordActions = this.recordActions.split(',');
@@ -57,36 +57,7 @@ export class TechRecordTitleComponent implements OnInit {
     return completeness === 'complete' ? 'green' : 'red';
   }
 
-  navigateToPromotion(): void {
-    this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/promote`);
-  }
-
-  navigateToArchive(): void {
-    this.currentTechRecord$
-      .pipe(take(1))
-      .subscribe(techRecord =>
-        techRecord?.statusCode === StatusCodes.PROVISIONAL
-          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/archive`)
-          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/archive`)
-      );
-  }
-
-  navigateToChangeVisibility(): void {
-    this.currentTechRecord$
-      .pipe(take(1))
-      .subscribe(techRecord =>
-        techRecord?.statusCode === StatusCodes.PROVISIONAL
-          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/change-vta-visibility`)
-          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/change-vta-visibility`)
-      );
-  }
-  navigateToChangeVehicleType() {
-    this.currentTechRecord$
-      .pipe(take(1))
-      .subscribe(techRecord =>
-        techRecord?.statusCode === StatusCodes.PROVISIONAL
-          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/change-vehicle-type`)
-          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/change-vehicle-type`)
-      );
+  navigateTo(path: string, queryParams?: Params): void {
+    this.router.navigate([path], { relativeTo: this.route, queryParams });
   }
 }

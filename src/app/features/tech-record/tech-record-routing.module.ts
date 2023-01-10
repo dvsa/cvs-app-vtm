@@ -13,6 +13,7 @@ import { TechRecordComponent } from './tech-record.component';
 import { ChangeVehicleTypeComponent } from './components/change-vehicle-type/change-vehicle-type.component';
 
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
+import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
 
 const routes: Routes = [
   {
@@ -21,24 +22,6 @@ const routes: Routes = [
     data: { roles: Roles.TechRecordView, isCustomLayout: true },
     canActivateChild: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
-  },
-  {
-    path: 'change-vehicle-type',
-    component: ChangeVehicleTypeComponent,
-    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard]
-  },
-  {
-    path: 'provisional/change-vehicle-type',
-    component: ChangeVehicleTypeComponent,
-    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard]
-  },
-  {
-    path: 'amend-reason',
-    component: TechAmendReasonComponent,
-    data: { roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard]
   },
   {
     path: 'correcting-an-error',
@@ -55,32 +38,99 @@ const routes: Routes = [
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
+    path: 'historic/:techCreatedAt',
+    component: TechRecordComponent,
+    data: { title: 'Historic tech record', isCustomLayout: true },
+    canActivate: [MsalGuard],
+    resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'provisional',
+    component: TechRouterOutletComponent,
+    children: [
+      {
+        path: '',
+        component: TechRecordComponent,
+        data: { title: 'Provisional tech record', isCustomLayout: true },
+        canActivate: [MsalGuard],
+        resolve: { load: TechRecordViewResolver }
+      },
+      {
+        path: 'notifiable-alteration-needed',
+        component: TechRecordComponent,
+        canActivate: [MsalGuard],
+        data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, isCustomLayout: true },
+        resolve: { load: TechRecordViewResolver }
+      },
+      {
+        path: 'change-vta-visibility',
+        component: TechRecordChangeVisibilityComponent,
+        data: { roles: Roles.TechRecordAmend },
+        canActivate: [MsalGuard, RoleGuard],
+        resolve: { techRecord: TechRecordViewResolver }
+      },
+      {
+        path: 'change-status',
+        component: TechRecordChangeStatusComponent,
+        data: { title: 'Promote or Archive Tech Record', roles: Roles.TechRecordArchive },
+        canActivate: [MsalGuard, RoleGuard],
+        resolve: { load: TechRecordViewResolver }
+      },
+      {
+        path: 'change-vehicle-type',
+        component: ChangeVehicleTypeComponent,
+        data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+        canActivate: [MsalGuard, RoleGuard]
+      },
+      {
+        path: 'notifiable-alteration-needed/tyre-search/:axleNumber',
+        component: TyresSearchComponent,
+        data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
+        canActivate: [MsalGuard, RoleGuard],
+        resolve: { techRecord: TechRecordViewResolver }
+      },
+      {
+        path: 'test-records/test-result/:testResultId/:testNumber',
+        data: { title: 'Test record', roles: Roles.TestResultView },
+        canActivate: [MsalGuard, RoleGuard],
+        resolve: { techRecord: TechRecordViewResolver },
+        loadChildren: () => import('../test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
+      },
+      {
+        path: 'test-records/create-test',
+        data: { roles: Roles.TestResultCreateContingency },
+        canActivate: [MsalGuard, RoleGuard],
+        resolve: { techRecord: TechRecordViewResolver },
+        loadChildren: () => import('../test-records/create/create-test-records.module').then(m => m.CreateTestRecordsModule)
+      }
+    ]
+  },
+  {
+    path: 'amend-reason',
+    component: TechAmendReasonComponent,
+    data: { roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: 'change-status',
+    component: TechRecordChangeStatusComponent,
+    data: { title: 'Promotore or Archive Tech Record', roles: Roles.TechRecordArchive },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'change-vehicle-type',
+    component: ChangeVehicleTypeComponent,
+    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver }
+  },
+  {
     path: 'change-vta-visibility',
     component: TechRecordChangeVisibilityComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
-  },
-  {
-    path: 'provisional/change-vta-visibility',
-    component: TechRecordChangeVisibilityComponent,
-    data: { roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver }
-  },
-  {
-    path: 'archive',
-    component: TechRecordChangeStatusComponent,
-    data: { title: 'Archive Tech Record', roles: Roles.TechRecordArchive },
-    canActivate: [MsalGuard, RoleGuard],
-    resolve: { load: TechRecordViewResolver }
-  },
-  {
-    path: 'provisional/archive',
-    component: TechRecordChangeStatusComponent,
-    data: { title: 'Archive Provisional Tech Record', roles: Roles.TechRecordArchive },
-    canActivate: [MsalGuard, RoleGuard],
-    resolve: { load: TechRecordViewResolver }
   },
   {
     path: 'correcting-an-error/tyre-search/:axleNumber',
@@ -97,40 +147,6 @@ const routes: Routes = [
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
-    path: 'provisional',
-    component: TechRecordComponent,
-    data: { title: 'Provisional tech record', isCustomLayout: true },
-    canActivate: [MsalGuard],
-    resolve: { load: TechRecordViewResolver }
-  },
-  {
-    path: 'provisional/notifiable-alteration-needed',
-    component: TechRecordComponent,
-    canActivate: [MsalGuard],
-    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, isCustomLayout: true },
-    resolve: { load: TechRecordViewResolver }
-  },
-  {
-    path: 'provisional/notifiable-alteration-needed/tyre-search/:axleNumber',
-    component: TyresSearchComponent,
-    data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
-    canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver }
-  },
-  {
-    path: 'provisional/promote',
-    component: TechRecordChangeStatusComponent,
-    canActivate: [MsalGuard],
-    resolve: { load: TechRecordViewResolver }
-  },
-  {
-    path: 'historic/:techCreatedAt',
-    component: TechRecordComponent,
-    data: { title: 'Historic tech record', isCustomLayout: true },
-    canActivate: [MsalGuard],
-    resolve: { load: TechRecordViewResolver }
-  },
-  {
     path: 'test-records/test-result/:testResultId/:testNumber',
     data: { title: 'Test record', roles: Roles.TestResultView },
     canActivate: [MsalGuard, RoleGuard],
@@ -138,21 +154,7 @@ const routes: Routes = [
     loadChildren: () => import('../test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
   },
   {
-    path: 'provisional/test-records/test-result/:testResultId/:testNumber',
-    data: { title: 'Test record', roles: Roles.TestResultView },
-    canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver },
-    loadChildren: () => import('../test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
-  },
-  {
     path: 'test-records/create-test',
-    data: { roles: Roles.TestResultCreateContingency },
-    canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver },
-    loadChildren: () => import('../test-records/create/create-test-records.module').then(m => m.CreateTestRecordsModule)
-  },
-  {
-    path: 'provisional/test-records/create-test',
     data: { roles: Roles.TestResultCreateContingency },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver },
