@@ -12,6 +12,7 @@ import { changeVehicleType } from '@store/technical-records';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
   selector: 'app-change-vehicle-type',
@@ -62,6 +63,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
 
   get vehicleMakeAndModel(): string | undefined {
     if (!this.currentTechRecord) return '';
+    if (!this.currentTechRecord.make && !this.currentTechRecord.chassisMake) return '';
 
     return this.currentTechRecord.vehicleType !== 'psv'
       ? `${this.currentTechRecord.make} - ${this.currentTechRecord.model}`
