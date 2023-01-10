@@ -1,41 +1,25 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeTypes, Params } from '@forms/services/dynamic-form.types';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { take } from 'rxjs';
-import { getOptionsFromEnum, getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
+import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { MultiOptions } from '@forms/models/options.model';
 import { changeVehicleType } from '@store/technical-records';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
   selector: 'app-change-vehicle-type',
   templateUrl: './change-vehicle-type.component.html'
 })
 export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
-  constructor(
-    private technicalRecordService: TechnicalRecordService,
-    public globalErrorService: GlobalErrorService,
-    private store: Store<TechnicalRecordServiceState>,
-    private router: Router,
-    private route: ActivatedRoute,
-    public dfs: DynamicFormService
-  ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicleTechRecord = data));
-    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(data => (this.currentTechRecord = data));
-    this.form = this.dfs.createForm(this.template) as CustomFormGroup;
-  }
-
   public currentTechRecord?: TechRecordModel;
   public vehicleTechRecord?: VehicleTechRecordModel;
   public form!: CustomFormGroup;
-
   public template: FormNode = {
     name: 'criteria',
     type: FormNodeTypes.GROUP,
@@ -49,6 +33,25 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     ]
   };
 
+  constructor(
+    public globalErrorService: GlobalErrorService,
+    public dfs: DynamicFormService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private store: Store<TechnicalRecordServiceState>,
+    private technicalRecordService: TechnicalRecordService
+  ) {
+    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicleTechRecord = data));
+    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(data => (this.currentTechRecord = data));
+    this.form = this.dfs.createForm(this.template) as CustomFormGroup;
+  }
+
+  ngOnInit(): void {
+    if (!this.currentTechRecord) {
+      this.navigateBack();
+    }
+  }
+
   ngOnChanges(): void {
     this.globalErrorService.clearErrors();
   }
@@ -58,22 +61,16 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   }
 
   get vehicleTypeOptions(): MultiOptions {
-    return getOptionsFromEnumAcronym(VehicleTypes).filter(vehicleType => vehicleType.value != this.currentTechRecord?.vehicleType);
+    return getOptionsFromEnumAcronym(VehicleTypes).filter(vehicleType => vehicleType.value !== this.currentTechRecord?.vehicleType);
   }
 
-  get vehicleMakeAndModel(): string | undefined {
+  get vehicleMakeAndModel(): string {
     if (!this.currentTechRecord) return '';
     if (!this.currentTechRecord.make && !this.currentTechRecord.chassisMake) return '';
 
     return this.currentTechRecord.vehicleType !== 'psv'
       ? `${this.currentTechRecord.make} - ${this.currentTechRecord.model}`
       : `${this.currentTechRecord.chassisMake} - ${this.currentTechRecord.chassisModel}`;
-  }
-
-  ngOnInit(): void {
-    if (this.currentTechRecord === undefined) {
-      this.navigateBack();
-    }
   }
 
   handleSubmitNewVehicleType(selectedVehicleType: VehicleTypes): void {
@@ -87,12 +84,16 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));
 
     this.currentTechRecord?.statusCode !== StatusCodes.PROVISIONAL
-      ? this.router.navigate(['../amend-reason'], { relativeTo: this.route })
-      : this.router.navigate(['../notifiable-alteration-needed'], { relativeTo: this.route });
+      ? this.navigateTo('../amend-reason')
+      : this.navigateTo('../notifiable-alteration-needed');
+  }
+
+  navigateTo(path: string, queryParams?: Params): void {
+    this.router.navigate([path], { relativeTo: this.route, queryParams });
   }
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.navigateTo('../');
   }
 }
