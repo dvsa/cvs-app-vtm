@@ -9,9 +9,7 @@ import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-am
 import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
 import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { TechRecordComponent } from './tech-record.component';
-
 import { ChangeVehicleTypeComponent } from './components/change-vehicle-type/change-vehicle-type.component';
-
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
 

@@ -6,15 +6,14 @@
     </dd>
     <dd class="govuk-summary-list__actions"></dd>
     <dd class="govuk-summary-list__actions">
-      <a
+      <app-button
         *ngIf="
           (currentTechRecord$ | async)?.statusCode !== 'archived' &&
           (currentTechRecord$ | async)?.vehicleType === (editableTechRecord$ | async)?.vehicleType
         "
-        class="govuk-link"
-        style="cursor: pointer"
-        (click)="navigateTo('change-vehicle-type')"
-        >Change</a
+        design="link"
+        (clicked)="navigateTo('change-vehicle-type')"
+        >Change</app-button
       >
     </dd>
   </div>
@@ -69,11 +68,11 @@
       <dd class="govuk-summary-list__value"></dd>
       <div *appRoleRequired="roles.TechRecordArchive">
         <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
-          <a class="govuk-link" (click)="navigateTo('change-status', { to: 'archived' })">Archive</a>
+          <app-button design="link" (clicked)="navigateTo('change-status', { to: 'archived' })">Archive</app-button>
         </dd>
       </div>
       <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
-        <a class="govuk-link" (click)="navigateTo('change-status', { to: 'current' })">Promote</a>
+        <app-button design="link" (clicked)="navigateTo('change-status', { to: 'current' })">Promote</app-button>
       </dd>
     </ng-container>
   </div>
@@ -98,7 +97,7 @@
       <ng-container *ngIf="!hideActions">
         <dd class="govuk-summary-list__value"></dd>
         <dd class="govuk-summary-list__actions">
-          <a class="govuk-link" (click)="navigateTo('change-vta-visibility')">Change</a>
+          <app-button design="link" (clicked)="navigateTo('change-vta-visibility')">Change</app-button>
         </dd>
       </ng-container>
     </div>

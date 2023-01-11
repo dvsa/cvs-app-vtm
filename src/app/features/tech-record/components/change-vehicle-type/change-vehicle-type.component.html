@@ -1,6 +1,4 @@
 <div *ngIf="vehicleTechRecord">
-  <br />
-  <br />
   <h2 class="govuk-heading-l">
     {{ vehicleMakeAndModel }}
   </h2>
@@ -34,13 +32,10 @@
     <div *ngIf="selectVehicleType.value !== vehicleTechRecord!.techRecord[0].vehicleType && selectVehicleType.value !== ''">
       <h1 class="govuk-heading-xl">Are you sure you want to change this Vehicle type?</h1>
 
-      <span class="govuk-body"
-        >You are about to change a {{ vehicleTechRecord!.techRecord[0].vehicleType | uppercase }} to a
-        {{ selectVehicleType.value | uppercase }} provisional technical record.</span
-      >
-
-      <br />
-      <br />
+      <p class="govuk-body">
+        You are about to change a {{ vehicleTechRecord!.techRecord[0].vehicleType | uppercase }} to a
+        {{ selectVehicleType.value | uppercase }} provisional technical record.
+      </p>
     </div>
 
     <div style="display: flex; justify-content: space-between; align-items: center">
@@ -53,7 +48,7 @@
       >
         Confirm and continue
       </button>
-      <a class="govuk-link margin-right" style="cursor: pointer" data-module="govuk-button" (click)="navigateBack()">Back</a>
+      <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
     </div>
   </form>
 </div>
