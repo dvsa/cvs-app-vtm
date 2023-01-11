@@ -9,6 +9,7 @@ import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-am
 import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
 import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { TechRecordComponent } from './tech-record.component';
+import { ChangeVehicleTypeComponent } from './components/change-vehicle-type/change-vehicle-type.component';
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
 
@@ -69,9 +70,15 @@ const routes: Routes = [
       {
         path: 'change-status',
         component: TechRecordChangeStatusComponent,
-        data: { title: 'Promotore or Archive Tech Record', roles: Roles.TechRecordArchive },
+        data: { title: 'Promote or Archive Tech Record', roles: Roles.TechRecordArchive },
         canActivate: [MsalGuard, RoleGuard],
         resolve: { load: TechRecordViewResolver }
+      },
+      {
+        path: 'change-vehicle-type',
+        component: ChangeVehicleTypeComponent,
+        data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+        canActivate: [MsalGuard, RoleGuard]
       },
       {
         path: 'notifiable-alteration-needed/tyre-search/:axleNumber',
@@ -108,6 +115,13 @@ const routes: Routes = [
     data: { title: 'Promotore or Archive Tech Record', roles: Roles.TechRecordArchive },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'change-vehicle-type',
+    component: ChangeVehicleTypeComponent,
+    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver }
   },
   {
     path: 'change-vta-visibility',

@@ -14,6 +14,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
 import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { TechRecordTitleComponent } from './components/tech-record-title/tech-record-title.component';
+
+import { ChangeVehicleTypeComponent } from './components/change-vehicle-type/change-vehicle-type.component';
+
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
 
@@ -29,6 +32,7 @@ import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-
     TyresSearchComponent,
     TechRecordChangeStatusComponent,
     TechRecordTitleComponent,
+    ChangeVehicleTypeComponent,
     TechRecordChangeVisibilityComponent,
     TechRouterOutletComponent
   ],

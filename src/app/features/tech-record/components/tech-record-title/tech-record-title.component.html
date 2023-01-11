@@ -1,5 +1,24 @@
 <dl *ngIf="currentTechRecord$ | async as currentTechRecord" class="govuk-summary-list">
   <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Vehicle type</dt>
+    <dd id="vehicleType" class="govuk-summary-list__value">
+      {{ (editableTechRecord$ | async)?.vehicleType ?? '' | uppercase | defaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__actions"></dd>
+    <dd class="govuk-summary-list__actions">
+      <app-button
+        *ngIf="
+          (currentTechRecord$ | async)?.statusCode !== 'archived' &&
+          (currentTechRecord$ | async)?.vehicleType === (editableTechRecord$ | async)?.vehicleType
+        "
+        design="link"
+        (clicked)="navigateTo('change-vehicle-type')"
+        >Change</app-button
+      >
+    </dd>
+  </div>
+
+  <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
     <dd id="vin" class="govuk-summary-list__value">
       {{ currentTechRecord.historicVin ?? vehicleTechRecord?.vin | defaultNullOrEmpty }}
@@ -49,11 +68,11 @@
       <dd class="govuk-summary-list__value"></dd>
       <div *appRoleRequired="roles.TechRecordArchive">
         <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
-          <a class="govuk-link" (click)="navigateTo('change-status', { to: 'archived' })">Archive</a>
+          <app-button design="link" (clicked)="navigateTo('change-status', { to: 'archived' })">Archive</app-button>
         </dd>
       </div>
       <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
-        <a class="govuk-link" (click)="navigateTo('change-status', { to: 'current' })">Promote</a>
+        <app-button design="link" (clicked)="navigateTo('change-status', { to: 'current' })">Promote</app-button>
       </dd>
     </ng-container>
   </div>
@@ -78,7 +97,7 @@
       <ng-container *ngIf="!hideActions">
         <dd class="govuk-summary-list__value"></dd>
         <dd class="govuk-summary-list__actions">
-          <a class="govuk-link" (click)="navigateTo('change-vta-visibility')">Change</a>
+          <app-button design="link" (clicked)="navigateTo('change-vta-visibility')">Change</app-button>
         </dd>
       </ng-container>
     </div>
