@@ -4,13 +4,14 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes, Params } from '@forms/services/dynamic-form.types';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { take } from 'rxjs';
+import { map, take } from 'rxjs';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { MultiOptions } from '@forms/models/options.model';
-import { changeVehicleType } from '@store/technical-records';
+import { changeVehicleType, updateEditingTechRecord } from '@store/technical-records';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { ActivatedRoute, Router } from '@angular/router';
+import cloneDeep from 'lodash.clonedeep';
 
 @Component({
   selector: 'app-change-vehicle-type',
@@ -67,8 +68,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   }
 
   get vehicleMakeAndModel(): string {
-    if (!this.currentTechRecord) return '';
-    if (!this.currentTechRecord.make && !this.currentTechRecord.chassisMake) return '';
+    if (!this.currentTechRecord?.make && !this.currentTechRecord?.chassisMake) return '';
 
     return this.currentTechRecord.vehicleType !== 'psv'
       ? `${this.currentTechRecord.make} - ${this.currentTechRecord.model}`
@@ -85,9 +85,22 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     }
     this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));
 
+    this.clearReasonForCreation();
+
     this.currentTechRecord?.statusCode !== StatusCodes.PROVISIONAL
       ? this.navigateTo('../amend-reason')
       : this.navigateTo('../notifiable-alteration-needed');
+  }
+
+  clearReasonForCreation(): void {
+    this.technicalRecordService.editableTechRecord$
+      .pipe(
+        map(data => data ?? { ...cloneDeep(this.vehicleTechRecord) }),
+        take(1)
+      )
+      .subscribe(data => {
+        this.store.dispatch(updateEditingTechRecord({ techRecord: { ...data, reasonForCreation: '' } as TechRecordModel }));
+      });
   }
 
   navigateTo(path: string, queryParams?: Params): void {
