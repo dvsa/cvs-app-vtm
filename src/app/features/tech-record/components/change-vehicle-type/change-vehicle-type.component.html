@@ -26,6 +26,7 @@
       [label]="form.meta.children![0].label"
       [formControlName]="form.meta.children![0].name"
       [options]="vehicleTypeOptions"
+      name="change-vehicle-type-select"
       (ngModelChange)="ngOnChanges()"
     ></app-select>
 
@@ -44,11 +45,12 @@
         data-module="govuk-button"
         type="submit"
         enterkeyhint="change vehicle type"
+        id="change-vehicle-type-confirm-button"
         (click)="handleSubmitNewVehicleType(selectVehicleType.value)"
       >
         Confirm and continue
       </button>
-      <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+      <app-button design="link" id="back-from-vehicle-type-change-button" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
     </div>
   </form>
 </div>
