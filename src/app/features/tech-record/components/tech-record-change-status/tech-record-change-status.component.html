@@ -7,12 +7,18 @@
 
       <dl class="govuk-summary-list">
         <dd class="govuk-summary-list__value">
-          <button class="govuk-button govuk-button--primary" id="submit" type="submit" data-module="govuk-button" data-prevent-double-click="true">
+          <button
+            class="govuk-button govuk-button--primary"
+            id="submit-change-record-status-to-archived-button"
+            type="submit"
+            data-module="govuk-button"
+            data-prevent-double-click="true"
+          >
             {{ buttonLabel }} record
           </button>
         </dd>
         <dd class="govuk-summary-list__value back-button">
-          <a class="govuk-link" (click)="goBack()">Back</a>
+          <a class="govuk-link" id="tech-record-back-link" (click)="goBack()">Back</a>
         </dd>
       </dl>
     </form>
