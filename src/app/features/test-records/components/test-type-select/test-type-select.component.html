@@ -2,8 +2,9 @@
 <div class="categories">
   <div class="list_container" [ngClass]="{ 'list_container--shrink': categories.length > 0 + 1 }">
     <ol class="list">
-      <li *ngFor="let type of selectAllTestTypes$ | async; trackBy: tackByFn">
+      <li *ngFor="let type of selectAllTestTypes$ | async; trackBy: tackByFn; let testListIndex = index">
         <button
+          [id]="'test-list-item-' + [testListIndex]"
           class="list__item"
           [ngClass]="{ 'list__item--active': isSelected(type.id!!), 'list__item--more': hasNext(type) }"
           (click)="handleCategory(type, 0)"
