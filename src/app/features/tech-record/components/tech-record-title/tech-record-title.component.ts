@@ -1,13 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TechRecord } from '@api/vehicle';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editableTechRecord } from '@store/technical-records/selectors/technical-record-service.selectors';
-import { Observable, take } from 'rxjs';
+import { Observable, of, Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-title',
@@ -21,6 +20,7 @@ export class TechRecordTitleComponent implements OnInit {
 
   queryableRecordActions: string[] = [];
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
+  vehicleMakeAndModel?: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private technicalRecordService: TechnicalRecordService, private store: Store) {}
 
@@ -28,6 +28,12 @@ export class TechRecordTitleComponent implements OnInit {
     this.queryableRecordActions = this.recordActions.split(',');
 
     this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
+
+    this.currentTechRecord$.pipe(take(1)).subscribe(data => {
+      data?.vehicleType === this.vehicleTypes.PSV
+        ? (this.vehicleMakeAndModel = `${data.chassisMake ?? ''} ${data.chassisModel ?? ''}`)
+        : (this.vehicleMakeAndModel = `${data?.make ?? ''} ${data?.model ?? ''}`);
+    });
   }
 
   get currentVrm(): string | undefined {
@@ -37,6 +43,7 @@ export class TechRecordTitleComponent implements OnInit {
   get editableTechRecord$() {
     return this.store.pipe(select(editableTechRecord));
   }
+
   get otherVrms(): Vrm[] | undefined {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }

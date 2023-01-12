@@ -1,3 +1,10 @@
+<div class="vehicle_heading">
+  <h1 class="govuk-heading-l">
+    <span>{{ vehicleMakeAndModel }}</span>
+    <app-icon [icon]="(editableTechRecord$ | async)?.vehicleType || ''"></app-icon>
+  </h1>
+</div>
+
 <dl *ngIf="currentTechRecord$ | async as currentTechRecord" class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Vehicle type</dt>
@@ -23,7 +30,6 @@
     <dd id="vin" class="govuk-summary-list__value">
       {{ currentTechRecord.historicVin ?? vehicleTechRecord?.vin | defaultNullOrEmpty }}
     </dd>
-    <dd class="govuk-summary-list__value"></dd>
   </div>
 
   <ng-container *ngIf="currentTechRecord.vehicleType !== vehicleTypes.TRL; else trailerHeader">
@@ -32,7 +38,6 @@
       <dd id="current-vrm" class="govuk-summary-list__value">
         <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
       </dd>
-      <dd class="govuk-summary-list__value"></dd>
     </div>
 
     <div class="govuk-summary-list__row">
@@ -45,7 +50,6 @@
           [isSecondary]="true"
         ></app-number-plate>
       </dd>
-      <dd class="govuk-summary-list__value"></dd>
     </div>
   </ng-container>
 
@@ -55,7 +59,6 @@
       <dd id="trailer-id" class="govuk-summary-list__value">
         {{ vehicleTechRecord?.trailerId | defaultNullOrEmpty }}
       </dd>
-      <dd class="govuk-summary-list__value"></dd>
     </div>
   </ng-template>
 
@@ -65,7 +68,6 @@
       <strong class="govuk-tag govuk-phase-banner__content__tag">{{ currentTechRecord.statusCode | defaultNullOrEmpty }}</strong>
     </dd>
     <ng-container *ngIf="!hideActions">
-      <dd class="govuk-summary-list__value"></dd>
       <div *appRoleRequired="roles.TechRecordArchive">
         <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
           <app-button design="link" (clicked)="navigateTo('change-status', { to: 'archived' })">Archive</app-button>
@@ -95,7 +97,7 @@
         </app-tag>
       </dd>
       <ng-container *ngIf="!hideActions">
-        <dd class="govuk-summary-list__value"></dd>
+        <dd class="govuk-summary-list__actions"></dd>
         <dd class="govuk-summary-list__actions">
           <app-button design="link" (clicked)="navigateTo('change-vta-visibility')">Change</app-button>
         </dd>
