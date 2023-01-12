@@ -69,7 +69,9 @@
       <dd class="govuk-summary-list__value"></dd>
       <div *appRoleRequired="roles.TechRecordArchive">
         <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
-          <app-button design="link" (clicked)="navigateTo('change-status', { to: 'archived' })">Archive</app-button>
+          <app-button design="link" id="change-status-to-archive-link" (clicked)="navigateTo('change-status', { to: 'archived' })"
+            >Archive</app-button
+          >
         </dd>
       </div>
       <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
@@ -98,7 +100,7 @@
       <ng-container *ngIf="!hideActions">
         <dd class="govuk-summary-list__value"></dd>
         <dd class="govuk-summary-list__actions">
-          <app-button design="link" (clicked)="navigateTo('change-vta-visibility')">Change</app-button>
+          <app-button design="link" id="change-record-visibility-in-vta-link" (clicked)="navigateTo('change-vta-visibility')">Change</app-button>
         </dd>
       </ng-container>
     </div>
