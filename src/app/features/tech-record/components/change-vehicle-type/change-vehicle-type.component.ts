@@ -95,11 +95,14 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   clearReasonForCreation(): void {
     this.technicalRecordService.editableVehicleTechRecord$
       .pipe(
-        map(data => data ?? { ...cloneDeep(this.vehicleTechRecord!) }),
+        map(data => data ?? cloneDeep(this.vehicleTechRecord)),
         take(1)
       )
-      .subscribe(data => {
-        this.store.dispatch(updateEditingTechRecord(data));
+      .subscribe(vehicTechRec => {
+        if (vehicTechRec) {
+          vehicTechRec.techRecord[0].reasonForCreation = '';
+          this.store.dispatch(updateEditingTechRecord(vehicTechRec));
+        }
       });
   }
 
