@@ -19,7 +19,6 @@ import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/ref
 import { map, Observable, take } from 'rxjs';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { reasonForCreationSection } from '@forms/templates/test-records/section-templates/reasonForCreation/reasonForCreation.template';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 
 @Component({
