@@ -73,20 +73,20 @@
   <tbody class="govuk-table__body">
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Service</th>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 16) / 100) }}</td>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 16) / 100) }}</td>
+      <td class="govuk-table__cell" id="noWheelLockAddedServiceCell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 16) / 100) }}</td>
+      <td class="govuk-table__cell" id="halfWheelsLockedServiceCell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 16) / 100) }}</td>
     </tr>
 
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Secondary</th>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100) }}</td>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 25) / 100) }}</td>
+      <td class="govuk-table__cell" id="noWheelLockAddedSecondaryCell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100) }}</td>
+      <td class="govuk-table__cell" id="halfWheelsLockedSecondaryCell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 25) / 100) }}</td>
     </tr>
 
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Parking</th>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 45) / 100) }}</td>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 50) / 100) }}</td>
+      <td class="govuk-table__cell" id="noWheelLockAddedParkingCell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 45) / 100) }}</td>
+      <td class="govuk-table__cell" id="halfWheelsLockedParkingCell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 50) / 100) }}</td>
     </tr>
   </tbody>
 </table>
