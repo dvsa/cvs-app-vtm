@@ -13,6 +13,7 @@ import {
   getByVin,
   getByVrm,
   selectVehicleTechnicalRecordsBySystemNumber,
+  updateEditingTechRecord,
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
@@ -112,6 +113,15 @@ export class TechnicalRecordService {
     };
 
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+  }
+
+  clearReasonForCreation(vehicleTechRecord?: VehicleTechRecordModel): void {
+    this.editableVehicleTechRecord$.pipe(map(data => data ?? cloneDeep(vehicleTechRecord))).subscribe(data => {
+      if (data) {
+        data.techRecord[0].reasonForCreation = '';
+        this.store.dispatch(updateEditingTechRecord(data));
+      }
+    });
   }
 
   get vehicleTechRecords$() {

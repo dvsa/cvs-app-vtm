@@ -68,18 +68,7 @@ export class EditTechRecordButtonComponent implements OnInit {
     this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL
       ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
       : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route });
-    this.clearReasonForCreation();
-  }
-
-  clearReasonForCreation(): void {
-    this.technicalRecordService.editableVehicleTechRecord$
-      .pipe(
-        map(data => data ?? { ...cloneDeep(this.vehicleTechRecord!) }),
-        take(1)
-      )
-      .subscribe(data => {
-        this.store.dispatch(updateEditingTechRecord(data));
-      });
+    this.technicalRecordService.clearReasonForCreation(this.vehicleTechRecord);
   }
 
   toggleEditMode() {

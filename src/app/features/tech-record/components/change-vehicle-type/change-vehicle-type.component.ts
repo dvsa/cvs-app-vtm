@@ -85,25 +85,11 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     }
     this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));
 
-    this.clearReasonForCreation();
+    this.technicalRecordService.clearReasonForCreation(this.vehicleTechRecord);
 
     this.currentTechRecord?.statusCode !== StatusCodes.PROVISIONAL
       ? this.navigateTo('../amend-reason')
       : this.navigateTo('../notifiable-alteration-needed');
-  }
-
-  clearReasonForCreation(): void {
-    this.technicalRecordService.editableVehicleTechRecord$
-      .pipe(
-        map(data => data ?? cloneDeep(this.vehicleTechRecord)),
-        take(1)
-      )
-      .subscribe(vehicTechRec => {
-        if (vehicTechRec) {
-          vehicTechRec.techRecord[0].reasonForCreation = '';
-          this.store.dispatch(updateEditingTechRecord(vehicTechRec));
-        }
-      });
   }
 
   navigateTo(path: string, queryParams?: Params): void {
