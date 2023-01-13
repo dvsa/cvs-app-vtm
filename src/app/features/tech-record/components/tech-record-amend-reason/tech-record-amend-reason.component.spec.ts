@@ -4,18 +4,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 
-import { TechAmendReasonComponent } from './tech-amend-reason.component';
+import { TechRecordAmendReasonComponent } from './tech-record-amend-reason.component';
 import { StoreModule } from '@ngrx/store';
 
-describe('TechAmendReasonComponent', () => {
-  let component: TechAmendReasonComponent;
-  let fixture: ComponentFixture<TechAmendReasonComponent>;
+describe('TechRecordAmendReasonComponent', () => {
+  let component: TechRecordAmendReasonComponent;
+  let fixture: ComponentFixture<TechRecordAmendReasonComponent>;
   let route: ActivatedRoute;
   let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TechAmendReasonComponent],
+      declarations: [TechRecordAmendReasonComponent],
       imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule, StoreModule.forRoot({})]
     }).compileComponents();
 
@@ -24,7 +24,7 @@ describe('TechAmendReasonComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TechAmendReasonComponent);
+    fixture = TestBed.createComponent(TechRecordAmendReasonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

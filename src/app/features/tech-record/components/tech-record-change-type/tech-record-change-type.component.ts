@@ -15,7 +15,8 @@ import { take, map } from 'rxjs';
 
 @Component({
   selector: 'app-change-vehicle-type',
-  templateUrl: './change-vehicle-type.component.html'
+  templateUrl: './tech-record-change-type.component.html',
+  styleUrls: ['./tech-record-change-type.component.scss']
 })
 export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   vehicle?: VehicleTechRecordModel;
@@ -43,9 +44,9 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicle = data));
+    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
-    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(data => (this.currentTechRecord = data));
+    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.currentTechRecord = techRecord));
 
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
   }
@@ -84,11 +85,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
 
   handleSubmit(selectedVehicleType: VehicleTypes): void {
     if (!selectedVehicleType) {
-      this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
-      return;
-    } else if (selectedVehicleType !== VehicleTypes.PSV) {
-      this.globalErrorService.addError({ error: 'That technical feature will be implemented soon', anchorLink: 'selectedVehicleType' });
-      return;
+      return this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
     }
 
     this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));

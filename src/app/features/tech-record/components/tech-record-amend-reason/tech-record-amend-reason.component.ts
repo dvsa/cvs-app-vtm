@@ -8,10 +8,10 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 
 @Component({
   selector: 'app-tech-amend-reason',
-  templateUrl: './tech-amend-reason.component.html',
+  templateUrl: './tech-record-amend-reason.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TechAmendReasonComponent {
+export class TechRecordAmendReasonComponent {
   reasons: Array<FormNodeOption<string>> = [
     { label: 'Correcting an error', value: ReasonForEditing.CORRECTING_AN_ERROR, hint: 'Amend the current technical record' },
     { label: 'Notifiable alteration needed', value: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, hint: 'Create a new provisional technical record' }

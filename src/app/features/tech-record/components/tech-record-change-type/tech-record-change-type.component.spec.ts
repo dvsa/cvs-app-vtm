@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -6,10 +8,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
 import { of, ReplaySubject } from 'rxjs';
-
-import { ChangeVehicleTypeComponent } from './change-vehicle-type.component';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ChangeVehicleTypeComponent } from './tech-record-change-type.component';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
@@ -24,7 +23,7 @@ const mockDynamicFormService = {
 let router: Router;
 let store: MockStore;
 
-describe('ChangeVehicleTypeComponent', () => {
+describe('TechRecordChangeTypeComponent', () => {
   let component: ChangeVehicleTypeComponent;
   let fixture: ComponentFixture<ChangeVehicleTypeComponent>;
   let actions$ = new ReplaySubject<Action>();

@@ -275,6 +275,5 @@ export class TechRecordSummaryComponent implements OnInit {
         parkingBrakeForceB: Math.round(((this.vehicleTechRecordCalculated.grossKerbWeight || 0) * 50) / 100)
       }
     };
-    console.log(this.vehicleTechRecordCalculated.brakes);
   }
 }
