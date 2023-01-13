@@ -1,0 +1,9 @@
+.buttons-row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  a {
+    cursor: pointer;
+  }
+}

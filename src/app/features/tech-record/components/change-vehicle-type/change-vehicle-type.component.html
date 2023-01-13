@@ -1,14 +1,8 @@
 <div *ngIf="vehicleTechRecord">
   <br />
   <br />
-  <h2 *ngIf="currentTechRecord?.vehicleType !== 'psv'" class="govuk-heading-l">
-    {{ currentTechRecord?.make | defaultNullOrEmpty }} -
-    {{ currentTechRecord?.model | defaultNullOrEmpty }}
-  </h2>
-  <h2 *ngIf="currentTechRecord?.vehicleType === 'psv'" class="govuk-heading-l">
-    {{ currentTechRecord?.chassisMake | defaultNullOrEmpty }} -
-    {{ currentTechRecord?.chassisModel | defaultNullOrEmpty }}
-  </h2>
+
+  <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
 
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
@@ -17,10 +11,12 @@
         {{ currentTechRecord?.vehicleType?.toUpperCase() | defaultNullOrEmpty }}
       </dd>
     </div>
+
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">VRM</dt>
       <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
     </div>
+
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">VIN/chassis number</dt>
       <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicleTechRecord.vin | defaultNullOrEmpty }}</dd>
@@ -39,26 +35,27 @@
     <div *ngIf="selectVehicleType.value !== vehicleTechRecord!.techRecord[0].vehicleType && selectVehicleType.value !== ''">
       <h1 class="govuk-heading-xl">Are you sure you want to change this Vehicle type?</h1>
 
-      <span class="govuk-body"
-        >You are about to change a {{ vehicleTechRecord!.techRecord[0].vehicleType.toUpperCase() }} to a
-        {{ selectVehicleType.value.toUpperCase() }} provisional technical record.</span
-      >
+      <span class="govuk-body">
+        You are about to change a {{ vehicleTechRecord!.techRecord[0].vehicleType.toUpperCase() }} to a
+        {{ selectVehicleType.value.toUpperCase() }} provisional technical record.
+      </span>
 
       <br />
       <br />
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center">
+    <div class="buttons-row">
       <button
         class="govuk-button"
         data-module="govuk-button"
         type="submit"
         enterkeyhint="change vehicle type"
-        (click)="handleSubmitNewVehicleType(selectVehicleType.value)"
+        (click)="handleSubmit(selectVehicleType.value)"
       >
         Confirm and continue
       </button>
-      <a class="govuk-link margin-right" style="cursor: pointer" data-module="govuk-button" (click)="navigateBack()">Back</a>
+
+      <a class="govuk-link" data-module="govuk-button" (click)="navigateBack()">Back</a>
     </div>
   </form>
 </div>

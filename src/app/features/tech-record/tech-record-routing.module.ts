@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
-import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-amend-reason.component';
-import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
-import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
-import { TechRecordComponent } from './tech-record.component';
-
 import { ChangeVehicleTypeComponent } from './components/change-vehicle-type/change-vehicle-type.component';
-
+import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-amend-reason.component';
+import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
+import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
+import { TechRecordComponent } from './tech-record.component';
 
 const routes: Routes = [
   {
