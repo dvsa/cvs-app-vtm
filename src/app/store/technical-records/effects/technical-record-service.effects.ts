@@ -175,7 +175,6 @@ export class TechnicalRecordServiceEffects {
     this.actions$.pipe(
       ofType(changeVehicleType),
       withLatestFrom(this.store.pipe(select(editableTechRecord))),
-      take(1),
       concatMap(([{ vehicleType }, editableTechRecord]) => {
         const techRecord = { ...cloneDeep(editableTechRecord), vehicleType };
 

@@ -1,14 +1,11 @@
-<div *ngIf="vehicleTechRecord">
-  <br />
-  <br />
-
+<div *ngIf="vehicle">
   <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
 
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle type</dt>
       <dd id="vehicleType" class="govuk-summary-list__value">
-        {{ currentTechRecord?.vehicleType?.toUpperCase() | defaultNullOrEmpty }}
+        {{ currentTechRecord?.vehicleType | defaultNullOrEmpty | uppercase }}
       </dd>
     </div>
 
@@ -19,7 +16,7 @@
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">VIN/chassis number</dt>
-      <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicleTechRecord.vin | defaultNullOrEmpty }}</dd>
+      <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicle.vin | defaultNullOrEmpty }}</dd>
     </div>
   </dl>
 
@@ -32,19 +29,16 @@
       (ngModelChange)="ngOnChanges()"
     ></app-select>
 
-    <div *ngIf="selectVehicleType.value !== vehicleTechRecord!.techRecord[0].vehicleType && selectVehicleType.value !== ''">
+    <div *ngIf="selectVehicleType.value !== vehicle!.techRecord[0].vehicleType && selectVehicleType.value !== ''">
       <h1 class="govuk-heading-xl">Are you sure you want to change this Vehicle type?</h1>
 
-      <span class="govuk-body">
-        You are about to change a {{ vehicleTechRecord!.techRecord[0].vehicleType.toUpperCase() }} to a
-        {{ selectVehicleType.value.toUpperCase() }} provisional technical record.
-      </span>
-
-      <br />
-      <br />
+      <p class="govuk-body">
+        You are about to change a {{ vehicle!.techRecord[0].vehicleType | uppercase }} to a {{ selectVehicleType.value | uppercase }} provisional
+        technical record.
+      </p>
     </div>
 
-    <div class="buttons-row">
+    <div style="display: flex; justify-content: space-between; align-items: center">
       <button
         class="govuk-button"
         data-module="govuk-button"
@@ -55,7 +49,7 @@
         Confirm and continue
       </button>
 
-      <a class="govuk-link" data-module="govuk-button" (click)="navigateBack()">Back</a>
+      <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
     </div>
   </form>
 </div>

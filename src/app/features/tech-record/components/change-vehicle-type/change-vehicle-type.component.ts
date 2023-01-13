@@ -1,4 +1,4 @@
-import { OnInit, OnChanges, Component } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
@@ -8,19 +8,19 @@ import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes, StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { changeVehicleType } from '@store/technical-records';
+import { changeVehicleType, updateEditingTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { take } from 'rxjs';
+import cloneDeep from 'lodash.clonedeep';
+import { take, map } from 'rxjs';
 
 @Component({
   selector: 'app-change-vehicle-type',
-  templateUrl: './change-vehicle-type.component.html',
-  styleUrls: ['./change-vehicle-type.component.scss']
+  templateUrl: './change-vehicle-type.component.html'
 })
 export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
-  vehicleTechRecord?: VehicleTechRecordModel;
+  vehicle?: VehicleTechRecordModel;
   currentTechRecord?: TechRecordModel;
-  form!: CustomFormGroup;
+  form: CustomFormGroup;
 
   template: FormNode = {
     name: 'criteria',
@@ -43,7 +43,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicleTechRecord = data));
+    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicle = data));
 
     this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(data => (this.currentTechRecord = data));
 
@@ -51,7 +51,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    if (!this.vehicleTechRecord) {
+    if (!this.currentTechRecord) {
       this.navigateBack();
     }
   }
@@ -62,33 +62,50 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
 
   get makeAndModel(): string {
     const c = this.currentTechRecord;
-    if (!c) return '';
+    if (!c?.make && !c?.chassisMake) return '';
 
     return `${c.vehicleType === 'psv' ? c.make : c.chassisMake} - ${c.vehicleType === 'psv' ? c.model : c.chassisModel}`;
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
   get vehicleTypeOptions(): MultiOptions {
-    return getOptionsFromEnumAcronym(VehicleTypes).filter(vehicleType => vehicleType.value !== this.currentTechRecord?.vehicleType);
+    return getOptionsFromEnumAcronym(VehicleTypes).filter(
+      type => type.value !== this.currentTechRecord?.vehicleType && type.value !== VehicleTypes.MOTORCYCLE
+    );
+  }
+
+  navigateBack() {
+    this.globalErrorService.clearErrors();
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(selectedVehicleType: VehicleTypes): void {
     if (!selectedVehicleType) {
-      return this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
+      this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
+      return;
+    } else if (selectedVehicleType !== VehicleTypes.PSV) {
+      this.globalErrorService.addError({ error: 'That technical feature will be implemented soon', anchorLink: 'selectedVehicleType' });
+      return;
     }
 
     this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));
+
+    this.clearReasonForCreation();
 
     const routeSuffix = this.currentTechRecord?.statusCode !== StatusCodes.PROVISIONAL ? 'amend-reason' : 'notifiable-alteration-needed';
 
     this.router.navigate([`../${routeSuffix}`], { relativeTo: this.route });
   }
 
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    this.router.navigate(['..'], { relativeTo: this.route });
+  clearReasonForCreation(): void {
+    this.technicalRecordService.editableTechRecord$
+      .pipe(
+        map(data => data ?? cloneDeep(this.vehicle)),
+        take(1)
+      )
+      .subscribe(data => this.store.dispatch(updateEditingTechRecord({ techRecord: { ...data, reasonForCreation: '' } as TechRecordModel })));
   }
 }

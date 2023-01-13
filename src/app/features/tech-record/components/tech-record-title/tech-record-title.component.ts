@@ -1,12 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TechRecord } from '@api/vehicle';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
+import { VehicleTechRecordModel, TechRecordModel, Vrm, VehicleTypes, StatusCodes } from '@models/vehicle-tech-record.model';
+import { Store, select } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { editableTechRecord } from '@store/technical-records/selectors/technical-record-service.selectors';
+import { editableTechRecord } from '@store/technical-records';
 import { Observable, take } from 'rxjs';
 
 @Component({
@@ -21,6 +20,7 @@ export class TechRecordTitleComponent implements OnInit {
 
   queryableRecordActions: string[] = [];
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
+  vehicleMakeAndModel: string = '';
 
   constructor(private route: ActivatedRoute, private router: Router, private technicalRecordService: TechnicalRecordService, private store: Store) {}
 
@@ -28,6 +28,14 @@ export class TechRecordTitleComponent implements OnInit {
     this.queryableRecordActions = this.recordActions.split(',');
 
     this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
+
+    this.currentTechRecord$
+      .pipe(take(1))
+      .subscribe(
+        data =>
+          (this.vehicleMakeAndModel =
+            data?.vehicleType === this.vehicleTypes.PSV ? `${data.chassisMake} ${data.chassisModel}` : `${data?.make} ${data?.model}`)
+      );
   }
 
   get currentVrm(): string | undefined {
@@ -37,6 +45,7 @@ export class TechRecordTitleComponent implements OnInit {
   get editableTechRecord$() {
     return this.store.pipe(select(editableTechRecord));
   }
+
   get otherVrms(): Vrm[] | undefined {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
