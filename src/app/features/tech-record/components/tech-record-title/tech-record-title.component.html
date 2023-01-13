@@ -75,7 +75,7 @@
         </dd>
       </div>
       <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
-        <app-button design="link" (clicked)="navigateTo('change-status', { to: 'current' })">Promote</app-button>
+        <app-button design="link" id="promote-link" (clicked)="navigateTo('change-status', { to: 'current' })">Promote</app-button>
       </dd>
     </ng-container>
   </div>
