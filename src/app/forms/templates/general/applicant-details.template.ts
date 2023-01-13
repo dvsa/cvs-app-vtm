@@ -43,7 +43,7 @@ export const ApplicantDetails: FormNode = {
           validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
         },
         {
-          name: 'country',
+          name: 'address3',
           label: 'County',
           value: '',
           width: FormNodeWidth.XL,
