@@ -18,7 +18,7 @@
   .prefix {
     border: 2px solid #0b0c0c;
     border-right: 0;
-    height: unset;
+    height: fit-content;
   }
 
   @media (max-width: 640px) {
