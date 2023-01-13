@@ -37,21 +37,11 @@
               <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'ladenWeight' }"></ng-template>
             </ng-container>
 
-            <ng-template
-              [ngTemplateOutlet]="axleTdNumberInput"
-              [ngTemplateOutletContext]="{ name: 'gbWeightAxel' + axle.value.axleNumber }"
-            ></ng-template>
+            <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'gbWeight' }"></ng-template>
 
-            <ng-template
-              *ngIf="!isPsv"
-              [ngTemplateOutlet]="axleTdNumberInput"
-              [ngTemplateOutletContext]="{ name: 'eecWeight' + +axle.value.axleNumber }"
-            ></ng-template>
+            <ng-template *ngIf="!isPsv" [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'eecWeight' }"></ng-template>
 
-            <ng-template
-              [ngTemplateOutlet]="axleTdNumberInput"
-              [ngTemplateOutletContext]="{ name: 'designWeight' + axle.value.axleNumber }"
-            ></ng-template>
+            <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'designWeight' }"></ng-template>
 
             <td *ngIf="isEditing" class="govuk-table__cell">
               <a class="axleButton" (click)="removeAxle(i)">Remove</a>

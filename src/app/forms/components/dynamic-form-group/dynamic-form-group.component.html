@@ -16,7 +16,7 @@
         <a
           *ngIf="form.meta.subHeadingLink"
           class="govuk-link"
-          [id]="'select-' + [form.meta.subHeadingLink.url] + '-link'"
+          [id]="'select-' + form.meta.subHeadingLink.url + '-link'"
           [routerLink]="form.meta.subHeadingLink.url"
           >{{ form.meta.subHeadingLink.label }}</a
         >
