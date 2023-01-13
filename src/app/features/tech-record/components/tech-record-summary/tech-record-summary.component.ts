@@ -51,6 +51,7 @@ export class TechRecordSummaryComponent implements OnInit {
   vehicleTechRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
+  displayReasonForCreation: boolean = false;
 
   constructor(
     private technicalRecordService: TechnicalRecordService,
@@ -82,11 +83,10 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   toggleReasonForCreation(): void {
-    if (this.isEditing && this.sectionTemplates[0]?.name !== 'reasonForCreationSection') {
-      this.sectionTemplates.unshift(reasonForCreationSection);
-    }
-    if (!this.isEditing && this.sectionTemplates[0]?.name === 'reasonForCreationSection') {
-      this.sectionTemplates.shift();
+    if (this.isEditing) {
+      this.displayReasonForCreation = true;
+    } else {
+      this.displayReasonForCreation = false;
     }
   }
 
