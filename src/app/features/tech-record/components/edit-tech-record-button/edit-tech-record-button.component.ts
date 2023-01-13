@@ -8,10 +8,13 @@ import {
   updateTechRecordsSuccess
 } from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
-import { mergeMap, take } from 'rxjs';
+import { map, mergeMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ViewportScroller } from '@angular/common';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import cloneDeep from 'lodash.clonedeep';
+import { updateEditingTechRecord } from '@store/technical-records';
 
 @Component({
   selector: 'app-edit-tech-record-button',
@@ -33,6 +36,7 @@ export class EditTechRecordButtonComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store,
+    private technicalRecordService: TechnicalRecordService,
     private viewportScroller: ViewportScroller
   ) {}
 
@@ -64,6 +68,18 @@ export class EditTechRecordButtonComponent implements OnInit {
     this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL
       ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
       : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route });
+    this.clearReasonForCreation();
+  }
+
+  clearReasonForCreation(): void {
+    this.technicalRecordService.editableTechRecord$
+      .pipe(
+        map(data => data ?? { ...cloneDeep(this.vehicleTechRecord) }),
+        take(1)
+      )
+      .subscribe(data => {
+        this.store.dispatch(updateEditingTechRecord({ techRecord: { ...data, reasonForCreation: '' } as TechRecordModel }));
+      });
   }
 
   toggleEditMode() {
