@@ -84,7 +84,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit {
 
     this.store.pipe(select(editableVehicleTechRecord), take(1)).subscribe(vehicleTechRecord => {
       if (vehicleTechRecord) {
-        this.store.dispatch(updateEditingTechRecord({ ...vehicleTechRecord, techRecord: [updatedTechRecord] }));
+        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: { ...vehicleTechRecord, techRecord: [updatedTechRecord] } }));
       }
     });
 

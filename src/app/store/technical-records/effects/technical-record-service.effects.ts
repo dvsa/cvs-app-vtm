@@ -176,16 +176,16 @@ export class TechnicalRecordServiceEffects {
       concatMap(([action, editableVehicleTechRecord]) => {
         const { vehicleType } = action;
 
-        const vehicleTechRecord = cloneDeep(editableVehicleTechRecord!);
-        vehicleTechRecord.techRecord[0].vehicleType = vehicleType;
+        const vehicTechRecord = cloneDeep(editableVehicleTechRecord!);
+        vehicTechRecord.techRecord[0].vehicleType = vehicleType;
 
         const techRecordTemplate = vehicleTemplateMap.get(vehicleType);
         const mergedForms = techRecordTemplate!.reduce((mergedNodes, formNode) => {
-          const form = this.dfs.createForm(formNode, vehicleTechRecord.techRecord[0]);
+          const form = this.dfs.createForm(formNode, vehicTechRecord.techRecord[0]);
           return merge(mergedNodes, form.getCleanValue(form));
         }, {});
 
-        return of(updateEditingTechRecord({ ...vehicleTechRecord, techRecord: [mergedForms as TechRecordModel] }));
+        return of(updateEditingTechRecord({ vehicleTechRecord: { ...vehicTechRecord, techRecord: [mergedForms as TechRecordModel] } }));
       })
     )
   );

@@ -119,7 +119,7 @@ export class TechnicalRecordService {
     this.editableVehicleTechRecord$.pipe(map(data => data ?? cloneDeep(vehicleTechRecord))).subscribe(data => {
       if (data) {
         data.techRecord[0].reasonForCreation = '';
-        this.store.dispatch(updateEditingTechRecord(data));
+        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: data }));
       }
     });
   }

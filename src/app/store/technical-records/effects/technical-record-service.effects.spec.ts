@@ -651,82 +651,84 @@ describe('TechnicalRecordServiceEffects', () => {
 
           expectObservable(effects.generateTechRecordBasedOnSectionTemplates).toBe('-b', {
             b: updateEditingTechRecord({
-              vrms: [],
-              vin: '',
-              systemNumber: '',
-              techRecord: [
-                {
-                  alterationMarker: '',
-                  approvalType: undefined,
-                  approvalTypeNumber: undefined,
-                  axles: [],
-                  bodyMake: '',
-                  bodyModel: '',
-                  bodyType: {
-                    description: ''
-                  },
-                  brakes: {
-                    brakeCode: '',
-                    brakeCodeOriginal: '',
-                    dataTrBrakeOne: '',
-                    dataTrBrakeThree: '',
-                    dataTrBrakeTwo: '',
-                    dtpNumber: '',
-                    retarderBrakeOne: '',
-                    retarderBrakeTwo: ''
-                  },
-                  chassisMake: '',
-                  chassisModel: '',
-                  coifCertifierName: undefined,
-                  coifDate: undefined,
-                  coifSerialNumber: undefined,
-                  conversionRefNo: '',
-                  dda: null,
-                  departmentalVehicleMarker: false,
-                  dimensions: {
-                    height: '',
-                    length: '',
-                    width: ''
-                  },
-                  dispensations: undefined,
-                  emissionsLimit: null,
-                  euVehicleCategory: 'm1',
-                  euroStandard: undefined,
-                  frontAxleToRearAxle: '',
-                  fuelPropulsionSystem: '',
-                  functionCode: '',
-                  grossDesignWeight: '',
-                  grossGbWeight: '',
-                  grossKerbWeight: '',
-                  grossLadenWeight: '',
-                  manufactureYear: 0,
-                  maxTrainGbWeight: '',
-                  microfilm: null,
-                  modelLiteral: '',
-                  noOfAxles: 0,
-                  ntaNumber: undefined,
-                  numberOfSeatbelts: '',
-                  regnDate: '',
-                  remarks: undefined,
-                  seatbeltInstallationApprovalDate: '',
-                  seatsLowerDeck: '',
-                  seatsUpperDeck: '',
-                  speedLimiterMrk: '',
-                  speedRestriction: '',
-                  standingCapacity: '',
-                  tachoExemptMrk: '',
-                  trainDesignWeight: '',
-                  unladenWeight: '',
-                  variantNumber: undefined,
-                  variantVersionNumber: undefined,
-                  vehicleClass: {
-                    description: ''
-                  },
-                  vehicleConfiguration: '',
-                  vehicleSize: '',
-                  vehicleType: VehicleTypes.PSV
-                } as unknown as TechRecordModel
-              ]
+              vehicleTechRecord: {
+                vrms: [],
+                vin: '',
+                systemNumber: '',
+                techRecord: [
+                  {
+                    alterationMarker: '',
+                    approvalType: undefined,
+                    approvalTypeNumber: undefined,
+                    axles: [],
+                    bodyMake: '',
+                    bodyModel: '',
+                    bodyType: {
+                      description: ''
+                    },
+                    brakes: {
+                      brakeCode: '',
+                      brakeCodeOriginal: '',
+                      dataTrBrakeOne: '',
+                      dataTrBrakeThree: '',
+                      dataTrBrakeTwo: '',
+                      dtpNumber: '',
+                      retarderBrakeOne: '',
+                      retarderBrakeTwo: ''
+                    },
+                    chassisMake: '',
+                    chassisModel: '',
+                    coifCertifierName: undefined,
+                    coifDate: undefined,
+                    coifSerialNumber: undefined,
+                    conversionRefNo: '',
+                    dda: null,
+                    departmentalVehicleMarker: false,
+                    dimensions: {
+                      height: '',
+                      length: '',
+                      width: ''
+                    },
+                    dispensations: undefined,
+                    emissionsLimit: null,
+                    euVehicleCategory: 'm1',
+                    euroStandard: undefined,
+                    frontAxleToRearAxle: '',
+                    fuelPropulsionSystem: '',
+                    functionCode: '',
+                    grossDesignWeight: '',
+                    grossGbWeight: '',
+                    grossKerbWeight: '',
+                    grossLadenWeight: '',
+                    manufactureYear: 0,
+                    maxTrainGbWeight: '',
+                    microfilm: null,
+                    modelLiteral: '',
+                    noOfAxles: 0,
+                    ntaNumber: undefined,
+                    numberOfSeatbelts: '',
+                    regnDate: '',
+                    remarks: undefined,
+                    seatbeltInstallationApprovalDate: '',
+                    seatsLowerDeck: '',
+                    seatsUpperDeck: '',
+                    speedLimiterMrk: '',
+                    speedRestriction: '',
+                    standingCapacity: '',
+                    tachoExemptMrk: '',
+                    trainDesignWeight: '',
+                    unladenWeight: '',
+                    variantNumber: undefined,
+                    variantVersionNumber: undefined,
+                    vehicleClass: {
+                      description: ''
+                    },
+                    vehicleConfiguration: '',
+                    vehicleSize: '',
+                    vehicleType: VehicleTypes.PSV
+                  } as unknown as TechRecordModel
+                ]
+              }
             })
           });
         });

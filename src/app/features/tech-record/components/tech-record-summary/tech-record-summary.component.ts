@@ -104,7 +104,9 @@ export class TechRecordSummaryComponent implements OnInit {
       : (this.vehicleTechRecordCalculated = { ...this.vehicleTechRecord });
     this.store.pipe(select(editableVehicleTechRecord), take(1)).subscribe(editableVehicleTechRecord => {
       if (editableVehicleTechRecord) {
-        this.store.dispatch(updateEditingTechRecord({ ...editableVehicleTechRecord, techRecord: [this.vehicleTechRecordCalculated] }));
+        this.store.dispatch(
+          updateEditingTechRecord({ vehicleTechRecord: { ...editableVehicleTechRecord, techRecord: [this.vehicleTechRecordCalculated] } })
+        );
       }
     });
   }
@@ -137,7 +139,7 @@ export class TechRecordSummaryComponent implements OnInit {
     }
     this.store.pipe(select(editableVehicleTechRecord), take(1)).subscribe(vehicleTechRecord => {
       if (vehicleTechRecord) {
-        this.store.dispatch(updateEditingTechRecord({ ...vehicleTechRecord, techRecord: [this.vehicleTechRecordCalculated] }));
+        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: { ...vehicleTechRecord, techRecord: [this.vehicleTechRecordCalculated] } }));
       }
     });
     this.formChange.emit();

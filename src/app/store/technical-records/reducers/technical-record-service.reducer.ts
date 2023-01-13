@@ -87,9 +87,9 @@ export const vehicleTechRecordReducer = createReducer(
   on(archiveTechRecordSuccess, successArgs),
   on(archiveTechRecordFailure, updateFailureArgs),
 
-  on(updateEditingTechRecord, (state: TechnicalRecordServiceState, vehicleTechRecord: VehicleTechRecordModel) => ({
+  on(updateEditingTechRecord, (state: TechnicalRecordServiceState, data: { vehicleTechRecord: VehicleTechRecordModel }) => ({
     ...state,
-    editingTechRecord: vehicleTechRecord
+    editingTechRecord: data.vehicleTechRecord
   })),
   on(updateEditingTechRecordCancel, (state: TechnicalRecordServiceState) => ({ ...state, editingTechRecord: undefined }))
 );

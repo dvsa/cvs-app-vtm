@@ -117,7 +117,7 @@ describe('TechRecordSummaryComponent', () => {
       component.handleFormState({});
 
       expect(dispatchSpy).toHaveBeenCalledWith(
-        updateEditingTechRecord({ vin: '', vrms: [], systemNumber: '', techRecord: [component.vehicleTechRecordCalculated!] })
+        updateEditingTechRecord({ vehicleTechRecord: { vin: '', vrms: [], systemNumber: '', techRecord: [component.vehicleTechRecordCalculated!] } })
       );
     });
   });

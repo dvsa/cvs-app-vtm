@@ -158,7 +158,7 @@ export class TyresSearchComponent implements OnInit {
             : parseInt(tyre.loadIndexTwinLoad);
       }
 
-      this.store.dispatch(updateEditingTechRecord({ ...this.vehicleTechRecord!, techRecord: [this.viewableTechRecord!] }));
+      this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: { ...this.vehicleTechRecord!, techRecord: [this.viewableTechRecord!] } }));
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
   }

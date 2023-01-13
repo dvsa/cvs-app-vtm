@@ -416,8 +416,8 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('updateEditingTechRecord', () => {
     it('should set the editingTechRecord', () => {
-      const vehicleTechRecord: VehicleTechRecordModel = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-      const action = updateEditingTechRecord(vehicleTechRecord);
+      const vehicleTechRecord = { vin: '' } as VehicleTechRecordModel;
+      const action = updateEditingTechRecord({ vehicleTechRecord: vehicleTechRecord });
       const newState = vehicleTechRecordReducer(initialState, action);
 
       expect(initialState).not.toEqual(newState);
