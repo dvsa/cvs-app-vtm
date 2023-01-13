@@ -35,10 +35,9 @@ import {
   changeVehicleType,
   updateEditingTechRecord
 } from '../actions/technical-record-service.actions';
-import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/index';
-import { editableTechRecord } from '@store/technical-records';
+import { editableVehicleTechRecord } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -51,7 +50,6 @@ export class TechnicalRecordServiceEffects {
     private actions$: Actions,
     private technicalRecordService: TechnicalRecordService,
     private userService: UserService,
-    private router: Router,
     private store: Store<State>,
     private dfs: DynamicFormService
   ) {}
@@ -113,7 +111,7 @@ export class TechnicalRecordServiceEffects {
   updateTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTechRecords),
-      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.name$, this.userService.id$),
+      withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
       switchMap(([action, record, name, id]) =>
         this.technicalRecordService
           .putUpdateTechRecords(action.systemNumber, record!, { id, name }, action.recordToArchiveStatus, action.newStatus)
@@ -174,20 +172,20 @@ export class TechnicalRecordServiceEffects {
   generateTechRecordBasedOnSectionTemplates = createEffect(() =>
     this.actions$.pipe(
       ofType(changeVehicleType),
-      mergeMap(action => of(action).pipe(withLatestFrom(this.store.pipe(select(editableTechRecord))))),
-      concatMap(([action, editableTechRecord]) => {
+      mergeMap(action => of(action).pipe(withLatestFrom(this.store.pipe(select(editableVehicleTechRecord))))),
+      concatMap(([action, editableVehicleTechRecord]) => {
         const { vehicleType } = action;
 
-        const techRecord = cloneDeep(editableTechRecord);
-        techRecord!.vehicleType = vehicleType;
+        const vehicleTechRecord = cloneDeep(editableVehicleTechRecord!);
+        vehicleTechRecord.techRecord[0].vehicleType = vehicleType;
 
         const techRecordTemplate = vehicleTemplateMap.get(vehicleType);
         const mergedForms = techRecordTemplate!.reduce((mergedNodes, formNode) => {
-          const form = this.dfs.createForm(formNode, techRecord);
+          const form = this.dfs.createForm(formNode, vehicleTechRecord.techRecord[0]);
           return merge(mergedNodes, form.getCleanValue(form));
         }, {});
 
-        return of(updateEditingTechRecord({ techRecord: mergedForms as TechRecordModel }));
+        return of(updateEditingTechRecord({ ...vehicleTechRecord, techRecord: [mergedForms as TechRecordModel] }));
       })
     )
   );

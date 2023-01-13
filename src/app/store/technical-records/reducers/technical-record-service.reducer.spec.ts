@@ -1,4 +1,4 @@
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { mockVehicleTechnicalRecordList, mockVehicleTechnicalRecord } from '../../../../mocks/mock-vehicle-technical-record.mock';
 import {
   getByAll,
@@ -416,18 +416,18 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('updateEditingTechRecord', () => {
     it('should set the editingTechRecord', () => {
-      const techRecord: TechRecordModel = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
-      const action = updateEditingTechRecord({ techRecord: techRecord });
+      const vehicleTechRecord: VehicleTechRecordModel = mockVehicleTechnicalRecord(VehicleTypes.PSV);
+      const action = updateEditingTechRecord(vehicleTechRecord);
       const newState = vehicleTechRecordReducer(initialState, action);
 
       expect(initialState).not.toEqual(newState);
-      expect(newState.editingTechRecord).toEqual(techRecord);
+      expect(newState.editingTechRecord).toEqual(vehicleTechRecord);
       expect(initialState).not.toBe(newState);
     });
   });
   describe('updateEditingTechRecordCancel', () => {
     it('should clear the state', () => {
-      initialState.editingTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+      initialState.editingTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV);
       const action = updateEditingTechRecordCancel();
       const newState = vehicleTechRecordReducer(initialState, action);
 

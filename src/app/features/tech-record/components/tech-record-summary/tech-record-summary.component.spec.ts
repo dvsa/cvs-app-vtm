@@ -3,12 +3,12 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { Axle, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { updateEditingTechRecord } from '@store/technical-records';
+import { editableVehicleTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { SharedModule } from '@shared/shared.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 
@@ -112,9 +112,13 @@ describe('TechRecordSummaryComponent', () => {
       component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
 
+      store.overrideSelector(editableVehicleTechRecord, { vrms: [], vin: '', systemNumber: '', techRecord: [] });
+
       component.handleFormState({});
 
-      expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ techRecord: component.vehicleTechRecordCalculated! }));
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        updateEditingTechRecord({ vin: '', vrms: [], systemNumber: '', techRecord: [component.vehicleTechRecordCalculated!] })
+      );
     });
   });
 

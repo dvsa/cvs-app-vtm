@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { PutVehicleTechRecordModel, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
   editableTechRecord,
+  editableVehicleTechRecord,
   getByAll,
   getByPartialVin,
   getByTrailerId,
@@ -64,18 +65,20 @@ export class TechnicalRecordService {
 
   putUpdateTechRecords(
     systemNumber: string,
-    techRecord: TechRecordModel,
+    vehicleTechRecord: VehicleTechRecordModel,
     user: { id?: string; name: string },
     recordToArchiveStatus?: StatusCodes,
     newStatus?: StatusCodes
   ) {
-    const newTechRecord = cloneDeep(techRecord);
+    const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
+    const newTechRecord = newVehicleTechRecord.techRecord[0];
     newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
-    this.removeUpdateType(techRecord, newTechRecord);
+    delete newTechRecord.updateType;
 
     const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${recordToArchiveStatus ? '?oldStatusCode=' + recordToArchiveStatus : ''}`;
 
-    const body = {
+    const body: PutVehicleTechRecordModel & { msUserDetails: { msOid: string | undefined; msUser: string } } = {
+      ...this.formatVrmsForUpdatePayload(vehicleTechRecord),
       msUserDetails: { msOid: user.id, msUser: user.name },
       techRecord: [newTechRecord]
     };
@@ -83,17 +86,11 @@ export class TechnicalRecordService {
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  private removeUpdateType(techRecord: TechRecordModel, newTechRecord: TechRecordModel) {
-    if (techRecord.updateType) {
-      delete newTechRecord.updateType;
-    }
-  }
-
   postProvisionalTechRecord(systemNumber: string, techRecord: TechRecordModel, user: { id?: string; name: string }) {
     // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
     const recordCopy = cloneDeep(techRecord);
     recordCopy.statusCode = StatusCodes.PROVISIONAL;
-    this.removeUpdateType(techRecord, recordCopy);
+    delete recordCopy.updateType;
 
     const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;
 
@@ -125,8 +122,16 @@ export class TechnicalRecordService {
     return this.store.pipe(select(editableTechRecord));
   }
 
+  get editableVehicleTechRecord$() {
+    return this.store.pipe(select(editableVehicleTechRecord));
+  }
+
   get selectedVehicleTechRecord$() {
     return this.store.pipe(select(selectVehicleTechnicalRecordsBySystemNumber));
+  }
+
+  get techRecord$(): Observable<TechRecordModel | undefined> {
+    return this.selectedVehicleTechRecord$.pipe(switchMap(techRecord => (techRecord ? this.viewableTechRecord$(techRecord) : of(undefined))));
   }
 
   searchBy(type: SEARCH_TYPES, term: string) {
@@ -190,7 +195,12 @@ export class TechnicalRecordService {
     );
   }
 
-  get techRecord$(): Observable<TechRecordModel | undefined> {
-    return this.selectedVehicleTechRecord$.pipe(switchMap(techRecord => (techRecord ? this.viewableTechRecord$(techRecord) : of(undefined))));
+  private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {
+    const secondaryVrms: string[] = [];
+    const putVehicleTechRecordModel: PutVehicleTechRecordModel = { ...vehicleTechRecord, secondaryVrms };
+    vehicleTechRecord.vrms.forEach(vrm =>
+      vrm.isPrimary ? (putVehicleTechRecordModel.primaryVrm = vrm.vrm) : putVehicleTechRecordModel.secondaryVrms!.push(vrm.vrm)
+    );
+    return putVehicleTechRecordModel;
   }
 }
