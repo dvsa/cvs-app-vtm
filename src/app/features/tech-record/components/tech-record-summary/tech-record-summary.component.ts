@@ -49,7 +49,6 @@ export class TechRecordSummaryComponent implements OnInit {
   vehicleTechRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
-  displayReasonForCreation: boolean = false;
 
   constructor(
     private technicalRecordService: TechnicalRecordService,
