@@ -116,12 +116,17 @@ export class TechnicalRecordService {
   }
 
   clearReasonForCreation(vehicleTechRecord?: VehicleTechRecordModel): void {
-    this.editableVehicleTechRecord$.pipe(map(data => data ?? cloneDeep(vehicleTechRecord))).subscribe(data => {
-      if (data) {
-        data.techRecord[0].reasonForCreation = '';
-        this.updateEditingTechRecord(data);
-      }
-    });
+    this.editableVehicleTechRecord$
+      .pipe(
+        map(data => cloneDeep(data ?? vehicleTechRecord)),
+        take(1)
+      )
+      .subscribe(data => {
+        if (data) {
+          data.techRecord[0].reasonForCreation = '';
+          this.updateEditingTechRecord(data);
+        }
+      });
   }
 
   updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel): void {
