@@ -1,19 +1,43 @@
-<dl class="govuk-summary-list">
+<div class="vehicle_heading">
+  <h1 class="govuk-heading-l">
+    <span>{{ vehicleMakeAndModel }}</span>
+    <app-icon [icon]="(editableTechRecord$ | async)?.vehicleType || ''"></app-icon>
+  </h1>
+</div>
+
+<dl *ngIf="currentTechRecord$ | async as currentTechRecord" class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Vehicle type</dt>
+    <dd id="vehicleType" class="govuk-summary-list__value">
+      {{ (editableTechRecord$ | async)?.vehicleType ?? '' | uppercase | defaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__actions"></dd>
+    <dd class="govuk-summary-list__actions">
+      <app-button
+        *ngIf="
+          (currentTechRecord$ | async)?.statusCode !== 'archived' &&
+          (currentTechRecord$ | async)?.vehicleType === (editableTechRecord$ | async)?.vehicleType
+        "
+        design="link"
+        (clicked)="navigateTo('change-vehicle-type')"
+        >Change</app-button
+      >
+    </dd>
+  </div>
+
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
     <dd id="vin" class="govuk-summary-list__value">
-      {{ (currentTechRecord$ | async)?.historicVin ?? vehicleTechRecord?.vin | defaultNullOrEmpty }}
+      {{ currentTechRecord.historicVin ?? vehicleTechRecord?.vin | defaultNullOrEmpty }}
     </dd>
-    <dd class="govuk-summary-list__value"></dd>
   </div>
 
-  <ng-container *ngIf="(currentTechRecord$ | async)?.vehicleType !== vehicleTypes.TRL; else trailerHeader">
+  <ng-container *ngIf="currentTechRecord.vehicleType !== vehicleTypes.TRL; else trailerHeader">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
       <dd id="current-vrm" class="govuk-summary-list__value">
         <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
       </dd>
-      <dd class="govuk-summary-list__value"></dd>
     </div>
 
     <div class="govuk-summary-list__row">
@@ -26,7 +50,6 @@
           [isSecondary]="true"
         ></app-number-plate>
       </dd>
-      <dd class="govuk-summary-list__value"></dd>
     </div>
   </ng-container>
 
@@ -36,30 +59,49 @@
       <dd id="trailer-id" class="govuk-summary-list__value">
         {{ vehicleTechRecord?.trailerId | defaultNullOrEmpty }}
       </dd>
-      <dd class="govuk-summary-list__value"></dd>
     </div>
   </ng-template>
 
   <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Record status</dt>
+    <dt class="govuk-summary-list__key">Record type</dt>
     <dd id="status-code" class="govuk-summary-list__value">
-      <strong class="govuk-tag govuk-phase-banner__content__tag">{{ (currentTechRecord$ | async)?.statusCode | defaultNullOrEmpty }}</strong>
+      <strong class="govuk-tag govuk-phase-banner__content__tag">{{ currentTechRecord.statusCode | defaultNullOrEmpty }}</strong>
     </dd>
-    <dd class="govuk-summary-list__value"></dd>
-    <div *appRoleRequired="roles.TechRecordArchive">
-      <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
-        <a class="govuk-link" style="cursor: pointer" (click)="navigateToArchive()">Archive</a>
+    <ng-container *ngIf="!hideActions">
+      <div *appRoleRequired="roles.TechRecordArchive">
+        <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
+          <app-button design="link" (clicked)="navigateTo('change-status', { to: 'archived' })">Archive</app-button>
+        </dd>
+      </div>
+      <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
+        <app-button design="link" (clicked)="navigateTo('change-status', { to: 'current' })">Promote</app-button>
       </dd>
-    </div>
-    <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
-      <a class="govuk-link" style="cursor: pointer" (click)="navigateToPromotion()">Promote</a>
-    </dd>
+    </ng-container>
   </div>
 
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Testable record</dt>
-    <dd id="record-completeness" class="govuk-summary-list__value" *ngIf="currentTechRecord$ | async as record">
-      <app-tag [type]="getCompletenessColor(record?.recordCompleteness)">{{ getCompletenessText(record?.recordCompleteness) }}</app-tag>
-    </dd>
-  </div>
+  <ng-container *ngIf="currentTechRecord.statusCode !== statuses.ARCHIVED">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Record status</dt>
+      <dd id="record-completeness" class="govuk-summary-list__value">
+        <app-tag [type]="getCompletenessColor(currentTechRecord.recordCompleteness)">
+          {{ currentTechRecord.recordCompleteness | uppercase }}
+        </app-tag>
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Record visibility in VTA</dt>
+      <dd id="record-visibility" class="govuk-summary-list__value">
+        <app-tag [type]="currentTechRecord.hiddenInVta ? 'red' : 'green'">
+          {{ currentTechRecord.hiddenInVta ? 'HIDDEN' : 'VISIBLE' }}
+        </app-tag>
+      </dd>
+      <ng-container *ngIf="!hideActions">
+        <dd class="govuk-summary-list__actions"></dd>
+        <dd class="govuk-summary-list__actions">
+          <app-button design="link" (clicked)="navigateTo('change-vta-visibility')">Change</app-button>
+        </dd>
+      </ng-container>
+    </div>
+  </ng-container>
 </dl>

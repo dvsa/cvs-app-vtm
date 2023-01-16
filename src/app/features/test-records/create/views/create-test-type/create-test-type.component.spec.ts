@@ -1,8 +1,11 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestType } from '@api/test-types';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
@@ -18,9 +21,15 @@ describe('CreateTestTypeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateTestTypeComponent, TestTypeSelectComponent],
-      imports: [RouterTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
         provideMockStore({ initialState: initialAppState }),
+        {
+          provide: TechnicalRecordService,
+          useValue: {
+            selectedVehicleTechRecord$: of(mockVehicleTechnicalRecord())
+          }
+        },
         { provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } }
       ]
     }).compileComponents();

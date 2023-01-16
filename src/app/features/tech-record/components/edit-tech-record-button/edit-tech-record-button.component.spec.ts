@@ -53,6 +53,8 @@ describe('EditTechRecordButtonComponent', () => {
     component = fixture.componentInstance;
 
     fixture.detectChanges();
+
+    jest.spyOn(window, 'confirm');
   });
 
   describe('component', () => {
@@ -81,6 +83,7 @@ describe('EditTechRecordButtonComponent', () => {
     it('component should nagivate away for current ammendments', () => {
       jest.spyOn(router, 'navigate');
       component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current' };
+      jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('#edit')).nativeElement.click();
@@ -226,6 +229,7 @@ describe('EditTechRecordButtonComponent', () => {
         }));
 
         it('should return user to non-edit view', fakeAsync(() => {
+          jest.spyOn(window, 'confirm');
           jest.spyOn(component, 'cancel');
           jest.spyOn(component, 'toggleEditMode');
           jest.spyOn(store, 'dispatch');

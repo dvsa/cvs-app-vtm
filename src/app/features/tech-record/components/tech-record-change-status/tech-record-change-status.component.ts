@@ -19,7 +19,6 @@ import {
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { Observable, take } from 'rxjs';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-tech-record-change-status',
@@ -33,7 +32,7 @@ export class TechRecordChangeStatusComponent implements OnInit {
 
   form: CustomFormGroup;
 
-  buttonLabel: string;
+  isPromotion = false;
 
   constructor(
     private actions$: Actions,
@@ -42,14 +41,11 @@ export class TechRecordChangeStatusComponent implements OnInit {
     private router: Router,
     private routerStore: Store<RouterReducerState>,
     private techRecordsStore: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService,
-    private location: Location
+    private technicalRecordService: TechnicalRecordService
   ) {
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
 
     this.technicalRecordService.techRecord$.subscribe(techRecord => (this.techRecord = techRecord));
-
-    this.buttonLabel = this.isPromotion ? 'Promote' : 'Archive';
 
     this.form = new CustomFormGroup(
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
@@ -58,21 +54,21 @@ export class TechRecordChangeStatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.actions$
-      .pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1))
-      .subscribe(() => this.router.navigate([this.isPromotion ? '../..' : '..'], { relativeTo: this.route }));
-  }
+    this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
 
-  get isPromotion(): boolean {
-    return this.router.url.split('/').pop() === 'promote';
+    this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => this.goBack(true));
   }
 
   get label(): string {
     return `Reason for ${this.isPromotion ? 'promotion' : 'archiving'}`;
   }
 
-  goBack(): void {
-    this.location.back();
+  get buttonLabel(): string {
+    return this.isPromotion ? 'Promote' : 'Archive';
+  }
+
+  goBack(isAfterSubmussion: boolean = false): void {
+    this.router.navigate([isAfterSubmussion && this.isPromotion ? '../..' : '..'], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string }): void {

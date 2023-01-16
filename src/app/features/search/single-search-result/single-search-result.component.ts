@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { createSingleSearchResult } from '@forms/templates/search/single-search-result.template';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Roles } from '@models/roles.enum';
@@ -29,8 +29,8 @@ export class SingleSearchResultComponent implements OnInit, OnDestroy {
             vin: this.vehicleTechRecord.vin,
             vrm: this.vehicleTechRecord.vrms.find(vrm => vrm.isPrimary)?.vrm,
             trailerId: this.vehicleTechRecord.trailerId,
-            make: record?.chassisMake,
-            model: record?.chassisModel,
+            make: record?.vehicleType == 'psv' ? record?.chassisMake : record?.make,
+            model: record?.vehicleType == 'psv' ? record?.chassisModel : record?.model,
             manufactureYear: record?.manufactureYear,
             vehicleType: record?.vehicleType.toUpperCase()
           })
