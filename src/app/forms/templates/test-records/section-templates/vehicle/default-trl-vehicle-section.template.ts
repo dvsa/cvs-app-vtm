@@ -1,6 +1,8 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
 
 export const VehicleSectionDefaultTrl: FormNode = {
   name: 'vehicleSection',
@@ -42,9 +44,10 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'euVehicleCategory',
       label: 'EU Vehicle Category',
       value: '',
-      disabled: true,
-      width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(EuVehicleCategories),
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'preparerCombination',

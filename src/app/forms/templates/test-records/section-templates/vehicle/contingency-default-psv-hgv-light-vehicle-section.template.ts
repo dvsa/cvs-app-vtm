@@ -1,7 +1,9 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
 
 export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
   name: 'vehicleSection',
@@ -40,9 +42,10 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
       name: 'euVehicleCategory',
       label: 'EU Vehicle Category',
       value: '',
-      disabled: true,
       type: FormNodeTypes.CONTROL,
-      width: FormNodeWidth.XXS
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(EuVehicleCategories),
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'odometerReading',
