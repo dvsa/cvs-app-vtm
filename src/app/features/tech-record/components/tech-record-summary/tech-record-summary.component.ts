@@ -93,7 +93,6 @@ export class TechRecordSummaryComponent implements OnInit {
           })
       : (this.vehicleTechRecordCalculated = { ...this.vehicleTechRecord });
 
-    // this.store.dispatch(updateEditingTechRecordCancel());
     this.technicalRecordService.updateEditingTechRecord(this.vehicleTechRecordCalculated, true);
   }
 

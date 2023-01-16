@@ -129,7 +129,7 @@ export class TechnicalRecordService {
       });
   }
 
-  updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel, override = false): void {
+  updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel, resetVehicleAttributes = false): void {
     const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel =>
       rec.hasOwnProperty('vin') && rec.hasOwnProperty('techRecord');
 
@@ -137,7 +137,7 @@ export class TechnicalRecordService {
       ? of(record)
       : this.store.pipe(
           select(editableVehicleTechRecord),
-          switchMap(vehicleRecord => (vehicleRecord && override ? of(vehicleRecord) : this.selectedVehicleTechRecord$)),
+          switchMap(vehicleRecord => (vehicleRecord && resetVehicleAttributes ? of(vehicleRecord) : this.selectedVehicleTechRecord$)),
           map(vehicleRecord => vehicleRecord && { ...vehicleRecord, techRecord: [record] })
         );
 
