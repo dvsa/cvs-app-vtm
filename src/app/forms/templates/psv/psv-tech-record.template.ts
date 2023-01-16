@@ -4,8 +4,8 @@ import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
-import { VehicleSize } from '@models/vehicle-size.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { VehicleSize } from '@models/vehicle-size.enum';
 
 export const PsvTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -207,7 +207,8 @@ export const PsvTechRecord: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(VehicleSize)
+      options: getOptionsFromEnum(VehicleSize),
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'departmentalVehicleMarker',

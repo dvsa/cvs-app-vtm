@@ -12,7 +12,12 @@ export const PsvTyresTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 99 }, { name: ValidatorNames.Min, args: 0 }]
+      validators: [
+        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Max, args: 99 },
+        { name: ValidatorNames.Min, args: 0 },
+        { name: ValidatorNames.Required }
+      ]
     },
     {
       name: 'axles',
