@@ -15,7 +15,7 @@ import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { of, ReplaySubject } from 'rxjs';
 
-import { TyresSearchComponent } from './tyres-search.component';
+import { TechRecordSearchTyresComponent } from './tech-record-search-tyres.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 
 const mockGlobalErrorService = {
@@ -38,14 +38,14 @@ const mockDynamicFormService = {
   createForm: jest.fn()
 };
 
-describe('TyresSearchComponent', () => {
-  let component: TyresSearchComponent;
-  let fixture: ComponentFixture<TyresSearchComponent>;
+describe('TechRecordSearchTyresComponent', () => {
+  let component: TechRecordSearchTyresComponent;
+  let fixture: ComponentFixture<TechRecordSearchTyresComponent>;
   let actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TyresSearchComponent],
+      declarations: [TechRecordSearchTyresComponent],
       imports: [DynamicFormsModule, RouterTestingModule, SharedModule, HttpClientTestingModule],
       providers: [
         provideMockActions(() => actions$),
@@ -59,7 +59,7 @@ describe('TyresSearchComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TyresSearchComponent);
+    fixture = TestBed.createComponent(TechRecordSearchTyresComponent);
     component = fixture.componentInstance;
   });
 
