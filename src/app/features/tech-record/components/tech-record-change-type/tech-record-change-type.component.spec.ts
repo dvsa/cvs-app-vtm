@@ -73,7 +73,7 @@ describe('TechRecordChangeTypeComponent', () => {
       expect(component.makeAndModel).toBe(`${expectedTechRecord.make} - ${expectedTechRecord.model}`);
     });
 
-    it('should should return an empty string when the current record is null', () => {
+    it('should return an empty string when the current record is null', () => {
       delete component.currentTechRecord;
 
       expect(component.makeAndModel).toBe('');

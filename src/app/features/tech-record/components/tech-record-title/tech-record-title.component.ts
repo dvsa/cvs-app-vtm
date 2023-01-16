@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
-import { VehicleTechRecordModel, TechRecordModel, Vrm, VehicleTypes, StatusCodes } from '@models/vehicle-tech-record.model';
-import { Store, select } from '@ngrx/store';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editableTechRecord } from '@store/technical-records';
 import { Observable, take } from 'rxjs';

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
