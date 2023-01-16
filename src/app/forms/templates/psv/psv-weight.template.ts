@@ -62,7 +62,7 @@ export const PsvWeightsTemplate: FormNode = {
       label: 'Unladen weight',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: optionalValidation
+      validators: requiredValidation
     },
     {
       name: 'trainSection',
