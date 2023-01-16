@@ -17,7 +17,6 @@ import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/ref
 import { map, Observable, take } from 'rxjs';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { reasonForCreationSection } from '@forms/templates/test-records/section-templates/reasonForCreation/reasonForCreation.template';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 
 @Component({
@@ -41,7 +40,6 @@ export class TechRecordSummaryComponent implements OnInit {
   set isEditing(value: boolean) {
     this._isEditing = value;
     this.calculateVehicleModel();
-    this.toggleReasonForCreation();
   }
   @Output() formChange = new EventEmitter();
 
@@ -60,7 +58,6 @@ export class TechRecordSummaryComponent implements OnInit {
     this.referenceDataService.removeTyreSearch();
     this.calculateVehicleModel();
     this.sectionTemplates = this.vehicleTemplates;
-    this.toggleReasonForCreation();
     this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
   }
 
@@ -75,15 +72,9 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   get vehicleTemplates(): Array<FormNode> {
-    return vehicleTemplateMap.get(this.vehicleTechRecordCalculated.vehicleType) ?? ([] as Array<FormNode>);
-  }
-
-  toggleReasonForCreation(): void {
-    if (this.isEditing) {
-      this.sectionTemplates.unshift(reasonForCreationSection);
-    } else if (this.sectionTemplates[0]?.name === 'reasonForCreationSection') {
-      this.sectionTemplates.shift();
-    }
+    const vehicleTemplates = vehicleTemplateMap.get(this.vehicleTechRecordCalculated.vehicleType);
+    if (vehicleTemplates) return this.isEditing ? vehicleTemplates : vehicleTemplates.filter(t => t.name !== 'reasonForCreationSection');
+    else return [] as Array<FormNode>;
   }
 
   calculateVehicleModel(): void {

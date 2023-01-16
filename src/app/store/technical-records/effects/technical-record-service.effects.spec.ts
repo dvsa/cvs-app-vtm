@@ -710,6 +710,7 @@ describe('TechnicalRecordServiceEffects', () => {
                     numberOfSeatbelts: '',
                     regnDate: '',
                     remarks: undefined,
+                    reasonForCreation: '',
                     seatbeltInstallationApprovalDate: '',
                     seatsLowerDeck: '',
                     seatsUpperDeck: '',
