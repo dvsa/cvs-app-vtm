@@ -137,7 +137,7 @@ export class TechnicalRecordService {
       ? of(record)
       : this.store.pipe(
           select(editableVehicleTechRecord),
-          switchMap(vehicleRecord => (vehicleRecord && resetVehicleAttributes ? of(vehicleRecord) : this.selectedVehicleTechRecord$)),
+          switchMap(vehicleRecord => (vehicleRecord && !resetVehicleAttributes ? of(vehicleRecord) : this.selectedVehicleTechRecord$)),
           map(vehicleRecord => vehicleRecord && { ...vehicleRecord, techRecord: [record] })
         );
 

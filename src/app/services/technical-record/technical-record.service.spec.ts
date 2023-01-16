@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { editableVehicleTechRecord, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecord } from '@store/technical-records';
@@ -257,6 +257,21 @@ describe('TechnicalRecordService', () => {
         store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, mockVehicleRecord);
         service.updateEditingTechRecord(mockVehicleRecord.techRecord[0]);
         expect(dispatchSpy).toHaveBeenCalledTimes(1);
+        expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
+      });
+
+      it('override the editable tech record and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        const mockVehicleRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV);
+        mockVehicleRecord.techRecord = [mockVehicleRecord.techRecord[0]];
+
+        const mockEditableVehicleRecord = { vin: 'a random vin' } as VehicleTechRecordModel;
+
+        store.overrideSelector(editableVehicleTechRecord, mockEditableVehicleRecord);
+        store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, mockVehicleRecord);
+        service.updateEditingTechRecord(mockVehicleRecord.techRecord[0], true);
+        expect(dispatchSpy).toHaveBeenCalledTimes(1);
+        expect(dispatchSpy).not.toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockEditableVehicleRecord }));
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
       });
 
