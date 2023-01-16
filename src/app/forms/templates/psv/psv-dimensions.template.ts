@@ -16,7 +16,7 @@ export const PsvDimensionsTemplate: FormNode = {
           label: 'Height (mm)',
           value: '',
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }]
+          validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
         },
         {
           name: 'length',
