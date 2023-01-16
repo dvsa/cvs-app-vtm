@@ -112,7 +112,7 @@ const routes: Routes = [
   {
     path: 'change-status',
     component: TechRecordChangeStatusComponent,
-    data: { title: 'Promotore or Archive Tech Record', roles: Roles.TechRecordArchive },
+    data: { title: 'Promote or Archive Tech Record', roles: Roles.TechRecordArchive },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
   },
