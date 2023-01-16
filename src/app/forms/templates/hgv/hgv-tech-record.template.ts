@@ -29,7 +29,7 @@ export const HgvTechRecord: FormNode = {
     },
     {
       name: 'numberOfWheelsDriven',
-      value: '',
+      value: '' || null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN

@@ -73,14 +73,14 @@ export const PsvWeightsTemplate: FormNode = {
     {
       name: 'maxTrainGbWeight',
       label: 'Max train GB',
-      value: '',
+      value: '' || null,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
     {
       name: 'trainDesignWeight',
       label: 'Train design',
-      value: '',
+      value: '' || null,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },

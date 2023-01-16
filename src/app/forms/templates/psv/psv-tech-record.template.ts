@@ -30,7 +30,7 @@ export const PsvTechRecord: FormNode = {
     },
     {
       name: 'numberOfWheelsDriven',
-      value: '',
+      value: '' || null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
@@ -219,7 +219,8 @@ export const PsvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'alterationMarker',
@@ -231,7 +232,8 @@ export const PsvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     }
   ]
 };

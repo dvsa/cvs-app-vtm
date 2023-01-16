@@ -81,7 +81,7 @@ export const tyresTemplateHgv: FormNode = {
                 {
                   name: 'dataTrAxles',
                   label: 'Load index',
-                  value: '',
+                  value: '' || null,
                   type: FormNodeTypes.CONTROL,
                   editType: FormNodeEditTypes.NUMBER,
                   disabled: true,
