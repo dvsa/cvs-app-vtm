@@ -128,14 +128,14 @@ export class TechnicalRecordService {
     const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel =>
       rec.hasOwnProperty('vin') && rec.hasOwnProperty('techRecord');
 
-    const record$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord(record)
+    const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord(record)
       ? of(record)
       : this.store.pipe(
           select(editableVehicleTechRecord),
           map(vehicleRecord => (vehicleRecord ? { ...vehicleRecord, techRecord: [record] } : undefined))
         );
 
-    record$.subscribe(vehicleRecord => {
+    vehicleTechRecord$.subscribe(vehicleRecord => {
       if (vehicleRecord) {
         this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
       }
