@@ -1,16 +1,18 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { initialAppState, State } from '@store/.';
+import { editableVehicleTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { environment } from '../../../environments/environment';
-import { mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
+import { mockVehicleTechnicalRecord, mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
 import { TechnicalRecordService } from './technical-record.service';
 
 describe('TechnicalRecordService', () => {
   let service: TechnicalRecordService;
   let httpTestingController: HttpTestingController;
+  let store: MockStore<State>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,6 +22,7 @@ describe('TechnicalRecordService', () => {
 
     httpTestingController = TestBed.inject(HttpTestingController);
     service = TestBed.inject(TechnicalRecordService);
+    store = TestBed.inject(MockStore);
   });
 
   afterEach(() => {
@@ -180,6 +183,11 @@ describe('TechnicalRecordService', () => {
         );
         expect(req.request.method).toEqual('PUT');
 
+        // should format the vrms for the update payload
+        expect(req.request.body).toHaveProperty('primaryVrm');
+        expect(req.request.body).toHaveProperty('secondaryVrms');
+        expect(req.request.body).not.toHaveProperty('vrms');
+
         // Provide each request with a mock response
         req.flush(mockData);
       }));
@@ -226,6 +234,28 @@ describe('TechnicalRecordService', () => {
         // Provide each request with a mock response
         req.flush(mockData);
       }));
+    });
+  });
+
+  describe('methods', () => {
+    describe('updateEditingTechRecord', () => {
+      it('should patch the missing information for the technical record and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        const mockVehicleRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV);
+        mockVehicleRecord.techRecord = [mockVehicleRecord.techRecord[0]];
+        store.overrideSelector(editableVehicleTechRecord, mockVehicleRecord);
+        service.updateEditingTechRecord(mockVehicleRecord.techRecord[0]);
+        expect(dispatchSpy).toHaveBeenCalledTimes(1);
+        expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
+      });
+
+      it('should call the store with the vehicle record', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        const mockVehicleRecord = mockVehicleTechnicalRecord();
+        service.updateEditingTechRecord(mockVehicleRecord);
+        expect(dispatchSpy).toHaveBeenCalledTimes(1);
+        expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
+      });
     });
   });
 });

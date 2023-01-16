@@ -211,7 +211,7 @@ export class TechnicalRecordService {
   }
 
   /**
-   * A function to filter the correct tech record, this has a hierarchy which is PROVISIONAL -> CURRENT -> ARCHIVED.
+   * A function to filter the correct tech record, this has a hierarchy which is CURRENT -> PROVISIONAL -> ARCHIVED.
    * @param record This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
@@ -229,6 +229,7 @@ export class TechnicalRecordService {
     vehicleTechRecord.vrms.forEach(vrm => {
       vrm.isPrimary ? (putVehicleTechRecordModel.primaryVrm = vrm.vrm) : putVehicleTechRecordModel.secondaryVrms!.push(vrm.vrm);
     });
+    delete (putVehicleTechRecordModel as any).vrms;
     return putVehicleTechRecordModel;
   }
 }
