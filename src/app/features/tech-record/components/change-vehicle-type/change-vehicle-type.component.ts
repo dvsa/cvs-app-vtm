@@ -4,14 +4,13 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes, Params } from '@forms/services/dynamic-form.types';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { map, take } from 'rxjs';
+import { take } from 'rxjs';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { MultiOptions } from '@forms/models/options.model';
-import { changeVehicleType, updateEditingTechRecord } from '@store/technical-records';
+import { changeVehicleType } from '@store/technical-records';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { ActivatedRoute, Router } from '@angular/router';
-import cloneDeep from 'lodash.clonedeep';
 
 @Component({
   selector: 'app-change-vehicle-type',

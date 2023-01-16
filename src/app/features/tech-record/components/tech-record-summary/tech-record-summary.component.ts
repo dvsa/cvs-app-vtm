@@ -5,12 +5,10 @@ import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimension
 import { WeightsComponent } from '@forms/custom-sections/weights/weights.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Axle, AxleSpacing, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { Store } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
-import { editableVehicleTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
 import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
 import { BodyTypeCode, bodyTypeCodeMap } from '@models/body-type-enum';
@@ -54,7 +52,6 @@ export class TechRecordSummaryComponent implements OnInit {
 
   constructor(
     private technicalRecordService: TechnicalRecordService,
-    private store: Store<TechnicalRecordServiceState>,
     private referenceDataStore: Store<ReferenceDataState>,
     private referenceDataService: ReferenceDataService
   ) {}
@@ -102,6 +99,7 @@ export class TechRecordSummaryComponent implements OnInit {
             this.normaliseVehicleTechRecordAxles();
           })
       : (this.vehicleTechRecordCalculated = { ...this.vehicleTechRecord });
+
     this.technicalRecordService.updateEditingTechRecord(this.vehicleTechRecordCalculated);
   }
 

@@ -9,14 +9,7 @@ import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import {
-  archiveTechRecord,
-  archiveTechRecordSuccess,
-  editableVehicleTechRecord,
-  updateEditingTechRecord,
-  updateTechRecords,
-  updateTechRecordsSuccess
-} from '@store/technical-records';
+import { archiveTechRecord, archiveTechRecordSuccess, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { Observable, take } from 'rxjs';
 

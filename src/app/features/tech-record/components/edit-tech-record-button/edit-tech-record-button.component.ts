@@ -8,13 +8,11 @@ import {
   updateTechRecordsSuccess
 } from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
-import { map, mergeMap, take } from 'rxjs';
+import { mergeMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ViewportScroller } from '@angular/common';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import cloneDeep from 'lodash.clonedeep';
-import { updateEditingTechRecord } from '@store/technical-records';
 
 @Component({
   selector: 'app-edit-tech-record-button',
