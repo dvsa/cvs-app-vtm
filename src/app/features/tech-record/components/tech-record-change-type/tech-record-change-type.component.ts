@@ -68,7 +68,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     return `${c.vehicleType === 'psv' ? c.make : c.chassisMake} - ${c.vehicleType === 'psv' ? c.model : c.chassisModel}`;
   }
 
-  get currentVrm(): string | undefined {
+  get vrm(): string | undefined {
     return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
