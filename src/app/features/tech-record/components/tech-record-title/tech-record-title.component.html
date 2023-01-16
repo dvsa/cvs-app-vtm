@@ -14,10 +14,7 @@
     <dd class="govuk-summary-list__actions"></dd>
     <dd class="govuk-summary-list__actions">
       <app-button
-        *ngIf="
-          (currentTechRecord$ | async)?.statusCode !== 'archived' &&
-          (currentTechRecord$ | async)?.vehicleType === (editableTechRecord$ | async)?.vehicleType
-        "
+        *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
         design="link"
         (clicked)="navigateTo('change-vehicle-type')"
         >Change</app-button

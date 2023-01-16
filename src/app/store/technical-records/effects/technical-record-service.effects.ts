@@ -42,7 +42,7 @@ import { cloneDeep } from 'lodash';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import merge from 'lodash.merge';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
@@ -172,15 +172,14 @@ export class TechnicalRecordServiceEffects {
   generateTechRecordBasedOnSectionTemplates = createEffect(() =>
     this.actions$.pipe(
       ofType(changeVehicleType),
-      mergeMap(action => of(action).pipe(withLatestFrom(this.store.pipe(select(editableVehicleTechRecord))))),
-      concatMap(([action, editableVehicleTechRecord]) => {
-        const { vehicleType } = action;
-
-        const vehicTechRecord = cloneDeep(editableVehicleTechRecord!);
+      withLatestFrom(this.store.pipe(select(editableVehicleTechRecord))),
+      concatMap(([{ vehicleType }, editableTechRecord]) => {
+        const vehicTechRecord: VehicleTechRecordModel = cloneDeep(editableTechRecord)!;
         vehicTechRecord.techRecord[0].vehicleType = vehicleType;
 
-        const techRecordTemplate = vehicleTemplateMap.get(vehicleType);
-        const mergedForms = techRecordTemplate!.reduce((mergedNodes, formNode) => {
+        const techRecordTemplate = vehicleTemplateMap.get(vehicleType) || [];
+
+        const mergedForms = techRecordTemplate.reduce((mergedNodes, formNode) => {
           const form = this.dfs.createForm(formNode, vehicTechRecord.techRecord[0]);
           return merge(mergedNodes, form.getCleanValue(form));
         }, {});

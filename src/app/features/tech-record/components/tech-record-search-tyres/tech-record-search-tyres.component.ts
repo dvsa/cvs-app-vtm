@@ -21,10 +21,10 @@ import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-tyres-search',
-  templateUrl: './tyres-search.component.html',
-  styleUrls: ['./tyres-search.component.scss']
+  templateUrl: './tech-record-search-tyres.component.html',
+  styleUrls: ['./tech-record-search-tyres.component.scss']
 })
-export class TyresSearchComponent implements OnInit {
+export class TechRecordSearchTyresComponent implements OnInit {
   options?: MultiOptions = [
     { label: 'Tyre code', value: 'code' },
     { label: 'Ply rating', value: 'plyrating' },
