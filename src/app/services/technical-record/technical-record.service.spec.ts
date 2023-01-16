@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { editableVehicleTechRecord, updateEditingTechRecord } from '@store/technical-records';
+import { editableVehicleTechRecord, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecord } from '@store/technical-records';
 import { environment } from '../../../environments/environment';
 import { mockVehicleTechnicalRecord, mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
 import { TechnicalRecordService } from './technical-record.service';
@@ -244,6 +244,17 @@ describe('TechnicalRecordService', () => {
         const mockVehicleRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV);
         mockVehicleRecord.techRecord = [mockVehicleRecord.techRecord[0]];
         store.overrideSelector(editableVehicleTechRecord, mockVehicleRecord);
+        service.updateEditingTechRecord(mockVehicleRecord.techRecord[0]);
+        expect(dispatchSpy).toHaveBeenCalledTimes(1);
+        expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
+      });
+
+      it('should patch from the selected record if the editing is not defined and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        const mockVehicleRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV);
+        mockVehicleRecord.techRecord = [mockVehicleRecord.techRecord[0]];
+        store.overrideSelector(editableVehicleTechRecord, undefined);
+        store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, mockVehicleRecord);
         service.updateEditingTechRecord(mockVehicleRecord.techRecord[0]);
         expect(dispatchSpy).toHaveBeenCalledTimes(1);
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));

@@ -132,7 +132,8 @@ export class TechnicalRecordService {
       ? of(record)
       : this.store.pipe(
           select(editableVehicleTechRecord),
-          map(vehicleRecord => (vehicleRecord ? { ...vehicleRecord, techRecord: [record] } : undefined))
+          switchMap(vehicleRecord => (vehicleRecord ? of(vehicleRecord) : this.selectedVehicleTechRecord$)),
+          map(vehicleRecord => vehicleRecord && { ...vehicleRecord, techRecord: [record] })
         );
 
     vehicleTechRecord$.pipe(take(1)).subscribe(vehicleRecord => {
