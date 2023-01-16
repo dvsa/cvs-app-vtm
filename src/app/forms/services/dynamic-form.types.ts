@@ -100,6 +100,7 @@ export interface FormNode {
   suffix?: string;
   isoDate?: boolean;
   class?: string;
+  customId?: string;
 }
 
 export interface FormNodeValidator {

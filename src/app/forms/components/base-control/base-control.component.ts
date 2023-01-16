@@ -17,6 +17,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   @ContentChild(SuffixDirective) suffix?: SuffixDirective;
 
   @Input() name = '';
+  @Input() idExtension?: string;
   @Input() hint?: string;
   @Input() label?: string;
   @Input() width?: FormNodeWidth;
