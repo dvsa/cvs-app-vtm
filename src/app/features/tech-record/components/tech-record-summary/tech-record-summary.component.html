@@ -2,22 +2,16 @@
   <app-accordion-control [class]="'padding'">
     <div class="govuk-grid-column-one-half">
       <ng-container *ngFor="let section of sectionTemplates; let i = index">
-        <ng-container *ngIf="section.name === 'reasonForCreationSection' && !displayReasonForCreation; else sectionTemplate"> </ng-container>
-        <ng-template #sectionTemplate>
-          <app-accordion *ngIf="i < middleIndex" [id]="section.name" [title]="section.label">
-            <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
-          </app-accordion>
-        </ng-template>
+        <app-accordion *ngIf="i < middleIndex" [id]="section.name" [title]="section.label">
+          <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
+        </app-accordion>
       </ng-container>
     </div>
     <div class="govuk-grid-column-one-half">
       <ng-container *ngFor="let section of sectionTemplates; let i = index">
-        <ng-container *ngIf="section.name === 'reasonForCreationSection' && !displayReasonForCreation; else sectionTemplate"> </ng-container>
-        <ng-template #sectionTemplate>
-          <app-accordion *ngIf="i >= middleIndex" [id]="section.name" [title]="section.label">
-            <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
-          </app-accordion>
-        </ng-template>
+        <app-accordion *ngIf="i >= middleIndex" [id]="section.name" [title]="section.label">
+          <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
+        </app-accordion>
       </ng-container>
     </div>
   </app-accordion-control>

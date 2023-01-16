@@ -42,7 +42,6 @@ export class TechRecordSummaryComponent implements OnInit {
   set isEditing(value: boolean) {
     this._isEditing = value;
     this.calculateVehicleModel();
-    this.toggleReasonForCreation();
   }
   @Output() formChange = new EventEmitter();
 
@@ -63,7 +62,6 @@ export class TechRecordSummaryComponent implements OnInit {
     this.referenceDataService.removeTyreSearch();
     this.calculateVehicleModel();
     this.sectionTemplates = this.vehicleTemplates;
-    this.toggleReasonForCreation();
     this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
   }
 
@@ -78,15 +76,9 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   get vehicleTemplates(): Array<FormNode> {
-    return vehicleTemplateMap.get(this.vehicleTechRecordCalculated.vehicleType) ?? ([] as Array<FormNode>);
-  }
-
-  toggleReasonForCreation(): void {
-    if (this.isEditing) {
-      this.displayReasonForCreation = true;
-    } else {
-      this.displayReasonForCreation = false;
-    }
+    const vehicleTemplates = vehicleTemplateMap.get(this.vehicleTechRecordCalculated.vehicleType);
+    if (vehicleTemplates) return this.isEditing ? vehicleTemplates : vehicleTemplates.filter(t => t.name !== 'reasonForCreationSection');
+    else return [] as Array<FormNode>;
   }
 
   calculateVehicleModel(): void {
