@@ -17,7 +17,7 @@ import {
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap, take } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -135,7 +135,7 @@ export class TechnicalRecordService {
           map(vehicleRecord => (vehicleRecord ? { ...vehicleRecord, techRecord: [record] } : undefined))
         );
 
-    vehicleTechRecord$.subscribe(vehicleRecord => {
+    vehicleTechRecord$.pipe(take(1)).subscribe(vehicleRecord => {
       if (vehicleRecord) {
         this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
       }
