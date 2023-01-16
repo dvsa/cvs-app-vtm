@@ -29,7 +29,7 @@
       (ngModelChange)="ngOnChanges()"
     ></app-select>
 
-    <div *ngIf="selectVehicleType.value ?? selectVehicleType.value !== currentTechRecord?.vehicleType">
+    <div *ngIf="selectVehicleType.value && selectVehicleType.value !== currentTechRecord?.vehicleType">
       <h1 class="govuk-heading-xl">Are you sure you want to change this Vehicle type?</h1>
 
       <p class="govuk-body">
