@@ -82,11 +82,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit {
       hiddenInVta: !this.isHidden
     };
 
-    this.store.pipe(select(editableVehicleTechRecord), take(1)).subscribe(vehicleTechRecord => {
-      if (vehicleTechRecord) {
-        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: { ...vehicleTechRecord, techRecord: [updatedTechRecord] } }));
-      }
-    });
+    this.technicalRecordService.updateEditingTechRecord(updatedTechRecord);
 
     this.store
       .select(selectRouteNestedParams)

@@ -119,7 +119,25 @@ export class TechnicalRecordService {
     this.editableVehicleTechRecord$.pipe(map(data => data ?? cloneDeep(vehicleTechRecord))).subscribe(data => {
       if (data) {
         data.techRecord[0].reasonForCreation = '';
-        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: data }));
+        this.updateEditingTechRecord(data);
+      }
+    });
+  }
+
+  updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel): void {
+    const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel =>
+      rec.hasOwnProperty('vin') && rec.hasOwnProperty('techRecord');
+
+    const record$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord(record)
+      ? of(record)
+      : this.store.pipe(
+          select(editableVehicleTechRecord),
+          map(vehicleRecord => (vehicleRecord ? { ...vehicleRecord, techRecord: [record] } : undefined))
+        );
+
+    record$.subscribe(vehicleRecord => {
+      if (vehicleRecord) {
+        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
       }
     });
   }

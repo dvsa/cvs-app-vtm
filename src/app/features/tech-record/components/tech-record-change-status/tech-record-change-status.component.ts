@@ -90,11 +90,7 @@ export class TechRecordChangeStatusComponent implements OnInit {
       return;
     }
 
-    this.store.pipe(select(editableVehicleTechRecord), take(1)).subscribe(vehicleTechRecord => {
-      if (vehicleTechRecord) {
-        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: { ...vehicleTechRecord, techRecord: [newTechRecord] } }));
-      }
-    });
+    this.technicalRecordService.updateEditingTechRecord(newTechRecord);
 
     this.store.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber }) => {
       const action = this.isPromotion

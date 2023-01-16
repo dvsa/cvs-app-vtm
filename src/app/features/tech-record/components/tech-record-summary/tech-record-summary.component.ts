@@ -137,11 +137,8 @@ export class TechRecordSummaryComponent implements OnInit {
     ) {
       this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length ?? 0;
     }
-    this.store.pipe(select(editableVehicleTechRecord), take(1)).subscribe(vehicleTechRecord => {
-      if (vehicleTechRecord) {
-        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: { ...vehicleTechRecord, techRecord: [this.vehicleTechRecordCalculated] } }));
-      }
-    });
+
+    this.technicalRecordService.updateEditingTechRecord(this.vehicleTechRecordCalculated);
     this.formChange.emit();
   }
 
