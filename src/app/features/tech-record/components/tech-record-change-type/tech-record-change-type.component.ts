@@ -95,8 +95,4 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
 
     this.router.navigate([`../${routeSuffix}`], { relativeTo: this.route });
   }
-
-  navigateTo(path: string, queryParams?: Params): void {
-    this.router.navigate([path], { relativeTo: this.route, queryParams });
-  }
 }
