@@ -3,8 +3,9 @@
 <div class="defects">
   <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedItem }">
     <ol class="list">
-      <li *ngFor="let defect of defects">
+      <li *ngFor="let defect of defects; let i = index">
         <a
+          [id]="'defect-list-item-' + i"
           class="browse__link browse__link--inactive"
           [ngClass]="{ 'browse__link--active': defect === selectedDefect }"
           (click)="handleSelect(defect, types.Defect)"
@@ -17,8 +18,9 @@
 
   <div *ngIf="selectedDefect" class="list_container">
     <ol class="list">
-      <li *ngFor="let item of selectedDefect?.items">
+      <li *ngFor="let item of selectedDefect?.items; let i = index">
         <a
+          [id]="'defect-sub-list-item-' + i"
           class="browse__link browse__link--inactive"
           [ngClass]="{ 'browse__link--active': item === selectedItem }"
           (click)="handleSelect(item, types.Item)"
@@ -32,7 +34,14 @@
   <div *ngIf="selectedItem" class="list_container">
     <ol class="list">
       <li *ngFor="let deficiency of selectedItem?.deficiencies">
-        <a class="browse__normal-link govuk-link--no-visited-state" (click)="handleSelect(deficiency, types.Deficiency)"
+        <a
+          class="browse__normal-link govuk-link--no-visited-state"
+          [id]="
+            deficiency.deficiencySubId
+              ? 'selectedDefect-' + deficiency.deficiencyId + deficiency.deficiencySubId
+              : 'selectedDefect-' + deficiency.deficiencyId
+          "
+          (click)="handleSelect(deficiency, types.Deficiency)"
           >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} {{ deficiency.deficiencyId ? '(' + deficiency.deficiencyId + ')' : ''
           }}{{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}{{ deficiency.stdForProhibition ? '*' : '' }}</a
         >
@@ -43,7 +52,7 @@
       </li>
 
       <li>
-        <a class="browse__normal-link govuk-link--no-visited-state" (click)="handleSelect()"
+        <a class="browse__normal-link govuk-link--no-visited-state" id="selected-defect-advisory" (click)="handleSelect()"
           >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }}</a
         >
         <span>
