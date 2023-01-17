@@ -14,7 +14,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testStartTimestamp',
@@ -23,7 +23,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testTypes',
