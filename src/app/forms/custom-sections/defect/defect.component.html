@@ -97,10 +97,10 @@
     <ng-container [formGroup]="form">
       <ng-container formGroupName="additionalInformation">
         <ng-container *ngIf="!isAdvisory" formGroupName="location">
-          <ng-container *ngFor="let item of infoDictionary | keyvalue; trackBy: trackByFn">
+          <ng-container *ngFor="let item of infoDictionary | keyvalue; trackBy: trackByFn; let index = index">
             <app-radio-group
               *ngIf="item.value.length <= 4"
-              [name]="item.key + index"
+              [name]="item.key + '-' + index"
               [label]="pascalCase(item.key)"
               [formControlName]="item.key"
               [options]="item.value"
@@ -116,12 +116,12 @@
             ></app-select>
           </ng-container>
         </ng-container>
-        <app-text-area [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
+        <app-text-area name="notes" label="Notes" formControlName="notes"></app-text-area>
       </ng-container>
 
       <app-radio-group
         *ngIf="isDangerous"
-        [name]="'prohibitionIssued-' + index"
+        name="prohibitionIssued"
         label="Prohibition issued in mobile compliance"
         formControlName="prohibitionIssued"
         [options]="booleanOptions"
@@ -132,14 +132,7 @@
       <div class="govuk-form-group" *ngIf="!isAdvisory">
         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
           <div class="govuk-checkboxes__item">
-            <input
-              class="govuk-checkboxes__input"
-              id="prs"
-              [name]="'prs-' + index"
-              type="checkbox"
-              [checked]="defect.prs"
-              (change)="toggleDefectField('prs')"
-            />
+            <input class="govuk-checkboxes__input" id="prs" type="checkbox" [checked]="defect.prs" (change)="toggleDefectField('prs')" />
             <label class="govuk-label govuk-checkboxes__label" for="prs"> Defect repaired during test</label>
           </div>
         </div>
