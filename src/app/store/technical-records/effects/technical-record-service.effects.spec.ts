@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
@@ -635,7 +635,83 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.resetModules();
       });
 
-      it('should generate new techRecord based on vehicle type', () => {
+      it('should generate new techRecord based on vehicle type', fakeAsync(() => {
+        const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
+        const expectedTechRecord = {
+          alterationMarker: '',
+          approvalType: undefined,
+          approvalTypeNumber: undefined,
+          axles: [],
+          bodyMake: '',
+          bodyModel: '',
+          bodyType: {
+            description: ''
+          },
+          brakes: {
+            brakeCode: '',
+            brakeCodeOriginal: '',
+            dataTrBrakeOne: '',
+            dataTrBrakeThree: '',
+            dataTrBrakeTwo: '',
+            dtpNumber: '',
+            retarderBrakeOne: '',
+            retarderBrakeTwo: ''
+          },
+          chassisMake: '',
+          chassisModel: '',
+          coifCertifierName: undefined,
+          coifDate: undefined,
+          coifSerialNumber: undefined,
+          conversionRefNo: '',
+          dda: null,
+          departmentalVehicleMarker: '',
+          dimensions: {
+            height: null,
+            length: null,
+            width: null
+          },
+          dispensations: undefined,
+          emissionsLimit: null,
+          euVehicleCategory: '',
+          euroStandard: undefined,
+          frontAxleToRearAxle: null,
+          fuelPropulsionSystem: '',
+          functionCode: '',
+          grossDesignWeight: '',
+          grossGbWeight: '',
+          grossKerbWeight: '',
+          grossLadenWeight: '',
+          manufactureYear: '',
+          maxTrainGbWeight: null,
+          microfilm: null,
+          modelLiteral: '',
+          noOfAxles: '',
+          numberOfWheelsDriven: null,
+          ntaNumber: undefined,
+          numberOfSeatbelts: '',
+          regnDate: '',
+          remarks: undefined,
+          reasonForCreation: undefined,
+          seatbeltInstallationApprovalDate: '',
+          seatsLowerDeck: '',
+          seatsUpperDeck: '',
+          speedLimiterMrk: '',
+          speedRestriction: '',
+          standingCapacity: '',
+          statusCode: '',
+          tachoExemptMrk: '',
+          trainDesignWeight: null,
+          unladenWeight: '',
+          variantNumber: undefined,
+          variantVersionNumber: undefined,
+          vehicleClass: {
+            description: ''
+          },
+          vehicleConfiguration: '',
+          vehicleSize: '',
+          vehicleType: VehicleTypes.PSV
+        } as unknown as TechRecordModel;
+
         testScheduler.run(({ hot, expectObservable }) => {
           const techRecord = createMock<TechRecordModel>({
             vehicleType: VehicleTypes.HGV
@@ -650,83 +726,14 @@ describe('TechnicalRecordServiceEffects', () => {
           });
 
           expectObservable(effects.generateTechRecordBasedOnSectionTemplates).toBe('-b', {
-            b: {
-              alterationMarker: '',
-              approvalType: undefined,
-              approvalTypeNumber: undefined,
-              axles: [],
-              bodyMake: '',
-              bodyModel: '',
-              bodyType: {
-                description: ''
-              },
-              brakes: {
-                brakeCode: '',
-                brakeCodeOriginal: '',
-                dataTrBrakeOne: '',
-                dataTrBrakeThree: '',
-                dataTrBrakeTwo: '',
-                dtpNumber: '',
-                retarderBrakeOne: '',
-                retarderBrakeTwo: ''
-              },
-              chassisMake: '',
-              chassisModel: '',
-              coifCertifierName: undefined,
-              coifDate: undefined,
-              coifSerialNumber: undefined,
-              conversionRefNo: '',
-              dda: null,
-              departmentalVehicleMarker: '',
-              dimensions: {
-                height: null,
-                length: null,
-                width: null
-              },
-              dispensations: undefined,
-              emissionsLimit: null,
-              euVehicleCategory: '',
-              euroStandard: undefined,
-              frontAxleToRearAxle: null,
-              fuelPropulsionSystem: '',
-              functionCode: '',
-              grossDesignWeight: '',
-              grossGbWeight: '',
-              grossKerbWeight: '',
-              grossLadenWeight: '',
-              manufactureYear: '',
-              maxTrainGbWeight: null,
-              microfilm: null,
-              modelLiteral: '',
-              noOfAxles: '',
-              numberOfWheelsDriven: null,
-              ntaNumber: undefined,
-              numberOfSeatbelts: '',
-              regnDate: '',
-              remarks: undefined,
-              reasonForCreation: undefined,
-              seatbeltInstallationApprovalDate: '',
-              seatsLowerDeck: '',
-              seatsUpperDeck: '',
-              speedLimiterMrk: '',
-              speedRestriction: '',
-              standingCapacity: '',
-              statusCode: '',
-              tachoExemptMrk: '',
-              trainDesignWeight: null,
-              unladenWeight: '',
-              variantNumber: undefined,
-              variantVersionNumber: undefined,
-              vehicleClass: {
-                description: ''
-              },
-              vehicleConfiguration: '',
-              vehicleSize: '',
-              vehicleType: VehicleTypes.PSV
-            } as unknown as TechRecordModel
+            b: expectedTechRecord
           });
         });
-      });
+
+        flush();
+        expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
+        expect(techRecordServiceSpy).toHaveBeenCalledWith(expectedTechRecord);
+      }));
     });
   });
 });
