@@ -1,6 +1,6 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <a class="govuk-back-link" (click)="navigateBack()">Back</a>
+    <a class="govuk-back-link" id="multiple-search-results-back-link" (click)="navigateBack()">Back</a>
   </div>
 
   <ng-container *ngFor="let vehicleTechRecord of vehicleTechRecords$ | async">

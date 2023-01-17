@@ -9,4 +9,5 @@ export class HomeButtonComponent {
   @Input() url: string = '';
   @Input() linkText: string = '';
   @Input() description: string = '';
+  @Input() linkId: string = '';
 }
