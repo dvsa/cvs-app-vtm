@@ -4,8 +4,8 @@ import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
-import { VehicleSize } from '@models/vehicle-size.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { VehicleSize } from '@models/vehicle-size.enum';
 
 export const PsvTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -20,6 +20,20 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true
+    },
+    {
+      name: 'statusCode',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
+      name: 'numberOfWheelsDriven',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'regnDate',
@@ -133,7 +147,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'emissionsLimit',
       label: 'Emission limit (plate value)',
-      value: '' || null,
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -193,7 +207,8 @@ export const PsvTechRecord: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(VehicleSize)
+      options: getOptionsFromEnum(VehicleSize),
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'departmentalVehicleMarker',
@@ -204,7 +219,8 @@ export const PsvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'alterationMarker',
@@ -216,7 +232,8 @@ export const PsvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     }
   ]
 };

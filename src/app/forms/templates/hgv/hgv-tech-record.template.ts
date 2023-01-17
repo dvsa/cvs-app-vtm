@@ -21,6 +21,20 @@ export const HgvTechRecord: FormNode = {
       disabled: true
     },
     {
+      name: 'statusCode',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
+      name: 'numberOfWheelsDriven',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
       name: 'regnDate',
       label: 'Date of first registration',
       value: '',
@@ -162,7 +176,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'emissionsLimit',
       label: 'Emission limit (plate value)',
-      value: '' || null,
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,

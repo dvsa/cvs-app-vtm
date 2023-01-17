@@ -14,14 +14,14 @@ export const HgvDimensionsTemplate: FormNode = {
         {
           name: 'length',
           label: 'Length (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Max, args: 99999 }]
         },
         {
           name: 'width',
           label: 'Width (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Max, args: 99999 }]
         },

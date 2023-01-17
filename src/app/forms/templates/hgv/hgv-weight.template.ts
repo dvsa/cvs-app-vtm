@@ -53,7 +53,7 @@ export const HgvWeight: FormNode = {
     {
       name: 'grossTrainSection',
       label: 'Gross train weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.SECTION
     },
     {
@@ -68,7 +68,7 @@ export const HgvWeight: FormNode = {
       name: 'trainEecWeight',
       label: 'EEC (optional)',
       customValidatorErrorName: 'Train EEC Weight',
-      value: '',
+      value: null,
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
@@ -77,14 +77,14 @@ export const HgvWeight: FormNode = {
       name: 'trainDesignWeight',
       label: 'Design (optional)',
       customValidatorErrorName: 'Train Design Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
     {
       name: 'maxTrainSection',
       label: 'Max train weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.SECTION
     },
     {
@@ -99,7 +99,7 @@ export const HgvWeight: FormNode = {
       name: 'maxTrainEecWeight',
       label: 'EEC (optional)',
       customValidatorErrorName: 'Max Train EEC Weight',
-      value: '',
+      value: null,
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
@@ -108,7 +108,7 @@ export const HgvWeight: FormNode = {
       name: 'maxTrainDesignWeight',
       label: 'Design (optional)',
       customValidatorErrorName: 'Max Train Design Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
@@ -152,7 +152,7 @@ export const HgvWeight: FormNode = {
                   name: 'eecWeight',
                   label: 'EEC (optional)',
                   customValidatorErrorName: 'Axle EEC Weight',
-                  value: '',
+                  value: null,
                   editType: FormNodeEditTypes.NUMBER,
                   type: FormNodeTypes.CONTROL,
                   validators: optionalValidation
