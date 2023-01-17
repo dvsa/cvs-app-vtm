@@ -64,7 +64,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     const c = this.currentTechRecord;
     if (!c?.make && !c?.chassisMake) return '';
 
-    return `${c.vehicleType === 'psv' ? c.make : c.chassisMake} - ${c.vehicleType === 'psv' ? c.model : c.chassisModel}`;
+    return `${c.vehicleType === 'psv' ? c.chassisMake : c.make} - ${c.vehicleType === 'psv' ? c.chassisModel : c.model}`;
   }
 
   get vrm(): string | undefined {

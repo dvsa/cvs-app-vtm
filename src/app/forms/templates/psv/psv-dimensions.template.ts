@@ -14,21 +14,21 @@ export const PsvDimensionsTemplate: FormNode = {
         {
           name: 'height',
           label: 'Height (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+          validators: [{ name: ValidatorNames.Max, args: 99999 }]
         },
         {
           name: 'length',
           label: 'Length (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Max, args: 99999 }]
         },
         {
           name: 'width',
           label: 'Width (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Max, args: 99999 }]
         }
@@ -37,7 +37,7 @@ export const PsvDimensionsTemplate: FormNode = {
     {
       name: 'frontAxleToRearAxle',
       label: 'Front axle to rear axle (mm)',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     }
