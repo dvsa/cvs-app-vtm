@@ -73,9 +73,14 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   }
 
   get vehicleTypeOptions(): MultiOptions {
-    return getOptionsFromEnumAcronym(VehicleTypes).filter(
-      type => type.value !== this.currentTechRecord?.vehicleType && type.value !== VehicleTypes.MOTORCYCLE
-    );
+    switch (this.currentTechRecord?.vehicleType) {
+      case VehicleTypes.HGV:
+        return [{ label: 'PSV', value: VehicleTypes.PSV }];
+      case VehicleTypes.PSV:
+        return [{ label: 'HGV', value: VehicleTypes.HGV }];
+      default:
+        return [];
+    }
   }
 
   navigateBack() {

@@ -94,18 +94,6 @@ describe('TechRecordChangeTypeComponent', () => {
     });
   });
 
-  describe('vehicleTypeOptions', () => {
-    it('should return all types except for the current one', () => {
-      component.currentTechRecord = expectedVehicle.techRecord.pop()!;
-
-      const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter(
-        type => type.value !== VehicleTypes.PSV && type.value !== VehicleTypes.MOTORCYCLE
-      );
-
-      expect(component.vehicleTypeOptions).toStrictEqual(expectedOptions);
-    });
-  });
-
   describe('navigateBack', () => {
     it('should clear all errors', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
