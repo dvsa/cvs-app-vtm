@@ -6,7 +6,6 @@ import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editableTechRecord } from '@store/technical-records';
-import { cancelEditingTestResult } from '@store/test-records';
 import { Observable, take } from 'rxjs';
 
 @Component({
