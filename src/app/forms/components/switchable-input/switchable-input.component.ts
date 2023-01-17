@@ -15,7 +15,7 @@ export class SwitchableInputComponent implements OnInit {
 
   @Input() isEditing = true;
 
-  @Input() index?: number;
+  @Input() idExtension?: number;
   @Input() label?: string;
   @Input() prefix?: string;
   @Input() suffix?: string;
