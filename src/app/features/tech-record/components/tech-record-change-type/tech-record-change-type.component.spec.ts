@@ -65,12 +65,12 @@ describe('TechRecordChangeTypeComponent', () => {
   });
 
   describe('makeAndModel', () => {
-    it('should should return the makel and model', () => {
+    it('should should return the make and model', () => {
       const expectedTechRecord = expectedVehicle.techRecord.pop()!;
 
       component.currentTechRecord = expectedTechRecord;
 
-      expect(component.makeAndModel).toBe(`${expectedTechRecord.make} - ${expectedTechRecord.model}`);
+      expect(component.makeAndModel).toBe(`${expectedTechRecord.chassisMake} - ${expectedTechRecord.chassisModel}`);
     });
 
     it('should return an empty string when the current record is null', () => {
