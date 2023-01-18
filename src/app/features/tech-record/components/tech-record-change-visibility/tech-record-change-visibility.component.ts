@@ -6,14 +6,13 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { RouterReducerState } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { updateEditingTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
-import { filter, mergeMap, Observable, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-visibility',
@@ -31,8 +30,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit {
     private errorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
-    private routerStore: Store<RouterReducerState>,
-    private techRecordsStore: Store<TechnicalRecordServiceState>,
+    private store: Store<State>,
     private technicalRecordService: TechnicalRecordService
   ) {
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
@@ -82,11 +80,11 @@ export class TechRecordChangeVisibilityComponent implements OnInit {
       hiddenInVta: !this.isHidden
     };
 
-    this.techRecordsStore.dispatch(updateEditingTechRecord({ techRecord: updatedTechRecord }));
+    this.technicalRecordService.updateEditingTechRecord(updatedTechRecord);
 
-    this.routerStore
+    this.store
       .select(selectRouteNestedParams)
       .pipe(take(1))
-      .subscribe(({ systemNumber }) => this.techRecordsStore.dispatch(updateTechRecords({ systemNumber })));
+      .subscribe(({ systemNumber }) => this.store.dispatch(updateTechRecords({ systemNumber })));
   }
 }

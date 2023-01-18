@@ -37,7 +37,7 @@ export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 export interface TechnicalRecordServiceState {
   vehicleTechRecords: Array<VehicleTechRecordModel>;
   loading: boolean;
-  editingTechRecord?: TechRecordModel;
+  editingTechRecord?: VehicleTechRecordModel;
   error?: unknown;
 }
 
@@ -87,9 +87,9 @@ export const vehicleTechRecordReducer = createReducer(
   on(archiveTechRecordSuccess, successArgs),
   on(archiveTechRecordFailure, updateFailureArgs),
 
-  on(updateEditingTechRecord, (state: TechnicalRecordServiceState, data: { techRecord: TechRecordModel }) => ({
+  on(updateEditingTechRecord, (state: TechnicalRecordServiceState, data: { vehicleTechRecord: VehicleTechRecordModel }) => ({
     ...state,
-    editingTechRecord: data.techRecord
+    editingTechRecord: data.vehicleTechRecord
   })),
   on(updateEditingTechRecordCancel, (state: TechnicalRecordServiceState) => ({ ...state, editingTechRecord: undefined }))
 );

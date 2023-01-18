@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { concatMap, of, take } from 'rxjs';
+import { concat, concatMap, of, take } from 'rxjs';
 import { UserService } from '@services/user-service/user-service';
-import { catchError, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatAll, map, mergeAll, mergeMap, switchMap, tap, withLatestFrom, zipAll } from 'rxjs/operators';
 import {
   getByPartialVin,
   getByPartialVinFailure,
@@ -35,15 +35,14 @@ import {
   changeVehicleType,
   updateEditingTechRecord
 } from '../actions/technical-record-service.actions';
-import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/index';
-import { editableTechRecord } from '@store/technical-records';
+import { editableTechRecord, editableVehicleTechRecord } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import merge from 'lodash.merge';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
@@ -51,7 +50,6 @@ export class TechnicalRecordServiceEffects {
     private actions$: Actions,
     private technicalRecordService: TechnicalRecordService,
     private userService: UserService,
-    private router: Router,
     private store: Store<State>,
     private dfs: DynamicFormService
   ) {}
@@ -113,7 +111,7 @@ export class TechnicalRecordServiceEffects {
   updateTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTechRecords),
-      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.name$, this.userService.id$),
+      withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
       switchMap(([action, record, name, id]) =>
         this.technicalRecordService
           .putUpdateTechRecords(action.systemNumber, record!, { id, name }, action.recordToArchiveStatus, action.newStatus)
@@ -171,22 +169,27 @@ export class TechnicalRecordServiceEffects {
     }
   }
 
-  generateTechRecordBasedOnSectionTemplates = createEffect(() =>
-    this.actions$.pipe(
-      ofType(changeVehicleType),
-      withLatestFrom(this.store.pipe(select(editableTechRecord))),
-      concatMap(([{ vehicleType }, editableTechRecord]) => {
-        const techRecord = { ...cloneDeep(editableTechRecord), vehicleType };
+  generateTechRecordBasedOnSectionTemplates = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(changeVehicleType),
+        withLatestFrom(this.store.pipe(select(editableTechRecord))),
+        concatMap(([{ vehicleType }, editableTechRecord]) => {
+          const techRecord = { ...cloneDeep(editableTechRecord), vehicleType };
 
-        const techRecordTemplate = vehicleTemplateMap.get(vehicleType) || [];
+          const techRecordTemplate = vehicleTemplateMap.get(vehicleType) || [];
 
-        const mergedForms = techRecordTemplate.reduce((mergedNodes, formNode) => {
-          const form = this.dfs.createForm(formNode, techRecord);
-          return merge(mergedNodes, form.getCleanValue(form));
-        }, {});
-
-        return of(updateEditingTechRecord({ techRecord: mergedForms as TechRecordModel }));
-      })
-    )
+          return of(
+            techRecordTemplate.reduce((mergedNodes, formNode) => {
+              const form = this.dfs.createForm(formNode, techRecord);
+              return merge(mergedNodes, form.getCleanValue(form));
+            }, {}) as TechRecordModel
+          );
+        }),
+        tap(mergedForms => {
+          this.technicalRecordService.updateEditingTechRecord(mergedForms);
+        })
+      ),
+    { dispatch: false }
   );
 }

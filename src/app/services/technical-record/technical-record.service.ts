@@ -1,21 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { PutVehicleTechRecordModel, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
   editableTechRecord,
+  editableVehicleTechRecord,
   getByAll,
   getByPartialVin,
   getByTrailerId,
   getByVin,
   getByVrm,
   selectVehicleTechnicalRecordsBySystemNumber,
+  updateEditingTechRecord,
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap, take } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -64,18 +66,20 @@ export class TechnicalRecordService {
 
   putUpdateTechRecords(
     systemNumber: string,
-    techRecord: TechRecordModel,
+    vehicleTechRecord: VehicleTechRecordModel,
     user: { id?: string; name: string },
     recordToArchiveStatus?: StatusCodes,
     newStatus?: StatusCodes
   ) {
-    const newTechRecord = cloneDeep(techRecord);
+    const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
+    const newTechRecord = newVehicleTechRecord.techRecord[0];
     newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
-    this.removeUpdateType(techRecord, newTechRecord);
+    delete newTechRecord.updateType;
 
     const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${recordToArchiveStatus ? '?oldStatusCode=' + recordToArchiveStatus : ''}`;
 
-    const body = {
+    const body: PutVehicleTechRecordModel & { msUserDetails: { msOid: string | undefined; msUser: string } } = {
+      ...this.formatVrmsForUpdatePayload(vehicleTechRecord),
       msUserDetails: { msOid: user.id, msUser: user.name },
       techRecord: [newTechRecord]
     };
@@ -83,17 +87,11 @@ export class TechnicalRecordService {
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  private removeUpdateType(techRecord: TechRecordModel, newTechRecord: TechRecordModel) {
-    if (techRecord.updateType) {
-      delete newTechRecord.updateType;
-    }
-  }
-
   postProvisionalTechRecord(systemNumber: string, techRecord: TechRecordModel, user: { id?: string; name: string }) {
     // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
     const recordCopy = cloneDeep(techRecord);
     recordCopy.statusCode = StatusCodes.PROVISIONAL;
-    this.removeUpdateType(techRecord, recordCopy);
+    delete recordCopy.updateType;
 
     const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;
 
@@ -117,6 +115,47 @@ export class TechnicalRecordService {
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
+  clearReasonForCreation(vehicleTechRecord?: VehicleTechRecordModel): void {
+    this.editableVehicleTechRecord$
+      .pipe(
+        map(data => cloneDeep(data ?? vehicleTechRecord)),
+        take(1)
+      )
+      .subscribe(data => {
+        if (data) {
+          data.techRecord[0].reasonForCreation = '';
+          this.updateEditingTechRecord(data);
+        }
+      });
+  }
+
+  /**
+   * A function which takes either a TechRecordModel or a VehicleTechRecordModel, maps the missing vehicle record information if passed
+   * a TechRecordModel and dispatches the action to update the editing tech record.
+   * @param record - TechRecordModel or VehicleTechRecordModel
+   * @param resetVehicleAttributes [resetVehicleAttributes=false] - Used to overwrite the attributes inside of the properties inside
+   * the VehicleTechRecordModel to the un-edited information present in state for that vehicle. Only used if passed a TechRecordModel.
+   * @returns void
+   */
+  updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel, resetVehicleAttributes = false): void {
+    const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel =>
+      rec.hasOwnProperty('vin') && rec.hasOwnProperty('techRecord');
+
+    const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord(record)
+      ? of(record)
+      : this.store.pipe(
+          select(editableVehicleTechRecord),
+          switchMap(vehicleRecord => (vehicleRecord && !resetVehicleAttributes ? of(vehicleRecord) : this.selectedVehicleTechRecord$)),
+          map(vehicleRecord => vehicleRecord && { ...vehicleRecord, techRecord: [record] })
+        );
+
+    vehicleTechRecord$.pipe(take(1)).subscribe(vehicleRecord => {
+      if (vehicleRecord) {
+        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
+      }
+    });
+  }
+
   get vehicleTechRecords$() {
     return this.store.pipe(select(vehicleTechRecords));
   }
@@ -125,8 +164,16 @@ export class TechnicalRecordService {
     return this.store.pipe(select(editableTechRecord));
   }
 
+  get editableVehicleTechRecord$() {
+    return this.store.pipe(select(editableVehicleTechRecord));
+  }
+
   get selectedVehicleTechRecord$() {
     return this.store.pipe(select(selectVehicleTechnicalRecordsBySystemNumber));
+  }
+
+  get techRecord$(): Observable<TechRecordModel | undefined> {
+    return this.selectedVehicleTechRecord$.pipe(switchMap(techRecord => (techRecord ? this.viewableTechRecord$(techRecord) : of(undefined))));
   }
 
   searchBy(type: SEARCH_TYPES, term: string) {
@@ -178,7 +225,7 @@ export class TechnicalRecordService {
   }
 
   /**
-   * A function to filter the correct tech record, this has a hierarchy which is PROVISIONAL -> CURRENT -> ARCHIVED.
+   * A function to filter the correct tech record, this has a hierarchy which is CURRENT -> PROVISIONAL -> ARCHIVED.
    * @param record This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
@@ -190,7 +237,13 @@ export class TechnicalRecordService {
     );
   }
 
-  get techRecord$(): Observable<TechRecordModel | undefined> {
-    return this.selectedVehicleTechRecord$.pipe(switchMap(techRecord => (techRecord ? this.viewableTechRecord$(techRecord) : of(undefined))));
+  private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {
+    const secondaryVrms: string[] = [];
+    const putVehicleTechRecordModel: PutVehicleTechRecordModel = { ...vehicleTechRecord, secondaryVrms };
+    vehicleTechRecord.vrms.forEach(vrm => {
+      vrm.isPrimary ? (putVehicleTechRecordModel.primaryVrm = vrm.vrm) : putVehicleTechRecordModel.secondaryVrms!.push(vrm.vrm);
+    });
+    delete (putVehicleTechRecordModel as any).vrms;
+    return putVehicleTechRecordModel;
   }
 }

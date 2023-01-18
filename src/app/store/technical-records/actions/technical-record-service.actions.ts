@@ -44,7 +44,7 @@ export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, pro
 export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
 export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord');
 
-export const updateEditingTechRecord = createAction('[tech-record] Update editing', props<{ techRecord: TechRecordModel }>());
+export const updateEditingTechRecord = createAction('[tech-record] Update editing', props<{ vehicleTechRecord: VehicleTechRecordModel }>());
 export const updateEditingTechRecordCancel = createAction('[tech-record] Update editing cancelled');
 
 export const changeVehicleType = createAction('[tech-record] vehicle type changed', props<{ vehicleType: VehicleTypes }>());

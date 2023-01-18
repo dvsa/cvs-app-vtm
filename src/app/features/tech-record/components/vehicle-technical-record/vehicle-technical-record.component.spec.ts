@@ -63,7 +63,8 @@ describe('VehicleTechnicalRecordComponent', () => {
         {
           provide: TechnicalRecordService,
           useValue: {
-            viewableTechRecord$: () => of(mockVehicleTechnicalRecord().techRecord[2])
+            viewableTechRecord$: () => of(mockVehicleTechnicalRecord().techRecord[2]),
+            updateEditingTechRecord: () => {}
           }
         }
       ]

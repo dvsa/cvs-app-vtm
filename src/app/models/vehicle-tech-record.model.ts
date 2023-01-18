@@ -1,4 +1,3 @@
-import { MultiOptions } from '@forms/models/options.model';
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
 export interface VehicleTechRecordModel {
@@ -7,6 +6,11 @@ export interface VehicleTechRecordModel {
   trailerId?: string;
   systemNumber: string;
   techRecord: TechRecordModel[];
+}
+
+export interface PutVehicleTechRecordModel extends Omit<VehicleTechRecordModel, 'vrms'> {
+  primaryVrm?: string;
+  secondaryVrms?: string[];
 }
 
 export interface Vrm {

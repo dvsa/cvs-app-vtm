@@ -12,13 +12,14 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
 import { changeVehicleType } from '@store/technical-records';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { ChangeVehicleTypeComponent } from './tech-record-change-type.component';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
-  viewableTechRecord$: jest.fn()
+  viewableTechRecord$: jest.fn(),
+  clearReasonForCreation: jest.fn()
 };
 
 const mockDynamicFormService = {
@@ -34,6 +35,7 @@ describe('TechRecordChangeTypeComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let store: MockStore;
+  let techRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -148,8 +150,9 @@ describe('TechRecordChangeTypeComponent', () => {
     it('should call clearReasonForCreation', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
 
-      const clearReasonForCreationSpy = jest.spyOn(component, 'clearReasonForCreation').mockImplementation();
+      const clearReasonForCreationSpy = jest.spyOn(mockTechRecordService, 'clearReasonForCreation');
 
+      jest.resetAllMocks();
       component.handleSubmit(VehicleTypes.PSV);
 
       expect(clearReasonForCreationSpy).toHaveBeenCalledTimes(1);
