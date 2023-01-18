@@ -34,7 +34,8 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
       type: FormNodeTypes.CONTROL,
-      asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }]
+      asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }],
+      width: FormNodeWidth.XL
     },
     {
       name: 'euVehicleCategory',

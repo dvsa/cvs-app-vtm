@@ -65,7 +65,7 @@
                   "with": "src/environments/environment.deploy.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
               "namedChunks": false,

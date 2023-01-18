@@ -28,7 +28,7 @@ export const DeskBasedVehicleSectionDefaultPsvHgv: FormNode = {
       label: 'Country Of Registration',
       value: '',
       options: [],
-      width: FormNodeWidth.XXL,
+      width: FormNodeWidth.XL,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
       type: FormNodeTypes.CONTROL

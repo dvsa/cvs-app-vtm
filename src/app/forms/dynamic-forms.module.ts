@@ -36,6 +36,7 @@ import { BodyComponent } from './custom-sections/body/body.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
 import { PrefixDirective } from './directives/prefix.directive';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { PrefixDirective } from './directives/prefix.directive';
     BodyComponent,
     TyresComponent,
     PsvBrakesComponent,
-    PrefixDirective
+    PrefixDirective,
+    DropdownComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -105,7 +107,8 @@ import { PrefixDirective } from './directives/prefix.directive';
     AbandonDialogComponent,
     BodyComponent,
     PsvBrakesComponent,
-    PrefixDirective
+    PrefixDirective,
+    DropdownComponent
   ]
 })
 export class DynamicFormsModule {}
