@@ -174,15 +174,13 @@ export class TechnicalRecordServiceEffects {
   generateTechRecordBasedOnSectionTemplates = createEffect(() =>
     this.actions$.pipe(
       ofType(changeVehicleType),
-      mergeMap(action => of(action).pipe(withLatestFrom(this.store.pipe(select(editableTechRecord))))),
-      concatMap(([action, editableTechRecord]) => {
-        const { vehicleType } = action;
+      withLatestFrom(this.store.pipe(select(editableTechRecord))),
+      concatMap(([{ vehicleType }, editableTechRecord]) => {
+        const techRecord = { ...cloneDeep(editableTechRecord), vehicleType };
 
-        const techRecord = cloneDeep(editableTechRecord);
-        techRecord!.vehicleType = vehicleType;
+        const techRecordTemplate = vehicleTemplateMap.get(vehicleType) || [];
 
-        const techRecordTemplate = vehicleTemplateMap.get(vehicleType);
-        const mergedForms = techRecordTemplate!.reduce((mergedNodes, formNode) => {
+        const mergedForms = techRecordTemplate.reduce((mergedNodes, formNode) => {
           const form = this.dfs.createForm(formNode, techRecord);
           return merge(mergedNodes, form.getCleanValue(form));
         }, {});

@@ -2,12 +2,14 @@
   <div *ngIf="breadcrumbs.length" class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
-        <a class="govuk-breadcrumbs__link" [routerLink]="['']">Home</a>
+        <a class="govuk-breadcrumbs__link" id="breadcrumb-home-link" [routerLink]="['']">Home</a>
       </li>
-      <li *ngFor="let breadcrumb of breadcrumbs; let last = last; trackBy: trackByFn" class="govuk-breadcrumbs__list-item">
-        <a *ngIf="!last; else current" class="govuk-breadcrumbs__link" [routerLink]="'/' + breadcrumb.path">{{ breadcrumb.label }}</a>
+      <li *ngFor="let breadcrumb of breadcrumbs; let last = last; trackBy: trackByFn; let indexOfLink = index" class="govuk-breadcrumbs__list-item">
+        <a *ngIf="!last; else current" [id]="'breadcrumb-link-' + indexOfLink" class="govuk-breadcrumbs__link" [routerLink]="'/' + breadcrumb.path">{{
+          breadcrumb.label
+        }}</a>
         <ng-template #current>
-          <a class="govuk-breadcrumbs__link govuk-breadcrumbs__link--current">{{ breadcrumb.label }}</a>
+          <a class="govuk-breadcrumbs__link govuk-breadcrumbs__link--current" id="breadcrumb-current-link">{{ breadcrumb.label }}</a>
         </ng-template>
       </li>
     </ol>
