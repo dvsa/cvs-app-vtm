@@ -12,6 +12,7 @@ import { TechRecordChangeVisibilityComponent } from './components/tech-record-ch
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
 import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { TechRecordComponent } from './tech-record.component';
+import { TechRecordCreateComponent } from './components/tech-record-create/tech-record-create.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,12 @@ const routes: Routes = [
     data: { title: 'Historic tech record', isCustomLayout: true },
     canActivate: [MsalGuard],
     resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'create',
+    data: { title: 'Technical record create', roles: Roles.TechRecordCreate },
+    canActivate: [MsalGuard, RoleGuard],
+    component: TechRecordCreateComponent
   },
   {
     path: 'provisional',
