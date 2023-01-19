@@ -37,6 +37,16 @@ export class TechnicalRecordService {
     return this.getVehicleTechRecordModels(vin, SEARCH_TYPES.VIN);
   }
 
+  isUnique(valueToCheck: string, searchType: SEARCH_TYPES) {
+    return this.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
+      map(vehicleTechRecord => {
+        const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
+        const isUnique = allTechRecords.length > 0 ? allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED) : true;
+        return isUnique;
+      })
+    );
+  }
+
   getByPartialVin(partialVin: string): Observable<VehicleTechRecordModel[]> {
     return this.getVehicleTechRecordModels(partialVin, SEARCH_TYPES.PARTIAL_VIN);
   }
