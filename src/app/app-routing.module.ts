@@ -26,6 +26,12 @@ const routes: Routes = [
         loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule)
       },
       {
+        path: 'create',
+        data: { title: 'Technical record search', roles: Roles.TechRecordView },
+        canActivate: [MsalGuard, RoleGuard],
+        loadChildren: () => import('./features/create/create.module').then(m => m.CreateModule)
+      },
+      {
         path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
         data: { title: 'Test Result', roles: Roles.TestResultView },
         canActivate: [MsalGuard, RoleGuard],
