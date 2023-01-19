@@ -20,8 +20,7 @@ export const TrlBrakesTemplate: FormNode = {
           name: 'antilockBrakingSystem',
           label: 'Antilock braking system',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Required }]
+          type: FormNodeTypes.CONTROL
         }
       ]
     },

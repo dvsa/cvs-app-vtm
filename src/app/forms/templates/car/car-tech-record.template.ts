@@ -15,8 +15,7 @@ export const CarTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
-      disabled: true,
-      validators: [{ name: ValidatorNames.Required }]
+      disabled: true
     },
     {
       name: 'regnDate',
@@ -25,7 +24,6 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      validators: [{ name: ValidatorNames.Required }],
       isoDate: false
     },
     {
@@ -35,7 +33,10 @@ export const CarTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 }
+      ]
     },
     {
       name: 'noOfAxles',
@@ -43,7 +44,6 @@ export const CarTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }],
       disabled: true
     },
     {
@@ -51,8 +51,7 @@ export const CarTechRecord: FormNode = {
       label: 'Vehicle Subclass',
       value: '',
       width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }]
+      type: FormNodeTypes.CONTROL
     },
     {
       name: 'euVehicleCategory',
@@ -60,8 +59,7 @@ export const CarTechRecord: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      options: getOptionsFromEnum(EuVehicleCategories)
     }
   ]
 };

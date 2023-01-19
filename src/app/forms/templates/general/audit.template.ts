@@ -11,7 +11,7 @@ export const Audit: FormNode = {
       label: 'Reason for creation',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'createdAt',

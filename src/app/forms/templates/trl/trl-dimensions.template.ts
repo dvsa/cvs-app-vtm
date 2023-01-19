@@ -60,35 +60,35 @@ export const TrlDimensionsTemplate: FormNode = {
       label: 'Rear axle to rear trailer',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'couplingCenterToRearAxleMin',
       label: 'Minimum',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'couplingCenterToRearAxleMax',
       label: 'Maximum',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'couplingCenterToRearTrlMin',
       label: 'Minimum',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'couplingCenterToRearTrlMax',
       label: 'Maximum',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     }
   ]
 };
