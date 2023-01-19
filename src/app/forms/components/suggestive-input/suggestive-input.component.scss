@@ -3,8 +3,10 @@
   border-right: 0;
 }
 
-input::-webkit-calendar-picker-indicator {
-  opacity: 0;
+input {
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0;
+  }
 }
 
 .datalist-arrow {

@@ -2,23 +2,23 @@ import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MultiOption } from '@forms/models/options.model';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { firstValueFrom, map, Observable, of, skipWhile, take, withLatestFrom } from 'rxjs';
+import { firstValueFrom, Observable, skipWhile, take } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
-  selector: 'app-dropdown',
-  templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.scss'],
+  selector: 'app-suggestive-input',
+  templateUrl: './suggestive-input.component.html',
+  styleUrls: ['./suggestive-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: DropdownComponent,
+      useExisting: SuggestiveInputComponent,
       multi: true
     }
   ]
 })
-export class DropdownComponent extends BaseControlComponent implements AfterContentInit, OnInit {
+export class SuggestiveInputComponent extends BaseControlComponent implements AfterContentInit, OnInit {
   @Input() options$!: Observable<MultiOption[]>;
   @Input() defaultValue: string = '';
 
@@ -48,13 +48,12 @@ export class DropdownComponent extends BaseControlComponent implements AfterCont
     return 'govuk-input ' + (this.width ? 'govuk-input--width-' + this.width : '');
   }
 
-  async handleChangeForOption(option: string) {
-    const value = await this.findOption(option);
+  async handleChangeForOption(value: string) {
+    const option = await this.findOption(value);
 
-    // this._value = typeof value === 'string' ? value : value.label;
-    this._value = value?.label ?? option;
-    // this.control?.patchValue(value ? (typeof value === 'string' ? '[INVALID_OPTION]' : value.value) : value);
-    this.control?.patchValue(value ? value.value : option ? '[INVALID_OPTION]' : option);
+    this._value = option?.label ?? value;
+    // if value, patch option value else `[INVALID_OPTION]` if not found, finally propagate empty value
+    this.control?.patchValue(option ? option.value : value ? '[INVALID_OPTION]' : value);
     this.cdr.markForCheck();
   }
 
@@ -71,5 +70,9 @@ export class DropdownComponent extends BaseControlComponent implements AfterCont
 
   addValidators() {
     this.control?.addValidators([CustomValidators.invalidOption]);
+  }
+
+  trackByFn(i: number, option: MultiOption) {
+    return option.value ?? i;
   }
 }

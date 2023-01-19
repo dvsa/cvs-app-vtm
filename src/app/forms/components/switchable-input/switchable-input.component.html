@@ -1,5 +1,5 @@
 <ng-container *ngIf="isEditing; else view" [ngSwitch]="type" [formGroup]="form">
-  <app-dropdown
+  <app-suggestive-input
     *ngSwitchCase="types.AUTOCOMPLETE"
     [formControlName]="name"
     [name]="name"
@@ -10,7 +10,7 @@
     [hint]="hint"
   >
     <ng-template *ngIf="prefix" appPrefix>{{ prefix }}</ng-template>
-  </app-dropdown>
+  </app-suggestive-input>
 
   <app-checkbox-group
     *ngSwitchCase="types.CHECKBOX"
