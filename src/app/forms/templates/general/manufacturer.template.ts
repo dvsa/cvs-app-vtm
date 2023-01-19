@@ -15,7 +15,7 @@ export const ManufacturerTemplate: FormNode = {
           label: 'Name',
           type: FormNodeTypes.CONTROL,
           width: FormNodeWidth.XXL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 150 }, { name: ValidatorNames.Required }],
+          validators: [{ name: ValidatorNames.MaxLength, args: 150 }],
           customId: 'manufacturerName'
         },
         {
@@ -23,7 +23,7 @@ export const ManufacturerTemplate: FormNode = {
           label: 'Address line 1',
           type: FormNodeTypes.CONTROL,
           width: FormNodeWidth.XXL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }],
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
           customId: 'manufacturerAddress1'
         },
         {
@@ -31,7 +31,7 @@ export const ManufacturerTemplate: FormNode = {
           label: 'Address line 2',
           type: FormNodeTypes.CONTROL,
           width: FormNodeWidth.XXL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }],
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
           customId: 'manufacturerAddress2'
         },
         {
@@ -39,7 +39,7 @@ export const ManufacturerTemplate: FormNode = {
           label: 'Town or City',
           type: FormNodeTypes.CONTROL,
           width: FormNodeWidth.XL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }],
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
           customId: 'manufacturerPostTown'
         },
         {

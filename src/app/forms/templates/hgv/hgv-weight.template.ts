@@ -4,8 +4,7 @@ import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynam
 const requiredValidation = [
   { name: ValidatorNames.Numeric, args: 99999 },
   { name: ValidatorNames.Max, args: 99999 },
-  { name: ValidatorNames.Min, args: 0 },
-  { name: ValidatorNames.Required }
+  { name: ValidatorNames.Min, args: 0 }
 ];
 
 const optionalValidation = [

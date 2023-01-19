@@ -45,12 +45,7 @@ export const tyresTemplateHgv: FormNode = {
                   value: '',
                   type: FormNodeTypes.CONTROL,
                   editType: FormNodeEditTypes.NUMBER,
-                  validators: [
-                    { name: ValidatorNames.Numeric },
-                    { name: ValidatorNames.Max, args: 99999 },
-                    { name: ValidatorNames.Min, args: 0 },
-                    { name: ValidatorNames.Required }
-                  ]
+                  validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Min, args: 0 }]
                 },
                 {
                   name: 'tyreSize',
@@ -58,7 +53,10 @@ export const tyresTemplateHgv: FormNode = {
                   value: '',
                   type: FormNodeTypes.CONTROL,
                   disabled: true,
-                  validators: [{ name: ValidatorNames.MaxLength, args: 12 }, { name: ValidatorNames.Min, args: 0 }, { name: ValidatorNames.Required }]
+                  validators: [
+                    { name: ValidatorNames.MaxLength, args: 12 },
+                    { name: ValidatorNames.Min, args: 0 }
+                  ]
                 },
                 {
                   name: 'plyRating',
@@ -76,7 +74,7 @@ export const tyresTemplateHgv: FormNode = {
                   label: 'Fitment code',
                   value: '',
                   type: FormNodeTypes.CONTROL,
-                  validators: [{ name: ValidatorNames.Required }]
+                  validators: []
                 },
                 {
                   name: 'dataTrAxles',

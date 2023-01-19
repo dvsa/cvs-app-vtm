@@ -19,7 +19,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
           width: FormNodeWidth.L,
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.TEXT,
-          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
         }
       ]
     },
@@ -30,7 +30,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 30 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
     },
     {
       name: 'model',
@@ -39,7 +39,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 30 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
     },
     {
       name: 'bodyType',
@@ -55,7 +55,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.SELECT,
           options: getOptionsFromEnum(BodyTypeDescription),
-          validators: [{ name: ValidatorNames.Required }]
+          validators: []
         }
       ]
     },

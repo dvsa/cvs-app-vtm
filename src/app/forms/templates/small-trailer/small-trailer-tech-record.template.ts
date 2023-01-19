@@ -16,7 +16,7 @@ export const SmallTrailerTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'manufactureYear',
@@ -25,7 +25,10 @@ export const SmallTrailerTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 }
+      ]
     },
     {
       name: 'noOfAxles',
@@ -33,7 +36,6 @@ export const SmallTrailerTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }],
       disabled: true
     },
     {
@@ -51,7 +53,7 @@ export const SmallTrailerTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'euVehicleCategory',
@@ -60,7 +62,7 @@ export const SmallTrailerTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     }
   ]
 };

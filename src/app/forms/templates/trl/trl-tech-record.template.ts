@@ -17,8 +17,7 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
-      disabled: true,
-      validators: [{ name: ValidatorNames.Required }]
+      disabled: true
     },
     {
       name: 'regnDate',
@@ -27,7 +26,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      validators: [{ name: ValidatorNames.Required }],
+
       isoDate: false
     },
     {
@@ -37,7 +36,10 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 }
+      ]
     },
     {
       name: 'firstUseDate',
@@ -46,7 +48,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      validators: [{ name: ValidatorNames.Required }],
+
       isoDate: false
     },
     {
@@ -55,7 +57,7 @@ export const TrlTechRecordTemplate: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }],
+
       disabled: true
     },
     {
@@ -102,8 +104,7 @@ export const TrlTechRecordTemplate: FormNode = {
           editType: FormNodeEditTypes.SELECT,
           options: getOptionsFromEnum(VehicleClass.DescriptionEnum)
         }
-      ],
-      validators: [{ name: ValidatorNames.Required }]
+      ]
     },
     {
       name: 'couplingType',
@@ -130,8 +131,7 @@ export const TrlTechRecordTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(VehicleConfiguration),
-      validators: [{ name: ValidatorNames.Required }]
+      options: getOptionsFromEnum(VehicleConfiguration)
     },
     {
       name: 'frameDescription',
@@ -159,8 +159,7 @@ export const TrlTechRecordTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      options: getOptionsFromEnum(EuVehicleCategories)
     },
     {
       name: 'alterationMarker',
