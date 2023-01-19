@@ -7,8 +7,7 @@ import { Roles } from '@models/roles.enum';
 import { TechRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from '@core/components/server-error/server-error.component';
-import { CreateTestRecordComponent } from './features/test-records/create/views/create-test-record/create-test-record.component';
-import { TechRecordCreateComponent } from './features/tech-record/components/tech-record-create/tech-record-create.component';
+import { TechRecordCreateModule } from './features/tech-record/components/tech-record-create/tech-record-create.module';
 
 const routes: Routes = [
   {
@@ -31,8 +30,8 @@ const routes: Routes = [
         path: 'create/tech-record',
         data: { title: 'Technical record create', roles: Roles.TechRecordCreate },
         canActivate: [MsalGuard, RoleGuard],
-        component: TechRecordCreateComponent,
-        loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
+        loadChildren: () =>
+          import('./features/tech-record/components/tech-record-create/tech-record-create.module').then(m => m.TechRecordCreateModule)
       },
       {
         path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
