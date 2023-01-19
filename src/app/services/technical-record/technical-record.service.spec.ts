@@ -7,7 +7,7 @@ import { initialAppState, State } from '@store/.';
 import { editableVehicleTechRecord, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecord } from '@store/technical-records';
 import { environment } from '../../../environments/environment';
 import { mockVehicleTechnicalRecord, mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
-import { TechnicalRecordService } from './technical-record.service';
+import { SEARCH_TYPES, TechnicalRecordService } from './technical-record.service';
 
 describe('TechnicalRecordService', () => {
   let service: TechnicalRecordService;
@@ -68,6 +68,25 @@ describe('TechnicalRecordService', () => {
 
         // Respond with mock error
         req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
+      });
+    });
+
+    describe('isUnique', () => {
+      it('should get an array of matching results and validate is the search term is unique', () => {
+        const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
+        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
+        service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VIN).subscribe(response => {
+          expect(response).toEqual(mockData);
+        });
+
+        // Check for correct requests: should have made one request to search from expected URL
+        const req = httpTestingController.expectOne(
+          `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`
+        );
+        expect(req.request.method).toEqual('GET');
+
+        // Provide each request with a mock response
+        req.flush(mockData);
       });
     });
 

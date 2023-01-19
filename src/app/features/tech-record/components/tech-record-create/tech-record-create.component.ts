@@ -13,7 +13,7 @@ export class TechRecordCreateComponent implements OnInit {
   private isVrmUnique: boolean = true;
 
   private trailerId: string = '';
-  private isTrailerIdUnique: boolean;
+  private isTrailerIdUnique: boolean = true;
 
   constructor(private technicalRecordService: TechnicalRecordService) {}
 
