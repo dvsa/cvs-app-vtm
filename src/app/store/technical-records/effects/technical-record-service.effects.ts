@@ -33,7 +33,8 @@ import {
   archiveTechRecordSuccess,
   archiveTechRecordFailure,
   changeVehicleType,
-  updateEditingTechRecord
+  updateEditingTechRecord,
+  createVehicle
 } from '../actions/technical-record-service.actions';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/index';
@@ -172,7 +173,7 @@ export class TechnicalRecordServiceEffects {
   generateTechRecordBasedOnSectionTemplates = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(changeVehicleType),
+        ofType(changeVehicleType, createVehicle),
         withLatestFrom(this.store.pipe(select(editableTechRecord))),
         concatMap(([{ vehicleType }, editableTechRecord]) => {
           const techRecord = { ...cloneDeep(editableTechRecord), vehicleType };

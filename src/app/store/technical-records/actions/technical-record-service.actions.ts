@@ -49,6 +49,8 @@ export const updateEditingTechRecordCancel = createAction('[tech-record] Update 
 
 export const changeVehicleType = createAction('[tech-record] vehicle type changed', props<{ vehicleType: VehicleTypes }>());
 
+export const createVehicle = createAction('[tech-record] create vehicle', props<{ vehicleType: VehicleTypes }>());
+
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';
   const type = `${prefix} ${title} ${suffix}`;

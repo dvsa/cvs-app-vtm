@@ -1,10 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { PutVehicleTechRecordModel, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { PutVehicleTechRecordModel, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
+  createVehicle,
   editableTechRecord,
   editableVehicleTechRecord,
   getByAll,
@@ -166,6 +167,10 @@ export class TechnicalRecordService {
         this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
       }
     });
+  }
+
+  generateEditingVehicleTechnicalRecordFromVehicleType(vehicleType: VehicleTypes) {
+    this.store.dispatch(createVehicle({ vehicleType: vehicleType }));
   }
 
   get vehicleTechRecords$() {
