@@ -52,7 +52,7 @@ export class SuggestiveInputComponent extends BaseControlComponent implements Af
     const option = await this.findOption(value);
 
     this._value = option?.label ?? value;
-    // if value, patch option value else `[INVALID_OPTION]` if not found, finally propagate empty value
+    // if option found, patch option value else if value patch `[INVALID_OPTION]` else value (empty string)
     this.control?.patchValue(option ? option.value : value ? '[INVALID_OPTION]' : value);
     this.cdr.markForCheck();
   }
