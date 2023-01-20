@@ -1,7 +1,13 @@
 <ng-container>
-  <h1 class="govuk-heading-xl title">New vehicle information</h1>
-  <app-text-input #inputVin formControlName="newRecordVin" label="Vehicle Identification number (VIN)" [width]="30"></app-text-input>
-  <app-text-input #inputVrmOrTrailerId formControlName="newRecordVrmOrTrailerID" label="VRM / Trailer ID" [width]="30"></app-text-input>
+  <h1 class="govuk-heading-l title">New vehicle information</h1>
+  <app-text-input #inputVin formControlName="newRecordVin" name="input-vin" label="Vehicle Identification number (VIN)" [width]="30"></app-text-input>
+  <app-text-input
+    #inputVrmOrTrailerId
+    formControlName="newRecordVrmOrTrailerID"
+    name="input-vrm-or-trailer-id"
+    label="VRM / Trailer ID"
+    [width]="30"
+  ></app-text-input>
   <app-select
     #selectVehicleType
     formControlName="newRecordVehicleType"

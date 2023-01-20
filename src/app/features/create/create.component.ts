@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MultiOptions } from '@forms/models/options.model';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -18,13 +19,13 @@ export class CreateComponent implements OnInit {
   #inputVin: string = '';
   #inputVrmOrTrailerId: string = '';
 
-  constructor(private technicalRecordService: TechnicalRecordService) {}
+  constructor(private technicalRecordService: TechnicalRecordService, private route: ActivatedRoute, private router: Router) {}
   get vehicleTypeOptions(): MultiOptions {
     return [
       { label: 'Heavy goods vehicle (HGV)', value: 'hgv' },
       { label: 'Light goods vehicle (LGV)', value: 'lgv' },
       { label: 'Public service vehicle (PSV)', value: 'psv' },
-      { label: 'Trailer (TLR)', value: 'tlr' }
+      { label: 'Trailer (TRL)', value: 'trl' }
     ];
   }
   ngOnInit(): void {
@@ -36,7 +37,7 @@ export class CreateComponent implements OnInit {
     this.vehicle.trailerId = this.#inputVrmOrTrailerId;
 
     if (this.areValuesUnique()) {
-      console.log('navigate to hydrate record');
+      this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
     }
     console.log('error');
   }

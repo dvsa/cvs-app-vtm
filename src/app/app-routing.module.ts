@@ -27,7 +27,7 @@ const routes: Routes = [
       },
       {
         path: 'create',
-        data: { title: 'Technical record search', roles: Roles.TechRecordView },
+        data: { title: 'Create new technical record', roles: Roles.TechRecordView },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/create/create.module').then(m => m.CreateModule)
       },
