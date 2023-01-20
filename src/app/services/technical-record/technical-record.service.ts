@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { PutVehicleTechRecordModel, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
@@ -17,7 +17,7 @@ import {
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { map, Observable, of, switchMap, take } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, take, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -41,8 +41,10 @@ export class TechnicalRecordService {
     return this.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
       map(vehicleTechRecord => {
         const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
-        const isUnique = allTechRecords.length > 0 ? allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED) : true;
-        return isUnique;
+        return allTechRecords.length > 0 ? allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED) : true;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        return (error.status == 404 && of(true)) || throwError(() => error);
       })
     );
   }
