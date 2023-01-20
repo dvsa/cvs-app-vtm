@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MultiOption } from '@forms/models/options.model';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { Observable, of } from 'rxjs';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { SuggestiveInputComponent } from './suggestive-input.component';
@@ -46,6 +46,15 @@ describe('SuggestiveInputComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('getters', () => {
+    it('should retutn the correct class', () => {
+      suggestiveInput.width = FormNodeWidth.L;
+      expect(suggestiveInput.style).toBe('govuk-input govuk-input--width-10');
+      suggestiveInput.width = undefined;
+      expect(suggestiveInput.style).toBe('govuk-input');
+    });
   });
 
   describe(SuggestiveInputComponent.prototype.handleChangeForOption.name, () => {
