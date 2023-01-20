@@ -45,7 +45,7 @@ export class SuggestiveInputComponent extends BaseControlComponent implements Af
   }
 
   get style(): string {
-    return 'govuk-input ' + (this.width ? 'govuk-input--width-' + this.width : '');
+    return 'govuk-input' + (this.width ? ' govuk-input--width-' + this.width : '');
   }
 
   async handleChangeForOption(value: string) {
