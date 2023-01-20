@@ -1,40 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MultiOptions } from '@forms/models/options.model';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html'
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent {
   private vehicle: Partial<VehicleTechRecordModel> = {};
 
-  private isVinUnique: boolean = true;
-  private isVrmUnique: boolean = true;
-  private isTrailerIdUnique: boolean = true;
+  private isVinUnique: boolean = false;
+  private isVrmUnique: boolean = false;
+  private isTrailerIdUnique: boolean = false;
 
-  #selectVehicleType: VehicleTypes = VehicleTypes.PSV;
-  #inputVin: string = '';
-  #inputVrmOrTrailerId: string = '';
+  vehicleForm = new FormGroup({
+    vin: new FormControl('', [Validators.minLength(3), Validators.maxLength(21), Validators.required]),
+    vrmTrm: new FormControl('', [Validators.minLength(1), Validators.maxLength(9), Validators.required]),
+    vehicleType: new FormControl('')
+  });
 
-  constructor(private technicalRecordService: TechnicalRecordService, private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private technicalRecordService: TechnicalRecordService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private dfs: DynamicFormService
+  ) {}
   get vehicleTypeOptions(): MultiOptions {
     return [
-      { label: 'Heavy goods vehicle (HGV)', value: 'hgv' },
-      { label: 'Light goods vehicle (LGV)', value: 'lgv' },
-      { label: 'Public service vehicle (PSV)', value: 'psv' },
-      { label: 'Trailer (TRL)', value: 'trl' }
+      { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
+      { label: 'Light goods vehicle (LGV)', value: VehicleTypes.LGV },
+      { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
+      { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
     ];
   }
-  ngOnInit(): void {
-    console.log('create init');
-  }
+
   handleSubmit() {
-    this.vehicle.vin = this.#inputVin;
-    this.vehicle.vrms = [{ vrm: this.#inputVrmOrTrailerId, isPrimary: true }];
-    this.vehicle.trailerId = this.#inputVrmOrTrailerId;
+    this.vehicle.vin = this.vehicleForm.value.vin;
+    this.vehicle.vrms = [{ vrm: this.vehicleForm.value.vrmTrm, isPrimary: true }];
+    this.vehicle.trailerId = this.vehicleForm.value.vrmTrm;
 
     if (this.areValuesUnique()) {
       this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
@@ -43,7 +51,7 @@ export class CreateComponent implements OnInit {
   }
 
   private areValuesUnique() {
-    const isTrailer = this.#selectVehicleType == VehicleTypes.TRL;
+    const isTrailer = this.vehicleForm.value.vehicleType === VehicleTypes.TRL;
 
     this.technicalRecordService.isUnique(this.vehicle.vin!, SEARCH_TYPES.VIN).subscribe(data => (this.isVinUnique = data));
 
