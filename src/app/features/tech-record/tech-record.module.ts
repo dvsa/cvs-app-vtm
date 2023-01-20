@@ -5,6 +5,7 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { SharedModule } from '@shared/shared.module';
 import { EditTechRecordButtonComponent } from './components/edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
+import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
 import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { ChangeVehicleTypeComponent } from './components/tech-record-change-type/tech-record-change-type.component';
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
@@ -20,6 +21,7 @@ import { TechRecordComponent } from './tech-record.component';
 
 @NgModule({
   declarations: [
+    AmendVrmComponent,
     ChangeVehicleTypeComponent,
     EditTechRecordButtonComponent,
     TechRecordAmendReasonComponent,

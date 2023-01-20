@@ -1,0 +1,40 @@
+<div *ngIf="vehicle">
+  <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
+
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Current VRM</dt>
+      <app-number-plate *ngIf="vrm" [vrm]="vrm"></app-number-plate>
+    </div>
+  </dl>
+
+  <form [formGroup]="form">
+    <app-text-input
+      #selectVehicleType
+      [label]="form.meta.children![0].label"
+      [formControlName]="form.meta.children![0].name"
+      name="amend-vrm-text"
+      (ngModelChange)="ngOnChanges()"
+    ></app-text-input>
+
+    <div *ngIf="selectVehicleType.value && selectVehicleType.value !== currentTechRecord?.vehicleType">
+      <h1 class="govuk-heading-xl">Are you sure you want to change this VRM?</h1>
+
+      <p class="govuk-body">You are about to change the VRM to {{ selectVehicleType.value | uppercase }}.</p>
+    </div>
+
+    <div class="buttons-row">
+      <button
+        class="govuk-button"
+        data-module="govuk-button"
+        type="submit"
+        enterkeyhint="change vehicle type"
+        (click)="handleSubmit(selectVehicleType.value)"
+      >
+        Confirm and continue
+      </button>
+
+      <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+    </div>
+  </form>
+</div>
