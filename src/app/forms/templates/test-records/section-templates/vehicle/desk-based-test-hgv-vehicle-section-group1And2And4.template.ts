@@ -41,6 +41,7 @@ export const DeskBasedVehicleSectionHgvGroup1And2And4: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
+      width: FormNodeWidth.S,
       options: getOptionsFromEnum(EuVehicleCategories),
       validators: [{ name: ValidatorNames.Required }]
     },
