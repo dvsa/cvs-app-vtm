@@ -7,9 +7,10 @@ import { SharedModule } from '@shared/shared.module';
 import { CreateComponent } from './create.component';
 import { HydrateNewVehicleRecordComponent } from './components/hydrate-new-vehicle-record/hydrate-new-vehicle-record.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TechRecordsModule } from '../tech-record/tech-record.module';
 
 @NgModule({
   declarations: [CreateComponent, HydrateNewVehicleRecordComponent],
-  imports: [CommonModule, CreateRoutingModule, ReactiveFormsModule, DynamicFormsModule, RouterModule, SharedModule]
+  imports: [CommonModule, CreateRoutingModule, ReactiveFormsModule, DynamicFormsModule, RouterModule, SharedModule, TechRecordsModule]
 })
 export class CreateModule {}

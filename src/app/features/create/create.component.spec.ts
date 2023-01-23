@@ -11,14 +11,8 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { RouterTestingModule } from '@angular/router/testing';
 
 const mockTechRecordService = {
-  editableTechRecord$: of({}),
-  selectedVehicleTechRecord$: of({}),
-  viewableTechRecord$: jest.fn(),
-  clearReasonForCreation: jest.fn()
-};
-
-const mockDynamicFormService = {
-  createForm: jest.fn()
+  updateEditingTechRecord$: of({}),
+  generateEditingVehicleTechnicalRecordFromVehicleType: of({})
 };
 
 describe('CreateNewVehicleRecordComponent', () => {
@@ -36,7 +30,6 @@ describe('CreateNewVehicleRecordComponent', () => {
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
-        { provide: DynamicFormService, useValue: mockDynamicFormService },
         { provide: TechnicalRecordService, useValue: mockTechRecordService }
       ],
       imports: [RouterTestingModule]
@@ -78,7 +71,14 @@ describe('CreateNewVehicleRecordComponent', () => {
   });
 
   describe('handleSubmit', () => {
-    it('should invoke the global error component for failed validation rules', () => {});
-    it('should invoke the global error component for failed validation rules', () => {});
+    describe('Unhappy', () => {
+      it('should invoke the global error component for failed validation rules', () => {});
+      it('should invoke the global error component for non unique values', () => {});
+    });
+    describe('Happy', () => {
+      it('should dispatch updateEditingTechRecord', () => {});
+      it('generateEditingVehicleTechnicalRecordFromVehicleType', () => {});
+      it('should navigate to hydrate on success', () => {});
+    });
   });
 });
