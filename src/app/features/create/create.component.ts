@@ -15,7 +15,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
   templateUrl: './create.component.html'
 })
 export class CreateComponent implements OnChanges {
-  private vehicle: Partial<VehicleTechRecordModel> = {};
+  vehicle: Partial<VehicleTechRecordModel> = {};
 
   vehicleForm = new FormGroup({
     vin: new CustomFormControl(
@@ -40,6 +40,11 @@ export class CreateComponent implements OnChanges {
     private route: ActivatedRoute,
     private router: Router
   ) {}
+
+  ngOnChanges(): void {
+    this.globalErrorService.clearErrors();
+  }
+
   get vehicleTypeOptions(): MultiOptions {
     return [
       { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
@@ -49,71 +54,18 @@ export class CreateComponent implements OnChanges {
     ];
   }
 
-  ngOnChanges(): void {
-    this.globalErrorService.clearErrors();
+  get primaryVrm(): string {
+    return this.vehicle.vrms!.find(vrm => vrm.isPrimary)!.vrm;
   }
 
-  async handleSubmit() {
-    if (!this.formIsValid()) {
-      return;
-    }
-    if (!(await this.formValuesUnique())) {
-      return;
-    }
-
-    console.log(this.vehicle);
-    this.technicalRecordService.updateEditingTechRecord(this.vehicle as VehicleTechRecordModel);
-    this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.vehicleForm.value.vehicleType);
-    await this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
-  }
-
-  private formIsValid(): boolean {
+  get isFormValid(): boolean {
     const errors: GlobalError[] = [];
+
     DynamicFormService.updateValidity(this.vehicleForm, errors);
+
     this.globalErrorService.setErrors(errors);
+
     return this.vehicleForm.valid;
-  }
-
-  private async formValuesUnique() {
-    const isTrailer = this.vehicleForm.value.vehicleType === VehicleTypes.TRL;
-    this.vehicle.techRecord = [{ vehicleType: this.vehicleForm.value.vehicleType } as TechRecordModel];
-
-    const isVinUnique = await this.isVinUnique();
-
-    if (isTrailer) {
-      const isTrailerIdUnique = await this.isTrmUnique();
-      return isVinUnique && isTrailerIdUnique;
-    } else {
-      const isVrmUnique = await this.isVrmUnique();
-      return isVinUnique && isVrmUnique;
-    }
-  }
-
-  private async isVinUnique() {
-    this.vehicle.vin! = this.vehicleForm.value.vin;
-    const isVinUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.vehicle.vin!, SEARCH_TYPES.VIN));
-    if (!isVinUnique) {
-      this.globalErrorService.addError({ error: 'Vin not unique', anchorLink: 'input-vin' });
-    }
-    return isVinUnique;
-  }
-
-  private async isTrmUnique() {
-    this.vehicle.trailerId = this.vehicleForm.value.vrmTrm;
-    const isTrailerIdUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.vehicle.trailerId!, SEARCH_TYPES.TRAILER_ID));
-    if (!isTrailerIdUnique) {
-      this.globalErrorService.addError({ error: 'Vin not unique', anchorLink: 'input-vrm-or-trailer-id' });
-    }
-    return isTrailerIdUnique;
-  }
-
-  private async isVrmUnique() {
-    this.vehicle.vrms = [{ vrm: this.vehicleForm.value.vrmTrm, isPrimary: true }];
-    const isVrmUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.getPrimaryVRM(), SEARCH_TYPES.VRM));
-    if (!isVrmUnique) {
-      this.globalErrorService.addError({ error: 'Vin not unique', anchorLink: 'input-vrm-or-trailer-id' });
-    }
-    return isVrmUnique;
   }
 
   navigateBack() {
@@ -121,7 +73,53 @@ export class CreateComponent implements OnChanges {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  private getPrimaryVRM() {
-    return this.vehicle.vrms!.find(vrm => vrm.isPrimary)!.vrm;
+  async handleSubmit() {
+    if (!this.isFormValid || !(await this.isFormValueUnique())) return;
+
+    this.technicalRecordService.updateEditingTechRecord(this.vehicle as VehicleTechRecordModel);
+    this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.vehicleForm.value.vehicleType);
+    await this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
+  }
+
+  async isFormValueUnique() {
+    const isTrailer = this.vehicleForm.value.vehicleType === VehicleTypes.TRL;
+    this.vehicle.techRecord = [{ vehicleType: this.vehicleForm.value.vehicleType } as TechRecordModel];
+
+    const isVinUnique = await this.isVinUnique();
+
+    if (isTrailer) {
+      const isTrailerIdUnique = await this.isTrailerIdUnique();
+      return isVinUnique && isTrailerIdUnique;
+    } else {
+      const isVrmUnique = await this.isVrmUnique();
+      return isVinUnique && isVrmUnique;
+    }
+  }
+
+  async isVinUnique() {
+    this.vehicle.vin = this.vehicleForm.value.vin;
+    const isVinUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.vehicle.vin!, SEARCH_TYPES.VIN));
+    if (!isVinUnique) {
+      this.globalErrorService.addError({ error: 'Vin not unique', anchorLink: 'input-vin' });
+    }
+    return isVinUnique;
+  }
+
+  async isVrmUnique() {
+    this.vehicle.vrms = [{ vrm: this.vehicleForm.value.vrmTrm, isPrimary: true }];
+    const isVrmUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.primaryVrm, SEARCH_TYPES.VRM));
+    if (!isVrmUnique) {
+      this.globalErrorService.addError({ error: 'Vin not unique', anchorLink: 'input-vrm-or-trailer-id' });
+    }
+    return isVrmUnique;
+  }
+
+  async isTrailerIdUnique() {
+    this.vehicle.trailerId = this.vehicleForm.value.vrmTrm;
+    const isTrailerIdUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.vehicle.trailerId!, SEARCH_TYPES.TRAILER_ID));
+    if (!isTrailerIdUnique) {
+      this.globalErrorService.addError({ error: 'Vin not unique', anchorLink: 'input-vrm-or-trailer-id' });
+    }
+    return isTrailerIdUnique;
   }
 }
