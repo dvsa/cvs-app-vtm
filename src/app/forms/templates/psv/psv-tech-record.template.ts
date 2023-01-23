@@ -126,7 +126,7 @@ export const PsvTechRecord: FormNode = {
           class: '.govuk-input--width-10'
         }
       ],
-      validators: []
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'vehicleConfiguration',

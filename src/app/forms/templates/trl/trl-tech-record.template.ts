@@ -104,7 +104,8 @@ export const TrlTechRecordTemplate: FormNode = {
           editType: FormNodeEditTypes.SELECT,
           options: getOptionsFromEnum(VehicleClass.DescriptionEnum)
         }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'couplingType',

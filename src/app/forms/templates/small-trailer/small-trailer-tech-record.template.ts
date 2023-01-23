@@ -45,7 +45,8 @@ export const SmallTrailerTechRecord: FormNode = {
       children: [
         { name: 'code', label: 'Vehicle Class code', value: '', type: FormNodeTypes.CONTROL },
         { name: 'description', label: 'Vehicle', value: '', type: FormNodeTypes.CONTROL }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'vehicleSubclass',

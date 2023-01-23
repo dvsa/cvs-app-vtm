@@ -74,7 +74,8 @@ export const PsvBodyTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           disabled: true
         }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'functionCode',

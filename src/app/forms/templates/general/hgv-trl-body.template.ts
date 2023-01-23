@@ -55,7 +55,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.SELECT,
           options: getOptionsFromEnum(BodyTypeDescription),
-          validators: []
+          validators: [{ name: ValidatorNames.Required }]
         }
       ]
     },
