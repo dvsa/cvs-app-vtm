@@ -3,8 +3,18 @@
 
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Current VRM</dt>
+      <dt class="govuk-summary-list__key">Vehicle type</dt>
+      <dd id="vehicleType" class="govuk-summary-list__value">
+        {{ currentTechRecord?.vehicleType | defaultNullOrEmpty | uppercase }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VRM</dt>
       <app-number-plate *ngIf="vrm" [vrm]="vrm"></app-number-plate>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VIN/chassis number</dt>
+      <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicle.vin | defaultNullOrEmpty }}</dd>
     </div>
   </dl>
 
@@ -17,21 +27,9 @@
       (ngModelChange)="ngOnChanges()"
     ></app-text-input>
 
-    <div *ngIf="selectVehicleType.value && selectVehicleType.value !== currentTechRecord?.vehicleType">
-      <h1 class="govuk-heading-xl">Are you sure you want to change this VRM?</h1>
-
-      <p class="govuk-body">You are about to change the VRM to {{ selectVehicleType.value | uppercase }}.</p>
-    </div>
-
     <div class="buttons-row">
-      <button
-        class="govuk-button"
-        data-module="govuk-button"
-        type="submit"
-        enterkeyhint="change vehicle type"
-        (click)="handleSubmit(selectVehicleType.value)"
-      >
-        Confirm and continue
+      <button class="govuk-button" data-module="govuk-button" type="submit" enterkeyhint="amend vrm" (click)="handleSubmit(selectVehicleType.value)">
+        Save
       </button>
 
       <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>

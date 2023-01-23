@@ -11,7 +11,8 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { changeVehicleType } from '@store/technical-records';
+import { changeVehicleType, updateEditingTechRecord } from '@store/technical-records';
+import cloneDeep from 'lodash.clonedeep';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 
@@ -94,18 +95,6 @@ describe('TechRecordChangeTypeComponent', () => {
     });
   });
 
-  describe('vehicleTypeOptions', () => {
-    it('should return all types except for the current one', () => {
-      component.currentTechRecord = expectedVehicle.techRecord.pop()!;
-
-      const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter(
-        type => type.value !== VehicleTypes.PSV && type.value !== VehicleTypes.MOTORCYCLE
-      );
-
-      expect(component.vehicleTypeOptions).toStrictEqual(expectedOptions);
-    });
-  });
-
   describe('navigateBack', () => {
     it('should clear all errors', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
@@ -127,32 +116,41 @@ describe('TechRecordChangeTypeComponent', () => {
   });
 
   describe('handleSubmit', () => {
-    it('should add an error when no vehicle type is selected', () => {
+    it('should add an error when the field is not filled out', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
 
-      component.handleSubmit(null as unknown as VehicleTypes);
+      component.handleSubmit('');
 
-      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVRM' });
     });
 
-    it('should dispatch the changeVehicleType action', () => {
+    it('should add an error when the field is equal to the current VRM', () => {
+      const addErrorSpy = jest.spyOn(errorService, 'addError');
+
+      component.handleSubmit(expectedVehicle.vrms.find(vrm => vrm.isPrimary)!.vrm);
+
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVRM' });
+    });
+
+    it('should dispatch the updateEditingTechRecord action', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
 
       const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-      component.handleSubmit(VehicleTypes.PSV);
+      component.handleSubmit('TESTVRM');
 
-      expect(dispatchSpy).toHaveBeenCalledWith(changeVehicleType({ vehicleType: VehicleTypes.PSV }));
+      expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord);
     });
 
-    it('should call clearReasonForCreation', () => {
+    it('should make the old primary vrm no longer primary', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
+      const oldVrms = cloneDeep(expectedVehicle.vrms);
 
-      const clearReasonForCreationSpy = jest.spyOn(component, 'clearReasonForCreation').mockImplementation();
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-      component.handleSubmit(VehicleTypes.PSV);
+      component.handleSubmit('TESTVRM');
 
-      expect(clearReasonForCreationSpy).toHaveBeenCalledTimes(1);
+      expect();
     });
 
     it('navigate to the editing page', () => {

@@ -21,6 +21,7 @@ export class TechRecordTitleComponent implements OnInit {
   queryableRecordActions: string[] = [];
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
   vehicleMakeAndModel: string = '';
+  vrms: Vrm[] = [];
 
   constructor(private route: ActivatedRoute, private router: Router, private technicalRecordService: TechnicalRecordService, private store: Store) {}
 
@@ -29,17 +30,15 @@ export class TechRecordTitleComponent implements OnInit {
 
     this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
 
-    this.currentTechRecord$
-      .pipe(take(1))
-      .subscribe(
-        data =>
-          (this.vehicleMakeAndModel =
-            data?.vehicleType === this.vehicleTypes.PSV ? `${data.chassisMake} ${data.chassisModel}` : `${data?.make} ${data?.model}`)
-      );
+    this.currentTechRecord$.pipe(take(1)).subscribe(data => {
+      this.vehicleMakeAndModel =
+        data?.vehicleType === this.vehicleTypes.PSV ? `${data.chassisMake} ${data.chassisModel}` : `${data?.make} ${data?.model}`;
+      this.vrms = this.mapVrms(data!) ?? this.vehicleTechRecord!.vrms;
+    });
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return this.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
   get editableTechRecord$() {
@@ -47,7 +46,7 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   get otherVrms(): Vrm[] | undefined {
-    return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
+    return this.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
   get vehicleTypes(): typeof VehicleTypes {
@@ -60,6 +59,13 @@ export class TechRecordTitleComponent implements OnInit {
 
   get statuses(): typeof StatusCodes {
     return StatusCodes;
+  }
+
+  mapVrms(techRecord: TechRecordModel) {
+    let mappedVrms: Vrm[] = [];
+    if (techRecord.historicPrimaryVrm) mappedVrms.push({ vrm: techRecord.historicPrimaryVrm, isPrimary: true });
+    if (techRecord.historicSecondaryVrms) techRecord.historicSecondaryVrms.forEach(vrm => mappedVrms.push({ vrm: vrm, isPrimary: false }));
+    return mappedVrms.length > 0 ? mappedVrms : undefined;
   }
 
   getCompletenessColor(completeness?: string): 'green' | 'red' {

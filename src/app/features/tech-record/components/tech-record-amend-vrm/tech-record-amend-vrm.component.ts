@@ -110,7 +110,8 @@ export class AmendVrmComponent implements OnInit, OnChanges {
         next: res => {
           console.log('response:', res);
           const newVehicleRecord = this.amendVrm(newVRM, this.vehicle!);
-          this.technicalRecordService.updateEditingTechRecord(newVehicleRecord);
+          const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
+          this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord, techRecord: [newTechRecord] });
           this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
           this.navigateBack();
         },
@@ -127,5 +128,16 @@ export class AmendVrmComponent implements OnInit, OnChanges {
     });
     newModel.vrms.push(vrmObject);
     return newModel;
+  }
+
+  mapVrmToTech(vehicleRecord: VehicleTechRecordModel, techRecord: TechRecordModel) {
+    const newTechModel: TechRecordModel = cloneDeep(techRecord);
+
+    newTechModel.historicSecondaryVrms = [];
+
+    vehicleRecord.vrms.forEach(vrm =>
+      vrm.isPrimary ? (newTechModel.historicPrimaryVrm = vrm.vrm) : newTechModel.historicSecondaryVrms!.push(vrm.vrm)
+    );
+    return newTechModel;
   }
 }
