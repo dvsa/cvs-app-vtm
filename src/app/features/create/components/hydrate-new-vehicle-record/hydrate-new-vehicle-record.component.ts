@@ -31,14 +31,10 @@ export class HydrateNewVehicleRecordComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.middleIndex = Math.floor(this.templates.length / 2);
-    console.log(this.vehicleRecord);
-    console.log(this.techRecord.vehicleType);
-    console.log(this.templates);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
-    this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: this.vehicleRecord }));
   }
 
   get templates(): Array<FormNode> {
