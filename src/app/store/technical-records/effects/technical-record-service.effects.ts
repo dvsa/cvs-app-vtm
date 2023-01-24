@@ -33,17 +33,19 @@ import {
   archiveTechRecordSuccess,
   archiveTechRecordFailure,
   changeVehicleType,
-  updateEditingTechRecord,
-  createVehicle
+  createVehicle,
+  createNewVehicleRecord,
+  createNewVehicleRecordSuccess,
+  createNewVehicleRecordFailure
 } from '../actions/technical-record-service.actions';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/index';
-import { editableTechRecord, editableVehicleTechRecord } from '@store/technical-records';
+import { editableTechRecord } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import merge from 'lodash.merge';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
@@ -132,6 +134,19 @@ export class TechnicalRecordServiceEffects {
         this.technicalRecordService.postProvisionalTechRecord(action.systemNumber, record!, { id, name }).pipe(
           map(vehicleTechRecord => createProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
           catchError(error => of(createProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createProvisionalTechRecord') })))
+        )
+      )
+    )
+  );
+
+  postNewVehicleRecord$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createNewVehicleRecord),
+      withLatestFrom(this.technicalRecordService.selectedVehicleTechRecord$, this.userService.name$, this.userService.id$),
+      switchMap(([action, record, name, id]) =>
+        this.technicalRecordService.postNewVehicleRecord(record!, { id, name }).pipe(
+          map(newVehicleRecord => createNewVehicleRecordSuccess({ vehicleTechRecords: [newVehicleRecord] })),
+          catchError(err => of(createNewVehicleRecordFailure({ err: this.getTechRecordErrorMessage(err, 'createNewVehicleRecord') })))
         )
       )
     )

@@ -29,7 +29,10 @@ import {
   archiveTechRecordSuccess,
   archiveTechRecordFailure,
   updateEditingTechRecord,
-  updateEditingTechRecordCancel
+  updateEditingTechRecordCancel,
+  createNewVehicleRecord,
+  createNewVehicleRecordFailure,
+  createNewVehicleRecordSuccess
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -82,6 +85,10 @@ export const vehicleTechRecordReducer = createReducer(
   on(createProvisionalTechRecord, defaultArgs),
   on(createProvisionalTechRecordSuccess, successArgs),
   on(createProvisionalTechRecordFailure, updateFailureArgs),
+
+  on(createNewVehicleRecord, defaultArgs),
+  on(createNewVehicleRecordSuccess, successArgs),
+  on(createNewVehicleRecordFailure, updateFailureArgs),
 
   on(archiveTechRecord, defaultArgs),
   on(archiveTechRecordSuccess, successArgs),

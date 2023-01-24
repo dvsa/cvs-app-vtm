@@ -6,35 +6,35 @@ import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { updateEditingTechRecord } from '@store/technical-records/actions/technical-record-service.actions';
+import { UserService } from '@services/user-service/user-service';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, take } from 'rxjs';
+import { UserServiceState } from '@store/user/user-service.reducer';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-hydrate-new-vehicle-record',
   templateUrl: './hydrate-new-vehicle-record.component.html',
   styleUrls: ['./hydrate-new-vehicle-record.component.scss']
 })
-export class HydrateNewVehicleRecordComponent implements OnInit, OnChanges {
+export class HydrateNewVehicleRecordComponent implements OnInit {
   vehicleRecord!: VehicleTechRecordModel;
   middleIndex = 0;
+  user?: UserServiceState;
 
   constructor(
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private userService: UserService
   ) {
     this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicleRecord = data!));
+    this.userService.user$.pipe(take(1)).subscribe(data => (this.user = data));
   }
 
   ngOnInit(): void {
     this.middleIndex = Math.floor(this.templates.length / 2);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
 
   get templates(): Array<FormNode> {
@@ -42,6 +42,9 @@ export class HydrateNewVehicleRecordComponent implements OnInit, OnChanges {
   }
 
   get techRecord(): TechRecordModel {
+    if (!this.vehicleRecord) {
+      this.router.navigate(['..'], { relativeTo: this.route });
+    }
     return this.vehicleRecord!.techRecord[0];
   }
 
@@ -54,10 +57,13 @@ export class HydrateNewVehicleRecordComponent implements OnInit, OnChanges {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
   handleSubmit() {
-    console.log(this.vehicleRecord);
-    console.log(this.techRecord);
+    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicleRecord =>
+      this.technicalRecordService
+        .postNewVehicleRecord(vehicleRecord as VehicleTechRecordModel, { id: this.user!.oid, name: this.user!.name })
+        .pipe(take(1))
+        .subscribe()
+    );
 
-    // dispatch
     // route to confirmation page
   }
 }
