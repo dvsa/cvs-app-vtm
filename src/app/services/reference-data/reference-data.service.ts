@@ -7,8 +7,8 @@ import {
   ReferenceDataItemApiResponse,
   ReferenceDataService as ReferenceDataApiService
 } from '@api/reference-data';
-import { MultiOptions } from '@forms/models/options.model';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { MultiOption, MultiOptions } from '@forms/models/options.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, User } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import {
@@ -96,18 +96,28 @@ export class ReferenceDataService extends ReferenceDataApiService {
   };
 
   getReferenceDataOptions(resourceType: ReferenceDataResourceType): Observable<MultiOptions | undefined> {
-    return this.mapReferenceDataOptions(this.getAll$(resourceType));
+    return this.getAll$(resourceType).pipe(this.mapReferenceDataOptions);
   }
 
-  private mapReferenceDataOptions(referenceData: Observable<ReferenceDataModelBase[] | undefined>): Observable<MultiOptions | undefined> {
-    return referenceData.pipe(map(options => options?.map(option => ({ value: option.resourceKey, label: option.description ?? '' }))));
-  }
+  private mapReferenceDataOptions = function (
+    source: Observable<Array<ReferenceDataModelBase & Partial<User>> | undefined>
+  ): Observable<MultiOptions | undefined> {
+    return new Observable(subscriber => {
+      source.subscribe({
+        next: val => {
+          subscriber.next(val?.map(option => ({ value: option.resourceKey, label: option.description ?? option.name ?? `${option.resourceKey}` })));
+        },
+        error: e => subscriber.error(e),
+        complete: () => subscriber.complete()
+      });
+    });
+  };
 
   getReasonsForAbandoning(vehicleType: VehicleTypes | undefined): Observable<MultiOptions | undefined> {
     if (!vehicleType) {
       return of([]);
     }
-    return this.mapReferenceDataOptions(this.store.pipe(select(selectReasonsForAbandoning(vehicleType))));
+    return this.store.pipe(select(selectReasonsForAbandoning(vehicleType)), this.mapReferenceDataOptions);
   }
 
   getReferencePsvMakeDataLoading() {

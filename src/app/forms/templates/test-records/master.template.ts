@@ -34,7 +34,6 @@ import { TestSectionGroup6And11 } from './section-templates/test/test-section-gr
 import { TestSectionGroup7 } from './section-templates/test/test-section-group7.template';
 import { TestSectionGroup9And10 } from './section-templates/test/test-section-group9And10.template';
 import { TestSection } from './section-templates/test/test-section.template';
-import { ContingencyVehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/contingency-default-psv-hgv-light-vehicle-section.template';
 import { VehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/default-psv-hgv-light-vehicle-section.template';
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
@@ -42,6 +41,8 @@ import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/d
 import { DeskBasedVehicleSectionHgvGroup1And2And4 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
 import { AmendDeskBasedTestSectionGroup3 } from '@forms/templates/test-records/section-templates/test/desk-based/desk-based-test-section-group3.template';
+import { SpecialistRequiredSectionLgvCar } from './section-templates/required/specialist-required-hidden-section-lgv-car.template';
+import { RequiredSpecialistSectionMotorcycle } from './section-templates/required/specialist-required-hidden-section-motorcycle.template';
 
 /**
  * Keys of root object must a a valid vehicle type.
@@ -456,10 +457,30 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
   },
   lgv: {
     default: {
-      required: RequiredSpecialistSection,
+      required: SpecialistRequiredSectionLgvCar,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup1: {
+      required: SpecialistRequiredSectionLgvCar,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: SpecialistTestSectionGroup1,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup5: {
+      required: SpecialistRequiredSectionLgvCar,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: SpecialistTestSectionGroup5,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -474,6 +495,26 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup1: {
+      required: SpecialistRequiredSectionLgvCar,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: SpecialistTestSectionGroup1,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup5: {
+      required: SpecialistRequiredSectionLgvCar,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: SpecialistTestSectionGroup5,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
     }
   },
   motorcycle: {
@@ -482,6 +523,16 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup1: {
+      required: RequiredSpecialistSectionMotorcycle,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: SpecialistTestSectionGroup1,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection

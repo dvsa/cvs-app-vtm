@@ -59,7 +59,8 @@ export const CarTechRecord: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories)
+      options: getOptionsFromEnum(EuVehicleCategories),
+      width: FormNodeWidth.S
     }
   ]
 };
