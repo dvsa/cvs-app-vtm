@@ -140,7 +140,7 @@ describe('TechRecordChangeVrmComponent', () => {
       expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVRM' });
     });
 
-    it('should add an error if getByVrm returns a record', () => {
+    it('should add an error if isUnique returns false', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
       jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
 
@@ -173,8 +173,6 @@ describe('TechRecordChangeVrmComponent', () => {
       jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
       const oldPrimaryVrm = 'KP01ABC';
 
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
-
       expect(expectedVehicle.vrms.find(vrm => vrm.vrm == oldPrimaryVrm)?.isPrimary);
 
       component.handleSubmit('TESTVRM');
@@ -184,7 +182,6 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('navigate back to the tech record', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValueOnce(of([]));
       jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
 
       component.handleSubmit('TESTVRM');
