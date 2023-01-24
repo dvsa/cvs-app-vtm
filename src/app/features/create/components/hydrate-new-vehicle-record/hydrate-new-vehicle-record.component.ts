@@ -18,7 +18,6 @@ import { take } from 'rxjs';
 })
 export class HydrateNewVehicleRecordComponent implements OnInit {
   vehicleRecord!: VehicleTechRecordModel;
-  middleIndex = 0;
   user?: UserServiceState;
 
   constructor(
@@ -34,7 +33,7 @@ export class HydrateNewVehicleRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.middleIndex = Math.floor(this.templates.length / 2);
+    console.log(this.vehicleRecord);
   }
 
   get templates(): Array<FormNode> {

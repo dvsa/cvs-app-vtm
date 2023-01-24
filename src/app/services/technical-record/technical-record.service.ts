@@ -126,7 +126,6 @@ export class TechnicalRecordService {
   postNewVehicleRecord(newVehicleRecord: VehicleTechRecordModel, user: { id?: string; name: string }) {
     const recordCopy = cloneDeep(newVehicleRecord);
 
-    console.log(recordCopy);
     const url = `${environment.VTM_API_URI}/vehicles`;
     const body = {
       msUserDetails: { msOid: user.id, msUser: user.name },
@@ -135,7 +134,6 @@ export class TechnicalRecordService {
       trailerId: recordCopy.trailerId ?? '',
       techRecord: recordCopy.techRecord
     };
-    console.log(body);
 
     return this.http.post<postNewVehicleModel>(url, body, { responseType: 'json' });
   }
