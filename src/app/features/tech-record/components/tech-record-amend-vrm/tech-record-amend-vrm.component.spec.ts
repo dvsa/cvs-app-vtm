@@ -23,7 +23,8 @@ const mockTechRecordService = {
   viewableTechRecord$: jest.fn(),
   // getByVrm: (vrm: string) => of(<VehicleTechRecordModel[]>{})
   getByVrm: jest.fn(),
-  updateEditingTechRecord: jest.fn()
+  updateEditingTechRecord: jest.fn(),
+  isUnique: jest.fn()
 };
 
 const mockDynamicFormService = {
@@ -141,7 +142,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('should add an error if getByVrm returns a record', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
-      jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValueOnce(of([<VehicleTechRecordModel>{}]));
+      jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
 
       component.handleSubmit('TESTVRM');
 
@@ -150,7 +151,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('should dispatch the updateEditingTechRecord action', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
-      jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValue(of([]));
+      jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
 
       component.vehicle = { vin: 'TESTVIN', vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
 
@@ -169,6 +170,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('should make the old primary vrm no longer primary', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
+      jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
       const oldPrimaryVrm = 'KP01ABC';
 
       const dispatchSpy = jest.spyOn(store, 'dispatch');
@@ -183,6 +185,7 @@ describe('TechRecordChangeVrmComponent', () => {
     it('navigate back to the tech record', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValueOnce(of([]));
+      jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
 
       component.handleSubmit('TESTVRM');
 

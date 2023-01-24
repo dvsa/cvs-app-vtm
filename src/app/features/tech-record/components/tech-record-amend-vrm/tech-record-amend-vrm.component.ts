@@ -8,7 +8,7 @@ import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynami
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { getByVrmSuccess, updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
@@ -86,37 +86,40 @@ export class AmendVrmComponent implements OnInit, OnChanges {
     }
 
     //TODO: Implement Tom's isUnique function when that is ready
-    this.technicalRecordService
-      .getByVrm(newVRM)
-      .pipe(
-        map(response => {
-          console.log(response);
-          if (response.length >= 1) {
-            throw new HttpErrorResponse({
-              status: 400,
-              statusText: 'VRM already exists'
-            });
-          }
-        }),
-        catchError((error: HttpErrorResponse) => {
-          if (error.status === 404) {
-            return of(true);
-          }
 
-          return throwError(() => new Error('stop'));
-        })
-      )
-      .subscribe({
-        next: res => {
+    // this.technicalRecordService
+    //   .getByVrm(newVRM)
+    //   .pipe(
+    //     map(response => {
+    //       console.log(response);
+    //       if (response.length >= 1) {
+    //         throw new HttpErrorResponse({
+    //           status: 400,
+    //           statusText: 'VRM already exists'
+    //         });
+    //       }
+    //     }),
+    //     catchError((error: HttpErrorResponse) => {
+    //       if (error.status === 404) {
+    //         return of(true);
+    //       }
+
+    //       return throwError(() => new Error('stop'));
+    //     })
+    //   )
+    this.technicalRecordService.isUnique(newVRM, SEARCH_TYPES.VRM).subscribe({
+      next: res => {
+        if (res) {
           console.log('response:', res);
           const newVehicleRecord = this.amendVrm(newVRM, this.vehicle!);
           //const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
           this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
           this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
           this.navigateBack();
-        },
-        error: e => this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVRM' })
-      });
+        } else this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVRM' });
+      },
+      error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVRM' })
+    });
   }
 
   amendVrm(newVrm: string, record: VehicleTechRecordModel) {
