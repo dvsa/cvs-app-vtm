@@ -169,12 +169,12 @@ export enum FitmentCode {
 }
 
 export interface Tyres {
-  tyreCode: number | null;
-  tyreSize: string | null;
-  plyRating: string | null;
-  fitmentCode: FitmentCode | null;
-  speedCategorySymbol: SpeedCategorySymbol | null;
-  dataTrAxles: number | null;
+  tyreCode?: number | null;
+  tyreSize?: string | null;
+  plyRating?: string | null;
+  fitmentCode?: FitmentCode | null;
+  speedCategorySymbol?: SpeedCategorySymbol | null;
+  dataTrAxles?: number | null;
 }
 
 export class Tyre implements Tyres {
@@ -193,16 +193,16 @@ export class Tyre implements Tyres {
 export interface AxleWeights {
   kerbWeight?: number | null;
   ladenWeight?: number | null;
-  gbWeight: number | null;
+  gbWeight?: number | null;
   eecWeight?: number | null;
-  designWeight: number | null;
+  designWeight?: number | null;
 }
 
 export interface Purchaser {
-  name: string;
-  address1: string;
-  address2: string;
-  postTown: string;
+  name?: string;
+  address1?: string;
+  address2?: string;
+  postTown?: string;
   address3?: string | null;
   postCode?: string | null;
   telephoneNumber?: string | null;
@@ -219,14 +219,14 @@ export interface BodyType {
 export interface TechRecordModel {
   historicVin?: string;
   createdAt: Date;
-  createdByName: string;
-  statusCode: StatusCodes;
+  createdByName?: string;
+  statusCode?: StatusCodes;
   vehicleType: VehicleTypes;
-  regnDate: string;
+  regnDate?: string;
   firstUseDate?: string;
-  manufactureYear: number;
-  noOfAxles: number;
-  axles: Axle[];
+  manufactureYear?: number;
+  noOfAxles?: number;
+  axles?: Axle[];
   suspensionType?: string;
   speedRestriction?: number;
   speedLimiterMrk?: boolean;
@@ -235,7 +235,7 @@ export interface TechRecordModel {
   roadFriendly?: boolean;
   fuelPropulsionSystem?: FuelTypes;
   drawbarCouplingFitted?: boolean;
-  vehicleClass: {
+  vehicleClass?: {
     description: string;
     code: string;
   };
@@ -245,7 +245,7 @@ export interface TechRecordModel {
   frameDescription?: FrameDescriptions;
   offRoad?: boolean;
   numberOfWheelsDriven?: number;
-  euVehicleCategory: EuVehicleCategories;
+  euVehicleCategory?: EuVehicleCategories;
   emissionsLimit?: number;
   seatsLowerDeck?: number;
   seatsUpperDeck?: number;
@@ -253,7 +253,7 @@ export interface TechRecordModel {
   vehicleSize?: VehicleSizes;
   numberOfSeatbelts?: string;
   seatbeltInstallationApprovalDate?: string;
-  departmentalVehicleMarker: boolean;
+  departmentalVehicleMarker?: boolean;
   approvalType?: approvalType;
   approvalTypeNumber?: string;
   ntaNumber?: string;
@@ -262,11 +262,11 @@ export interface TechRecordModel {
   coifDate?: string | Date;
   variantNumber?: string;
   variantVersionNumber?: string;
-  brakes: Brakes;
+  brakes?: Brakes;
   applicantDetails?: ApplicantDetails;
   microfilm?: Microfilm;
   remarks?: string;
-  reasonForCreation: string;
+  reasonForCreation?: string;
   modelLiteral?: string;
   make?: string;
   model?: string;
@@ -337,25 +337,25 @@ export interface AuthIntoService {
 }
 
 export interface DDA {
-  certificateIssued: boolean;
-  wheelchairCapacity: number;
-  wheelchairFittings: string;
-  wheelchairLiftPresent: boolean;
-  wheelchairLiftInformation: string;
-  wheelchairRampPresent: boolean;
-  wheelchairRampInformation: string;
-  minEmergencyExits: number;
-  outswing: string;
-  ddaSchedules: string;
-  seatbeltsFitted: number;
-  ddaNotes: string;
+  certificateIssued?: boolean;
+  wheelchairCapacity?: number;
+  wheelchairFittings?: string;
+  wheelchairLiftPresent?: boolean;
+  wheelchairLiftInformation?: string;
+  wheelchairRampPresent?: boolean;
+  wheelchairRampInformation?: string;
+  minEmergencyExits?: number;
+  outswing?: string;
+  ddaSchedules?: string;
+  seatbeltsFitted?: number;
+  ddaNotes?: string;
 }
 
 export interface Plates {
-  plateSerialNumber: string;
-  plateIssueDate: Date;
-  plateReasonForIssue: PlateReasonForIssue;
-  plateIssuer: string;
+  plateSerialNumber?: string;
+  plateIssueDate?: Date;
+  plateReasonForIssue?: PlateReasonForIssue;
+  plateIssuer?: string;
 }
 
 export enum PlateReasonForIssue {
@@ -368,26 +368,26 @@ export enum PlateReasonForIssue {
 }
 
 export interface ApplicantDetails {
-  name: string;
-  address1: string;
-  address2: string;
-  postTown: string;
-  address3: string;
-  postCode: string;
-  telephoneNumber: string;
-  emailAddress: string;
+  name?: string;
+  address1?: string;
+  address2?: string;
+  postTown?: string;
+  address3?: string;
+  postCode?: string;
+  telephoneNumber?: string;
+  emailAddress?: string;
 }
 
 export interface Dimensions {
-  height: number;
-  length: number;
-  width: number;
+  height?: number;
+  length?: number;
+  width?: number;
   axleSpacing?: AxleSpacing[];
 }
 
 export interface AxleSpacing {
-  axles: string;
-  value: number | null;
+  axles?: string;
+  value?: number | null;
 }
 
 export interface Brakes {
@@ -408,15 +408,15 @@ export interface Brakes {
 }
 
 export interface BrakeForceWheelsNotLocked {
-  parkingBrakeForceA: number;
-  secondaryBrakeForceA: number;
-  serviceBrakeForceA: number;
+  parkingBrakeForceA?: number;
+  secondaryBrakeForceA?: number;
+  serviceBrakeForceA?: number;
 }
 
 export interface BrakeForceWheelsUpToHalfLocked {
-  parkingBrakeForceB: number;
-  secondaryBrakeForceB: number;
-  serviceBrakeForceB: number;
+  parkingBrakeForceB?: number;
+  secondaryBrakeForceB?: number;
+  serviceBrakeForceB?: number;
 }
 export enum Retarders {
   ELECTRIC = 'electric',
@@ -428,15 +428,15 @@ export enum Retarders {
 }
 
 export interface AxleBrakeProperties {
-  brakeActuator: string;
-  leverLength: string;
-  springBrakeParking: boolean;
+  brakeActuator?: string;
+  leverLength?: string;
+  springBrakeParking?: boolean;
 }
 
 export interface Microfilm {
-  microfilmDocumentType: MicrofilmDocumentType;
-  microfilmRollNumber: string;
-  microfilmSerialNumber: string;
+  microfilmDocumentType?: MicrofilmDocumentType;
+  microfilmRollNumber?: string;
+  microfilmSerialNumber?: string;
 }
 
 export enum MicrofilmDocumentType {

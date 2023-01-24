@@ -135,7 +135,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   searchTyres(name: any, axleNumber: number) {
     if (name === 'tyreCode') {
-      this.getTyresRefData(this.vehicleTechRecord.axles[axleNumber - 1].tyres!, axleNumber);
+      this.getTyresRefData(this.vehicleTechRecord.axles![axleNumber - 1].tyres!, axleNumber);
     }
   }
 
@@ -165,7 +165,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {
     this.vehicleTechRecord = cloneDeep(this.vehicleTechRecord);
-    this.vehicleTechRecord.axles.find(ax => ax.axleNumber === axleNumber)!.tyres = tyre;
+    this.vehicleTechRecord.axles!.find(ax => ax.axleNumber === axleNumber)!.tyres = tyre;
     this.form.patchValue(this.vehicleTechRecord);
   }
 
@@ -184,7 +184,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       tyres: tyres
     };
 
-    if (this.vehicleTechRecord.axles.length < 10) {
+    if (this.vehicleTechRecord.axles!.length < 10) {
       this.isError = false;
       this.axles.addControl(newAxle);
     } else {
@@ -196,7 +196,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
 
-    if (this.vehicleTechRecord.axles.length > minLength) {
+    if (this.vehicleTechRecord.axles!.length > minLength) {
       this.isError = false;
       this.axles.removeAt(index);
     } else {
