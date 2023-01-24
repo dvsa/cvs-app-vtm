@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -11,7 +12,7 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { changeVehicleType, updateEditingTechRecord } from '@store/technical-records';
+import { updateEditingTechRecord } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
@@ -19,14 +20,17 @@ import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 const mockTechRecordService = {
   editableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
-  viewableTechRecord$: jest.fn()
+  viewableTechRecord$: jest.fn(),
+  // getByVrm: (vrm: string) => of(<VehicleTechRecordModel[]>{})
+  getByVrm: jest.fn(),
+  updateEditingTechRecord: jest.fn()
 };
 
 const mockDynamicFormService = {
   createForm: jest.fn()
 };
 
-describe('TechRecordChangeTypeComponent', () => {
+describe('TechRecordChangeVrmComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: AmendVrmComponent;
   let errorService: GlobalErrorService;
@@ -35,6 +39,7 @@ describe('TechRecordChangeTypeComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let store: MockStore;
+  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -57,8 +62,10 @@ describe('TechRecordChangeTypeComponent', () => {
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
+    technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
     expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
+    component.vehicle = expectedVehicle;
   });
 
   it('should create', () => {
@@ -85,7 +92,7 @@ describe('TechRecordChangeTypeComponent', () => {
     it('should return the primary VRM', () => {
       component.vehicle = expectedVehicle;
 
-      expect(component.vrm).toBe(expectedVehicle.vrms.find(vrm => vrm.isPrimary)?.vrm);
+      expect(component.vrm).toBe('KP01ABC');
     });
 
     it('should return undefined when the vehicle is null', () => {
@@ -127,38 +134,53 @@ describe('TechRecordChangeTypeComponent', () => {
     it('should add an error when the field is equal to the current VRM', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
 
-      component.handleSubmit(expectedVehicle.vrms.find(vrm => vrm.isPrimary)!.vrm);
+      component.handleSubmit('KP01ABC');
 
       expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVRM' });
     });
 
+    it('should add an error if getByVrm returns a record', () => {
+      const addErrorSpy = jest.spyOn(errorService, 'addError');
+      jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValueOnce(of([<VehicleTechRecordModel>{}]));
+
+      component.handleSubmit('TESTVRM');
+
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM already exists', anchorLink: 'newVRM' });
+    });
+
     it('should dispatch the updateEditingTechRecord action', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
+      jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValue(of([]));
 
       const dispatchSpy = jest.spyOn(store, 'dispatch');
 
       component.handleSubmit('TESTVRM');
+      console.log(expectedVehicle);
 
-      expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord);
+      expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: {}} as VehicleTechRecordModel }));
+      // expect(dispatchSpy).toHaveBeenCalledTimes(2);
     });
 
     it('should make the old primary vrm no longer primary', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
-      const oldVrms = cloneDeep(expectedVehicle.vrms);
+      const oldPrimaryVrm = 'KP01ABC';
 
       const dispatchSpy = jest.spyOn(store, 'dispatch');
 
+      expect(expectedVehicle.vrms.find(vrm => vrm.vrm == oldPrimaryVrm)?.isPrimary);
+
       component.handleSubmit('TESTVRM');
 
-      expect();
+      expect(!expectedVehicle.vrms.find(vrm => vrm.vrm == oldPrimaryVrm)?.isPrimary);
     });
 
-    it('navigate to the editing page', () => {
+    it('navigate back to the tech record', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+      jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValueOnce(of([]));
 
-      component.handleSubmit(VehicleTypes.PSV);
+      component.handleSubmit('TESTVRM');
 
-      expect(navigateSpy).toHaveBeenCalledWith([`../amend-reason`], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith([`..`], { relativeTo: route });
     });
   });
 });

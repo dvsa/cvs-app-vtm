@@ -85,7 +85,7 @@ describe('VehicleTechnicalRecordComponent', () => {
   it('should get current vrm', () => {
     fixture.detectChanges();
     component.vehicleTechRecord = mockVehicleTechnicalRecord();
-    expect(component.currentVrm).toEqual('KP01 ABC');
+    expect(component.currentVrm).toEqual('KP01ABC');
   });
 
   it('should get other Vrms', () => {

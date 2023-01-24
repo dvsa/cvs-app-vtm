@@ -81,7 +81,7 @@ export class AmendVrmComponent implements OnInit, OnChanges {
   }
 
   handleSubmit(newVRM: string): void {
-    if (newVRM === '' && (newVRM !== this.vrm ?? '')) {
+    if (newVRM === '' || (newVRM === this.vrm ?? '')) {
       return this.globalErrorService.addError({ error: 'You must provide a new VRM', anchorLink: 'newVRM' });
     }
 
