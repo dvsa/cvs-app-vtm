@@ -54,6 +54,12 @@ describe('CreateNewVehicleRecordComponent', () => {
     });
   });
 
+  describe('get vehicleStatusOptions', () => {
+    it('should return the expected options', () => {
+      expect(component.vehicleStatusOptions).toBeTruthy();
+    });
+  });
+
   describe('get primaryVrm', () => {
     it('should get the primary VRM', () => {
       component.vehicle = expectedVehicle;

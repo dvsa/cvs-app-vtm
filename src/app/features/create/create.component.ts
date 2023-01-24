@@ -1,7 +1,7 @@
 import { Component, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MultiOptions } from '@forms/models/options.model';
-import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { FormGroup, Validators } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
@@ -31,6 +31,7 @@ export class CreateComponent implements OnChanges {
       Validators.maxLength(9),
       Validators.required
     ]),
+    vehicleStatus: new CustomFormControl({ name: 'change-vehicle-status-select', type: FormNodeTypes.CONTROL }, '', [Validators.required]),
     vehicleType: new CustomFormControl({ name: 'change-vehicle-type-select', type: FormNodeTypes.CONTROL }, '', [Validators.required])
   });
 
@@ -51,6 +52,13 @@ export class CreateComponent implements OnChanges {
       { label: 'Light goods vehicle (LGV)', value: VehicleTypes.LGV },
       { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
       { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
+    ];
+  }
+
+  get vehicleStatusOptions(): MultiOptions {
+    return [
+      { label: 'Current', value: StatusCodes.CURRENT },
+      { label: 'Provisional', value: StatusCodes.PROVISIONAL }
     ];
   }
 
@@ -83,7 +91,9 @@ export class CreateComponent implements OnChanges {
 
   async isFormValueUnique() {
     const isTrailer = this.vehicleForm.value.vehicleType === VehicleTypes.TRL;
-    this.vehicle.techRecord = [{ vehicleType: this.vehicleForm.value.vehicleType } as TechRecordModel];
+    this.vehicle.techRecord = [
+      { vehicleType: this.vehicleForm.value.vehicleType, statusCode: this.vehicleForm.value.vehicleStatus } as TechRecordModel
+    ];
 
     const isVinUnique = await this.isVinUnique();
 

@@ -18,6 +18,14 @@
       (ngModelChange)="ngOnChanges()"
     ></app-text-input>
     <app-select
+      #selectVehicleStatus
+      formControlName="vehicleStatus"
+      label="Select vehicle status"
+      [options]="vehicleStatusOptions"
+      name="change-vehicle-status-select"
+      (ngModelChange)="ngOnChanges()"
+    ></app-select>
+    <app-select
       #selectVehicleType
       formControlName="vehicleType"
       label="Select vehicle type"
