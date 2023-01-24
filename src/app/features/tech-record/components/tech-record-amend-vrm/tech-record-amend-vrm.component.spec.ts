@@ -152,12 +152,6 @@ describe('TechRecordChangeVrmComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
       jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValue(of([]));
 
-      // const amendedVehicleTechRecord = cloneDeep(expectedVehicle);
-      // const primaryVrm = amendedVehicleTechRecord.vrms.find(x => x.isPrimary);
-      // primaryVrm!.isPrimary = false;
-      // amendedVehicleTechRecord.vrms.push({vrm: "TESTVRM", isPrimary: true});
-      // amendedVehicleTechRecord.techRecord[0].historicPrimaryVrm = "TESTVRM";
-      // expectedVehicle.vrms.forEach(x => amendedVehicleTechRecord.techRecord[0].historicSecondaryVrms?.push(x.vrm));
       component.vehicle = { vin: 'TESTVIN', vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
 
       const dispatchSpy = jest.spyOn(mockTechRecordService, 'updateEditingTechRecord');
@@ -166,13 +160,11 @@ describe('TechRecordChangeVrmComponent', () => {
 
       expect(dispatchSpy).toHaveBeenNthCalledWith(1, {
         vin: 'TESTVIN',
-        techRecord: [{ historicPrimaryVrm: 'TESTVRM', historicSecondaryVrms: ['VRM1'] }],
         vrms: [
           { vrm: 'VRM1', isPrimary: false },
           { vrm: 'TESTVRM', isPrimary: true }
         ]
       });
-      //expect(dispatchSpy).toHaveBeenCalledTimes(2);
     });
 
     it('should make the old primary vrm no longer primary', () => {

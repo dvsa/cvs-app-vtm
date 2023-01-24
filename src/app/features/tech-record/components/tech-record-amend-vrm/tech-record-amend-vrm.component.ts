@@ -110,8 +110,8 @@ export class AmendVrmComponent implements OnInit, OnChanges {
         next: res => {
           console.log('response:', res);
           const newVehicleRecord = this.amendVrm(newVRM, this.vehicle!);
-          const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
-          this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord, techRecord: [newTechRecord] });
+          //const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
+          this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
           this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
           this.navigateBack();
         },
@@ -130,6 +130,7 @@ export class AmendVrmComponent implements OnInit, OnChanges {
     return newModel;
   }
 
+  // Currently unused, to be discussed as a future ticket
   mapVrmToTech(vehicleRecord: VehicleTechRecordModel, techRecord: TechRecordModel) {
     const newTechModel: TechRecordModel = cloneDeep(techRecord);
 
