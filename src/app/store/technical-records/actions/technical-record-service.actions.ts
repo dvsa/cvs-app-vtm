@@ -40,6 +40,10 @@ export const createProvisionalTechRecord = createAction(`${prefix} createProvisi
 export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
 export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
 
+export const createNewVehicleRecord = createAction(`${prefix} createNewVehicleRecord`, props<{ vehicleType: VehicleTypes }>());
+export const createNewVehicleRecordSuccess = createOutcomeAction('createNewVehicleRecord', true);
+export const createNewVehicleRecordFailure = createOutcomeAction('createNewVehicleRecord');
+
 export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, props<{ systemNumber: string; reasonForArchiving: string }>());
 export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
 export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord');

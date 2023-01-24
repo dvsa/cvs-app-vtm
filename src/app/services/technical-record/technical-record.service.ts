@@ -1,7 +1,14 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { PutVehicleTechRecordModel, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  postNewVehicleModel,
+  PutVehicleTechRecordModel,
+  StatusCodes,
+  TechRecordModel,
+  VehicleTechRecordModel,
+  VehicleTypes
+} from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
@@ -114,6 +121,21 @@ export class TechnicalRecordService {
     };
 
     return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+  }
+
+  postNewVehicleRecord(newVehicleRecord: VehicleTechRecordModel, user: { id?: string; name: string }) {
+    const recordCopy = cloneDeep(newVehicleRecord);
+
+    const url = `${environment.VTM_API_URI}/vehicles`;
+    const body = {
+      msUserDetails: { msOid: user.id, msUser: user.name },
+      vin: recordCopy.vin,
+      primaryVrm: recordCopy.vrms ? recordCopy.vrms[0].vrm : '',
+      trailerId: recordCopy.trailerId ?? '',
+      techRecord: recordCopy.techRecord
+    };
+
+    return this.http.post<postNewVehicleModel>(url, body, { responseType: 'json' });
   }
 
   archiveTechnicalRecord(systemNumber: string, techRecord: TechRecordModel, reason: string, user: { id?: string; name: string }) {
