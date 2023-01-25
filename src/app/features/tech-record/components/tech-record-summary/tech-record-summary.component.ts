@@ -106,7 +106,7 @@ export class TechRecordSummaryComponent implements OnInit {
       this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
     }
 
-    if (event.brakes?.dtpNumber && (event.brakes.dtpNumber.length === 4 || event.brakes.dtpNumber.length === 6)) {
+    if (event.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4 && this.vehicleTechRecordCalculated.vehicleType === VehicleTypes.PSV) {
       this.setBodyFields(this.vehicleTechRecordCalculated.vehicleType);
     }
 
