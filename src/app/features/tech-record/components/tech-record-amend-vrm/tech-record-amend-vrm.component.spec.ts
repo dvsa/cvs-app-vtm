@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -149,16 +149,17 @@ describe('TechRecordChangeVrmComponent', () => {
       expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM already exists', anchorLink: 'newVRM' });
     });
 
-    it('should dispatch the updateEditingTechRecord action', () => {
+    it('should dispatch the updateEditingTechRecord action', fakeAsync(() => {
       jest.spyOn(router, 'navigate').mockImplementation();
       jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
+      jest.spyOn(component, 'setReasonForCreation').mockImplementation();
+      const dispatchSpy = jest.spyOn(mockTechRecordService, 'updateEditingTechRecord').mockImplementation(() => Promise.resolve(true));
 
       component.vehicle = { vin: 'TESTVIN', vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
 
-      const dispatchSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-      component.handleSubmit('TESTVRM98');
+      component.handleSubmit('TESTVRM');
+      tick();
 
-      console.log(dispatchSpy.mock.calls);
       expect(dispatchSpy).toHaveBeenNthCalledWith(1, {
         vin: 'TESTVIN',
         vrms: [
@@ -166,7 +167,7 @@ describe('TechRecordChangeVrmComponent', () => {
           { vrm: 'TESTVRM', isPrimary: true }
         ]
       });
-    });
+    }));
 
     it('should make the old primary vrm no longer primary', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
