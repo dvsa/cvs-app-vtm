@@ -126,6 +126,7 @@ export class CreateComponent implements OnChanges {
 
   async isTrailerIdUnique() {
     this.vehicle.trailerId = this.vehicleForm.value.vrmTrm;
+    this.vehicle.vrms = [{ vrm: this.vehicleForm.value.vrmTrm, isPrimary: true }];
     const isTrailerIdUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.vehicle.trailerId!, SEARCH_TYPES.TRAILER_ID));
     if (!isTrailerIdUnique) {
       this.globalErrorService.addError({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });

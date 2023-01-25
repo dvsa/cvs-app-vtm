@@ -21,6 +21,13 @@ export const TrlTechRecordTemplate: FormNode = {
       validators: [{ name: ValidatorNames.Required }]
     },
     {
+      name: 'statusCode',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
       name: 'regnDate',
       label: 'Date of first registration',
       value: '',
