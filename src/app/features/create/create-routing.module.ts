@@ -17,7 +17,7 @@ const routes: Routes = [
   {
     path: 'new-record-details',
     component: HydrateNewVehicleRecordComponent,
-    data: { title: 'New record details', roles: Roles.TechRecordCreate },
+    data: { title: 'New record details', roles: Roles.TechRecordCreate, isCustomLayout: true },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
