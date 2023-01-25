@@ -28,6 +28,7 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },
+
   {
     path: 'notifiable-alteration-needed',
     component: TechRecordComponent,
@@ -87,6 +88,7 @@ const routes: Routes = [
         canActivate: [MsalGuard, RoleGuard],
         resolve: { techRecord: TechRecordViewResolver }
       },
+
       {
         path: 'test-records/test-result/:testResultId/:testNumber',
         data: { title: 'Test record', roles: Roles.TestResultView },

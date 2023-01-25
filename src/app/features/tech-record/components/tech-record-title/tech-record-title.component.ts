@@ -29,12 +29,6 @@ export class TechRecordTitleComponent implements OnInit {
 
     this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
 
-    console.log(this.vehicleTechRecord);
-    console.log(this.currentVrm);
-    console.log(this.editableTechRecord$);
-    console.log(this.otherVrms);
-    console.log(this.currentVehicleType);
-
     this.currentTechRecord$
       .pipe(take(1))
       .subscribe(data =>
@@ -43,9 +37,6 @@ export class TechRecordTitleComponent implements OnInit {
               data?.vehicleType === this.vehicleTypes.PSV ? `${data.chassisMake} ${data.chassisModel}` : `${data?.make} ${data?.model}`)
           : (this.vehicleMakeAndModel = '')
       );
-  }
-  set currentVehicleType(vehicleMakeAndModel: any) {
-    vehicleMakeAndModel;
   }
 
   get currentVrm(): string | undefined {
