@@ -20,16 +20,6 @@ export const VehicleSectionGroup3: FormNode = {
       editType: FormNodeEditTypes.HIDDEN
     },
     {
-      name: 'trailerId',
-      label: 'Trailer ID',
-      value: '',
-      disabled: true,
-      width: FormNodeWidth.L,
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
-    },
-    {
       name: 'countryOfRegistration',
       label: 'Country Of Registration',
       value: '',
