@@ -186,7 +186,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
       component.handleSubmit('TESTVRM');
 
-      expect(navigateSpy).toHaveBeenCalledWith([`..`], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith([`../amend-reason`], { relativeTo: route });
     });
   });
 });

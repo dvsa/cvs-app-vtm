@@ -36,6 +36,7 @@
       <dd id="current-vrm" class="govuk-summary-list__value">
         <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
       </dd>
+      <dd class="govuk-summary-list__actions"></dd>
       <dd class="govuk-summary-list__actions">
         <app-button
           *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"

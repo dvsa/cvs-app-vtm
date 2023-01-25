@@ -12,7 +12,7 @@ import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record
 import { getByVrmSuccess, updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
-import { catchError, map, of, take, throwError } from 'rxjs';
+import { catchError, map, of, skipUntil, take, throwError, skipWhile } from 'rxjs';
 import { ValidatorNames } from '@forms/models/validators.enum';
 
 @Component({
@@ -104,11 +104,17 @@ export class AmendVrmComponent implements OnInit, OnChanges {
           if (res == true) {
             console.log('response:', res);
             const newVehicleRecord = this.amendVrm(newVRM, this.vehicle!);
+
+            this.setReasonForCreation(newVehicleRecord, newVRM);
             //const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
             this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
             this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
+            //all the examples I'm seeing the skipUntil or while go in a pipe
+            console.log();
 
-            this.navigateBack();
+            const routeSuffix = this.currentTechRecord?.statusCode !== StatusCodes.PROVISIONAL ? 'amend-reason' : 'notifiable-alteration-needed';
+
+            this.router.navigate([`../${routeSuffix}`], { relativeTo: this.route });
           } else this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVRM' });
         },
         error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVRM' })
@@ -136,5 +142,9 @@ export class AmendVrmComponent implements OnInit, OnChanges {
       vrm.isPrimary ? (newTechModel.historicPrimaryVrm = vrm.vrm) : newTechModel.historicSecondaryVrms!.push(vrm.vrm)
     );
     return newTechModel;
+  }
+
+  setReasonForCreation(vehicleRecord: VehicleTechRecordModel, vrm: string) {
+    vehicleRecord.techRecord.forEach(record => (record.reasonForCreation = `Amending VRM.`));
   }
 }
