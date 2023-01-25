@@ -144,7 +144,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 
   handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
     const axleIndex = Number(this.params.axleNumber!) - 1;
-    console.log(this.viewableTechRecord?.axles);
+
     if (this.viewableTechRecord?.axles[axleIndex].tyres) {
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
 
