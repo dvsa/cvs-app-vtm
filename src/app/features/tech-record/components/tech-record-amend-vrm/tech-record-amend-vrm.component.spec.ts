@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
-import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -12,16 +10,14 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
-import cloneDeep from 'lodash.clonedeep';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
   viewableTechRecord$: jest.fn(),
-  updateEditingTechRecord: jest.fn().mockImplementation(() => {}),
+  updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn()
 };
 

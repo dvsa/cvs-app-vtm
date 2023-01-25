@@ -2,17 +2,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { getByVrmSuccess, updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
+import { updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
-import { catchError, map, of, skipUntil, take, throwError, skipWhile } from 'rxjs';
+import { catchError, map, of, take, throwError } from 'rxjs';
 import { ValidatorNames } from '@forms/models/validators.enum';
 
 @Component({
