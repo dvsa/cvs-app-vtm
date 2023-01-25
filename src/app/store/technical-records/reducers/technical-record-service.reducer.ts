@@ -1,5 +1,5 @@
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import {
   getByPartialVin,
   getByPartialVinFailure,
@@ -30,9 +30,9 @@ import {
   archiveTechRecordFailure,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
-  createNewVehicleRecord,
-  createNewVehicleRecordFailure,
-  createNewVehicleRecordSuccess
+  createVehicleRecord,
+  createVehicleRecordFailure,
+  createVehicleRecordSuccess
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -78,17 +78,17 @@ export const vehicleTechRecordReducer = createReducer(
   on(getByAllSuccess, successArgs),
   on(getByAllFailure, failureArgs),
 
-  on(updateTechRecords, defaultArgs),
-  on(updateTechRecordsSuccess, successArgs),
-  on(updateTechRecordsFailure, updateFailureArgs),
+  on(createVehicleRecord, defaultArgs),
+  on(createVehicleRecordSuccess, successArgs),
+  on(createVehicleRecordFailure, updateFailureArgs),
 
   on(createProvisionalTechRecord, defaultArgs),
   on(createProvisionalTechRecordSuccess, successArgs),
   on(createProvisionalTechRecordFailure, updateFailureArgs),
 
-  on(createNewVehicleRecord, defaultArgs),
-  on(createNewVehicleRecordSuccess, successArgs),
-  on(createNewVehicleRecordFailure, updateFailureArgs),
+  on(updateTechRecords, defaultArgs),
+  on(updateTechRecordsSuccess, successArgs),
+  on(updateTechRecordsFailure, updateFailureArgs),
 
   on(archiveTechRecord, defaultArgs),
   on(archiveTechRecordSuccess, successArgs),

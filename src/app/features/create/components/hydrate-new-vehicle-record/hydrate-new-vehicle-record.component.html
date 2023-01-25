@@ -1,3 +1,5 @@
-<app-tech-record-title [vehicleTechRecord]="vehicleRecord" [hideActions]="true"></app-tech-record-title>
-<app-button id="submit-record-continue" (clicked)="handleSubmit()">Submit new record</app-button>
-<app-tech-record-summary [isEditing]="true" [vehicleTechRecord]="techRecord"></app-tech-record-summary>
+<ng-container *ngIf="vehicle$ | async as vehicle">
+  <app-tech-record-title [vehicleTechRecord]="vehicle || undefined" [hideActions]="true"></app-tech-record-title>
+  <app-button id="submit-record-continue" (clicked)="handleSubmit()">Submit new record</app-button>
+  <app-tech-record-summary [isEditing]="true" [vehicleTechRecord]="vehicle.techRecord[0]"></app-tech-record-summary>
+</ng-container>

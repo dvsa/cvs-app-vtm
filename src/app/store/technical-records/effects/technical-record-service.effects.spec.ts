@@ -566,7 +566,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
 
         // expect effect to return success action
-        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+        expectObservable(effects.addProvisionalTechRecord).toBe('---b', {
           b: createProvisionalTechRecordSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
@@ -581,7 +581,7 @@ describe('TechnicalRecordServiceEffects', () => {
         const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
         jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+        expectObservable(effects.addProvisionalTechRecord).toBe('---b', {
           b: createProvisionalTechRecordFailure({
             error: 'Unable to create a new provisional record null'
           })
@@ -602,7 +602,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
 
         // expect effect to return success action
-        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+        expectObservable(effects.addProvisionalTechRecord).toBe('---b', {
           b: createProvisionalTechRecordSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
@@ -620,7 +620,7 @@ describe('TechnicalRecordServiceEffects', () => {
         const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
         jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+        expectObservable(effects.addProvisionalTechRecord).toBe('---b', {
           b: createProvisionalTechRecordFailure({
             error: 'Unable to create a new provisional record null'
           })

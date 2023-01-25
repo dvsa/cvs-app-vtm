@@ -268,7 +268,7 @@ describe('TechnicalRecordService', () => {
       it('should return an array with a new tech record and updated status code', fakeAsync(() => {
         const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' }, oldStatusCode: StatusCodes.PROVISIONAL };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.putUpdateTechRecords(params.systemNumber, mockData[0], params.user, params.oldStatusCode).subscribe();
+        service.updateTechRecords(params.systemNumber, mockData[0], params.user, params.oldStatusCode).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
         const req = httpTestingController.expectOne(
@@ -288,7 +288,7 @@ describe('TechnicalRecordService', () => {
       it('should return an array with a new tech record and updated status code using basic URL', fakeAsync(() => {
         const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.putUpdateTechRecords(params.systemNumber, mockData[0], params.user).subscribe();
+        service.updateTechRecords(params.systemNumber, mockData[0], params.user).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
         const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/${params.systemNumber}`);
@@ -303,7 +303,7 @@ describe('TechnicalRecordService', () => {
       it('should return an array with a new tech record having added provisional', fakeAsync(() => {
         const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.postProvisionalTechRecord(params.systemNumber, mockData[0].techRecord[0], params.user).subscribe();
+        service.createProvisionalTechRecord(params.systemNumber, mockData[0].techRecord[0], params.user).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
         const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/add-provisional/${params.systemNumber}`);
