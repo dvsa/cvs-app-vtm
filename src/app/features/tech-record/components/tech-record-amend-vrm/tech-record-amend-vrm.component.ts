@@ -74,14 +74,6 @@ export class AmendVrmComponent implements OnInit, OnChanges {
     return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
-  hasProvisional() {
-    return this.vehicle && this.vehicle.techRecord.filter(x => x.statusCode === StatusCodes.PROVISIONAL).length >= 1;
-  }
-
-  techRecordStatus() {
-    return this.currentTechRecord!.statusCode.toString() ?? null;
-  }
-
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
@@ -136,6 +128,7 @@ export class AmendVrmComponent implements OnInit, OnChanges {
       const vrmObject: Vrm = { vrm: newVrm.toUpperCase(), isPrimary: true };
       newModel.vrms.push(vrmObject);
     } else existingVrmObject.isPrimary = true;
+
     return newModel;
   }
 
