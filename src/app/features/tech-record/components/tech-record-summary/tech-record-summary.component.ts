@@ -5,7 +5,7 @@ import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimension
 import { WeightsComponent } from '@forms/custom-sections/weights/weights.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Axle, AxleSpacing, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
@@ -19,7 +19,6 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { State } from '@store/index';
-import { updateEditingTechRecordCancel } from '@store/technical-records';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -107,7 +106,11 @@ export class TechRecordSummaryComponent implements OnInit {
       this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
     }
 
-    if (event.brakes?.dtpNumber && (event.brakes.dtpNumber.length === 4 || event.brakes.dtpNumber.length === 6)) {
+    if (
+      this.vehicleTechRecordCalculated.vehicleType === VehicleTypes.PSV &&
+      event.brakes?.dtpNumber &&
+      (event.brakes.dtpNumber.length === 4 || event.brakes.dtpNumber.length === 6)
+    ) {
       this.setBodyFields();
     }
 

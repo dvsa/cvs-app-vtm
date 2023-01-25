@@ -12,7 +12,7 @@
       {{ (editableTechRecord$ | async)?.vehicleType ?? '' | uppercase | defaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__actions"></dd>
-    <dd class="govuk-summary-list__actions">
+    <dd class="govuk-summary-list__actions" *ngIf="!hideActions">
       <app-button
         *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
         design="link"

@@ -1,20 +1,17 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { UserServiceState } from '@store/user/user-service.reducer';
 import { take } from 'rxjs';
 
 @Component({
   selector: 'app-hydrate-new-vehicle-record',
-  templateUrl: './hydrate-new-vehicle-record.component.html',
-  styleUrls: ['./hydrate-new-vehicle-record.component.scss']
+  templateUrl: './hydrate-new-vehicle-record.component.html'
 })
 export class HydrateNewVehicleRecordComponent implements OnInit {
   vehicleRecord!: VehicleTechRecordModel;
@@ -24,16 +21,13 @@ export class HydrateNewVehicleRecordComponent implements OnInit {
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
     private userService: UserService
-  ) {
-    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicleRecord = data!));
-    this.userService.user$.pipe(take(1)).subscribe(data => (this.user = data));
-  }
+  ) {}
 
   ngOnInit(): void {
-    console.log(this.vehicleRecord);
+    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicleRecord = data!));
+    this.userService.user$.pipe(take(1)).subscribe(data => (this.user = data));
   }
 
   get templates(): Array<FormNode> {
@@ -63,6 +57,6 @@ export class HydrateNewVehicleRecordComponent implements OnInit {
         .subscribe()
     );
 
-    // route to confirmation page
+    // route to confirmation page?
   }
 }
