@@ -1,5 +1,8 @@
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
 
 export const DeskBasedVehicleSectionHgvGroup1And2And4: FormNode = {
   name: 'vehicleSection',
@@ -36,9 +39,11 @@ export const DeskBasedVehicleSectionHgvGroup1And2And4: FormNode = {
       name: 'euVehicleCategory',
       label: 'EU Vehicle Category',
       value: '',
-      disabled: true,
       type: FormNodeTypes.CONTROL,
-      width: FormNodeWidth.XXS
+      editType: FormNodeEditTypes.SELECT,
+      width: FormNodeWidth.S,
+      options: getOptionsFromEnum(EuVehicleCategories),
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'odometerReading',
