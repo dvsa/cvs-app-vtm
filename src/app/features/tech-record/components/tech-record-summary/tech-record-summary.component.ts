@@ -196,7 +196,7 @@ export class TechRecordSummaryComponent implements OnInit {
       if (vehicleAxles && vehicleAxleSpacings) {
         if (vehicleAxles.length > vehicleAxleSpacings.length + 1) {
           this.vehicleTechRecordCalculated.dimensions!.axleSpacing = this.generateAxleSpacing(vehicleAxles.length, true, vehicleAxleSpacings);
-        } else if (vehicleAxles.length < vehicleAxleSpacings.length + 1) {
+        } else if (vehicleAxles.length < vehicleAxleSpacings.length + 1 && vehicleAxleSpacings.length > 0) {
           this.vehicleTechRecordCalculated.axles = this.generateAxlesFromAxleSpacings(
             this.vehicleTechRecordCalculated.vehicleType,
             vehicleAxleSpacings.length,
@@ -205,7 +205,7 @@ export class TechRecordSummaryComponent implements OnInit {
         }
       } else if (vehicleAxles && !vehicleAxleSpacings) {
         this.vehicleTechRecordCalculated.dimensions!.axleSpacing = this.generateAxleSpacing(vehicleAxles.length);
-      } else if (!vehicleAxles && vehicleAxleSpacings) {
+      } else if (!vehicleAxles && vehicleAxleSpacings && vehicleAxleSpacings.length > 0) {
         this.vehicleTechRecordCalculated.axles = this.generateAxlesFromAxleSpacings(
           this.vehicleTechRecordCalculated.vehicleType,
           vehicleAxleSpacings.length
