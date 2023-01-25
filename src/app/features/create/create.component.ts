@@ -49,7 +49,6 @@ export class CreateComponent implements OnChanges {
   get vehicleTypeOptions(): MultiOptions {
     return [
       { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
-      { label: 'Light goods vehicle (LGV)', value: VehicleTypes.LGV },
       { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
       { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
     ];
