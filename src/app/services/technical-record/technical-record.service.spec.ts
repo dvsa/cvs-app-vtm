@@ -126,6 +126,42 @@ describe('TechnicalRecordService', () => {
         // Provide each request with a mock response
         req.flush(mockData);
       });
+
+      it('should validate the search term to be non unique when vrm is used as a primary', () => {
+        const searchParams = { searchTerm: 'KP01 ABC', type: 'vrm' };
+        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
+
+        service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VRM).subscribe(response => {
+          expect(response).toEqual(false);
+        });
+
+        // Check for correct requests: should have made one request to search from expected URL
+        const req = httpTestingController.expectOne(
+          `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vrm`
+        );
+        expect(req.request.method).toEqual('GET');
+
+        // Provide each request with a mock response
+        req.flush(mockData);
+      });
+
+      it('should validate the search term to be unique when vrm is not used as a primary', () => {
+        const searchParams = { searchTerm: '12345', type: 'vrm' };
+        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
+
+        service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VRM).subscribe(response => {
+          expect(response).toEqual(true);
+        });
+
+        // Check for correct requests: should have made one request to search from expected URL
+        const req = httpTestingController.expectOne(
+          `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vrm`
+        );
+        expect(req.request.method).toEqual('GET');
+
+        // Provide each request with a mock response
+        req.flush(mockData);
+      });
     });
 
     describe('getByPartialVin', () => {

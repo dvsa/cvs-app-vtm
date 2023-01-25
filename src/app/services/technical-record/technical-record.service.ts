@@ -46,15 +46,25 @@ export class TechnicalRecordService {
   }
 
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES) {
-    return this.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
+    const isUnique = this.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
       map(vehicleTechRecord => {
+        if (vehicleTechRecord.length == 0) {
+          return true;
+        }
+
+        if (searchType === SEARCH_TYPES.VRM) {
+          const allVrms = vehicleTechRecord.flatMap(record => record.vrms);
+          const primaryVRMFound = allVrms.some(vrm => vrm.isPrimary && vrm.vrm == valueToCheck);
+          return !primaryVRMFound;
+        }
         const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
-        return allTechRecords.length > 0 ? allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED) : true;
+        return allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED);
       }),
       catchError((error: HttpErrorResponse) => {
         return (error.status == 404 && of(true)) || throwError(() => error);
       })
     );
+    return isUnique;
   }
 
   getByPartialVin(partialVin: string): Observable<VehicleTechRecordModel[]> {
