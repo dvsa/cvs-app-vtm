@@ -2,23 +2,23 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
+import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
+import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
+import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
 import { WeightsComponent } from '@forms/custom-sections/weights/weights.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
+import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
+import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
+import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Axle, AxleSpacing, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { State } from '@store/index';
+import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
-import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
-import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
-import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
-import { BodyTypeCode, bodyTypeCodeMap } from '@models/body-type-enum';
-import { ReferenceDataResourceType, PsvMake } from '@models/reference-data.model';
-import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { map, Observable, take } from 'rxjs';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { State } from '@store/index';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -106,12 +106,8 @@ export class TechRecordSummaryComponent implements OnInit {
       this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
     }
 
-    if (
-      this.vehicleTechRecordCalculated.vehicleType === VehicleTypes.PSV &&
-      event.brakes?.dtpNumber &&
-      (event.brakes.dtpNumber.length === 4 || event.brakes.dtpNumber.length === 6)
-    ) {
-      this.setBodyFields();
+    if (event.brakes?.dtpNumber && (event.brakes.dtpNumber.length === 4 || event.brakes.dtpNumber.length === 6)) {
+      this.setBodyFields(this.vehicleTechRecordCalculated.vehicleType);
     }
 
     if (this.vehicleTechRecordCalculated.vehicleType === VehicleTypes.PSV && (event.grossKerbWeight || event.grossLadenWeight || event.brakes)) {
@@ -237,11 +233,11 @@ export class TechRecordSummaryComponent implements OnInit {
     return { axleNumber, weights, tyres };
   }
 
-  setBodyFields(): void {
+  setBodyFields(vehicleType: VehicleTypes): void {
     this.psvFromDtp$.pipe(take(1)).subscribe(payload => {
       const code = payload?.psvBodyType.toLowerCase() as BodyTypeCode;
 
-      this.vehicleTechRecordCalculated.bodyType = { code, description: bodyTypeCodeMap.get(code) };
+      this.vehicleTechRecordCalculated.bodyType = { code, description: vehicleBodyTypeCodeMap.get(vehicleType)?.get(code) };
       this.vehicleTechRecordCalculated.bodyMake = payload?.psvBodyMake;
       this.vehicleTechRecordCalculated.chassisMake = payload?.psvChassisMake;
       this.vehicleTechRecordCalculated.chassisModel = payload?.psvChassisModel;

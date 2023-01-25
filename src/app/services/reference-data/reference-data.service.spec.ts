@@ -1,11 +1,14 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ReferenceDataApiResponse, ReferenceDataService as ReferenceDataApiService } from '@api/reference-data';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { MultiOptions } from '@forms/models/options.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, User } from '@models/reference-data.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { initialReferenceDataState, STORE_FEATURE_REFERENCE_DATA_KEY } from '@store/reference-data';
+import { ReferenceDataStateModule } from '@store/reference-data/reference-data.module';
 import { testCases } from '@store/reference-data/reference-data.test-cases';
+import { concat, concatMap, firstValueFrom, of, switchMap, take } from 'rxjs';
 import { ReferenceDataService } from './reference-data.service';
 
 describe('ReferenceDataService', () => {
@@ -180,6 +183,45 @@ describe('ReferenceDataService', () => {
           description: 'Alderney - GBA'
         });
         done();
+      });
+    });
+  });
+
+  describe('helper function', () => {
+    describe('mapReferenceDataOptions', () => {
+      it.each([
+        {
+          refData: [
+            {
+              resourceType: ReferenceDataResourceType.Brake,
+              resourceKey: 'banana',
+              description: 'yellow'
+            }
+          ] as ReferenceDataModelBase[],
+          output: [{ label: 'yellow', value: 'banana' }] as MultiOptions
+        },
+        {
+          refData: [
+            {
+              resourceType: ReferenceDataResourceType.User,
+              resourceKey: 'mike@mail.com',
+              name: 'Mike'
+            }
+          ] as Array<ReferenceDataModelBase & Partial<User>>,
+          output: [{ label: 'Mike', value: 'mike@mail.com' }]
+        },
+        {
+          refData: [
+            {
+              resourceType: ReferenceDataResourceType.User,
+              resourceKey: 'mike@mail.com'
+            }
+          ] as Array<ReferenceDataModelBase & Partial<User>>,
+          output: [{ label: 'mike@mail.com', value: 'mike@mail.com' }]
+        }
+      ])('should return MultiOption Array with description as label', async ({ refData, output }) => {
+        const options = await firstValueFrom(of(refData).pipe(take(1), service['mapReferenceDataOptions']));
+        expect(options).toEqual(output);
       });
     });
   });
