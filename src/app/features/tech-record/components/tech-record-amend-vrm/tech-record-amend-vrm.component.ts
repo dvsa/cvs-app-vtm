@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -24,13 +24,14 @@ export class AmendVrmComponent implements OnInit, OnChanges {
   vehicle?: VehicleTechRecordModel;
   currentTechRecord?: TechRecordModel;
   form: CustomFormGroup;
+  width: FormNodeWidth = FormNodeWidth.L;
 
   template: FormNode = {
     name: 'criteria',
     type: FormNodeTypes.GROUP,
     children: [
       {
-        name: 'newVRM',
+        name: 'newVrm',
         label: 'Input a new VRM',
         value: '',
         type: FormNodeTypes.CONTROL,
@@ -75,18 +76,27 @@ export class AmendVrmComponent implements OnInit, OnChanges {
     return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
+  hasProvisional() {
+    return this.vehicle && this.vehicle.techRecord.filter(x => x.statusCode === StatusCodes.PROVISIONAL).length >= 1;
+  }
+
+  techRecordStatus() {
+    return this.currentTechRecord!.statusCode.toString() ?? null;
+  }
+
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  handleSubmit(newVRM: string): void {
-    if (newVRM === '' || (newVRM === this.vrm ?? '')) {
-      return this.globalErrorService.addError({ error: 'You must provide a new VRM', anchorLink: 'newVRM' });
+  handleSubmit(newVrm: string): void {
+    this.globalErrorService.clearErrors();
+    if (newVrm === '' || (newVrm === this.vrm ?? '')) {
+      return this.globalErrorService.addError({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
     }
 
     this.technicalRecordService
-      .isUnique(newVRM, SEARCH_TYPES.VRM)
+      .isUnique(newVrm, SEARCH_TYPES.VRM)
       .pipe(
         map(response => {
           console.log(response);
@@ -103,28 +113,31 @@ export class AmendVrmComponent implements OnInit, OnChanges {
         next: res => {
           if (res == true) {
             console.log('response:', res);
-            const newVehicleRecord = this.amendVrm(newVRM, this.vehicle!);
+            const newVehicleRecord = this.amendVrm(this.vehicle!, newVrm);
 
-            this.setReasonForCreation(newVehicleRecord, newVRM);
+            this.setReasonForCreation(newVehicleRecord);
             //const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
             this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
             this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
 
             this.navigateBack();
-          } else this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVRM' });
+          } else this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
         },
-        error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVRM' })
+        error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
       });
   }
 
-  amendVrm(newVrm: string, record: VehicleTechRecordModel) {
+  amendVrm(record: VehicleTechRecordModel, newVrm: string) {
     const newModel: VehicleTechRecordModel = cloneDeep(record);
-    const vrmObject: Vrm = { vrm: newVrm.toUpperCase(), isPrimary: true };
-
     newModel.vrms.forEach(x => {
       x.isPrimary = false;
     });
-    newModel.vrms.push(vrmObject);
+
+    const existingVrmObject = newModel.vrms.find(vrm => vrm.vrm == newVrm);
+    if (existingVrmObject == null) {
+      const vrmObject: Vrm = { vrm: newVrm.toUpperCase(), isPrimary: true };
+      newModel.vrms.push(vrmObject);
+    } else existingVrmObject.isPrimary = true;
     return newModel;
   }
 
@@ -140,7 +153,7 @@ export class AmendVrmComponent implements OnInit, OnChanges {
     return newTechModel;
   }
 
-  setReasonForCreation(vehicleRecord: VehicleTechRecordModel, vrm: string) {
+  setReasonForCreation(vehicleRecord: VehicleTechRecordModel) {
     vehicleRecord.techRecord.forEach(record => (record.reasonForCreation = `Amending VRM.`));
   }
 }

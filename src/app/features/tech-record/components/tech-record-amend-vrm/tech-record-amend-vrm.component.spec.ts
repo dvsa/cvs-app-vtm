@@ -12,7 +12,7 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { updateEditingTechRecord } from '@store/technical-records';
+import { updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
@@ -21,9 +21,7 @@ const mockTechRecordService = {
   editableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
   viewableTechRecord$: jest.fn(),
-  updateEditingTechRecord: jest.fn().mockImplementation(() => {
-    console.log('Updating the editing tech record');
-  }),
+  updateEditingTechRecord: jest.fn().mockImplementation(() => {}),
   isUnique: jest.fn()
 };
 
@@ -129,7 +127,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
       component.handleSubmit('');
 
-      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVRM' });
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
     });
 
     it('should add an error when the field is equal to the current VRM', () => {
@@ -137,7 +135,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
       component.handleSubmit('KP01ABC');
 
-      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVRM' });
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
     });
 
     it('should add an error if isUnique returns false', () => {
@@ -146,7 +144,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
       component.handleSubmit('TESTVRM');
 
-      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM already exists', anchorLink: 'newVRM' });
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM already exists', anchorLink: 'newVrm' });
     });
 
     it('should dispatch the updateEditingTechRecord action', fakeAsync(() => {
@@ -155,31 +153,18 @@ describe('TechRecordChangeVrmComponent', () => {
       jest.spyOn(component, 'setReasonForCreation').mockImplementation();
       const dispatchSpy = jest.spyOn(mockTechRecordService, 'updateEditingTechRecord').mockImplementation(() => Promise.resolve(true));
 
-      component.vehicle = { vin: 'TESTVIN', vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
+      component.vehicle = { vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
 
       component.handleSubmit('TESTVRM');
       tick();
 
       expect(dispatchSpy).toHaveBeenNthCalledWith(1, {
-        vin: 'TESTVIN',
         vrms: [
           { vrm: 'VRM1', isPrimary: false },
           { vrm: 'TESTVRM', isPrimary: true }
         ]
       });
     }));
-
-    it('should make the old primary vrm no longer primary', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
-      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
-      const oldPrimaryVrm = 'KP01ABC';
-
-      expect(expectedVehicle.vrms.find(vrm => vrm.vrm == oldPrimaryVrm)?.isPrimary);
-
-      component.handleSubmit('TESTVRM');
-
-      expect(!expectedVehicle.vrms.find(vrm => vrm.vrm == oldPrimaryVrm)?.isPrimary);
-    });
 
     it('navigate back to the tech record', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
@@ -188,6 +173,73 @@ describe('TechRecordChangeVrmComponent', () => {
       component.handleSubmit('TESTVRM');
 
       expect(navigateSpy).toHaveBeenCalledWith([`..`], { relativeTo: route });
+    });
+  });
+
+  describe('amendVrm', () => {
+    it('should make the old primary vrm no longer primary', () => {
+      const oldPrimaryVrm = 'VRM1';
+      component.vehicle = {
+        techRecord: [{ reasonForCreation: '' }],
+        vrms: [{ vrm: 'VRM1', isPrimary: true }]
+      } as VehicleTechRecordModel;
+
+      const newVehicle = component.amendVrm(component.vehicle, 'TESTVRM');
+
+      expect(!newVehicle.vrms.find(vrm => vrm.vrm == oldPrimaryVrm)?.isPrimary);
+    });
+
+    it('should handle amending duplicate VRMs', fakeAsync(() => {
+      component.vehicle = {
+        vrms: [
+          { vrm: 'VRM1', isPrimary: true },
+          { vrm: 'VRM2', isPrimary: false }
+        ]
+      } as VehicleTechRecordModel;
+
+      const newVehicle = component.amendVrm(component.vehicle, 'VRM2');
+      tick();
+
+      expect(newVehicle).toEqual({
+        vrms: [
+          { vrm: 'VRM1', isPrimary: false },
+          { vrm: 'VRM2', isPrimary: true }
+        ]
+      });
+    }));
+  });
+
+  describe('setReasonForCreation', () => {
+    it('should set the reason for creation', () => {
+      jest.spyOn(router, 'navigate').mockImplementation();
+
+      component.vehicle = {
+        techRecord: [{ reasonForCreation: '' }],
+        vrms: [{ vrm: 'VRM1', isPrimary: true }]
+      } as VehicleTechRecordModel;
+
+      component.setReasonForCreation(component.vehicle);
+
+      expect(component.vehicle).toEqual({
+        techRecord: [{ reasonForCreation: 'Amending VRM.' }],
+        vrms: [{ vrm: 'VRM1', isPrimary: true }]
+      });
+    });
+
+    it('should set the reason for creation on multiple tech records', () => {
+      jest.spyOn(router, 'navigate').mockImplementation();
+
+      component.vehicle = {
+        techRecord: [{ reasonForCreation: '' }, { reasonForCreation: 'Created' }],
+        vrms: [{ vrm: 'VRM1', isPrimary: true }]
+      } as VehicleTechRecordModel;
+
+      component.setReasonForCreation(component.vehicle);
+
+      expect(component.vehicle).toEqual({
+        techRecord: [{ reasonForCreation: 'Amending VRM.' }, { reasonForCreation: 'Amending VRM.' }],
+        vrms: [{ vrm: 'VRM1', isPrimary: true }]
+      });
     });
   });
 });

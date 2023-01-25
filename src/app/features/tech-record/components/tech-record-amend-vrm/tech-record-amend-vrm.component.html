@@ -20,15 +20,21 @@
 
   <form [formGroup]="form">
     <app-text-input
-      #selectVehicleType
+      #newVrm
       [label]="form.meta.children![0].label"
       [formControlName]="form.meta.children![0].name"
+      [width]="width"
       name="amend-vrm-text"
-      (ngModelChange)="ngOnChanges()"
+      (ngModelChange)="ngOnChanges(); newVrm.value = newVrm.value.toUpperCase()"
     ></app-text-input>
 
+    <div *ngIf="newVrm.value.toUpperCase() !== vrm && newVrm.value.length !== 0">
+      <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
+      <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
+    </div>
+
     <div class="buttons-row">
-      <button class="govuk-button" data-module="govuk-button" type="submit" enterkeyhint="amend vrm" (click)="handleSubmit(selectVehicleType.value)">
+      <button class="govuk-button" data-module="govuk-button" type="submit" enterkeyhint="amend vrm" (click)="handleSubmit(newVrm.value)">
         Save
       </button>
 
