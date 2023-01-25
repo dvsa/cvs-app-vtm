@@ -21,9 +21,9 @@ const mockTechRecordService = {
   editableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
   viewableTechRecord$: jest.fn(),
-  // getByVrm: (vrm: string) => of(<VehicleTechRecordModel[]>{})
-  getByVrm: jest.fn(),
-  updateEditingTechRecord: jest.fn(),
+  updateEditingTechRecord: jest.fn().mockImplementation(() => {
+    console.log('Updating the editing tech record');
+  }),
   isUnique: jest.fn()
 };
 
@@ -142,7 +142,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('should add an error if isUnique returns false', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
-      jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
+      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(false));
 
       component.handleSubmit('TESTVRM');
 
@@ -151,14 +151,14 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('should dispatch the updateEditingTechRecord action', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
-      jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
+      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
 
       component.vehicle = { vin: 'TESTVIN', vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
 
-      const dispatchSpy = jest.spyOn(mockTechRecordService, 'updateEditingTechRecord');
+      const dispatchSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
+      component.handleSubmit('TESTVRM98');
 
-      component.handleSubmit('TESTVRM');
-
+      console.log(dispatchSpy.mock.calls);
       expect(dispatchSpy).toHaveBeenNthCalledWith(1, {
         vin: 'TESTVIN',
         vrms: [
@@ -170,7 +170,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('should make the old primary vrm no longer primary', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
-      jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
+      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
       const oldPrimaryVrm = 'KP01ABC';
 
       expect(expectedVehicle.vrms.find(vrm => vrm.vrm == oldPrimaryVrm)?.isPrimary);
@@ -182,11 +182,11 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('navigate back to the tech record', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
+      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
 
       component.handleSubmit('TESTVRM');
 
-      expect(navigateSpy).toHaveBeenCalledWith([`../amend-reason`], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith([`..`], { relativeTo: route });
     });
   });
 });

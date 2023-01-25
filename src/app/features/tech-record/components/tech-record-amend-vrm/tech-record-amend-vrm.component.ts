@@ -109,12 +109,8 @@ export class AmendVrmComponent implements OnInit, OnChanges {
             //const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
             this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
             this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
-            //all the examples I'm seeing the skipUntil or while go in a pipe
-            console.log();
 
-            const routeSuffix = this.currentTechRecord?.statusCode !== StatusCodes.PROVISIONAL ? 'amend-reason' : 'notifiable-alteration-needed';
-
-            this.router.navigate([`../${routeSuffix}`], { relativeTo: this.route });
+            this.navigateBack();
           } else this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVRM' });
         },
         error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVRM' })
