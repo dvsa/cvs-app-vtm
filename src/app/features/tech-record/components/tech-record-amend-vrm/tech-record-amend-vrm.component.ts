@@ -60,7 +60,9 @@ export class AmendVrmComponent implements OnInit, OnChanges {
       this.navigateBack();
     }
 
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.navigateBack());
+    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => {
+      this.navigateBack();
+    });
   }
 
   ngOnChanges(): void {

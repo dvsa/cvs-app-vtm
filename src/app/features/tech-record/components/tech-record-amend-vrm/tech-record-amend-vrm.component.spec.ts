@@ -13,6 +13,10 @@ import { initialAppState } from '@store/index';
 import { updateTechRecordsSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
+import { SharedModule } from '@shared/shared.module';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CustomFormGroup, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
@@ -48,7 +52,7 @@ describe('TechRecordChangeVrmComponent', () => {
         { provide: DynamicFormService, useValue: mockDynamicFormService },
         { provide: TechnicalRecordService, useValue: mockTechRecordService }
       ],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule]
     }).compileComponents();
   });
 
@@ -116,6 +120,18 @@ describe('TechRecordChangeVrmComponent', () => {
 
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
+
+    it('should navigate back on updateTechRecordsSuccess', fakeAsync(() => {
+      component.ngOnInit();
+
+      const navigateBackSpy = jest.spyOn(component, 'navigateBack');
+      jest.spyOn(router, 'navigate').mockImplementation();
+
+      actions$.next(updateTechRecordsSuccess({}));
+      tick();
+
+      expect(navigateBackSpy).toHaveBeenCalled();
+    }));
   });
 
   describe('handleSubmit', () => {
@@ -162,17 +178,6 @@ describe('TechRecordChangeVrmComponent', () => {
         ]
       });
     }));
-
-    it('navigate back to the tech record', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
-
-      actions$.next(updateTechRecordsSuccess({}));
-
-      component.handleSubmit('TESTVRM');
-
-      expect(navigateSpy).toHaveBeenCalledWith([`..`], { relativeTo: route });
-    });
   });
 
   describe('amendVrm', () => {
