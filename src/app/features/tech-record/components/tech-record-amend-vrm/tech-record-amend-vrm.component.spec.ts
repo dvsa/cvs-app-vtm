@@ -10,6 +10,7 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
+import { updateTechRecordsSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 
@@ -165,6 +166,8 @@ describe('TechRecordChangeVrmComponent', () => {
     it('navigate back to the tech record', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
+
+      actions$.next(updateTechRecordsSuccess({}));
 
       component.handleSubmit('TESTVRM');
 

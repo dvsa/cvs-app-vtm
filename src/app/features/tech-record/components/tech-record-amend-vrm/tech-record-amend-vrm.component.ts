@@ -7,11 +7,12 @@ import { CustomFormGroup, FormNode, FormNodeTypes, FormNodeWidth } from '@forms/
 import { TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { updateTechRecords } from '@store/technical-records';
+import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { catchError, map, of, take, throwError } from 'rxjs';
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-change-amend-vrm',
@@ -39,6 +40,7 @@ export class AmendVrmComponent implements OnInit, OnChanges {
   };
 
   constructor(
+    private actions$: Actions,
     public dfs: DynamicFormService,
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
@@ -57,6 +59,8 @@ export class AmendVrmComponent implements OnInit, OnChanges {
     if (!this.currentTechRecord) {
       this.navigateBack();
     }
+
+    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 
   ngOnChanges(): void {
@@ -109,13 +113,20 @@ export class AmendVrmComponent implements OnInit, OnChanges {
             //const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
             this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
             this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
+
+            // try {
+            //   this.navigateBack();
+            // } catch(e){
+            //   throw e;
+            // }
           } else this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
         },
         error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
       });
-    if (!this.globalErrorService.errors$) {
-      this.navigateBack();
-    }
+    // console.log(this.globalErrorService.errors$);
+    // if (!this.globalErrorService.errors$) {
+    //   this.navigateBack();
+    // }
   }
 
   amendVrm(record: VehicleTechRecordModel, newVrm: string) {
