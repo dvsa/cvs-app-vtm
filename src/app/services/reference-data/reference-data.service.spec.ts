@@ -2,13 +2,26 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { ReferenceDataApiResponse, ReferenceDataService as ReferenceDataApiService } from '@api/reference-data';
 import { MultiOptions } from '@forms/models/options.model';
-import { ReferenceDataModelBase, ReferenceDataResourceType, User } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User } from '@models/reference-data.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
-import { initialReferenceDataState, STORE_FEATURE_REFERENCE_DATA_KEY } from '@store/reference-data';
-import { ReferenceDataStateModule } from '@store/reference-data/reference-data.module';
+import {
+  addSearchInformation,
+  fetchReferenceData,
+  fetchReferenceDataByKeySearch,
+  fetchTyreReferenceDataByKeySearch,
+  initialReferenceDataState,
+  ReferenceDataEntityStateTyres,
+  referencePsvMakeLoadingState,
+  removeTyreSearch,
+  selectAllReferenceDataByResourceType,
+  selectTyreSearchCriteria,
+  selectTyreSearchReturn,
+  STORE_FEATURE_REFERENCE_DATA_KEY
+} from '@store/reference-data';
 import { testCases } from '@store/reference-data/reference-data.test-cases';
-import { concat, concatMap, firstValueFrom, of, switchMap, take } from 'rxjs';
+import { firstValueFrom, of, take } from 'rxjs';
 import { ReferenceDataService } from './reference-data.service';
 
 describe('ReferenceDataService', () => {
@@ -152,6 +165,15 @@ describe('ReferenceDataService', () => {
                 description: 'Alderney - GBA'
               }
             }
+          },
+          [ReferenceDataResourceType.ReasonsForAbandoningPsv]: {
+            ids: ['foobar'],
+            entities: {
+              foobar: {
+                resourceType: ReferenceDataResourceType.ReasonsForAbandoningPsv,
+                resourceKey: 'foobar'
+              }
+            }
           }
         }
       });
@@ -184,6 +206,71 @@ describe('ReferenceDataService', () => {
         });
         done();
       });
+    });
+
+    it('should get the tyre search results', done => {
+      const mockReferenceDataTyre = [{ code: 'foo' }] as ReferenceDataTyre[];
+      store.overrideSelector(selectTyreSearchReturn, mockReferenceDataTyre);
+      service
+        .getTyreSearchReturn$()
+        .pipe(take(1))
+        .subscribe(referenceData => {
+          expect(referenceData).toEqual(mockReferenceDataTyre);
+          done();
+        });
+    });
+    it('should get the tyre search criteria', done => {
+      const mockState = { loading: false } as ReferenceDataEntityStateTyres;
+      store.overrideSelector(selectTyreSearchCriteria, mockState);
+      service
+        .getTyreSearchCriteria$()
+        .pipe(take(1))
+        .subscribe(referenceData => {
+          expect(referenceData).toEqual(mockState);
+          done();
+        });
+    });
+    it('should get the psv make reference data loading', done => {
+      store.overrideSelector(referencePsvMakeLoadingState, false);
+      service
+        .getReferencePsvMakeDataLoading$()
+        .pipe(take(1))
+        .subscribe(loadingFlag => {
+          expect(loadingFlag).toBe(false);
+          done();
+        });
+    });
+
+    it('should get the data from state and format the response', done => {
+      service
+        .getReferenceDataOptions(ReferenceDataResourceType.CountryOfRegistration)
+        .pipe(take(1))
+        .subscribe(data => {
+          expect(data).toEqual([
+            { label: 'Great Britain and Northern Ireland - GB', value: 'gb' },
+            { label: 'Alderney - GBA', value: 'gba' }
+          ]);
+          done();
+        });
+    });
+    it('should get the data from state and format the response', done => {
+      service
+        .getReasonsForAbandoning(VehicleTypes.PSV)
+        .pipe(take(1))
+        .subscribe(data => {
+          expect(data).toEqual([{ label: 'foobar', value: 'foobar' }]);
+          done();
+        });
+    });
+
+    it('should return if vehicle Type if undefined', done => {
+      service
+        .getReasonsForAbandoning(undefined)
+        .pipe(take(1))
+        .subscribe(data => {
+          expect(data).toEqual([]);
+          done();
+        });
     });
   });
 
@@ -223,6 +310,43 @@ describe('ReferenceDataService', () => {
         const options = await firstValueFrom(of(refData).pipe(take(1), service['mapReferenceDataOptions']));
         expect(options).toEqual(output);
       });
+    });
+  });
+
+  describe('search methods', () => {
+    describe('fetchReferenceDataByKeySearch', () => {
+      it('should dispatch the action to fetchReferenceDataByKeySearch', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        service.loadReferenceDataByKeySearch(ReferenceDataResourceType.CountryOfRegistration, 'foo');
+        expect(dispatchSpy).toHaveBeenCalledWith(
+          fetchReferenceDataByKeySearch({ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'foo' })
+        );
+      });
+    });
+    describe('loadTyreReferenceDataByKeySearch', () => {
+      it('should dispatch the action to loadTyreReferenceDataByKeySearch', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        service.loadTyreReferenceDataByKeySearch('foo', 'bar');
+        expect(dispatchSpy).toHaveBeenCalledWith(fetchTyreReferenceDataByKeySearch({ searchFilter: 'foo', searchTerm: 'bar' }));
+      });
+    });
+  });
+
+  describe('store methods', () => {
+    it('should dispatch the fetchReferenceData action', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      service.loadReferenceData(ReferenceDataResourceType.CountryOfRegistration);
+      expect(dispatchSpy).toHaveBeenCalledWith(fetchReferenceData({ resourceType: ReferenceDataResourceType.CountryOfRegistration }));
+    });
+    it('should dispatch the addSearchInformation action', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      service.addSearchInformation('foo', 'bar');
+      expect(dispatchSpy).toHaveBeenCalledWith(addSearchInformation({ filter: 'foo', term: 'bar' }));
+    });
+    it('should dispatch the removeTyreSearch action', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      service.removeTyreSearch();
+      expect(dispatchSpy).toHaveBeenCalledWith(removeTyreSearch());
     });
   });
 });

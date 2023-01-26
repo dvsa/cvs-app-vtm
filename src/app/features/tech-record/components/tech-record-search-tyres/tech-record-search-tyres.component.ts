@@ -15,7 +15,6 @@ import { Store } from '@ngrx/store';
 import { selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { updateEditingTechRecord } from '@store/technical-records/actions/technical-record-service.actions';
 import { VehicleTechRecordModel, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -104,10 +103,10 @@ export class TechRecordSearchTyresComponent implements OnInit {
     return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
   get paginatedFields(): ReferenceDataTyre[] {
-    return this.searchResults!.slice(this.pageStart, this.pageEnd);
+    return this.searchResults?.slice(this.pageStart, this.pageEnd) ?? [];
   }
   get numberOfResults(): number {
-    return this.searchResults?.length!;
+    return this.searchResults?.length ?? 0;
   }
 
   handleSearch(filter: string, term: string): void {
@@ -116,12 +115,10 @@ export class TechRecordSearchTyresComponent implements OnInit {
     this.searchResults = [];
     this.referenceDataService.addSearchInformation(filter, term);
 
-    if (!term) {
-      this.globalErrorService.addError({ error: 'You must provide search criteria', anchorLink: 'term' });
-      return;
-    } else if (!filter) {
-      this.globalErrorService.addError({ error: 'You must select a valid search filter', anchorLink: 'term' });
-      return;
+    if (!term || !filter) {
+      const error = !term ? 'You must provide a search criteria' : 'You must select a valid search filter';
+      const anchorLink = !term ? 'term' : 'filter';
+      this.globalErrorService.addError({ error, anchorLink });
     }
 
     if (filter === 'code') {
@@ -133,7 +130,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     this.actions$
       .pipe(
         ofType(fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess),
-        mergeMap(() => this.store.select(selectTyreSearchReturn())),
+        mergeMap(() => this.store.select(selectTyreSearchReturn)),
         take(1)
       )
       .subscribe(data => {
@@ -172,7 +169,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     return errors.find(error => error.anchorLink === name);
   }
   trackByFn(i: number, r: ReferenceDataTyre) {
-    return r.resourceKey!;
+    return r.resourceKey;
   }
   cancel() {
     this.globalErrorService.clearErrors();

@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -9,27 +9,33 @@ import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-
 import { Roles } from '@models/roles.enum';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState } from '@store/index';
+import { initialAppState, State } from '@store/index';
 import { of, ReplaySubject } from 'rxjs';
 
 import { TechRecordSearchTyresComponent } from './tech-record-search-tyres.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { ActivatedRoute, Router } from '@angular/router';
+import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { fetchReferenceDataByKeySearchSuccess, selectTyreSearchReturn } from '@store/reference-data';
 
 const mockGlobalErrorService = {
   addError: jest.fn(),
   clearErrors: jest.fn()
 };
 const mockTechRecordService = {
-  editableTechRecord$: of({}),
+  get editableTechRecord$() {
+    return of({});
+  },
   selectedVehicleTechRecord$: of({}),
   viewableTechRecord$: jest.fn()
 };
 const mockReferenceDataService = {
   addSearchInformation: jest.fn(),
   getTyreSearchReturn$: jest.fn(),
+  getTyreSearchCriteria$: jest.fn(),
   loadReferenceDataByKeySearch: jest.fn(),
   loadTyreReferenceDataByKeySearch: jest.fn(),
   loadReferenceData: jest.fn()
@@ -42,6 +48,9 @@ describe('TechRecordSearchTyresComponent', () => {
   let component: TechRecordSearchTyresComponent;
   let fixture: ComponentFixture<TechRecordSearchTyresComponent>;
   let actions$ = new ReplaySubject<Action>();
+  let router: Router;
+  let route: ActivatedRoute;
+  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -60,6 +69,9 @@ describe('TechRecordSearchTyresComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TechRecordSearchTyresComponent);
+    router = TestBed.inject(Router);
+    route = TestBed.inject(ActivatedRoute);
+    store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
   });
 
@@ -115,6 +127,17 @@ describe('TechRecordSearchTyresComponent', () => {
       component.handleSearch(filter, term);
       expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith(filter, term);
     });
+    it('should navigate and populate the search results on success action', fakeAsync(() => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      const mockTyreSearchReturn = ['foo', 'bar'] as any;
+      store.overrideSelector(selectTyreSearchReturn, mockTyreSearchReturn);
+      component.handleSearch('foo', 'bar');
+      expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith('foo', 'bar');
+      actions$.next(fetchReferenceDataByKeySearchSuccess);
+      tick();
+      expect(navigateSpy).toHaveBeenCalledWith(['.'], { relativeTo: route, queryParams: { 'search-results-page': 1 } });
+      expect(component.searchResults).toEqual(mockTyreSearchReturn);
+    }));
   });
 
   describe('handleSelectTyreData', () => {
@@ -154,6 +177,66 @@ describe('TechRecordSearchTyresComponent', () => {
     it('should clear global errors', () => {
       component.cancel();
       expect(mockGlobalErrorService.clearErrors).toBeCalled();
+    });
+  });
+
+  describe('Getters', () => {
+    it('should get the currentVrm', () => {
+      const mockVehicleRecord = {
+        vrms: [
+          { isPrimary: false, vrm: 'foo' },
+          { isPrimary: true, vrm: 'bar' }
+        ]
+      } as VehicleTechRecordModel;
+      component.vehicleTechRecord = mockVehicleRecord;
+      expect(component.currentVrm).toEqual('bar');
+    });
+    it('should get the paginated fields', () => {
+      component.searchResults = ['foo', 'bar', 'foobar'] as any;
+      expect(component.paginatedFields).toEqual(['foo', 'bar', 'foobar']);
+    });
+    it('should get the number of results', () => {
+      component.searchResults = ['foo', 'bar', 'foobar'] as any;
+      expect(component.numberOfResults).toEqual(component.searchResults?.length);
+    });
+  });
+
+  describe('trackByFn', () => {
+    it('should return the resourceKey', () => {
+      expect(component.trackByFn(12, { resourceKey: 'foo' } as any)).toEqual('foo');
+    });
+  });
+
+  describe('OnInit', () => {
+    it('should patch the form with the search criteria and the search return', () => {
+      const mockForm = {
+        controls: {
+          filter: {
+            patchValue: jest.fn()
+          },
+          term: {
+            patchValue: jest.fn()
+          }
+        }
+      };
+      const mockTyreSearchReturn = ['foobar'];
+      const mockSearchCriteria = { filter: 'foo', term: 'bar' };
+      const dfsSpy = jest.spyOn(mockDynamicFormService, 'createForm').mockReturnValue(mockForm);
+      jest.spyOn(mockReferenceDataService, 'getTyreSearchReturn$').mockReturnValue(of(mockTyreSearchReturn));
+      jest.spyOn(mockReferenceDataService, 'getTyreSearchCriteria$').mockReturnValue(of(mockSearchCriteria));
+      const filterSpy = jest.spyOn(mockForm.controls.filter, 'patchValue');
+      const termSpy = jest.spyOn(mockForm.controls.term, 'patchValue');
+      component.ngOnInit();
+      expect(dfsSpy).toHaveBeenCalledWith(component.template);
+      expect(filterSpy).toHaveBeenCalledWith(mockSearchCriteria.filter);
+      expect(termSpy).toHaveBeenCalledWith(mockSearchCriteria.term);
+      expect(component.searchResults).toEqual(mockTyreSearchReturn);
+    });
+    it('should navigate if there is no viewable tech record', () => {
+      const routerSpy = jest.spyOn(router, 'navigate');
+      jest.spyOn(mockTechRecordService, 'editableTechRecord$', 'get').mockReturnValue(of(undefined) as any);
+      component.ngOnInit();
+      expect(routerSpy).toHaveBeenCalledWith(['../..'], { relativeTo: route });
     });
   });
 });
