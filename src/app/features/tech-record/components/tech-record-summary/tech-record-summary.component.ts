@@ -201,7 +201,7 @@ export class TechRecordSummaryComponent implements OnInit {
         }
       } else if (vehicleAxles && !vehicleAxleSpacings) {
         this.vehicleTechRecordCalculated.dimensions!.axleSpacing = this.generateAxleSpacing(vehicleAxles.length);
-      } else if (!vehicleAxles && vehicleAxleSpacings && vehicleAxleSpacings.length > 0) {
+      } else if (!vehicleAxles && vehicleAxleSpacings && vehicleAxleSpacings.length) {
         this.vehicleTechRecordCalculated.axles = this.generateAxlesFromAxleSpacings(
           this.vehicleTechRecordCalculated.vehicleType,
           vehicleAxleSpacings.length
