@@ -1,7 +1,6 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { createAction, props } from '@ngrx/store';
-import { ActionCreator, ActionCreatorProps } from '@ngrx/store/src/models';
-import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '../../../models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 
 const prefix = '[Technical Record Service]';
 
@@ -48,12 +47,12 @@ export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, pro
 export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
 export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord');
 
-export const updateEditingTechRecord = createAction('[tech-record] Update editing', props<{ vehicleTechRecord: VehicleTechRecordModel }>());
-export const updateEditingTechRecordCancel = createAction('[tech-record] Update editing cancelled');
+export const updateEditingTechRecord = createAction(`${prefix} updateEditingTechRecord`, props<{ vehicleTechRecord: VehicleTechRecordModel }>());
+export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditingTechRecordCancel`);
 
-export const changeVehicleType = createAction('[tech-record] vehicle type changed', props<{ vehicleType: VehicleTypes }>());
+export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ vehicleType: VehicleTypes }>());
 
-export const createVehicle = createAction('[tech-record] create vehicle', props<{ vehicleType: VehicleTypes }>());
+export const createVehicle = createAction(`${prefix} createVehicle`, props<{ vehicleType: VehicleTypes }>());
 
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';
