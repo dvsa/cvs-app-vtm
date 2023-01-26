@@ -41,19 +41,19 @@ export enum SEARCH_TYPES {
 export class TechnicalRecordService {
   constructor(private http: HttpClient, private router: Router, private store: Store) {}
 
-  get vehicleTechRecords$() {
+  get vehicleTechRecords$(): Observable<VehicleTechRecordModel[]> {
     return this.store.pipe(select(vehicleTechRecords));
   }
 
-  get editableTechRecord$() {
+  get editableTechRecord$(): Observable<TechRecordModel | undefined> {
     return this.store.pipe(select(editableTechRecord));
   }
 
-  get editableVehicleTechRecord$() {
+  get editableVehicleTechRecord$(): Observable<VehicleTechRecordModel | undefined> {
     return this.store.pipe(select(editableVehicleTechRecord));
   }
 
-  get selectedVehicleTechRecord$() {
+  get selectedVehicleTechRecord$(): Observable<VehicleTechRecordModel | undefined> {
     return this.store.pipe(select(selectVehicleTechnicalRecordsBySystemNumber));
   }
 
@@ -85,17 +85,16 @@ export class TechnicalRecordService {
     return this.getVehicleTechRecordModels(term, SEARCH_TYPES.ALL);
   }
 
-  private getVehicleTechRecordModels(id: string, type: SEARCH_TYPES) {
+  private getVehicleTechRecordModels(id: string, type: SEARCH_TYPES): Observable<VehicleTechRecordModel[]> {
     const queryStr = `${id}/tech-records?status=all&metadata=true&searchCriteria=${type}`;
     const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
 
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  createVehicleRecord(newVehicleRecord: VehicleTechRecordModel, user: { id?: string; name: string }) {
+  createVehicleRecord(newVehicleRecord: VehicleTechRecordModel, user: { id?: string; name: string }): Observable<postNewVehicleModel> {
     const recordCopy = cloneDeep(newVehicleRecord);
 
-    const url = `${environment.VTM_API_URI}/vehicles`;
     const body = {
       msUserDetails: { msOid: user.id, msUser: user.name },
       vin: recordCopy.vin,
@@ -104,10 +103,14 @@ export class TechnicalRecordService {
       techRecord: recordCopy.techRecord
     };
 
-    return this.http.post<postNewVehicleModel>(url, body, { responseType: 'json' });
+    return this.http.post<postNewVehicleModel>(`${environment.VTM_API_URI}/vehicles`, body);
   }
 
-  createProvisionalTechRecord(systemNumber: string, techRecord: TechRecordModel, user: { id?: string; name: string }) {
+  createProvisionalTechRecord(
+    systemNumber: string,
+    techRecord: TechRecordModel,
+    user: { id?: string; name: string }
+  ): Observable<VehicleTechRecordModel> {
     // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
     const recordCopy = cloneDeep(techRecord);
     recordCopy.statusCode = StatusCodes.PROVISIONAL;
@@ -129,7 +132,7 @@ export class TechnicalRecordService {
     user: { id?: string; name: string },
     recordToArchiveStatus?: StatusCodes,
     newStatus?: StatusCodes
-  ) {
+  ): Observable<VehicleTechRecordModel> {
     const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
     const newTechRecord = newVehicleTechRecord.techRecord[0];
     newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
@@ -146,7 +149,12 @@ export class TechnicalRecordService {
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  archiveTechnicalRecord(systemNumber: string, techRecord: TechRecordModel, reason: string, user: { id?: string; name: string }) {
+  archiveTechnicalRecord(
+    systemNumber: string,
+    techRecord: TechRecordModel,
+    reason: string,
+    user: { id?: string; name: string }
+  ): Observable<VehicleTechRecordModel> {
     const url = `${environment.VTM_API_URI}/vehicles/archive/${systemNumber}`;
 
     const body = {
@@ -158,7 +166,7 @@ export class TechnicalRecordService {
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  isUnique(valueToCheck: string, searchType: SEARCH_TYPES) {
+  isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
     const isUnique = this.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
       map(vehicleTechRecord => {
         if (vehicleTechRecord.length == 0) {
@@ -248,7 +256,7 @@ export class TechnicalRecordService {
     );
   }
 
-  searchBy(type: SEARCH_TYPES, term: string) {
+  searchBy(type: SEARCH_TYPES, term: string): void {
     switch (type) {
       case SEARCH_TYPES.VIN:
         this.store.dispatch(getByVin({ [type]: term }));
@@ -268,7 +276,7 @@ export class TechnicalRecordService {
     }
   }
 
-  generateEditingVehicleTechnicalRecordFromVehicleType(vehicleType: VehicleTypes) {
+  generateEditingVehicleTechnicalRecordFromVehicleType(vehicleType: VehicleTypes): void {
     this.store.dispatch(createVehicle({ vehicleType: vehicleType }));
   }
 

@@ -3,12 +3,11 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
-import cloneDeep from 'lodash.clonedeep';
-import merge from 'lodash.merge';
+import { cloneDeep, merge } from 'lodash';
 import { mergeMap, map, catchError, of, withLatestFrom, switchMap, concatMap, tap } from 'rxjs';
 import {
   archiveTechRecord,
@@ -114,16 +113,16 @@ export class TechnicalRecordServiceEffects {
     this.actions$.pipe(
       ofType(createVehicleRecord),
       withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
-      switchMap(([action, record, name, id]) =>
+      switchMap(([, record, name, id]) =>
         this.technicalRecordService.createVehicleRecord(record!, { id, name }).pipe(
           map(newVehicleRecord => createVehicleRecordSuccess({ vehicleTechRecords: [newVehicleRecord] })),
-          catchError(err => of(createVehicleRecordFailure({ err: this.getTechRecordErrorMessage(err, 'createNewVehicleRecord') })))
+          catchError(error => of(createVehicleRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createVehicleRecord') })))
         )
       )
     )
   );
 
-  createProvisionalTechRecord = createEffect(() =>
+  createProvisionalTechRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createProvisionalTechRecord),
       withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.name$, this.userService.id$),
@@ -151,7 +150,7 @@ export class TechnicalRecordServiceEffects {
     )
   );
 
-  archiveTechRecord = createEffect(() =>
+  archiveTechRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(archiveTechRecord),
       withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.name$, this.userService.id$),
@@ -164,7 +163,7 @@ export class TechnicalRecordServiceEffects {
     )
   );
 
-  generateTechRecordBasedOnSectionTemplates = createEffect(
+  generateTechRecordBasedOnSectionTemplates$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(changeVehicleType, createVehicle),
@@ -194,14 +193,15 @@ export class TechnicalRecordServiceEffects {
     } else if (error.status === 404) {
       return this.apiErrors[type + '_404'];
     } else {
-      return `${this.apiErrors[type + '_400']} ${search ? search : JSON.stringify(error.error)}`;
+      return `${this.apiErrors[type + '_400']} ${search ?? JSON.stringify(error.error)}`;
     }
   }
 
   private apiErrors: { [key: string]: string } = {
-    updateTechnicalRecord_400: 'Unable to update technical record',
-    createProvisionalTechRecord_400: 'Unable to create a new provisional record',
     getTechnicalRecords_400: 'There was a problem getting the Tech Record by',
-    getTechnicalRecords_404: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number'
+    getTechnicalRecords_404: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
+    createVehicleRecord_400: 'Unable to create a new vehicle record',
+    createProvisionalTechRecord_400: 'Unable to create a new provisional record',
+    updateTechnicalRecord_400: 'Unable to update technical record'
   };
 }

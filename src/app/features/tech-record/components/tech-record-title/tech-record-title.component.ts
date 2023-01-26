@@ -31,11 +31,14 @@ export class TechRecordTitleComponent implements OnInit {
 
     this.currentTechRecord$
       .pipe(take(1))
-      .subscribe(data =>
-        data?.make || data?.chassisMake
-          ? (this.vehicleMakeAndModel =
-              data?.vehicleType === this.vehicleTypes.PSV ? `${data.chassisMake} ${data.chassisModel}` : `${data?.make} ${data?.model}`)
-          : (this.vehicleMakeAndModel = '')
+      .subscribe(
+        data =>
+          (this.vehicleMakeAndModel =
+            data?.make || data?.chassisMake
+              ? data.vehicleType === this.vehicleTypes.PSV
+                ? `${data.chassisMake} ${data.chassisModel}`
+                : `${data?.make} ${data?.model}`
+              : '')
       );
   }
 
