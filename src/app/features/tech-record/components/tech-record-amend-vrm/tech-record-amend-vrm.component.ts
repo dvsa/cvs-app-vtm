@@ -145,6 +145,6 @@ export class AmendVrmComponent implements OnInit, OnChanges {
   }
 
   setReasonForCreation(vehicleRecord: VehicleTechRecordModel) {
-    vehicleRecord.techRecord.forEach(record => (record.reasonForCreation = `Amending VRM.`));
+    if (vehicleRecord.techRecord !== undefined) vehicleRecord.techRecord.forEach(record => (record.reasonForCreation = `Amending VRM.`));
   }
 }

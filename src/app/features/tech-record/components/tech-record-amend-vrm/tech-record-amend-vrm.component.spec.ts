@@ -237,5 +237,19 @@ describe('TechRecordChangeVrmComponent', () => {
         vrms: [{ vrm: 'VRM1', isPrimary: true }]
       });
     });
+
+    it('should handle being given no tech records', () => {
+      jest.spyOn(router, 'navigate').mockImplementation();
+
+      component.vehicle = {
+        vrms: [{ vrm: 'VRM1', isPrimary: true }]
+      } as VehicleTechRecordModel;
+
+      component.setReasonForCreation(component.vehicle);
+
+      expect(component.vehicle).toEqual({
+        vrms: [{ vrm: 'VRM1', isPrimary: true }]
+      });
+    });
   });
 });
