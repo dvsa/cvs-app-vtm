@@ -115,20 +115,10 @@ export class AmendVrmComponent implements OnInit, OnChanges {
             //const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
             this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
             this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
-
-            // try {
-            //   this.navigateBack();
-            // } catch(e){
-            //   throw e;
-            // }
           } else this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
         },
         error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
       });
-    // console.log(this.globalErrorService.errors$);
-    // if (!this.globalErrorService.errors$) {
-    //   this.navigateBack();
-    // }
   }
 
   amendVrm(record: VehicleTechRecordModel, newVrm: string) {
