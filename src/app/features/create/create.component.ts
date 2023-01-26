@@ -62,7 +62,7 @@ export class CreateComponent implements OnChanges {
   }
 
   get primaryVrm(): string {
-    return this.vehicle.vrms!.find(vrm => vrm.isPrimary)!.vrm;
+    return this.vehicle.vrms?.find(vrm => vrm.isPrimary)?.vrm ?? '';
   }
 
   get isFormValid(): boolean {
