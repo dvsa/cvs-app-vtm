@@ -25,9 +25,9 @@ export class HydrateNewVehicleRecordComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    !this.vehicle$.subscribe(data => {
+    this.vehicle$.subscribe(data => {
       if (!data) {
-        this.router.navigate(['..'], { relativeTo: this.route });
+        this.navigateBack();
       }
     });
   }
