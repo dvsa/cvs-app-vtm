@@ -110,21 +110,19 @@ export class TechRecordSearchTyresComponent implements OnInit {
   }
 
   handleSearch(filter: string, term: string): void {
-    term = term.trim();
     this.globalErrorService.clearErrors();
     this.searchResults = [];
-    this.referenceDataService.addSearchInformation(filter, term);
-
-    if (!term || !filter) {
-      const error = !term ? 'You must provide a search criteria' : 'You must select a valid search filter';
-      const anchorLink = !term ? 'term' : 'filter';
-      this.globalErrorService.addError({ error, anchorLink });
+    const trimmedTerm = term?.trim();
+    if (!trimmedTerm || !filter) {
+      const error = !trimmedTerm ? 'You must provide a search criteria' : 'You must select a valid search filter';
+      this.globalErrorService.addError({ error, anchorLink: 'term' });
+      return;
     }
-
+    this.referenceDataService.addSearchInformation(filter, trimmedTerm);
     if (filter === 'code') {
-      this.referenceDataService.loadReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, term);
+      this.referenceDataService.loadReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, trimmedTerm);
     } else {
-      this.referenceDataService.loadTyreReferenceDataByKeySearch(filter, term);
+      this.referenceDataService.loadTyreReferenceDataByKeySearch(filter, trimmedTerm);
     }
 
     this.actions$

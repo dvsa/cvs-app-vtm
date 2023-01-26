@@ -138,6 +138,21 @@ describe('TechRecordSearchTyresComponent', () => {
       expect(navigateSpy).toHaveBeenCalledWith(['.'], { relativeTo: route, queryParams: { 'search-results-page': 1 } });
       expect(component.searchResults).toEqual(mockTyreSearchReturn);
     }));
+
+    const testCases = [
+      { filter: '', term: 'foo' },
+      { filter: 'foo', term: '' },
+      { filter: '', term: '' }
+    ];
+
+    it.each(testCases)('should return early if the search information has not been provided', ({ filter, term }) => {
+      jest.resetAllMocks();
+      const refDataServiceSpy = jest.spyOn(mockReferenceDataService, 'addSearchInformation');
+      const errorServiceSpy = jest.spyOn(mockGlobalErrorService, 'addError');
+      component.handleSearch(filter, term);
+      expect(refDataServiceSpy).not.toHaveBeenCalled();
+      expect(errorServiceSpy).toHaveBeenCalledWith({ error: expect.stringContaining(term ? 'filter' : 'criteria'), anchorLink: 'term' });
+    });
   });
 
   describe('handleSelectTyreData', () => {
