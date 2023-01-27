@@ -190,6 +190,24 @@ describe('TechRecordChangeVrmComponent', () => {
         ]
       });
     }));
+
+    it('should be able to call it multiple times', fakeAsync(() => {
+      jest.spyOn(router, 'navigate').mockImplementation();
+      jest.spyOn(component, 'setReasonForCreation').mockImplementation();
+      const submitSpy = jest.spyOn(component, 'handleSubmit').mockImplementation(() => Promise.resolve(true));
+
+      component.vehicle = { vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
+
+      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
+      component.handleSubmit('TESTVRM');
+      tick();
+
+      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
+      component.handleSubmit('TESTVRM2');
+      tick();
+
+      expect(submitSpy).toHaveBeenCalledTimes(2);
+    }));
   });
 
   describe('amendVrm', () => {

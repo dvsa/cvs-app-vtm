@@ -93,7 +93,10 @@ export class AmendVrmComponent implements OnInit, OnChanges {
 
     this.technicalRecordService
       .isUnique(newVrm, SEARCH_TYPES.VRM)
-      .pipe(catchError(error => (error.status == 404 ? of(true) : throwError(() => new Error('Error')))))
+      .pipe(
+        take(1),
+        catchError(error => (error.status == 404 ? of(true) : throwError(() => new Error('Error'))))
+      )
       .subscribe({
         next: res => {
           if (!res) return this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
