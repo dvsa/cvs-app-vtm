@@ -47,7 +47,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'manufactureYear',
       label: 'Year of manufacture',
-      value: '',
+      value: null,
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
