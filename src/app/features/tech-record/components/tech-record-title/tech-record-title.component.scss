@@ -1,5 +1,9 @@
 @import 'node_modules/govuk-frontend/govuk/all';
 
+.govuk-heading-l {
+  display: flex;
+}
+
 .govuk-summary-list__actions--flex {
   display: flex;
   justify-content: flex-end;
