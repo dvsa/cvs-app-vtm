@@ -9,6 +9,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { CustomValidators } from '@forms/validators/custom-validators';
 
 @Component({
   selector: 'app-create',
@@ -21,18 +22,23 @@ export class CreateComponent implements OnChanges {
     vin: new CustomFormControl(
       {
         name: 'input-vin',
+        label: 'Vin',
         type: FormNodeTypes.CONTROL
       },
       '',
       [Validators.minLength(3), Validators.maxLength(21), Validators.required]
     ),
-    vrmTrm: new CustomFormControl({ name: 'input-vrm-or-trailer-id', type: FormNodeTypes.CONTROL }, '', [
+    vrmTrm: new CustomFormControl({ name: 'input-vrm-or-trailer-id', label: 'VRM/TRM', type: FormNodeTypes.CONTROL }, '', [
       Validators.minLength(1),
       Validators.maxLength(9),
       Validators.required
     ]),
-    vehicleStatus: new CustomFormControl({ name: 'change-vehicle-status-select', type: FormNodeTypes.CONTROL }, '', [Validators.required]),
-    vehicleType: new CustomFormControl({ name: 'change-vehicle-type-select', type: FormNodeTypes.CONTROL }, '', [Validators.required])
+    vehicleStatus: new CustomFormControl({ name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL }, '', [
+      Validators.required
+    ]),
+    vehicleType: new CustomFormControl({ name: 'change-vehicle-type-select', label: 'Vehicle type', type: FormNodeTypes.CONTROL }, '', [
+      Validators.required
+    ])
   });
 
   constructor(
