@@ -36,7 +36,7 @@ export const TrlWeight: FormNode = {
       name: 'grossEecWeight',
       label: 'EEC (optional)',
       customValidatorErrorName: 'Gross EEC Weight',
-      value: '',
+      value: null,
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation

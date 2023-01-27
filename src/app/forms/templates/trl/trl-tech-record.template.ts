@@ -39,7 +39,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'manufactureYear',
       label: 'Year of manufacture',
-      value: '',
+      value: null,
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -51,7 +51,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'firstUseDate',
       label: 'Date of first use',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
@@ -126,7 +126,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'maxLoadOnCoupling',
       label: 'Max load on coupling (optional)',
-      value: '',
+      value: null,
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
