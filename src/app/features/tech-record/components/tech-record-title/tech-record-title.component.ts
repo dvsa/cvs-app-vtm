@@ -18,9 +18,9 @@ export class TechRecordTitleComponent implements OnInit {
   @Input() recordActions: TechRecordActions = TechRecordActions.NONE;
   @Input() hideActions: boolean = false;
 
-  queryableRecordActions: string[] = [];
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
-  vehicleMakeAndModel: string = '';
+  queryableRecordActions: string[] = [];
+  vehicleMakeAndModel?: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private technicalRecordService: TechnicalRecordService, private store: Store) {}
 
@@ -34,7 +34,11 @@ export class TechRecordTitleComponent implements OnInit {
       .subscribe(
         data =>
           (this.vehicleMakeAndModel =
-            data?.vehicleType === this.vehicleTypes.PSV ? `${data.chassisMake} ${data.chassisModel}` : `${data?.make} ${data?.model}`)
+            data?.make || data?.chassisMake
+              ? data.vehicleType === this.vehicleTypes.PSV
+                ? `${data.chassisMake} ${data.chassisModel}`
+                : `${data?.make} ${data?.model}`
+              : '')
       );
   }
 

@@ -122,7 +122,7 @@ export class DynamicFormService {
     validators.forEach(v => control.addAsyncValidators(this.asyncValidatorMap[v.name](v.args)));
   }
 
-  static updateValidity(form: CustomFormGroup | CustomFormArray, errors: GlobalError[]) {
+  static updateValidity(form: FormGroup | FormArray, errors: GlobalError[]) {
     Object.entries(form.controls).forEach(([, value]) => {
       if (!(value instanceof CustomFormControl)) {
         this.updateValidity(value as CustomFormGroup | CustomFormArray, errors);
