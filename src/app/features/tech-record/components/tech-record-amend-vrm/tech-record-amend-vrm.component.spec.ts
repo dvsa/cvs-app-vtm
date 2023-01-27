@@ -64,8 +64,6 @@ describe('TechRecordChangeVrmComponent', () => {
     store = TestBed.inject(MockStore);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
-    expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-    component.vehicle = expectedVehicle;
   });
 
   it('should create', () => {
@@ -73,6 +71,11 @@ describe('TechRecordChangeVrmComponent', () => {
   });
 
   describe('makeAndModel', () => {
+    beforeEach(() => {
+      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
+      component.vehicle = expectedVehicle;
+    });
+
     it('should should return the make and model', () => {
       const expectedTechRecord = expectedVehicle.techRecord.pop()!;
 
@@ -89,6 +92,11 @@ describe('TechRecordChangeVrmComponent', () => {
   });
 
   describe('vrm', () => {
+    beforeEach(() => {
+      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
+      component.vehicle = expectedVehicle;
+    });
+
     it('should return the primary VRM', () => {
       component.vehicle = expectedVehicle;
 
@@ -135,6 +143,10 @@ describe('TechRecordChangeVrmComponent', () => {
   });
 
   describe('handleSubmit', () => {
+    beforeEach(() => {
+      component.vehicle = { vrms: [{ vrm: 'KP01ABC', isPrimary: true }] } as VehicleTechRecordModel;
+    });
+
     it('should add an error when the field is not filled out', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
 
