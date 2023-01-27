@@ -107,8 +107,7 @@ export class AmendVrmComponent implements OnInit, OnChanges {
       )
       .subscribe({
         next: res => {
-          if (res == true) {
-            console.log('response:', res);
+          if (res === true) {
             const newVehicleRecord = this.amendVrm(this.vehicle!, newVrm);
 
             this.setReasonForCreation(newVehicleRecord);

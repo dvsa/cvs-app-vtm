@@ -62,10 +62,10 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   mapVrms(techRecord: TechRecordModel) {
-    let mappedVrms: Vrm[] = [];
+    const mappedVrms: Vrm[] = [];
     if (techRecord.historicPrimaryVrm) mappedVrms.push({ vrm: techRecord.historicPrimaryVrm, isPrimary: true });
     if (techRecord.historicSecondaryVrms) techRecord.historicSecondaryVrms.forEach(vrm => mappedVrms.push({ vrm: vrm, isPrimary: false }));
-    return mappedVrms.length > 0 ? mappedVrms : undefined;
+    return mappedVrms.length ? mappedVrms : undefined;
   }
 
   getCompletenessColor(completeness?: string): 'green' | 'red' {

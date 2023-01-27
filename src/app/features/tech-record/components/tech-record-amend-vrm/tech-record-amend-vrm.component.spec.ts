@@ -202,7 +202,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
       const newVehicle = component.amendVrm(component.vehicle, 'TESTVRM');
 
-      expect(!newVehicle.vrms.find(vrm => vrm.vrm == oldPrimaryVrm)?.isPrimary);
+      expect(newVehicle.vrms.find(vrm => vrm.vrm == oldPrimaryVrm)?.isPrimary).toBeFalsy();
     });
 
     it('should handle amending duplicate VRMs', fakeAsync(() => {
