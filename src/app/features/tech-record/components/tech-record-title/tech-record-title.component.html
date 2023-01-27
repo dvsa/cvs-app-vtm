@@ -11,7 +11,7 @@
     <dd id="vehicleType" class="govuk-summary-list__value">
       {{ (editableTechRecord$ | async)?.vehicleType ?? '' | uppercase | defaultNullOrEmpty }}
     </dd>
-    <dd class="govuk-summary-list__actions">
+    <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
       <div class="govuk-summary-list__actions--flex">
         <app-button
           *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
