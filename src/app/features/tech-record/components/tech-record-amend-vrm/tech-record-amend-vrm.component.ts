@@ -10,7 +10,7 @@ import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record
 import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
-import { catchError, map, of, take, throwError } from 'rxjs';
+import { catchError, map, of, take, tap, throwError } from 'rxjs';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -93,28 +93,17 @@ export class AmendVrmComponent implements OnInit, OnChanges {
 
     this.technicalRecordService
       .isUnique(newVrm, SEARCH_TYPES.VRM)
-      .pipe(
-        map(response => {
-          console.log(response);
-          return response;
-        }),
-        catchError((error: HttpErrorResponse) => {
-          if (error.status == 404) {
-            return of(true);
-          }
-          return throwError(() => new Error('Error'));
-        })
-      )
+      .pipe(catchError(error => (error.status == 404 ? of(true) : throwError(() => new Error('Error')))))
       .subscribe({
         next: res => {
-          if (res === true) {
-            const newVehicleRecord = this.amendVrm(this.vehicle!, newVrm);
+          if (!res) return this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
 
-            this.setReasonForCreation(newVehicleRecord);
-            //const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
-            this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
-            this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
-          } else this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
+          const newVehicleRecord = this.amendVrm(this.vehicle!, newVrm);
+
+          this.setReasonForCreation(newVehicleRecord);
+          //const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
+          this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
+          this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
         },
         error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
       });
@@ -122,9 +111,7 @@ export class AmendVrmComponent implements OnInit, OnChanges {
 
   amendVrm(record: VehicleTechRecordModel, newVrm: string) {
     const newModel: VehicleTechRecordModel = cloneDeep(record);
-    newModel.vrms.forEach(x => {
-      x.isPrimary = false;
-    });
+    newModel.vrms.forEach(x => (x.isPrimary = false));
 
     const existingVrmObject = newModel.vrms.find(vrm => vrm.vrm == newVrm);
     if (existingVrmObject == null) {
