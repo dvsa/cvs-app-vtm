@@ -8,9 +8,10 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { of, ReplaySubject } from 'rxjs';
+import { lastValueFrom, of, ReplaySubject } from 'rxjs';
 import { HydrateNewVehicleRecordComponent } from './hydrate-new-vehicle-record.component';
 import { createVehicleRecord, createVehicleRecordSuccess } from '@store/technical-records';
+import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('HydrateNewVehicleRecordComponent', () => {
   let component: HydrateNewVehicleRecordComponent;
@@ -45,15 +46,23 @@ describe('HydrateNewVehicleRecordComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('get Vehicle', () => {
-    expect(component.vehicle$).toBeTruthy();
-  });
+  describe('get vehicle$', () => {
+    it('should return the editable vehicle', () => {
+      const expectedVehicle = mockVehicleTechnicalRecordList().pop();
 
-  it('should navigate away on no data', () => {
-    const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-    jest.spyOn(component, 'vehicle$', 'get').mockImplementation(() => of(undefined));
-    component.ngOnInit();
-    expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      jest.spyOn(techRecordService, 'editableVehicleTechRecord$', 'get').mockReturnValue(of(expectedVehicle));
+
+      expect(lastValueFrom(component.vehicle$)).resolves.toEqual(expectedVehicle);
+    });
+
+    it('should navigate back when the data is null', () => {
+      jest.spyOn(techRecordService, 'editableVehicleTechRecord$', 'get').mockReturnValue(of(undefined));
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+      expect(lastValueFrom(component.vehicle$)).resolves.toEqual(undefined);
+
+      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+    });
   });
 
   describe('navigateBack', () => {

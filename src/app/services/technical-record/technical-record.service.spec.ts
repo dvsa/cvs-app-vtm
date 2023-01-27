@@ -194,7 +194,7 @@ describe('TechnicalRecordService', () => {
         request.flush(expectedVehicle);
       }));
 
-      it('should return an array with the newly created vehicle record', async () => {
+      it('should return an array with the newly created vehicle record', () => {
         const expectedVehicle = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1)[0];
 
         const expectedResult = {
@@ -204,7 +204,7 @@ describe('TechnicalRecordService', () => {
           techRecord: expectedVehicle.techRecord
         };
 
-        await expect(lastValueFrom(service.createVehicleRecord(expectedVehicle, { name: 'test', id: '1234' }))).resolves.toEqual(expectedResult);
+        expect(lastValueFrom(service.createVehicleRecord(expectedVehicle, { name: 'test', id: '1234' }))).resolves.toEqual(expectedResult);
 
         const request = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles`);
         request.flush(expectedVehicle);
