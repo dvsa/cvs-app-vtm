@@ -28,7 +28,7 @@
       (ngModelChange)="ngOnChanges(); newVrm.value = newVrm.value.toUpperCase()"
     ></app-text-input>
 
-    <div *ngIf="newVrm.value.toUpperCase() !== vrm && newVrm.value.length !== 0">
+    <div *ngIf="newVrm.value.toUpperCase() !== vrm && newVrm.value.length">
       <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
       <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
     </div>
