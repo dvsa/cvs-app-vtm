@@ -85,7 +85,7 @@ export class CreateComponent implements OnChanges {
 
     this.technicalRecordService.updateEditingTechRecord(this.vehicle as VehicleTechRecordModel);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.vehicle.techRecord![0].vehicleType);
-    await this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
+    this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
   }
 
   async isFormValueUnique() {
