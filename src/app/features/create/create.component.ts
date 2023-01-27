@@ -80,12 +80,12 @@ export class CreateComponent implements OnChanges {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  async handleSubmit() {
+  handleSubmit() {
     if (!this.isFormValid || !(await this.isFormValueUnique())) return;
 
     this.technicalRecordService.updateEditingTechRecord(this.vehicle as VehicleTechRecordModel);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.vehicle.techRecord![0].vehicleType);
-    await this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
+    this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
   }
 
   async isFormValueUnique() {
