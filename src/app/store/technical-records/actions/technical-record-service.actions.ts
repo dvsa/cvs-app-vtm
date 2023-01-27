@@ -1,7 +1,6 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { createAction, props } from '@ngrx/store';
-import { ActionCreator, ActionCreatorProps } from '@ngrx/store/src/models';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '../../../models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 
 const prefix = '[Technical Record Service]';
 
@@ -29,6 +28,14 @@ export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }
 export const getByAllSuccess = createOutcomeAction('getByAll', true);
 export const getByAllFailure = createOutcomeAction('getByAll');
 
+export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`);
+export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
+export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord');
+
+export const createProvisionalTechRecord = createAction(`${prefix} createProvisionalTechRecord`, props<{ systemNumber: string }>());
+export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
+export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
+
 export const updateTechRecords = createAction(
   `${prefix} updateTechRecords`,
   props<{ systemNumber: string; recordToArchiveStatus?: StatusCodes; newStatus?: StatusCodes }>()
@@ -36,18 +43,16 @@ export const updateTechRecords = createAction(
 export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
 
-export const createProvisionalTechRecord = createAction(`${prefix} createProvisionalTechRecord`, props<{ systemNumber: string }>());
-export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
-export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
-
 export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, props<{ systemNumber: string; reasonForArchiving: string }>());
 export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
 export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord');
 
-export const updateEditingTechRecord = createAction('[tech-record] Update editing', props<{ vehicleTechRecord: VehicleTechRecordModel }>());
-export const updateEditingTechRecordCancel = createAction('[tech-record] Update editing cancelled');
+export const updateEditingTechRecord = createAction(`${prefix} updateEditingTechRecord`, props<{ vehicleTechRecord: VehicleTechRecordModel }>());
+export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditingTechRecordCancel`);
 
-export const changeVehicleType = createAction('[tech-record] vehicle type changed', props<{ vehicleType: VehicleTypes }>());
+export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ vehicleType: VehicleTypes }>());
+
+export const createVehicle = createAction(`${prefix} createVehicle`, props<{ vehicleType: VehicleTypes }>());
 
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';

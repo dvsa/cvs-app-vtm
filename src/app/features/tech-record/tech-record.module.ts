@@ -37,6 +37,6 @@ import { TechRecordComponent } from './tech-record.component';
     VehicleTechnicalRecordComponent
   ],
   imports: [CommonModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, TechRecordsRoutingModule],
-  exports: [EditTechRecordButtonComponent]
+  exports: [EditTechRecordButtonComponent, TechRecordSummaryComponent, TechRecordTitleComponent]
 })
 export class TechRecordsModule {}
