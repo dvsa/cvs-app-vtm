@@ -194,7 +194,7 @@ describe('TechRecordSummaryComponent', () => {
 
       component.addAxle(axleEvent);
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(3);
+      expect(component.vehicleTechRecordCalculated.axles!.length).toBe(3);
       expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.length).toBe(2);
     });
 
@@ -223,7 +223,7 @@ describe('TechRecordSummaryComponent', () => {
 
       component.addAxle(axleEvent);
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(4);
+      expect(component.vehicleTechRecordCalculated.axles!.length).toBe(4);
     });
   });
 
@@ -246,7 +246,7 @@ describe('TechRecordSummaryComponent', () => {
 
       component.removeAxle(axleEvent);
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+      expect(component.vehicleTechRecordCalculated.axles!.length).toBe(2);
     });
   });
 
@@ -297,7 +297,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should call generate spacings if there are more axles', () => {
       component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
-      component.vehicleTechRecordCalculated.axles.push({ axleNumber: 3 });
+      component.vehicleTechRecordCalculated.axles!.push({ axleNumber: 3 });
 
       expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.length).toBe(1);
 
@@ -310,11 +310,11 @@ describe('TechRecordSummaryComponent', () => {
       component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
       component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.push({ axles: '2-3', value: 1 });
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+      expect(component.vehicleTechRecordCalculated.axles!.length).toBe(2);
 
       component.normaliseVehicleTechRecordAxles();
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(3);
+      expect(component.vehicleTechRecordCalculated.axles!.length).toBe(3);
     });
 
     it('should call generate spacings if there are none but there is axles', () => {
@@ -330,7 +330,7 @@ describe('TechRecordSummaryComponent', () => {
     it('should call generate spacings if there are none but there is axles and there is an object to start with', () => {
       component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
       component.vehicleTechRecordCalculated.dimensions!.axleSpacing = [];
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+      expect(component.vehicleTechRecordCalculated.axles!.length).toBe(2);
 
       component.normaliseVehicleTechRecordAxles();
 

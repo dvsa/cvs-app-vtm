@@ -145,15 +145,15 @@ export class TechRecordSearchTyresComponent implements OnInit {
   handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
     const axleIndex = Number(this.params.axleNumber!) - 1;
 
-    if (this.viewableTechRecord?.axles[axleIndex].tyres) {
+    if (this.viewableTechRecord?.axles![axleIndex].tyres) {
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
 
-      this.viewableTechRecord.axles[axleIndex].tyres!.tyreCode = Number(tyre.code);
-      this.viewableTechRecord.axles[axleIndex].tyres!.tyreSize = tyre.tyreSize;
-      this.viewableTechRecord.axles[axleIndex].tyres!.plyRating = tyre.plyRating;
-      if (this.viewableTechRecord.axles[axleIndex].tyres!.fitmentCode) {
-        this.viewableTechRecord.axles[axleIndex].tyres!.dataTrAxles =
-          this.viewableTechRecord.axles[axleIndex].tyres!.fitmentCode === 'single'
+      this.viewableTechRecord.axles![axleIndex].tyres!.tyreCode = Number(tyre.code);
+      this.viewableTechRecord.axles![axleIndex].tyres!.tyreSize = tyre.tyreSize;
+      this.viewableTechRecord.axles![axleIndex].tyres!.plyRating = tyre.plyRating;
+      if (this.viewableTechRecord.axles![axleIndex].tyres!.fitmentCode) {
+        this.viewableTechRecord.axles![axleIndex].tyres!.dataTrAxles =
+          this.viewableTechRecord.axles![axleIndex].tyres!.fitmentCode === 'single'
             ? parseInt(tyre.loadIndexSingleLoad)
             : parseInt(tyre.loadIndexTwinLoad);
       }

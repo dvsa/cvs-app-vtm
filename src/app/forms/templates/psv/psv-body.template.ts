@@ -18,7 +18,7 @@ export const PsvBodyTemplate: FormNode = {
           width: FormNodeWidth.S,
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.AUTOCOMPLETE,
-          validators: [{ name: ValidatorNames.Required }]
+          validators: []
         }
       ],
       type: FormNodeTypes.GROUP
@@ -59,7 +59,7 @@ export const PsvBodyTemplate: FormNode = {
       label: 'Body model',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 20 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 20 }]
     },
     {
       name: 'bodyType',
@@ -74,7 +74,8 @@ export const PsvBodyTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           disabled: true
         }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'functionCode',

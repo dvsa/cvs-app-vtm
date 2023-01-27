@@ -42,7 +42,7 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [],
       isoDate: false
     },
     {
@@ -52,7 +52,10 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 }
+      ]
     },
     {
       name: 'noOfAxles',
@@ -60,7 +63,7 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [],
       disabled: true
     },
     {
@@ -73,7 +76,7 @@ export const PsvTechRecord: FormNode = {
         { value: true, label: 'Exempt' },
         { value: false, label: 'Not exempt' }
       ],
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [],
       class: 'flex--half'
     },
     {
@@ -86,7 +89,7 @@ export const PsvTechRecord: FormNode = {
         { value: true, label: 'Exempt' },
         { value: false, label: 'Not exempt' }
       ],
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [],
       class: 'flex--half'
     },
     {
@@ -94,8 +97,7 @@ export const PsvTechRecord: FormNode = {
       label: 'Euro standard',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(EmissionStandard),
-      validators: [{ name: ValidatorNames.Defined }]
+      options: getOptionsFromEnum(EmissionStandard)
     },
     {
       name: 'fuelPropulsionSystem',
@@ -105,7 +107,7 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(FuelTypes),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'vehicleClass',
@@ -133,7 +135,7 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'euVehicleCategory',
@@ -143,7 +145,7 @@ export const PsvTechRecord: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
       options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'emissionsLimit',
@@ -162,7 +164,7 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 99 }, { name: ValidatorNames.Required }],
+      validators: [{ name: ValidatorNames.Max, args: 99 }],
       class: 'flex--half'
     },
     {
@@ -172,7 +174,7 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 999 }, { name: ValidatorNames.Required }],
+      validators: [{ name: ValidatorNames.Max, args: 999 }],
       class: 'flex--half'
     },
     {
@@ -182,7 +184,7 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 999 }]
     },
     {
       name: 'numberOfSeatbelts',
@@ -191,7 +193,7 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMERICSTRING,
-      validators: [{ name: ValidatorNames.Max, args: 99 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
       name: 'seatbeltInstallationApprovalDate',
@@ -209,7 +211,7 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(VehicleSize),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'departmentalVehicleMarker',
@@ -221,7 +223,7 @@ export const PsvTechRecord: FormNode = {
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
       ],
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'alterationMarker',
@@ -234,7 +236,7 @@ export const PsvTechRecord: FormNode = {
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
       ],
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     }
   ]
 };
