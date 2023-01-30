@@ -33,12 +33,9 @@
       <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
     </div>
 
-    <div class="buttons-row">
-      <button class="govuk-button" data-module="govuk-button" type="submit" enterkeyhint="amend vrm" (click)="handleSubmit(newVrm.value)">
-        Save
-      </button>
-
+    <app-button-group>
+      <app-button id="submit-vrm" (clicked)="handleSubmit(newVrm.value)">Save</app-button>
       <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
-    </div>
+    </app-button-group>
   </form>
 </div>
