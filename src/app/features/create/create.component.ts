@@ -6,7 +6,7 @@ import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record
 import { FormGroup, Validators } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { CustomValidators } from '@forms/validators/custom-validators';
@@ -17,6 +17,12 @@ import { CustomValidators } from '@forms/validators/custom-validators';
 })
 export class CreateComponent implements OnChanges {
   vehicle: Partial<VehicleTechRecordModel> = {};
+  isDuplicateVinAlllowed: boolean = false;
+  isVinUniqueCheckComplete: boolean = false;
+
+  vinUnique: boolean = false;
+  vrmUnique: boolean = false;
+  trlUnique: boolean = false;
 
   vehicleForm = new FormGroup({
     vin: new CustomFormControl(
@@ -87,7 +93,14 @@ export class CreateComponent implements OnChanges {
   }
 
   async handleSubmit() {
-    if (!this.isFormValid || !(await this.isFormValueUnique())) return;
+    if (!this.isFormValid) {
+      return;
+    }
+
+    if (!(await this.isFormValueUnique())) {
+      this.isDuplicateVinAlllowed = true;
+      return;
+    }
 
     this.technicalRecordService.updateEditingTechRecord(this.vehicle as VehicleTechRecordModel);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.vehicle.techRecord![0].vehicleType);
@@ -100,23 +113,23 @@ export class CreateComponent implements OnChanges {
       { vehicleType: this.vehicleForm.value.vehicleType, statusCode: this.vehicleForm.value.vehicleStatus } as TechRecordModel
     ];
 
-    const isVinUnique = await this.isVinUnique();
+    if (!this.isVinUniqueCheckComplete) {
+      this.vinUnique = await this.isVinUnique();
+    }
 
     if (isTrailer) {
-      const isTrailerIdUnique = await this.isTrailerIdUnique();
-      return isVinUnique && isTrailerIdUnique;
+      this.trlUnique = await this.isTrailerIdUnique();
+      return (this.vinUnique || this.isDuplicateVinAlllowed) && this.trlUnique;
     } else {
-      const isVrmUnique = await this.isVrmUnique();
-      return isVinUnique && isVrmUnique;
+      this.vrmUnique = await this.isVrmUnique();
+      return (this.vinUnique || this.isDuplicateVinAlllowed) && this.vrmUnique;
     }
   }
 
-  async isVinUnique() {
+  async isVinUnique(): Promise<boolean> {
     this.vehicle.vin = this.vehicleForm.value.vin;
     const isVinUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.vehicle.vin!, SEARCH_TYPES.VIN));
-    if (!isVinUnique) {
-      this.globalErrorService.addError({ error: 'Vin not unique', anchorLink: 'input-vin' });
-    }
+    this.isVinUniqueCheckComplete = true;
     return isVinUnique;
   }
 
