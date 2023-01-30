@@ -58,20 +58,16 @@ export class CreateComponent implements OnChanges {
     this.globalErrorService.clearErrors();
   }
 
-  get vehicleTypeOptions(): MultiOptions {
-    return [
-      { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
-      { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
-      { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
-    ];
-  }
+  public vehicleTypeOptions: MultiOptions = [
+    { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
+    { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
+    { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
+  ];
 
-  get vehicleStatusOptions(): MultiOptions {
-    return [
-      { label: 'Current', value: StatusCodes.CURRENT },
-      { label: 'Provisional', value: StatusCodes.PROVISIONAL }
-    ];
-  }
+  public vehicleStatusOptions: MultiOptions = [
+    { label: 'Current', value: StatusCodes.CURRENT },
+    { label: 'Provisional', value: StatusCodes.PROVISIONAL }
+  ];
 
   get primaryVrm(): string {
     return this.vehicle.vrms?.find(vrm => vrm.isPrimary)?.vrm ?? '';
