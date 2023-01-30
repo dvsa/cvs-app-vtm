@@ -104,7 +104,6 @@ export class AmendVrmComponent implements OnInit, OnChanges {
           const newVehicleRecord = this.amendVrm(this.vehicle!, newVrm);
 
           this.setReasonForCreation(newVehicleRecord);
-          //const newTechRecord = this.mapVrmToTech(newVehicleRecord, this.currentTechRecord!);
           this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
           this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
         },
