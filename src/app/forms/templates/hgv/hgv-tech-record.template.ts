@@ -141,10 +141,10 @@ export const HgvTechRecord: FormNode = {
           value: '',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(VehicleClass.DescriptionEnum)
+          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+          validators: [{ name: ValidatorNames.Required }]
         }
-      ],
-      validators: [{ name: ValidatorNames.Required }]
+      ]
     },
     {
       name: 'vehicleConfiguration',

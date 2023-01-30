@@ -10,7 +10,11 @@
 
   <div class="govuk-grid-column-two-thirds">
     <div class="govuk-grid-column-full">
-      <app-tech-record-summary [isEditing]="true" [vehicleTechRecord]="vehicle.techRecord[0]"></app-tech-record-summary>
+      <app-tech-record-summary
+        [isEditing]="true"
+        [vehicleTechRecord]="vehicle.techRecord[0]"
+        (formChange)="handleFormState()"
+      ></app-tech-record-summary>
     </div>
   </div>
 </div>

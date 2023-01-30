@@ -123,10 +123,10 @@ export const PsvTechRecord: FormNode = {
           viewType: FormNodeViewTypes.STRING,
           editType: FormNodeEditTypes.SELECT,
           options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
-          class: '.govuk-input--width-10'
+          class: '.govuk-input--width-10',
+          validators: [{ name: ValidatorNames.Required }]
         }
-      ],
-      validators: [{ name: ValidatorNames.Required }]
+      ]
     },
     {
       name: 'vehicleConfiguration',
