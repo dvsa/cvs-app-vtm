@@ -225,6 +225,8 @@ export interface BodyType {
 
 export interface TechRecordModel {
   historicVin?: string;
+  historicPrimaryVrm?: string;
+  historicSecondaryVrms?: string[];
   createdAt: Date;
   createdByName?: string;
   statusCode?: StatusCodes;

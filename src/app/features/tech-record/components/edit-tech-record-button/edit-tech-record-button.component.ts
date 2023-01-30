@@ -8,7 +8,7 @@ import {
   updateTechRecordsSuccess
 } from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
-import { mergeMap, take } from 'rxjs';
+import { mergeMap, take, withLatestFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ViewportScroller } from '@angular/common';
@@ -42,13 +42,11 @@ export class EditTechRecordButtonComponent implements OnInit {
     this.actions$
       .pipe(
         ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
-        mergeMap(_action => this.store.select(selectVehicleTechnicalRecordsBySystemNumber)),
+        withLatestFrom(this.store.select(selectVehicleTechnicalRecordsBySystemNumber), this.technicalRecordService.techRecord$),
         take(1)
       )
-      .subscribe(vehicleTechRecord => {
-        const techRecord = vehicleTechRecord!.techRecord[0];
-
-        const routeSuffix = techRecord.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
+      .subscribe(([action, vehicleTechRecord, techRecord]) => {
+        const routeSuffix = techRecord?.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
 
         this.router.navigateByUrl(`/tech-records/${vehicleTechRecord!.systemNumber}${routeSuffix}`);
       });
