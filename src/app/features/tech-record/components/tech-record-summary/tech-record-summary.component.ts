@@ -68,7 +68,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   get psvFromDtp$(): Observable<PsvMake> {
     return this.store.select(
-      selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, this.vehicleTechRecordCalculated.brakes.dtpNumber as string)
+      selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, this.vehicleTechRecordCalculated.brakes?.dtpNumber as string)
     ) as Observable<PsvMake>;
   }
 
@@ -98,9 +98,9 @@ export class TechRecordSummaryComponent implements OnInit {
   handleFormState(event: any): void {
     this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
 
-    if (event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length) {
+    if (event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles!.length) {
       this.removeAxle(event);
-    } else if (event.axles && this.vehicleTechRecordCalculated.axles.length < event.axles.length) {
+    } else if (event.axles && this.vehicleTechRecordCalculated.axles!.length < event.axles.length) {
       this.addAxle(event);
     } else {
       this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
@@ -119,7 +119,7 @@ export class TechRecordSummaryComponent implements OnInit {
       this.vehicleTechRecord.vehicleType === VehicleTypes.HGV ||
       this.vehicleTechRecord.vehicleType === VehicleTypes.TRL
     ) {
-      this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length ?? 0;
+      this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles?.length ?? 0;
     }
 
     this.technicalRecordService.updateEditingTechRecord(this.vehicleTechRecordCalculated);
@@ -145,7 +145,7 @@ export class TechRecordSummaryComponent implements OnInit {
     this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
     if (this.vehicleTechRecord.vehicleType !== VehicleTypes.PSV && this.vehicleTechRecordCalculated.dimensions) {
       this.vehicleTechRecordCalculated.dimensions.axleSpacing = this.generateAxleSpacing(
-        this.vehicleTechRecordCalculated.axles.length,
+        this.vehicleTechRecordCalculated.axles!.length,
         true,
         this.vehicleTechRecordCalculated.dimensions.axleSpacing
       );
@@ -155,7 +155,7 @@ export class TechRecordSummaryComponent implements OnInit {
   removeAxle(axleEvent: any): void {
     const axleToRemove = this.findAxleToRemove(axleEvent.axles);
 
-    this.vehicleTechRecordCalculated.axles = this.vehicleTechRecordCalculated.axles.filter(ax => {
+    this.vehicleTechRecordCalculated.axles = this.vehicleTechRecordCalculated.axles!.filter(ax => {
       if (ax.axleNumber !== axleToRemove) {
         if (ax.axleNumber! > axleToRemove) {
           ax.axleNumber! -= 1;
@@ -253,7 +253,7 @@ export class TechRecordSummaryComponent implements OnInit {
   setBrakesForces(): void {
     this.vehicleTechRecordCalculated.brakes = {
       ...this.vehicleTechRecordCalculated.brakes,
-      brakeCode: this.brakeCodePrefix + this.vehicleTechRecordCalculated.brakes.brakeCodeOriginal,
+      brakeCode: this.brakeCodePrefix + this.vehicleTechRecordCalculated.brakes?.brakeCodeOriginal,
       brakeForceWheelsNotLocked: {
         serviceBrakeForceA: Math.round(((this.vehicleTechRecordCalculated.grossLadenWeight || 0) * 16) / 100),
         secondaryBrakeForceA: Math.round(((this.vehicleTechRecordCalculated.grossLadenWeight || 0) * 22.5) / 100),
