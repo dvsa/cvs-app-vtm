@@ -11,7 +11,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { createVehicleRecord, createVehicleRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, take, tap } from 'rxjs';
-import { TechRecordSummaryComponent } from 'src/app/features/tech-record/components/tech-record-summary/tech-record-summary.component';
+import { TechRecordSummaryComponent } from '../../../tech-record/components/tech-record-summary/tech-record-summary.component';
 
 @Component({
   selector: 'app-hydrate-new-vehicle-record',
@@ -39,7 +39,6 @@ export class HydrateNewVehicleRecordComponent implements OnInit {
     );
   }
 
-  isDirty: boolean = false;
   isInvalid: boolean = false;
   vehicleType?: VehicleTypes;
 
@@ -64,7 +63,6 @@ export class HydrateNewVehicleRecordComponent implements OnInit {
     this.vehicle$.pipe(take(1)).subscribe(data => (this.vehicleType = data?.techRecord[0].vehicleType));
     const form = this.summary?.sections.map(section => section.form).concat(this.customSectionForms);
     if (form) {
-      this.isDirty = form.some(form => form.dirty);
       this.isInvalid = this.isAnyFormInvalid(form);
     }
   }
@@ -83,7 +81,9 @@ export class HydrateNewVehicleRecordComponent implements OnInit {
 
   handleSubmit() {
     this.handleFormState();
-    this.store.dispatch(createVehicleRecord());
-    this.actions$.pipe(ofType(createVehicleRecordSuccess), take(1)).subscribe(() => this.navigateBack());
+    if (!this.isInvalid) {
+      this.store.dispatch(createVehicleRecord());
+      this.actions$.pipe(ofType(createVehicleRecordSuccess), take(1)).subscribe(() => this.navigateBack());
+    }
   }
 }

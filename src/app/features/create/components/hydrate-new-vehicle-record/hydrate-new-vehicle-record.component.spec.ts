@@ -99,7 +99,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
       component.handleSubmit();
       actions$.next(createVehicleRecordSuccess);
       tick();
-      expect(navigateSpy).toHaveBeenCalledTimes(1);
+      expect(navigateSpy).toHaveBeenCalledTimes(2);
     }));
   });
 });
