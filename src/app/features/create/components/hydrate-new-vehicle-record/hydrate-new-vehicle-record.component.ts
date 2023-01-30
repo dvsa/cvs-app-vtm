@@ -17,8 +17,11 @@ import { TechRecordSummaryComponent } from '../../../tech-record/components/tech
   selector: 'app-hydrate-new-vehicle-record',
   templateUrl: './hydrate-new-vehicle-record.component.html'
 })
-export class HydrateNewVehicleRecordComponent implements OnInit {
+export class HydrateNewVehicleRecordComponent {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
+  isInvalid: boolean = false;
+  vehicleType?: VehicleTypes;
+
   constructor(
     private actions$: Actions,
     private globalErrorService: GlobalErrorService,
@@ -27,20 +30,15 @@ export class HydrateNewVehicleRecordComponent implements OnInit {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {}
-  ngOnInit(): void {
-    this.handleFormState();
-  }
 
   get vehicle$(): Observable<VehicleTechRecordModel | undefined> {
     return this.technicalRecordService.editableVehicleTechRecord$.pipe(
-      tap(techRecord => {
-        if (!techRecord) this.navigateBack();
+      tap(vehicle => {
+        if (!vehicle) this.navigateBack();
+        this.vehicleType = vehicle?.techRecord[0].vehicleType;
       })
     );
   }
-
-  isInvalid: boolean = false;
-  vehicleType?: VehicleTypes;
 
   get customSectionForms(): Array<CustomFormGroup> {
     if (this.summary && this.vehicleType) {
@@ -60,10 +58,17 @@ export class HydrateNewVehicleRecordComponent implements OnInit {
   }
 
   handleFormState(): void {
-    this.vehicle$.pipe(take(1)).subscribe(data => (this.vehicleType = data?.techRecord[0].vehicleType));
     const form = this.summary?.sections.map(section => section.form).concat(this.customSectionForms);
     if (form) {
       this.isInvalid = this.isAnyFormInvalid(form);
+    }
+  }
+
+  handleSubmit() {
+    this.handleFormState();
+    if (!this.isInvalid) {
+      this.store.dispatch(createVehicleRecord());
+      this.actions$.pipe(ofType(createVehicleRecordSuccess), take(1)).subscribe(() => this.navigateBack());
     }
   }
 
@@ -77,13 +82,5 @@ export class HydrateNewVehicleRecordComponent implements OnInit {
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
-  }
-
-  handleSubmit() {
-    this.handleFormState();
-    if (!this.isInvalid) {
-      this.store.dispatch(createVehicleRecord());
-      this.actions$.pipe(ofType(createVehicleRecordSuccess), take(1)).subscribe(() => this.navigateBack());
-    }
   }
 }
