@@ -99,4 +99,8 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
+
+  trackBy(i: number) {
+    return i;
+  }
 }
