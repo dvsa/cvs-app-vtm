@@ -1,15 +1,14 @@
 import { Component, OnChanges } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { FormGroup, Validators } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { CustomFormControl, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { CustomValidators } from '@forms/validators/custom-validators';
 
 @Component({
   selector: 'app-create',
