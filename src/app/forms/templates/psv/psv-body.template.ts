@@ -18,7 +18,7 @@ export const PsvBodyTemplate: FormNode = {
           width: FormNodeWidth.S,
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.AUTOCOMPLETE,
-          validators: []
+          validators: [{ name: ValidatorNames.Required }]
         }
       ],
       type: FormNodeTypes.GROUP
