@@ -7,7 +7,7 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
+import { BodyTypeDescription, bodyTypeMap, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -25,7 +25,6 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   @Output() formChange = new EventEmitter();
 
   public form!: CustomFormGroup;
-  public bodyTypeOptions: MultiOptions = getOptionsFromEnum(BodyTypeDescription);
   private template!: FormNode;
   private destroy$ = new Subject<void>();
 
@@ -67,6 +66,10 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
   get widths(): typeof FormNodeWidth {
     return FormNodeWidth;
+  }
+
+  get bodyTypes(): MultiOptions {
+    return getOptionsFromEnum(vehicleBodyTypeCodeMap.get(this.vehicleTechRecord.vehicleType)!.values());
   }
 
   get bodyMakes$(): Observable<MultiOptions | undefined> {
