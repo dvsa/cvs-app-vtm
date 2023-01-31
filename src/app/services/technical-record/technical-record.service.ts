@@ -174,7 +174,14 @@ export class TechnicalRecordService {
         }
 
         const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
-        return allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED);
+        const allTechRecordsArchived = allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED);
+
+        if (searchType === SEARCH_TYPES.VRM) {
+          const allVrms = vehicleTechRecord.flatMap(record => record.vrms);
+          const primaryVRMFound = allVrms.some(vrm => vrm.isPrimary && vrm.vrm == valueToCheck);
+          return !primaryVRMFound || (primaryVRMFound && allTechRecordsArchived);
+        }
+        return allTechRecordsArchived;
       }),
       catchError((error: HttpErrorResponse) => {
         return (error.status == 404 && of(true)) || throwError(() => error);
