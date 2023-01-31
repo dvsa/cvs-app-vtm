@@ -175,11 +175,12 @@ export class TechnicalRecordService {
 
         const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
         const allTechRecordsArchived = allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED);
+        if (allTechRecordsArchived) return true;
 
         if (searchType === SEARCH_TYPES.VRM) {
           const allVrms = vehicleTechRecord.flatMap(record => record.vrms);
           const primaryVRMFound = allVrms.some(vrm => vrm.isPrimary && vrm.vrm == valueToCheck);
-          return !primaryVRMFound || (primaryVRMFound && allTechRecordsArchived);
+          return !primaryVRMFound;
         }
         return allTechRecordsArchived;
       }),
