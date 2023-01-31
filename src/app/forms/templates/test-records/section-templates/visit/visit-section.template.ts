@@ -35,7 +35,8 @@ export const VisitSection: FormNode = {
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: SpecialRefData.TEST_STATION_P_NUMBER,
       validators: [{ name: ValidatorNames.Required }],
-      asyncValidators: [{ name: AsyncValidatorNames.UpdateTestStationDetails }]
+      asyncValidators: [{ name: AsyncValidatorNames.UpdateTestStationDetails }],
+      width: FormNodeWidth.XXL
     },
     {
       name: 'testStationType',
