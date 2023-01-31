@@ -63,6 +63,13 @@ export const TrlDimensionsTemplate: FormNode = {
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
+      name: 'centreOfRearmostAxleToRearOfTrl',
+      label: 'Center of Rear axle to rear of trailer',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
       name: 'couplingCenterToRearAxleMin',
       label: 'Minimum',
       value: null,
