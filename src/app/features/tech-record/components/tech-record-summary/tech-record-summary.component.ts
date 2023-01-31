@@ -74,8 +74,12 @@ export class TechRecordSummaryComponent implements OnInit {
 
   get vehicleTemplates(): Array<FormNode> {
     const vehicleTemplates = vehicleTemplateMap.get(this.vehicleTechRecordCalculated.vehicleType);
-    if (vehicleTemplates) return this.isEditing ? vehicleTemplates : vehicleTemplates.filter(t => t.name !== 'reasonForCreationSection');
-    else return [] as Array<FormNode>;
+
+    return vehicleTemplates
+      ? this.isEditing
+        ? vehicleTemplates
+        : vehicleTemplates.filter(t => t.name !== 'reasonForCreationSection')
+      : ([] as Array<FormNode>);
   }
 
   calculateVehicleModel(): void {
