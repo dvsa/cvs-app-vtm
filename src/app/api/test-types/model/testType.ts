@@ -13,7 +13,7 @@
 /**
  * Test type
  */
-export interface TestType { 
+export interface TestType {
     /**
      * Unique identifier
      */
@@ -80,13 +80,14 @@ export interface TestType {
     forVehicleWheels?: Array<number>;
 }
 export namespace TestType {
-    export type ForVehicleTypeEnum = 'psv' | 'hgv' | 'trl' | 'car' | 'lgv' | 'motorcycle';
+    export type ForVehicleTypeEnum = 'psv' | 'hgv' | 'trl' | 'lgv' | 'car' | 'small trl' | 'motorcycle';
     export const ForVehicleTypeEnum = {
         Psv: 'psv' as ForVehicleTypeEnum,
         Hgv: 'hgv' as ForVehicleTypeEnum,
         Trl: 'trl' as ForVehicleTypeEnum,
-        Car: 'car' as ForVehicleTypeEnum,
         Lgv: 'lgv' as ForVehicleTypeEnum,
+        Car: 'car' as ForVehicleTypeEnum,
+        SmallTrl: 'small trl' as ForVehicleTypeEnum,
         Motorcycle: 'motorcycle' as ForVehicleTypeEnum,
     };
     export type ForVehicleSizeEnum = 'small' | 'large';
