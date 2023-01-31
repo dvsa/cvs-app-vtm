@@ -40,6 +40,12 @@ export const TrlBrakesTemplate: FormNode = {
               type: FormNodeTypes.CONTROL
             },
             {
+              name: 'parkingBrakeMrk',
+              label: 'Parking brake marker',
+              value: null,
+              type: FormNodeTypes.CONTROL
+            },
+            {
               name: 'brakes',
               value: '',
               type: FormNodeTypes.GROUP,

@@ -5,6 +5,7 @@
       <th scope="col" class="govuk-table__header">Brake actuator</th>
       <th scope="col" class="govuk-table__header">Lever length</th>
       <th scope="col" class="govuk-table__header">Spring brake parking</th>
+      <th scope="col" class="govuk-table__header">Parking brake mark</th>
     </tr>
   </thead>
 
@@ -25,6 +26,17 @@
           [form]="getAxleBrakes(i)"
           [type]="types.DROPDOWN"
           name="springBrakeParking"
+          [width]="widths.S"
+          [isEditing]="isEditing"
+          [options]="booleanOptions"
+        ></app-switchable-input>
+      </td>
+      <td class="govuk-table__cell">
+        <app-switchable-input
+          [form]="axleControl(axle)"
+          [type]="types.DROPDOWN"
+          name="parkingBrakeMrk"
+          [width]="widths.S"
           [isEditing]="isEditing"
           [options]="booleanOptions"
         ></app-switchable-input>

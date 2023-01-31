@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
@@ -45,6 +45,14 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  axleControl(control: AbstractControl) {
+    return control as FormGroup;
+  }
+
+  get widths(): typeof FormNodeWidth {
+    return FormNodeWidth;
   }
 
   get types(): typeof FormNodeEditTypes {
