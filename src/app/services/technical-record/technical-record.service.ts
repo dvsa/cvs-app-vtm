@@ -175,7 +175,9 @@ export class TechnicalRecordService {
 
         const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
         const allTechRecordsArchived = allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED);
-        if (allTechRecordsArchived) return true;
+        if (allTechRecordsArchived) {
+          return true;
+        }
 
         if (searchType === SEARCH_TYPES.VRM) {
           const allVrms = vehicleTechRecord.flatMap(record => record.vrms);
