@@ -1,17 +1,16 @@
-<ng-container *ngIf="vehicleTechRecord$ | async as vehicleTechRecord">
-  <app-vehicle-technical-record
-    [vehicleTechRecord]="vehicleTechRecord || undefined"
-    *appRoleRequired="roles.TechRecordView"
-  ></app-vehicle-technical-record>
+<ng-container *ngIf="vehicle$ | async as vehicle; else noVehicle">
+  <app-vehicle-technical-record *appRoleRequired="roles.TechRecordView" [vehicle]="vehicle"></app-vehicle-technical-record>
+
+  <ng-template #error let-name>
+    <ng-container *ngIf="errorService.errors$ | async as errorMessages">
+      <span id="search-term-error" class="govuk-error-message" *ngIf="getErrorByName(errorMessages, name) as errorMessage">
+        <span class="govuk-visually-hidden">Error:</span>
+        <p class="white-space--normal">{{ errorMessage.error }}</p>
+      </span>
+    </ng-container>
+  </ng-template>
 </ng-container>
 
-<h1 *ngIf="(vehicleTechRecord$ | async) === undefined">This vehicle is not real, like the no vehicle page we need to create</h1>
-
-<ng-template #error let-name>
-  <ng-container *ngIf="errorService.errors$ | async as errorMessages">
-    <span id="search-term-error" class="govuk-error-message" *ngIf="getErrorByName(errorMessages, name) as errorMessage">
-      <span class="govuk-visually-hidden">Error:</span>
-      <p class="white-space--normal">{{ errorMessage.error }}</p>
-    </span>
-  </ng-container>
+<ng-template #noVehicle>
+  <h1>This vehicle is not real, like the no vehicle page we need to create</h1>
 </ng-template>

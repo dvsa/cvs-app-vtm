@@ -9,25 +9,25 @@ import { editableTechRecord } from '@store/technical-records';
 import { Observable, take } from 'rxjs';
 
 @Component({
-  selector: 'app-tech-record-title',
+  selector: 'app-tech-record-title[vehicle]',
   templateUrl: './tech-record-title.component.html',
   styleUrls: ['./tech-record-title.component.scss']
 })
 export class TechRecordTitleComponent implements OnInit {
-  @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  @Input() recordActions: TechRecordActions = TechRecordActions.NONE;
+  @Input() vehicle?: VehicleTechRecordModel;
+  @Input() actions: TechRecordActions = TechRecordActions.NONE;
   @Input() hideActions: boolean = false;
 
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
-  queryableRecordActions: string[] = [];
-  vehicleMakeAndModel?: string;
+  queryableActions: string[] = [];
+  vehicleMakeAndModel = '';
 
-  constructor(private route: ActivatedRoute, private router: Router, private technicalRecordService: TechnicalRecordService, private store: Store) {}
+  constructor(private route: ActivatedRoute, private router: Router, private store: Store, private technicalRecordService: TechnicalRecordService) {}
 
   ngOnInit(): void {
-    this.queryableRecordActions = this.recordActions.split(',');
+    this.queryableActions = this.actions.split(',');
 
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
+    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicle!);
 
     this.currentTechRecord$
       .pipe(take(1))
@@ -43,7 +43,7 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
   get editableTechRecord$() {
@@ -51,7 +51,7 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   get otherVrms(): Vrm[] | undefined {
-    return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
+    return this.vehicle?.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
   get vehicleTypes(): typeof VehicleTypes {
