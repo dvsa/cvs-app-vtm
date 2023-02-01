@@ -3,7 +3,7 @@
   [ngSwitch]="control.value.meta.editType"
   [formGroup]="form"
 >
-  <app-suggestive-input
+  <app-autocomplete
     *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE"
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
@@ -11,7 +11,7 @@
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
     [width]="control.value.meta.width"
-  ></app-suggestive-input>
+  ></app-autocomplete>
 
   <app-date
     *ngSwitchCase="formNodeEditTypes.DATE"
