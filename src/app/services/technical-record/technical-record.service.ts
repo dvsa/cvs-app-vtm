@@ -169,17 +169,17 @@ export class TechnicalRecordService {
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
     const isUnique = this.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
       map(vehicleTechRecord => {
-        if (vehicleTechRecord.length == 0) {
+        const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
+        if (allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED)) {
           return true;
         }
 
         if (searchType === SEARCH_TYPES.VRM) {
           const allVrms = vehicleTechRecord.flatMap(record => record.vrms);
-          const primaryVRMFound = allVrms.some(vrm => vrm.isPrimary && vrm.vrm == valueToCheck);
-          return !primaryVRMFound;
+          return !allVrms.some(vrm => vrm.isPrimary && vrm.vrm == valueToCheck);
         }
-        const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
-        return allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED);
+
+        return false;
       }),
       catchError((error: HttpErrorResponse) => {
         return (error.status == 404 && of(true)) || throwError(() => error);
