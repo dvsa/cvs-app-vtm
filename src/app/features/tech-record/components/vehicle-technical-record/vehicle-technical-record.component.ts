@@ -113,6 +113,8 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   }
 
   handleSubmit(): void {
+    this.summary.checkForms();
+
     if (!this.isInvalid) {
       const { systemNumber } = this.vehicle;
       const hasProvisional = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);

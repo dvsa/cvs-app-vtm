@@ -36,6 +36,8 @@ export class HydrateNewVehicleRecordComponent {
   }
 
   handleSubmit() {
+    this.summary?.checkForms();
+
     if (!this.isInvalid) {
       this.store.dispatch(createVehicleRecord());
       this.actions$.pipe(ofType(createVehicleRecordSuccess), take(1)).subscribe(() => this.navigateBack());
