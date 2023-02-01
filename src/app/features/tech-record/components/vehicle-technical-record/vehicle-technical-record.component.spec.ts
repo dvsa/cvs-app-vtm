@@ -24,11 +24,17 @@ import { createProvisionalTechRecord, updateTechRecords } from '@store/technical
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
+import { Component } from '@angular/core';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
   let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;
   let store: MockStore<State>;
+
+  @Component({})
+  class TechRecordSummaryStubComponent {
+    checkForms() {}
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -47,7 +53,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         TechRecordHistoryComponent,
         TechRecordSummaryComponent,
         TechRecordTitleComponent,
-        TestRecordSummaryComponent,
+        TechRecordSummaryStubComponent,
         VehicleTechnicalRecordComponent
       ],
       providers: [
@@ -130,6 +136,7 @@ describe('VehicleTechnicalRecordComponent', () => {
       beforeEach(() => {
         component.editingReason = ReasonForEditing.CORRECTING_AN_ERROR;
         fixture.detectChanges();
+        component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
       });
 
       it('should update the current for a valid form', fakeAsync(() => {
@@ -144,6 +151,7 @@ describe('VehicleTechnicalRecordComponent', () => {
       beforeEach(() => {
         component.editingReason = ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED;
         fixture.detectChanges();
+        component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
       });
 
       it('should dispatch updateTechRecords with oldStatusCode to archive the prosional', fakeAsync(() => {
