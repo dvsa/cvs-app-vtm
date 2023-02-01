@@ -16,6 +16,7 @@ jobs:
             ["fix", ["bug"]],
             ["test", ["coverage"]],
             ["refactor", ["refactor"]],
+            ["chore", ["task"]],
             ]);
             const labels = labelMap.get(context.payload.pull_request.title.split("(")[0])
             if (labels) {
