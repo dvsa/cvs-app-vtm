@@ -35,7 +35,6 @@ describe('TechRecordChangeTypeComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let store: MockStore;
-  let techRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
