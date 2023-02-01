@@ -41,9 +41,9 @@ export class TechRecordHistoryComponent {
   summaryLinkUrl(techRecord: TechRecordModel) {
     switch (techRecord.statusCode) {
       case StatusCodes.PROVISIONAL:
-        return '/provisional';
+        return 'provisional';
       case StatusCodes.ARCHIVED:
-        return `/historic/${this.convertToUnix(techRecord.createdAt)}`;
+        return `historic/${this.convertToUnix(techRecord.createdAt)}`;
       default:
         return '';
     }

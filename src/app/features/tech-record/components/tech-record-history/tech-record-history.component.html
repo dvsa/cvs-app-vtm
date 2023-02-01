@@ -22,7 +22,14 @@
         <td class="govuk-table__cell" [id]="techRecord.statusCode + '-created-at-' + i">{{ techRecord.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
         <td class="govuk-table__cell">
           <ng-container *ngIf="techRecord.createdAt !== currentTechRecord.createdAt">
-            <a id="view-test-{{ vehicle.vin }}" href="/tech-records/{{ vehicle.systemNumber }}{{ summaryLinkUrl(techRecord) }}">View</a>
+            <app-button
+              id="view-test-{{ vehicle.vin }}"
+              type="link"
+              design="link"
+              [routerLink]="['/', 'tech-records', vehicle.systemNumber, summaryLinkUrl(techRecord)]"
+            >
+              View
+            </app-button>
           </ng-container>
         </td>
       </tr>
