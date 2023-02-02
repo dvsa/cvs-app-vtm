@@ -294,6 +294,11 @@ export class TechnicalRecordService {
       });
   }
 
+  generatePlate(techRecord?: TechRecordModel) {
+    console.log('Ping.');
+    return of(true);
+  }
+
   private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {
     const secondaryVrms: string[] = [];
     const putVehicleTechRecordModel: PutVehicleTechRecordModel = { ...vehicleTechRecord, secondaryVrms };

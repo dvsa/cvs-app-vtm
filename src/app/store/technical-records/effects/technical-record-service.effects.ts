@@ -41,7 +41,10 @@ import {
   getByVrmSuccess,
   updateTechRecords,
   updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecordsSuccess,
+  generatePlate,
+  generatePlateSuccess,
+  generatePlateFailure
 } from '../actions/technical-record-service.actions';
 import { editableTechRecord } from '../selectors/technical-record-service.selectors';
 
@@ -183,6 +186,19 @@ export class TechnicalRecordServiceEffects {
         tap(mergedForms => this.technicalRecordService.updateEditingTechRecord(mergedForms))
       ),
     { dispatch: false }
+  );
+
+  generatePlate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generatePlate),
+      withLatestFrom(this.store.pipe(select(editableTechRecord))),
+      switchMap(([action, record]) =>
+        this.technicalRecordService.generatePlate().pipe(
+          map(value => generatePlateSuccess({ outcome: value })),
+          catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
+        )
+      )
+    )
   );
 
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {

@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -6,11 +5,10 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReasonForGenerating, TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { generatePlate, generatePlateSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import cloneDeep from 'lodash.clonedeep';
-import { catchError, map, of, take, tap, throwError } from 'rxjs';
+import { take } from 'rxjs';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -68,6 +66,10 @@ export class GeneratePlateComponent implements OnInit, OnChanges {
     if (!this.currentTechRecord || (this.currentTechRecord.vehicleType !== 'hgv' && this.currentTechRecord.vehicleType !== 'trl')) {
       this.navigateBack();
     }
+
+    this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => {
+      this.navigateBack();
+    });
   }
 
   ngOnChanges(): void {
@@ -86,6 +88,7 @@ export class GeneratePlateComponent implements OnInit, OnChanges {
     }
 
     console.log(plateReasonForGenerating);
-    this.navigateBack();
+
+    this.store.dispatch(generatePlate({ techRecord: this.currentTechRecord! }));
   }
 }
