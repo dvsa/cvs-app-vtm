@@ -10,7 +10,7 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { updateTechRecordsSuccess } from '@store/technical-records';
+import { generatePlate, generatePlateSuccess, updateTechRecordsSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { GeneratePlateComponent } from './tech-record-generate-plate.component';
 import { SharedModule } from '@shared/shared.module';
@@ -88,6 +88,21 @@ describe('TechRecordGeneratePlateComponent', () => {
 
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
+
+    it('should navigate back on generatePlateSuccess', fakeAsync(() => {
+      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.HGV);
+      component.currentTechRecord = expectedVehicle.techRecord[0];
+
+      component.ngOnInit();
+
+      const navigateBackSpy = jest.spyOn(component, 'navigateBack');
+      jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+      actions$.next(generatePlateSuccess({}));
+      tick();
+
+      expect(navigateBackSpy).toHaveBeenCalled();
+    }));
   });
 
   describe('handleSubmit', () => {
@@ -99,12 +114,12 @@ describe('TechRecordGeneratePlateComponent', () => {
       expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Reason for generating plate is required', anchorLink: 'plateReasonForGenerating' });
     });
 
-    it('should navigate back on successful submission', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+    it('should dispatch the generatePlate action', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
 
       component.handleSubmit('Provisional');
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(dispatchSpy).toBeCalledWith(generatePlate({ techRecord: component.currentTechRecord! }));
     });
   });
 });

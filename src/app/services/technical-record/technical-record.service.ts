@@ -294,7 +294,8 @@ export class TechnicalRecordService {
       });
   }
 
-  generatePlate(techRecord?: TechRecordModel) {
+  generatePlate(techRecord: TechRecordModel) {
+    // TODO: Implement API call when ready
     console.log('Ping.');
     return of(true);
   }
