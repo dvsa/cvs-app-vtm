@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
@@ -14,6 +15,7 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectQueryParam, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { updateResultOfTest } from '@store/test-records';
+import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/selectors/test-types.selectors';
 import merge from 'lodash.merge';
 import { catchError, concatMap, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
@@ -169,11 +171,16 @@ export class TestResultsEffects {
       ofType(contingencyTestTypeSelected),
       mergeMap(action =>
         of(action).pipe(
-          withLatestFrom(this.store.select(testResultInEdit), this.store.select(selectTestType(action.testType)), this.userService.user$),
+          withLatestFrom(
+            this.store.select(testResultInEdit),
+            this.store.select(selectTestType(action.testType)),
+            this.userService.user$,
+            this.store.select(getTestStationFromProperty('testStationType', TestStationType.HQ))
+          ),
           take(1)
         )
       ),
-      concatMap(([action, editingTestResult, testTypeTaxonomy, user]) => {
+      concatMap(([action, editingTestResult, testTypeTaxonomy, user, testStation]) => {
         const id = action.testType;
 
         const { vehicleType } = editingTestResult!;
@@ -208,8 +215,8 @@ export class TestResultsEffects {
           mergedForms.testEndTimestamp = now;
           mergedForms.testTypes[0].testTypeStartTimestamp = now;
           mergedForms.testTypes[0].testTypeEndTimestamp = now;
-          mergedForms.testStationName = 'SWANSEA';
-          mergedForms.testStationPNumber = 'SWANSEA';
+          mergedForms.testStationName = testStation?.testStationName ?? '[INVALID_OPTION]';
+          mergedForms.testStationPNumber = testStation?.testStationPNumber ?? '[INVALID_OPTION]';
           mergedForms.testStationType = TestStationType.ATF;
         }
 
@@ -256,6 +263,7 @@ export class TestResultsEffects {
     private testRecordsService: TestRecordsService,
     private store: Store<State>,
     private userService: UserService,
-    private dfs: DynamicFormService
+    private dfs: DynamicFormService,
+    private errorService: GlobalErrorService
   ) {}
 }
