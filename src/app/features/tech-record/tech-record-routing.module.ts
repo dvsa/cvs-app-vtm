@@ -15,6 +15,7 @@ import { TechRecordComponent } from './tech-record.component';
 import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
 import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
 
+
 const routes: Routes = [
   {
     path: '',

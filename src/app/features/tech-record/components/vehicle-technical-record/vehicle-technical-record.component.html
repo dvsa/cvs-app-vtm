@@ -22,6 +22,7 @@
           <app-button style="margin-left: 10px" (clicked)="generatePlate()" *appRoleRequired="roles.TechRecordAmend">Generate Plate</app-button>
         </ng-container>
 
+
         <app-tech-record-history [vehicle]="vehicle" [currentTechRecord]="currentTechRecord"></app-tech-record-history>
 
         <app-test-record-summary *appRoleRequired="roles.TestResultView" [testResults]="(testResults$ | async) || []"></app-test-record-summary>
