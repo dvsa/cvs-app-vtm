@@ -1,16 +1,16 @@
-<div class="govuk-grid-row">
+<div class="govuk-grid-row" *ngIf="currentTechRecord$ | async as currentTechRecord">
   <div class="govuk-grid-column-one-third">
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-full" *ngIf="currentTechRecord$ | async as currentTechRecord">
-        <app-tech-record-title [vehicleTechRecord]="vehicleTechRecord" [recordActions]="getActions(currentTechRecord)"></app-tech-record-title>
+      <div class="govuk-grid-column-full">
+        <app-tech-record-title [vehicle]="vehicle" [actions]="getActions(currentTechRecord)"></app-tech-record-title>
 
         <app-edit-tech-record-button
-          [vehicleTechRecord]="vehicleTechRecord"
+          *appRoleRequired="roles.TechRecordAmend"
+          [vehicle]="vehicle"
           [viewableTechRecord]="currentTechRecord"
           [(isEditing)]="isEditing"
           [isDirty]="isDirty"
           (submitChange)="handleSubmit()"
-          *appRoleRequired="roles.TechRecordAmend"
         ></app-edit-tech-record-button>
 
         <ng-container
@@ -22,9 +22,9 @@
           <app-button style="margin-left: 10px" (clicked)="generatePlate()" *appRoleRequired="roles.TechRecordAmend">Generate Plate</app-button>
         </ng-container>
 
-        <app-tech-record-history [currentRecord]="currentTechRecord" [vehicleTechRecord]="vehicleTechRecord"></app-tech-record-history>
+        <app-tech-record-history [vehicle]="vehicle" [currentTechRecord]="currentTechRecord"></app-tech-record-history>
 
-        <app-test-record-summary *appRoleRequired="roles.TestResultView" [testRecords]="(records$ | async) || []"></app-test-record-summary>
+        <app-test-record-summary *appRoleRequired="roles.TestResultView" [testResults]="(testResults$ | async) || []"></app-test-record-summary>
 
         <ng-container *ngIf="!isArchived && !isEditing">
           <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssesment]">
@@ -36,10 +36,10 @@
   </div>
   <div class="govuk-grid-column-two-thirds">
     <app-tech-record-summary
-      *ngIf="currentTechRecord$ | async as currentTechRecord"
+      [techRecord]="currentTechRecord"
       [isEditing]="isEditing"
-      [vehicleTechRecord]="currentTechRecord"
-      (formChange)="handleFormState()"
+      (isFormDirty)="isDirty = $event"
+      (isFormInvalid)="isInvalid = $event"
     ></app-tech-record-summary>
   </div>
 </div>

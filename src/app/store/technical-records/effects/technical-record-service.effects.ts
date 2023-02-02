@@ -180,9 +180,7 @@ export class TechnicalRecordServiceEffects {
             }, {}) as TechRecordModel
           );
         }),
-        tap(mergedForms => {
-          this.technicalRecordService.updateEditingTechRecord(mergedForms);
-        })
+        tap(mergedForms => this.technicalRecordService.updateEditingTechRecord(mergedForms))
       ),
     { dispatch: false }
   );
