@@ -87,6 +87,6 @@ export class GeneratePlateComponent implements OnInit, OnChanges {
       return this.globalErrorService.addError({ error: 'Reason for generating plate is required', anchorLink: 'plateReasonForGenerating' });
     }
 
-    this.store.dispatch(generatePlate({ techRecord: this.currentTechRecord! }));
+    this.store.dispatch(generatePlate({ techRecord: this.currentTechRecord!, reason: plateReasonForGenerating }));
   }
 }

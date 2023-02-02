@@ -192,8 +192,8 @@ export class TechnicalRecordServiceEffects {
     this.actions$.pipe(
       ofType(generatePlate),
       withLatestFrom(this.store.pipe(select(editableTechRecord))),
-      switchMap(([action, record]) =>
-        this.technicalRecordService.generatePlate(record!).pipe(
+      switchMap(([{ techRecord, reason }, record]) =>
+        this.technicalRecordService.generatePlate(techRecord, reason).pipe(
           map(value => generatePlateSuccess({ outcome: value })),
           catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
         )
