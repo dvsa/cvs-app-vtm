@@ -19,7 +19,7 @@ import { Observable, take } from 'rxjs';
   styleUrls: ['./tech-record-change-status.component.scss']
 })
 export class TechRecordChangeStatusComponent implements OnInit {
-  vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
+  vehicle$: Observable<VehicleTechRecordModel | undefined>;
 
   techRecord?: TechRecordModel;
 
@@ -35,7 +35,7 @@ export class TechRecordChangeStatusComponent implements OnInit {
     private store: Store<State>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
+    this.vehicle$ = this.technicalRecordService.selectedVehicleTechRecord$;
 
     this.technicalRecordService.techRecord$.subscribe(techRecord => (this.techRecord = techRecord));
 
