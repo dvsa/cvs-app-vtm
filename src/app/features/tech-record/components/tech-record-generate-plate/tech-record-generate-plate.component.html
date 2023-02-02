@@ -1,0 +1,41 @@
+<div *ngIf="vehicle">
+  <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
+
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Vehicle type</dt>
+      <dd id="vehicleType" class="govuk-summary-list__value">
+        {{ currentTechRecord?.vehicleType | defaultNullOrEmpty | uppercase }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VRM</dt>
+      <app-number-plate *ngIf="vrm" [vrm]="vrm"></app-number-plate>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VIN/chassis number</dt>
+      <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicle.vin | defaultNullOrEmpty }}</dd>
+    </div>
+  </dl>
+
+  <form [formGroup]="form">
+    <app-text-input
+      #newVrm
+      [label]="form.meta.children![0].label"
+      [formControlName]="form.meta.children![0].name"
+      [width]="width"
+      name="amend-vrm-text"
+      (ngModelChange)="ngOnChanges(); newVrm.value = newVrm.value.toUpperCase()"
+    ></app-text-input>
+
+    <div *ngIf="newVrm.value.toUpperCase() !== vrm && newVrm.value.length">
+      <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
+      <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
+    </div>
+
+    <app-button-group>
+      <app-button id="submit-vrm" (clicked)="handleSubmit(newVrm.value)">Save</app-button>
+      <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+    </app-button-group>
+  </form>
+</div>

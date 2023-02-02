@@ -176,5 +176,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     }
   }
 
-  generatePlate(): void {}
+  generatePlate(): void {
+    this.router.navigate(['generate-plate'], { relativeTo: this.route });
+  }
 }
