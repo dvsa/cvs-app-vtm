@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
@@ -263,7 +262,6 @@ export class TestResultsEffects {
     private testRecordsService: TestRecordsService,
     private store: Store<State>,
     private userService: UserService,
-    private dfs: DynamicFormService,
-    private errorService: GlobalErrorService
+    private dfs: DynamicFormService
   ) {}
 }
