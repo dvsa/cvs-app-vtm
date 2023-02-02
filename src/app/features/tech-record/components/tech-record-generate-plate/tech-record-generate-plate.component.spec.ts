@@ -30,7 +30,7 @@ const mockDynamicFormService = {
   createForm: jest.fn()
 };
 
-describe('TechRecordChangeVrmComponent', () => {
+describe('TechRecordGeneratePlateComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: GeneratePlateComponent;
   let errorService: GlobalErrorService;
@@ -70,46 +70,6 @@ describe('TechRecordChangeVrmComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('makeAndModel', () => {
-    beforeEach(() => {
-      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-      component.vehicle = expectedVehicle;
-    });
-
-    it('should should return the make and model', () => {
-      const expectedTechRecord = expectedVehicle.techRecord.pop()!;
-
-      component.currentTechRecord = expectedTechRecord;
-
-      expect(component.makeAndModel).toBe(`${expectedTechRecord.chassisMake} - ${expectedTechRecord.chassisModel}`);
-    });
-
-    it('should return an empty string when the current record is null', () => {
-      delete component.currentTechRecord;
-
-      expect(component.makeAndModel).toBe('');
-    });
-  });
-
-  describe('vrm', () => {
-    beforeEach(() => {
-      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-      component.vehicle = expectedVehicle;
-    });
-
-    it('should return the primary VRM', () => {
-      component.vehicle = expectedVehicle;
-
-      expect(component.vrm).toBe('KP01ABC');
-    });
-
-    it('should return undefined when the vehicle is null', () => {
-      delete component.vehicle;
-
-      expect(component.vrm).toBe(undefined);
-    });
-  });
-
   describe('navigateBack', () => {
     it('should clear all errors', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
@@ -128,85 +88,23 @@ describe('TechRecordChangeVrmComponent', () => {
 
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
-
-    it('should navigate back on updateTechRecordsSuccess', fakeAsync(() => {
-      component.ngOnInit();
-
-      const navigateBackSpy = jest.spyOn(component, 'navigateBack');
-      jest.spyOn(router, 'navigate').mockImplementation();
-
-      actions$.next(updateTechRecordsSuccess({}));
-      tick();
-
-      expect(navigateBackSpy).toHaveBeenCalled();
-    }));
   });
 
   describe('handleSubmit', () => {
-    beforeEach(() => {
-      component.vehicle = { vrms: [{ vrm: 'KP01ABC', isPrimary: true }] } as VehicleTechRecordModel;
+    it('should add an error when the field is not filled out', () => {
+      const addErrorSpy = jest.spyOn(errorService, 'addError');
+
+      component.handleSubmit('');
+
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Reason for generating plate is required', anchorLink: 'plateReasonForGenerating' });
     });
 
-    // it('should add an error when the field is not filled out', () => {
-    //   const addErrorSpy = jest.spyOn(errorService, 'addError');
+    it('should navigate back on successful submission', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-    //   component.handleSubmit('');
+      component.handleSubmit('Provisional');
 
-    //   expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
-    // });
-
-    // it('should add an error when the field is equal to the current VRM', () => {
-    //   const addErrorSpy = jest.spyOn(errorService, 'addError');
-
-    //   component.handleSubmit('KP01ABC');
-
-    //   expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
-    // });
-
-    // it('should add an error if isUnique returns false', () => {
-    //   const addErrorSpy = jest.spyOn(errorService, 'addError');
-    //   jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(false));
-
-    //   component.handleSubmit('TESTVRM');
-
-    //   expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM already exists', anchorLink: 'newVrm' });
-    // });
-
-    // it('should dispatch the updateEditingTechRecord action', fakeAsync(() => {
-    //   jest.spyOn(router, 'navigate').mockImplementation();
-    //   jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
-    //   jest.spyOn(component, 'setReasonForCreation').mockImplementation();
-    //   const dispatchSpy = jest.spyOn(mockTechRecordService, 'updateEditingTechRecord').mockImplementation(() => Promise.resolve(true));
-
-    //   component.vehicle = { vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
-
-    //   component.handleSubmit('TESTVRM');
-    //   tick();
-
-    //   expect(dispatchSpy).toHaveBeenNthCalledWith(1, {
-    //     vrms: [
-    //       { vrm: 'VRM1', isPrimary: false },
-    //       { vrm: 'TESTVRM', isPrimary: true }
-    //     ]
-    //   });
-    // }));
-
-    // it('should be able to call it multiple times', fakeAsync(() => {
-    //   jest.spyOn(router, 'navigate').mockImplementation();
-    //   jest.spyOn(component, 'setReasonForCreation').mockImplementation();
-    //   const submitSpy = jest.spyOn(component, 'handleSubmit').mockImplementation(() => Promise.resolve(true));
-
-    //   component.vehicle = { vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
-
-    //   jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
-    //   component.handleSubmit('TESTVRM');
-    //   tick();
-
-    //   jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
-    //   component.handleSubmit('TESTVRM2');
-    //   tick();
-
-    //   expect(submitSpy).toHaveBeenCalledTimes(2);
-    // }));
+      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+    });
   });
 });
