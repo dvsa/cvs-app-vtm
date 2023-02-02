@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
@@ -8,12 +8,16 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { createVehicleRecord, createVehicleRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, take, tap } from 'rxjs';
+import { TechRecordSummaryComponent } from '../../../tech-record/components/tech-record-summary/tech-record-summary.component';
 
 @Component({
   selector: 'app-hydrate-new-vehicle-record',
   templateUrl: './hydrate-new-vehicle-record.component.html'
 })
 export class HydrateNewVehicleRecordComponent {
+  @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
+  isInvalid: boolean = false;
+
   constructor(
     private actions$: Actions,
     private globalErrorService: GlobalErrorService,
@@ -25,19 +29,23 @@ export class HydrateNewVehicleRecordComponent {
 
   get vehicle$(): Observable<VehicleTechRecordModel | undefined> {
     return this.technicalRecordService.editableVehicleTechRecord$.pipe(
-      tap(techRecord => {
-        if (!techRecord) this.navigateBack();
+      tap(vehicle => {
+        if (!vehicle) this.navigateBack();
       })
     );
+  }
+
+  handleSubmit() {
+    this.summary?.checkForms();
+
+    if (!this.isInvalid) {
+      this.store.dispatch(createVehicleRecord());
+      this.actions$.pipe(ofType(createVehicleRecordSuccess), take(1)).subscribe(() => this.navigateBack());
+    }
   }
 
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
-  }
-
-  handleSubmit() {
-    this.store.dispatch(createVehicleRecord());
-    this.actions$.pipe(ofType(createVehicleRecordSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 }

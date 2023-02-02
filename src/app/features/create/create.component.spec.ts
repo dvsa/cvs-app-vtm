@@ -161,16 +161,6 @@ describe('CreateNewVehicleRecordComponent', () => {
 
       expect(result).toBeTruthy();
     });
-
-    it('should call addError when the VIN is not unique', async () => {
-      jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(false));
-      const addErrorSpy = jest.spyOn(errorService, 'addError').mockImplementation();
-
-      const result = await component.isVinUnique();
-
-      expect(addErrorSpy).toBeCalledWith({ error: 'Vin not unique', anchorLink: 'input-vin' });
-      expect(result).toBeFalsy();
-    });
   });
 
   describe('isVrmUnique', () => {

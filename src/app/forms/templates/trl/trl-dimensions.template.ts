@@ -14,14 +14,14 @@ export const TrlDimensionsTemplate: FormNode = {
         {
           name: 'length',
           label: 'Length (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Max, args: 99999 }]
         },
         {
           name: 'width',
           label: 'Width (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Max, args: 99999 }]
         },
@@ -51,44 +51,51 @@ export const TrlDimensionsTemplate: FormNode = {
     {
       name: 'frontAxleToRearAxle',
       label: 'Front axle to rear axle (mm)',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'rearAxleToRearTrl',
       label: 'Rear axle to rear trailer',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: 'centreOfRearmostAxleToRearOfTrl',
+      label: 'Center of Rear axle to rear of trailer',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'couplingCenterToRearAxleMin',
       label: 'Minimum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'couplingCenterToRearAxleMax',
       label: 'Maximum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'couplingCenterToRearTrlMin',
       label: 'Minimum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'couplingCenterToRearTrlMax',
       label: 'Maximum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     }
   ]
 };

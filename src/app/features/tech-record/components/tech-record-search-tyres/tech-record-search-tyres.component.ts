@@ -15,7 +15,6 @@ import { Store } from '@ngrx/store';
 import { selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { updateEditingTechRecord } from '@store/technical-records/actions/technical-record-service.actions';
 import { VehicleTechRecordModel, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -104,36 +103,32 @@ export class TechRecordSearchTyresComponent implements OnInit {
     return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
   get paginatedFields(): ReferenceDataTyre[] {
-    return this.searchResults!.slice(this.pageStart, this.pageEnd);
+    return this.searchResults?.slice(this.pageStart, this.pageEnd) ?? [];
   }
   get numberOfResults(): number {
-    return this.searchResults?.length!;
+    return this.searchResults?.length ?? 0;
   }
 
   handleSearch(filter: string, term: string): void {
-    term = term.trim();
     this.globalErrorService.clearErrors();
     this.searchResults = [];
-    this.referenceDataService.addSearchInformation(filter, term);
-
-    if (!term) {
-      this.globalErrorService.addError({ error: 'You must provide search criteria', anchorLink: 'term' });
-      return;
-    } else if (!filter) {
-      this.globalErrorService.addError({ error: 'You must select a valid search filter', anchorLink: 'term' });
+    const trimmedTerm = term?.trim();
+    if (!trimmedTerm || !filter) {
+      const error = !trimmedTerm ? 'You must provide a search criteria' : 'You must select a valid search filter';
+      this.globalErrorService.addError({ error, anchorLink: 'term' });
       return;
     }
-
+    this.referenceDataService.addSearchInformation(filter, trimmedTerm);
     if (filter === 'code') {
-      this.referenceDataService.loadReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, term);
+      this.referenceDataService.loadReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, trimmedTerm);
     } else {
-      this.referenceDataService.loadTyreReferenceDataByKeySearch(filter, term);
+      this.referenceDataService.loadTyreReferenceDataByKeySearch(filter, trimmedTerm);
     }
 
     this.actions$
       .pipe(
         ofType(fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess),
-        mergeMap(() => this.store.select(selectTyreSearchReturn())),
+        mergeMap(() => this.store.select(selectTyreSearchReturn)),
         take(1)
       )
       .subscribe(data => {
@@ -145,15 +140,15 @@ export class TechRecordSearchTyresComponent implements OnInit {
   handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
     const axleIndex = Number(this.params.axleNumber!) - 1;
 
-    if (this.viewableTechRecord?.axles[axleIndex].tyres) {
+    if (this.viewableTechRecord?.axles![axleIndex].tyres) {
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
 
-      this.viewableTechRecord.axles[axleIndex].tyres!.tyreCode = Number(tyre.code);
-      this.viewableTechRecord.axles[axleIndex].tyres!.tyreSize = tyre.tyreSize;
-      this.viewableTechRecord.axles[axleIndex].tyres!.plyRating = tyre.plyRating;
-      if (this.viewableTechRecord.axles[axleIndex].tyres!.fitmentCode) {
-        this.viewableTechRecord.axles[axleIndex].tyres!.dataTrAxles =
-          this.viewableTechRecord.axles[axleIndex].tyres!.fitmentCode === 'single'
+      this.viewableTechRecord.axles![axleIndex].tyres!.tyreCode = Number(tyre.code);
+      this.viewableTechRecord.axles![axleIndex].tyres!.tyreSize = tyre.tyreSize;
+      this.viewableTechRecord.axles![axleIndex].tyres!.plyRating = tyre.plyRating;
+      if (this.viewableTechRecord.axles![axleIndex].tyres!.fitmentCode) {
+        this.viewableTechRecord.axles![axleIndex].tyres!.dataTrAxles =
+          this.viewableTechRecord.axles![axleIndex].tyres!.fitmentCode === 'single'
             ? parseInt(tyre.loadIndexSingleLoad)
             : parseInt(tyre.loadIndexTwinLoad);
       }
@@ -172,7 +167,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     return errors.find(error => error.anchorLink === name);
   }
   trackByFn(i: number, r: ReferenceDataTyre) {
-    return r.resourceKey!;
+    return r.resourceKey;
   }
   cancel() {
     this.globalErrorService.clearErrors();

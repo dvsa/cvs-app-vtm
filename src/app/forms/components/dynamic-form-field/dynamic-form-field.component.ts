@@ -20,7 +20,7 @@ export class DynamicFormFieldComponent implements AfterContentInit {
     return FormNodeEditTypes;
   }
 
-  get options(): Observable<FormNodeOption<string | number | boolean>[]> {
+  get options$(): Observable<FormNodeOption<string | number | boolean>[]> {
     const meta = this.control?.value.meta;
 
     return meta?.referenceData

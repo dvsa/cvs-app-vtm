@@ -33,6 +33,9 @@
     (ngModelChange)="ngOnChanges()"
   ></app-select>
 
+  <ng-container *ngIf="this.isVinUniqueCheckComplete && !this.vinUnique">
+    <p class="govuk-error-message">The Vin your about to submit is a duplicate, if you are happy to continue please press continue</p>
+  </ng-container>
   <app-button id="create-record-continue" (clicked)="handleSubmit()">Continue</app-button>
   <app-button class design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
 </form>

@@ -28,7 +28,7 @@ describe('TestRecordSummaryComponent', () => {
   });
 
   it('should not show table if no records found', () => {
-    component.testRecords = [];
+    component.testResults = [];
     fixture.detectChanges();
 
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
@@ -40,7 +40,7 @@ describe('TestRecordSummaryComponent', () => {
   });
 
   it('should show table if records found', () => {
-    component.testRecords = [createMock<TestResultModel>()];
+    component.testResults = [createMock<TestResultModel>()];
     fixture.detectChanges();
 
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
@@ -107,7 +107,7 @@ describe('TestRecordSummaryComponent', () => {
         ]
       }
     ] as TestResultModel[];
-    component.testRecords = mockRecords;
+    component.testResults = mockRecords;
     const testFieldResults = component.sortedTestTypeFields;
 
     expect(testFieldResults).toHaveLength(3);
