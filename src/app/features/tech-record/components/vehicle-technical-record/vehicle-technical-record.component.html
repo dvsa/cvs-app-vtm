@@ -13,12 +13,14 @@
           *appRoleRequired="roles.TechRecordAmend"
         ></app-edit-tech-record-button>
 
-        <app-button
-          style="margin-left: 10px"
-          (clicked)="generatePlate()"
-          *ngIf="currentTechRecord.vehicleType === 'hgv' && currentTechRecord.statusCode === statusCodes.CURRENT"
-          >Generate Plate</app-button
+        <ng-container
+          *ngIf="
+            (currentTechRecord.vehicleType === 'hgv' || currentTechRecord.vehicleType === 'trl') &&
+            currentTechRecord.statusCode === statusCodes.CURRENT
+          "
         >
+          <app-button style="margin-left: 10px" (clicked)="generatePlate()" *appRoleRequired="roles.TechRecordAmend">Generate Plate</app-button>
+        </ng-container>
 
         <app-tech-record-history [currentRecord]="currentTechRecord" [vehicleTechRecord]="vehicleTechRecord"></app-tech-record-history>
 
