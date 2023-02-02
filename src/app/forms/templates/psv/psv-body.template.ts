@@ -18,7 +18,7 @@ export const PsvBodyTemplate: FormNode = {
           width: FormNodeWidth.S,
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.AUTOCOMPLETE,
-          validators: []
+          validators: [{ name: ValidatorNames.Required }]
         }
       ],
       type: FormNodeTypes.GROUP
@@ -72,10 +72,10 @@ export const PsvBodyTemplate: FormNode = {
           label: 'Body type',
           value: '',
           type: FormNodeTypes.CONTROL,
-          disabled: true
+          disabled: true,
+          validators: [{ name: ValidatorNames.Required }]
         }
-      ],
-      validators: [{ name: ValidatorNames.Required }]
+      ]
     },
     {
       name: 'functionCode',

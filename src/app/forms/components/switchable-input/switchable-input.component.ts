@@ -22,6 +22,7 @@ export class SwitchableInputComponent implements OnInit {
   @Input() width?: FormNodeWidth;
   @Input() options?: MultiOptions = [];
   @Input() propOptions$?: Observable<MultiOptions>;
+  @Input() hint?: string;
 
   delimiter = { regex: '\\. (?<!\\..\\. )', separator: '. ' };
 
