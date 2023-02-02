@@ -22,9 +22,11 @@
         </th>
         <td class="govuk-table__cell" [id]="'test-record-summary-name-' + i">{{ test.testTypeName }}</td>
         <td class="govuk-table__cell" [id]="'test-record-summary-result-' + i">{{ test.testResult }}</td>
-        <td class="govuk-table__cell">
-          <a id="view-test-{{ test.testResultId }}" routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}">View</a>
-        </td>
+        <ng-container *ngIf="!isEditing">
+          <td class="govuk-table__cell">
+            <a id="view-test-{{ test.testResultId }}" routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}">View</a>
+          </td>
+        </ng-container>
       </tr>
     </tbody>
   </table>

@@ -18,6 +18,7 @@ interface TestField {
 })
 export class TestRecordSummaryComponent {
   @Input() testRecords: TestResultModel[] = [];
+  @Input() isEditing = false;
 
   public get roles() {
     return Roles;
