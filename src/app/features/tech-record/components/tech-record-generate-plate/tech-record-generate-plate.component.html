@@ -1,4 +1,4 @@
-<div *ngIf="vehicle">
+<div *ngIf="vehicle && (currentTechRecord?.vehicleType === 'hgv' || currentTechRecord?.vehicleType === 'trl')">
   <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
 
   <dl class="govuk-summary-list">
@@ -20,21 +20,40 @@
 
   <form [formGroup]="form">
     <app-text-input
-      #newVrm
+      #plateSerialNumber
       [label]="form.meta.children![0].label"
       [formControlName]="form.meta.children![0].name"
       [width]="width"
-      name="amend-vrm-text"
-      (ngModelChange)="ngOnChanges(); newVrm.value = newVrm.value.toUpperCase()"
+      name="generate-plate-serial-number"
     ></app-text-input>
+    <app-date
+      #plateIssueDate
+      [label]="form.meta.children![1].label"
+      [formControlName]="form.meta.children![1].name"
+      [width]="width"
+      name="generate-plate-issue-date"
+    ></app-date>
+    <app-radio-group
+      #plateReasonForGenerating
+      [label]="form.meta.children![2].label"
+      [formControlName]="form.meta.children![2].name"
+      [options]="reasons"
+      name="generate-plate-reason"
+    ></app-radio-group>
+    <app-text-area
+      #plateIssuer
+      [label]="form.meta.children![3].label"
+      [formControlName]="form.meta.children![3].name"
+      [width]="width"
+    ></app-text-area>
 
-    <div *ngIf="newVrm.value.toUpperCase() !== vrm && newVrm.value.length">
+    <!-- <div *ngIf="newVrm.value.toUpperCase() !== vrm && newVrm.value.length">
       <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
       <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
-    </div>
+    </div> -->
 
     <app-button-group>
-      <app-button id="submit-vrm" (clicked)="handleSubmit(newVrm.value)">Save</app-button>
+      <app-button id="submit-vrm" (clicked)="handleSubmit(plateSerialNumber.value)">Save</app-button>
       <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
     </app-button-group>
   </form>

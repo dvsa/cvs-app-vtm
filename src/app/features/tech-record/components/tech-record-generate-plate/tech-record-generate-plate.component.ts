@@ -3,8 +3,8 @@ import { Component, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
+import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { ReasonForGenerating, TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
@@ -20,6 +20,15 @@ import { Actions, ofType } from '@ngrx/effects';
   styleUrls: ['./tech-record-generate-plate.component.scss']
 })
 export class GeneratePlateComponent implements OnInit, OnChanges {
+  reasons: Array<FormNodeOption<string>> = [
+    { label: 'Free replacement', value: ReasonForGenerating.FREE_REPLACEMENT },
+    { label: 'Replacement', value: ReasonForGenerating.REPLACEMENT },
+    { label: 'Destroyed', value: ReasonForGenerating.DESTROYED },
+    { label: 'Provisional', value: ReasonForGenerating.PROVISIONAL },
+    { label: 'Original', value: ReasonForGenerating.ORIGINAL },
+    { label: 'Manual', value: ReasonForGenerating.MANUAL }
+  ];
+
   vehicle?: VehicleTechRecordModel;
   currentTechRecord?: TechRecordModel;
   form: CustomFormGroup;
@@ -30,11 +39,38 @@ export class GeneratePlateComponent implements OnInit, OnChanges {
     type: FormNodeTypes.GROUP,
     children: [
       {
-        name: 'newVrm',
-        label: 'Input a new VRM',
+        name: 'plateSerialNumber',
+        label: 'Plate Serial Number',
         value: '',
         type: FormNodeTypes.CONTROL,
-        validators: [{ name: ValidatorNames.MaxLength, args: 9 }, { name: ValidatorNames.MinLength, args: 1 }, { name: ValidatorNames.Alphanumeric }]
+        validators: [
+          { name: ValidatorNames.Required },
+          { name: ValidatorNames.MaxLength, args: 12 },
+          { name: ValidatorNames.MinLength, args: 1 },
+          { name: ValidatorNames.Alphanumeric }
+        ]
+      },
+      {
+        name: 'plateIssueDate',
+        label: 'Plate Issue Date',
+        value: '',
+        type: FormNodeTypes.CONTROL,
+        editType: FormNodeEditTypes.DATE,
+        validators: [{ name: ValidatorNames.Required }]
+      },
+      {
+        name: 'plateReason',
+        label: 'Reason for generating plate',
+        value: '',
+        type: FormNodeTypes.CONTROL,
+        validators: [{ name: ValidatorNames.Required }]
+      },
+      {
+        name: 'plateIssuer',
+        label: 'Plate Issuer',
+        value: '',
+        type: FormNodeTypes.CONTROL,
+        validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 12 }, { name: ValidatorNames.MinLength, args: 1 }]
       }
     ]
   };
@@ -85,55 +121,27 @@ export class GeneratePlateComponent implements OnInit, OnChanges {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  handleSubmit(newVrm: string): void {
-    this.globalErrorService.clearErrors();
-    if (newVrm === '' || (newVrm === this.vrm ?? '')) {
-      return this.globalErrorService.addError({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
-    }
-
-    this.technicalRecordService
-      .isUnique(newVrm, SEARCH_TYPES.VRM)
-      .pipe(
-        take(1),
-        catchError(error => (error.status == 404 ? of(true) : throwError(() => new Error('Error'))))
-      )
-      .subscribe({
-        next: res => {
-          if (!res) return this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
-
-          const newVehicleRecord = this.amendVrm(this.vehicle!, newVrm);
-
-          this.setReasonForCreation(newVehicleRecord);
-          this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
-          this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
-        },
-        error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
-      });
-  }
-
-  amendVrm(record: VehicleTechRecordModel, newVrm: string) {
-    const newModel: VehicleTechRecordModel = cloneDeep(record);
-    newModel.vrms.forEach(x => (x.isPrimary = false));
-
-    const existingVrmObject = newModel.vrms.find(vrm => vrm.vrm == newVrm);
-    if (existingVrmObject == null) {
-      const vrmObject: Vrm = { vrm: newVrm.toUpperCase(), isPrimary: true };
-      newModel.vrms.push(vrmObject);
-    } else existingVrmObject.isPrimary = true;
-
-    return newModel;
-  }
-
-  // Currently unused, to be discussed as a future ticket
-  mapVrmToTech(vehicleRecord: VehicleTechRecordModel, techRecord: TechRecordModel) {
-    const newTechModel: TechRecordModel = cloneDeep(techRecord);
-
-    newTechModel.historicSecondaryVrms = [];
-
-    vehicleRecord.vrms.forEach(vrm =>
-      vrm.isPrimary ? (newTechModel.historicPrimaryVrm = vrm.vrm) : newTechModel.historicSecondaryVrms!.push(vrm.vrm)
-    );
-    return newTechModel;
+  handleSubmit(plateSerialNumber: string): void {
+    // this.globalErrorService.clearErrors();
+    // if (newVrm === '' || (newVrm === this.vrm ?? '')) {
+    //   return this.globalErrorService.addError({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
+    // }
+    // this.technicalRecordService
+    //   .isUnique(newVrm, SEARCH_TYPES.VRM)
+    //   .pipe(
+    //     take(1),
+    //     catchError(error => (error.status == 404 ? of(true) : throwError(() => new Error('Error'))))
+    //   )
+    //   .subscribe({
+    //     next: res => {
+    //       if (!res) return this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
+    //       const newVehicleRecord = this.amendVrm(this.vehicle!, newVrm);
+    //       this.setReasonForCreation(newVehicleRecord);
+    //       this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
+    //       this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
+    //     },
+    //     error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
+    //   });
   }
 
   setReasonForCreation(vehicleRecord: VehicleTechRecordModel) {
