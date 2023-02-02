@@ -294,6 +294,12 @@ export class TechnicalRecordService {
       });
   }
 
+  generatePlate(techRecord: TechRecordModel, reason: string) {
+    // TODO: Implement API call when ready
+    console.log('Ping.');
+    return of(true);
+  }
+
   private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {
     const secondaryVrms: string[] = [];
     const putVehicleTechRecordModel: PutVehicleTechRecordModel = { ...vehicleTechRecord, secondaryVrms };

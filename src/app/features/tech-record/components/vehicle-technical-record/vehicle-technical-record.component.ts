@@ -130,4 +130,8 @@ export class VehicleTechnicalRecordComponent implements OnInit {
       }
     }
   }
+
+  generatePlate(): void {
+    this.router.navigate(['generate-plate'], { relativeTo: this.route });
+  }
 }

@@ -9,6 +9,7 @@ import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-recor
 import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { ChangeVehicleTypeComponent } from './components/tech-record-change-type/tech-record-change-type.component';
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
+import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
 import { TechRecordHistoryComponent } from './components/tech-record-history/tech-record-history.component';
 import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { TechRecordSummaryComponent } from './components/tech-record-summary/tech-record-summary.component';
@@ -28,6 +29,7 @@ import { TechRecordComponent } from './tech-record.component';
     TechRecordComponent,
     TechRecordChangeStatusComponent,
     TechRecordChangeVisibilityComponent,
+    GeneratePlateComponent,
     TechRecordHistoryComponent,
     TechRecordSearchTyresComponent,
     TechRecordSummaryComponent,
