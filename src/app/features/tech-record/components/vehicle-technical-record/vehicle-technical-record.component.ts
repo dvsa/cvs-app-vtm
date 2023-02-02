@@ -175,4 +175,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  generatePlate(): void {}
 }
