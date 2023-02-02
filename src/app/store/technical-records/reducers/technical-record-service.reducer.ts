@@ -32,7 +32,10 @@ import {
   updateEditingTechRecordCancel,
   createVehicleRecord,
   createVehicleRecordFailure,
-  createVehicleRecordSuccess
+  createVehicleRecordSuccess,
+  generatePlate,
+  generatePlateSuccess,
+  generatePlateFailure
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -93,6 +96,10 @@ export const vehicleTechRecordReducer = createReducer(
   on(archiveTechRecord, defaultArgs),
   on(archiveTechRecordSuccess, successArgs),
   on(archiveTechRecordFailure, updateFailureArgs),
+
+  on(generatePlate, defaultArgs),
+  on(generatePlateSuccess, successArgs),
+  on(generatePlateFailure, failureArgs),
 
   on(updateEditingTechRecord, (state: TechnicalRecordServiceState, data: { vehicleTechRecord: VehicleTechRecordModel }) => ({
     ...state,
