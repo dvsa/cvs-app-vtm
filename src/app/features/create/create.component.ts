@@ -1,5 +1,5 @@
 import { Component, OnChanges } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -16,7 +16,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class CreateComponent implements OnChanges {
   vehicle: Partial<VehicleTechRecordModel> = {};
-  isDuplicateVinAlllowed: boolean = false;
+  isDuplicateVinAllowed: boolean = false;
   isVinUniqueCheckComplete: boolean = false;
 
   vinUnique: boolean = false;
@@ -38,13 +38,24 @@ export class CreateComponent implements OnChanges {
       Validators.maxLength(9),
       Validators.required
     ]),
-    vehicleStatus: new CustomFormControl({ name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL }, '', [
-      Validators.required
-    ]),
+    vehicleStatus: new CustomFormControl(
+      { name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL },
+      StatusCodes.PROVISIONAL,
+      [Validators.required]
+    ),
     vehicleType: new CustomFormControl({ name: 'change-vehicle-type-select', label: 'Vehicle type', type: FormNodeTypes.CONTROL }, '', [
       Validators.required
-    ])
+    ]),
+    generateID: new CustomFormControl({ name: 'generate-c-or-z-num', type: FormNodeTypes.CONTROL }, null)
   });
+
+  public vehicleTypeOptions: MultiOptions = [
+    { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
+    { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
+    { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
+  ];
+
+  public vehicleStatusOptions: MultiOptions = [{ label: 'Provisional', value: StatusCodes.PROVISIONAL }];
 
   constructor(
     private globalErrorService: GlobalErrorService,
@@ -57,16 +68,22 @@ export class CreateComponent implements OnChanges {
     this.globalErrorService.clearErrors();
   }
 
-  public vehicleTypeOptions: MultiOptions = [
-    { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
-    { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
-    { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
-  ];
+  toggleVrmInput(checked: any) {
+    const vrmTrm = this.vehicleForm.controls['vrmTrm'];
+    checked.value ? this.generateID(vrmTrm) : this.vrmTrm(vrmTrm);
+  }
 
-  public vehicleStatusOptions: MultiOptions = [
-    { label: 'Current', value: StatusCodes.CURRENT },
-    { label: 'Provisional', value: StatusCodes.PROVISIONAL }
-  ];
+  vrmTrm(vrmTrm: AbstractControl) {
+    vrmTrm.addValidators(Validators.required);
+    vrmTrm.setValue('');
+    vrmTrm.enable();
+  }
+
+  generateID(vrmTrm: AbstractControl) {
+    vrmTrm.removeValidators(Validators.required);
+    vrmTrm.setValue(null);
+    vrmTrm.disable();
+  }
 
   get primaryVrm(): string {
     return this.vehicle.vrms?.find(vrm => vrm.isPrimary)?.vrm ?? '';
@@ -93,7 +110,7 @@ export class CreateComponent implements OnChanges {
     }
 
     if (!(await this.isFormValueUnique())) {
-      this.isDuplicateVinAlllowed = true;
+      this.isDuplicateVinAllowed = true;
       return;
     }
 
@@ -112,12 +129,16 @@ export class CreateComponent implements OnChanges {
       this.vinUnique = await this.isVinUnique();
     }
 
+    if (this.vehicleForm.controls['generateID'].value) {
+      return this.vinUnique || this.isDuplicateVinAllowed;
+    }
+
     if (isTrailer) {
       this.trlUnique = await this.isTrailerIdUnique();
-      return (this.vinUnique || this.isDuplicateVinAlllowed) && this.trlUnique;
+      return (this.vinUnique || this.isDuplicateVinAllowed) && this.trlUnique;
     } else {
       this.vrmUnique = await this.isVrmUnique();
-      return (this.vinUnique || this.isDuplicateVinAlllowed) && this.vrmUnique;
+      return (this.vinUnique || this.isDuplicateVinAllowed) && this.vrmUnique;
     }
   }
 

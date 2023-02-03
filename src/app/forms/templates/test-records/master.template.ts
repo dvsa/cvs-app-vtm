@@ -517,6 +517,17 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection
     }
   },
+  'small trl': {
+    default: {
+      required: RequiredSpecialistSection,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
   motorcycle: {
     default: {
       required: RequiredSpecialistSection,

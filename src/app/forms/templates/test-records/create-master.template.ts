@@ -527,6 +527,17 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     }
   },
+  'small trl': {
+    default: {
+      required: CreateRequiredSection,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
   motorcycle: {
     default: {
       required: CreateRequiredSection,
