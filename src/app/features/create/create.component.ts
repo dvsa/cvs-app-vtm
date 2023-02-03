@@ -66,7 +66,6 @@ export class CreateComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.globalErrorService.clearErrors();
-    console.log(this.vehicleForm.value);
   }
 
   toggleVrmInput(checked: any) {
