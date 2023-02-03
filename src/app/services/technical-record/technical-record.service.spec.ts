@@ -181,8 +181,8 @@ describe('TechnicalRecordService', () => {
         const expectedBody = {
           msUserDetails: { msOid: expectedUser.id, msUser: expectedUser.name },
           vin: expectedVehicle.vin,
-          primaryVrm: expectedVehicle.vrms ? expectedVehicle.vrms[0].vrm : '',
-          trailerId: expectedVehicle.trailerId ?? '',
+          primaryVrm: expectedVehicle.vrms ? expectedVehicle.vrms[0].vrm : null,
+          trailerId: expectedVehicle.trailerId ?? null,
           techRecord: expectedVehicle.techRecord
         };
 
@@ -199,8 +199,8 @@ describe('TechnicalRecordService', () => {
 
         const expectedResult = {
           vin: expectedVehicle.vin,
-          primaryVrm: expectedVehicle.vrms ? expectedVehicle.vrms[0].vrm : '',
-          trailerId: expectedVehicle.trailerId ?? '',
+          primaryVrm: expectedVehicle.vrms ? expectedVehicle.vrms[0].vrm : null,
+          trailerId: expectedVehicle.trailerId ?? null,
           techRecord: expectedVehicle.techRecord
         };
 

@@ -98,8 +98,8 @@ export class TechnicalRecordService {
     const body = {
       msUserDetails: { msOid: user.id, msUser: user.name },
       vin: recordCopy.vin,
-      primaryVrm: recordCopy.vrms ? recordCopy.vrms[0].vrm : '',
-      trailerId: recordCopy.trailerId ?? '',
+      primaryVrm: recordCopy.vrms ? recordCopy.vrms[0].vrm : null,
+      trailerId: recordCopy.trailerId ?? null,
       techRecord: recordCopy.techRecord
     };
 
