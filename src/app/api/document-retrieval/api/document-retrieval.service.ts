@@ -90,4 +90,57 @@ export class DocumentRetrievalService {
       withCredentials: this.configuration.withCredentials
     });
   }
+
+  public testPlateGet(serialNumber?: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+  public testPlateGet(serialNumber?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+  public testPlateGet(serialNumber?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+  public testPlateGet(serialNumber?: string, observe: any = 'body', reportProgress = false): Observable<any> {
+    if (!serialNumber) {
+      throw new Error('Required parameter serialNumber was null or undefined when calling testCertificateGet.');
+    }
+
+    // Set query parameters
+    let params = new HttpParams({ encoder: new CustomHttpUrlEncodingCodec() });
+    if (serialNumber) {
+      params = params.set('serialNumber', <any>serialNumber);
+    }
+
+    let headers = this.defaultHeaders;
+
+    // authentication (OAuth2) required
+    if (this.configuration.accessToken) {
+      const accessToken = typeof this.configuration.accessToken === 'function' ? this.configuration.accessToken() : this.configuration.accessToken;
+      headers = headers.set('Authorization', 'Bearer ' + accessToken);
+    }
+
+    // api keys
+    if (this.configuration.apiKeys) {
+      for (const key in this.configuration.apiKeys) {
+        headers = headers.set(key, this.configuration.apiKeys[key]);
+      }
+    }
+
+    // to determine the Accept header
+    let httpHeaderAccepts: string[] = [];
+    const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    if (httpHeaderAcceptSelected) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/pdf; charset=utf-8'];
+    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    return this.httpClient.get(`${this.basePath}/v1/document-retrieval`, {
+      headers,
+      params,
+      reportProgress,
+      observe,
+      responseType: 'text',
+      withCredentials: this.configuration.withCredentials
+    });
+  }
 }
