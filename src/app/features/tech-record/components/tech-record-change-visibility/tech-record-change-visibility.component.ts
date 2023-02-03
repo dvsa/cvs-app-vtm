@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +19,7 @@ import { Observable, take } from 'rxjs';
   styleUrls: ['./tech-record-change-visibility.component.scss']
 })
 export class TechRecordChangeVisibilityComponent implements OnInit {
-  vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
+  vehicle$: Observable<VehicleTechRecordModel | undefined>;
   techRecord?: TechRecordModel;
 
   form: CustomFormGroup;
@@ -33,7 +32,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit {
     private store: Store<State>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
+    this.vehicle$ = this.technicalRecordService.selectedVehicleTechRecord$;
 
     this.technicalRecordService.techRecord$.subscribe(techRecord => (this.techRecord = techRecord));
 

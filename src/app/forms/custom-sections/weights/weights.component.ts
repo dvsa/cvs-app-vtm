@@ -94,7 +94,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
       weights: weights
     };
 
-    if (this.vehicleTechRecord.axles.length < 10) {
+    if (this.vehicleTechRecord.axles!.length < 10) {
       this.isError = false;
       this.axles.addControl(newAxle);
     } else {
@@ -105,7 +105,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
-    if (this.vehicleTechRecord.axles.length > minLength) {
+    if (this.vehicleTechRecord.axles!.length > minLength) {
       this.isError = false;
       this.axles.removeAt(index);
     } else {

@@ -41,17 +41,20 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [],
       isoDate: false
     },
     {
       name: 'manufactureYear',
       label: 'Year of manufacture',
-      value: '',
+      value: null,
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 }
+      ]
     },
     {
       name: 'noOfAxles',
@@ -59,7 +62,7 @@ export const HgvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [],
       disabled: true
     },
     {
@@ -72,7 +75,7 @@ export const HgvTechRecord: FormNode = {
         { value: true, label: 'Exempt' },
         { value: false, label: 'Not exempt' }
       ],
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [],
       class: 'flex--half'
     },
     {
@@ -85,7 +88,7 @@ export const HgvTechRecord: FormNode = {
         { value: true, label: 'Exempt' },
         { value: false, label: 'Not exempt' }
       ],
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [],
       class: 'flex--half'
     },
     {
@@ -93,8 +96,7 @@ export const HgvTechRecord: FormNode = {
       label: 'Euro standard',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(EmissionStandard),
-      validators: [{ name: ValidatorNames.Defined }]
+      options: getOptionsFromEnum(EmissionStandard)
     },
     {
       name: 'roadFriendly',
@@ -114,7 +116,7 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(FuelTypes),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'drawbarCouplingFitted',
@@ -139,10 +141,10 @@ export const HgvTechRecord: FormNode = {
           value: '',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(VehicleClass.DescriptionEnum)
+          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+          validators: [{ name: ValidatorNames.Required }]
         }
-      ],
-      validators: [{ name: ValidatorNames.Required }]
+      ]
     },
     {
       name: 'vehicleConfiguration',
@@ -151,7 +153,7 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'offRoad',
@@ -172,7 +174,7 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
       options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'emissionsLimit',

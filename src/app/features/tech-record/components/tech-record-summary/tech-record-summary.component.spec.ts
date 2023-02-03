@@ -11,6 +11,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { editableVehicleTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { SharedModule } from '@shared/shared.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { QueryList } from '@angular/core';
+import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
@@ -46,7 +48,7 @@ describe('TechRecordSummaryComponent', () => {
   describe('TechRecordSummaryComponent View', () => {
     it('should show PSV record found', () => {
       component.isEditing = false;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -54,8 +56,8 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show PSV record found without dimensions', () => {
       component.isEditing = false;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
-      component.vehicleTechRecord!.dimensions = undefined;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      component.techRecord!.dimensions = undefined;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -63,7 +65,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show HGV record found', () => {
       component.isEditing = false;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -71,8 +73,8 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show HGV record found without dimensions', () => {
       component.isEditing = false;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
-      component.vehicleTechRecord!.dimensions = undefined;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
+      component.techRecord!.dimensions = undefined;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -80,7 +82,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found', () => {
       component.isEditing = false;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -88,8 +90,8 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found without dimensions', () => {
       component.isEditing = false;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
-      component.vehicleTechRecord!.dimensions = undefined;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
+      component.techRecord!.dimensions = undefined;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -99,7 +101,7 @@ describe('TechRecordSummaryComponent', () => {
   describe('TechRecordSummaryComponent Amend', () => {
     it('should make reason for change null in editMode', () => {
       component.isEditing = true;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -108,16 +110,18 @@ describe('TechRecordSummaryComponent', () => {
 
   describe('handleFormState', () => {
     it('should dispatch updateEditingTechRecord', () => {
+      jest.spyOn(component, 'checkForms').mockImplementation();
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      component.techRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      component.sections = new QueryList<DynamicFormGroupComponent>();
 
       store.overrideSelector(editableVehicleTechRecord, { vrms: [], vin: '', systemNumber: '', techRecord: [] });
 
       component.handleFormState({});
 
       expect(dispatchSpy).toHaveBeenCalledWith(
-        updateEditingTechRecord({ vehicleTechRecord: { vin: '', vrms: [], systemNumber: '', techRecord: [component.vehicleTechRecordCalculated!] } })
+        updateEditingTechRecord({ vehicleTechRecord: { vin: '', vrms: [], systemNumber: '', techRecord: [component.techRecordCalculated!] } })
       );
     });
   });
@@ -175,8 +179,8 @@ describe('TechRecordSummaryComponent', () => {
   describe('addAxle', () => {
     it('should add an axle', () => {
       component.isEditing = true;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
-      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.techRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
 
       const axleEvent = {
         axles: [
@@ -194,14 +198,14 @@ describe('TechRecordSummaryComponent', () => {
 
       component.addAxle(axleEvent);
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(3);
-      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.length).toBe(2);
+      expect(component.techRecordCalculated.axles!.length).toBe(3);
+      expect(component.techRecordCalculated.dimensions?.axleSpacing?.length).toBe(2);
     });
 
     it('should add an axle on a psv', () => {
       component.isEditing = true;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
-      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+      component.techRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
 
       const axleEvent = {
         axles: [
@@ -223,15 +227,15 @@ describe('TechRecordSummaryComponent', () => {
 
       component.addAxle(axleEvent);
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(4);
+      expect(component.techRecordCalculated.axles!.length).toBe(4);
     });
   });
 
   describe('removeAxle', () => {
     it('should remove axle on psv', () => {
       component.isEditing = true;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
-      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+      component.techRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
 
       const axleEvent = {
         axles: [
@@ -246,7 +250,7 @@ describe('TechRecordSummaryComponent', () => {
 
       component.removeAxle(axleEvent);
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+      expect(component.techRecordCalculated.axles!.length).toBe(2);
     });
   });
 
@@ -285,7 +289,7 @@ describe('TechRecordSummaryComponent', () => {
 
   describe('normaliseVehicleTechRecordAxles', () => {
     it('should not change anything if the tech record is correct', () => {
-      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.techRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
       component.normaliseVehicleTechRecordAxles();
 
       const axleSpacingMock = jest.spyOn(component, 'generateAxleSpacing');
@@ -296,55 +300,55 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should call generate spacings if there are more axles', () => {
-      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
-      component.vehicleTechRecordCalculated.axles.push({ axleNumber: 3 });
+      component.techRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.techRecordCalculated.axles!.push({ axleNumber: 3 });
 
-      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.length).toBe(1);
+      expect(component.techRecordCalculated.dimensions?.axleSpacing?.length).toBe(1);
 
       component.normaliseVehicleTechRecordAxles();
 
-      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.length).toBe(2);
+      expect(component.techRecordCalculated.dimensions?.axleSpacing?.length).toBe(2);
     });
 
     it('should call generate axles if there are more spacings', () => {
-      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
-      component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.push({ axles: '2-3', value: 1 });
+      component.techRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.techRecordCalculated.dimensions?.axleSpacing?.push({ axles: '2-3', value: 1 });
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+      expect(component.techRecordCalculated.axles!.length).toBe(2);
 
       component.normaliseVehicleTechRecordAxles();
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(3);
+      expect(component.techRecordCalculated.axles!.length).toBe(3);
     });
 
     it('should call generate spacings if there are none but there is axles', () => {
-      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
-      component.vehicleTechRecordCalculated.dimensions!.axleSpacing = undefined;
-      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing).toBe(undefined);
+      component.techRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.techRecordCalculated.dimensions!.axleSpacing = undefined;
+      expect(component.techRecordCalculated.dimensions?.axleSpacing).toBe(undefined);
 
       component.normaliseVehicleTechRecordAxles();
 
-      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing!.length).toBe(1);
+      expect(component.techRecordCalculated.dimensions?.axleSpacing!.length).toBe(1);
     });
 
     it('should call generate spacings if there are none but there is axles and there is an object to start with', () => {
-      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
-      component.vehicleTechRecordCalculated.dimensions!.axleSpacing = [];
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+      component.techRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.techRecordCalculated.dimensions!.axleSpacing = [];
+      expect(component.techRecordCalculated.axles!.length).toBe(2);
 
       component.normaliseVehicleTechRecordAxles();
 
-      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing!.length).toBe(1);
+      expect(component.techRecordCalculated.dimensions?.axleSpacing!.length).toBe(1);
     });
 
     it('should call generate axles if there are none but there is spacings', () => {
-      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
-      component.vehicleTechRecordCalculated.axles = [];
-      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing!.length).toBe(1);
+      component.techRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.techRecordCalculated.axles = [];
+      expect(component.techRecordCalculated.dimensions?.axleSpacing!.length).toBe(1);
 
       component.normaliseVehicleTechRecordAxles();
 
-      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+      expect(component.techRecordCalculated.axles.length).toBe(2);
     });
   });
 

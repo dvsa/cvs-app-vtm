@@ -17,35 +17,29 @@ interface TestField {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordSummaryComponent {
-  @Input() testRecords: TestResultModel[] = [];
-
-  public get roles() {
-    return Roles;
-  }
+  @Input() testResults: TestResultModel[] = [];
 
   pageStart?: number;
   pageEnd?: number;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  handlePaginationChange({ start, end }: { start: number; end: number }) {
-    this.pageStart = start;
-    this.pageEnd = end;
-    this.cdr.detectChanges();
+  public get roles() {
+    return Roles;
   }
 
-  getTestTypeName(testResult: TestResultModel) {
-    return testResult.testTypes.map(t => t.testTypeName).join(',');
+  get numberOfRecords(): number {
+    return this.testResults.length;
   }
 
-  getTestTypeResults(testResult: TestResultModel) {
-    return testResult.testTypes.map(t => t.testResult).join(',');
+  get paginatedTestFields() {
+    return this.sortedTestTypeFields.slice(this.pageStart, this.pageEnd);
   }
 
   get sortedTestTypeFields(): TestField[] {
     const byDate = (a: TestField, b: TestField) => new Date(b.testTypeStartTimestamp).getTime() - new Date(a.testTypeStartTimestamp).getTime();
 
-    return this.testRecords
+    return this.testResults
       .flatMap(record =>
         record.testTypes.map(testType => ({
           testTypeStartTimestamp: testType.testTypeStartTimestamp,
@@ -58,15 +52,21 @@ export class TestRecordSummaryComponent {
       .sort(byDate);
   }
 
-  get numberOfRecords(): number {
-    return this.testRecords.length;
+  getTestTypeName(testResult: TestResultModel) {
+    return testResult.testTypes.map(t => t.testTypeName).join(',');
   }
 
-  get paginatedTestFields() {
-    return this.sortedTestTypeFields.slice(this.pageStart, this.pageEnd);
+  getTestTypeResults(testResult: TestResultModel) {
+    return testResult.testTypes.map(t => t.testResult).join(',');
   }
 
   trackByFn(i: number, t: TestField) {
     return t.testNumber;
+  }
+
+  handlePaginationChange({ start, end }: { start: number; end: number }) {
+    this.pageStart = start;
+    this.pageEnd = end;
+    this.cdr.detectChanges();
   }
 }
