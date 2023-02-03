@@ -15,7 +15,18 @@
     label="VRM / Trailer ID"
     [width]="30"
     (ngModelChange)="ngOnChanges()"
+    *ngIf="!generateID.value"
   ></app-text-input>
+  <span class="govuk-list" *ngIf="!generateID.value">Or</span>
+
+  <app-checkbox-group
+    #generateID
+    formControlName="generateID"
+    name="generate-c-or-z-num"
+    [options]="[{ value: true, label: 'Generate a C/Z number on submission of the new record' }]"
+    (ngModelChange)="toggleVrmInput(generateID)"
+  ></app-checkbox-group>
+
   <app-select
     #selectVehicleStatus
     formControlName="vehicleStatus"
