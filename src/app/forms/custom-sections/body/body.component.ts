@@ -7,10 +7,13 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { BodyTypeDescription, bodyTypeMap, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
+import { bodyTypeMap, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { updateBody } from '@store/technical-records';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Subject, debounceTime, takeUntil, Observable, map, take, skipWhile, combineLatest } from 'rxjs';
 
 @Component({
@@ -28,7 +31,12 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   private template!: FormNode;
   private destroy$ = new Subject<void>();
 
-  constructor(private dfs: DynamicFormService, private optionsService: MultiOptionsService, private referenceDataService: ReferenceDataService) {}
+  constructor(
+    private dfs: DynamicFormService,
+    private optionsService: MultiOptionsService,
+    private referenceDataService: ReferenceDataService,
+    private store: Store<TechnicalRecordServiceState>
+  ) {}
 
   ngOnInit(): void {
     this.template = this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
@@ -40,7 +48,10 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       if (bodyType?.description) {
         event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
       }
+
       this.formChange.emit(event);
+
+      if (event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) this.store.dispatch(updateBody({ dtpNumber: event.brakes.dtpNumber }));
     });
 
     this.optionsService.loadOptions(ReferenceDataResourceType.BodyMake);

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
@@ -7,9 +7,11 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
-import { Brakes, Retarders, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Retarders, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataState, selectBrakeByCode } from '@store/reference-data';
+import { updateBrakeForces } from '@store/technical-records';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { debounceTime, mergeMap, Observable, of, Subject, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
@@ -30,7 +32,12 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private dfs: DynamicFormService, private optionsService: MultiOptionsService, private referenceDataStore: Store<ReferenceDataState>) {}
+  constructor(
+    private dfs: DynamicFormService,
+    private optionsService: MultiOptionsService,
+    private referenceDataStore: Store<ReferenceDataState>,
+    private store: Store<TechnicalRecordServiceState>
+  ) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(PsvBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
@@ -46,15 +53,15 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
       )
       .subscribe(([selectedBrake, event]: [Brake | undefined, any]) => {
         // Set the brake details automatically based selection
-        const brakes = event?.brakes as Brakes;
-
-        if (selectedBrake && brakes?.brakeCodeOriginal) {
+        if (selectedBrake && event?.brakes?.brakeCodeOriginal) {
           event.brakes['dataTrBrakeOne'] = selectedBrake.service;
           event.brakes['dataTrBrakeTwo'] = selectedBrake.secondary;
           event.brakes['dataTrBrakeThree'] = selectedBrake.parking;
         }
 
         this.formChange.emit(event);
+
+        if (event.brakes?.brakeCodeOriginal) this.store.dispatch(updateBrakeForces({}));
       });
 
     this.optionsService.loadOptions(ReferenceDataResourceType.Brake);
@@ -104,6 +111,14 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
     const prefix = `${Math.round(this.vehicleTechRecord!.grossLadenWeight! / 100)}`;
 
     return prefix.length <= 2 ? '0' + prefix : prefix;
+  }
+
+  get axles(): FormArray {
+    return this.form.get(['axles']) as FormArray;
+  }
+
+  getAxleForm(i: number): FormGroup {
+    return this.form.get(['axles', i]) as FormGroup;
   }
 
   round(n: number): number {

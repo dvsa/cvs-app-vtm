@@ -1,18 +1,22 @@
 import { Injectable } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
+import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
+import { selectReferenceDataByResourceKey } from '@store/reference-data';
 import { cloneDeep, merge } from 'lodash';
-import { mergeMap, map, catchError, of, withLatestFrom, switchMap, concatMap, tap } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, Observable, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import {
+  addAxle,
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
+  changeVehicleType,
   createProvisionalTechRecord,
   createProvisionalTechRecordFailure,
   createProvisionalTechRecordSuccess,
@@ -20,7 +24,6 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
-  changeVehicleType,
   getByAll,
   getByAllFailure,
   getByAllSuccess,
@@ -39,6 +42,12 @@ import {
   getByVrm,
   getByVrmFailure,
   getByVrmSuccess,
+  removeAxle,
+  updateAxlesSuccess,
+  updateBody,
+  updateBodySuccess,
+  updateBrakeForces,
+  updateBrakeForcesSuccess,
   updateTechRecords,
   updateTechRecordsFailure,
   updateTechRecordsSuccess
@@ -183,6 +192,32 @@ export class TechnicalRecordServiceEffects {
         tap(mergedForms => this.technicalRecordService.updateEditingTechRecord(mergedForms))
       ),
     { dispatch: false }
+  );
+
+  updateAxles$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addAxle, removeAxle),
+      map(() => updateAxlesSuccess())
+    )
+  );
+
+  updateBody$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateBody),
+      mergeMap(action =>
+        (this.store.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, action.dtpNumber)) as Observable<PsvMake>).pipe(
+          take(1)
+        )
+      ),
+      map(psvMake => updateBodySuccess({ psvMake }))
+    )
+  );
+
+  updateBrakeForces$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateBrakeForces),
+      map(() => updateBrakeForcesSuccess())
+    )
   );
 
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {

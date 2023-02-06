@@ -1,5 +1,9 @@
+import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
+import { PsvMake } from '@models/reference-data.model';
+import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { AxlesService } from '@services/axles.service';
+import { cloneDeep } from 'lodash';
 import {
   getByPartialVin,
   getByPartialVinFailure,
@@ -32,7 +36,11 @@ import {
   updateEditingTechRecordCancel,
   createVehicleRecord,
   createVehicleRecordFailure,
-  createVehicleRecordSuccess
+  createVehicleRecordSuccess,
+  updateBrakeForces,
+  updateBodySuccess,
+  addAxle,
+  removeAxle
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -94,11 +102,15 @@ export const vehicleTechRecordReducer = createReducer(
   on(archiveTechRecordSuccess, successArgs),
   on(archiveTechRecordFailure, updateFailureArgs),
 
-  on(updateEditingTechRecord, (state: TechnicalRecordServiceState, data: { vehicleTechRecord: VehicleTechRecordModel }) => ({
-    ...state,
-    editingTechRecord: data.vehicleTechRecord
-  })),
-  on(updateEditingTechRecordCancel, (state: TechnicalRecordServiceState) => ({ ...state, editingTechRecord: undefined }))
+  on(updateEditingTechRecord, (state, action) => ({ ...state, editingTechRecord: action.vehicleTechRecord })),
+  on(updateEditingTechRecordCancel, state => ({ ...state, editingTechRecord: undefined })),
+
+  on(updateBrakeForces, (state, action) => handleUpdateBrakeForces(state, action)),
+
+  on(updateBodySuccess, (state, action) => handleUpdateBody(state, action)),
+
+  on(addAxle, state => handleAddAxle(state)),
+  on(removeAxle, (state, action) => handleRemoveAxle(state, action))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
@@ -115,4 +127,93 @@ function updateFailureArgs(state: TechnicalRecordServiceState, data: { error: an
 
 function failureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
   return { ...state, vehicleTechRecords: [], error: data.error, loading: false };
+}
+
+function handleUpdateBrakeForces(
+  state: TechnicalRecordServiceState,
+  data: { grossLadenWeight?: number; grossKerbWeight?: number }
+): TechnicalRecordServiceState {
+  const newState = cloneDeep(state);
+
+  if (!newState.editingTechRecord) return newState;
+
+  const newGrossLadenWeight = data.grossLadenWeight ?? 0;
+  const newGrossKerbWeight = data.grossKerbWeight ?? 0;
+
+  const prefix = `${Math.round(newGrossLadenWeight / 100)}`;
+
+  newState.editingTechRecord.techRecord[0].brakes = {
+    ...newState.editingTechRecord?.techRecord[0].brakes,
+    brakeCode: (prefix.length <= 2 ? '0' + prefix : prefix) + newState.editingTechRecord.techRecord[0].brakes?.brakeCodeOriginal,
+    brakeForceWheelsNotLocked: {
+      serviceBrakeForceA: Math.round((newGrossLadenWeight * 16) / 100),
+      secondaryBrakeForceA: Math.round((newGrossLadenWeight * 22.5) / 100),
+      parkingBrakeForceA: Math.round((newGrossLadenWeight * 45) / 100)
+    },
+    brakeForceWheelsUpToHalfLocked: {
+      serviceBrakeForceB: Math.round((newGrossKerbWeight * 16) / 100),
+      secondaryBrakeForceB: Math.round((newGrossKerbWeight * 25) / 100),
+      parkingBrakeForceB: Math.round((newGrossKerbWeight * 50) / 100)
+    }
+  };
+
+  return newState;
+}
+
+function handleUpdateBody(state: TechnicalRecordServiceState, action: { psvMake: PsvMake }): TechnicalRecordServiceState {
+  const newState = cloneDeep(state);
+
+  if (!newState.editingTechRecord) return newState;
+
+  const code = action.psvMake.psvBodyType.toLowerCase() as BodyTypeCode;
+
+  newState.editingTechRecord.techRecord[0] = {
+    ...newState.editingTechRecord.techRecord[0],
+    bodyType: { code, description: vehicleBodyTypeCodeMap.get(VehicleTypes.PSV)?.get(code) },
+    bodyMake: action.psvMake.psvBodyMake,
+    chassisMake: action.psvMake.psvChassisMake,
+    chassisModel: action.psvMake.psvChassisModel
+  };
+
+  return newState;
+}
+
+function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServiceState {
+  const newState = cloneDeep(state);
+
+  if (!newState.editingTechRecord?.techRecord[0].axles) return newState;
+
+  newState.editingTechRecord.techRecord[0].axles.push({
+    axleNumber: newState.editingTechRecord.techRecord[0].axles.length + 1,
+    tyres: {},
+    weights: {}
+  });
+
+  newState.editingTechRecord.techRecord[0].dimensions ??= {};
+
+  newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
+    newState.editingTechRecord?.techRecord[0].axles.length,
+    true,
+    newState.editingTechRecord?.techRecord[0].dimensions.axleSpacing
+  );
+
+  return newState;
+}
+
+function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: number }): TechnicalRecordServiceState {
+  const newState = cloneDeep(state);
+
+  if (!newState.editingTechRecord?.techRecord[0].axles) return newState;
+
+  newState.editingTechRecord.techRecord[0].axles.splice(action.index, 1);
+
+  newState.editingTechRecord.techRecord[0].axles.forEach((axle, i) => (axle.axleNumber = i + 1));
+
+  newState.editingTechRecord.techRecord[0].dimensions ??= {};
+
+  newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
+    newState.editingTechRecord?.techRecord[0].axles.length
+  );
+
+  return newState;
 }

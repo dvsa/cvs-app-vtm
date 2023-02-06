@@ -59,6 +59,10 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
     return this.form.get(['axles']) as FormArray;
   }
 
+  getAxleForm(i: number): FormGroup {
+    return this.form.get(['axles', i]) as FormGroup;
+  }
+
   getAxleBrakes(i: number): FormGroup {
     return this.form.get(['axles', i, 'brakes']) as FormGroup;
   }

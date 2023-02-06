@@ -2,4 +2,11 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.govuk-checkboxes {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 10px;
 }

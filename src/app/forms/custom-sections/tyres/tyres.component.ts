@@ -8,19 +8,13 @@ import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
-import {
-  Axle,
-  FitmentCode,
-  TechRecordModel,
-  Tyres,
-  Tyre,
-  VehicleTypes,
-  SpeedCategorySymbol,
-  ReasonForEditing
-} from '@models/vehicle-tech-record.model';
+import { FitmentCode, ReasonForEditing, SpeedCategorySymbol, TechRecordModel, Tyres, Tyre, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { addAxle, removeAxle } from '@store/technical-records';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { Subscription, debounceTime, take } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tyres',
@@ -40,16 +34,17 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   private _formSubscription = new Subscription();
 
   constructor(
-    public dfs: DynamicFormService,
+    private dynamicFormsService: DynamicFormService,
     private referenceDataService: ReferenceDataService,
+    private route: ActivatedRoute,
     private router: Router,
-    private route: ActivatedRoute
+    private store: Store<TechnicalRecordServiceState>
   ) {
     this.editingReason = this.route.snapshot.data['reason'];
   }
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.dynamicFormsService.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
@@ -172,23 +167,9 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   addAxle(): void {
-    const tyres: Tyres = {
-      tyreSize: null,
-      speedCategorySymbol: null,
-      fitmentCode: null,
-      dataTrAxles: null,
-      plyRating: null,
-      tyreCode: null
-    };
-
-    const newAxle: Axle = {
-      axleNumber: this.axles.length + 1,
-      tyres: tyres
-    };
-
     if (this.vehicleTechRecord.axles!.length < 10) {
       this.isError = false;
-      this.axles.addControl(newAxle);
+      this.store.dispatch(addAxle());
     } else {
       this.isError = true;
       this.errorMessage = `Cannot have more than ${10} axles`;
@@ -200,7 +181,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.vehicleTechRecord.axles!.length > minLength) {
       this.isError = false;
-      this.axles.removeAt(index);
+      this.store.dispatch(removeAxle({ index }));
     } else {
       this.isError = true;
       this.errorMessage = `Cannot have less than ${minLength} axles`;
