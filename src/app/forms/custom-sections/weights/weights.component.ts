@@ -30,12 +30,12 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.form = this.dynamicFormsService.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
-    // this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event: any) => {
       this.formChange.emit(event);
 
-      if (event.grossLadenWeight || event.grossKerbWeight)
+      if (event.grossLadenWeight || event.grossKerbWeight) {
         this.store.dispatch(updateBrakeForces({ grossLadenWeight: event.grossLadenWeight, grossKerbWeight: event.grossKerbWeight }));
+      }
     });
   }
 

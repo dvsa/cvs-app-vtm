@@ -61,7 +61,9 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 
         this.formChange.emit(event);
 
-        if (event.brakes?.brakeCodeOriginal) this.store.dispatch(updateBrakeForces({}));
+        if (event.brakes?.brakeCodeOriginal) {
+          this.store.dispatch(updateBrakeForces({}));
+        }
       });
 
     this.optionsService.loadOptions(ReferenceDataResourceType.Brake);

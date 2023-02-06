@@ -51,7 +51,9 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
       this.formChange.emit(event);
 
-      if (event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) this.store.dispatch(updateBody({ dtpNumber: event.brakes.dtpNumber }));
+      if (event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) {
+        this.store.dispatch(updateBody({ dtpNumber: event.brakes.dtpNumber }));
+      }
     });
 
     this.optionsService.loadOptions(ReferenceDataResourceType.BodyMake);
