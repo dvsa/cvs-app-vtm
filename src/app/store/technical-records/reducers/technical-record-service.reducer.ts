@@ -195,7 +195,6 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
 
   newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
     newState.editingTechRecord?.techRecord[0].axles.length,
-    true,
     newState.editingTechRecord?.techRecord[0].dimensions.axleSpacing
   );
 
