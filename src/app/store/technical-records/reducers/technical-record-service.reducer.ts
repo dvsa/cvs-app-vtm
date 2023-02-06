@@ -5,9 +5,25 @@ import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles.service';
 import { cloneDeep } from 'lodash';
 import {
+  addAxle,
+  archiveTechRecord,
+  archiveTechRecordFailure,
+  archiveTechRecordSuccess,
+  createProvisionalTechRecord,
+  createProvisionalTechRecordFailure,
+  createProvisionalTechRecordSuccess,
+  createVehicleRecord,
+  createVehicleRecordFailure,
+  createVehicleRecordSuccess,
+  getByAll,
+  getByAllFailure,
+  getByAllSuccess,
   getByPartialVin,
   getByPartialVinFailure,
   getByPartialVinSuccess,
+  getBySystemNumber,
+  getBySystemNumberFailure,
+  getBySystemNumberSuccess,
   getByTrailerId,
   getByTrailerIdFailure,
   getByTrailerIdSuccess,
@@ -17,30 +33,14 @@ import {
   getByVrm,
   getByVrmFailure,
   getByVrmSuccess,
-  getBySystemNumber,
-  getBySystemNumberFailure,
-  getBySystemNumberSuccess,
-  getByAll,
-  getByAllFailure,
-  getByAllSuccess,
-  updateTechRecords,
-  updateTechRecordsSuccess,
-  updateTechRecordsFailure,
-  createProvisionalTechRecord,
-  createProvisionalTechRecordSuccess,
-  createProvisionalTechRecordFailure,
-  archiveTechRecord,
-  archiveTechRecordSuccess,
-  archiveTechRecordFailure,
+  removeAxle,
+  updateBodySuccess,
+  updateBrakeForces,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
-  createVehicleRecord,
-  createVehicleRecordFailure,
-  createVehicleRecordSuccess,
-  updateBrakeForces,
-  updateBodySuccess,
-  addAxle,
-  removeAxle
+  updateTechRecords,
+  updateTechRecordsFailure,
+  updateTechRecordsSuccess
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -189,6 +189,8 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
     weights: {}
   });
 
+  newState.editingTechRecord.techRecord[0].noOfAxles = newState.editingTechRecord.techRecord[0].axles.length;
+
   newState.editingTechRecord.techRecord[0].dimensions ??= {};
 
   newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
@@ -208,6 +210,8 @@ function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: n
   newState.editingTechRecord.techRecord[0].axles.splice(action.index, 1);
 
   newState.editingTechRecord.techRecord[0].axles.forEach((axle, i) => (axle.axleNumber = i + 1));
+
+  newState.editingTechRecord.techRecord[0].noOfAxles = newState.editingTechRecord.techRecord[0].axles.length;
 
   newState.editingTechRecord.techRecord[0].dimensions ??= {};
 
