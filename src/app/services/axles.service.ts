@@ -7,32 +7,26 @@ import cloneDeep from 'lodash.clonedeep';
 })
 export class AxlesService {
   normaliseAxles(axles?: Axle[], axleSpacings?: AxleSpacing[]): [Axle[] | undefined, AxleSpacing[] | undefined] {
-    let newAxles = cloneDeep(axles);
-    let newAxleSpacings = cloneDeep(axleSpacings);
+    let newAxles = cloneDeep(axles ?? []);
+    let newAxleSpacings = cloneDeep(axleSpacings ?? []);
 
-    if (axles && axleSpacings) {
-      if (axles.length > axleSpacings.length + 1) {
-        newAxleSpacings = this.generateAxleSpacing(axles.length, true, axleSpacings);
-      } else if (axles.length < axleSpacings.length + 1) {
-        newAxles = this.generateAxlesFromAxleSpacings(axleSpacings.length, axles);
-      }
-    } else if (axles && !axleSpacings) {
-      newAxleSpacings = this.generateAxleSpacing(axles.length);
-    } else if (!axles && axleSpacings?.length) {
-      newAxles = this.generateAxlesFromAxleSpacings(axleSpacings.length);
+    if (newAxles.length > newAxleSpacings.length + 1) {
+      newAxleSpacings = this.generateAxleSpacing(newAxles.length, axleSpacings);
+    } else if (newAxles.length < newAxleSpacings.length + 1) {
+      newAxles = this.generateAxlesFromAxleSpacings(newAxleSpacings.length, axles);
     }
 
     return [newAxles, newAxleSpacings];
   }
 
-  generateAxleSpacing(numberOfAxles: number, setOriginalValues: boolean = false, axleSpacingOriginal?: AxleSpacing[]): AxleSpacing[] {
-    let axleSpacing: AxleSpacing[] = [];
+  generateAxleSpacing(numberOfAxles: number, axleSpacingOriginal?: AxleSpacing[]): AxleSpacing[] {
+    const axleSpacing: AxleSpacing[] = [];
 
     let axleNumber = 1;
     while (axleNumber < numberOfAxles) {
       axleSpacing.push({
         axles: `${axleNumber}-${axleNumber + 1}`,
-        value: setOriginalValues && axleSpacingOriginal && axleSpacingOriginal[axleNumber - 1] ? axleSpacingOriginal[axleNumber - 1].value : null
+        value: axleSpacingOriginal && axleSpacingOriginal[axleNumber - 1] ? axleSpacingOriginal[axleNumber - 1].value : null
       });
       axleNumber++;
     }
@@ -43,9 +37,7 @@ export class AxlesService {
   generateAxlesFromAxleSpacings(vehicleAxleSpacingsLength: number, previousAxles?: Axle[]): Axle[] {
     const axles = previousAxles ?? [];
 
-    let i = previousAxles ? previousAxles.length : 0;
-
-    for (i; i < vehicleAxleSpacingsLength + 1; i++) {
+    for (let i = axles.length; i < vehicleAxleSpacingsLength + 1; i++) {
       axles.push(this.generateEmptyAxle(i + 1));
     }
 
