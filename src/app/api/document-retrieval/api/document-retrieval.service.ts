@@ -102,7 +102,7 @@ export class DocumentRetrievalService {
     // Set query parameters
     let params = new HttpParams({ encoder: new CustomHttpUrlEncodingCodec() });
     if (serialNumber) {
-      params = params.set('serialNumber', <any>serialNumber);
+      params = params.set('plateSerialNumber', <any>serialNumber);
     }
 
     let headers = this.defaultHeaders;

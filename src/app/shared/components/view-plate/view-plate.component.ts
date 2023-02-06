@@ -18,6 +18,7 @@ export class ViewPlateComponent {
 
   download() {
     console.log('Fetching plate');
+    //TODO: Replace 123453 with actual generated plate serial number when ready
     return this.documentRetrievalService
       .testPlateGet('123453', 'events', true)
       .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
@@ -40,7 +41,8 @@ export class ViewPlateComponent {
               const link: HTMLAnchorElement | undefined = document.createElement('a');
               link.href = url;
               link.target = '_blank';
-              link.download = `${this.testNumber}_${this.vin}.pdf`;
+              //TODO: Replace this with actual generated plate serial number when ready
+              link.download = `${'123453'}.pdf`;
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
