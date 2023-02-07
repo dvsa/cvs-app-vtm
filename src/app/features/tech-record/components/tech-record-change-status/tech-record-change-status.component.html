@@ -5,14 +5,10 @@
     <form [formGroup]="form">
       <app-text-area name="reason" [label]="label" formControlName="reason"></app-text-area>
 
-      <dl class="govuk-summary-list">
-        <app-button-group>
-          <app-button id="submit-change-status" data-prevent-double-click="true" (clicked)="handleSubmit(form.value)">
-            {{ buttonLabel }} record
-          </app-button>
-          <app-button design="link" id="tech-record-back-link" (clicked)="goBack()">Back</app-button>
-        </app-button-group>
-      </dl>
+      <app-button id="submit-change-status" data-prevent-double-click="true" (clicked)="handleSubmit(form.value)">
+        {{ buttonLabel }} record
+      </app-button>
+      <app-button design="link" id="tech-record-back-link" (clicked)="goBack()">Back</app-button>
     </form>
   </div>
 </div>
