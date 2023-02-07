@@ -3,10 +3,10 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess, fetchTestStationSuccess } from '@store/test-stations';
+import { fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess } from '@store/test-stations';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { TestStationsResolver } from './test-stations';
+import { TestStationsResolver } from './test-stations.resolver';
 
 describe('TestTypeTaxonomyResolver', () => {
   let resolver: TestStationsResolver;
