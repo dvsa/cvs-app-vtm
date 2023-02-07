@@ -88,7 +88,7 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const commonCustomSections = [this.body.form, this.dimensions.form, this.tyres.form, this.weights.form];
+    const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form];
 
     switch (this.techRecordCalculated.vehicleType) {
       case VehicleTypes.PSV:

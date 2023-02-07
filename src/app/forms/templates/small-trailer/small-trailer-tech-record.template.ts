@@ -12,7 +12,7 @@ export const SmallTrailerTechRecord: FormNode = {
       name: 'vehicleType',
       label: 'Vehicle type',
       value: '',
-      width: FormNodeWidth.XS,
+      width: FormNodeWidth.S,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
