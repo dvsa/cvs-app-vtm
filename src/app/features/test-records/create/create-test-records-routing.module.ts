@@ -7,7 +7,7 @@ import { Roles } from '@models/roles.enum';
 import { TestStationStatuses } from '@models/test-stations/test-station.model';
 import { ContingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
 import { DefectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
-import { TestStationsResolver } from 'src/app/resolvers/test-stations/test-stations';
+import { TestStationsResolver } from 'src/app/resolvers/test-stations/test-stations.resolver';
 import { TestTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
 import { CreateTestRecordComponent } from './views/create-test-record/create-test-record.component';
 import { CreateTestTypeComponent } from './views/create-test-type/create-test-type.component';
