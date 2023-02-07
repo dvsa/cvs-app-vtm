@@ -22,39 +22,43 @@ export class ViewPlateComponent {
 
   download() {
     const mostRecentPlate = this.fetchLatestPlate();
-    return this.documentRetrievalService
-      .testPlateGet(mostRecentPlate.plateSerialNumber, 'events', true)
-      .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
-      .subscribe({
-        next: res => {
-          switch (res.type) {
-            case HttpEventType.DownloadProgress:
-              console.log(res);
-              break;
-            case HttpEventType.Response:
-              const byteArray = new Uint8Array(
-                window
-                  .atob(res.body)
-                  .split('')
-                  .map(char => char.charCodeAt(0))
-              );
+    if (mostRecentPlate !== null) {
+      return this.documentRetrievalService
+        .testPlateGet(mostRecentPlate.plateSerialNumber, 'events', true)
+        .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
+        .subscribe({
+          next: res => {
+            switch (res.type) {
+              case HttpEventType.DownloadProgress:
+                console.log(res);
+                break;
+              case HttpEventType.Response:
+                const byteArray = new Uint8Array(
+                  window
+                    .atob(res.body)
+                    .split('')
+                    .map(char => char.charCodeAt(0))
+                );
 
-              const file = new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });
-              const url = window.URL.createObjectURL(file);
-              const link: HTMLAnchorElement | undefined = document.createElement('a');
-              link.href = url;
-              link.target = '_blank';
-              link.download = `${mostRecentPlate.plateSerialNumber}.pdf`;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
+                const file = new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });
+                const url = window.URL.createObjectURL(file);
+                const link: HTMLAnchorElement | undefined = document.createElement('a');
+                link.href = url;
+                link.target = '_blank';
+                link.download = `${mostRecentPlate.plateSerialNumber}.pdf`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
 
-              this.isSuccess.emit(true);
+                this.isSuccess.emit(true);
+            }
+          },
+          error: () => {
+            this.isSuccess.emit(false);
           }
-        },
-        error: () => {
-          this.isSuccess.emit(false);
-        }
-      });
+        });
+    }
+
+    throw new Error('Could not find plate.');
   }
 }
