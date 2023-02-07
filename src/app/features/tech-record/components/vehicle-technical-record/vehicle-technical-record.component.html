@@ -16,7 +16,8 @@
         <ng-container
           *ngIf="
             (currentTechRecord.vehicleType === 'hgv' || currentTechRecord.vehicleType === 'trl') &&
-            currentTechRecord.statusCode === statusCodes.CURRENT
+            currentTechRecord.statusCode === statusCodes.CURRENT &&
+            !isEditing
           "
         >
           <app-button style="margin-left: 10px" (clicked)="generatePlate()" *appRoleRequired="roles.TechRecordAmend">Generate Plate</app-button>
