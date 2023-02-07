@@ -74,5 +74,15 @@ describe('ViewPlateComponent', () => {
       expect(plateFetched).toBeDefined();
       expect(plateFetched.plateSerialNumber).toEqual('234567');
     });
+
+    it('should return null if plates are empty', () => {
+      component.currentTechRecord = {
+        plates: [] as Plates[]
+      } as TechRecordModel;
+
+      const plateFetched = component.fetchLatestPlate();
+
+      expect(plateFetched).toBeNull();
+    });
   });
 });

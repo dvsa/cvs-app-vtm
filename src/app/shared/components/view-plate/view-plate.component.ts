@@ -20,7 +20,7 @@ export class ViewPlateComponent {
     const justDates = this.currentTechRecord.plates!.map(x => x.plateIssueDate!.getTime());
     const maxDate = Math.max(...justDates);
     console.log(justDates.indexOf(maxDate));
-    return this.currentTechRecord.plates![justDates.indexOf(maxDate)];
+    return this.currentTechRecord.plates![justDates.indexOf(maxDate)] ?? null;
   }
 
   download() {
