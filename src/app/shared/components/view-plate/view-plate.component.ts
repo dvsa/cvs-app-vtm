@@ -1,6 +1,7 @@
 import { HttpEventType } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { DocumentRetrievalService } from '@api/document-retrieval';
+import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { takeWhile } from 'rxjs';
 
 @Component({
@@ -10,15 +11,19 @@ import { takeWhile } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewPlateComponent {
+  @Input() currentTechRecord!: TechRecordModel;
   @Output() isSuccess = new EventEmitter<boolean>();
 
   constructor(private documentRetrievalService: DocumentRetrievalService) {}
 
+  fetchLatestPlate() {
+    return this.currentTechRecord.plates!.reduce((a, b) => (a.plateIssueDate! > b.plateIssueDate! ? a : b)) ?? null;
+  }
+
   download() {
-    console.log('Fetching plate');
-    //TODO: Replace 123453 with actual generated plate serial number when ready
+    const mostRecentPlate = this.fetchLatestPlate();
     return this.documentRetrievalService
-      .testPlateGet('123453', 'events', true)
+      .testPlateGet(mostRecentPlate.plateSerialNumber, 'events', true)
       .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
       .subscribe({
         next: res => {
@@ -39,8 +44,7 @@ export class ViewPlateComponent {
               const link: HTMLAnchorElement | undefined = document.createElement('a');
               link.href = url;
               link.target = '_blank';
-              //TODO: Replace this with actual generated plate serial number when ready
-              link.download = `${'123453'}.pdf`;
+              link.download = `${mostRecentPlate.plateSerialNumber}.pdf`;
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
