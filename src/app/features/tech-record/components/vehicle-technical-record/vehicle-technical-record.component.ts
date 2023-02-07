@@ -73,6 +73,10 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     return StatusCodes;
   }
 
+  hasPlates(techRecord: TechRecordModel) {
+    return techRecord.plates!.length > 0 ?? false;
+  }
+
   getActions(techRecord?: TechRecordModel): TechRecordActions {
     switch (techRecord?.statusCode) {
       case StatusCodes.CURRENT:

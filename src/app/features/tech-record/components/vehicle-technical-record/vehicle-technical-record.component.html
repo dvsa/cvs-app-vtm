@@ -20,7 +20,9 @@
           "
         >
           <app-button style="margin-left: 10px" (clicked)="generatePlate()" *appRoleRequired="roles.TechRecordAmend">Generate Plate</app-button>
-          <app-view-plate *appRoleRequired="roles.TechRecordView"></app-view-plate>
+          <ng-container *ngIf="hasPlates(currentTechRecord)">
+            <app-view-plate *appRoleRequired="roles.TechRecordView"></app-view-plate>
+          </ng-container>
         </ng-container>
 
         <app-tech-record-history [vehicle]="vehicle" [currentTechRecord]="currentTechRecord"></app-tech-record-history>
