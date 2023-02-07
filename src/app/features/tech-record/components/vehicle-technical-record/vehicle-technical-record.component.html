@@ -18,7 +18,7 @@
         <app-test-record-summary *appRoleRequired="roles.TestResultView" [testResults]="(testResults$ | async) || []"></app-test-record-summary>
 
         <ng-container *ngIf="!isArchived && !isEditing">
-          <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssesment]">
+          <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]">
             <a id="create-test" class="govuk-button" (click)="createTest(currentTechRecord)">Create a test for this vehicle</a>
           </div>
         </ng-container>
