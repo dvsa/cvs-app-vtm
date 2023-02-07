@@ -17,7 +17,10 @@ export class ViewPlateComponent {
   constructor(private documentRetrievalService: DocumentRetrievalService) {}
 
   fetchLatestPlate() {
-    return this.currentTechRecord.plates!.reduce((a, b) => (a.plateIssueDate! > b.plateIssueDate! ? a : b)) ?? null;
+    const justDates = this.currentTechRecord.plates!.map(x => x.plateIssueDate!.getTime());
+    const maxDate = Math.max(...justDates);
+    console.log(justDates.indexOf(maxDate));
+    return this.currentTechRecord.plates![justDates.indexOf(maxDate)];
   }
 
   download() {
