@@ -10,8 +10,6 @@ import { takeWhile } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewPlateComponent {
-  @Input() testNumber!: string;
-  @Input() vin!: string;
   @Output() isSuccess = new EventEmitter<boolean>();
 
   constructor(private documentRetrievalService: DocumentRetrievalService) {}
