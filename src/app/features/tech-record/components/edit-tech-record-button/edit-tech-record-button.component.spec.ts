@@ -51,6 +51,8 @@ describe('EditTechRecordButtonComponent', () => {
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
+    component.vehicle = <VehicleTechRecordModel>{ techRecord: [<TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' }] };
+    component.viewableTechRecord = component.vehicle.techRecord[0];
 
     fixture.detectChanges();
 
@@ -117,7 +119,7 @@ describe('EditTechRecordButtonComponent', () => {
         ]
       };
       store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
-      component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
+      component.vehicle = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
       component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
       component.isEditing = true;
     });

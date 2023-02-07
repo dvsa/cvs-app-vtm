@@ -40,6 +40,9 @@ import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { DeskBasedTestSectionGroup2 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
 import { CreateRequiredSectionLgvCar } from './section-templates/required/contingency-required-hidden-section-lgv-car.template';
 import { CreateRequiredSectionMotorcycle } from './section-templates/required/contingency-required-hidden-section-motorcycle.template';
+import { VehicleSectionGroup3 } from './section-templates/vehicle/group-3-light-vehicle-section.template';
+import { SpecialistTestSectionGroup3 } from './section-templates/test/specialist/specialist-test-section-group3.template';
+import { SpecialistRequiredSectionLgvCarSmallTrl } from './section-templates/required/specialist-required-hidden-section-lgv-car.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -523,6 +526,26 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
       visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  'small trl': {
+    default: {
+      required: CreateRequiredSection,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesDeskBasedGroup3: {
+      required: SpecialistRequiredSectionLgvCarSmallTrl,
+      vehicle: VehicleSectionGroup3,
+      test: SpecialistTestSectionGroup3,
+      customDefects: CustomDefectsHiddenSection,
+      visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
     }

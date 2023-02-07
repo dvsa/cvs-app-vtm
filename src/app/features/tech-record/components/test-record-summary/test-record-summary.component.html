@@ -1,8 +1,4 @@
-<div *ngIf="!testRecords || !testRecords.length">
-  <h2 class="govuk-heading-m">Test Records</h2>
-  <h3 class="govuk-heading-s">No test records found.</h3>
-</div>
-<ng-container *ngIf="testRecords && testRecords.length">
+<ng-container *ngIf="testResults?.length; else noTestResults">
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       Test Records
@@ -32,3 +28,8 @@
   </table>
   <app-pagination tableName="test-history" [numberOfItems]="numberOfRecords" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
 </ng-container>
+
+<ng-template #noTestResults>
+  <h2 class="govuk-heading-m">Test Records</h2>
+  <h3 class="govuk-heading-s">No test records found.</h3>
+</ng-template>
