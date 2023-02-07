@@ -7,7 +7,7 @@ import { TestStationsService } from '@services/test-stations/test-stations.servi
 import { fetchReasonsForAbandoning } from '@store/reference-data';
 import { testResultInEdit } from '@store/test-records';
 import { fetchTestStations, TestStationsState } from '@store/test-stations';
-import { map, Observable, switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class MultiOptionsService {

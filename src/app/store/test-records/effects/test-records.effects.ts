@@ -173,13 +173,13 @@ export class TestResultsEffects {
           withLatestFrom(
             this.store.select(testResultInEdit),
             this.store.select(selectTestType(action.testType)),
-            this.userService.user$,
-            this.store.select(getTestStationFromProperty('testStationType', TestStationType.HQ))
+            this.store.select(getTestStationFromProperty('testStationType', TestStationType.HQ)),
+            this.userService.user$
           ),
           take(1)
         )
       ),
-      concatMap(([action, editingTestResult, testTypeTaxonomy, user, testStation]) => {
+      concatMap(([action, editingTestResult, testTypeTaxonomy, testStation, user]) => {
         const id = action.testType;
 
         const { vehicleType } = editingTestResult!;
