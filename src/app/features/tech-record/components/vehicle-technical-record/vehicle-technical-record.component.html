@@ -15,7 +15,11 @@
 
         <app-tech-record-history [vehicle]="vehicle" [currentTechRecord]="currentTechRecord"></app-tech-record-history>
 
-        <app-test-record-summary *appRoleRequired="roles.TestResultView" [testResults]="(testResults$ | async) || []"></app-test-record-summary>
+        <app-test-record-summary
+          *appRoleRequired="roles.TestResultView"
+          [testResults]="(testResults$ | async) || []"
+          [isEditing]="isEditing"
+        ></app-test-record-summary>
 
         <ng-container *ngIf="!isArchived && !isEditing">
           <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]">
