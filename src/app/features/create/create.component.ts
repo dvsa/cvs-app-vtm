@@ -65,7 +65,7 @@ export class CreateComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    this.globalErrorService.clearErrors();
+    this.isVinUniqueCheckComplete = false;
   }
 
   toggleVrmInput(checked: any) {
