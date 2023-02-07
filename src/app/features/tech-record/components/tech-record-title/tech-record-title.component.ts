@@ -43,7 +43,7 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return this.vehicle?.vrms?.find(vrm => vrm.isPrimary)?.vrm;
   }
 
   get editableTechRecord$() {
@@ -51,7 +51,7 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   get otherVrms(): Vrm[] | undefined {
-    return this.vehicle?.vrms.filter(vrm => vrm.isPrimary === false);
+    return this.vehicle?.vrms?.filter(vrm => !vrm.isPrimary);
   }
 
   get vehicleTypes(): typeof VehicleTypes {

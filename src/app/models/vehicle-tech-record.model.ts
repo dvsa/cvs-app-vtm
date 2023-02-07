@@ -51,6 +51,7 @@ export enum VehicleTypes {
   TRL = 'trl',
   LGV = 'lgv',
   CAR = 'car',
+  SMALL_TRL = 'small trl',
   MOTORCYCLE = 'motorcycle'
 }
 

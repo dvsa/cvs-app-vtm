@@ -104,7 +104,7 @@ const trlBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   [BodyTypeCode.Y, BodyTypeDescription.CAR_TRANSPORTER],
   [BodyTypeCode.E, BodyTypeDescription.CURTAINSIDER],
   [BodyTypeCode.L, BodyTypeDescription.LIVESTOCK_CARRIER],
-  [BodyTypeCode.L, BodyTypeDescription.LOW_LOADER],
+  [BodyTypeCode.I, BodyTypeDescription.LOW_LOADER],
   [BodyTypeCode.M, BodyTypeDescription.PETROL_OR_OIL_TANKER]
 ]);
 

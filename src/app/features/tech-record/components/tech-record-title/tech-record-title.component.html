@@ -41,7 +41,7 @@
         <dd *appRoleRequired="roles.TechRecordArchive" class="govuk-summary-list__actions">
           <div class="govuk-summary-list__actions--flex">
             <app-button
-              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === editableTechRecord.vehicleType"
+              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === editableTechRecord.vehicleType && !hideActions"
               design="link"
               id="change-vrm-link"
               (clicked)="navigateTo('change-vrm')"

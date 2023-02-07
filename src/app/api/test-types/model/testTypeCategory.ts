@@ -14,7 +14,7 @@ import { TestType } from './testType';
 /**
  * A category that can be composed of zero/more categories + one/more test types
  */
-export interface TestTypeCategory { 
+export interface TestTypeCategory {
     /**
      * Unique identifier
      */
@@ -73,13 +73,14 @@ export interface TestTypeCategory {
     nextTestTypesOrCategories?: Array<TestType | TestTypeCategory>;
 }
 export namespace TestTypeCategory {
-    export type ForVehicleTypeEnum = 'psv' | 'hgv' | 'trl' | 'car' | 'lgv' | 'motorcycle';
+    export type ForVehicleTypeEnum = 'psv' | 'hgv' | 'trl' | 'lgv' | 'car' | 'small trl' | 'motorcycle';
     export const ForVehicleTypeEnum = {
         Psv: 'psv' as ForVehicleTypeEnum,
         Hgv: 'hgv' as ForVehicleTypeEnum,
         Trl: 'trl' as ForVehicleTypeEnum,
         Car: 'car' as ForVehicleTypeEnum,
         Lgv: 'lgv' as ForVehicleTypeEnum,
+        SmallTrl: 'small trl' as ForVehicleTypeEnum,
         Motorcycle: 'motorcycle' as ForVehicleTypeEnum,
     };
     export type ForVehicleSizeEnum = 'small' | 'large';
