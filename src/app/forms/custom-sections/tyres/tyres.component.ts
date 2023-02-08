@@ -114,7 +114,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
       for (let [index, axle] of currentAxles.entries()) {
         if (
-          axle.tyres !== undefined &&
+          axle?.tyres !== undefined &&
           previousAxles[index] &&
           previousAxles[index].tyres !== undefined &&
           axle.tyres.fitmentCode !== previousAxles[index].tyres.fitmentCode

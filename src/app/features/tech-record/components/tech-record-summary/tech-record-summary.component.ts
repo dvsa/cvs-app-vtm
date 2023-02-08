@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
@@ -12,15 +23,14 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode, CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { State } from '@store/index';
-import { editableTechRecord, updateAxlesSuccess, updateBodySuccess as updateBodySuccess, updateBrakeForcesSuccess } from '@store/technical-records';
+import { editableTechRecord } from '@store/technical-records';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep, merge } from 'lodash';
-import { map, mergeMap, take } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary[techRecord]',
@@ -28,7 +38,7 @@ import { map, mergeMap, take } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./tech-record-summary.component.scss']
 })
-export class TechRecordSummaryComponent implements OnInit {
+export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
   @ViewChild(BodyComponent) body!: BodyComponent;
   @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
@@ -48,27 +58,55 @@ export class TechRecordSummaryComponent implements OnInit {
   }
   @Input() set isEditing(value: boolean) {
     this._isEditing = value;
-    this.calculateVehicleModel();
   }
 
   techRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
-    private actions$: Actions,
     private axlesService: AxlesService,
     private errorService: GlobalErrorService,
     private referenceDataService: ReferenceDataService,
-    private store: Store<State>,
+    private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {}
 
   ngOnInit(): void {
+    this.techRecordCalculated = this.techRecord;
+
+    if (this.techRecordCalculated.vehicleType === VehicleTypes.HGV || this.techRecordCalculated.vehicleType === VehicleTypes.TRL) {
+      const [axles, axleSpacing] = this.axlesService.normaliseAxles(
+        this.techRecordCalculated.axles,
+        this.techRecordCalculated.dimensions?.axleSpacing
+      );
+      this.techRecordCalculated.dimensions = { ...this.techRecordCalculated.dimensions, axleSpacing };
+      this.techRecordCalculated.axles = axles;
+    }
+
+    this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated, true);
+
+    this.store
+      .pipe(
+        select(editableTechRecord),
+        //Need to check that the editing tech record has more than just reason for creation on and is the full object.
+        map(techRecord =>
+          techRecord && Object.keys(techRecord).length > 1 ? cloneDeep(techRecord) : { ...cloneDeep(this.techRecord), reasonForCreation: '' }
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(techRecord => (this.techRecordCalculated = techRecord));
+
     this.referenceDataService.removeTyreSearch();
-    this.calculateVehicleModel();
     this.sectionTemplates = this.vehicleTemplates;
     this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get vehicleTemplates(): Array<FormNode> {
@@ -94,37 +132,6 @@ export class TechRecordSummaryComponent implements OnInit {
       default:
         return [];
     }
-  }
-
-  calculateVehicleModel(): void {
-    if (!this.isEditing) this.techRecordCalculated = { ...this.techRecord };
-
-    this.technicalRecordService.editableTechRecord$
-      .pipe(
-        //Need to check that the editing tech record has more than just reason for creation on and is the full object.
-        map(techRecord =>
-          techRecord && Object.keys(techRecord).length > 1 ? cloneDeep(techRecord) : { ...cloneDeep(this.techRecord), reasonForCreation: '' }
-        ),
-        take(1)
-      )
-      .subscribe(techRecord => {
-        this.techRecordCalculated = techRecord;
-
-        if (techRecord.vehicleType === VehicleTypes.HGV || techRecord.vehicleType === VehicleTypes.TRL) {
-          const [axles, axleSpacing] = this.axlesService.normaliseAxles(techRecord.axles, techRecord.dimensions?.axleSpacing);
-          this.techRecordCalculated.dimensions = { ...techRecord.dimensions, axleSpacing };
-          this.techRecordCalculated.axles = axles;
-        }
-      });
-
-    this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated, true);
-
-    this.actions$
-      .pipe(
-        ofType(updateAxlesSuccess, updateBodySuccess, updateBrakeForcesSuccess),
-        mergeMap(() => this.store.select(editableTechRecord))
-      )
-      .subscribe(techRecord => (this.techRecordCalculated = techRecord || cloneDeep(this.techRecord)));
   }
 
   handleFormState(event: any): void {

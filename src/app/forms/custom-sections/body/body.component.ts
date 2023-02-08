@@ -8,13 +8,14 @@ import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.tem
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { bodyTypeMap, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { State } from '@store/index';
+import { selectReferenceDataByResourceKey } from '@store/reference-data';
 import { updateBody } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Subject, debounceTime, takeUntil, Observable, map, take, skipWhile, combineLatest } from 'rxjs';
+import { Subject, debounceTime, takeUntil, Observable, map, take, skipWhile, combineLatest, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-body',
@@ -35,26 +36,38 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
     private dfs: DynamicFormService,
     private optionsService: MultiOptionsService,
     private referenceDataService: ReferenceDataService,
-    private store: Store<TechnicalRecordServiceState>
+    private store: Store<State>
   ) {}
 
   ngOnInit(): void {
     this.template = this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
-    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((event: any) => {
-      // Set the body type code automatically based selection
-      const bodyType = event?.bodyType as BodyType;
+    this.form.cleanValueChanges
+      .pipe(
+        debounceTime(400),
+        takeUntil(this.destroy$),
+        mergeMap((event: any) =>
+          this.store.pipe(
+            select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, event.brakes.dtpNumber)),
+            take(1),
+            map(referenceData => [event, referenceData as PsvMake])
+          )
+        )
+      )
+      .subscribe(([event, psvMake]) => {
+        // Set the body type code automatically based selection
+        const bodyType = event?.bodyType as BodyType;
 
-      if (bodyType?.description) {
-        event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
-      }
+        if (bodyType?.description) {
+          event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
+        }
 
-      this.formChange.emit(event);
+        this.formChange.emit(event);
 
-      if (event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) {
-        this.store.dispatch(updateBody({ dtpNumber: event.brakes.dtpNumber }));
-      }
-    });
+        if (event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) {
+          this.store.dispatch(updateBody({ psvMake }));
+        }
+      });
 
     this.optionsService.loadOptions(ReferenceDataResourceType.BodyMake);
     this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);

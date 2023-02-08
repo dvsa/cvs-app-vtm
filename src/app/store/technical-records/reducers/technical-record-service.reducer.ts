@@ -34,7 +34,7 @@ import {
   getByVrmFailure,
   getByVrmSuccess,
   removeAxle,
-  updateBodySuccess,
+  updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
@@ -107,7 +107,7 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(updateBrakeForces, (state, action) => handleUpdateBrakeForces(state, action)),
 
-  on(updateBodySuccess, (state, action) => handleUpdateBody(state, action)),
+  on(updateBody, (state, action) => handleUpdateBody(state, action)),
 
   on(addAxle, state => handleAddAxle(state)),
   on(removeAxle, (state, action) => handleRemoveAxle(state, action))
