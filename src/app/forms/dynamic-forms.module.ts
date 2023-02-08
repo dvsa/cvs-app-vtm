@@ -37,6 +37,7 @@ import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuggestiveInputComponent } from './components/suggestive-input/suggestive-input.component';
+import { LettersComponent } from './custom-sections/letters/letters.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { SuggestiveInputComponent } from './components/suggestive-input/suggesti
     FocusNextDirective,
     TruncatePipe,
     WeightsComponent,
+    LettersComponent,
     DimensionsComponent,
     TrlBrakesComponent,
     ReadOnlyComponent,
@@ -95,6 +97,7 @@ import { SuggestiveInputComponent } from './components/suggestive-input/suggesti
     FieldErrorMessageComponent,
     DefectSelectComponent,
     WeightsComponent,
+    LettersComponent,
     TyresComponent,
     DimensionsComponent,
     TrlBrakesComponent,

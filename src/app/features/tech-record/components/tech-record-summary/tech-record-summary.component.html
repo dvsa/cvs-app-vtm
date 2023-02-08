@@ -61,6 +61,13 @@
       (formChange)="handleFormState($event)"
     ></app-weights>
 
+    <app-letters
+      *ngSwitchCase="'lettersSection'"
+      [vehicleTechRecord]="techRecordCalculated"
+      [isEditing]="isEditing"
+      (formChange)="handleFormState($event)"
+    ></app-letters>
+
     <app-dynamic-form-group
       *ngSwitchDefault
       [data]="techRecordCalculated"

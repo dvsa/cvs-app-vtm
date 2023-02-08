@@ -386,6 +386,17 @@ export enum PlateReasonForIssue {
   MANUAL = 'Manual'
 }
 
+export interface Letters {
+  letterType?: LetterType;
+  letterDateRequested?: Date;
+  letterParagraphId?: number;
+}
+
+export enum LetterType {
+  ACCEPTED = 'Trailer authorization',
+  REJECTED = 'Trailer rejection'
+}
+
 export interface ApplicantDetails {
   name?: string;
   address1?: string;

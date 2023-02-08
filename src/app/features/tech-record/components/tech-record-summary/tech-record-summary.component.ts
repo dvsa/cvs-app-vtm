@@ -4,6 +4,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
+import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
 import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
 import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
@@ -36,6 +37,7 @@ export class TechRecordSummaryComponent implements OnInit {
   @ViewChild(TrlBrakesComponent) trlBrakes?: TrlBrakesComponent;
   @ViewChild(TyresComponent) tyres!: TyresComponent;
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
+  @ViewChild(LettersComponent) letters!: LettersComponent;
 
   @Input() techRecord!: TechRecordModel;
   @Input() refDataState!: ReferenceDataState;
@@ -96,7 +98,7 @@ export class TechRecordSummaryComponent implements OnInit {
       case VehicleTypes.HGV:
         return commonCustomSections;
       case VehicleTypes.TRL:
-        return [...commonCustomSections, this.trlBrakes!.form];
+        return [...commonCustomSections, this.trlBrakes!.form, this.letters!.form];
       default:
         return [];
     }
