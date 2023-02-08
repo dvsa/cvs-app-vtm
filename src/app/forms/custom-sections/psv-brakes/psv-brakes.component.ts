@@ -7,7 +7,7 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
-import { Retarders, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Axle, Retarders, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataState, selectBrakeByCode } from '@store/reference-data';
 import { updateBrakeForces } from '@store/technical-records';
@@ -57,6 +57,10 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
           event.brakes['dataTrBrakeOne'] = selectedBrake.service;
           event.brakes['dataTrBrakeTwo'] = selectedBrake.secondary;
           event.brakes['dataTrBrakeThree'] = selectedBrake.parking;
+        }
+
+        if (event?.axles) {
+          event.axles = (event.axles as Axle[]).filter(axle => !!axle?.axleNumber);
         }
 
         this.formChange.emit(event);

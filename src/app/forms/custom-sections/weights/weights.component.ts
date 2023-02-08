@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { addAxle, removeAxle, updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
@@ -31,6 +31,10 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.form = this.dynamicFormsService.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event: any) => {
+      if (event?.axles) {
+        event.axles = (event.axles as Axle[]).filter(axle => !!axle?.axleNumber);
+      }
+
       this.formChange.emit(event);
 
       if (event.grossLadenWeight || event.grossKerbWeight) {
@@ -39,8 +43,12 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  ngOnChanges(): void {
-    this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
+  ngOnChanges(changes: SimpleChanges): void {
+    const { vehicleTechRecord } = changes;
+
+    if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
+      this.form?.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
+    }
   }
 
   ngOnDestroy(): void {

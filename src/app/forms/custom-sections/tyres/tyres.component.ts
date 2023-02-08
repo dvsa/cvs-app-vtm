@@ -8,7 +8,16 @@ import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
-import { FitmentCode, ReasonForEditing, SpeedCategorySymbol, TechRecordModel, Tyres, Tyre, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  FitmentCode,
+  ReasonForEditing,
+  SpeedCategorySymbol,
+  TechRecordModel,
+  Tyres,
+  Tyre,
+  VehicleTypes,
+  Axle
+} from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { addAxle, removeAxle } from '@store/technical-records';
@@ -45,7 +54,13 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.form = this.dynamicFormsService.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
+    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event: any) => {
+      if (event?.axles) {
+        event.axles = (event.axles as Axle[]).filter(axle => !!axle?.axleNumber);
+      }
+
+      this.formChange.emit(event);
+    });
   }
 
   ngOnChanges(simpleChanges: SimpleChanges): void {
@@ -134,20 +149,20 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  getTyresRefData(tyre: Tyres, axleNumber: number): void {
+  getTyresRefData(tyres: Tyres, axleNumber: number): void {
     this.isError = false;
-    this.referenceDataService.fetchReferenceDataByKey(ReferenceDataResourceType.Tyres, String(tyre.tyreCode)).subscribe({
+    this.referenceDataService.fetchReferenceDataByKey(ReferenceDataResourceType.Tyres, String(tyres.tyreCode)).subscribe({
       next: data => {
         const refTyre = data as ReferenceDataTyre;
-        const indexLoad = tyre.fitmentCode === FitmentCode.SINGLE ? Number(refTyre.loadIndexSingleLoad) : Number(refTyre.loadIndexTwinLoad);
-        const newTyre = new Tyre({ ...tyre, tyreSize: refTyre.tyreSize, plyRating: refTyre.plyRating, dataTrAxles: indexLoad });
+        const indexLoad = tyres.fitmentCode === FitmentCode.SINGLE ? Number(refTyre.loadIndexSingleLoad) : Number(refTyre.loadIndexTwinLoad);
+        const newTyre = new Tyre({ ...tyres, tyreSize: refTyre.tyreSize, plyRating: refTyre.plyRating, dataTrAxles: indexLoad });
 
         this.addTyreToTechRecord(newTyre, axleNumber);
       },
       error: _e => {
         this.errorMessage = 'Cannot find data of this tyre on axle ' + axleNumber;
         this.isError = true;
-        const newTyre = new Tyre({ ...tyre, tyreCode: null, tyreSize: null, plyRating: null, dataTrAxles: null });
+        const newTyre = new Tyre({ ...tyres, tyreCode: null, tyreSize: null, plyRating: null, dataTrAxles: null });
 
         this.addTyreToTechRecord(newTyre, axleNumber);
       }

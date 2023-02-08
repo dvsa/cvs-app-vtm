@@ -4,7 +4,7 @@ import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Axle, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
@@ -31,7 +31,13 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.form = this.dfs.createForm(TrlBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
 
-    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(event => this.formChange.emit(event));
+    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((event: any) => {
+      if (event?.axles) {
+        event.axles = (event.axles as Axle[]).filter(axle => !!axle?.axleNumber);
+      }
+
+      this.formChange.emit(event);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -75,7 +75,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.techRecordCalculated = this.techRecord;
+    this.techRecordCalculated = cloneDeep(this.techRecord);
 
     if (this.techRecordCalculated.vehicleType === VehicleTypes.HGV || this.techRecordCalculated.vehicleType === VehicleTypes.TRL) {
       const [axles, axleSpacing] = this.axlesService.normaliseAxles(
