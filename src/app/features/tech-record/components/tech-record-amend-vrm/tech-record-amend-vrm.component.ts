@@ -127,11 +127,9 @@ export class AmendVrmComponent implements OnInit, OnChanges {
 
   amendVrm(record: VehicleTechRecordModel, newVrm: string, cherishedTransfer: boolean) {
     const newModel: VehicleTechRecordModel = cloneDeep(record);
-    console.log(cloneDeep(newModel.vrms));
     if (!cherishedTransfer) {
       const primaryVrm = newModel.vrms.find(vrm => vrm.isPrimary);
       newModel.vrms.splice(newModel.vrms.indexOf(primaryVrm!), 1);
-      console.log(cloneDeep(newModel.vrms));
     }
 
     newModel.vrms.forEach(x => (x.isPrimary = false));
@@ -142,7 +140,6 @@ export class AmendVrmComponent implements OnInit, OnChanges {
       newModel.vrms.push(vrmObject);
     } else existingVrmObject.isPrimary = true;
 
-    console.log(cloneDeep(newModel.vrms));
     return newModel;
   }
 
