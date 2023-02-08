@@ -17,7 +17,6 @@ interface TestField {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordSummaryComponent {
-  @Input() testRecords: TestResultModel[] = [];
   @Input() isEditing = false;
   @Input() testResults: TestResultModel[] = [];
 

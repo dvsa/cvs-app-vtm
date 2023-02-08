@@ -15,8 +15,7 @@ import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-status',
-  templateUrl: './tech-record-change-status.component.html',
-  styleUrls: ['./tech-record-change-status.component.scss']
+  templateUrl: './tech-record-change-status.component.html'
 })
 export class TechRecordChangeStatusComponent implements OnInit {
   vehicle$: Observable<VehicleTechRecordModel | undefined>;
@@ -48,7 +47,7 @@ export class TechRecordChangeStatusComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
 
-    this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => this.goBack(true));
+    this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => this.goBack());
   }
 
   get label(): string {
@@ -59,8 +58,8 @@ export class TechRecordChangeStatusComponent implements OnInit {
     return this.isPromotion ? 'Promote' : 'Archive';
   }
 
-  goBack(isAfterSubmission: boolean = false): void {
-    this.router.navigate([isAfterSubmission && this.isPromotion ? '../..' : '..'], { relativeTo: this.route });
+  goBack(): void {
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string }): void {
