@@ -32,7 +32,19 @@
       </dd>
     </div>
 
-    <ng-container *ngIf="currentTechRecord.vehicleType !== vehicleTypes.TRL; else trailerHeader">
+    <ng-container *ngSwitch="currentTechRecord.vehicleType">
+      <!-- Small Trailer -->
+      <ng-container *ngSwitchCase="vehicleTypes.SMALL_TRL"></ng-container>
+
+      <!-- Trailer -->
+      <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Trailer ID</dt>
+        <dd id="trailer-id" class="govuk-summary-list__value">
+          {{ vehicle?.trailerId | defaultNullOrEmpty }}
+        </dd>
+      </div>
+
+      <!-- Default -->
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
         <dd id="current-vrm" class="govuk-summary-list__value">
@@ -63,15 +75,6 @@
         </dd>
       </div>
     </ng-container>
-
-    <ng-template #trailerHeader>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Trailer ID</dt>
-        <dd id="trailer-id" class="govuk-summary-list__value">
-          {{ vehicle?.trailerId | defaultNullOrEmpty }}
-        </dd>
-      </div>
-    </ng-template>
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Record type</dt>
