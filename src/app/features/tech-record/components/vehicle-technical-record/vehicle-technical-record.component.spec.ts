@@ -19,11 +19,11 @@ import { initialAppState, State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
 import { of } from 'rxjs';
-import { TestRecordsModule } from '../../../test-records/test-records.module';
 import { EditTechRecordButtonComponent } from '../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
+import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
 
 describe('VehicleTechnicalRecordComponent', () => {
@@ -46,8 +46,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         RouterModule.forRoot([]),
         RouterTestingModule,
         SharedModule,
-        StoreModule.forRoot({}),
-        TestRecordsModule
+        StoreModule.forRoot({})
       ],
       declarations: [
         EditTechRecordButtonComponent,
@@ -55,6 +54,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         TechRecordSummaryComponent,
         TechRecordTitleComponent,
         TechRecordSummaryStubComponent,
+        TestRecordSummaryComponent,
         VehicleTechnicalRecordComponent
       ],
       providers: [
