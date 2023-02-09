@@ -2,7 +2,7 @@ import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { AxlesService } from '@services/axles.service';
+import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
 import {
   addAxle,

@@ -1,5 +1,5 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { CreateComponent } from './create.component';
+import { CreateTechRecordComponent } from './create-tech-record.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -10,10 +10,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { SharedModule } from '@shared/shared.module';
 
 describe('CreateNewVehicleRecordComponent', () => {
-  let component: CreateComponent;
-  let fixture: ComponentFixture<CreateComponent>;
+  let component: CreateTechRecordComponent;
+  let fixture: ComponentFixture<CreateTechRecordComponent>;
   let errorService: GlobalErrorService;
   let route: ActivatedRoute;
   let router: Router;
@@ -23,18 +25,18 @@ describe('CreateNewVehicleRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CreateComponent],
+      declarations: [CreateTechRecordComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } }
-      ],
-      imports: [HttpClientTestingModule, RouterTestingModule]
+      ]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateComponent);
+    fixture = TestBed.createComponent(CreateTechRecordComponent);
     errorService = TestBed.inject(GlobalErrorService);
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);

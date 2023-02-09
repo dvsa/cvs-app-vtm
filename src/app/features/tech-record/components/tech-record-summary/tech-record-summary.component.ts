@@ -24,7 +24,7 @@ import { FormNode, CustomFormArray, CustomFormGroup } from '@forms/services/dyna
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
-import { AxlesService } from '@services/axles.service';
+import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editableTechRecord } from '@store/technical-records';
