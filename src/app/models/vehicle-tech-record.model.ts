@@ -340,6 +340,7 @@ export interface TechRecordModel {
   couplingCenterToRearTrlMin?: number;
   couplingCenterToRearTrlMax?: number;
   plates?: Plates[];
+  letters?: Letters[];
   dda?: DDA;
   updateType?: string;
 

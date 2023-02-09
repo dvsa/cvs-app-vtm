@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } 
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
-import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Roles } from '@models/roles.enum';
+import { Axle, Letters, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
@@ -40,23 +41,38 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     return LettersTemplate;
   }
 
-  get isPsv(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.PSV;
-  }
-
-  get isHgv(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.HGV;
-  }
-
-  get isTrl(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.TRL;
-  }
-
   get types(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
   }
 
-  get axles(): CustomFormArray {
-    return this.form.get(['axles']) as CustomFormArray;
+  get roles(): typeof Roles {
+    return Roles;
+  }
+
+  get mostRecentLetter(): Letters | undefined {
+    if (this.vehicleTechRecord.letters && this.vehicleTechRecord.letters?.length > 0) {
+      return this.vehicleTechRecord.letters[this.vehicleTechRecord.letters.length - 1];
+    }
+    return undefined;
+  }
+
+  get letterType(): string | undefined {
+    const letter = this.mostRecentLetter;
+    if (letter !== undefined) return letter.letterType ?? undefined;
+    return undefined;
+  }
+
+  get dateRequested(): Date | undefined {
+    const letter = this.mostRecentLetter;
+    if (letter !== undefined) return letter.letterDateRequested;
+    return undefined;
+  }
+
+  download() {
+    console.log('Ping');
+  }
+
+  generateLetter() {
+    console.log('Generating letter');
   }
 }

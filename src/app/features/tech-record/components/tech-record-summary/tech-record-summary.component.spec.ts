@@ -13,6 +13,9 @@ import { SharedModule } from '@shared/shared.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { QueryList } from '@angular/core';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { UserService } from '@services/user-service/user-service';
+import { of } from 'rxjs';
+import { Roles } from '@models/roles.enum';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
@@ -23,7 +26,16 @@ describe('TechRecordSummaryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordSummaryComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
-      providers: [MultiOptionsService, provideMockStore({ initialState: initialAppState })]
+      providers: [
+        MultiOptionsService,
+        provideMockStore({ initialState: initialAppState }),
+        {
+          provide: UserService,
+          useValue: {
+            roles$: of([Roles.TechRecordAmend])
+          }
+        }
+      ]
     }).compileComponents();
   });
 
