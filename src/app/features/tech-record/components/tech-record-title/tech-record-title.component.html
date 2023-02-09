@@ -12,17 +12,19 @@
       <dd id="vehicleType" class="govuk-summary-list__value">
         {{ editableTechRecord.vehicleType | uppercase | defaultNullOrEmpty }}
       </dd>
-      <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
-        <div class="govuk-summary-list__actions--flex">
-          <app-button
-            *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === editableTechRecord.vehicleType"
-            design="link"
-            id="change-vehicle-type-link"
-            (clicked)="navigateTo('change-vehicle-type')"
-            >Change</app-button
-          >
-        </div>
-      </dd>
+      <ng-container *appRoleRequired="roles.TechRecordAmend">
+        <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
+          <div class="govuk-summary-list__actions--flex">
+            <app-button
+              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
+              design="link"
+              id="change-vrm-link"
+              (clicked)="navigateTo('change-vrm')"
+              >Change</app-button
+            >
+          </div>
+        </dd>
+      </ng-container>
     </div>
 
     <div class="govuk-summary-list__row">
@@ -38,17 +40,19 @@
         <dd id="current-vrm" class="govuk-summary-list__value">
           <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
         </dd>
-        <dd *appRoleRequired="roles.TechRecordArchive" class="govuk-summary-list__actions">
-          <div class="govuk-summary-list__actions--flex">
-            <app-button
-              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === editableTechRecord.vehicleType && !hideActions"
-              design="link"
-              id="change-vrm-link"
-              (clicked)="navigateTo('change-vrm')"
-              >Change</app-button
-            >
-          </div>
-        </dd>
+        <ng-container *ngIf="!hideActions">
+          <dd *appRoleRequired="roles.TechRecordAmend" class="govuk-summary-list__actions">
+            <div class="govuk-summary-list__actions--flex">
+              <app-button
+                *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === editableTechRecord.vehicleType"
+                design="link"
+                id="change-vrm-link"
+                (clicked)="navigateTo('change-vrm')"
+                >Change</app-button
+              >
+            </div>
+          </dd>
+        </ng-container>
       </div>
 
       <div class="govuk-summary-list__row">
@@ -118,7 +122,7 @@
           </app-tag>
         </dd>
         <ng-container *ngIf="!hideActions">
-          <dd class="govuk-summary-list__actions">
+          <dd *appRoleRequired="roles.TechRecordAmend" class="govuk-summary-list__actions">
             <div class="govuk-summary-list__actions--flex">
               <app-button design="link" id="change-record-visibility-in-vta-link" (clicked)="navigateTo('change-vta-visibility')">Change</app-button>
             </div>
