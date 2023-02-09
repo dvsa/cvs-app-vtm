@@ -38,6 +38,7 @@ import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.comp
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuggestiveInputComponent } from './components/suggestive-input/suggestive-input.component';
 import { LettersComponent } from './custom-sections/letters/letters.component';
+import { PlatesComponent } from './custom-sections/plates/plates.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { LettersComponent } from './custom-sections/letters/letters.component';
     TruncatePipe,
     WeightsComponent,
     LettersComponent,
+    PlatesComponent,
     DimensionsComponent,
     TrlBrakesComponent,
     ReadOnlyComponent,
@@ -98,6 +100,7 @@ import { LettersComponent } from './custom-sections/letters/letters.component';
     DefectSelectComponent,
     WeightsComponent,
     LettersComponent,
+    PlatesComponent,
     TyresComponent,
     DimensionsComponent,
     TrlBrakesComponent,

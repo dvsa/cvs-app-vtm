@@ -19,7 +19,6 @@ import { BaseDialogComponent } from './components/base-dialog/base-dialog.compon
 import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
 import { DocumentRetrievalService } from '@api/document-retrieval';
 import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe';
-import { ViewPlateComponent } from './components/view-plate/view-plate.component';
 
 @NgModule({
   declarations: [
@@ -39,8 +38,7 @@ import { ViewPlateComponent } from './components/view-plate/view-plate.component
     PreventDoubleClickDirective,
     BaseDialogComponent,
     DigitGroupSeparatorPipe,
-    RefDataDecodePipe,
-    ViewPlateComponent
+    RefDataDecodePipe
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -59,8 +57,7 @@ import { ViewPlateComponent } from './components/view-plate/view-plate.component
     TestCertificateComponent,
     BaseDialogComponent,
     DigitGroupSeparatorPipe,
-    RefDataDecodePipe,
-    ViewPlateComponent
+    RefDataDecodePipe
   ],
   providers: [DocumentRetrievalService]
 })

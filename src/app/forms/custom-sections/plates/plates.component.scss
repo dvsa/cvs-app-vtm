@@ -1,5 +1,11 @@
 @import 'node_modules/govuk-frontend/govuk/all';
 
+.axleButton {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+
 .link {
   border: none;
   padding: 0;
