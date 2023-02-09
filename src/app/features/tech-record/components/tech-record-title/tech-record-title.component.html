@@ -12,19 +12,17 @@
       <dd id="vehicleType" class="govuk-summary-list__value">
         {{ editableTechRecord.vehicleType | uppercase | defaultNullOrEmpty }}
       </dd>
-      <ng-container *appRoleRequired="roles.TechRecordAmend">
-        <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
-          <div class="govuk-summary-list__actions--flex">
-            <app-button
-              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
-              design="link"
-              id="change-vrm-link"
-              (clicked)="navigateTo('change-vrm')"
-              >Change</app-button
-            >
-          </div>
-        </dd>
-      </ng-container>
+      <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
+        <div class="govuk-summary-list__actions--flex">
+          <app-button
+            *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === editableTechRecord.vehicleType"
+            design="link"
+            id="change-vehicle-type-link"
+            (clicked)="navigateTo('change-vehicle-type')"
+            >Change</app-button
+          >
+        </div>
+      </dd>
     </div>
 
     <div class="govuk-summary-list__row">
@@ -34,51 +32,46 @@
       </dd>
     </div>
 
-    <ng-container *ngSwitch="currentTechRecord.vehicleType">
-      <!-- Small Trailer -->
-      <ng-container *ngSwitchCase="vehicleTypes.SMALL_TRL"></ng-container>
-
-      <!-- Trailer -->
-      <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Trailer ID</dt>
-        <dd id="trailer-id" class="govuk-summary-list__value">
-          {{ vehicle?.trailerId | defaultNullOrEmpty }}
-        </dd>
-      </div>
-
-      <!-- Default -->
+    <ng-container *ngIf="currentTechRecord.vehicleType !== vehicleTypes.TRL; else trailerHeader">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
         <dd id="current-vrm" class="govuk-summary-list__value">
           <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
         </dd>
-        <ng-container *ngIf="!hideActions">
-          <dd *appRoleRequired="roles.TechRecordAmend" class="govuk-summary-list__actions">
-            <div class="govuk-summary-list__actions--flex">
-              <app-button
-                *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === editableTechRecord.vehicleType"
-                design="link"
-                id="change-vrm-link"
-                (clicked)="navigateTo('change-vrm')"
-                >Change</app-button
-              >
-            </div>
-          </dd>
-        </ng-container>
+        <dd *appRoleRequired="roles.TechRecordArchive" class="govuk-summary-list__actions">
+          <div class="govuk-summary-list__actions--flex">
+            <app-button
+              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === editableTechRecord.vehicleType && !hideActions"
+              design="link"
+              id="change-vrm-link"
+              (clicked)="navigateTo('change-vrm')"
+              >Change</app-button
+            >
+          </div>
+        </dd>
       </div>
 
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Previous VRM</dt>
         <dd id="previous-vrm" class="govuk-summary-list__value">
           <app-number-plate
-            *ngFor="let secondaryVrm of otherVrms"
-            class="govuk-body govuk-!-margin-bottom-0"
-            [vrm]="secondaryVrm.vrm"
+            *ngIf="otherVrms && otherVrms.length"
+            class="govuk-body govuk-!margin-bottom-0"
+            [vrm]="otherVrms[otherVrms.length - 1].vrm"
             [isSecondary]="true"
           ></app-number-plate>
         </dd>
       </div>
     </ng-container>
+
+    <ng-template #trailerHeader>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Trailer ID</dt>
+        <dd id="trailer-id" class="govuk-summary-list__value">
+          {{ vehicle?.trailerId | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </ng-template>
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Record type</dt>
@@ -125,7 +118,7 @@
           </app-tag>
         </dd>
         <ng-container *ngIf="!hideActions">
-          <dd *appRoleRequired="roles.TechRecordAmend" class="govuk-summary-list__actions">
+          <dd class="govuk-summary-list__actions">
             <div class="govuk-summary-list__actions--flex">
               <app-button design="link" id="change-record-visibility-in-vta-link" (clicked)="navigateTo('change-vta-visibility')">Change</app-button>
             </div>
