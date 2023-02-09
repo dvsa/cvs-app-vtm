@@ -75,26 +75,26 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.techRecordCalculated = cloneDeep(this.techRecord);
-
-    if (this.techRecordCalculated.vehicleType === VehicleTypes.HGV || this.techRecordCalculated.vehicleType === VehicleTypes.TRL) {
-      const [axles, axleSpacing] = this.axlesService.normaliseAxles(
-        this.techRecordCalculated.axles,
-        this.techRecordCalculated.dimensions?.axleSpacing
-      );
-      this.techRecordCalculated.dimensions = { ...this.techRecordCalculated.dimensions, axleSpacing };
-      this.techRecordCalculated.axles = axles;
-    }
-
-    this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated, true);
-
     this.store
       .pipe(
         select(editableTechRecord),
         //Need to check that the editing tech record has more than just reason for creation on and is the full object.
-        map(techRecord =>
-          techRecord && Object.keys(techRecord).length > 1 ? cloneDeep(techRecord) : { ...cloneDeep(this.techRecord), reasonForCreation: '' }
-        ),
+        map(techRecord => {
+          if (techRecord && Object.keys(techRecord).length > 1) {
+            return cloneDeep(techRecord);
+          } else {
+            if (this.techRecord.vehicleType === VehicleTypes.HGV || this.techRecord.vehicleType === VehicleTypes.TRL) {
+              const [axles, axleSpacing] = this.axlesService.normaliseAxles(this.techRecord.axles, this.techRecord.dimensions?.axleSpacing);
+              this.techRecord = cloneDeep(this.techRecord);
+              this.techRecord.dimensions = { ...this.techRecord.dimensions, axleSpacing };
+              this.techRecord.axles = axles;
+            }
+
+            this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
+
+            return { ...cloneDeep(this.techRecord), reasonForCreation: '' };
+          }
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe(techRecord => (this.techRecordCalculated = techRecord));

@@ -193,10 +193,13 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
 
   newState.editingTechRecord.techRecord[0].dimensions ??= {};
 
-  newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
-    newState.editingTechRecord?.techRecord[0].axles.length,
-    newState.editingTechRecord?.techRecord[0].dimensions.axleSpacing
-  );
+  const vehicleType = newState.editingTechRecord?.techRecord[0].vehicleType;
+  if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) {
+    newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
+      newState.editingTechRecord?.techRecord[0].axles.length,
+      newState.editingTechRecord?.techRecord[0].dimensions.axleSpacing
+    );
+  }
 
   return newState;
 }
@@ -214,9 +217,12 @@ function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: n
 
   newState.editingTechRecord.techRecord[0].dimensions ??= {};
 
-  newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
-    newState.editingTechRecord?.techRecord[0].axles.length
-  );
+  const vehicleType = newState.editingTechRecord?.techRecord[0].vehicleType;
+  if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) {
+    newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
+      newState.editingTechRecord?.techRecord[0].axles.length
+    );
+  }
 
   return newState;
 }
