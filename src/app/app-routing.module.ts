@@ -29,7 +29,7 @@ const routes: Routes = [
         path: 'create',
         data: { title: 'Create new technical record', roles: Roles.TechRecordCreate },
         canActivate: [MsalGuard, RoleGuard],
-        loadChildren: () => import('./features/create/create.module').then(m => m.CreateModule)
+        loadChildren: () => import('./features/tech-record/create/create-tech-records.module').then(m => m.CreateTechRecordsModule)
       },
       {
         path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',

@@ -12,9 +12,9 @@ import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-create',
-  templateUrl: './create.component.html'
+  templateUrl: './create-tech-record.component.html'
 })
-export class CreateComponent implements OnChanges {
+export class CreateTechRecordComponent implements OnChanges {
   vehicle: Partial<VehicleTechRecordModel> = {};
   isDuplicateVinAllowed: boolean = false;
   isVinUniqueCheckComplete: boolean = false;

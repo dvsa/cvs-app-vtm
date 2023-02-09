@@ -7,7 +7,7 @@ export const vehicleTechRecords = createSelector(getVehicleTechRecordState, stat
 
 export const editableVehicleTechRecord = createSelector(getVehicleTechRecordState, state => state.editingTechRecord);
 
-export const editableTechRecord = createSelector(editableVehicleTechRecord, state => state?.techRecord[0]);
+export const editableTechRecord = createSelector(editableVehicleTechRecord, vehicle => vehicle?.techRecord[0]);
 
 export const technicalRecordsLoadingState = createSelector(getVehicleTechRecordState, state => state.loading);
 

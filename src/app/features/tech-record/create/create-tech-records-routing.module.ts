@@ -3,14 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
-import { TechRecordSearchTyresComponent } from '../tech-record/components/tech-record-search-tyres/tech-record-search-tyres.component';
+import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { HydrateNewVehicleRecordComponent } from './components/hydrate-new-vehicle-record/hydrate-new-vehicle-record.component';
-import { CreateComponent } from './create.component';
+import { CreateTechRecordComponent } from './create-tech-record.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: CreateComponent,
+    component: CreateTechRecordComponent,
     data: { roles: Roles.TechRecordCreate },
     canActivate: [MsalGuard, RoleGuard]
   },
@@ -32,4 +32,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CreateRoutingModule {}
+export class CreateTechRecordsRoutingModule {}
