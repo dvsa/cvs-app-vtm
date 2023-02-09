@@ -61,7 +61,7 @@ describe('TechRecordTitleComponent', () => {
       store.overrideSelector(editableTechRecord, mockRecord);
       fixture.detectChanges();
 
-      const vrmField = fixture.debugElement.query(By.css('#current-vrm-span')).nativeElement;
+      const vrmField = fixture.nativeElement.querySelector('app-number-plate');
       expect(vrmField.textContent).toContain('TEST VRM');
     });
 
@@ -85,7 +85,7 @@ describe('TechRecordTitleComponent', () => {
       store.overrideSelector(editableTechRecord, mockRecord);
       fixture.detectChanges();
 
-      const vrmField = fixture.debugElement.query(By.css('#previous-vrm-span')).nativeElement;
+      const vrmField = fixture.nativeElement.querySelectorAll('app-number-plate')[1];
       expect(vrmField.textContent).toContain('TESTV RM5');
       expect(vrmField.textContent).not.toContain('TEST VRM');
       expect(vrmField.textContent).not.toContain('TESTV RM2');
