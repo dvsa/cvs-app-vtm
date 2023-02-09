@@ -65,7 +65,7 @@ export class CreateTechRecordComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    this.globalErrorService.clearErrors();
+    this.isVinUniqueCheckComplete = false;
   }
 
   toggleVrmInput(checked: any) {

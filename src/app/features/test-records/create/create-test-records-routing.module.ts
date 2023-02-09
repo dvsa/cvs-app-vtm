@@ -4,8 +4,10 @@ import { DefectSelectComponent } from '@forms/components/defect-select/defect-se
 import { DefectComponent } from '@forms/custom-sections/defect/defect.component';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
+import { TestStationStatuses } from '@models/test-stations/test-station.model';
 import { ContingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
 import { DefectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
+import { TestStationsResolver } from 'src/app/resolvers/test-stations/test-stations.resolver';
 import { TestTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
 import { CreateTestRecordComponent } from './views/create-test-record/create-test-record.component';
 import { CreateTestTypeComponent } from './views/create-test-type/create-test-type.component';
@@ -30,7 +32,7 @@ const routes: Routes = [
       {
         path: 'test-details',
         component: TestRouterOutletComponent,
-        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver },
+        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver, testStations: TestStationsResolver },
         data: { title: 'Test details', roles: Roles.TestResultCreateContingency },
         canActivate: [RoleGuard],
         children: [
