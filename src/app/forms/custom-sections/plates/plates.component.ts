@@ -89,7 +89,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     const mostRecentPlate = this.mostRecentPlate;
     if (mostRecentPlate !== undefined) {
       return this.documentRetrievalService
-        .testPlateGet(mostRecentPlate.plateSerialNumber, 'events', true)
+        .testPlateGet(`plate_${mostRecentPlate.plateSerialNumber}`, 'events', true)
         .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
         .subscribe({
           next: res => {
@@ -110,7 +110,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
                 const link: HTMLAnchorElement | undefined = document.createElement('a');
                 link.href = url;
                 link.target = '_blank';
-                link.download = `${mostRecentPlate.plateSerialNumber}.pdf`;
+                link.download = `plate_${mostRecentPlate.plateSerialNumber}.pdf`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
