@@ -206,4 +206,12 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static notZNumber = (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null;
+
+    const isZNumber = new RegExp('^[0-9]{6}[zZ]$').test(control.value);
+
+    return !isZNumber ? null : { notZNumber: true };
+  };
 }
