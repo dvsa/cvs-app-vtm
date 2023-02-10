@@ -62,9 +62,9 @@
         <dt class="govuk-summary-list__key">Previous VRM</dt>
         <dd id="previous-vrm" class="govuk-summary-list__value">
           <app-number-plate
-            *ngFor="let secondaryVrm of otherVrms"
-            class="govuk-body govuk-!-margin-bottom-0"
-            [vrm]="secondaryVrm.vrm"
+            *ngIf="otherVrms && otherVrms.length"
+            class="govuk-body govuk-!margin-bottom-0"
+            [vrm]="otherVrms[otherVrms.length - 1].vrm"
             [isSecondary]="true"
           ></app-number-plate>
         </dd>
