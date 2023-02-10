@@ -39,7 +39,12 @@ export class AmendVrmComponent implements OnInit, OnChanges {
         label: 'Input a new VRM',
         value: '',
         type: FormNodeTypes.CONTROL,
-        validators: [{ name: ValidatorNames.MaxLength, args: 9 }, { name: ValidatorNames.MinLength, args: 1 }, { name: ValidatorNames.Alphanumeric }]
+        validators: [
+          { name: ValidatorNames.Alphanumeric },
+          { name: ValidatorNames.MaxLength, args: 9 },
+          { name: ValidatorNames.MinLength, args: 1 },
+          { name: ValidatorNames.NotZNumber }
+        ]
       }
     ]
   };

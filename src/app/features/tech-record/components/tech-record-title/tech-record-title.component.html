@@ -49,16 +49,10 @@
         <dd id="current-vrm" class="govuk-summary-list__value">
           <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
         </dd>
-        <ng-container *ngIf="!hideActions">
+        <ng-container *ngIf="isVrmEditable(currentTechRecord.statusCode, currentTechRecord.vehicleType, editableTechRecord.vehicleType)">
           <dd *appRoleRequired="roles.TechRecordAmend" class="govuk-summary-list__actions">
             <div class="govuk-summary-list__actions--flex">
-              <app-button
-                *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === editableTechRecord.vehicleType"
-                design="link"
-                id="change-vrm-link"
-                (clicked)="navigateTo('change-vrm')"
-                >Change</app-button
-              >
+              <app-button design="link" id="change-vrm-link" (clicked)="navigateTo('change-vrm')">Change</app-button>
             </div>
           </dd>
         </ng-container>
