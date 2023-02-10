@@ -69,8 +69,16 @@
     [hint]="control.value.meta.hint"
   ></app-text-area>
 
-  <app-checkbox-group
+  <app-checkbox
     *ngSwitchCase="formNodeEditTypes.CHECKBOX"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [formControlName]="control.key"
+    [hint]="control.value.meta.hint"
+  ></app-checkbox>
+
+  <app-checkbox-group
+    *ngSwitchCase="formNodeEditTypes.CHECKBOXGROUP"
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
     [options]="(options$ | async) || []"

@@ -43,7 +43,7 @@
       </select>
     </div>
 
-    <button class="govuk-button" data-module="govuk-button" (click)="navigateSearch(searchTerm.value, searchType.value)">Search</button>
+    <app-button (clicked)="navigateSearch(searchTerm.value, searchType.value)">Search</app-button>
   </div>
 </div>
 

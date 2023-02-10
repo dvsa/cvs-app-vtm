@@ -15,13 +15,23 @@
       <div class="govuk-grid-column-one-half">
         <h2 class="govuk-heading-m">Vehicle details</h2>
         <dl class="govuk-summary-list">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">{{ testResult?.vehicleType === vehicleTypes.TRL ? 'Trailer ID' : 'VRM' }}</dt>
-            <dd id="test-testTypeId" class="govuk-summary-list__value">
-              <app-number-plate *ngIf="testResult?.vehicleType !== vehicleTypes.TRL; else trailerId" [vrm]="testResult?.vrm"></app-number-plate>
-              <ng-template #trailerId>{{ testResult?.trailerId | defaultNullOrEmpty }}</ng-template>
-            </dd>
-          </div>
+          <ng-container [ngSwitch]="testResult?.vehicleType">
+            <ng-container *ngSwitchCase="vehicleTypes.SMALL_TRL"></ng-container>
+
+            <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Trailer ID</dt>
+              <dd id="test-testTypeId" class="govuk-summary-list__value">
+                {{ testResult?.trailerId | defaultNullOrEmpty }}
+              </dd>
+            </div>
+
+            <div *ngSwitchDefault class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">VRM</dt>
+              <dd id="test-testTypeId" class="govuk-summary-list__value">
+                <app-number-plate [vrm]="testResult?.vrm"></app-number-plate>
+              </dd>
+            </div>
+          </ng-container>
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">VIN</dt>
             <dd class="govuk-summary-list__value">
@@ -70,13 +80,21 @@
     </div>
     <h3 class="govuk-heading-m">Vehicle overview</h3>
     <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">{{ testResult?.vehicleType === vehicleTypes.TRL ? 'Trailer ID' : 'VRM' }}</dt>
-        <dd id="test-testTypeId" class="govuk-summary-list__value">
-          <app-number-plate *ngIf="testResult?.vehicleType !== vehicleTypes.TRL; else trailerId" [vrm]="testResult?.vrm"></app-number-plate>
-          <ng-template #trailerId>{{ testResult?.trailerId | defaultNullOrEmpty }}</ng-template>
-        </dd>
-      </div>
+      <ng-container *ngSwitch="testResult?.vehicleType">
+        <ng-container *ngSwitchCase="vehicleTypes.SMALL_TRL"></ng-container>
+
+        <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Trailer ID</dt>
+          <dd id="test-testTypeId" class="govuk-summary-list__value">{{ testResult?.trailerId | defaultNullOrEmpty }}</dd>
+        </div>
+
+        <div *ngSwitchDefault class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">VRM</dt>
+          <dd id="test-testTypeId" class="govuk-summary-list__value">
+            <app-number-plate [vrm]="testResult?.vrm"></app-number-plate>
+          </dd>
+        </div>
+      </ng-container>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VIN</dt>
         <dd id="test-vin" class="govuk-summary-list__value">

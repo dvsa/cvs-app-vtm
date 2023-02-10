@@ -12,4 +12,14 @@
       min-width: 200px;
     }
   }
+
+  .govuk-table {
+    margin-bottom: 0;
+  }
+
+  .govuk-checkboxes {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 10px;
+  }
 }

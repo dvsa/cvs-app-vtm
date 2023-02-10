@@ -37,6 +37,7 @@ import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuggestiveInputComponent } from './components/suggestive-input/suggestive-input.component';
+import { CheckboxComponent } from './components/checkbox/checkbox.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { SuggestiveInputComponent } from './components/suggestive-input/suggesti
     TyresComponent,
     PsvBrakesComponent,
     PrefixDirective,
-    SuggestiveInputComponent
+    SuggestiveInputComponent,
+    CheckboxComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -108,7 +110,8 @@ import { SuggestiveInputComponent } from './components/suggestive-input/suggesti
     BodyComponent,
     PsvBrakesComponent,
     PrefixDirective,
-    SuggestiveInputComponent
+    SuggestiveInputComponent,
+    CheckboxComponent
   ]
 })
 export class DynamicFormsModule {}
