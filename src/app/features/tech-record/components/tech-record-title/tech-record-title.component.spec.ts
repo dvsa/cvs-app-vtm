@@ -2,10 +2,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TechRecord } from '@api/vehicle';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Roles } from '@models/roles.enum';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
@@ -45,7 +46,7 @@ describe('TechRecordTitleComponent', () => {
     expect(component).toBeTruthy();
   });
   describe('the VRM fields', () => {
-    it('should show primary VRM', () => {
+    it('should show primary VRM for current record', () => {
       const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
       const mockVehicle = {
@@ -60,6 +61,8 @@ describe('TechRecordTitleComponent', () => {
       component.vehicle = mockVehicle;
       store.overrideSelector(editableTechRecord, mockRecord);
       fixture.detectChanges();
+
+      console.log(component.vehicle.techRecord[0].statusCode);
 
       const vrmField = fixture.nativeElement.querySelector('app-number-plate');
       expect(vrmField.textContent).toContain('TEST VRM');
@@ -107,6 +110,52 @@ describe('TechRecordTitleComponent', () => {
 
       const vrmField = fixture.debugElement.query(By.css('#previous-vrm-span'));
       expect(vrmField).toBe(null);
+    });
+    it('should show historicPrimaryVrm for an archived record', () => {
+      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const mockVehicle = {
+        vrms: [
+          { vrm: 'TESTVRM', isPrimary: true },
+          { vrm: 'TESTVRM2', isPrimary: false }
+        ],
+        vin: 'testvin',
+        systemNumber: 'testNumber',
+        techRecord: [mockRecord]
+      };
+      mockRecord.statusCode = StatusCodes.ARCHIVED;
+      mockVehicle.techRecord[0].historicPrimaryVrm = 'TESTHIST';
+      component.vehicle = mockVehicle;
+      store.overrideSelector(editableTechRecord, mockRecord);
+      fixture.detectChanges();
+
+      const vrmField = fixture.nativeElement.querySelector('app-number-plate');
+      expect(vrmField.textContent).toContain('TESTH IST');
+    });
+    it('should show historicSecondaryVrm for an archived record', () => {
+      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const mockVehicle = {
+        vrms: [
+          { vrm: 'TESTVRM3', isPrimary: true },
+          { vrm: 'TESTVRM2', isPrimary: false },
+          { vrm: 'TESTVRM', isPrimary: false }
+        ],
+        vin: 'testvin',
+        systemNumber: 'testNumber',
+        techRecord: [mockRecord]
+      };
+      mockRecord.statusCode = StatusCodes.ARCHIVED;
+      mockVehicle.techRecord[0].historicPrimaryVrm = 'TESTVRM2';
+      mockVehicle.techRecord[0].historicSecondaryVrms = ['TESTVRM'];
+      component.vehicle = mockVehicle;
+      store.overrideSelector(editableTechRecord, mockRecord);
+      fixture.detectChanges();
+
+      const vrmField = fixture.nativeElement.querySelector('app-number-plate');
+      const secondaryVrmField = fixture.nativeElement.querySelectorAll('app-number-plate')[1];
+      expect(vrmField.textContent).toContain('TESTV RM2');
+      expect(secondaryVrmField.textContent).toContain('TEST VRM');
     });
   });
 });
