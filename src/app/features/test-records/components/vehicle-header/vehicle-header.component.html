@@ -15,7 +15,7 @@
       <div class="govuk-grid-column-one-half">
         <h2 class="govuk-heading-m">Vehicle details</h2>
         <dl class="govuk-summary-list">
-          <ng-container *ngSwitch="testResult?.vehicleType">
+          <ng-container [ngSwitch]="testResult?.vehicleType">
             <ng-container *ngSwitchCase="vehicleTypes.SMALL_TRL"></ng-container>
 
             <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
