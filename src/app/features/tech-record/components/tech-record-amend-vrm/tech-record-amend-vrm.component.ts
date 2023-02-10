@@ -10,7 +10,7 @@ import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record
 import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
-import { catchError, map, of, take, tap, throwError } from 'rxjs';
+import { catchError, filter, map, of, switchMap, take, tap, throwError } from 'rxjs';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -91,7 +91,6 @@ export class AmendVrmComponent implements OnInit, OnChanges {
   }
 
   handleSubmit(newVrm: string, cherishedTransfer: string): void {
-    console.log(cherishedTransfer);
     this.globalErrorService.clearErrors();
     if (newVrm === '' || (newVrm === this.vrm ?? '')) {
       this.globalErrorService.addError({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
@@ -100,29 +99,26 @@ export class AmendVrmComponent implements OnInit, OnChanges {
       this.globalErrorService.addError({ error: 'You must provide a reason for amending', anchorLink: 'cherishedTransfer' });
     }
 
-    this.globalErrorService.errors$.pipe(take(1)).subscribe({
-      next: res => {
-        if (res.length > 0) return;
-        this.technicalRecordService
-          .isUnique(newVrm, SEARCH_TYPES.VRM)
-          .pipe(
-            take(1),
-            catchError(error => (error.status == 404 ? of(true) : throwError(() => new Error('Error'))))
-          )
-          .subscribe({
-            next: res => {
-              if (!res) return this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
+    this.globalErrorService.errors$
+      .pipe(
+        take(1),
+        filter(errors => !errors.length),
+        switchMap(() => this.technicalRecordService.isUnique(newVrm, SEARCH_TYPES.VRM)),
+        take(1),
+        catchError(error => (error.status == 404 ? of(true) : throwError(() => new Error('Error'))))
+      )
+      .subscribe({
+        next: res => {
+          if (!res) return this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
 
-              const newVehicleRecord = this.amendVrm(this.vehicle!, newVrm, cherishedTransfer === 'true');
+          const newVehicleRecord = this.amendVrm(this.vehicle!, newVrm, cherishedTransfer === 'true');
 
-              this.setReasonForCreation(newVehicleRecord);
-              this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
-              this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
-            },
-            error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
-          });
-      }
-    });
+          this.setReasonForCreation(newVehicleRecord);
+          this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
+          this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
+        },
+        error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
+      });
   }
 
   amendVrm(record: VehicleTechRecordModel, newVrm: string, cherishedTransfer: boolean) {
@@ -158,6 +154,4 @@ export class AmendVrmComponent implements OnInit, OnChanges {
   setReasonForCreation(vehicleRecord: VehicleTechRecordModel) {
     if (vehicleRecord.techRecord !== undefined) vehicleRecord.techRecord.forEach(record => (record.reasonForCreation = `Amending VRM.`));
   }
-
-  toggleCherishedTransfer() {}
 }
