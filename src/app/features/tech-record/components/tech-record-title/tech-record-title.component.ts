@@ -66,16 +66,12 @@ export class TechRecordTitleComponent implements OnInit {
     return StatusCodes;
   }
 
-  get isZNumber(): boolean {
-    return !!this.currentVrm && new RegExp('^[0-9]{6}[zZ]$').test(this.currentVrm);
-  }
-
   getCompletenessColor(completeness?: string): 'green' | 'red' {
     return completeness === 'complete' ? 'green' : 'red';
   }
 
   isVrmEditable(statusCode: StatusCodes | undefined, currentVehicleType: VehicleTypes, editableVehicleType: VehicleTypes): boolean {
-    return !this.hideActions && !this.isZNumber && statusCode !== StatusCodes.ARCHIVED && currentVehicleType === editableVehicleType;
+    return !this.hideActions && statusCode !== StatusCodes.ARCHIVED && currentVehicleType === editableVehicleType;
   }
 
   navigateTo(path: string, queryParams?: Params): void {

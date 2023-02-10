@@ -10,7 +10,7 @@ import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record
 import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
-import { catchError, map, of, take, tap, throwError } from 'rxjs';
+import { catchError, of, take, throwError } from 'rxjs';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -34,7 +34,12 @@ export class AmendVrmComponent implements OnInit, OnChanges {
         label: 'Input a new VRM',
         value: '',
         type: FormNodeTypes.CONTROL,
-        validators: [{ name: ValidatorNames.MaxLength, args: 9 }, { name: ValidatorNames.MinLength, args: 1 }, { name: ValidatorNames.Alphanumeric }]
+        validators: [
+          { name: ValidatorNames.Alphanumeric },
+          { name: ValidatorNames.MaxLength, args: 9 },
+          { name: ValidatorNames.MinLength, args: 1 },
+          { name: ValidatorNames.NotZNumber }
+        ]
       }
     ]
   };
