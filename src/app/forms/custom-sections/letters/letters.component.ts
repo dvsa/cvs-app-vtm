@@ -5,6 +5,8 @@ import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
 import { Axle, Letters, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { debounceTime, Subscription } from 'rxjs';
+import { DocumentRetrievalService } from '@api/document-retrieval';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-letters',
@@ -22,7 +24,12 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   public isError: boolean = false;
   public errorMessage?: string;
 
-  constructor(public dfs: DynamicFormService) {}
+  constructor(
+    public dfs: DynamicFormService,
+    private documentRetrievalService: DocumentRetrievalService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
@@ -73,6 +80,6 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   generateLetter() {
-    console.log('Generating letter');
+    this.router.navigate(['generate-letter'], { relativeTo: this.route });
   }
 }

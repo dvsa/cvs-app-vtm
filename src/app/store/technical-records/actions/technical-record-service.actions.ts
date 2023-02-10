@@ -58,6 +58,10 @@ export const generatePlate = createAction(`${prefix} generatePlate`, props<{ tec
 export const generatePlateSuccess = createOutcomeAction('generatePlate', true);
 export const generatePlateFailure = createOutcomeAction('generatePlate');
 
+export const generateLetter = createAction(`${prefix} generateLetter`, props<{ techRecord: TechRecordModel; letterType: string }>());
+export const generateLetterSuccess = createOutcomeAction('generateLetter', true);
+export const generateLetterFailure = createOutcomeAction('generateLetter');
+
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';
   const type = `${prefix} ${title} ${suffix}`;

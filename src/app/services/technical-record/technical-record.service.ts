@@ -300,6 +300,12 @@ export class TechnicalRecordService {
     return of(true);
   }
 
+  generateLetter(techRecord: TechRecordModel, letterType: string) {
+    // TODO: Implement API call when ready
+    console.log('Piiing.');
+    return of(true);
+  }
+
   private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {
     const secondaryVrms: string[] = [];
     const putVehicleTechRecordModel: PutVehicleTechRecordModel = { ...vehicleTechRecord, secondaryVrms };

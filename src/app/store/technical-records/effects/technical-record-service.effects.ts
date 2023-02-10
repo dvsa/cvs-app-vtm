@@ -44,7 +44,10 @@ import {
   updateTechRecordsSuccess,
   generatePlate,
   generatePlateSuccess,
-  generatePlateFailure
+  generatePlateFailure,
+  generateLetter,
+  generateLetterSuccess,
+  generateLetterFailure
 } from '../actions/technical-record-service.actions';
 import { editableTechRecord } from '../selectors/technical-record-service.selectors';
 
@@ -196,6 +199,19 @@ export class TechnicalRecordServiceEffects {
         this.technicalRecordService.generatePlate(techRecord, reason).pipe(
           map(value => generatePlateSuccess({ outcome: value })),
           catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
+        )
+      )
+    )
+  );
+
+  generateLetter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateLetter),
+      withLatestFrom(this.store.pipe(select(editableTechRecord))),
+      switchMap(([{ techRecord, letterType }, record]) =>
+        this.technicalRecordService.generateLetter(techRecord, letterType).pipe(
+          map(value => generateLetterSuccess({ outcome: value })),
+          catchError(error => of(generateLetterFailure({ error: this.getTechRecordErrorMessage(error, 'generateLetter') })))
         )
       )
     )
