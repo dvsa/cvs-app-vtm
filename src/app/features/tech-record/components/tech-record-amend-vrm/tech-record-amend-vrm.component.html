@@ -28,13 +28,21 @@
       (ngModelChange)="ngOnChanges(); newVrm.value = newVrm.value.toUpperCase()"
     ></app-text-input>
 
+    <app-radio-group
+      #cherishedTransfer
+      name="cherishedTransfer"
+      label="Why do you want to amend this VRM?"
+      formControlName="amend-vrm-reason"
+      [options]="reasons"
+    ></app-radio-group>
+
     <div *ngIf="newVrm.value.toUpperCase() !== vrm && newVrm.value.length">
       <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
       <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
     </div>
 
     <app-button-group>
-      <app-button id="submit-vrm" (clicked)="handleSubmit(newVrm.value)">Save</app-button>
+      <app-button id="submit-vrm" (clicked)="handleSubmit(newVrm.value, cherishedTransfer.value)">Save</app-button>
       <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
     </app-button-group>
   </form>
