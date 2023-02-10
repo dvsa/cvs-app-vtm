@@ -210,7 +210,7 @@ export class CustomValidators {
   static notZNumber = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) return null;
 
-    const isZNumber = new RegExp('^[0-9]{6}[zZ]$').test(control.value);
+    const isZNumber = new RegExp('^[0-9]{7}[zZ]$').test(control.value);
 
     return !isZNumber ? null : { notZNumber: true };
   };
