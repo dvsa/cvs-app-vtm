@@ -30,15 +30,6 @@ export enum ReasonForEditing {
   NOTIFIABLE_ALTERATION_NEEDED = 'notifiable-alteration-needed'
 }
 
-export enum ReasonForGenerating {
-  FREE_REPLACEMENT = 'Free replacement',
-  REPLACEMENT = 'Replacement',
-  DESTROYED = 'Destroyed',
-  PROVISIONAL = 'Provisional',
-  ORIGINAL = 'Original',
-  MANUAL = 'Manual'
-}
-
 export enum StatusCodes {
   ARCHIVED = 'archived',
   CURRENT = 'current',
