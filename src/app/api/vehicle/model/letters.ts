@@ -18,3 +18,11 @@ export interface Letters {
     letterDateRequested?: Date;
     letterParagraphId?: number;
 }
+
+export namespace Letters {
+    export type LetterIssueTypeEnum = 'Authorised' | 'Rejected';
+    export const LetterIssueTypeEnum = {
+        Authorised: 'Authorised' as LetterIssueTypeEnum,
+        Rejected: 'Rejected' as LetterIssueTypeEnum
+    };
+}
