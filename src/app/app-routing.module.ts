@@ -7,6 +7,7 @@ import { Roles } from '@models/roles.enum';
 import { TechRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from '@core/components/server-error/server-error.component';
+import { VersionComponent } from '@core/components/version/version.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,11 @@ const routes: Routes = [
         path: 'error',
         pathMatch: 'full',
         component: ServerErrorComponent
+      },
+      {
+        path: 'version',
+        pathMatch: 'full',
+        component: VersionComponent
       }
     ]
   },

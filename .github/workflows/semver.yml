@@ -1,0 +1,53 @@
+name: Update Package semantic version
+on:
+  push:
+    branches: ['develop']
+jobs:
+  semver:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          persist-credentials: true
+      - name: Update
+        uses: actions/github-script@v6
+        id: update-step
+        with:
+          result-encoding: string
+          script: |
+            const semverMap = {
+              feat: "minor",
+              fix: "patch",
+              breaking_change: "major",
+              breaking: "major"
+            };
+
+            const version = semverMap[context.payload.head_commit.message.split("(")[0]];
+
+            async function update() {
+              if (version) {
+                await exec.exec('git config --local user.name "github-actions[bot]"');
+                await exec.exec('git config --local user.email "github-actions[bot]@users.noreply.github.com"');
+                await exec.exec("npm version " + version);
+                await exec.exec("git status");
+                return "true";
+              } else {
+                console.log("To update package version use one of the following in your PR title:");
+                console.table(semverMap);
+                return "false";
+              }
+            }
+
+            return await update();
+      - name: Get result
+        run: echo "${{steps.update-step.outputs.result}}"
+      - name: Push
+        uses: ad-m/github-push-action@master
+        if: ${{ steps.update-step.outputs.result == 'true'}}
+        with:
+          ssh: true
+          branch: ${{ github.ref }}

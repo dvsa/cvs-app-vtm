@@ -1,0 +1,10 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+.govuk-panel {
+  &__title {
+    color: govuk-colour('white');
+  }
+  &--info {
+    background-color: govuk-colour('blue');
+  }
+}

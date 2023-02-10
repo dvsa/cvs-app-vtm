@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from './components/server-error/server-error.component';
+import { VersionComponent } from './components/version/version.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ServerErrorComponent } from './components/server-error/server-error.com
     SpinnerComponent,
     BreadcrumbsComponent,
     PageNotFoundComponent,
-    ServerErrorComponent
+    ServerErrorComponent,
+    VersionComponent
   ],
   imports: [CommonModule, RouterModule],
   exports: [FooterComponent, HeaderComponent, GlobalErrorComponent, SpinnerComponent, BreadcrumbsComponent]
