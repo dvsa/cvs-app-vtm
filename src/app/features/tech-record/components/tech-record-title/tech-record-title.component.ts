@@ -14,7 +14,6 @@ import { Observable, take } from 'rxjs';
   styleUrls: ['./tech-record-title.component.scss']
 })
 export class TechRecordTitleComponent implements OnInit {
-  [x: string]: any;
   @Input() vehicle?: VehicleTechRecordModel;
   @Input() actions: TechRecordActions = TechRecordActions.NONE;
   @Input() hideActions: boolean = false;
