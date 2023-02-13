@@ -70,6 +70,10 @@ export class TechRecordTitleComponent implements OnInit {
     return completeness === 'complete' ? 'green' : 'red';
   }
 
+  isVrmEditable(statusCode: StatusCodes | undefined, currentVehicleType: VehicleTypes, editableVehicleType: VehicleTypes): boolean {
+    return !this.hideActions && statusCode !== StatusCodes.ARCHIVED && currentVehicleType === editableVehicleType;
+  }
+
   navigateTo(path: string, queryParams?: Params): void {
     this.router.navigate([path], { relativeTo: this.route, queryParams });
   }

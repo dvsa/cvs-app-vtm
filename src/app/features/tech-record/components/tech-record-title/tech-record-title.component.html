@@ -19,7 +19,7 @@
               *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
               design="link"
               id="change-type-link"
-              (clicked)="navigateTo('change-vehicle-type')"
+               (clicked)="navigateTo('change-vehicle-type')"
               >Change</app-button
             >
           </div>
@@ -56,16 +56,10 @@
             <app-number-plate *ngIf="currentTechRecord.historicPrimaryVrm" [vrm]="currentTechRecord.historicPrimaryVrm"></app-number-plate
           ></ng-template>
         </dd>
-        <ng-container *ngIf="!hideActions">
+        <ng-container *ngIf="isVrmEditable(currentTechRecord.statusCode, currentTechRecord.vehicleType, editableTechRecord.vehicleType)">
           <dd *appRoleRequired="roles.TechRecordAmend" class="govuk-summary-list__actions">
             <div class="govuk-summary-list__actions--flex">
-              <app-button
-                *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === editableTechRecord.vehicleType"
-                design="link"
-                id="change-vrm-link"
-                (clicked)="navigateTo('change-vrm')"
-                >Change</app-button
-              >
+              <app-button design="link" id="change-vrm-link" (clicked)="navigateTo('change-vrm')">Change</app-button>
             </div>
           </dd>
         </ng-container>
