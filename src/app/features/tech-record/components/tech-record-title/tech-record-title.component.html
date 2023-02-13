@@ -19,7 +19,7 @@
               *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
               design="link"
               id="change-type-link"
-               (clicked)="navigateTo('change-vehicle-type')"
+              (clicked)="navigateTo('change-vehicle-type')"
               >Change</app-button
             >
           </div>
