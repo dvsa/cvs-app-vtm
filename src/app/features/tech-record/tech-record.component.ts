@@ -14,8 +14,8 @@ import { Observable } from 'rxjs';
 export class TechRecordComponent {
   vehicle$: Observable<VehicleTechRecordModel | undefined>;
 
-  constructor(private techrecordService: TechnicalRecordService, private router: Router, public errorService: GlobalErrorService) {
-    this.vehicle$ = this.techrecordService.selectedVehicleTechRecord$;
+  constructor(private techRecordService: TechnicalRecordService, private router: Router, public errorService: GlobalErrorService) {
+    this.vehicle$ = this.techRecordService.selectedVehicleTechRecord$;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 

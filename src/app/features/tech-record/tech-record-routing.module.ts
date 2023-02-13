@@ -13,6 +13,7 @@ import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-
 import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { TechRecordComponent } from './tech-record.component';
 import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
+import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
     component: TechRecordComponent,
     data: { roles: Roles.TechRecordView, isCustomLayout: true },
     canActivateChild: [MsalGuard, RoleGuard],
+    canDeactivate: [CancelEditTechGuard],
     resolve: { load: TechRecordViewResolver }
   },
   {
@@ -58,6 +60,7 @@ const routes: Routes = [
         component: TechRecordComponent,
         data: { title: 'Provisional tech record', isCustomLayout: true },
         canActivate: [MsalGuard],
+        canDeactivate: [CancelEditTechGuard],
         resolve: { load: TechRecordViewResolver }
       },
       {
