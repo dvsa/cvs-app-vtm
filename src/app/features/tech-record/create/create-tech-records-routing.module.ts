@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
