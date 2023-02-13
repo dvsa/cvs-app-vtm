@@ -77,14 +77,14 @@
           <app-number-plate
             *ngIf="otherVrms && otherVrms.length && currentTechRecord.statusCode !== statuses.ARCHIVED; else historicSecondary"
             class="govuk-body govuk-!margin-bottom-0"
-            [vrm]="otherVrms[otherVrms.length - 1].vrm"
+            [vrm]="otherVrms[0].vrm"
             [isSecondary]="true"
           ></app-number-plate>
           <ng-template #historicSecondary>
             <app-number-plate
               *ngIf="currentTechRecord.historicSecondaryVrms && currentTechRecord.historicSecondaryVrms.length"
               class="govuk-body govuk-!margin-bottom-0"
-              [vrm]="currentTechRecord.historicSecondaryVrms[currentTechRecord.historicSecondaryVrms.length - 1]"
+              [vrm]="currentTechRecord.historicSecondaryVrms[0]"
               [isSecondary]="true"
             ></app-number-plate
           ></ng-template>
