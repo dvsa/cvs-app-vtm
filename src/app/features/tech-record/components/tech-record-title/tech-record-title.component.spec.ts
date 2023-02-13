@@ -62,8 +62,6 @@ describe('TechRecordTitleComponent', () => {
       store.overrideSelector(editableTechRecord, mockRecord);
       fixture.detectChanges();
 
-      console.log(component.vehicle.techRecord[0].statusCode);
-
       const vrmField = fixture.nativeElement.querySelector('app-number-plate');
       expect(vrmField.textContent).toContain('TEST VRM');
     });
