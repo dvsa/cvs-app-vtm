@@ -305,7 +305,7 @@ export class TechnicalRecordService {
       systemNumber: vehicleRecord.systemNumber,
       trailerId: techRecord.vehicleType === 'trl' ? vehicleRecord.trailerId : undefined,
       msUserDetails: { msOid: user.id, msUser: user.name },
-      techRecord: [recordCopy],
+      techRecord: recordCopy,
       reasonForCreation: reason,
       vtmUsername: user.name
     };
