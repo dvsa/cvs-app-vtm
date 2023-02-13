@@ -59,7 +59,6 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get mostRecentPlate(): Plates | undefined {
-    console.log(this.vehicleTechRecord.plates);
     if (this.vehicleTechRecord.plates === undefined) return undefined;
     const justDates = this.vehicleTechRecord.plates!.map(x => {
       if (x.plateIssueDate !== undefined) {
@@ -68,8 +67,6 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       return 0;
     });
     const maxDate = Math.max(...justDates);
-    console.log(maxDate);
-    console.log(justDates);
     return this.vehicleTechRecord.plates![justDates.indexOf(maxDate)] ?? undefined;
   }
 
