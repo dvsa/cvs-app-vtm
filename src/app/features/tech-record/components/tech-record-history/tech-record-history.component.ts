@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
   selector: 'app-tech-record-history[vehicle][currentTechRecord]',
@@ -14,7 +15,7 @@ export class TechRecordHistoryComponent {
   pageStart?: number;
   pageEnd?: number;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private techRecordService: TechnicalRecordService) {}
 
   get techRecords() {
     return this.vehicle.techRecord.slice(this.pageStart, this.pageEnd) ?? [];
@@ -47,5 +48,9 @@ export class TechRecordHistoryComponent {
       default:
         return `/tech-records/${this.vehicle.systemNumber}/`;
     }
+  }
+
+  updateTechRecordInEdit(index: number): void {
+    this.techRecordService.updateEditingTechRecord(this.vehicle.techRecord[index]);
   }
 }
