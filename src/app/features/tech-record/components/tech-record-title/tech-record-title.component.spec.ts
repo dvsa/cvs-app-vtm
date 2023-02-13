@@ -71,11 +71,11 @@ describe('TechRecordTitleComponent', () => {
       const mockVehicle = {
         vrms: [
           { vrm: 'TESTVRM6', isPrimary: true },
-          { vrm: 'TESTVRM', isPrimary: false },
-          { vrm: 'TESTVRM2', isPrimary: false },
-          { vrm: 'TESTVRM3', isPrimary: false },
+          { vrm: 'TESTVRM5', isPrimary: false },
           { vrm: 'TESTVRM4', isPrimary: false },
-          { vrm: 'TESTVRM5', isPrimary: false }
+          { vrm: 'TESTVRM3', isPrimary: false },
+          { vrm: 'TESTVRM2', isPrimary: false },
+          { vrm: 'TESTVRM', isPrimary: false }
         ],
         vin: 'testvin',
         systemNumber: 'testNumber',
