@@ -54,7 +54,10 @@ export const changeVehicleType = createAction(`${prefix} changeVehicleType`, pro
 
 export const createVehicle = createAction(`${prefix} createVehicle`, props<{ vehicleType: VehicleTypes }>());
 
-export const generatePlate = createAction(`${prefix} generatePlate`, props<{ techRecord: TechRecordModel; reason: string }>());
+export const generatePlate = createAction(
+  `${prefix} generatePlate`,
+  props<{ vehicleRecord: VehicleTechRecordModel; techRecord: TechRecordModel; reason: string }>()
+);
 export const generatePlateSuccess = createOutcomeAction('generatePlate', true);
 export const generatePlateFailure = createOutcomeAction('generatePlate');
 

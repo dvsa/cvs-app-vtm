@@ -294,10 +294,23 @@ export class TechnicalRecordService {
       });
   }
 
-  generatePlate(techRecord: TechRecordModel, reason: string) {
-    // TODO: Implement API call when ready
-    console.log('Ping.');
-    return of(true);
+  generatePlate(vehicleRecord: VehicleTechRecordModel, techRecord: TechRecordModel, reason: string, user: { id?: string; name?: string }) {
+    const recordCopy = cloneDeep(techRecord);
+
+    const url = `${environment.VTM_API_URI}/vehicles/documents/plate`;
+
+    const body = {
+      vin: vehicleRecord.vin,
+      primaryVrm: vehicleRecord.vrms.find(x => x.isPrimary),
+      systemNumber: vehicleRecord.systemNumber,
+      trailerId: techRecord.vehicleType === 'trl' ? vehicleRecord.trailerId : undefined,
+      msUserDetails: { msOid: user.id, msUser: user.name },
+      techRecord: [recordCopy],
+      reasonForCreation: reason,
+      vtmUsername: user.name
+    };
+
+    return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
   generateLetter(techRecord: TechRecordModel, letterType: string) {

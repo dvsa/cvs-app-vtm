@@ -119,7 +119,9 @@ describe('TechRecordGeneratePlateComponent', () => {
 
       component.handleSubmit('Provisional');
 
-      expect(dispatchSpy).toBeCalledWith(generatePlate({ techRecord: component.currentTechRecord!, reason: 'Provisional' }));
+      expect(dispatchSpy).toBeCalledWith(
+        generatePlate({ vehicleRecord: component.vehicle!, techRecord: component.currentTechRecord!, reason: 'Provisional' })
+      );
     });
   });
 });
