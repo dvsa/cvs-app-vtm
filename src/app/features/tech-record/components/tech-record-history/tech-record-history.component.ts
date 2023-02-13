@@ -51,6 +51,6 @@ export class TechRecordHistoryComponent {
   }
 
   updateTechRecordInEdit(index: number): void {
-    this.techRecordService.updateEditingTechRecord(this.vehicle.techRecord[index]);
+    this.techRecordService.updateEditingTechRecord(this.vehicle.techRecord[this.pageStart || 0 + index]);
   }
 }
