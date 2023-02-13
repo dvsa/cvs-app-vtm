@@ -46,6 +46,10 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     this._formSubscription.unsubscribe();
   }
 
+  hasPlates(): boolean {
+    return this.vehicleTechRecord.plates !== undefined && this.vehicleTechRecord.plates.length > 0;
+  }
+
   get template(): FormNode | undefined {
     return PlatesTemplate;
   }
