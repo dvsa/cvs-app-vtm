@@ -11,9 +11,9 @@ export class AxlesService {
     let newAxleSpacings = cloneDeep(axleSpacings ?? []);
 
     if (newAxles.length > newAxleSpacings.length + 1) {
-      newAxleSpacings = this.generateAxleSpacing(newAxles.length, axleSpacings);
+      newAxleSpacings = this.generateAxleSpacing(newAxles.length, newAxleSpacings);
     } else if (newAxles.length < newAxleSpacings.length + 1) {
-      newAxles = this.generateAxlesFromAxleSpacings(newAxleSpacings.length, axles);
+      newAxles = this.generateAxlesFromAxleSpacings(newAxleSpacings.length, newAxles);
     }
 
     return [newAxles, newAxleSpacings];
