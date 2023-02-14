@@ -18,7 +18,7 @@
             <app-button
               *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
               design="link"
-              id="change-vrm-link"
+              id="change-type-link"
               (clicked)="navigateTo('change-vehicle-type')"
               >Change</app-button
             >
@@ -47,7 +47,14 @@
       <div *ngSwitchDefault class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
         <dd id="current-vrm" class="govuk-summary-list__value">
-          <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
+          <app-number-plate
+            *ngIf="currentTechRecord.statusCode !== statuses.ARCHIVED && currentVrm; else historicPrimary"
+            [vrm]="currentVrm"
+          ></app-number-plate>
+
+          <ng-template #historicPrimary>
+            <app-number-plate *ngIf="currentTechRecord.historicPrimaryVrm" [vrm]="currentTechRecord.historicPrimaryVrm"></app-number-plate
+          ></ng-template>
         </dd>
         <ng-container *ngIf="isVrmEditable(currentTechRecord.statusCode, currentTechRecord.vehicleType, editableTechRecord.vehicleType)">
           <dd *appRoleRequired="roles.TechRecordAmend" class="govuk-summary-list__actions">
@@ -62,11 +69,19 @@
         <dt class="govuk-summary-list__key">Previous VRM</dt>
         <dd id="previous-vrm" class="govuk-summary-list__value">
           <app-number-plate
-            *ngIf="otherVrms && otherVrms.length"
+            *ngIf="otherVrms && otherVrms.length && currentTechRecord.statusCode !== statuses.ARCHIVED; else historicSecondary"
             class="govuk-body govuk-!margin-bottom-0"
             [vrm]="otherVrms[0].vrm"
             [isSecondary]="true"
           ></app-number-plate>
+          <ng-template #historicSecondary>
+            <app-number-plate
+              *ngIf="currentTechRecord.historicSecondaryVrms && currentTechRecord.historicSecondaryVrms.length"
+              class="govuk-body govuk-!margin-bottom-0"
+              [vrm]="currentTechRecord.historicSecondaryVrms[0]"
+              [isSecondary]="true"
+            ></app-number-plate
+          ></ng-template>
         </dd>
       </div>
     </ng-container>
