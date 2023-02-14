@@ -11,7 +11,7 @@ import cloneDeep from 'lodash.clonedeep';
 import { debounceTime, Subscription, takeWhile } from 'rxjs';
 
 @Component({
-  selector: 'app-plates',
+  selector: 'app-plates[vehicleTechRecord]',
   templateUrl: './plates.component.html',
   styleUrls: ['./plates.component.scss']
 })
@@ -24,15 +24,8 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
   public form!: CustomFormGroup;
   private _formSubscription = new Subscription();
-  public isError: boolean = false;
-  public errorMessage?: string;
 
-  constructor(
-    public dfs: DynamicFormService,
-    private documentRetrievalService: DocumentRetrievalService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  constructor(public dfs: DynamicFormService, private documentRetrievalService: DocumentRetrievalService) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(PlatesTemplate, this.vehicleTechRecord) as CustomFormGroup;
@@ -60,8 +53,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get mostRecentPlate(): Plates | undefined {
-    const platesList = cloneDeep(this.vehicleTechRecord.plates);
-    return platesList
+    return cloneDeep(this.vehicleTechRecord.plates)
       ?.sort((a, b) => (a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0))
       ?.pop();
   }

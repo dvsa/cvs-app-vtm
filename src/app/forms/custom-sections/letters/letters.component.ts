@@ -21,15 +21,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   public form!: CustomFormGroup;
   private _formSubscription = new Subscription();
-  public isError: boolean = false;
-  public errorMessage?: string;
 
-  constructor(
-    public dfs: DynamicFormService,
-    private documentRetrievalService: DocumentRetrievalService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  constructor(public dfs: DynamicFormService, private documentRetrievalService: DocumentRetrievalService) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(LettersTemplate, this.vehicleTechRecord) as CustomFormGroup;
@@ -56,18 +49,6 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     if (this.vehicleTechRecord.letters && this.vehicleTechRecord.letters?.length > 0) {
       return this.vehicleTechRecord.letters[this.vehicleTechRecord.letters.length - 1];
     }
-    return undefined;
-  }
-
-  get letterType(): string | undefined {
-    const letter = this.mostRecentLetter;
-    if (letter !== undefined) return letter.letterType ?? undefined;
-    return undefined;
-  }
-
-  get dateRequested(): Date | undefined {
-    const letter = this.mostRecentLetter;
-    if (letter !== undefined) return letter.letterDateRequested;
     return undefined;
   }
 

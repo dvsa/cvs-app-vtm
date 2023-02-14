@@ -74,7 +74,7 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   }
 
   hasPlates(techRecord: TechRecordModel) {
-    return techRecord.plates!.length > 0 ?? false;
+    return (techRecord.plates?.length ?? 0) > 0;
   }
 
   getActions(techRecord?: TechRecordModel): TechRecordActions {
