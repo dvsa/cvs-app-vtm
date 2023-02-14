@@ -25,7 +25,7 @@
         <dt class="govuk-summary-list__key">This vehicle does not have a plate.</dt>
       </div>
     </ng-container>
-    <div class="govuk-grid-row" *ngIf="vehicleTechRecord.statusCode === 'current'">
+    <div class="govuk-grid-row" *ngIf="vehicleTechRecord.statusCode === 'current' && !isEditing">
       <br />
       <div class="govuk-grid-column-full">
         <app-button id="generate-plate-link" type="link" routerLink="generate-plate" *appRoleRequired="roles.TechRecordAmend"
