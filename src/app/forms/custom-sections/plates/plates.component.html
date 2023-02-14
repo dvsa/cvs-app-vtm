@@ -3,15 +3,15 @@
     <ng-container *ngIf="hasPlates()">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Plate serial number</dt>
-        <dd id="test-cor" class="govuk-summary-list__value">{{ plateSerialNumber ?? '-' }}</dd>
+        <dd id="test-cor" class="govuk-summary-list__value">{{ plateSerialNumber | defaultNullOrEmpty }}</dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Plate issue date</dt>
-        <dd id="test-cor" class="govuk-summary-list__value">{{ plateIssueDate ?? '-' }}</dd>
+        <dd id="test-cor" class="govuk-summary-list__value">{{ plateIssueDate | date: 'dd/MM/yyyy HH:mm' }}</dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Plate issuer</dt>
-        <dd id="test-cor" class="govuk-summary-list__value">{{ plateIssuer ?? '-' }}</dd>
+        <dd id="test-cor" class="govuk-summary-list__value">{{ plateIssuer | defaultNullOrEmpty }}</dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Plate:</dt>
