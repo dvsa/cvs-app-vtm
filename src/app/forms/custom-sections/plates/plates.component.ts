@@ -107,8 +107,4 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
     throw new Error('Could not find plate.');
   }
-
-  generatePlate(): void {
-    this.router.navigate(['generate-plate'], { relativeTo: this.route });
-  }
 }

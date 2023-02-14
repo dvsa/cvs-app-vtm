@@ -74,8 +74,4 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   download() {
     console.log('Ping');
   }
-
-  generateLetter() {
-    this.router.navigate(['generate-letter'], { relativeTo: this.route });
-  }
 }

@@ -116,14 +116,6 @@ export const vehicleTechRecordReducer = createReducer(
   on(generateLetterSuccess, successArgs),
   on(generateLetterFailure, failureArgs),
 
-  on(generatePlate, defaultArgs),
-  on(generatePlateSuccess, successArgs),
-  on(generatePlateFailure, failureArgs),
-
-  on(generateLetter, defaultArgs),
-  on(generateLetterSuccess, successArgs),
-  on(generateLetterFailure, failureArgs),
-
   on(updateEditingTechRecord, (state, action) => ({ ...state, editingTechRecord: action.vehicleTechRecord })),
   on(updateEditingTechRecordCancel, state => ({ ...state, editingTechRecord: undefined })),
 

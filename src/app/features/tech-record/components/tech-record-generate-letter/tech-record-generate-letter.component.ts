@@ -19,7 +19,7 @@ import { FormGroup, Validators } from '@angular/forms';
   templateUrl: './tech-record-generate-letter.component.html',
   styleUrls: ['./tech-record-generate-letter.component.scss']
 })
-export class GenerateLetterComponent implements OnInit, OnChanges {
+export class GenerateLetterComponent implements OnInit {
   vehicle?: VehicleTechRecordModel;
   currentTechRecord?: TechRecordModel;
   form = new FormGroup({
@@ -56,10 +56,6 @@ export class GenerateLetterComponent implements OnInit, OnChanges {
     }
 
     this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
-  }
-
-  ngOnChanges(): void {
-    return;
   }
 
   navigateBack() {

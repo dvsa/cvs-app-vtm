@@ -62,16 +62,6 @@ describe('PlatesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('generatePlate', () => {
-    it('should navigate to generate-plate', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-
-      component.generatePlate();
-
-      expect(navigateSpy).toBeCalledWith(['generate-plate'], { relativeTo: route });
-    });
-  });
-
   describe('mostRecentPlate', () => {
     it('should fetch the plate if only 1 exists', () => {
       component.vehicleTechRecord = {

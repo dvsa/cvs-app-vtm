@@ -19,7 +19,7 @@ import { FormGroup, Validators } from '@angular/forms';
   templateUrl: './tech-record-generate-plate.component.html',
   styleUrls: ['./tech-record-generate-plate.component.scss']
 })
-export class GeneratePlateComponent implements OnInit, OnChanges {
+export class GeneratePlateComponent implements OnInit {
   vehicle?: VehicleTechRecordModel;
   currentTechRecord?: TechRecordModel;
   form = new FormGroup({
@@ -60,10 +60,6 @@ export class GeneratePlateComponent implements OnInit, OnChanges {
     }
 
     this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => this.navigateBack());
-  }
-
-  ngOnChanges(): void {
-    return;
   }
 
   navigateBack() {

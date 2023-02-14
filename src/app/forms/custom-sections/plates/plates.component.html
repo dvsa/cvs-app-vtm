@@ -28,7 +28,9 @@
     <div class="govuk-grid-row" *ngIf="vehicleTechRecord.statusCode === 'current'">
       <br />
       <div class="govuk-grid-column-full">
-        <app-button id="generate-plate-link" (clicked)="generatePlate()" *appRoleRequired="roles.TechRecordAmend">Generate plate</app-button>
+        <app-button id="generate-plate-link" type="link" routerLink="generate-plate" *appRoleRequired="roles.TechRecordAmend"
+          >Generate plate</app-button
+        >
       </div>
     </div>
   </dl>
