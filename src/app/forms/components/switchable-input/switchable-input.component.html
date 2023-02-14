@@ -12,8 +12,17 @@
     <ng-template *ngIf="prefix" appPrefix>{{ prefix }}</ng-template>
   </app-autocomplete>
 
-  <app-checkbox-group
+  <app-checkbox
     *ngSwitchCase="types.CHECKBOX"
+    [formControlName]="name"
+    [name]="name"
+    [label]="label"
+    [customId]="customId"
+    [noBottomMargin]="true"
+  ></app-checkbox>
+
+  <app-checkbox-group
+    *ngSwitchCase="types.CHECKBOXGROUP"
     [formControlName]="name"
     [name]="name"
     [label]="label"

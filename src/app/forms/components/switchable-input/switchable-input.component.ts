@@ -15,6 +15,7 @@ export class SwitchableInputComponent implements OnInit {
 
   @Input() isEditing = true;
 
+  @Input() customId?: string;
   @Input() idExtension?: number;
   @Input() label?: string;
   @Input() prefix?: string;
@@ -35,7 +36,7 @@ export class SwitchableInputComponent implements OnInit {
   get requiresOptions(): boolean {
     return (
       this.type === this.types.AUTOCOMPLETE ||
-      this.type === this.types.CHECKBOX ||
+      this.type === this.types.CHECKBOXGROUP ||
       this.type === this.types.DROPDOWN ||
       this.type === this.types.RADIO
     );

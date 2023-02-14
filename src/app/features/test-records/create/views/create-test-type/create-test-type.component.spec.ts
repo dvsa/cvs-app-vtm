@@ -39,6 +39,9 @@ describe('CreateTestTypeComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
+
+    jest.spyOn(window, 'alert').mockImplementation();
+
     fixture.detectChanges();
   });
 
@@ -77,7 +80,7 @@ describe('CreateTestTypeComponent', () => {
         .spyOn(techRecordService, 'selectedVehicleTechRecord$', 'get')
         .mockReturnValue(of({ vin: 'foo' } as VehicleTechRecordModel));
       const mockTechRecordSpy = jest.spyOn(techRecordService, 'viewableTechRecord$').mockReturnValue(of(record as TechRecordModel));
-      const alertSpy = jest.spyOn(window, 'alert');
+      const alertSpy = jest.spyOn(window, 'alert').mockImplementation();
       const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
       component.ngAfterContentInit();
       expect(mockVehicleRecordSpy).toHaveBeenCalledTimes(1);

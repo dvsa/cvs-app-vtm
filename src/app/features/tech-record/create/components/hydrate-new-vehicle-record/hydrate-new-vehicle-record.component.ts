@@ -8,7 +8,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { createVehicleRecord, createVehicleRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, take, tap } from 'rxjs';
-import { TechRecordSummaryComponent } from '../../../tech-record/components/tech-record-summary/tech-record-summary.component';
+import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
   selector: 'app-hydrate-new-vehicle-record',

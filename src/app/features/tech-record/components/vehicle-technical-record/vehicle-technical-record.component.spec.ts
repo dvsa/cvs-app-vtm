@@ -1,30 +1,30 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ApiModule as TestResultsApiModule } from '@api/test-results';
-import { ReasonForEditing, StatusCodes } from '@models/vehicle-tech-record.model';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/.';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
-import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
-import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
+import { ApiModule } from '@api/test-results';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
+import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { ReasonForEditing, StatusCodes } from '@models/vehicle-tech-record.model';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
+import { SharedModule } from '@shared/shared.module';
+import { initialAppState, State } from '@store/index';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
 import { of } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../edit-tech-record-button/edit-tech-record-button.component';
-import { RouterModule } from '@angular/router';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { APP_BASE_HREF } from '@angular/common';
-import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
+import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
-import { Component } from '@angular/core';
+import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
+import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -39,14 +39,14 @@ describe('VehicleTechnicalRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ApiModule,
         DynamicFormsModule,
         EffectsModule.forRoot(),
         HttpClientTestingModule,
         RouterModule.forRoot([]),
         RouterTestingModule,
         SharedModule,
-        StoreModule.forRoot({}),
-        TestResultsApiModule
+        StoreModule.forRoot({})
       ],
       declarations: [
         EditTechRecordButtonComponent,
@@ -54,6 +54,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         TechRecordSummaryComponent,
         TechRecordTitleComponent,
         TechRecordSummaryStubComponent,
+        TestRecordSummaryComponent,
         VehicleTechnicalRecordComponent
       ],
       providers: [

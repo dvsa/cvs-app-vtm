@@ -8,11 +8,12 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
-import { mergeMap, map, catchError, of, withLatestFrom, switchMap, concatMap, tap } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import {
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
+  changeVehicleType,
   createProvisionalTechRecord,
   createProvisionalTechRecordFailure,
   createProvisionalTechRecordSuccess,
@@ -20,7 +21,6 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
-  changeVehicleType,
   getByAll,
   getByAllFailure,
   getByAllSuccess,

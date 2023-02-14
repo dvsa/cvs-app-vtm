@@ -37,6 +37,7 @@ import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuggestiveInputComponent } from './components/suggestive-input/suggestive-input.component';
+import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { LettersComponent } from './custom-sections/letters/letters.component';
 import { PlatesComponent } from './custom-sections/plates/plates.component';
 
@@ -78,7 +79,8 @@ import { PlatesComponent } from './custom-sections/plates/plates.component';
     TyresComponent,
     PsvBrakesComponent,
     PrefixDirective,
-    SuggestiveInputComponent
+    SuggestiveInputComponent,
+    CheckboxComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -114,7 +116,8 @@ import { PlatesComponent } from './custom-sections/plates/plates.component';
     BodyComponent,
     PsvBrakesComponent,
     PrefixDirective,
-    SuggestiveInputComponent
+    SuggestiveInputComponent,
+    CheckboxComponent
   ]
 })
 export class DynamicFormsModule {}

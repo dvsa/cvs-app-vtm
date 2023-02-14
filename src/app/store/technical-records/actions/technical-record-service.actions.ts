@@ -1,4 +1,5 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { PsvMake } from '@models/reference-data.model';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 
@@ -64,6 +65,13 @@ export const generatePlateFailure = createOutcomeAction('generatePlate');
 export const generateLetter = createAction(`${prefix} generateLetter`, props<{ techRecord: TechRecordModel; letterType: string }>());
 export const generateLetterSuccess = createOutcomeAction('generateLetter', true);
 export const generateLetterFailure = createOutcomeAction('generateLetter');
+
+export const updateBrakeForces = createAction(`${prefix} updateBrakesForces`, props<{ grossLadenWeight?: number; grossKerbWeight?: number }>());
+
+export const updateBody = createAction(`${prefix} updatebody`, props<{ psvMake: PsvMake }>());
+
+export const addAxle = createAction(`${prefix} addAxle`);
+export const removeAxle = createAction(`${prefix} removeAxle`, props<{ index: number }>());
 
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';
