@@ -20,7 +20,7 @@ import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes
 import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
 import { WeightsComponent } from '@forms/custom-sections/weights/weights.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { FormNode, CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
+import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
@@ -97,11 +97,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this.destroy$)
       )
-      .subscribe(techRecord => (this.techRecordCalculated = techRecord));
-
-    this.referenceDataService.removeTyreSearch();
-    this.sectionTemplates = this.vehicleTemplates;
-    this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
+      .subscribe(techRecord => {
+        this.techRecordCalculated = techRecord;
+        this.referenceDataService.removeTyreSearch();
+        this.sectionTemplates = this.vehicleTemplates;
+        this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
+      });
   }
 
   ngOnDestroy(): void {
