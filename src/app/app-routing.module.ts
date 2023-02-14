@@ -7,6 +7,7 @@ import { Roles } from '@models/roles.enum';
 import { TechRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from '@core/components/server-error/server-error.component';
+import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 
 const routes: Routes = [
   {
@@ -17,12 +18,14 @@ const routes: Routes = [
         path: '',
         data: { title: 'Home', roles: Roles.TechRecordView },
         canActivate: [MsalGuard, RoleGuard],
+        canDeactivate: [CancelEditTechGuard],
         loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule)
       },
       {
         path: 'search',
         data: { title: 'Technical record search', roles: Roles.TechRecordView },
         canActivate: [MsalGuard, RoleGuard],
+        canDeactivate: [CancelEditTechGuard],
         loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule)
       },
       {

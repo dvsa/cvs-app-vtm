@@ -21,9 +21,16 @@
         <td class="govuk-table__cell word-break" [id]="techRecord.statusCode + '-created-by-' + i">{{ techRecord.createdByName }}</td>
         <td class="govuk-table__cell" [id]="techRecord.statusCode + '-created-at-' + i">{{ techRecord.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
         <td class="govuk-table__cell">
-          <ng-container *ngIf="techRecord.createdAt !== currentTechRecord.createdAt">
-            <app-button id="view-test-{{ vehicle.vin }}" type="link" design="link" [routerLink]="[summaryLinkUrl(techRecord)]"> View </app-button>
-          </ng-container>
+          <app-button
+            *ngIf="techRecord.createdAt !== currentTechRecord.createdAt"
+            id="view-test-{{ vehicle.vin }}"
+            type="link"
+            design="link"
+            [routerLink]="[summaryLinkUrl(techRecord)]"
+            (click)="updateTechRecordInEdit(i)"
+          >
+            View
+          </app-button>
         </td>
       </tr>
     </tbody>
