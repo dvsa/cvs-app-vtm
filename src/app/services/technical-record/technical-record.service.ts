@@ -299,7 +299,7 @@ export class TechnicalRecordService {
 
     const body = {
       vin: vehicleRecord.vin,
-      primaryVrm: vehicleRecord.vrms.find(x => x.isPrimary)!.vrm,
+      primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)!.vrm : undefined,
       systemNumber: vehicleRecord.systemNumber,
       trailerId: techRecord.vehicleType === 'trl' ? vehicleRecord.trailerId : undefined,
       msUserDetails: { msOid: user.id, msUser: user.name },
