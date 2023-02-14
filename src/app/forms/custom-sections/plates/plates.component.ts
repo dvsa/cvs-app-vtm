@@ -74,26 +74,6 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     return this.vehicleTechRecord.plates![justDates.indexOf(maxDate)] ?? undefined;
   }
 
-  get plateIssueDate(): Date | undefined {
-    if (this.mostRecentPlate !== undefined) return this.mostRecentPlate?.plateIssueDate;
-    return undefined;
-  }
-
-  get plateIssuer(): string | undefined {
-    if (this.mostRecentPlate !== undefined) return this.mostRecentPlate.plateIssuer;
-    return undefined;
-  }
-
-  get plateReasonForIssue(): string | undefined {
-    if (this.mostRecentPlate !== undefined) return this.mostRecentPlate?.plateReasonForIssue;
-    return undefined;
-  }
-
-  get plateSerialNumber(): string | undefined {
-    if (this.mostRecentPlate !== undefined) return this.mostRecentPlate?.plateSerialNumber;
-    return undefined;
-  }
-
   download() {
     const mostRecentPlate = this.mostRecentPlate;
     if (mostRecentPlate !== undefined) {

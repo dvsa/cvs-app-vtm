@@ -1,16 +1,10 @@
 <div *ngIf="vehicle && currentTechRecord?.vehicleType === 'trl'">
   <form [formGroup]="form">
-    <app-radio-group
-      #letterType
-      [label]="form.meta.children![0].label"
-      [formControlName]="form.meta.children![0].name"
-      [options]="reasons"
-      name="generate-letter-reason"
-    ></app-radio-group>
+    <app-radio-group #letterType formControlName="letterType" [options]="reasons"></app-radio-group>
 
     <app-button-group>
       <app-button id="submit-letter-form" (clicked)="handleSubmit(letterType.value)">Save</app-button>
-      <app-button id="back-from-generate-letter" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+      <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
     </app-button-group>
   </form>
 </div>

@@ -2,7 +2,7 @@ import { Component, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNode, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -12,6 +12,7 @@ import { take } from 'rxjs';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { Actions, ofType } from '@ngrx/effects';
 import { Letters } from '@api/vehicle/model/letters';
+import { FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-generate-letter',
@@ -26,22 +27,12 @@ export class GenerateLetterComponent implements OnInit, OnChanges {
 
   vehicle?: VehicleTechRecordModel;
   currentTechRecord?: TechRecordModel;
-  form: CustomFormGroup;
+  form = new FormGroup({
+    letterType: new CustomFormControl({ name: 'letterType', label: 'Type of letter to generate', type: FormNodeTypes.CONTROL }, '', [
+      Validators.required
+    ])
+  });
   width: FormNodeWidth = FormNodeWidth.L;
-
-  template: FormNode = {
-    name: 'criteria',
-    type: FormNodeTypes.GROUP,
-    children: [
-      {
-        name: 'letterType',
-        label: 'Type of letter to generate',
-        value: '',
-        type: FormNodeTypes.CONTROL,
-        validators: [{ name: ValidatorNames.Required }]
-      }
-    ]
-  };
 
   constructor(
     private actions$: Actions,
@@ -55,8 +46,6 @@ export class GenerateLetterComponent implements OnInit, OnChanges {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
     this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.currentTechRecord = techRecord));
-
-    this.form = this.dfs.createForm(this.template) as CustomFormGroup;
   }
 
   ngOnInit(): void {
@@ -64,13 +53,11 @@ export class GenerateLetterComponent implements OnInit, OnChanges {
       this.navigateBack();
     }
 
-    this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => {
-      this.navigateBack();
-    });
+    this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 
   ngOnChanges(): void {
-    this.globalErrorService.clearErrors();
+    return;
   }
 
   navigateBack() {

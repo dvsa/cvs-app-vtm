@@ -1,12 +1,6 @@
 <div *ngIf="vehicle && (currentTechRecord?.vehicleType === 'hgv' || currentTechRecord?.vehicleType === 'trl')">
   <form [formGroup]="form">
-    <app-radio-group
-      #plateReasonForGenerating
-      [label]="form.meta.children![0].label"
-      [formControlName]="form.meta.children![0].name"
-      [options]="reasons"
-      name="generate-plate-reason"
-    ></app-radio-group>
+    <app-radio-group #plateReasonForGenerating formControlName="plateReasonForGenerating" [options]="reasons"></app-radio-group>
 
     <app-button-group>
       <app-button id="submit-plate-form" (clicked)="handleSubmit(plateReasonForGenerating.value)">Save</app-button>
