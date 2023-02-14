@@ -7,6 +7,7 @@ import { CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dy
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
 import { Plates, TechRecordModel } from '@models/vehicle-tech-record.model';
+import cloneDeep from 'lodash.clonedeep';
 import { debounceTime, Subscription, takeWhile } from 'rxjs';
 
 @Component({
@@ -34,7 +35,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.dfs.createForm(PlatesTemplate, this.vehicleTechRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
@@ -50,10 +51,6 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     return this.vehicleTechRecord.plates !== undefined && this.vehicleTechRecord.plates.length > 0;
   }
 
-  get template(): FormNode | undefined {
-    return PlatesTemplate;
-  }
-
   get types(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
   }
@@ -63,20 +60,15 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get mostRecentPlate(): Plates | undefined {
-    if (this.vehicleTechRecord.plates === undefined) return undefined;
-    const justDates = this.vehicleTechRecord.plates!.map(x => {
-      if (x.plateIssueDate !== undefined) {
-        return new Date(x.plateIssueDate).getTime();
-      }
-      return 0;
-    });
-    const maxDate = Math.max(...justDates);
-    return this.vehicleTechRecord.plates![justDates.indexOf(maxDate)] ?? undefined;
+    const platesList = cloneDeep(this.vehicleTechRecord.plates);
+    return platesList
+      ?.sort((a, b) => (a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0))
+      ?.pop();
   }
 
   download() {
     const mostRecentPlate = this.mostRecentPlate;
-    if (mostRecentPlate !== undefined) {
+    if (mostRecentPlate) {
       return this.documentRetrievalService
         .testPlateGet(`plate_${mostRecentPlate.plateSerialNumber}`, 'events', true)
         .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))

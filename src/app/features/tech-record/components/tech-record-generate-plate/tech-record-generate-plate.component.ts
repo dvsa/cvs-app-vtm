@@ -20,15 +20,6 @@ import { FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./tech-record-generate-plate.component.scss']
 })
 export class GeneratePlateComponent implements OnInit, OnChanges {
-  reasons: Array<FormNodeOption<string>> = [
-    { label: 'Free replacement', value: PlatesInner.PlateReasonForIssueEnum.FreeReplacement },
-    { label: 'Replacement', value: PlatesInner.PlateReasonForIssueEnum.Replacement },
-    { label: 'Destroyed', value: PlatesInner.PlateReasonForIssueEnum.Destroyed },
-    { label: 'Provisional', value: PlatesInner.PlateReasonForIssueEnum.Provisional },
-    { label: 'Original', value: PlatesInner.PlateReasonForIssueEnum.Original },
-    { label: 'Manual', value: PlatesInner.PlateReasonForIssueEnum.Manual }
-  ];
-
   vehicle?: VehicleTechRecordModel;
   currentTechRecord?: TechRecordModel;
   form = new FormGroup({
@@ -50,6 +41,17 @@ export class GeneratePlateComponent implements OnInit, OnChanges {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
     this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.currentTechRecord = techRecord));
+  }
+
+  get reasons(): Array<FormNodeOption<string>> {
+    return [
+      { label: 'Free replacement', value: PlatesInner.PlateReasonForIssueEnum.FreeReplacement },
+      { label: 'Replacement', value: PlatesInner.PlateReasonForIssueEnum.Replacement },
+      { label: 'Destroyed', value: PlatesInner.PlateReasonForIssueEnum.Destroyed },
+      { label: 'Provisional', value: PlatesInner.PlateReasonForIssueEnum.Provisional },
+      { label: 'Original', value: PlatesInner.PlateReasonForIssueEnum.Original },
+      { label: 'Manual', value: PlatesInner.PlateReasonForIssueEnum.Manual }
+    ];
   }
 
   ngOnInit(): void {

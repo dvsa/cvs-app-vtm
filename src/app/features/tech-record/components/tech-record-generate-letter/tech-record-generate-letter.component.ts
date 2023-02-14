@@ -20,11 +20,6 @@ import { FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./tech-record-generate-letter.component.scss']
 })
 export class GenerateLetterComponent implements OnInit, OnChanges {
-  reasons: Array<FormNodeOption<string>> = [
-    { label: 'Authorised', value: Letters.LetterIssueTypeEnum.Authorised },
-    { label: 'Rejected', value: Letters.LetterIssueTypeEnum.Rejected }
-  ];
-
   vehicle?: VehicleTechRecordModel;
   currentTechRecord?: TechRecordModel;
   form = new FormGroup({
@@ -46,6 +41,13 @@ export class GenerateLetterComponent implements OnInit, OnChanges {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
     this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.currentTechRecord = techRecord));
+  }
+
+  get reasons(): Array<FormNodeOption<string>> {
+    return [
+      { label: 'Authorised', value: Letters.LetterIssueTypeEnum.Authorised },
+      { label: 'Rejected', value: Letters.LetterIssueTypeEnum.Rejected }
+    ];
   }
 
   ngOnInit(): void {

@@ -32,7 +32,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.dfs.createForm(LettersTemplate, this.vehicleTechRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
@@ -42,10 +42,6 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     this._formSubscription.unsubscribe();
-  }
-
-  get template(): FormNode | undefined {
-    return LettersTemplate;
   }
 
   get types(): typeof FormNodeEditTypes {
