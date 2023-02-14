@@ -60,43 +60,43 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
   download() {
     const mostRecentPlate = this.mostRecentPlate;
-    if (mostRecentPlate) {
-      return this.documentRetrievalService
-        .testPlateGet(`plate_${mostRecentPlate.plateSerialNumber}`, 'events', true)
-        .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
-        .subscribe({
-          next: res => {
-            switch (res.type) {
-              case HttpEventType.DownloadProgress:
-                console.log(res);
-                break;
-              case HttpEventType.Response:
-                const byteArray = new Uint8Array(
-                  window
-                    .atob(res.body)
-                    .split('')
-                    .map(char => char.charCodeAt(0))
-                );
-
-                const file = new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });
-                const url = window.URL.createObjectURL(file);
-                const link: HTMLAnchorElement | undefined = document.createElement('a');
-                link.href = url;
-                link.target = '_blank';
-                link.download = `plate_${mostRecentPlate.plateSerialNumber}.pdf`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                this.isSuccess.emit(true);
-            }
-          },
-          error: () => {
-            this.isSuccess.emit(false);
-          }
-        });
+    if (!mostRecentPlate) {
+      throw new Error('Could not find plate.');
     }
 
-    throw new Error('Could not find plate.');
+    return this.documentRetrievalService
+      .testPlateGet(`plate_${mostRecentPlate.plateSerialNumber}`, 'events', true)
+      .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
+      .subscribe({
+        next: res => {
+          switch (res.type) {
+            case HttpEventType.DownloadProgress:
+              console.log(res);
+              break;
+            case HttpEventType.Response:
+              const byteArray = new Uint8Array(
+                window
+                  .atob(res.body)
+                  .split('')
+                  .map(char => char.charCodeAt(0))
+              );
+
+              const file = new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });
+              const url = window.URL.createObjectURL(file);
+              const link: HTMLAnchorElement | undefined = document.createElement('a');
+              link.href = url;
+              link.target = '_blank';
+              link.download = `plate_${mostRecentPlate.plateSerialNumber}.pdf`;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+
+              this.isSuccess.emit(true);
+          }
+        },
+        error: () => {
+          this.isSuccess.emit(false);
+        }
+      });
   }
 }

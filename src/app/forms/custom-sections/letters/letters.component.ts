@@ -46,10 +46,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get mostRecentLetter(): Letters | undefined {
-    if (this.vehicleTechRecord.letters && this.vehicleTechRecord.letters?.length > 0) {
-      return this.vehicleTechRecord.letters[this.vehicleTechRecord.letters.length - 1];
-    }
-    return undefined;
+    return this.vehicleTechRecord.letters && this.vehicleTechRecord.letters[this.vehicleTechRecord.letters.length - 1];
   }
 
   download() {
