@@ -49,7 +49,7 @@ import {
   generateLetterSuccess,
   generateLetterFailure
 } from '../actions/technical-record-service.actions';
-import { editableTechRecord } from '../selectors/technical-record-service.selectors';
+import { editableTechRecord, selectVehicleTechnicalRecordsBySystemNumber } from '../selectors/technical-record-service.selectors';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
@@ -194,10 +194,15 @@ export class TechnicalRecordServiceEffects {
   generatePlate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generatePlate),
-      withLatestFrom(this.store.pipe(select(editableTechRecord)), this.userService.name$, this.userService.id$),
-      switchMap(([{ vehicleRecord, techRecord, reason }, record, name, id]) =>
-        this.technicalRecordService.generatePlate(vehicleRecord, techRecord, reason, { name, id }).pipe(
-          map(value => generatePlateSuccess({ outcome: value })),
+      withLatestFrom(
+        this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
+        this.store.select(editableTechRecord),
+        this.userService.name$,
+        this.userService.id$
+      ),
+      switchMap(([{ reason }, vehicle, techRecord, name, id]) =>
+        this.technicalRecordService.generatePlate(vehicle!, techRecord!, reason, { name, id }).pipe(
+          map(() => generatePlateSuccess()),
           catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
         )
       )
