@@ -1,6 +1,6 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { PsvMake } from '@models/reference-data.model';
-import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 
 const prefix = '[Technical Record Service]';
@@ -54,6 +54,17 @@ export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditi
 export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ vehicleType: VehicleTypes }>());
 
 export const createVehicle = createAction(`${prefix} createVehicle`, props<{ vehicleType: VehicleTypes }>());
+
+export const generatePlate = createAction(
+  `${prefix} generatePlate`,
+  props<{ vehicleRecord: VehicleTechRecordModel; techRecord: TechRecordModel; reason: string }>()
+);
+export const generatePlateSuccess = createOutcomeAction('generatePlate', true);
+export const generatePlateFailure = createOutcomeAction('generatePlate');
+
+export const generateLetter = createAction(`${prefix} generateLetter`, props<{ techRecord: TechRecordModel; letterType: string }>());
+export const generateLetterSuccess = createOutcomeAction('generateLetter', true);
+export const generateLetterFailure = createOutcomeAction('generateLetter');
 
 export const updateBrakeForces = createAction(`${prefix} updateBrakesForces`, props<{ grossLadenWeight?: number; grossKerbWeight?: number }>());
 

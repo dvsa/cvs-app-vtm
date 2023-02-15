@@ -5,6 +5,7 @@ import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval
 import { Audit } from '@forms/templates/general/audit.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
+import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { ManufacturerTemplate } from '@forms/templates/general/manufacturer.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
@@ -80,15 +81,16 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
       /*  4 */ HgvAndTrlTypeApprovalTemplate,
       /*  5 */ ApplicantDetails,
       /*  6 */ DocumentsTemplate,
-      /*  7 */ HgvAndTrlBodyTemplate,
-      /*  8 */ TrlWeight,
-      /*  9 */ tyresTemplateTrl,
-      /* 10 */ TrlBrakesTemplate,
-      /* 11 */ TrlPurchasers,
-      /* 12 */ TrlDimensionsTemplate,
-      /* 13 */ PlatesTemplate,
-      /* 14 */ TrlAuthIntoServiceTemplate,
-      /* 15 */ ManufacturerTemplate
+      /*  7 */ LettersTemplate,
+      /*  8 */ HgvAndTrlBodyTemplate,
+      /*  9 */ TrlWeight,
+      /* 10 */ tyresTemplateTrl,
+      /* 11 */ TrlBrakesTemplate,
+      /* 12 */ TrlPurchasers,
+      /* 13 */ TrlDimensionsTemplate,
+      /* 14 */ PlatesTemplate,
+      /* 15 */ TrlAuthIntoServiceTemplate,
+      /* 16 */ ManufacturerTemplate
     ]
   ],
   [

@@ -331,6 +331,7 @@ export interface TechRecordModel {
   couplingCenterToRearTrlMin?: number;
   couplingCenterToRearTrlMax?: number;
   plates?: Plates[];
+  letters?: Letters[];
   dda?: DDA;
   updateType?: string;
 
@@ -375,6 +376,17 @@ export enum PlateReasonForIssue {
   PROVISIONAL = 'Provisional',
   ORIGINAL = 'Original',
   MANUAL = 'Manual'
+}
+
+export interface Letters {
+  letterType?: LetterType;
+  letterDateRequested?: Date;
+  letterParagraphId?: number;
+}
+
+export enum LetterType {
+  ACCEPTED = 'Trailer authorization',
+  REJECTED = 'Trailer rejection'
 }
 
 export interface ApplicantDetails {

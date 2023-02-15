@@ -13,6 +13,8 @@ import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-
 import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { TechRecordComponent } from './tech-record.component';
 import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
+import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
+import { GenerateLetterComponent } from './components/tech-record-generate-letter/tech-record-generate-letter.component';
 
 const routes: Routes = [
   {
@@ -47,6 +49,18 @@ const routes: Routes = [
     path: 'change-vrm',
     component: AmendVrmComponent,
     data: { title: 'Change vrm', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: 'generate-plate',
+    component: GeneratePlateComponent,
+    data: { title: 'Generate plate', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: 'generate-letter',
+    component: GenerateLetterComponent,
+    data: { title: 'Generate letter', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard]
   },
   {

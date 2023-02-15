@@ -41,7 +41,13 @@ import {
   getByVrmSuccess,
   updateTechRecords,
   updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecordsSuccess,
+  generatePlate,
+  generatePlateSuccess,
+  generatePlateFailure,
+  generateLetter,
+  generateLetterSuccess,
+  generateLetterFailure
 } from '../actions/technical-record-service.actions';
 import { editableTechRecord } from '../selectors/technical-record-service.selectors';
 
@@ -183,6 +189,32 @@ export class TechnicalRecordServiceEffects {
         tap(mergedForms => this.technicalRecordService.updateEditingTechRecord(mergedForms))
       ),
     { dispatch: false }
+  );
+
+  generatePlate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generatePlate),
+      withLatestFrom(this.store.pipe(select(editableTechRecord)), this.userService.name$, this.userService.id$),
+      switchMap(([{ vehicleRecord, techRecord, reason }, record, name, id]) =>
+        this.technicalRecordService.generatePlate(vehicleRecord, techRecord, reason, { name, id }).pipe(
+          map(value => generatePlateSuccess({ outcome: value })),
+          catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
+        )
+      )
+    )
+  );
+
+  generateLetter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateLetter),
+      withLatestFrom(this.store.pipe(select(editableTechRecord))),
+      switchMap(([{ techRecord, letterType }, record]) =>
+        this.technicalRecordService.generateLetter(techRecord, letterType).pipe(
+          map(value => generateLetterSuccess({ outcome: value })),
+          catchError(error => of(generateLetterFailure({ error: this.getTechRecordErrorMessage(error, 'generateLetter') })))
+        )
+      )
+    )
   );
 
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {

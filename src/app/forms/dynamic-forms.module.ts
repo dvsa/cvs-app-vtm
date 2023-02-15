@@ -38,6 +38,8 @@ import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.comp
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuggestiveInputComponent } from './components/suggestive-input/suggestive-input.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { LettersComponent } from './custom-sections/letters/letters.component';
+import { PlatesComponent } from './custom-sections/plates/plates.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,8 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
     FocusNextDirective,
     TruncatePipe,
     WeightsComponent,
+    LettersComponent,
+    PlatesComponent,
     DimensionsComponent,
     TrlBrakesComponent,
     ReadOnlyComponent,
@@ -97,6 +101,8 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
     FieldErrorMessageComponent,
     DefectSelectComponent,
     WeightsComponent,
+    LettersComponent,
+    PlatesComponent,
     TyresComponent,
     DimensionsComponent,
     TrlBrakesComponent,

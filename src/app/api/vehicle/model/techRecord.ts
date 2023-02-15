@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Letters } from './letters';
 import { AdrDetails } from './adrDetails';
 import { ApplicantDetailsProperties } from './applicantDetailsProperties';
 import { AuthIntoService } from './authIntoService';
@@ -112,6 +113,7 @@ export interface TechRecord {
     manufacturerDetails?: ManufacturerDetails;
     microfilm?: Microfilm;
     plates?: Plates;
+    letters?: Letters;
     /**
      * Used only for PSV
      */
