@@ -8,7 +8,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Letters } from './letters';
 import { AdrDetails } from './adrDetails';
 import { ApplicantDetailsProperties } from './applicantDetailsProperties';
 import { AuthIntoService } from './authIntoService';
@@ -24,7 +23,7 @@ import { TechRecordBodyType } from './techRecordBodyType';
 import { TechRecordDimensions } from './techRecordDimensions';
 import { TechRecordVehicleClass } from './techRecordVehicleClass';
 
-export interface TechRecord { 
+export interface TechRecord {
     /**
      * Defines the level of completeness for a tech record. If it is set to \"skeleton\" then it means the vehicle does not meet the minimum requirements to be tested. If it is \"testable\" it means the vehicle meets the minimum requirements to be tested but is not complete from a business perspective. If \"complete\" then the vehicle it is complete form a business perspective also.
      */
@@ -112,7 +111,6 @@ export interface TechRecord {
     manufacturerDetails?: ManufacturerDetails;
     microfilm?: Microfilm;
     plates?: Plates;
-    letters?: Letters;
     /**
      * Used only for PSV
      */

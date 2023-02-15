@@ -1,18 +1,17 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LettersOfAuth } from '@api/vehicle';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNode, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { generateLetter, generateLetterSuccess, generatePlate, generatePlateSuccess } from '@store/technical-records';
+import { generateLetter, generateLetterSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { take } from 'rxjs';
-import { ValidatorNames } from '@forms/models/validators.enum';
-import { Actions, ofType } from '@ngrx/effects';
-import { Letters } from '@api/vehicle/model/letters';
-import { FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-generate-letter',
@@ -45,8 +44,8 @@ export class GenerateLetterComponent implements OnInit {
 
   get reasons(): Array<FormNodeOption<string>> {
     return [
-      { label: 'Authorised', value: Letters.LetterIssueTypeEnum.Authorised },
-      { label: 'Rejected', value: Letters.LetterIssueTypeEnum.Rejected }
+      { label: 'Authorised', value: LettersOfAuth.LetterTypeEnum.Authorization },
+      { label: 'Rejected', value: LettersOfAuth.LetterTypeEnum.Rejection }
     ];
   }
 

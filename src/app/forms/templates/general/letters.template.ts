@@ -1,5 +1,4 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { LETTER_TYPES } from './letter-types';
 
 export const LettersTemplate: FormNode = {
@@ -8,7 +7,7 @@ export const LettersTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: '0',
+      name: 'lettersOfAuth',
       type: FormNodeTypes.GROUP,
       children: [
         {
@@ -23,8 +22,8 @@ export const LettersTemplate: FormNode = {
           type: FormNodeTypes.CONTROL
         },
         {
-          name: 'letterParagraphID',
-          label: 'Paragraph ID',
+          name: 'letterContents',
+          label: 'Content',
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.HIDDEN
         }
