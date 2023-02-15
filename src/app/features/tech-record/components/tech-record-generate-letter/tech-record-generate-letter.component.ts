@@ -44,7 +44,7 @@ export class GenerateLetterComponent implements OnInit {
 
   get reasons(): Array<FormNodeOption<string>> {
     return [
-      { label: 'Authorized', value: LettersOfAuth.LetterTypeEnum.Authorization },
+      { label: 'Authorised', value: LettersOfAuth.LetterTypeEnum.Authorization },
       { label: 'Rejected', value: LettersOfAuth.LetterTypeEnum.Rejection }
     ];
   }
