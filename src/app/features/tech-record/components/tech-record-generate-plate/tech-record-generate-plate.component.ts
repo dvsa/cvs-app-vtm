@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { CustomFormControl, FormNodeTypes, FormNodeWidth, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { generatePlateSuccess, generatePlate } from '@store/technical-records';
+import { generatePlateSuccess, generatePlate, editableTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { take } from 'rxjs';
 
@@ -26,7 +26,11 @@ export class GeneratePlateComponent {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>
-  ) {}
+  ) {
+    this.store.select(editableTechRecord).subscribe(record => {
+      if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
+    });
+  }
 
   get width(): FormNodeWidth {
     return FormNodeWidth.L;
