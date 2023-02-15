@@ -90,15 +90,13 @@ describe('TechRecordGeneratePlateComponent', () => {
     });
 
     it('should navigate back on generatePlateSuccess', fakeAsync(() => {
-      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.HGV);
-      component.currentTechRecord = expectedVehicle.techRecord[0];
+      component.form.get('reason')?.setValue('Provisional');
 
-      component.ngOnInit();
+      const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();
 
-      const navigateBackSpy = jest.spyOn(component, 'navigateBack');
-      jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+      component.handleSubmit();
 
-      actions$.next(generatePlateSuccess({}));
+      actions$.next(generatePlateSuccess());
       tick();
 
       expect(navigateBackSpy).toHaveBeenCalled();
@@ -109,7 +107,7 @@ describe('TechRecordGeneratePlateComponent', () => {
     it('should add an error when the field is not filled out', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
 
-      component.handleSubmit('');
+      component.handleSubmit();
 
       expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Reason for generating plate is required', anchorLink: 'plateReasonForGenerating' });
     });
@@ -117,11 +115,11 @@ describe('TechRecordGeneratePlateComponent', () => {
     it('should dispatch the generatePlate action', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-      component.handleSubmit('Provisional');
+      component.form.get('reason')?.setValue('Provisional');
 
-      expect(dispatchSpy).toBeCalledWith(
-        generatePlate({ vehicleRecord: component.vehicle!, techRecord: component.currentTechRecord!, reason: 'Provisional' })
-      );
+      component.handleSubmit();
+
+      expect(dispatchSpy).toBeCalledWith(generatePlate({ reason: 'Provisional' }));
     });
   });
 });
