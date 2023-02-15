@@ -13,6 +13,7 @@ import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-
 import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { TechRecordComponent } from './tech-record.component';
 import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
+import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,12 @@ const routes: Routes = [
     data: { title: 'Historic tech record', isCustomLayout: true },
     canActivate: [MsalGuard],
     resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'change-vin',
+    component: AmendVinComponent,
+    data: { title: 'Change VIN', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard]
   },
   {
     path: 'change-vrm',
@@ -85,6 +92,12 @@ const routes: Routes = [
         path: 'change-vehicle-type',
         component: ChangeVehicleTypeComponent,
         data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+        canActivate: [MsalGuard, RoleGuard]
+      },
+      {
+        path: 'change-vin',
+        component: AmendVinComponent,
+        data: { title: 'Change VIN', roles: Roles.TechRecordAmend },
         canActivate: [MsalGuard, RoleGuard]
       },
       {

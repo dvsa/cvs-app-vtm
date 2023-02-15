@@ -1,0 +1,50 @@
+<div *ngIf="vehicle">
+  <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
+
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Vehicle type</dt>
+      <dd id="vehicleType" class="govuk-summary-list__value">
+        {{ techRecord?.vehicleType | defaultNullOrEmpty | uppercase }}
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VRM</dt>
+      <app-number-plate *ngIf="vrm" [vrm]="vrm"></app-number-plate>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VIN/chassis number</dt>
+      <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicle.vin | defaultNullOrEmpty }}</dd>
+    </div>
+  </dl>
+
+  <form [formGroup]="form">
+    <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': getInlineErrorMessage('newVin') | async }">
+      <label class="govuk-label govuk-!-font-weight-bold" for="search-term"> New VIN </label>
+
+      <ng-container *ngIf="globalErrorService.errors$ | async as errorMessages">
+        <span id="search-term-error" class="govuk-error-message" *ngIf="getErrorByName(errorMessages, 'newVin') as errorMessage">
+          <span class="govuk-visually-hidden">Error:</span>
+          <p class="white-space--normal">{{ errorMessage.error }}</p>
+        </span>
+      </ng-container>
+
+      <input
+        #newVin
+        id="newVin"
+        formControlName="newVin"
+        name="newVin"
+        aria-describedby="newVin"
+        type="text"
+        class="govuk-input govuk-!-width-two-thirds"
+      />
+    </div>
+
+    <app-button-group>
+      <app-button id="submit-vrm" (clicked)="handleSubmit()">Save</app-button>
+      <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+    </app-button-group>
+  </form>
+</div>

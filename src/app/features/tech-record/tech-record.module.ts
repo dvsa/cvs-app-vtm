@@ -18,9 +18,11 @@ import { TestRecordSummaryComponent } from './components/test-record-summary/tes
 import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-record/vehicle-technical-record.component';
 import { TechRecordsRoutingModule } from './tech-record-routing.module';
 import { TechRecordComponent } from './tech-record.component';
+import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
 
 @NgModule({
   declarations: [
+    AmendVinComponent,
     AmendVrmComponent,
     ChangeVehicleTypeComponent,
     EditTechRecordButtonComponent,
