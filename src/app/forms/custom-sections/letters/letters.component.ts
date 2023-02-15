@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { DocumentRetrievalService } from '@api/document-retrieval';
+import { LettersOfAuth } from '@api/vehicle/model/lettersOfAuth';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
-import { Axle, Letters, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { debounceTime, Subscription } from 'rxjs';
-import { DocumentRetrievalService } from '@api/document-retrieval';
-import { ActivatedRoute, Router } from '@angular/router';
+import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-letters',
@@ -45,8 +45,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     return Roles;
   }
 
-  get mostRecentLetter(): Letters | undefined {
-    return this.vehicleTechRecord.letters && this.vehicleTechRecord.letters[this.vehicleTechRecord.letters.length - 1];
+  get mostRecentLetter(): LettersOfAuth | undefined {
+    return this.vehicleTechRecord.lettersOfAuth && this.vehicleTechRecord.lettersOfAuth[this.vehicleTechRecord.lettersOfAuth.length - 1];
   }
 
   download() {
