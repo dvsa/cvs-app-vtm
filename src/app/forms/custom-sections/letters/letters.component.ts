@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { DocumentRetrievalService } from '@api/document-retrieval';
-import { LettersOfAuth } from '@api/vehicle/model/lettersOfAuth';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { LettersIntoAuthApprovalType, LettersOfAuth, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -47,6 +46,10 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   get mostRecentLetter(): LettersOfAuth | undefined {
     return this.vehicleTechRecord.lettersOfAuth && this.vehicleTechRecord.lettersOfAuth[this.vehicleTechRecord.lettersOfAuth.length - 1];
+  }
+
+  get eligibleForLetter(): boolean {
+    return this.vehicleTechRecord.approvalType !== undefined && this.vehicleTechRecord.approvalType.valueOf() in LettersIntoAuthApprovalType;
   }
 
   download() {

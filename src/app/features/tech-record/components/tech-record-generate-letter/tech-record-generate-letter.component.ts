@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LettersOfAuth } from '@api/vehicle';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { LETTER_TYPES } from '@forms/templates/general/letter-types';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -44,8 +44,8 @@ export class GenerateLetterComponent implements OnInit {
 
   get reasons(): Array<FormNodeOption<string>> {
     return [
-      { label: 'Authorised', value: LettersOfAuth.LetterTypeEnum.Authorization },
-      { label: 'Rejected', value: LettersOfAuth.LetterTypeEnum.Rejection }
+      { label: 'Trailer authorised', value: LETTER_TYPES[0].value },
+      { label: 'Trailer rejected', value: LETTER_TYPES[1].value }
     ];
   }
 
