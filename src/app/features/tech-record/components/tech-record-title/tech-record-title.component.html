@@ -29,9 +29,22 @@
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
-      <dd id="vin" class="govuk-summary-list__value">
+      <dd id="vehicleType" class="govuk-summary-list__value">
         {{ currentTechRecord.historicVin ?? vehicle?.vin | defaultNullOrEmpty }}
       </dd>
+      <ng-container *appRoleRequired="roles.TechRecordAmend">
+        <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
+          <div class="govuk-summary-list__actions--flex">
+            <app-button
+              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
+              design="link"
+              id="change-vin-link"
+              (clicked)="navigateTo('change-vin')"
+              >Change</app-button
+            >
+          </div>
+        </dd>
+      </ng-container>
     </div>
 
     <ng-container [ngSwitch]="currentTechRecord.vehicleType">
