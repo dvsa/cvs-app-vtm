@@ -22,6 +22,7 @@ import {
   getByVrm,
   selectVehicleTechnicalRecordsBySystemNumber,
   updateEditingTechRecord,
+  updateEditingTechRecordCancel,
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
@@ -325,5 +326,9 @@ export class TechnicalRecordService {
     });
     delete (putVehicleTechRecordModel as any).vrms;
     return putVehicleTechRecordModel;
+  }
+
+  clearEditingTechRecord() {
+    this.store.dispatch(updateEditingTechRecordCancel());
   }
 }
