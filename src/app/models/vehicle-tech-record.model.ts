@@ -139,7 +139,7 @@ export enum VehicleSubclass {
 
 export interface LettersOfAuth {
   letterType: string;
-  paragraphID: ParagraphID;
+  paragraphId: ParagraphId;
   letterIssuer: string;
   letterDateRequested: string;
   letterContents: string;
@@ -174,7 +174,7 @@ export enum LettersIntoAuthApprovalType {
   IVA_DVSA_NI = 'IVA - DVSA/NI'
 }
 
-export enum ParagraphID {
+export enum ParagraphId {
   PARAGRAPH_3 = 3,
   PARAGRAPH_4 = 4,
   PARAGRAPH_5 = 5,
