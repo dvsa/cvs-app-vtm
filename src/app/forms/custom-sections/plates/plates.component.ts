@@ -1,12 +1,12 @@
 import { HttpEventType } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentRetrievalService } from '@api/document-retrieval';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
 import { Plates, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { DocumentsService } from '@services/documents/documents.service';
 import cloneDeep from 'lodash.clonedeep';
 import { debounceTime, Subscription, takeWhile } from 'rxjs';
 
@@ -22,13 +22,18 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   @Output() formChange = new EventEmitter();
   @Output() isSuccess = new EventEmitter<boolean>();
 
-  public form!: CustomFormGroup;
+  form!: CustomFormGroup;
+
   private _formSubscription = new Subscription();
 
-  constructor(public dfs: DynamicFormService, private documentRetrievalService: DocumentRetrievalService) {}
+  constructor(
+    private documentRetrievalService: DocumentRetrievalService,
+    private documentsService: DocumentsService,
+    private dynamicFormService: DynamicFormService
+  ) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(PlatesTemplate, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.dynamicFormService.createForm(PlatesTemplate, this.vehicleTechRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
@@ -74,29 +79,12 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
               console.log(res);
               break;
             case HttpEventType.Response:
-              const byteArray = new Uint8Array(
-                window
-                  .atob(res.body)
-                  .split('')
-                  .map(char => char.charCodeAt(0))
-              );
-
-              const file = new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });
-              const url = window.URL.createObjectURL(file);
-              const link: HTMLAnchorElement | undefined = document.createElement('a');
-              link.href = url;
-              link.target = '_blank';
-              link.download = `plate_${mostRecentPlate.plateSerialNumber}.pdf`;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-
+              this.documentsService.openDocumentFromResponse(`plate_${mostRecentPlate.plateSerialNumber}`, res.body);
               this.isSuccess.emit(true);
+              break;
           }
         },
-        error: () => {
-          this.isSuccess.emit(false);
-        }
+        error: () => this.isSuccess.emit(false)
       });
   }
 }

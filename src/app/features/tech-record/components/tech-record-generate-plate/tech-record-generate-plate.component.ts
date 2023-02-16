@@ -55,7 +55,7 @@ export class GeneratePlateComponent {
   handleSubmit(): void {
     this.globalErrorService.clearErrors();
     if (!this.form.value.reason) {
-      return this.globalErrorService.addError({ error: 'Reason for generating plate is required', anchorLink: 'plateReasonForGenerating' });
+      return this.globalErrorService.addError({ error: 'Reason for generating plate is required', anchorLink: 'reason' });
     }
 
     this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => this.navigateBack());

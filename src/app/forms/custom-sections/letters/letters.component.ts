@@ -1,3 +1,4 @@
+import { HttpEventType } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { DocumentRetrievalService } from '@api/document-retrieval';
 import { LettersOfAuth } from '@api/vehicle/model/lettersOfAuth';
@@ -6,10 +7,11 @@ import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
-import { Subscription, debounceTime } from 'rxjs';
+import { DocumentsService } from '@services/documents/documents.service';
+import { Subscription, debounceTime, takeWhile } from 'rxjs';
 
 @Component({
-  selector: 'app-letters',
+  selector: 'app-letters[vehicleTechRecord]',
   templateUrl: './letters.component.html',
   styleUrls: ['./letters.component.scss']
 })
@@ -19,13 +21,18 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() formChange = new EventEmitter();
 
-  public form!: CustomFormGroup;
+  form!: CustomFormGroup;
+
   private _formSubscription = new Subscription();
 
-  constructor(public dfs: DynamicFormService, private documentRetrievalService: DocumentRetrievalService) {}
+  constructor(
+    private documentRetrievalService: DocumentRetrievalService,
+    private documentsService: DocumentsService,
+    private dynamicFormService: DynamicFormService
+  ) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(LettersTemplate, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.dynamicFormService.createForm(LettersTemplate, this.vehicleTechRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
@@ -50,6 +57,24 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   download() {
-    console.log('Ping');
+    const mostRecentLetter = this.mostRecentLetter;
+
+    if (!mostRecentLetter) throw new Error('Could not find letter.');
+
+    return this.documentRetrievalService
+      .testPlateGet(`plate_${mostRecentLetter.letterContents}`, 'events', true) // TODO: Use testLetterGet when it's implemented
+      .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
+      .subscribe({
+        next: res => {
+          switch (res.type) {
+            case HttpEventType.DownloadProgress:
+              console.log(res);
+              break;
+            case HttpEventType.Response:
+              this.documentsService.openDocumentFromResponse(`plate_${mostRecentLetter.letterContents}`, res.body);
+              break;
+          }
+        }
+      });
   }
 }
