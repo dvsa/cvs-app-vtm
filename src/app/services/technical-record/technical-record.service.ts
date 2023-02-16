@@ -312,13 +312,7 @@ export class TechnicalRecordService {
     return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  generateLetter(
-    vehicleRecord: VehicleTechRecordModel,
-    techRecord: TechRecordModel,
-    letterType: string,
-    paragraphId: number,
-    user: { id?: string; name?: string }
-  ) {
+  generateLetter(vehicleRecord: VehicleTechRecordModel, letterType: string, paragraphId: number, user: { id?: string; name?: string }) {
     const url = `${environment.VTM_API_URI}/vehicles/documents/letter`;
 
     const body = {

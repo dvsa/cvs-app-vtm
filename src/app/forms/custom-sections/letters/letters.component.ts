@@ -5,6 +5,7 @@ import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
 import { LettersIntoAuthApprovalType, LettersOfAuth, TechRecordModel } from '@models/vehicle-tech-record.model';
+import cloneDeep from 'lodash.clonedeep';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -45,7 +46,11 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get mostRecentLetter(): LettersOfAuth | undefined {
-    return this.vehicleTechRecord.lettersOfAuth && this.vehicleTechRecord.lettersOfAuth[this.vehicleTechRecord.lettersOfAuth.length - 1];
+    return cloneDeep(this.vehicleTechRecord.lettersOfAuth)
+      ?.sort((a, b) =>
+        a.letterDateRequested && b.letterDateRequested ? new Date(a.letterDateRequested).getTime() - new Date(b.letterDateRequested).getTime() : 0
+      )
+      ?.pop();
   }
 
   get eligibleForLetter(): boolean {

@@ -5,12 +5,13 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { LETTER_TYPES } from '@forms/templates/general/letter-types';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { approvalType, LettersIntoAuthApprovalType, LettersOfAuth, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import cloneDeep from 'lodash.clonedeep';
 import { take } from 'rxjs';
 
 @Component({
@@ -18,7 +19,7 @@ import { take } from 'rxjs';
   templateUrl: './tech-record-generate-letter.component.html',
   styleUrls: ['./tech-record-generate-letter.component.scss']
 })
-export class GenerateLetterComponent implements OnInit {
+export class GenerateLetterComponent {
   vehicle?: VehicleTechRecordModel;
   currentTechRecord?: TechRecordModel;
   form = new FormGroup({
@@ -27,6 +28,18 @@ export class GenerateLetterComponent implements OnInit {
     ])
   });
   width: FormNodeWidth = FormNodeWidth.L;
+
+  paragraphMap = new Map<approvalType, number>([
+    [approvalType.GB_WVTA, 6],
+    [approvalType.UKNI_WVTA, 3],
+    [approvalType.EU_WVTA_PRE_23, 3],
+    [approvalType.EU_WVTA_23_ON, 7],
+    [approvalType.QNIG, 3],
+    [approvalType.PROV_GB_WVTA, 3],
+    [approvalType.SMALL_SERIES, 3],
+    [approvalType.IVA_VCA, 3],
+    [approvalType.IVA_DVSA_NI, 3]
+  ]);
 
   constructor(
     private actions$: Actions,
@@ -49,12 +62,15 @@ export class GenerateLetterComponent implements OnInit {
     ];
   }
 
-  ngOnInit(): void {
-    if (!this.currentTechRecord || this.currentTechRecord.vehicleType !== 'trl') {
-      this.navigateBack();
-    }
-
-    this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
+  get mostRecentLetter(): LettersOfAuth | undefined {
+    return (
+      this.currentTechRecord &&
+      cloneDeep(this.currentTechRecord.lettersOfAuth)
+        ?.sort((a, b) =>
+          a.letterDateRequested && b.letterDateRequested ? new Date(a.letterDateRequested).getTime() - new Date(b.letterDateRequested).getTime() : 0
+        )
+        ?.pop()
+    );
   }
 
   navigateBack() {
@@ -62,12 +78,19 @@ export class GenerateLetterComponent implements OnInit {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  handleSubmit(letterType: string): void {
+  handleSubmit(): void {
     this.globalErrorService.clearErrors();
-    if (letterType === '') {
+    if (this.form.value.letterType === '') {
       return this.globalErrorService.addError({ error: 'Letter type is required', anchorLink: 'letterType' });
     }
+    if (!this.currentTechRecord) {
+      return this.globalErrorService.addError({ error: 'Could not retrieve current technical record' });
+    }
 
-    this.store.dispatch(generateLetter({ techRecord: this.currentTechRecord!, letterType: letterType }));
+    const paragraphId = this.form.value.letterType == 'trailer authorisation' ? this.paragraphMap.get(this.currentTechRecord.approvalType!) : 4;
+
+    this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
+
+    this.store.dispatch(generateLetter({ letterType: this.form.value.letterType, paragraphId: paragraphId ?? 4 }));
   }
 }
