@@ -22,6 +22,7 @@ import {
   getByVrm,
   selectVehicleTechnicalRecordsBySystemNumber,
   updateEditingTechRecord,
+  updateEditingTechRecordCancel,
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
@@ -294,6 +295,29 @@ export class TechnicalRecordService {
       });
   }
 
+  generatePlate(vehicleRecord: VehicleTechRecordModel, techRecord: TechRecordModel, reason: string, user: { id?: string; name?: string }) {
+    const url = `${environment.VTM_API_URI}/vehicles/documents/plate`;
+
+    const body = {
+      vin: vehicleRecord.vin,
+      primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)!.vrm : undefined,
+      systemNumber: vehicleRecord.systemNumber,
+      trailerId: techRecord.vehicleType === 'trl' ? vehicleRecord.trailerId : undefined,
+      msUserDetails: { msOid: user.id, msUser: user.name },
+      techRecord: vehicleRecord.techRecord,
+      reasonForCreation: reason,
+      vtmUsername: user.name
+    };
+
+    return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+  }
+
+  generateLetter(techRecord: TechRecordModel, letterType: string) {
+    // TODO: Implement API call when ready
+    console.log('Piiing.');
+    return of(true);
+  }
+
   private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {
     const secondaryVrms: string[] = [];
     const putVehicleTechRecordModel: PutVehicleTechRecordModel = { ...vehicleTechRecord, secondaryVrms };
@@ -302,5 +326,9 @@ export class TechnicalRecordService {
     });
     delete (putVehicleTechRecordModel as any).vrms;
     return putVehicleTechRecordModel;
+  }
+
+  clearEditingTechRecord() {
+    this.store.dispatch(updateEditingTechRecordCancel());
   }
 }

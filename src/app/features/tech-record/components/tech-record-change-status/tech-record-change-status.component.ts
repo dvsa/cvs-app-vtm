@@ -9,7 +9,13 @@ import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { archiveTechRecord, archiveTechRecordSuccess, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import {
+  archiveTechRecord,
+  archiveTechRecordSuccess,
+  updateEditingTechRecordCancel,
+  updateTechRecords,
+  updateTechRecordsSuccess
+} from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { Observable, take } from 'rxjs';
 
@@ -47,7 +53,9 @@ export class TechRecordChangeStatusComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
 
-    this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => this.goBack());
+    this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => {
+      this.navigateBack(), this.technicalRecordService.clearEditingTechRecord();
+    });
   }
 
   get label(): string {
@@ -58,7 +66,7 @@ export class TechRecordChangeStatusComponent implements OnInit {
     return this.isPromotion ? 'Promote' : 'Archive';
   }
 
-  goBack(): void {
+  navigateBack(): void {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 

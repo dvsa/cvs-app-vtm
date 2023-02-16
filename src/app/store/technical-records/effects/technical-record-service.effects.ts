@@ -8,11 +8,12 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
-import { mergeMap, map, catchError, of, withLatestFrom, switchMap, concatMap, tap } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import {
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
+  changeVehicleType,
   createProvisionalTechRecord,
   createProvisionalTechRecordFailure,
   createProvisionalTechRecordSuccess,
@@ -20,7 +21,6 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
-  changeVehicleType,
   getByAll,
   getByAllFailure,
   getByAllSuccess,
@@ -41,9 +41,15 @@ import {
   getByVrmSuccess,
   updateTechRecords,
   updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecordsSuccess,
+  generatePlate,
+  generatePlateSuccess,
+  generatePlateFailure,
+  generateLetter,
+  generateLetterSuccess,
+  generateLetterFailure
 } from '../actions/technical-record-service.actions';
-import { editableTechRecord } from '../selectors/technical-record-service.selectors';
+import { editableTechRecord, selectVehicleTechnicalRecordsBySystemNumber } from '../selectors/technical-record-service.selectors';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
@@ -183,6 +189,37 @@ export class TechnicalRecordServiceEffects {
         tap(mergedForms => this.technicalRecordService.updateEditingTechRecord(mergedForms))
       ),
     { dispatch: false }
+  );
+
+  generatePlate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generatePlate),
+      withLatestFrom(
+        this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
+        this.store.select(editableTechRecord),
+        this.userService.name$,
+        this.userService.id$
+      ),
+      switchMap(([{ reason }, vehicle, techRecord, name, id]) =>
+        this.technicalRecordService.generatePlate(vehicle!, techRecord!, reason, { name, id }).pipe(
+          map(() => generatePlateSuccess()),
+          catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
+        )
+      )
+    )
+  );
+
+  generateLetter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateLetter),
+      withLatestFrom(this.store.pipe(select(editableTechRecord))),
+      switchMap(([{ techRecord, letterType }, record]) =>
+        this.technicalRecordService.generateLetter(techRecord, letterType).pipe(
+          map(value => generateLetterSuccess({ outcome: value })),
+          catchError(error => of(generateLetterFailure({ error: this.getTechRecordErrorMessage(error, 'generateLetter') })))
+        )
+      )
+    )
   );
 
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {

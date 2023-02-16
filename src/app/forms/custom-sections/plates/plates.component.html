@@ -1,0 +1,37 @@
+<form [formGroup]="form">
+  <dl class="govuk-summary-list">
+    <ng-container *ngIf="hasPlates()">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Plate serial number</dt>
+        <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentPlate?.plateSerialNumber | defaultNullOrEmpty }}</dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Plate issue date</dt>
+        <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentPlate?.plateIssueDate | date: 'dd/MM/yyyy HH:mm' }}</dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Plate issuer</dt>
+        <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentPlate?.plateIssuer | defaultNullOrEmpty }}</dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Plate:</dt>
+        <dd id="test-certificate" class="govuk-summary-list__value">
+          <button id="test-certificate-link" class="link" (click)="download()">{{ 'plate_' + mostRecentPlate?.plateSerialNumber + '.pdf' }}</button>
+        </dd>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!hasPlates()">
+      <div>
+        <dt class="govuk-summary-list__key">This vehicle does not have a plate.</dt>
+      </div>
+    </ng-container>
+    <div class="govuk-grid-row" *ngIf="vehicleTechRecord.statusCode === 'current' && !isEditing">
+      <br />
+      <div class="govuk-grid-column-full">
+        <app-button id="generate-plate-link" type="link" routerLink="generate-plate" *appRoleRequired="roles.TechRecordAmend"
+          >Generate plate</app-button
+        >
+      </div>
+    </div>
+  </dl>
+</form>

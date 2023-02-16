@@ -17,6 +17,7 @@ interface TestField {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordSummaryComponent {
+  @Input() isEditing = false;
   @Input() testResults: TestResultModel[] = [];
 
   pageStart?: number;

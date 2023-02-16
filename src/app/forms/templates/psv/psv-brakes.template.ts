@@ -58,6 +58,31 @@ export const PsvBrakesTemplate: FormNode = {
           type: FormNodeTypes.CONTROL
         }
       ]
+    },
+    {
+      name: 'axles',
+      value: '',
+      type: FormNodeTypes.ARRAY,
+      children: [
+        {
+          name: '0',
+          label: 'Axle',
+          value: '',
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'axleNumber',
+              label: 'Axle Number',
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'parkingBrakeMrk',
+              label: 'Parking Brake',
+              type: FormNodeTypes.CONTROL
+            }
+          ]
+        }
+      ]
     }
   ]
 };

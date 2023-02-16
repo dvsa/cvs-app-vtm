@@ -6,15 +6,16 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomValidators } from '@forms/validators/custom-validators';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-create',
-  templateUrl: './create.component.html'
+  templateUrl: './create-tech-record.component.html'
 })
-export class CreateComponent implements OnChanges {
+export class CreateTechRecordComponent implements OnChanges {
   vehicle: Partial<VehicleTechRecordModel> = {};
   isDuplicateVinAllowed: boolean = false;
   isVinUniqueCheckComplete: boolean = false;
@@ -34,8 +35,10 @@ export class CreateComponent implements OnChanges {
       [Validators.minLength(3), Validators.maxLength(21), Validators.required]
     ),
     vrmTrm: new CustomFormControl({ name: 'input-vrm-or-trailer-id', label: 'VRM/TRM', type: FormNodeTypes.CONTROL }, '', [
-      Validators.minLength(1),
+      CustomValidators.alphanumeric(),
+      CustomValidators.notZNumber,
       Validators.maxLength(9),
+      Validators.minLength(1),
       Validators.required
     ]),
     vehicleStatus: new CustomFormControl(

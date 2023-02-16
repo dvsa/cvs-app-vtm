@@ -1,3 +1,4 @@
+import { LettersOfAuth } from '@api/vehicle/model/models';
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
 export interface VehicleTechRecordModel {
@@ -331,6 +332,7 @@ export interface TechRecordModel {
   couplingCenterToRearTrlMin?: number;
   couplingCenterToRearTrlMax?: number;
   plates?: Plates[];
+  lettersOfAuth?: LettersOfAuth[];
   dda?: DDA;
   updateType?: string;
 

@@ -28,7 +28,7 @@ const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialR
               type: FormNodeTypes.CONTROL,
               label: 'Why was this test abandoned?',
               hint: 'Select all that apply.',
-              editType: FormNodeEditTypes.CHECKBOX,
+              editType: FormNodeEditTypes.CHECKBOXGROUP,
               delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' }, // the space is important here
               required: true,
               referenceData: ReasonsForAbandoning,

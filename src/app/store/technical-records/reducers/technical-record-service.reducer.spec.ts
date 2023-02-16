@@ -1,3 +1,5 @@
+import { BodyTypeCode, BodyTypeDescription } from '@models/body-type-enum';
+import { PsvMake } from '@models/reference-data.model';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { mockVehicleTechnicalRecord, mockVehicleTechnicalRecordList } from '../../../../mocks/mock-vehicle-technical-record.mock';
 import {
@@ -32,7 +34,11 @@ import {
   updateEditingTechRecordCancel,
   updateTechRecords,
   updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecordsSuccess,
+  addAxle,
+  removeAxle,
+  updateBrakeForces,
+  updateBody
 } from '../actions/technical-record-service.actions';
 import { initialState, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-record-service.reducer';
 
@@ -482,6 +488,96 @@ describe('Vehicle Technical Record Reducer', () => {
       expect(initialState).not.toEqual(newState);
       expect(newState.editingTechRecord).toBeUndefined();
       expect(initialState).not.toBe(newState);
+    });
+  });
+
+  describe('updating properties of the tech record in edit', () => {
+    beforeEach(() => (initialState.editingTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV)));
+
+    describe('updateBrakeForces', () => {
+      it('should update brake forces', () => {
+        initialState.editingTechRecord!.techRecord[0].brakes!.brakeCodeOriginal = '80';
+        const brakes = initialState.editingTechRecord?.techRecord[0].brakes;
+        expect(brakes?.brakeCode).toBe('1234');
+
+        const newState = vehicleTechRecordReducer(initialState, updateBrakeForces({ grossKerbWeight: 1000, grossLadenWeight: 2000 }));
+
+        expect(newState).not.toBe(initialState);
+        expect(newState).not.toEqual(initialState);
+
+        const updatedBrakes = newState.editingTechRecord?.techRecord[0].brakes;
+        expect(updatedBrakes?.brakeCode).toBe(`0${2000 / 100}${brakes?.brakeCodeOriginal}`);
+
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.serviceBrakeForceA).toBe(Math.round((2000 * 16) / 100));
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.secondaryBrakeForceA).toBe(Math.round((2000 * 22.5) / 100));
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.parkingBrakeForceA).toBe(Math.round((2000 * 45) / 100));
+
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.serviceBrakeForceB).toBe(Math.round((1000 * 16) / 100));
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.secondaryBrakeForceB).toBe(Math.round((1000 * 25) / 100));
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.parkingBrakeForceB).toBe(Math.round((1000 * 50) / 100));
+      });
+    });
+
+    describe('updateBody', () => {
+      it('should update body', () => {
+        expect(initialState.editingTechRecord?.techRecord[0].bodyType?.description).toBe(BodyTypeDescription.DOUBLE_DECKER);
+
+        const expectedData = {
+          dtpNumber: '9999',
+          psvChassisMake: 'Toyota',
+          psvChassisModel: 'Supra',
+          psvBodyMake: 'Random',
+          psvBodyType: 'o'
+        } as PsvMake;
+
+        const newState = vehicleTechRecordReducer(initialState, updateBody({ psvMake: expectedData }));
+
+        expect(newState).not.toBe(initialState);
+        expect(newState).not.toEqual(initialState);
+
+        const updatedTechRecord = newState.editingTechRecord?.techRecord[0];
+        expect(updatedTechRecord?.bodyType?.code).toBe(BodyTypeCode.O);
+        expect(updatedTechRecord?.bodyType?.description).toBe(BodyTypeDescription.OTHER);
+        expect(updatedTechRecord?.bodyMake).toBe(expectedData.psvBodyMake);
+        expect(updatedTechRecord?.chassisMake).toBe(expectedData.psvChassisMake);
+        expect(updatedTechRecord?.chassisModel).toBe(expectedData.psvChassisModel);
+      });
+    });
+
+    describe('addAxle', () => {
+      it('should add an axle', () => {
+        const techRecord = initialState.editingTechRecord?.techRecord[0];
+        expect(techRecord?.noOfAxles).toBe(2);
+        expect(techRecord?.axles?.length).toBe(3);
+
+        const newState = vehicleTechRecordReducer(initialState, addAxle());
+
+        expect(newState).not.toBe(initialState);
+        expect(newState).not.toEqual(initialState);
+
+        const updatedTechRecord = newState.editingTechRecord?.techRecord[0];
+        expect(updatedTechRecord?.noOfAxles).toBe(4);
+        expect(updatedTechRecord?.axles?.length).toBe(4);
+        expect(updatedTechRecord?.axles?.pop()?.axleNumber).toBe(4);
+      });
+    });
+
+    describe('removeAxle', () => {
+      it('should remove specified axle', () => {
+        const techRecord = initialState.editingTechRecord?.techRecord[0];
+        expect(techRecord?.noOfAxles).toBe(2);
+        expect(techRecord?.axles?.length).toBe(3);
+
+        const newState = vehicleTechRecordReducer(initialState, removeAxle({ index: 0 }));
+
+        expect(newState).not.toBe(initialState);
+        expect(newState).not.toEqual(initialState);
+
+        const updatedTechRecord = newState.editingTechRecord?.techRecord[0];
+        expect(updatedTechRecord?.noOfAxles).toBe(2);
+        expect(updatedTechRecord?.axles?.length).toBe(2);
+        expect(updatedTechRecord?.axles?.pop()?.axleNumber).toBe(2);
+      });
     });
   });
 });

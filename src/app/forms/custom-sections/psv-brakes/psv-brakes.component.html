@@ -90,3 +90,19 @@
     </tr>
   </tbody>
 </table>
+
+<div class="checkboxes">
+  <label class="govuk-label govuk-label--m" for="parking-brake">Parking Brake</label>
+
+  <div id="parking-brake" class="govuk-checkboxes">
+    <app-switchable-input
+      *ngFor="let axle of axles.controls; let i = index"
+      [form]="getAxleForm(i)"
+      [type]="editTypes.CHECKBOX"
+      [customId]="'parkingBrakeMrk' + (i + 1)"
+      name="parkingBrakeMrk"
+      [label]="'Axle ' + (i + 1)"
+      [isEditing]="isEditing"
+    ></app-switchable-input>
+  </div>
+</div>

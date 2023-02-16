@@ -16,8 +16,7 @@ import { take, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-edit-tech-record-button[vehicle][viewableTechRecord]',
-  templateUrl: './edit-tech-record-button.component.html',
-  styleUrls: ['./edit-tech-record-button.component.scss']
+  templateUrl: './edit-tech-record-button.component.html'
 })
 export class EditTechRecordButtonComponent implements OnInit {
   @Input() vehicle!: VehicleTechRecordModel;
