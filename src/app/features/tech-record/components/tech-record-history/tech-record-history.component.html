@@ -13,17 +13,24 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row" *ngFor="let techRecord of techRecords; trackBy: trackByFn">
-        <th scope="row" class="govuk-table__header">{{ techRecord.statusCode }}</th>
-        <td class="govuk-table__cell word-break">{{ techRecord.reasonForCreation }}</td>
-        <td class="govuk-table__cell word-break">{{ techRecord.createdByName }}</td>
-        <td class="govuk-table__cell">{{ techRecord.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+      <tr class="govuk-table__row" *ngFor="let techRecord of techRecords; trackBy: trackByFn; let i = index">
+        <th scope="row" class="govuk-table__header" [id]="techRecord.statusCode + '-status-header-' + i">{{ techRecord.statusCode }}</th>
+        <td class="govuk-table__cell word-break" [id]="techRecord.statusCode + '-reason-' + i">
+          {{ techRecord.reasonForCreation }}
+        </td>
+        <td class="govuk-table__cell word-break" [id]="techRecord.statusCode + '-created-by-' + i">{{ techRecord.createdByName }}</td>
+        <td class="govuk-table__cell" [id]="techRecord.statusCode + '-created-at-' + i">{{ techRecord.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
         <td class="govuk-table__cell">
-          <ng-container *ngIf="techRecord.createdAt !== currentRecord?.createdAt">
-            <a id="view-test-{{ vehicleTechRecord!.vin }}" href="/tech-records/{{ vehicleTechRecord!.systemNumber }}{{ summaryLinkUrl(techRecord) }}">
-              View
-            </a>
-          </ng-container>
+          <app-button
+            *ngIf="techRecord.createdAt !== currentTechRecord.createdAt"
+            id="view-test-{{ vehicle.vin }}"
+            type="link"
+            design="link"
+            [routerLink]="[summaryLinkUrl(techRecord)]"
+            (click)="updateTechRecordInEdit(i)"
+          >
+            View
+          </app-button>
         </td>
       </tr>
     </tbody>

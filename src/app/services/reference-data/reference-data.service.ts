@@ -8,7 +8,7 @@ import {
   ReferenceDataService as ReferenceDataApiService
 } from '@api/reference-data';
 import { MultiOptions } from '@forms/models/options.model';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import {
@@ -16,6 +16,7 @@ import {
   fetchReferenceData,
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
+  ReferenceDataEntityStateTyres,
   ReferenceDataState,
   referencePsvMakeLoadingState,
   removeTyreSearch,
@@ -25,7 +26,7 @@ import {
   selectTyreSearchCriteria,
   selectTyreSearchReturn
 } from '@store/reference-data';
-import { map, Observable, of, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +64,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
   loadReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): void {
     this.store.dispatch(fetchReferenceDataByKeySearch({ resourceType, resourceKey }));
   }
+
   loadTyreReferenceDataByKeySearch(searchFilter: string, searchTerm: string): void {
     this.store.dispatch(fetchTyreReferenceDataByKeySearch({ searchFilter, searchTerm }));
   }
@@ -75,42 +77,52 @@ export class ReferenceDataService extends ReferenceDataApiService {
     this.store.dispatch(addSearchInformation({ filter, term }));
   }
 
-  removeTyreSearch() {
-    return this.store.dispatch(removeTyreSearch());
+  removeTyreSearch(): void {
+    this.store.dispatch(removeTyreSearch());
   }
 
-  getTyreSearchReturn$ = () => {
-    return this.store.pipe(select(selectTyreSearchReturn()));
-  };
+  getTyreSearchReturn$(): Observable<ReferenceDataTyre[] | null> {
+    return this.store.pipe(select(selectTyreSearchReturn));
+  }
 
-  getTyreSearchCriteria$ = () => {
-    return this.store.pipe(select(selectTyreSearchCriteria()));
-  };
+  getTyreSearchCriteria$(): Observable<ReferenceDataEntityStateTyres> {
+    return this.store.pipe(select(selectTyreSearchCriteria));
+  }
 
-  getAll$ = (resourceType: ReferenceDataResourceType): Observable<ReferenceDataModelBase[] | undefined> => {
+  getAll$(resourceType: ReferenceDataResourceType): Observable<ReferenceDataModelBase[] | undefined> {
     return this.store.pipe(select(selectAllReferenceDataByResourceType(resourceType)));
-  };
+  }
 
-  getByKey$ = (resourceType: ReferenceDataResourceType, resourceKey: string | number) => {
+  getByKey$(resourceType: ReferenceDataResourceType, resourceKey: string | number) {
     return this.store.pipe(select(selectReferenceDataByResourceKey(resourceType, resourceKey)));
-  };
+  }
 
   getReferenceDataOptions(resourceType: ReferenceDataResourceType): Observable<MultiOptions | undefined> {
-    return this.mapReferenceDataOptions(this.getAll$(resourceType));
+    return this.getAll$(resourceType).pipe(this.mapReferenceDataOptions);
   }
 
-  private mapReferenceDataOptions(referenceData: Observable<ReferenceDataModelBase[] | undefined>): Observable<MultiOptions | undefined> {
-    return referenceData.pipe(map(options => options?.map(option => ({ value: option.resourceKey, label: option.description ?? '' }))));
-  }
+  private mapReferenceDataOptions = function (
+    source: Observable<Array<ReferenceDataModelBase & Partial<User>> | undefined>
+  ): Observable<MultiOptions | undefined> {
+    return new Observable(subscriber => {
+      source.subscribe({
+        next: val => {
+          subscriber.next(val?.map(option => ({ value: option.resourceKey, label: option.description ?? option.name ?? `${option.resourceKey}` })));
+        },
+        error: e => subscriber.error(e),
+        complete: () => subscriber.complete()
+      });
+    });
+  };
 
   getReasonsForAbandoning(vehicleType: VehicleTypes | undefined): Observable<MultiOptions | undefined> {
     if (!vehicleType) {
       return of([]);
     }
-    return this.mapReferenceDataOptions(this.store.pipe(select(selectReasonsForAbandoning(vehicleType))));
+    return this.store.pipe(select(selectReasonsForAbandoning(vehicleType)), this.mapReferenceDataOptions);
   }
 
-  getReferencePsvMakeDataLoading() {
+  getReferencePsvMakeDataLoading$(): Observable<boolean> {
     return this.store.pipe(select(referencePsvMakeLoadingState));
   }
 }

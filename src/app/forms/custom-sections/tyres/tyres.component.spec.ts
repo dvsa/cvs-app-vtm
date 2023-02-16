@@ -179,7 +179,7 @@ describe('TyresComponent', () => {
 
       component.addTyreToTechRecord(tyre, 1);
 
-      expect(component.vehicleTechRecord.axles[0].tyres).toBe(tyre);
+      expect(component.vehicleTechRecord.axles![0].tyres).toBe(tyre);
     });
   });
 });

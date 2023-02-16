@@ -84,7 +84,7 @@ export class CustomAsyncValidators {
           const testerEmail = control.parent?.get('testerEmailAddress');
           if (user && testerName && testerEmail) {
             testerName.setValue((user as User).name, { emitEvent: false, onlySelf: true });
-            testerEmail.setValue((user as User).email, { emitEvent: false, onlySelf: true });
+            testerEmail.setValue((user as User).resourceKey, { emitEvent: false, onlySelf: true });
           }
         }),
         map(() => null),

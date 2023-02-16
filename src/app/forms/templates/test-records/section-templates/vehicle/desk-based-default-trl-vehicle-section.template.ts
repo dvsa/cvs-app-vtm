@@ -32,7 +32,7 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
       label: 'Country Of Registration',
       value: '',
       options: [],
-      width: FormNodeWidth.XXL,
+      width: FormNodeWidth.XL,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
       type: FormNodeTypes.CONTROL
@@ -43,6 +43,7 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
+      width: FormNodeWidth.S,
       options: getOptionsFromEnum(EuVehicleCategories),
       validators: [{ name: ValidatorNames.Required }]
     },

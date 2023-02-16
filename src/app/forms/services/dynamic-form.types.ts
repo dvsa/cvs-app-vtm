@@ -44,6 +44,7 @@ export enum FormNodeTypes {
 export enum FormNodeEditTypes {
   AUTOCOMPLETE = 'autocomplete',
   CHECKBOX = 'checkbox',
+  CHECKBOXGROUP = 'checkboxgroup',
   DATE = 'date',
   DATETIME = 'datetime',
   DROPDOWN = 'dropdown',
@@ -100,6 +101,7 @@ export interface FormNode {
   suffix?: string;
   isoDate?: boolean;
   class?: string;
+  customId?: string;
 }
 
 export interface FormNodeValidator {

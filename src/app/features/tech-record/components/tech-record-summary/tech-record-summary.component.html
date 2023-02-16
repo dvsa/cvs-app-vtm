@@ -21,49 +21,63 @@
   <ng-container [ngSwitch]="sectionName">
     <app-body
       *ngSwitchCase="'bodySection'"
-      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [vehicleTechRecord]="techRecordCalculated"
       [isEditing]="isEditing"
       (formChange)="handleFormState($event)"
     ></app-body>
 
     <app-dimensions
       *ngSwitchCase="'dimensionsSection'"
-      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [vehicleTechRecord]="techRecordCalculated"
       [isEditing]="isEditing"
       (formChange)="handleFormState($event)"
     ></app-dimensions>
 
     <app-psv-brakes
       *ngSwitchCase="'psvBrakesSection'"
-      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [vehicleTechRecord]="techRecordCalculated"
       [isEditing]="isEditing"
       (formChange)="handleFormState($event)"
     ></app-psv-brakes>
 
     <app-trl-brakes
       *ngSwitchCase="'trlBrakesSection'"
-      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [vehicleTechRecord]="techRecordCalculated"
       [isEditing]="isEditing"
       (formChange)="handleFormState($event)"
     ></app-trl-brakes>
 
     <app-tyres
       *ngSwitchCase="'tyreSection'"
-      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [vehicleTechRecord]="techRecordCalculated"
       [isEditing]="isEditing"
       (formChange)="handleFormState($event)"
     ></app-tyres>
 
     <app-weights
       *ngSwitchCase="'weightsSection'"
-      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [vehicleTechRecord]="techRecordCalculated"
       [isEditing]="isEditing"
       (formChange)="handleFormState($event)"
     ></app-weights>
 
+    <app-letters
+      *ngSwitchCase="'lettersSection'"
+      [vehicleTechRecord]="techRecordCalculated"
+      [isEditing]="isEditing"
+      (formChange)="handleFormState($event)"
+    ></app-letters>
+
+    <app-plates
+      *ngSwitchCase="'platesSection'"
+      [vehicleTechRecord]="techRecordCalculated"
+      [isEditing]="isEditing"
+      (formChange)="handleFormState($event)"
+    ></app-plates>
+
     <app-dynamic-form-group
       *ngSwitchDefault
-      [data]="vehicleTechRecordCalculated"
+      [data]="techRecordCalculated"
       [template]="section"
       [edit]="isEditing"
       (formChange)="handleFormState($event)"

@@ -1,18 +1,14 @@
-.govuk-link {
-  cursor: pointer;
+@import 'node_modules/govuk-frontend/govuk/all';
+
+.govuk-heading-l {
+  display: flex;
 }
 
-@media (min-width: 40.0625em) {
-  .govuk-summary-list {
-    table-layout: auto;
-  }
+.govuk-summary-list__actions--flex {
+  display: flex;
+  justify-content: flex-end;
 
-  .govuk-summary-list__key {
-    width: 37.5%;
-  }
-
-  .govuk-summary-list__value,
-  .govuk-summary-list__actions {
-    vertical-align: middle;
+  @include govuk-media-query($until: tablet) {
+    justify-content: flex-start;
   }
 }

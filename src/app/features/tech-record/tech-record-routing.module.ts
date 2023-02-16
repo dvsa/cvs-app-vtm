@@ -5,12 +5,16 @@ import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
-import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-amend-reason.component';
-import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
+import { ChangeVehicleTypeComponent } from './components/tech-record-change-type/tech-record-change-type.component';
+import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
 import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
-import { TechRecordComponent } from './tech-record.component';
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
+import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
+import { TechRecordComponent } from './tech-record.component';
+import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
+import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
+import { GenerateLetterComponent } from './components/tech-record-generate-letter/tech-record-generate-letter.component';
 
 const routes: Routes = [
   {
@@ -42,6 +46,24 @@ const routes: Routes = [
     resolve: { load: TechRecordViewResolver }
   },
   {
+    path: 'change-vrm',
+    component: AmendVrmComponent,
+    data: { title: 'Change vrm', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: 'generate-plate',
+    component: GeneratePlateComponent,
+    data: { title: 'Generate plate', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: 'generate-letter',
+    component: GenerateLetterComponent,
+    data: { title: 'Generate letter', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
     path: 'provisional',
     component: TechRouterOutletComponent,
     children: [
@@ -69,13 +91,25 @@ const routes: Routes = [
       {
         path: 'change-status',
         component: TechRecordChangeStatusComponent,
-        data: { title: 'Promotore or Archive Tech Record', roles: Roles.TechRecordArchive },
+        data: { title: 'Promote or Archive Tech Record', roles: Roles.TechRecordArchive },
         canActivate: [MsalGuard, RoleGuard],
         resolve: { load: TechRecordViewResolver }
       },
       {
+        path: 'change-vehicle-type',
+        component: ChangeVehicleTypeComponent,
+        data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+        canActivate: [MsalGuard, RoleGuard]
+      },
+      {
+        path: 'change-vrm',
+        component: AmendVrmComponent,
+        data: { title: 'Change vrm', roles: Roles.TechRecordAmend },
+        canActivate: [MsalGuard, RoleGuard]
+      },
+      {
         path: 'notifiable-alteration-needed/tyre-search/:axleNumber',
-        component: TyresSearchComponent,
+        component: TechRecordSearchTyresComponent,
         data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
         canActivate: [MsalGuard, RoleGuard],
         resolve: { techRecord: TechRecordViewResolver }
@@ -98,16 +132,23 @@ const routes: Routes = [
   },
   {
     path: 'amend-reason',
-    component: TechAmendReasonComponent,
+    component: TechRecordAmendReasonComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
     path: 'change-status',
     component: TechRecordChangeStatusComponent,
-    data: { title: 'Promotore or Archive Tech Record', roles: Roles.TechRecordArchive },
+    data: { title: 'Promote or Archive Tech Record', roles: Roles.TechRecordArchive },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'change-vehicle-type',
+    component: ChangeVehicleTypeComponent,
+    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver }
   },
   {
     path: 'change-vta-visibility',
@@ -118,14 +159,14 @@ const routes: Routes = [
   },
   {
     path: 'correcting-an-error/tyre-search/:axleNumber',
-    component: TyresSearchComponent,
+    component: TechRecordSearchTyresComponent,
     data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.CORRECTING_AN_ERROR },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
     path: 'notifiable-alteration-needed/tyre-search/:axleNumber',
-    component: TyresSearchComponent,
+    component: TechRecordSearchTyresComponent,
     data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }

@@ -12,11 +12,11 @@ export const SmallTrailerTechRecord: FormNode = {
       name: 'vehicleType',
       label: 'Vehicle type',
       value: '',
-      width: FormNodeWidth.XS,
+      width: FormNodeWidth.S,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'manufactureYear',
@@ -25,7 +25,10 @@ export const SmallTrailerTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 }
+      ]
     },
     {
       name: 'noOfAxles',
@@ -33,7 +36,6 @@ export const SmallTrailerTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }],
       disabled: true
     },
     {
@@ -43,7 +45,8 @@ export const SmallTrailerTechRecord: FormNode = {
       children: [
         { name: 'code', label: 'Vehicle Class code', value: '', type: FormNodeTypes.CONTROL },
         { name: 'description', label: 'Vehicle', value: '', type: FormNodeTypes.CONTROL }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'vehicleSubclass',
@@ -51,7 +54,7 @@ export const SmallTrailerTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'euVehicleCategory',
@@ -59,8 +62,9 @@ export const SmallTrailerTechRecord: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
+      width: FormNodeWidth.S,
       options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     }
   ]
 };

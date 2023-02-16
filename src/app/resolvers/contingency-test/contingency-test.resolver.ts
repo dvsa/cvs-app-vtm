@@ -77,7 +77,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
       map(() => {
         return true;
       }),
-      catchError(e => {
+      catchError(() => {
         return of(false);
       })
     );

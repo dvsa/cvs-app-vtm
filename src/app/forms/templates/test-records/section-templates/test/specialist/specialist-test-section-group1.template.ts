@@ -14,7 +14,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testStartTimestamp',
@@ -23,7 +23,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testTypes',
@@ -40,7 +40,8 @@ export const SpecialistTestSectionGroup1: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.XS
+              width: FormNodeWidth.XS,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testResult',
@@ -73,7 +74,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               label: 'Reason for abandoning',
-              editType: FormNodeEditTypes.CHECKBOX,
+              editType: FormNodeEditTypes.CHECKBOXGROUP,
               delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' },
               required: true,
               validators: [
@@ -122,7 +123,8 @@ export const SpecialistTestSectionGroup1: FormNode = {
               label: 'Test Number',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testTypeStartTimestamp',

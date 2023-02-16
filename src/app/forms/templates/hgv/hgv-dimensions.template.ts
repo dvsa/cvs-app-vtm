@@ -14,14 +14,14 @@ export const HgvDimensionsTemplate: FormNode = {
         {
           name: 'length',
           label: 'Length (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Max, args: 99999 }]
         },
         {
           name: 'width',
           label: 'Width (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Max, args: 99999 }]
         },
@@ -50,35 +50,35 @@ export const HgvDimensionsTemplate: FormNode = {
     {
       name: 'frontAxleToRearAxle',
       label: 'Front axle to rear axle (mm)',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'frontAxleTo5thWheelCouplingMin',
       label: 'Minimum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'frontAxleTo5thWheelCouplingMax',
       label: 'Maximum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'frontAxleTo5thWheelMin',
       label: 'Minimum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'frontAxleTo5thWheelMax',
       label: 'Maximum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     }

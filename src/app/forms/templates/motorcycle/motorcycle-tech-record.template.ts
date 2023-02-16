@@ -16,7 +16,7 @@ export const MotorcycleTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'regnDate',
@@ -25,7 +25,7 @@ export const MotorcycleTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [],
       isoDate: false
     },
     {
@@ -35,7 +35,10 @@ export const MotorcycleTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 }
+      ]
     },
     {
       name: 'noOfAxles',
@@ -43,7 +46,7 @@ export const MotorcycleTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [],
       disabled: true
     },
     {
@@ -53,7 +56,8 @@ export const MotorcycleTechRecord: FormNode = {
       children: [
         { name: 'code', label: 'Vehicle Class Code', value: '', type: FormNodeTypes.CONTROL },
         { name: 'description', label: 'Vehicle Class Description', value: '', type: FormNodeTypes.CONTROL }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'euVehicleCategory',
@@ -61,8 +65,9 @@ export const MotorcycleTechRecord: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
+      width: FormNodeWidth.S,
       options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'numberOfWheelsDriven',
@@ -70,7 +75,7 @@ export const MotorcycleTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     }
   ]
 };

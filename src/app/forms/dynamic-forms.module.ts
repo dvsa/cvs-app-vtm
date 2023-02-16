@@ -36,6 +36,10 @@ import { BodyComponent } from './custom-sections/body/body.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
 import { PrefixDirective } from './directives/prefix.directive';
+import { SuggestiveInputComponent } from './components/suggestive-input/suggestive-input.component';
+import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { LettersComponent } from './custom-sections/letters/letters.component';
+import { PlatesComponent } from './custom-sections/plates/plates.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +64,8 @@ import { PrefixDirective } from './directives/prefix.directive';
     FocusNextDirective,
     TruncatePipe,
     WeightsComponent,
+    LettersComponent,
+    PlatesComponent,
     DimensionsComponent,
     TrlBrakesComponent,
     ReadOnlyComponent,
@@ -72,7 +78,9 @@ import { PrefixDirective } from './directives/prefix.directive';
     BodyComponent,
     TyresComponent,
     PsvBrakesComponent,
-    PrefixDirective
+    PrefixDirective,
+    SuggestiveInputComponent,
+    CheckboxComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -93,6 +101,8 @@ import { PrefixDirective } from './directives/prefix.directive';
     FieldErrorMessageComponent,
     DefectSelectComponent,
     WeightsComponent,
+    LettersComponent,
+    PlatesComponent,
     TyresComponent,
     DimensionsComponent,
     TrlBrakesComponent,
@@ -105,7 +115,9 @@ import { PrefixDirective } from './directives/prefix.directive';
     AbandonDialogComponent,
     BodyComponent,
     PsvBrakesComponent,
-    PrefixDirective
+    PrefixDirective,
+    SuggestiveInputComponent,
+    CheckboxComponent
   ]
 })
 export class DynamicFormsModule {}

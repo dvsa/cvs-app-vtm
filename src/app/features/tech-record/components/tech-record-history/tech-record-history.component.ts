@@ -1,20 +1,29 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
-  selector: 'app-tech-record-history',
+  selector: 'app-tech-record-history[vehicle][currentTechRecord]',
   templateUrl: './tech-record-history.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./tech-record-history.component.scss']
 })
 export class TechRecordHistoryComponent {
-  @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  @Input() currentRecord?: TechRecordModel;
+  @Input() vehicle!: VehicleTechRecordModel;
+  @Input() currentTechRecord!: TechRecordModel;
 
   pageStart?: number;
   pageEnd?: number;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private techRecordService: TechnicalRecordService) {}
+
+  get techRecords() {
+    return this.vehicle.techRecord.slice(this.pageStart, this.pageEnd) ?? [];
+  }
+
+  get numberOfRecords(): number {
+    return this.vehicle.techRecord.length || 0;
+  }
 
   convertToUnix(date: Date): number {
     return new Date(date).getTime();
@@ -26,14 +35,6 @@ export class TechRecordHistoryComponent {
     this.cdr.detectChanges();
   }
 
-  get numberOfRecords(): number {
-    return this.vehicleTechRecord?.techRecord.length || 0;
-  }
-
-  get techRecords() {
-    return this.vehicleTechRecord?.techRecord.slice(this.pageStart, this.pageEnd) ?? [];
-  }
-
   trackByFn(i: number, tr: TechRecordModel) {
     return tr.createdAt;
   }
@@ -41,11 +42,15 @@ export class TechRecordHistoryComponent {
   summaryLinkUrl(techRecord: TechRecordModel) {
     switch (techRecord.statusCode) {
       case StatusCodes.PROVISIONAL:
-        return '/provisional';
+        return `/tech-records/${this.vehicle.systemNumber}/provisional`;
       case StatusCodes.ARCHIVED:
-        return `/historic/${this.convertToUnix(techRecord.createdAt)}`;
+        return `/tech-records/${this.vehicle.systemNumber}/historic/${this.convertToUnix(techRecord.createdAt)}`;
       default:
-        return '';
+        return `/tech-records/${this.vehicle.systemNumber}/`;
     }
+  }
+
+  updateTechRecordInEdit(index: number): void {
+    this.techRecordService.updateEditingTechRecord(this.vehicle.techRecord[this.pageStart || 0 + index], true);
   }
 }

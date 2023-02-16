@@ -59,7 +59,7 @@ export const PsvBodyTemplate: FormNode = {
       label: 'Body model',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 20 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 20 }]
     },
     {
       name: 'bodyType',
@@ -72,7 +72,8 @@ export const PsvBodyTemplate: FormNode = {
           label: 'Body type',
           value: '',
           type: FormNodeTypes.CONTROL,
-          disabled: true
+          disabled: true,
+          validators: [{ name: ValidatorNames.Required }]
         }
       ]
     },

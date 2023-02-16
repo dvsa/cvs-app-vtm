@@ -1,5 +1,11 @@
 <div class="govuk-accordion__controls">
-  <button type="button" class="govuk-accordion__show-all {{ class }}" [attr.aria-expanded]="isExpanded" (click)="toggle()">
+  <button
+    type="button"
+    id="accordian-show-all-button"
+    class="govuk-accordion__show-all {{ class }}"
+    [attr.aria-expanded]="isExpanded"
+    (click)="toggle()"
+  >
     <span [class]="iconStyle"></span>
     <span class="govuk-accordion__show-all-text">{{ isExpanded ? 'Hide' : 'Show' }} all sections</span>
   </button>

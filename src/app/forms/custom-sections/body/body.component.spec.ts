@@ -34,7 +34,7 @@ describe('BodyComponent', () => {
 
   describe('The DTpNumber value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect(component.vehicleTechRecord.brakes.dtpNumber).toStrictEqual(component.form.value.brakes.dtpNumber);
+      expect(component.vehicleTechRecord.brakes!.dtpNumber).toStrictEqual(component.form.value.brakes.dtpNumber);
     });
   });
   describe('The bodyModel value on this.form', () => {

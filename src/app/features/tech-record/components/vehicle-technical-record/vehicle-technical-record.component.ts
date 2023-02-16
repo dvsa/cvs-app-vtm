@@ -1,9 +1,7 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
+import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { ReasonForEditing, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -13,44 +11,41 @@ import { createProvisionalTechRecord, updateTechRecords } from '@store/technical
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 
 @Component({
-  selector: 'app-vehicle-technical-record',
+  selector: 'app-vehicle-technical-record[vehicle]',
   templateUrl: './vehicle-technical-record.component.html',
   styleUrls: ['./vehicle-technical-record.component.scss']
 })
-export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
+export class VehicleTechnicalRecordComponent implements OnInit {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
-  @Input() vehicleTechRecord?: VehicleTechRecordModel;
+  @Input() vehicle!: VehicleTechRecordModel;
 
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
-  records$: Observable<TestResultModel[]>;
+  testResults$: Observable<TestResultModel[]>;
+  editingReason?: ReasonForEditing;
 
-  isDirty = false;
   isCurrent = false;
   isArchived = false;
-  isInvalid = false;
   isEditing = false;
-  editingReason?: ReasonForEditing;
+  isDirty = false;
+  isInvalid = false;
 
   constructor(
     testRecordService: TestRecordsService,
     private activatedRoute: ActivatedRoute,
-    private errorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.records$ = testRecordService.testRecords$;
+    this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
     this.editingReason = this.activatedRoute.snapshot.data['reason'];
   }
 
   ngOnInit(): void {
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!).pipe(
+    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicle).pipe(
       tap(viewableTechRecord => {
         this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
         this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
@@ -58,16 +53,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     );
   }
 
-  ngAfterViewInit(): void {
-    this.handleFormState();
-  }
-
   get currentVrm(): string | undefined {
-    return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return this.vehicle.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
   get otherVrms(): Vrm[] | undefined {
-    return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
+    return this.vehicle.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
   get roles(): typeof Roles {
@@ -82,21 +73,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     return StatusCodes;
   }
 
-  get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const type = this.vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.vehicleType;
-
-    const commonCustomSections = [this.summary.body.form, this.summary.dimensions.form, this.summary.tyres.form, this.summary.weights.form];
-
-    switch (type) {
-      case VehicleTypes.PSV:
-        return [...commonCustomSections, this.summary.psvBrakes!.form];
-      case VehicleTypes.HGV:
-        return commonCustomSections;
-      case VehicleTypes.TRL:
-        return [...commonCustomSections, this.summary.trlBrakes!.form];
-      default:
-        return [];
-    }
+  hasPlates(techRecord: TechRecordModel) {
+    return (techRecord.plates?.length ?? 0) > 0;
   }
 
   getActions(techRecord?: TechRecordModel): TechRecordActions {
@@ -138,31 +116,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     }
   }
 
-  isAnyFormInvalid(forms: Array<CustomFormGroup | CustomFormArray>): boolean {
-    const errors: GlobalError[] = [];
-
-    forms.forEach(form => DynamicFormService.updateValidity(form, errors));
-
-    errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
-
-    return forms.some(form => form.invalid);
-  }
-
-  handleFormState(): void {
-    if (this.isEditing) {
-      const form = this.summary.sections.map(section => section.form).concat(this.customSectionForms);
-
-      this.isDirty = form.some(form => form.dirty);
-      this.isInvalid = this.isAnyFormInvalid(form);
-    }
-  }
-
   handleSubmit(): void {
-    this.handleFormState();
+    this.summary.checkForms();
 
     if (!this.isInvalid) {
-      const { systemNumber } = this.vehicleTechRecord!;
-      const hasProvisional = this.vehicleTechRecord!.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
+      const { systemNumber } = this.vehicle;
+      const hasProvisional = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
 
       if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
         this.store.dispatch(updateTechRecords({ systemNumber }));

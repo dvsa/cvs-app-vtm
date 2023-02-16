@@ -7,11 +7,15 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { bodyTypeMap, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
+import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { Subject, debounceTime, takeUntil, Observable, map, take, skipWhile, combineLatest } from 'rxjs';
+import { State } from '@store/index';
+import { selectReferenceDataByResourceKey } from '@store/reference-data';
+import { updateBody } from '@store/technical-records';
+import { Subject, debounceTime, takeUntil, Observable, map, take, skipWhile, combineLatest, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-body',
@@ -25,24 +29,45 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   @Output() formChange = new EventEmitter();
 
   public form!: CustomFormGroup;
-  public bodyTypeOptions: MultiOptions = getOptionsFromEnum(BodyTypeDescription);
   private template!: FormNode;
   private destroy$ = new Subject<void>();
 
-  constructor(private dfs: DynamicFormService, private optionsService: MultiOptionsService, private referenceDataService: ReferenceDataService) {}
+  constructor(
+    private dfs: DynamicFormService,
+    private optionsService: MultiOptionsService,
+    private referenceDataService: ReferenceDataService,
+    private store: Store<State>
+  ) {}
 
   ngOnInit(): void {
     this.template = this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
-    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((event: any) => {
-      // Set the body type code automatically based selection
-      const bodyType = event?.bodyType as BodyType;
+    this.form.cleanValueChanges
+      .pipe(
+        debounceTime(400),
+        takeUntil(this.destroy$),
+        mergeMap((event: any) =>
+          this.store.pipe(
+            select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, event.brakes.dtpNumber)),
+            take(1),
+            map(referenceData => [event, referenceData as PsvMake])
+          )
+        )
+      )
+      .subscribe(([event, psvMake]) => {
+        // Set the body type code automatically based selection
+        const bodyType = event?.bodyType as BodyType;
 
-      if (bodyType?.description) {
-        event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
-      }
-      this.formChange.emit(event);
-    });
+        if (bodyType?.description) {
+          event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
+        }
+
+        this.formChange.emit(event);
+
+        if (this.vehicleTechRecord.vehicleType === VehicleTypes.PSV && event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) {
+          this.store.dispatch(updateBody({ psvMake }));
+        }
+      });
 
     this.optionsService.loadOptions(ReferenceDataResourceType.BodyMake);
     this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
@@ -69,6 +94,12 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
     return FormNodeWidth;
   }
 
+  get bodyTypes(): MultiOptions {
+    const map = vehicleBodyTypeCodeMap.get(this.vehicleTechRecord.vehicleType);
+    const values = [...map!.values()];
+    return getOptionsFromEnum(values.sort());
+  }
+
   get bodyMakes$(): Observable<MultiOptions | undefined> {
     return this.optionsService.getOptions(ReferenceDataResourceType.BodyMake);
   }
@@ -76,7 +107,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   get dtpNumbers$(): Observable<MultiOptions> {
     return combineLatest([
       this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
-      this.referenceDataService.getReferencePsvMakeDataLoading()
+      this.referenceDataService.getReferencePsvMakeDataLoading$()
     ]).pipe(
       skipWhile(([data, loading]) => loading),
       take(1),

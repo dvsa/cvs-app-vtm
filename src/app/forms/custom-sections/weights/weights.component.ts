@@ -1,10 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
 import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
+import { addAxle, removeAxle, updateBrakeForces } from '@store/technical-records';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
@@ -23,22 +26,36 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   public isError: boolean = false;
   public errorMessage?: string;
 
-  constructor(public dfs: DynamicFormService) {}
+  constructor(public dynamicFormsService: DynamicFormService, private store: Store<TechnicalRecordServiceState>) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
+    this.form = this.dynamicFormsService.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
+    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event: any) => {
+      if (event?.axles) {
+        event.axles = (event.axles as Axle[]).filter(axle => !!axle?.axleNumber);
+      }
+
+      this.formChange.emit(event);
+
+      if (event.grossLadenWeight || event.grossKerbWeight) {
+        this.store.dispatch(updateBrakeForces({ grossLadenWeight: event.grossLadenWeight, grossKerbWeight: event.grossKerbWeight }));
+      }
+    });
   }
 
-  ngOnChanges(): void {
-    this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
+  ngOnChanges(changes: SimpleChanges): void {
+    const { vehicleTechRecord } = changes;
+
+    if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
+      this.form?.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
+    }
   }
 
   ngOnDestroy(): void {
     this._formSubscription.unsubscribe();
   }
 
-  get template(): FormNode | undefined {
+  get template(): FormNode {
     switch (this.vehicleTechRecord.vehicleType) {
       case VehicleTypes.PSV:
         return PsvWeightsTemplate;
@@ -47,7 +64,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
       case VehicleTypes.TRL:
         return TrlWeight;
       default:
-        return;
+        throw Error('Incorrect vehicle type!');
     }
   }
 
@@ -76,27 +93,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   addAxle(): void {
-    const weights = this.isPsv
-      ? {
-          kerbWeight: null,
-          ladenWeight: null,
-          gbWeight: null,
-          designWeight: null
-        }
-      : {
-          gbWeight: null,
-          eecWeight: null,
-          designWeight: null
-        };
-
-    const newAxle: Axle = {
-      axleNumber: this.axles.length + 1,
-      weights: weights
-    };
-
-    if (this.vehicleTechRecord.axles.length < 10) {
+    if (this.vehicleTechRecord.axles!.length < 10) {
       this.isError = false;
-      this.axles.addControl(newAxle);
+      this.store.dispatch(addAxle());
     } else {
       this.isError = true;
       this.errorMessage = `Cannot have more than ${10} axles`;
@@ -105,9 +104,10 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
-    if (this.vehicleTechRecord.axles.length > minLength) {
+
+    if (this.vehicleTechRecord.axles!.length > minLength) {
       this.isError = false;
-      this.axles.removeAt(index);
+      this.store.dispatch(removeAxle({ index }));
     } else {
       this.isError = true;
       this.errorMessage = `Cannot have less than ${minLength} axles`;
