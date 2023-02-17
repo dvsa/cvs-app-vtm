@@ -368,7 +368,7 @@ export interface TechRecordModel {
   couplingCenterToRearTrlMin?: number;
   couplingCenterToRearTrlMax?: number;
   plates?: Plates[];
-  lettersOfAuth?: LettersOfAuth[];
+  letterOfAuth?: LettersOfAuth;
   dda?: DDA;
   updateType?: string;
 

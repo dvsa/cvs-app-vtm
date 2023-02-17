@@ -62,15 +62,8 @@ export class GenerateLetterComponent {
     ];
   }
 
-  get mostRecentLetter(): LettersOfAuth | undefined {
-    return (
-      this.currentTechRecord &&
-      cloneDeep(this.currentTechRecord.lettersOfAuth)
-        ?.sort((a, b) =>
-          a.letterDateRequested && b.letterDateRequested ? new Date(a.letterDateRequested).getTime() - new Date(b.letterDateRequested).getTime() : 0
-        )
-        ?.pop()
-    );
+  get letter(): LettersOfAuth | undefined {
+    return this.currentTechRecord?.letterOfAuth ?? undefined;
   }
 
   navigateBack() {

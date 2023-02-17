@@ -2,11 +2,11 @@
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Letter type</dt>
-      <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentLetter?.letterType | defaultNullOrEmpty }}</dd>
+      <dd id="test-cor" class="govuk-summary-list__value">{{ letter?.letterType | defaultNullOrEmpty }}</dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date requested</dt>
-      <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentLetter?.letterDateRequested | date: 'dd/MM/yyyy HH:mm' }}</dd>
+      <dd id="test-cor" class="govuk-summary-list__value">{{ letter?.letterDateRequested | date: 'dd/MM/yyyy HH:mm' }}</dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Letter:</dt>

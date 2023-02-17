@@ -45,12 +45,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     return Roles;
   }
 
-  get mostRecentLetter(): LettersOfAuth | undefined {
-    return cloneDeep(this.vehicleTechRecord.lettersOfAuth)
-      ?.sort((a, b) =>
-        a.letterDateRequested && b.letterDateRequested ? new Date(a.letterDateRequested).getTime() - new Date(b.letterDateRequested).getTime() : 0
-      )
-      ?.pop();
+  get letter(): LettersOfAuth | undefined {
+    return this.vehicleTechRecord?.letterOfAuth ?? undefined;
   }
 
   get eligibleForLetter(): boolean {
