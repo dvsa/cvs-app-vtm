@@ -78,6 +78,7 @@ export const PsvBrakesTemplate: FormNode = {
             {
               name: 'parkingBrakeMrk',
               label: 'Parking Brake',
+              value: false,
               type: FormNodeTypes.CONTROL
             }
           ]

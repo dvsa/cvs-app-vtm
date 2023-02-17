@@ -1,22 +1,19 @@
-import { HttpEventType } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { DocumentRetrievalService } from '@api/document-retrieval';
 import { LettersOfAuth } from '@api/vehicle/model/lettersOfAuth';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
-import { DocumentsService } from '@services/documents/documents.service';
-import { Subscription, debounceTime, takeWhile } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
-  selector: 'app-letters[vehicleTechRecord]',
+  selector: 'app-letters[techRecord]',
   templateUrl: './letters.component.html',
   styleUrls: ['./letters.component.scss']
 })
 export class LettersComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() vehicleTechRecord!: TechRecordModel;
+  @Input() techRecord!: TechRecordModel;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -25,56 +22,42 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   private _formSubscription = new Subscription();
 
-  constructor(
-    private documentRetrievalService: DocumentRetrievalService,
-    private documentsService: DocumentsService,
-    private dynamicFormService: DynamicFormService
-  ) {}
+  constructor(private dynamicFormService: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dynamicFormService.createForm(LettersTemplate, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
   ngOnChanges(): void {
-    this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
+    this.form?.patchValue(this.techRecord, { emitEvent: false });
   }
 
   ngOnDestroy(): void {
     this._formSubscription.unsubscribe();
   }
 
-  get types(): typeof FormNodeEditTypes {
-    return FormNodeEditTypes;
-  }
-
   get roles(): typeof Roles {
     return Roles;
   }
 
-  get mostRecentLetter(): LettersOfAuth | undefined {
-    return this.vehicleTechRecord.lettersOfAuth && this.vehicleTechRecord.lettersOfAuth[this.vehicleTechRecord.lettersOfAuth.length - 1];
+  get types(): typeof FormNodeEditTypes {
+    return FormNodeEditTypes;
   }
 
-  download() {
-    const mostRecentLetter = this.mostRecentLetter;
+  get mostRecentLetter(): LettersOfAuth | undefined {
+    return this.techRecord.lettersOfAuth && this.techRecord.lettersOfAuth[this.techRecord.lettersOfAuth.length - 1];
+  }
 
-    if (!mostRecentLetter) throw new Error('Could not find letter.');
+  get documentParams(): Map<string, string> {
+    return new Map([['letterContents', this.fileName]]);
+  }
 
-    return this.documentRetrievalService
-      .testPlateGet(`plate_${mostRecentLetter.letterContents}`, 'events', true) // TODO: Use testLetterGet when it's implemented
-      .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
-      .subscribe({
-        next: res => {
-          switch (res.type) {
-            case HttpEventType.DownloadProgress:
-              console.log(res);
-              break;
-            case HttpEventType.Response:
-              this.documentsService.openDocumentFromResponse(`plate_${mostRecentLetter.letterContents}`, res.body);
-              break;
-          }
-        }
-      });
+  get fileName(): string {
+    if (this.mostRecentLetter) {
+      return `letter_${this.mostRecentLetter.letterContents}`;
+    } else {
+      throw new Error('Could not find letter.');
+    }
   }
 }
