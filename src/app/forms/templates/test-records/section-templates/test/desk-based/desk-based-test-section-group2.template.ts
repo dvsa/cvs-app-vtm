@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedTestSectionGroup2: FormNode = {
+export const DeskBasedTestSectionGroup2And5: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
