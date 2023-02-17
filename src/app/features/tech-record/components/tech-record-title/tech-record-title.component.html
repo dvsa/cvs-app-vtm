@@ -29,7 +29,7 @@
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
-      <dd id="vehicleType" class="govuk-summary-list__value">
+      <dd id="vin" class="govuk-summary-list__value">
         {{ currentTechRecord.historicVin ?? vehicle?.vin | defaultNullOrEmpty }}
       </dd>
       <ng-container *appRoleRequired="roles.TechRecordAmend">

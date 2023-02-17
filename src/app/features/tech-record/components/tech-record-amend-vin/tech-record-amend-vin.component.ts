@@ -44,16 +44,16 @@ export class AmendVinComponent implements OnInit {
     this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.techRecord = techRecord));
   }
 
-  get width(): FormNodeWidth {
-    return FormNodeWidth.L;
-  }
-
   ngOnInit(): void {
     if (!this.techRecord) {
       this.navigateBack();
     }
 
     this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.navigateBack());
+  }
+
+  get width(): FormNodeWidth {
+    return FormNodeWidth.L;
   }
 
   get makeAndModel(): string {
@@ -67,6 +67,16 @@ export class AmendVinComponent implements OnInit {
     return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
+  get isFormValid(): boolean {
+    const errors: GlobalError[] = [];
+
+    DynamicFormService.updateValidity(this.form, errors);
+
+    this.globalErrorService.setErrors(errors);
+
+    return this.form.valid;
+  }
+
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
@@ -78,15 +88,5 @@ export class AmendVinComponent implements OnInit {
     //awaiting backend logic
     console.log('valid form');
     this.navigateBack();
-  }
-
-  get isFormValid(): boolean {
-    const errors: GlobalError[] = [];
-
-    DynamicFormService.updateValidity(this.form, errors);
-
-    this.globalErrorService.setErrors(errors);
-
-    return this.form.valid;
   }
 }
