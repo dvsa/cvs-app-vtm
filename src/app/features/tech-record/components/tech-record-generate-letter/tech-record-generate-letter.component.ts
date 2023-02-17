@@ -57,7 +57,7 @@ export class GenerateLetterComponent {
 
   get reasons(): Array<FormNodeOption<string>> {
     return [
-      { label: 'Trailer authorised', value: LETTER_TYPES[0].value },
+      { label: 'Trailer accepted', value: LETTER_TYPES[0].value },
       { label: 'Trailer rejected', value: LETTER_TYPES[1].value }
     ];
   }

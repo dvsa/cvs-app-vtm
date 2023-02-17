@@ -320,7 +320,6 @@ export class TechnicalRecordService {
       primaryVrm: undefined,
       systemNumber: vehicleRecord.systemNumber,
       trailerId: vehicleRecord.trailerId,
-      msUserDetails: { msOid: user.id, msUser: user.name },
       techRecord: vehicleRecord.techRecord,
       vtmUsername: user.name,
       letterType: letterType,
