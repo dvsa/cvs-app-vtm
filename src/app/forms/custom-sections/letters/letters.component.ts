@@ -54,7 +54,10 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get eligibleForLetter(): boolean {
-    return this.vehicleTechRecord.approvalType !== undefined && this.vehicleTechRecord.approvalType.valueOf() in LettersIntoAuthApprovalType;
+    return (
+      this.vehicleTechRecord.approvalType !== undefined &&
+      (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.vehicleTechRecord.approvalType!.valueOf())
+    );
   }
 
   download() {
