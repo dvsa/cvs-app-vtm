@@ -116,15 +116,39 @@ describe('TechRecordGenerateLetterComponent', () => {
       expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Letter type is required', anchorLink: 'letterType' });
     });
 
-    it('should dispatch the generateLetter action', () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
-      component.currentTechRecord = expectedVehicle.techRecord[0];
-      component.currentTechRecord.approvalType = approvalType.GB_WVTA;
+    describe('it should dispatch the generateLetter action with the correct paragraphIds', () => {
+      it('should dispatch with id 3 on acceptance', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        component.currentTechRecord = expectedVehicle.techRecord[0];
+        component.currentTechRecord.approvalType = approvalType.SMALL_SERIES;
 
-      component.form.get('letterType')?.setValue('trailer authorisation');
-      component.handleSubmit();
+        component.form.get('letterType')?.setValue('trailer acceptance');
+        component.handleSubmit();
 
-      expect(dispatchSpy).toHaveBeenNthCalledWith(3, generateLetter({ letterType: 'trailer authorisation', paragraphId: 6 }));
+        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 3 }));
+      });
+
+      it('should dispatch with id 4 on rejection', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        component.currentTechRecord = expectedVehicle.techRecord[0];
+        component.currentTechRecord.approvalType = approvalType.GB_WVTA;
+
+        component.form.get('letterType')?.setValue('trailer rejection');
+        component.handleSubmit();
+
+        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer rejection', paragraphId: 4 }));
+      });
+
+      it('should dispatch with id 6 on acceptance', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        component.currentTechRecord = expectedVehicle.techRecord[0];
+        component.currentTechRecord.approvalType = approvalType.GB_WVTA;
+
+        component.form.get('letterType')?.setValue('trailer acceptance');
+        component.handleSubmit();
+
+        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 6 }));
+      });
     });
   });
 });

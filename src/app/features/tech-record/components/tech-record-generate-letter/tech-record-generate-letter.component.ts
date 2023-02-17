@@ -74,6 +74,7 @@ export class GenerateLetterComponent {
   }
 
   navigateBack() {
+    console.log('Clearing errors in navigateBack');
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
   }
@@ -87,7 +88,7 @@ export class GenerateLetterComponent {
       return this.globalErrorService.addError({ error: 'Could not retrieve current technical record' });
     }
 
-    const paragraphId = this.form.value.letterType == 'trailer authorisation' ? this.paragraphMap.get(this.currentTechRecord.approvalType!) : 4;
+    const paragraphId = this.form.value.letterType == 'trailer acceptance' ? this.paragraphMap.get(this.currentTechRecord.approvalType!) : 4;
 
     this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
 
