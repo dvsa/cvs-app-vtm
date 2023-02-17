@@ -121,11 +121,10 @@ describe('TechRecordGenerateLetterComponent', () => {
       component.currentTechRecord = expectedVehicle.techRecord[0];
       component.currentTechRecord.approvalType = approvalType.GB_WVTA;
 
-      component.form.get('letterType')?.setValue('trailer authorsation');
+      component.form.get('letterType')?.setValue('trailer authorisation');
       component.handleSubmit();
 
-      // FIXME: I don't like unit testing
-      expect(dispatchSpy).toBeCalledWith(generateLetter({ letterType: 'trailer authorisation', paragraphId: 6 }));
+      expect(dispatchSpy).toHaveBeenNthCalledWith(3, generateLetter({ letterType: 'trailer authorisation', paragraphId: 6 }));
     });
   });
 });
