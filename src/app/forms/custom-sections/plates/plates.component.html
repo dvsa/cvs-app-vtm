@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" *ngIf="!isEditing">
   <dl class="govuk-summary-list">
     <ng-container *ngIf="hasPlates">
       <div class="govuk-summary-list__row">
@@ -32,3 +32,11 @@
     </div>
   </dl>
 </form>
+
+<ng-container *ngIf="isEditing">
+  <dl class="govuk-summary-list">
+    <div>
+      <dt class="govuk-summary-list__key">This section is unavailable when creating or amending a record.</dt>
+    </div>
+  </dl>
+</ng-container>
