@@ -52,7 +52,7 @@ export const updateEditingTechRecord = createAction(`${prefix} updateEditingTech
 export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditingTechRecordCancel`);
 
 export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ vehicleType: VehicleTypes }>());
-//not sure on this
+
 export const amendVin = createAction(`${prefix} amendVin`, props<{ oldVin: string; newVin: string; systemNumber: string }>());
 export const amendVinSuccess = createAction('amendVin Success');
 export const amendVinFailure = createOutcomeAction('amendVin');
