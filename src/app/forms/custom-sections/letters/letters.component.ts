@@ -62,15 +62,21 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get documentParams(): Map<string, string> {
-    return new Map([['letterContents', this.fileName]]);
+    if (!this.vehicle) {
+      throw new Error('Could not find vehicle record associated with this technical record.');
+    }
+    return new Map([
+      ['systemNumber', this.vehicle!.systemNumber],
+      ['vinNumber', this.vehicle!.vin]
+    ]);
   }
 
   get fileName(): string {
     if (!this.letter) {
-      throw new Error('Could not find letter.');
+      return '';
     }
     if (!this.vehicle) {
-      throw new Error('Could not find vehicle record associated with this technical record.');
+      return '';
     }
     return `letter_${this.vehicle.systemNumber}_${this.vehicle.vin}`;
   }
