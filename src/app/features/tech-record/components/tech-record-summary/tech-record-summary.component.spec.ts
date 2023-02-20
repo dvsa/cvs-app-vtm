@@ -1,22 +1,21 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { createMockTrl } from '@mocks/trl-record.mock';
-import { Roles } from '@models/roles.enum';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { UserService } from '@services/user-service/user-service';
-import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/index';
-import { editableVehicleTechRecord, updateEditingTechRecord } from '@store/technical-records';
-import { of } from 'rxjs';
+import { initialAppState, State } from '@store/.';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { editableVehicleTechRecord, updateEditingTechRecord } from '@store/technical-records';
+import { SharedModule } from '@shared/shared.module';
+import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { QueryList } from '@angular/core';
+import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { UserService } from '@services/user-service/user-service';
+import { of } from 'rxjs';
+import { Roles } from '@models/roles.enum';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
@@ -95,10 +94,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found', () => {
       component.isEditing = false;
-      component.techRecord = {
-        ...createMockTrl(12345).techRecord[0],
-        lettersOfAuth: [{ letterContents: 'test' }]
-      };
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -106,10 +102,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found without dimensions', () => {
       component.isEditing = false;
-      component.techRecord = {
-        ...createMockTrl(12345).techRecord[0],
-        lettersOfAuth: [{ letterContents: 'test' }]
-      };
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       component.techRecord!.dimensions = undefined;
       fixture.detectChanges();
 

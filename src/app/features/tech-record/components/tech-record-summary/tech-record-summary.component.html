@@ -63,14 +63,14 @@
 
     <app-letters
       *ngSwitchCase="'lettersSection'"
-      [techRecord]="techRecordCalculated"
+      [vehicleTechRecord]="techRecordCalculated"
       [isEditing]="isEditing"
       (formChange)="handleFormState($event)"
     ></app-letters>
 
     <app-plates
       *ngSwitchCase="'platesSection'"
-      [techRecord]="techRecordCalculated"
+      [vehicleTechRecord]="techRecordCalculated"
       [isEditing]="isEditing"
       (formChange)="handleFormState($event)"
     ></app-plates>

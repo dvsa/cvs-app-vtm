@@ -1,8 +1,10 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MsalBroadcastService } from '@azure/msal-angular';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { createMockPsv } from '@mocks/psv-record.mock';
 import { Roles } from '@models/roles.enum';
@@ -52,7 +54,7 @@ describe('PlatesComponent', () => {
     component = fixture.componentInstance;
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
-    component.techRecord = createMockPsv(12345).techRecord[0];
+    component.vehicleTechRecord = createMockPsv(12345).techRecord[0];
     fixture.detectChanges();
   });
 
@@ -62,7 +64,7 @@ describe('PlatesComponent', () => {
 
   describe('mostRecentPlate', () => {
     it('should fetch the plate if only 1 exists', () => {
-      component.techRecord = {
+      component.vehicleTechRecord = {
         plates: [
           {
             plateIssueDate: new Date(),
@@ -80,7 +82,7 @@ describe('PlatesComponent', () => {
     });
 
     it('should fetch the latest plate if more than 1 exists', () => {
-      component.techRecord = {
+      component.vehicleTechRecord = {
         plates: [
           {
             plateIssueDate: new Date(new Date().getTime()),
@@ -110,7 +112,7 @@ describe('PlatesComponent', () => {
     });
 
     it('should return null if plates are empty', () => {
-      component.techRecord = {
+      component.vehicleTechRecord = {
         plates: [] as Plates[]
       } as TechRecordModel;
 

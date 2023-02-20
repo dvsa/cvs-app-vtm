@@ -1,5 +1,5 @@
 <form [formGroup]="form">
-  <app-radio-group id="reason" formControlName="reason" [options]="reasons"></app-radio-group>
+  <app-radio-group formControlName="reason" [options]="reasons"></app-radio-group>
 
   <app-button-group>
     <app-button id="submit-plate-form" (clicked)="handleSubmit()">Save</app-button>
