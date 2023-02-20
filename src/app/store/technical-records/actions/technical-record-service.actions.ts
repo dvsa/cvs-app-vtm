@@ -45,7 +45,7 @@ export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords',
 export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
 
 export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, props<{ systemNumber: string; reasonForArchiving: string }>());
-export const archiveTechRecordSuccess = createAction('archiveTechRecord Success');
+export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
 export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord');
 
 export const updateEditingTechRecord = createAction(`${prefix} updateEditingTechRecord`, props<{ vehicleTechRecord: VehicleTechRecordModel }>());
@@ -54,7 +54,7 @@ export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditi
 export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ vehicleType: VehicleTypes }>());
 //not sure on this
 export const amendVin = createAction(`${prefix} amendVin`, props<{ oldVin: string; newVin: string; systemNumber: string }>());
-export const amendVinSuccess = createOutcomeAction(`amendVin`, true);
+export const amendVinSuccess = createAction(`amendVin Success`);
 export const amendVinFailure = createOutcomeAction(`amendVin`);
 
 export const createVehicle = createAction(`${prefix} createVehicle`, props<{ vehicleType: VehicleTypes }>());
