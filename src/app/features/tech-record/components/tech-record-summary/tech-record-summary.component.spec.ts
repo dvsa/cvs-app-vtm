@@ -1,15 +1,16 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { QueryList } from '@angular/core';
+import { Component, QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { mockVehicleTechnicalRecord, mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { createMockTrl } from '@mocks/trl-record.mock';
 import { Roles } from '@models/roles.enum';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { LettersOfAuth, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
@@ -37,7 +38,14 @@ describe('TechRecordSummaryComponent', () => {
           }
         }
       ]
-    }).compileComponents();
+    })
+      .overrideComponent(LettersComponent, {
+        set: {
+          selector: 'app-letters',
+          template: `<h6>Mock Letters Component</h6>`
+        }
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -93,13 +101,15 @@ describe('TechRecordSummaryComponent', () => {
       checkHeadingAndForm();
     });
 
-    it('should show TRL record found', () => {
+    it('should show TRL record found', async () => {
       component.isEditing = false;
       component.techRecord = {
         ...createMockTrl(12345).techRecord[0],
-        lettersOfAuth: [{ letterContents: 'test' }]
+        letterOfAuth: {} as LettersOfAuth
       };
       fixture.detectChanges();
+      component.letters.vehicle = createMockTrl(12345);
+      await fixture.whenStable();
 
       checkHeadingAndForm();
     });
@@ -108,7 +118,7 @@ describe('TechRecordSummaryComponent', () => {
       component.isEditing = false;
       component.techRecord = {
         ...createMockTrl(12345).techRecord[0],
-        lettersOfAuth: [{ letterContents: 'test' }]
+        letterOfAuth: {} as LettersOfAuth
       };
       component.techRecord!.dimensions = undefined;
       fixture.detectChanges();

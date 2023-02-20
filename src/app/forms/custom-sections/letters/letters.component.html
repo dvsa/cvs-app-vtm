@@ -1,26 +1,34 @@
-<form [formGroup]="form">
+<form [formGroup]="form" *ngIf="!isEditing">
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Letter type</dt>
-      <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentLetter?.letterType | defaultNullOrEmpty }}</dd>
+      <dd id="test-cor" class="govuk-summary-list__value">{{ letter?.letterType | defaultNullOrEmpty }}</dd>
+      <dd id="test-certificate" class="govuk-summary-list__value">
+        <button id="test-certificate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">View letter</button>
+      </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date requested</dt>
-      <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentLetter?.letterDateRequested | date: 'dd/MM/yyyy HH:mm' }}</dd>
+      <dd id="test-cor" class="govuk-summary-list__value">{{ letter?.letterDateRequested | date: 'dd/MM/yyyy HH:mm' }}</dd>
     </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Letter:</dt>
-      <dd id="test-certificate" class="govuk-summary-list__value">
-        <button id="test-certificate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">TEST LETTER</button>
-      </dd>
+    <div *ngIf="!letter">
+      <dt class="govuk-summary-list__key">This vehicle does not have a letter.</dt>
     </div>
     <div class="govuk-grid-row">
       <br />
-      <div class="govuk-grid-column-full">
-        <app-button id="generate-letters-link" type="link" routerLink="generate-letter" *appRoleRequired="roles.TechRecordAmend">
-          Generate letter
-        </app-button>
+      <div class="govuk-grid-column-full" *ngIf="eligibleForLetter">
+        <app-button id="generate-letters-link" type="link" routerLink="generate-letter" *appRoleRequired="roles.TechRecordAmend"
+          >Generate letter</app-button
+        >
       </div>
     </div>
   </dl>
 </form>
+
+<ng-container *ngIf="isEditing">
+  <dl class="govuk-summary-list">
+    <div>
+      <dt class="govuk-summary-list__key">This section is unavailable when creating or amending a record.</dt>
+    </div>
+  </dl>
+</ng-container>

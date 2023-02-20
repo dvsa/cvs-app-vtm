@@ -1,4 +1,3 @@
-import { LettersOfAuth } from '@api/vehicle/model/models';
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
 export interface VehicleTechRecordModel {
@@ -138,12 +137,49 @@ export enum VehicleSubclass {
   W = 'w'
 }
 
+export interface LettersOfAuth {
+  letterType: string;
+  paragraphId: ParagraphId;
+  letterIssuer: string;
+  letterDateRequested: string;
+  letterContents: string;
+}
+
 export enum approvalType {
   NTA = 'NTA',
   ECTA = 'ECTA',
   IVA = 'IVA',
   NSSTA = 'NSSTA',
-  ECSSTA = 'ECSSTA'
+  ECSSTA = 'ECSSTA',
+  GB_WVTA = 'GB WVTA',
+  UKNI_WVTA = 'UKNI WVTA',
+  EU_WVTA_PRE_23 = 'EU WVTA Pre 23',
+  EU_WVTA_23_ON = 'EU WVTA 23 on',
+  QNIG = 'QNIG',
+  PROV_GB_WVTA = 'Prov.GB WVTA',
+  SMALL_SERIES = 'Small series',
+  IVA_VCA = 'IVA - VCA',
+  IVA_DVSA_NI = 'IVA - DVSA/NI'
+}
+
+export enum LettersIntoAuthApprovalType {
+  GB_WVTA = 'GB WVTA',
+  UKNI_WVTA = 'UKNI WVTA',
+  EU_WVTA_PRE_23 = 'EU WVTA Pre 23',
+  EU_WVTA_23_ON = 'EU WVTA 23 on',
+  QNIG = 'QNIG',
+  PROV_GB_WVTA = 'Prov.GB WVTA',
+  SMALL_SERIES = 'Small series',
+  IVA_VCA = 'IVA - VCA',
+  IVA_DVSA_NI = 'IVA - DVSA/NI'
+}
+
+export enum ParagraphId {
+  PARAGRAPH_3 = 3,
+  PARAGRAPH_4 = 4,
+  PARAGRAPH_5 = 5,
+  PARAGRAPH_6 = 6,
+  PARAGRAPH_7 = 7
 }
 
 export enum SpeedCategorySymbol {
@@ -332,7 +368,7 @@ export interface TechRecordModel {
   couplingCenterToRearTrlMin?: number;
   couplingCenterToRearTrlMax?: number;
   plates?: Plates[];
-  lettersOfAuth?: LettersOfAuth[];
+  letterOfAuth?: LettersOfAuth;
   dda?: DDA;
   updateType?: string;
 
