@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { createMockPsv } from '@mocks/psv-record.mock';
 import { Roles } from '@models/roles.enum';
-import { LettersOfAuth } from '@models/vehicle-tech-record.model';
+import { LettersOfAuth, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
@@ -18,6 +18,7 @@ import { LettersComponent } from './letters.component';
 describe('LettersComponent', () => {
   let component: LettersComponent;
   let fixture: ComponentFixture<LettersComponent>;
+  let expectedVehicle = {} as VehicleTechRecordModel;
   let route: ActivatedRoute;
   let router: Router;
 
@@ -54,6 +55,7 @@ describe('LettersComponent', () => {
       ...createMockPsv(12345).techRecord[0],
       letterOfAuth: {} as LettersOfAuth
     };
+    component.vehicle = expectedVehicle;
     fixture.detectChanges();
   });
 
