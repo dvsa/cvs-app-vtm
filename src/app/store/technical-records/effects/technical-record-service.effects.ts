@@ -231,8 +231,8 @@ export class TechnicalRecordServiceEffects {
       withLatestFrom(this.userService.name$, this.userService.id$),
       switchMap(([{ oldVin, newVin, systemNumber }, name, id]) =>
         this.technicalRecordService.amendVin(oldVin, newVin, systemNumber, { id, name }).pipe(
-          map(value => amendVinSuccess()),
-          catchError(error => of(amendVinFailure()))
+          map(response => amendVinSuccess({ outcome: response })),
+          catchError(error => of(amendVinFailure({ error: error })))
         )
       )
     )

@@ -54,8 +54,8 @@ export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditi
 export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ vehicleType: VehicleTypes }>());
 //not sure on this
 export const amendVin = createAction(`${prefix} amendVin`, props<{ oldVin: string; newVin: string; systemNumber: string }>());
-export const amendVinSuccess = createAction(`${prefix} amendVin Success`);
-export const amendVinFailure = createAction(`${prefix} amendVin`);
+export const amendVinSuccess = createOutcomeAction(`amendVin`, true);
+export const amendVinFailure = createOutcomeAction(`amendVin`);
 
 export const createVehicle = createAction(`${prefix} createVehicle`, props<{ vehicleType: VehicleTypes }>());
 
