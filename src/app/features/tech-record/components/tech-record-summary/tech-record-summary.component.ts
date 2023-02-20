@@ -141,8 +141,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     this.techRecordCalculated = merge(cloneDeep(this.techRecordCalculated), event);
 
     this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated);
-
-    this.checkForms();
   }
 
   checkForms(): void {
