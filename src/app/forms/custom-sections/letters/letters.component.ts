@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { DocumentRetrievalService } from '@api/document-retrieval';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
 import { LettersIntoAuthApprovalType, LettersOfAuth, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import cloneDeep from 'lodash.clonedeep';
 import { Subscription, debounceTime, take } from 'rxjs';
 
 @Component({
