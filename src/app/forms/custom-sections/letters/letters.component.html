@@ -11,15 +11,15 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Letter:</dt>
       <dd id="test-certificate" class="govuk-summary-list__value">
-        <button id="test-certificate-link" class="link" (click)="download()">TEST LETTER</button>
+        <button id="test-certificate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">TEST LETTER</button>
       </dd>
     </div>
     <div class="govuk-grid-row">
       <br />
       <div class="govuk-grid-column-full">
-        <app-button id="generate-letters-link" type="link" routerLink="generate-letter" *appRoleRequired="roles.TechRecordAmend"
-          >Generate letter</app-button
-        >
+        <app-button id="generate-letters-link" type="link" routerLink="generate-letter" *appRoleRequired="roles.TechRecordAmend">
+          Generate letter
+        </app-button>
       </div>
     </div>
   </dl>

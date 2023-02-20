@@ -109,7 +109,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 
       component.handleSubmit();
 
-      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Reason for generating plate is required', anchorLink: 'plateReasonForGenerating' });
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Reason for generating plate is required', anchorLink: 'reason' });
     });
 
     it('should dispatch the generatePlate action', () => {
