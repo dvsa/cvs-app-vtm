@@ -5,8 +5,9 @@ import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
 import { LettersIntoAuthApprovalType, LettersOfAuth, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import cloneDeep from 'lodash.clonedeep';
-import { Subscription, debounceTime } from 'rxjs';
+import { Subscription, debounceTime, take } from 'rxjs';
 
 @Component({
   selector: 'app-letters[techRecord]',
@@ -14,17 +15,19 @@ import { Subscription, debounceTime } from 'rxjs';
   styleUrls: ['./letters.component.scss']
 })
 export class LettersComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() vehicle!: VehicleTechRecordModel;
   @Input() techRecord!: TechRecordModel;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
 
   form!: CustomFormGroup;
+  vehicle?: VehicleTechRecordModel;
 
   private _formSubscription = new Subscription();
 
-  constructor(private dynamicFormService: DynamicFormService) {}
+  constructor(private dynamicFormService: DynamicFormService, private technicalRecordService: TechnicalRecordService) {
+    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
+  }
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
@@ -63,10 +66,12 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get fileName(): string {
-    if (this.letter) {
-      return `letter_${this.letter.letterContents}`;
-    } else {
+    if (!this.letter) {
       throw new Error('Could not find letter.');
     }
+    if (!this.vehicle) {
+      throw new Error('Could not find vehicle record associated with this technical record.');
+    }
+    return `letter_${this.vehicle?.systemNumber}_${this.vehicle?.vin}`;
   }
 }
