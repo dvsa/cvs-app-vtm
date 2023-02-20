@@ -143,4 +143,40 @@ export class DocumentRetrievalService {
       withCredentials: this.configuration.withCredentials
     });
   }
+
+  getDocument(paramMap: Map<string, string>): Observable<HttpEvent<string>> {
+    let headers = this.defaultHeaders;
+
+    if (this.configuration.accessToken) {
+      const accessToken = typeof this.configuration.accessToken === 'function' ? this.configuration.accessToken() : this.configuration.accessToken;
+      headers = headers.set('Authorization', 'Bearer ' + accessToken);
+    }
+
+    if (this.configuration.apiKeys) {
+      for (const key in this.configuration.apiKeys) {
+        headers = headers.set(key, this.configuration.apiKeys[key]);
+      }
+    }
+
+    const httpContentTypeSelected = this.configuration.selectHeaderContentType(['application/pdf; charset=utf-8']);
+    if (httpContentTypeSelected) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let params = new HttpParams({ encoder: new CustomHttpUrlEncodingCodec() });
+
+    paramMap.forEach((value, key) => params = params.set(key, value));
+
+    return this.httpClient.get(
+      `${this.basePath}/v1/document-retrieval`,
+      {
+        headers,
+        observe: 'events',
+        params,
+        reportProgress: true,
+        responseType: 'text',
+        withCredentials: this.configuration.withCredentials
+      }
+    );
+  }
 }

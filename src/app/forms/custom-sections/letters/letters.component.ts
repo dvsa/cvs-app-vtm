@@ -4,59 +4,69 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
-import { LettersIntoAuthApprovalType, LettersOfAuth, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { LettersIntoAuthApprovalType, LettersOfAuth, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import cloneDeep from 'lodash.clonedeep';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
-  selector: 'app-letters',
+  selector: 'app-letters[techRecord]',
   templateUrl: './letters.component.html',
   styleUrls: ['./letters.component.scss']
 })
 export class LettersComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() vehicleTechRecord!: TechRecordModel;
+  @Input() vehicle!: VehicleTechRecordModel;
+  @Input() techRecord!: TechRecordModel;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
 
-  public form!: CustomFormGroup;
+  form!: CustomFormGroup;
+
   private _formSubscription = new Subscription();
 
-  constructor(public dfs: DynamicFormService, private documentRetrievalService: DocumentRetrievalService) {}
+  constructor(private dynamicFormService: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(LettersTemplate, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
   ngOnChanges(): void {
-    this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
+    this.form?.patchValue(this.techRecord, { emitEvent: false });
   }
 
   ngOnDestroy(): void {
     this._formSubscription.unsubscribe();
   }
 
-  get types(): typeof FormNodeEditTypes {
-    return FormNodeEditTypes;
-  }
-
   get roles(): typeof Roles {
     return Roles;
   }
 
+  get types(): typeof FormNodeEditTypes {
+    return FormNodeEditTypes;
+  }
+
   get letter(): LettersOfAuth | undefined {
-    return this.vehicleTechRecord?.letterOfAuth ?? undefined;
+    return this.techRecord?.letterOfAuth ?? undefined;
   }
 
   get eligibleForLetter(): boolean {
     return (
-      this.vehicleTechRecord.approvalType !== undefined &&
-      (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.vehicleTechRecord.approvalType!.valueOf())
+      this.techRecord.approvalType !== undefined &&
+      (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.techRecord.approvalType!.valueOf())
     );
   }
 
-  download() {
-    console.log('Ping');
+  get documentParams(): Map<string, string> {
+    return new Map([['letterContents', this.fileName]]);
+  }
+
+  get fileName(): string {
+    if (this.letter) {
+      return `letter_${this.letter.letterContents}`;
+    } else {
+      throw new Error('Could not find letter.');
+    }
   }
 }

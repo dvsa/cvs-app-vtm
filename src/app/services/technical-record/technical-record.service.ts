@@ -309,7 +309,7 @@ export class TechnicalRecordService {
       vtmUsername: user.name
     };
 
-    return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.post(url, body, { responseType: 'json' });
   }
 
   generateLetter(vehicleRecord: VehicleTechRecordModel, letterType: string, paragraphId: number, user: { id?: string; name?: string }) {
