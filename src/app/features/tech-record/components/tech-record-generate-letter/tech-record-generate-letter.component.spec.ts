@@ -16,7 +16,6 @@ import { GenerateLetterComponent } from './tech-record-generate-letter.component
 import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CustomFormGroup, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),

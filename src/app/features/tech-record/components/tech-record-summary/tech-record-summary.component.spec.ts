@@ -42,7 +42,7 @@ describe('TechRecordSummaryComponent', () => {
       .overrideComponent(LettersComponent, {
         set: {
           selector: 'app-letters',
-          template: `<h6>Mock Letters Component</h6>`
+          template: `<p>Mock Letters Component</p>`
         }
       })
       .compileComponents();
