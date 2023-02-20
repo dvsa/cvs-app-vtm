@@ -45,7 +45,7 @@ export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords',
 export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
 
 export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, props<{ systemNumber: string; reasonForArchiving: string }>());
-export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
+export const archiveTechRecordSuccess = createAction('archiveTechRecord Success');
 export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord');
 
 export const updateEditingTechRecord = createAction(`${prefix} updateEditingTechRecord`, props<{ vehicleTechRecord: VehicleTechRecordModel }>());
