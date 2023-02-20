@@ -4,9 +4,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { createMockPsv } from '@mocks/psv-record.mock';
+import { createMockTrl } from '@mocks/trl-record.mock';
 import { Roles } from '@models/roles.enum';
-import { LettersOfAuth, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { approvalType, LettersIntoAuthApprovalType, LettersOfAuth, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
@@ -52,7 +52,7 @@ describe('LettersComponent', () => {
     fixture = TestBed.createComponent(LettersComponent);
     component = fixture.componentInstance;
     component.techRecord = {
-      ...createMockPsv(12345).techRecord[0],
+      ...createMockTrl(12345).techRecord[0],
       letterOfAuth: {} as LettersOfAuth
     };
     component.vehicle = expectedVehicle;
@@ -61,5 +61,33 @@ describe('LettersComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('eligibleForLetter', () => {
+    it('should return true if the approval type is valid', () => {
+      component.techRecord.approvalType = approvalType.EU_WVTA_23_ON;
+      expect(component.eligibleForLetter).toBeTruthy();
+    });
+
+    it('should return false if the approval type is valid', () => {
+      component.techRecord.approvalType = approvalType.NTA;
+      expect(component.eligibleForLetter).toBeFalsy();
+    });
+  });
+
+  describe('letter', () => {
+    it('should return the letter if it exists', () => {
+      component.techRecord.letterOfAuth = { paragraphId: 3, letterIssuer: 'issuer' } as LettersOfAuth;
+
+      expect(component.letter).toBeTruthy();
+      expect(component.letter!.paragraphId).toEqual(3);
+      expect(component.letter!.letterIssuer).toEqual('issuer');
+    });
+
+    it('should return undefined if it does not exist', () => {
+      component.techRecord.letterOfAuth = undefined;
+
+      expect(component.letter).toBe(undefined);
+    });
   });
 });
