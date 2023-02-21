@@ -222,6 +222,19 @@ export class TechnicalRecordServiceEffects {
     )
   );
 
+  amendVin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(amendVin),
+      withLatestFrom(this.userService.name$, this.userService.id$),
+      switchMap(([{ newVin, systemNumber }, name, id]) =>
+        this.technicalRecordService.amendVin(newVin, systemNumber, { id, name }).pipe(
+          map(() => amendVinSuccess()),
+          catchError(error => of(amendVinFailure({ error: error })))
+        )
+      )
+    )
+  );
+
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {
     if (typeof error !== 'object') {
       return error;
