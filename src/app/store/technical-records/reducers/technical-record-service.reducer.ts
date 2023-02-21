@@ -200,7 +200,8 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
   newState.editingTechRecord.techRecord[0].axles.push({
     axleNumber: newState.editingTechRecord.techRecord[0].axles.length + 1,
     tyres: {},
-    weights: {}
+    weights: {},
+    parkingBrakeMrk: false
   });
 
   newState.editingTechRecord.techRecord[0].noOfAxles = newState.editingTechRecord.techRecord[0].axles.length;
