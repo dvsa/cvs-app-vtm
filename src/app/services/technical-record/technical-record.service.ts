@@ -331,4 +331,13 @@ export class TechnicalRecordService {
   clearEditingTechRecord() {
     this.store.dispatch(updateEditingTechRecordCancel());
   }
+
+  amendVin(newVin: string, systemNumber: string, user: { id?: string; name?: string }) {
+    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}`;
+    const body = {
+      msUserDetails: { msOid: user.id, msUser: user.name },
+      newVin
+    };
+    return this.http.post(url, body, { responseType: 'json' });
+  }
 }
