@@ -332,8 +332,8 @@ export class TechnicalRecordService {
     this.store.dispatch(updateEditingTechRecordCancel());
   }
 
-  amendVin(oldVin: string, newVin: string, systemNumber: string, user: { id?: string; name?: string }) {
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}/${oldVin}`;
+  amendVin(newVin: string, systemNumber: string, user: { id?: string; name?: string }) {
+    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}`;
     const body = {
       msUserDetails: { msOid: user.id, msUser: user.name },
       newVin
