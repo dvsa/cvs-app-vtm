@@ -47,7 +47,10 @@ import {
   generatePlateFailure,
   generateLetter,
   generateLetterSuccess,
-  generateLetterFailure
+  generateLetterFailure,
+  amendVin,
+  amendVinSuccess,
+  amendVinFailure
 } from '../actions/technical-record-service.actions';
 import { editableTechRecord, selectVehicleTechnicalRecordsBySystemNumber } from '../selectors/technical-record-service.selectors';
 
