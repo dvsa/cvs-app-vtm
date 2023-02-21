@@ -10,7 +10,6 @@ import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
 import { catchError, concatMap, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import {
-  amendVin,
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
@@ -49,8 +48,9 @@ import {
   generateLetter,
   generateLetterSuccess,
   generateLetterFailure,
-  amendVinSuccess,
-  amendVinFailure
+  updateVin,
+  updateVinFailure,
+  updateVinSuccess
 } from '../actions/technical-record-service.actions';
 import { editableTechRecord, selectVehicleTechnicalRecordsBySystemNumber } from '../selectors/technical-record-service.selectors';
 
@@ -225,14 +225,14 @@ export class TechnicalRecordServiceEffects {
     )
   );
 
-  amendVin$ = createEffect(() =>
+  updateVin$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(amendVin),
+      ofType(updateVin),
       withLatestFrom(this.userService.name$, this.userService.id$),
       switchMap(([{ newVin, systemNumber }, name, id]) =>
-        this.technicalRecordService.amendVin(newVin, systemNumber, { id, name }).pipe(
-          map(() => amendVinSuccess()),
-          catchError(error => of(amendVinFailure({ error: error })))
+        this.technicalRecordService.updateVin(newVin, systemNumber, { id, name }).pipe(
+          map(() => updateVinSuccess()),
+          catchError(error => of(updateVinFailure({ error: error })))
         )
       )
     )

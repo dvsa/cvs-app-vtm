@@ -259,13 +259,13 @@ describe('TechnicalRecordService', () => {
       }));
     });
 
-    describe('amendVin', () => {
+    describe('updateVin', () => {
       it('should make POST request to correct URL', fakeAsync(() => {
         const params = { systemNumber: '12345', vin: 'MYNEWVIN', user: { name: 'TEST', id: '1234' } };
-        service.amendVin(params.vin, params.systemNumber, params.user).subscribe();
+        service.updateVin(params.vin, params.systemNumber, params.user).subscribe();
 
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/${params.systemNumber}`);
-        expect(req.request.method).toEqual('POST');
+        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/update-vin/${params.systemNumber}`);
+        expect(req.request.method).toEqual('PUT');
       }));
     });
 
