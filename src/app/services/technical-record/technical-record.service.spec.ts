@@ -275,6 +275,16 @@ describe('TechnicalRecordService', () => {
     });
   });
 
+  describe('amendVin', () => {
+    it('should make POST request to correct URL', fakeAsync(() => {
+      const params = { systemNumber: '12345', vin: 'MYNEWVIN', user: { name: 'TEST', id: '1234' } };
+      service.amendVin(params.vin, params.systemNumber, params.user).subscribe();
+
+      const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/${params.systemNumber}`);
+      expect(req.request.method).toEqual('POST');
+    }));
+  });
+
   describe('isUnique', () => {
     it('should validate the search term to be unique when no matching results are returned', () => {
       const searchParams = { searchTerm: '12345', type: 'vin' };
