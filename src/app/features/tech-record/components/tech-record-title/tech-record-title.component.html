@@ -35,8 +35,6 @@
     </div>
 
     <ng-container [ngSwitch]="currentTechRecord.vehicleType">
-      <ng-container *ngSwitchCase="vehicleTypes.SMALL_TRL"></ng-container>
-
       <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Trailer ID</dt>
         <dd id="trailer-id" class="govuk-summary-list__value">
@@ -65,7 +63,10 @@
         </ng-container>
       </div>
 
-      <div class="govuk-summary-list__row">
+      <div
+        class="govuk-summary-list__row"
+        *ngIf="currentTechRecord.vehicleType !== 'trl' && currentTechRecord.euVehicleCategory !== ('o1' || 'o2' || 'o3')"
+      >
         <dt class="govuk-summary-list__key">Previous VRM</dt>
         <dd id="previous-vrm" class="govuk-summary-list__value">
           <app-number-plate

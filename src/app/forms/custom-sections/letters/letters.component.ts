@@ -57,7 +57,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     if (this.mostRecentLetter) {
       return `letter_${this.mostRecentLetter.letterContents}`;
     } else {
-      throw new Error('Could not find letter.');
+      return 'Could not find letter.';
     }
   }
 }
