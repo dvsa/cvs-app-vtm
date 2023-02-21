@@ -1,26 +1,35 @@
+<!-- This section is going to be redone as part of the changes in VTMDEV-2 -->
 <form [formGroup]="form" *ngIf="!isEditing">
   <dl class="govuk-summary-list">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Letter type</dt>
-      <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentLetter?.letterType | defaultNullOrEmpty }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Date requested</dt>
-      <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentLetter?.letterDateRequested | date: 'dd/MM/yyyy HH:mm' }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Letter:</dt>
-      <dd id="test-certificate" class="govuk-summary-list__value">
-        <button id="test-certificate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">TEST LETTER</button>
-      </dd>
-    </div>
-    <div class="govuk-grid-row">
-      <br />
-      <div class="govuk-grid-column-full">
-        <app-button id="generate-letters-link" type="link" routerLink="generate-letter" *appRoleRequired="roles.TechRecordAmend">
-          Generate letter
-        </app-button>
+    <ng-container *ngIf="mostRecentLetter">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Letter type</dt>
+        <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentLetter?.letterType | defaultNullOrEmpty }}</dd>
       </div>
-    </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Date requested</dt>
+        <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentLetter?.letterDateRequested | date: 'dd/MM/yyyy HH:mm' }}</dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Letter:</dt>
+        <dd id="test-certificate" class="govuk-summary-list__value">
+          <button id="test-certificate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">TEST LETTER</button>
+        </dd>
+      </div>
+      <div class="govuk-grid-row">
+        <br />
+        <div class="govuk-grid-column-full">
+          <app-button id="generate-letters-link" type="link" routerLink="generate-letter" *appRoleRequired="roles.TechRecordAmend">
+            Generate letter
+          </app-button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!mostRecentLetter">
+      <div>
+        <dt class="govuk-summary-list__key">This vehicle does not have a letter.</dt>
+      </div>
+    </ng-container>
   </dl>
 </form>
