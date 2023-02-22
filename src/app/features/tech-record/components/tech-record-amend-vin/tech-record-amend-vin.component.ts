@@ -9,7 +9,6 @@ import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-re
 import { Actions, ofType } from '@ngrx/effects';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateTechRecordsSuccess, updateVin, updateVinSuccess } from '@store/technical-records';
-import { UserService } from '@services/user-service/user-service';
 import { take } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
@@ -46,16 +45,11 @@ export class AmendVinComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private technicalRecordService: TechnicalRecordService,
-    private userService: UserService,
     private store: Store<TechnicalRecordServiceState>
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
     this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.techRecord = techRecord));
-
-    this.userService.name$.pipe(take(1)).subscribe(uName => (this.user.name = uName));
-
-    this.userService.id$.pipe(take(1)).subscribe(uId => (this.user.id = uId));
   }
 
   ngOnInit(): void {
