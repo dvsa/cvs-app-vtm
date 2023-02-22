@@ -51,7 +51,10 @@ export class TechRecordChangeStatusComponent implements OnInit {
     this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
 
     this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => {
-      this.navigateBack(this.isProvisional), this.technicalRecordService.clearEditingTechRecord();
+      const relativePath = this.isProvisional ? '../..' : '..';
+      this.navigateBack(relativePath);
+
+      this.technicalRecordService.clearEditingTechRecord();
     });
   }
 
@@ -63,8 +66,7 @@ export class TechRecordChangeStatusComponent implements OnInit {
     return this.isPromotion ? 'Promote' : 'Archive';
   }
 
-  navigateBack(provisional: boolean = false): void {
-    const relativePath = provisional ? '../..' : '..';
+  navigateBack(relativePath: string = '..'): void {
     this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
