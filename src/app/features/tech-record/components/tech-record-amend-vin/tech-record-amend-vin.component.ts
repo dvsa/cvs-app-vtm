@@ -8,8 +8,11 @@ import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { updateTechRecordsSuccess } from '@store/technical-records';
+import { updateTechRecordsSuccess, updateVin, updateVinSuccess } from '@store/technical-records';
+import { UserService } from '@services/user-service/user-service';
 import { take } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 
 @Component({
   selector: 'app-change-amend-vin',
@@ -18,6 +21,11 @@ import { take } from 'rxjs';
 export class AmendVinComponent implements OnInit {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
+
+  user!: {
+    name?: string;
+    id?: string;
+  };
 
   form = new FormGroup({
     vin: new CustomFormControl(
@@ -37,11 +45,17 @@ export class AmendVinComponent implements OnInit {
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private userService: UserService,
+    private store: Store<TechnicalRecordServiceState>
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
     this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.techRecord = techRecord));
+
+    this.userService.name$.pipe(take(1)).subscribe(uName => (this.user.name = uName));
+
+    this.userService.id$.pipe(take(1)).subscribe(uId => (this.user.id = uId));
   }
 
   ngOnInit(): void {
@@ -85,8 +99,13 @@ export class AmendVinComponent implements OnInit {
   handleSubmit(): void {
     if (!this.isFormValid) return;
 
-    //awaiting backend logic
-    console.log('valid form');
-    this.navigateBack();
+    const payload = {
+      newVin: this.form.value.vin,
+      systemNumber: this.vehicle?.systemNumber ? this.vehicle.systemNumber : ''
+    };
+
+    this.store.dispatch(updateVin(payload));
+
+    this.actions$.pipe(ofType(updateVinSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 }
