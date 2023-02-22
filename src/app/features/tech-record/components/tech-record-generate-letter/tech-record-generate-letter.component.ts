@@ -67,7 +67,6 @@ export class GenerateLetterComponent {
   }
 
   navigateBack() {
-    console.log('Clearing errors in navigateBack');
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
   }
