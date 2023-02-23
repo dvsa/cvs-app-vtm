@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -9,15 +9,16 @@ import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-re
 import { Actions, ofType } from '@ngrx/effects';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateTechRecordsSuccess, updateVin, updateVinSuccess } from '@store/technical-records';
-import { take } from 'rxjs';
-import { Store } from '@ngrx/store';
+import { Subject, take, takeUntil } from 'rxjs';
+import { select, Store } from '@ngrx/store';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 
 @Component({
   selector: 'app-change-amend-vin',
   templateUrl: './tech-record-amend-vin.component.html'
 })
-export class AmendVinComponent implements OnInit {
+export class AmendVinComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
 
@@ -58,6 +59,12 @@ export class AmendVinComponent implements OnInit {
     }
 
     this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.navigateBack());
+    this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get width(): FormNodeWidth {
@@ -99,7 +106,5 @@ export class AmendVinComponent implements OnInit {
     };
 
     this.store.dispatch(updateVin(payload));
-
-    this.actions$.pipe(ofType(updateVinSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 }
