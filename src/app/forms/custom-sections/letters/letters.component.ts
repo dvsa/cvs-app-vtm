@@ -3,7 +3,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
-import { LettersIntoAuthApprovalType, LettersOfAuth, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Subscription, debounceTime, take } from 'rxjs';
 
@@ -53,6 +53,28 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get eligibleForLetter(): boolean {
+    const currentTechRecord = this.techRecord.statusCode === StatusCodes.CURRENT;
+
+    return this.correctApprovalType && currentTechRecord && !this.isEditing;
+  }
+
+  get reasonForIneligibility(): string {
+    if (this.isEditing) {
+      return 'This section is not available when amending or creating a technical record.';
+    }
+
+    if (this.techRecord.statusCode !== StatusCodes.CURRENT) {
+      return 'Generating letters is only applicable to current technical records.';
+    }
+
+    if (!this.correctApprovalType) {
+      return 'This trailer does not have the right approval type to be eligible for a letter of authorisation.';
+    }
+
+    return '';
+  }
+
+  get correctApprovalType(): boolean {
     return (
       this.techRecord.approvalType !== undefined &&
       (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.techRecord.approvalType!.valueOf())

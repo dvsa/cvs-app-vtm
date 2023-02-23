@@ -1,5 +1,5 @@
-<form [formGroup]="form" *ngIf="!isEditing">
-  <dl class="govuk-summary-list">
+<form [formGroup]="form">
+  <dl class="govuk-summary-list" *ngIf="eligibleForPlates">
     <ng-container *ngIf="hasPlates">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Plate serial number</dt>
@@ -31,12 +31,10 @@
       </div>
     </div>
   </dl>
-</form>
 
-<ng-container *ngIf="isEditing">
-  <dl class="govuk-summary-list">
+  <dl class="govuk-summary-list" *ngIf="!eligibleForPlates">
     <div>
-      <dt class="govuk-summary-list__key">This section is unavailable when creating or amending a record.</dt>
+      <dt class="govuk-summary-list__key">{{ reasonForIneligibility }}</dt>
     </div>
   </dl>
-</ng-container>
+</form>
