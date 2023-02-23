@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { LettersOfAuth } from '@api/vehicle/model/lettersOfAuth';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
-import { Subscription, debounceTime } from 'rxjs';
+import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { Subscription, debounceTime, take } from 'rxjs';
 
 @Component({
   selector: 'app-letters[techRecord]',
@@ -19,10 +19,13 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   @Output() formChange = new EventEmitter();
 
   form!: CustomFormGroup;
+  vehicle?: VehicleTechRecordModel;
 
   private _formSubscription = new Subscription();
 
-  constructor(private dynamicFormService: DynamicFormService) {}
+  constructor(private dynamicFormService: DynamicFormService, private technicalRecordService: TechnicalRecordService) {
+    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
+  }
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
@@ -45,19 +48,56 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     return FormNodeEditTypes;
   }
 
-  get mostRecentLetter(): LettersOfAuth | undefined {
-    return this.techRecord.lettersOfAuth && this.techRecord.lettersOfAuth[this.techRecord.lettersOfAuth.length - 1];
+  get letter(): LettersOfAuth | undefined {
+    return this.techRecord?.letterOfAuth ?? undefined;
+  }
+
+  get eligibleForLetter(): boolean {
+    const currentTechRecord = this.techRecord.statusCode === StatusCodes.CURRENT;
+
+    return this.correctApprovalType && currentTechRecord && !this.isEditing;
+  }
+
+  get reasonForIneligibility(): string {
+    if (this.isEditing) {
+      return 'This section is not available when amending or creating a technical record.';
+    }
+
+    if (this.techRecord.statusCode !== StatusCodes.CURRENT) {
+      return 'Generating letters is only applicable to current technical records.';
+    }
+
+    if (!this.correctApprovalType) {
+      return 'This trailer does not have the right approval type to be eligible for a letter of authorisation.';
+    }
+
+    return '';
+  }
+
+  get correctApprovalType(): boolean {
+    return (
+      this.techRecord.approvalType !== undefined &&
+      (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.techRecord.approvalType!.valueOf())
+    );
   }
 
   get documentParams(): Map<string, string> {
-    return new Map([['letterContents', this.fileName]]);
+    if (!this.vehicle) {
+      throw new Error('Could not find vehicle record associated with this technical record.');
+    }
+    return new Map([
+      ['systemNumber', this.vehicle!.systemNumber],
+      ['vinNumber', this.vehicle!.vin]
+    ]);
   }
 
   get fileName(): string {
-    if (this.mostRecentLetter) {
-      return `letter_${this.mostRecentLetter.letterContents}`;
-    } else {
-      throw new Error('Could not find letter.');
+    if (!this.letter) {
+      return '';
     }
+    if (!this.vehicle) {
+      return '';
+    }
+    return `letter_${this.vehicle.systemNumber}_${this.vehicle.vin}`;
   }
 }

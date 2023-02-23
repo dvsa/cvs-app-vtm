@@ -312,10 +312,21 @@ export class TechnicalRecordService {
     return this.http.post(url, body, { responseType: 'json' });
   }
 
-  generateLetter(techRecord: TechRecordModel, letterType: string) {
-    // TODO: Implement API call when ready
-    console.log('Piiing.');
-    return of(true);
+  generateLetter(vehicleRecord: VehicleTechRecordModel, letterType: string, paragraphId: number, user: { id?: string; name?: string }) {
+    const url = `${environment.VTM_API_URI}/vehicles/documents/letter`;
+
+    const body = {
+      vin: vehicleRecord.vin,
+      primaryVrm: undefined,
+      systemNumber: vehicleRecord.systemNumber,
+      trailerId: vehicleRecord.trailerId,
+      techRecord: vehicleRecord.techRecord,
+      vtmUsername: user.name,
+      letterType: letterType,
+      paragraphId: paragraphId
+    };
+
+    return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
   private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {

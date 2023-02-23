@@ -7,7 +7,7 @@ export const LettersTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'lettersOfAuth',
+      name: 'letterOfAuth',
       type: FormNodeTypes.GROUP,
       children: [
         {

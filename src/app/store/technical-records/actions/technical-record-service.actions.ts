@@ -63,8 +63,8 @@ export const generatePlate = createAction(`${prefix} generatePlate`, props<{ rea
 export const generatePlateSuccess = createAction(`${prefix} generatePlate Success`);
 export const generatePlateFailure = createOutcomeAction('generatePlate');
 
-export const generateLetter = createAction(`${prefix} generateLetter`, props<{ techRecord: TechRecordModel; letterType: string }>());
-export const generateLetterSuccess = createOutcomeAction('generateLetter', true);
+export const generateLetter = createAction(`${prefix} generateLetter`, props<{ letterType: string; paragraphId: number }>());
+export const generateLetterSuccess = createAction(`${prefix} generateLetter Success`);
 export const generateLetterFailure = createOutcomeAction('generateLetter');
 
 export const updateBrakeForces = createAction(`${prefix} updateBrakesForces`, props<{ grossLadenWeight?: number; grossKerbWeight?: number }>());
