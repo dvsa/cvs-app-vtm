@@ -22,6 +22,16 @@ export const LettersTemplate: FormNode = {
           type: FormNodeTypes.CONTROL
         },
         {
+          name: 'letterIssuer',
+          label: 'Letter issuer',
+          type: FormNodeTypes.CONTROL
+        },
+        {
+          name: 'paragraphId',
+          label: 'Paragraph ID',
+          type: FormNodeTypes.CONTROL
+        },
+        {
           name: 'letterContents',
           label: 'Content',
           type: FormNodeTypes.CONTROL,
