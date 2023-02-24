@@ -4,8 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PlatesInner } from '@api/vehicle';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth, FormNodeOption } from '@forms/services/dynamic-form.types';
+import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { UserService } from '@services/user-service/user-service';
 import { generatePlateSuccess, generatePlate, editableTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { take } from 'rxjs';
@@ -20,15 +22,19 @@ export class GeneratePlateComponent {
     reason: new CustomFormControl({ name: 'reason', label: 'Reason for generating plate', type: FormNodeTypes.CONTROL }, '', [Validators.required])
   });
 
+  record?: TechRecordModel;
+
   constructor(
     private actions$: Actions,
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<TechnicalRecordServiceState>
+    private store: Store<TechnicalRecordServiceState>,
+    public userService: UserService
   ) {
     this.store.select(editableTechRecord).subscribe(record => {
       if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
+      this.record = record;
     });
   }
 
@@ -45,6 +51,10 @@ export class GeneratePlateComponent {
       { label: 'Original', value: PlatesInner.PlateReasonForIssueEnum.Original },
       { label: 'Manual', value: PlatesInner.PlateReasonForIssueEnum.Manual }
     ];
+  }
+
+  get emailAddress(): string | undefined {
+    return this.record?.applicantDetails?.emailAddress;
   }
 
   navigateBack() {

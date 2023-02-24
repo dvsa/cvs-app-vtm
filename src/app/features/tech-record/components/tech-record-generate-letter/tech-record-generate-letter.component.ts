@@ -9,6 +9,7 @@ import { approvalType, LettersIntoAuthApprovalType, LettersOfAuth, TechRecordMod
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { UserService } from '@services/user-service/user-service';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
@@ -48,7 +49,8 @@ export class GenerateLetterComponent {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    public userService: UserService
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
@@ -64,6 +66,10 @@ export class GenerateLetterComponent {
 
   get letter(): LettersOfAuth | undefined {
     return this.currentTechRecord?.letterOfAuth ?? undefined;
+  }
+
+  get emailAddress(): string | undefined {
+    return this.currentTechRecord?.applicantDetails?.emailAddress;
   }
 
   navigateBack() {
