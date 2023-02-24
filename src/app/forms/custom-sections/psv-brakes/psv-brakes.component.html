@@ -7,11 +7,11 @@
   [isEditing]="isEditing"
   [width]="widths.L"
   [prefix]="brakeCodePrefix"
-  [options]="(brakeCodeOptions$ | async) || []"
+  [propOptions$]="brakeCodeOptions$"
 ></app-switchable-input>
 
 <ng-template #view [formGroup]="brakesForm">
-  <app-read-only formControlName="brakeCode" label="Brake code"></app-read-only>
+  <app-read-only formControlName="brakeCode" name="brake-code" label="Brake code"></app-read-only>
 </ng-template>
 
 <app-switchable-input
@@ -73,20 +73,36 @@
   <tbody class="govuk-table__body">
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Service</th>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 16) / 100) }}</td>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 16) / 100) }}</td>
+      <td class="govuk-table__cell" id="noWheelLockAddedServiceCell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 16) / 100) }}</td>
+      <td class="govuk-table__cell" id="halfWheelsLockedServiceCell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 16) / 100) }}</td>
     </tr>
 
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Secondary</th>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100) }}</td>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 25) / 100) }}</td>
+      <td class="govuk-table__cell" id="noWheelLockAddedSecondaryCell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100) }}</td>
+      <td class="govuk-table__cell" id="halfWheelsLockedSecondaryCell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 25) / 100) }}</td>
     </tr>
 
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Parking</th>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 45) / 100) }}</td>
-      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 50) / 100) }}</td>
+      <td class="govuk-table__cell" id="noWheelLockAddedParkingCell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 45) / 100) }}</td>
+      <td class="govuk-table__cell" id="halfWheelsLockedParkingCell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 50) / 100) }}</td>
     </tr>
   </tbody>
 </table>
+
+<div class="checkboxes">
+  <label class="govuk-label govuk-label--m" for="parking-brake">Parking Brake</label>
+
+  <div id="parking-brake" class="govuk-checkboxes">
+    <app-switchable-input
+      *ngFor="let axle of axles.controls; let i = index"
+      [form]="getAxleForm(i)"
+      [type]="editTypes.CHECKBOX"
+      [customId]="'parkingBrakeMrk' + (i + 1)"
+      name="parkingBrakeMrk"
+      [label]="'Axle ' + (i + 1)"
+      [isEditing]="isEditing"
+    ></app-switchable-input>
+  </div>
+</div>

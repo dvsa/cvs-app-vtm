@@ -7,9 +7,10 @@
     *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE"
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
-    [options$]="options"
+    [options$]="options$"
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
+    [width]="control.value.meta.width"
   ></app-autocomplete>
 
   <app-date
@@ -45,7 +46,7 @@
     *ngSwitchCase="formNodeEditTypes.RADIO"
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
-    [options]="(options | async) || []"
+    [options]="(options$ | async) || []"
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
   ></app-radio-group>
@@ -54,7 +55,7 @@
     *ngSwitchCase="formNodeEditTypes.SELECT"
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
-    [options]="(options | async) || []"
+    [options]="(options$ | async) || []"
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
     [width]="control.value.meta.width"
@@ -68,11 +69,19 @@
     [hint]="control.value.meta.hint"
   ></app-text-area>
 
-  <app-checkbox-group
+  <app-checkbox
     *ngSwitchCase="formNodeEditTypes.CHECKBOX"
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
-    [options]="(options | async) || []"
+    [formControlName]="control.key"
+    [hint]="control.value.meta.hint"
+  ></app-checkbox>
+
+  <app-checkbox-group
+    *ngSwitchCase="formNodeEditTypes.CHECKBOXGROUP"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [options]="(options$ | async) || []"
     [formControlName]="control.key"
     [delimited]="control.value.meta.delimited"
     [hint]="control.value.meta.hint"

@@ -43,7 +43,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, Array<string>>();
-  protectedResourceMap.set(environment.VTM_API_URI, [`${environment.VTM_API_CLIENT_ID}/user_impersonation`]);
+  protectedResourceMap.set(environment.VTM_API_URI, [`${environment.VTM_API_CLIENT_ID}/user_impersonation`, 'email']);
 
   return {
     interactionType: InteractionType.Redirect,
@@ -55,7 +55,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
     interactionType: InteractionType.Redirect,
     authRequest: {
-      scopes: [`${environment.VTM_API_CLIENT_ID}/user_impersonation`]
+      scopes: [`${environment.VTM_API_CLIENT_ID}/user_impersonation`, 'email']
     },
     loginFailedRoute: ''
   };

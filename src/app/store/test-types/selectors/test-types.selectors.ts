@@ -2,6 +2,7 @@ import { TestType } from '@api/test-types';
 import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { VehicleSubclass } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
@@ -88,33 +89,39 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
   const { vehicleType, euVehicleCategory, vehicleSize, vehicleConfiguration, noOfAxles, vehicleClass, vehicleSubclass, numberOfWheelsDriven } =
     testResult;
 
-  return testTypes
-    .filter(testTypes => !vehicleType || !testTypes.forVehicleType || testTypes.forVehicleType.includes(vehicleType))
-    .filter(testTypes => !euVehicleCategory || !testTypes.forEuVehicleCategory || testTypes.forEuVehicleCategory.includes(euVehicleCategory))
-    .filter(testTypes => !vehicleSize || !testTypes.forVehicleSize || testTypes.forVehicleSize.includes(vehicleSize))
-    .filter(
-      testTypes => !vehicleConfiguration || !testTypes.forVehicleConfiguration || testTypes.forVehicleConfiguration.includes(vehicleConfiguration)
-    )
-    .filter(testTypes => !noOfAxles || !testTypes.forVehicleAxles || testTypes.forVehicleAxles.includes(noOfAxles))
-    .filter(testTypes => !vehicleClass || !vehicleClass.code || !testTypes.forVehicleClass || testTypes.forVehicleClass.includes(vehicleClass.code))
-    .filter(
-      testTypes =>
-        !vehicleClass || !vehicleClass.description || !testTypes.forVehicleClass || testTypes.forVehicleClass.includes(vehicleClass.description)
-    )
-    .filter(
-      testTypes =>
-        !vehicleSubclass ||
-        !testTypes.forVehicleSubclass ||
-        testTypes.forVehicleSubclass.some(forVehicleSubclass => vehicleSubclass.includes(forVehicleSubclass))
-    )
-    .filter(testTypes => !numberOfWheelsDriven || !testTypes.forVehicleWheels || testTypes.forVehicleWheels.includes(numberOfWheelsDriven))
-    .map(testType => {
-      const newTestType = { ...testType } as TestTypeCategory;
+  return (
+    testTypes
+      .filter(testTypes => !vehicleType || !testTypes.forVehicleType || testTypes.forVehicleType.includes(vehicleType))
+      .filter(testTypes => !euVehicleCategory || !testTypes.forEuVehicleCategory || testTypes.forEuVehicleCategory.includes(euVehicleCategory))
+      .filter(testTypes => !vehicleSize || !testTypes.forVehicleSize || testTypes.forVehicleSize.includes(vehicleSize))
+      .filter(
+        testTypes => !vehicleConfiguration || !testTypes.forVehicleConfiguration || testTypes.forVehicleConfiguration.includes(vehicleConfiguration)
+      )
+      .filter(testTypes => !noOfAxles || !testTypes.forVehicleAxles || testTypes.forVehicleAxles.includes(noOfAxles))
+      // if code AND description are null, or if either code OR description are in forVehicleClass, include in filter
+      .filter(
+        testTypes =>
+          !vehicleClass ||
+          !testTypes.forVehicleClass ||
+          (!vehicleClass.code && !vehicleClass.description) ||
+          (vehicleClass.code && testTypes.forVehicleClass.includes(vehicleClass.code)) ||
+          (vehicleClass.description && testTypes.forVehicleClass.includes(vehicleClass.description))
+      )
+      .filter(
+        testTypes =>
+          !vehicleSubclass ||
+          !testTypes.forVehicleSubclass ||
+          testTypes.forVehicleSubclass.some(forVehicleSubclass => vehicleSubclass.includes(forVehicleSubclass as VehicleSubclass))
+      )
+      .filter(testTypes => !numberOfWheelsDriven || !testTypes.forVehicleWheels || testTypes.forVehicleWheels.includes(numberOfWheelsDriven))
+      .map(testType => {
+        const newTestType = { ...testType } as TestTypeCategory;
 
-      if (newTestType.hasOwnProperty('nextTestTypesOrCategories')) {
-        newTestType.nextTestTypesOrCategories = filterTestTypes(newTestType.nextTestTypesOrCategories!, testResult);
-      }
+        if (newTestType.hasOwnProperty('nextTestTypesOrCategories')) {
+          newTestType.nextTestTypesOrCategories = filterTestTypes(newTestType.nextTestTypesOrCategories!, testResult);
+        }
 
-      return newTestType;
-    });
+        return newTestType;
+      })
+  );
 }

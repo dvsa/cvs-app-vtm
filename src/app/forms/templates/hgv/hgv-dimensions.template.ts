@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const HgvDimensionsTemplate: FormNode = {
   name: 'dimensionsSection',
@@ -14,14 +14,14 @@ export const HgvDimensionsTemplate: FormNode = {
         {
           name: 'length',
           label: 'Length (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Max, args: 99999 }]
         },
         {
           name: 'width',
           label: 'Width (mm)',
-          value: '',
+          value: null,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Max, args: 99999 }]
         },
@@ -36,7 +36,8 @@ export const HgvDimensionsTemplate: FormNode = {
                 {
                   name: 'value',
                   label: 'Axle to axle (mm)',
-                  value: '',
+                  value: null,
+                  editType: FormNodeEditTypes.NUMBER,
                   type: FormNodeTypes.CONTROL,
                   validators: [{ name: ValidatorNames.Max, args: 99999 }]
                 }
@@ -49,35 +50,35 @@ export const HgvDimensionsTemplate: FormNode = {
     {
       name: 'frontAxleToRearAxle',
       label: 'Front axle to rear axle (mm)',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'frontAxleTo5thWheelCouplingMin',
       label: 'Minimum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'frontAxleTo5thWheelCouplingMax',
       label: 'Maximum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'frontAxleTo5thWheelMin',
       label: 'Minimum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
       name: 'frontAxleTo5thWheelMax',
       label: 'Maximum',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     }

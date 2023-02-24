@@ -1,5 +1,4 @@
 .autocomplete__wrapper {
-  width: 30rem;
   z-index: 0;
 
   .govuk-label,
@@ -13,14 +12,13 @@
 }
 
 .internal-wrapper {
-  align-items: flex-start;
-  display: flex;
   margin-top: 10px;
+  display: flex;
 
   .prefix {
     border: 2px solid #0b0c0c;
     border-right: 0;
-    height: unset;
+    height: fit-content;
   }
 
   @media (max-width: 640px) {

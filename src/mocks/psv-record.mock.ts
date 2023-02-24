@@ -21,7 +21,7 @@ export const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
     vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
     vrms: [
       {
-        vrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
+        vrm: `KP01ABC`,
         isPrimary: true
       },
       {
@@ -337,6 +337,7 @@ const archivedTechRecord = {
 };
 
 const currentTechRecord = {
+  recordCompleteness: 'complete',
   createdAt: new Date(2019, 11),
   createdByName: 'Nathan',
   statusCode: StatusCodes.CURRENT,

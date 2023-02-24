@@ -17,7 +17,7 @@ import {
   fetchTyreReferenceDataByKeySearchSuccess,
   removeTyreSearch
 } from '../actions/reference-data.actions';
-import { isResourceType } from '../selectors/reference-data.selectors';
+
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
 
 const selectResourceKey = (a: ReferenceDataModelBase): string | number => {
@@ -46,7 +46,6 @@ function getInitialState(resourceType: ReferenceDataResourceType) {
 
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
   [ReferenceDataResourceType.BodyMake]: createAdapter(),
-  [ReferenceDataResourceType.BodyModel]: createAdapter(),
   [ReferenceDataResourceType.Brake]: createAdapter(),
   [ReferenceDataResourceType.CountryOfRegistration]: createAdapter(),
   [ReferenceDataResourceType.PsvMake]: createAdapter(),
@@ -63,7 +62,6 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
 
 export const initialReferenceDataState: ReferenceDataState = {
   [ReferenceDataResourceType.BodyMake]: getInitialState(ReferenceDataResourceType.BodyMake),
-  [ReferenceDataResourceType.BodyModel]: getInitialState(ReferenceDataResourceType.BodyModel),
   [ReferenceDataResourceType.Brake]: getInitialState(ReferenceDataResourceType.Brake),
   [ReferenceDataResourceType.CountryOfRegistration]: getInitialState(ReferenceDataResourceType.CountryOfRegistration),
   [ReferenceDataResourceType.PsvMake]: getInitialState(ReferenceDataResourceType.PsvMake),
@@ -86,9 +84,7 @@ export const referenceDataReducer = createReducer(
       [resourceType]: { ...resourceTypeAdapters[resourceType].upsertMany(payload, state[resourceType]), loading: paginated }
     };
   }),
-
   on(fetchReferenceDataFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
-
   on(fetchReferenceDataByKey, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: true } })),
   on(fetchReferenceDataByKeySuccess, (state, action) => {
     const { resourceType, payload } = action;
@@ -98,7 +94,6 @@ export const referenceDataReducer = createReducer(
     };
   }),
   on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
-
   on(fetchReferenceDataByKeySearch, (state, action) => ({
     ...state,
     [action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: true }
@@ -114,7 +109,6 @@ export const referenceDataReducer = createReducer(
     ...state,
     [action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: false, filter: null, term: null }
   })),
-
   on(fetchTyreReferenceDataByKeySearch, (state, action) => ({
     ...state,
     [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null, loading: true }

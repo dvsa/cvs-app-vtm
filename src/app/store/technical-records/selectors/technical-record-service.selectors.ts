@@ -5,15 +5,17 @@ import { getVehicleTechRecordState } from '../reducers/technical-record-service.
 
 export const vehicleTechRecords = createSelector(getVehicleTechRecordState, state => state.vehicleTechRecords);
 
-export const editableTechRecord = createSelector(getVehicleTechRecordState, state => state.editingTechRecord);
+export const editableVehicleTechRecord = createSelector(getVehicleTechRecordState, state => state.editingTechRecord);
+
+export const editableTechRecord = createSelector(editableVehicleTechRecord, vehicle => vehicle?.techRecord[0]);
 
 export const technicalRecordsLoadingState = createSelector(getVehicleTechRecordState, state => state.loading);
 
 export const selectVehicleTechnicalRecordsBySystemNumber = createSelector(
   vehicleTechRecords,
   selectRouteNestedParams,
-  (techRecords, { systemNumber, vin }) => {
-    const foundRecord = techRecords.find(record => record.systemNumber === systemNumber && record.vin === vin);
+  (techRecords, { systemNumber }) => {
+    const foundRecord = techRecords.find(record => record.systemNumber === systemNumber);
 
     const sortByDate = function (a: Date, b: Date): number {
       return new Date(b).getTime() - new Date(a).getTime();

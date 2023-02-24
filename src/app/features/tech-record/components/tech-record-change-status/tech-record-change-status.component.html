@@ -1,20 +1,14 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <app-tech-record-title [vehicleTechRecord]="(vehicleTechRecord$ | async) || undefined"></app-tech-record-title>
+    <app-tech-record-title [vehicle]="(vehicle$ | async) || undefined" [hideActions]="true"></app-tech-record-title>
 
-    <form [formGroup]="form" (submit)="handleSubmit(form.value)">
+    <form [formGroup]="form">
       <app-text-area name="reason" [label]="label" formControlName="reason"></app-text-area>
 
-      <dl class="govuk-summary-list">
-        <dd class="govuk-summary-list__value">
-          <button class="govuk-button govuk-button--primary" id="submit" type="submit" data-module="govuk-button" data-prevent-double-click="true">
-            {{ buttonLabel }} record
-          </button>
-        </dd>
-        <dd class="govuk-summary-list__value">
-          <a class="govuk-link" (click)="goBack()">Back</a>
-        </dd>
-      </dl>
+      <app-button id="submit-change-status" data-prevent-double-click="true" (clicked)="handleSubmit(form.value)">
+        {{ buttonLabel }} record
+      </app-button>
+      <app-button design="link" id="tech-record-back-link" (clicked)="navigateBack()">Back</app-button>
     </form>
   </div>
 </div>

@@ -31,4 +31,25 @@ describe('BodyComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('The DTpNumber value on this.form', () => {
+    it('should match the corresponding values on vehicleTechRecord', () => {
+      expect(component.vehicleTechRecord.brakes!.dtpNumber).toStrictEqual(component.form.value.brakes.dtpNumber);
+    });
+  });
+  describe('The bodyModel value on this.form', () => {
+    it('should match the corresponding values on vehicleTechRecord', () => {
+      expect(component.vehicleTechRecord.bodyModel).toStrictEqual(component.form.value.bodyModel);
+    });
+  });
+  describe('The bodyMake value on this.form', () => {
+    it('should match the corresponding values on vehicleTechRecord', () => {
+      expect(component.vehicleTechRecord.bodyType).toStrictEqual(component.form.controls['bodyType'].value);
+    });
+  });
+  describe('The bodyModel value on this.form', () => {
+    it('should match the corresponding values on vehicleTechRecord', () => {
+      expect(component.vehicleTechRecord.bodyModel).toStrictEqual(component.form.controls['bodyModel'].value);
+    });
+  });
 });

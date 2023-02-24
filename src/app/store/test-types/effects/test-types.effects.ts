@@ -14,7 +14,7 @@ export class TestTypeEffects {
       ofType(fetchTestTypes),
       switchMap(() => this.userService.roles$),
       switchMap(roles => {
-        const typeOfTest = Roles.TestResultCreateDeskAssesment.split(',').some(role => roles?.includes(role)) ? TypeOfTest.DESK_BASED : undefined;
+        const typeOfTest = Roles.TestResultCreateDeskAssessment.split(',').some(role => roles?.includes(role)) ? TypeOfTest.DESK_BASED : undefined;
 
         return this.testTypeService.getTestTypes(typeOfTest).pipe(
           map(testTypes => fetchTestTypesSuccess({ payload: testTypes })),

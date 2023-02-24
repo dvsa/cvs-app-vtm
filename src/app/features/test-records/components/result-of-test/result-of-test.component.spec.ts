@@ -34,11 +34,11 @@ describe('ResultOfTestComponent', () => {
   });
 
   it('should render on the dom with the correct test result from the service', async () => {
-    jest.spyOn(component, 'resultOfTest$', 'get').mockReturnValue(of(resultOfTestEnum.pass));
+    component.resultOfTest = resultOfTestEnum.pass;
     await runOnPushChangeDetection(fixture);
     const tag = fixture.debugElement.query(By.css('.govuk-tag'));
     expect(tag.nativeElement.innerHTML).toBe('Pass');
-    jest.spyOn(component, 'resultOfTest$', 'get').mockReturnValue(of(resultOfTestEnum.fail));
+    component.resultOfTest = resultOfTestEnum.fail;
     await runOnPushChangeDetection(fixture);
     expect(tag.nativeElement.innerHTML).toBe('Fail');
   });

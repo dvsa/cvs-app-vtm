@@ -24,7 +24,8 @@ export const ContingencyVisitSection: FormNode = {
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: SpecialRefData.TEST_STATION_P_NUMBER,
       validators: [{ name: ValidatorNames.Required }],
-      asyncValidators: [{ name: AsyncValidatorNames.UpdateTestStationDetails }]
+      asyncValidators: [{ name: AsyncValidatorNames.UpdateTestStationDetails }],
+      width: FormNodeWidth.XXL
     },
     {
       name: 'testStationType',
@@ -37,6 +38,7 @@ export const ContingencyVisitSection: FormNode = {
       name: 'testerStaffId',
       type: FormNodeTypes.CONTROL,
       label: 'Tester details',
+      width: FormNodeWidth.XXL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: ReferenceDataResourceType.User,

@@ -4,6 +4,7 @@
     <ol class="list">
       <li *ngFor="let type of selectAllTestTypes$ | async; trackBy: tackByFn">
         <button
+          [id]="'test-list-item-' + [type.id]"
           class="list__item"
           [ngClass]="{ 'list__item--active': isSelected(type.id!!), 'list__item--more': hasNext(type) }"
           (click)="handleCategory(type, 0)"
@@ -23,6 +24,7 @@
       <ng-container *ngIf="hasNext(category)">
         <li *ngFor="let type of category.nextTestTypesOrCategories; trackBy: tackByFn">
           <button
+            [id]="'browse-list-item-' + [type.id]"
             class="list__item"
             [ngClass]="{ 'list__item--active': isSelected(type.id!!), 'list__item--more': hasNext(type) }"
             (click)="handleCategory(type, i + 1)"

@@ -1,8 +1,12 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
+import { initialAppState } from '@store/index';
 import { TechRecordHistoryComponent } from './tech-record-history.component';
 
 describe('TechRecordHistoryComponent', () => {
@@ -14,7 +18,8 @@ describe('TechRecordHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordHistoryComponent],
-      imports: [RouterTestingModule, SharedModule]
+      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
+      providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
@@ -23,8 +28,8 @@ describe('TechRecordHistoryComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
-    component.vehicleTechRecord = mockVehicleTechnicalRecord();
-    component.currentRecord = mockVehicleTechnicalRecord().techRecord[0];
+    component.vehicle = mockVehicleTechnicalRecord();
+    component.currentTechRecord = mockVehicleTechnicalRecord().techRecord[0];
     fixture.detectChanges();
   });
   it('should create', () => {

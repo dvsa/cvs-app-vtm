@@ -1,4 +1,14 @@
 <ng-container *ngIf="vehicleTechRecord.vehicleType === 'psv'">
+  <app-switchable-input
+    [form]="brakesForm"
+    [type]="editTypes.AUTOCOMPLETE"
+    name="dtpNumber"
+    label="DTp Number"
+    [isEditing]="isEditing"
+    [propOptions$]="dtpNumbers$"
+    [width]="widths.L"
+  ></app-switchable-input>
+
   <div class="node-row">
     <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="chassisMake" label="Chassis make" [isEditing]="isEditing" [width]="widths.L">
     </app-switchable-input>
@@ -26,18 +36,39 @@
       [width]="widths.L"
     ></app-switchable-input>
   </div>
-  <app-switchable-input
-    [form]="bodyTypeForm"
-    [type]="editTypes.TEXT"
-    name="description"
-    label="Body type"
-    [isEditing]="isEditing"
-    [options]="bodyTypeOptions"
-    [width]="widths.L"
-  ></app-switchable-input>
+
+  <div class="node-row">
+    <app-switchable-input
+      [form]="bodyTypeForm"
+      [type]="editTypes.TEXT"
+      name="description"
+      label="Body type"
+      [isEditing]="isEditing"
+      [options]="bodyTypes"
+      [width]="widths.L"
+    ></app-switchable-input>
+
+    <app-switchable-input
+      [form]="form"
+      [type]="editTypes.TEXT"
+      name="modelLiteral"
+      label="Model Literal"
+      [isEditing]="isEditing"
+      [width]="widths.L"
+    ></app-switchable-input>
+  </div>
 </ng-container>
 
 <ng-container *ngIf="vehicleTechRecord.vehicleType !== 'psv'">
+  <app-switchable-input
+    [form]="brakesForm"
+    [type]="editTypes.TEXT"
+    name="dtpNumber"
+    label="DTp Number"
+    [isEditing]="isEditing"
+    [width]="widths.L"
+  ></app-switchable-input>
+
   <div class="node-row">
     <app-switchable-input
       [form]="form"
@@ -51,11 +82,10 @@
 
     <app-switchable-input
       [form]="form"
-      [type]="editTypes.DROPDOWN"
+      [type]="editTypes.TEXT"
       name="model"
       label="Body model"
       [isEditing]="isEditing"
-      [options]="(bodyModels$ | async) || []"
       [width]="widths.M"
     ></app-switchable-input>
   </div>
@@ -66,7 +96,7 @@
     name="description"
     label="Body type"
     [isEditing]="isEditing"
-    [options]="bodyTypeOptions"
+    [options]="bodyTypes"
     [width]="widths.L"
   ></app-switchable-input>
 </ng-container>

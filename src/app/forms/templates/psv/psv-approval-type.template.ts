@@ -14,7 +14,7 @@ export const PsvTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(approvalType),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: []
     },
     {
       name: 'approvalTypeNumber',

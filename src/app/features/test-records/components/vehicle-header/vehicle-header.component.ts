@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TestTypesTaxonomy } from '@api/test-types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TestType } from '@models/test-types/test-type.model';
+import { resultOfTestEnum, TestType } from '@models/test-types/test-type.model';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
@@ -46,6 +46,10 @@ export class VehicleHeaderComponent {
     return ReferenceDataResourceType;
   }
 
+  get resultOfTest(): resultOfTestEnum | undefined {
+    return this.testResult?.testTypes[0].testResult;
+  }
+
   getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined) {
     switch (vehicleType) {
       case VehicleTypes.TRL:
@@ -53,6 +57,10 @@ export class VehicleHeaderComponent {
       case VehicleTypes.PSV:
         return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
       case VehicleTypes.HGV:
+      case VehicleTypes.LGV:
+      case VehicleTypes.CAR:
+      case VehicleTypes.SMALL_TRL:
+      case VehicleTypes.MOTORCYCLE:
         return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
       default:
         return 'Unknown Vehicle Type';

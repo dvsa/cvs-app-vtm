@@ -14,6 +14,7 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectQueryParam, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { updateResultOfTest } from '@store/test-records';
+import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/selectors/test-types.selectors';
 import merge from 'lodash.merge';
 import { catchError, concatMap, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
@@ -87,12 +88,12 @@ export class TestResultsEffects {
       ofType(updateTestResult),
       mergeMap(action =>
         of(action.value).pipe(
-          withLatestFrom(this.userService.userName$, this.userService.id$, this.store.pipe(select(selectRouteNestedParams))),
+          withLatestFrom(this.userService.name$, this.userService.id$, this.userService.userEmail$, this.store.pipe(select(selectRouteNestedParams))),
           take(1)
         )
       ),
-      mergeMap(([testResult, username, id, { systemNumber }]) => {
-        return this.testRecordsService.saveTestResult(systemNumber, { username, id }, testResult).pipe(
+      mergeMap(([testResult, name, id, userEmail, { systemNumber }]) => {
+        return this.testRecordsService.saveTestResult(systemNumber, { name, id, userEmail }, testResult).pipe(
           take(1),
           map(responseBody => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),
           catchError(e => {
@@ -169,11 +170,16 @@ export class TestResultsEffects {
       ofType(contingencyTestTypeSelected),
       mergeMap(action =>
         of(action).pipe(
-          withLatestFrom(this.store.select(testResultInEdit), this.store.select(selectTestType(action.testType)), this.userService.user$),
+          withLatestFrom(
+            this.store.select(testResultInEdit),
+            this.store.select(selectTestType(action.testType)),
+            this.store.select(getTestStationFromProperty('testStationType', TestStationType.HQ)),
+            this.userService.user$
+          ),
           take(1)
         )
       ),
-      concatMap(([action, editingTestResult, testTypeTaxonomy, user]) => {
+      concatMap(([action, editingTestResult, testTypeTaxonomy, testStation, user]) => {
         const id = action.testType;
 
         const { vehicleType } = editingTestResult!;
@@ -202,14 +208,14 @@ export class TestResultsEffects {
 
         if (mergedForms.typeOfTest !== TypeOfTest.CONTINGENCY) {
           mergedForms.testerName = user.name;
-          mergedForms.testerEmailAddress = user.username;
+          mergedForms.testerEmailAddress = user.userEmail;
           mergedForms.testerStaffId = user.oid;
           mergedForms.testStartTimestamp = now;
           mergedForms.testEndTimestamp = now;
           mergedForms.testTypes[0].testTypeStartTimestamp = now;
           mergedForms.testTypes[0].testTypeEndTimestamp = now;
-          mergedForms.testStationName = 'SWANSEA';
-          mergedForms.testStationPNumber = 'SWANSEA';
+          mergedForms.testStationName = testStation?.testStationName ?? '[INVALID_OPTION]';
+          mergedForms.testStationPNumber = testStation?.testStationPNumber ?? '[INVALID_OPTION]';
           mergedForms.testStationType = TestStationType.ATF;
         }
 

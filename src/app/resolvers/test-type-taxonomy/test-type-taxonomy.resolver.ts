@@ -18,9 +18,7 @@ export class TestTypeTaxonomyResolver implements Resolve<boolean> {
     return this.action$.pipe(
       ofType(fetchTestTypesSuccess, fetchTestTypesFailed),
       take(1),
-      map(action => {
-        return action.type === fetchTestTypesSuccess.type;
-      })
+      map(action => action.type === fetchTestTypesSuccess.type)
     );
   }
 }

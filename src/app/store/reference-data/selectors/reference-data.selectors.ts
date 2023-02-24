@@ -15,6 +15,8 @@ export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataReso
 
 export const referenceDataLoadingState = createSelector(referenceDataFeatureState, state => Object.values(state).some(feature => feature.loading));
 
+export const referencePsvMakeLoadingState = createSelector(referenceDataFeatureState, state => state.PSV_MAKE.loading);
+
 export const selectBrakeByCode = (code: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Brake].entities[code] as Brake);
 
@@ -31,10 +33,14 @@ export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
   }
 };
 
-export const selectTyreSearchReturn = () =>
-  createSelector(referenceDataFeatureState, state => (state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres).searchReturn);
-export const selectTyreSearchCriteria = () =>
-  createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres);
+export const selectTyreSearchReturn = createSelector(
+  referenceDataFeatureState,
+  state => (state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres).searchReturn
+);
+export const selectTyreSearchCriteria = createSelector(
+  referenceDataFeatureState,
+  state => state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres
+);
 
 export const selectUserByResourceKey = (resourceKey: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.User].entities[resourceKey]);

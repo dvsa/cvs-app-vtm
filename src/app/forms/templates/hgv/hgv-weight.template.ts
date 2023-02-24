@@ -1,11 +1,10 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
 const requiredValidation = [
   { name: ValidatorNames.Numeric, args: 99999 },
   { name: ValidatorNames.Max, args: 99999 },
-  { name: ValidatorNames.Min, args: 0 },
-  { name: ValidatorNames.Required }
+  { name: ValidatorNames.Min, args: 0 }
 ];
 
 const optionalValidation = [
@@ -37,7 +36,8 @@ export const HgvWeight: FormNode = {
       name: 'grossEecWeight',
       label: 'EEC (optional)',
       customValidatorErrorName: 'Gross EEC Weight',
-      value: '',
+      value: null,
+      editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
@@ -52,7 +52,7 @@ export const HgvWeight: FormNode = {
     {
       name: 'grossTrainSection',
       label: 'Gross train weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.SECTION
     },
     {
@@ -67,7 +67,8 @@ export const HgvWeight: FormNode = {
       name: 'trainEecWeight',
       label: 'EEC (optional)',
       customValidatorErrorName: 'Train EEC Weight',
-      value: '',
+      value: null,
+      editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
@@ -75,14 +76,14 @@ export const HgvWeight: FormNode = {
       name: 'trainDesignWeight',
       label: 'Design (optional)',
       customValidatorErrorName: 'Train Design Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
     {
       name: 'maxTrainSection',
       label: 'Max train weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.SECTION
     },
     {
@@ -97,7 +98,8 @@ export const HgvWeight: FormNode = {
       name: 'maxTrainEecWeight',
       label: 'EEC (optional)',
       customValidatorErrorName: 'Max Train EEC Weight',
-      value: '',
+      value: null,
+      editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
@@ -105,7 +107,7 @@ export const HgvWeight: FormNode = {
       name: 'maxTrainDesignWeight',
       label: 'Design (optional)',
       customValidatorErrorName: 'Max Train Design Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
@@ -149,7 +151,8 @@ export const HgvWeight: FormNode = {
                   name: 'eecWeight',
                   label: 'EEC (optional)',
                   customValidatorErrorName: 'Axle EEC Weight',
-                  value: '',
+                  value: null,
+                  editType: FormNodeEditTypes.NUMBER,
                   type: FormNodeTypes.CONTROL,
                   validators: optionalValidation
                 },

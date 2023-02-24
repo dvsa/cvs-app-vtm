@@ -169,7 +169,7 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       const siblingControl = control?.parent?.get(sibling);
       if (siblingControl?.value && control.value && new Date(control.value) < new Date(siblingControl.value)) {
-        return { aheadOfDate: { sibling: (siblingControl as CustomFormControl).meta.label } };
+        return { aheadOfDate: { sibling: (siblingControl as CustomFormControl).meta.label, date: new Date(siblingControl.value) } };
       }
 
       return null;
@@ -205,5 +205,13 @@ export class CustomValidators {
       }
       return null;
     };
+  };
+
+  static notZNumber = (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null;
+
+    const isZNumber = new RegExp('^[0-9]{7}[zZ]$').test(control.value);
+
+    return !isZNumber ? null : { notZNumber: true };
   };
 }

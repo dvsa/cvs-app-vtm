@@ -68,7 +68,7 @@ describe('Reference Data Selectors', () => {
         }
       };
 
-      const expectedState = referenceDataSelectors.selectTyreSearchReturn().projector(state);
+      const expectedState = referenceDataSelectors.selectTyreSearchReturn.projector(state);
       expect(expectedState).toBe(value.payload);
     });
   });
@@ -102,7 +102,7 @@ describe('Reference Data Selectors', () => {
         }
       };
 
-      const expectedState = referenceDataSelectors.selectTyreSearchCriteria().projector(state);
+      const expectedState = referenceDataSelectors.selectTyreSearchCriteria.projector(state);
       expect(expectedState.filter).toBe('cake');
       expect(expectedState.term).toBe('lies');
     });

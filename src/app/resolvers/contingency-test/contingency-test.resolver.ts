@@ -41,8 +41,9 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               testResultId: uuidv4(),
               euVehicleCategory: viewableTechRecord?.euVehicleCategory ?? null,
               vehicleSize: viewableTechRecord?.vehicleSize,
-              vehicleConfiguration: viewableTechRecord?.vehicleConfiguration,
+              vehicleConfiguration: viewableTechRecord?.vehicleConfiguration ?? null,
               vehicleClass: viewableTechRecord?.vehicleClass ?? null,
+              vehicleSubclass: viewableTechRecord?.vehicleSubclass ?? null,
               noOfAxles: viewableTechRecord?.noOfAxles ?? 0,
               numberOfWheelsDriven: viewableTechRecord?.numberOfWheelsDriven ?? null,
               testStatus: 'submitted',
@@ -76,7 +77,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
       map(() => {
         return true;
       }),
-      catchError(e => {
+      catchError(() => {
         return of(false);
       })
     );

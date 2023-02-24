@@ -1,0 +1,22 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <app-tech-record-title [vehicle]="(vehicle$ | async) || undefined" [hideActions]="true"></app-tech-record-title>
+
+    <form [formGroup]="form" (submit)="handleSubmit(form.value)">
+      <h1 class="govuk-heading-l">{{ title }}</h1>
+
+      <app-text-area name="reason" label="Why are you making this change?" formControlName="reason"></app-text-area>
+
+      <dl class="govuk-summary-list">
+        <dd class="govuk-summary-list__value">
+          <button class="govuk-button govuk-button--primary" id="submit" type="submit" data-module="govuk-button" data-prevent-double-click="true">
+            {{ buttonLabel }}
+          </button>
+        </dd>
+        <dd class="govuk-summary-list__value back-button">
+          <a class="govuk-link" id="back-from-record-visibility-link" (click)="goBack()">Back</a>
+        </dd>
+      </dl>
+    </form>
+  </div>
+</div>

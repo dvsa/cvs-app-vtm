@@ -1,29 +1,27 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
-import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
-import { By } from '@angular/platform-browser';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { Action } from '@ngrx/store';
-import { Router } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
-import { ReplaySubject } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
+import { Action } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { SharedModule } from '@shared/shared.module';
+import { initialAppState } from '@store/.';
+import { clearError } from '@store/global-error/actions/global-error.actions';
 import {
   createProvisionalTechRecordSuccess,
   selectVehicleTechnicalRecordsBySystemNumber,
   updateEditingTechRecordCancel,
   updateTechRecordsSuccess
 } from '@store/technical-records';
-import { RouterTestingModule } from '@angular/router/testing';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { clearError } from '@store/global-error/actions/global-error.actions';
-import { selectedAmendedTestResultState } from '@store/test-records';
-import { mockTestResult } from '@mocks/mock-test-result';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { ReplaySubject } from 'rxjs';
+import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
 
 let component: EditTechRecordButtonComponent;
 let fixture: ComponentFixture<EditTechRecordButtonComponent>;
@@ -45,7 +43,7 @@ describe('EditTechRecordButtonComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         { provide: APP_BASE_HREF, useValue: '/' }
       ],
-      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule]
+      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule]
     }).compileComponents();
   });
 
@@ -54,8 +52,12 @@ describe('EditTechRecordButtonComponent', () => {
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
+    component.vehicle = <VehicleTechRecordModel>{ techRecord: [<TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' }] };
+    component.viewableTechRecord = component.vehicle.techRecord[0];
 
     fixture.detectChanges();
+
+    jest.spyOn(window, 'confirm');
   });
 
   describe('component', () => {
@@ -81,21 +83,22 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   describe('when user clicks edit button', () => {
-    it('component should nagivate away for current ammendments', () => {
+    it('component should navigate away for current amendments', () => {
       jest.spyOn(router, 'navigate');
       component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current' };
+      jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
 
       fixture.detectChanges();
-      fixture.debugElement.query(By.css('#edit')).nativeElement.click();
+      fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
 
       expect(router.navigate).toHaveBeenCalled();
     });
-    it('component should nagivate away for notifyable alterations', () => {
+    it('component should navigate away for notifiable alterations', () => {
       jest.spyOn(router, 'navigate');
       component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional' };
 
       fixture.detectChanges();
-      fixture.debugElement.query(By.css('#edit')).nativeElement.click();
+      fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
 
       expect(router.navigate).toHaveBeenCalled();
     });
@@ -117,7 +120,7 @@ describe('EditTechRecordButtonComponent', () => {
         ]
       };
       store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
-      component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
+      component.vehicle = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
       component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
       component.isEditing = true;
     });
@@ -127,7 +130,8 @@ describe('EditTechRecordButtonComponent', () => {
         jest.spyOn(component.submitChange, 'emit');
 
         fixture.detectChanges();
-        fixture.debugElement.query(By.css('#submit')).nativeElement.click();
+        fixture.debugElement.query(By.css('button#submit')).nativeElement.click();
+        discardPeriodicTasks();
 
         expect(component.submitChange.emit).toHaveBeenCalledTimes(1);
       }));
@@ -140,7 +144,7 @@ describe('EditTechRecordButtonComponent', () => {
         tick();
 
         expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/1/provisional');
+        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
       }));
 
       it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
@@ -151,7 +155,7 @@ describe('EditTechRecordButtonComponent', () => {
         tick();
 
         expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/1/provisional');
+        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
       }));
     });
 
@@ -170,7 +174,7 @@ describe('EditTechRecordButtonComponent', () => {
 
           fixture.detectChanges();
 
-          fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+          fixture.debugElement.query(By.css('button#cancel')).nativeElement.click();
 
           expect(window.confirm).toHaveBeenCalledWith('Your changes will not be saved. Are you sure?');
         });
@@ -181,7 +185,9 @@ describe('EditTechRecordButtonComponent', () => {
             jest.spyOn(store, 'dispatch');
 
             fixture.detectChanges();
-            fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+            fixture.debugElement.query(By.css('button#cancel')).nativeElement.click();
+
+            discardPeriodicTasks();
 
             expect(component.cancel).toHaveBeenCalled();
             expect(component.toggleEditMode).not.toHaveBeenCalled();
@@ -200,7 +206,9 @@ describe('EditTechRecordButtonComponent', () => {
             jest.spyOn(store, 'dispatch');
 
             fixture.detectChanges();
-            fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+            fixture.debugElement.query(By.css('button#cancel')).nativeElement.click();
+
+            discardPeriodicTasks();
 
             expect(router.navigate).toHaveBeenCalled();
             expect(component.cancel).toHaveBeenCalled();
@@ -229,13 +237,16 @@ describe('EditTechRecordButtonComponent', () => {
         }));
 
         it('should return user to non-edit view', fakeAsync(() => {
+          jest.spyOn(window, 'confirm');
           jest.spyOn(component, 'cancel');
           jest.spyOn(component, 'toggleEditMode');
           jest.spyOn(store, 'dispatch');
 
           fixture.detectChanges();
 
-          fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+          fixture.debugElement.query(By.css('button#cancel')).nativeElement.click();
+
+          discardPeriodicTasks();
 
           expect(component.cancel).toHaveBeenCalled();
           expect(component.toggleEditMode).toHaveBeenCalled();

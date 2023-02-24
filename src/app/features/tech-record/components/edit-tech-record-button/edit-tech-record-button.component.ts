@@ -1,26 +1,26 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import {
   createProvisionalTechRecordSuccess,
   selectVehicleTechnicalRecordsBySystemNumber,
   updateEditingTechRecordCancel,
   updateTechRecordsSuccess
 } from '@store/technical-records';
-import { ofType, Actions } from '@ngrx/effects';
-import { mergeMap, take } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { ViewportScroller } from '@angular/common';
+import { take, withLatestFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-edit-tech-record-button',
-  templateUrl: './edit-tech-record-button.component.html',
-  styleUrls: ['./edit-tech-record-button.component.scss']
+  selector: 'app-edit-tech-record-button[vehicle][viewableTechRecord]',
+  templateUrl: './edit-tech-record-button.component.html'
 })
 export class EditTechRecordButtonComponent implements OnInit {
-  @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  @Input() viewableTechRecord?: TechRecordModel;
+  @Input() vehicle!: VehicleTechRecordModel;
+  @Input() viewableTechRecord!: TechRecordModel;
   @Input() isEditing = false;
   @Input() isDirty = false;
 
@@ -33,6 +33,7 @@ export class EditTechRecordButtonComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store,
+    private technicalRecordService: TechnicalRecordService,
     private viewportScroller: ViewportScroller
   ) {}
 
@@ -40,20 +41,18 @@ export class EditTechRecordButtonComponent implements OnInit {
     this.actions$
       .pipe(
         ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
-        mergeMap(_action => this.store.select(selectVehicleTechnicalRecordsBySystemNumber)),
+        withLatestFrom(this.store.select(selectVehicleTechnicalRecordsBySystemNumber), this.technicalRecordService.techRecord$),
         take(1)
       )
-      .subscribe(vehicleTechRecord => {
-        const techRecord = vehicleTechRecord!.techRecord[0];
+      .subscribe(([, vehicleTechRecord, techRecord]) => {
+        const routeSuffix = techRecord?.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
 
-        const routeSuffix = techRecord.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
-
-        this.router.navigateByUrl(`/tech-records/${vehicleTechRecord!.systemNumber}/${vehicleTechRecord!.vin}${routeSuffix}`);
+        this.router.navigateByUrl(`/tech-records/${vehicleTechRecord!.systemNumber}${routeSuffix}`);
       });
   }
 
   get isArchived(): boolean {
-    return !(this.viewableTechRecord?.statusCode === StatusCodes.CURRENT || this.viewableTechRecord?.statusCode === StatusCodes.PROVISIONAL);
+    return !(this.viewableTechRecord.statusCode === StatusCodes.CURRENT || this.viewableTechRecord.statusCode === StatusCodes.PROVISIONAL);
   }
 
   getLatestRecordTimestamp(record: VehicleTechRecordModel): number {
@@ -61,9 +60,10 @@ export class EditTechRecordButtonComponent implements OnInit {
   }
 
   checkIfEditableReasonRequired() {
-    this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL
+    this.viewableTechRecord.statusCode !== StatusCodes.PROVISIONAL
       ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
       : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route });
+    this.technicalRecordService.clearReasonForCreation(this.vehicle);
   }
 
   toggleEditMode() {

@@ -15,14 +15,14 @@ export const PsvBrakesTemplate: FormNode = {
           label: 'Brake code',
           value: '',
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
         },
         {
           name: 'brakeCode',
           label: 'Brake code',
           value: '',
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
         },
         {
           name: 'dataTrBrakeOne',
@@ -56,6 +56,32 @@ export const PsvBrakesTemplate: FormNode = {
           label: 'Retarder 2',
           value: '',
           type: FormNodeTypes.CONTROL
+        }
+      ]
+    },
+    {
+      name: 'axles',
+      value: '',
+      type: FormNodeTypes.ARRAY,
+      children: [
+        {
+          name: '0',
+          label: 'Axle',
+          value: '',
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'axleNumber',
+              label: 'Axle Number',
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'parkingBrakeMrk',
+              label: 'Parking Brake',
+              value: false,
+              type: FormNodeTypes.CONTROL
+            }
+          ]
         }
       ]
     }

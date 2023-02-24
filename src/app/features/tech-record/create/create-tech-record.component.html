@@ -1,0 +1,58 @@
+<form [formGroup]="vehicleForm">
+  <h1 class="govuk-heading-l title">New vehicle information</h1>
+
+  <app-text-input
+    #inputVin
+    formControlName="vin"
+    name="input-vin"
+    label="Vehicle Identification number (VIN)"
+    [width]="30"
+    (ngModelChange)="ngOnChanges()"
+  ></app-text-input>
+
+  <app-text-input
+    #inputVrmOrTrailerId
+    formControlName="vrmTrm"
+    name="input-vrm-or-trailer-id"
+    label="VRM / Trailer ID"
+    [width]="30"
+    (ngModelChange)="ngOnChanges()"
+    *ngIf="!generateID.value"
+  ></app-text-input>
+
+  <span class="govuk-list" *ngIf="!generateID.value">Or</span>
+
+  <app-checkbox-group
+    #generateID
+    formControlName="generateID"
+    name="generate-c-or-z-num"
+    [options]="[{ value: true, label: 'Generate a C/Z number on submission of the new record' }]"
+    (ngModelChange)="toggleVrmInput(generateID)"
+  ></app-checkbox-group>
+
+  <app-select
+    #selectVehicleStatus
+    formControlName="vehicleStatus"
+    label="Select vehicle status"
+    [options]="vehicleStatusOptions"
+    name="change-vehicle-status-select"
+    (ngModelChange)="ngOnChanges()"
+  ></app-select>
+
+  <app-select
+    #selectVehicleType
+    formControlName="vehicleType"
+    label="Select vehicle type"
+    [options]="vehicleTypeOptions"
+    name="change-vehicle-type-select"
+    (ngModelChange)="ngOnChanges()"
+  ></app-select>
+
+  <ng-container *ngIf="this.isVinUniqueCheckComplete && !this.vinUnique">
+    <p class="govuk-error-message">The Vin your about to submit is a duplicate, if you are happy to continue please press continue</p>
+  </ng-container>
+
+  <app-button id="create-record-continue" (clicked)="handleSubmit()">Continue</app-button>
+
+  <app-button class design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+</form>

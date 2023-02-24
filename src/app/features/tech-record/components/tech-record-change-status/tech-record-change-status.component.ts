@@ -5,51 +5,44 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { RouterReducerState } from '@ngrx/router-store';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
   archiveTechRecord,
   archiveTechRecordSuccess,
-  updateEditingTechRecord,
+  updateEditingTechRecordCancel,
   updateTechRecords,
   updateTechRecordsSuccess
 } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { Observable, take } from 'rxjs';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-tech-record-change-status',
-  templateUrl: './tech-record-change-status.component.html',
-  styleUrls: ['./tech-record-change-status.component.scss']
+  templateUrl: './tech-record-change-status.component.html'
 })
 export class TechRecordChangeStatusComponent implements OnInit {
-  vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
+  vehicle$: Observable<VehicleTechRecordModel | undefined>;
 
   techRecord?: TechRecordModel;
 
   form: CustomFormGroup;
 
-  buttonLabel: string;
+  isPromotion = false;
 
   constructor(
     private actions$: Actions,
     private errorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
-    private routerStore: Store<RouterReducerState>,
-    private techRecordsStore: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService,
-    private location: Location
+    private store: Store<State>,
+    private technicalRecordService: TechnicalRecordService
   ) {
-    this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
+    this.vehicle$ = this.technicalRecordService.selectedVehicleTechRecord$;
 
     this.technicalRecordService.techRecord$.subscribe(techRecord => (this.techRecord = techRecord));
-
-    this.buttonLabel = this.isPromotion ? 'Promote' : 'Archive';
 
     this.form = new CustomFormGroup(
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
@@ -58,25 +51,27 @@ export class TechRecordChangeStatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.actions$
-      .pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1))
-      .subscribe(() => this.router.navigate([this.isPromotion ? '../..' : '..'], { relativeTo: this.route }));
-  }
+    this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
 
-  get isPromotion(): boolean {
-    return this.router.url.split('/').pop() === 'promote';
+    this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => {
+      this.navigateBack(), this.technicalRecordService.clearEditingTechRecord();
+    });
   }
 
   get label(): string {
     return `Reason for ${this.isPromotion ? 'promotion' : 'archiving'}`;
   }
 
-  goBack(): void {
-    this.location.back();
+  get buttonLabel(): string {
+    return this.isPromotion ? 'Promote' : 'Archive';
+  }
+
+  navigateBack(): void {
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string }): void {
-    let newTechRecord: TechRecordModel = cloneDeep(this.techRecord!);
+    const newTechRecord: TechRecordModel = cloneDeep(this.techRecord!);
     if (!this.techRecord) {
       return;
     }
@@ -95,14 +90,14 @@ export class TechRecordChangeStatusComponent implements OnInit {
       return;
     }
 
-    this.techRecordsStore.dispatch(updateEditingTechRecord({ techRecord: newTechRecord }));
+    this.technicalRecordService.updateEditingTechRecord(newTechRecord);
 
-    this.routerStore.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber }) => {
+    this.store.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber }) => {
       const action = this.isPromotion
         ? updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
         : archiveTechRecord({ systemNumber, reasonForArchiving: form.reason });
 
-      this.techRecordsStore.dispatch(action);
+      this.store.dispatch(action);
     });
   }
 }

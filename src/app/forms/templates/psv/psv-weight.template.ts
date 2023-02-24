@@ -4,8 +4,7 @@ import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 const requiredValidation = [
   { name: ValidatorNames.Numeric, args: 99999 },
   { name: ValidatorNames.Max, args: 99999 },
-  { name: ValidatorNames.Min, args: 0 },
-  { name: ValidatorNames.Required }
+  { name: ValidatorNames.Min, args: 0 }
 ];
 
 const optionalValidation = [
@@ -62,7 +61,7 @@ export const PsvWeightsTemplate: FormNode = {
       label: 'Unladen weight',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: optionalValidation
+      validators: requiredValidation
     },
     {
       name: 'trainSection',
@@ -73,14 +72,14 @@ export const PsvWeightsTemplate: FormNode = {
     {
       name: 'maxTrainGbWeight',
       label: 'Max train GB',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
     {
       name: 'trainDesignWeight',
       label: 'Train design',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
