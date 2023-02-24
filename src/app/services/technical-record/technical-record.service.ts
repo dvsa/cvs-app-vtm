@@ -25,6 +25,7 @@ import {
   updateEditingTechRecordCancel,
   vehicleTechRecords
 } from '@store/technical-records';
+import { userEmail } from '@store/user/user-service.reducer';
 import { cloneDeep } from 'lodash';
 import { catchError, Observable, of, map, switchMap, take, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -295,7 +296,12 @@ export class TechnicalRecordService {
       });
   }
 
-  generatePlate(vehicleRecord: VehicleTechRecordModel, techRecord: TechRecordModel, reason: string, user: { id?: string; name?: string }) {
+  generatePlate(
+    vehicleRecord: VehicleTechRecordModel,
+    techRecord: TechRecordModel,
+    reason: string,
+    user: { id?: string; name?: string; email?: string }
+  ) {
     const url = `${environment.VTM_API_URI}/vehicles/documents/plate`;
 
     const body = {
@@ -306,13 +312,19 @@ export class TechnicalRecordService {
       msUserDetails: { msOid: user.id, msUser: user.name },
       techRecord: vehicleRecord.techRecord,
       reasonForCreation: reason,
-      vtmUsername: user.name
+      vtmUsername: user.name,
+      recipientEmailAddress: techRecord.applicantDetails?.emailAddress ?? user.email
     };
 
     return this.http.post(url, body, { responseType: 'json' });
   }
 
-  generateLetter(vehicleRecord: VehicleTechRecordModel, letterType: string, paragraphId: number, user: { id?: string; name?: string }) {
+  generateLetter(
+    vehicleRecord: VehicleTechRecordModel,
+    letterType: string,
+    paragraphId: number,
+    user: { id?: string; name?: string; email?: string }
+  ) {
     const url = `${environment.VTM_API_URI}/vehicles/documents/letter`;
 
     const body = {
@@ -323,7 +335,9 @@ export class TechnicalRecordService {
       techRecord: vehicleRecord.techRecord,
       vtmUsername: user.name,
       letterType: letterType,
-      paragraphId: paragraphId
+      paragraphId: paragraphId,
+      recipientEmailAddress:
+        vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.applicantDetails?.emailAddress ?? user.email
     };
 
     return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });

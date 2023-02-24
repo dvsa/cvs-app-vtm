@@ -201,10 +201,11 @@ export class TechnicalRecordServiceEffects {
         this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
         this.store.select(editableTechRecord),
         this.userService.name$,
-        this.userService.id$
+        this.userService.id$,
+        this.userService.userEmail$
       ),
-      switchMap(([{ reason }, vehicle, techRecord, name, id]) =>
-        this.technicalRecordService.generatePlate(vehicle!, techRecord!, reason, { name, id }).pipe(
+      switchMap(([{ reason }, vehicle, techRecord, name, id, email]) =>
+        this.technicalRecordService.generatePlate(vehicle!, techRecord!, reason, { name, id, email }).pipe(
           map(() => generatePlateSuccess()),
           catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
         )
@@ -215,9 +216,14 @@ export class TechnicalRecordServiceEffects {
   generateLetter$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateLetter),
-      withLatestFrom(this.store.select(selectVehicleTechnicalRecordsBySystemNumber), this.userService.name$, this.userService.id$),
-      switchMap(([{ letterType, paragraphId }, vehicle, name, id]) =>
-        this.technicalRecordService.generateLetter(vehicle!, letterType, paragraphId, { name, id }).pipe(
+      withLatestFrom(
+        this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
+        this.userService.name$,
+        this.userService.id$,
+        this.userService.userEmail$
+      ),
+      switchMap(([{ letterType, paragraphId }, vehicle, name, id, email]) =>
+        this.technicalRecordService.generateLetter(vehicle!, letterType, paragraphId, { name, id, email }).pipe(
           map(value => generateLetterSuccess()),
           catchError(error => of(generateLetterFailure({ error: this.getTechRecordErrorMessage(error, 'generateLetter') })))
         )
