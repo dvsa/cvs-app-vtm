@@ -89,7 +89,7 @@ export class AmendVinComponent implements OnInit {
 
     const payload = {
       newVin: this.form.value.vin,
-      systemNumber: this.vehicle?.systemNumber ? this.vehicle.systemNumber : ''
+      systemNumber: this.vehicle?.systemNumber ?? ''
     };
 
     this.store.dispatch(updateVin(payload));
