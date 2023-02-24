@@ -200,7 +200,7 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
 
   const newAxle: Axle = {
     axleNumber: newState.editingTechRecord.techRecord[0].axles.length + 1,
-    tyres: {},
+    tyres: { dataTrAxles: null },
     weights: {},
     parkingBrakeMrk: false
   };
