@@ -353,8 +353,8 @@ export interface TechRecordModel {
   rearAxleToRearTrl?: number;
 
   // Front of vehicle to 5th wheel coupling
-  frontAxleTo5thWheelCouplingMin?: number;
-  frontAxleTo5thWheelCouplingMax?: number;
+  frontVehicleTo5thWheelCouplingMin?: number;
+  frontVehicleTo5thWheelCouplingMax?: number;
 
   // Front axle to 5th wheel
   frontAxleTo5thWheelMin?: number;
