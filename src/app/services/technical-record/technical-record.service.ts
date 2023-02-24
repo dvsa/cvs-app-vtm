@@ -321,6 +321,7 @@ export class TechnicalRecordService {
 
   generateLetter(
     vehicleRecord: VehicleTechRecordModel,
+    techRecord: TechRecordModel,
     letterType: string,
     paragraphId: number,
     user: { id?: string; name?: string; email?: string }
@@ -336,8 +337,7 @@ export class TechnicalRecordService {
       vtmUsername: user.name,
       letterType: letterType,
       paragraphId: paragraphId,
-      recipientEmailAddress:
-        vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.applicantDetails?.emailAddress ?? user.email
+      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ?? user.email
     };
 
     return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });

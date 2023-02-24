@@ -218,12 +218,13 @@ export class TechnicalRecordServiceEffects {
       ofType(generateLetter),
       withLatestFrom(
         this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
+        this.store.select(editableTechRecord),
         this.userService.name$,
         this.userService.id$,
         this.userService.userEmail$
       ),
-      switchMap(([{ letterType, paragraphId }, vehicle, name, id, email]) =>
-        this.technicalRecordService.generateLetter(vehicle!, letterType, paragraphId, { name, id, email }).pipe(
+      switchMap(([{ letterType, paragraphId }, vehicle, techRecord, name, id, email]) =>
+        this.technicalRecordService.generateLetter(vehicle!, techRecord!, letterType, paragraphId, { name, id, email }).pipe(
           map(value => generateLetterSuccess()),
           catchError(error => of(generateLetterFailure({ error: this.getTechRecordErrorMessage(error, 'generateLetter') })))
         )
