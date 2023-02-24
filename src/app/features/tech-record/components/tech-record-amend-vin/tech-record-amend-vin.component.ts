@@ -20,7 +20,6 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 export class AmendVinComponent implements OnInit {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
-
   form = new FormGroup({
     vin: new CustomFormControl(
       {
