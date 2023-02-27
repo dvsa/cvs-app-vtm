@@ -6,7 +6,7 @@ import { TechRecord } from '@api/vehicle';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Roles } from '@models/roles.enum';
-import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
@@ -154,6 +154,47 @@ describe('TechRecordTitleComponent', () => {
       const secondaryVrmField = fixture.nativeElement.querySelectorAll('app-number-plate')[1];
       expect(vrmField.textContent).toContain('TESTV RM2');
       expect(secondaryVrmField.textContent).toContain('TEST VRM');
+    });
+  });
+
+  describe('trailer ID', () => {
+    it('shows a trailer ID instead of VRM when vehicle type is a trailer', () => {
+      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const mockVehicle = {
+        trailerId: 'testId',
+        techRecord: [mockRecord],
+        vrms: [],
+        vin: 'testvin',
+        systemNumber: 'testNumber'
+      };
+      component.vehicle = mockVehicle;
+      store.overrideSelector(editableTechRecord, mockRecord);
+      fixture.detectChanges();
+
+      const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
+      expect(trailerIdField.nativeElement.textContent).toContain('TestId');
+    });
+
+    it('does not show secondary VRMs for small trailer', () => {
+      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const mockVehicle = {
+        trailerId: 'testId',
+        techRecord: [mockRecord],
+        vrms: [],
+        vin: 'testvin',
+        systemNumber: 'testNumber'
+      };
+      mockVehicle.techRecord[0].euVehicleCategory = EuVehicleCategories.o1;
+      component.vehicle = mockVehicle;
+      store.overrideSelector(editableTechRecord, mockRecord);
+      fixture.detectChanges();
+
+      const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
+      expect(trailerIdField.nativeElement.textContent).toContain('TestId');
+      const secondaryVrmField = fixture.debugElement.query(By.css('#previous-vrm'));
+      expect(secondaryVrmField).toBe(null);
     });
   });
 });
