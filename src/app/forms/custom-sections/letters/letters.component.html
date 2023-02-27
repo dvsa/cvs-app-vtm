@@ -1,35 +1,44 @@
-<!-- This section is going to be redone as part of the changes in VTMDEV-2 -->
-<form [formGroup]="form" *ngIf="!isEditing">
-  <dl class="govuk-summary-list">
-    <ng-container *ngIf="mostRecentLetter">
+<form [formGroup]="form">
+  <dl class="govuk-summary-list" *ngIf="eligibleForLetter">
+    <ng-container *ngIf="letter">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Letter type</dt>
-        <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentLetter?.letterType | defaultNullOrEmpty }}</dd>
+        <dd id="letter-type" class="govuk-summary-list__value">{{ letter.letterType | defaultNullOrEmpty }}</dd>
+        <dd id="letter" class="govuk-summary-list__value">
+          <button id="letter-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">View letter</button>
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Paragraph ID</dt>
+        <dd id="letter-paragraph-id" class="govuk-summary-list__value">{{ letter.paragraphId }}</dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date requested</dt>
-        <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentLetter?.letterDateRequested | date: 'dd/MM/yyyy HH:mm' }}</dd>
+        <dd id="letter-date" class="govuk-summary-list__value">{{ letter.letterDateRequested | date: 'dd/MM/yyyy HH:mm' }}</dd>
       </div>
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Letter:</dt>
-        <dd id="test-certificate" class="govuk-summary-list__value">
-          <button id="test-certificate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">TEST LETTER</button>
-        </dd>
-      </div>
-      <div class="govuk-grid-row">
-        <br />
-        <div class="govuk-grid-column-full">
-          <app-button id="generate-letters-link" type="link" routerLink="generate-letter" *appRoleRequired="roles.TechRecordAmend">
-            Generate letter
-          </app-button>
-        </div>
+        <dt class="govuk-summary-list__key">Letter issuer</dt>
+        <dd id="letter-issuer" class="govuk-summary-list__value">{{ letter.letterIssuer }}</dd>
       </div>
     </ng-container>
 
-    <ng-container *ngIf="!mostRecentLetter">
-      <div>
-        <dt class="govuk-summary-list__key">This vehicle does not have a letter.</dt>
+    <div *ngIf="!letter">
+      <dt class="govuk-summary-list__key">This vehicle does not have a letter.</dt>
+    </div>
+
+    <div class="govuk-grid-row">
+      <br />
+      <div class="govuk-grid-column-full" *ngIf="eligibleForLetter">
+        <app-button id="generate-letters-link" type="link" routerLink="generate-letter" *appRoleRequired="roles.TechRecordAmend"
+          >Generate letter</app-button
+        >
       </div>
-    </ng-container>
+    </div>
+  </dl>
+
+  <dl class="govuk-summary-list" *ngIf="!eligibleForLetter">
+    <div>
+      <dt class="govuk-summary-list__key">{{ reasonForIneligibility }}</dt>
+    </div>
   </dl>
 </form>

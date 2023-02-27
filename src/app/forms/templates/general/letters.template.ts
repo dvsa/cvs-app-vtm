@@ -7,7 +7,7 @@ export const LettersTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'lettersOfAuth',
+      name: 'letterOfAuth',
       type: FormNodeTypes.GROUP,
       children: [
         {
@@ -19,6 +19,16 @@ export const LettersTemplate: FormNode = {
         {
           name: 'letterDateRequested',
           label: 'Date requested',
+          type: FormNodeTypes.CONTROL
+        },
+        {
+          name: 'letterIssuer',
+          label: 'Letter issuer',
+          type: FormNodeTypes.CONTROL
+        },
+        {
+          name: 'paragraphId',
+          label: 'Paragraph ID',
           type: FormNodeTypes.CONTROL
         },
         {

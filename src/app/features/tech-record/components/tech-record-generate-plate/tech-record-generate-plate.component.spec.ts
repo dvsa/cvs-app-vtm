@@ -3,20 +3,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { generatePlate, generatePlateSuccess, updateTechRecordsSuccess } from '@store/technical-records';
+import { generatePlate, generatePlateSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { GeneratePlateComponent } from './tech-record-generate-plate.component';
 import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CustomFormGroup, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
@@ -34,7 +31,6 @@ describe('TechRecordGeneratePlateComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: GeneratePlateComponent;
   let errorService: GlobalErrorService;
-  let expectedVehicle = {} as VehicleTechRecordModel;
   let fixture: ComponentFixture<GeneratePlateComponent>;
   let route: ActivatedRoute;
   let router: Router;

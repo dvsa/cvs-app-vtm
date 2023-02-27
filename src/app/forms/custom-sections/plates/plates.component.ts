@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { DocumentRetrievalService } from '@api/document-retrieval';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
-import { Plates, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Plates, StatusCodes, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { cloneDeep } from 'lodash';
 import { debounceTime, Subscription } from 'rxjs';
 
@@ -66,5 +65,20 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       throw new Error('Could not find plate.');
     }
+  }
+
+  get eligibleForPlates(): boolean {
+    return this.techRecord.statusCode === StatusCodes.CURRENT && !this.isEditing;
+  }
+
+  get reasonForIneligibility(): string {
+    if (this.isEditing) {
+      return 'This section is not available when amending or creating a technical record.';
+    }
+
+    if (this.techRecord.statusCode !== StatusCodes.CURRENT) {
+      return 'Generating plates is only applicable to current technical records.';
+    }
+    return '';
   }
 }
