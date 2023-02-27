@@ -3,18 +3,18 @@
     <ng-container *ngIf="hasPlates">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Plate serial number</dt>
-        <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentPlate?.plateSerialNumber | defaultNullOrEmpty }}</dd>
-        <dd id="test-certificate" class="govuk-summary-list__value">
-          <button id="test-certificate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">View plate</button>
+        <dd id="plate-serial-number" class="govuk-summary-list__value">{{ mostRecentPlate?.plateSerialNumber | defaultNullOrEmpty }}</dd>
+        <dd id="plate" class="govuk-summary-list__value">
+          <button id="plate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">View plate</button>
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Plate issue date</dt>
-        <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentPlate?.plateIssueDate | date: 'dd/MM/yyyy HH:mm' }}</dd>
+        <dd id="plate-date" class="govuk-summary-list__value">{{ mostRecentPlate?.plateIssueDate | date: 'dd/MM/yyyy HH:mm' }}</dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Plate issuer</dt>
-        <dd id="test-cor" class="govuk-summary-list__value">{{ mostRecentPlate?.plateIssuer | defaultNullOrEmpty }}</dd>
+        <dd id="plate-issuer" class="govuk-summary-list__value">{{ mostRecentPlate?.plateIssuer | defaultNullOrEmpty }}</dd>
       </div>
     </ng-container>
     <ng-container *ngIf="!hasPlates">
