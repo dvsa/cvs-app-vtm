@@ -69,7 +69,7 @@ export class AmendVinComponent implements OnInit {
     return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
-  get isFormValid(): boolean {
+  isFormValid(): boolean {
     const errors: GlobalError[] = [];
 
     DynamicFormService.updateValidity(this.form, errors);
