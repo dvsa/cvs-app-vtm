@@ -82,6 +82,12 @@ export const RequiredSpecialistSectionMotorcycle: FormNode = {
       ]
     },
     {
+      name: 'vehicleConfiguration',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
       name: 'vehicleType',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
