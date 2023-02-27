@@ -1,0 +1,31 @@
+<div *ngIf="vehicle">
+  <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
+
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Vehicle type</dt>
+      <dd id="vehicleType" class="govuk-summary-list__value">
+        {{ techRecord?.vehicleType | defaultNullOrEmpty | uppercase }}
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VRM</dt>
+      <app-number-plate *ngIf="vrm" [vrm]="vrm"></app-number-plate>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VIN/chassis number</dt>
+      <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicle.vin | defaultNullOrEmpty }}</dd>
+    </div>
+  </dl>
+
+  <form [formGroup]="form">
+    <app-text-input formControlName="vin" name="vin" label="New VIN" [width]="width" (focusout)="isFormValid()"></app-text-input>
+  </form>
+
+  <app-button-group>
+    <app-button id="submit-vim" (clicked)="handleSubmit()">Save</app-button>
+    <app-button id="back-button" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+  </app-button-group>
+</div>

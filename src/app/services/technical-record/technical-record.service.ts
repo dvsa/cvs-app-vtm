@@ -357,12 +357,12 @@ export class TechnicalRecordService {
     this.store.dispatch(updateEditingTechRecordCancel());
   }
 
-  amendVin(oldVin: string, newVin: string, systemNumber: string, user: { id?: string; name?: string }) {
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}/${oldVin}`;
+  updateVin(newVin: string, systemNumber: string, user: { id?: string; name?: string }) {
+    const url = `${environment.VTM_API_URI}/vehicles/update-vin/${systemNumber}`;
     const body = {
       msUserDetails: { msOid: user.id, msUser: user.name },
       newVin
     };
-    return this.http.post(url, body, { responseType: 'json' });
+    return this.http.put(url, body, { responseType: 'json' });
   }
 }

@@ -15,6 +15,7 @@ import { TechRecordComponent } from './tech-record.component';
 import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
 import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
 import { GenerateLetterComponent } from './components/tech-record-generate-letter/tech-record-generate-letter.component';
+import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
 
 const routes: Routes = [
   {
@@ -46,9 +47,15 @@ const routes: Routes = [
     resolve: { load: TechRecordViewResolver }
   },
   {
+    path: 'change-vin',
+    component: AmendVinComponent,
+    data: { title: 'Change VIN', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
     path: 'change-vrm',
     component: AmendVrmComponent,
-    data: { title: 'Change vrm', roles: Roles.TechRecordAmend },
+    data: { title: 'Change VRM', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
@@ -102,9 +109,15 @@ const routes: Routes = [
         canActivate: [MsalGuard, RoleGuard]
       },
       {
+        path: 'change-vin',
+        component: AmendVinComponent,
+        data: { title: 'Change VIN', roles: Roles.TechRecordAmend },
+        canActivate: [MsalGuard, RoleGuard]
+      },
+      {
         path: 'change-vrm',
         component: AmendVrmComponent,
-        data: { title: 'Change vrm', roles: Roles.TechRecordAmend },
+        data: { title: 'Change VRM', roles: Roles.TechRecordAmend },
         canActivate: [MsalGuard, RoleGuard]
       },
       {
