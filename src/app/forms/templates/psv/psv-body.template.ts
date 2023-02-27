@@ -71,6 +71,7 @@ export const PsvBodyTemplate: FormNode = {
           name: 'description',
           label: 'Body type',
           value: '',
+          customId: 'bodyType',
           type: FormNodeTypes.CONTROL,
           disabled: true,
           validators: [{ name: ValidatorNames.Required }]

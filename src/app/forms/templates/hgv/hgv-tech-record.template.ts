@@ -139,6 +139,7 @@ export const HgvTechRecord: FormNode = {
           name: 'description',
           label: 'Vehicle class',
           value: '',
+          customId: 'vehicleClassDescription',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.SELECT,
           options: getOptionsFromEnum(VehicleClass.DescriptionEnum),

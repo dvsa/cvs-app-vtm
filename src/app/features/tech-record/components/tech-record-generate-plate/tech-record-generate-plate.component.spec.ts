@@ -14,6 +14,7 @@ import { GeneratePlateComponent } from './tech-record-generate-plate.component';
 import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UserService } from '@services/user-service/user-service';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
@@ -46,7 +47,13 @@ describe('TechRecordGeneratePlateComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService }
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
+        {
+          provide: UserService,
+          useValue: {
+            roles$: of(['TechRecord.Amend'])
+          }
+        }
       ],
       imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule]
     }).compileComponents();

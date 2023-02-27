@@ -1,8 +1,16 @@
 <form [formGroup]="form">
   <app-radio-group id="reason" formControlName="reason" [options]="reasons"></app-radio-group>
 
+  <ng-container *ngIf="emailAddress">
+    <p class="govuk-body">This letter will be sent to {{ emailAddress }}</p>
+  </ng-container>
+  <ng-container *ngIf="!emailAddress">
+    <p>This technical record does not have an applicant email address associated with it</p>
+    <p>This letter will instead be sent to {{ userService.name$ | async }}</p>
+  </ng-container>
+
   <app-button-group>
-    <app-button id="submit-plate-form" (clicked)="handleSubmit()">Save</app-button>
+    <app-button id="submit-plate-form" (clicked)="handleSubmit()">Generate and send</app-button>
     <app-button id="back-from-generate-plate" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
   </app-button-group>
 </form>
