@@ -13,7 +13,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { updateTechRecordsSuccess } from '@store/technical-records';
+import { updateTechRecordsSuccess, updateVinSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVinComponent } from './tech-record-amend-vin.component';
 
@@ -128,13 +128,13 @@ describe('TechRecordChangeVrmComponent', () => {
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
 
-    it('should navigate back on updateTechRecordsSuccess', fakeAsync(() => {
+    it('should navigate back on updateVinSuccess', fakeAsync(() => {
       component.ngOnInit();
 
       const navigateBackSpy = jest.spyOn(component, 'navigateBack');
       jest.spyOn(router, 'navigate').mockImplementation();
 
-      actions$.next(updateTechRecordsSuccess({}));
+      actions$.next(updateVinSuccess());
       tick();
 
       expect(navigateBackSpy).toHaveBeenCalled();
