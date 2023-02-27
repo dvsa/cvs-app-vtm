@@ -54,8 +54,8 @@ export const MotorcycleTechRecord: FormNode = {
       value: '',
       type: FormNodeTypes.GROUP,
       children: [
-        { name: 'code', label: 'Vehicle Class Code', value: '', type: FormNodeTypes.CONTROL },
-        { name: 'description', label: 'Vehicle Class Description', value: '', type: FormNodeTypes.CONTROL }
+        { name: 'code', label: 'Vehicle Class Code', value: '', customId: 'vehicleClassCode', type: FormNodeTypes.CONTROL },
+        { name: 'description', label: 'Vehicle Class Description', value: '', customId: 'vehicleClassDescription', type: FormNodeTypes.CONTROL }
       ],
       validators: [{ name: ValidatorNames.Required }]
     },

@@ -51,6 +51,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
           name: 'description',
           label: 'Body type',
           value: '',
+          customId: 'bodyType',
           width: FormNodeWidth.L,
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.SELECT,

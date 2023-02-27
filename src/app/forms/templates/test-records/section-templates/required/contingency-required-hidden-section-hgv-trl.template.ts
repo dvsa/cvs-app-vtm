@@ -46,12 +46,14 @@ export const CreateRequiredSectionHgvTrl: FormNode = {
       children: [
         {
           name: 'code',
+          customId: 'vehicleClassCode',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.HIDDEN,
           viewType: FormNodeViewTypes.HIDDEN
         },
         {
           name: 'description',
+          customId: 'vehicleClassDescription',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.HIDDEN,
           viewType: FormNodeViewTypes.HIDDEN

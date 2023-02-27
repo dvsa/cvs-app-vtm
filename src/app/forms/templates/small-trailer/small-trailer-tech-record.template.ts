@@ -43,8 +43,8 @@ export const SmallTrailerTechRecord: FormNode = {
       value: '',
       type: FormNodeTypes.GROUP,
       children: [
-        { name: 'code', label: 'Vehicle Class code', value: '', type: FormNodeTypes.CONTROL },
-        { name: 'description', label: 'Vehicle', value: '', type: FormNodeTypes.CONTROL }
+        { name: 'code', label: 'Vehicle Class code', value: '', customId: 'vehicleClassCode', type: FormNodeTypes.CONTROL },
+        { name: 'description', label: 'Vehicle', value: '', customId: 'vehicleClassDescription', type: FormNodeTypes.CONTROL }
       ],
       validators: [{ name: ValidatorNames.Required }]
     },
