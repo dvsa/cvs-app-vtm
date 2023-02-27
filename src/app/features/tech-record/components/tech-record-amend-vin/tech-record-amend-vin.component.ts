@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -7,17 +7,17 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { updateTechRecordsSuccess, updateVin, updateVinSuccess } from '@store/technical-records';
-import { take } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { updateVin, updateVinSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vin',
   templateUrl: './tech-record-amend-vin.component.html'
 })
-export class AmendVinComponent implements OnInit {
+export class AmendVinComponent implements OnInit, OnDestroy {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
   form = new FormGroup({
@@ -31,10 +31,10 @@ export class AmendVinComponent implements OnInit {
       [Validators.minLength(3), Validators.maxLength(21), Validators.required]
     )
   });
+  private destroy$ = new Subject<void>();
 
   constructor(
     private actions$: Actions,
-    public dfs: DynamicFormService,
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -42,16 +42,18 @@ export class AmendVinComponent implements OnInit {
     private store: Store<TechnicalRecordServiceState>
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
-
-    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.techRecord = techRecord));
   }
 
   ngOnInit(): void {
-    if (!this.techRecord) {
+    if (!this.vehicle) {
       this.navigateBack();
     }
+    this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
+  }
 
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.navigateBack());
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get width(): FormNodeWidth {
@@ -85,7 +87,7 @@ export class AmendVinComponent implements OnInit {
   }
 
   handleSubmit(): void {
-    if (!this.isFormValid) return;
+    if (this.form.invalid) return;
 
     const payload = {
       newVin: this.form.value.vin,
@@ -93,7 +95,5 @@ export class AmendVinComponent implements OnInit {
     };
 
     this.store.dispatch(updateVin(payload));
-
-    this.actions$.pipe(ofType(updateVinSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 }
