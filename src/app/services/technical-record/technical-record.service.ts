@@ -304,6 +304,8 @@ export class TechnicalRecordService {
   ) {
     const url = `${environment.VTM_API_URI}/vehicles/documents/plate`;
 
+    const emailExists = techRecord?.applicantDetails?.emailAddress !== undefined && techRecord?.applicantDetails?.emailAddress !== '';
+
     const body = {
       vin: vehicleRecord.vin,
       primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)!.vrm : undefined,
@@ -327,6 +329,8 @@ export class TechnicalRecordService {
     user: { id?: string; name?: string; email?: string }
   ) {
     const url = `${environment.VTM_API_URI}/vehicles/documents/letter`;
+
+    const emailExists = techRecord?.applicantDetails?.emailAddress !== undefined && techRecord?.applicantDetails?.emailAddress !== '';
 
     const body = {
       vin: vehicleRecord.vin,
