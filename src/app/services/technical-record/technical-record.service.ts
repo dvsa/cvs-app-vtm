@@ -305,8 +305,6 @@ export class TechnicalRecordService {
     const url = `${environment.VTM_API_URI}/vehicles/documents/plate`;
 
     const emailExists = techRecord?.applicantDetails?.emailAddress !== undefined && techRecord?.applicantDetails?.emailAddress !== '';
-    console.log(emailExists);
-    console.log(user.email);
 
     const body = {
       vin: vehicleRecord.vin,
@@ -333,8 +331,6 @@ export class TechnicalRecordService {
     const url = `${environment.VTM_API_URI}/vehicles/documents/letter`;
 
     const emailExists = techRecord?.applicantDetails?.emailAddress !== undefined && techRecord?.applicantDetails?.emailAddress !== '';
-    console.log(emailExists);
-    console.log(user.email);
 
     const body = {
       vin: vehicleRecord.vin,
