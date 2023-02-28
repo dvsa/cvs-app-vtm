@@ -87,7 +87,7 @@ export class AmendVinComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit(): void {
-    if (this.form.invalid) return;
+    if (!this.isFormValid()) return;
 
     const payload = {
       newVin: this.form.value.vin,
