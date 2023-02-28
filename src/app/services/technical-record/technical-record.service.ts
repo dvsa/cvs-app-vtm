@@ -304,6 +304,10 @@ export class TechnicalRecordService {
   ) {
     const url = `${environment.VTM_API_URI}/vehicles/documents/plate`;
 
+    const emailExists = techRecord?.applicantDetails?.emailAddress !== undefined && techRecord?.applicantDetails?.emailAddress !== '';
+    console.log(emailExists);
+    console.log(user.email);
+
     const body = {
       vin: vehicleRecord.vin,
       primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)!.vrm : undefined,
@@ -313,7 +317,7 @@ export class TechnicalRecordService {
       techRecord: vehicleRecord.techRecord,
       reasonForCreation: reason,
       vtmUsername: user.name,
-      recipientEmailAddress: techRecord.applicantDetails?.emailAddress ?? user.email
+      recipientEmailAddress: emailExists ? techRecord.applicantDetails?.emailAddress : user.email
     };
 
     return this.http.post(url, body, { responseType: 'json' });
@@ -328,6 +332,10 @@ export class TechnicalRecordService {
   ) {
     const url = `${environment.VTM_API_URI}/vehicles/documents/letter`;
 
+    const emailExists = techRecord?.applicantDetails?.emailAddress !== undefined && techRecord?.applicantDetails?.emailAddress !== '';
+    console.log(emailExists);
+    console.log(user.email);
+
     const body = {
       vin: vehicleRecord.vin,
       primaryVrm: undefined,
@@ -337,7 +345,7 @@ export class TechnicalRecordService {
       vtmUsername: user.name,
       letterType: letterType,
       paragraphId: paragraphId,
-      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ?? user.email
+      recipientEmailAddress: emailExists ? techRecord?.applicantDetails?.emailAddress : user.email
     };
 
     return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
