@@ -50,17 +50,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(LettersComponent) letters!: LettersComponent;
 
   @Input() techRecord!: TechRecordModel;
+  @Input() isEditing: boolean = false;
 
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
-
-  private _isEditing: boolean = false;
-  get isEditing(): boolean {
-    return this._isEditing;
-  }
-  @Input() set isEditing(value: boolean) {
-    this._isEditing = value;
-  }
 
   techRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];

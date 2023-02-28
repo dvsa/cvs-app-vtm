@@ -1,12 +1,12 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -104,7 +104,7 @@ describe('EditTechRecordButtonComponent', () => {
     });
   });
 
-  describe('when amending a current tech record', () => {
+  describe('when amending an empty vehicle', () => {
     let expectedResult: TechnicalRecordServiceState;
     let expectedDate: Date;
     beforeEach(() => {
@@ -115,13 +115,13 @@ describe('EditTechRecordButtonComponent', () => {
           {
             systemNumber: '1',
             vin: '1',
-            techRecord: [<TechRecordModel>{ createdAt: expectedDate }]
+            techRecord: <TechRecordModel[]>[]
           } as VehicleTechRecordModel
         ]
       };
       store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
-      component.vehicle = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
-      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
+      component.vehicle = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional', vehicleType: 'psv' }] };
+      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional', vehicleType: 'psv' };
       component.isEditing = true;
     });
 
@@ -156,6 +156,118 @@ describe('EditTechRecordButtonComponent', () => {
 
         expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
         expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
+      }));
+    });
+  });
+
+  describe('when amending a provisional tech record', () => {
+    let expectedResult: TechnicalRecordServiceState;
+    let expectedDate: Date;
+    beforeEach(() => {
+      store = TestBed.inject(MockStore);
+      expectedDate = new Date();
+      expectedResult = <TechnicalRecordServiceState>{
+        vehicleTechRecords: [
+          {
+            systemNumber: '1',
+            vin: '1',
+            techRecord: [<TechRecordModel>{ createdAt: expectedDate, statusCode: StatusCodes.PROVISIONAL }]
+          } as VehicleTechRecordModel
+        ]
+      };
+      store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
+      component.vehicle = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional', vehicleType: 'psv' }] };
+      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional', vehicleType: 'psv' };
+      component.isEditing = true;
+    });
+
+    describe('and the user submits their changes', () => {
+      it('component should emit event', fakeAsync(() => {
+        jest.spyOn(component.submitChange, 'emit');
+
+        fixture.detectChanges();
+        fixture.debugElement.query(By.css('button#submit')).nativeElement.click();
+        discardPeriodicTasks();
+
+        expect(component.submitChange.emit).toHaveBeenCalledTimes(1);
+      }));
+
+      it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
+        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+
+        actions$.next(updateTechRecordsSuccess(expectedResult));
+
+        tick();
+
+        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
+      }));
+
+      it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
+        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+
+        actions$.next(createProvisionalTechRecordSuccess(expectedResult));
+
+        tick();
+
+        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
+      }));
+    });
+  });
+
+  describe('when amending a current tech record', () => {
+    let expectedResult: TechnicalRecordServiceState;
+    let expectedDate: Date;
+    beforeEach(() => {
+      store = TestBed.inject(MockStore);
+      expectedDate = new Date();
+      expectedResult = <TechnicalRecordServiceState>{
+        vehicleTechRecords: [
+          {
+            systemNumber: '1',
+            vin: '1',
+            techRecord: [<TechRecordModel>{ createdAt: expectedDate, statusCode: StatusCodes.CURRENT }]
+          } as VehicleTechRecordModel
+        ]
+      };
+      store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
+      component.vehicle = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
+      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
+      component.isEditing = true;
+    });
+
+    describe('and the user submits their changes', () => {
+      it('component should emit event', fakeAsync(() => {
+        jest.spyOn(component.submitChange, 'emit');
+
+        fixture.detectChanges();
+        fixture.debugElement.query(By.css('button#submit')).nativeElement.click();
+        discardPeriodicTasks();
+
+        expect(component.submitChange.emit).toHaveBeenCalledTimes(1);
+      }));
+
+      it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
+        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+
+        actions$.next(updateTechRecordsSuccess(expectedResult));
+
+        tick();
+
+        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1');
+      }));
+
+      it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
+        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+
+        actions$.next(createProvisionalTechRecordSuccess(expectedResult));
+
+        tick();
+
+        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1');
       }));
     });
 

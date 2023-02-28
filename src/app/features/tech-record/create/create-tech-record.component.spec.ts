@@ -1,17 +1,18 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { CreateTechRecordComponent } from './create-tech-record.component';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/index';
-import { of } from 'rxjs';
-import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
+import { initialAppState } from '@store/index';
+import { of } from 'rxjs';
+import { CreateTechRecordComponent } from './create-tech-record.component';
 
 describe('CreateNewVehicleRecordComponent', () => {
   let component: CreateTechRecordComponent;
@@ -26,7 +27,7 @@ describe('CreateNewVehicleRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateTechRecordComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule],
+      imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule],
       providers: [
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
@@ -74,7 +75,7 @@ describe('CreateNewVehicleRecordComponent', () => {
       const updateValiditySpy = jest.spyOn(DynamicFormService, 'updateValidity').mockImplementation();
       component.isFormValid;
       expect(updateValiditySpy).toHaveBeenCalledTimes(1);
-      expect(updateValiditySpy).toHaveBeenCalledWith(component.vehicleForm, []);
+      expect(updateValiditySpy).toHaveBeenCalledWith(component.form, []);
     });
 
     it('should call setErrors with an empty array', () => {
