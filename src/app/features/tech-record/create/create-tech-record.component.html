@@ -1,22 +1,48 @@
 <form [formGroup]="form">
   <h1 class="govuk-heading-l title">New vehicle information</h1>
 
-  <app-text-input formControlName="vin" [width]="30" (ngModelChange)="ngOnChanges()"></app-text-input>
+  <app-text-input
+    formControlName="vin"
+    name="input-vin"
+    label="Vehicle Identification number (VIN)"
+    [width]="30"
+    (ngModelChange)="ngOnChanges()"
+  ></app-text-input>
 
-  <app-text-input *ngIf="!generateID.value" formControlName="vrmTrm" [width]="30" (ngModelChange)="ngOnChanges()"></app-text-input>
+  <app-text-input
+    *ngIf="!generateID.value"
+    formControlName="vrmTrm"
+    name="input-vrm-or-trailer-id"
+    label="VRM / Trailer ID"
+    [width]="30"
+    (ngModelChange)="ngOnChanges()"
+  ></app-text-input>
 
   <span *ngIf="!generateID.value" class="govuk-list">Or</span>
 
   <app-checkbox-group
     #generateID
     formControlName="generateID"
+    name="generate-c-or-z-num"
     [options]="checkboxOptions"
     (ngModelChange)="toggleVrmInput(generateID)"
   ></app-checkbox-group>
 
-  <app-select formControlName="vehicleStatus" [options]="vehicleStatusOptions" (ngModelChange)="ngOnChanges()"></app-select>
+  <app-select
+    formControlName="vehicleStatus"
+    name="change-vehicle-status-select"
+    label="Select vehicle status"
+    [options]="vehicleStatusOptions"
+    (ngModelChange)="ngOnChanges()"
+  ></app-select>
 
-  <app-select formControlName="vehicleType" [options]="vehicleTypeOptions" (ngModelChange)="ngOnChanges()"></app-select>
+  <app-select
+    formControlName="vehicleType"
+    name="change-vehicle-type-select"
+    label="Select vehicle type"
+    [options]="vehicleTypeOptions"
+    (ngModelChange)="ngOnChanges()"
+  ></app-select>
 
   <p *ngIf="this.isVinUniqueCheckComplete && !this.vinUnique" class="govuk-error-message">
     The Vin your about to submit is a duplicate, if you are happy to continue please press continue
