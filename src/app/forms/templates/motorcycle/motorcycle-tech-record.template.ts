@@ -1,6 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { VehicleClass } from '@models/vehicle-class.model';
 import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
 
 export const MotorcycleTechRecord: FormNode = {
@@ -17,6 +18,13 @@ export const MotorcycleTechRecord: FormNode = {
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
       validators: []
+    },
+    {
+      name: 'statusCode',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'regnDate',
@@ -51,13 +59,22 @@ export const MotorcycleTechRecord: FormNode = {
     },
     {
       name: 'vehicleClass',
-      value: '',
+      label: 'Vehicle class',
       type: FormNodeTypes.GROUP,
       children: [
-        { name: 'code', label: 'Vehicle Class Code', value: '', customId: 'vehicleClassCode', type: FormNodeTypes.CONTROL },
-        { name: 'description', label: 'Vehicle Class Description', value: '', customId: 'vehicleClassDescription', type: FormNodeTypes.CONTROL }
-      ],
-      validators: [{ name: ValidatorNames.Required }]
+        {
+          name: 'description',
+          label: 'Vehicle class',
+          value: '',
+          customId: 'vehicleClassDescription',
+          type: FormNodeTypes.CONTROL,
+          viewType: FormNodeViewTypes.STRING,
+          editType: FormNodeEditTypes.SELECT,
+          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+          class: '.govuk-input--width-10',
+          validators: [{ name: ValidatorNames.Required }]
+        }
+      ]
     },
     {
       name: 'euVehicleCategory',

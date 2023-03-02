@@ -54,8 +54,12 @@ export class CreateTechRecordComponent implements OnChanges {
 
   public vehicleTypeOptions: MultiOptions = [
     { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
+    { label: 'Light goods vehicle (LGV)', value: VehicleTypes.LGV },
     { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
-    { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
+    { label: 'Trailer (TRL)', value: VehicleTypes.TRL },
+    { label: 'Wee Trailer (TRL)', value: VehicleTypes.SMALL_TRL },
+    { label: 'Car', value: VehicleTypes.CAR },
+    { label: 'Motorcycle', value: VehicleTypes.MOTORCYCLE }
   ];
 
   public vehicleStatusOptions: MultiOptions = [{ label: 'Provisional', value: StatusCodes.PROVISIONAL }];
