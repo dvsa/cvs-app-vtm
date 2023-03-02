@@ -60,7 +60,7 @@ export class TechnicalRecordService {
   }
 
   get techRecord$(): Observable<TechRecordModel | undefined> {
-    return this.selectedVehicleTechRecord$.pipe(switchMap(techRecord => (techRecord ? this.viewableTechRecord$(techRecord) : of(undefined))));
+    return this.selectedVehicleTechRecord$.pipe(switchMap(vehicle => (vehicle ? this.viewableTechRecord$(vehicle) : of(undefined))));
   }
 
   getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
