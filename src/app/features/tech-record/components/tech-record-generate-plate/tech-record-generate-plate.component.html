@@ -5,8 +5,8 @@
     <p class="govuk-body">This letter will be sent to {{ emailAddress }}</p>
   </ng-container>
   <ng-container *ngIf="!emailAddress">
-    <p>This technical record does not have an applicant email address associated with it</p>
-    <p>This letter will instead be sent to {{ userService.name$ | async }}</p>
+    <p class="govuk-body">This technical record does not have an applicant email address associated with it</p>
+    <p class="govuk-body">This letter will instead be sent to {{ userService.userEmail$ | async }}</p>
   </ng-container>
 
   <app-button-group>

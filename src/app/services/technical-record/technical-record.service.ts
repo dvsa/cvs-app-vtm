@@ -60,7 +60,7 @@ export class TechnicalRecordService {
   }
 
   get techRecord$(): Observable<TechRecordModel | undefined> {
-    return this.selectedVehicleTechRecord$.pipe(switchMap(techRecord => (techRecord ? this.viewableTechRecord$(techRecord) : of(undefined))));
+    return this.selectedVehicleTechRecord$.pipe(switchMap(vehicle => (vehicle ? this.viewableTechRecord$(vehicle) : of(undefined))));
   }
 
   getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
@@ -313,7 +313,7 @@ export class TechnicalRecordService {
       techRecord: vehicleRecord.techRecord,
       reasonForCreation: reason,
       vtmUsername: user.name,
-      recipientEmailAddress: techRecord.applicantDetails?.emailAddress ?? user.email
+      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails?.emailAddress : user.email
     };
 
     return this.http.post(url, body, { responseType: 'json' });
@@ -337,7 +337,7 @@ export class TechnicalRecordService {
       vtmUsername: user.name,
       letterType: letterType,
       paragraphId: paragraphId,
-      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ?? user.email
+      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails?.emailAddress : user.email
     };
 
     return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
