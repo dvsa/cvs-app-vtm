@@ -281,11 +281,11 @@ export interface TechRecord {
     /**
      * Used only for HGV. Optional for HGV
      */
-    frontAxleTo5thWheelCouplingMin?: number;
+    frontVehicleTo5thWheelCouplingMin?: number;
     /**
      * Used only for HGV. Optional for HGV
      */
-    frontAxleTo5thWheelCouplingMax?: number;
+    frontVehicleTo5thWheelCouplingMax?: number;
     /**
      * Used for all vehicle types. Optional for PSV
      */
