@@ -13,7 +13,7 @@ export const MotorcycleTechRecord: FormNode = {
       name: 'vehicleType',
       label: 'Vehicle type',
       value: '',
-      width: FormNodeWidth.XS,
+      width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
