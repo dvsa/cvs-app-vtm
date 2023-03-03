@@ -43,8 +43,7 @@ export const CarTechRecord: FormNode = {
       label: 'Number of axles',
       value: '',
       width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL,
-      disabled: true
+      type: FormNodeTypes.CONTROL
     },
     {
       name: 'vehicleSubclass',

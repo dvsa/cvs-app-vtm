@@ -45,9 +45,7 @@ export const MotorcycleTechRecord: FormNode = {
       label: 'Number of axles',
       value: '',
       width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL,
-      validators: [],
-      disabled: true
+      type: FormNodeTypes.CONTROL
     },
     {
       name: 'vehicleClass',
