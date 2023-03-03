@@ -35,8 +35,7 @@ export const SmallTrailerTechRecord: FormNode = {
       label: 'Number of axles',
       value: '',
       width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL,
-      disabled: true
+      type: FormNodeTypes.CONTROL
     },
     {
       name: 'vehicleClass',
