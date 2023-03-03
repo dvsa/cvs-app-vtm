@@ -82,8 +82,8 @@ const currentTechRecord = {
     ]
   },
   frontAxleToRearAxle: 3,
-  frontAxleTo5thWheelCouplingMin: 5,
-  frontAxleTo5thWheelCouplingMax: 6,
+  frontVehicleTo5thWheelCouplingMin: 5,
+  frontVehicleTo5thWheelCouplingMax: 6,
   frontAxleTo5thWheelMin: 7,
   frontAxleTo5thWheelMax: 8,
   plates: [
