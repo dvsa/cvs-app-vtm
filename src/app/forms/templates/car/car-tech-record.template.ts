@@ -48,10 +48,11 @@ export const CarTechRecord: FormNode = {
     {
       name: 'noOfAxles',
       label: 'Number of axles',
-      value: '',
+      value: 2,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      disabled: true
+      editType: FormNodeEditTypes.NUMBER,
+      validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
       name: 'vehicleSubclass',
