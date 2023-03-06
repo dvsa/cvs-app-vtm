@@ -11,6 +11,8 @@
     "ng": "ng",
     "config": "ts-node ./setenv.ts",
     "start": "npm run config -- --environment=dev && ng serve",
+    "start:dev1": "npm run config -- --env=dev1 && ng serve",
+    "start:dev2": "npm run config -- --env=dev2 && ng serve",
     "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
     "watch": "ng build --watch",
     "sonar-scanner": "npm run test && sonar-scanner",
