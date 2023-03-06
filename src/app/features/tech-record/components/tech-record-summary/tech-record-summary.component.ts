@@ -106,13 +106,11 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get vehicleTemplates(): Array<FormNode> {
-    const vehicleTemplates = vehicleTemplateMap.get(this.techRecordCalculated.vehicleType);
-
-    return vehicleTemplates
-      ? this.isEditing
-        ? vehicleTemplates
-        : vehicleTemplates.filter(t => t.name !== 'reasonForCreationSection')
-      : ([] as Array<FormNode>);
+    return (
+      vehicleTemplateMap
+        .get(this.techRecordCalculated.vehicleType)
+        ?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
+    );
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {

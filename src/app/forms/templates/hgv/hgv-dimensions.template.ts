@@ -55,14 +55,14 @@ export const HgvDimensionsTemplate: FormNode = {
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'frontAxleTo5thWheelCouplingMin',
+      name: 'frontVehicleTo5thWheelCouplingMin',
       label: 'Minimum',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'frontAxleTo5thWheelCouplingMax',
+      name: 'frontVehicleTo5thWheelCouplingMax',
       label: 'Maximum',
       value: null,
       type: FormNodeTypes.CONTROL,
