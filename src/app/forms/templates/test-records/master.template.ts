@@ -493,6 +493,25 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
+    },
+    testTypesDeskBasedGroup4: {
+      required: DeskBasedRequiredSectionHgvTrl,
+      vehicle: DeskBasedVehicleSectionHgvGroup1And2And4And5,
+      test: AmendDeskBasedTestSectionGroup2And5,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesDeskBasedGroup5: {
+      required: DeskBasedRequiredSectionHgvTrl,
+      vehicle: DeskBasedVehicleSectionDefaultTrl,
+      test: AmendDeskBasedTestSectionGroup3,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      reasonForCreation: reasonForCreationSection
     }
   },
   car: {
@@ -523,6 +542,16 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesDeskBasedGroup4: {
+      required: DeskBasedRequiredSectionHgvTrl,
+      vehicle: DeskBasedVehicleSectionHgvGroup1And2And4And5,
+      test: AmendDeskBasedTestSectionGroup2And5,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     }
   },
@@ -555,6 +584,16 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesDeskBasedGroup4: {
+      required: DeskBasedRequiredSectionHgvTrl,
+      vehicle: DeskBasedVehicleSectionHgvGroup1And2And4And5,
+      test: AmendDeskBasedTestSectionGroup2And5,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     }
   }
