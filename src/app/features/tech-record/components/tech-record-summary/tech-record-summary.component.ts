@@ -30,7 +30,7 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editableTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { cloneDeep, merge } from 'lodash';
+import { cloneDeep, mergeWith } from 'lodash';
 import { map, Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -129,7 +129,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   handleFormState(event: any): void {
-    this.techRecordCalculated = merge(cloneDeep(this.techRecordCalculated), event);
+    const isPrimitiveArray = (a: any, b: any) => (Array.isArray(a) && !a.some(i => typeof i === 'object') ? b : undefined);
+
+    this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
 
     this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated);
   }
