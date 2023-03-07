@@ -10,6 +10,18 @@ export const ContingencyVisitSection: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
+      name: 'testFacilityCombination',
+      label: 'Test facility name/number',
+      viewType: FormNodeViewTypes.HIDDEN,
+      type: FormNodeTypes.COMBINATION,
+      options: {
+        leftComponentName: 'testStationName',
+        rightComponentName: 'testStationPNumber',
+        separator: ' / '
+      },
+      disabled: true
+    },
+    {
       name: 'testStationName',
       label: 'Test Station Name',
       type: FormNodeTypes.CONTROL,
