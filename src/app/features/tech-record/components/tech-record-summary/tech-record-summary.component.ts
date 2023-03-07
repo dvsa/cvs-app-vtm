@@ -23,7 +23,7 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -106,11 +106,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get vehicleTemplates(): Array<FormNode> {
-    return (
-      vehicleTemplateMap
-        .get(this.techRecordCalculated.vehicleType)
-        ?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
-    );
+    const type =
+      this.techRecordCalculated.vehicleType === VehicleTypes.TRL && this.techRecordCalculated.euVehicleCategory === EuVehicleCategories.O1
+        ? VehicleTypes.SMALL_TRL
+        : this.techRecordCalculated.vehicleType;
+
+    return vehicleTemplateMap.get(type)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? [];
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
