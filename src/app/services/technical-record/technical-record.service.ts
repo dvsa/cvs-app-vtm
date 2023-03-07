@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {
+  EuVehicleCategories,
   postNewVehicleModel,
   PutVehicleTechRecordModel,
   StatusCodes,
@@ -61,6 +62,12 @@ export class TechnicalRecordService {
 
   get techRecord$(): Observable<TechRecordModel | undefined> {
     return this.selectedVehicleTechRecord$.pipe(switchMap(vehicle => (vehicle ? this.viewableTechRecord$(vehicle) : of(undefined))));
+  }
+
+  getVehicleTypeWithSmallTrl(techRecord?: TechRecordModel): VehicleTypes | undefined {
+    return techRecord?.vehicleType === VehicleTypes.TRL && techRecord.euVehicleCategory === EuVehicleCategories.O1
+      ? VehicleTypes.SMALL_TRL
+      : techRecord?.vehicleType;
   }
 
   getByVin(vin: string): Observable<VehicleTechRecordModel[]> {

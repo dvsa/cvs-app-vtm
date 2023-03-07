@@ -69,9 +69,7 @@ export class AmendVinComponent implements OnDestroy {
   }
 
   get vehicleType(): VehicleTypes | undefined {
-    return this.techRecord?.vehicleType === VehicleTypes.TRL && this.techRecord.euVehicleCategory === EuVehicleCategories.O1
-      ? VehicleTypes.SMALL_TRL
-      : this.techRecord?.vehicleType;
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord);
   }
 
   isFormValid(): boolean {
