@@ -23,6 +23,6 @@ export class NumberPlateComponent {
   }
 
   isZNumber(vrm: string): boolean {
-    return vrm.slice(-1) == 'Z' && /^\d+$/.test(vrm.slice(0, -1));
+    return new RegExp('^[0-9]{7}[zZ]$').test(vrm);
   }
 }

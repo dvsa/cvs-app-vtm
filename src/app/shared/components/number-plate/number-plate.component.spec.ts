@@ -34,7 +34,7 @@ describe('NumberPlateComponent', () => {
 
   describe('isZNumber', () => {
     it('should return true if it matches the z number format', () => {
-      component.vrm = '12345Z';
+      component.vrm = '1234567Z';
       expect(component.isZNumber(component.vrm)).toBeTruthy();
     });
 
@@ -49,6 +49,8 @@ describe('NumberPlateComponent', () => {
       component.vrm = 'A12345Z';
       expect(component.isZNumber(component.vrm)).toBeFalsy();
       component.vrm = '12+%345Z';
+      expect(component.isZNumber(component.vrm)).toBeFalsy();
+      component.vrm = 'Z';
       expect(component.isZNumber(component.vrm)).toBeFalsy();
     });
   });
