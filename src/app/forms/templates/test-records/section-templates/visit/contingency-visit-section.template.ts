@@ -12,7 +12,7 @@ export const ContingencyVisitSection: FormNode = {
     {
       name: 'testFacilityCombination',
       label: 'Test facility name/number',
-      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
       type: FormNodeTypes.COMBINATION,
       options: {
         leftComponentName: 'testStationName',
