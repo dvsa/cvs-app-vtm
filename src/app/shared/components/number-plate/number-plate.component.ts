@@ -12,7 +12,7 @@ export class NumberPlateComponent {
   @Input() isSecondary: boolean = false;
   @Input() set vrm(value: string | undefined) {
     // formatting: if the number plate is long enough, add a space before the final 3 characters
-    if (value && value.length >= 5) {
+    if (value && value.length >= 5 && !this.isZNumber(value)) {
       this._vrm = value.slice(0, value.length - 3) + ' ' + value.slice(value.length - 3);
     } else {
       this._vrm = value;
@@ -20,5 +20,9 @@ export class NumberPlateComponent {
   }
   get vrm(): string | undefined {
     return this._vrm;
+  }
+
+  isZNumber(vrm: string): boolean {
+    return vrm.slice(-1) == 'Z' && /^\d+$/.test(vrm.slice(0, -1));
   }
 }
