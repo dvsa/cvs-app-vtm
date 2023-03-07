@@ -480,8 +480,8 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: SpecialistRequiredSectionLgvCarSmallTrl,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup1,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsHiddenSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -490,8 +490,8 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: SpecialistRequiredSectionLgvCarSmallTrl,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup5,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsHiddenSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -529,8 +529,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: SpecialistRequiredSectionLgvCarSmallTrl,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup1,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsHiddenSection,
+      customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -539,8 +538,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: SpecialistRequiredSectionLgvCarSmallTrl,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup5,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsHiddenSection,
+      customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -581,8 +579,8 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSpecialistSectionMotorcycle,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup1,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsHiddenSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
