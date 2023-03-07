@@ -9,6 +9,7 @@ import { reasonForCreationSection } from './section-templates/reasonForCreation/
 import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
 import { defectsHiddenSection } from './section-templates/required/defect-hidden-section.template';
 import { DeskBasedRequiredSectionHgvTrl } from './section-templates/required/desk-based-required-hidden-section-hgv-trl.template';
+import { DeskBasedRequiredHiddenSectionLGV } from './section-templates/required/desk-based-required-hidden-section-lgv.template';
 import { DeskBasedRequiredSectionPsv } from './section-templates/required/desk-based-required-hidden-section-psv.template';
 import { RequiredSectionHGVTRL } from './section-templates/required/required-hidden-section-hgv-trl.template';
 import { RequiredSection } from './section-templates/required/required-hidden-section.template';
@@ -41,6 +42,7 @@ import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-tr
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
 import { DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvGroup1And2And4And5 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
+import { DeskBasedVehicleSectionGroup4LGV } from './section-templates/vehicle/desk-based-vehicle-section-group4-lgv.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
 
 /**
@@ -495,22 +497,21 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredSectionHgvTrl,
-      vehicle: DeskBasedVehicleSectionHgvGroup1And2And4And5,
+      required: DeskBasedRequiredHiddenSectionLGV,
+      vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
       visit: VisitSection,
       notes: NotesSection,
-      defects: defectsHiddenSection,
-      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup5: {
       required: DeskBasedRequiredSectionHgvTrl,
-      vehicle: DeskBasedVehicleSectionDefaultTrl,
+      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
       test: AmendDeskBasedTestSectionGroup3,
       visit: VisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     }
   },
