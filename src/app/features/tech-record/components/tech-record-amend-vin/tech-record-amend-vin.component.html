@@ -20,6 +20,11 @@
     </div>
   </dl>
 
+  <div *ngIf="message">
+    <h6 class="govuk-heading-xl">Are you sure you want to change the VIN?</h6>
+    <app-field-error-message [error]="message" name="vin-field"></app-field-error-message>
+  </div>
+
   <form [formGroup]="form">
     <app-text-input formControlName="vin" name="vin" label="New VIN" [width]="width" (focusout)="isFormValid()"></app-text-input>
   </form>

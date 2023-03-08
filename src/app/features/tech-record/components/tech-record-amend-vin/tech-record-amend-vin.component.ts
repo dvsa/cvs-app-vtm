@@ -8,7 +8,7 @@ import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateVin, updateVinSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Subject, take, takeUntil } from 'rxjs';
@@ -20,7 +20,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 export class AmendVinComponent implements OnInit, OnDestroy {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
-  message?: String;
+  message?: string;
   form = new FormGroup({
     vin: new CustomFormControl(
       {
