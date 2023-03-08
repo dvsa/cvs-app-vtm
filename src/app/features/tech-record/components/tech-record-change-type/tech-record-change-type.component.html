@@ -37,15 +37,7 @@
   </ng-container>
 
   <div class="buttons-row">
-    <button
-      class="govuk-button"
-      data-module="govuk-button"
-      type="submit"
-      enterkeyhint="change vehicle type"
-      (click)="handleSubmit(selectVehicleType.value)"
-    >
-      Confirm and continue
-    </button>
+    <app-button (clicked)="handleSubmit(selectVehicleType.value)">Confirm and continue</app-button>
 
     <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
   </div>
