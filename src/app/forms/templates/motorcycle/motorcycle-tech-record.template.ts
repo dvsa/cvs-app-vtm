@@ -1,6 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { VehicleClass } from '@models/vehicle-class.model';
 import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
 
 export const MotorcycleTechRecord: FormNode = {

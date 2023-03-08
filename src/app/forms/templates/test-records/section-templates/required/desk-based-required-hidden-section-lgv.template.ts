@@ -82,6 +82,18 @@ export const DeskBasedRequiredHiddenSectionLGV: FormNode = {
       ]
     },
     {
+      name: 'vehicleSubclass',
+      type: FormNodeTypes.ARRAY,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+      children: [
+        {
+          name: '0',
+          type: FormNodeTypes.CONTROL
+        }
+      ]
+    },
+    {
       name: 'vehicleType',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
