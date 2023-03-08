@@ -33,8 +33,6 @@ export class AmendVinComponent {
     )
   });
 
-  private destroy$ = new Subject<void>();
-
   constructor(
     private actions$: Actions,
     private globalErrorService: GlobalErrorService,
@@ -46,22 +44,12 @@ export class AmendVinComponent {
     this.technicalRecordService.selectedVehicleTechRecord$
       .pipe(take(1))
       .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
-  }
 
-  ngOnInit(): void {
-    if (!this.vehicle) {
-      this.navigateBack();
-    }
-    this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
+    this.actions$.pipe(ofType(updateVinSuccess), take(1)).subscribe(() => this.navigateBack());
     this.form
       .get('vin')
-      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      ?.valueChanges.pipe()
       .subscribe(() => delete this.message);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   get width(): FormNodeWidth {
