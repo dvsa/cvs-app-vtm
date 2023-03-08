@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -17,7 +17,7 @@ import { Subject, take, takeUntil } from 'rxjs';
   selector: 'app-change-amend-vin',
   templateUrl: './tech-record-amend-vin.component.html'
 })
-export class AmendVinComponent implements OnInit, OnDestroy {
+export class AmendVinComponent {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
   message?: string;
@@ -32,6 +32,7 @@ export class AmendVinComponent implements OnInit, OnDestroy {
       [Validators.minLength(3), Validators.maxLength(21), Validators.required]
     )
   });
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -42,7 +43,9 @@ export class AmendVinComponent implements OnInit, OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
+    this.technicalRecordService.selectedVehicleTechRecord$
+      .pipe(take(1))
+      .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
   }
 
   ngOnInit(): void {
@@ -76,6 +79,10 @@ export class AmendVinComponent implements OnInit, OnDestroy {
     return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
+  get vehicleType(): VehicleTypes | undefined {
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord);
+  }
+
   isFormValid(): boolean {
     const errors: GlobalError[] = [];
 
@@ -94,10 +101,7 @@ export class AmendVinComponent implements OnInit, OnDestroy {
   handleSubmit(): void {
     if (!this.isFormValid()) return;
 
-    const payload = {
-      newVin: this.form.value.vin,
-      systemNumber: this.vehicle?.systemNumber ?? ''
-    };
+    const payload = { newVin: this.form.value.vin, systemNumber: this.vehicle?.systemNumber ?? '' };
 
     if (this.message) {
       this.store.dispatch(updateVin(payload));
