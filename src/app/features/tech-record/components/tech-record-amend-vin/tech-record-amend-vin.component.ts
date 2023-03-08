@@ -20,6 +20,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 export class AmendVinComponent implements OnInit, OnDestroy {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
+  message?: String;
   form = new FormGroup({
     vin: new CustomFormControl(
       {
@@ -94,6 +95,19 @@ export class AmendVinComponent implements OnInit, OnDestroy {
       systemNumber: this.vehicle?.systemNumber ?? ''
     };
 
-    this.store.dispatch(updateVin(payload));
+    if (this.message) {
+      this.store.dispatch(updateVin(payload));
+    }
+
+    this.technicalRecordService
+      .isUnique(this.form.value.vin, SEARCH_TYPES.VIN)
+      .pipe(take(1))
+      .subscribe(res => {
+        if (!res) {
+          this.message = 'This VIN already exists, if you continue it will be associated with two technical records';
+        } else {
+          this.store.dispatch(updateVin(payload));
+        }
+      });
   }
 }
