@@ -45,6 +45,7 @@ import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/d
 import { DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvGroup1And2And4And5 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
 import { DeskBasedVehicleSectionGroup4LGV } from './section-templates/vehicle/desk-based-vehicle-section-group4-lgv.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
+import { DeskBasedVehicleSectionLgvGroup5 } from './section-templates/vehicle/desk-based-vehicle-section-lgv-group5.template';
 
 /**
  * Keys of root object must a a valid vehicle type.
@@ -506,7 +507,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     },
     testTypesDeskBasedGroup5: {
       required: DeskBasedRequiredSectionLgvGroup5,
-      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
+      vehicle: DeskBasedVehicleSectionLgvGroup5,
       test: AmendDeskBasedTestSectionGroup3,
       customDefects: CustomDefectsHiddenSection,
       emissions: EmissionsSection,
