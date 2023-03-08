@@ -19,6 +19,13 @@ export const LgvTechRecord: FormNode = {
       validators: []
     },
     {
+      name: 'statusCode',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
       name: 'regnDate',
       label: 'Date of first registration',
       value: '',
