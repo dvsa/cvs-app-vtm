@@ -50,9 +50,11 @@ export const LgvTechRecord: FormNode = {
     {
       name: 'noOfAxles',
       label: 'Number of axles',
-      value: '',
       width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.NUMBER,
+      value: 2,
+      validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
       name: 'vehicleSubclass',
