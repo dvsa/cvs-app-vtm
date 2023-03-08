@@ -13,7 +13,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { updateTechRecordsSuccess, updateVinSuccess } from '@store/technical-records';
+import { updateVin, updateVinSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVinComponent } from './tech-record-amend-vin.component';
 
@@ -106,6 +106,52 @@ describe('TechRecordChangeVrmComponent', () => {
       delete component.vehicle;
 
       expect(component.vrm).toBe(undefined);
+    });
+  });
+
+  describe('handleSubmit', () => {
+    it('should dispatch the updateVin function with the new vin', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      component.form.controls['vin'].setValue('myNewVin');
+      component.vehicle!.systemNumber = '01234';
+      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValue(of(true));
+
+      const payload = {
+        newVin: 'myNewVin',
+        systemNumber: '01234'
+      };
+
+      component.handleSubmit();
+
+      expect(dispatchSpy).toHaveBeenCalledWith(updateVin(payload));
+    });
+
+    it('if the VIN is a duplicate it should create a warning message', () => {
+      component.form.controls['vin'].setValue('myNewVin');
+      component.vehicle!.systemNumber = '01234';
+      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValue(of(false));
+
+      component.handleSubmit();
+
+      expect(component.message).toBe('This VIN already exists, if you continue it will be associated with two technical records');
+    });
+
+    it('if the warning message exists already it should dispatch updateVin', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      component.form.controls['vin'].setValue('myNewVin');
+      component.vehicle!.systemNumber = '01234';
+      component.message = 'This VIN already exists, if you continue it will be associated with two technical records';
+
+      const payload = {
+        newVin: 'myNewVin',
+        systemNumber: '01234'
+      };
+
+      component.handleSubmit();
+
+      expect(dispatchSpy).toHaveBeenCalledWith(updateVin(payload));
     });
   });
 
