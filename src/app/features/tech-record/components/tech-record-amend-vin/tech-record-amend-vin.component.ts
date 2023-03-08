@@ -53,9 +53,7 @@ export class AmendVinComponent implements OnInit, OnDestroy {
     this.form
       .get('vin')
       ?.valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        delete this.message;
-      });
+      .subscribe(() => delete this.message);
   }
 
   ngOnDestroy(): void {
