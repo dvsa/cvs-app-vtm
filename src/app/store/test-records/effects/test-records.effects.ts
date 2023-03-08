@@ -44,7 +44,7 @@ export class TestResultsEffects {
     this.actions$.pipe(
       ofType(fetchTestResultsBySystemNumber),
       mergeMap(({ systemNumber }) =>
-        this.testRecordsService.fetchTestResultbySystemNumber(systemNumber).pipe(
+        this.testRecordsService.fetchTestResultbySystemNumber(systemNumber, { fromDateTime: new Date(1970) }).pipe(
           map(testResults => fetchTestResultsBySystemNumberSuccess({ payload: testResults })),
           catchError(e => {
             switch (e.status) {
@@ -64,18 +64,20 @@ export class TestResultsEffects {
       mergeMap(() => this.store.pipe(select(selectRouteNestedParams), take(1))),
       mergeMap(params => {
         const { systemNumber, testResultId } = params;
-        return this.testRecordsService.fetchTestResultbySystemNumber(systemNumber, { testResultId, version: 'all' }).pipe(
-          map(vehicleTestRecords => {
-            if (vehicleTestRecords && vehicleTestRecords.length === 1) {
-              return fetchSelectedTestResultSuccess({ payload: vehicleTestRecords[0] });
-            } else {
-              return fetchSelectedTestResultFailed({ error: 'Test result not found' });
-            }
-          }),
-          catchError(e => {
-            return of(fetchSelectedTestResultFailed({ error: e.message }));
-          })
-        );
+        return this.testRecordsService
+          .fetchTestResultbySystemNumber(systemNumber, { fromDateTime: new Date(1970), testResultId, version: 'all' })
+          .pipe(
+            map(vehicleTestRecords => {
+              if (vehicleTestRecords && vehicleTestRecords.length === 1) {
+                return fetchSelectedTestResultSuccess({ payload: vehicleTestRecords[0] });
+              } else {
+                return fetchSelectedTestResultFailed({ error: 'Test result not found' });
+              }
+            }),
+            catchError(e => {
+              return of(fetchSelectedTestResultFailed({ error: e.message }));
+            })
+          );
       })
     )
   );

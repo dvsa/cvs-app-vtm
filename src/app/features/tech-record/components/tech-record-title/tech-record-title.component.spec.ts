@@ -186,7 +186,7 @@ describe('TechRecordTitleComponent', () => {
         vin: 'testvin',
         systemNumber: 'testNumber'
       };
-      mockVehicle.techRecord[0].euVehicleCategory = EuVehicleCategories.o1;
+      mockVehicle.techRecord[0].euVehicleCategory = EuVehicleCategories.O1;
       component.vehicle = mockVehicle;
       store.overrideSelector(editableTechRecord, mockRecord);
       fixture.detectChanges();

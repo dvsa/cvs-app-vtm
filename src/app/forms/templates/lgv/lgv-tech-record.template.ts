@@ -61,7 +61,6 @@ export const LgvTechRecord: FormNode = {
       label: 'Vehicle Subclass',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [],
       editType: FormNodeEditTypes.CHECKBOXGROUP,
       options: getOptionsFromEnum(VehicleSubclass)
     },

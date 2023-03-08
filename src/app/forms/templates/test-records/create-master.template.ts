@@ -496,8 +496,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSectionLgvCar,
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup1,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsHiddenSection,
+      customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -506,8 +505,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSectionLgvCar,
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup5,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsHiddenSection,
+      customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -538,8 +536,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSectionLgvCar,
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup1,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsHiddenSection,
+      customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -548,8 +545,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSectionLgvCar,
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup5,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsHiddenSection,
+      customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -589,8 +585,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSectionMotorcycle,
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup1,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsHiddenSection,
+      customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection

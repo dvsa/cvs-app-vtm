@@ -92,7 +92,8 @@ export const MotorcycleTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: []
+      editType: FormNodeEditTypes.NUMBER,
+      validators: [{ name: ValidatorNames.Max, args: 9999 }]
     }
   ]
 };
