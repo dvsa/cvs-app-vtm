@@ -65,12 +65,10 @@ export const SmallTrailerTechRecord: FormNode = {
     {
       name: 'euVehicleCategory',
       label: 'EU vehicle category',
-      value: '',
+      value: EuVehicleCategories.O1,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      validators: []
+      disabled: true
     }
   ]
 };

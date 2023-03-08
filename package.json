@@ -40,7 +40,7 @@
     "@angular/platform-browser-dynamic": "^13.3.12",
     "@angular/router": "^13.3.12",
     "@azure/msal-browser": "^2.33.0",
-    "@azure/msal-angular": "^2.5.1",
+    "@azure/msal-angular": "^2.5.3",
     "@ngrx/effects": "^13.2.0",
     "@ngrx/entity": "^13.2.0",
     "@ngrx/router-store": "^13.2.0",

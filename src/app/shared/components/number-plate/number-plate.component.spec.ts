@@ -31,4 +31,27 @@ describe('NumberPlateComponent', () => {
     component.vrm = 'A123';
     expect(component.vrm).toEqual('A123');
   });
+
+  describe('isZNumber', () => {
+    it('should return true if it matches the z number format', () => {
+      component.vrm = '1234567Z';
+      expect(component.isZNumber(component.vrm)).toBeTruthy();
+    });
+
+    it('should return false if the Z is not present at the end', () => {
+      component.vrm = '12345';
+      expect(component.isZNumber(component.vrm)).toBeFalsy();
+      component.vrm = '1234Z5';
+      expect(component.isZNumber(component.vrm)).toBeFalsy();
+    });
+
+    it('should return false if the z number does not match the format', () => {
+      component.vrm = 'A12345Z';
+      expect(component.isZNumber(component.vrm)).toBeFalsy();
+      component.vrm = '12+%345Z';
+      expect(component.isZNumber(component.vrm)).toBeFalsy();
+      component.vrm = 'Z';
+      expect(component.isZNumber(component.vrm)).toBeFalsy();
+    });
+  });
 });

@@ -129,7 +129,9 @@ describe('TechRecordChangeVrmComponent', () => {
     });
 
     it('should navigate back on updateTechRecordsSuccess', fakeAsync(() => {
-      component.ngOnInit();
+      jest.spyOn(component, 'isFormValid').mockImplementation(() => true);
+
+      component.handleSubmit();
 
       const navigateBackSpy = jest.spyOn(component, 'navigateBack');
       jest.spyOn(router, 'navigate').mockImplementation();
