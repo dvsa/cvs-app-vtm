@@ -4,7 +4,7 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
 
-export const DeskBasedVehicleSectionLgvGroup5: FormNode = {
+export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
   name: 'vehicleSection',
   label: 'Vehicle Details',
   type: FormNodeTypes.GROUP,
