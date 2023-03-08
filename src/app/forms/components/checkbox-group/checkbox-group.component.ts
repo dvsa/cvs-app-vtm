@@ -33,23 +33,20 @@ export class CheckboxGroupComponent extends BaseControlComponent {
     } else {
       this.value = this.value.concat(this.delimited ? this.delimited.separator + option.value : option.value);
     }
+
     this.onChange(this.value);
   }
 
   private remove(option: FormNodeOption<OptionsType>) {
     const separator = this.delimited && this.delimited?.regex ? new RegExp(this.delimited?.regex) : this.delimited?.separator;
+
     let newValue = separator ? this.value?.split(separator) : [...this.value];
-    if (newValue && newValue.length > 0) {
-      const i = newValue.indexOf(option.value);
-      if (i > -1) {
-        newValue.splice(i, 1);
-      }
-      newValue = separator ? newValue.join(this.delimited?.separator) : newValue;
-    }
-    if ((newValue === '' || newValue) && newValue.length === 0) {
-      newValue = null;
-    }
-    this.value = newValue;
+
+    newValue = newValue?.filter((v: any) => v !== option.value);
+
+    newValue = separator ? newValue?.join(this.delimited?.separator) : newValue;
+
+    this.value = newValue !== '' && newValue?.length !== 0 ? newValue : null;
 
     this.onChange(this.value);
   }

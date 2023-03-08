@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
+import { EuVehicleCategories, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
-import { catchError, concatMap, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import {
   archiveTechRecord,
   archiveTechRecordFailure,
@@ -179,6 +180,11 @@ export class TechnicalRecordServiceEffects {
         withLatestFrom(this.store.pipe(select(editableTechRecord))),
         concatMap(([{ vehicleType }, editableTechRecord]) => {
           const techRecord = { ...cloneDeep(editableTechRecord), vehicleType };
+
+          if (vehicleType === VehicleTypes.SMALL_TRL) {
+            techRecord.vehicleType = VehicleTypes.TRL;
+            techRecord.euVehicleCategory = EuVehicleCategories.O1;
+          }
 
           const techRecordTemplate = vehicleTemplateMap.get(vehicleType) || [];
 

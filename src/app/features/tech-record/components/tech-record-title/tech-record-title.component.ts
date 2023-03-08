@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editableTechRecord } from '@store/technical-records';
@@ -64,6 +64,12 @@ export class TechRecordTitleComponent implements OnInit {
 
   get statuses(): typeof StatusCodes {
     return StatusCodes;
+  }
+
+  getVehicleType(techRecord: TechRecordModel): VehicleTypes {
+    return techRecord.vehicleType === VehicleTypes.TRL && techRecord.euVehicleCategory === EuVehicleCategories.O1
+      ? VehicleTypes.SMALL_TRL
+      : techRecord.vehicleType;
   }
 
   getCompletenessColor(completeness?: string): 'green' | 'red' {

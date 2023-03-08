@@ -49,6 +49,15 @@ export class CreateTechRecordComponent implements OnChanges {
     generateID: new CustomFormControl({ name: 'generate-c-or-z-num', type: FormNodeTypes.CONTROL }, null)
   });
 
+  public vehicleTypeOptions: MultiOptions = [
+    { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
+    { label: 'Light goods vehicle (LGV)', value: VehicleTypes.LGV },
+    { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
+    { label: 'Trailer (TRL)', value: VehicleTypes.TRL },
+    { label: 'Car', value: VehicleTypes.CAR },
+    { label: 'Motorcycle', value: VehicleTypes.MOTORCYCLE }
+  ];
+
   constructor(
     private globalErrorService: GlobalErrorService,
     private technicalRecordService: TechnicalRecordService,
@@ -72,14 +81,6 @@ export class CreateTechRecordComponent implements OnChanges {
     this.globalErrorService.setErrors(errors);
 
     return this.form.valid;
-  }
-
-  get vehicleTypeOptions(): MultiOptions {
-    return [
-      { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
-      { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
-      { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
-    ];
   }
 
   get vehicleStatusOptions(): MultiOptions {
