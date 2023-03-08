@@ -1,7 +1,8 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
+import { VehicleClass } from '@models/vehicle-class.model';
+import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
 
 export const SmallTrailerTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -46,21 +47,27 @@ export const SmallTrailerTechRecord: FormNode = {
     },
     {
       name: 'vehicleClass',
-      value: '',
       type: FormNodeTypes.GROUP,
       children: [
-        { name: 'code', label: 'Vehicle Class code', value: '', customId: 'vehicleClassCode', type: FormNodeTypes.CONTROL },
-        { name: 'description', label: 'Vehicle', value: '', customId: 'vehicleClassDescription', type: FormNodeTypes.CONTROL }
-      ],
-      validators: [{ name: ValidatorNames.Required }]
+        {
+          customId: 'vehicleClassDescription',
+          name: 'description',
+          label: 'Vehicle class',
+          value: '',
+          type: FormNodeTypes.CONTROL,
+          editType: FormNodeEditTypes.SELECT,
+          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+          validators: [{ name: ValidatorNames.Required }]
+        }
+      ]
     },
     {
       name: 'vehicleSubclass',
       label: 'Vehicle Subclass',
-      value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: []
+      editType: FormNodeEditTypes.CHECKBOXGROUP,
+      options: getOptionsFromEnum(VehicleSubclass)
     },
     {
       name: 'euVehicleCategory',
