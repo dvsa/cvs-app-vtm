@@ -8,6 +8,7 @@ import { NotesSection } from './section-templates/notes/notes-section.template';
 import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
 import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
 import { defectsHiddenSection } from './section-templates/required/defect-hidden-section.template';
+import { DeskBasedRequiredSectionLgvGroup5 } from './section-templates/required/desk-based-required-hidden-group5-lgv.template';
 import { DeskBasedRequiredSectionHgvTrl } from './section-templates/required/desk-based-required-hidden-section-hgv-trl.template';
 import { DeskBasedRequiredHiddenSectionLGV } from './section-templates/required/desk-based-required-hidden-section-lgv.template';
 import { DeskBasedRequiredSectionPsv } from './section-templates/required/desk-based-required-hidden-section-psv.template';
@@ -498,18 +499,19 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: DeskBasedRequiredHiddenSectionLGV,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
+      customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup5: {
-      required: DeskBasedRequiredSectionHgvTrl,
+      required: DeskBasedRequiredSectionLgvGroup5,
       vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
       test: AmendDeskBasedTestSectionGroup3,
+      customDefects: CustomDefectsHiddenSection,
+      emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
-      defects: defectsHiddenSection,
-      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     }
   },
@@ -542,13 +544,12 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredSectionHgvTrl,
-      vehicle: DeskBasedVehicleSectionHgvGroup1And2And4And5,
+      required: DeskBasedRequiredHiddenSectionLGV,
+      vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
+      customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
-      defects: defectsHiddenSection,
-      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     }
   },
@@ -583,13 +584,12 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredSectionHgvTrl,
-      vehicle: DeskBasedVehicleSectionHgvGroup1And2And4And5,
+      required: DeskBasedRequiredHiddenSectionLGV,
+      vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
+      customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
-      defects: defectsHiddenSection,
-      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     }
   }
