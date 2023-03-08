@@ -44,6 +44,20 @@ export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
       width: FormNodeWidth.S,
       options: getOptionsFromEnum(EuVehicleCategories),
       validators: [{ name: ValidatorNames.Required }]
+    },
+    {
+      name: 'preparerName',
+      label: 'Preparer Name',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'preparerId',
+      label: 'Preparer ID',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
     }
   ]
 };
