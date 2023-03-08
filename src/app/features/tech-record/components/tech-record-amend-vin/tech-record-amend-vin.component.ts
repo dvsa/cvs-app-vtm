@@ -1,23 +1,23 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { EuVehicleCategories, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateVin, updateVinSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Subject, take, takeUntil } from 'rxjs';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vin',
   templateUrl: './tech-record-amend-vin.component.html'
 })
-export class AmendVinComponent implements OnDestroy {
+export class AmendVinComponent {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
 
@@ -33,8 +33,6 @@ export class AmendVinComponent implements OnDestroy {
     )
   });
 
-  private destroy$ = new Subject<void>();
-
   constructor(
     private actions$: Actions,
     private globalErrorService: GlobalErrorService,
@@ -46,11 +44,8 @@ export class AmendVinComponent implements OnDestroy {
     this.technicalRecordService.selectedVehicleTechRecord$
       .pipe(take(1))
       .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
-  }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.actions$.pipe(ofType(updateVinSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 
   get width(): FormNodeWidth {
@@ -89,8 +84,6 @@ export class AmendVinComponent implements OnDestroy {
 
   handleSubmit(): void {
     if (!this.isFormValid()) return;
-
-    this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
 
     const payload = { newVin: this.form.value.vin, systemNumber: this.vehicle?.systemNumber ?? '' };
 
