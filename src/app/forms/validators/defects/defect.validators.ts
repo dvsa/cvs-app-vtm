@@ -9,12 +9,12 @@ export class DefectValidators {
       const prohibitionIssued = grandParent.get('prohibitionIssued')?.value as boolean;
       const stdForProhibition = grandParent.get('stdForProhibition')?.value as boolean;
 
-      const imNumber = grandParent.get('imNumber')?.value as string;
-      const itemNumber = grandParent.get('itemNumber')?.value as string;
-      const deficiencyId = grandParent.get('deficiencyId')?.value as string;
-      const deficiencySubId = grandParent.get('deficiencySubId')?.value as string;
+      const imNumber = grandParent.get('imNumber')?.value ? grandParent.get('imNumber')?.value + '.' : '';
+      const itemNumber = grandParent.get('itemNumber')?.value ? grandParent.get('itemNumber')?.value + '.' : '';
+      const deficiencyId = grandParent.get('deficiencyId')?.value ? grandParent.get('deficiencyId')?.value + '.' : '';
+      const deficiencySubId = grandParent.get('deficiencySubId')?.value ?? '';
 
-      const defectType = imNumber + '.' + itemNumber + '.' + deficiencyId + '.' + deficiencySubId;
+      const defectType = imNumber + itemNumber + deficiencyId + deficiencySubId;
 
       const optionalDefectNotes = ['43.1.a.ii', '41.1.a.ii', '10.1.iii'];
 
