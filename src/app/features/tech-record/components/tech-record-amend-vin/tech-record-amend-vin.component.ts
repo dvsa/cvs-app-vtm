@@ -46,6 +46,7 @@ export class AmendVinComponent {
       .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
 
     this.actions$.pipe(ofType(updateVinSuccess), take(1)).subscribe(() => this.navigateBack());
+
     this.form
       .get('vin')
       ?.valueChanges.pipe()
