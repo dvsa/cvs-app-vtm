@@ -1,6 +1,6 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedRequiredHiddenSectionLGV: FormNode = {
+export const DeskBasedRequiredHiddenSectionLGVGroup4: FormNode = {
   name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [

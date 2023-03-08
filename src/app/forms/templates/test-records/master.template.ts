@@ -10,7 +10,7 @@ import { CustomDefectsHiddenSection } from './section-templates/required/custom-
 import { defectsHiddenSection } from './section-templates/required/defect-hidden-section.template';
 import { DeskBasedRequiredSectionLgvGroup5 } from './section-templates/required/desk-based-required-hidden-group5-lgv.template';
 import { DeskBasedRequiredSectionHgvTrl } from './section-templates/required/desk-based-required-hidden-section-hgv-trl.template';
-import { DeskBasedRequiredHiddenSectionLGV } from './section-templates/required/desk-based-required-hidden-section-lgv.template';
+import { DeskBasedRequiredHiddenSectionLGVGroup4 } from './section-templates/required/desk-based-required-hidden-group4-lgv.template';
 import { DeskBasedRequiredSectionPsv } from './section-templates/required/desk-based-required-hidden-section-psv.template';
 import { RequiredSectionHGVTRL } from './section-templates/required/required-hidden-section-hgv-trl.template';
 import { RequiredSection } from './section-templates/required/required-hidden-section.template';
@@ -496,7 +496,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredHiddenSectionLGV,
+      required: DeskBasedRequiredHiddenSectionLGVGroup4,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
       customDefects: CustomDefectsHiddenSection,
@@ -544,7 +544,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredHiddenSectionLGV,
+      required: DeskBasedRequiredHiddenSectionLGVGroup4,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
       customDefects: CustomDefectsHiddenSection,
@@ -584,7 +584,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredHiddenSectionLGV,
+      required: DeskBasedRequiredHiddenSectionLGVGroup4,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
       customDefects: CustomDefectsHiddenSection,
