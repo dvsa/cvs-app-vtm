@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -13,14 +13,14 @@ import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record
 import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { catchError, filter, of, Subject, switchMap, take, takeUntil, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vrm',
   templateUrl: './tech-record-amend-vrm.component.html',
   styleUrls: ['./tech-record-amend-vrm.component.scss']
 })
-export class AmendVrmComponent {
+export class AmendVrmComponent implements OnDestroy {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
 
@@ -37,6 +37,7 @@ export class AmendVrmComponent {
       [Validators.required]
     )
   });
+  private destroy$ = new Subject<void>();
 
   constructor(
     private actions$: Actions,
@@ -53,9 +54,13 @@ export class AmendVrmComponent {
       .pipe(take(1))
       .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
 
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.navigateBack());
+    this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   get reasons(): Array<FormNodeOption<string>> {
     return [
       { label: 'Cherished transfer', value: 'true', hint: 'Current VRM will be archived' },

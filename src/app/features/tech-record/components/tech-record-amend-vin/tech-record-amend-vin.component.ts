@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -11,13 +11,13 @@ import { Store } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateVin, updateVinSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { take, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vin',
   templateUrl: './tech-record-amend-vin.component.html'
 })
-export class AmendVinComponent {
+export class AmendVinComponent implements OnDestroy {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
   message?: string;
@@ -32,6 +32,7 @@ export class AmendVinComponent {
       [Validators.minLength(3), Validators.maxLength(21), Validators.required]
     )
   });
+  private destroy$ = new Subject<void>();
 
   constructor(
     private actions$: Actions,
@@ -45,12 +46,17 @@ export class AmendVinComponent {
       .pipe(take(1))
       .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
 
-    this.actions$.pipe(ofType(updateVinSuccess), takeUntil(destroy)).subscribe(() => this.navigateBack());
+    this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
 
     this.form
       .get('vin')
-      ?.valueChanges.pipe(takeUntil(destroy))
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(() => delete this.message);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get width(): FormNodeWidth {
