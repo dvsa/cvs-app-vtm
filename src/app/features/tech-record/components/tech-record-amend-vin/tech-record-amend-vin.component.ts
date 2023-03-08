@@ -43,7 +43,7 @@ export class AmendVinComponent implements OnDestroy {
     private store: Store<TechnicalRecordServiceState>
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$
-      .pipe(take(1))
+      .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
 
     this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
@@ -84,6 +84,11 @@ export class AmendVinComponent implements OnDestroy {
     DynamicFormService.updateValidity(this.form, errors);
 
     this.globalErrorService.setErrors(errors);
+
+    if (this.form.value.vin === this.vehicle?.vin) {
+      this.globalErrorService.addError({ error: 'You must provide a new VIN', anchorLink: 'newVin' });
+      return false;
+    }
 
     return this.form.valid;
   }
