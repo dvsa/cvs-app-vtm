@@ -1,0 +1,13 @@
+<h1 class="govuk-heading-l title">Add batch of trailers</h1>
+<form [formGroup]="form">
+  <ng-container formArrayName="input-data">
+    <ng-container *ngFor="let control of inputDataArray.controls; let i = index" [formGroupName]="i">
+      <h2 class="govuk-heading-s">Vehicle {{ i + 1 }}</h2>
+      <app-text-input formControlName="vin" name="input-vin{{ i }}" label="Vehicle Identification number (VIN)" [width]="30"></app-text-input>
+    </ng-container>
+  </ng-container>
+
+  <pre>{{ form.value | json }}</pre>
+</form>
+
+<app-button id="create-record-continue" (clicked)="handleSubmit()">Continue</app-button>

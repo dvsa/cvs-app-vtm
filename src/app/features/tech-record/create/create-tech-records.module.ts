@@ -8,9 +8,10 @@ import { CreateTechRecordComponent } from './create-tech-record.component';
 import { HydrateNewVehicleRecordComponent } from './components/hydrate-new-vehicle-record/hydrate-new-vehicle-record.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TechRecordsModule } from '../tech-record.module';
+import { BatchCreateComponent } from './components/batch-create/batch-create.component';
 
 @NgModule({
-  declarations: [CreateTechRecordComponent, HydrateNewVehicleRecordComponent],
+  declarations: [CreateTechRecordComponent, HydrateNewVehicleRecordComponent, BatchCreateComponent],
   imports: [CommonModule, CreateTechRecordsRoutingModule, ReactiveFormsModule, DynamicFormsModule, RouterModule, SharedModule, TechRecordsModule]
 })
 export class CreateTechRecordsModule {}

@@ -4,6 +4,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
+import { BatchCreateComponent } from './components/batch-create/batch-create.component';
 import { HydrateNewVehicleRecordComponent } from './components/hydrate-new-vehicle-record/hydrate-new-vehicle-record.component';
 import { CreateTechRecordComponent } from './create-tech-record.component';
 
@@ -24,6 +25,12 @@ const routes: Routes = [
     path: 'new-record-details/tyre-search/:axleNumber',
     component: TechRecordSearchTyresComponent,
     data: { title: 'Tyre search', roles: Roles.TechRecordCreate, isEditing: true },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: 'add-batch',
+    component: BatchCreateComponent,
+    data: { tile: 'Batch Creation', roles: Roles.TechRecordCreate },
     canActivate: [MsalGuard, RoleGuard]
   }
 ];
