@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
 
 export const CarTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -16,6 +16,13 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true
+    },
+    {
+      name: 'statusCode',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'regnDate',
@@ -41,16 +48,19 @@ export const CarTechRecord: FormNode = {
     {
       name: 'noOfAxles',
       label: 'Number of axles',
-      value: '',
+      value: 2,
       width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.NUMBER,
+      validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
       name: 'vehicleSubclass',
       label: 'Vehicle Subclass',
-      value: '',
       width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOXGROUP,
+      options: getOptionsFromEnum(VehicleSubclass)
     },
     {
       name: 'euVehicleCategory',

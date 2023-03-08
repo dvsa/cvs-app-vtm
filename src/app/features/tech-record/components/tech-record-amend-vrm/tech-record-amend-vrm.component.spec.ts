@@ -1,6 +1,6 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
@@ -47,7 +47,7 @@ describe('TechRecordChangeVrmComponent', () => {
         GlobalErrorService,
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
-        { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
+        { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]), snapshot: new ActivatedRouteSnapshot() } },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
         { provide: TechnicalRecordService, useValue: mockTechRecordService }
       ],
@@ -129,13 +129,10 @@ describe('TechRecordChangeVrmComponent', () => {
     });
 
     it('should navigate back on updateTechRecordsSuccess', fakeAsync(() => {
-      component.ngOnInit();
-
       const navigateBackSpy = jest.spyOn(component, 'navigateBack');
       jest.spyOn(router, 'navigate').mockImplementation();
 
       actions$.next(updateTechRecordsSuccess({}));
-      tick();
 
       expect(navigateBackSpy).toHaveBeenCalled();
     }));

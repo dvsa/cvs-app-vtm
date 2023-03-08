@@ -70,13 +70,13 @@ describe('TechRecordChangeTypeComponent', () => {
     it('should should return the make and model', () => {
       const expectedTechRecord = expectedVehicle.techRecord.pop()!;
 
-      component.currentTechRecord = expectedTechRecord;
+      component.techRecord = expectedTechRecord;
 
       expect(component.makeAndModel).toBe(`${expectedTechRecord.chassisMake} - ${expectedTechRecord.chassisModel}`);
     });
 
     it('should return an empty string when the current record is null', () => {
-      delete component.currentTechRecord;
+      delete component.techRecord;
 
       expect(component.makeAndModel).toBe('');
     });
@@ -98,7 +98,7 @@ describe('TechRecordChangeTypeComponent', () => {
 
   describe('vehicleTypeOptions', () => {
     it('should return all types except for the current one', () => {
-      component.currentTechRecord = expectedVehicle.techRecord.pop()!;
+      component.techRecord = expectedVehicle.techRecord.pop()!;
 
       const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter(type => type.value !== VehicleTypes.PSV);
 

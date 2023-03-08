@@ -5,7 +5,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MultiOptions } from '@forms/models/options.model';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { changeVehicleType } from '@store/technical-records';
@@ -19,7 +19,7 @@ import { take } from 'rxjs';
 })
 export class ChangeVehicleTypeComponent {
   vehicle?: VehicleTechRecordModel;
-  currentTechRecord?: TechRecordModel;
+  techRecord?: TechRecordModel;
 
   form: FormGroup = new FormGroup({
     selectVehicleType: new CustomFormControl(
@@ -40,14 +40,13 @@ export class ChangeVehicleTypeComponent {
 
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
-    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => {
-      if (!techRecord) this.navigateBack();
-      this.currentTechRecord = techRecord;
-    });
+    this.technicalRecordService.editableTechRecord$
+      .pipe(take(1))
+      .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
   }
 
   get makeAndModel(): string {
-    const c = this.currentTechRecord;
+    const c = this.techRecord;
     if (!c?.make && !c?.chassisMake) return '';
 
     return `${c.vehicleType === 'psv' ? c.chassisMake : c.make} - ${c.vehicleType === 'psv' ? c.chassisModel : c.model}`;
@@ -57,8 +56,12 @@ export class ChangeVehicleTypeComponent {
     return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
+  get vehicleType(): VehicleTypes | undefined {
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord);
+  }
+
   get vehicleTypeOptions(): MultiOptions {
-    return getOptionsFromEnumAcronym(VehicleTypes).filter(type => type.value !== this.currentTechRecord?.vehicleType);
+    return getOptionsFromEnumAcronym(VehicleTypes).filter(type => type.value !== this.techRecord?.vehicleType);
   }
 
   navigateBack() {
@@ -71,13 +74,20 @@ export class ChangeVehicleTypeComponent {
       return this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
     }
 
+    if (selectedVehicleType === VehicleTypes.TRL && this.techRecord?.euVehicleCategory === EuVehicleCategories.O1) {
+      return this.globalErrorService.addError({
+        error: "You cannot change vehicle type to TRL when EU vehicle category is set to 'O1'",
+        anchorLink: 'selectedVehicleType'
+      });
+    }
+
     this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));
 
     this.technicalRecordService.clearReasonForCreation(this.vehicle);
 
     this.globalErrorService.clearErrors();
 
-    const routeSuffix = this.currentTechRecord?.statusCode !== StatusCodes.PROVISIONAL ? 'amend-reason' : 'notifiable-alteration-needed';
+    const routeSuffix = this.techRecord?.statusCode !== StatusCodes.PROVISIONAL ? 'amend-reason' : 'notifiable-alteration-needed';
 
     this.router.navigate([`../${routeSuffix}`], { relativeTo: this.route });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -20,7 +20,7 @@ import { catchError, filter, of, switchMap, take, throwError } from 'rxjs';
   templateUrl: './tech-record-amend-vrm.component.html',
   styleUrls: ['./tech-record-amend-vrm.component.scss']
 })
-export class AmendVrmComponent implements OnInit {
+export class AmendVrmComponent {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
 
@@ -49,7 +49,11 @@ export class AmendVrmComponent implements OnInit {
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
-    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.techRecord = techRecord));
+    this.technicalRecordService.editableTechRecord$
+      .pipe(take(1))
+      .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
+
+    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 
   get reasons(): Array<FormNodeOption<string>> {
@@ -63,12 +67,8 @@ export class AmendVrmComponent implements OnInit {
     return FormNodeWidth.L;
   }
 
-  ngOnInit(): void {
-    if (!this.techRecord) {
-      this.navigateBack();
-    }
-
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.navigateBack());
+  get vehicleType(): VehicleTypes | undefined {
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord);
   }
 
   get makeAndModel(): string {

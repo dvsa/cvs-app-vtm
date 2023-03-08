@@ -19,6 +19,13 @@ export const SmallTrailerTechRecord: FormNode = {
       validators: []
     },
     {
+      name: 'statusCode',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
       name: 'manufactureYear',
       label: 'Year of manufacture',
       value: '',
@@ -58,12 +65,10 @@ export const SmallTrailerTechRecord: FormNode = {
     {
       name: 'euVehicleCategory',
       label: 'EU vehicle category',
-      value: '',
+      value: EuVehicleCategories.O1,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      validators: []
+      disabled: true
     }
   ]
 };
