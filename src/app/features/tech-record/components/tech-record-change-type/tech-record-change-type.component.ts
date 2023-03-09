@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -21,22 +21,15 @@ export class ChangeVehicleTypeComponent {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
 
-  form: CustomFormGroup;
-  template: FormNode = {
-    name: 'criteria',
-    type: FormNodeTypes.GROUP,
-    children: [
-      {
-        name: 'selectVehicleType',
-        label: 'Select a new vehicle type',
-        value: '',
-        type: FormNodeTypes.CONTROL
-      }
-    ]
-  };
+  form: FormGroup = new FormGroup({
+    selectVehicleType: new CustomFormControl(
+      { name: 'change-vehicle-type-select', label: 'Select a new vehicle type', type: FormNodeTypes.CONTROL },
+      '',
+      [Validators.required]
+    )
+  });
 
   constructor(
-    public dfs: DynamicFormService,
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -50,8 +43,6 @@ export class ChangeVehicleTypeComponent {
     this.technicalRecordService.editableTechRecord$
       .pipe(take(1))
       .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
-
-    this.form = this.dfs.createForm(this.template) as CustomFormGroup;
   }
 
   get makeAndModel(): string {
@@ -70,9 +61,7 @@ export class ChangeVehicleTypeComponent {
   }
 
   get vehicleTypeOptions(): MultiOptions {
-    return getOptionsFromEnumAcronym(VehicleTypes).filter(
-      type => type.value !== this.techRecord?.vehicleType && type.value !== VehicleTypes.MOTORCYCLE
-    );
+    return getOptionsFromEnumAcronym(VehicleTypes).filter(type => type.value !== this.techRecord?.vehicleType);
   }
 
   navigateBack() {
@@ -95,6 +84,8 @@ export class ChangeVehicleTypeComponent {
     this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));
 
     this.technicalRecordService.clearReasonForCreation(this.vehicle);
+
+    this.globalErrorService.clearErrors();
 
     const routeSuffix = this.techRecord?.statusCode !== StatusCodes.PROVISIONAL ? 'amend-reason' : 'notifiable-alteration-needed';
 
