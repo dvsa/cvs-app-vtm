@@ -54,6 +54,7 @@ export class CreateTechRecordComponent implements OnChanges {
     { label: 'Light goods vehicle (LGV)', value: VehicleTypes.LGV },
     { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
     { label: 'Trailer (TRL)', value: VehicleTypes.TRL },
+    { label: 'Small Trailer (Small TRL)', value: VehicleTypes.SMALL_TRL },
     { label: 'Car', value: VehicleTypes.CAR },
     { label: 'Motorcycle', value: VehicleTypes.MOTORCYCLE }
   ];
