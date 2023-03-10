@@ -48,10 +48,10 @@ export class AmendVrmComponent implements OnDestroy {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe(vehicle => (this.vehicle = vehicle));
+    this.technicalRecordService.selectedVehicleTechRecord$.pipe(takeUntil(this.destroy$)).subscribe(vehicle => (this.vehicle = vehicle));
 
     this.technicalRecordService.editableTechRecord$
-      .pipe(take(1), takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
 
     this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());

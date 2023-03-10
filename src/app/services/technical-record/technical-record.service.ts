@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   EuVehicleCategories,
@@ -371,5 +372,16 @@ export class TechnicalRecordService {
       newVin
     };
     return this.http.put(url, body, { responseType: 'json' });
+  }
+
+  validateVin(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return this.isUnique(control.value, SEARCH_TYPES.VIN).pipe(
+        map(result => {
+          if (result) return null;
+          else return { msg: 'This VIN already exists, if you continue it will be associated with two technical records' };
+        })
+      );
+    };
   }
 }

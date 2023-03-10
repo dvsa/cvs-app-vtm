@@ -3,8 +3,11 @@ import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
+import { CustomValidators } from '@forms/validators/custom-validators';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -30,6 +33,7 @@ export class AmendVinComponent implements OnDestroy {
       },
       '',
       [Validators.minLength(3), Validators.maxLength(21), Validators.required]
+      // [this.technicalRecordService.validateVin()]
     )
   });
   private destroy$ = new Subject<void>();
@@ -43,7 +47,7 @@ export class AmendVinComponent implements OnDestroy {
     private store: Store<TechnicalRecordServiceState>
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$
-      .pipe(take(1), takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
 
     this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());

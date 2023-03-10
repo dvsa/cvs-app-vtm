@@ -9,6 +9,7 @@ import { CustomAsyncValidators } from '@forms/validators/custom-async-validators
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
 
@@ -18,7 +19,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
   providedIn: 'root'
 })
 export class DynamicFormService {
-  constructor(private store: Store<State>) {}
+  constructor(private store: Store<State>, private techRecordService: TechnicalRecordService) {}
 
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
@@ -62,7 +63,8 @@ export class DynamicFormService {
       CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
-    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store)
+    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
+    [AsyncValidatorNames.ValidateVin]: () => this.techRecordService.validateVin()
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
@@ -71,7 +73,9 @@ export class DynamicFormService {
     }
 
     const form: CustomFormGroup | CustomFormArray =
-      formNode.type === FormNodeTypes.ARRAY ? new CustomFormArray(formNode, [], this.store) : new CustomFormGroup(formNode, {});
+      formNode.type === FormNodeTypes.ARRAY
+        ? new CustomFormArray(formNode, [], this.store, this.techRecordService)
+        : new CustomFormGroup(formNode, {});
     data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
 
     formNode.children?.forEach(child => {
