@@ -33,7 +33,7 @@ export class AmendVinComponent implements OnDestroy {
       },
       '',
       [Validators.minLength(3), Validators.maxLength(21), Validators.required],
-      [this.technicalRecordService.validateVin()]
+      this.technicalRecordService.validateVin()
     )
   });
   private destroy$ = new Subject<void>();

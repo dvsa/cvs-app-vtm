@@ -29,7 +29,22 @@ import {
 } from '@store/technical-records';
 import { userEmail } from '@store/user/user-service.reducer';
 import { cloneDeep } from 'lodash';
-import { catchError, Observable, of, map, switchMap, take, throwError } from 'rxjs';
+import {
+  catchError,
+  Observable,
+  of,
+  map,
+  switchMap,
+  take,
+  throwError,
+  debounceTime,
+  filter,
+  takeWhile,
+  skip,
+  skipUntil,
+  skipWhile,
+  first
+} from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -376,10 +391,18 @@ export class TechnicalRecordService {
 
   validateVin(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return this.isUnique(control.value, SEARCH_TYPES.VIN).pipe(
-        map(result => {
-          if (result) return null;
-          else return { msg: 'This VIN already exists, if you continue it will be associated with two technical records' };
+      return control.valueChanges.pipe(
+        filter((value: string) => !!value),
+        debounceTime(1000),
+        take(1),
+        switchMap(value => {
+          console.log('post deboune');
+          return this.isUnique(value, SEARCH_TYPES.VIN).pipe(
+            map(result => {
+              return { validateVin: 'This VIN already exists, if you continue it will be associated with two technical records' };
+            }),
+            catchError(error => of(null))
+          );
         })
       );
     };
