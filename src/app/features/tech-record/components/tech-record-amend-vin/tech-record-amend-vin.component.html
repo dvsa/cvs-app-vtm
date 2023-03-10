@@ -26,7 +26,7 @@
   </ng-container>
 
   <form [formGroup]="form">
-    <app-text-input formControlName="vin" name="vin" label="New VIN" [width]="width" (focusout)="isFormValid()"></app-text-input>
+    <app-text-input formControlName="vin" name="vin" label="New VIN" [width]="width"></app-text-input>
     <pre>status: {{ form.controls['vin'].status }}</pre>
     <pre>valid: {{ form.controls['vin'].valid }}</pre>
   </form>

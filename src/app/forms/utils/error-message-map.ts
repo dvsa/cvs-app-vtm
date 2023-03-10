@@ -9,6 +9,7 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   invalidOption: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is invalid`,
   invalidTestResult: (err: { message: string }) => err.message,
   validateVin: () => 'This VIN already exists, if you continue it will be associated with two technical records',
+
   [ValidatorNames.AheadOfDate]: (err: { sibling: string; date: Date }, label?: string) =>
     `${label || 'This date'} must be ahead of ${err.sibling || 'the previous date'}${err.date ? formatDate(err.date, ' (dd/MM/yyyy)', 'en') : ''}`,
   [ValidatorNames.CustomPattern]: (err: { message: string }, label?: string) => `${label || DEFAULT_LABEL} ${err.message}`,
@@ -29,6 +30,7 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.RequiredIfEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
   [ValidatorNames.ValidateDefectNotes]: () => 'Notes is required',
   [ValidatorNames.ValidateProhibitionIssued]: () => 'Prohibition notice has not been issued.',
+
   [AsyncValidatorNames.RequiredIfNotAbandoned]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotResult]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,

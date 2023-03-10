@@ -391,15 +391,14 @@ export class TechnicalRecordService {
 
   validateVin(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return control.valueChanges.pipe(
+      return of(control.value).pipe(
         filter((value: string) => !!value),
         debounceTime(1000),
         take(1),
         switchMap(value => {
-          console.log('post deboune');
           return this.isUnique(value, SEARCH_TYPES.VIN).pipe(
             map(result => {
-              return { validateVin: 'This VIN already exists, if you continue it will be associated with two technical records' };
+              return result ? null : { validateVin: 'This VIN already exists, if you continue it will be associated with two technical records' };
             }),
             catchError(error => of(null))
           );

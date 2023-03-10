@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -103,23 +103,9 @@ export class AmendVinComponent implements OnDestroy {
   }
 
   handleSubmit(): void {
-    if (!this.isFormValid()) return;
-
-    const payload = { newVin: this.form.value.vin, systemNumber: this.vehicle?.systemNumber ?? '' };
-
-    if (this.message) {
+    if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
+      const payload = { newVin: this.form.value.vin, systemNumber: this.vehicle?.systemNumber ?? '' };
       this.store.dispatch(updateVin(payload));
     }
-
-    this.technicalRecordService
-      .isUnique(this.form.value.vin, SEARCH_TYPES.VIN)
-      .pipe(take(1))
-      .subscribe(res => {
-        if (!res) {
-          this.message = 'This VIN already exists, if you continue it will be associated with two technical records';
-        } else {
-          this.store.dispatch(updateVin(payload));
-        }
-      });
   }
 }
