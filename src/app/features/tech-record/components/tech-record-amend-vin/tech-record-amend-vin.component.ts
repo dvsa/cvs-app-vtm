@@ -32,8 +32,8 @@ export class AmendVinComponent implements OnDestroy {
         type: FormNodeTypes.CONTROL
       },
       '',
-      [Validators.minLength(3), Validators.maxLength(21), Validators.required]
-      // [this.technicalRecordService.validateVin()]
+      [Validators.minLength(3), Validators.maxLength(21), Validators.required],
+      [this.technicalRecordService.validateVin()]
     )
   });
   private destroy$ = new Subject<void>();
@@ -47,10 +47,10 @@ export class AmendVinComponent implements OnDestroy {
     private store: Store<TechnicalRecordServiceState>
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(take(1))
       .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
 
-    this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
+    this.actions$.pipe(ofType(updateVinSuccess), take(1)).subscribe(() => this.navigateBack());
 
     this.form
       .get('vin')

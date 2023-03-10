@@ -20,7 +20,7 @@ import { catchError, filter, of, Subject, switchMap, take, takeUntil, throwError
   templateUrl: './tech-record-amend-vrm.component.html',
   styleUrls: ['./tech-record-amend-vrm.component.scss']
 })
-export class AmendVrmComponent implements OnDestroy {
+export class AmendVrmComponent {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
 
@@ -37,7 +37,6 @@ export class AmendVrmComponent implements OnDestroy {
       [Validators.required]
     )
   });
-  private destroy$ = new Subject<void>();
 
   constructor(
     private actions$: Actions,
@@ -48,19 +47,15 @@ export class AmendVrmComponent implements OnDestroy {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(takeUntil(this.destroy$)).subscribe(vehicle => (this.vehicle = vehicle));
+    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
     this.technicalRecordService.editableTechRecord$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(take(1))
       .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
 
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
+    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
   get reasons(): Array<FormNodeOption<string>> {
     return [
       { label: 'Cherished transfer', value: 'true', hint: 'Current VRM will be archived' },
