@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AsyncValidatorFn, FormArray, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { Condition } from '@forms/models/condition.model';
@@ -123,32 +123,30 @@ export class DynamicFormService {
     validators.forEach(v => control.addAsyncValidators(this.asyncValidatorMap[v.name](v.args)));
   }
 
-  static updateValidity(form: FormGroup | FormArray, errors: GlobalError[]) {
+  static updateValidity(form: CustomFormGroup | CustomFormArray | FormGroup | FormArray, errors: GlobalError[]) {
     Object.entries(form.controls).forEach(([, value]) => {
-      if (!(value instanceof CustomFormControl)) {
+      if (!(value instanceof FormControl || value instanceof CustomFormControl)) {
         this.updateValidity(value as CustomFormGroup | CustomFormArray, errors);
       } else {
         value.markAsTouched();
         value.updateValueAndValidity({ emitEvent: false });
-        value.meta.changeDetection?.detectChanges();
+        (value as CustomFormControl).meta?.changeDetection?.detectChanges();
         this.getControlErrors(value, errors);
       }
     });
   }
 
-  private static getControlErrors(control: CustomFormControl, validationErrorList: GlobalError[]) {
-    const {
-      errors,
-      meta: { name, label, customValidatorErrorName }
-    } = control;
+  private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {
+    const { errors } = control;
+    const meta = (control as CustomFormControl).meta as FormNode | undefined;
 
     if (errors) {
       const errorList = Object.keys(errors);
 
       errorList.forEach(error => {
         validationErrorList.push({
-          error: ErrorMessageMap[error](errors[error], customValidatorErrorName ?? label),
-          anchorLink: name
+          error: ErrorMessageMap[error](errors[error], meta?.customValidatorErrorName ?? meta?.label),
+          anchorLink: meta?.name
         } as GlobalError);
       });
     }
