@@ -21,7 +21,7 @@
   </dl>
 
   <form [formGroup]="form">
-    <app-text-input #newVrm appToUppercase formControlName="newVrm" [width]="width"></app-text-input>
+    <app-text-input #newVrm appToUppercase appNoSpace formControlName="newVrm" [width]="width"></app-text-input>
 
     <app-radio-group formControlName="isCherishedTransfer" [options]="reasons"></app-radio-group>
 
