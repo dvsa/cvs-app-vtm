@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -62,7 +63,7 @@ describe('DefectComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [],
-      imports: [SharedModule, DynamicFormsModule, RouterTestingModule],
+      imports: [SharedModule, DynamicFormsModule, RouterTestingModule, HttpClientTestingModule],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
 

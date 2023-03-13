@@ -7,14 +7,15 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DynamicFormService', () => {
   let service: DynamicFormService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })],
+      imports: [RouterTestingModule, HttpClientTestingModule]
     });
     service = TestBed.inject(DynamicFormService);
   });

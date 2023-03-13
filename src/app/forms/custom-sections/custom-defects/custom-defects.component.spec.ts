@@ -1,7 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -15,7 +17,7 @@ describe('CustomDefectsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule],
+      imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule],
       declarations: [CustomDefectsComponent, CustomDefectComponent],
       providers: [DynamicFormService, provideMockStore({})]
     }).compileComponents();
