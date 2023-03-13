@@ -190,6 +190,19 @@ export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN
             },
             {
+              name: 'testTypeName',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'prohibitionIssued',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN
+            },
+            {
               name: 'name',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
@@ -214,13 +227,6 @@ export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN
             },
             {
-              name: 'testTypeClassification',
-              type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN,
-              value: null
-            },
-            {
               name: 'deletionFlag',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
@@ -232,6 +238,27 @@ export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'reasonForAbandoning',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN
+            },
+            {
+              name: 'additionalCommentsForAbandon',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN
+            },
+            {
+              name: 'secondaryCertificateNumber',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN
             }
           ]
         }
