@@ -13,7 +13,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { updateVinSuccess } from '@store/technical-records';
+import { updateVin, updateVinSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVinComponent } from './tech-record-amend-vin.component';
 
@@ -138,5 +138,15 @@ describe('TechRecordChangeVrmComponent', () => {
 
       expect(navigateBackSpy).toHaveBeenCalled();
     }));
+  });
+
+  describe('handleSubmit', () => {
+    it('should submit the vin in uppercase format', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      component.form.get('vin')?.patchValue('testvin');
+      component.handleSubmit();
+
+      expect(dispatchSpy).toHaveBeenCalledWith(updateVin({ newVin: 'TESTVIN', systemNumber: '' }));
+    });
   });
 });

@@ -85,7 +85,7 @@ export class AmendVinComponent {
   handleSubmit(): void {
     if (!this.isFormValid()) return;
 
-    const payload = { newVin: this.form.value.vin, systemNumber: this.vehicle?.systemNumber ?? '' };
+    const payload = { newVin: this.form.value.vin.toUpperCase(), systemNumber: this.vehicle?.systemNumber ?? '' };
 
     this.store.dispatch(updateVin(payload));
   }

@@ -21,7 +21,7 @@
   </dl>
 
   <form [formGroup]="form">
-    <app-text-input #newVrm formControlName="newVrm" [width]="width"></app-text-input>
+    <app-text-input #newVrm formControlName="newVrm" [width]="width" (ngModelChange)="newVrm.value = newVrm.value.toUpperCase()"></app-text-input>
 
     <app-radio-group formControlName="isCherishedTransfer" [options]="reasons"></app-radio-group>
 

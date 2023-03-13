@@ -21,11 +21,19 @@
   </dl>
 
   <form [formGroup]="form">
-    <app-text-input formControlName="vin" name="vin" label="New VIN" [width]="width" (focusout)="isFormValid()"></app-text-input>
+    <app-text-input
+      #vin
+      formControlName="vin"
+      name="vin"
+      label="New VIN"
+      [width]="width"
+      (ngModelChange)="vin.value = vin.value.toUpperCase()"
+      (focusout)="isFormValid()"
+    ></app-text-input>
   </form>
 
   <app-button-group>
-    <app-button id="submit-vim" (clicked)="handleSubmit()">Save</app-button>
+    <app-button id="submit-vin" (clicked)="handleSubmit()">Save</app-button>
     <app-button id="back-button" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
   </app-button-group>
 </div>
