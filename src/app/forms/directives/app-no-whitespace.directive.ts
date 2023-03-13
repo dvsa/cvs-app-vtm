@@ -9,7 +9,6 @@ export class NoWhitespaceDirective {
 
   @HostListener('focusout', ['$event.target'])
   public onInput(input: HTMLInputElement): void {
-    console.log("It's blurred");
     this.control.control?.setValue(input.value.replace(/\s/g, ''));
   }
 }
