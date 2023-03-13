@@ -1,4 +1,6 @@
+import { HttpClientModule } from '@angular/common/http';
 import { inject, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { DynamicFormService } from './dynamic-form.service';
@@ -7,7 +9,8 @@ import { FormNode, FormNodeTypes } from './dynamic-form.types';
 describe('Custom Classes', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })],
+      imports: [HttpClientModule, RouterTestingModule]
     });
   });
 

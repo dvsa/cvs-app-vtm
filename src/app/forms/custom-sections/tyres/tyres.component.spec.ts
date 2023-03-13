@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -22,7 +23,7 @@ describe('TyresComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, DynamicFormsModule, StoreModule.forRoot({})],
+      imports: [RouterTestingModule, HttpClientModule, DynamicFormsModule, StoreModule.forRoot({})],
       declarations: [TyresComponent],
       providers: [provideMockStore<State>({ initialState: initialAppState }), { provide: ReferenceDataService, useValue: mockReferenceDataService }]
     }).compileComponents();
