@@ -501,7 +501,6 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: DeskBasedRequiredHiddenSectionGroup4Lgv,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
-      customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -510,7 +509,6 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: DeskBasedRequiredHiddenSectionGroup5Lgv,
       vehicle: DeskBasedVehicleSectionGroup5Lgv,
       test: AmendDeskBasedTestSectionGroup3,
-      customDefects: CustomDefectsHiddenSection,
       emissions: DeskBasedEmissionsSectionGroup5Lgv,
       visit: VisitSection,
       notes: NotesSection,
@@ -540,7 +538,6 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: SpecialistRequiredSectionLgvCarSmallTrl,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup5,
-      customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -549,7 +546,6 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: DeskBasedRequiredHiddenSectionGroup4Lgv,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
-      customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -589,7 +585,6 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: DeskBasedRequiredHiddenSectionGroup4Lgv,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
-      customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
