@@ -23,7 +23,6 @@ import { Subject, take, takeUntil } from 'rxjs';
 export class AmendVinComponent implements OnDestroy {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
-  message?: string;
   form = new FormGroup({
     vin: new CustomFormControl(
       {
@@ -51,11 +50,6 @@ export class AmendVinComponent implements OnDestroy {
       .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
 
     this.actions$.pipe(ofType(updateVinSuccess), take(1)).subscribe(() => this.navigateBack());
-
-    this.form
-      .get('vin')
-      ?.valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(() => delete this.message);
   }
 
   ngOnDestroy(): void {

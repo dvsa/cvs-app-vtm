@@ -23,7 +23,8 @@ const mockTechRecordService = {
   viewableTechRecord$: jest.fn(),
   updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn(),
-  getVehicleTypeWithSmallTrl: jest.fn()
+  getVehicleTypeWithSmallTrl: jest.fn(),
+  validateVin: jest.fn().mockReturnValue(of(null))
 };
 
 const mockDynamicFormService = {
@@ -64,6 +65,8 @@ describe('TechRecordChangeVrmComponent', () => {
     store = TestBed.inject(MockStore);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
+    component.form.controls['vin'].clearAsyncValidators();
+    component.form.controls['vin'].setAsyncValidators(mockTechRecordService.validateVin.bind(this));
   });
 
   it('should create', () => {
@@ -116,34 +119,6 @@ describe('TechRecordChangeVrmComponent', () => {
 
       component.form.controls['vin'].setValue('myNewVin');
       component.vehicle!.systemNumber = '01234';
-      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValue(of(true));
-
-      const payload = {
-        newVin: 'myNewVin',
-        systemNumber: '01234'
-      };
-
-      component.handleSubmit();
-
-      expect(dispatchSpy).toHaveBeenCalledWith(updateVin(payload));
-    });
-
-    it('if the VIN is a duplicate it should create a warning message', () => {
-      component.form.controls['vin'].setValue('myNewVin');
-      component.vehicle!.systemNumber = '01234';
-      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValue(of(false));
-
-      component.handleSubmit();
-
-      expect(component.message).toBe('This VIN already exists, if you continue it will be associated with two technical records');
-    });
-
-    it('if the warning message exists already it should dispatch updateVin', () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
-
-      component.form.controls['vin'].setValue('myNewVin');
-      component.vehicle!.systemNumber = '01234';
-      component.message = 'This VIN already exists, if you continue it will be associated with two technical records';
 
       const payload = {
         newVin: 'myNewVin',
