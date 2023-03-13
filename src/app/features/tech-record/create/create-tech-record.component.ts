@@ -46,7 +46,7 @@ export class CreateTechRecordComponent implements OnChanges {
     vehicleType: new CustomFormControl({ name: 'change-vehicle-type-select', label: 'Vehicle type', type: FormNodeTypes.CONTROL }, '', [
       Validators.required
     ]),
-    generateID: new CustomFormControl({ name: 'generate-c-or-z-num', type: FormNodeTypes.CONTROL }, null)
+    generateID: new CustomFormControl({ name: 'generate-c-t-z-num', type: FormNodeTypes.CONTROL }, null)
   });
 
   public vehicleTypeOptions: MultiOptions = [
@@ -89,7 +89,7 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   get checkboxOptions(): MultiOptions {
-    return [{ value: true, label: 'Generate a C/Z number on submission of the new record' }];
+    return [{ value: true, label: 'Generate a C/T/Z number on submission of the new record' }];
   }
 
   toggleVrmInput(checked: any) {
