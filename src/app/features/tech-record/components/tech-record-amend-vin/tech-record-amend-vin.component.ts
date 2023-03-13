@@ -1,20 +1,17 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
-import { CustomValidators } from '@forms/validators/custom-validators';
+import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateVin, updateVinSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, take } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vin',
