@@ -19,7 +19,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
   providedIn: 'root'
 })
 export class DynamicFormService {
-  constructor(private store: Store<State>, private techRecordService: TechnicalRecordService) {}
+  constructor(private store: Store<State>) {}
 
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
@@ -63,8 +63,7 @@ export class DynamicFormService {
       CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
-    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
-    [AsyncValidatorNames.ValidateVin]: () => this.techRecordService.validateVin()
+    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
@@ -73,9 +72,7 @@ export class DynamicFormService {
     }
 
     const form: CustomFormGroup | CustomFormArray =
-      formNode.type === FormNodeTypes.ARRAY
-        ? new CustomFormArray(formNode, [], this.store, this.techRecordService)
-        : new CustomFormGroup(formNode, {});
+      formNode.type === FormNodeTypes.ARRAY ? new CustomFormArray(formNode, [], this.store) : new CustomFormGroup(formNode, {});
     data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
 
     formNode.children?.forEach(child => {

@@ -114,7 +114,7 @@ describe('TechRecordChangeVrmComponent', () => {
   });
 
   describe('handleSubmit', () => {
-    it('should dispatch the updateVin function with the new vin', () => {
+    it('should dispatch the updateVin action with the new vin', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
 
       component.form.controls['vin'].setValue('myNewVin');

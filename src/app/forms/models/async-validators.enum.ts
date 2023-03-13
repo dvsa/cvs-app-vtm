@@ -7,6 +7,5 @@ export enum AsyncValidatorNames {
   RequiredIfNotResultAndSiblingEquals = 'requiredIfNotResultAndSiblingEquals',
   RequiredIfNotResult = 'requiredIfNotResult',
   HideIfEqualsWithCondition = 'hideIfEqualsWithCondition',
-  PassResultDependantOnCustomDefects = 'passResultDependantOnCustomDefects',
-  ValidateVin = 'validateVin'
+  PassResultDependantOnCustomDefects = 'passResultDependantOnCustomDefects'
 }

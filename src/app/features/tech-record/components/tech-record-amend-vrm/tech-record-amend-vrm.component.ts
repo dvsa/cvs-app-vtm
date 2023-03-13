@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -13,7 +13,7 @@ import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record
 import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { catchError, filter, of, Subject, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { catchError, filter, of, switchMap, take, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vrm',

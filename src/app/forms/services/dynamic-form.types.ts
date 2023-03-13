@@ -196,13 +196,12 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     meta: FormNode,
     controls: AbstractControl[],
     store: Store<State>,
-    techRecordService: TechnicalRecordService,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorOptions
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
-    this.dynamicFormService = new DynamicFormService(store, techRecordService);
+    this.dynamicFormService = new DynamicFormService(store);
   }
 
   getCleanValue = cleanValue.bind(this);
