@@ -139,14 +139,4 @@ describe('TechRecordChangeVrmComponent', () => {
       expect(navigateBackSpy).toHaveBeenCalled();
     }));
   });
-
-  describe('handleSubmit', () => {
-    it('should submit the vin in uppercase format', () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
-      component.form.get('vin')?.patchValue('testvin');
-      component.handleSubmit();
-
-      expect(dispatchSpy).toHaveBeenCalledWith(updateVin({ newVin: 'TESTVIN', systemNumber: '' }));
-    });
-  });
 });

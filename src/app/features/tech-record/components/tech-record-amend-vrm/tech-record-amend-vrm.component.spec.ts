@@ -189,7 +189,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
       component.vehicle = { vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
 
-      component.form.get('newVrm')?.setValue('testvrm');
+      component.form.get('newVrm')?.setValue('TESTVRM');
       component.form.get('isCherishedTransfer')?.setValue('true');
 
       component.handleSubmit();
@@ -278,26 +278,6 @@ describe('TechRecordChangeVrmComponent', () => {
         vrms: [
           { vrm: 'VRM1', isPrimary: false },
           { vrm: 'VRM2', isPrimary: true }
-        ]
-      });
-    }));
-
-    it('should set the input vrm to uppercase', fakeAsync(() => {
-      component.vehicle = {
-        vrms: [
-          { vrm: 'VRM1', isPrimary: true },
-          { vrm: 'VRM2', isPrimary: false }
-        ]
-      } as VehicleTechRecordModel;
-
-      const newVehicle = component.amendVrm(component.vehicle, 'testvrm', true);
-      tick();
-
-      expect(newVehicle).toEqual({
-        vrms: [
-          { vrm: 'VRM1', isPrimary: false },
-          { vrm: 'VRM2', isPrimary: false },
-          { vrm: 'TESTVRM', isPrimary: true }
         ]
       });
     }));

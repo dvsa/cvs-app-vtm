@@ -23,11 +23,12 @@
   <form [formGroup]="form">
     <app-text-input
       #vin
+      appToUppercase
+      appNoSpace
       formControlName="vin"
       name="vin"
       label="New VIN"
       [width]="width"
-      (ngModelChange)="vin.value = vin.value.toUpperCase()"
       (focusout)="isFormValid()"
     ></app-text-input>
   </form>
