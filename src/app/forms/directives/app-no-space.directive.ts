@@ -8,7 +8,9 @@ export class NoSpaceDirective {
 
   @HostListener('keydown', ['$event'])
   public onKeyDown(e: KeyboardEvent): void {
+    console.log(e.key);
     if (e.key === ' ' || e.key === 'Space') {
+      console.log('preventing default');
       e.preventDefault();
     }
   }
