@@ -27,24 +27,8 @@ import {
   updateEditingTechRecordCancel,
   vehicleTechRecords
 } from '@store/technical-records';
-import { userEmail } from '@store/user/user-service.reducer';
 import { cloneDeep } from 'lodash';
-import {
-  catchError,
-  Observable,
-  of,
-  map,
-  switchMap,
-  take,
-  throwError,
-  debounceTime,
-  filter,
-  takeWhile,
-  skip,
-  skipUntil,
-  skipWhile,
-  first
-} from 'rxjs';
+import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
