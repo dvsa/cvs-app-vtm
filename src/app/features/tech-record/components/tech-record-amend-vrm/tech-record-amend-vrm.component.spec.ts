@@ -192,7 +192,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
       component.vehicle = { vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
 
-      component.form.get('newVrm')?.setValue('testvrm');
+      component.form.get('newVrm')?.setValue('TESTVRM');
       component.form.get('isCherishedTransfer')?.setValue('true');
 
       component.handleSubmit();
