@@ -1,6 +1,6 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
+export const AmendDeskBasedRequiredHiddenSectionGroup4: FormNode = {
   name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [
@@ -196,11 +196,11 @@ export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
               editType: FormNodeEditTypes.HIDDEN
             },
             {
-              name: 'prohibitionIssued',
+              name: 'testTypeClassification',
               type: FormNodeTypes.CONTROL,
-              value: null,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
+              value: null
             },
             {
               name: 'name',
@@ -238,20 +238,6 @@ export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
-            },
-            {
-              name: 'reasonForAbandoning',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
-            },
-            {
-              name: 'additionalCommentsForAbandon',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'secondaryCertificateNumber',

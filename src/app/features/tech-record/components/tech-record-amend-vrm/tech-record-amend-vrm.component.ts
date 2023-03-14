@@ -158,7 +158,7 @@ export class AmendVrmComponent implements OnDestroy {
     const existingVrmObject = newModel.vrms.find(vrm => vrm.vrm == newVrm);
 
     if (!existingVrmObject) {
-      newModel.vrms.push({ vrm: newVrm.toUpperCase(), isPrimary: true });
+      newModel.vrms.push({ vrm: newVrm, isPrimary: true });
     } else {
       existingVrmObject.isPrimary = true;
     }

@@ -107,7 +107,7 @@ export const DeskBasedTestSectionGroup2And5: FormNode = {
   ]
 };
 
-export const AmendDeskBasedTestSectionGroup2: FormNode = {
+export const AmendDeskBasedTestSectionGroup2And5: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,

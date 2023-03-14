@@ -46,6 +46,22 @@ export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
       validators: [{ name: ValidatorNames.Required }]
     },
     {
+      name: 'odometerReading',
+      label: 'Odometer Reading',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'odometerReadingUnits',
+      label: 'Odometer Reading Units',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
       name: 'preparerName',
       label: 'Preparer Name',
       value: '',

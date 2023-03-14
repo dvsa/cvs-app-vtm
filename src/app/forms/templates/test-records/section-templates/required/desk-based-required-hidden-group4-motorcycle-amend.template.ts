@@ -1,6 +1,6 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
+export const AmendDeskBasedRequiredHiddenSectionGroup4Motorcyle: FormNode = {
   name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [
@@ -78,18 +78,6 @@ export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.HIDDEN,
           viewType: FormNodeViewTypes.HIDDEN
-        }
-      ]
-    },
-    {
-      name: 'vehicleSubclass',
-      type: FormNodeTypes.ARRAY,
-      editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN,
-      children: [
-        {
-          name: '0',
-          type: FormNodeTypes.CONTROL
         }
       ]
     },
@@ -196,13 +184,6 @@ export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
               editType: FormNodeEditTypes.HIDDEN
             },
             {
-              name: 'prohibitionIssued',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
-            },
-            {
               name: 'name',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
@@ -227,6 +208,13 @@ export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN
             },
             {
+              name: 'testTypeClassification',
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN,
+              value: null
+            },
+            {
               name: 'deletionFlag',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
@@ -238,20 +226,6 @@ export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
-            },
-            {
-              name: 'reasonForAbandoning',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
-            },
-            {
-              name: 'additionalCommentsForAbandon',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'secondaryCertificateNumber',

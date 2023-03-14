@@ -21,7 +21,16 @@
   </dl>
 
   <form [formGroup]="form">
-    <app-text-input formControlName="vin" name="vin" label="New VIN" (blur)="isFormValid()" [width]="width">
+    <app-text-input
+      appToUppercase
+      appNoSpace
+      appTrimWhitespace
+      formControlName="vin"
+      name="vin"
+      label="New VIN"
+      [width]="width"
+      (focusout)="isFormValid()"
+    >
       <ng-container *ngIf="form.controls['vin'].status === 'VALID' || form.controls['vin'].status === 'PENDING'">
         <ng-template appSuffix>
           <ng-container [ngSwitch]="form.controls['vin'].status">
@@ -34,7 +43,7 @@
   </form>
 
   <app-button-group>
-    <app-button id="submit-vim" (clicked)="handleSubmit()">Save</app-button>
+    <app-button id="submit-vin" (clicked)="handleSubmit()">Save</app-button>
     <app-button id="back-button" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
   </app-button-group>
 </div>

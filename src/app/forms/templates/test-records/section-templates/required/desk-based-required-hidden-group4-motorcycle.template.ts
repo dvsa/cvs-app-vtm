@@ -1,6 +1,6 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
+export const DeskBasedRequiredHiddenSectionGroup4Motorcyle: FormNode = {
   name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [
@@ -78,18 +78,6 @@ export const DeskBasedRequiredHiddenSectionGroup4Lgv: FormNode = {
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.HIDDEN,
           viewType: FormNodeViewTypes.HIDDEN
-        }
-      ]
-    },
-    {
-      name: 'vehicleSubclass',
-      type: FormNodeTypes.ARRAY,
-      editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN,
-      children: [
-        {
-          name: '0',
-          type: FormNodeTypes.CONTROL
         }
       ]
     },
