@@ -7,6 +7,4 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class InputSpinnerComponent {
   @Input() isValid: string = '';
-
-  constructor() {}
 }

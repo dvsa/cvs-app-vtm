@@ -15,8 +15,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vin',
-  templateUrl: './tech-record-amend-vin.component.html',
-  styleUrls: ['./tech-record-amend-vin.component.scss']
+  templateUrl: './tech-record-amend-vin.component.html'
 })
 export class AmendVinComponent implements OnDestroy {
   vehicle?: VehicleTechRecordModel;
