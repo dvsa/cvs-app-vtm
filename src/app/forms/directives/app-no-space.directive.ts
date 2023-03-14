@@ -4,8 +4,6 @@ import { Directive, HostListener } from '@angular/core';
   selector: '[appNoSpace]'
 })
 export class NoSpaceDirective {
-  constructor() {}
-
   @HostListener('keydown', ['$event'])
   public onKeyDown(e: KeyboardEvent): void {
     if (e.key === ' ' || e.key === 'Space') {
