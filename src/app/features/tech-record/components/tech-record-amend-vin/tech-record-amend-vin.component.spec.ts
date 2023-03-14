@@ -13,7 +13,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { updateVinSuccess } from '@store/technical-records';
+import { updateVin, updateVinSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVinComponent } from './tech-record-amend-vin.component';
 
@@ -23,7 +23,8 @@ const mockTechRecordService = {
   viewableTechRecord$: jest.fn(),
   updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn(),
-  getVehicleTypeWithSmallTrl: jest.fn()
+  getVehicleTypeWithSmallTrl: jest.fn(),
+  validateVin: jest.fn().mockReturnValue(of(null))
 };
 
 const mockDynamicFormService = {
@@ -64,6 +65,8 @@ describe('TechRecordChangeVrmComponent', () => {
     store = TestBed.inject(MockStore);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
+    component.form.controls['vin'].clearAsyncValidators();
+    component.form.controls['vin'].setAsyncValidators(mockTechRecordService.validateVin.bind(this));
   });
 
   it('should create', () => {
@@ -107,6 +110,24 @@ describe('TechRecordChangeVrmComponent', () => {
       delete component.vehicle;
 
       expect(component.vrm).toBe(undefined);
+    });
+  });
+
+  describe('handleSubmit', () => {
+    it('should dispatch the updateVin action with the new vin', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      component.form.controls['vin'].setValue('myNewVin');
+      component.vehicle!.systemNumber = '01234';
+
+      const payload = {
+        newVin: 'myNewVin',
+        systemNumber: '01234'
+      };
+
+      component.handleSubmit();
+
+      expect(dispatchSpy).toHaveBeenCalledWith(updateVin(payload));
     });
   });
 

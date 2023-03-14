@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
@@ -16,7 +17,7 @@ describe('BodyComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BodyComponent],
-      imports: [DynamicFormsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule],
+      imports: [DynamicFormsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule],
       providers: [MultiOptionsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });

@@ -46,7 +46,10 @@ import {
   updateEditingTechRecordCancel,
   updateTechRecords,
   updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecordsSuccess,
+  updateVin,
+  updateVinSuccess,
+  updateVinFailure
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -124,7 +127,11 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateBody, (state, action) => handleUpdateBody(state, action)),
 
   on(addAxle, state => handleAddAxle(state)),
-  on(removeAxle, (state, action) => handleRemoveAxle(state, action))
+  on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
+
+  on(updateVin, defaultArgs),
+  on(updateVinSuccess, state => ({ ...state, loading: false })),
+  on(updateVinFailure, updateFailureArgs)
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {

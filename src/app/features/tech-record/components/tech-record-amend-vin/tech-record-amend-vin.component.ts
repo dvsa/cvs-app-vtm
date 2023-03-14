@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -11,16 +11,15 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateVin, updateVinSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vin',
   templateUrl: './tech-record-amend-vin.component.html'
 })
-export class AmendVinComponent {
+export class AmendVinComponent implements OnDestroy {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
-
   form = new FormGroup({
     vin: new CustomFormControl(
       {
@@ -29,9 +28,11 @@ export class AmendVinComponent {
         type: FormNodeTypes.CONTROL
       },
       '',
-      [Validators.minLength(3), Validators.maxLength(21), Validators.required]
+      [Validators.minLength(3), Validators.maxLength(21), Validators.required],
+      [this.technicalRecordService.validateVin()]
     )
   });
+  private destroy$ = new Subject<void>();
 
   constructor(
     private actions$: Actions,
@@ -45,7 +46,12 @@ export class AmendVinComponent {
       .pipe(take(1))
       .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
 
-    this.actions$.pipe(ofType(updateVinSuccess), take(1)).subscribe(() => this.navigateBack());
+    this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get width(): FormNodeWidth {
@@ -74,6 +80,11 @@ export class AmendVinComponent {
 
     this.globalErrorService.setErrors(errors);
 
+    if (this.form.value.vin === this.vehicle?.vin) {
+      this.globalErrorService.addError({ error: 'You must provide a new VIN', anchorLink: 'newVin' });
+      return false;
+    }
+
     return this.form.valid;
   }
 
@@ -83,10 +94,9 @@ export class AmendVinComponent {
   }
 
   handleSubmit(): void {
-    if (!this.isFormValid()) return;
-
-    const payload = { newVin: this.form.value.vin, systemNumber: this.vehicle?.systemNumber ?? '' };
-
-    this.store.dispatch(updateVin(payload));
+    if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
+      const payload = { newVin: this.form.value.vin, systemNumber: this.vehicle?.systemNumber ?? '' };
+      this.store.dispatch(updateVin(payload));
+    }
   }
 }
