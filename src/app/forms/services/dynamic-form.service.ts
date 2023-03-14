@@ -9,7 +9,6 @@ import { CustomAsyncValidators } from '@forms/validators/custom-async-validators
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
 
