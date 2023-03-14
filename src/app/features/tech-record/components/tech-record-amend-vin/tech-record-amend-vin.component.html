@@ -33,10 +33,7 @@
     >
       <ng-container *ngIf="form.controls['vin'].status === 'VALID' || form.controls['vin'].status === 'PENDING'">
         <ng-template appSuffix>
-          <ng-container [ngSwitch]="form.controls['vin'].status">
-            <div id="checkmark" *ngSwitchCase="'VALID'">&#10003;</div>
-            <div *ngSwitchCase="'PENDING'" class="spinner"></div>
-          </ng-container>
+          <app-input-spinner [isValid]="form.controls['vin'].status"></app-input-spinner>
         </ng-template>
       </ng-container>
     </app-text-input>

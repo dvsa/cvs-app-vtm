@@ -377,7 +377,7 @@ export class TechnicalRecordService {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return of(control.value).pipe(
         filter((value: string) => !!value),
-        debounceTime(3000),
+        debounceTime(1000),
         take(1),
         switchMap(value => {
           return this.isUnique(value, SEARCH_TYPES.VIN).pipe(

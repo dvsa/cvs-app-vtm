@@ -1,0 +1,4 @@
+<ng-container [ngSwitch]="isValid">
+  <div id="checkmark" *ngSwitchCase="'VALID'">&#10003;</div>
+  <div *ngSwitchCase="'PENDING'" class="spinner"></div>
+</ng-container>
