@@ -42,7 +42,7 @@ import { LettersComponent } from './custom-sections/letters/letters.component';
 import { PlatesComponent } from './custom-sections/plates/plates.component';
 import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { NoSpaceDirective } from './directives/app-no-space.directive';
-import { NoWhitespaceDirective } from './directives/app-no-whitespace.directive';
+import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 
 @NgModule({
   declarations: [
@@ -61,7 +61,7 @@ import { NoWhitespaceDirective } from './directives/app-no-whitespace.directive'
     NumberOnlyDirective,
     ToUppercaseDirective,
     NoSpaceDirective,
-    NoWhitespaceDirective,
+    TrimWhitespaceDirective,
     DateComponent,
     SelectComponent,
     DynamicFormFieldComponent,
@@ -126,7 +126,7 @@ import { NoWhitespaceDirective } from './directives/app-no-whitespace.directive'
     CheckboxComponent,
     ToUppercaseDirective,
     NoSpaceDirective,
-    NoWhitespaceDirective
+    TrimWhitespaceDirective
   ]
 })
 export class DynamicFormsModule {}

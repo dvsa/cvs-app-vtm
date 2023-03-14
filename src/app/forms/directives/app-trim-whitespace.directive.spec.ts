@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoWhitespaceDirective } from './app-no-whitespace.directive';
+import { TrimWhitespaceDirective } from './app-no-whitespace.directive';
 
 @Component({
-  template: ` <form [formGroup]="form"><input id="bar" appNoWhitespace formControlName="foo" /></form>
-    <input id="baz" appNoWhitespace />`
+  template: ` <form [formGroup]="form"><input id="bar" appTrimWhitespace formControlName="foo" /></form>
+    <input id="baz" appTrimWhitespace />`
 })
 class TestComponent {
   form = new FormGroup({
@@ -14,7 +14,7 @@ class TestComponent {
   });
 }
 
-describe('NoWhitespaceDirective', () => {
+describe('TrimWhitespaceDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
   let input1: HTMLInputElement;
   let input2: HTMLInputElement;
@@ -23,7 +23,7 @@ describe('NoWhitespaceDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
-      declarations: [NoWhitespaceDirective, TestComponent]
+      declarations: [TrimWhitespaceDirective, TestComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestComponent);

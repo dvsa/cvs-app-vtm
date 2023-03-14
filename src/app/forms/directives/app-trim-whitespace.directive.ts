@@ -2,9 +2,9 @@ import { Directive, HostListener } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  selector: '[appNoWhitespace]'
+  selector: '[appTrimWhitespace]'
 })
-export class NoWhitespaceDirective {
+export class TrimWhitespaceDirective {
   @HostListener('focusout', ['$event.target'])
   public onBlur(input: HTMLInputElement): void {
     input.value = input.value.replace(/\s/g, '');
