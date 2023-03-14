@@ -13,6 +13,7 @@ import {
 } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import {
   createVehicle,
   editableTechRecord,
@@ -28,7 +29,7 @@ import {
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
+import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter, finalize } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -176,6 +177,7 @@ export class TechnicalRecordService {
   }
 
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
+    this.store.dispatch(setSpinnerState({ showSpinner: true }));
     const isUnique = this.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
       map(vehicleTechRecord => {
         const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
@@ -192,7 +194,8 @@ export class TechnicalRecordService {
       }),
       catchError((error: HttpErrorResponse) => {
         return (error.status == 404 && of(true)) || throwError(() => error);
-      })
+      }),
+      finalize(() => this.store.dispatch(setSpinnerState({ showSpinner: false })))
     );
     return isUnique;
   }
