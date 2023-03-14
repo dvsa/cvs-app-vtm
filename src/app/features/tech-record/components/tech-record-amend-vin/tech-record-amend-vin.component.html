@@ -21,7 +21,16 @@
   </dl>
 
   <form [formGroup]="form">
-    <app-text-input formControlName="vin" name="vin" label="New VIN" [width]="width"></app-text-input>
+    <app-text-input formControlName="vin" name="vin" label="New VIN" (blur)="isFormValid()" [width]="width">
+      <ng-container *ngIf="form.controls['vin'].status === 'VALID' || form.controls['vin'].status === 'PENDING'">
+        <ng-template appSuffix>
+          <ng-container [ngSwitch]="form.controls['vin'].status">
+            <div id="checkmark" *ngSwitchCase="'VALID'">&#10003;</div>
+            <div *ngSwitchCase="'PENDING'" class="spinner"></div>
+          </ng-container>
+        </ng-template>
+      </ng-container>
+    </app-text-input>
   </form>
 
   <app-button-group>
