@@ -1,14 +1,12 @@
 import { Directive, HostListener } from '@angular/core';
-import { NgControl } from '@angular/forms';
 
 @Directive({
-  selector: '[formControlName][appToUppercase]'
+  selector: '[appToUppercase]'
 })
 export class ToUppercaseDirective {
-  constructor(private control: NgControl) {}
-
-  @HostListener('input', ['$event.target'])
-  public onInput(input: HTMLInputElement): void {
-    this.control.control?.setValue(input.value.toUpperCase());
+  @HostListener('focusout', ['$event.target'])
+  public onBlur(input: HTMLInputElement): void {
+    input.value = input.value.toUpperCase();
+    input.dispatchEvent(new Event('input'));
   }
 }

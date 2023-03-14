@@ -31,7 +31,7 @@ describe('ToUppercaseDirective', () => {
 
   it('should make the text uppercase on input', () => {
     input.value = 'lowercase';
-    input.dispatchEvent(new Event('input'));
+    input.dispatchEvent(new Event('focusout'));
 
     expect(input.value).toBe('LOWERCASE');
     expect(component.form.get('foo')?.value).toBe('LOWERCASE');
