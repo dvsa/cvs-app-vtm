@@ -11,4 +11,10 @@ export class NoSpaceDirective {
       e.preventDefault();
     }
   }
+
+  @HostListener('focusout', ['$event.target'])
+  public onBlur(input: HTMLInputElement): void {
+    input.value = input.value.replace(/\s/g, '');
+    input.dispatchEvent(new Event('input'));
+  }
 }

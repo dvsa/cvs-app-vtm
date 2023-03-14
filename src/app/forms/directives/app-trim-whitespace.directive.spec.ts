@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { TrimWhitespaceDirective } from './app-no-whitespace.directive';
+import { TrimWhitespaceDirective } from './app-trim-whitespace.directive';
 
 @Component({
   template: ` <form [formGroup]="form"><input id="bar" appTrimWhitespace formControlName="foo" /></form>
@@ -34,20 +34,20 @@ describe('TrimWhitespaceDirective', () => {
     component = fixture.componentInstance;
   });
 
-  describe('should remove whitespaces on focusout', () => {
+  describe('should trim whitespaces on focusout', () => {
     it('with form', () => {
-      input1.value = 'this has spaces';
+      input1.value = 'this has spaces   ';
       input1.dispatchEvent(new Event('focusout'));
 
-      expect(input1.value).toBe('thishasspaces');
-      expect(component.form.get('foo')?.value).toBe('thishasspaces');
+      expect(input1.value).toBe('this has spaces');
+      expect(component.form.get('foo')?.value).toBe('this has spaces');
     });
 
     it('without form', () => {
-      input2.value = 'this has spaces';
+      input2.value = 'this has spaces   ';
       input2.dispatchEvent(new Event('focusout'));
 
-      expect(input2.value).toBe('thishasspaces');
+      expect(input2.value).toBe('this has spaces');
     });
   });
 });
