@@ -119,7 +119,13 @@ export class CreateTechRecordComponent implements OnChanges {
       return;
     }
 
-    if (!(await this.isFormValueUnique())) {
+    this.store.dispatch(setSpinnerState({ showSpinner: true }));
+
+    const formValueUnique = await this.isFormValueUnique();
+
+    this.store.dispatch(setSpinnerState({ showSpinner: false }));
+
+    if (!formValueUnique) {
       this.isDuplicateVinAllowed = true;
       return;
     }
@@ -134,9 +140,7 @@ export class CreateTechRecordComponent implements OnChanges {
     this.vehicle.techRecord = [{ vehicleType: this.form.value.vehicleType, statusCode: this.form.value.vehicleStatus } as TechRecordModel];
 
     if (!this.isVinUniqueCheckComplete) {
-      this.store.dispatch(setSpinnerState({ showSpinner: true }));
       this.vinUnique = await this.isVinUnique();
-      this.store.dispatch(setSpinnerState({ showSpinner: false }));
     }
 
     if (this.form.controls['generateID'].value) {
