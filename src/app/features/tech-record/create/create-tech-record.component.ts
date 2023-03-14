@@ -8,7 +8,9 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -63,7 +65,8 @@ export class CreateTechRecordComponent implements OnChanges {
     private globalErrorService: GlobalErrorService,
     private technicalRecordService: TechnicalRecordService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {}
 
   ngOnChanges(): void {
@@ -131,7 +134,9 @@ export class CreateTechRecordComponent implements OnChanges {
     this.vehicle.techRecord = [{ vehicleType: this.form.value.vehicleType, statusCode: this.form.value.vehicleStatus } as TechRecordModel];
 
     if (!this.isVinUniqueCheckComplete) {
+      this.store.dispatch(setSpinnerState({ showSpinner: true }));
       this.vinUnique = await this.isVinUnique();
+      this.store.dispatch(setSpinnerState({ showSpinner: false }));
     }
 
     if (this.form.controls['generateID'].value) {

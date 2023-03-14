@@ -177,7 +177,6 @@ export class TechnicalRecordService {
   }
 
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
-    this.store.dispatch(setSpinnerState({ showSpinner: true }));
     const isUnique = this.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
       map(vehicleTechRecord => {
         const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
@@ -194,8 +193,7 @@ export class TechnicalRecordService {
       }),
       catchError((error: HttpErrorResponse) => {
         return (error.status == 404 && of(true)) || throwError(() => error);
-      }),
-      finalize(() => this.store.dispatch(setSpinnerState({ showSpinner: false })))
+      })
     );
     return isUnique;
   }
