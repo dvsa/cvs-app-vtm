@@ -5,6 +5,9 @@
     formControlName="vin"
     name="input-vin"
     label="Vehicle Identification number (VIN)"
+    appToUppercase
+    appNoSpace
+    appTrimWhitespace
     [width]="30"
     (ngModelChange)="ngOnChanges()"
   ></app-text-input>
@@ -14,6 +17,9 @@
     formControlName="vrmTrm"
     name="input-vrm-or-trailer-id"
     label="VRM / Trailer ID"
+    appToUppercase
+    appNoSpace
+    appTrimWhitespace
     [width]="30"
     (ngModelChange)="ngOnChanges()"
   ></app-text-input>
