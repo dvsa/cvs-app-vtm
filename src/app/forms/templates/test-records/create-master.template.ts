@@ -15,6 +15,7 @@ import { CreateRequiredSection } from './section-templates/required/contingency-
 import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
 import { defectsHiddenSection } from './section-templates/required/defect-hidden-section.template';
 import { DeskBasedRequiredHiddenSectionGroup4Lgv } from './section-templates/required/desk-based-required-hidden-group4-lgv.template';
+import { DeskBasedRequiredHiddenSectionGroup4Motorcyle } from './section-templates/required/desk-based-required-hidden-group4-motorcycle.template';
 import { SeatbeltHiddenSection } from './section-templates/required/seatbelt-hidden-section.template';
 import { SpecialistRequiredSectionLgvCarSmallTrl } from './section-templates/required/specialist-required-hidden-section-lgv-car.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
@@ -612,7 +613,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredHiddenSectionGroup4Lgv,
+      required: DeskBasedRequiredHiddenSectionGroup4Motorcyle,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: AmendDeskBasedTestSectionGroup2And5,
       visit: VisitSection,
