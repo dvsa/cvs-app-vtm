@@ -52,6 +52,16 @@ export class CreateTechRecordComponent implements OnChanges {
     }
   );
 
+  public vehicleTypeOptions: MultiOptions = [
+    { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
+    { label: 'Light goods vehicle (LGV)', value: VehicleTypes.LGV },
+    { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
+    { label: 'Trailer (TRL)', value: VehicleTypes.TRL },
+    { label: 'Small Trailer (Small TRL)', value: VehicleTypes.SMALL_TRL },
+    { label: 'Car', value: VehicleTypes.CAR },
+    { label: 'Motorcycle', value: VehicleTypes.MOTORCYCLE }
+  ];
+
   constructor(
     private globalErrorService: GlobalErrorService,
     private technicalRecordService: TechnicalRecordService,
@@ -77,20 +87,12 @@ export class CreateTechRecordComponent implements OnChanges {
     return this.form.valid;
   }
 
-  get vehicleTypeOptions(): MultiOptions {
-    return [
-      { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
-      { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
-      { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
-    ];
-  }
-
   get vehicleStatusOptions(): MultiOptions {
     return [{ label: 'Provisional', value: StatusCodes.PROVISIONAL }];
   }
 
   get checkboxOptions(): MultiOptions {
-    return [{ value: true, label: 'Generate a C/Z number on submission of the new record' }];
+    return [{ value: true, label: 'Generate a C/T/Z number on submission of the new record' }];
   }
 
   toggleVrmInput(checked: any) {

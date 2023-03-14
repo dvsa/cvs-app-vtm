@@ -19,6 +19,13 @@ export const LgvTechRecord: FormNode = {
       validators: []
     },
     {
+      name: 'statusCode',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
       name: 'regnDate',
       label: 'Date of first registration',
       value: '',
@@ -43,9 +50,11 @@ export const LgvTechRecord: FormNode = {
     {
       name: 'noOfAxles',
       label: 'Number of axles',
-      value: '',
       width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.NUMBER,
+      value: 2,
+      validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
       name: 'vehicleSubclass',

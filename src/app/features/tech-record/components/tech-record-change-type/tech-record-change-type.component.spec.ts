@@ -10,6 +10,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { changeVehicleType } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
@@ -47,7 +48,7 @@ describe('TechRecordChangeTypeComponent', () => {
         { provide: DynamicFormService, useValue: mockDynamicFormService },
         { provide: TechnicalRecordService, useValue: mockTechRecordService }
       ],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule, SharedModule]
     }).compileComponents();
   });
 
@@ -69,13 +70,13 @@ describe('TechRecordChangeTypeComponent', () => {
     it('should should return the make and model', () => {
       const expectedTechRecord = expectedVehicle.techRecord.pop()!;
 
-      component.currentTechRecord = expectedTechRecord;
+      component.techRecord = expectedTechRecord;
 
       expect(component.makeAndModel).toBe(`${expectedTechRecord.chassisMake} - ${expectedTechRecord.chassisModel}`);
     });
 
     it('should return an empty string when the current record is null', () => {
-      delete component.currentTechRecord;
+      delete component.techRecord;
 
       expect(component.makeAndModel).toBe('');
     });
@@ -97,11 +98,9 @@ describe('TechRecordChangeTypeComponent', () => {
 
   describe('vehicleTypeOptions', () => {
     it('should return all types except for the current one', () => {
-      component.currentTechRecord = expectedVehicle.techRecord.pop()!;
+      component.techRecord = expectedVehicle.techRecord.pop()!;
 
-      const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter(
-        type => type.value !== VehicleTypes.PSV && type.value !== VehicleTypes.MOTORCYCLE
-      );
+      const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter(type => type.value !== VehicleTypes.PSV);
 
       expect(component.vehicleTypeOptions).toStrictEqual(expectedOptions);
     });

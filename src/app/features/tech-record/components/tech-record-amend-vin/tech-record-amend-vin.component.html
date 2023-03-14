@@ -5,7 +5,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle type</dt>
       <dd id="vehicleType" class="govuk-summary-list__value">
-        {{ techRecord?.vehicleType | defaultNullOrEmpty | uppercase }}
+        {{ vehicleType | defaultNullOrEmpty | uppercase }}
       </dd>
     </div>
 
@@ -21,11 +21,20 @@
   </dl>
 
   <form [formGroup]="form">
-    <app-text-input formControlName="vin" name="vin" label="New VIN" [width]="width" (focusout)="isFormValid()"></app-text-input>
+    <app-text-input
+      appToUppercase
+      appNoSpace
+      appTrimWhitespace
+      formControlName="vin"
+      name="vin"
+      label="New VIN"
+      [width]="width"
+      (focusout)="isFormValid()"
+    ></app-text-input>
   </form>
 
   <app-button-group>
-    <app-button id="submit-vim" (clicked)="handleSubmit()">Save</app-button>
+    <app-button id="submit-vin" (clicked)="handleSubmit()">Save</app-button>
     <app-button id="back-button" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
   </app-button-group>
 </div>

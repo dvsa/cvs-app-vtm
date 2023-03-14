@@ -10,7 +10,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle type</dt>
       <dd id="vehicleType" class="govuk-summary-list__value">
-        {{ editableTechRecord.vehicleType | uppercase | defaultNullOrEmpty }}
+        {{ getVehicleType(editableTechRecord) | uppercase | defaultNullOrEmpty }}
       </dd>
       <ng-container *appRoleRequired="roles.TechRecordAmend">
         <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
@@ -128,7 +128,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Record status</dt>
         <dd id="record-completeness" class="govuk-summary-list__value">
-          <app-tag [type]="getCompletenessColor(currentTechRecord.recordCompleteness)">
+          <app-tag *ngIf="currentTechRecord.recordCompleteness" [type]="getCompletenessColor(currentTechRecord.recordCompleteness)">
             {{ currentTechRecord.recordCompleteness | uppercase }}
           </app-tag>
         </dd>
