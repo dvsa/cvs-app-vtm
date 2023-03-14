@@ -124,14 +124,14 @@ export class DynamicFormService {
     validators.forEach(v => control.addAsyncValidators(this.asyncValidatorMap[v.name](v.args)));
   }
 
-  static updateValidity(form: FormGroup | FormArray | CustomFormGroup | CustomFormArray, errors: GlobalError[]) {
+  static updateValidity(form: FormGroup | FormArray, errors: GlobalError[]) {
     Object.entries(form.controls).forEach(([, value]) => {
-      if (!(value instanceof CustomFormControl || value instanceof FormControl)) {
+      if (!(value instanceof CustomFormControl)) {
         this.updateValidity(value as CustomFormGroup | CustomFormArray, errors);
       } else {
         value.markAsTouched();
         value.updateValueAndValidity({ emitEvent: false });
-        (value as CustomFormControl).meta?.changeDetection?.detectChanges();
+        value.meta.changeDetection?.detectChanges();
         this.getControlErrors(value, errors);
       }
     });
