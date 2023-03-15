@@ -28,9 +28,9 @@ import {
   vehicleTechRecords
 } from '@store/technical-records';
 import { upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
-import { selectBatchVehicles, selectIsBatch } from '@store/technical-records/selectors/batch-create.selectors';
+import { selectBatchCount, selectBatchVehicles, selectIsBatch } from '@store/technical-records/selectors/batch-create.selectors';
 import { cloneDeep } from 'lodash';
-import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
+import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter, first } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -403,5 +403,9 @@ export class TechnicalRecordService {
 
   get isBatchCreate$() {
     return this.store.pipe(select(selectIsBatch));
+  }
+
+  get batchCount$() {
+    return this.store.pipe(select(selectBatchCount));
   }
 }

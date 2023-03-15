@@ -58,4 +58,8 @@ export class HydrateNewVehicleRecordComponent {
   get isBatch$() {
     return this.technicalRecordService.isBatchCreate$;
   }
+
+  get batchCount$() {
+    return this.technicalRecordService.batchCount$;
+  }
 }

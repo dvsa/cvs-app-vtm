@@ -17,6 +17,7 @@ export class TechRecordTitleComponent implements OnInit {
   @Input() vehicle?: VehicleTechRecordModel;
   @Input() actions: TechRecordActions = TechRecordActions.NONE;
   @Input() hideActions: boolean = false;
+  @Input() customTitle = '';
 
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
   queryableActions: string[] = [];

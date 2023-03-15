@@ -12,7 +12,7 @@ import { debounceTime, Subject, take, takeUntil } from 'rxjs';
   templateUrl: './batch-create.component.html'
 })
 export class BatchCreateComponent implements OnInit, OnDestroy {
-  readonly maxNumberOfvehicles = 39;
+  readonly maxNumberOfVehicles = 39;
   private destroy$ = new Subject<void>();
   form: FormGroup;
 
@@ -32,9 +32,9 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
   private startingObject = { vin: '' };
 
   ngOnInit() {
-    // this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
-    //   if (!vehicle) this.back();
-    // });
+    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
+      if (!vehicle) this.back();
+    });
 
     this.technicalRecordService.batchVehicles$.pipe(take(1)).subscribe({
       next: vehicles => {
@@ -59,8 +59,8 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
       ?.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(500))
       .subscribe({
         next: val => {
-          const n = Math.min(val, this.maxNumberOfvehicles);
-          if (isNaN(n) || n > this.maxNumberOfvehicles) {
+          const n = Math.min(val, this.maxNumberOfVehicles);
+          if (isNaN(n) || n > this.maxNumberOfVehicles) {
             return;
           }
 
@@ -87,7 +87,7 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
 
   get vehicleForm() {
     return this.fb.group({
-      vin: ['', [Validators.required]]
+      vin: ['', [Validators.required], [this.technicalRecordService.validateVin()]]
     });
   }
 
@@ -103,11 +103,10 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
     return this.vehicles.value ?? [];
   }
 
-  get isFormValid(): boolean {
+  showErrors(): void {
     const errors: GlobalError[] = [];
-    DynamicFormService.updateValidity(this.form, errors);
+    DynamicFormService.validate(this.form, errors, false);
     this.globalErrorService.setErrors(errors);
-    return this.form.valid;
   }
 
   private cleanEmptyValues<T extends Record<string, any>>(input: T[]): T[] {
@@ -115,12 +114,14 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit() {
-    if (!this.isFormValid) {
+    if (this.form.invalid) {
+      this.showErrors();
       return;
     }
 
-    console.log(this.cleanEmptyValues(this.filledVinsInForm));
+    this.globalErrorService.setErrors([]);
     this.technicalRecordService.upsertVehicleBatch(this.vehicles.value);
+    this.back();
   }
 
   back() {

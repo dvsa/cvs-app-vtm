@@ -76,7 +76,7 @@ export class AmendVinComponent implements OnDestroy {
   isFormValid(): boolean {
     const errors: GlobalError[] = [];
 
-    DynamicFormService.updateValidity(this.form, errors);
+    DynamicFormService.validate(this.form, errors);
 
     this.globalErrorService.setErrors(errors);
 
