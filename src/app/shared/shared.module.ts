@@ -10,6 +10,7 @@ import { BaseDialogComponent } from './components/base-dialog/base-dialog.compon
 import { ButtonGroupComponent } from './components/button-group/button-group.component';
 import { ButtonComponent } from './components/button/button.component';
 import { IconComponent } from './components/icon/icon.component';
+import { InputSpinnerComponent } from './components/input-spinner/input-spinner.component';
 import { NumberPlateComponent } from './components/number-plate/number-plate.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { RouterOutletComponent } from './components/router-outlet/router-outlet.component';
@@ -42,6 +43,7 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     DigitGroupSeparatorPipe,
     RefDataDecodePipe,
     RetrieveDocumentDirective,
+    InputSpinnerComponent,
     RouterOutletComponent
   ],
   imports: [CommonModule, RouterModule],
@@ -63,6 +65,7 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     DigitGroupSeparatorPipe,
     RefDataDecodePipe,
     RetrieveDocumentDirective,
+    InputSpinnerComponent,
     RouterOutletComponent
   ],
   providers: [DocumentRetrievalService]

@@ -30,7 +30,13 @@
       label="New VIN"
       [width]="width"
       (focusout)="isFormValid()"
-    ></app-text-input>
+    >
+      <ng-container *ngIf="form.controls['vin'].status === 'VALID' || form.controls['vin'].status === 'PENDING'">
+        <ng-template appSuffix>
+          <app-input-spinner [isValid]="form.controls['vin'].status"></app-input-spinner>
+        </ng-template>
+      </ng-container>
+    </app-text-input>
   </form>
 
   <app-button-group>

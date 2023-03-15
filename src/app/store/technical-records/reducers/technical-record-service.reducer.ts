@@ -47,7 +47,10 @@ import {
   updateEditingTechRecordCancel,
   updateTechRecords,
   updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecordsSuccess,
+  updateVin,
+  updateVinSuccess,
+  updateVinFailure
 } from '../actions/technical-record-service.actions';
 import { vehicleBatchCreateReducer } from './batch-create.reducer';
 
@@ -128,6 +131,10 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(addAxle, state => handleAddAxle(state)),
   on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
+
+  on(updateVin, defaultArgs),
+  on(updateVinSuccess, state => ({ ...state, loading: false })),
+  on(updateVinFailure, updateFailureArgs),
 
   on(upsertVehicleBatch, (state, action) => ({ ...state, batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action) }))
 );

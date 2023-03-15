@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   EuVehicleCategories,
@@ -28,9 +29,8 @@ import {
 } from '@store/technical-records';
 import { upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
 import { selectBatchVehicles, selectIsBatch } from '@store/technical-records/selectors/batch-create.selectors';
-import { userEmail } from '@store/user/user-service.reducer';
 import { cloneDeep } from 'lodash';
-import { catchError, Observable, of, map, switchMap, take, throwError } from 'rxjs';
+import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -373,6 +373,24 @@ export class TechnicalRecordService {
       newVin
     };
     return this.http.put(url, body, { responseType: 'json' });
+  }
+
+  validateVin(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return of(control.value).pipe(
+        filter((value: string) => !!value),
+        debounceTime(1000),
+        take(1),
+        switchMap(value => {
+          return this.isUnique(value, SEARCH_TYPES.VIN).pipe(
+            map(result => {
+              return result ? null : { validateVin: 'This VIN already exists, if you continue it will be associated with two technical records' };
+            }),
+            catchError(error => of(null))
+          );
+        })
+      );
+    };
   }
 
   upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string }>) {
