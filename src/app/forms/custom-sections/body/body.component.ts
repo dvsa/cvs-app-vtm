@@ -69,9 +69,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
         }
       });
 
-    this.optionsService.loadOptions(
-      this.techRecord.vehicleType === VehicleTypes.HGV ? ReferenceDataResourceType.HgvMake : ReferenceDataResourceType.TrlMake
-    );
+    this.loadOptions();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -102,9 +100,13 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get bodyMakes$(): Observable<MultiOptions | undefined> {
-    return this.optionsService.getOptions(
-      this.techRecord.vehicleType === VehicleTypes.HGV ? ReferenceDataResourceType.HgvMake : ReferenceDataResourceType.TrlMake
-    );
+    if (this.techRecord.vehicleType === VehicleTypes.HGV) {
+      return this.optionsService.getOptions(ReferenceDataResourceType.HgvMake);
+    } else if (this.techRecord.vehicleType === VehicleTypes.PSV) {
+      return this.optionsService.getOptions(ReferenceDataResourceType.PsvMake);
+    } else {
+      return this.optionsService.getOptions(ReferenceDataResourceType.TrlMake);
+    }
   }
 
   get dtpNumbers$(): Observable<MultiOptions> {
@@ -126,5 +128,15 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
   get brakesForm(): FormGroup {
     return this.form.get(['brakes']) as FormGroup;
+  }
+
+  loadOptions(): void {
+    if (this.techRecord.vehicleType === VehicleTypes.HGV) {
+      this.optionsService.loadOptions(ReferenceDataResourceType.HgvMake);
+    } else if (this.techRecord.vehicleType === VehicleTypes.PSV) {
+      this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
+    } else {
+      this.optionsService.loadOptions(ReferenceDataResourceType.TrlMake);
+    }
   }
 }
