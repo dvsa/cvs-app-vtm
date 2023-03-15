@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { string } from 'yargs';
 
 const DEFAULT_LABEL = 'This field';
 export const ErrorMessageMap: Record<string, (...args: any) => string> = {
@@ -8,7 +9,8 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   invalidDate: (err: { error: boolean; reason: string; index: number }) => `${err.reason}`,
   invalidOption: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is invalid`,
   invalidTestResult: (err: { message: string }) => err.message,
-  validateVin: () => 'This VIN already exists, if you continue it will be associated with two technical records',
+  //VIN error
+  validateVin: (error: { message: string }) => error.message,
 
   [ValidatorNames.AheadOfDate]: (err: { sibling: string; date: Date }, label?: string) =>
     `${label || 'This date'} must be ahead of ${err.sibling || 'the previous date'}${err.date ? formatDate(err.date, ' (dd/MM/yyyy)', 'en') : ''}`,
