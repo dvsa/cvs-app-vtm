@@ -385,8 +385,6 @@ export class TechnicalRecordService {
               if (control.value === originalVin) {
                 return { validateVin: { message: 'You must provide a new VIN' } };
               } else {
-                console.log(control.value);
-                console.log(originalVin);
                 return result
                   ? null
                   : { validateVin: { message: 'This VIN already exists, if you continue it will be associated with two vehicles' } };
