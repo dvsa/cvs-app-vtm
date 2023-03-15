@@ -45,15 +45,16 @@ function getInitialState(resourceType: ReferenceDataResourceType) {
 }
 
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
-  [ReferenceDataResourceType.BodyMake]: createAdapter(),
   [ReferenceDataResourceType.Brake]: createAdapter(),
   [ReferenceDataResourceType.CountryOfRegistration]: createAdapter(),
+  [ReferenceDataResourceType.HgvMake]: createAdapter(),
   [ReferenceDataResourceType.PsvMake]: createAdapter(),
   [ReferenceDataResourceType.ReasonsForAbandoningHgv]: createAdapter(),
   [ReferenceDataResourceType.ReasonsForAbandoningPsv]: createAdapter(),
   [ReferenceDataResourceType.ReasonsForAbandoningTrl]: createAdapter(),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.TrlMake]: createAdapter(),
   [ReferenceDataResourceType.Tyres]: createAdapter(),
   [ReferenceDataResourceType.User]: createAdapter()
 };
@@ -61,15 +62,16 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
 //IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching resourceType
 
 export const initialReferenceDataState: ReferenceDataState = {
-  [ReferenceDataResourceType.BodyMake]: getInitialState(ReferenceDataResourceType.BodyMake),
   [ReferenceDataResourceType.Brake]: getInitialState(ReferenceDataResourceType.Brake),
   [ReferenceDataResourceType.CountryOfRegistration]: getInitialState(ReferenceDataResourceType.CountryOfRegistration),
+  [ReferenceDataResourceType.HgvMake]: getInitialState(ReferenceDataResourceType.HgvMake),
   [ReferenceDataResourceType.PsvMake]: getInitialState(ReferenceDataResourceType.PsvMake),
   [ReferenceDataResourceType.ReasonsForAbandoningTrl]: getInitialState(ReferenceDataResourceType.ReasonsForAbandoningTrl),
   [ReferenceDataResourceType.ReasonsForAbandoningHgv]: getInitialState(ReferenceDataResourceType.ReasonsForAbandoningHgv),
   [ReferenceDataResourceType.ReasonsForAbandoningPsv]: getInitialState(ReferenceDataResourceType.ReasonsForAbandoningPsv),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: getInitialState(ReferenceDataResourceType.SpecialistReasonsForAbandoning),
   [ReferenceDataResourceType.TIRReasonsForAbandoning]: getInitialState(ReferenceDataResourceType.TIRReasonsForAbandoning),
+  [ReferenceDataResourceType.TrlMake]: getInitialState(ReferenceDataResourceType.TrlMake),
   [ReferenceDataResourceType.Tyres]: getInitialState(ReferenceDataResourceType.Tyres),
   [ReferenceDataResourceType.User]: getInitialState(ReferenceDataResourceType.User)
 };

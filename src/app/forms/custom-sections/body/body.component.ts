@@ -23,7 +23,7 @@ import { Subject, debounceTime, takeUntil, Observable, map, take, skipWhile, com
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() vehicleTechRecord!: TechRecordModel;
+  @Input() techRecord!: TechRecordModel;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -40,8 +40,8 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.template = this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
-    this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
+    this.template = this.techRecord.vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
+    this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
     this.form.cleanValueChanges
       .pipe(
         debounceTime(400),
@@ -64,20 +64,19 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
         this.formChange.emit(event);
 
-        if (this.vehicleTechRecord.vehicleType === VehicleTypes.PSV && event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) {
+        if (this.techRecord.vehicleType === VehicleTypes.PSV && event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) {
           this.store.dispatch(updateBody({ psvMake }));
         }
       });
 
-    this.optionsService.loadOptions(ReferenceDataResourceType.BodyMake);
-    this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
+    this.loadOptions();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { vehicleTechRecord } = changes;
+    const { techRecord } = changes;
 
-    if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
-      this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
+    if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
+      this.form.patchValue(techRecord.currentValue, { emitEvent: false });
     }
   }
 
@@ -95,13 +94,19 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get bodyTypes(): MultiOptions {
-    const map = vehicleBodyTypeCodeMap.get(this.vehicleTechRecord.vehicleType);
+    const map = vehicleBodyTypeCodeMap.get(this.techRecord.vehicleType);
     const values = [...map!.values()];
     return getOptionsFromEnum(values.sort());
   }
 
   get bodyMakes$(): Observable<MultiOptions | undefined> {
-    return this.optionsService.getOptions(ReferenceDataResourceType.BodyMake);
+    if (this.techRecord.vehicleType === VehicleTypes.HGV) {
+      return this.optionsService.getOptions(ReferenceDataResourceType.HgvMake);
+    } else if (this.techRecord.vehicleType === VehicleTypes.PSV) {
+      return this.optionsService.getOptions(ReferenceDataResourceType.PsvMake);
+    } else {
+      return this.optionsService.getOptions(ReferenceDataResourceType.TrlMake);
+    }
   }
 
   get dtpNumbers$(): Observable<MultiOptions> {
@@ -123,5 +128,15 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
   get brakesForm(): FormGroup {
     return this.form.get(['brakes']) as FormGroup;
+  }
+
+  loadOptions(): void {
+    if (this.techRecord.vehicleType === VehicleTypes.HGV) {
+      this.optionsService.loadOptions(ReferenceDataResourceType.HgvMake);
+    } else if (this.techRecord.vehicleType === VehicleTypes.PSV) {
+      this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
+    } else {
+      this.optionsService.loadOptions(ReferenceDataResourceType.TrlMake);
+    }
   }
 }
