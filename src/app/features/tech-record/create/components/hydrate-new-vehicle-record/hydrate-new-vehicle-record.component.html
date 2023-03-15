@@ -3,7 +3,14 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         <app-tech-record-title [vehicle]="vehicle" [hideActions]="true"></app-tech-record-title>
-        <app-button id="submit-record-continue" (clicked)="handleSubmit()">Submit new record</app-button>
+        <app-button-group>
+          <app-button id="submit-record-continue" (clicked)="handleSubmit()">{{
+            (isBatch$ | async) ? 'Save and create batch' : 'Submit new record'
+          }}</app-button>
+          <app-button *ngIf="(isBatch$ | async) === false" id="submit-record-continue" design="secondary" (clicked)="addVehiclesToBatch()"
+            >Add vehicles to batch</app-button
+          >
+        </app-button-group>
       </div>
     </div>
   </div>

@@ -1,5 +1,33 @@
+@import 'node_modules/govuk-frontend/govuk/all';
 /* You can add global styles to this file, and also import other style files */
 .section {
   display: block;
   margin-top: 1rem;
+}
+
+.button {
+  cursor: pointer;
+  &--no-style {
+    border: none;
+  }
+}
+
+.flex {
+  display: flex;
+
+  &--wrap {
+    flex-wrap: wrap;
+  }
+
+  &_gap {
+    &--7 {
+      gap: govuk-spacing(7);
+    }
+  }
+}
+
+.justify {
+  &--flex-start {
+    justify-content: flex-start;
+  }
 }

@@ -4,6 +4,7 @@ import { Axle, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
+import { upsertVehicleBatch } from '../actions/batch-create.actions';
 import {
   addAxle,
   archiveTechRecord,
@@ -48,6 +49,7 @@ import {
   updateTechRecordsFailure,
   updateTechRecordsSuccess
 } from '../actions/technical-record-service.actions';
+import { vehicleBatchCreateReducer } from './batch-create.reducer';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
@@ -56,6 +58,7 @@ export interface TechnicalRecordServiceState {
   loading: boolean;
   editingTechRecord?: VehicleTechRecordModel;
   error?: unknown;
+  batchVehicles?: Array<{ vin: string; trailerId?: string }>;
 }
 
 export const initialState: TechnicalRecordServiceState = {
@@ -124,7 +127,9 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateBody, (state, action) => handleUpdateBody(state, action)),
 
   on(addAxle, state => handleAddAxle(state)),
-  on(removeAxle, (state, action) => handleRemoveAxle(state, action))
+  on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
+
+  on(upsertVehicleBatch, (state, action) => ({ ...state, batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action) }))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {

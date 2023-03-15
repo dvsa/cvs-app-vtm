@@ -1,13 +1,20 @@
 <h1 class="govuk-heading-l title">Add batch of trailers</h1>
 <form [formGroup]="form">
-  <ng-container formArrayName="input-data">
-    <ng-container *ngFor="let control of inputDataArray.controls; let i = index" [formGroupName]="i">
-      <h2 class="govuk-heading-s">Vehicle {{ i + 1 }}</h2>
-      <app-text-input formControlName="vin" name="input-vin{{ i }}" label="Vehicle Identification number (VIN)" [width]="30"></app-text-input>
-    </ng-container>
+  <app-number-input formControlName="numberOfVehicles" label="Number of vehicles" [width]="width.XS"></app-number-input>
+  <ng-container formArrayName="vehicles">
+    <div class="flex flex--wrap flex_gap--7 justify--flex-start">
+      <ng-container *ngFor="let control of vehicles.controls; let i = index" [formGroupName]="i">
+        <app-text-input formControlName="vin" name="input-vin{{ i }}" [label]="'Vehicle ' + (i + 1)" hint="VIN" [width]="width.L">
+          <ng-template appSuffix>
+            <button id="remove-vehicle-{{ i + 1 }}" class="button button--no-style" (click)="removeAt(i)">&#88;</button>
+          </ng-template>
+        </app-text-input>
+      </ng-container>
+    </div>
   </ng-container>
-
-  <pre>{{ form.value | json }}</pre>
 </form>
 
-<app-button id="create-record-continue" (clicked)="handleSubmit()">Continue</app-button>
+<app-button-group>
+  <app-button id="add-vehicles" (clicked)="handleSubmit()">Add vehicles</app-button>
+  <app-button id="back" design="link" (clicked)="back()">Back</app-button>
+</app-button-group>

@@ -26,6 +26,8 @@ import {
   updateEditingTechRecordCancel,
   vehicleTechRecords
 } from '@store/technical-records';
+import { upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
+import { selectBatchVehicles, selectIsBatch } from '@store/technical-records/selectors/batch-create.selectors';
 import { userEmail } from '@store/user/user-service.reducer';
 import { cloneDeep } from 'lodash';
 import { catchError, Observable, of, map, switchMap, take, throwError } from 'rxjs';
@@ -371,5 +373,17 @@ export class TechnicalRecordService {
       newVin
     };
     return this.http.put(url, body, { responseType: 'json' });
+  }
+
+  upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string }>) {
+    this.store.dispatch(upsertVehicleBatch({ vehicles }));
+  }
+
+  get batchVehicles$() {
+    return this.store.pipe(select(selectBatchVehicles));
+  }
+
+  get isBatchCreate$() {
+    return this.store.pipe(select(selectIsBatch));
   }
 }

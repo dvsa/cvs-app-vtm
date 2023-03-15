@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
@@ -17,6 +18,7 @@ import { TechRecordSummaryComponent } from '../../../components/tech-record-summ
 export class HydrateNewVehicleRecordComponent {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
   isInvalid: boolean = false;
+  batchForm?: FormGroup;
 
   constructor(
     private actions$: Actions,
@@ -47,5 +49,13 @@ export class HydrateNewVehicleRecordComponent {
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
+  }
+
+  addVehiclesToBatch() {
+    this.router.navigate(['add-batch'], { relativeTo: this.route });
+  }
+
+  get isBatch$() {
+    return this.technicalRecordService.isBatchCreate$;
   }
 }
