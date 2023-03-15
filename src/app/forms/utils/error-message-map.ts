@@ -8,7 +8,7 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   invalidDate: (err: { error: boolean; reason: string; index: number }) => `${err.reason}`,
   invalidOption: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is invalid`,
   invalidTestResult: (err: { message: string }) => err.message,
-  //VIN error
+
   validateVin: (error: { message: string }) => error.message,
 
   [ValidatorNames.AheadOfDate]: (err: { sibling: string; date: Date }, label?: string) =>
