@@ -118,14 +118,14 @@ describe('ReferenceDataEffects', () => {
 
     it('should return fetchReferenceDataFailed action when data is not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a--', { a: fetchReferenceData({ resourceType: ReferenceDataResourceType.BodyMake }) });
+        actions$ = hot('-a--', { a: fetchReferenceData({ resourceType: ReferenceDataResourceType.HgvMake }) });
 
         jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--a|', { a: { data: [] } }));
 
         expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
           b: fetchReferenceDataFailed({
-            error: `Reference data not found for resource type ${ReferenceDataResourceType.BodyMake}`,
-            resourceType: ReferenceDataResourceType.BodyMake
+            error: `Reference data not found for resource type ${ReferenceDataResourceType.HgvMake}`,
+            resourceType: ReferenceDataResourceType.HgvMake
           })
         });
       });
