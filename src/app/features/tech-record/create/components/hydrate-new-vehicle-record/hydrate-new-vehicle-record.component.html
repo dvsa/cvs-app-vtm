@@ -10,7 +10,7 @@
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Vehicles in batch</dt>
               <dd class="govuk-summary-list__value">
-                {{ batchCount$ | async }}
+                {{ ((batchCount$ | async) ?? 0) + 1 }}
               </dd>
               <dd class="govuk-summary-list__actions">
                 <app-button id="manage-vehicles" type="link" design="link" [routerLink]="['add-batch']"> Manage vehicles </app-button>
@@ -23,7 +23,12 @@
           <app-button id="submit-record-continue" (clicked)="handleSubmit()">{{
             (isBatch$ | async) ? 'Save and create batch' : 'Submit new record'
           }}</app-button>
-          <app-button *ngIf="(isBatch$ | async) === false" id="submit-record-continue" design="secondary" (clicked)="addVehiclesToBatch()">
+          <app-button
+            *ngIf="vehicle.techRecord[0]?.vehicleType === vehicleTypes.TRL && (isBatch$ | async) === false"
+            id="submit-record-continue"
+            design="secondary"
+            (clicked)="addVehiclesToBatch()"
+          >
             Add vehicles to batch
           </app-button>
         </app-button-group>

@@ -29,7 +29,7 @@ export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }
 export const getByAllSuccess = createOutcomeAction('getByAll', true);
 export const getByAllFailure = createOutcomeAction('getByAll');
 
-export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`);
+export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`, props<{ vehicle: VehicleTechRecordModel }>());
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
 export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord');
 

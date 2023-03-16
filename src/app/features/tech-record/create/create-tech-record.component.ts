@@ -70,7 +70,9 @@ export class CreateTechRecordComponent implements OnChanges {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store
-  ) {}
+  ) {
+    this.technicalRecordService.clearBatch();
+  }
 
   ngOnChanges(): void {
     this.isVinUniqueCheckComplete = false;

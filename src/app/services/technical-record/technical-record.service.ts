@@ -27,8 +27,16 @@ import {
   updateEditingTechRecordCancel,
   vehicleTechRecords
 } from '@store/technical-records';
-import { upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
-import { selectBatchCount, selectBatchVehicles, selectIsBatch } from '@store/technical-records/selectors/batch-create.selectors';
+import { clearBatch, setBatchId, setGenerateNumberFlag, upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
+import {
+  selectBatchCount,
+  selectAllBatch,
+  selectIsBatch,
+  selectGenerateNumber,
+  selectCreatedBatch,
+  selectCreatedBatchCount,
+  selectBatchId
+} from '@store/technical-records/selectors/batch-create.selectors';
 import { cloneDeep } from 'lodash';
 import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter, first } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -398,7 +406,11 @@ export class TechnicalRecordService {
   }
 
   get batchVehicles$() {
-    return this.store.pipe(select(selectBatchVehicles));
+    return this.store.pipe(select(selectAllBatch));
+  }
+
+  get batchVehiclesCreated$() {
+    return this.store.pipe(select(selectCreatedBatch));
   }
 
   get isBatchCreate$() {
@@ -407,5 +419,28 @@ export class TechnicalRecordService {
 
   get batchCount$() {
     return this.store.pipe(select(selectBatchCount));
+  }
+
+  get batchCreatedCount$() {
+    return this.store.pipe(select(selectCreatedBatchCount));
+  }
+
+  get batchId$() {
+    return this.store.pipe(select(selectBatchId));
+  }
+
+  get generateNumber$() {
+    return this.store.pipe(select(selectGenerateNumber));
+  }
+
+  setBatchId(batchId: string) {
+    this.store.dispatch(setBatchId({ batchId }));
+  }
+  setGenerateNumberFlag(generateNumber: boolean) {
+    this.store.dispatch(setGenerateNumberFlag({ generateNumber }));
+  }
+
+  clearBatch() {
+    this.store.dispatch(clearBatch());
   }
 }

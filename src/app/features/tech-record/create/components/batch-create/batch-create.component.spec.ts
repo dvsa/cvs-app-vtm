@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BatchCreateComponent } from './batch-create.component';
 
@@ -8,7 +9,8 @@ describe('BatchCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BatchCreateComponent]
+      declarations: [BatchCreateComponent],
+      imports: [FormsModule, ReactiveFormsModule]
     }).compileComponents();
   });
 

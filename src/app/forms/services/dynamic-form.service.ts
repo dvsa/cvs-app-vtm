@@ -129,10 +129,7 @@ export class DynamicFormService {
         this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
       } else {
         value.markAsTouched();
-        // const asyncValidators = value.asyncValidator;
-        // value.clearAsyncValidators();
         updateValidity && this.updateValidity(value);
-        // value.setAsyncValidators(asyncValidators);
         (value as CustomFormControl).meta?.changeDetection?.detectChanges();
         this.getControlErrors(value, errors);
       }

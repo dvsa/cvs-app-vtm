@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomValidators } from '@forms/validators/custom-validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { debounceTime, Subject, take, takeUntil } from 'rxjs';
+import { debounceTime, forkJoin, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
 @Component({
   selector: 'app-batch-create',
   templateUrl: './batch-create.component.html'
@@ -33,17 +34,21 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
-      if (!vehicle) this.back();
-    });
-
-    this.technicalRecordService.batchVehicles$.pipe(take(1)).subscribe({
-      next: vehicles => {
-        if (vehicles && vehicles.length) {
-          this.addVehicles(vehicles.length);
-          this.form.setValue({ numberOfVehicles: vehicles.length, vehicles });
-        }
+      if (!vehicle) {
+        this.back();
       }
     });
+
+    forkJoin([this.technicalRecordService.batchVehicles$, this.technicalRecordService.batchCount$])
+      .pipe(take(1))
+      .subscribe({
+        next: ([vehicles, numberOfVehicles]) => {
+          if (numberOfVehicles) {
+            this.addVehicles(numberOfVehicles);
+            this.form.setValue({ numberOfVehicles, vehicles });
+          }
+        }
+      });
 
     this.watchNumberOfVehicles();
   }
@@ -56,9 +61,9 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
   watchNumberOfVehicles() {
     this.form
       .get('numberOfVehicles')
-      ?.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(500))
+      ?.valueChanges.pipe(withLatestFrom(this.technicalRecordService.generateNumber$.pipe(take(1))), takeUntil(this.destroy$), debounceTime(500))
       .subscribe({
-        next: val => {
+        next: ([val, generateNumber]) => {
           const n = Math.min(val, this.maxNumberOfVehicles);
           if (isNaN(n) || n > this.maxNumberOfVehicles) {
             return;
@@ -69,15 +74,15 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
           if (currentList > val) {
             this.vehicles.controls.length = n;
           } else {
-            this.addVehicles(n - currentList);
+            this.addVehicles(n - currentList, generateNumber);
           }
         }
       });
   }
 
-  addVehicles(n: number) {
+  addVehicles(n: number, withNumber = false) {
     for (let i = 0; i < n; i++) {
-      this.vehicles.push(this.vehicleForm);
+      this.vehicles.push(this.vehicleForm(withNumber));
     }
   }
 
@@ -85,10 +90,19 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
     this.vehicles.removeAt(i);
   }
 
-  get vehicleForm() {
-    return this.fb.group({
-      vin: ['', [Validators.required], [this.technicalRecordService.validateVin()]]
+  vehicleForm(withNumber = false) {
+    const f = this.fb.group({
+      vin: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(21)], [this.technicalRecordService.validateVin()]]
     });
+
+    if (withNumber) {
+      f.addControl(
+        'trailerId',
+        this.fb.control('', [Validators.required, Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()])
+      );
+    }
+
+    return f;
   }
 
   getNumberOfFields(qty: number) {
@@ -97,6 +111,14 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
 
   get vehicles() {
     return this.form.get('vehicles') as FormArray;
+  }
+
+  get generateNumber$() {
+    return this.technicalRecordService.generateNumber$;
+  }
+
+  getVin(group: AbstractControl) {
+    return group.get('vin');
   }
 
   get filledVinsInForm(): typeof this.startingObject[] {

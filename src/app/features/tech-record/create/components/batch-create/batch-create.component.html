@@ -3,25 +3,30 @@
   <app-number-input formControlName="numberOfVehicles" label="Number of vehicles" [width]="width.XS"></app-number-input>
   <ng-container formArrayName="vehicles">
     <div class="flex flex--wrap flex_gap--7 justify--flex-start">
-      <ng-container *ngFor="let control of vehicles.controls; let i = index" [formGroupName]="i">
-        <app-text-input formControlName="vin" name="input-vin{{ i }}" [label]="'Vehicle ' + (i + 1)" hint="VIN" [width]="width.L">
-          <ng-template appPrefix>
-            <button id="remove-vehicle-{{ i + 1 }}" class="button button--no-style" (click)="removeAt(i)">&#88;</button>
-          </ng-template>
-          <ng-container *ngIf="control.status === 'VALID' || control.status === 'PENDING'">
-            <ng-template appSuffix>
-              <app-input-spinner [isValid]="control.status"></app-input-spinner>
-            </ng-template>
-          </ng-container>
-        </app-text-input>
+      <ng-container *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i">
+        <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
+          </legend>
+          <app-text-input formControlName="vin" name="input-vin{{ i }}" label="VIN" [width]="width.L">
+            <ng-container *ngIf="getVin(group)?.status === 'VALID' || getVin(group)?.status === 'PENDING'">
+              <ng-template appSuffix>
+                <app-input-spinner [isValid]="getVin(group)?.status || 'PENDING'"></app-input-spinner>
+              </ng-template>
+            </ng-container>
+          </app-text-input>
+          <app-text-input
+            *ngIf="generateNumber$ | async"
+            formControlName="trailerId"
+            name="trailerId{{ i }}"
+            label="Trailer id"
+            [width]="width.L"
+          ></app-text-input>
+        </fieldset>
       </ng-container>
     </div>
   </ng-container>
 </form>
-
-<pre>form valid: {{ form.valid }}</pre>
-<pre>form status: {{ form.status }}</pre>
-<pre>form errors: {{ form.errors | json }}</pre>
 
 <app-button-group>
   <app-button id="add-vehicles" (clicked)="handleSubmit()">Add vehicles</app-button>

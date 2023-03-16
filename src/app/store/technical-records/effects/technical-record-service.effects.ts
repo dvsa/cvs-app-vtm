@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { EuVehicleCategories, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
@@ -9,7 +8,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
-import { catchError, concatMap, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, first, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import {
   archiveTechRecord,
   archiveTechRecordFailure,
@@ -22,6 +21,12 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
+  generateLetter,
+  generateLetterFailure,
+  generateLetterSuccess,
+  generatePlate,
+  generatePlateFailure,
+  generatePlateSuccess,
   getByAll,
   getByAllFailure,
   getByAllSuccess,
@@ -43,12 +48,6 @@ import {
   updateTechRecords,
   updateTechRecordsFailure,
   updateTechRecordsSuccess,
-  generatePlate,
-  generatePlateSuccess,
-  generatePlateFailure,
-  generateLetter,
-  generateLetterSuccess,
-  generateLetterFailure,
   updateVin,
   updateVinFailure,
   updateVinSuccess
@@ -122,13 +121,26 @@ export class TechnicalRecordServiceEffects {
   createVehicleRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createVehicleRecord),
-      withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
-      switchMap(([, record, name, id]) =>
-        this.technicalRecordService.createVehicleRecord(record!, { id, name }).pipe(
+      withLatestFrom(this.technicalRecordService.batchId$, this.userService.name$, this.userService.id$),
+      concatMap(([{ vehicle }, batchId, name, id]) => {
+        const { techRecord } = vehicle;
+        const vehicleRecord = {
+          ...vehicle,
+          techRecord: [{ ...techRecord[0], batchId }]
+        };
+        return this.technicalRecordService.createVehicleRecord(vehicleRecord, { id, name }).pipe(
           map(newVehicleRecord => createVehicleRecordSuccess({ vehicleTechRecords: [newVehicleRecord] })),
-          catchError(error => of(createVehicleRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createVehicleRecord') })))
-        )
-      )
+          catchError(({ error }) =>
+            of(
+              createVehicleRecordFailure({
+                error: `Unable to create vehicle with VIN ${vehicle.vin} ${
+                  error.errors ? 'because:' + (error.errors?.map((e: string) => '\n' + e) as string[]).join() : ''
+                }`
+              })
+            )
+          )
+        );
+      })
     )
   );
 

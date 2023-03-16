@@ -1,10 +1,10 @@
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
-import { Axle, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
-import { upsertVehicleBatch } from '../actions/batch-create.actions';
+import { clearBatch, setGenerateNumberFlag, upsertVehicleBatch } from '../actions/batch-create.actions';
 import {
   addAxle,
   archiveTechRecord,
@@ -52,7 +52,7 @@ import {
   updateVinSuccess,
   updateVinFailure
 } from '../actions/technical-record-service.actions';
-import { vehicleBatchCreateReducer } from './batch-create.reducer';
+import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
@@ -61,11 +61,12 @@ export interface TechnicalRecordServiceState {
   loading: boolean;
   editingTechRecord?: VehicleTechRecordModel;
   error?: unknown;
-  batchVehicles?: Array<{ vin: string; trailerId?: string }>;
+  batchVehicles: BatchRecords;
 }
 
 export const initialState: TechnicalRecordServiceState = {
   vehicleTechRecords: [],
+  batchVehicles: initialBatchState,
   loading: false
 };
 
@@ -99,8 +100,8 @@ export const vehicleTechRecordReducer = createReducer(
   on(getByAllFailure, failureArgs),
 
   on(createVehicleRecord, defaultArgs),
-  on(createVehicleRecordSuccess, successArgs),
-  on(createVehicleRecordFailure, updateFailureArgs),
+  on(createVehicleRecordSuccess, (state, action) => ({ ...state, editingTechRecord: action.vehicleTechRecords[0], loading: false })),
+  on(createVehicleRecordFailure, state => ({ ...state, loading: false })),
 
   on(createProvisionalTechRecord, defaultArgs),
   on(createProvisionalTechRecordSuccess, successArgs),
@@ -136,7 +137,10 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateVinSuccess, state => ({ ...state, loading: false })),
   on(updateVinFailure, updateFailureArgs),
 
-  on(upsertVehicleBatch, (state, action) => ({ ...state, batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action) }))
+  on(upsertVehicleBatch, createVehicleRecordSuccess, setGenerateNumberFlag, clearBatch, (state, action) => ({
+    ...state,
+    batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
+  }))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
