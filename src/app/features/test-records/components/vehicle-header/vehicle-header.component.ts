@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
 })
 export class VehicleHeaderComponent {
   @Input() isEditing = false;
-  @Input() testResult?: TestResultModel;
+  @Input() testResult?: TestResultModel | null;
   @Input() testNumber?: string | null;
   @Input() isReview = false;
 

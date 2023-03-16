@@ -1,14 +1,11 @@
 <app-vehicle-header [isEditing]="isEditing" [testResult]="testResult" [testNumber]="testNumber$ | async" [isReview]="isReview">
   <app-button-group *ngIf="!isReview">
     <ng-container *appRoleRequired="roles.TestResultAmend">
-      <app-button
-        *ngIf="isTestTypeGroupEditable$ | async; else notSupported"
-        id="amend-test"
-        type="link"
-        design="secondary"
-        [routerLink]="['amend-test']"
-        >Amend this test</app-button
-      >
+      <ng-container *ngIf="isTestTypeGroupEditable$ | async; else notSupported">
+        <app-button id="amend-test" type="link" design="secondary" [routerLink]="['amend-test']">Amend</app-button>
+
+        <app-button id="cancel-test" type="link" design="warning" [routerLink]="['cancel-test']">Cancel</app-button>
+      </ng-container>
     </ng-container>
   </app-button-group>
 </app-vehicle-header>

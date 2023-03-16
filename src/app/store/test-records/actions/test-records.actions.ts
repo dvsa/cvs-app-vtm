@@ -21,29 +21,35 @@ export const fetchSelectedTestResult = createAction('[API/test-results], Fetch b
 export const fetchSelectedTestResultSuccess = createAction('[API/test-results], Fetch by ID Success', props<{ payload: TestResultModel }>());
 export const fetchSelectedTestResultFailed = createAction('[API/test-results], Fetch by ID Failed', props<GlobalError>());
 
-export const updateTestResult = createAction('[test-results] Update test result', props<{ value: TestResultModel }>());
-export const updateTestResultSuccess = createAction('[API/test-results] Update test result Success', props<{ payload: Update<TestResultModel> }>());
-export const updateTestResultFailed = createAction('[API/test-results] Update test result Failed', props<{ errors: GlobalError[] }>());
-
-export const editingTestResult = createAction('[test-results] Editing', props<{ testTypeId: string }>());
-export const cancelEditingTestResult = createAction('[test-results] Cancel editing');
-export const templateSectionsChanged = createAction(
-  '[test-results] Template sections changed',
-  props<{ sectionTemplates: FormNode[]; sectionsValue: TestResultModel | undefined }>()
-);
-export const updateEditingTestResult = createAction('[test-results] Update editing', props<{ testResult: TestResultModel }>());
-export const testTypeIdChanged = createAction('[test-results] test type id changed', props<{ testTypeId: string }>());
-
-export const updateResultOfTest = createAction('[test-results] update the result of the test');
-export const setResultOfTest = createAction('[test-results] set the result of the test', props<{ result: resultOfTestEnum }>());
-
-export const initialContingencyTest = createAction('[Contingency test] Create', props<{ testResult: Partial<TestResultModel> }>());
-
 export const createTestResult = createAction('[test-results] Create test result', props<{ value: TestResultModel }>());
 export const createTestResultSuccess = createAction('[API/test-results] Create test result Success', props<{ payload: Update<TestResultModel> }>());
 export const createTestResultFailed = createAction('[API/test-results] Create test result Failed', props<{ errors: GlobalError[] }>());
 
+export const updateTestResult = createAction('[test-results] Update test result', props<{ value: TestResultModel }>());
+export const updateTestResultSuccess = createAction('[API/test-results] Update test result Success', props<{ payload: Update<TestResultModel> }>());
+export const updateTestResultFailed = createAction('[API/test-results] Update test result Failed', props<{ errors: GlobalError[] }>());
+
+export const cancelTestResult = createAction('[test-results] Cancel Test', props<{ reason: string }>());
+export const cancelTestResultSuccess = createAction('[test-results] Cancel Test Success', props<{ payload: Update<TestResultModel> }>());
+export const cancelTestResultFailed = createAction('[test-results] Cancel Test Failed', props<{ errors: GlobalError[] }>());
+
+export const editingTestResult = createAction('[test-results] Editing', props<{ testTypeId: string }>());
+export const updateEditingTestResult = createAction('[test-results] Update editing', props<{ testResult: TestResultModel }>());
+export const cancelEditingTestResult = createAction('[test-results] Cancel editing');
+
+export const setResultOfTest = createAction('[test-results] set the result of the test', props<{ result: resultOfTestEnum }>());
+export const updateResultOfTest = createAction('[test-results] update the result of the test');
+
+export const initialContingencyTest = createAction('[Contingency test] Create', props<{ testResult: Partial<TestResultModel> }>());
+
 export const contingencyTestTypeSelected = createAction('[Test Results] contingency test type selected', props<{ testType: string }>());
+
+export const testTypeIdChanged = createAction('[test-results] test type id changed', props<{ testTypeId: string }>());
+
+export const templateSectionsChanged = createAction(
+  '[test-results] Template sections changed',
+  props<{ sectionTemplates: FormNode[]; sectionsValue: TestResultModel | undefined }>()
+);
 
 export const createDefect = createAction('[test-results] create defect', props<{ defect: TestResultDefect }>());
 export const updateDefect = createAction('[test-results] save defect', props<{ defect: TestResultDefect; index: number }>());

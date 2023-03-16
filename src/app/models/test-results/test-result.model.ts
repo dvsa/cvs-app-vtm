@@ -6,6 +6,7 @@ import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TestResultStatus } from './test-result-status.enum';
 import { TestCodes } from './testCodes.enum';
 import { TypeOfTest } from './typeOfTest.enum';
 
@@ -40,7 +41,7 @@ export interface TestResultModel {
   reasonForCreation?: string;
   vehicleType: VehicleTypes;
   testHistory?: TestResultModel[];
-  testStatus?: string;
+  testStatus?: TestResultStatus;
 
   /**
    * Applicable only when updating/creating a test from VTM

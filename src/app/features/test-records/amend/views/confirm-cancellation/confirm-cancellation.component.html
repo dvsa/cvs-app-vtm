@@ -1,0 +1,17 @@
+<form [formGroup]="form" (submit)="handleSubmit()">
+  <app-vehicle-header [isEditing]="true" [testResult]="testResult$ | async" [testNumber]="testNumber$ | async"></app-vehicle-header>
+
+  <app-text-area formControlName="reason" name="reason" label="Why do you want to cancel this test?"></app-text-area>
+
+  <button
+    id="submit"
+    class="govuk-button govuk-button--primary"
+    type="submit"
+    [disabled]="false"
+    [attr.aria-disabled]="false"
+    data-module="govuk-button"
+    data-prevent-double-click="true"
+  >
+    Cancel
+  </button>
+</form>
