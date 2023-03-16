@@ -98,7 +98,7 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
     if (withNumber) {
       f.addControl(
         'trailerId',
-        this.fb.control('', [Validators.required, Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()])
+        this.fb.control('', [Validators.required, Validators.maxLength(8), CustomValidators.alphanumeric()]) //Validators.minLength(7)
       );
     }
 

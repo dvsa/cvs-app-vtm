@@ -134,7 +134,7 @@ export class TechnicalRecordServiceEffects {
             of(
               createVehicleRecordFailure({
                 error: `Unable to create vehicle with VIN ${vehicle.vin}${
-                  error.error?.errors ? ' because:' + (error.errors?.map((e: string) => '\n' + e) as string[]).join() : ''
+                  error.error?.errors ? ' because:' + (error.error.errors?.map((e: string) => '\n' + e) as string[]).join() : ''
                 }`
               })
             )

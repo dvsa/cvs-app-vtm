@@ -6,6 +6,7 @@ import { Roles } from '@models/roles.enum';
 import { RouterOutletComponent } from '@shared/components/router-outlet/router-outlet.component';
 import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { BatchCreateResultsComponent } from './components/batch-create-results/batch-create-results.component';
+import { BatchCreateComponent } from './components/batch-create/batch-create.component';
 import { GenerateBatchNumbersComponent } from './components/generate-batch-numbers/generate-batch-numbers.component';
 import { HydrateNewVehicleRecordComponent } from './components/hydrate-new-vehicle-record/hydrate-new-vehicle-record.component';
 import { CreateTechRecordComponent } from './create-tech-record.component';
@@ -34,8 +35,8 @@ const routes: Routes = [
       },
       {
         path: 'add-batch',
-        data: { tile: 'Batch Creation', roles: Roles.TechRecordCreate },
-        loadChildren: () => import('./components/batch-create/batch-create.module').then(m => m.BatchCreateModule)
+        component: BatchCreateComponent,
+        data: { tile: 'Batch Creation', roles: Roles.TechRecordCreate }
       },
       {
         path: 'batch-results',

@@ -10,8 +10,7 @@ import { take } from 'rxjs';
 
 @Component({
   selector: 'app-generate-batch-numbers',
-  templateUrl: './generate-batch-numbers.component.html',
-  styleUrls: ['./generate-batch-numbers.component.scss']
+  templateUrl: './generate-batch-numbers.component.html'
 })
 export class GenerateBatchNumbersComponent implements OnInit {
   form = new FormGroup({

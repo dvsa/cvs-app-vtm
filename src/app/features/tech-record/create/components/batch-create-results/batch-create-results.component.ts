@@ -6,8 +6,7 @@ import { take } from 'rxjs';
 
 @Component({
   selector: 'app-batch-create-results',
-  templateUrl: './batch-create-results.component.html',
-  styleUrls: ['./batch-create-results.component.scss']
+  templateUrl: './batch-create-results.component.html'
 })
 export class BatchCreateResultsComponent implements OnInit {
   constructor(private technicalRecordService: TechnicalRecordService, private router: Router, private route: ActivatedRoute) {}

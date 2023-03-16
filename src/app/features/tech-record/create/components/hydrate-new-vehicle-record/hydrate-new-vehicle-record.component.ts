@@ -52,6 +52,7 @@ export class HydrateNewVehicleRecordComponent {
               const newVehicle = {
                 ...record!,
                 vin: v.vin,
+                primaryVrm: v.trailerId ? v.trailerId : null,
                 trailerId: v.trailerId ? v.trailerId : null
               } as VehicleTechRecordModel;
 
