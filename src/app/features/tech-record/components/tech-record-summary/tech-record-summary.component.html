@@ -21,7 +21,7 @@
   <ng-container [ngSwitch]="sectionName">
     <app-body
       *ngSwitchCase="'bodySection'"
-      [vehicleTechRecord]="techRecordCalculated"
+      [techRecord]="techRecordCalculated"
       [isEditing]="isEditing"
       (formChange)="handleFormState($event)"
     ></app-body>

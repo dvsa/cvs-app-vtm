@@ -20,18 +20,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 export class AmendVinComponent implements OnDestroy {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
-  form = new FormGroup({
-    vin: new CustomFormControl(
-      {
-        name: 'input-vin',
-        label: 'Vin',
-        type: FormNodeTypes.CONTROL
-      },
-      '',
-      [Validators.minLength(3), Validators.maxLength(21), Validators.required],
-      [this.technicalRecordService.validateVin()]
-    )
-  });
+  form: FormGroup;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -45,6 +34,19 @@ export class AmendVinComponent implements OnDestroy {
     this.technicalRecordService.selectedVehicleTechRecord$
       .pipe(take(1))
       .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
+
+    this.form = new FormGroup({
+      vin: new CustomFormControl(
+        {
+          name: 'input-vin',
+          label: 'Vin',
+          type: FormNodeTypes.CONTROL
+        },
+        '',
+        [Validators.minLength(3), Validators.maxLength(21), Validators.required],
+        [this.technicalRecordService.validateVin(this.vehicle?.vin)]
+      )
+    });
 
     this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
   }

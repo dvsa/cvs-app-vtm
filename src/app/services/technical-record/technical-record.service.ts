@@ -383,7 +383,7 @@ export class TechnicalRecordService {
     return this.http.put(url, body, { responseType: 'json' });
   }
 
-  validateVin(): AsyncValidatorFn {
+  validateVin(originalVin?: string): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return of(control.value).pipe(
         filter((value: string) => !!value),
@@ -392,7 +392,13 @@ export class TechnicalRecordService {
         switchMap(value => {
           return this.isUnique(value, SEARCH_TYPES.VIN).pipe(
             map(result => {
-              return result ? null : { validateVin: 'This VIN already exists, if you continue it will be associated with two technical records' };
+              if (control.value === originalVin) {
+                return { validateVin: { message: 'You must provide a new VIN' } };
+              } else {
+                return result
+                  ? null
+                  : { validateVin: { message: 'This VIN already exists, if you continue it will be associated with two vehicles' } };
+              }
             }),
             catchError(error => of(null))
           );
