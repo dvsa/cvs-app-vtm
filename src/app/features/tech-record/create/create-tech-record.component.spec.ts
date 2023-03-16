@@ -71,17 +71,19 @@ describe('CreateNewVehicleRecordComponent', () => {
   });
 
   describe('get isFormValid', () => {
-    it('should call updateValidity with the vehicleForm and an empty array', () => {
-      const updateValiditySpy = jest.spyOn(DynamicFormService, 'updateValidity').mockImplementation();
-      expect(updateValiditySpy).toHaveBeenCalledTimes(1);
-      expect(updateValiditySpy).toHaveBeenCalledWith(component.form, []);
+    it('should call validate with the vehicleForm and an empty array', () => {
+      const validateSpy = jest.spyOn(DynamicFormService, 'validate').mockImplementation();
+      const valid = component.isFormValid;
+      expect(validateSpy).toHaveBeenCalledTimes(1);
+      expect(validateSpy).toHaveBeenCalledWith(component.form, []);
     });
 
     it('should call setErrors with an empty array', () => {
-      jest.spyOn(DynamicFormService, 'updateValidity').mockImplementation(() => {
+      jest.spyOn(DynamicFormService, 'validate').mockImplementation(() => {
         return;
       });
       const setErrorsSpy = jest.spyOn(errorService, 'setErrors').mockImplementation();
+      const valid = component.isFormValid;
       expect(setErrorsSpy).toHaveBeenCalledTimes(1);
       expect(setErrorsSpy).toHaveBeenCalledWith([]);
     });

@@ -47,7 +47,7 @@ export class HydrateNewVehicleRecordComponent {
           withLatestFrom(this.technicalRecordService.batchVehicles$),
           take(1),
           map(([record, batch]) => {
-            const vehiclesToCreate = [record!];
+            const vehiclesToCreate = record ? [record] : [];
             batch?.forEach(v => {
               const newVehicle = {
                 ...record!,

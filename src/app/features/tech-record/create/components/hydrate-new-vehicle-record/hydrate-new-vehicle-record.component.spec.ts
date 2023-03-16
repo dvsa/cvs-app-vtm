@@ -12,6 +12,7 @@ import { lastValueFrom, of, ReplaySubject } from 'rxjs';
 import { HydrateNewVehicleRecordComponent } from './hydrate-new-vehicle-record.component';
 import { createVehicleRecord, createVehicleRecordSuccess } from '@store/technical-records';
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
+import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 
 describe('HydrateNewVehicleRecordComponent', () => {
   let component: HydrateNewVehicleRecordComponent;
@@ -86,20 +87,20 @@ describe('HydrateNewVehicleRecordComponent', () => {
   });
 
   describe('handleSubmit', () => {
-    it('should dispatch createVehicleRecord', () => {
+    it('should not dispatch createVehicleRecord', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
 
       component.handleSubmit();
 
-      expect(dispatchSpy).toHaveBeenCalledWith(createVehicleRecord());
+      expect(dispatchSpy).not.toHaveBeenCalled();
     });
 
-    it('should navigate back', fakeAsync(() => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+    it('should navigate to batch-results', fakeAsync(() => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
       component.handleSubmit();
-      actions$.next(createVehicleRecordSuccess);
       tick();
       expect(navigateSpy).toHaveBeenCalledTimes(1);
+      expect(navigateSpy).toHaveBeenCalledWith(['batch-results'], { relativeTo: route });
     }));
   });
 });
