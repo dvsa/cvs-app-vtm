@@ -36,8 +36,8 @@ export class TechRecordTitleComponent implements OnInit {
           (this.vehicleMakeAndModel =
             data?.make || data?.chassisMake
               ? data.vehicleType === this.vehicleTypes.PSV
-                ? `${data.chassisMake} ${data.chassisModel}`
-                : `${data?.make} ${data?.model}`
+                ? `${data.chassisMake} ${data.chassisModel ?? ''}`
+                : `${data?.make} ${data?.model ?? ''}`
               : '')
       );
   }
