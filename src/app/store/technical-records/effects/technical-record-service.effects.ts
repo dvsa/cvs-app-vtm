@@ -121,12 +121,12 @@ export class TechnicalRecordServiceEffects {
   createVehicleRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createVehicleRecord),
-      withLatestFrom(this.technicalRecordService.batchId$, this.userService.name$, this.userService.id$),
-      concatMap(([{ vehicle }, batchId, name, id]) => {
+      withLatestFrom(this.technicalRecordService.applicationId$, this.userService.name$, this.userService.id$),
+      concatMap(([{ vehicle }, applicationId, name, id]) => {
         const { techRecord } = vehicle;
         const vehicleRecord = {
           ...vehicle,
-          techRecord: [{ ...techRecord[0], batchId }]
+          techRecord: [{ ...techRecord[0], applicationId }]
         };
         return this.technicalRecordService.createVehicleRecord(vehicleRecord, { id, name }).pipe(
           map(newVehicleRecord => createVehicleRecordSuccess({ vehicleTechRecords: [newVehicleRecord] })),

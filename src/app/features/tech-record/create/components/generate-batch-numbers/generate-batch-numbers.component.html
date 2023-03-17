@@ -1,5 +1,5 @@
 <form [formGroup]="form">
-  <app-text-input label="Batch ID" formControlName="batchId" [width]="width.L"></app-text-input>
+  <app-text-input label="Batch ID" formControlName="applicationId" [width]="width.L"></app-text-input>
   <app-radio-group label="Do the vehicles have trailer IDs?" formControlName="generateNumber" [options]="options"></app-radio-group>
   <app-button id="continue" (clicked)="continue()">Continue</app-button>
 </form>

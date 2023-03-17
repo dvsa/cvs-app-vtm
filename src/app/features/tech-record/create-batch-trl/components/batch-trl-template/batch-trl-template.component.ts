@@ -2,27 +2,24 @@ import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { createVehicleRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { map, Observable, take, tap, withLatestFrom } from 'rxjs';
+import { map, Observable, take, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
-  selector: 'app-hydrate-new-vehicle-record',
-  templateUrl: './hydrate-new-vehicle-record.component.html'
+  selector: 'app-batch-trl-template',
+  templateUrl: './batch-trl-template.component.html'
 })
-export class HydrateNewVehicleRecordComponent {
+export class BatchTrlTemplateComponent {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
   isInvalid: boolean = false;
   batchForm?: FormGroup;
 
   constructor(
-    private actions$: Actions,
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -31,11 +28,7 @@ export class HydrateNewVehicleRecordComponent {
   ) {}
 
   get vehicle$(): Observable<VehicleTechRecordModel | undefined> {
-    return this.technicalRecordService.editableVehicleTechRecord$.pipe(
-      tap(vehicle => {
-        if (!vehicle) this.navigateBack();
-      })
-    );
+    return this.technicalRecordService.editableVehicleTechRecord$;
   }
 
   handleSubmit() {
@@ -47,7 +40,7 @@ export class HydrateNewVehicleRecordComponent {
           withLatestFrom(this.technicalRecordService.batchVehicles$),
           take(1),
           map(([record, batch]) => {
-            const vehiclesToCreate = record ? [record] : [];
+            const vehiclesToCreate: VehicleTechRecordModel[] = [];
             batch?.forEach(v => {
               const newVehicle = {
                 ...record!,
@@ -76,8 +69,8 @@ export class HydrateNewVehicleRecordComponent {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  addVehiclesToBatch() {
-    this.router.navigate(['generate-batch-numbers'], { relativeTo: this.route });
+  get applicationId$() {
+    return this.technicalRecordService.applicationId$;
   }
 
   get isBatch$() {

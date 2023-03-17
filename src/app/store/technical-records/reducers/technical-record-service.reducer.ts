@@ -4,7 +4,7 @@ import { Axle, StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
-import { clearBatch, setBatchId, setGenerateNumberFlag, upsertVehicleBatch } from '../actions/batch-create.actions';
+import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '../actions/batch-create.actions';
 import {
   addAxle,
   archiveTechRecord,
@@ -137,7 +137,7 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateVinSuccess, state => ({ ...state, loading: false })),
   on(updateVinFailure, updateFailureArgs),
 
-  on(upsertVehicleBatch, createVehicleRecordSuccess, setBatchId, setGenerateNumberFlag, clearBatch, (state, action) => ({
+  on(upsertVehicleBatch, createVehicleRecordSuccess, setApplicationId, setGenerateNumberFlag, clearBatch, (state, action) => ({
     ...state,
     batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
   }))

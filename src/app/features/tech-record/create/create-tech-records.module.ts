@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { SharedModule } from '@shared/shared.module';
+import { SharedTechRecordsModule } from '../shared-tech-record.module';
 import { TechRecordsModule } from '../tech-record.module';
 import { BatchCreateResultsComponent } from './components/batch-create-results/batch-create-results.component';
 import { BatchCreateComponent } from './components/batch-create/batch-create.component';
@@ -20,6 +21,15 @@ import { CreateTechRecordsRoutingModule } from './create-tech-records-routing.mo
     BatchCreateResultsComponent,
     GenerateBatchNumbersComponent
   ],
-  imports: [CommonModule, CreateTechRecordsRoutingModule, ReactiveFormsModule, DynamicFormsModule, RouterModule, SharedModule, TechRecordsModule]
+  imports: [
+    CommonModule,
+    CreateTechRecordsRoutingModule,
+    ReactiveFormsModule,
+    DynamicFormsModule,
+    RouterModule,
+    SharedModule,
+    TechRecordsModule,
+    SharedTechRecordsModule
+  ]
 })
 export class CreateTechRecordsModule {}

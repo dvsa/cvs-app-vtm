@@ -8,7 +8,7 @@ export const selectBatchState = createSelector(getVehicleTechRecordState, state 
 export const selectAllBatch = createSelector(selectBatchState, state => selectAll(state));
 export const selectBatchCount = createSelector(selectBatchState, state => selectTotal(state));
 export const selectIsBatch = createSelector(selectBatchCount, state => !!state);
-export const selectBatchId = createSelector(selectBatchState, state => state.batchId);
+export const selectApplicationId = createSelector(selectBatchState, state => state.applicationId);
 export const selectGenerateNumber = createSelector(selectBatchState, state => state.generateNumber);
 export const selectCreatedBatch = createSelector(selectAllBatch, state => state.filter(v => v.created));
 export const selectCreatedBatchCount = createSelector(selectCreatedBatch, state => state.length);

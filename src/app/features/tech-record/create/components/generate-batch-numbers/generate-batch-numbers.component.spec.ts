@@ -11,7 +11,7 @@ import { GenerateBatchNumbersComponent } from './generate-batch-numbers.componen
 
 const mockTechRecordService = {
   editableVehicleTechRecord$: of({}),
-  setBatchId: jest.fn(),
+  setApplicationId: jest.fn(),
   setGenerateNumberFlag: jest.fn()
 };
 

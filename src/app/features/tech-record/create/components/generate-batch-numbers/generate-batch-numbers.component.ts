@@ -14,7 +14,7 @@ import { take } from 'rxjs';
 })
 export class GenerateBatchNumbersComponent implements OnInit {
   form = new FormGroup({
-    batchId: new FormControl(null, [Validators.required]),
+    applicationId: new FormControl(null, [Validators.required]),
     generateNumber: new FormControl(null, [Validators.required])
   });
 
@@ -47,7 +47,7 @@ export class GenerateBatchNumbersComponent implements OnInit {
 
     this.errorService.clearErrors();
 
-    this.trs.setBatchId(this.form.get('batchId')?.value);
+    this.trs.setApplicationId(this.form.get('applicationId')?.value);
     this.trs.setGenerateNumberFlag(this.form.get('generateNumber')?.value);
     this.router.navigate(['..', 'add-batch'], { relativeTo: this.route });
   }
