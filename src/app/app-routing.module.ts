@@ -36,7 +36,7 @@ const routes: Routes = [
       },
       {
         path: 'create-batch-trl',
-        data: { title: 'Create batch trailers', roles: Roles.TechRecordCreate },
+        data: { title: 'Trailer batch records', roles: Roles.TechRecordCreate },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/tech-record/create-batch-trl/create-batch-trl.module').then(m => m.CreateBatchTrlModule)
       },

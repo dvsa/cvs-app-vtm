@@ -13,23 +13,24 @@ const routes: Routes = [
   {
     path: '',
     component: CreateBatchTrlComponent,
-    data: { title: 'Type approved trailer', roles: Roles.TechRecordCreate, isCustomLayout: true },
+    data: { roles: Roles.TechRecordCreate, isCustomLayout: true },
     canActivate: [MsalGuard, RoleGuard],
     children: [
       {
         path: '',
         component: BatchTrlTemplateComponent,
+        data: { title: 'Type approved trailer' },
         canActivate: [MsalGuard, RoleGuard],
         resolve: [CreateBatchTrlResolver]
       },
       {
         path: 'details',
         component: BatchTrlDetailsComponent,
-        data: { tile: 'Batch Creation', roles: Roles.TechRecordCreate }
+        data: { tile: 'Add batch of trailers', roles: Roles.TechRecordCreate }
       },
       {
         path: 'batch-results',
-        data: { tile: 'Batch results' },
+        data: { tile: 'Batch summary' },
         component: BatchTrlResultsComponent
       }
     ]
