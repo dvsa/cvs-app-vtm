@@ -203,7 +203,8 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
   const newState = cloneDeep(state);
   const vehicleType = newState.editingTechRecord?.techRecord[0].vehicleType;
 
-  if (!newState.editingTechRecord?.techRecord[0].axles) return newState;
+  if (!newState.editingTechRecord) return newState;
+  if (!newState.editingTechRecord?.techRecord[0].axles) newState.editingTechRecord.techRecord[0].axles = [];
 
   const newAxle: Axle = {
     axleNumber: newState.editingTechRecord.techRecord[0].axles.length + 1,
