@@ -7,7 +7,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { debounceTime, forkJoin, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
+import { combineLatest, debounceTime, forkJoin, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
 @Component({
   selector: 'app-batch-create',
   templateUrl: './batch-create.component.html'
@@ -39,12 +39,12 @@ export class BatchCreateComponent implements OnInit, OnDestroy {
       }
     });
 
-    forkJoin([this.technicalRecordService.batchVehicles$, this.technicalRecordService.batchCount$])
+    combineLatest([this.technicalRecordService.batchVehicles$, this.technicalRecordService.batchCount$, this.technicalRecordService.batchId$])
       .pipe(take(1))
       .subscribe({
-        next: ([vehicles, numberOfVehicles]) => {
+        next: ([vehicles, numberOfVehicles, batchId]) => {
           if (numberOfVehicles) {
-            this.addVehicles(numberOfVehicles);
+            this.addVehicles(numberOfVehicles, !!batchId);
             this.form.setValue({ numberOfVehicles, vehicles });
           }
         }
