@@ -2,7 +2,7 @@ import { createSelector } from '@ngrx/store';
 import { batchAdapter } from '../reducers/batch-create.reducer';
 import { getVehicleTechRecordState } from '../reducers/technical-record-service.reducer';
 
-const { selectIds, selectEntities, selectAll, selectTotal } = batchAdapter.getSelectors();
+const { selectAll, selectTotal } = batchAdapter.getSelectors();
 
 export const selectBatchState = createSelector(getVehicleTechRecordState, state => state.batchVehicles);
 export const selectAllBatch = createSelector(selectBatchState, state => selectAll(state));
