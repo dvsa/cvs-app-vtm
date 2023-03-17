@@ -545,20 +545,39 @@ describe('Vehicle Technical Record Reducer', () => {
     });
 
     describe('addAxle', () => {
-      it('should add an axle', () => {
-        const techRecord = initialState.editingTechRecord?.techRecord[0];
-        expect(techRecord?.noOfAxles).toBe(2);
-        expect(techRecord?.axles?.length).toBe(3);
+      describe('it should add an axle', () => {
+        it('with the axles property defined', () => {
+          const techRecord = initialState.editingTechRecord?.techRecord[0];
+          expect(techRecord?.noOfAxles).toBe(2);
+          expect(techRecord?.axles?.length).toBe(3);
 
-        const newState = vehicleTechRecordReducer(initialState, addAxle());
+          const newState = vehicleTechRecordReducer(initialState, addAxle());
 
-        expect(newState).not.toBe(initialState);
-        expect(newState).not.toEqual(initialState);
+          expect(newState).not.toBe(initialState);
+          expect(newState).not.toEqual(initialState);
 
-        const updatedTechRecord = newState.editingTechRecord?.techRecord[0];
-        expect(updatedTechRecord?.noOfAxles).toBe(4);
-        expect(updatedTechRecord?.axles?.length).toBe(4);
-        expect(updatedTechRecord?.axles?.pop()?.axleNumber).toBe(4);
+          const updatedTechRecord = newState.editingTechRecord?.techRecord[0];
+          expect(updatedTechRecord?.noOfAxles).toBe(4);
+          expect(updatedTechRecord?.axles?.length).toBe(4);
+          expect(updatedTechRecord?.axles?.pop()?.axleNumber).toBe(4);
+        });
+
+        it('without the axles property defined', () => {
+          const techRecord = initialState.editingTechRecord?.techRecord[0];
+          delete techRecord?.axles;
+          techRecord!.noOfAxles = 0;
+          expect(techRecord?.noOfAxles).toBe(0);
+
+          const newState = vehicleTechRecordReducer(initialState, addAxle());
+
+          expect(newState).not.toBe(initialState);
+          expect(newState).not.toEqual(initialState);
+
+          const updatedTechRecord = newState.editingTechRecord?.techRecord[0];
+          expect(updatedTechRecord?.noOfAxles).toBe(1);
+          expect(updatedTechRecord?.axles?.length).toBe(1);
+          expect(updatedTechRecord?.axles?.pop()?.axleNumber).toBe(1);
+        });
       });
     });
 
