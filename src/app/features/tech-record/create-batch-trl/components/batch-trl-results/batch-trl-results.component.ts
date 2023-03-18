@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { take } from 'rxjs';
 
 @Component({
-  selector: 'app-batch-create-results',
-  templateUrl: './batch-create-results.component.html'
+  selector: 'app-batch-trl-results',
+  templateUrl: './batch-trl-results.component.html',
+  styleUrls: ['./batch-trl-results.component.scss']
 })
-export class BatchCreateResultsComponent implements OnInit {
+export class BatchTrlResultsComponent implements OnInit {
   constructor(private technicalRecordService: TechnicalRecordService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -25,8 +26,8 @@ export class BatchCreateResultsComponent implements OnInit {
     });
   }
 
-  get leadRecord$() {
-    return this.technicalRecordService.editableVehicleTechRecord$;
+  get applicationId$() {
+    return this.technicalRecordService.applicationId$;
   }
 
   get batchVehiclesCreated$() {

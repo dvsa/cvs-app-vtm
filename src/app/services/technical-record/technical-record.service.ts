@@ -27,7 +27,7 @@ import {
   updateEditingTechRecordCancel,
   vehicleTechRecords
 } from '@store/technical-records';
-import { clearBatch, setBatchId, setGenerateNumberFlag, upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
+import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
 import {
   selectBatchCount,
   selectAllBatch,
@@ -35,7 +35,7 @@ import {
   selectGenerateNumber,
   selectCreatedBatch,
   selectCreatedBatchCount,
-  selectBatchId
+  selectApplicationId
 } from '@store/technical-records/selectors/batch-create.selectors';
 import { cloneDeep } from 'lodash';
 import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter, first } from 'rxjs';
@@ -262,6 +262,10 @@ export class TechnicalRecordService {
     });
   }
 
+  initialBatchTechRecord(vehicleRecord: VehicleTechRecordModel) {
+    this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
+  }
+
   /**
    * A function to filter the correct tech record, this has a hierarchy which is CURRENT -> PROVISIONAL -> ARCHIVED.
    * @param record This is a VehicleTechRecordModel passed in from the parent component
@@ -431,16 +435,16 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectCreatedBatchCount));
   }
 
-  get batchId$() {
-    return this.store.pipe(select(selectBatchId));
+  get applicationId$() {
+    return this.store.pipe(select(selectApplicationId));
   }
 
   get generateNumber$() {
     return this.store.pipe(select(selectGenerateNumber));
   }
 
-  setBatchId(batchId: string) {
-    this.store.dispatch(setBatchId({ batchId }));
+  setApplicationId(applicationId: string) {
+    this.store.dispatch(setApplicationId({ applicationId }));
   }
   setGenerateNumberFlag(generateNumber: boolean) {
     this.store.dispatch(setGenerateNumberFlag({ generateNumber }));

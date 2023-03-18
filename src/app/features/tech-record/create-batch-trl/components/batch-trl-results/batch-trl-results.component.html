@@ -1,0 +1,41 @@
+<app-banner>
+  <ng-container title>Success</ng-container>
+
+  <ng-container content>
+    <h2 class="govuk-heading-m">Technical records created</h2>
+    <p class="govuk-body">
+      You have created {{ (batchCreatedCount$ | async) ?? 0 }} out of {{ (batchCount$ | async) ?? 0 }} trailer technical records using application ID
+      {{ applicationId$ | async }}.
+    </p>
+  </ng-container>
+</app-banner>
+
+<table class="govuk-table">
+  <caption class="govuk-table__caption govuk-table__caption--m">
+    Technical record batch
+  </caption>
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">VIN</th>
+      <th scope="col" class="govuk-table__header">Trailer ID</th>
+      <th scope="col" class="govuk-table__header">Vehicle type</th>
+      <th scope="col" class="govuk-table__header">Record type</th>
+      <th scope="col" class="govuk-table__header"></th>
+      <th scope="col" class="govuk-table__header"></th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr *ngFor="let vehicle of batchVehiclesCreated$ | async; let i = index" class="govuk-table__row">
+      <th scope="row" class="govuk-table__header">{{ vehicle.vin }}</th>
+      <td class="govuk-table__cell">{{ vehicle.trailerId }}</td>
+      <td class="govuk-table__cell">{{ vehicle.vehicleType }}</td>
+      <td class="govuk-table__cell">
+        <app-tag type="blue"> {{ vehicleStatus.PROVISIONAL }} </app-tag>
+      </td>
+      <td class="govuk-table__cell"></td>
+      <td class="govuk-table__cell">
+        <app-button id="view-{{ i + 1 }}" type="link" design="link" [routerLink]="['/', 'tech-records', vehicle.systemNumber]">View</app-button>
+      </td>
+    </tr>
+  </tbody>
+</table>

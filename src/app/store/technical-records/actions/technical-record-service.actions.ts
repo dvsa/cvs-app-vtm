@@ -1,6 +1,6 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { PsvMake } from '@models/reference-data.model';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 
 const prefix = '[Technical Record Service]';
