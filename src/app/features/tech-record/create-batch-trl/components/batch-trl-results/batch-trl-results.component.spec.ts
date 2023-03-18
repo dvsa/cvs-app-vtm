@@ -5,6 +5,7 @@ import { initialAppState, State } from '@store/.';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { BatchTrlResultsComponent } from './batch-trl-results.component';
+import { SharedModule } from '@shared/shared.module';
 
 describe('BatchTrlResultsComponent', () => {
   let component: BatchTrlResultsComponent;
@@ -13,7 +14,7 @@ describe('BatchTrlResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
       declarations: [BatchTrlResultsComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();

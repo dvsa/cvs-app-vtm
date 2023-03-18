@@ -7,7 +7,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { combineLatest, debounceTime, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
+import { combineLatest, debounceTime, Observable, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-batch-trl-details',
@@ -15,9 +15,12 @@ import { combineLatest, debounceTime, Subject, take, takeUntil, withLatestFrom }
   styleUrls: ['./batch-trl-details.component.scss']
 })
 export class BatchTrlDetailsComponent implements OnInit, OnDestroy {
-  readonly maxNumberOfVehicles = 40;
-  private destroy$ = new Subject<void>();
   form: FormGroup;
+
+  private startingObject = { vin: '' };
+  private destroy$ = new Subject<void>();
+
+  readonly maxNumberOfVehicles = 40;
 
   constructor(
     private fb: FormBuilder,
@@ -32,9 +35,7 @@ export class BatchTrlDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private startingObject = { vin: '' };
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.addVehicles(this.maxNumberOfVehicles);
 
     this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
@@ -59,63 +60,45 @@ export class BatchTrlDetailsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  watchNumberOfVehicles() {
-    this.form
-      .get('numberOfVehicles')
-      ?.valueChanges.pipe(withLatestFrom(this.technicalRecordService.generateNumber$.pipe(take(1))), takeUntil(this.destroy$), debounceTime(500))
-      .subscribe({
-        next: ([val, generateNumber]) => {
-          const n = Math.min(val, this.maxNumberOfVehicles);
-          if (isNaN(n) || n > this.maxNumberOfVehicles) {
-            return;
-          }
-
-          const currentList = this.vehicles.controls.length;
-
-          if (currentList > val) {
-            this.vehicles.controls.length = n;
-          } else {
-            this.addVehicles(n - currentList);
-          }
-        }
-      });
+  get vehicles(): FormArray {
+    return this.form.get('vehicles') as FormArray;
   }
 
-  addVehicles(n: number) {
-    for (let i = 0; i < n; i++) {
-      this.vehicles.push(this.vehicleForm());
-    }
+  get generateNumber$(): Observable<boolean> {
+    return this.technicalRecordService.generateNumber$;
   }
 
-  removeAt(i: number) {
-    this.vehicles.removeAt(i);
+  get filledVinsInForm(): typeof this.startingObject[] {
+    return this.vehicles.value ?? [];
   }
 
-  vehicleForm() {
+  get width(): typeof FormNodeWidth {
+    return FormNodeWidth;
+  }
+
+  get vehicleForm(): FormGroup {
     return this.fb.group({
       vin: [null, [Validators.minLength(3), Validators.maxLength(21)], [this.technicalRecordService.validateVin()]],
       trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]]
     });
   }
 
-  getNumberOfFields(qty: number) {
-    return Array.from(Array(qty));
-  }
-
-  get vehicles() {
-    return this.form.get('vehicles') as FormArray;
-  }
-
-  get generateNumber$() {
-    return this.technicalRecordService.generateNumber$;
-  }
-
-  getVin(group: AbstractControl) {
+  getVin(group: AbstractControl): AbstractControl | null {
     return group.get('vin');
   }
 
-  get filledVinsInForm(): typeof this.startingObject[] {
-    return this.vehicles.value ?? [];
+  getNumberOfFields(qty: number): any[] {
+    return Array.from(Array(qty));
+  }
+
+  addVehicles(n: number): void {
+    for (let i = 0; i < n; i++) {
+      this.vehicles.push(this.vehicleForm);
+    }
+  }
+
+  removeAt(i: number): void {
+    this.vehicles.removeAt(i);
   }
 
   showErrors(): void {
@@ -124,15 +107,29 @@ export class BatchTrlDetailsComponent implements OnInit, OnDestroy {
     this.globalErrorService.setErrors(errors);
   }
 
-  private cleanEmptyValues(input: { vin: string; trailerId?: string }[]): { vin: string; trailerId?: string }[] {
-    return input.filter(formInput => !!formInput.vin);
+  back(): void {
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  handleSubmit() {
-    if (this.form.invalid) {
-      this.showErrors();
-      return;
-    }
+  watchNumberOfVehicles(): void {
+    this.form
+      .get('numberOfVehicles')
+      ?.valueChanges.pipe(withLatestFrom(this.technicalRecordService.generateNumber$.pipe(take(1))), takeUntil(this.destroy$), debounceTime(500))
+      .subscribe({
+        next: ([value]) => {
+          if (isNaN(value) || value > this.maxNumberOfVehicles) return;
+
+          if (this.vehicles.controls.length > value) {
+            this.vehicles.controls.length = value;
+          } else {
+            this.addVehicles(value - this.vehicles.controls.length);
+          }
+        }
+      });
+  }
+
+  handleSubmit(): void {
+    if (this.form.invalid) return this.showErrors();
 
     this.globalErrorService.setErrors([]);
     this.technicalRecordService.setApplicationId(this.form.get('applicationId')?.value);
@@ -140,11 +137,7 @@ export class BatchTrlDetailsComponent implements OnInit, OnDestroy {
     this.back();
   }
 
-  back() {
-    this.router.navigate(['..'], { relativeTo: this.route });
-  }
-
-  get width() {
-    return FormNodeWidth;
+  private cleanEmptyValues(input: { vin: string; trailerId?: string }[]): { vin: string; trailerId?: string }[] {
+    return input.filter(formInput => !!formInput.vin);
   }
 }

@@ -71,7 +71,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
       const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-      component.navigateBack();
+      component.navigateTo();
 
       expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
     });
@@ -79,7 +79,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
     it('should navigate back to the previous page', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.navigateBack();
+      component.navigateTo();
 
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
@@ -89,16 +89,21 @@ describe('HydrateNewVehicleRecordComponent', () => {
     it('should not dispatch createVehicleRecord', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
 
+      component.isInvalid = true;
+
       component.handleSubmit();
 
       expect(dispatchSpy).not.toHaveBeenCalled();
     });
 
     it('should navigate back', fakeAsync(() => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation();
+
       component.handleSubmit();
+
       actions$.next(createVehicleRecordSuccess);
       tick();
+
       expect(navigateSpy).toHaveBeenCalledTimes(1);
     }));
   });

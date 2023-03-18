@@ -1,11 +1,12 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
-import { SharedTechRecordsModule } from '../../../shared-tech-record.module';
 
 import { BatchTrlDetailsComponent } from './batch-trl-details.component';
 
@@ -18,11 +19,8 @@ describe('BatchTrlDetailsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BatchTrlDetailsComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [
-        FormBuilder,
-        provideMockStore({ initialState: initialAppState })
-      ]
+      imports: [DynamicFormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
+      providers: [FormBuilder, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
