@@ -95,7 +95,7 @@ describe('BatchTrlTemplateComponent', () => {
     });
 
     it('given a batch of 40', () => {
-      for (let i = 0; i < 38; i++) {
+      for (let i = 3; i <= 40; i++) {
         batchOfVehicles.push({ vin: `EXAMPLEVIN0000${i}`, trailerId: `100000${i}` });
       }
 

@@ -7,7 +7,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { combineLatest, debounceTime, Observable, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
+import { combineLatest, Observable, Subject, take } from 'rxjs';
 
 @Component({
   selector: 'app-batch-trl-details',
@@ -87,18 +87,10 @@ export class BatchTrlDetailsComponent implements OnInit, OnDestroy {
     return group.get('vin');
   }
 
-  getNumberOfFields(qty: number): any[] {
-    return Array.from(Array(qty));
-  }
-
   addVehicles(n: number): void {
     for (let i = 0; i < n; i++) {
       this.vehicles.push(this.vehicleForm);
     }
-  }
-
-  removeAt(i: number): void {
-    this.vehicles.removeAt(i);
   }
 
   showErrors(): void {
@@ -109,23 +101,6 @@ export class BatchTrlDetailsComponent implements OnInit, OnDestroy {
 
   back(): void {
     this.router.navigate(['..'], { relativeTo: this.route });
-  }
-
-  watchNumberOfVehicles(): void {
-    this.form
-      .get('numberOfVehicles')
-      ?.valueChanges.pipe(withLatestFrom(this.technicalRecordService.generateNumber$.pipe(take(1))), takeUntil(this.destroy$), debounceTime(500))
-      .subscribe({
-        next: ([value]) => {
-          if (isNaN(value) || value > this.maxNumberOfVehicles) return;
-
-          if (this.vehicles.controls.length > value) {
-            this.vehicles.controls.length = value;
-          } else {
-            this.addVehicles(value - this.vehicles.controls.length);
-          }
-        }
-      });
   }
 
   handleSubmit(): void {

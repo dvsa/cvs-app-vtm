@@ -7,7 +7,6 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
-
 import { BatchTrlDetailsComponent } from './batch-trl-details.component';
 
 describe('BatchTrlDetailsComponent', () => {
