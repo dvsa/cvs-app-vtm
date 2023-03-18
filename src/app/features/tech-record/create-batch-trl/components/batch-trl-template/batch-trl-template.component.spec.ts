@@ -79,6 +79,12 @@ describe('BatchTrlTemplateComponent', () => {
       component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
     });
 
+    it('given a batch of 0', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
+      component.handleSubmit();
+      expect(dispatchSpy).toHaveBeenCalledTimes(0);
+    });
+
     it('given a batch of 2', () => {
       batchOfVehicles.push({ vin: 'EXAMPLEVIN000001', trailerId: '1000001' });
       batchOfVehicles.push({ vin: 'EXAMPLEVIN000002', trailerId: '1000002' });

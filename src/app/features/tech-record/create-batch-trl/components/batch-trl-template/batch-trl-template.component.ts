@@ -40,17 +40,15 @@ export class BatchTrlTemplateComponent {
           withLatestFrom(this.technicalRecordService.batchVehicles$),
           take(1),
           map(([record, batch]) => {
-            const vehiclesToCreate = record ? [record] : [];
-            return vehiclesToCreate.concat(
-              batch.map(
-                v =>
-                  ({
-                    ...record!,
-                    vin: v.vin,
-                    vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
-                    trailerId: v.trailerId ? v.trailerId : null
-                  } as VehicleTechRecordModel)
-              )
+            // const vehiclesToCreate: VehicleTechRecordModel[] = [];
+            return batch.map(
+              v =>
+                ({
+                  ...record!,
+                  vin: v.vin,
+                  vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
+                  trailerId: v.trailerId ? v.trailerId : null
+                } as VehicleTechRecordModel)
             );
           })
         )
