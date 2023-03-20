@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: '',
     component: CreateBatchTrlComponent,
-    data: { oles: Roles.TechRecordCreate, isCustomLayout: true },
+    data: { roles: Roles.TechRecordCreate, isCustomLayout: true },
     canActivate: [MsalGuard, RoleGuard],
     children: [
       {

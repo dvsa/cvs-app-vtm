@@ -9,11 +9,13 @@ import { Observable, of } from 'rxjs';
 })
 export class CreateBatchTrlResolver implements Resolve<boolean> {
   constructor(private trs: TechnicalRecordService) {}
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  resolve(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean> {
     this.trs.initialBatchTechRecord({
       techRecord: [{ vehicleType: VehicleTypes.TRL, statusCode: StatusCodes.PROVISIONAL }]
     } as VehicleTechRecordModel);
+
     this.trs.generateEditingVehicleTechnicalRecordFromVehicleType(VehicleTypes.TRL);
+
     return of(true);
   }
 }

@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -20,7 +19,6 @@ export class BatchTrlTemplateComponent {
   batchForm?: FormGroup;
 
   constructor(
-    private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
@@ -29,42 +27,6 @@ export class BatchTrlTemplateComponent {
 
   get vehicle$(): Observable<VehicleTechRecordModel | undefined> {
     return this.technicalRecordService.editableVehicleTechRecord$;
-  }
-
-  handleSubmit() {
-    this.summary?.checkForms();
-
-    if (!this.isInvalid) {
-      this.technicalRecordService.editableVehicleTechRecord$
-        .pipe(
-          withLatestFrom(this.technicalRecordService.batchVehicles$),
-          take(1),
-          map(([record, batch]) => {
-            // const vehiclesToCreate: VehicleTechRecordModel[] = [];
-            return batch.map(
-              v =>
-                ({
-                  ...record!,
-                  vin: v.vin,
-                  vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
-                  trailerId: v.trailerId ? v.trailerId : null
-                } as VehicleTechRecordModel)
-            );
-          })
-        )
-        .subscribe(vehicleList => {
-          vehicleList.forEach(vehicle => {
-            this.store.dispatch(createVehicleRecord({ vehicle }));
-          });
-
-          this.router.navigate(['batch-results'], { relativeTo: this.route });
-        });
-    }
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   get applicationId$() {
@@ -81,5 +43,33 @@ export class BatchTrlTemplateComponent {
 
   get vehicleTypes(): typeof VehicleTypes {
     return VehicleTypes;
+  }
+
+  handleSubmit() {
+    this.summary?.checkForms();
+
+    if (!this.isInvalid) {
+      this.technicalRecordService.editableVehicleTechRecord$
+        .pipe(
+          withLatestFrom(this.technicalRecordService.batchVehicles$),
+          take(1),
+          map(([record, batch]) =>
+            batch.map(
+              v =>
+                ({
+                  ...record!,
+                  vin: v.vin,
+                  vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
+                  trailerId: v.trailerId ? v.trailerId : null
+                } as VehicleTechRecordModel)
+            )
+          )
+        )
+        .subscribe(vehicleList => {
+          vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle })));
+
+          this.router.navigate(['batch-results'], { relativeTo: this.route });
+        });
+    }
   }
 }

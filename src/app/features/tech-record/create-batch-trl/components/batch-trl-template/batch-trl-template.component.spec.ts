@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
@@ -51,7 +51,6 @@ describe('BatchTrlTemplateComponent', () => {
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     errorService = TestBed.inject(GlobalErrorService);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -103,11 +102,5 @@ describe('BatchTrlTemplateComponent', () => {
       component.handleSubmit();
       expect(dispatchSpy).toHaveBeenCalledTimes(40);
     });
-  });
-
-  it('should clear global errors when navigating back', () => {
-    const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors').mockImplementation();
-    component.navigateBack();
-    expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
   });
 });

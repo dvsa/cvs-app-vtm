@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -14,13 +14,12 @@ import { combineLatest, Observable, Subject, take } from 'rxjs';
   templateUrl: './batch-trl-details.component.html',
   styleUrls: ['./batch-trl-details.component.scss']
 })
-export class BatchTrlDetailsComponent implements OnInit, OnDestroy {
+export class BatchTrlDetailsComponent implements OnDestroy {
   form: FormGroup;
 
-  private startingObject = { vin: '' };
-  private destroy$ = new Subject<void>();
-
   readonly maxNumberOfVehicles = 40;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -29,28 +28,19 @@ export class BatchTrlDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.form = this.fb.group({
-      vehicles: this.fb.array([]),
-      applicationId: new FormControl(null, [Validators.required])
-    });
-  }
+    this.form = this.fb.group({ vehicles: this.fb.array([]), applicationId: new FormControl(null, [Validators.required]) });
 
-  ngOnInit(): void {
     this.addVehicles(this.maxNumberOfVehicles);
 
     this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
-      if (!vehicle) {
-        this.back();
-      }
+      if (!vehicle) this.back();
     });
 
     combineLatest([this.technicalRecordService.batchVehicles$, this.technicalRecordService.applicationId$])
       .pipe(take(1))
-      .subscribe({
-        next: ([vehicles, applicationId]) => {
-          if (this.form && vehicles.length) {
-            this.form.patchValue({ vehicles, applicationId });
-          }
+      .subscribe(([vehicles, applicationId]) => {
+        if (this.form && vehicles.length) {
+          this.form.patchValue({ vehicles, applicationId });
         }
       });
   }
@@ -68,7 +58,7 @@ export class BatchTrlDetailsComponent implements OnInit, OnDestroy {
     return this.technicalRecordService.generateNumber$;
   }
 
-  get filledVinsInForm(): typeof this.startingObject[] {
+  get filledVinsInForm() {
     return this.vehicles.value ?? [];
   }
 
