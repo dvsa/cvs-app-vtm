@@ -12,8 +12,7 @@ import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-confirm-cancellation',
-  templateUrl: './confirm-cancellation.component.html',
-  styleUrls: ['./confirm-cancellation.component.scss']
+  templateUrl: './confirm-cancellation.component.html'
 })
 export class ConfirmCancellationComponent implements OnDestroy {
   form = new CustomFormGroup(
