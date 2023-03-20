@@ -13,6 +13,7 @@ import { IconComponent } from './components/icon/icon.component';
 import { InputSpinnerComponent } from './components/input-spinner/input-spinner.component';
 import { NumberPlateComponent } from './components/number-plate/number-plate.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { RouterOutletComponent } from './components/router-outlet/router-outlet.component';
 import { TagComponent } from './components/tag/tag.component';
 import { TestCertificateComponent } from './components/test-certificate/test-certificate.component';
 import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
@@ -42,7 +43,8 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     DigitGroupSeparatorPipe,
     RefDataDecodePipe,
     RetrieveDocumentDirective,
-    InputSpinnerComponent
+    InputSpinnerComponent,
+    RouterOutletComponent
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -63,7 +65,8 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     DigitGroupSeparatorPipe,
     RefDataDecodePipe,
     RetrieveDocumentDirective,
-    InputSpinnerComponent
+    InputSpinnerComponent,
+    RouterOutletComponent
   ],
   providers: [DocumentRetrievalService]
 })

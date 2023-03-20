@@ -27,6 +27,16 @@ import {
   updateEditingTechRecordCancel,
   vehicleTechRecords
 } from '@store/technical-records';
+import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
+import {
+  selectBatchCount,
+  selectAllBatch,
+  selectIsBatch,
+  selectGenerateNumber,
+  selectCreatedBatch,
+  selectCreatedBatchCount,
+  selectApplicationId
+} from '@store/technical-records/selectors/batch-create.selectors';
 import { cloneDeep } from 'lodash';
 import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -252,6 +262,10 @@ export class TechnicalRecordService {
     });
   }
 
+  initialBatchTechRecord(vehicleRecord: VehicleTechRecordModel) {
+    this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
+  }
+
   /**
    * A function to filter the correct tech record, this has a hierarchy which is CURRENT -> PROVISIONAL -> ARCHIVED.
    * @param record This is a VehicleTechRecordModel passed in from the parent component
@@ -395,5 +409,48 @@ export class TechnicalRecordService {
         })
       );
     };
+  }
+
+  upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string }>) {
+    this.store.dispatch(upsertVehicleBatch({ vehicles }));
+  }
+
+  get batchVehicles$() {
+    return this.store.pipe(select(selectAllBatch));
+  }
+
+  get batchVehiclesCreated$() {
+    return this.store.pipe(select(selectCreatedBatch));
+  }
+
+  get isBatchCreate$() {
+    return this.store.pipe(select(selectIsBatch));
+  }
+
+  get batchCount$() {
+    return this.store.pipe(select(selectBatchCount));
+  }
+
+  get batchCreatedCount$() {
+    return this.store.pipe(select(selectCreatedBatchCount));
+  }
+
+  get applicationId$() {
+    return this.store.pipe(select(selectApplicationId));
+  }
+
+  get generateNumber$() {
+    return this.store.pipe(select(selectGenerateNumber));
+  }
+
+  setApplicationId(applicationId: string) {
+    this.store.dispatch(setApplicationId({ applicationId }));
+  }
+  setGenerateNumberFlag(generateNumber: boolean) {
+    this.store.dispatch(setGenerateNumberFlag({ generateNumber }));
+  }
+
+  clearBatch() {
+    this.store.dispatch(clearBatch());
   }
 }

@@ -122,7 +122,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     }
 
     forms.forEach(form => {
-      DynamicFormService.updateValidity(form, errors);
+      DynamicFormService.validate(form, errors);
     });
 
     if (errors.length > 0) {

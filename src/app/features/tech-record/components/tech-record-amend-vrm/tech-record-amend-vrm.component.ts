@@ -127,7 +127,7 @@ export class AmendVrmComponent implements OnDestroy {
 
     const errors: GlobalError[] = [];
 
-    DynamicFormService.updateValidity(this.form, errors);
+    DynamicFormService.validate(this.form, errors);
 
     if (errors?.length) {
       this.globalErrorService.setErrors(errors);

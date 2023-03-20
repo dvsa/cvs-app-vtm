@@ -123,22 +123,25 @@ export class DynamicFormService {
     validators.forEach(v => control.addAsyncValidators(this.asyncValidatorMap[v.name](v.args)));
   }
 
-  static updateValidity(form: FormGroup | FormArray, errors: GlobalError[]) {
+  static validate(form: CustomFormGroup | CustomFormArray | FormGroup | FormArray, errors: GlobalError[], updateValidity = true) {
     Object.entries(form.controls).forEach(([, value]) => {
-      if (!(value instanceof CustomFormControl)) {
-        this.updateValidity(value as CustomFormGroup | CustomFormArray, errors);
+      if (!(value instanceof FormControl || value instanceof CustomFormControl)) {
+        this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
       } else {
         value.markAsTouched();
-        value.updateValueAndValidity({ emitEvent: false });
-        value.meta.changeDetection?.detectChanges();
+        updateValidity && this.updateValidity(value);
+        (value as CustomFormControl).meta?.changeDetection?.detectChanges();
         this.getControlErrors(value, errors);
       }
     });
   }
 
-  private static getControlErrors(control: CustomFormControl | FormControl, validationErrorList: GlobalError[]) {
-    const { errors } = control;
+  static updateValidity(control: FormControl) {
+    control.updateValueAndValidity({ emitEvent: false });
+  }
 
+  private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {
+    const { errors } = control;
     const meta = (control as CustomFormControl).meta as FormNode | undefined;
 
     if (errors) {

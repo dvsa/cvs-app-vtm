@@ -14,11 +14,11 @@ import { GenerateLetterComponent } from './components/tech-record-generate-lette
 import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
 import { TechRecordHistoryComponent } from './components/tech-record-history/tech-record-history.component';
 import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
-import { TechRecordSummaryComponent } from './components/tech-record-summary/tech-record-summary.component';
 import { TechRecordTitleComponent } from './components/tech-record-title/tech-record-title.component';
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
 import { TestRecordSummaryComponent } from './components/test-record-summary/test-record-summary.component';
 import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-record/vehicle-technical-record.component';
+import { SharedTechRecordsModule } from './shared-tech-record.module';
 import { TechRecordsRoutingModule } from './tech-record-routing.module';
 import { TechRecordComponent } from './tech-record.component';
 
@@ -36,13 +36,12 @@ import { TechRecordComponent } from './tech-record.component';
     GenerateLetterComponent,
     TechRecordHistoryComponent,
     TechRecordSearchTyresComponent,
-    TechRecordSummaryComponent,
     TechRecordTitleComponent,
     TechRouterOutletComponent,
     TestRecordSummaryComponent,
     VehicleTechnicalRecordComponent
   ],
-  imports: [CommonModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, TechRecordsRoutingModule],
-  exports: [EditTechRecordButtonComponent, TechRecordSummaryComponent, TechRecordTitleComponent]
+  imports: [CommonModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, TechRecordsRoutingModule, SharedTechRecordsModule],
+  exports: [EditTechRecordButtonComponent, TechRecordTitleComponent]
 })
 export class TechRecordsModule {}
