@@ -51,7 +51,7 @@ export namespace VehicleClass {
 
   export const DescriptionEnumCommon = [DescriptionEnum.NotApplicable, DescriptionEnum._3Wheelers];
 
-  export const DescriptionByVehicleTypeMap = new Map<string, Array<DescriptionEnum>>([
+  export const DescriptionEnumByVehicleTypeMap = new Map<string, Array<DescriptionEnum>>([
     [
       'psv',
       [
@@ -71,6 +71,6 @@ export namespace VehicleClass {
   ]);
 
   export function retrieveVehicleClassesByType(vehicleType: string) {
-    return [...(DescriptionByVehicleTypeMap.get(vehicleType) ?? []), ...DescriptionEnumCommon];
+    return [...(DescriptionEnumByVehicleTypeMap.get(vehicleType) ?? []), ...DescriptionEnumCommon];
   }
 }
