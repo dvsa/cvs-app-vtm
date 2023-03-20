@@ -57,7 +57,7 @@ export const SmallTrailerTechRecord: FormNode = {
           value: '',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+          options: getOptionsFromEnum(VehicleClass.retrieveVehicleClassesByType('small trl')),
           validators: [{ name: ValidatorNames.Required }]
         }
       ]

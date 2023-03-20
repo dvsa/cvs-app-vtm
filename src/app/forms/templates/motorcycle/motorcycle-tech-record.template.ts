@@ -70,7 +70,7 @@ export const MotorcycleTechRecord: FormNode = {
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING,
           editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+          options: getOptionsFromEnum(VehicleClass.retrieveVehicleClassesByType('motorcycle')),
           class: '.govuk-input--width-10',
           validators: [{ name: ValidatorNames.Required }]
         }

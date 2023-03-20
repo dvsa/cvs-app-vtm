@@ -62,7 +62,7 @@ export enum VehicleClassDescriptions {
   SMALL_PSV = 'small psv (ie: less than or equal to 22 seats)',
   MOTORBIKE_UPTO_200CC = 'motorbikes up to 200cc',
   TRAILER = 'trailer',
-  LARGE_PSV = 'large psv(ie: greater than 23 seats)',
+  LARGE_PSV = 'large psv (ie: greater than 23 seats)',
   THREE_WHEELER = '3 wheelers',
   HGV = 'heavy goods vehicle',
   MOT_CLASS_4 = 'MOT class 4',

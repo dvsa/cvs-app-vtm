@@ -1,4 +1,5 @@
 import { MultiOptions } from '@forms/models/options.model';
+import { VehicleClass } from '@models/vehicle-class.model';
 
 export function getOptionsFromEnum(object: object): MultiOptions {
   return Object.values(object).map(value => ({ value, label: value.charAt(0).toUpperCase() + value.slice(1) }));

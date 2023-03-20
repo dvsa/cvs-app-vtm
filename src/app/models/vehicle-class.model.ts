@@ -25,7 +25,7 @@ export namespace VehicleClass {
     | 'small psv (ie: less than or equal to 22 seats)'
     | 'motorbikes up to 200cc'
     | 'trailer'
-    | 'large psv(ie: greater than 23 seats)'
+    | 'large psv (ie: greater than 23 seats)'
     | '3 wheelers'
     | 'heavy goods vehicle'
     | 'MOT class 4'
@@ -39,7 +39,7 @@ export namespace VehicleClass {
     SmallPsvIeLessThanOrEqualTo22Seats: 'small psv (ie: less than or equal to 22 seats)' as DescriptionEnum,
     MotorbikesUpTo200cc: 'motorbikes up to 200cc' as DescriptionEnum,
     Trailer: 'trailer' as DescriptionEnum,
-    LargePsvIeGreaterThan23Seats: 'large psv(ie: greater than 23 seats)' as DescriptionEnum,
+    LargePsvIeGreaterThan23Seats: 'large psv (ie: greater than 23 seats)' as DescriptionEnum,
     _3Wheelers: '3 wheelers' as DescriptionEnum,
     HeavyGoodsVehicle: 'heavy goods vehicle' as DescriptionEnum,
     MOTClass4: 'MOT class 4' as DescriptionEnum,
@@ -48,4 +48,29 @@ export namespace VehicleClass {
     PSVOfUnknownOrUnspecifiedSize: 'PSV of unknown or unspecified size' as DescriptionEnum,
     NotKnown: 'Not Known' as DescriptionEnum
   };
+
+  export const DescriptionEnumCommon = [DescriptionEnum.NotApplicable, DescriptionEnum._3Wheelers];
+
+  export const DescriptionByVehicleTypeMap = new Map<string, Array<DescriptionEnum>>([
+    [
+      'psv',
+      [
+        DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats,
+        DescriptionEnum.LargePsvIeGreaterThan23Seats,
+        DescriptionEnum.MOTClass4,
+        DescriptionEnum.MOTClass5,
+        DescriptionEnum.MOTClass7
+      ]
+    ],
+    ['hgv', [DescriptionEnum.HeavyGoodsVehicle, DescriptionEnum.MOTClass4, DescriptionEnum.MOTClass5, DescriptionEnum.MOTClass7]],
+    ['trl', [DescriptionEnum.Trailer]],
+    ['small trl', [DescriptionEnum.Trailer]],
+    ['lgv', []],
+    ['car', []],
+    ['motorcycle', [DescriptionEnum.MotorbikesOver200ccOrWithASidecar, DescriptionEnum.MotorbikesUpTo200cc]]
+  ]);
+
+  export function retrieveVehicleClassesByType(vehicleType: string) {
+    return [...(DescriptionByVehicleTypeMap.get(vehicleType) ?? []), ...DescriptionEnumCommon];
+  }
 }
