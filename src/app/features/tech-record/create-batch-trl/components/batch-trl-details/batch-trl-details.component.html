@@ -8,7 +8,7 @@
       </div>
 
       <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
-        <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-trl-details" class="govuk-fieldset">
+        <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-trl-create-details" class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
           </legend>
@@ -24,14 +24,14 @@
         </fieldset>
       </div>
     </app-accordion>
-    <app-accordion [id]="'batch-trl-create-section'" [title]="'Existing vehicles'">
+    <app-accordion [id]="'batch-trl-update-section'" [title]="'Existing vehicles'">
       <div class="govuk-inset-text">
         Add the VINs and Trailer IDs for the vehicles you want to update.
         <strong>Vehicles that do not have unique VINs or Trailer IDs will not be updated.</strong>
       </div>
 
       <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
-        <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-trl-details" class="govuk-fieldset">
+        <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-trl-update-details" class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
           </legend>
