@@ -1,7 +1,7 @@
 export const TestAbandonmentReasonsPsvData = [
   {
-    value: 'The vehicle was not submitted for test at the appointed time',
-    label: 'The vehicle was not submitted for test at the appointed time'
+    value: 'The vehicle was not submitted for test at the appointed time.',
+    label: 'The vehicle was not submitted for test at the appointed time.'
   },
   { value: 'The relevant test fee has not been paid', label: 'The relevant test fee has not been paid' },
   {
