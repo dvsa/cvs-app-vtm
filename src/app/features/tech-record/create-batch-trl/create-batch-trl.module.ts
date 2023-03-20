@@ -9,12 +9,11 @@ import { CreateTechRecordsModule } from '../create/create-tech-records.module';
 import { SharedTechRecordsModule } from '../shared-tech-record.module';
 import { BatchTrlTemplateComponent } from './components/batch-trl-template/batch-trl-template.component';
 import { CreateBatchTrlRoutingModule } from './create-batch-trl-routing.module';
-import { CreateBatchTrlComponent } from './create-batch-trl.component';
 import { BatchTrlDetailsComponent } from './components/batch-trl-details/batch-trl-details.component';
 import { BatchTrlResultsComponent } from './components/batch-trl-results/batch-trl-results.component';
 
 @NgModule({
-  declarations: [CreateBatchTrlComponent, BatchTrlTemplateComponent, BatchTrlDetailsComponent, BatchTrlResultsComponent],
+  declarations: [BatchTrlTemplateComponent, BatchTrlDetailsComponent, BatchTrlResultsComponent],
   imports: [
     CommonModule,
     CreateBatchTrlRoutingModule,
