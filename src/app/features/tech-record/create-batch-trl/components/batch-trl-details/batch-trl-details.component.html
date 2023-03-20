@@ -1,10 +1,33 @@
 <h1 class="govuk-heading-l title">Add batch of trailers</h1>
 <form [formGroup]="form">
   <app-text-input formControlName="applicationId" name="applicationId" label="Application ID" [width]="width.XL"></app-text-input>
-  <app-accordion-control [title]="'New technical records'">
-    <app-accordion [id]="'batch-create-section'">
+  <app-accordion-control>
+    <app-accordion [id]="'batch-trl-create-section'" [title]="'New technical records'">
       <div class="govuk-inset-text">
         Add the VINs for each new trailer. Each trailer will be given a unique Trailer ID <strong>if the Trailer ID field is left blank</strong>.
+      </div>
+
+      <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
+        <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-trl-details" class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
+          </legend>
+
+          <app-text-input formControlName="vin" name="input-vin{{ i }}" label="VIN" [width]="width.L">
+            <ng-container *ngIf="getVin(group)?.dirty && (getVin(group)?.status === 'VALID' || getVin(group)?.status === 'PENDING')">
+              <ng-template appSuffix>
+                <app-input-spinner [isValid]="getVin(group)?.status || 'PENDING'"></app-input-spinner>
+              </ng-template>
+            </ng-container>
+          </app-text-input>
+          <app-text-input formControlName="trailerId" name="trailerId{{ i }}" label="Trailer ID" [width]="width.L"></app-text-input>
+        </fieldset>
+      </div>
+    </app-accordion>
+    <app-accordion [id]="'batch-trl-create-section'" [title]="'Existing vehicles'">
+      <div class="govuk-inset-text">
+        Add the VINs and Trailer IDs for the vehicles you want to update.
+        <strong>Vehicles that do not have unique VINs or Trailer IDs will not be updated.</strong>
       </div>
 
       <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
