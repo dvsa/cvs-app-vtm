@@ -59,27 +59,24 @@ export class HydrateNewVehicleRecordComponent {
 
     this.technicalRecordService.editableVehicleTechRecord$
       .pipe(
-        withLatestFrom(this.technicalRecordService.batchVehicles$, this.isBatch$),
+        withLatestFrom(this.technicalRecordService.batchVehicles$),
         take(1),
-        map(([record, batch, isBatch]) => {
-          const recordArray = record ? [record] : [];
-          return {
-            vehicleList: recordArray.concat(
-              batch.map(
-                v =>
-                  ({
-                    ...record!,
-                    vin: v.vin,
-                    vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
-                    trailerId: v.trailerId ?? null
-                  } as VehicleTechRecordModel)
-              )
-            ),
-            isBatch
-          };
-        })
+        map(([record, batch]) =>
+          (record ? [record] : []).concat(
+            batch.map(
+              v =>
+                ({
+                  ...record!,
+                  vin: v.vin,
+                  vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
+                  trailerId: v.trailerId ?? null
+                } as VehicleTechRecordModel)
+            )
+          )
+        ),
+        withLatestFrom(this.isBatch$)
       )
-      .subscribe(({ vehicleList, isBatch }) => {
+      .subscribe(([vehicleList, isBatch]) => {
         vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle })));
 
         this.navigateTo(isBatch ? 'batch-results' : '..');
