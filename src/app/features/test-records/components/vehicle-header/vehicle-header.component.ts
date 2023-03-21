@@ -50,6 +50,11 @@ export class VehicleHeaderComponent {
     return this.testResult?.testTypes[0].testResult;
   }
 
+  get testCode(): string | undefined {
+    const testCode = this.testResult?.testTypes[0].testCode;
+    return testCode ? `(${testCode})` : '';
+  }
+
   getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined) {
     switch (vehicleType) {
       case VehicleTypes.TRL:
