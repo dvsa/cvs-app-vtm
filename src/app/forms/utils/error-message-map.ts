@@ -10,6 +10,7 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   invalidTestResult: (err: { message: string }) => err.message,
 
   validateVin: (error: { message: string }) => error.message,
+  validateVinAndTrailerId: (error: { message: string }) => error.message,
 
   [ValidatorNames.AheadOfDate]: (err: { sibling: string; date: Date }, label?: string) =>
     `${label || 'This date'} must be ahead of ${err.sibling || 'the previous date'}${err.date ? formatDate(err.date, ' (dd/MM/yyyy)', 'en') : ''}`,
