@@ -92,6 +92,7 @@ export const TestSectionGroup7: FormNode = {
               name: 'testNumber',
               label: 'Test Number',
               value: '',
+              disabled: true,
               type: FormNodeTypes.CONTROL
             },
             {
