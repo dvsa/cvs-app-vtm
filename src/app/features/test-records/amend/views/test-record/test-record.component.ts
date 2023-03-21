@@ -48,7 +48,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
     this.actions$
       .pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$))
-      .subscribe(() => this.router.navigate(['../../../../../..'], { relativeTo: this.route.parent }));
+      .subscribe(() => this.router.navigate(['../..'], { relativeTo: this.route.parent }));
 
     combineLatest([this.testResult$, this.routerService.getQueryParam$('testType'), this.testRecordsService.sectionTemplates$])
       .pipe(
