@@ -30,20 +30,25 @@
         <strong>Vehicles that do not have unique VINs or Trailer IDs will not be updated.</strong>
       </div>
 
-      <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
-        <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-trl-update-details" class="govuk-fieldset">
+      <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="updateVehicles">
+        <fieldset
+          *ngFor="let group of updateVehicles.controls; let i = index"
+          [formGroupName]="i"
+          id="batch-trl-update-details"
+          class="govuk-fieldset"
+        >
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
           </legend>
 
-          <app-text-input formControlName="vin" name="input-vin{{ i }}" label="VIN" [width]="width.L">
+          <app-text-input formControlName="vin" name="input-update-vin{{ i }}" label="VIN" [width]="width.L">
             <ng-container *ngIf="getVin(group)?.dirty && (getVin(group)?.status === 'VALID' || getVin(group)?.status === 'PENDING')">
               <ng-template appSuffix>
                 <app-input-spinner [isValid]="getVin(group)?.status || 'PENDING'"></app-input-spinner>
               </ng-template>
             </ng-container>
           </app-text-input>
-          <app-text-input formControlName="trailerId" name="trailerId{{ i }}" label="Trailer ID" [width]="width.L"></app-text-input>
+          <app-text-input formControlName="trailerId" name="update-trailerId{{ i }}" label="Trailer ID" [width]="width.L"></app-text-input>
         </fieldset>
       </div>
     </app-accordion>

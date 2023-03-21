@@ -28,7 +28,11 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     private route: ActivatedRoute,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.form = this.fb.group({ vehicles: this.fb.array([]), applicationId: new FormControl(null, [Validators.required]) });
+    this.form = this.fb.group({
+      vehicles: this.fb.array([]),
+      updateVehicles: this.fb.array([]),
+      applicationId: new FormControl(null, [Validators.required])
+    });
 
     this.addVehicles(this.maxNumberOfVehicles);
 
@@ -54,6 +58,10 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     return this.form.get('vehicles') as FormArray;
   }
 
+  get updateVehicles(): FormArray {
+    return this.form.get('updateVehicles') as FormArray;
+  }
+
   get generateNumber$(): Observable<boolean> {
     return this.technicalRecordService.generateNumber$;
   }
@@ -73,6 +81,13 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     });
   }
 
+  get updateVehicleForm(): FormGroup {
+    return this.fb.group({
+      vin: [null, [Validators.minLength(3), Validators.maxLength(21), Validators.required]],
+      trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric(), Validators.required]]
+    });
+  }
+
   getVin(group: AbstractControl): AbstractControl | null {
     return group.get('vin');
   }
@@ -80,6 +95,9 @@ export class BatchTrlDetailsComponent implements OnDestroy {
   addVehicles(n: number): void {
     for (let i = 0; i < n; i++) {
       this.vehicles.push(this.vehicleForm);
+    }
+    for (let i = 0; i < n; i++) {
+      this.updateVehicles.push(this.updateVehicleForm);
     }
   }
 
