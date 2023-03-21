@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { createMockPsv } from '@mocks/psv-record.mock';
 import { StoreModule } from '@ngrx/store';
@@ -13,7 +15,7 @@ describe('WeightsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DynamicFormsModule, StoreModule.forRoot({})],
+      imports: [DynamicFormsModule, StoreModule.forRoot({}), HttpClientTestingModule, RouterTestingModule],
       declarations: [NumberInputComponent, WeightsComponent],
       providers: [provideMockStore<State>({ initialState: initialAppState })]
     }).compileComponents();

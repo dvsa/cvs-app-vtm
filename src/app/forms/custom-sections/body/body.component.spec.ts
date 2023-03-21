@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
@@ -16,7 +17,7 @@ describe('BodyComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BodyComponent],
-      imports: [DynamicFormsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule],
+      imports: [DynamicFormsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule],
       providers: [MultiOptionsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
@@ -24,7 +25,7 @@ describe('BodyComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BodyComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord = mockVehicleTechnicalRecord().techRecord.pop()!;
+    component.techRecord = mockVehicleTechnicalRecord().techRecord.pop()!;
     fixture.detectChanges();
   });
 
@@ -34,22 +35,22 @@ describe('BodyComponent', () => {
 
   describe('The DTpNumber value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect(component.vehicleTechRecord.brakes!.dtpNumber).toStrictEqual(component.form.value.brakes.dtpNumber);
+      expect(component.techRecord.brakes!.dtpNumber).toStrictEqual(component.form.value.brakes.dtpNumber);
     });
   });
   describe('The bodyModel value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect(component.vehicleTechRecord.bodyModel).toStrictEqual(component.form.value.bodyModel);
+      expect(component.techRecord.bodyModel).toStrictEqual(component.form.value.bodyModel);
     });
   });
   describe('The bodyMake value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect(component.vehicleTechRecord.bodyType).toStrictEqual(component.form.controls['bodyType'].value);
+      expect(component.techRecord.bodyType).toStrictEqual(component.form.controls['bodyType'].value);
     });
   });
   describe('The bodyModel value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect(component.vehicleTechRecord.bodyModel).toStrictEqual(component.form.controls['bodyModel'].value);
+      expect(component.techRecord.bodyModel).toStrictEqual(component.form.controls['bodyModel'].value);
     });
   });
 });

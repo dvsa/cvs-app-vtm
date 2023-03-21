@@ -3,14 +3,12 @@ import { RouterStateSnapshot } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
-import { State } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { selectRouteParam } from '@store/router/selectors/router.selectors';
-import { getBySystemNumber, getBySystemNumberFailure, getBySystemNumberSuccess } from '@store/technical-records';
-import { fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
+import { getBySystemNumberFailure, getBySystemNumberSuccess } from '@store/technical-records';
+import { fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-
 import { TechRecordViewResolver } from './tech-record-view.resolver';
 
 describe('TechRecordViewResolver', () => {

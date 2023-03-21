@@ -14,8 +14,16 @@
       <app-home-button
         url="create"
         linkText="Create a new technical record"
-        description="Create records for PSVs, HGVs and trailers"
+        description="Create records for PSVs, HGVs, trailers and LGVs"
         linkId="create-new-technical-record-link"
+        *appRoleRequired="Roles.TechRecordCreate"
+      ></app-home-button>
+
+      <app-home-button
+        url="create-batch-trl"
+        linkText="Create a batch of trailer technical records"
+        description="Process TES1 & TES2 applications to create a batch of trailer technical records"
+        linkId="create-batch-trailer-technical-records-link"
         *appRoleRequired="Roles.TechRecordCreate"
       ></app-home-button>
     </div>

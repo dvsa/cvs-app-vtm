@@ -127,6 +127,8 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       const currentAxles = vehicleTechRecord.currentValue.axles;
       const previousAxles = vehicleTechRecord.previousValue.axles;
 
+      if (!previousAxles) return false;
+
       for (let [index, axle] of currentAxles.entries()) {
         if (
           axle?.tyres !== undefined &&
@@ -183,7 +185,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   addAxle(): void {
-    if (this.vehicleTechRecord.axles!.length < 10) {
+    if (!this.vehicleTechRecord.axles || this.vehicleTechRecord.axles!.length < 10) {
       this.isError = false;
       this.store.dispatch(addAxle());
     } else {

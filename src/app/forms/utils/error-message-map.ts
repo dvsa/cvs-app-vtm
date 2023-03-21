@@ -9,6 +9,8 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   invalidOption: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is invalid`,
   invalidTestResult: (err: { message: string }) => err.message,
 
+  validateVin: (error: { message: string }) => error.message,
+
   [ValidatorNames.AheadOfDate]: (err: { sibling: string; date: Date }, label?: string) =>
     `${label || 'This date'} must be ahead of ${err.sibling || 'the previous date'}${err.date ? formatDate(err.date, ' (dd/MM/yyyy)', 'en') : ''}`,
   [ValidatorNames.CustomPattern]: (err: { message: string }, label?: string) => `${label || DEFAULT_LABEL} ${err.message}`,

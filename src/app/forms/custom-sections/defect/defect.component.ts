@@ -122,7 +122,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     const errors: GlobalError[] = [];
-    DynamicFormService.updateValidity(this.form, errors);
+    DynamicFormService.validate(this.form, errors);
 
     if (errors.length > 0) {
       this.errorService.setErrors(errors);

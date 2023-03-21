@@ -1,5 +1,61 @@
+@import 'node_modules/govuk-frontend/govuk/all';
 /* You can add global styles to this file, and also import other style files */
 .section {
   display: block;
   margin-top: 1rem;
+}
+
+.button {
+  cursor: pointer;
+  &--no-style {
+    border: none;
+  }
+}
+
+.flex {
+  display: flex;
+
+  &--wrap {
+    flex-wrap: wrap;
+  }
+
+  &_gap {
+    &--7 {
+      gap: govuk-spacing(7);
+    }
+  }
+}
+
+.justify {
+  &--flex-start {
+    justify-content: flex-start;
+  }
+}
+
+.width-30 {
+  max-width: 29.5em;
+}
+
+.width-20 {
+  max-width: 20.5em;
+}
+
+.width-10 {
+  max-width: 11.5em;
+}
+
+.width-5 {
+  max-width: 5.5em;
+}
+
+.width-4 {
+  max-width: 4.5em;
+}
+
+.width-3 {
+  max-width: 3.75em;
+}
+
+.width-2 {
+  max-width: 2.75em;
 }

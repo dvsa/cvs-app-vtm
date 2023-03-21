@@ -4,6 +4,7 @@ import { Axle, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
+import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '../actions/batch-create.actions';
 import {
   addAxle,
   archiveTechRecord,
@@ -46,8 +47,12 @@ import {
   updateEditingTechRecordCancel,
   updateTechRecords,
   updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecordsSuccess,
+  updateVin,
+  updateVinSuccess,
+  updateVinFailure
 } from '../actions/technical-record-service.actions';
+import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
@@ -56,10 +61,12 @@ export interface TechnicalRecordServiceState {
   loading: boolean;
   editingTechRecord?: VehicleTechRecordModel;
   error?: unknown;
+  batchVehicles: BatchRecords;
 }
 
 export const initialState: TechnicalRecordServiceState = {
   vehicleTechRecords: [],
+  batchVehicles: initialBatchState,
   loading: false
 };
 
@@ -93,8 +100,8 @@ export const vehicleTechRecordReducer = createReducer(
   on(getByAllFailure, failureArgs),
 
   on(createVehicleRecord, defaultArgs),
-  on(createVehicleRecordSuccess, successArgs),
-  on(createVehicleRecordFailure, updateFailureArgs),
+  on(createVehicleRecordSuccess, (state, action) => ({ ...state, editingTechRecord: action.vehicleTechRecords[0], loading: false })),
+  on(createVehicleRecordFailure, state => ({ ...state, loading: false })),
 
   on(createProvisionalTechRecord, defaultArgs),
   on(createProvisionalTechRecordSuccess, successArgs),
@@ -124,7 +131,16 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateBody, (state, action) => handleUpdateBody(state, action)),
 
   on(addAxle, state => handleAddAxle(state)),
-  on(removeAxle, (state, action) => handleRemoveAxle(state, action))
+  on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
+
+  on(updateVin, defaultArgs),
+  on(updateVinSuccess, state => ({ ...state, loading: false })),
+  on(updateVinFailure, updateFailureArgs),
+
+  on(upsertVehicleBatch, createVehicleRecordSuccess, setApplicationId, setGenerateNumberFlag, clearBatch, (state, action) => ({
+    ...state,
+    batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
+  }))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
@@ -196,7 +212,8 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
   const newState = cloneDeep(state);
   const vehicleType = newState.editingTechRecord?.techRecord[0].vehicleType;
 
-  if (!newState.editingTechRecord?.techRecord[0].axles) return newState;
+  if (!newState.editingTechRecord) return newState;
+  if (!newState.editingTechRecord?.techRecord[0].axles) newState.editingTechRecord.techRecord[0].axles = [];
 
   const newAxle: Axle = {
     axleNumber: newState.editingTechRecord.techRecord[0].axles.length + 1,

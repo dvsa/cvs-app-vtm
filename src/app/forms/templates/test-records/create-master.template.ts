@@ -33,11 +33,9 @@ import { ContingencyTestSectionSpecialistGroup3And4 } from './section-templates/
 import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency/contingency-test-section-specialist-group5.template';
 import { DeskBasedTestSectionGroup1Psv } from './section-templates/test/desk-based/desk-based-test-section-group1-PSV.template';
 import { DeskBasedTestSectionGroup1And4HgvTrl as DeskBasedTestSectionGroup1And4And5HgvTrl } from './section-templates/test/desk-based/desk-based-test-section-group1And4-HGV-TRL.template';
-import {
-  AmendDeskBasedTestSectionGroup2And5,
-  DeskBasedTestSectionGroup2And5
-} from './section-templates/test/desk-based/desk-based-test-section-group2.template';
+import { DeskBasedTestSectionGroup2And5 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
 import { DeskBasedTestSectionGroup3 } from './section-templates/test/desk-based/desk-based-test-section-group3.template';
+import { DeskBasedTestSectionGroup4LgvCarMotorcycle } from './section-templates/test/desk-based/desk-based-test-section-group4-lgv-template';
 import { DeskBasedTestSectionGroup4Psv } from './section-templates/test/desk-based/desk-based-test-section-group4-PSV.template';
 import { DeskBasedTestSectionLgvGroup5 } from './section-templates/test/desk-based/desk-based-test-section-group5-LGV';
 import { SpecialistTestSectionGroup3 } from './section-templates/test/specialist/specialist-test-section-group3.template';
@@ -508,7 +506,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     testTypesDeskBasedGroup4: {
       required: DeskBasedRequiredHiddenSectionGroup4Lgv,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
-      test: AmendDeskBasedTestSectionGroup2And5,
+      test: DeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsHiddenSection,
@@ -557,7 +555,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     testTypesDeskBasedGroup4: {
       required: DeskBasedRequiredHiddenSectionGroup4Lgv,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
-      test: AmendDeskBasedTestSectionGroup2And5,
+      test: DeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsHiddenSection,
@@ -615,7 +613,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     testTypesDeskBasedGroup4: {
       required: DeskBasedRequiredHiddenSectionGroup4Motorcyle,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
-      test: AmendDeskBasedTestSectionGroup2And5,
+      test: DeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsHiddenSection,

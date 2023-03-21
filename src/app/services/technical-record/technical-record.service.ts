@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   EuVehicleCategories,
@@ -26,9 +27,18 @@ import {
   updateEditingTechRecordCancel,
   vehicleTechRecords
 } from '@store/technical-records';
-import { userEmail } from '@store/user/user-service.reducer';
+import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
+import {
+  selectBatchCount,
+  selectAllBatch,
+  selectIsBatch,
+  selectGenerateNumber,
+  selectCreatedBatch,
+  selectCreatedBatchCount,
+  selectApplicationId
+} from '@store/technical-records/selectors/batch-create.selectors';
 import { cloneDeep } from 'lodash';
-import { catchError, Observable, of, map, switchMap, take, throwError } from 'rxjs';
+import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -252,6 +262,10 @@ export class TechnicalRecordService {
     });
   }
 
+  initialBatchTechRecord(vehicleRecord: VehicleTechRecordModel) {
+    this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
+  }
+
   /**
    * A function to filter the correct tech record, this has a hierarchy which is CURRENT -> PROVISIONAL -> ARCHIVED.
    * @param record This is a VehicleTechRecordModel passed in from the parent component
@@ -371,5 +385,72 @@ export class TechnicalRecordService {
       newVin
     };
     return this.http.put(url, body, { responseType: 'json' });
+  }
+
+  validateVin(originalVin?: string): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return of(control.value).pipe(
+        filter((value: string) => !!value),
+        debounceTime(1000),
+        take(1),
+        switchMap(value => {
+          return this.isUnique(value, SEARCH_TYPES.VIN).pipe(
+            map(result => {
+              if (control.value === originalVin) {
+                return { validateVin: { message: 'You must provide a new VIN' } };
+              } else {
+                return result
+                  ? null
+                  : { validateVin: { message: 'This VIN already exists, if you continue it will be associated with two vehicles' } };
+              }
+            }),
+            catchError(error => of(null))
+          );
+        })
+      );
+    };
+  }
+
+  upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string }>) {
+    this.store.dispatch(upsertVehicleBatch({ vehicles }));
+  }
+
+  get batchVehicles$() {
+    return this.store.pipe(select(selectAllBatch));
+  }
+
+  get batchVehiclesCreated$() {
+    return this.store.pipe(select(selectCreatedBatch));
+  }
+
+  get isBatchCreate$() {
+    return this.store.pipe(select(selectIsBatch));
+  }
+
+  get batchCount$() {
+    return this.store.pipe(select(selectBatchCount));
+  }
+
+  get batchCreatedCount$() {
+    return this.store.pipe(select(selectCreatedBatchCount));
+  }
+
+  get applicationId$() {
+    return this.store.pipe(select(selectApplicationId));
+  }
+
+  get generateNumber$() {
+    return this.store.pipe(select(selectGenerateNumber));
+  }
+
+  setApplicationId(applicationId: string) {
+    this.store.dispatch(setApplicationId({ applicationId }));
+  }
+  setGenerateNumberFlag(generateNumber: boolean) {
+    this.store.dispatch(setGenerateNumberFlag({ generateNumber }));
+  }
+
+  clearBatch() {
+    this.store.dispatch(clearBatch());
   }
 }

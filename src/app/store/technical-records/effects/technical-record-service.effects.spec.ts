@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -522,7 +522,7 @@ describe('TechnicalRecordServiceEffects', () => {
         const expectedVehicles = mockVehicleTechnicalRecordList();
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: createVehicleRecord });
+        actions$ = hot('-a--', { a: createVehicleRecord({ vehicle: { vin: 'xxx', techRecord: [{}] } as VehicleTechRecordModel }) });
 
         // mock service call
         jest.spyOn(technicalRecordService, 'createVehicleRecord').mockReturnValue(cold('--a|', { a: expectedVehicles[0] }));
@@ -537,7 +537,7 @@ describe('TechnicalRecordServiceEffects', () => {
     it('should return an error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: createVehicleRecord });
+        actions$ = hot('-a--', { a: createVehicleRecord({ vehicle: { vin: 'xxx', techRecord: [{}] } as VehicleTechRecordModel }) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
@@ -545,7 +545,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'createVehicleRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.createVehicleRecord$).toBe('---b', {
-          b: createVehicleRecordFailure({ error: 'Unable to create a new vehicle record null' })
+          b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN xxx' })
         });
       });
     });
