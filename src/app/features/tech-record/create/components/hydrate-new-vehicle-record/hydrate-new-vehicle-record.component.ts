@@ -73,12 +73,13 @@ export class HydrateNewVehicleRecordComponent {
                 } as VehicleTechRecordModel)
             )
           )
-        )
+        ),
+        withLatestFrom(this.isBatch$)
       )
-      .subscribe(vehicleList => {
+      .subscribe(([vehicleList, isBatch]) => {
         vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle })));
 
-        this.navigateTo('batch-results');
+        this.navigateTo(isBatch ? 'batch-results' : '..');
       });
   }
 }
