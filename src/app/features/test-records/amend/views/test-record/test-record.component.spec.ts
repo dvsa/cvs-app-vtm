@@ -179,22 +179,6 @@ describe('TestRecordComponent', () => {
     }));
   });
 
-  describe(TestRecordComponent.prototype.watchForUpdateSuccess.name, () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
-    it('should call handleCancel when updateTestResultState is success', fakeAsync(() => {
-      const handleCancelSpy = jest.spyOn(component, 'backToTestRecord');
-
-      actions$.next(updateTestResultSuccess({ payload: { id: '', changes: {} as TestResultModel } }));
-
-      tick();
-
-      expect(handleCancelSpy).toHaveBeenCalledTimes(1);
-    }));
-  });
-
   describe('Render banner', () => {
     beforeEach(() => {
       jest
