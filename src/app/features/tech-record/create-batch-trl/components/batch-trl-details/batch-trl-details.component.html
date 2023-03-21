@@ -13,14 +13,22 @@
             <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
           </legend>
 
-          <app-text-input formControlName="vin" name="input-vin{{ i }}" label="VIN" [width]="width.L">
+          <app-text-input appNoSpace appTrimWhitespace appToUppercase formControlName="vin" name="input-vin{{ i }}" label="VIN" [width]="width.L">
             <ng-container *ngIf="getVin(group)?.dirty && (getVin(group)?.status === 'VALID' || getVin(group)?.status === 'PENDING')">
               <ng-template appSuffix>
                 <app-input-spinner [isValid]="getVin(group)?.status || 'PENDING'"></app-input-spinner>
               </ng-template>
             </ng-container>
           </app-text-input>
-          <app-text-input formControlName="trailerId" name="trailerId{{ i }}" label="Trailer ID" [width]="width.L"></app-text-input>
+          <app-text-input
+            appNoSpace
+            appTrimWhitespace
+            appToUppercase
+            formControlName="trailerId"
+            name="trailerId{{ i }}"
+            label="Trailer ID"
+            [width]="width.L"
+          ></app-text-input>
         </fieldset>
       </div>
     </app-accordion>
@@ -40,8 +48,17 @@
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
           </legend>
-
-          <app-text-input formControlName="vin" name="input-update-vin{{ i }}" label="VIN" [width]="width.L">
+          <app-field-error-message [error]="formErrors"></app-field-error-message>
+          <app-text-input
+            appNoSpace
+            appTrimWhitespace
+            appToUppercase
+            formControlName="vin"
+            name="input-update-vin{{ i }}"
+            label="VIN"
+            [width]="width.L"
+            (focusout)="callVinValidation(group)"
+          >
             <ng-container *ngIf="getVin(group)?.dirty && (getVin(group)?.status === 'VALID' || getVin(group)?.status === 'PENDING')">
               <ng-template appSuffix>
                 <app-input-spinner [isValid]="getVin(group)?.status || 'PENDING'"></app-input-spinner>
@@ -49,6 +66,9 @@
             </ng-container>
           </app-text-input>
           <app-text-input
+            appNoSpace
+            appTrimWhitespace
+            appToUppercase
             formControlName="trailerId"
             name="update-trailerId{{ i }}"
             label="Trailer ID"

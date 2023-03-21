@@ -417,32 +417,37 @@ export class TechnicalRecordService {
       const trailerId = control.parent?.get('trailerId') as CustomFormControl;
       const vin = control.parent?.get('vin') as CustomFormControl;
       if (trailerId && vin) {
-        return of(control.value).pipe(
-          filter((value: string) => !!value),
-          debounceTime(1000),
-          switchMap(value => {
-            return this.getByVin(vin.value).pipe(
-              map(result => {
-                if (result) {
-                  const filteredResults = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId.value);
-                  if (filteredResults.length > 1) {
-                    return { validateVinAndTrailerId: { message: 'More than one vehicle has this VIN and Trailer ID' } };
+        if (trailerId.valid) {
+          return of(control.value).pipe(
+            filter((value: string) => !!value),
+            debounceTime(1000),
+            switchMap(value => {
+              return this.getByVin(vin.value).pipe(
+                map(result => {
+                  if (result) {
+                    const filteredResults = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId.value);
+                    if (filteredResults.length > 1) {
+                      return { validateVinAndTrailerId: { message: 'More than one vehicle has this VIN and Trailer ID' } };
+                    }
+                    if (!filteredResults.length) {
+                      return { validateVinAndTrailerId: { message: 'No vehicle has this VIN and Trailer ID' } };
+                    }
+                    if (filteredResults[0].techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT).length > 0) {
+                      return { validateVinAndTrailerId: { message: 'This record cannot be updated as it has a Current tech record' } };
+                    }
+                    return null;
+                  } else {
+                    return { validateVinAndTrailerId: { message: 'Could not find a record with matching VIN' } };
                   }
-                  if (!filteredResults.length) {
-                    return { validateVinAndTrailerId: { message: 'No vehicle has this VIN and Trailer ID' } };
-                  }
-                  if (filteredResults[0].techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT).length > 0) {
-                    return { validateVinAndTrailerId: { message: 'This record cannot be updated as it has a Current tech record' } };
-                  }
-                  return null;
-                } else {
-                  return { validateVinAndTrailerId: { message: 'Could not find a record with matching VIN' } };
-                }
-              }),
-              catchError(error => of({ validateVinAndTrailerId: { message: 'Could not find a record with matching VIN' } }))
-            );
-          })
-        );
+                }),
+                catchError(error => of({ validateVinAndTrailerId: { message: 'Could not find a record with matching VIN' } }))
+              );
+            })
+          );
+        } else {
+          console.log('Piss');
+          return of({ validateVinAndTrailerId: { message: 'VIN and Trailer ID are not in the required format' } });
+        }
       } else {
         return of({ validateVinAndTrailerId: { message: 'VIN and Trailer ID are required' } });
       }

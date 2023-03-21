@@ -76,20 +76,34 @@ export class BatchTrlDetailsComponent implements OnDestroy {
 
   get vehicleForm(): FormGroup {
     return this.fb.group({
-      vin: [null, [Validators.minLength(3), Validators.maxLength(21)], [this.technicalRecordService.validateVin()]],
+      vin: [null, [Validators.minLength(3), Validators.maxLength(21)]],
       trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]]
     });
   }
 
   get updateVehicleForm(): FormGroup {
-    return this.fb.group({
-      vin: [null, [Validators.minLength(3), Validators.maxLength(21), Validators.required], [this.technicalRecordService.validateVinAndTrailerId()]],
-      trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric(), Validators.required]]
-    });
+    return this.fb.group(
+      {
+        vin: [null, [Validators.minLength(3), Validators.maxLength(21), Validators.required]],
+        trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric(), Validators.required]]
+      }
+      // },
+      // {
+      //   asyncValidators: [this.technicalRecordService.validateVinAndTrailerId()],
+      //   updateOn: 'blur'
+      // }
+    );
+  }
+
+  get formErrors(): string {
+    return this.updateVehicleForm.errors?.['validateVinAndTrailerId'].message;
   }
 
   callVinValidation(group: AbstractControl): void {
-    group.get('vin')?.updateValueAndValidity();
+    const vin = group.get('vin')!;
+    vin.setAsyncValidators(this.technicalRecordService.validateVinAndTrailerId());
+    vin.updateValueAndValidity();
+    vin.clearAsyncValidators();
   }
 
   getVin(group: AbstractControl): AbstractControl | null {
