@@ -240,7 +240,7 @@ describe('DynamicFormService', () => {
         }
       );
 
-      DynamicFormService.updateValidity(form, errors);
+      DynamicFormService.validate(form, errors);
 
       expect(errors).toHaveLength(2);
     });

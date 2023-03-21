@@ -152,7 +152,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   setErrors(forms: Array<CustomFormGroup | CustomFormArray>): void {
     const errors: GlobalError[] = [];
 
-    forms.forEach(form => DynamicFormService.updateValidity(form, errors));
+    forms.forEach(form => DynamicFormService.validate(form, errors));
 
     errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
   }

@@ -17,6 +17,7 @@ export class TechRecordTitleComponent implements OnInit {
   @Input() vehicle?: VehicleTechRecordModel;
   @Input() actions: TechRecordActions = TechRecordActions.NONE;
   @Input() hideActions: boolean = false;
+  @Input() customTitle = '';
 
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
   queryableActions: string[] = [];
@@ -36,8 +37,8 @@ export class TechRecordTitleComponent implements OnInit {
           (this.vehicleMakeAndModel =
             data?.make || data?.chassisMake
               ? data.vehicleType === this.vehicleTypes.PSV
-                ? `${data.chassisMake} ${data.chassisModel}`
-                : `${data?.make} ${data?.model}`
+                ? `${data.chassisMake} ${data.chassisModel ?? ''}`
+                : `${data?.make} ${data?.model ?? ''}`
               : '')
       );
   }

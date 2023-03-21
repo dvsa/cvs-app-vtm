@@ -10,7 +10,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { initialAppState } from '@store/index';
 import { lastValueFrom, of, ReplaySubject } from 'rxjs';
 import { HydrateNewVehicleRecordComponent } from './hydrate-new-vehicle-record.component';
-import { createVehicleRecord, createVehicleRecordSuccess } from '@store/technical-records';
+import { createVehicleRecordSuccess } from '@store/technical-records';
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('HydrateNewVehicleRecordComponent', () => {
@@ -71,7 +71,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
       const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-      component.navigateBack();
+      component.navigateTo();
 
       expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
     });
@@ -79,26 +79,31 @@ describe('HydrateNewVehicleRecordComponent', () => {
     it('should navigate back to the previous page', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.navigateBack();
+      component.navigateTo();
 
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
   });
 
   describe('handleSubmit', () => {
-    it('should dispatch createVehicleRecord', () => {
+    it('should not dispatch createVehicleRecord', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      component.isInvalid = true;
 
       component.handleSubmit();
 
-      expect(dispatchSpy).toHaveBeenCalledWith(createVehicleRecord());
+      expect(dispatchSpy).not.toHaveBeenCalled();
     });
 
     it('should navigate back', fakeAsync(() => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation();
+
       component.handleSubmit();
+
       actions$.next(createVehicleRecordSuccess);
       tick();
+
       expect(navigateSpy).toHaveBeenCalledTimes(1);
     }));
   });

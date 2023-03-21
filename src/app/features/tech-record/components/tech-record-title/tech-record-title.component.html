@@ -1,7 +1,7 @@
 <ng-container *ngIf="editableTechRecord$ | async as editableTechRecord">
   <div class="vehicle_heading">
     <h1 class="govuk-heading-l">
-      <span>{{ vehicleMakeAndModel }}</span>
+      <span>{{ customTitle || vehicleMakeAndModel }}</span>
       <app-icon [icon]="editableTechRecord.vehicleType || ''"></app-icon>
     </h1>
   </div>
