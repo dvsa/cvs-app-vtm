@@ -82,13 +82,14 @@ export class BatchTrlDetailsComponent implements OnDestroy {
   }
 
   get updateVehicleForm(): FormGroup {
-    return this.fb.group(
-      {
-        vin: [null, [Validators.minLength(3), Validators.maxLength(21), Validators.required]],
-        trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric(), Validators.required]]
-      },
-      [this.technicalRecordService.validateVinAndTrailerId()]
-    );
+    return this.fb.group({
+      vin: [null, [Validators.minLength(3), Validators.maxLength(21), Validators.required], [this.technicalRecordService.validateVinAndTrailerId()]],
+      trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric(), Validators.required]]
+    });
+  }
+
+  callVinValidation(group: AbstractControl): void {
+    group.get('vin')?.updateValueAndValidity();
   }
 
   getVin(group: AbstractControl): AbstractControl | null {

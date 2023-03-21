@@ -414,8 +414,8 @@ export class TechnicalRecordService {
 
   validateVinAndTrailerId(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const trailerId = control.get('trailerId') as CustomFormControl;
-      const vin = control.get('vin') as CustomFormControl;
+      const trailerId = control.parent?.get('trailerId') as CustomFormControl;
+      const vin = control.parent?.get('vin') as CustomFormControl;
       if (trailerId && vin) {
         return of(control.value).pipe(
           filter((value: string) => !!value),
@@ -438,7 +438,8 @@ export class TechnicalRecordService {
                 } else {
                   return { validateVinAndTrailerId: { message: 'Could not find a record with matching VIN' } };
                 }
-              })
+              }),
+              catchError(error => of({ validateVinAndTrailerId: { message: 'Could not find a record with matching VIN' } }))
             );
           })
         );

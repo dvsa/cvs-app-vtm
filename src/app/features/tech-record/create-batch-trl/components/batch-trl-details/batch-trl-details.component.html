@@ -48,7 +48,13 @@
               </ng-template>
             </ng-container>
           </app-text-input>
-          <app-text-input formControlName="trailerId" name="update-trailerId{{ i }}" label="Trailer ID" [width]="width.L"></app-text-input>
+          <app-text-input
+            formControlName="trailerId"
+            name="update-trailerId{{ i }}"
+            label="Trailer ID"
+            [width]="width.L"
+            (focusout)="callVinValidation(group)"
+          ></app-text-input>
         </fieldset>
       </div>
     </app-accordion>
