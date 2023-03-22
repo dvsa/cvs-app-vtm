@@ -153,7 +153,11 @@ export class TechnicalRecordService {
     newStatus?: StatusCodes
   ): Observable<VehicleTechRecordModel> {
     const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
-    const newTechRecord = newVehicleTechRecord.techRecord[0];
+    const newTechRecord =
+      recordToArchiveStatus === StatusCodes.PROVISIONAL
+        ? newVehicleTechRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL)
+        : newVehicleTechRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
+    if (!newTechRecord) throw new Error(`Cannot find a provisional or current to update`);
     newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
     delete newTechRecord.updateType;
 
