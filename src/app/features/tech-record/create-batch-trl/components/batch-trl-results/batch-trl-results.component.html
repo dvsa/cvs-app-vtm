@@ -34,7 +34,14 @@
       </td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell">
-        <app-button id="view-{{ i + 1 }}" type="link" design="link" [routerLink]="['/', 'tech-records', vehicle.systemNumber]">View</app-button>
+        <a
+          id="view-{{ i + 1 }}"
+          [routerLink]="['/', 'tech-records', vehicle.systemNumber]"
+          class="govuk-link"
+          rel="noreferrer noopener"
+          target="_blank"
+          >View (opens in a new tab)</a
+        >
       </td>
     </tr>
   </tbody>
