@@ -4,7 +4,15 @@ import { createReducer, on } from '@ngrx/store';
 import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '../actions/batch-create.actions';
 import { createVehicleRecordSuccess } from '../actions/technical-record-service.actions';
 
-export type BatchRecord = { vin: string; systemNumber?: string; trailerId?: string; vehicleType?: string; status?: StatusCodes; created?: boolean };
+export type BatchRecord = {
+  vin: string;
+  systemNumber?: string;
+  trailerId?: string;
+  vehicleType?: string;
+  status?: StatusCodes;
+  created?: boolean;
+  existing?: boolean;
+};
 
 export interface BatchRecords extends EntityState<BatchRecord> {
   generateNumber: boolean;

@@ -39,7 +39,7 @@ import {
   selectApplicationId
 } from '@store/technical-records/selectors/batch-create.selectors';
 import { cloneDeep } from 'lodash';
-import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
+import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -147,12 +147,12 @@ export class TechnicalRecordService {
   }
 
   updateTechRecords(
-    systemNumber: string,
     vehicleTechRecord: VehicleTechRecordModel,
     user: { id?: string; name: string },
     recordToArchiveStatus?: StatusCodes,
     newStatus?: StatusCodes
   ): Observable<VehicleTechRecordModel> {
+    const { systemNumber } = vehicleTechRecord;
     const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
     const newTechRecord = newVehicleTechRecord.techRecord[0];
     newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
@@ -366,6 +366,7 @@ export class TechnicalRecordService {
   }
 
   private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {
+    console.log(vehicleTechRecord.vrms);
     const secondaryVrms: string[] = [];
     const putVehicleTechRecordModel: PutVehicleTechRecordModel = { ...vehicleTechRecord, secondaryVrms };
     vehicleTechRecord.vrms.forEach(vrm => {
@@ -414,15 +415,16 @@ export class TechnicalRecordService {
 
   validateVinAndTrailerId(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const trailerId = control.parent?.get('trailerId') as CustomFormControl;
-      const vin = control.parent?.get('vin') as CustomFormControl;
-      if (trailerId && vin) {
-        if (trailerId.valid) {
+      const trailerId = control.parent?.get('trailerId');
+      const vin = control.parent?.get('vin');
+      const systemNumberControl = control.parent?.get('systemNumber');
+      if (trailerId?.value && vin?.value) {
+        if (trailerId?.valid) {
           return of(control.value).pipe(
             filter((value: string) => !!value),
             debounceTime(1000),
-            switchMap(value => {
-              return this.getByVin(vin.value).pipe(
+            switchMap(() => {
+              return this.getByVin(vin?.value ?? '').pipe(
                 map(result => {
                   if (result) {
                     const filteredResults = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId.value);
@@ -435,17 +437,17 @@ export class TechnicalRecordService {
                     if (filteredResults[0].techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT).length > 0) {
                       return { validateVinAndTrailerId: { message: 'This record cannot be updated as it has a Current tech record' } };
                     }
+                    systemNumberControl?.patchValue(filteredResults[0].systemNumber, { emitEvent: false });
                     return null;
                   } else {
                     return { validateVinAndTrailerId: { message: 'Could not find a record with matching VIN' } };
                   }
                 }),
-                catchError(error => of({ validateVinAndTrailerId: { message: 'Could not find a record with matching VIN' } }))
+                catchError(() => of({ validateVinAndTrailerId: { message: 'Could not find a record with matching VIN' } }))
               );
             })
           );
         } else {
-          console.log('Piss');
           return of({ validateVinAndTrailerId: { message: 'VIN and Trailer ID are not in the required format' } });
         }
       } else {
@@ -454,7 +456,7 @@ export class TechnicalRecordService {
     };
   }
 
-  upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string }>) {
+  upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string; existing?: boolean }>) {
     this.store.dispatch(upsertVehicleBatch({ vehicles }));
   }
 

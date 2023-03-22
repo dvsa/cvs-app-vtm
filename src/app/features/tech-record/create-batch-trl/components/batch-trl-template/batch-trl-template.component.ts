@@ -1,12 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { createVehicleRecord } from '@store/technical-records';
+import { createVehicleRecord, updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { map, Observable, take, withLatestFrom } from 'rxjs';
+import { catchError, map, Observable, of, take, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
@@ -54,20 +54,31 @@ export class BatchTrlTemplateComponent {
           withLatestFrom(this.technicalRecordService.batchVehicles$),
           take(1),
           map(([record, batch]) =>
-            batch.map(
-              v =>
-                ({
-                  ...record!,
-                  vin: v.vin,
-                  vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
-                  trailerId: v.trailerId ? v.trailerId : null
-                } as VehicleTechRecordModel)
-            )
+            batch.map(v => ({
+              vehicle: {
+                ...record!,
+                vin: v.vin,
+                vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
+                trailerId: v.trailerId ? v.trailerId : null
+              } as VehicleTechRecordModel,
+              systemNumber: v.systemNumber
+            }))
           )
         )
         .subscribe(vehicleList => {
-          vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle })));
+          vehicleList.forEach(vehicleEntry => {
+            if (!vehicleEntry.systemNumber) {
+              const vehicle = vehicleEntry.vehicle;
+              this.store.dispatch(createVehicleRecord({ vehicle }));
+            } else {
+              // It's an existing vehicle
+              // Archive the existing provisional record
+              // Update the vehicle record to add a new current tech record
+              console.log(vehicleEntry.systemNumber);
 
+              this.store.dispatch(updateTechRecords({ vehicle: vehicleEntry.vehicle }));
+            }
+          });
           this.router.navigate(['batch-results'], { relativeTo: this.route });
         });
     }

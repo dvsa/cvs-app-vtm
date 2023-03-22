@@ -39,7 +39,7 @@ export const createProvisionalTechRecordFailure = createOutcomeAction('createPro
 
 export const updateTechRecords = createAction(
   `${prefix} updateTechRecords`,
-  props<{ systemNumber: string; recordToArchiveStatus?: StatusCodes; newStatus?: StatusCodes }>()
+  props<{ vehicle: VehicleTechRecordModel; recordToArchiveStatus?: StatusCodes; newStatus?: StatusCodes }>()
 );
 export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');

@@ -160,14 +160,12 @@ export class TechnicalRecordServiceEffects {
   updateTechRecords$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTechRecords),
-      withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
-      switchMap(([action, record, name, id]) =>
-        this.technicalRecordService
-          .updateTechRecords(action.systemNumber, record!, { id, name }, action.recordToArchiveStatus, action.newStatus)
-          .pipe(
-            map(vehicleTechRecord => updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
-            catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
-          )
+      withLatestFrom(this.userService.name$, this.userService.id$),
+      switchMap(([action, name, id]) =>
+        this.technicalRecordService.updateTechRecords(action.vehicle, { id, name }, action.recordToArchiveStatus, action.newStatus).pipe(
+          map(vehicleTechRecord => updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
+          catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
+        )
       )
     )
   );

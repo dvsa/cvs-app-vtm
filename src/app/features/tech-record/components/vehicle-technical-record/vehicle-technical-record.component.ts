@@ -124,11 +124,11 @@ export class VehicleTechnicalRecordComponent implements OnInit {
       const hasProvisional = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
 
       if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
-        this.store.dispatch(updateTechRecords({ systemNumber }));
+        this.store.dispatch(updateTechRecords({ vehicle: this.vehicle }));
       } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
         hasProvisional
           ? this.store.dispatch(
-              updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
+              updateTechRecords({ vehicle: this.vehicle, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
             )
           : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
       }
