@@ -54,7 +54,7 @@
         </h1>
         <div class="date_and_result">
           <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
-          <app-result-of-test [resultOfTest]="resultOfTest"></app-result-of-test>
+          <app-tag [type]="tagType">{{ resultOfTest | defaultNullOrEmpty }}</app-tag>
         </div>
       </div>
 

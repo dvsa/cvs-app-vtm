@@ -9,6 +9,7 @@ import { DefectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defe
 import { TestResultResolver } from 'src/app/resolvers/test-result/test-result.resolver';
 import { TestTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
 import { AmendedTestRecordComponent } from './views/amended-test-record/amended-test-record.component';
+import { ConfirmCancellationComponent } from './views/confirm-cancellation/confirm-cancellation.component';
 import { TestAmendReasonComponent } from './views/test-amend-reason/test-amend-reason.component';
 import { TestRecordComponent } from './views/test-record/test-record.component';
 import { TestResultSummaryComponent } from './views/test-result-summary/test-result-summary.component';
@@ -92,6 +93,12 @@ const routes: Routes = [
         path: 'amended/:createdAt',
         component: AmendedTestRecordComponent,
         data: { title: 'Amended test result', roles: Roles.TestResultView },
+        canActivate: [RoleGuard]
+      },
+      {
+        path: 'cancel-test',
+        component: ConfirmCancellationComponent,
+        data: { title: 'Cancel test result', roles: Roles.TestResultAmend },
         canActivate: [RoleGuard]
       },
       {
