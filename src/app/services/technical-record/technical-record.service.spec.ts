@@ -458,7 +458,7 @@ describe('TechnicalRecordService', () => {
           expect(err.message).toContain('Cannot find a provisional or current to update');
         }
       });
-      it('should error when there is only a archived', () => {
+      it('should error when there is only an archived', () => {
         let techRec = [
           {
             createdAt: new Date(),
@@ -530,7 +530,7 @@ describe('TechnicalRecordService', () => {
 
         expect(res).toBe(techRec[0]);
       });
-      it('should error when there is only a archived', () => {
+      it('should error when there is only an archived', () => {
         let techRec = [
           {
             createdAt: new Date(),
@@ -623,7 +623,7 @@ describe('TechnicalRecordService', () => {
 
         expect(res).toBe(techRec[0]);
       });
-      it('should error when there is only a archived', () => {
+      it('should error when there is only an archived', () => {
         let techRec = [
           {
             createdAt: new Date(),
