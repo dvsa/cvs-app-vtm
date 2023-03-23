@@ -53,9 +53,20 @@ export class AmendVrmComponent implements OnDestroy {
       .pipe(
         take(1),
         skipWhile(vehicle => !vehicle),
-        map(vehicle => ({ ...vehicle!, techRecord: [vehicle!.techRecord.filter(techRecord => techRecord.statusCode !== StatusCodes.ARCHIVED)[0]] }))
+        map(vehicle => {
+          const techRecord = vehicle?.techRecord.find(techRecord => techRecord.statusCode !== StatusCodes.ARCHIVED);
+          if (!vehicle || !techRecord) {
+            return this.navigateBack();
+          }
+          return { ...vehicle!, techRecord: [techRecord] };
+        })
       )
-      .subscribe(vehicle => (this.vehicle = vehicle));
+      .subscribe(vehicle => {
+        if (!vehicle) {
+          return;
+        }
+        this.vehicle = vehicle;
+      });
 
     this.technicalRecordService.editableTechRecord$
       .pipe(take(1))
