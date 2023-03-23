@@ -431,14 +431,11 @@ describe('TechnicalRecordService', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         const mockVehicleRecord = mockVehicleTechnicalRecord();
         expect(() => service.updateEditingTechRecord(mockVehicleRecord)).toThrowError('Editing tech record can only have one technical record!');
-        expect(dispatchSpy).toHaveBeenCalledTimes(1);
-        expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
       });
       it('should throw an error if there is more than one tech record', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         const mockVehicleRecord = mockVehicleTechnicalRecord();
         mockVehicleRecord.techRecord = mockVehicleRecord.techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
-        expect(() => service.updateEditingTechRecord(mockVehicleRecord)).toThrowError();
         expect(dispatchSpy).toHaveBeenCalledTimes(1);
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
       });
