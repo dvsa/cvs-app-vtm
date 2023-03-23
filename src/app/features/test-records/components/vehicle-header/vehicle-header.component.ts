@@ -52,11 +52,7 @@ export class VehicleHeaderComponent {
     return this.testResult?.testStatus === TestResultStatus.CANCELLED ? TestResultStatus.CANCELLED : this.testResult?.testTypes[0].testResult;
   }
 
-  getTagType(): TagType {
-    if (this.testResult?.testStatus === TestResultStatus.CANCELLED) {
-      return TagType.YELLOW;
-    }
-
+  get tagType(): TagType {
     switch (this.resultOfTest) {
       case resultOfTestEnum.pass:
         return TagType.GREEN;
@@ -64,6 +60,8 @@ export class VehicleHeaderComponent {
         return TagType.BLUE;
       case resultOfTestEnum.fail:
         return TagType.RED;
+      case TestResultStatus.CANCELLED:
+        return TagType.YELLOW;
       default:
         return TagType.ORANGE;
     }
