@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { filter, first, map, race, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
+import { filter, race, Subject, take, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-batch-trl-results',
