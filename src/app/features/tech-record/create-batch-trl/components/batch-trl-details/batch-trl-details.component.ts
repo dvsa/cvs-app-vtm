@@ -84,11 +84,8 @@ export class BatchTrlDetailsComponent implements OnDestroy {
   get updateVehicleForm(): FormGroup {
     return this.fb.group(
       {
-        vin: [null, [Validators.minLength(3), Validators.maxLength(21), CustomValidators.requiredIfNotEqual('trailerId', '')]],
-        trailerId: [
-          '',
-          [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric(), CustomValidators.requiredIfNotEqual('vin', '')]
-        ]
+        vin: [null, [Validators.minLength(3), Validators.maxLength(21)]],
+        trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]]
       }
       // },
       // {
@@ -133,7 +130,7 @@ export class BatchTrlDetailsComponent implements OnDestroy {
   }
 
   handleSubmit(): void {
-    if (this.form.invalid) return this.showErrors();
+    if (!this.isFormValid()) return;
 
     this.globalErrorService.setErrors([]);
     this.technicalRecordService.setApplicationId(this.form.get('applicationId')?.value);
@@ -143,5 +140,24 @@ export class BatchTrlDetailsComponent implements OnDestroy {
 
   private cleanEmptyValues(input: { vin: string; trailerId?: string }[]): { vin: string; trailerId?: string }[] {
     return input.filter(formInput => !!formInput.vin);
+  }
+
+  isFormValid(): boolean {
+    this.globalErrorService.clearErrors();
+
+    const errors: GlobalError[] = [];
+
+    DynamicFormService.validate(this.form, errors);
+
+    if (errors?.length) {
+      this.globalErrorService.setErrors(errors);
+    }
+
+    if (this.cleanEmptyValues(this.vehicles.value).length == 0 && this.cleanEmptyValues(this.updateVehicles.value).length == 0) {
+      this.globalErrorService.addError({ error: 'At least 1 vehicle must be created or updated in a batch' });
+      return false;
+    }
+
+    return this.form.valid;
   }
 }
