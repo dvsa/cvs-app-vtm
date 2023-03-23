@@ -170,23 +170,6 @@ export class TechnicalRecordService {
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  calculateTechRecordToUpdate(newVehicleTechRecord: VehicleTechRecordModel, recordToArchiveStatus?: StatusCodes): TechRecordModel {
-    let newTechRecord;
-
-    if (recordToArchiveStatus === StatusCodes.PROVISIONAL) {
-      newTechRecord = newVehicleTechRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL);
-    } else {
-      newTechRecord = newVehicleTechRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
-      if (!newTechRecord) {
-        newTechRecord = newVehicleTechRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL);
-      }
-    }
-
-    if (!newTechRecord) throw new Error(`Cannot find a provisional or current to update`);
-
-    return newTechRecord;
-  }
-
   archiveTechnicalRecord(
     systemNumber: string,
     techRecord: TechRecordModel,
@@ -296,6 +279,15 @@ export class TechnicalRecordService {
       record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL) ??
       record.techRecord.find(record => record.statusCode === StatusCodes.ARCHIVED)
     );
+  }
+
+  calculateTechRecordToUpdate(vehicle: VehicleTechRecordModel, status?: StatusCodes): TechRecordModel {
+    let techRecord = vehicle.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
+    if (!techRecord || status === StatusCodes.PROVISIONAL) {
+      techRecord = vehicle.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL);
+    }
+    if (!techRecord) throw new Error(`Cannot find a provisional or current to update`);
+    return techRecord;
   }
 
   searchBy(type: SEARCH_TYPES, term: string): void {
