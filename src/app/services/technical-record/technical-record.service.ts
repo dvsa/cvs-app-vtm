@@ -246,8 +246,7 @@ export class TechnicalRecordService {
    * @returns void
    */
   updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel, resetVehicleAttributes = false): void {
-    const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel =>
-      rec.hasOwnProperty('vin') && rec.hasOwnProperty('techRecord');
+    const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel => rec.hasOwnProperty('techRecord');
 
     const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord(record)
       ? of(record)
@@ -262,10 +261,6 @@ export class TechnicalRecordService {
         this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
       }
     });
-  }
-
-  initialBatchTechRecord(vehicleRecord: VehicleTechRecordModel) {
-    this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
   }
 
   /**
