@@ -84,8 +84,11 @@ export class BatchTrlDetailsComponent implements OnDestroy {
   get updateVehicleForm(): FormGroup {
     return this.fb.group(
       {
-        vin: [null, [Validators.minLength(3), Validators.maxLength(21), Validators.required]],
-        trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric(), Validators.required]]
+        vin: [null, [Validators.minLength(3), Validators.maxLength(21), CustomValidators.requiredIfNotEqual('trailerId', '')]],
+        trailerId: [
+          '',
+          [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric(), CustomValidators.requiredIfNotEqual('vin', '')]
+        ]
       }
       // },
       // {
