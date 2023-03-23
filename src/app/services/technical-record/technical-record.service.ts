@@ -153,11 +153,9 @@ export class TechnicalRecordService {
     newStatus?: StatusCodes
   ): Observable<VehicleTechRecordModel> {
     const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
-    const newTechRecord =
-      recordToArchiveStatus === StatusCodes.PROVISIONAL
-        ? newVehicleTechRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL)
-        : newVehicleTechRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
-    if (!newTechRecord) throw new Error(`Cannot find a provisional or current to update`);
+
+    const newTechRecord = this.calculateTechRecordToUpdate(newVehicleTechRecord, recordToArchiveStatus);
+
     newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
     delete newTechRecord.updateType;
 
@@ -170,6 +168,23 @@ export class TechnicalRecordService {
     };
 
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+  }
+
+  calculateTechRecordToUpdate(newVehicleTechRecord: VehicleTechRecordModel, recordToArchiveStatus?: StatusCodes): TechRecordModel {
+    let newTechRecord;
+
+    if (recordToArchiveStatus === StatusCodes.PROVISIONAL) {
+      newTechRecord = newVehicleTechRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL);
+    } else {
+      newTechRecord = newVehicleTechRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
+      if (!newTechRecord) {
+        newTechRecord = newVehicleTechRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL);
+      }
+    }
+
+    if (!newTechRecord) throw new Error(`Cannot find a provisional or current to update`);
+
+    return newTechRecord;
   }
 
   archiveTechnicalRecord(
