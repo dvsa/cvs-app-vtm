@@ -4,6 +4,7 @@ import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
+import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
@@ -26,10 +27,11 @@ import {
   testTypeIdChanged,
   toEditOrNotToEdit,
   updateEditingTestResult,
-  updateTestResult
+  updateTestResult,
+  updateTestResultFailed
 } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { map, Observable, throwError } from 'rxjs';
+import { Observable, take, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -193,5 +195,17 @@ export class TestRecordsService {
 
   contingencyTestTypeSelected(testType: string) {
     this.store.dispatch(contingencyTestTypeSelected({ testType }));
+  }
+
+  cancelTest(reason: string): void {
+    this.store.pipe(select(testResultInEdit), take(1)).subscribe(testResult => {
+      if (!testResult) {
+        return this.store.dispatch(updateTestResultFailed({ errors: [{ error: 'No selected test result.' }] }));
+      }
+
+      const cancelledTest = { ...testResult, testStatus: TestResultStatus.CANCELLED, reasonForCancellation: reason };
+
+      this.store.dispatch(updateTestResult({ value: cancelledTest }));
+    });
   }
 }
