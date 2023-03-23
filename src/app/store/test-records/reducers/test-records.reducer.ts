@@ -9,9 +9,6 @@ import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import {
   cancelEditingTestResult,
-  cancelTestResult,
-  cancelTestResultFailed,
-  cancelTestResultSuccess,
   createDefect,
   createTestResult,
   createTestResultFailed,
@@ -71,12 +68,12 @@ export const testResultsReducer = createReducer(
   on(fetchSelectedTestResultSuccess, (state, action) => ({ ...testResultAdapter.upsertOne(action.payload, state), loading: false })),
   on(fetchSelectedTestResultFailed, state => ({ ...state, loading: false })),
 
-  on(createTestResult, updateTestResult, cancelTestResult, state => ({ ...state, loading: true })),
-  on(updateTestResultSuccess, cancelTestResultSuccess, (state, action) => ({
+  on(createTestResult, updateTestResult, state => ({ ...state, loading: true })),
+  on(updateTestResultSuccess, (state, action) => ({
     ...testResultAdapter.updateOne(action.payload, state),
     loading: false
   })),
-  on(createTestResultSuccess, createTestResultFailed, updateTestResultFailed, cancelTestResultFailed, state => ({ ...state, loading: false })),
+  on(createTestResultSuccess, createTestResultFailed, updateTestResultFailed, state => ({ ...state, loading: false })),
 
   on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) })),
   on(setResultOfTest, (state, action) => ({ ...state, editingTestResult: setTestResult(state.editingTestResult, action.result) })),

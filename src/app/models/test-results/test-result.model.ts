@@ -39,6 +39,7 @@ export interface TestResultModel {
   testerStaffId: string;
 
   reasonForCreation?: string;
+  reasonForCancellation?: string;
   vehicleType: VehicleTypes;
   testHistory?: TestResultModel[];
   testStatus?: TestResultStatus;

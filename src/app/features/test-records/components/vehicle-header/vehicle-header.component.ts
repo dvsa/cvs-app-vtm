@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TestTypesTaxonomy } from '@api/test-types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum, TestType } from '@models/test-types/test-type.model';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
+import { TagType } from '@shared/components/tag/tag.component';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -46,8 +48,25 @@ export class VehicleHeaderComponent {
     return ReferenceDataResourceType;
   }
 
-  get resultOfTest(): resultOfTestEnum | undefined {
-    return this.testResult?.testTypes[0].testResult;
+  get resultOfTest(): string | undefined {
+    return this.testResult?.testStatus === TestResultStatus.CANCELLED ? TestResultStatus.CANCELLED : this.testResult?.testTypes[0].testResult;
+  }
+
+  getTagType(): TagType {
+    if (this.testResult?.testStatus === TestResultStatus.CANCELLED) {
+      return TagType.YELLOW;
+    }
+
+    switch (this.resultOfTest) {
+      case resultOfTestEnum.pass:
+        return TagType.GREEN;
+      case resultOfTestEnum.prs:
+        return TagType.BLUE;
+      case resultOfTestEnum.fail:
+        return TagType.RED;
+      default:
+        return TagType.ORANGE;
+    }
   }
 
   getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined) {

@@ -4,7 +4,6 @@ import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
-import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
@@ -20,9 +19,6 @@ import { selectTestType } from '@store/test-types/selectors/test-types.selectors
 import merge from 'lodash.merge';
 import { catchError, concatMap, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
 import {
-  cancelTestResult,
-  cancelTestResultFailed,
-  cancelTestResultSuccess,
   contingencyTestTypeSelected,
   createTestResult,
   createTestResultFailed,
@@ -135,41 +131,6 @@ export class TestResultsEffects {
         return this.testRecordsService.saveTestResult(systemNumber, { name, id, userEmail }, testResult).pipe(
           take(1),
           map(responseBody => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),
-          catchError(e => {
-            const validationsErrors: GlobalError[] = [];
-            if (e.status === 400) {
-              const {
-                error: { errors }
-              } = e;
-              errors.forEach((error: string) => {
-                const field = error.match(/"([^"]+)"/);
-                validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
-              });
-            } else if (e.status === 502) {
-              validationsErrors.push({ error: 'Internal Server Error, please contact technical support', anchorLink: '' });
-            }
-            return of(updateTestResultFailed({ errors: validationsErrors }));
-          })
-        );
-      })
-    )
-  );
-
-  /**
-   * Call PUT Test Results API to cancel test result
-   */
-  cancelTestResult$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(cancelTestResult),
-      withLatestFrom(this.store.select(selectedTestResultState), this.userService.id$, this.userService.name$, this.userService.userEmail$),
-      switchMap(([{ reason }, testResult, id, name, userEmail]) => {
-        if (!testResult) return of(cancelTestResultFailed({ errors: [{ error: 'No selected test result.' }] }));
-
-        const cancelledTest: TestResultModel = { ...testResult, testStatus: TestResultStatus.CANCELLED, reasonForCreation: reason };
-
-        return this.testRecordsService.saveTestResult(cancelledTest.systemNumber, { name, id, userEmail }, cancelledTest).pipe(
-          take(1),
-          map(response => cancelTestResultSuccess({ payload: { id: response.testResultId, changes: response } })),
           catchError(e => {
             const validationsErrors: GlobalError[] = [];
             if (e.status === 400) {

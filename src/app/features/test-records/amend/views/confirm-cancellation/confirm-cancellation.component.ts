@@ -6,8 +6,9 @@ import { CustomFormGroup, FormNodeTypes, CustomFormControl } from '@forms/servic
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { cancelTestResult, cancelTestResultSuccess, selectedTestResultState } from '@store/test-records';
+import { selectedTestResultState, updateTestResultSuccess } from '@store/test-records';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -27,10 +28,11 @@ export class ConfirmCancellationComponent implements OnDestroy {
     private errorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store
+    private store: Store,
+    private testRecordsService: TestRecordsService
   ) {
     this.actions$
-      .pipe(ofType(cancelTestResultSuccess), takeUntil(this.destroy$))
+      .pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$))
       .subscribe(() => this.router.navigate(['../../../../..'], { relativeTo: this.route }));
   }
 
@@ -56,6 +58,6 @@ export class ConfirmCancellationComponent implements OnDestroy {
 
     const reason: string = this.form.get('reason')?.value;
 
-    this.store.dispatch(cancelTestResult({ reason }));
+    this.testRecordsService.cancelTest(reason);
   }
 }
