@@ -154,7 +154,7 @@ export class TechnicalRecordService {
   ): Observable<VehicleTechRecordModel> {
     const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
 
-    const newTechRecord = this.calculateTechRecordToUpdate(newVehicleTechRecord, recordToArchiveStatus);
+    const newTechRecord = newVehicleTechRecord.techRecord[0];
 
     newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
     delete newTechRecord.updateType;
@@ -248,6 +248,10 @@ export class TechnicalRecordService {
   updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel, resetVehicleAttributes = false): void {
     const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel => rec.hasOwnProperty('techRecord');
 
+    if (isVehicleRecord(record) && record.techRecord.length > 1) {
+      throw new Error('Editing tech record can only have one technical record!');
+    }
+
     const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord(record)
       ? of(record)
       : this.store.pipe(
@@ -274,15 +278,6 @@ export class TechnicalRecordService {
       record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL) ??
       record.techRecord.find(record => record.statusCode === StatusCodes.ARCHIVED)
     );
-  }
-
-  calculateTechRecordToUpdate(vehicle: VehicleTechRecordModel, status?: StatusCodes): TechRecordModel {
-    let techRecord = vehicle.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
-    if (!techRecord || status === StatusCodes.PROVISIONAL) {
-      techRecord = vehicle.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL);
-    }
-    if (!techRecord) throw new Error(`Cannot find a provisional or current to update`);
-    return techRecord;
   }
 
   searchBy(type: SEARCH_TYPES, term: string): void {
