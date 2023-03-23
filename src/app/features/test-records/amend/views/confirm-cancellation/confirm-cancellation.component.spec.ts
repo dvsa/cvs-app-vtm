@@ -6,6 +6,7 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { ReplaySubject } from 'rxjs';
@@ -20,7 +21,16 @@ describe('ConfirmCancellationComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ConfirmCancellationComponent, VehicleHeaderComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule],
-      providers: [provideMockStore({ initialState: initialAppState }), provideMockActions(() => new ReplaySubject<Action>())]
+      providers: [
+        provideMockStore({ initialState: initialAppState }),
+        provideMockActions(() => new ReplaySubject<Action>()),
+        {
+          provide: TestRecordsService,
+          useValue: {
+            cancelTest: () => {}
+          }
+        }
+      ]
     }).compileComponents();
   });
 
