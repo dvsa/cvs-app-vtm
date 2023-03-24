@@ -416,6 +416,7 @@ export class TechnicalRecordService {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const trailerId = control.parent?.get('trailerId') as CustomFormControl;
       const vin = control.parent?.get('vin') as CustomFormControl;
+      const systemNumber = control.parent?.get('systemNumber') as CustomFormControl;
       if (trailerId && vin) {
         if (trailerId.value && vin.value) {
           return this.getByVin(vin.value).pipe(
@@ -431,6 +432,7 @@ export class TechnicalRecordService {
                 if (filteredResults[0].techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT).length > 0) {
                   return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
                 }
+                systemNumber.setValue(result[0].systemNumber);
                 return null;
               } else {
                 return { validateForBatch: { message: 'Could not find a record with matching VIN' } };
