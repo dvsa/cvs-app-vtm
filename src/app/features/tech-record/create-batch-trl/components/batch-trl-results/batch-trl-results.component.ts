@@ -33,6 +33,7 @@ export class BatchTrlResultsComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.technicalRecordService.clearBatch();
     this.destroy$.next();
     this.destroy$.complete();
   }
