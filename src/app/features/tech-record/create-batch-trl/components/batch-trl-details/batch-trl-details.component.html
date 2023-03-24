@@ -1,84 +1,48 @@
 <h1 class="govuk-heading-l title">Add batch of trailers</h1>
 <form [formGroup]="form">
   <app-text-input formControlName="applicationId" name="applicationId" label="Application ID" [width]="width.XL"></app-text-input>
-  <app-accordion-control>
-    <app-accordion [id]="'batch-trl-create-section'" [title]="'New technical records'">
-      <div class="govuk-inset-text">
-        Add the VINs for each new trailer. Each trailer will be given a unique Trailer ID <strong>if the Trailer ID field is left blank</strong>.
-      </div>
+  <div class="govuk-inset-text">
+    For creating trailers, populate the <strong>VIN field only</strong>.
+    <br />
+    For updating existing trailers, populate the <strong>VIN field and the Trailer ID field</strong>.
+  </div>
 
-      <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
-        <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-trl-create-details" class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-            <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
-          </legend>
-
-          <app-text-input appNoSpace appTrimWhitespace appToUppercase formControlName="vin" name="input-vin{{ i }}" label="VIN" [width]="width.L">
-            <ng-container *ngIf="getVin(group)?.dirty && (getVin(group)?.status === 'VALID' || getVin(group)?.status === 'PENDING')">
-              <ng-template appSuffix>
-                <app-input-spinner [isValid]="getVin(group)?.status || 'PENDING'"></app-input-spinner>
-              </ng-template>
-            </ng-container>
-          </app-text-input>
-          <app-text-input
-            appNoSpace
-            appTrimWhitespace
-            appToUppercase
-            formControlName="trailerId"
-            name="trailerId{{ i }}"
-            label="Trailer ID"
-            [width]="width.L"
-          ></app-text-input>
-        </fieldset>
-      </div>
-    </app-accordion>
-    <app-accordion [id]="'batch-trl-update-section'" [title]="'Existing vehicles'">
-      <div class="govuk-inset-text">
-        Add the VINs and Trailer IDs for the vehicles you want to update.
-        <strong>Vehicles that do not have unique VINs or Trailer IDs will not be updated.</strong>
-      </div>
-
-      <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="updateVehicles">
-        <fieldset
-          *ngFor="let group of updateVehicles.controls; let i = index"
-          [formGroupName]="i"
-          id="batch-trl-update-details"
-          class="govuk-fieldset"
-        >
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-            <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
-          </legend>
-          <app-field-error-message [error]="formErrors"></app-field-error-message>
-          <app-text-input
-            appNoSpace
-            appTrimWhitespace
-            appToUppercase
-            formControlName="vin"
-            name="input-update-vin{{ i }}"
-            label="VIN"
-            [width]="width.L"
-            (focusout)="callVinValidation(group)"
-          >
-            <ng-container *ngIf="getVin(group)?.dirty && (getVin(group)?.status === 'VALID' || getVin(group)?.status === 'PENDING')">
-              <ng-template appSuffix>
-                <app-input-spinner [isValid]="getVin(group)?.status || 'PENDING'"></app-input-spinner>
-              </ng-template>
-            </ng-container>
-          </app-text-input>
-          <app-text-input
-            appNoSpace
-            appTrimWhitespace
-            appToUppercase
-            formControlName="trailerId"
-            name="update-trailerId{{ i }}"
-            label="Trailer ID"
-            [width]="width.L"
-            (focusout)="callVinValidation(group)"
-          ></app-text-input>
-        </fieldset>
-      </div>
-    </app-accordion>
-  </app-accordion-control>
+  <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
+    <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-trl-details" class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
+      </legend>
+      <ng-container *ngFor="let error of getGroupErrorMessages(group)">
+        <app-field-error-message [error]="error" [name]="'batch-trl-vin-required{{i}}'"></app-field-error-message>
+      </ng-container>
+      <app-text-input
+        appNoSpace
+        appTrimWhitespace
+        appToUppercase
+        formControlName="vin"
+        name="input-vin{{ i }}"
+        label="VIN"
+        [width]="width.L"
+        (focusout)="callValidation(group)"
+      >
+        <ng-container *ngIf="getVin(group)?.dirty && (getVin(group)?.status === 'VALID' || getVin(group)?.status === 'PENDING')">
+          <ng-template appSuffix>
+            <app-input-spinner [isValid]="getVin(group)?.status || 'PENDING'"></app-input-spinner>
+          </ng-template>
+        </ng-container>
+      </app-text-input>
+      <app-text-input
+        appNoSpace
+        appTrimWhitespace
+        appToUppercase
+        formControlName="trailerId"
+        name="trailerId{{ i }}"
+        label="Trailer ID"
+        [width]="width.L"
+        (focusout)="callValidation(group)"
+      ></app-text-input>
+    </fieldset>
+  </div>
 </form>
 
 <app-button-group>

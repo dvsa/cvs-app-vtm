@@ -137,7 +137,7 @@ export class DynamicFormService {
   }
 
   static updateValidity(control: FormControl) {
-    control.updateValueAndValidity({ emitEvent: false });
+    control.updateValueAndValidity();
   }
 
   private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {
