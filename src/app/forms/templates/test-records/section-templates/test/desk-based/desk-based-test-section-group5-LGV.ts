@@ -100,7 +100,9 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               label: 'Reason for abandoning',
-              value: null
+              value: null,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'additionalCommentsForAbandon',
@@ -109,6 +111,116 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
               label: 'Additional details for abandoning',
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
+  name: 'testSection',
+  label: 'Test',
+  type: FormNodeTypes.GROUP,
+  children: [
+    {
+      name: 'testStartTimestamp',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
+      name: 'testEndTimestamp',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
+      name: 'createdAt',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'testTypes',
+      label: 'Test Types',
+      type: FormNodeTypes.ARRAY,
+      children: [
+        {
+          name: '0', // it is important here that the name of the node for an ARRAY type should be an index value
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'testCode',
+              label: 'Test Code',
+              value: '',
+              disabled: true,
+              type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.XS
+            },
+            {
+              name: 'testResult',
+              label: 'Result',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' }
+              ]
+            },
+            {
+              name: 'certificateNumber',
+              label: 'Certificate number',
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.TEXT,
+              width: FormNodeWidth.L,
+              validators: [{ name: ValidatorNames.Alphanumeric }],
+              value: null
+            },
+            {
+              name: 'testNumber',
+              value: '',
+              disabled: true,
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'testTypeStartTimestamp',
+              type: FormNodeTypes.CONTROL,
+              value: '',
+              label: 'Test start date and time',
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.DATETIME,
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.PastDate },
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
+              ]
+            },
+            {
+              name: 'testTypeEndTimestamp',
+              type: FormNodeTypes.CONTROL,
+              value: '',
+              label: 'Test end date and time',
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.DATETIME,
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
+              ]
+            },
+            {
+              name: 'testExpiryDate',
+              label: 'Expiry Date',
+              value: null,
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE,
+              validators: [{ name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }]
             }
           ]
         }

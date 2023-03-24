@@ -45,9 +45,10 @@ import { DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvG
 import { DeskBasedVehicleSectionGroup4LGV } from './section-templates/vehicle/desk-based-vehicle-section-group4-lgv.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
 import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/desk-based-vehicle-section-group5-lgv.template';
-import { DeskBasedEmissionsSectionGroup5Lgv } from './section-templates/emissions/desk-based-emissions-section-group5-lgv';
 import { AmendDeskBasedRequiredHiddenSectionGroup4 } from './section-templates/required/desk-based-required-section-group4-amend.template';
 import { AmendDeskBasedRequiredHiddenSectionGroup4Motorcyle } from './section-templates/required/desk-based-required-hidden-group4-motorcycle-amend.template';
+import { AmendDeskBasedTestSectionLgvGroup5 } from './section-templates/test/desk-based/desk-based-test-section-group5-LGV';
+import { AmendDeskBasedTestSectionGroup4LgvCarMotorcycle } from './section-templates/test/desk-based/desk-based-test-section-group4-lgv-template';
 
 /**
  * Keys of root object must a a valid vehicle type.
@@ -501,7 +502,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     testTypesDeskBasedGroup4: {
       required: AmendDeskBasedRequiredHiddenSectionGroup4,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
-      test: AmendDeskBasedTestSectionGroup2And5,
+      test: AmendDeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -509,8 +510,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     testTypesDeskBasedGroup5: {
       required: DeskBasedRequiredHiddenSectionGroup5Lgv,
       vehicle: DeskBasedVehicleSectionGroup5Lgv,
-      test: AmendDeskBasedTestSectionGroup3,
-      emissions: DeskBasedEmissionsSectionGroup5Lgv,
+      test: AmendDeskBasedTestSectionLgvGroup5,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -546,7 +546,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     testTypesDeskBasedGroup4: {
       required: AmendDeskBasedRequiredHiddenSectionGroup4,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
-      test: AmendDeskBasedTestSectionGroup2And5,
+      test: AmendDeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
@@ -585,7 +585,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     testTypesDeskBasedGroup4: {
       required: AmendDeskBasedRequiredHiddenSectionGroup4Motorcyle,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
-      test: AmendDeskBasedTestSectionGroup2And5,
+      test: AmendDeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
