@@ -3,7 +3,6 @@ import { FormNode } from '@forms/services/dynamic-form.types';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsTpl } from '../general/defect.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
-import { DeskBasedEmissionsSectionGroup5Lgv } from './section-templates/emissions/desk-based-emissions-section-group5-lgv';
 import { DeskBasedEmissionsSection } from './section-templates/emissions/desk-based-emissions-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
@@ -46,6 +45,7 @@ import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicl
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
 import { DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvGroup1And2And4And5 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
 import { DeskBasedVehicleSectionGroup4LGV } from './section-templates/vehicle/desk-based-vehicle-section-group4-lgv.template';
+import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/desk-based-vehicle-section-group5-lgv.template';
 import { VehicleSectionGroup3 } from './section-templates/vehicle/group-3-light-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
@@ -523,9 +523,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesDeskBasedGroup5: {
       required: CreateRequiredSectionLgvCar,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: DeskBasedVehicleSectionGroup5Lgv,
       test: DeskBasedTestSectionLgvGroup5,
-      emissions: DeskBasedEmissionsSectionGroup5Lgv,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
