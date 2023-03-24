@@ -1,13 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TechRecord } from '@api/vehicle';
 import { mockVehicleTechnicalRecord, mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/index';
 import { editableVehicleTechRecord, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecord } from '@store/technical-records';
-import { assert } from 'console';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { SEARCH_TYPES, TechnicalRecordService } from './technical-record.service';
