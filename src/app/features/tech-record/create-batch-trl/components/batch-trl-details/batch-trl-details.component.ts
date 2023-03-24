@@ -81,16 +81,11 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     });
   }
 
-  // get formErrors(): string {
-  //   return this.updateVehicleForm.errors?.['validateForBatch'].message;
-  // }
-
   callValidation(group: AbstractControl): void {
     const vin = group.get('vin')!;
     const trailerId = group.get('trailerId')!;
 
     vin.updateValueAndValidity({ onlySelf: false, emitEvent: true });
-    //vin.clearAsyncValidators();
 
     group.markAllAsTouched();
   }
