@@ -1,13 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TechRecord } from '@api/vehicle';
 import { mockVehicleTechnicalRecord, mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/index';
 import { editableVehicleTechRecord, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecord } from '@store/technical-records';
-import { assert } from 'console';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { SEARCH_TYPES, TechnicalRecordService } from './technical-record.service';
@@ -387,262 +385,6 @@ describe('TechnicalRecordService', () => {
       systemNumber: '1234',
       techRecord: []
     };
-
-    describe('provisional updates', () => {
-      it('should update the provisional record when there is just a provisional', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.PROVISIONAL
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        const res = service.calculateTechRecordToUpdate(vehicle, StatusCodes.PROVISIONAL);
-
-        expect(res).toBe(techRec[0]);
-      });
-      it('should update the provisional record when there is a provisional and a current', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.PROVISIONAL
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.CURRENT
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        const res = service.calculateTechRecordToUpdate(vehicle, StatusCodes.PROVISIONAL);
-
-        expect(res).toBe(techRec[0]);
-      });
-      it('should error when there is only a current', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.CURRENT
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        expect.hasAssertions();
-
-        try {
-          service.calculateTechRecordToUpdate(vehicle, StatusCodes.PROVISIONAL);
-        } catch (err: any) {
-          expect(err.message).toContain('Cannot find a provisional or current to update');
-        }
-      });
-      it('should error when there is only an archived', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        expect.hasAssertions();
-
-        try {
-          service.calculateTechRecordToUpdate(vehicle, StatusCodes.PROVISIONAL);
-        } catch (err: any) {
-          expect(err.message).toContain('Cannot find a provisional or current to update');
-        }
-      });
-    });
-
-    describe('current updates', () => {
-      it('should update the current record when there is just a current', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.CURRENT
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        const res = service.calculateTechRecordToUpdate(vehicle);
-
-        expect(res).toBe(techRec[0]);
-      });
-      it('should update the current record when there is a provisional and a current', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.CURRENT
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.PROVISIONAL
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        const res = service.calculateTechRecordToUpdate(vehicle);
-
-        expect(res).toBe(techRec[0]);
-      });
-      it('should error when there is only an archived', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        expect.hasAssertions();
-
-        try {
-          service.calculateTechRecordToUpdate(vehicle);
-        } catch (err: any) {
-          expect(err.message).toContain('Cannot find a provisional or current to update');
-        }
-      });
-    });
-
-    describe('cherish/vin changes', () => {
-      it('should update the current record when there is just a current', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.CURRENT
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        const res = service.calculateTechRecordToUpdate(vehicle);
-
-        expect(res).toBe(techRec[0]);
-      });
-      it('should update the provisional record when there is just a provisional', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.PROVISIONAL
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        const res = service.calculateTechRecordToUpdate(vehicle);
-
-        expect(res).toBe(techRec[0]);
-      });
-
-      it('should update the current record when there is a provisional and a current', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.CURRENT
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.PROVISIONAL
-          },
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        const res = service.calculateTechRecordToUpdate(vehicle);
-
-        expect(res).toBe(techRec[0]);
-      });
-      it('should error when there is only an archived', () => {
-        let techRec = [
-          {
-            createdAt: new Date(),
-            vehicleType: VehicleTypes.TRL,
-            statusCode: StatusCodes.ARCHIVED
-          }
-        ];
-
-        vehicle.techRecord = techRec;
-
-        expect.hasAssertions();
-
-        try {
-          service.calculateTechRecordToUpdate(vehicle);
-        } catch (err: any) {
-          expect(err.message).toContain('Cannot find a provisional or current to update');
-        }
-      });
-    });
   });
 
   describe('business logic methods', () => {
@@ -683,9 +425,15 @@ describe('TechnicalRecordService', () => {
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
       });
 
-      it('should call the store with the vehicle record', () => {
+      it('should throw an error if there is more than one tech record', () => {
+        const mockVehicleRecord = mockVehicleTechnicalRecord();
+        expect(() => service.updateEditingTechRecord(mockVehicleRecord)).toThrowError('Editing tech record can only have one technical record!');
+      });
+
+      it('should throw an error if there is more than one tech record', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         const mockVehicleRecord = mockVehicleTechnicalRecord();
+        mockVehicleRecord.techRecord = mockVehicleRecord.techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
         service.updateEditingTechRecord(mockVehicleRecord);
         expect(dispatchSpy).toHaveBeenCalledTimes(1);
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
