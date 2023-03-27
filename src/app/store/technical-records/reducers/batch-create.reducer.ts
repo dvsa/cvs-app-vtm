@@ -2,7 +2,7 @@ import { StatusCodes, VehicleTechRecordModel } from '@models/vehicle-tech-record
 import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '../actions/batch-create.actions';
-import { createVehicleRecordSuccess } from '../actions/technical-record-service.actions';
+import { createVehicleRecordSuccess, updateTechRecordsSuccess } from '../actions/technical-record-service.actions';
 
 export type BatchRecord = { vin: string; systemNumber?: string; trailerId?: string; vehicleType?: string; status?: StatusCodes; created?: boolean };
 
@@ -27,6 +27,7 @@ export const vehicleBatchCreateReducer = createReducer(
   on(setGenerateNumberFlag, (state, { generateNumber }) => ({ ...state, generateNumber })),
   on(setApplicationId, (state, { applicationId }) => ({ ...state, applicationId })),
   on(createVehicleRecordSuccess, (state, action) => batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecords)[0], state)),
+  on(updateTechRecordsSuccess, (state, action) => batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecords)[0], state)),
   on(clearBatch, state => batchAdapter.removeAll(state))
 );
 

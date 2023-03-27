@@ -68,9 +68,12 @@ export class BatchTrlTemplateComponent {
         )
         .subscribe(vehicleList => {
           vehicleList.forEach(vehicle => {
+            console.log('Dispatching action');
             if (!vehicle.systemNumber) {
+              console.log('Create: ' + vehicle.vin);
               this.store.dispatch(createVehicleRecord({ vehicle }));
             } else {
+              console.log('Update: ' + vehicle.vin);
               this.technicalRecordService.updateEditingTechRecord(vehicle);
               this.store.dispatch(updateTechRecords({ systemNumber: vehicle.systemNumber }));
             }
