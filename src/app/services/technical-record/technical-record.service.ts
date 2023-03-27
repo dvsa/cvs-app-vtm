@@ -34,9 +34,13 @@ import {
   selectAllBatch,
   selectIsBatch,
   selectGenerateNumber,
-  selectCreatedBatch,
-  selectCreatedBatchCount,
-  selectApplicationId
+  selectBatchSuccess,
+  selectBatchSuccessCount,
+  selectApplicationId,
+  selectBatchUpdatedSuccessCount,
+  selectBatchUpdatedCount,
+  selectBatchCreatedCount,
+  selectBatchCreatedSuccessCount
 } from '@store/technical-records/selectors/batch-create.selectors';
 import { cloneDeep } from 'lodash';
 import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
@@ -467,7 +471,7 @@ export class TechnicalRecordService {
   }
 
   get batchVehiclesCreated$() {
-    return this.store.pipe(select(selectCreatedBatch));
+    return this.store.pipe(select(selectBatchSuccess));
   }
 
   get isBatchCreate$() {
@@ -478,8 +482,24 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectBatchCount));
   }
 
+  get batchSuccessCount$() {
+    return this.store.pipe(select(selectBatchSuccessCount));
+  }
+
   get batchCreatedCount$() {
-    return this.store.pipe(select(selectCreatedBatchCount));
+    return this.store.pipe(select(selectBatchCreatedSuccessCount));
+  }
+
+  get batchTotalCreatedCount$() {
+    return this.store.pipe(select(selectBatchCreatedCount));
+  }
+
+  get batchUpdatedCount$() {
+    return this.store.pipe(select(selectBatchUpdatedSuccessCount));
+  }
+
+  get batchTotalUpdatedCount$() {
+    return this.store.pipe(select(selectBatchUpdatedCount));
   }
 
   get applicationId$() {

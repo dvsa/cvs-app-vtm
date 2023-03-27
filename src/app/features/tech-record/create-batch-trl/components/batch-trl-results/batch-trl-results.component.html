@@ -4,8 +4,14 @@
   <ng-container content>
     <h2 class="govuk-heading-m">Technical records created</h2>
     <p class="govuk-body">
-      You have created {{ (batchCreatedCount$ | async) ?? 0 }} out of {{ (batchCount$ | async) ?? 0 }} trailer technical records using application ID
+      You have created {{ (batchSuccessCount$ | async) ?? 0 }} out of {{ (batchCount$ | async) ?? 0 }} trailer technical records using application ID
       {{ applicationId$ | async }}.
+    </p>
+    <p class="govuk-body">
+      {{ (batchCreatedCount$ | async) ?? 0 }} out of {{ (batchTotalCreatedCount$ | async) ?? 0 }} records successfully created.
+    </p>
+    <p class="govuk-body">
+      {{ (batchUpdatedCount$ | async) ?? 0 }} out of {{ (batchTotalUpdatedCount$ | async) ?? 0 }} records successfully updated.
     </p>
   </ng-container>
 </app-banner>

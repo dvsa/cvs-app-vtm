@@ -34,7 +34,24 @@ export class BatchTrlResultsComponent {
   get batchCount$() {
     return this.technicalRecordService.batchCount$;
   }
+
+  get batchSuccessCount$() {
+    return this.technicalRecordService.batchSuccessCount$;
+  }
+
+  get batchTotalCreatedCount$() {
+    return this.technicalRecordService.batchTotalCreatedCount$;
+  }
+
+  get batchTotalUpdatedCount$() {
+    return this.technicalRecordService.batchTotalUpdatedCount$;
+  }
+
   get batchCreatedCount$() {
     return this.technicalRecordService.batchCreatedCount$;
+  }
+
+  get batchUpdatedCount$() {
+    return this.technicalRecordService.batchUpdatedCount$;
   }
 }
