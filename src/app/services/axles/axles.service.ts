@@ -19,6 +19,10 @@ export class AxlesService {
     return [newAxles, newAxleSpacings];
   }
 
+  sortAxle(axles?: Axle[]): Axle[] {
+    return axles?.sort((a, b) => a.axleNumber! - b.axleNumber!) ?? [];
+  }
+
   generateAxleSpacing(numberOfAxles: number, axleSpacingOriginal?: AxleSpacing[]): AxleSpacing[] {
     const axleSpacing: AxleSpacing[] = [];
 

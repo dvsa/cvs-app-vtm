@@ -76,7 +76,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         //Need to check that the editing tech record has more than just reason for creation on and is the full object.
         map(techRecord => {
           if (techRecord && Object.keys(techRecord).length > 1) {
-            return cloneDeep(techRecord);
+            const updatedTechRecord = cloneDeep(techRecord);
+            const axles = this.axlesService.sortAxle(updatedTechRecord.axles);
+            return { ...updatedTechRecord, axles };
           } else {
             if (this.techRecord.vehicleType === VehicleTypes.HGV || this.techRecord.vehicleType === VehicleTypes.TRL) {
               const [axles, axleSpacing] = this.axlesService.normaliseAxles(this.techRecord.axles, this.techRecord.dimensions?.axleSpacing);
