@@ -16,6 +16,8 @@ export class AxlesService {
       newAxles = this.generateAxlesFromAxleSpacings(newAxleSpacings.length, newAxles);
     }
 
+    newAxles.sort((a, b) => a.axleNumber! - b.axleNumber!);
+
     return [newAxles, newAxleSpacings];
   }
 
