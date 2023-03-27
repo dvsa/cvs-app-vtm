@@ -6,17 +6,17 @@
         <dl class="govuk-summary-list">
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Vehicle type</dt>
-            <dd id="vehicle-type" class="govuk-summary-list__value">Trailer</dd>
+            <dd id="batch-vehicle-type" class="govuk-summary-list__value">Trailer</dd>
           </div>
 
           <ng-container *ngIf="isBatch$ | async">
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Application ID</dt>
-              <dd id="application-id" class="govuk-summary-list__value">{{ applicationId$ | async }}</dd>
+              <dd id="batch-application-id" class="govuk-summary-list__value">{{ applicationId$ | async }}</dd>
             </div>
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Trailers in batch</dt>
-              <dd id="trailers-batch" class="govuk-summary-list__value">
+              <dd id="batch-trailerCount" class="govuk-summary-list__value">
                 {{ (batchCount$ | async) ?? 0 }}
               </dd>
               <dd class="govuk-summary-list__actions">
