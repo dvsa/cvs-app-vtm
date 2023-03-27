@@ -137,10 +137,18 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateVinSuccess, state => ({ ...state, loading: false })),
   on(updateVinFailure, updateFailureArgs),
 
-  on(upsertVehicleBatch, createVehicleRecordSuccess, setApplicationId, setGenerateNumberFlag, clearBatch, (state, action) => ({
-    ...state,
-    batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
-  }))
+  on(
+    upsertVehicleBatch,
+    createVehicleRecordSuccess,
+    updateTechRecordsSuccess,
+    setApplicationId,
+    setGenerateNumberFlag,
+    clearBatch,
+    (state, action) => ({
+      ...state,
+      batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
+    })
+  )
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {

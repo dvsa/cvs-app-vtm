@@ -26,12 +26,15 @@ export const vehicleBatchCreateReducer = createReducer(
   on(upsertVehicleBatch, (state, action) => batchAdapter.setAll(action.vehicles, state)),
   on(setGenerateNumberFlag, (state, { generateNumber }) => ({ ...state, generateNumber })),
   on(setApplicationId, (state, { applicationId }) => ({ ...state, applicationId })),
-  on(createVehicleRecordSuccess, (state, action) => batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecords)[0], state)),
-  on(updateTechRecordsSuccess, (state, action) => batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecords)[0], state)),
+  on(createVehicleRecordSuccess, updateTechRecordsSuccess, (state, action) => {
+    console.log('Reducer called');
+    return batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecords)[0], state);
+  }),
   on(clearBatch, state => batchAdapter.removeAll(state))
 );
 
 function vehicleRecordsToBatchRecordMapper(vehicles: VehicleTechRecordModel[], created = true): Update<BatchRecord>[] {
+  console.log('Log vehicles: ' + vehicles);
   return vehicles.map(v => {
     const { vin, systemNumber, techRecord, trailerId } = v;
     return {
