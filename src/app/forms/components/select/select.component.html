@@ -8,7 +8,7 @@
   <select
     [class]="style"
     class="govuk-select"
-    id="{{ name }}"
+    [id]="customId || name"
     name="{{ name }}"
     [(ngModel)]="value"
     [disabled]="disabled"
