@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { combineLatest, filter, first, firstValueFrom, Observable, startWith, Subject, take } from 'rxjs';
+import { combineLatest, filter, first, firstValueFrom, map, Observable, startWith, Subject, take } from 'rxjs';
 
 @Component({
   selector: 'app-batch-trl-details',
@@ -75,7 +75,12 @@ export class BatchTrlDetailsComponent implements OnDestroy {
 
   get vehicleForm(): FormGroup {
     return this.fb.group({
-      vin: [null, [Validators.minLength(3), Validators.maxLength(21)], this.technicalRecordService.validateForBatch()],
+      vin: new CustomFormControl(
+        { name: 'vin', type: FormNodeTypes.CONTROL },
+        null,
+        [Validators.minLength(3), Validators.maxLength(21)],
+        this.technicalRecordService.validateForBatch()
+      ),
       trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]],
       systemNumber: ['']
     });
@@ -90,8 +95,8 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     group.markAllAsTouched();
   }
 
-  getVin(group: AbstractControl): AbstractControl | null {
-    return group.get('vin');
+  getVin(group: AbstractControl): CustomFormControl | null {
+    return group.get('vin') as CustomFormControl | null;
   }
 
   addVehicles(n: number): void {

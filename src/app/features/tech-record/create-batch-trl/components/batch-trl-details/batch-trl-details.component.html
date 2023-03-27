@@ -12,9 +12,9 @@
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
         <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
       </legend>
-      <ng-container *ngFor="let error of getGroupErrorMessages(group)">
-        <app-field-error-message [error]="error" [name]="'batch-trl-vin-required{{i}}'"></app-field-error-message>
-      </ng-container>
+
+      <app-field-error-message [error]="getVin(group)?.meta?.warning" [name]="'batch-trl-vin-required{{i}}'"></app-field-error-message>
+
       <app-text-input
         appNoSpace
         appTrimWhitespace

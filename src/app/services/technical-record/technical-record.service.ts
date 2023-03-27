@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import {
   EuVehicleCategories,
@@ -57,7 +58,7 @@ export enum SEARCH_TYPES {
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(private http: HttpClient, private router: Router, private store: Store) {}
+  constructor(private http: HttpClient, private router: Router, private store: Store, private globalErrorService: GlobalErrorService) {}
 
   get vehicleTechRecords$(): Observable<VehicleTechRecordModel[]> {
     return this.store.pipe(select(vehicleTechRecords));
@@ -452,7 +453,11 @@ export class TechnicalRecordService {
         } else if (!trailerId.value && vin.value) {
           return this.isUnique(vin.value, SEARCH_TYPES.VIN).pipe(
             map(result => {
-              return result ? null : { validateVin: { message: 'This VIN already exists, if you continue it will be associated with two vehicles' } };
+              delete vin.meta.warning;
+              if (!result) {
+                vin.meta.warning = 'This VIN already exists, if you continue it will be associated with two vehicles';
+              }
+              return null;
             }),
             catchError(error => of(null))
           );

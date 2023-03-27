@@ -102,6 +102,7 @@ export interface FormNode {
   isoDate?: boolean;
   class?: string;
   customId?: string;
+  warning?: string;
 }
 
 export interface FormNodeValidator {
