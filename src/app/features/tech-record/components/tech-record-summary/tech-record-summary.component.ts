@@ -59,6 +59,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
 
+  private isTechRecordCleaned = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -75,20 +76,24 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         select(editableTechRecord),
         //Need to check that the editing tech record has more than just reason for creation on and is the full object.
         map(techRecord => {
+          if (
+            techRecord &&
+            (this.techRecord.vehicleType === VehicleTypes.HGV || this.techRecord.vehicleType === VehicleTypes.TRL) &&
+            this.isEditing &&
+            !this.isTechRecordCleaned
+          ) {
+            const [axles, axleSpacing] = this.axlesService.normaliseAxles(techRecord.axles, techRecord.dimensions?.axleSpacing);
+            const cleanedTechRecord = cloneDeep(techRecord);
+            cleanedTechRecord.dimensions = { ...techRecord.dimensions, axleSpacing };
+            cleanedTechRecord.axles = axles;
+            this.isTechRecordCleaned = true;
+            return cleanedTechRecord;
+          }
+
           if (techRecord && Object.keys(techRecord).length > 1) {
-            const updatedTechRecord = cloneDeep(techRecord);
-            const axles = this.axlesService.sortAxle(updatedTechRecord.axles);
-            return { ...updatedTechRecord, axles };
+            return cloneDeep(techRecord);
           } else {
-            if (this.techRecord.vehicleType === VehicleTypes.HGV || this.techRecord.vehicleType === VehicleTypes.TRL) {
-              const [axles, axleSpacing] = this.axlesService.normaliseAxles(this.techRecord.axles, this.techRecord.dimensions?.axleSpacing);
-              this.techRecord = cloneDeep(this.techRecord);
-              this.techRecord.dimensions = { ...this.techRecord.dimensions, axleSpacing };
-              this.techRecord.axles = axles;
-            }
-
             this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
-
             return { ...cloneDeep(this.techRecord), reasonForCreation: '' };
           }
         }),
