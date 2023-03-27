@@ -100,7 +100,7 @@ export const vehicleTechRecordReducer = createReducer(
   on(getByAllFailure, failureArgs),
 
   on(createVehicleRecord, defaultArgs),
-  on(createVehicleRecordSuccess, (state, action) => ({ ...state, editingTechRecord: action.vehicleTechRecords[0], loading: false })),
+  on(createVehicleRecordSuccess, successArgs),
   on(createVehicleRecordFailure, state => ({ ...state, loading: false })),
 
   on(createProvisionalTechRecord, defaultArgs),

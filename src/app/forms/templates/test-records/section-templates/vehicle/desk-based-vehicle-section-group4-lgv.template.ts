@@ -42,38 +42,45 @@ export const DeskBasedVehicleSectionGroup4LGV: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      options: getOptionsFromEnum(EuVehicleCategories)
     },
     {
       name: 'odometerReading',
       label: 'Odometer Reading',
       value: null,
+      validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 9999999 }],
+      editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      width: FormNodeWidth.L
     },
     {
       name: 'odometerReadingUnits',
       label: 'Odometer Reading Units',
       value: null,
+      options: [
+        { value: 'kilometres', label: 'Kilometres' },
+        { value: 'miles', label: 'Miles' }
+      ],
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.RADIO
     },
     {
       name: 'preparerName',
       label: 'Preparer Name',
       value: '',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'preparerId',
       label: 'Preparer ID',
       value: '',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     }
   ]
 };

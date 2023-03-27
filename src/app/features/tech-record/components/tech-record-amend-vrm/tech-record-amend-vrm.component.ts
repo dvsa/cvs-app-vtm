@@ -6,14 +6,14 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { catchError, filter, of, Subject, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { catchError, filter, map, of, skipWhile, Subject, switchMap, take, takeUntil, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vrm',
@@ -49,7 +49,24 @@ export class AmendVrmComponent implements OnDestroy {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
+    this.technicalRecordService.selectedVehicleTechRecord$
+      .pipe(
+        take(1),
+        skipWhile(vehicle => !vehicle),
+        map(vehicle => {
+          const techRecord = vehicle?.techRecord.find(techRecord => techRecord.statusCode !== StatusCodes.ARCHIVED);
+          if (!vehicle || !techRecord) {
+            return this.navigateBack();
+          }
+          return { ...vehicle!, techRecord: [techRecord] };
+        })
+      )
+      .subscribe(vehicle => {
+        if (!vehicle) {
+          return;
+        }
+        this.vehicle = vehicle;
+      });
 
     this.technicalRecordService.editableTechRecord$
       .pipe(take(1))

@@ -158,7 +158,9 @@ export class TechnicalRecordService {
     newStatus?: StatusCodes
   ): Observable<VehicleTechRecordModel> {
     const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
+
     const newTechRecord = newVehicleTechRecord.techRecord[0];
+
     newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
     delete newTechRecord.updateType;
 
@@ -249,8 +251,11 @@ export class TechnicalRecordService {
    * @returns void
    */
   updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel, resetVehicleAttributes = false): void {
-    const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel =>
-      rec.hasOwnProperty('vin') && rec.hasOwnProperty('techRecord');
+    const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel => rec.hasOwnProperty('techRecord');
+
+    if (isVehicleRecord(record) && record.techRecord.length > 1) {
+      throw new Error('Editing tech record can only have one technical record!');
+    }
 
     const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord(record)
       ? of(record)
@@ -265,10 +270,6 @@ export class TechnicalRecordService {
         this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
       }
     });
-  }
-
-  initialBatchTechRecord(vehicleRecord: VehicleTechRecordModel) {
-    this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
   }
 
   /**
@@ -330,13 +331,17 @@ export class TechnicalRecordService {
   ) {
     const url = `${environment.VTM_API_URI}/vehicles/documents/plate`;
 
+    const updatedVehicleRecord = cloneDeep(vehicleRecord);
+    const currentRecordIndex = updatedVehicleRecord.techRecord.findIndex(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
+    updatedVehicleRecord.techRecord[currentRecordIndex].axles?.sort((a, b) => a.axleNumber! - b.axleNumber!);
+
     const body = {
       vin: vehicleRecord.vin,
       primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)!.vrm : undefined,
       systemNumber: vehicleRecord.systemNumber,
       trailerId: techRecord.vehicleType === 'trl' ? vehicleRecord.trailerId : undefined,
       msUserDetails: { msOid: user.id, msUser: user.name },
-      techRecord: vehicleRecord.techRecord,
+      techRecord: updatedVehicleRecord.techRecord,
       reasonForCreation: reason,
       vtmUsername: user.name,
       recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails?.emailAddress : user.email

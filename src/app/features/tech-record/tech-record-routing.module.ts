@@ -16,6 +16,7 @@ import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-recor
 import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
 import { GenerateLetterComponent } from './components/tech-record-generate-letter/tech-record-generate-letter.component';
 import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
+import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
     component: TechRecordComponent,
     data: { roles: Roles.TechRecordView, isCustomLayout: true },
     canActivateChild: [MsalGuard, RoleGuard],
+    canActivate: [CancelEditTechGuard],
     resolve: { load: TechRecordViewResolver }
   },
   {
@@ -78,7 +80,7 @@ const routes: Routes = [
         path: '',
         component: TechRecordComponent,
         data: { title: 'Provisional tech record', isCustomLayout: true },
-        canActivate: [MsalGuard],
+        canActivate: [MsalGuard, CancelEditTechGuard],
         resolve: { load: TechRecordViewResolver }
       },
       {

@@ -378,6 +378,15 @@ describe('TechnicalRecordService', () => {
     });
   });
 
+  describe('calculateTechRecordToUpdate', () => {
+    let vehicle: VehicleTechRecordModel = {
+      vin: '123',
+      vrms: [{ vrm: '123', isPrimary: true }],
+      systemNumber: '1234',
+      techRecord: []
+    };
+  });
+
   describe('business logic methods', () => {
     describe('updateEditingTechRecord', () => {
       it('should patch the missing information for the technical record and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
@@ -416,9 +425,15 @@ describe('TechnicalRecordService', () => {
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
       });
 
-      it('should call the store with the vehicle record', () => {
+      it('should throw an error if there is more than one tech record', () => {
+        const mockVehicleRecord = mockVehicleTechnicalRecord();
+        expect(() => service.updateEditingTechRecord(mockVehicleRecord)).toThrowError('Editing tech record can only have one technical record!');
+      });
+
+      it('should throw an error if there is more than one tech record', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         const mockVehicleRecord = mockVehicleTechnicalRecord();
+        mockVehicleRecord.techRecord = mockVehicleRecord.techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
         service.updateEditingTechRecord(mockVehicleRecord);
         expect(dispatchSpy).toHaveBeenCalledTimes(1);
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
