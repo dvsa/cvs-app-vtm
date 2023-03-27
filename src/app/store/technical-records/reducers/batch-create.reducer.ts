@@ -42,7 +42,6 @@ export const vehicleBatchCreateReducer = createReducer(
 );
 
 function vehicleRecordsToBatchRecordMapper(vehicles: VehicleTechRecordModel[], created = true, amendedRecord = false): Update<BatchRecord>[] {
-  console.log('Log vehicles: ' + vehicles);
   return vehicles.map(v => {
     const { vin, systemNumber, techRecord, trailerId } = v;
     return {

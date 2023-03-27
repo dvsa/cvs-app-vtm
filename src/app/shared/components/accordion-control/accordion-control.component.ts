@@ -16,7 +16,6 @@ export class AccordionControlComponent {
     value: QueryList<AccordionComponent> | undefined
   ) {
     this._accordions = value;
-    console.log('Content children is doing... something...');
   }
 
   @Input() isExpanded = false;
@@ -36,7 +35,6 @@ export class AccordionControlComponent {
   }
 
   private toggleAccordions(): void {
-    console.log('Toggle accordions');
     if (this.accordions) {
       this.accordions.forEach(a => (this.isExpanded ? a.open() : a.close()));
     }

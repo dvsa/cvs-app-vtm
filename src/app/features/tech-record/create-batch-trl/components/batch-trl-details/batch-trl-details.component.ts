@@ -125,7 +125,6 @@ export class BatchTrlDetailsComponent implements OnDestroy {
   }
 
   async isFormValid(): Promise<boolean> {
-    console.log('Is form valid?');
     this.globalErrorService.clearErrors();
     this.form.markAllAsTouched();
 
@@ -136,14 +135,12 @@ export class BatchTrlDetailsComponent implements OnDestroy {
 
     if (errors?.length) {
       this.globalErrorService.setErrors(errors);
-      console.log(errors);
     }
 
     if (this.cleanEmptyValues(this.vehicles.value).length == 0) {
       this.globalErrorService.addError({ error: 'At least 1 vehicle must be created or updated in a batch' });
       return false;
     }
-    console.log(this.form.status);
     return this.form.valid;
   }
 }
