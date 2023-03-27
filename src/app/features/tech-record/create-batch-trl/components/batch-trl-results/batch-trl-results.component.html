@@ -30,7 +30,10 @@
       <td class="govuk-table__cell">{{ vehicle.trailerId }}</td>
       <td class="govuk-table__cell">{{ vehicle.vehicleType }}</td>
       <td class="govuk-table__cell">
-        <app-tag type="blue"> {{ vehicleStatus.PROVISIONAL }} </app-tag>
+        <ng-container [ngSwitch]="vehicle.status">
+          <app-tag *ngSwitchCase="'provisional'" type="blue"> {{ vehicleStatus.PROVISIONAL }} </app-tag>
+          <app-tag *ngSwitchCase="'archived'" type="green"> {{ vehicleStatus.CURRENT }} </app-tag>
+        </ng-container>
       </td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell">

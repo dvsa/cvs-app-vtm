@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { createVehicleRecord, updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
+import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { map, Observable, take, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
@@ -75,7 +75,13 @@ export class BatchTrlTemplateComponent {
             } else {
               console.log('Update: ' + vehicle.vin);
               this.technicalRecordService.updateEditingTechRecord(vehicle);
-              this.store.dispatch(updateTechRecords({ systemNumber: vehicle.systemNumber }));
+              this.store.dispatch(
+                updateTechRecords({
+                  systemNumber: vehicle.systemNumber,
+                  recordToArchiveStatus: StatusCodes.PROVISIONAL,
+                  newStatus: StatusCodes.CURRENT
+                })
+              );
             }
           });
 
