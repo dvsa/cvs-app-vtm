@@ -122,8 +122,10 @@ export class BatchTrlDetailsComponent implements OnDestroy {
 
     const errors: GlobalError[] = [];
 
+    console.log('Reached validation');
     DynamicFormService.validate(this.form, errors, true);
-    await firstValueFrom(this.form.statusChanges.pipe(filter(status => status !== 'PENDING')));
+    await firstValueFrom(this.formStatus);
+    console.log('Passed validation');
 
     if (errors?.length) {
       this.globalErrorService.setErrors(errors);
@@ -134,5 +136,9 @@ export class BatchTrlDetailsComponent implements OnDestroy {
       return false;
     }
     return this.form.valid;
+  }
+
+  get formStatus() {
+    return this.form.statusChanges.pipe(filter(status => status !== 'PENDING'));
   }
 }
