@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
@@ -10,17 +10,22 @@ import { of } from 'rxjs';
 import { Component } from '@angular/core';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
-import { updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
-import { StatusCodes, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { updateTechRecords } from '@store/technical-records';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { Router } from '@angular/router';
 
 let batchOfVehicles: BatchRecord[] = [];
 
 const mockTechRecordService = (<unknown>{
   editableVehicleTechRecord$: of({}),
-  batchVehicles$: of(batchOfVehicles),
+  get batchVehicles$() {
+    return of(batchOfVehicles);
+  },
   applicationId$: of('TES_1_APPLICATION_ID'),
   isBatchCreate$: of(true),
-  batchCount$: of(2)
+  batchCount$: of(2),
+  updateEditingTechRecord: jest.fn(),
+  createVehicleRecord: jest.fn()
 }) as TechnicalRecordService;
 
 @Component({})
@@ -32,6 +37,7 @@ describe('BatchTrlTemplateComponent', () => {
   let component: BatchTrlTemplateComponent;
   let fixture: ComponentFixture<BatchTrlTemplateComponent>;
   let store: MockStore<State>;
+  let router: Router;
   let errorService: GlobalErrorService;
   let technicalRecordService: TechnicalRecordService;
 
@@ -52,6 +58,7 @@ describe('BatchTrlTemplateComponent', () => {
     store = TestBed.inject(MockStore);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     errorService = TestBed.inject(GlobalErrorService);
+    router = TestBed.inject(Router);
     component = fixture.componentInstance;
   });
 
@@ -78,7 +85,7 @@ describe('BatchTrlTemplateComponent', () => {
   describe('should dispatch the createVehicleTechRecord action for every vin and trailerId given', () => {
     beforeEach(() => {
       component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
-      batchOfVehicles = new Array<BatchRecord>();
+      //batchOfVehicles = new Array<BatchRecord>();
     });
 
     it('given a batch of 0', () => {
@@ -88,40 +95,81 @@ describe('BatchTrlTemplateComponent', () => {
     });
 
     it('given a batch of 2 vehicles to create', () => {
-      batchOfVehicles.push({ vin: 'EXAMPLEVIN000001' });
-      batchOfVehicles.push({ vin: 'EXAMPLEVIN000002' });
+      batchOfVehicles = [{ vin: 'EXAMPLEVIN000001' }, { vin: 'EXAMPLEVIN000002' }];
 
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
       component.handleSubmit();
       expect(dispatchSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('then given 2 more vehicles, this time to update', () => {
-      batchOfVehicles.push({ vin: 'EXAMPLEVIN000003', trailerId: '1000001', systemNumber: '1' });
-      batchOfVehicles.push({ vin: 'EXAMPLEVIN000004', trailerId: '1000002', systemNumber: '2' });
+    it('given a batch of 2 vehicles to update', fakeAsync(() => {
+      jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+      batchOfVehicles = [
+        { vin: 'EXAMPLEVIN000001', trailerId: '1000001', systemNumber: '1' },
+        { vin: 'EXAMPLEVIN000002', trailerId: '1000002', systemNumber: '2' }
+      ];
+      jest.spyOn(mockTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
 
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
       component.handleSubmit();
+
+      tick();
+
       expect(dispatchSpy).toHaveBeenCalledTimes(2);
       expect(dispatchSpy).toHaveBeenNthCalledWith(
-        3,
+        1,
         updateTechRecords({ systemNumber: '1', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
       );
 
       expect(dispatchSpy).toHaveBeenNthCalledWith(
-        4,
+        2,
         updateTechRecords({ systemNumber: '2', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
       );
-    });
+    }));
 
-    it('given a batch of 40', () => {
+    it('given a batch of 5 vehicles to create and update', fakeAsync(() => {
+      jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+      batchOfVehicles = [
+        { vin: 'EXAMPLEVIN000001', trailerId: '1000001', systemNumber: '1' },
+        { vin: 'EXAMPLEVIN000002' },
+        { vin: 'EXAMPLEVIN000003', trailerId: '1000002', systemNumber: '3' },
+        { vin: 'EXAMPLEVIN000004' },
+        { vin: 'EXAMPLEVIN000005' }
+      ];
+
+      jest.spyOn(mockTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
+
+      const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
+      component.handleSubmit();
+
+      tick();
+
+      expect(dispatchSpy).toHaveBeenCalledTimes(5);
+      expect(dispatchSpy).toHaveBeenNthCalledWith(
+        1,
+        updateTechRecords({ systemNumber: '1', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+      );
+      expect(dispatchSpy).toHaveBeenNthCalledWith(
+        3,
+        updateTechRecords({ systemNumber: '3', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+      );
+    }));
+
+    it('given a batch of 40', fakeAsync(() => {
+      jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+      batchOfVehicles = [];
       for (let i = 1; i <= 40; i++) {
         batchOfVehicles.push({ vin: `EXAMPLEVIN0000${i}`, trailerId: `100000${i}` });
       }
 
+      jest.spyOn(mockTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
+
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
       component.handleSubmit();
+      tick();
       expect(dispatchSpy).toHaveBeenCalledTimes(40);
-    });
+    }));
   });
 });
