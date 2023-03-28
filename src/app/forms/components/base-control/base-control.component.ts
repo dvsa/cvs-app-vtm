@@ -23,7 +23,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   @Input() width?: FormNodeWidth;
   @Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
   @Input() noBottomMargin = false;
-  @Input() warning?: string;
+  @Input() warning?: string | null = null;
 
   public onChange = (event: any) => {};
   public onTouched = () => {};
@@ -76,13 +76,13 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     return this.control?.meta;
   }
 
-  get thisWarning() {
-    if (this.warning) {
-      return this.warning;
-    } else {
-      return null;
-    }
-  }
+  // get thisWarning() {
+  //   if (this.warning) {
+  //     return this.warning;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   public handleEvent(event: Event) {
     switch (event.type) {

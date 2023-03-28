@@ -22,7 +22,6 @@
         label="VIN"
         [width]="width.L"
         [warning]="getVin(group)?.meta?.warning"
-        (focusout)="callValidation(group)"
       >
         <ng-container *ngIf="getVin(group)?.dirty && (getVin(group)?.status === 'VALID' || getVin(group)?.status === 'PENDING')">
           <ng-template appSuffix>
@@ -38,7 +37,6 @@
         name="trailerId{{ i }}"
         label="Trailer ID"
         [width]="width.L"
-        (focusout)="callValidation(group)"
       ></app-text-input>
     </fieldset>
   </div>

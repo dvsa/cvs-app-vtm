@@ -49,6 +49,7 @@ export class BatchTrlTemplateComponent {
     this.summary?.checkForms();
 
     if (!this.isInvalid) {
+      console.log('Foo bar and stuff');
       this.technicalRecordService.editableVehicleTechRecord$
         .pipe(
           withLatestFrom(this.technicalRecordService.batchVehicles$),

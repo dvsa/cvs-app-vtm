@@ -7,7 +7,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { combineLatest, filter, first, firstValueFrom, map, Observable, startWith, Subject, take } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from 'rxjs';
 
 @Component({
   selector: 'app-batch-trl-details',
@@ -53,10 +53,6 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  getGroupErrorMessages(group: AbstractControl): Array<any> | null {
-    return group.errors ? Object.entries(group.errors!).map(([key, val]) => val.message) : null;
-  }
-
   get vehicles(): FormArray {
     return this.form.get('vehicles') as FormArray;
   }
@@ -84,15 +80,6 @@ export class BatchTrlDetailsComponent implements OnDestroy {
       trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]],
       systemNumber: ['']
     });
-  }
-
-  callValidation(group: AbstractControl): void {
-    const vin = group.get('vin')!;
-    const trailerId = group.get('trailerId')!;
-
-    vin.updateValueAndValidity({ onlySelf: false, emitEvent: true });
-
-    group.markAllAsTouched();
   }
 
   getVin(group: AbstractControl): CustomFormControl | null {
