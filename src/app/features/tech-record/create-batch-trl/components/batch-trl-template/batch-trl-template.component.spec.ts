@@ -10,8 +10,8 @@ import { of } from 'rxjs';
 import { Component } from '@angular/core';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
-import { updateTechRecords } from '@store/technical-records';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
+import { StatusCodes, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Router } from '@angular/router';
 
 let batchOfVehicles: BatchRecord[] = [];
@@ -85,7 +85,6 @@ describe('BatchTrlTemplateComponent', () => {
   describe('should dispatch the createVehicleTechRecord action for every vin and trailerId given', () => {
     beforeEach(() => {
       component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
-      //batchOfVehicles = new Array<BatchRecord>();
     });
 
     it('given a batch of 0', () => {
@@ -151,10 +150,13 @@ describe('BatchTrlTemplateComponent', () => {
         1,
         updateTechRecords({ systemNumber: '1', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
       );
+      expect(dispatchSpy).toHaveBeenNthCalledWith(2, createVehicleRecord({ vehicle: expect.anything() }));
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         3,
         updateTechRecords({ systemNumber: '3', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
       );
+      expect(dispatchSpy).toHaveBeenNthCalledWith(4, createVehicleRecord({ vehicle: expect.anything() }));
+      expect(dispatchSpy).toHaveBeenNthCalledWith(5, createVehicleRecord({ vehicle: expect.anything() }));
     }));
 
     it('given a batch of 40', fakeAsync(() => {
