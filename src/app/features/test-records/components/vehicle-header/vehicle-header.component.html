@@ -130,7 +130,7 @@
           {{ combinedOdometerReading(testResult?.odometerReading | digitGroupSeparator, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
         </dd>
       </div>
-      <div class="govuk-summary-list__row">
+      <div *ngIf="resultOfTest !== 'cancelled'" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Certificate:</dt>
         <dd id="test-certificate" class="govuk-summary-list__value">
           <app-test-certificate [testNumber]="testNumber || ''" [vin]="testResult?.vin || ''" [isClickable]="!isReview">
