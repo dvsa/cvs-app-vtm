@@ -2,6 +2,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { VehicleClass } from '@models/vehicle-class.model';
+import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
 
 export const MotorcycleTechRecord: FormNode = {
@@ -75,6 +76,15 @@ export const MotorcycleTechRecord: FormNode = {
           validators: [{ name: ValidatorNames.Required }]
         }
       ]
+    },
+    {
+      name: 'vehicleConfiguration',
+      label: 'Vehicle configuration',
+      value: VehicleConfiguration.OTHER,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(VehicleConfiguration),
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'euVehicleCategory',
