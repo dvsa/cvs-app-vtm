@@ -11,6 +11,7 @@
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
     [width]="control.value.meta.width"
+    [customId]="control.value.meta.customId"
   ></app-autocomplete>
 
   <app-date
@@ -20,6 +21,7 @@
     [formControlName]="control.key"
     [isoDate]="control.value.meta.isoDate ?? true"
     [hint]="control.value.meta.hint"
+    [customId]="control.value.meta.customId"
   ></app-date>
 
   <app-date
@@ -29,6 +31,7 @@
     [formControlName]="control.key"
     [displayTime]="true"
     [hint]="control.value.meta.hint"
+    [customId]="control.value.meta.customId"
   ></app-date>
 
   <app-number-input
@@ -38,6 +41,7 @@
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
     [width]="control.value.meta.width"
+    [customId]="control.value.meta.customId"
   >
     <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
   </app-number-input>
@@ -49,6 +53,7 @@
     [options]="(options$ | async) || []"
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
+    [customId]="control.value.meta.customId"
   ></app-radio-group>
 
   <app-select
@@ -59,6 +64,7 @@
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
     [width]="control.value.meta.width"
+    [customId]="control.value.meta.customId"
   ></app-select>
 
   <app-text-area
@@ -67,6 +73,7 @@
     [name]="control.value.meta.name"
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
+    [customId]="control.value.meta.customId"
   ></app-text-area>
 
   <app-checkbox
@@ -75,6 +82,7 @@
     [name]="control.value.meta.name"
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
+    [customId]="control.value.meta.customId"
   ></app-checkbox>
 
   <app-checkbox-group
@@ -85,6 +93,7 @@
     [formControlName]="control.key"
     [delimited]="control.value.meta.delimited"
     [hint]="control.value.meta.hint"
+    [customId]="control.value.meta.customId"
   ></app-checkbox-group>
 
   <app-text-input
@@ -95,6 +104,7 @@
     [numeric]="true"
     [hint]="control.value.meta.hint"
     [width]="control.value.meta.width"
+    [customId]="control.value.meta.customId"
   >
     <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
   </app-text-input>
@@ -106,6 +116,7 @@
     [name]="control.value.meta.name"
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
+    [customId]="control.value.meta.customId"
   >
     <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template></app-text-input
   >
