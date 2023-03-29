@@ -76,7 +76,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, OnChanges 
       .pipe(
         select(editableTechRecord),
         skipWhile(editableTechRecord => !editableTechRecord),
-        //Need to check that the editing tech record has more than just reason for creation on and is the full object.
         map(editingTechRecord => {
           return cloneDeep(editingTechRecord);
         }),
