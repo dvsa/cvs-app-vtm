@@ -76,14 +76,6 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     return this.control?.meta;
   }
 
-  // get thisWarning() {
-  //   if (this.warning) {
-  //     return this.warning;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
   public handleEvent(event: Event) {
     switch (event.type) {
       case 'focus':
