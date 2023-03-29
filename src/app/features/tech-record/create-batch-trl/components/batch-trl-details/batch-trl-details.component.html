@@ -37,6 +37,7 @@
         name="trailerId{{ i }}"
         label="Trailer ID"
         [width]="width.L"
+        (focusout)="validate(group)"
       ></app-text-input>
     </fieldset>
   </div>

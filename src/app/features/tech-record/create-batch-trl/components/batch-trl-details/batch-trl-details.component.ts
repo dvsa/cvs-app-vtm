@@ -82,6 +82,10 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     });
   }
 
+  validate(group: AbstractControl): void {
+    group.get('vin')!.updateValueAndValidity();
+  }
+
   getVin(group: AbstractControl): CustomFormControl | null {
     return group.get('vin') as CustomFormControl | null;
   }

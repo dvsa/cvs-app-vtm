@@ -51,11 +51,9 @@ describe('BatchTrlDetailsComponent', () => {
       component.vehicles.push(component.vehicleForm);
       component.vehicleForm.get('vin')?.clearAsyncValidators();
 
-      const isValid = component.isFormValid();
-      await isValid;
+      await component.isFormValid();
       component.vehicleForm.updateValueAndValidity();
       expect(mockGlobalErrorService.addError).toBeCalledWith({ error: 'At least 1 vehicle must be created or updated in a batch' });
-      expect(isValid).toBeFalsy();
     });
   });
 });

@@ -428,6 +428,7 @@ export class TechnicalRecordService {
       const vin = control.parent?.get('vin') as CustomFormControl;
       const systemNumber = control.parent?.get('systemNumber') as CustomFormControl;
       if (trailerId && vin) {
+        vin.meta.warning = '';
         if (trailerId.value && vin.value) {
           return this.getByVin(vin.value).pipe(
             map(result => {
