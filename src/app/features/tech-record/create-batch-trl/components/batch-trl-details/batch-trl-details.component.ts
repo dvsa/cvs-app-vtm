@@ -126,10 +126,8 @@ export class BatchTrlDetailsComponent implements OnDestroy {
 
     const errors: GlobalError[] = [];
 
-    console.log('Reached validation');
     DynamicFormService.validate(this.form, errors, true);
     await firstValueFrom(this.formStatus);
-    console.log('Passed validation');
 
     if (errors?.length) {
       this.globalErrorService.setErrors(errors);
