@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
-import { StatusCodes, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Router } from '@angular/router';
 
 let batchOfVehicles: BatchRecord[] = [];
