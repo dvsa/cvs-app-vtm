@@ -445,7 +445,6 @@ export class TechnicalRecordService {
               if (filteredResults[0].techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT).length > 0) {
                 return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
               }
-
               systemNumberControl.setValue(result[0].systemNumber);
               return null;
             }),
@@ -460,14 +459,15 @@ export class TechnicalRecordService {
               }
               return null;
             }),
-            catchError(error => of(null))
+            catchError(error => {
+              console.log(error);
+              return of(null);
+            })
           );
-        }
-        if (trailerIdControl && !vinControl) {
+        } else if (trailerId && !vin) {
           return of({ validateForBatch: { message: 'VIN is required' } });
-        } else if (!trailerIdControl && !vinControl) {
-          return of(null);
         }
+        return of(null);
       }
       return of(null);
     };
