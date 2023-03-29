@@ -111,7 +111,7 @@
       </ng-template>
 
       <tr *ngIf="isEditing">
-        <a class="axleButton" role="button" (click)="addAxle()">Add Axle</a>
+        <a class="axleButton" role="button" id="weightsAddAxle" (click)="addAxle()">Add Axle</a>
         <p *ngIf="isError" class="govuk-error-message">{{ errorMessage }}</p>
       </tr>
 
