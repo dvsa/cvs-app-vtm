@@ -424,48 +424,48 @@ export class TechnicalRecordService {
 
   validateForBatch(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const trailerId = control.parent?.get('trailerId') as CustomFormControl;
-      const vin = control.parent?.get('vin') as CustomFormControl;
-      const systemNumber = control.parent?.get('systemNumber') as CustomFormControl;
-      if (trailerId && vin) {
-        vin.meta.warning = '';
-        if (trailerId.value && vin.value) {
-          return this.getByVin(vin.value).pipe(
+      const trailerIdControl = control.parent?.get('trailerId') as CustomFormControl;
+      const vinControl = control.parent?.get('vin') as CustomFormControl;
+      const systemNumberControl = control.parent?.get('systemNumber') as CustomFormControl;
+      if (trailerIdControl && vinControl) {
+        const trailerId = trailerIdControl.value;
+        const vin = vinControl.value;
+        delete vinControl.meta.warning;
+
+        if (trailerId && vin) {
+          return this.getByVin(vin).pipe(
             map(result => {
-              if (result) {
-                const filteredResults = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId.value);
-                if (filteredResults.length > 1) {
-                  return { validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } };
-                }
-                if (!filteredResults.length) {
-                  return { validateForBatch: { message: 'No vehicle has this VIN and Trailer ID' } };
-                }
-                if (filteredResults[0].techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT).length > 0) {
-                  return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
-                }
-                systemNumber.setValue(result[0].systemNumber);
-                return null;
-              } else {
-                return { validateForBatch: { message: 'Could not find a record with matching VIN' } };
+              const filteredResults = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId);
+              if (!result || !filteredResults.length) {
+                return { validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } };
               }
+              if (filteredResults.length > 1) {
+                return { validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } };
+              }
+              if (filteredResults[0].techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT).length > 0) {
+                return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
+              }
+
+              systemNumberControl.setValue(result[0].systemNumber);
+              return null;
             }),
             catchError(error => of({ validateForBatch: { message: 'Could not find a record with matching VIN' } }))
           );
-        } else if (!trailerId.value && vin.value) {
-          return this.isUnique(vin.value, SEARCH_TYPES.VIN).pipe(
+        } else if (!trailerId && vin) {
+          return this.isUnique(vin, SEARCH_TYPES.VIN).pipe(
             map(result => {
-              delete vin.meta.warning;
+              delete vinControl.meta.warning;
               if (!result) {
-                vin.meta.warning = 'This VIN already exists, if you continue it will be associated with two vehicles';
+                vinControl.meta.warning = 'This VIN already exists, if you continue it will be associated with two vehicles';
               }
               return null;
             }),
             catchError(error => of(null))
           );
         }
-        if (trailerId.value && !vin.value) {
+        if (trailerIdControl && !vinControl) {
           return of({ validateForBatch: { message: 'VIN is required' } });
-        } else if (!trailerId.value && !vin.value) {
+        } else if (!trailerIdControl && !vinControl) {
           return of(null);
         }
       }
