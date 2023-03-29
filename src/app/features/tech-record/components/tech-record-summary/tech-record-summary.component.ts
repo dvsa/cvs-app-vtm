@@ -76,14 +76,11 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, OnChanges 
       .pipe(
         select(editableTechRecord),
         skipWhile(editableTechRecord => !editableTechRecord),
-        map(editingTechRecord => {
-          return cloneDeep(editingTechRecord);
-        }),
         takeUntil(this.destroy$)
       )
       .subscribe(techRecord => {
         if (techRecord) {
-          this.techRecordCalculated = techRecord;
+          this.techRecordCalculated = cloneDeep(techRecord);
           this.referenceDataService.removeTyreSearch();
           this.sectionTemplates = this.vehicleTemplates;
           this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
