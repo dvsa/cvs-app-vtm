@@ -14,6 +14,7 @@ import {
   VehicleTypes
 } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
   createVehicle,
@@ -44,7 +45,7 @@ import {
   selectBatchCreatedSuccessCount
 } from '@store/technical-records/selectors/batch-create.selectors';
 import { cloneDeep } from 'lodash';
-import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
+import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter, withLatestFrom, concatMap, mergeMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -58,7 +59,13 @@ export enum SEARCH_TYPES {
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(private http: HttpClient, private router: Router, private store: Store, private globalErrorService: GlobalErrorService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private store: Store,
+    private globalErrorService: GlobalErrorService,
+    private routerService: RouterService
+  ) {}
 
   get vehicleTechRecords$(): Observable<VehicleTechRecordModel[]> {
     return this.store.pipe(select(vehicleTechRecords));
@@ -77,7 +84,7 @@ export class TechnicalRecordService {
   }
 
   get techRecord$(): Observable<TechRecordModel | undefined> {
-    return this.selectedVehicleTechRecord$.pipe(switchMap(vehicle => (vehicle ? this.viewableTechRecord$(vehicle) : of(undefined))));
+    return this.selectedVehicleTechRecord$.pipe(switchMap(vehicle => (vehicle ? this.viewableTechRecord$ : of(undefined))));
   }
 
   getVehicleTypeWithSmallTrl(techRecord?: TechRecordModel): VehicleTypes | undefined {
@@ -220,25 +227,26 @@ export class TechnicalRecordService {
    * @param vehicleRecord This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
-  viewableTechRecord$(vehicleRecord: VehicleTechRecordModel): Observable<TechRecordModel | undefined> {
-    return this.store.pipe(
-      select(selectRouteNestedParams),
-      map(params => {
-        const lastTwoUrlParts = this.router.url.split('/').slice(-2);
-
-        if (lastTwoUrlParts.includes('provisional')) {
-          return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL);
+  get viewableTechRecord$(): Observable<TechRecordModel | undefined> {
+    return this.selectedVehicleTechRecord$.pipe(
+      withLatestFrom(
+        this.routerService.getRouteParam$('techCreatedAt'),
+        this.routerService.getQueryParam$('status'),
+        this.routerService.getRouteDataProperty$('isEditing')
+      ),
+      switchMap(([vehicleRecord, createdAt, status, isEditing]) => {
+        if (isEditing) {
+          return this.editableTechRecord$;
         }
-
-        const createdAt = params['techCreatedAt'];
-
         if (createdAt) {
-          return vehicleRecord.techRecord.find(
-            techRecord => new Date(techRecord.createdAt).getTime() == createdAt && techRecord.statusCode === StatusCodes.ARCHIVED
+          return of(
+            vehicleRecord?.techRecord.find(
+              techRecord => new Date(techRecord.createdAt).getTime() == +createdAt && techRecord.statusCode === StatusCodes.ARCHIVED
+            )
           );
         }
-
-        return this.filterTechRecordByStatusCode(vehicleRecord);
+        const recordStatus = status ?? StatusCodes.CURRENT;
+        return of(vehicleRecord?.techRecord.find(record => record.statusCode === recordStatus));
       })
     );
   }
@@ -278,7 +286,7 @@ export class TechnicalRecordService {
    * @param record This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
-  private filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
+  filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
     return (
       record.techRecord.find(record => record.statusCode === StatusCodes.CURRENT) ??
       record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL) ??

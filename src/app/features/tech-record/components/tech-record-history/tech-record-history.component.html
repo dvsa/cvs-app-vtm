@@ -26,7 +26,8 @@
             id="view-test-{{ vehicle.vin }}"
             type="link"
             design="link"
-            [routerLink]="[summaryLinkUrl(techRecord)]"
+            [routerLink]="summaryLinkUrl(techRecord)"
+            [queryParams]="techRecord.statusCode === 'provisional' ? { status: 'provisional' } : {}"
             (click)="updateTechRecordInEdit(i)"
           >
             View

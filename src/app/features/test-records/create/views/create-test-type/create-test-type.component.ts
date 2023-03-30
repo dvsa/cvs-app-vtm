@@ -23,7 +23,7 @@ export class CreateTestTypeComponent implements AfterContentInit {
   ngAfterContentInit(): void {
     this.technicalRecordService.selectedVehicleTechRecord$
       .pipe(
-        mergeMap(vehicle => (vehicle ? this.technicalRecordService.viewableTechRecord$(vehicle) : of(undefined))),
+        mergeMap(vehicle => (vehicle ? this.technicalRecordService.viewableTechRecord$ : of(undefined))),
         take(1)
       )
       .subscribe(techRecord => {

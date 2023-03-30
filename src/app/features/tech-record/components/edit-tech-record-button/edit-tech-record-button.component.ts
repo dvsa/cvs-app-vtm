@@ -45,7 +45,7 @@ export class EditTechRecordButtonComponent implements OnInit {
         take(1)
       )
       .subscribe(([, vehicleTechRecord, techRecord]) => {
-        const routeSuffix = techRecord?.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
+        const routeSuffix = techRecord?.statusCode === StatusCodes.CURRENT ? '' : '?status=provisional';
 
         this.router.navigateByUrl(`/tech-records/${vehicleTechRecord!.systemNumber}${routeSuffix}`);
       });

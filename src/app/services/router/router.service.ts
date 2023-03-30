@@ -7,6 +7,8 @@ import {
   routerState,
   selectQueryParam,
   selectQueryParams,
+  selectRouteData,
+  selectRouteDataProperty,
   selectRouteNestedParams,
   selectRouteParam
 } from '@store/router/selectors/router.selectors';
@@ -40,5 +42,13 @@ export class RouterService {
 
   get routeEditable$() {
     return this.store.pipe(select(routeEditable));
+  }
+
+  get routeData$() {
+    return this.store.pipe(select(selectRouteData));
+  }
+
+  getRouteDataProperty$(property: string) {
+    return this.store.pipe(select(selectRouteDataProperty(property)));
   }
 }
