@@ -485,7 +485,7 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectAllBatch));
   }
 
-  get batchVehiclesCreated$() {
+  get batchVehiclesSuccess$() {
     return this.store.pipe(select(selectBatchSuccess));
   }
 

@@ -42,8 +42,8 @@ export class BatchTrlResultsComponent implements OnDestroy {
     return this.technicalRecordService.applicationId$;
   }
 
-  get batchVehiclesCreated$() {
-    return this.technicalRecordService.batchVehiclesCreated$;
+  get batchVehiclesSuccess$() {
+    return this.technicalRecordService.batchVehiclesSuccess$;
   }
 
   get vehicleStatus() {

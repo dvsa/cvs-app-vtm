@@ -39,6 +39,6 @@ describe('BatchTrlResultsComponent', () => {
     expect(component.batchUpdatedCount$).toBeTruthy();
     expect(component.batchTotalUpdatedCount$).toBeTruthy();
     expect(component.applicationId$).toBeTruthy();
-    expect(component.batchVehiclesCreated$).toBeTruthy();
+    expect(component.batchVehiclesSuccess$).toBeTruthy();
   });
 });

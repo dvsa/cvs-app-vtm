@@ -31,7 +31,7 @@
     </tr>
   </thead>
   <tbody class="govuk-table__body">
-    <tr *ngFor="let vehicle of batchVehiclesCreated$ | async; let i = index" class="govuk-table__row">
+    <tr *ngFor="let vehicle of batchVehiclesSuccess$ | async; let i = index" class="govuk-table__row">
       <th scope="row" class="govuk-table__header">{{ vehicle.vin }}</th>
       <td class="govuk-table__cell">{{ vehicle.trailerId }}</td>
       <td class="govuk-table__cell">{{ vehicle.vehicleType }}</td>
