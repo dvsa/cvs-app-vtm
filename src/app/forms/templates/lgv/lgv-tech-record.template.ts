@@ -1,6 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
 
@@ -64,6 +65,24 @@ export const LgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOXGROUP,
       options: getOptionsFromEnum(VehicleSubclass)
+    },
+    {
+      name: 'vehicleClass',
+      label: 'Vehicle class',
+      value: '',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'description',
+          label: 'Vehicle class',
+          value: '',
+          customId: 'vehicleClassDescription',
+          type: FormNodeTypes.CONTROL,
+          editType: FormNodeEditTypes.SELECT,
+          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+          validators: [{ name: ValidatorNames.Required }]
+        }
+      ]
     },
     {
       name: 'vehicleConfiguration',
