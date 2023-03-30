@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormControlStatus, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -86,7 +86,7 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     group.get('vin')!.updateValueAndValidity();
   }
 
-  getVin(group: AbstractControl): CustomFormControl | null {
+  getVinControl(group: AbstractControl): CustomFormControl | null {
     return group.get('vin') as CustomFormControl | null;
   }
 
@@ -140,7 +140,7 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     return this.form.valid;
   }
 
-  get formStatus() {
+  get formStatus(): Observable<FormControlStatus> {
     return this.form.statusChanges.pipe(filter(status => status !== 'PENDING'));
   }
 }

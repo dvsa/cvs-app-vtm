@@ -21,11 +21,11 @@
         name="input-vin{{ i }}"
         label="VIN"
         [width]="width.L"
-        [warning]="getVin(group)?.meta?.warning"
+        [warning]="getVinControl(group)?.meta?.warning"
       >
-        <ng-container *ngIf="getVin(group)?.dirty && (getVin(group)?.status === 'VALID' || getVin(group)?.status === 'PENDING')">
+        <ng-container *ngIf="getVinControl(group)?.dirty && (getVinControl(group)?.status === 'VALID' || getVinControl(group)?.status === 'PENDING')">
           <ng-template appSuffix>
-            <app-input-spinner [isValid]="getVin(group)?.status || 'PENDING'"></app-input-spinner>
+            <app-input-spinner [isValid]="getVinControl(group)?.status || 'PENDING'"></app-input-spinner>
           </ng-template>
         </ng-container>
       </app-text-input>

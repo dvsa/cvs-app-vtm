@@ -427,50 +427,54 @@ export class TechnicalRecordService {
       const trailerIdControl = control.parent?.get('trailerId') as CustomFormControl;
       const vinControl = control.parent?.get('vin') as CustomFormControl;
       const systemNumberControl = control.parent?.get('systemNumber') as CustomFormControl;
+
       if (trailerIdControl && vinControl) {
         const trailerId = trailerIdControl.value;
         const vin = vinControl.value;
         delete vinControl.meta.warning;
 
         if (trailerId && vin) {
-          return this.getByVin(vin).pipe(
-            map(result => {
-              const filteredResults = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId);
-              if (!result || !filteredResults.length) {
-                return { validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } };
-              }
-              if (filteredResults.length > 1) {
-                return { validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } };
-              }
-              if (filteredResults[0].techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT).length > 0) {
-                return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
-              }
-              systemNumberControl.setValue(result[0].systemNumber);
-              return null;
-            }),
-            catchError(error => of({ validateForBatch: { message: 'Could not find a record with matching VIN' } }))
-          );
+          return this.validateVinAndTrailerId(vin, trailerId, systemNumberControl);
         } else if (!trailerId && vin) {
-          return this.isUnique(vin, SEARCH_TYPES.VIN).pipe(
-            map(result => {
-              delete vinControl.meta.warning;
-              if (!result) {
-                vinControl.meta.warning = 'This VIN already exists, if you continue it will be associated with two vehicles';
-              }
-              return null;
-            }),
-            catchError(error => {
-              console.log(error);
-              return of(null);
-            })
-          );
+          return this.validateVinForBatch(vinControl);
         } else if (trailerId && !vin) {
           return of({ validateForBatch: { message: 'VIN is required' } });
         }
-        return of(null);
       }
       return of(null);
     };
+  }
+
+  private validateVinAndTrailerId(vin: string, trailerId: string, systemNumberControl: CustomFormControl): Observable<ValidationErrors | null> {
+    return this.getByVin(vin).pipe(
+      map(result => {
+        const filteredResults = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId);
+        if (!filteredResults.length) {
+          return { validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } };
+        }
+        if (filteredResults.length > 1) {
+          return { validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } };
+        }
+        if (filteredResults[0].techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT).length > 0) {
+          return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
+        }
+        systemNumberControl.setValue(result[0].systemNumber);
+        return null;
+      }),
+      catchError(error => of({ validateForBatch: { message: 'Could not find a record with matching VIN' } }))
+    );
+  }
+
+  private validateVinForBatch(vinControl: CustomFormControl): Observable<null> {
+    return this.isUnique(vinControl.value, SEARCH_TYPES.VIN).pipe(
+      map(result => {
+        if (!result) {
+          vinControl.meta.warning = 'This VIN already exists, if you continue it will be associated with two vehicles';
+        }
+        return null;
+      }),
+      catchError(error => of(null))
+    );
   }
 
   upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string }>) {
