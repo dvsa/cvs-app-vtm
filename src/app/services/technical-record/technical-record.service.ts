@@ -455,7 +455,7 @@ export class TechnicalRecordService {
         if (filteredResults.length > 1) {
           return { validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } };
         }
-        if (filteredResults[0].techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT).length > 0) {
+        if (filteredResults[0].techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT)) {
           return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
         }
         systemNumberControl.setValue(result[0].systemNumber);
