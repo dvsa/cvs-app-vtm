@@ -12,9 +12,10 @@ export class AccordionControlComponent {
   get accordions(): QueryList<AccordionComponent> | undefined {
     return this._accordions;
   }
-  @ContentChildren(AccordionComponent, { descendants: true }) set accordions(value: QueryList<AccordionComponent> | undefined) {
+  @ContentChildren(AccordionComponent, { descendants: true, emitDistinctChangesOnly: false }) set accordions(
+    value: QueryList<AccordionComponent> | undefined
+  ) {
     this._accordions = value;
-    this.toggleAccordions();
   }
 
   @Input() isExpanded = false;
@@ -33,7 +34,7 @@ export class AccordionControlComponent {
     this.cdr.markForCheck();
   }
 
-  toggleAccordions(): void {
+  private toggleAccordions(): void {
     if (this.accordions) {
       this.accordions.forEach(a => (this.isExpanded ? a.open() : a.close()));
     }

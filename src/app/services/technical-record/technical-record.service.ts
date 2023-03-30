@@ -2,6 +2,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import {
   EuVehicleCategories,
   postNewVehicleModel,
@@ -33,9 +35,13 @@ import {
   selectAllBatch,
   selectIsBatch,
   selectGenerateNumber,
-  selectCreatedBatch,
-  selectCreatedBatchCount,
-  selectApplicationId
+  selectBatchSuccess,
+  selectBatchSuccessCount,
+  selectApplicationId,
+  selectBatchUpdatedSuccessCount,
+  selectBatchUpdatedCount,
+  selectBatchCreatedCount,
+  selectBatchCreatedSuccessCount
 } from '@store/technical-records/selectors/batch-create.selectors';
 import { cloneDeep } from 'lodash';
 import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
@@ -52,7 +58,7 @@ export enum SEARCH_TYPES {
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(private http: HttpClient, private router: Router, private store: Store) {}
+  constructor(private http: HttpClient, private router: Router, private store: Store, private globalErrorService: GlobalErrorService) {}
 
   get vehicleTechRecords$(): Observable<VehicleTechRecordModel[]> {
     return this.store.pipe(select(vehicleTechRecords));
@@ -416,6 +422,61 @@ export class TechnicalRecordService {
     };
   }
 
+  validateForBatch(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      const trailerIdControl = control.parent?.get('trailerId') as CustomFormControl;
+      const vinControl = control.parent?.get('vin') as CustomFormControl;
+      const systemNumberControl = control.parent?.get('systemNumber') as CustomFormControl;
+
+      if (trailerIdControl && vinControl) {
+        const trailerId = trailerIdControl.value;
+        const vin = vinControl.value;
+        delete vinControl.meta.warning;
+
+        if (trailerId && vin) {
+          return this.validateVinAndTrailerId(vin, trailerId, systemNumberControl);
+        } else if (!trailerId && vin) {
+          return this.validateVinForBatch(vinControl);
+        } else if (trailerId && !vin) {
+          return of({ validateForBatch: { message: 'VIN is required' } });
+        }
+      }
+      return of(null);
+    };
+  }
+
+  private validateVinAndTrailerId(vin: string, trailerId: string, systemNumberControl: CustomFormControl): Observable<ValidationErrors | null> {
+    return this.getByVin(vin).pipe(
+      map(result => {
+        const filteredResults = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId);
+        if (!filteredResults.length) {
+          return { validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } };
+        }
+        if (filteredResults.length > 1) {
+          return { validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } };
+        }
+        if (filteredResults[0].techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT)) {
+          return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
+        }
+        systemNumberControl.setValue(result[0].systemNumber);
+        return null;
+      }),
+      catchError(error => of({ validateForBatch: { message: 'Could not find a record with matching VIN' } }))
+    );
+  }
+
+  private validateVinForBatch(vinControl: CustomFormControl): Observable<null> {
+    return this.isUnique(vinControl.value, SEARCH_TYPES.VIN).pipe(
+      map(result => {
+        if (!result) {
+          vinControl.meta.warning = 'This VIN already exists, if you continue it will be associated with two vehicles';
+        }
+        return null;
+      }),
+      catchError(error => of(null))
+    );
+  }
+
   upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string }>) {
     this.store.dispatch(upsertVehicleBatch({ vehicles }));
   }
@@ -424,8 +485,8 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectAllBatch));
   }
 
-  get batchVehiclesCreated$() {
-    return this.store.pipe(select(selectCreatedBatch));
+  get batchVehiclesSuccess$() {
+    return this.store.pipe(select(selectBatchSuccess));
   }
 
   get isBatchCreate$() {
@@ -436,8 +497,24 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectBatchCount));
   }
 
+  get batchSuccessCount$() {
+    return this.store.pipe(select(selectBatchSuccessCount));
+  }
+
   get batchCreatedCount$() {
-    return this.store.pipe(select(selectCreatedBatchCount));
+    return this.store.pipe(select(selectBatchCreatedSuccessCount));
+  }
+
+  get batchTotalCreatedCount$() {
+    return this.store.pipe(select(selectBatchCreatedCount));
+  }
+
+  get batchUpdatedCount$() {
+    return this.store.pipe(select(selectBatchUpdatedSuccessCount));
+  }
+
+  get batchTotalUpdatedCount$() {
+    return this.store.pipe(select(selectBatchUpdatedCount));
   }
 
   get applicationId$() {
