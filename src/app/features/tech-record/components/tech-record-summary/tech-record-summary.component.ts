@@ -33,7 +33,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { editableTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep, mergeWith } from 'lodash';
-import { map, skipWhile, Subject, takeUntil } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary[techRecord]',
@@ -41,7 +41,7 @@ import { map, skipWhile, Subject, takeUntil } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./tech-record-summary.component.scss']
 })
-export class TechRecordSummaryComponent implements OnInit, OnDestroy, OnChanges {
+export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
   @ViewChild(BodyComponent) body!: BodyComponent;
   @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
@@ -59,6 +59,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, OnChanges 
 
   techRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
+  isNormalized = false;
   middleIndex = 0;
 
   private destroy$ = new Subject<void>();
@@ -75,32 +76,38 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, OnChanges 
     this.store
       .pipe(
         select(editableTechRecord),
-        skipWhile(editableTechRecord => !editableTechRecord),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
+        map(techRecord => {
+          if (techRecord && Object.keys(techRecord).length > 1) {
+            return cloneDeep(techRecord);
+          } else {
+            const normalizedTechRecord = cloneDeep(this.techRecord);
+
+            if (
+              this.isEditing &&
+              !this.isNormalized &&
+              (this.techRecord.vehicleType === VehicleTypes.HGV || this.techRecord.vehicleType === VehicleTypes.TRL)
+            ) {
+              const [axles, axleSpacing] = this.axlesService.normaliseAxles(normalizedTechRecord.axles, normalizedTechRecord.dimensions?.axleSpacing);
+              normalizedTechRecord.dimensions = { ...this.techRecord.dimensions, axleSpacing };
+              normalizedTechRecord.axles = axles;
+              this.isNormalized = true;
+            }
+
+            this.technicalRecordService.updateEditingTechRecord(normalizedTechRecord, true);
+
+            return { ...normalizedTechRecord, reasonForCreation: '' };
+          }
+        })
       )
       .subscribe(techRecord => {
         if (techRecord) {
-          this.techRecordCalculated = cloneDeep(techRecord);
+          this.techRecordCalculated = techRecord;
           this.referenceDataService.removeTyreSearch();
           this.sectionTemplates = this.vehicleTemplates;
           this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
         }
       });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const { techRecord } = changes;
-
-    if (techRecord.previousValue !== techRecord.currentValue && techRecord.isFirstChange()) {
-      if (this.techRecord.vehicleType === VehicleTypes.HGV || this.techRecord.vehicleType === VehicleTypes.TRL) {
-        const [axles, axleSpacing] = this.axlesService.normaliseAxles(this.techRecord.axles, this.techRecord.dimensions?.axleSpacing);
-        this.techRecord = cloneDeep(this.techRecord);
-        this.techRecord.dimensions = { ...this.techRecord.dimensions, axleSpacing };
-        this.techRecord.axles = axles;
-      }
-
-      this.technicalRecordService.updateEditingTechRecord({ ...cloneDeep(this.techRecord), reasonForCreation: '' }, true);
-    }
   }
 
   ngOnDestroy(): void {
