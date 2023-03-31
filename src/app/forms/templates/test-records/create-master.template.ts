@@ -522,7 +522,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup5: {
-      required: CreateRequiredSectionLgvCar,
+      required: DeskBasedRequiredHiddenSectionGroup4Lgv,
       vehicle: DeskBasedVehicleSectionGroup5Lgv,
       test: DeskBasedTestSectionLgvGroup5,
       visit: ContingencyVisitSection,
