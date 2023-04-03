@@ -27,7 +27,8 @@
     "test:ci": "jest -ci --runInBand --watchAll=false --reporters=default",
     "mock-api": "npx ts-node ./mock-api/mock-api-server.ts",
     "prepare": "husky install && ts-patch install -s",
-    "postinstall": "ngcc"
+    "postinstall": "ngcc",
+    "e2e": "npm run config && cypress open"
   },
   "private": true,
   "dependencies": {
