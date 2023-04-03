@@ -1,5 +1,11 @@
-describe('template spec', () => {
+describe('View the home page', () => {
+
+  beforeEach(() => {
+    cy.loginToAAD('email', 'special info')
+    cy.visit('')
+  })
+
   it('passes', () => {
-    cy.visit('https://example.cypress.io')
+    cy.get('#search-for-technical-record-link').click()
   })
 })
