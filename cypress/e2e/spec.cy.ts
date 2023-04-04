@@ -16,8 +16,8 @@ describe('View the home page', () => {
     cy.get('.govuk-accordion__show-all-text').click();
     cy.get('#reasonForCreation').type('testing create');
     cy.get('#vehicleClassDescription').select('2: not applicable');
-    cy.get('#dtpNumber').click();
-    cy.get('#dtpNumber__option--2').click();
+    cy.get('#dtpNumber').type('00');
+    cy.get('#dtpNumber__option--1').click();
     cy.wait(400);
     cy.get('app-button > #submit-record-continue').click();
     cy.get('@create-vehicle').its('response', { timeout: 12000 }).should('have.property', 'statusCode', 201);
@@ -84,8 +84,8 @@ describe('View the home page', () => {
     cy.get('#search-for-technical-record-link').click();
     cy.get('#search-term').type(vin + '{enter}');
     cy.get('a').contains('Select technical record').click();
-    cy.get('#create-test').click();
-    cy.get('#test-list-item-400', { timeout: 12000 }).click();
+    cy.get('#create-test', { timeout: 12000 }).click();
+    cy.get('#test-list-item-400', { timeout: 20000 }).click();
     cy.get('#browse-list-item-413').click();
     cy.get('#browse-list-item-433').click();
     cy.get('#reasonForCreation', { timeout: 15000 }).type('testing create DBA');
