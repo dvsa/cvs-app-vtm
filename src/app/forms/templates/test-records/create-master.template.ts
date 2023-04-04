@@ -13,7 +13,7 @@ import { CreateRequiredSectionMotorcycle } from './section-templates/required/co
 import { CreateRequiredSection } from './section-templates/required/contingency-required-hidden-section.template';
 import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
 import { defectsHiddenSection } from './section-templates/required/defect-hidden-section.template';
-import { DeskBasedRequiredHiddenSectionGroup4Lgv } from './section-templates/required/desk-based-required-hidden-group4-lgv.template';
+import { DeskBasedRequiredHiddenSectionGroup4And5Lgv } from './section-templates/required/desk-based-required-hidden-group4-lgv.template';
 import { DeskBasedRequiredHiddenSectionGroup4Motorcyle } from './section-templates/required/desk-based-required-hidden-group4-motorcycle.template';
 import { SeatbeltHiddenSection } from './section-templates/required/seatbelt-hidden-section.template';
 import { SpecialistRequiredSectionLgvCarSmallTrl } from './section-templates/required/specialist-required-hidden-section-lgv-car.template';
@@ -504,7 +504,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredHiddenSectionGroup4Lgv,
+      required: DeskBasedRequiredHiddenSectionGroup4And5Lgv,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: DeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
@@ -522,7 +522,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup5: {
-      required: DeskBasedRequiredHiddenSectionGroup4Lgv,
+      required: DeskBasedRequiredHiddenSectionGroup4And5Lgv,
       vehicle: DeskBasedVehicleSectionGroup5Lgv,
       test: DeskBasedTestSectionLgvGroup5,
       visit: ContingencyVisitSection,
@@ -552,7 +552,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredHiddenSectionGroup4Lgv,
+      required: DeskBasedRequiredHiddenSectionGroup4And5Lgv,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
       test: DeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
