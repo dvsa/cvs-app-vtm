@@ -338,14 +338,14 @@ export class TechnicalRecordService {
 
     const body = {
       vin: vehicleRecord.vin,
-      primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)!.vrm : undefined,
+      primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)?.vrm : undefined,
       systemNumber: vehicleRecord.systemNumber,
       trailerId: techRecord.vehicleType === 'trl' ? vehicleRecord.trailerId : undefined,
       msUserDetails: { msOid: user.id, msUser: user.name },
       techRecord: updatedVehicleRecord.techRecord,
       reasonForCreation: reason,
       vtmUsername: user.name,
-      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails?.emailAddress : user.email
+      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails.emailAddress : user.email
     };
 
     return this.http.post(url, body, { responseType: 'json' });
