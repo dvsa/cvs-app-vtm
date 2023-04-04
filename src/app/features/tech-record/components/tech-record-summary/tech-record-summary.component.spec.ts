@@ -10,12 +10,12 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { mockVehicleTechnicalRecord, mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { createMockTrl } from '@mocks/trl-record.mock';
 import { Roles } from '@models/roles.enum';
-import { LettersOfAuth, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { LettersOfAuth, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/index';
-import { editableTechRecord, editableVehicleTechRecord, updateEditingTechRecord } from '@store/technical-records';
+import { editableVehicleTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { of } from 'rxjs';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
 
@@ -58,9 +58,7 @@ describe('TechRecordSummaryComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  function checkHeadingAndForm(technicalRecord?: TechRecordModel): void {
-    technicalRecord && store.overrideSelector(editableTechRecord, technicalRecord);
-    fixture.detectChanges();
+  function checkHeadingAndForm(): void {
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
     expect(heading).toBeFalsy();
 
@@ -70,70 +68,72 @@ describe('TechRecordSummaryComponent', () => {
 
   describe('TechRecordSummaryComponent View', () => {
     it('should show PSV record found', () => {
-      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       component.isEditing = false;
-      component.techRecord = mockRecord;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      fixture.detectChanges();
 
-      checkHeadingAndForm(mockRecord);
+      checkHeadingAndForm();
     });
 
     it('should show PSV record found without dimensions', () => {
-      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       component.isEditing = false;
-      component.techRecord = mockRecord;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       component.techRecord!.dimensions = undefined;
+      fixture.detectChanges();
 
-      checkHeadingAndForm(mockRecord);
+      checkHeadingAndForm();
     });
 
     it('should show HGV record found', () => {
-      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       component.isEditing = false;
-      component.techRecord = mockRecord;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
+      fixture.detectChanges();
 
-      checkHeadingAndForm(mockRecord);
+      checkHeadingAndForm();
     });
 
     it('should show HGV record found without dimensions', () => {
-      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       component.isEditing = false;
-      component.techRecord = mockRecord;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       component.techRecord!.dimensions = undefined;
+      fixture.detectChanges();
 
-      checkHeadingAndForm(mockRecord);
+      checkHeadingAndForm();
     });
 
     it('should show TRL record found', async () => {
-      const mockRecord = createMockTrl(12345);
       component.isEditing = false;
       component.techRecord = {
-        ...mockRecord.techRecord[0],
+        ...createMockTrl(12345).techRecord[0],
         letterOfAuth: {} as LettersOfAuth
       };
+      fixture.detectChanges();
+      component.letters.vehicle = createMockTrl(12345);
+      await fixture.whenStable();
 
-      checkHeadingAndForm(mockRecord.techRecord[0]);
+      checkHeadingAndForm();
     });
 
     it('should show TRL record found without dimensions', () => {
-      const mockRecord = createMockTrl(12345).techRecord[0];
       component.isEditing = false;
       component.techRecord = {
-        ...mockRecord,
+        ...createMockTrl(12345).techRecord[0],
         letterOfAuth: {} as LettersOfAuth
       };
-      component.techRecord.dimensions = undefined;
+      component.techRecord!.dimensions = undefined;
+      fixture.detectChanges();
 
-      checkHeadingAndForm(mockRecord);
+      checkHeadingAndForm();
     });
   });
 
   describe('TechRecordSummaryComponent Amend', () => {
     it('should make reason for change null in editMode', () => {
-      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       component.isEditing = true;
-      component.techRecord = mockRecord;
+      component.techRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      fixture.detectChanges();
 
-      checkHeadingAndForm(mockRecord);
+      checkHeadingAndForm();
     });
   });
 
