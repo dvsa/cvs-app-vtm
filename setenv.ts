@@ -31,7 +31,8 @@ const environmentFileContent = `export const environment = {
 
 const cypressCredsFile = JSON.stringify({
   aad_username: process.env['AAD_USER'],
-  aad_password: process.env['AAD_PASSWORD']
+  aad_password: process.env['AAD_PASSWORD'],
+  vtm_api_uri: process.env['VTM_API_URI']
 });
 
 const filesToWrite = [
