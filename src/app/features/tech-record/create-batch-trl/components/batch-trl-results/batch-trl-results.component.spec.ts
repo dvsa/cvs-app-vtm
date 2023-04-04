@@ -30,4 +30,15 @@ describe('BatchTrlResultsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should expose relevant observables', () => {
+    expect(component.batchCount$).toBeTruthy();
+    expect(component.batchSuccessCount$).toBeTruthy();
+    expect(component.batchCreatedCount$).toBeTruthy();
+    expect(component.batchTotalCreatedCount$).toBeTruthy();
+    expect(component.batchUpdatedCount$).toBeTruthy();
+    expect(component.batchTotalUpdatedCount$).toBeTruthy();
+    expect(component.applicationId$).toBeTruthy();
+    expect(component.batchVehiclesSuccess$).toBeTruthy();
+  });
 });

@@ -1,13 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormControlStatus, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { combineLatest, Observable, Subject, take } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from 'rxjs';
 
 @Component({
   selector: 'app-batch-trl-details',
@@ -28,7 +28,10 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     private route: ActivatedRoute,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.form = this.fb.group({ vehicles: this.fb.array([]), applicationId: new FormControl(null, [Validators.required]) });
+    this.form = this.fb.group({
+      vehicles: this.fb.array([]),
+      applicationId: new FormControl(null, [Validators.required])
+    });
 
     this.addVehicles(this.maxNumberOfVehicles);
 
@@ -68,13 +71,23 @@ export class BatchTrlDetailsComponent implements OnDestroy {
 
   get vehicleForm(): FormGroup {
     return this.fb.group({
-      vin: [null, [Validators.minLength(3), Validators.maxLength(21)], [this.technicalRecordService.validateVin()]],
-      trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]]
+      vin: new CustomFormControl(
+        { name: 'vin', type: FormNodeTypes.CONTROL },
+        null,
+        [Validators.minLength(3), Validators.maxLength(21)],
+        this.technicalRecordService.validateForBatch()
+      ),
+      trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]],
+      systemNumber: ['']
     });
   }
 
-  getVin(group: AbstractControl): AbstractControl | null {
-    return group.get('vin');
+  validate(group: AbstractControl): void {
+    group.get('vin')!.updateValueAndValidity();
+  }
+
+  getVinControl(group: AbstractControl): CustomFormControl | null {
+    return group.get('vin') as CustomFormControl | null;
   }
 
   addVehicles(n: number): void {
@@ -93,8 +106,9 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  handleSubmit(): void {
-    if (this.form.invalid) return this.showErrors();
+  async handleSubmit(): Promise<void> {
+    const valid = await this.isFormValid();
+    if (!valid) return;
 
     this.globalErrorService.setErrors([]);
     this.technicalRecordService.setApplicationId(this.form.get('applicationId')?.value);
@@ -104,5 +118,29 @@ export class BatchTrlDetailsComponent implements OnDestroy {
 
   private cleanEmptyValues(input: { vin: string; trailerId?: string }[]): { vin: string; trailerId?: string }[] {
     return input.filter(formInput => !!formInput.vin);
+  }
+
+  async isFormValid(): Promise<boolean> {
+    this.globalErrorService.clearErrors();
+    this.form.markAllAsTouched();
+
+    const errors: GlobalError[] = [];
+
+    DynamicFormService.validate(this.form, errors, true);
+    await firstValueFrom(this.formStatus);
+
+    if (errors?.length) {
+      this.globalErrorService.setErrors(errors);
+    }
+
+    if (this.cleanEmptyValues(this.vehicles.value).length == 0) {
+      this.globalErrorService.addError({ error: 'At least 1 vehicle must be created or updated in a batch' });
+      return false;
+    }
+    return this.form.valid;
+  }
+
+  get formStatus(): Observable<FormControlStatus> {
+    return this.form.statusChanges.pipe(filter(status => status !== 'PENDING'));
   }
 }
