@@ -53,8 +53,6 @@ Cypress.Commands.add('loginToAAD', () => {
     },
     {
       validate: () => {
-        // this is a very basic form of session validation for this demo.
-        // depending on your needs, something more verbose might be needed
         cy.visit('http://localhost:4200');
       }
     }
