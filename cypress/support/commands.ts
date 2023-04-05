@@ -2,7 +2,7 @@
 declare namespace Cypress {
   interface Chainable {
     loginToAAD(): Chainable<JQuery<HTMLElement>>;
-    createVehicle(vin: string): Chainable<JQuery<HTMLElement>>;
+    createVehicle(vin: string, statusCode: string, primaryVrm: string): Chainable<JQuery<HTMLElement>>;
   }
 }
 
@@ -32,26 +32,26 @@ function loginViaAAD(username: string, password: string) {
   cy.url().should('equal', 'http://localhost:4200/');
 }
 
-function createVehicle(vin: string) {
+function createVehicle(vin: string, statusCode: string, primaryVrm: string) {
   const techRecord = [
     {
       vehicleType: 'psv',
       vehicleClass: { code: '4', description: 'MOT class 4' },
       bodyType: { code: 'b', description: 'box' },
       reasonForCreation: 'Cypress auto testing',
-      brakes: { brakeCode: '123' }
+      brakes: { brakeCode: '123' },
+      statusCode
     }
   ];
   const body = {
     vin,
-    primaryVrm: '1234',
+    primaryVrm,
     techRecord,
     msUserDetails: { msUser: '123', msOid: '123' }
   };
   const headers = {
     authorization: 'Bearer ' + window.localStorage.getItem('accessToken')
   };
-  console.log(headers);
   cy.request({ method: 'POST', url: Cypress.env('vtm_api_uri') + '/vehicles', headers, body }).then(response => {
     expect(response.body).to.have.property('systemNumber');
   });
@@ -61,7 +61,7 @@ Cypress.Commands.add('loginToAAD', () => {
   const username = Cypress.env('aad_username');
   const password = Cypress.env('aad_password');
   cy.session(
-    `aad-${username}`,
+    `loginSession`,
     () => {
       const log = Cypress.log({
         displayName: 'Azure Active Directory Login',
@@ -80,11 +80,12 @@ Cypress.Commands.add('loginToAAD', () => {
     {
       validate: () => {
         cy.visit('http://localhost:4200');
-      }
+      },
+      cacheAcrossSpecs: true
     }
   );
 });
 
-Cypress.Commands.add('createVehicle', (vin: string) => {
-  createVehicle(vin);
+Cypress.Commands.add('createVehicle', (vin: string, statusCode: string, primaryVrm: string) => {
+  createVehicle(vin, statusCode, primaryVrm);
 });
