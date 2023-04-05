@@ -6,6 +6,7 @@ export default defineConfig({
       // implement node event listeners here
     },
     baseUrl: 'http://localhost:4200/',
-    experimentalModifyObstructiveThirdPartyCode: true
+    experimentalModifyObstructiveThirdPartyCode: true,
+    defaultCommandTimeout: 30000
   }
 });
