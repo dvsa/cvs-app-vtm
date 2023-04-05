@@ -4,6 +4,7 @@ describe('LGV technical record', () => {
   beforeEach(() => {
     cy.loginToAAD();
     cy.visit('');
+    cy.get('#search-for-technical-record-link', { timeout: 10000 }).should('be.visible');
   });
   it('should create a new LGV', () => {
     const vin = randomString(10);
