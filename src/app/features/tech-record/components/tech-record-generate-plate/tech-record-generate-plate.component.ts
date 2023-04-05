@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlatesInner } from '@api/vehicle';
@@ -17,7 +17,7 @@ import { take } from 'rxjs';
   templateUrl: './tech-record-generate-plate.component.html',
   styleUrls: ['./tech-record-generate-plate.component.scss']
 })
-export class GeneratePlateComponent {
+export class GeneratePlateComponent implements OnInit {
   form = new FormGroup({
     reason: new CustomFormControl({ name: 'reason', label: 'Reason for generating plate', type: FormNodeTypes.CONTROL }, '', [Validators.required])
   });
@@ -32,9 +32,18 @@ export class GeneratePlateComponent {
     private store: Store<TechnicalRecordServiceState>,
     public userService: UserService
   ) {
-    this.store.select(editableTechRecord).subscribe(record => {
-      if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
-      this.record = record;
+    this.store
+      .select(editableTechRecord)
+      .pipe(take(1))
+      .subscribe(record => {
+        if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
+        this.record = record;
+      });
+  }
+
+  ngOnInit(): void {
+    this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => {
+      this.navigateBack();
     });
   }
 
@@ -67,8 +76,6 @@ export class GeneratePlateComponent {
     if (!this.form.value.reason) {
       return this.globalErrorService.addError({ error: 'Reason for generating plate is required', anchorLink: 'reason' });
     }
-
-    this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => this.navigateBack());
 
     this.store.dispatch(generatePlate({ reason: this.form.value.reason }));
   }
