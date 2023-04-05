@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { UserService } from '@services/user-service/user-service';
 import { generatePlateSuccess, generatePlate, editableTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { take } from 'rxjs';
+import { Observable, map, take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-generate-plate',
@@ -22,7 +22,7 @@ export class GeneratePlateComponent implements OnInit {
     reason: new CustomFormControl({ name: 'reason', label: 'Reason for generating plate', type: FormNodeTypes.CONTROL }, '', [Validators.required])
   });
 
-  record?: TechRecordModel;
+  record$: Observable<TechRecordModel | undefined>;
 
   constructor(
     private actions$: Actions,
@@ -32,13 +32,11 @@ export class GeneratePlateComponent implements OnInit {
     private store: Store<TechnicalRecordServiceState>,
     public userService: UserService
   ) {
-    this.store
-      .select(editableTechRecord)
-      .pipe(take(1))
-      .subscribe(record => {
+    this.record$ = this.store.select(editableTechRecord).pipe(
+      tap(record => {
         if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
-        this.record = record;
-      });
+      })
+    );
   }
 
   ngOnInit(): void {
@@ -62,8 +60,8 @@ export class GeneratePlateComponent implements OnInit {
     ];
   }
 
-  get emailAddress(): string | undefined {
-    return this.record?.applicantDetails?.emailAddress;
+  get emailAddress$(): Observable<string | undefined> {
+    return this.record$.pipe(map(record => record?.applicantDetails?.emailAddress));
   }
 
   navigateBack() {
