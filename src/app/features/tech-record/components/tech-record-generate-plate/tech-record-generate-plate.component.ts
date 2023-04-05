@@ -22,7 +22,7 @@ export class GeneratePlateComponent implements OnInit {
     reason: new CustomFormControl({ name: 'reason', label: 'Reason for generating plate', type: FormNodeTypes.CONTROL }, '', [Validators.required])
   });
 
-  record$: Observable<TechRecordModel | undefined>;
+  emailAddress$: Observable<string | undefined>;
 
   constructor(
     private actions$: Actions,
@@ -32,10 +32,11 @@ export class GeneratePlateComponent implements OnInit {
     private store: Store<TechnicalRecordServiceState>,
     public userService: UserService
   ) {
-    this.record$ = this.store.select(editableTechRecord).pipe(
+    this.emailAddress$ = this.store.select(editableTechRecord).pipe(
       tap(record => {
         if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
-      })
+      }),
+      map(record => record?.applicantDetails?.emailAddress)
     );
   }
 
@@ -58,10 +59,6 @@ export class GeneratePlateComponent implements OnInit {
       { label: 'Original', value: PlatesInner.PlateReasonForIssueEnum.Original },
       { label: 'Manual', value: PlatesInner.PlateReasonForIssueEnum.Manual }
     ];
-  }
-
-  get emailAddress$(): Observable<string | undefined> {
-    return this.record$.pipe(map(record => record?.applicantDetails?.emailAddress));
   }
 
   navigateBack() {
