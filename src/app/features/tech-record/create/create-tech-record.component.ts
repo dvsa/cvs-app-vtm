@@ -179,7 +179,6 @@ export class CreateTechRecordComponent implements OnChanges {
 
   async isTrailerIdUnique() {
     this.vehicle.trailerId = this.form.value.vrmTrm;
-    this.vehicle.vrms = [{ vrm: this.form.value.vrmTrm, isPrimary: true }];
     const isTrailerIdUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.vehicle.trailerId!, SEARCH_TYPES.TRAILER_ID));
     if (!isTrailerIdUnique) {
       this.globalErrorService.addError({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });

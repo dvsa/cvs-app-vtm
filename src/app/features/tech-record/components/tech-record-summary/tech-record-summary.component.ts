@@ -70,6 +70,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    let isOnInit = true;
     this.store
       .pipe(
         select(editableTechRecord),
@@ -85,7 +86,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
               this.techRecord.axles = axles;
             }
 
-            this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
+            isOnInit && this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
 
             return { ...cloneDeep(this.techRecord), reasonForCreation: '' };
           }
@@ -98,6 +99,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
+    isOnInit = false;
   }
 
   ngOnDestroy(): void {

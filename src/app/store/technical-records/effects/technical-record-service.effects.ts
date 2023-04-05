@@ -161,7 +161,7 @@ export class TechnicalRecordServiceEffects {
     this.actions$.pipe(
       ofType(updateTechRecords),
       withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
-      switchMap(([action, record, name, id]) =>
+      concatMap(([action, record, name, id]) =>
         this.technicalRecordService
           .updateTechRecords(action.systemNumber, record!, { id, name }, action.recordToArchiveStatus, action.newStatus)
           .pipe(

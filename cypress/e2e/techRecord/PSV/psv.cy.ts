@@ -1,5 +1,5 @@
 let vin: string;
-describe('View the home page', () => {
+describe('PSV technical record', () => {
   beforeEach(() => {
     cy.loginToAAD();
     cy.visit('');
@@ -16,8 +16,8 @@ describe('View the home page', () => {
     cy.get('.govuk-accordion__show-all-text').click();
     cy.get('#reasonForCreation').type('testing create');
     cy.get('#vehicleClassDescription').select('2: not applicable');
-    cy.get('#dtpNumber').click();
-    cy.get('#dtpNumber__option--2').click();
+    cy.get('#dtpNumber').type('00');
+    cy.get('#dtpNumber__option--1').click();
     cy.wait(400);
     cy.get('app-button > #submit-record-continue').click();
     cy.get('@create-vehicle').its('response', { timeout: 12000 }).should('have.property', 'statusCode', 201);
@@ -64,39 +64,28 @@ describe('View the home page', () => {
     cy.get('#status-code').should('have.text', 'Current');
   });
 
-  it('should create a new LGV', () => {
-    vin = randomString(10);
-    cy.intercept('POST', '/develop/vehicles').as('create-vehicle');
-    cy.get('#create-new-technical-record-link').click();
-    cy.get('#input-vin').type(vin);
-    cy.get('#generate-c-t-z-num-true-checkbox').click();
-    cy.get('#change-vehicle-type-select').select('2: lgv');
-    cy.get(':nth-child(6) > #create-record-continue').click();
-    cy.get('.govuk-accordion__show-all-text').click();
-    cy.get('#reasonForCreation').type('testing create');
-    cy.get('#vehicleSubclass-l-checkbox').click();
-    cy.wait(400);
-    cy.get('app-button > #submit-record-continue').click();
-    cy.get('@create-vehicle').its('response', { timeout: 12000 }).should('have.property', 'statusCode', 201);
-  });
-
-  it('should create a DBA', () => {
+  it('should amend the vehicle approval type', () => {
     cy.get('#search-for-technical-record-link').click();
     cy.get('#search-term').type(vin + '{enter}');
     cy.get('a').contains('Select technical record').click();
-    cy.get('#create-test').click();
-    cy.get('#test-list-item-400', { timeout: 12000 }).click();
-    cy.get('#browse-list-item-413').click();
-    cy.get('#browse-list-item-433').click();
-    cy.get('#reasonForCreation', { timeout: 15000 }).type('testing create DBA');
-    cy.get('#certificateNumber').type('123456');
-    cy.get('#review-test-result').click();
-    cy.get('#submit-test-result').click();
-    cy.get('#test-record-summary-name-0').should('have.text', 'IVA17 Appeal for IVA');
+    cy.get('.govuk-accordion__show-all-text').click();
+    cy.get('#test-approvalType').should('have.text', ' - ');
+    cy.get('#test-approvalType').should('not.have.text', ' NTA ');
+    cy.get('app-button > #edit').click();
+    cy.get('#reason-correcting-an-error-radio').click();
+    cy.get('#submit').click();
+    cy.get('.govuk-accordion__show-all-text').click();
+    cy.get('#reasonForCreation').type('amending approval type');
+    cy.get('#approvalType').select('1: NTA');
+    cy.get('.govuk-button-group > :nth-child(1) > #submit').click();
+    cy.intercept('GET', '/develop/vehicles/**').as('get-vehicle');
+    cy.wait('@get-vehicle');
+    cy.get('.govuk-accordion__show-all-text').click();
+    cy.get('#test-approvalType').should('have.text', ' NTA ');
   });
 });
 
-const randomString = (length: number = 5) => {
+export const randomString = (length: number = 5) => {
   const randomString = (Math.random() + 1).toString(36);
   return randomString.substring(randomString.length - length);
 };

@@ -163,7 +163,7 @@ describe('TestRecordComponent', () => {
       store.overrideSelector(testResultInEdit, testRecord);
       store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1']!));
 
-      tick();
+      tick(1000);
       fixture.detectChanges();
 
       component.isAnyFormDirty = jest.fn().mockReturnValue(true);
@@ -171,7 +171,7 @@ describe('TestRecordComponent', () => {
 
       component.handleSave();
 
-      tick();
+      tick(1000);
 
       expect(updateTestResultStateSpy).toHaveBeenCalledTimes(1);
       expect(updateTestResultStateSpy).toHaveBeenCalledWith(testRecord);
