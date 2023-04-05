@@ -3,6 +3,7 @@ declare namespace Cypress {
   interface Chainable {
     loginToAAD(): Chainable<JQuery<HTMLElement>>;
     createVehicle(vehicleType: string, vin: string, statusCode: string, primaryVrm: string): Chainable<JQuery<HTMLElement>>;
+    createVehicleAndTest(vehicleType: string, vin: string, primaryVrm: string, testTypeId: string): Chainable<JQuery<HTMLElement>>;
   }
 }
 
@@ -50,6 +51,36 @@ function createVehicle(vehicleType: string, vin: string, statusCode: string, pri
   });
 }
 
+function createTest(vehicleType: string, vin: string, primaryVrm: string, testTypeId: string) {
+  cy.fixture(vehicleType).then(techRecord => {
+    techRecord.statusCode = 'current';
+    const body = {
+      vin,
+      primaryVrm,
+      msUserDetails: { msUser: '123', msOid: '123' },
+      techRecord: [techRecord]
+    };
+    const headers = {
+      authorization: 'Bearer ' + window.localStorage.getItem('accessToken')
+    };
+    cy.request({ method: 'POST', url: Cypress.env('vtm_api_uri') + '/vehicles', headers, body }).then(response => {
+      cy.fixture(testTypeId).then(testRecord => {
+        testRecord.systemNumber = response.body.systemNumber;
+        testRecord.testResultId = randomString(15);
+        testRecord.testStartTimestamp = new Date().toISOString();
+        testRecord.testEndTimestamp = new Date().toISOString();
+        testRecord.testTypes[0].testTypeStartTimestamp = new Date().toISOString();
+        testRecord.testTypes[0].testTypeEndTimestamp = new Date().toISOString();
+        testRecord.vin = vin;
+        const testBody = testRecord;
+        cy.request({ method: 'POST', url: Cypress.env('vtm_api_uri') + '/test-results', headers, body: testBody }).then(response => {
+          expect(response.status).to.equal(201);
+        });
+      });
+    });
+  });
+}
+
 Cypress.Commands.add('loginToAAD', () => {
   const username = Cypress.env('aad_username');
   const password = Cypress.env('aad_password');
@@ -82,3 +113,11 @@ Cypress.Commands.add('loginToAAD', () => {
 Cypress.Commands.add('createVehicle', (vehicleType: string, vin: string, statusCode: string, primaryVrm: string) => {
   createVehicle(vehicleType, vin, statusCode, primaryVrm);
 });
+Cypress.Commands.add('createVehicleAndTest', (vehicleType: string, vin: string, primaryVrm: string, testTypeId: string) => {
+  createTest(vehicleType, vin, primaryVrm, testTypeId);
+});
+
+const randomString = (length: number = 5) => {
+  const randomString = (Math.random() + 1).toString(36);
+  return randomString.substring(randomString.length - length);
+};
