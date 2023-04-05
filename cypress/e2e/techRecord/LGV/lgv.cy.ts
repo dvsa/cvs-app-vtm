@@ -1,13 +1,12 @@
-import { randomString } from '../PSV/psv.cy';
+import { randomString } from '../../../support/functions';
 
-let vin: string;
 describe('LGV technical record', () => {
   beforeEach(() => {
     cy.loginToAAD();
     cy.visit('');
   });
   it('should create a new LGV', () => {
-    vin = randomString(10);
+    const vin = randomString(10);
     cy.intercept('POST', '/develop/vehicles').as('create-vehicle');
     cy.get('#create-new-technical-record-link').click();
     cy.get('#input-vin').type(vin);
@@ -22,7 +21,9 @@ describe('LGV technical record', () => {
     cy.get('@create-vehicle').its('response', { timeout: 12000 }).should('have.property', 'statusCode', 201);
   });
 
-  it('should create a DBA', () => {
+  it.only('should create a DBA', () => {
+    const vin = randomString(10);
+    cy.createVehicle('lgv', vin, 'current', randomString(7));
     cy.get('#search-for-technical-record-link').click();
     cy.get('#search-term').type(vin + '{enter}');
     cy.get('a').contains('Select technical record').click();
@@ -35,6 +36,25 @@ describe('LGV technical record', () => {
     cy.wait(400);
     cy.get('#review-test-result').click();
     cy.get('#submit-test-result').click();
-    cy.get('#test-record-summary-name-0').should('have.text', 'IVA17 Appeal for IVA');
+    cy.get('#test-record-summary-name-0', { timeout: 10000 }).should('have.text', 'IVA17 Appeal for IVA');
+  });
+
+  it('should amend the test result', () => {
+    const vin = randomString(10);
+    cy.createVehicle('lgv', vin, 'current', randomString(7));
+    cy.get('#search-for-technical-record-link').click();
+    cy.get('#search-term').type(vin + '{enter}');
+    cy.get('a').contains('Select technical record').click();
+    cy.get('#view-test-1').click();
+    cy.get('.govuk-tag--green', { timeout: 10000 }).should('have.text', 'Pass');
+    cy.get('#amend-test').click();
+    cy.get('#submit').click();
+    cy.get('.govuk-accordion__show-all-text').click();
+    cy.get('#reasonForCreation', { timeout: 15000 }).type('testing amend DBA');
+    cy.get('#testResult-fail-radio').click();
+    cy.wait(400);
+    cy.get('#review-test-result').click();
+    cy.get('#save-test-result').click();
+    cy.get('.govuk-tag--red', { timeout: 10000 }).should('have.text', 'Fail');
   });
 });

@@ -2,7 +2,7 @@
 declare namespace Cypress {
   interface Chainable {
     loginToAAD(): Chainable<JQuery<HTMLElement>>;
-    createVehicle(vin: string, statusCode: string, primaryVrm: string): Chainable<JQuery<HTMLElement>>;
+    createVehicle(vehicleType: string, vin: string, statusCode: string, primaryVrm: string): Chainable<JQuery<HTMLElement>>;
   }
 }
 
@@ -32,28 +32,21 @@ function loginViaAAD(username: string, password: string) {
   cy.url().should('equal', 'http://localhost:4200/');
 }
 
-function createVehicle(vin: string, statusCode: string, primaryVrm: string) {
-  const techRecord = [
-    {
-      vehicleType: 'psv',
-      vehicleClass: { code: '4', description: 'MOT class 4' },
-      bodyType: { code: 'b', description: 'box' },
-      reasonForCreation: 'Cypress auto testing',
-      brakes: { brakeCode: '123' },
-      statusCode
-    }
-  ];
-  const body = {
-    vin,
-    primaryVrm,
-    techRecord,
-    msUserDetails: { msUser: '123', msOid: '123' }
-  };
-  const headers = {
-    authorization: 'Bearer ' + window.localStorage.getItem('accessToken')
-  };
-  cy.request({ method: 'POST', url: Cypress.env('vtm_api_uri') + '/vehicles', headers, body }).then(response => {
-    expect(response.body).to.have.property('systemNumber');
+function createVehicle(vehicleType: string, vin: string, statusCode: string, primaryVrm: string) {
+  cy.fixture(vehicleType).then(techRecord => {
+    techRecord.statusCode = statusCode;
+    const body = {
+      vin,
+      primaryVrm,
+      msUserDetails: { msUser: '123', msOid: '123' },
+      techRecord: [techRecord]
+    };
+    const headers = {
+      authorization: 'Bearer ' + window.localStorage.getItem('accessToken')
+    };
+    cy.request({ method: 'POST', url: Cypress.env('vtm_api_uri') + '/vehicles', headers, body }).then(response => {
+      expect(response.body).to.have.property('systemNumber');
+    });
   });
 }
 
@@ -86,6 +79,6 @@ Cypress.Commands.add('loginToAAD', () => {
   );
 });
 
-Cypress.Commands.add('createVehicle', (vin: string, statusCode: string, primaryVrm: string) => {
-  createVehicle(vin, statusCode, primaryVrm);
+Cypress.Commands.add('createVehicle', (vehicleType: string, vin: string, statusCode: string, primaryVrm: string) => {
+  createVehicle(vehicleType, vin, statusCode, primaryVrm);
 });

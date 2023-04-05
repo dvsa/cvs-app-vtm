@@ -1,3 +1,5 @@
+import { randomString } from '../../../support/functions';
+
 let vin: string;
 describe('PSV technical record', () => {
   beforeEach(() => {
@@ -77,6 +79,7 @@ describe('PSV technical record', () => {
     cy.get('.govuk-accordion__show-all-text').click();
     cy.get('#reasonForCreation').type('amending approval type');
     cy.get('#approvalType').select('1: NTA');
+    cy.wait(400);
     cy.get('.govuk-button-group > :nth-child(1) > #submit').click();
     cy.intercept('GET', '/develop/vehicles/**').as('get-vehicle');
     cy.wait('@get-vehicle');
@@ -84,8 +87,3 @@ describe('PSV technical record', () => {
     cy.get('#test-approvalType').should('have.text', ' NTA ');
   });
 });
-
-export const randomString = (length: number = 5) => {
-  const randomString = (Math.random() + 1).toString(36);
-  return randomString.substring(randomString.length - length);
-};
