@@ -9,7 +9,6 @@ declare namespace Cypress {
 function loginViaAAD(username: string, password: string) {
   //Login to your AAD tenant.
   cy.visit('');
-  cy.get('input[type="email"]', { timeout: 10000 }).should('be.visible');
   cy.origin(
     'login.microsoftonline.com',
     {
