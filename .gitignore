@@ -57,3 +57,5 @@ cypress.env.json
 cypress/videos
 cypress/screenshots
 runner-results
+multi-reporter-config.json
+cypress/parallel-weights.json
