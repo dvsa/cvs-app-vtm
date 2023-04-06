@@ -7,6 +7,8 @@ export default defineConfig({
     },
     baseUrl: 'http://localhost:4200/',
     experimentalModifyObstructiveThirdPartyCode: true,
-    defaultCommandTimeout: 30000
+    defaultCommandTimeout: 30000,
+    videoCompression: false,
+    videoUploadOnPasses: false
   }
 });
