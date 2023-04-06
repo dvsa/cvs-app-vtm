@@ -1,6 +1,5 @@
 import { randomString } from '../../../support/functions';
 
-let vin: string;
 describe('PSV technical record', () => {
   beforeEach(() => {
     cy.loginToAAD();
@@ -9,7 +8,7 @@ describe('PSV technical record', () => {
   });
 
   it('should create a new PSV', () => {
-    vin = randomString(10);
+    const vin = randomString(10);
     cy.intercept('POST', '/develop/vehicles').as('create-vehicle');
     cy.get('#create-new-technical-record-link').click();
     cy.get('#input-vin').type(vin);
@@ -27,6 +26,8 @@ describe('PSV technical record', () => {
   });
 
   it('should amend the vehicle type', () => {
+    const vin = randomString(10);
+    cy.createVehicle('psv', vin, 'provisional', randomString(7));
     cy.get('#search-for-technical-record-link').click();
     cy.get('#search-term').type(vin + '{enter}');
     cy.get('a').contains('Select technical record').click();
@@ -44,9 +45,15 @@ describe('PSV technical record', () => {
 
   it('should amend the vrm', () => {
     const newVrm = randomString(7);
+    const vin = randomString(10);
+    cy.createVehicle('psv', vin, 'current', randomString(7));
     cy.get('#search-for-technical-record-link').click();
     cy.get('#search-term').type(vin + '{enter}');
     cy.get('a').contains('Select technical record').click();
+    cy.get('#current-vrm-span').should(vrm => {
+      const vrmSplit = newVrm.slice(0, newVrm.length - 3) + ' ' + newVrm.slice(newVrm.length - 3);
+      expect(vrm).not.to.contain(vrmSplit.toUpperCase());
+    });
     cy.get('app-button > #change-vrm-link').click();
     cy.get('.govuk-input').type(newVrm);
     cy.get('#-true-radio').click();
@@ -58,6 +65,8 @@ describe('PSV technical record', () => {
   });
 
   it('should promote the record', () => {
+    const vin = randomString(10);
+    cy.createVehicle('psv', vin, 'provisional', randomString(7));
     cy.get('#search-for-technical-record-link').click();
     cy.get('#search-term').type(vin + '{enter}');
     cy.get('a').contains('Select technical record').click();
@@ -67,7 +76,9 @@ describe('PSV technical record', () => {
     cy.get('#status-code').should('have.text', 'Current');
   });
 
-  it('should amend the vehicle approval type', () => {
+  it('should amend the vehicle', () => {
+    const vin = randomString(10);
+    cy.createVehicle('psv', vin, 'current', randomString(7));
     cy.get('#search-for-technical-record-link').click();
     cy.get('#search-term').type(vin + '{enter}');
     cy.get('a').contains('Select technical record').click();
@@ -80,6 +91,8 @@ describe('PSV technical record', () => {
     cy.get('.govuk-accordion__show-all-text').click();
     cy.get('#reasonForCreation').type('amending approval type');
     cy.get('#approvalType').select('1: NTA');
+    cy.get('#dtpNumber').type('00');
+    cy.get('#dtpNumber__option--1').click();
     cy.wait(400);
     cy.get('.govuk-button-group > :nth-child(1) > #submit').click();
     cy.intercept('GET', '/develop/vehicles/**').as('get-vehicle');

@@ -1,5 +1,0 @@
-{
-  "cypress/e2e/techRecord/LGV/lgv.cy.ts": { "time": 26016, "weight": 5 },
-  "cypress/e2e/techRecord/PSV/psv.cy.ts": { "time": 67799, "weight": 15 },
-  "cypress/e2e/testResults/LGV/DBA.cy.ts": { "time": 39347, "weight": 8 }
-}
