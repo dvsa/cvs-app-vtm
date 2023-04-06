@@ -30,7 +30,7 @@
     "postinstall": "ngcc",
     "e2e": "npm run config && cypress run",
     "e2e:open": "npm run config && cypress open",
-    "cy:parallel": "cypress-parallel -s e2e -t 3 -d cypress/e2e"
+    "e2e:parallel": "cypress-parallel -s e2e -t 3 -d cypress/e2e"
   },
   "private": true,
   "dependencies": {
