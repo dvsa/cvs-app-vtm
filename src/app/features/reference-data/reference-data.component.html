@@ -1,0 +1,11 @@
+<div class="govuk-grid-row search-page" *appRoleRequired="roles.Admin">
+  <div class="govuk-grid-column-full">
+    <!-- <p class="govuk-heading-xl govuk-!-font-weight-bold">Search for a reference data</p> -->
+    <app-radio-group name="reference-data" label="Search for a reference data" formControlName="reference-data" [options]="references">
+    </app-radio-group>
+    <app-button-group>
+      <app-button id="submit">Continue</app-button>
+      <app-button id="cancel" design="link" (clicked)="cancel()">Cancel</app-button>
+    </app-button-group>
+  </div>
+</div>

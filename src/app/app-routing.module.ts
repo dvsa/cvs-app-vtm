@@ -41,6 +41,12 @@ const routes: Routes = [
         loadChildren: () => import('./features/tech-record/create-batch-trl/create-batch-trl.module').then(m => m.CreateBatchTrlModule)
       },
       {
+        path: 'reference-data',
+        data: { title: 'Reference data', roles: Roles.Admin },
+        canActivate: [MsalGuard, RoleGuard],
+        loadChildren: () => import('./features/reference-data/reference-data.module').then(m => m.ReferenceDataModule)
+      },
+      {
         path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
         data: { title: 'Test Result', roles: Roles.TestResultView },
         canActivate: [MsalGuard, RoleGuard],
