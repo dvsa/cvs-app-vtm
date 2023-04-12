@@ -31,7 +31,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
     private technicalRecordService: TechnicalRecordService
   ) {
     this.actions$
-      .pipe(ofType(createVehicleRecordSuccess), take(1), takeUntil(this.destroy$))
+      .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
       .subscribe(({ vehicleTechRecords }) => this.navigateTo(['/tech-records', vehicleTechRecords[0].systemNumber]));
   }
 

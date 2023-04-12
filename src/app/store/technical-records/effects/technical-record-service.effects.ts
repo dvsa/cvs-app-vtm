@@ -270,7 +270,7 @@ export class TechnicalRecordServiceEffects {
 
   mapVehicleFromResponse(response: PostNewVehicleModel | PutVehicleTechRecordModel): VehicleTechRecordModel {
     let trailerId: string | undefined;
-    let vrms: Vrm[] = [];
+    const vrms: Vrm[] = [];
 
     if (response.techRecord[0].vehicleType === VehicleTypes.TRL) {
       trailerId = response.primaryVrm;
