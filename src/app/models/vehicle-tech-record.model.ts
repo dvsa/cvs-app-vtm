@@ -8,8 +8,7 @@ export interface VehicleTechRecordModel {
   techRecord: TechRecordModel[];
 }
 
-export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms' | 'trailerId'> {
-  partialVin?: string;
+export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'> {
   primaryVrm?: string;
   secondaryVrms?: string[];
 }
