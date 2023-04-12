@@ -14,8 +14,6 @@ export class PhaseBannerComponent implements OnInit {
   ngOnInit(): void {}
 
   get feedbackUri(): string {
-    this.count++;
-    console.log(this.count);
     return environment.FEEDBACK_URI;
   }
 }
