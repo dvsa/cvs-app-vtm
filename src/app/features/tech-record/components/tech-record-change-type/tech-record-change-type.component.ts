@@ -74,7 +74,10 @@ export class ChangeVehicleTypeComponent {
       return this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
     }
 
-    if (selectedVehicleType === VehicleTypes.TRL && this.techRecord?.euVehicleCategory === EuVehicleCategories.O1) {
+    if (
+      selectedVehicleType === VehicleTypes.TRL &&
+      (this.techRecord?.euVehicleCategory === EuVehicleCategories.O1 || this.techRecord?.euVehicleCategory === EuVehicleCategories.O2)
+    ) {
       return this.globalErrorService.addError({
         error: "You cannot change vehicle type to TRL when EU vehicle category is set to 'O1'",
         anchorLink: 'selectedVehicleType'

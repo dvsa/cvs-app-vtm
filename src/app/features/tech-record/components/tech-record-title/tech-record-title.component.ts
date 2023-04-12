@@ -68,7 +68,8 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   getVehicleType(techRecord: TechRecordModel): VehicleTypes {
-    return techRecord.vehicleType === VehicleTypes.TRL && techRecord.euVehicleCategory === EuVehicleCategories.O1
+    return techRecord.vehicleType === VehicleTypes.TRL &&
+      (techRecord.euVehicleCategory === EuVehicleCategories.O1 || techRecord.euVehicleCategory === EuVehicleCategories.O2)
       ? VehicleTypes.SMALL_TRL
       : techRecord.vehicleType;
   }

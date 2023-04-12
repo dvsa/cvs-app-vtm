@@ -81,7 +81,8 @@ export class TechnicalRecordService {
   }
 
   getVehicleTypeWithSmallTrl(techRecord?: TechRecordModel): VehicleTypes | undefined {
-    return techRecord?.vehicleType === VehicleTypes.TRL && techRecord.euVehicleCategory === EuVehicleCategories.O1
+    return techRecord?.vehicleType === VehicleTypes.TRL &&
+      (techRecord.euVehicleCategory === EuVehicleCategories.O1 || techRecord.euVehicleCategory === EuVehicleCategories.O2)
       ? VehicleTypes.SMALL_TRL
       : techRecord?.vehicleType;
   }

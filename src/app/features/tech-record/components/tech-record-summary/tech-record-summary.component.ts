@@ -109,7 +109,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
   get vehicleTemplates(): Array<FormNode> {
     const type =
-      this.techRecordCalculated.vehicleType === VehicleTypes.TRL && this.techRecordCalculated.euVehicleCategory === EuVehicleCategories.O1
+      this.techRecordCalculated.vehicleType === VehicleTypes.TRL &&
+      (this.techRecordCalculated.euVehicleCategory === EuVehicleCategories.O1 ||
+        this.techRecordCalculated.euVehicleCategory === EuVehicleCategories.O2)
         ? VehicleTypes.SMALL_TRL
         : this.techRecordCalculated.vehicleType;
 
@@ -125,7 +127,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       case VehicleTypes.HGV:
         return commonCustomSections;
       case VehicleTypes.TRL:
-        return this.techRecordCalculated.euVehicleCategory !== EuVehicleCategories.O1
+        return this.techRecordCalculated.euVehicleCategory !== EuVehicleCategories.O1 &&
+          this.techRecordCalculated.euVehicleCategory !== EuVehicleCategories.O2
           ? [...commonCustomSections, this.trlBrakes!.form, this.letters!.form]
           : [];
       default:
