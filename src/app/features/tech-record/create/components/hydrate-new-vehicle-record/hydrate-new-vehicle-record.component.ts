@@ -32,7 +32,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
   ) {
     this.actions$
       .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
-      .subscribe(({ vehicleTechRecords }) => this.navigateTo(['/tech-records', vehicleTechRecords[0].systemNumber]));
+      .subscribe(({ vehicleTechRecords }) => this.navigate(vehicleTechRecords[0].systemNumber));
   }
 
   ngOnDestroy(): void {
@@ -56,13 +56,13 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
     return VehicleTypes;
   }
 
-  navigateTo(route?: string[]): void {
+  navigate(systemNumber?: string): void {
     this.globalErrorService.clearErrors();
 
-    if (route) {
-      this.router.navigate(route);
+    if (systemNumber) {
+      this.router.navigate(['/tech-records', systemNumber]);
     } else {
-      this.router.navigate(['..'], { relativeTo: this.route });
+      this.router.navigate(['batch-results'], { relativeTo: this.route });
     }
   }
 
@@ -93,7 +93,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
       .subscribe(([vehicleList, isBatch]) => {
         vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle })));
 
-        if (isBatch) this.navigateTo();
+        if (isBatch) this.navigate();
       });
   }
 }

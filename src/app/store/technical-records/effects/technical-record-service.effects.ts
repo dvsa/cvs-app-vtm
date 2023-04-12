@@ -269,18 +269,15 @@ export class TechnicalRecordServiceEffects {
   );
 
   mapVehicleFromResponse(response: PostNewVehicleModel | PutVehicleTechRecordModel): VehicleTechRecordModel {
-    let trailerId: string | undefined;
     const vrms: Vrm[] = [];
 
-    if (response.techRecord[0].vehicleType === VehicleTypes.TRL) {
-      trailerId = response.primaryVrm;
-    } else {
+    if (response.techRecord[0].vehicleType !== VehicleTypes.TRL) {
       response.primaryVrm && vrms.push({ vrm: response.primaryVrm, isPrimary: true });
 
       response.secondaryVrms && vrms.push(...response.secondaryVrms.map(vrm => ({ vrm, isPrimary: false })));
     }
 
-    return { ...response, vrms, trailerId };
+    return { ...response, vrms };
   }
 
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {
