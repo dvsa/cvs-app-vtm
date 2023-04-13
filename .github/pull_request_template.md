@@ -1,7 +1,7 @@
 ## Ticket title
 
 _One line description_
-[link to ticket number](https://dvsa.atlassian.net/browse/CB2-XXXX)
+[CB2-XXXX](https://dvsa.atlassian.net/browse/CB2-XXXX)
 
 ## Checklist
 
