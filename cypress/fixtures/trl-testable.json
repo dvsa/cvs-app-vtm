@@ -7,7 +7,6 @@
   "suspensionType": "A",
   "notes": "T/S 33 1/9/06",
   "couplingType": "F",
-  "lastUpdatedAt": "2020-01-10T14:04:01.000000Z",
   "brakes": {
     "antilockBrakingSystem": true,
     "dtpNumber": "326577",
@@ -78,7 +77,6 @@
     }
   ],
   "couplingCenterToRearAxleMax": 9430,
-  "createdAt": "2016-03-04T11:25:12.000000Z",
   "maxLoadOnCoupling": 15000,
   "grossGbWeight": 39000,
   "couplingCenterToRearTrlMin": 11365,
@@ -108,11 +106,7 @@
       "type": "SEMI TRAILER TANK",
       "approvalDate": "2016-11-09"
     },
-    "documents": [
-      "3803A48603D2440A802570DD0036C574_A00052593_filename1.pdf",
-      "3803A48603D2440A802570DD0036C574_A00052593_filename3.pdf",
-      "3803A48603D2440A802570DD0036C574_A00052593_filename2.pdf"
-    ],
+    "documents": [],
     "additionalExaminerNotes": "Additional Examiner Notes",
     "adrTypeApprovalNo": null,
     "permittedDangerousGoods": ["FP <61 (FL)", "AT"],
