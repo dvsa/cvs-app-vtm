@@ -107,30 +107,26 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  get vehicleTemplates(): Array<FormNode> {
-    const type =
-      this.techRecordCalculated.vehicleType === VehicleTypes.TRL &&
-      (this.techRecordCalculated.euVehicleCategory === EuVehicleCategories.O1 ||
-        this.techRecordCalculated.euVehicleCategory === EuVehicleCategories.O2)
-        ? VehicleTypes.SMALL_TRL
-        : this.techRecordCalculated.vehicleType;
+  get vehicleType() {
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated);
+  }
 
-    return vehicleTemplateMap.get(type)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? [];
+  get vehicleTemplates(): Array<FormNode> {
+    return (
+      vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
+    );
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
     const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form];
 
-    switch (this.techRecordCalculated.vehicleType) {
+    switch (this.vehicleType) {
       case VehicleTypes.PSV:
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
         return commonCustomSections;
       case VehicleTypes.TRL:
-        return this.techRecordCalculated.euVehicleCategory !== EuVehicleCategories.O1 &&
-          this.techRecordCalculated.euVehicleCategory !== EuVehicleCategories.O2
-          ? [...commonCustomSections, this.trlBrakes!.form, this.letters!.form]
-          : [];
+        return [...commonCustomSections, this.trlBrakes!.form, this.letters!.form];
       default:
         return [];
     }
