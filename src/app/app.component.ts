@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   constructor(public userService: UserService, private loadingService: LoadingService, private router: Router, private store: Store<State>) {
     /** Code to Track Page View using gtag.js */
     this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) gtag('event', 'page_view', { page_path: event.urlAfterRedirects });
+      if (event instanceof NavigationEnd) gtag('config', 'G-SQGJK21GF6', { page_path: event.urlAfterRedirects });
     });
   }
 
