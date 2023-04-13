@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/functions';
 
-describe('LGV technical record', () => {
+describe('HGV technical record', () => {
   beforeEach(() => {
     cy.loginToAAD();
     cy.visit('');

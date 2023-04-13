@@ -1,0 +1,185 @@
+{
+  "bodyType": {
+    "description": "flat",
+    "code": "f"
+  },
+  "frontAxleToRearAxle": 0,
+  "suspensionType": "A",
+  "notes": "T/S 33 1/9/06",
+  "couplingType": "F",
+  "lastUpdatedAt": "2020-01-10T14:04:01.000000Z",
+  "brakes": {
+    "antilockBrakingSystem": true,
+    "dtpNumber": "326577",
+    "loadSensingValve": true
+  },
+  "conversionRefNo": " ",
+  "rearAxleToRearTrl": 1935,
+  "axles": [
+    {
+      "axleNumber": 1,
+      "tyres": {
+        "tyreSize": "385/65-22.5",
+        "fitmentCode": "single",
+        "dataTrAxles": 158,
+        "plyRating": " ",
+        "tyreCode": 383
+      },
+      "parkingBrakeMrk": true,
+      "weights": {
+        "designWeight": 8250,
+        "gbWeight": 8000
+      },
+      "brakes": {
+        "leverLength": 135,
+        "springBrakeParking": true,
+        "brakeActuator": 24
+      }
+    },
+    {
+      "axleNumber": 2,
+      "tyres": {
+        "tyreSize": "385/65-22.5",
+        "fitmentCode": "single",
+        "dataTrAxles": 158,
+        "plyRating": " ",
+        "tyreCode": 383
+      },
+      "parkingBrakeMrk": true,
+      "weights": {
+        "designWeight": 8250,
+        "gbWeight": 8000
+      },
+      "brakes": {
+        "leverLength": 135,
+        "springBrakeParking": true,
+        "brakeActuator": 24
+      }
+    },
+    {
+      "axleNumber": 3,
+      "tyres": {
+        "tyreSize": "385/65-22.5",
+        "fitmentCode": "single",
+        "dataTrAxles": 158,
+        "plyRating": " ",
+        "tyreCode": 383
+      },
+      "parkingBrakeMrk": true,
+      "weights": {
+        "designWeight": 8250,
+        "gbWeight": 8000
+      },
+      "brakes": {
+        "leverLength": 135,
+        "springBrakeParking": true,
+        "brakeActuator": 24
+      }
+    }
+  ],
+  "couplingCenterToRearAxleMax": 9430,
+  "createdAt": "2016-03-04T11:25:12.000000Z",
+  "maxLoadOnCoupling": 15000,
+  "grossGbWeight": 39000,
+  "couplingCenterToRearTrlMin": 11365,
+  "vehicleClass": {
+    "description": "trailer",
+    "code": "t"
+  },
+  "model": " ",
+  "noOfAxles": 3,
+  "make": "DENNISON TRAILERS",
+  "grossDesignWeight": 39000,
+  "vehicleType": "trl",
+  "speedLimiterMrk": false,
+  "recordCompleteness": "complete",
+  "couplingCenterToRearAxleMin": 9430,
+  "vehicleConfiguration": "semi-trailer",
+  "regnDate": "2005-01-01",
+  "couplingCenterToRearTrlMax": 11365,
+  "firstUseDate": "0001-01-01",
+  "ntaNumber": "N000394760",
+  "adrDetails": {
+    "batteryListNumber": null,
+    "declarationsSeen": true,
+    "brakeEndurance": false,
+    "brakeDeclarationIssuer": null,
+    "vehicleDetails": {
+      "type": "SEMI TRAILER TANK",
+      "approvalDate": "2016-11-09"
+    },
+    "documents": [
+      "3803A48603D2440A802570DD0036C574_A00052593_filename1.pdf",
+      "3803A48603D2440A802570DD0036C574_A00052593_filename3.pdf",
+      "3803A48603D2440A802570DD0036C574_A00052593_filename2.pdf"
+    ],
+    "additionalExaminerNotes": "Additional Examiner Notes",
+    "adrTypeApprovalNo": null,
+    "permittedDangerousGoods": ["FP <61 (FL)", "AT"],
+    "weight": null,
+    "memosApply": [],
+    "applicantDetails": {
+      "name": "***",
+      "postcode": "********",
+      "town": "*****",
+      "city": "**",
+      "street": "********"
+    },
+    "compatibilityGroupJ": null,
+    "brakeDeclarationsSeen": true,
+    "additionalNotes": {
+      "number": ["3"],
+      "guidanceNotes": []
+    },
+    "tank": {
+      "tankDetails": {
+        "yearOfManufacture": "2006",
+        "tc2Details": {
+          "tc2IntermediateApprovalNo": "HSB/5640",
+          "tc2IntermediateExpiryDate": null,
+          "tc2Type": null
+        },
+        "tc3Details": [
+          {
+            "tc3PeriodicNumber": "GB/M/14/008953",
+            "tc3PeriodicExpiryDate": "2017-12-11",
+            "tc3Type": null
+          }
+        ],
+        "specialProvisions": null,
+        "tankManufacturerSerialNo": "CTB296ST0644",
+        "tankCode": "L4BN",
+        "tankTypeAppNo": "GB/FT/TCHSB/5055",
+        "tankManufacturer": "CROSSLAND TANKERS"
+      },
+      "tankStatement": {
+        "statement": "B",
+        "productListRefNo": null,
+        "productListUnNo": [null],
+        "substancesPermitted": "B",
+        "productList": "TARS LIQUID CLASS 3 UN NO. 1999 ELEVATED TEMPERATURE LIQUID FLAMMABLE NOS CLASS 3 UN NO. 3256 ELEVATED TEMPERATURE LIQUID NOS CLASS 9 UN NO. 3257"
+      }
+    },
+    "listStatementApplicable": false
+  },
+  "reasonForCreation": " ",
+  "roadFriendly": true,
+  "tyreUseCode": "2B",
+  "manufactureYear": 2005,
+  "dimensions": {
+    "axleSpacing": [
+      {
+        "axles": "1",
+        "value": 1310
+      },
+      {
+        "axles": "2",
+        "value": 1310
+      }
+    ],
+    "length": 12271,
+    "width": 2438
+  },
+  "statusCode": "current",
+  "numberOfWheelsDriven": null
+}
