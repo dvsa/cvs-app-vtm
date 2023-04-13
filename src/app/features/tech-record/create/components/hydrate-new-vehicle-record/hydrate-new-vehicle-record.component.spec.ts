@@ -54,34 +54,25 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
       expect(lastValueFrom(component.vehicle$)).resolves.toEqual(expectedVehicle);
     });
-
-    it('should navigate back when the data is null', () => {
-      jest.spyOn(techRecordService, 'editableVehicleTechRecord$', 'get').mockReturnValue(of(undefined));
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-
-      expect(lastValueFrom(component.vehicle$)).resolves.toEqual(undefined);
-
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
-    });
   });
 
-  describe('navigateBack', () => {
+  describe('navigate', () => {
     it('should clear all errors', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
 
       const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-      component.navigateTo();
+      component.navigate();
 
       expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
     });
 
-    it('should navigate back to the previous page', () => {
+    it('should navigate back to batch results', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.navigateTo();
+      component.navigate();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toBeCalledWith(['batch-results'], { relativeTo: route });
     });
   });
 
@@ -101,7 +92,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
       component.handleSubmit();
 
-      actions$.next(createVehicleRecordSuccess);
+      actions$.next(createVehicleRecordSuccess({ vehicleTechRecords: [{ systemNumber: '007' }] }));
       tick();
 
       expect(navigateSpy).toHaveBeenCalledTimes(1);
