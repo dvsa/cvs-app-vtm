@@ -79,7 +79,7 @@ export class ChangeVehicleTypeComponent {
       (this.techRecord?.euVehicleCategory === EuVehicleCategories.O1 || this.techRecord?.euVehicleCategory === EuVehicleCategories.O2)
     ) {
       return this.globalErrorService.addError({
-        error: "You cannot change vehicle type to TRL when EU vehicle category is set to 'O1'",
+        error: "You cannot change vehicle type to TRL when EU vehicle category is set to 'O1' or 'O2'",
         anchorLink: 'selectedVehicleType'
       });
     }
