@@ -168,7 +168,9 @@ export const TrlTechRecordTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories).filter(option => option.value !== EuVehicleCategories.O1),
+      options: getOptionsFromEnum(EuVehicleCategories).filter(
+        option => option.value !== EuVehicleCategories.O1 && option.value !== EuVehicleCategories.O2
+      ),
       width: FormNodeWidth.S
     },
     {

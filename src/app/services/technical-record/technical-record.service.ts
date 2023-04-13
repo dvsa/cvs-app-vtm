@@ -80,10 +80,11 @@ export class TechnicalRecordService {
     return this.selectedVehicleTechRecord$.pipe(switchMap(vehicle => (vehicle ? this.viewableTechRecord$(vehicle) : of(undefined))));
   }
 
-  getVehicleTypeWithSmallTrl(techRecord?: TechRecordModel): VehicleTypes | undefined {
-    return techRecord?.vehicleType === VehicleTypes.TRL && techRecord.euVehicleCategory === EuVehicleCategories.O1
+  getVehicleTypeWithSmallTrl(techRecord: TechRecordModel): VehicleTypes {
+    return techRecord.vehicleType === VehicleTypes.TRL &&
+      (techRecord.euVehicleCategory === EuVehicleCategories.O1 || techRecord.euVehicleCategory === EuVehicleCategories.O2)
       ? VehicleTypes.SMALL_TRL
-      : techRecord?.vehicleType;
+      : techRecord.vehicleType;
   }
 
   getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
