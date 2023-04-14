@@ -76,7 +76,7 @@
         </ng-container>
       </div>
 
-      <div class="govuk-summary-list__row" *ngIf="currentTechRecord.vehicleType !== 'trl' && currentTechRecord.euVehicleCategory !== 'o1'">
+      <div class="govuk-summary-list__row" *ngIf="getVehicleType(currentTechRecord) !== vehicleTypes.SMALL_TRL">
         <dt class="govuk-summary-list__key">Previous VRM</dt>
         <dd id="previous-vrm" class="govuk-summary-list__value">
           <app-number-plate

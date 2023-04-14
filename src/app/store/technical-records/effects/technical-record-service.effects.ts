@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { EuVehicleCategories, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  EuVehicleCategories,
+  PostNewVehicleModel,
+  PutVehicleTechRecordModel,
+  TechRecordModel,
+  VehicleTechRecordModel,
+  VehicleTypes,
+  Vrm
+} from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -123,13 +131,10 @@ export class TechnicalRecordServiceEffects {
       ofType(createVehicleRecord),
       withLatestFrom(this.technicalRecordService.applicationId$, this.userService.name$, this.userService.id$),
       concatMap(([{ vehicle }, applicationId, name, id]) => {
-        const { techRecord } = vehicle;
-        const vehicleRecord = {
-          ...vehicle,
-          techRecord: [{ ...techRecord[0], applicationId }]
-        };
+        const vehicleRecord = { ...vehicle, techRecord: [{ ...vehicle.techRecord[0], applicationId }] };
+
         return this.technicalRecordService.createVehicleRecord(vehicleRecord, { id, name }).pipe(
-          map(newVehicleRecord => createVehicleRecordSuccess({ vehicleTechRecords: [newVehicleRecord] })),
+          map(response => createVehicleRecordSuccess({ vehicleTechRecords: [this.mapVehicleFromResponse(response)] })),
           catchError(error =>
             of(
               createVehicleRecordFailure({
@@ -262,6 +267,18 @@ export class TechnicalRecordServiceEffects {
       )
     )
   );
+
+  mapVehicleFromResponse(response: PostNewVehicleModel | PutVehicleTechRecordModel): VehicleTechRecordModel {
+    const vrms: Vrm[] = [];
+
+    if (response.techRecord[0].vehicleType !== VehicleTypes.TRL) {
+      response.primaryVrm && vrms.push({ vrm: response.primaryVrm, isPrimary: true });
+
+      response.secondaryVrms && vrms.push(...response.secondaryVrms.map(vrm => ({ vrm, isPrimary: false })));
+    }
+
+    return { ...response, vrms };
+  }
 
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {
     if (typeof error !== 'object') {

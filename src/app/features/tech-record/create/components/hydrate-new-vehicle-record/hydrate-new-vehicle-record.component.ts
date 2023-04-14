@@ -1,38 +1,47 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { createVehicleRecord } from '@store/technical-records';
+import { createVehicleRecord, createVehicleRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { map, Observable, take, tap, withLatestFrom } from 'rxjs';
+import { map, Observable, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-hydrate-new-vehicle-record',
   templateUrl: './hydrate-new-vehicle-record.component.html'
 })
-export class HydrateNewVehicleRecordComponent {
+export class HydrateNewVehicleRecordComponent implements OnDestroy {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
   isInvalid: boolean = false;
   batchForm?: FormGroup;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
+    private actions$: Actions,
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
-  ) {}
+  ) {
+    this.actions$
+      .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
+      .subscribe(({ vehicleTechRecords }) => this.navigate(vehicleTechRecords[0].systemNumber));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   get vehicle$(): Observable<VehicleTechRecordModel | undefined> {
-    return this.technicalRecordService.editableVehicleTechRecord$.pipe(
-      tap(vehicle => {
-        if (!vehicle) this.navigateTo();
-      })
-    );
+    return this.technicalRecordService.editableVehicleTechRecord$;
   }
 
   get isBatch$(): Observable<boolean> {
@@ -47,9 +56,14 @@ export class HydrateNewVehicleRecordComponent {
     return VehicleTypes;
   }
 
-  navigateTo(route: string = '..'): void {
+  navigate(systemNumber?: string): void {
     this.globalErrorService.clearErrors();
-    this.router.navigate([route], { relativeTo: this.route });
+
+    if (systemNumber) {
+      this.router.navigate(['/tech-records', systemNumber]);
+    } else {
+      this.router.navigate(['batch-results'], { relativeTo: this.route });
+    }
   }
 
   handleSubmit(): void {
@@ -79,7 +93,7 @@ export class HydrateNewVehicleRecordComponent {
       .subscribe(([vehicleList, isBatch]) => {
         vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle })));
 
-        this.navigateTo(isBatch ? 'batch-results' : '..');
+        if (isBatch) this.navigate();
       });
   }
 }

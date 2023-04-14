@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
-import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { PostNewVehicleModel, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -519,17 +519,22 @@ describe('TechnicalRecordServiceEffects', () => {
   describe('createVehicleRecord', () => {
     it('should return a vehicle on successful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const expectedVehicles = mockVehicleTechnicalRecordList();
+        const mockVehicle = mockVehicleTechnicalRecordList()[0];
+        const expectedVehicle: PostNewVehicleModel = {
+          ...mockVehicle,
+          primaryVrm: mockVehicle.vrms.find(vrm => vrm.isPrimary)?.vrm,
+          secondaryVrms: mockVehicle.vrms.filter(vrm => !vrm.isPrimary).map(vrm => vrm.vrm)
+        };
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: createVehicleRecord({ vehicle: { vin: 'xxx', techRecord: [{}] } as VehicleTechRecordModel }) });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'createVehicleRecord').mockReturnValue(cold('--a|', { a: expectedVehicles[0] }));
+        jest.spyOn(technicalRecordService, 'createVehicleRecord').mockReturnValue(cold('--a|', { a: expectedVehicle }));
 
         // expect effect to return success action
         expectObservable(effects.createVehicleRecord$).toBe('---b', {
-          b: createVehicleRecordSuccess({ vehicleTechRecords: expectedVehicles })
+          b: createVehicleRecordSuccess({ vehicleTechRecords: [expectedVehicle] })
         });
       });
     });

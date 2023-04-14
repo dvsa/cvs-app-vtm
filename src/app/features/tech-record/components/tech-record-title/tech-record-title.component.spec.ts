@@ -176,7 +176,9 @@ describe('TechRecordTitleComponent', () => {
       expect(trailerIdField.nativeElement.textContent).toContain('TestId');
     });
 
-    it('does not show secondary VRMs for small trailer', () => {
+    const smallTrailerEuVehicleCategories = [EuVehicleCategories.O1, EuVehicleCategories.O2];
+
+    it.each(smallTrailerEuVehicleCategories)('does not show secondary VRMs for small trailer', euVehicleCategory => {
       const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
       const mockVehicle = {
@@ -186,7 +188,7 @@ describe('TechRecordTitleComponent', () => {
         vin: 'testvin',
         systemNumber: 'testNumber'
       };
-      mockVehicle.techRecord[0].euVehicleCategory = EuVehicleCategories.O1;
+      mockVehicle.techRecord[0].euVehicleCategory = euVehicleCategory;
       component.vehicle = mockVehicle;
       store.overrideSelector(editableTechRecord, mockRecord);
       fixture.detectChanges();

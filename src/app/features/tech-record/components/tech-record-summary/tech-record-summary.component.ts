@@ -3,12 +3,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   QueryList,
-  SimpleChanges,
   ViewChild,
   ViewChildren
 } from '@angular/core';
@@ -33,7 +31,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { editableTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep, mergeWith } from 'lodash';
-import { map, skipWhile, Subject, takeUntil } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary[techRecord]',
@@ -41,7 +39,7 @@ import { map, skipWhile, Subject, takeUntil } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./tech-record-summary.component.scss']
 })
-export class TechRecordSummaryComponent implements OnInit, OnDestroy, OnChanges {
+export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
   @ViewChild(BodyComponent) body!: BodyComponent;
   @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
@@ -72,35 +70,36 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, OnChanges 
   ) {}
 
   ngOnInit(): void {
+    let isOnInit = true;
     this.store
       .pipe(
         select(editableTechRecord),
-        skipWhile(editableTechRecord => !editableTechRecord),
+        //Need to check that the editing tech record has more than just reason for creation on and is the full object.
+        map(techRecord => {
+          if (techRecord && Object.keys(techRecord).length > 1) {
+            return cloneDeep(techRecord);
+          } else {
+            if (this.techRecord.vehicleType === VehicleTypes.HGV || this.techRecord.vehicleType === VehicleTypes.TRL) {
+              const [axles, axleSpacing] = this.axlesService.normaliseAxles(this.techRecord.axles, this.techRecord.dimensions?.axleSpacing);
+              this.techRecord = cloneDeep(this.techRecord);
+              this.techRecord.dimensions = { ...this.techRecord.dimensions, axleSpacing };
+              this.techRecord.axles = axles;
+            }
+
+            isOnInit && this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
+
+            return { ...cloneDeep(this.techRecord), reasonForCreation: '' };
+          }
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe(techRecord => {
-        if (techRecord) {
-          this.techRecordCalculated = cloneDeep(techRecord);
-          this.referenceDataService.removeTyreSearch();
-          this.sectionTemplates = this.vehicleTemplates;
-          this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
-        }
+        this.techRecordCalculated = techRecord;
+        this.referenceDataService.removeTyreSearch();
+        this.sectionTemplates = this.vehicleTemplates;
+        this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const { techRecord } = changes;
-
-    if (techRecord.previousValue !== techRecord.currentValue && techRecord.isFirstChange()) {
-      if (this.techRecord.vehicleType === VehicleTypes.HGV || this.techRecord.vehicleType === VehicleTypes.TRL) {
-        const [axles, axleSpacing] = this.axlesService.normaliseAxles(this.techRecord.axles, this.techRecord.dimensions?.axleSpacing);
-        this.techRecord = cloneDeep(this.techRecord);
-        this.techRecord.dimensions = { ...this.techRecord.dimensions, axleSpacing };
-        this.techRecord.axles = axles;
-      }
-
-      this.technicalRecordService.updateEditingTechRecord({ ...cloneDeep(this.techRecord), reasonForCreation: '' }, true);
-    }
+    isOnInit = false;
   }
 
   ngOnDestroy(): void {
@@ -108,27 +107,26 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy, OnChanges 
     this.destroy$.complete();
   }
 
-  get vehicleTemplates(): Array<FormNode> {
-    const type =
-      this.techRecordCalculated.vehicleType === VehicleTypes.TRL && this.techRecordCalculated.euVehicleCategory === EuVehicleCategories.O1
-        ? VehicleTypes.SMALL_TRL
-        : this.techRecordCalculated.vehicleType;
+  get vehicleType() {
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated);
+  }
 
-    return vehicleTemplateMap.get(type)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? [];
+  get vehicleTemplates(): Array<FormNode> {
+    return (
+      vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
+    );
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
     const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form];
 
-    switch (this.techRecordCalculated.vehicleType) {
+    switch (this.vehicleType) {
       case VehicleTypes.PSV:
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
         return commonCustomSections;
       case VehicleTypes.TRL:
-        return this.techRecordCalculated.euVehicleCategory !== EuVehicleCategories.O1
-          ? [...commonCustomSections, this.trlBrakes!.form, this.letters!.form]
-          : [];
+        return [...commonCustomSections, this.trlBrakes!.form, this.letters!.form];
       default:
         return [];
     }

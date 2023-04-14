@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import {
   EuVehicleCategories,
-  postNewVehicleModel,
+  PostNewVehicleModel,
   PutVehicleTechRecordModel,
   StatusCodes,
   TechRecordModel,
@@ -87,10 +87,11 @@ export class TechnicalRecordService {
     return this.selectedVehicleTechRecord$.pipe(switchMap(vehicle => (vehicle ? this.viewableTechRecord$ : of(undefined))));
   }
 
-  getVehicleTypeWithSmallTrl(techRecord?: TechRecordModel): VehicleTypes | undefined {
-    return techRecord?.vehicleType === VehicleTypes.TRL && techRecord.euVehicleCategory === EuVehicleCategories.O1
+  getVehicleTypeWithSmallTrl(techRecord: TechRecordModel): VehicleTypes {
+    return techRecord.vehicleType === VehicleTypes.TRL &&
+      (techRecord.euVehicleCategory === EuVehicleCategories.O1 || techRecord.euVehicleCategory === EuVehicleCategories.O2)
       ? VehicleTypes.SMALL_TRL
-      : techRecord?.vehicleType;
+      : techRecord.vehicleType;
   }
 
   getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
@@ -124,7 +125,7 @@ export class TechnicalRecordService {
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  createVehicleRecord(newVehicleRecord: VehicleTechRecordModel, user: { id?: string; name: string }): Observable<postNewVehicleModel> {
+  createVehicleRecord(newVehicleRecord: VehicleTechRecordModel, user: { id?: string; name: string }): Observable<PostNewVehicleModel> {
     const recordCopy = cloneDeep(newVehicleRecord);
 
     const body = {
@@ -135,7 +136,7 @@ export class TechnicalRecordService {
       techRecord: recordCopy.techRecord
     };
 
-    return this.http.post<postNewVehicleModel>(`${environment.VTM_API_URI}/vehicles`, body);
+    return this.http.post<PostNewVehicleModel>(`${environment.VTM_API_URI}/vehicles`, body);
   }
 
   createProvisionalTechRecord(
@@ -164,7 +165,7 @@ export class TechnicalRecordService {
     user: { id?: string; name: string },
     recordToArchiveStatus?: StatusCodes,
     newStatus?: StatusCodes
-  ): Observable<VehicleTechRecordModel> {
+  ): Observable<PutVehicleTechRecordModel> {
     const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
 
     const newTechRecord = newVehicleTechRecord.techRecord[0];
@@ -180,7 +181,7 @@ export class TechnicalRecordService {
       techRecord: [newTechRecord]
     };
 
-    return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.put<PutVehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
   archiveTechnicalRecord(
@@ -346,14 +347,14 @@ export class TechnicalRecordService {
 
     const body = {
       vin: vehicleRecord.vin,
-      primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)!.vrm : undefined,
+      primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)?.vrm : undefined,
       systemNumber: vehicleRecord.systemNumber,
       trailerId: techRecord.vehicleType === 'trl' ? vehicleRecord.trailerId : undefined,
       msUserDetails: { msOid: user.id, msUser: user.name },
       techRecord: updatedVehicleRecord.techRecord,
       reasonForCreation: reason,
       vtmUsername: user.name,
-      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails?.emailAddress : user.email
+      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails.emailAddress : user.email
     };
 
     return this.http.post(url, body, { responseType: 'json' });

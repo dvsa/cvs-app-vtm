@@ -552,6 +552,22 @@ describe('Vehicle Technical Record Reducer', () => {
           const updatedTechRecord = newState.editingTechRecord?.techRecord[0];
           expect(updatedTechRecord?.noOfAxles).toBe(4);
           expect(updatedTechRecord?.axles?.length).toBe(4);
+
+          const newAxleField = updatedTechRecord?.axles || [];
+          expect(newAxleField[3].tyres).toEqual({
+            dataTrAxles: null,
+            fitmentCode: null,
+            plyRating: null,
+            speedCategorySymbol: null,
+            tyreCode: null,
+            tyreSize: null
+          });
+          expect(newAxleField[3].weights).toEqual({
+            designWeight: null,
+            gbWeight: null,
+            kerbWeight: null,
+            ladenWeight: null
+          });
           expect(updatedTechRecord?.axles?.pop()?.axleNumber).toBe(4);
         });
 
@@ -569,6 +585,22 @@ describe('Vehicle Technical Record Reducer', () => {
           const updatedTechRecord = newState.editingTechRecord?.techRecord[0];
           expect(updatedTechRecord?.noOfAxles).toBe(1);
           expect(updatedTechRecord?.axles?.length).toBe(1);
+
+          const newAxleField = updatedTechRecord?.axles || [];
+          expect(newAxleField[0].tyres).toEqual({
+            dataTrAxles: null,
+            fitmentCode: null,
+            plyRating: null,
+            speedCategorySymbol: null,
+            tyreCode: null,
+            tyreSize: null
+          });
+          expect(newAxleField[0].weights).toEqual({
+            designWeight: null,
+            gbWeight: null,
+            kerbWeight: null,
+            ladenWeight: null
+          });
           expect(updatedTechRecord?.axles?.pop()?.axleNumber).toBe(1);
         });
       });

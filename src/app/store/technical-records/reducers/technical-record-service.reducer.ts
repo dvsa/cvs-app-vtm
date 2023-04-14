@@ -225,13 +225,18 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
 
   const newAxle: Axle = {
     axleNumber: newState.editingTechRecord.techRecord[0].axles.length + 1,
-    tyres: { dataTrAxles: null },
-    weights: {},
+    tyres: { tyreSize: null, fitmentCode: null, dataTrAxles: null, plyRating: null, tyreCode: null },
+    weights: { gbWeight: null, designWeight: null },
     parkingBrakeMrk: false
   };
 
   if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) {
     newAxle.weights!.eecWeight = null;
+  }
+  if (vehicleType === VehicleTypes.PSV) {
+    newAxle.weights!.kerbWeight = null;
+    newAxle.weights!.ladenWeight = null;
+    newAxle.tyres!.speedCategorySymbol = null;
   }
 
   newState.editingTechRecord.techRecord[0].axles.push(newAxle);

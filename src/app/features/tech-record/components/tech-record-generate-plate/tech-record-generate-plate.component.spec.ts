@@ -93,6 +93,7 @@ describe('TechRecordGeneratePlateComponent', () => {
     });
 
     it('should navigate back on generatePlateSuccess', fakeAsync(() => {
+      component.ngOnInit();
       component.form.get('reason')?.setValue('Provisional');
 
       const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();

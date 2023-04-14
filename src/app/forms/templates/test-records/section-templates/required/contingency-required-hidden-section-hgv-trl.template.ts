@@ -144,12 +144,6 @@ export const CreateRequiredSectionHgvTrl: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
-      name: 'vehicleSize',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
-    },
-    {
       name: 'typeOfTest',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
