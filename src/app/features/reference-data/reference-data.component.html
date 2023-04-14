@@ -1,9 +1,9 @@
-<div class="govuk-grid-row search-page" *appRoleRequired="roles.ReferenceDataView">
+<form [formGroup]="form" class="govuk-grid-row search-page" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
     <app-radio-group
-      name="reference-data"
+      name="reference"
       label="What type of Reference Data would you like to search?"
-      formControlName="reference-data"
+      formControlName="reference"
       [options]="references"
     >
     </app-radio-group>
@@ -12,4 +12,4 @@
       <app-button id="cancel" design="link" (clicked)="cancel()">Cancel</app-button>
     </app-button-group>
   </div>
-</div>
+</form>
