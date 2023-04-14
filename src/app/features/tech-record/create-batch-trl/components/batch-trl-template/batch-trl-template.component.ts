@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
@@ -22,7 +23,8 @@ export class BatchTrlTemplateComponent {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private batchTechRecordService: BatchTechnicalRecordService
   ) {}
 
   get vehicle$(): Observable<VehicleTechRecordModel | undefined> {
@@ -30,15 +32,15 @@ export class BatchTrlTemplateComponent {
   }
 
   get applicationId$() {
-    return this.technicalRecordService.applicationId$;
+    return this.batchTechRecordService.applicationId$;
   }
 
   get isBatch$() {
-    return this.technicalRecordService.isBatchCreate$;
+    return this.batchTechRecordService.isBatchCreate$;
   }
 
   get batchCount$() {
-    return this.technicalRecordService.batchCount$;
+    return this.batchTechRecordService.batchCount$;
   }
 
   get vehicleTypes(): typeof VehicleTypes {
@@ -51,7 +53,7 @@ export class BatchTrlTemplateComponent {
     if (!this.isInvalid) {
       this.technicalRecordService.editableVehicleTechRecord$
         .pipe(
-          withLatestFrom(this.technicalRecordService.batchVehicles$),
+          withLatestFrom(this.batchTechRecordService.batchVehicles$),
           take(1),
           map(([record, batch]) =>
             batch.map(

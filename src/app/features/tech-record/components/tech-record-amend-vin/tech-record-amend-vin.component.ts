@@ -44,7 +44,7 @@ export class AmendVinComponent implements OnDestroy {
         },
         '',
         [Validators.minLength(3), Validators.maxLength(21), Validators.required],
-        [this.technicalRecordService.validateVin(this.vehicle?.vin)]
+        [this.technicalRecordService.validateVinForUpdate(this.vehicle?.vin)]
       )
     });
 
