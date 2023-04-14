@@ -1,1 +1,30 @@
-<p>data-type-list works!</p>
+<div class="govuk-grid-row search-page" *appRoleRequired="roles.ReferenceDataView">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-full">
+      <p class="govuk-heading-xl govuk-!-font-weight-bold">Search for a Country of Registration</p>
+    </div>
+    <app-button-group>
+      <app-button id="submit">Add New</app-button>
+      <app-button id="cancel" design="link" (clicked)="back()">back</app-button>
+    </app-button-group>
+    <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Resource Key</th>
+          <th scope="col" class="govuk-table__header">Description</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row" *ngFor="let item; in: referenceData$ | async">
+          <td class="govuk-table__cell">{{ item.resourceKey }}</td>
+          <td class="govuk-table__cell">{{ item.description }}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">last-key</td>
+          <td class="govuk-table__cell">This is an extra, final item</td>
+        </tr>
+      </tbody>
+    </table>
+    <app-button id="cancel" design="link" (clicked)="back()">back</app-button>
+  </div>
+</div>

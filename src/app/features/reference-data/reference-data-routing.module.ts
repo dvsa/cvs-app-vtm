@@ -15,7 +15,7 @@ const routes: Routes = [
   {
     path: 'data-type-list',
     component: DataTypeListComponent,
-    data: { title: 'Select data type', roles: Roles.ReferenceDataView },
+    data: { title: 'View Reference Data', roles: Roles.ReferenceDataView },
     canActivate: [MsalGuard, RoleGuard]
   }
 ];

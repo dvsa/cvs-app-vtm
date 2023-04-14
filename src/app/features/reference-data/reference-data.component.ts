@@ -13,7 +13,10 @@ import { Roles } from '@models/roles.enum';
 export class ReferenceDataComponent {
   store: any;
   form: CustomFormGroup;
-  references: Array<FormNodeOption<string>> = [{ label: 'Country of registration', value: 'Country' }];
+  references: Array<FormNodeOption<string>> = [
+    { label: 'Country of registration', value: 'CountryOfRegistration' },
+    { label: 'DTp Numbers', value: 'PsvMake' }
+  ];
   errorService: any;
 
   constructor(public globalErrorService: GlobalErrorService, private route: ActivatedRoute, private router: Router) {
