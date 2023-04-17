@@ -42,7 +42,7 @@ export class ReferenceDataComponent {
     return this.form.valid;
   }
 
-  clearErrors() {
+  ngOnChanges(): void {
     this.globalErrorService.clearErrors();
   }
 
