@@ -39,7 +39,7 @@ test: #help Run the unit tests
 	npm run sonar-scanner
 
 e2e: #help Run the e2e tests
-	@echo Not Implemented
+	npm run e2e
 
 plan: #help Plan to run any infra changes
 	@echo Not Implemented
