@@ -3,6 +3,7 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
 
@@ -19,7 +20,11 @@ export class ReferenceDataComponent {
   constructor(public globalErrorService: GlobalErrorService, private route: ActivatedRoute, private router: Router) {
     this.form = new CustomFormGroup(
       { name: 'reference-data', type: FormNodeTypes.GROUP },
-      { reference: new CustomFormControl({ name: 'reference', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
+      {
+        reference: new CustomFormControl({ name: 'reference', label: 'Reference Data type', type: FormNodeTypes.CONTROL }, undefined, [
+          Validators.required
+        ])
+      }
     );
   }
 
@@ -27,20 +32,26 @@ export class ReferenceDataComponent {
     return Roles;
   }
 
+  get isFormValid(): boolean {
+    const errors: GlobalError[] = [];
+
+    DynamicFormService.validate(this.form, errors);
+
+    this.globalErrorService.setErrors(errors);
+
+    return this.form.valid;
+  }
+
+  clearErrors() {
+    this.globalErrorService.clearErrors();
+  }
+
   handleSubmit(): void {
-    const reference: string = this.form.get('reference')?.value;
-    const errors: GlobalError[] = [
-      {
-        error: 'Data type is required',
-        anchorLink: 'reference-data'
-      }
-    ];
-
-    //this.form.valid ? this.errorService.clearErrors() : this.errorService.setErrors(errors);
-
-    if (this.form.valid && reference) {
-      this.router.navigate(['../reference-data/data-type-list'], { relativeTo: this.route });
+    if (!this.isFormValid) {
+      return;
     }
+
+    this.router.navigate(['../reference-data/data-type-list'], { relativeTo: this.route });
   }
 
   cancel() {

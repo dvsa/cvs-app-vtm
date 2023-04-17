@@ -26,8 +26,8 @@
       ></app-text-input>
 
       <app-button-group>
-        <app-button id="submit">Add</app-button>
-        <app-button id="cancel" design="link" (clicked)="back()">Back</app-button>
+        <app-button id="submit" (clicked)="handleSubmit()">Add</app-button>
+        <app-button id="cancel" design="link" (clicked)="handleBack()">Back</app-button>
       </app-button-group>
     </div>
   </div>
