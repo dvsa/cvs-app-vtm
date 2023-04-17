@@ -1,0 +1,12 @@
+<div class="govuk-grid-row search-page" *appRoleRequired="roles.ReferenceDataView">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-full">
+      <p class="govuk-heading-xl govuk-!-font-weight-bold">Add a Country of Registration</p>
+    </div>
+
+    <app-button-group>
+      <app-button id="submit">Add</app-button>
+      <app-button id="cancel" design="link" (clicked)="back()">Back</app-button>
+    </app-button-group>
+  </div>
+</div>

@@ -4,7 +4,7 @@
       <p class="govuk-heading-xl govuk-!-font-weight-bold">Search for a Country of Registration</p>
     </div>
     <app-button-group>
-      <app-button id="submit">Add New</app-button>
+      <app-button id="submit" (clicked)="handleSubmit()">Add New</app-button>
       <app-button id="cancel" design="link" (clicked)="back()">back</app-button>
     </app-button-group>
     <table class="govuk-table">

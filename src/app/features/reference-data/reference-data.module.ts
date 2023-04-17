@@ -7,9 +7,10 @@ import { ReferenceDataRoutingModule } from './reference-data-routing.module';
 import { ReferenceDataComponent } from './reference-data.component';
 import { DataTypeListComponent } from './data-type-list/data-type-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AddReferenceDataComponent } from './add-reference-data/add-reference-data.component';
 
 @NgModule({
-  declarations: [ReferenceDataComponent, DataTypeListComponent],
+  declarations: [ReferenceDataComponent, DataTypeListComponent, AddReferenceDataComponent],
   imports: [CommonModule, DynamicFormsModule, RouterModule, ReactiveFormsModule, ReferenceDataRoutingModule, SharedModule]
 })
 export class ReferenceDataModule {}

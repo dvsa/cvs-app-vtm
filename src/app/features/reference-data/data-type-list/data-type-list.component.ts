@@ -38,6 +38,10 @@ export class DataTypeListComponent implements OnInit, AfterContentInit {
     return Roles;
   }
 
+  handleSubmit(): void {
+    this.router.navigate(['../data-type-list/add-reference-data'], { relativeTo: this.route });
+  }
+
   back() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['../'], { relativeTo: this.route });
