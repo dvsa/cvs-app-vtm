@@ -68,9 +68,7 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   getVehicleType(techRecord: TechRecordModel): VehicleTypes {
-    return techRecord.vehicleType === VehicleTypes.TRL && techRecord.euVehicleCategory === EuVehicleCategories.O1
-      ? VehicleTypes.SMALL_TRL
-      : techRecord.vehicleType;
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord);
   }
 
   getCompletenessColor(completeness?: string): 'green' | 'red' {

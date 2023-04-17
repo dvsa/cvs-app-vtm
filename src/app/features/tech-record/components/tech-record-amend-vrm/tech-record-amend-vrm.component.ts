@@ -92,7 +92,7 @@ export class AmendVrmComponent implements OnDestroy {
   }
 
   get vehicleType(): VehicleTypes | undefined {
-    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord);
+    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
   }
 
   get makeAndModel(): string {
