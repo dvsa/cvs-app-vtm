@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { RoleGuard } from '@guards/roles.guard';
+import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';

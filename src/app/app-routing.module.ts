@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { RoleGuard } from '@guards/roles.guard';
+import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { TitleResolver } from './resolvers/title/title.resolver';
 import { Roles } from '@models/roles.enum';
 import { TechRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
