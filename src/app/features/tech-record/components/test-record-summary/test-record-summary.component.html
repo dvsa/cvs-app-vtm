@@ -20,7 +20,7 @@
         <td class="govuk-table__cell" [id]="'test-record-summary-result-' + i">{{ getResult(test) }}</td>
         <ng-container *ngIf="!isEditing">
           <td class="govuk-table__cell">
-            <a id="view-test-{{ test.testResultId }}" routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}">View</a>
+            <a id="view-test-{{ i + 1 }}" routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}">View</a>
           </td>
         </ng-container>
       </tr>
