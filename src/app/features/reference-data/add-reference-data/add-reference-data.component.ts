@@ -4,18 +4,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { CustomValidators } from '@forms/validators/custom-validators';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 
 @Component({
   selector: 'app-add-reference-data',
   templateUrl: './add-reference-data.component.html'
 })
 export class AddReferenceDataComponent implements OnInit {
-  form!: CustomFormGroup;
+  form: CustomFormGroup;
   store: any;
+  columns: string[] = ['Resource Key', 'Description'];
 
   constructor(public globalErrorService: GlobalErrorService, private route: ActivatedRoute, private router: Router) {
     this.form = new CustomFormGroup(

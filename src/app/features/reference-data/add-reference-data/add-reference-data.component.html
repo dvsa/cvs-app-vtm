@@ -4,27 +4,18 @@
       <div class="govuk-grid-column-full">
         <p class="govuk-heading-xl govuk-!-font-weight-bold">Add a Country of Registration</p>
       </div>
-      <app-text-input
-        formControlName="resourceKey"
-        name="resource-key"
-        label="Resource Key"
-        appToUppercase
-        appNoSpace
-        appTrimWhitespace
-        [width]="30"
-        (ngModelChange)="ngOnChanges()"
-      ></app-text-input>
-      <app-text-input
-        formControlName="description"
-        name="description"
-        label="Description"
-        appToUppercase
-        appNoSpace
-        appTrimWhitespace
-        [width]="30"
-        (ngModelChange)="ngOnChanges()"
-      ></app-text-input>
-
+      <ng-container *ngFor="let key of columns">
+        <app-text-input
+          formControlName="{{ key }}"
+          name="{{ key }}"
+          label="{{ key }}"
+          appToUppercase
+          appNoSpace
+          appTrimWhitespace
+          [width]="30"
+          (ngModelChange)="ngOnChanges()"
+        ></app-text-input>
+      </ng-container>
       <app-button-group>
         <app-button id="submit" (clicked)="handleSubmit()">Add</app-button>
         <app-button id="cancel" design="link" (clicked)="handleBack()">Back</app-button>
