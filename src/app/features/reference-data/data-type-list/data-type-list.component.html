@@ -15,13 +15,9 @@
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        <tr class="govuk-table__row" *ngFor="let item; in: referenceData$ | async">
+        <tr class="govuk-table__row" *ngFor="let item of referenceData$ | async">
           <td class="govuk-table__cell">{{ item.resourceKey }}</td>
           <td class="govuk-table__cell">{{ item.description }}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">last-key</td>
-          <td class="govuk-table__cell">This is an extra, final item</td>
         </tr>
       </tbody>
     </table>

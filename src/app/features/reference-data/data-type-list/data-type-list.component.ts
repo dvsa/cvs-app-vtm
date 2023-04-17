@@ -24,11 +24,11 @@ export class DataTypeListComponent implements OnInit, AfterContentInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
-
-  ngAfterContentInit(): void {
+  ngOnInit(): void {
     this.referenceDataService.loadReferenceData(this.resourceType);
   }
+
+  ngAfterContentInit(): void {}
 
   get referenceData$(): Observable<ReferenceDataModelBase[] | undefined> {
     return this.store.pipe(select(selectAllReferenceDataByResourceType(this.resourceType)));
