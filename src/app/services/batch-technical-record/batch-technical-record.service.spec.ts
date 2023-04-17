@@ -1,31 +1,30 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { mockVehicleTechnicalRecord, mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
-import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/index';
-import { editableVehicleTechRecord, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecord } from '@store/technical-records';
+import { StatusCodes, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { initialAppState } from '@store/index';
 import cloneDeep from 'lodash.clonedeep';
-import { firstValueFrom, lastValueFrom, Observable, of } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { SEARCH_TYPES, TechnicalRecordService } from './batch-technical-record.service';
+import { firstValueFrom, Observable, of } from 'rxjs';
+import { BatchTechnicalRecordService } from './batch-technical-record.service';
 
 describe('TechnicalRecordService', () => {
-  let service: TechnicalRecordService;
+  let service: BatchTechnicalRecordService;
   let httpClient: HttpTestingController;
-  let store: MockStore<State>;
+  let technicalRecordHttpService: TechnicalRecordHttpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })]
+      providers: [BatchTechnicalRecordService, provideMockStore({ initialState: initialAppState }), TechnicalRecordHttpService]
     });
     httpClient = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(TechnicalRecordService);
-    store = TestBed.inject(MockStore);
+    service = TestBed.inject(BatchTechnicalRecordService);
+    technicalRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
   });
 
   afterEach(() => {
@@ -35,413 +34,6 @@ describe('TechnicalRecordService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
-
-  describe('API', () => {
-    describe('getByVin', () => {
-      it('should get an array of matching results', () => {
-        const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.getByVin(searchParams.searchTerm).subscribe(response => {
-          expect(response).toEqual(mockData);
-        });
-
-        // Check for correct requests: should have made one request to search from expected URL
-        const req = httpClient.expectOne(
-          `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`
-        );
-        expect(req.request.method).toEqual('GET');
-
-        // Provide each request with a mock response
-        req.flush(mockData);
-      });
-
-      it('should handle errors', () => {
-        const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.getByVin(searchParams.searchTerm).subscribe(response => {
-          expect(response).toEqual(mockData);
-        });
-
-        // Check for correct requests: should have made one request to search from expected URL
-        const req = httpClient.expectOne(
-          `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`
-        );
-        expect(req.request.method).toEqual('GET');
-
-        // Respond with mock error
-        req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
-      });
-    });
-
-    describe('getByPartialVin', () => {
-      it('should get an array of matching results', () => {
-        const searchParams = { searchTerm: 'A_VIN', type: 'partialVin' };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.getByPartialVin(searchParams.searchTerm).subscribe(response => {
-          expect(response).toEqual(mockData);
-        });
-
-        // Check for correct requests: should have made one request to search from expected URL
-        const req = httpClient.expectOne(
-          `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=partialVin`
-        );
-        expect(req.request.method).toEqual('GET');
-
-        // Provide each request with a mock response
-        req.flush(mockData);
-      });
-
-      it('should handle errors', () => {
-        const searchParams = { searchTerm: 'A_VIN', type: 'partialVin' };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.getByPartialVin(searchParams.searchTerm).subscribe(response => {
-          expect(response).toEqual(mockData);
-        });
-
-        // Check for correct requests: should have made one request to search from expected URL
-        const req = httpClient.expectOne(
-          `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=partialVin`
-        );
-        expect(req.request.method).toEqual('GET');
-
-        // Respond with mock error
-        req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
-      });
-    });
-
-    describe('getByVrm', () => {
-      it('should get an array of matching results', () => {
-        const params = { term: 'A_VRM', type: 'vrm' };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.getByVrm(params.term).subscribe(response => expect(response).toEqual(mockData));
-
-        // Check for correct requests: should have made one request to search from expected URL
-        const req = httpClient.expectOne(
-          `${environment.VTM_API_URI}/vehicles/${params.term}/tech-records?status=all&metadata=true&searchCriteria=${params.type}`
-        );
-        expect(req.request.method).toEqual('GET');
-
-        // Provide each request with a mock response
-        req.flush(mockData);
-      });
-
-      it('should handle errors', () => {
-        const params = { term: 'A_VRM', type: 'vrm' };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.getByVrm(params.term).subscribe(response => expect(response).toEqual(mockData));
-
-        // Check for correct requests: should have made one request to search from expected URL
-        const req = httpClient.expectOne(
-          `${environment.VTM_API_URI}/vehicles/${params.term}/tech-records?status=all&metadata=true&searchCriteria=${params.type}`
-        );
-        expect(req.request.method).toEqual('GET');
-
-        // Respond with mock error
-        req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
-      });
-    });
-
-    describe('getByTrailerId', () => {
-      it('should get an array of matching results', () => {
-        const params = { term: 'A_TRAILER_ID', type: 'trailerId' };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.getByTrailerId(params.term).subscribe(response => expect(response).toEqual(mockData));
-
-        // Check for correct requests: should have made one request to search from expected URL
-        const req = httpClient.expectOne(
-          `${environment.VTM_API_URI}/vehicles/${params.term}/tech-records?status=all&metadata=true&searchCriteria=${params.type}`
-        );
-        expect(req.request.method).toEqual('GET');
-
-        // Provide each request with a mock response
-        req.flush(mockData);
-      });
-
-      it('should handle errors', () => {
-        const params = { term: 'A_TRAILER_ID', type: 'trailerId' };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.getByTrailerId(params.term).subscribe(response => expect(response).toEqual(mockData));
-
-        // Check for correct requests: should have made one request to search from expected URL
-        const req = httpClient.expectOne(
-          `${environment.VTM_API_URI}/vehicles/${params.term}/tech-records?status=all&metadata=true&searchCriteria=${params.type}`
-        );
-        expect(req.request.method).toEqual('GET');
-
-        // Respond with mock error
-        req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
-      });
-    });
-
-    describe('createVehicleRecord', () => {
-      it('should call post with the correct URL, body and response type', fakeAsync(() => {
-        const expectedVehicle = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1)[0];
-        const expectedUser = { name: 'test', id: '1234' };
-
-        service.createVehicleRecord(expectedVehicle, expectedUser).subscribe();
-
-        const expectedBody = {
-          msUserDetails: { msOid: expectedUser.id, msUser: expectedUser.name },
-          vin: expectedVehicle.vin,
-          primaryVrm: expectedVehicle.vrms ? expectedVehicle.vrms[0].vrm : null,
-          trailerId: expectedVehicle.trailerId ?? null,
-          techRecord: expectedVehicle.techRecord
-        };
-
-        const request = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles`);
-
-        expect(request.request.method).toEqual('POST');
-        expect(request.request.body).toEqual(expectedBody);
-
-        request.flush(expectedVehicle);
-      }));
-
-      it('should return an array with the newly created vehicle record', () => {
-        const expectedVehicle = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1)[0];
-
-        const expectedResult = {
-          vin: expectedVehicle.vin,
-          primaryVrm: expectedVehicle.vrms ? expectedVehicle.vrms[0].vrm : null,
-          trailerId: expectedVehicle.trailerId ?? null,
-          techRecord: expectedVehicle.techRecord
-        };
-
-        expect(lastValueFrom(service.createVehicleRecord(expectedVehicle, { name: 'test', id: '1234' }))).resolves.toEqual(expectedResult);
-
-        const request = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles`);
-        request.flush(expectedResult);
-      });
-    });
-
-    describe('createProvisionalTechRecord', () => {
-      it('should return an array with a new tech record having added provisional', fakeAsync(() => {
-        const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.createProvisionalTechRecord(params.systemNumber, mockData[0].techRecord[0], params.user).subscribe();
-
-        // Check for correct requests: should have made one request to the PUT URL
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/add-provisional/${params.systemNumber}`);
-        expect(req.request.method).toEqual('POST');
-
-        // Provide each request with a mock response
-        req.flush(mockData);
-      }));
-    });
-
-    describe('updateTechRecords', () => {
-      it('should return an array with a new tech record and updated status code', fakeAsync(() => {
-        const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' }, oldStatusCode: StatusCodes.PROVISIONAL };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.updateTechRecords(params.systemNumber, mockData[0], params.user, params.oldStatusCode).subscribe();
-
-        // Check for correct requests: should have made one request to the PUT URL
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/${params.systemNumber}?oldStatusCode=${params.oldStatusCode}`);
-        expect(req.request.method).toEqual('PUT');
-
-        // should format the vrms for the update payload
-        expect(req.request.body).toHaveProperty('primaryVrm');
-        expect(req.request.body).toHaveProperty('secondaryVrms');
-        expect(req.request.body).not.toHaveProperty('vrms');
-
-        // Provide each request with a mock response
-        req.flush(mockData);
-      }));
-
-      it('should return an array with a new tech record and updated status code using basic URL', fakeAsync(() => {
-        const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.updateTechRecords(params.systemNumber, mockData[0], params.user).subscribe();
-
-        // Check for correct requests: should have made one request to the PUT URL
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/${params.systemNumber}`);
-        expect(req.request.method).toEqual('PUT');
-
-        // Provide each request with a mock response
-        req.flush(mockData);
-      }));
-    });
-
-    describe('updateVin', () => {
-      it('should make POST request to correct URL', fakeAsync(() => {
-        const params = { systemNumber: '12345', vin: 'MYNEWVIN', user: { name: 'TEST', id: '1234' } };
-        service.updateVin(params.vin, params.systemNumber, params.user).subscribe();
-
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/update-vin/${params.systemNumber}`);
-        expect(req.request.method).toEqual('PUT');
-      }));
-    });
-
-    describe('archiveTechRecord', () => {
-      it('should return a new tech record having added provisional', fakeAsync(() => {
-        const params = { systemNumber: '12345', reasonForArchiving: 'some reason', user: { name: 'TEST', id: '1234' } };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.archiveTechnicalRecord(params.systemNumber, mockData[0].techRecord[0], params.reasonForArchiving, params.user).subscribe();
-
-        // Check for correct requests: should have made one request to the PUT URL
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/archive/${params.systemNumber}`);
-        expect(req.request.method).toEqual('PUT');
-
-        // Provide each request with a mock response
-        req.flush(mockData);
-      }));
-    });
-  });
-
-  describe('isUnique', () => {
-    it('should validate the search term to be unique when no matching results are returned', () => {
-      const searchParams = { searchTerm: '12345', type: 'vin' };
-      const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-
-      service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VIN).subscribe(response => {
-        expect(response).toEqual(true);
-      });
-
-      // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(
-        `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`
-      );
-      expect(req.request.method).toEqual('GET');
-
-      // Provide each request with a mock response
-      req.flush(mockData);
-    });
-
-    it('should validate the search term to be unique when no matching results are returned', () => {
-      const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
-      const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-      mockData[0].techRecord.map(record => (record.statusCode = StatusCodes.ARCHIVED));
-
-      service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VIN).subscribe(response => {
-        expect(response).toEqual(true);
-      });
-
-      // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(
-        `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`
-      );
-      expect(req.request.method).toEqual('GET');
-
-      // Provide each request with a mock response
-      req.flush(mockData);
-    });
-
-    it('should validate the search term to be non unique when matching results are returned and are current or provisional', () => {
-      const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
-      const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-
-      service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VIN).subscribe(response => {
-        expect(response).toEqual(false);
-      });
-
-      // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(
-        `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`
-      );
-      expect(req.request.method).toEqual('GET');
-
-      // Provide each request with a mock response
-      req.flush(mockData);
-    });
-
-    it('should validate the search term to be non unique when vrm is used as a primary', () => {
-      const searchParams = { searchTerm: 'KP01 ABC', type: 'vrm' };
-      const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-
-      service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VRM).subscribe(response => {
-        expect(response).toEqual(false);
-      });
-
-      // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(
-        `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vrm`
-      );
-      expect(req.request.method).toEqual('GET');
-
-      // Provide each request with a mock response
-      req.flush(mockData);
-    });
-
-    it('should validate the search term to be unique when vrm is not used as a primary', () => {
-      const searchParams = { searchTerm: '12345', type: 'vrm' };
-      const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-
-      service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VRM).subscribe(response => {
-        expect(response).toEqual(true);
-      });
-
-      // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(
-        `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vrm`
-      );
-      expect(req.request.method).toEqual('GET');
-
-      // Provide each request with a mock response
-      req.flush(mockData);
-    });
-  });
-
-  describe('calculateTechRecordToUpdate', () => {
-    let vehicle: VehicleTechRecordModel = {
-      vin: '123',
-      vrms: [{ vrm: '123', isPrimary: true }],
-      systemNumber: '1234',
-      techRecord: []
-    };
-  });
-
-  describe('business logic methods', () => {
-    describe('updateEditingTechRecord', () => {
-      it('should patch the missing information for the technical record and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
-        const dispatchSpy = jest.spyOn(store, 'dispatch');
-        const mockVehicleRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-        mockVehicleRecord.techRecord = [mockVehicleRecord.techRecord[0]];
-        store.overrideSelector(editableVehicleTechRecord, mockVehicleRecord);
-        service.updateEditingTechRecord(mockVehicleRecord.techRecord[0]);
-        expect(dispatchSpy).toHaveBeenCalledTimes(1);
-        expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
-      });
-
-      it('should patch from the selected record if the editing is not defined and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
-        const dispatchSpy = jest.spyOn(store, 'dispatch');
-        const mockVehicleRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-        mockVehicleRecord.techRecord = [mockVehicleRecord.techRecord[0]];
-        store.overrideSelector(editableVehicleTechRecord, undefined);
-        store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, mockVehicleRecord);
-        service.updateEditingTechRecord(mockVehicleRecord.techRecord[0]);
-        expect(dispatchSpy).toHaveBeenCalledTimes(1);
-        expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
-      });
-
-      it('override the editable tech record and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
-        const dispatchSpy = jest.spyOn(store, 'dispatch');
-        const mockVehicleRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-        mockVehicleRecord.techRecord = [mockVehicleRecord.techRecord[0]];
-
-        const mockEditableVehicleRecord = { vin: 'a random vin' } as VehicleTechRecordModel;
-
-        store.overrideSelector(editableVehicleTechRecord, mockEditableVehicleRecord);
-        store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, mockVehicleRecord);
-        service.updateEditingTechRecord(mockVehicleRecord.techRecord[0], true);
-        expect(dispatchSpy).toHaveBeenCalledTimes(1);
-        expect(dispatchSpy).not.toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockEditableVehicleRecord }));
-        expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
-      });
-
-      it('should throw an error if there is more than one tech record', () => {
-        const mockVehicleRecord = mockVehicleTechnicalRecord();
-        expect(() => service.updateEditingTechRecord(mockVehicleRecord)).toThrowError('Editing tech record can only have one technical record!');
-      });
-
-      it('should throw an error if there is more than one tech record', () => {
-        const dispatchSpy = jest.spyOn(store, 'dispatch');
-        const mockVehicleRecord = mockVehicleTechnicalRecord();
-        mockVehicleRecord.techRecord = mockVehicleRecord.techRecord.filter(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
-        service.updateEditingTechRecord(mockVehicleRecord);
-        expect(dispatchSpy).toHaveBeenCalledTimes(1);
-        expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
-      });
-    });
   });
 
   describe('validateForBatch', () => {
@@ -521,7 +113,7 @@ describe('TechnicalRecordService', () => {
           techRecord: []
         } as unknown as VehicleTechRecordModel;
 
-        jest.spyOn(service, 'getByVin').mockReturnValue(of([mockVehicleRecord]));
+        jest.spyOn(technicalRecordHttpService, 'getByVin').mockReturnValue(of([mockVehicleRecord]));
 
         const serviceCall = service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>;
         const errors = await firstValueFrom(serviceCall);
@@ -539,7 +131,7 @@ describe('TechnicalRecordService', () => {
           techRecord: [{ statusCode: StatusCodes.CURRENT }]
         } as unknown as VehicleTechRecordModel;
 
-        jest.spyOn(service, 'getByVin').mockReturnValue(of([mockVehicleRecord]));
+        jest.spyOn(technicalRecordHttpService, 'getByVin').mockReturnValue(of([mockVehicleRecord]));
 
         const serviceCall = service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>;
         const errors = await firstValueFrom(serviceCall);
@@ -552,7 +144,7 @@ describe('TechnicalRecordService', () => {
         testGroup.get('trailerId')!.setValue('TESTTRAILERID');
         const mockVehicleRecord = { vin: 'TESTVIN', trailerId: 'TESTTRAILERID' } as VehicleTechRecordModel;
 
-        jest.spyOn(service, 'getByVin').mockReturnValue(of([cloneDeep(mockVehicleRecord), cloneDeep(mockVehicleRecord)]));
+        jest.spyOn(technicalRecordHttpService, 'getByVin').mockReturnValue(of([cloneDeep(mockVehicleRecord), cloneDeep(mockVehicleRecord)]));
 
         const serviceCall = service.validateForBatch()(testGroup.get('vin')!);
         (serviceCall as Observable<ValidationErrors | null>).subscribe(errors => {
@@ -566,7 +158,7 @@ describe('TechnicalRecordService', () => {
         testGroup.get('vin')!.setValue('TESTVIN');
         testGroup.get('trailerId')!.setValue('TESTTRAILERID');
 
-        jest.spyOn(service, 'getByVin').mockReturnValue(of([]));
+        jest.spyOn(technicalRecordHttpService, 'getByVin').mockReturnValue(of([]));
 
         const serviceCall = service.validateForBatch()(testGroup.get('vin')!);
         (serviceCall as Observable<ValidationErrors | null>).subscribe(errors => {
