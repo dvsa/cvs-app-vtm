@@ -49,5 +49,58 @@ describe('TrimWhitespaceDirective', () => {
 
       expect(input2.value).toBe('this has spaces');
     });
+
+    describe('it should dispatch the appropriate number of events', () => {
+      it('if the value has changed', () => {
+        const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+        input1.value = 'this has spaces   ';
+        input1.dispatchEvent(new Event('focusout'));
+
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
+      });
+
+      it('if the value has not changed', () => {
+        const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+        input1.value = 'this has spaces';
+        input1.dispatchEvent(new Event('focusout'));
+
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('should trim whitespaces on input', () => {
+    it('should trim the values and update the form', () => {
+      input1.value = 'this has spaces   ';
+      input1.dispatchEvent(new Event('input'));
+
+      expect(input1.value).toBe('this has spaces');
+      expect(component.form.get('foo')?.value).toBe('this has spaces');
+    });
+
+    it('without form', () => {
+      input2.value = 'this has spaces   ';
+      input2.dispatchEvent(new Event('input'));
+
+      expect(input2.value).toBe('this has spaces');
+    });
+
+    describe('it should dispatch the appropriate number of input events', () => {
+      it('if the value has changed', () => {
+        const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+        input1.value = 'this has spaces   ';
+        input1.dispatchEvent(new Event('input'));
+
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
+      });
+
+      it('if the value has not changed', () => {
+        const dispatchEventSpy = jest.spyOn(input1, 'dispatchEvent');
+        input1.value = 'this has spaces';
+        input1.dispatchEvent(new Event('input'));
+
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 });

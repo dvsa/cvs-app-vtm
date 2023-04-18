@@ -13,12 +13,17 @@ export class NoSpaceDirective {
 
   @HostListener('focusout', ['$event.target'])
   public onBlur(input: HTMLInputElement): void {
+    const oldValue = input.value;
     input.value = input.value.replace(/\s/g, '');
-    input.dispatchEvent(new Event('input'));
+
+    if (input.value !== oldValue) input.dispatchEvent(new Event('input'));
   }
 
   @HostListener('input', ['$event.target'])
   public onInput(input: HTMLInputElement): void {
+    const oldValue = input.value;
     input.value = input.value.replace(/\s/g, '');
+
+    if (input.value !== oldValue) input.dispatchEvent(new Event('input'));
   }
 }
