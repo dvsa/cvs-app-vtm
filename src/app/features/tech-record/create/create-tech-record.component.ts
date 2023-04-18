@@ -31,6 +31,7 @@ export class CreateTechRecordComponent implements OnChanges {
     { name: 'main-form', type: FormNodeTypes.GROUP },
     {
       vin: new CustomFormControl({ name: 'input-vin', label: 'Vin', type: FormNodeTypes.CONTROL }, '', [
+        CustomValidators.alphanumeric(),
         Validators.minLength(3),
         Validators.maxLength(21),
         Validators.required

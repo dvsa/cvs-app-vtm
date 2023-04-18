@@ -16,4 +16,9 @@ export class NoSpaceDirective {
     input.value = input.value.replace(/\s/g, '');
     input.dispatchEvent(new Event('input'));
   }
+
+  @HostListener('input', ['$event.target'])
+  public onInput(input: HTMLInputElement): void {
+    input.value = input.value.replace(/\s/g, '');
+  }
 }
