@@ -4,8 +4,8 @@
   "description": "DVSA CVS Vehicle Testing Management Application",
   "main": "index.js",
   "engines": {
-    "node": "16.14.0",
-    "npm": "8.3.1"
+    "node": "18.16.0",
+    "npm": "9.5.1"
   },
   "scripts": {
     "ng": "ng",
