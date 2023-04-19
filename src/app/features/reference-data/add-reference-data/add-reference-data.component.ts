@@ -84,6 +84,8 @@ export class AddReferenceDataComponent implements OnInit {
   }
 
   getLabel(rawString: string): string {
-    return rawString;
+    const splitString: string = rawString.replace(/([a-z])([A-Z])/g, '$1 $2');
+    const newString = splitString.charAt(0).toUpperCase() + splitString.slice(1);
+    return newString;
   }
 }
