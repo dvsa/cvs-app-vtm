@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormControlStatus, FormGroup, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { Roles } from '@models/roles.enum';
-import { selectAllReferenceDataByResourceType } from '@store/reference-data';
+import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { select, Store } from '@ngrx/store';
+import { Reference } from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
   selector: 'app-add-reference-data',
@@ -19,14 +20,16 @@ import { select, Store } from '@ngrx/store';
 export class AddReferenceDataComponent implements OnInit {
   private resourceType: ReferenceDataResourceType = ReferenceDataResourceType.ReferenceDataAdminType;
   form: CustomFormGroup;
-  store: any;
+
   columns: string[] = ['Resource Key', 'Description'];
 
   constructor(
+    private fb: FormBuilder,
     private referenceDataService: ReferenceDataService,
     public globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private store: Store<ReferenceDataState>
   ) {
     this.form = new CustomFormGroup(
       { name: 'main-form', type: FormNodeTypes.GROUP },
