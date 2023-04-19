@@ -64,6 +64,5 @@ export interface User extends ReferenceDataModelBase {
 }
 
 export interface ReferenceDataAdminType extends ReferenceDataModelBase {
-  template: FormNode;
-  templateList: string[];
+  yolo?: string;
 }
