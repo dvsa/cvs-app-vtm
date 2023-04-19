@@ -1,3 +1,5 @@
+import { FormNode } from '@forms/services/dynamic-form.types';
+
 export enum ReferenceDataResourceType {
   Brake = 'BRAKES',
   CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',
@@ -10,7 +12,8 @@ export enum ReferenceDataResourceType {
   TIRReasonsForAbandoning = 'TIR_REASONS_FOR_ABANDONING',
   TrlMake = 'TRL_MAKE',
   Tyres = 'TYRES',
-  User = 'USER'
+  User = 'USER',
+  ReferenceDataAdminType = 'REFERENCE_DATA_ADMIN_TYPE'
 }
 
 export interface ReferenceDataModelBase {
@@ -58,4 +61,9 @@ export interface ReferenceDataTyre extends ReferenceDataModelBase {
 export interface User extends ReferenceDataModelBase {
   name: string;
   email: string;
+}
+
+export interface ReferenceDataAdminType extends ReferenceDataModelBase {
+  template: FormNode;
+  templateList: string[];
 }

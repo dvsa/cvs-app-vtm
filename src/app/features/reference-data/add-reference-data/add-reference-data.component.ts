@@ -5,19 +5,29 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { Observable } from 'rxjs';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { Roles } from '@models/roles.enum';
+import { selectAllReferenceDataByResourceType } from '@store/reference-data';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-add-reference-data',
   templateUrl: './add-reference-data.component.html'
 })
 export class AddReferenceDataComponent implements OnInit {
+  private resourceType: ReferenceDataResourceType = ReferenceDataResourceType.ReferenceDataAdminType;
   form: CustomFormGroup;
   store: any;
   columns: string[] = ['Resource Key', 'Description'];
 
-  constructor(public globalErrorService: GlobalErrorService, private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private referenceDataService: ReferenceDataService,
+    public globalErrorService: GlobalErrorService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.form = new CustomFormGroup(
       { name: 'main-form', type: FormNodeTypes.GROUP },
       {
@@ -43,10 +53,16 @@ export class AddReferenceDataComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.referenceDataService.loadReferenceData(this.resourceType);
+  }
 
   ngOnChanges(): void {
     this.globalErrorService.clearErrors();
+  }
+
+  get referenceData$(): Observable<ReferenceDataModelBase[] | undefined> {
+    return this.store.pipe(select(selectAllReferenceDataByResourceType(this.resourceType)));
   }
 
   get roles() {

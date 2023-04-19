@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { initialAppState, State } from '@store/.';
@@ -14,7 +15,7 @@ describe('AddReferenceDataComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AddReferenceDataComponent],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
