@@ -5,6 +5,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomValidators } from '@forms/validators/custom-validators';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -43,7 +44,7 @@ export class AmendVinComponent implements OnDestroy {
           type: FormNodeTypes.CONTROL
         },
         '',
-        [Validators.minLength(3), Validators.maxLength(21), Validators.required],
+        [CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21), Validators.required],
         [this.technicalRecordService.validateVin(this.vehicle?.vin)]
       )
     });

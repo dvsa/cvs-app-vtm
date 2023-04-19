@@ -74,7 +74,7 @@ export class BatchTrlDetailsComponent implements OnDestroy {
       vin: new CustomFormControl(
         { name: 'vin', type: FormNodeTypes.CONTROL },
         null,
-        [Validators.minLength(3), Validators.maxLength(21)],
+        [CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21)],
         this.technicalRecordService.validateForBatch()
       ),
       trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]],
