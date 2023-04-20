@@ -91,42 +91,34 @@ describe('CreateTestRecordComponent', () => {
     expect(navigateSpy).toHaveBeenCalled();
   });
 
-  it('should call createTestResult with value of all forms merged into one', fakeAsync(() => {
+  it('should call createTestResult with value of all forms merged into one', async () => {
+    fixture.detectChanges();
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
     store.overrideSelector(testResultInEdit, testRecord);
     store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']!));
-
-    tick();
-    fixture.detectChanges();
 
     component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
 
-    component.handleSave();
-
-    tick();
-
+    await component.handleSave();
+    fixture.detectChanges();
     expect(createTestResultSpy).toHaveBeenCalledTimes(1);
     expect(createTestResultSpy).toHaveBeenCalledWith(testRecord);
-  }));
+  });
 
-  it('should not call createTestResult if some forms are invalid', fakeAsync(() => {
+  it('should not call createTestResult if some forms are invalid', async () => {
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
     store.overrideSelector(testResultInEdit, testRecord);
     store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']!));
 
-    tick();
     fixture.detectChanges();
-
     component.isAnyFormInvalid = jest.fn().mockReturnValue(true);
 
-    component.handleSave();
-
-    tick();
+    await component.handleSave();
 
     expect(createTestResultSpy).not.toHaveBeenCalled();
-  }));
+  });
 
   it('should dispatch the action to update the test result in edit', () => {
     const updateTestResultSpy = jest.spyOn(testRecordsService, 'updateEditingTestResult').mockImplementation(() => {});
@@ -193,26 +185,24 @@ describe('CreateTestRecordComponent', () => {
     });
   });
 
-  it('should combine forms', fakeAsync(() => {
+  it('should combine forms', async () => {
     component['baseTestRecordComponent'] = {
       sections: { forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) }
     } as unknown as BaseTestRecordComponent;
 
-    const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
+    const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => Promise.resolve(true));
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
     store.overrideSelector(testResultInEdit, testRecord);
     store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']!));
 
-    tick();
     fixture.detectChanges();
 
-    component.handleSave();
+    await component.handleSave();
 
-    tick();
-
+    fixture.detectChanges();
     expect(createTestResultSpy).toHaveBeenCalledTimes(1);
     expect(createTestResultSpy).toHaveBeenCalledWith(testRecord);
-  }));
+  });
 
   it('should set testMode to be view', () => {
     component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
