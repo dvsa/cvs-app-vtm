@@ -8,6 +8,8 @@ import { BatchTrlDetailsComponent } from './components/batch-trl-details/batch-t
 import { BatchTrlResultsComponent } from './components/batch-trl-results/batch-trl-results.component';
 import { BatchTrlTemplateComponent } from './components/batch-trl-template/batch-trl-template.component';
 import { CreateBatchTrlResolver } from './resolvers/create-batch-trl.resolver';
+import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
+import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 
 const routes: Routes = [
   {
@@ -31,6 +33,12 @@ const routes: Routes = [
         path: 'batch-results',
         data: { tile: 'Batch summary' },
         component: BatchTrlResultsComponent
+      },
+      {
+        path: 'tyre-search/:axleNumber',
+        component: TechRecordSearchTyresComponent,
+        data: { title: 'Tyre search', roles: Roles.TechRecordCreate, isEditing: true },
+        canActivate: [MsalGuard, RoleGuard]
       }
     ]
   }
