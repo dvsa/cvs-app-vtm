@@ -6,6 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
+import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from 'rxjs';
 
@@ -26,7 +27,8 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     private globalErrorService: GlobalErrorService,
     private router: Router,
     private route: ActivatedRoute,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private batchTechRecordService: BatchTechnicalRecordService
   ) {
     this.form = this.fb.group({
       vehicles: this.fb.array([]),
@@ -39,7 +41,7 @@ export class BatchTrlDetailsComponent implements OnDestroy {
       if (!vehicle) this.back();
     });
 
-    combineLatest([this.technicalRecordService.batchVehicles$, this.technicalRecordService.applicationId$])
+    combineLatest([this.batchTechRecordService.batchVehicles$, this.batchTechRecordService.applicationId$])
       .pipe(take(1))
       .subscribe(([vehicles, applicationId]) => {
         if (this.form && vehicles.length) {
@@ -58,7 +60,7 @@ export class BatchTrlDetailsComponent implements OnDestroy {
   }
 
   get generateNumber$(): Observable<boolean> {
-    return this.technicalRecordService.generateNumber$;
+    return this.batchTechRecordService.generateNumber$;
   }
 
   get filledVinsInForm() {
@@ -75,7 +77,7 @@ export class BatchTrlDetailsComponent implements OnDestroy {
         { name: 'vin', type: FormNodeTypes.CONTROL },
         null,
         [CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21)],
-        this.technicalRecordService.validateForBatch()
+        this.batchTechRecordService.validateForBatch()
       ),
       trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]],
       systemNumber: ['']
@@ -111,8 +113,8 @@ export class BatchTrlDetailsComponent implements OnDestroy {
     if (!valid) return;
 
     this.globalErrorService.setErrors([]);
-    this.technicalRecordService.setApplicationId(this.form.get('applicationId')?.value);
-    this.technicalRecordService.upsertVehicleBatch(this.cleanEmptyValues(this.vehicles.value));
+    this.batchTechRecordService.setApplicationId(this.form.get('applicationId')?.value);
+    this.batchTechRecordService.upsertVehicleBatch(this.cleanEmptyValues(this.vehicles.value));
     this.back();
   }
 
