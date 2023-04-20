@@ -1,4 +1,4 @@
-import { Component, OnChanges } from '@angular/core';
+import { Component, NgZone, OnChanges } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -66,6 +66,7 @@ export class CreateTechRecordComponent implements OnChanges {
   ];
 
   constructor(
+    private _ngZone: NgZone,
     private globalErrorService: GlobalErrorService,
     private technicalRecordService: TechnicalRecordService,
     private route: ActivatedRoute,
@@ -138,7 +139,9 @@ export class CreateTechRecordComponent implements OnChanges {
 
     this.technicalRecordService.updateEditingTechRecord(this.vehicle as VehicleTechRecordModel);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.vehicle.techRecord![0].vehicleType);
-    this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
+    this._ngZone.run(() => {
+      this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
+    });
   }
 
   async isFormValueUnique() {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -30,6 +30,7 @@ export class ChangeVehicleTypeComponent {
   });
 
   constructor(
+    private _ngZone: NgZone,
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -91,7 +92,8 @@ export class ChangeVehicleTypeComponent {
     this.globalErrorService.clearErrors();
 
     const routeSuffix = this.techRecord?.statusCode !== StatusCodes.PROVISIONAL ? 'amend-reason' : 'notifiable-alteration-needed';
-
-    this.router.navigate([`../${routeSuffix}`], { relativeTo: this.route });
+    this._ngZone.run(() => {
+      this.router.navigate([`../${routeSuffix}`], { relativeTo: this.route });
+    });
   }
 }
