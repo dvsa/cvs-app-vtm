@@ -13,7 +13,6 @@ import { BatchRecord } from '@store/technical-records/reducers/batch-create.redu
 import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Router } from '@angular/router';
-import { SharedModule } from '@shared/shared.module';
 import { BatchTrlResultsComponent } from '../batch-trl-results/batch-trl-results.component';
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 
@@ -49,7 +48,6 @@ describe('BatchTrlTemplateComponent', () => {
       imports: [
         RouterTestingModule.withRoutes([{ path: 'batch-results', component: BatchTrlResultsComponent }]),
         HttpClientTestingModule,
-        SharedModule,
         FixNavigationTriggeredOutsideAngularZoneNgModule
       ],
       declarations: [BatchTrlTemplateComponent, TechRecordSummaryStubComponent],

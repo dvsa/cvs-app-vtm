@@ -52,7 +52,7 @@ describe('SelectComponent', () => {
   });
 
   describe('value', () => {
-    it('should be propagated from element to the form control', async () => {
+    it('should be propagated from element to the form control', () => {
       const select = fixture.debugElement.query(By.css('select')).nativeElement as HTMLSelectElement;
       const foo = component.form.get('foo');
       select.selectedIndex = 1;

@@ -81,6 +81,7 @@ export class BatchTrlTemplateComponent {
               );
             }
           });
+
           this.router.navigate(['batch-results'], { relativeTo: this.route });
         });
     }
