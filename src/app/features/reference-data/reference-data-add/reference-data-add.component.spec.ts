@@ -1,28 +1,30 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { DataTypeListComponent } from './data-type-list.component';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { AddReferenceDataComponent } from './reference-data-add.component';
 
-describe('DataTypeListComponent', () => {
-  let component: DataTypeListComponent;
-  let fixture: ComponentFixture<DataTypeListComponent>;
+describe('AddReferenceDataComponent', () => {
+  let component: AddReferenceDataComponent;
+  let fixture: ComponentFixture<AddReferenceDataComponent>;
   let store: MockStore<State>;
   let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DataTypeListComponent],
+      declarations: [AddReferenceDataComponent],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DataTypeListComponent);
+    store = TestBed.inject(MockStore);
+    fixture = TestBed.createComponent(AddReferenceDataComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 

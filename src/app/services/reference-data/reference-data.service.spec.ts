@@ -280,7 +280,7 @@ describe('ReferenceDataService', () => {
         {
           refData: [
             {
-              resourceType: ReferenceDataResourceType.Brake,
+              resourceType: ReferenceDataResourceType.Brakes,
               resourceKey: 'banana',
               description: 'yellow'
             }

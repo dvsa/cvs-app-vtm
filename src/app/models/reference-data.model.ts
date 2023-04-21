@@ -1,19 +1,17 @@
-import { FormNode } from '@forms/services/dynamic-form.types';
-
 export enum ReferenceDataResourceType {
-  Brake = 'BRAKES',
+  Brakes = 'BRAKES',
   CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',
   HgvMake = 'HGV_MAKE',
   PsvMake = 'PSV_MAKE',
   ReasonsForAbandoningHgv = 'REASONS_FOR_ABANDONING_HGV',
   ReasonsForAbandoningTrl = 'REASONS_FOR_ABANDONING_TRL',
   ReasonsForAbandoningPsv = 'REASONS_FOR_ABANDONING_PSV',
+  ReferenceDataAdminType = 'REFERENCE_DATA_ADMIN_TYPE',
   SpecialistReasonsForAbandoning = 'SPECIALIST_REASONS_FOR_ABANDONING',
-  TIRReasonsForAbandoning = 'TIR_REASONS_FOR_ABANDONING',
+  TirReasonsForAbandoning = 'TIR_REASONS_FOR_ABANDONING',
   TrlMake = 'TRL_MAKE',
   Tyres = 'TYRES',
-  User = 'USER',
-  ReferenceDataAdminType = 'REFERENCE_DATA_ADMIN_TYPE'
+  User = 'USER'
 }
 
 export interface ReferenceDataModelBase {

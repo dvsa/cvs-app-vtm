@@ -1,17 +1,20 @@
 <form [formGroup]="form" class="govuk-grid-row search-page" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
-    <p class="govuk-heading-xl govuk-!-font-weight-bold">Select a Reference Data type to search</p>
+    <p class="govuk-heading-xl govuk-!-font-weight-bold">Select a reference data type to search</p>
   </div>
+
   <div class="govuk-grid-column-full">
     <app-radio-group
-      name="reference"
-      label="Reference Data type"
-      formControlName="reference"
-      [options]="references"
-      (ngModelChange)="ngOnChanges()"
+      #type
+      name="type"
+      label="Reference Data Type"
+      formControlName="referenceType"
+      [options]="(options$ | async) || []"
     ></app-radio-group>
+
     <app-button-group>
-      <app-button id="submit" (clicked)="handleSubmit()">Continue</app-button>
+      <app-button id="submit" (clicked)="navigateTo(type.value)">Continue</app-button>
+
       <app-button id="cancel" design="link" (clicked)="cancel()">Cancel</app-button>
     </app-button-group>
   </div>

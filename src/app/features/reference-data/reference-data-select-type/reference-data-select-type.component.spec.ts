@@ -3,17 +3,17 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { ReferenceDataComponent } from './reference-data.component';
+import { ReferenceDataSelectTypeComponent } from './reference-data-select-type.component';
 
 describe('ReferenceDataComponent', () => {
-  let component: ReferenceDataComponent;
-  let fixture: ComponentFixture<ReferenceDataComponent>;
+  let component: ReferenceDataSelectTypeComponent;
+  let fixture: ComponentFixture<ReferenceDataSelectTypeComponent>;
   let store: MockStore<State>;
   let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ReferenceDataComponent],
+      declarations: [ReferenceDataSelectTypeComponent],
       imports: [RouterTestingModule],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
@@ -21,7 +21,7 @@ describe('ReferenceDataComponent', () => {
 
   beforeEach(() => {
     store = TestBed.inject(MockStore);
-    fixture = TestBed.createComponent(ReferenceDataComponent);
+    fixture = TestBed.createComponent(ReferenceDataSelectTypeComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     fixture.detectChanges();

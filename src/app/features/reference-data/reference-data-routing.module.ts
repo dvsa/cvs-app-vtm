@@ -1,26 +1,27 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
-import { AddReferenceDataComponent } from './add-reference-data/add-reference-data.component';
-import { DataTypeListComponent } from './data-type-list/data-type-list.component';
-import { ReferenceDataComponent } from './reference-data.component';
+import { AddReferenceDataComponent } from './reference-data-add/reference-data-add.component';
+import { ReferenceDataListComponent } from './reference-data-list/reference-data-list.component';
+import { ReferenceDataSelectTypeComponent } from './reference-data-select-type/reference-data-select-type.component';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'prefix',
-    component: ReferenceDataComponent
+    component: ReferenceDataListComponent,
+    data: { title: 'View Reference Data', roles: Roles.ReferenceDataView }
   },
   {
-    path: 'data-type-list',
-    component: DataTypeListComponent,
-    data: { title: 'View Reference Data', roles: Roles.ReferenceDataView },
+    path: 'select-type',
+    component: ReferenceDataSelectTypeComponent,
+    data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
-    path: 'data-type-list/add-reference-data',
+    path: 'add',
     component: AddReferenceDataComponent,
     data: { title: 'Add Reference Data', roles: Roles.ReferenceDataView },
     canActivate: [MsalGuard, RoleGuard]
