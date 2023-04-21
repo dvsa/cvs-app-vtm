@@ -15,6 +15,7 @@ import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Router } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
 import { BatchTrlResultsComponent } from '../batch-trl-results/batch-trl-results.component';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 
 let batchOfVehicles: BatchRecord[] = [];
 
@@ -48,7 +49,8 @@ describe('BatchTrlTemplateComponent', () => {
       imports: [
         RouterTestingModule.withRoutes([{ path: 'batch-results', component: BatchTrlResultsComponent }]),
         HttpClientTestingModule,
-        SharedModule
+        SharedModule,
+        FixNavigationTriggeredOutsideAngularZoneNgModule
       ],
       declarations: [BatchTrlTemplateComponent, TechRecordSummaryStubComponent],
       providers: [
