@@ -70,6 +70,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    let isOnInit = true;
     this.store
       .pipe(
         select(editableTechRecord),
@@ -85,7 +86,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
               this.techRecord.axles = axles;
             }
 
-            this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
+            isOnInit && this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
 
             return { ...cloneDeep(this.techRecord), reasonForCreation: '' };
           }
@@ -98,6 +99,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
+    isOnInit = false;
   }
 
   ngOnDestroy(): void {
@@ -105,27 +107,26 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  get vehicleTemplates(): Array<FormNode> {
-    const type =
-      this.techRecordCalculated.vehicleType === VehicleTypes.TRL && this.techRecordCalculated.euVehicleCategory === EuVehicleCategories.O1
-        ? VehicleTypes.SMALL_TRL
-        : this.techRecordCalculated.vehicleType;
+  get vehicleType() {
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated);
+  }
 
-    return vehicleTemplateMap.get(type)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? [];
+  get vehicleTemplates(): Array<FormNode> {
+    return (
+      vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
+    );
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
     const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form];
 
-    switch (this.techRecordCalculated.vehicleType) {
+    switch (this.vehicleType) {
       case VehicleTypes.PSV:
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
         return commonCustomSections;
       case VehicleTypes.TRL:
-        return this.techRecordCalculated.euVehicleCategory !== EuVehicleCategories.O1
-          ? [...commonCustomSections, this.trlBrakes!.form, this.letters!.form]
-          : [];
+        return [...commonCustomSections, this.trlBrakes!.form, this.letters!.form];
       default:
         return [];
     }
@@ -152,7 +153,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   setErrors(forms: Array<CustomFormGroup | CustomFormArray>): void {
     const errors: GlobalError[] = [];
 
-    forms.forEach(form => DynamicFormService.updateValidity(form, errors));
+    forms.forEach(form => DynamicFormService.validate(form, errors));
 
     errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
   }

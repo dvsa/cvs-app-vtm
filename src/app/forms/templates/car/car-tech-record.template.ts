@@ -1,6 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
 
 export const CarTechRecord: FormNode = {
@@ -61,6 +62,15 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOXGROUP,
       options: getOptionsFromEnum(VehicleSubclass)
+    },
+    {
+      name: 'vehicleConfiguration',
+      label: 'Vehicle configuration',
+      value: VehicleConfiguration.OTHER,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(VehicleConfiguration),
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'euVehicleCategory',

@@ -71,19 +71,19 @@ describe('CreateNewVehicleRecordComponent', () => {
   });
 
   describe('get isFormValid', () => {
-    it('should call updateValidity with the vehicleForm and an empty array', () => {
-      const updateValiditySpy = jest.spyOn(DynamicFormService, 'updateValidity').mockImplementation();
-      component.isFormValid;
-      expect(updateValiditySpy).toHaveBeenCalledTimes(1);
-      expect(updateValiditySpy).toHaveBeenCalledWith(component.form, []);
+    it('should call validate with the vehicleForm and an empty array', () => {
+      const validateSpy = jest.spyOn(DynamicFormService, 'validate').mockImplementation();
+      const valid = component.isFormValid;
+      expect(validateSpy).toHaveBeenCalledTimes(1);
+      expect(validateSpy).toHaveBeenCalledWith(component.form, []);
     });
 
     it('should call setErrors with an empty array', () => {
-      jest.spyOn(DynamicFormService, 'updateValidity').mockImplementation(() => {
+      jest.spyOn(DynamicFormService, 'validate').mockImplementation(() => {
         return;
       });
       const setErrorsSpy = jest.spyOn(errorService, 'setErrors').mockImplementation();
-      component.isFormValid;
+      const valid = component.isFormValid;
       expect(setErrorsSpy).toHaveBeenCalledTimes(1);
       expect(setErrorsSpy).toHaveBeenCalledWith([]);
     });
@@ -138,7 +138,7 @@ describe('CreateNewVehicleRecordComponent', () => {
       jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
       jest.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(true));
       const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      const updateEditingSpy = jest.spyOn(techRecordService, 'updateEditingTechRecord');
+      jest.spyOn(techRecordService, 'updateEditingTechRecord');
 
       component.vehicle = { techRecord: [{ vehicleType: VehicleTypes.HGV } as TechRecordModel] };
       component.handleSubmit();
@@ -152,7 +152,7 @@ describe('CreateNewVehicleRecordComponent', () => {
     it('should call isUnique with an emptry string and the type of vin', async () => {
       const isUniqueSpy = jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
 
-      const result = await component.isVinUnique();
+      await component.isVinUnique();
 
       expect(isUniqueSpy).toBeCalledWith('', SEARCH_TYPES.VIN);
     });

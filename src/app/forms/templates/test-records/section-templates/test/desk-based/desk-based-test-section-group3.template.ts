@@ -132,6 +132,14 @@ export const AmendDeskBasedTestSectionGroup3: FormNode = {
           type: FormNodeTypes.GROUP,
           children: [
             {
+              name: 'testCode',
+              label: 'Test Code',
+              value: '',
+              disabled: true,
+              type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.XS
+            },
+            {
               name: 'testResult',
               label: 'Result',
               type: FormNodeTypes.CONTROL,

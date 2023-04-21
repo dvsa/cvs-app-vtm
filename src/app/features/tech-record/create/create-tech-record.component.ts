@@ -5,7 +5,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -27,29 +27,33 @@ export class CreateTechRecordComponent implements OnChanges {
   vrmUnique: boolean = false;
   trlUnique: boolean = false;
 
-  form = new FormGroup({
-    vin: new CustomFormControl({ name: 'input-vin', label: 'Vin', type: FormNodeTypes.CONTROL }, '', [
-      Validators.minLength(3),
-      Validators.maxLength(21),
-      Validators.required
-    ]),
-    vrmTrm: new CustomFormControl({ name: 'input-vrm-or-trailer-id', label: 'VRM/TRM', type: FormNodeTypes.CONTROL }, '', [
-      CustomValidators.alphanumeric(),
-      CustomValidators.notZNumber,
-      Validators.maxLength(9),
-      Validators.minLength(1),
-      Validators.required
-    ]),
-    vehicleStatus: new CustomFormControl(
-      { name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL },
-      StatusCodes.PROVISIONAL,
-      [Validators.required]
-    ),
-    vehicleType: new CustomFormControl({ name: 'change-vehicle-type-select', label: 'Vehicle type', type: FormNodeTypes.CONTROL }, '', [
-      Validators.required
-    ]),
-    generateID: new CustomFormControl({ name: 'generate-c-t-z-num', type: FormNodeTypes.CONTROL }, null)
-  });
+  form = new CustomFormGroup(
+    { name: 'main-form', type: FormNodeTypes.GROUP },
+    {
+      vin: new CustomFormControl({ name: 'input-vin', label: 'Vin', type: FormNodeTypes.CONTROL }, '', [
+        CustomValidators.alphanumeric(),
+        Validators.minLength(3),
+        Validators.maxLength(21),
+        Validators.required
+      ]),
+      vrmTrm: new CustomFormControl({ name: 'input-vrm-or-trailer-id', label: 'VRM/TRM', type: FormNodeTypes.CONTROL }, '', [
+        CustomValidators.alphanumeric(),
+        CustomValidators.notZNumber,
+        Validators.maxLength(9),
+        Validators.minLength(1),
+        Validators.required
+      ]),
+      vehicleStatus: new CustomFormControl(
+        { name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL },
+        StatusCodes.PROVISIONAL,
+        [Validators.required]
+      ),
+      vehicleType: new CustomFormControl({ name: 'change-vehicle-type-select', label: 'Vehicle type', type: FormNodeTypes.CONTROL }, '', [
+        Validators.required
+      ]),
+      generateID: new CustomFormControl({ name: 'generate-c-or-z-num', type: FormNodeTypes.CONTROL }, null)
+    }
+  );
 
   public vehicleTypeOptions: MultiOptions = [
     { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
@@ -67,7 +71,9 @@ export class CreateTechRecordComponent implements OnChanges {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store
-  ) {}
+  ) {
+    this.technicalRecordService.clearBatch();
+  }
 
   ngOnChanges(): void {
     this.isVinUniqueCheckComplete = false;
@@ -80,7 +86,7 @@ export class CreateTechRecordComponent implements OnChanges {
   get isFormValid(): boolean {
     const errors: GlobalError[] = [];
 
-    DynamicFormService.updateValidity(this.form, errors);
+    DynamicFormService.validate(this.form, errors);
 
     this.globalErrorService.setErrors(errors);
 
@@ -174,7 +180,6 @@ export class CreateTechRecordComponent implements OnChanges {
 
   async isTrailerIdUnique() {
     this.vehicle.trailerId = this.form.value.vrmTrm;
-    this.vehicle.vrms = [{ vrm: this.form.value.vrmTrm, isPrimary: true }];
     const isTrailerIdUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.vehicle.trailerId!, SEARCH_TYPES.TRAILER_ID));
     if (!isTrailerIdUnique) {
       this.globalErrorService.addError({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });

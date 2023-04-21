@@ -3,7 +3,6 @@ import { FormNode } from '@forms/services/dynamic-form.types';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsTpl } from '../general/defect.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
-import { DeskBasedEmissionsSectionGroup5Lgv } from './section-templates/emissions/desk-based-emissions-section-group5-lgv';
 import { DeskBasedEmissionsSection } from './section-templates/emissions/desk-based-emissions-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
@@ -14,7 +13,7 @@ import { CreateRequiredSectionMotorcycle } from './section-templates/required/co
 import { CreateRequiredSection } from './section-templates/required/contingency-required-hidden-section.template';
 import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
 import { defectsHiddenSection } from './section-templates/required/defect-hidden-section.template';
-import { DeskBasedRequiredHiddenSectionGroup4Lgv } from './section-templates/required/desk-based-required-hidden-group4-lgv.template';
+import { DeskBasedRequiredHiddenSectionGroup4And5Lgv } from './section-templates/required/desk-based-required-hidden-group4-lgv.template';
 import { DeskBasedRequiredHiddenSectionGroup4Motorcyle } from './section-templates/required/desk-based-required-hidden-group4-motorcycle.template';
 import { SeatbeltHiddenSection } from './section-templates/required/seatbelt-hidden-section.template';
 import { SpecialistRequiredSectionLgvCarSmallTrl } from './section-templates/required/specialist-required-hidden-section-lgv-car.template';
@@ -33,11 +32,9 @@ import { ContingencyTestSectionSpecialistGroup3And4 } from './section-templates/
 import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency/contingency-test-section-specialist-group5.template';
 import { DeskBasedTestSectionGroup1Psv } from './section-templates/test/desk-based/desk-based-test-section-group1-PSV.template';
 import { DeskBasedTestSectionGroup1And4HgvTrl as DeskBasedTestSectionGroup1And4And5HgvTrl } from './section-templates/test/desk-based/desk-based-test-section-group1And4-HGV-TRL.template';
-import {
-  AmendDeskBasedTestSectionGroup2And5,
-  DeskBasedTestSectionGroup2And5
-} from './section-templates/test/desk-based/desk-based-test-section-group2.template';
+import { DeskBasedTestSectionGroup2And5 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
 import { DeskBasedTestSectionGroup3 } from './section-templates/test/desk-based/desk-based-test-section-group3.template';
+import { DeskBasedTestSectionGroup4LgvCarMotorcycle } from './section-templates/test/desk-based/desk-based-test-section-group4-lgv-template';
 import { DeskBasedTestSectionGroup4Psv } from './section-templates/test/desk-based/desk-based-test-section-group4-PSV.template';
 import { DeskBasedTestSectionLgvGroup5 } from './section-templates/test/desk-based/desk-based-test-section-group5-LGV';
 import { SpecialistTestSectionGroup3 } from './section-templates/test/specialist/specialist-test-section-group3.template';
@@ -48,6 +45,7 @@ import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicl
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
 import { DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvGroup1And2And4And5 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
 import { DeskBasedVehicleSectionGroup4LGV } from './section-templates/vehicle/desk-based-vehicle-section-group4-lgv.template';
+import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/desk-based-vehicle-section-group5-lgv.template';
 import { VehicleSectionGroup3 } from './section-templates/vehicle/group-3-light-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
@@ -506,9 +504,9 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredHiddenSectionGroup4Lgv,
+      required: DeskBasedRequiredHiddenSectionGroup4And5Lgv,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
-      test: AmendDeskBasedTestSectionGroup2And5,
+      test: DeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsHiddenSection,
@@ -524,10 +522,9 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup5: {
-      required: CreateRequiredSectionLgvCar,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      required: DeskBasedRequiredHiddenSectionGroup4And5Lgv,
+      vehicle: DeskBasedVehicleSectionGroup5Lgv,
       test: DeskBasedTestSectionLgvGroup5,
-      emissions: DeskBasedEmissionsSectionGroup5Lgv,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
@@ -555,9 +552,9 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: DeskBasedRequiredHiddenSectionGroup4Lgv,
+      required: DeskBasedRequiredHiddenSectionGroup4And5Lgv,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
-      test: AmendDeskBasedTestSectionGroup2And5,
+      test: DeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsHiddenSection,
@@ -615,7 +612,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     testTypesDeskBasedGroup4: {
       required: DeskBasedRequiredHiddenSectionGroup4Motorcyle,
       vehicle: DeskBasedVehicleSectionGroup4LGV,
-      test: AmendDeskBasedTestSectionGroup2And5,
+      test: DeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsHiddenSection,

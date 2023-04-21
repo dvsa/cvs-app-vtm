@@ -4,7 +4,10 @@
       <div class="govuk-grid-column-two-thirds">
         <div class="vehicle_heading">
           <h1 class="govuk-heading-l">
-            <span>{{ test?.testTypeId ?? '' | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}</span>
+            <span>
+              {{ test?.testTypeId ?? '' | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}
+              {{ testCode | uppercase }}
+            </span>
             <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
           </h1>
         </div>
@@ -46,10 +49,12 @@
   <ng-container *ngSwitchCase="false">
     <div class="test_result_header">
       <div class="test_name_and_date">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }}</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">
+          <span>{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }} {{ testCode | uppercase }}</span>
+        </h1>
         <div class="date_and_result">
           <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
-          <app-result-of-test [resultOfTest]="resultOfTest"></app-result-of-test>
+          <app-tag [type]="tagType">{{ resultOfTest | defaultNullOrEmpty }}</app-tag>
         </div>
       </div>
 
@@ -125,10 +130,10 @@
           {{ combinedOdometerReading(testResult?.odometerReading | digitGroupSeparator, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
         </dd>
       </div>
-      <div *ngIf="!isReview" class="govuk-summary-list__row">
+      <div *ngIf="resultOfTest !== 'cancelled'" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Certificate:</dt>
         <dd id="test-certificate" class="govuk-summary-list__value">
-          <app-test-certificate [testNumber]="testNumber || ''" [vin]="testResult?.vin || ''">
+          <app-test-certificate [testNumber]="testNumber || ''" [vin]="testResult?.vin || ''" [isClickable]="!isReview">
             {{ test?.certificateNumber | defaultNullOrEmpty }}
           </app-test-certificate>
         </dd>

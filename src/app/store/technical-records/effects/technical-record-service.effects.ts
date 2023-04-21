@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
-import { EuVehicleCategories, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  EuVehicleCategories,
+  PostNewVehicleModel,
+  PutVehicleTechRecordModel,
+  TechRecordModel,
+  VehicleTechRecordModel,
+  VehicleTypes,
+  Vrm
+} from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -22,6 +29,12 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
+  generateLetter,
+  generateLetterFailure,
+  generateLetterSuccess,
+  generatePlate,
+  generatePlateFailure,
+  generatePlateSuccess,
   getByAll,
   getByAllFailure,
   getByAllSuccess,
@@ -43,12 +56,6 @@ import {
   updateTechRecords,
   updateTechRecordsFailure,
   updateTechRecordsSuccess,
-  generatePlate,
-  generatePlateSuccess,
-  generatePlateFailure,
-  generateLetter,
-  generateLetterSuccess,
-  generateLetterFailure,
   updateVin,
   updateVinFailure,
   updateVinSuccess
@@ -122,13 +129,23 @@ export class TechnicalRecordServiceEffects {
   createVehicleRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createVehicleRecord),
-      withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
-      switchMap(([, record, name, id]) =>
-        this.technicalRecordService.createVehicleRecord(record!, { id, name }).pipe(
-          map(newVehicleRecord => createVehicleRecordSuccess({ vehicleTechRecords: [newVehicleRecord] })),
-          catchError(error => of(createVehicleRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createVehicleRecord') })))
-        )
-      )
+      withLatestFrom(this.technicalRecordService.applicationId$, this.userService.name$, this.userService.id$),
+      concatMap(([{ vehicle }, applicationId, name, id]) => {
+        const vehicleRecord = { ...vehicle, techRecord: [{ ...vehicle.techRecord[0], applicationId }] };
+
+        return this.technicalRecordService.createVehicleRecord(vehicleRecord, { id, name }).pipe(
+          map(response => createVehicleRecordSuccess({ vehicleTechRecords: [this.mapVehicleFromResponse(response)] })),
+          catchError(error =>
+            of(
+              createVehicleRecordFailure({
+                error: `Unable to create vehicle with VIN ${vehicle.vin}${
+                  error.error?.errors ? ' because:' + (error.error.errors?.map((e: string) => '\n' + e) as string[]).join() : ''
+                }`
+              })
+            )
+          )
+        );
+      })
     )
   );
 
@@ -149,7 +166,7 @@ export class TechnicalRecordServiceEffects {
     this.actions$.pipe(
       ofType(updateTechRecords),
       withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
-      switchMap(([action, record, name, id]) =>
+      concatMap(([action, record, name, id]) =>
         this.technicalRecordService
           .updateTechRecords(action.systemNumber, record!, { id, name }, action.recordToArchiveStatus, action.newStatus)
           .pipe(
@@ -250,6 +267,18 @@ export class TechnicalRecordServiceEffects {
       )
     )
   );
+
+  mapVehicleFromResponse(response: PostNewVehicleModel | PutVehicleTechRecordModel): VehicleTechRecordModel {
+    const vrms: Vrm[] = [];
+
+    if (response.techRecord[0].vehicleType !== VehicleTypes.TRL) {
+      response.primaryVrm && vrms.push({ vrm: response.primaryVrm, isPrimary: true });
+
+      response.secondaryVrms && vrms.push(...response.secondaryVrms.map(vrm => ({ vrm, isPrimary: false })));
+    }
+
+    return { ...response, vrms };
+  }
 
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {
     if (typeof error !== 'object') {

@@ -1,4 +1,5 @@
 import { Directive, HostListener } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Directive({
   selector: '[appTrimWhitespace]'
@@ -6,7 +7,17 @@ import { Directive, HostListener } from '@angular/core';
 export class TrimWhitespaceDirective {
   @HostListener('focusout', ['$event.target'])
   public onBlur(input: HTMLInputElement): void {
+    const oldValue = input.value;
     input.value = input.value.trim();
-    input.dispatchEvent(new Event('input'));
+
+    if (input.value !== oldValue) input.dispatchEvent(new Event('input'));
+  }
+
+  @HostListener('input', ['$event.target'])
+  public onInput(input: HTMLInputElement): void {
+    const oldValue = input.value;
+    input.value = input.value.trim();
+
+    if (input.value !== oldValue) input.dispatchEvent(new Event('input'));
   }
 }

@@ -1,0 +1,49 @@
+<h1 class="govuk-heading-l title">Add batch of trailers</h1>
+<form [formGroup]="form">
+  <app-text-input formControlName="applicationId" name="applicationId" label="Application ID" [width]="width.XL"></app-text-input>
+  <div class="govuk-inset-text">
+    For creating trailers, populate the <strong>VIN field only</strong>.
+    <br />
+    For updating existing trailers, populate the <strong>VIN field and the Trailer ID field</strong>.
+  </div>
+
+  <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
+    <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-trl-details" class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
+      </legend>
+
+      <app-text-input
+        appNoSpace
+        appTrimWhitespace
+        appToUppercase
+        formControlName="vin"
+        name="input-vin{{ i }}"
+        label="VIN"
+        [width]="width.L"
+        [warning]="getVinControl(group)?.meta?.warning"
+      >
+        <ng-container *ngIf="getVinControl(group)?.dirty && (getVinControl(group)?.status === 'VALID' || getVinControl(group)?.status === 'PENDING')">
+          <ng-template appSuffix>
+            <app-input-spinner [isValid]="getVinControl(group)?.status || 'PENDING'"></app-input-spinner>
+          </ng-template>
+        </ng-container>
+      </app-text-input>
+      <app-text-input
+        appNoSpace
+        appTrimWhitespace
+        appToUppercase
+        formControlName="trailerId"
+        name="trailerId{{ i }}"
+        label="Trailer ID"
+        [width]="width.L"
+        (focusout)="validate(group)"
+      ></app-text-input>
+    </fieldset>
+  </div>
+</form>
+
+<app-button-group>
+  <app-button id="add-vehicles" (clicked)="handleSubmit()">Add vehicles</app-button>
+  <app-button id="back" design="link" (clicked)="back()">Back</app-button>
+</app-button-group>

@@ -42,8 +42,7 @@ export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      options: getOptionsFromEnum(EuVehicleCategories)
     },
     {
       name: 'odometerReading',
@@ -66,6 +65,7 @@ export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
       label: 'Preparer Name',
       value: '',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
@@ -73,6 +73,7 @@ export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
       label: 'Preparer ID',
       value: '',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     }
   ]
