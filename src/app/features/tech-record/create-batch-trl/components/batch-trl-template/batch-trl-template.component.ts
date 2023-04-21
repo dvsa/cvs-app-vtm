@@ -1,4 +1,4 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -20,7 +20,6 @@ export class BatchTrlTemplateComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private _ngZone: NgZone,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
@@ -82,9 +81,7 @@ export class BatchTrlTemplateComponent {
               );
             }
           });
-          this._ngZone.run(() => {
-            this.router.navigate(['batch-results'], { relativeTo: this.route });
-          });
+          this.router.navigate(['batch-results'], { relativeTo: this.route });
         });
     }
   }

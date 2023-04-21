@@ -16,6 +16,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { RouterOutletComponent } from './components/router-outlet/router-outlet.component';
 import { TagComponent } from './components/tag/tag.component';
 import { TestCertificateComponent } from './components/test-certificate/test-certificate.component';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from './custom-module/fixNgZoneError';
 import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
 import { RetrieveDocumentDirective } from './directives/retrieve-document/retrieve-document.directive';
 import { DefaultNullOrEmpty } from './pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -46,7 +47,7 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     InputSpinnerComponent,
     RouterOutletComponent
   ],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FixNavigationTriggeredOutsideAngularZoneNgModule],
   exports: [
     DefaultNullOrEmpty,
     ButtonGroupComponent,

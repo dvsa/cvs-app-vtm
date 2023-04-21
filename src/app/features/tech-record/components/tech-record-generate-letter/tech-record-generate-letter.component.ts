@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -43,7 +43,6 @@ export class GenerateLetterComponent {
   ]);
 
   constructor(
-    private _ngZone: NgZone,
     private actions$: Actions,
     public dfs: DynamicFormService,
     private globalErrorService: GlobalErrorService,
@@ -75,9 +74,7 @@ export class GenerateLetterComponent {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    this._ngZone.run(() => {
-      this.router.navigate(['..'], { relativeTo: this.route });
-    });
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(): void {

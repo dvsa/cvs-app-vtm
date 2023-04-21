@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CustomFormGroup, FormNode, FormNodeTypes, Params } from '@forms/services/dynamic-form.types';
 import { cloneDeep } from 'lodash';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -32,7 +32,6 @@ export class TechRecordSearchTyresComponent implements OnInit {
   ];
 
   constructor(
-    private _ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     public dfs: DynamicFormService,
     public globalErrorService: GlobalErrorService,
@@ -93,9 +92,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
       });
 
     if (!this.viewableTechRecord) {
-      this._ngZone.run(() => {
-        this.router.navigate(['../..'], { relativeTo: this.route });
-      });
+      this.router.navigate(['../..'], { relativeTo: this.route });
     }
   }
 
@@ -135,9 +132,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
         take(1)
       )
       .subscribe(data => {
-        this._ngZone.run(() => {
-          this.router.navigate(['.'], { relativeTo: this.route, queryParams: { 'search-results-page': 1 } });
-        });
+        this.router.navigate(['.'], { relativeTo: this.route, queryParams: { 'search-results-page': 1 } });
         this.searchResults = data;
       });
   }
@@ -176,8 +171,6 @@ export class TechRecordSearchTyresComponent implements OnInit {
   }
   cancel() {
     this.globalErrorService.clearErrors();
-    this._ngZone.run(() => {
-      this.router.navigate(['../..'], { relativeTo: this.route });
-    });
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 }

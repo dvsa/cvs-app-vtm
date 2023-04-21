@@ -13,6 +13,8 @@ import { BatchRecord } from '@store/technical-records/reducers/batch-create.redu
 import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Router } from '@angular/router';
+import { SharedModule } from '@shared/shared.module';
+import { BatchTrlResultsComponent } from '../batch-trl-results/batch-trl-results.component';
 
 let batchOfVehicles: BatchRecord[] = [];
 
@@ -43,7 +45,11 @@ describe('BatchTrlTemplateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: 'batch-results', component: BatchTrlResultsComponent }]),
+        HttpClientTestingModule,
+        SharedModule
+      ],
       declarations: [BatchTrlTemplateComponent, TechRecordSummaryStubComponent],
       providers: [
         GlobalErrorService,
