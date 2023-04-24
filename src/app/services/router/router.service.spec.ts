@@ -4,13 +4,17 @@ import { initialAppState, State } from '@store/.';
 import { selectQueryParams, selectRouteNestedParams, selectRouteParams } from '@store/router/selectors/router.selectors';
 import { firstValueFrom, take } from 'rxjs';
 import { RouterService } from './router.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('RouterService', () => {
   let service: RouterService;
   let store: MockStore<State>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [RouterService, provideMockStore({ initialState: initialAppState })] });
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      providers: [RouterService, provideMockStore({ initialState: initialAppState })]
+    });
     service = TestBed.inject(RouterService);
     store = TestBed.inject(MockStore);
     store.resetSelectors();

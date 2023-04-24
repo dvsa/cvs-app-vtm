@@ -1,22 +1,22 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { CustomFormGroup, FormNode, FormNodeTypes, Params } from '@forms/services/dynamic-form.types';
-import { cloneDeep } from 'lodash';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
-import { mergeMap, take } from 'rxjs';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormGroup, FormNode, FormNodeTypes, SearchParams } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess } from '@store/reference-data';
-import { Store } from '@ngrx/store';
-import { selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { VehicleTechRecordModel, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess } from '@store/reference-data';
+import { selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { cloneDeep } from 'lodash';
+import { mergeMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-tyres-search',
@@ -49,7 +49,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
   public searchResults: Array<ReferenceDataTyre> | null = null;
   public vehicleTechRecord?: VehicleTechRecordModel;
   public viewableTechRecord: TechRecordModel | undefined = undefined;
-  private params: Params = {};
+  private params: SearchParams = {};
   private pageStart?: number;
   private pageEnd?: number;
   public itemsPerPage: number = 10;

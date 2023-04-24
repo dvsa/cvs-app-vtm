@@ -1,26 +1,33 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
   createVehicle,
   editableTechRecord,
   editableVehicleTechRecord,
+  selectTechRecord,
   selectVehicleTechnicalRecordsBySystemNumber,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { catchError, debounceTime, filter, map, Observable, of, switchMap, take, throwError } from 'rxjs';
+import { catchError, debounceTime, filter, map, Observable, of, switchMap, take, tap, throwError, withLatestFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService, private router: Router) {}
+  constructor(
+    private store: Store,
+    private techRecordHttpService: TechnicalRecordHttpService,
+    private router: Router,
+    private routerService: RouterService
+  ) {}
 
   getVehicleTypeWithSmallTrl(techRecord: TechRecordModel): VehicleTypes {
     return techRecord.vehicleType === VehicleTypes.TRL &&
@@ -55,27 +62,8 @@ export class TechnicalRecordService {
    * @param vehicleRecord This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
-  viewableTechRecord$(vehicleRecord: VehicleTechRecordModel): Observable<TechRecordModel | undefined> {
-    return this.store.pipe(
-      select(selectRouteNestedParams),
-      map(params => {
-        const lastTwoUrlParts = this.router.url.split('/').slice(-2);
-
-        if (lastTwoUrlParts.includes('provisional')) {
-          return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL);
-        }
-
-        const createdAt = params['techCreatedAt'];
-
-        if (createdAt) {
-          return vehicleRecord.techRecord.find(
-            techRecord => new Date(techRecord.createdAt).getTime() == createdAt && techRecord.statusCode === StatusCodes.ARCHIVED
-          );
-        }
-
-        return this.filterTechRecordByStatusCode(vehicleRecord);
-      })
-    );
+  get viewableTechRecord$(): Observable<TechRecordModel | undefined> {
+    return this.store.pipe(select(selectTechRecord));
   }
 
   /**
@@ -113,7 +101,7 @@ export class TechnicalRecordService {
    * @param record This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
-  filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
+  static filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
     return (
       record.techRecord.find(record => record.statusCode === StatusCodes.CURRENT) ??
       record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL) ??
@@ -184,6 +172,10 @@ export class TechnicalRecordService {
   }
 
   get techRecord$(): Observable<TechRecordModel | undefined> {
-    return this.selectedVehicleTechRecord$.pipe(switchMap(vehicle => (vehicle ? this.viewableTechRecord$(vehicle) : of(undefined))));
+    return this.viewableTechRecord$;
+  }
+
+  get viewableRecordStatus$(): Observable<StatusCodes | undefined> {
+    return this.viewableTechRecord$.pipe(map(techRecord => techRecord?.statusCode));
   }
 }
