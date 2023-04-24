@@ -5,7 +5,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -102,13 +102,14 @@ export class AddReferenceDataComponent {
   handleSubmit() {
     if (!this.isFormValid) return;
 
-    const referenceData: ReferenceDataModelBase = {
-      resourceType: this.type,
-      resourceKey: this.form.get('resourceKey')?.value
-    };
+    const referenceData: any = {};
 
-    Object.keys(this.form.controls).forEach(control => (referenceData[control as keyof ReferenceDataModelBase] = this.form.get(control)?.value));
+    Object.keys(this.form.controls)
+      .filter(control => control !== 'resourceKey')
+      .forEach(control => (referenceData[control] = this.form.get(control)?.value));
 
-    this.referenceDataService.createNewReferenceDataItem(this.type, referenceData).subscribe(() => this.navigateBack());
+    this.referenceDataService
+      .createNewReferenceDataItem(this.type, this.form.get('resourceKey')?.value, referenceData)
+      .subscribe(() => this.navigateBack());
   }
 }

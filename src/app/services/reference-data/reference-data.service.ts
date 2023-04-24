@@ -45,13 +45,13 @@ export class ReferenceDataService extends ReferenceDataApiService {
 
   //  URL to POST new reference data items: /reference/{ type capitalized }/{ new key } POST
 
-  createNewReferenceDataItem(resourceType: ReferenceDataResourceType, data: ReferenceDataModelBase) {
+  createNewReferenceDataItem(type: ReferenceDataResourceType, key: string, data: any) {
     return this.usersService.id$.pipe(
       withLatestFrom(this.usersService.name$),
       switchMap(([createdId, createdName]) => {
         const referenceData = { ...data, createdId, createdName, createdAt: new Date() };
 
-        return this.referenceResourceTypeResourceKeyPost(resourceType, data.resourceKey, referenceData, 'body', false);
+        return this.referenceResourceTypeResourceKeyPost(type, key, referenceData, 'body', false);
       })
     );
   }
