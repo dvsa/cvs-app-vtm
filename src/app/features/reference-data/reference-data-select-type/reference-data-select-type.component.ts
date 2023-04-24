@@ -54,11 +54,7 @@ export class ReferenceDataSelectTypeComponent {
   }
 
   titleCase(input: string | number | boolean): string {
-    return input
-      .toString()
-      .split('_')
-      .map(s => s.charAt(0) + s.slice(1).toLowerCase())
-      .join(' ');
+    return this.referenceDataService.macroCasetoTitleCase(input);
   }
 
   cancel(): void {

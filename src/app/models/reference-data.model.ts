@@ -62,5 +62,17 @@ export interface User extends ReferenceDataModelBase {
 }
 
 export interface ReferenceDataAdminType extends ReferenceDataModelBase {
-  yolo?: string;
+  code?: string;
+  dtpNumber?: string;
+  loadIndexSingleLoad?: string;
+  loadIndexTwinLoad?: string;
+  parking?: string;
+  plyRating?: string;
+  psvBodyMake?: string;
+  psvBodyType?: string;
+  psvChassisMake?: string;
+  psvChassisModel?: string;
+  secondary?: string;
+  service?: string;
+  tyreSize?: string;
 }

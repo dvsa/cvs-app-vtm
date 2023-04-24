@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReferenceDataResourceType, ReferenceDataModelBase } from '@models/reference-data.model';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -41,15 +41,11 @@ export class ReferenceDataListComponent {
   }
 
   titleCaseHeading(input: ReferenceDataResourceType): string {
-    return input
-      .toString()
-      .split('_')
-      .map(s => s.charAt(0) + s.slice(1).toLowerCase())
-      .join(' ');
+    return this.referenceDataService.macroCasetoTitleCase(input);
   }
 
   titleCaseColumn(s: string): string {
-    return s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
+    return this.referenceDataService.camelCaseToTitleCase(s);
   }
 
   addNew(): void {

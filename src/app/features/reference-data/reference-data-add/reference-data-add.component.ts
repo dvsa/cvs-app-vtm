@@ -5,7 +5,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -83,15 +83,11 @@ export class AddReferenceDataComponent {
   }
 
   titleCaseHeading(input: ReferenceDataResourceType): string {
-    return input
-      .toString()
-      .split('_')
-      .map(s => s.charAt(0) + s.slice(1).toLowerCase())
-      .join(' ');
+    return this.referenceDataService.macroCasetoTitleCase(input);
   }
 
   titleCaseField(s: string): string {
-    return s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
+    return this.referenceDataService.camelCaseToTitleCase(s);
   }
 
   navigateBack() {
@@ -102,8 +98,13 @@ export class AddReferenceDataComponent {
   handleSubmit() {
     if (!this.isFormValid) return;
 
-    // send the API request
+    const referenceData: ReferenceDataModelBase = {
+      resourceType: this.type,
+      resourceKey: this.form.get('resourceKey')?.value
+    };
 
-    this.navigateBack();
+    Object.keys(this.form.controls).forEach(control => ((referenceData as any)[control] = this.form.get(control)?.value));
+
+    this.referenceDataService.createNewReferenceDataItem(this.type, referenceData).subscribe(() => this.navigateBack());
   }
 }
