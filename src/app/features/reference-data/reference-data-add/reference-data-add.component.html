@@ -3,16 +3,17 @@
     <div class="govuk-grid-column-full">
       <p class="govuk-heading-xl govuk-!-font-weight-bold">Add {{ titleCaseHeading(type) }}</p>
 
-      <app-text-input
-        *ngFor="let control of form.controls | keyvalue"
-        [formControlName]="control.key"
-        [name]="control.key"
-        [label]="titleCaseField(control.key)"
-        appToUppercase
-        appNoSpace
-        appTrimWhitespace
-        [width]="30"
-      ></app-text-input>
+      <app-text-input formControlName="resourceKey" name="resourceKey" label="Resource Key" [width]="widths.XXL"></app-text-input>
+
+      <ng-container *ngFor="let control of form.controls | keyvalue">
+        <app-text-input
+          *ngIf="control.key !== 'resourceKey'"
+          [formControlName]="control.key"
+          [name]="control.key"
+          [label]="titleCaseField(control.key)"
+          [width]="widths.XXL"
+        ></app-text-input>
+      </ng-container>
 
       <app-button-group>
         <app-button id="submit" (clicked)="handleSubmit()">Add</app-button>

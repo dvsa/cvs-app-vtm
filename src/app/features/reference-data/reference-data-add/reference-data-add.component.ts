@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store } from '@ngrx/store';
@@ -69,8 +69,12 @@ export class AddReferenceDataComponent {
       });
   }
 
-  get roles() {
+  get roles(): typeof Roles {
     return Roles;
+  }
+
+  get widths(): typeof FormNodeWidth {
+    return FormNodeWidth;
   }
 
   get isFormValid(): boolean {
@@ -103,7 +107,7 @@ export class AddReferenceDataComponent {
       resourceKey: this.form.get('resourceKey')?.value
     };
 
-    Object.keys(this.form.controls).forEach(control => ((referenceData as any)[control] = this.form.get(control)?.value));
+    Object.keys(this.form.controls).forEach(control => (referenceData[control as keyof ReferenceDataModelBase] = this.form.get(control)?.value));
 
     this.referenceDataService.createNewReferenceDataItem(this.type, referenceData).subscribe(() => this.navigateBack());
   }
