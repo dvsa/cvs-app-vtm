@@ -42,10 +42,7 @@ export class RouterService {
   }
 
   getRouteNestedParam$(param: string): Observable<string | undefined> {
-    return this.store.pipe(
-      select(selectRouteNestedParams),
-      map(route => route[param])
-    );
+    return this.routeNestedParams$.pipe(map(route => route[param]));
   }
 
   get routeEditable$() {

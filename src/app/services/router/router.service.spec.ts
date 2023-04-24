@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { selectQueryParams, selectRouteNestedParams, selectRouteParams } from '@store/router/selectors/router.selectors';
-import { firstValueFrom, take } from 'rxjs';
+import { firstValueFrom, of, take } from 'rxjs';
 import { RouterService } from './router.service';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -55,6 +55,16 @@ describe('RouterService', () => {
       store.refreshState();
       service.routeNestedParams$.subscribe(value => {
         expect(value).toEqual({ foo: 'bar' });
+        done();
+      });
+    });
+  });
+
+  describe('getRouteNestedParam', () => {
+    it('should return the correct value', done => {
+      jest.spyOn(service, 'routeNestedParams$', 'get').mockReturnValue(of({ foo: 'bar' }));
+      service.getRouteNestedParam$('foo').subscribe(value => {
+        expect(value).toEqual('bar');
         done();
       });
     });
