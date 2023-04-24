@@ -21,26 +21,21 @@ export class CreateTestTypeComponent implements AfterContentInit {
   ) {}
 
   ngAfterContentInit(): void {
-    this.technicalRecordService.selectedVehicleTechRecord$
-      .pipe(
-        mergeMap(vehicle => (vehicle ? this.technicalRecordService.viewableTechRecord$ : of(undefined))),
-        take(1)
-      )
-      .subscribe(techRecord => {
-        if (techRecord?.hiddenInVta) {
-          alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
+    this.technicalRecordService.viewableTechRecord$.pipe(take(1)).subscribe(techRecord => {
+      if (techRecord?.hiddenInVta) {
+        alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
 
-          this.router.navigate(['../../..'], { relativeTo: this.route });
-        } else if (techRecord?.recordCompleteness !== 'complete' && techRecord?.recordCompleteness !== 'testable') {
-          alert(
-            'Incomplete vehicle record.\n\n' +
-              'This vehicle does not have enough data to be tested. ' +
-              'Call Technical Support to correct this record and use SAR to test this vehicle.'
-          );
+        this.router.navigate(['../../..'], { relativeTo: this.route });
+      } else if (techRecord?.recordCompleteness !== 'complete' && techRecord?.recordCompleteness !== 'testable') {
+        alert(
+          'Incomplete vehicle record.\n\n' +
+            'This vehicle does not have enough data to be tested. ' +
+            'Call Technical Support to correct this record and use SAR to test this vehicle.'
+        );
 
-          this.router.navigate(['../../..'], { relativeTo: this.route });
-        }
-      });
+        this.router.navigate(['../../..'], { relativeTo: this.route });
+      }
+    });
   }
 
   handleSelectedTestType(testType: TestType) {
