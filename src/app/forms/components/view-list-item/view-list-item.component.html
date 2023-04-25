@@ -21,7 +21,7 @@
 
     <ng-container *ngSwitchDefault>
       <dd [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-summary-list__value">
-        {{ value | refDataDecode$: control?.meta?.referenceData | async | defaultNullOrEmpty }}
+        {{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}
       </dd>
     </ng-container>
   </ng-container>
