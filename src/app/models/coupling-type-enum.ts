@@ -10,15 +10,6 @@ export enum CouplingTypeCodeEnum {
   S = 'S'
 }
 
-export const CouplingTypeCodeToDescription = new Map<CouplingTypeCodeEnum, string>([
-  [CouplingTypeCodeEnum.F, 'Fifth wheel'],
-  [CouplingTypeCodeEnum.B, 'Drawbar'],
-  [CouplingTypeCodeEnum.O, 'Other'],
-  [CouplingTypeCodeEnum.A, 'Automatic'],
-  [CouplingTypeCodeEnum.D, 'Dolly'],
-  [CouplingTypeCodeEnum.S, 'Semi']
-]);
-
 export const CouplingTypeOptions: MultiOptions = [
   { label: 'Fifth wheel', value: CouplingTypeCodeEnum.F },
   { label: 'Drawbar', value: CouplingTypeCodeEnum.B },
