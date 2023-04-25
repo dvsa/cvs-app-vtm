@@ -5,6 +5,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { ReferenceDataListComponent } from './reference-data-list.component';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { UserService } from '@services/user-service/user-service';
 
 describe('DataTypeListComponent', () => {
   let component: ReferenceDataListComponent;
@@ -16,7 +18,7 @@ describe('DataTypeListComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ReferenceDataListComponent],
       imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, { provide: UserService, useValue: {} }]
     }).compileComponents();
   });
 

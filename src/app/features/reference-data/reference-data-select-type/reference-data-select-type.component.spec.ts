@@ -4,6 +4,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { ReferenceDataSelectTypeComponent } from './reference-data-select-type.component';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { UserService } from '@services/user-service/user-service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ReferenceDataComponent', () => {
   let component: ReferenceDataSelectTypeComponent;
@@ -14,8 +17,8 @@ describe('ReferenceDataComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ReferenceDataSelectTypeComponent],
-      imports: [RouterTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      imports: [HttpClientTestingModule, RouterTestingModule],
+      providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, { provide: UserService, useValue: {} }]
     }).compileComponents();
   });
 

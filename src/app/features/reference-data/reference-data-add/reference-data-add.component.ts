@@ -110,6 +110,7 @@ export class AddReferenceDataComponent {
 
     this.referenceDataService
       .createNewReferenceDataItem(this.type, this.form.get('resourceKey')?.value, referenceData)
+      .pipe(take(1))
       .subscribe(() => this.navigateBack());
   }
 }
