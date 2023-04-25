@@ -116,15 +116,6 @@ export const TrlTechRecordTemplate: FormNode = {
         }
       ]
     },
-    // {
-    //   name: 'couplingType',
-    //   label: 'Coupling type (optional)',
-    //   value: '',
-    //   width: FormNodeWidth.M,
-    //   type: FormNodeTypes.CONTROL,
-    //   validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
-    //   class: 'flex--half'
-    // },
     {
       name: 'couplingType',
       label: 'Coupling type (optional)',
