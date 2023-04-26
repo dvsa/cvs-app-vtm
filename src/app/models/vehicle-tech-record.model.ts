@@ -42,7 +42,8 @@ export enum VehicleTypes {
 }
 
 export enum FuelTypes {
-  DIESELPETROL = 'DieselPetrol',
+  DIESEL = 'Diesel',
+  PETROL = 'Petrol',
   HYBRID = 'Hybrid',
   ELECTRIC = 'Electric',
   CNG = 'CNG',
