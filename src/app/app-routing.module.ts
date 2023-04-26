@@ -54,6 +54,12 @@ const routes: Routes = [
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
       },
       {
+        path: 'reference-data',
+        data: { title: 'Reference Data', roles: Roles.ReferenceDataView },
+        canActivate: [MsalGuard, RoleGuard],
+        loadChildren: () => import('./features/reference-data/reference-data.module').then(m => m.ReferenceDataModule)
+      },
+      {
         path: 'error',
         pathMatch: 'full',
         component: ServerErrorComponent

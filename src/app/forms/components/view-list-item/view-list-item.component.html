@@ -2,15 +2,15 @@
   <dt *ngIf="viewType !== formNodeViewTypes.FULLWIDTH" class="govuk-summary-list__key">{{ label }}:</dt>
   <ng-container [ngSwitch]="viewType">
     <ng-container *ngSwitchCase="formNodeViewTypes.DATE">
-      <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</dd>
+      <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</dd>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.DATETIME">
-      <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</dd>
+      <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</dd>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.TIME">
-      <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</dd>
+      <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date : 'HH:mm' | defaultNullOrEmpty }}</dd>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.VRM">
@@ -21,7 +21,7 @@
 
     <ng-container *ngSwitchDefault>
       <dd [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-summary-list__value">
-        {{ value | refDataDecode$: control?.meta?.referenceData | async | defaultNullOrEmpty }}
+        {{ value | refDataDecode$ : control?.meta?.referenceData | async | getControlLabel : control?.meta?.options | defaultNullOrEmpty }}
       </dd>
     </ng-container>
   </ng-container>

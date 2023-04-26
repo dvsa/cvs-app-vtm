@@ -22,6 +22,7 @@ import { DefaultNullOrEmpty } from './pipes/default-null-or-empty/default-null-o
 import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
 import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe';
 import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
+import { GetControlLabelPipe } from './pipes/get-control-label/get-control-label.pipe';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     RefDataDecodePipe,
     RetrieveDocumentDirective,
     InputSpinnerComponent,
-    RouterOutletComponent
+    RouterOutletComponent,
+    GetControlLabelPipe
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -66,7 +68,8 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     RefDataDecodePipe,
     RetrieveDocumentDirective,
     InputSpinnerComponent,
-    RouterOutletComponent
+    RouterOutletComponent,
+    GetControlLabelPipe
   ],
   providers: [DocumentRetrievalService]
 })

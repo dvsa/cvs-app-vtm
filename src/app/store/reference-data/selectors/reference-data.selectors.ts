@@ -18,7 +18,7 @@ export const referenceDataLoadingState = createSelector(referenceDataFeatureStat
 export const referencePsvMakeLoadingState = createSelector(referenceDataFeatureState, state => state.PSV_MAKE.loading);
 
 export const selectBrakeByCode = (code: string) =>
-  createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Brake].entities[code] as Brake);
+  createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Brakes].entities[code] as Brake);
 
 export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
   switch (vehicleType) {

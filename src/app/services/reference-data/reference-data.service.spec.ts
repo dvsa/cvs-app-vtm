@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ReferenceDataApiResponse, ReferenceDataService as ReferenceDataApiService } from '@api/reference-data';
+import { ReferenceDataApiResponse } from '@api/reference-data';
 import { MultiOptions } from '@forms/models/options.model';
 import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -15,7 +15,6 @@ import {
   ReferenceDataEntityStateTyres,
   referencePsvMakeLoadingState,
   removeTyreSearch,
-  selectAllReferenceDataByResourceType,
   selectTyreSearchCriteria,
   selectTyreSearchReturn,
   STORE_FEATURE_REFERENCE_DATA_KEY
@@ -23,6 +22,7 @@ import {
 import { testCases } from '@store/reference-data/reference-data.test-cases';
 import { firstValueFrom, of, take } from 'rxjs';
 import { ReferenceDataService } from './reference-data.service';
+import { UserService } from '@services/user-service/user-service';
 
 describe('ReferenceDataService', () => {
   let service: ReferenceDataService;
@@ -32,7 +32,11 @@ describe('ReferenceDataService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ReferenceDataService, ReferenceDataApiService, provideMockStore({ initialState: initialAppState })]
+      providers: [
+        provideMockStore({ initialState: initialAppState }),
+        ReferenceDataService,
+        { provide: UserService, useValue: { id$: of('id'), name$: of('Jack') } }
+      ]
     });
 
     service = TestBed.inject(ReferenceDataService);
@@ -280,7 +284,7 @@ describe('ReferenceDataService', () => {
         {
           refData: [
             {
-              resourceType: ReferenceDataResourceType.Brake,
+              resourceType: ReferenceDataResourceType.Brakes,
               resourceKey: 'banana',
               description: 'yellow'
             }
