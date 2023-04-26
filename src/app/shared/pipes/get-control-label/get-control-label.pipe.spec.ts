@@ -3,7 +3,6 @@ import { FormNode, FormNodeOption } from '@forms/services/dynamic-form.types';
 
 describe('GetControlLabelPipe', () => {
   let testOptions: FormNodeOption<string>[];
-  let testFormNode: FormNode;
 
   beforeEach(() => {
     testOptions = [
