@@ -55,4 +55,8 @@ export class ReferenceDataListComponent {
   back(): void {
     this.router.navigate(['select-type'], { relativeTo: this.route });
   }
+
+  amend(): void {
+    this.router.navigate(['amend'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+  }
 }
