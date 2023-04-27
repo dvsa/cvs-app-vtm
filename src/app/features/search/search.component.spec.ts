@@ -6,7 +6,8 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { Roles } from '@models/roles.enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState, State } from '@store/.';
 import { globalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { of } from 'rxjs';

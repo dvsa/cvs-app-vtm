@@ -45,7 +45,7 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicle).pipe(
+    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$.pipe(
       tap(viewableTechRecord => {
         this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
         this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;

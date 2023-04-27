@@ -3,13 +3,13 @@ import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlatesInner } from '@api/vehicle';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { CustomFormControl, FormNodeTypes, FormNodeWidth, FormNodeOption } from '@forms/services/dynamic-form.types';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { generatePlateSuccess, generatePlate, editableTechRecord } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { State } from '@store/index';
+import { generatePlate, generatePlateSuccess } from '@store/technical-records';
 import { Observable, map, take, tap } from 'rxjs';
 
 @Component({
@@ -29,10 +29,11 @@ export class GeneratePlateComponent implements OnInit {
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<TechnicalRecordServiceState>,
-    public userService: UserService
+    private store: Store<State>,
+    public userService: UserService,
+    private technicalRecordService: TechnicalRecordService
   ) {
-    this.emailAddress$ = this.store.select(editableTechRecord).pipe(
+    this.emailAddress$ = this.technicalRecordService.editableTechRecord$.pipe(
       tap(record => {
         if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
       }),

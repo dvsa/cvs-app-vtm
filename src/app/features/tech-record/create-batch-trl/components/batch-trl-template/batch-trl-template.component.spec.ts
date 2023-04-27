@@ -13,20 +13,24 @@ import { BatchRecord } from '@store/technical-records/reducers/batch-create.redu
 import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Router } from '@angular/router';
+import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 
 let batchOfVehicles: BatchRecord[] = [];
 
 const mockTechRecordService = (<unknown>{
   editableVehicleTechRecord$: of({}),
+  updateEditingTechRecord: jest.fn(),
+  createVehicleRecord: jest.fn()
+}) as TechnicalRecordService;
+
+const mockBatchTechRecordService = (<unknown>{
   get batchVehicles$() {
     return of(batchOfVehicles);
   },
   applicationId$: of('TES_1_APPLICATION_ID'),
   isBatchCreate$: of(true),
-  batchCount$: of(2),
-  updateEditingTechRecord: jest.fn(),
-  createVehicleRecord: jest.fn()
-}) as TechnicalRecordService;
+  batchCount$: of(2)
+}) as BatchTechnicalRecordService;
 
 @Component({})
 class TechRecordSummaryStubComponent {
@@ -40,6 +44,7 @@ describe('BatchTrlTemplateComponent', () => {
   let router: Router;
   let errorService: GlobalErrorService;
   let technicalRecordService: TechnicalRecordService;
+  let batchTechRecordService: BatchTechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -48,7 +53,8 @@ describe('BatchTrlTemplateComponent', () => {
       providers: [
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
-        { provide: TechnicalRecordService, useValue: mockTechRecordService }
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
+        { provide: BatchTechnicalRecordService, useValue: mockBatchTechRecordService }
       ]
     }).compileComponents();
   });
@@ -59,6 +65,7 @@ describe('BatchTrlTemplateComponent', () => {
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     errorService = TestBed.inject(GlobalErrorService);
     router = TestBed.inject(Router);
+    batchTechRecordService = TestBed.inject(BatchTechnicalRecordService);
     component = fixture.componentInstance;
   });
 
@@ -108,7 +115,7 @@ describe('BatchTrlTemplateComponent', () => {
         { vin: 'EXAMPLEVIN000001', trailerId: '1000001', systemNumber: '1' },
         { vin: 'EXAMPLEVIN000002', trailerId: '1000002', systemNumber: '2' }
       ];
-      jest.spyOn(mockTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
+      jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
 
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
       component.handleSubmit();
@@ -138,7 +145,7 @@ describe('BatchTrlTemplateComponent', () => {
         { vin: 'EXAMPLEVIN000005' }
       ];
 
-      jest.spyOn(mockTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
+      jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
 
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
       component.handleSubmit();
@@ -166,7 +173,7 @@ describe('BatchTrlTemplateComponent', () => {
         batchOfVehicles.push({ vin: `EXAMPLEVIN0000${i}`, trailerId: `100000${i}` });
       }
 
-      jest.spyOn(mockTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
+      jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
 
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
       component.handleSubmit();
