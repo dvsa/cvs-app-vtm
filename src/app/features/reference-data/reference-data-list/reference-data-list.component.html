@@ -14,14 +14,17 @@
           <th scope="col" class="govuk-table__header">Resource Key</th>
 
           <th *ngFor="let column of columns$ | async" scope="col" class="govuk-table__header">{{ titleCaseColumn(column) }}</th>
+          <th scope="col" class="govuk-table__header"></th>
         </tr>
       </thead>
 
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row" *ngFor="let item of data$ | async">
           <td class="govuk-table__cell">{{ item.resourceKey }}</td>
-
           <td *ngFor="let column of columns$ | async" class="govuk-table__cell">{{ item[column] }}</td>
+          <td class="govuk-table__cell">
+            <app-button id="cancel" design="link" (clicked)="back()">Amend</app-button>
+          </td>
         </tr>
       </tbody>
     </table>
