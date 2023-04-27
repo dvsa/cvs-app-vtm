@@ -14,7 +14,7 @@
     <tbody class="govuk-table__body">
       <tr *ngFor="let test of paginatedTestFields; trackBy: trackByFn; let i = index">
         <th scope="row" class="govuk-table__header" [id]="'test-record-summary-date-' + i">
-          {{ test.testTypeStartTimestamp | date: 'dd/MM/yyyy HH:mm' }}
+          {{ test.testTypeStartTimestamp | date : 'dd/MM/yyyy HH:mm' }}
         </th>
         <td class="govuk-table__cell" [id]="'test-record-summary-name-' + i">{{ test.testTypeName }}</td>
         <td class="govuk-table__cell" [id]="'test-record-summary-result-' + i">{{ getResult(test) }}</td>
