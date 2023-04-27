@@ -149,8 +149,8 @@ export class TechRecordSearchTyresComponent implements OnInit {
       if (this.viewableTechRecord.axles![axleIndex].tyres!.fitmentCode) {
         this.viewableTechRecord.axles![axleIndex].tyres!.dataTrAxles =
           this.viewableTechRecord.axles![axleIndex].tyres!.fitmentCode === 'single'
-            ? parseInt(tyre.loadIndexSingleLoad)
-            : parseInt(tyre.loadIndexTwinLoad);
+            ? parseInt(tyre.loadIndexSingleLoad ?? '0')
+            : parseInt(tyre.loadIndexTwinLoad ?? '0');
       }
 
       this.technicalRecordService.updateEditingTechRecord(this.viewableTechRecord);

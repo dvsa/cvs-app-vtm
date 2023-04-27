@@ -46,11 +46,11 @@ export interface Brake extends ReferenceDataModelBase {
 
 export interface ReferenceDataTyre extends ReferenceDataModelBase {
   code: string;
-  loadIndexSingleLoad: string;
+  loadIndexSingleLoad?: string;
   tyreSize: string;
   dateTimeStamp: string;
   userId: string;
-  loadIndexTwinLoad: string;
+  loadIndexTwinLoad?: string;
   plyRating: string;
   axleLoadSingle?: string;
   axleLoadDouble?: string;
