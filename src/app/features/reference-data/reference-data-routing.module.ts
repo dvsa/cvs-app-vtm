@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { RoleGuard } from '@guards/roles.guard';
+import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { AddReferenceDataComponent } from './reference-data-add/reference-data-add.component';
 import { ReferenceDataListComponent } from './reference-data-list/reference-data-list.component';
