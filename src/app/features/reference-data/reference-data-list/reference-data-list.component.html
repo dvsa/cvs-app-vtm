@@ -20,7 +20,7 @@
 
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row" *ngFor="let item of data$ | async">
-          <td class="govuk-table__cell">{{ item.resourceKey }}</td>
+          <td id="{{ item.resourceKey }}" class="govuk-table__cell">{{ item.resourceKey }}</td>
           <td *ngFor="let column of columns$ | async" class="govuk-table__cell">{{ item[column] }}</td>
           <td class="govuk-table__cell">
             <app-button id="cancel" design="link" (clicked)="amend()">Amend</app-button>
