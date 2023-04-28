@@ -5,7 +5,7 @@ import { getTestStationFromProperty, testStation, testStations, testStationsLoad
 describe('Test Results Selectors', () => {
   describe('adapter selectors', () => {
     it('should return correct state', () => {
-      const state = { ...initialTestStationsState, ids: ['1'], entities: { ['1']: { preparerId: '2' } } };
+      const state = { ...initialTestStationsState, ids: ['1'], entities: { ['1']: { preparerId: '2' } } } as unknown as TestStationsState;
 
       expect(testStations.projector(state)).toEqual([{ preparerId: '2' }]);
       expect(testStation('1').projector(state)).toEqual({ preparerId: '2' });

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { RoleGuard } from '@guards/roles.guard';
+import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { RouterOutletComponent } from '@shared/components/router-outlet/router-outlet.component';
 import { BatchTrlDetailsComponent } from './components/batch-trl-details/batch-trl-details.component';

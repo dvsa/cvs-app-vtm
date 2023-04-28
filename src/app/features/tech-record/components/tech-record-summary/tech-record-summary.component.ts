@@ -65,15 +65,13 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private axlesService: AxlesService,
     private errorService: GlobalErrorService,
     private referenceDataService: ReferenceDataService,
-    private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {}
 
   ngOnInit(): void {
     let isOnInit = true;
-    this.store
+    this.technicalRecordService.editableTechRecord$
       .pipe(
-        select(editableTechRecord),
         //Need to check that the editing tech record has more than just reason for creation on and is the full object.
         map(techRecord => {
           if (techRecord && Object.keys(techRecord).length > 1) {

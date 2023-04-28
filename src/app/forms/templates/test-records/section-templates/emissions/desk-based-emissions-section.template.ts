@@ -1,6 +1,8 @@
 import { FormNode, FormNodeTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
+import { EmissionStandard } from '@models/test-types/emissions.enum';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 export const DeskBasedEmissionsSection: FormNode = {
   name: 'deskBasedEmissionsSection',
   label: 'Emissions',
@@ -20,15 +22,7 @@ export const DeskBasedEmissionsSection: FormNode = {
               label: 'Emissions standard',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: '0.10 g/kWh Euro 3 PM', label: '0.10 g/kWh Euro 3 PM' },
-                { value: '0.03 g/kWh Euro IV PM', label: '0.03 g/kWh Euro IV PM' },
-                { value: 'Euro 3', label: 'Euro 3' },
-                { value: 'Euro 4', label: 'Euro 4' },
-                { value: 'Euro 6', label: 'Euro 6' },
-                { value: 'Euro VI', label: 'Euro VI' },
-                { value: 'Full Electric', label: 'Full Electric' }
-              ],
+              options: getOptionsFromEnum(EmissionStandard),
               required: true,
               value: null
             },

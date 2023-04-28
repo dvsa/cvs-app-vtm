@@ -17,6 +17,7 @@ import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '@services/user-service/user-service';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
@@ -58,7 +59,7 @@ describe('TechRecordGenerateLetterComponent', () => {
           }
         }
       ],
-      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule]
+      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, FixNavigationTriggeredOutsideAngularZoneNgModule]
     }).compileComponents();
   });
 

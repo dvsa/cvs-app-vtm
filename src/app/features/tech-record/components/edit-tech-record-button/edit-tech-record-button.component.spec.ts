@@ -10,11 +10,13 @@ import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/ve
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { RouterService } from '@services/router/router.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { clearError } from '@store/global-error/actions/global-error.actions';
 import {
   createProvisionalTechRecordSuccess,
+  selectTechRecord,
   selectVehicleTechnicalRecordsBySystemNumber,
   updateEditingTechRecordCancel,
   updateTechRecordsSuccess
@@ -29,6 +31,10 @@ let router: Router;
 let store: MockStore;
 let actions$: ReplaySubject<Action>;
 
+const mockRouterService = {
+  getRouteNestedParam$: () => '1'
+};
+
 describe('EditTechRecordButtonComponent', () => {
   beforeEach(async () => {
     actions$ = new ReplaySubject<Action>();
@@ -38,6 +44,7 @@ describe('EditTechRecordButtonComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [EditTechRecordButtonComponent],
       providers: [
+        { provide: RouterService, useValue: mockRouterService },
         GlobalErrorService,
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
@@ -232,6 +239,7 @@ describe('EditTechRecordButtonComponent', () => {
         ]
       };
       store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
+      store.overrideSelector(selectTechRecord, expectedResult.vehicleTechRecords[0].techRecord[0]);
       component.vehicle = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
       component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
       component.isEditing = true;
@@ -282,7 +290,7 @@ describe('EditTechRecordButtonComponent', () => {
         });
 
         it('should prompt user if they wish to cancel', () => {
-          jest.spyOn(window, 'confirm');
+          jest.spyOn(window, 'confirm').mockImplementation(() => true);
 
           fixture.detectChanges();
 

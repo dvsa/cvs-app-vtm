@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { SEARCH_TYPES } from '@services/technical-record/technical-record.service';
 import { map, Observable } from 'rxjs';
 import { Roles } from '@models/roles.enum';
+import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 
 @Component({
   selector: 'app-search',

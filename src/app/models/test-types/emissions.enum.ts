@@ -13,8 +13,8 @@ export enum EmissionStandard {
   EuroIVPM = '0.03 g/kWh Euro IV PM',
   Euro3 = 'Euro 3',
   Euro4 = 'Euro 4',
+  Euro5 = 'Euro 5',
   Euro6 = 'Euro 6',
-  EuroVI = 'Euro VI',
   FullElectric = 'Full Electric'
 }
 

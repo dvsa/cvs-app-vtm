@@ -18,6 +18,7 @@
           class="govuk-link"
           [id]="'select-' + form.meta.subHeadingLink.url + '-link'"
           [routerLink]="form.meta.subHeadingLink.url"
+          [queryParams]="form.meta.subHeadingLink.queryParams"
           >{{ form.meta.subHeadingLink.label }}</a
         >
       </div>

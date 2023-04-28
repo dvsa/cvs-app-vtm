@@ -20,6 +20,7 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { fetchReferenceDataByKeySearchSuccess, selectTyreSearchReturn } from '@store/reference-data';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 
 const mockGlobalErrorService = {
   addError: jest.fn(),
@@ -55,7 +56,7 @@ describe('TechRecordSearchTyresComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordSearchTyresComponent],
-      imports: [DynamicFormsModule, RouterTestingModule, SharedModule, HttpClientTestingModule],
+      imports: [DynamicFormsModule, RouterTestingModule, SharedModule, HttpClientTestingModule, FixNavigationTriggeredOutsideAngularZoneNgModule],
       providers: [
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
