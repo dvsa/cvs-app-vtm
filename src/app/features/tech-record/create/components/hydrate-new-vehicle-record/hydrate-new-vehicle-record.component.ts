@@ -4,12 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { createVehicleRecord, createVehicleRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { map, Observable, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 import { Actions, ofType } from '@ngrx/effects';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 
 @Component({
   selector: 'app-hydrate-new-vehicle-record',
@@ -28,7 +29,8 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private batchTechRecordService: BatchTechnicalRecordService
   ) {
     this.actions$
       .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
@@ -45,11 +47,11 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
   }
 
   get isBatch$(): Observable<boolean> {
-    return this.technicalRecordService.isBatchCreate$;
+    return this.batchTechRecordService.isBatchCreate$;
   }
 
   get batchCount$(): Observable<number> {
-    return this.technicalRecordService.batchCount$;
+    return this.batchTechRecordService.batchCount$;
   }
 
   get vehicleTypes(): typeof VehicleTypes {
@@ -73,7 +75,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
 
     this.technicalRecordService.editableVehicleTechRecord$
       .pipe(
-        withLatestFrom(this.technicalRecordService.batchVehicles$),
+        withLatestFrom(this.batchTechRecordService.batchVehicles$),
         take(1),
         map(([record, batch]) =>
           (record ? [record] : []).concat(

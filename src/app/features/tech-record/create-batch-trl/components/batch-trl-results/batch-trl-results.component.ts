@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { filter, race, Subject, take, withLatestFrom } from 'rxjs';
 
@@ -10,18 +11,23 @@ import { filter, race, Subject, take, withLatestFrom } from 'rxjs';
 })
 export class BatchTrlResultsComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
-  constructor(private technicalRecordService: TechnicalRecordService, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private technicalRecordService: TechnicalRecordService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private batchTechRecordService: BatchTechnicalRecordService
+  ) {
     this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
       if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
     });
 
-    this.technicalRecordService.batchCount$.pipe(take(1)).subscribe(count => {
+    this.batchTechRecordService.batchCount$.pipe(take(1)).subscribe(count => {
       if (!count) this.router.navigate(['../..'], { relativeTo: this.route });
     });
 
     race(
-      this.technicalRecordService.batchCreatedCount$.pipe(
-        withLatestFrom(this.technicalRecordService.batchCount$),
+      this.batchTechRecordService.batchCreatedCount$.pipe(
+        withLatestFrom(this.batchTechRecordService.batchCount$),
         filter(([created, total]) => created === total)
       ),
       this.destroy$
@@ -33,17 +39,17 @@ export class BatchTrlResultsComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.technicalRecordService.clearBatch();
+    this.batchTechRecordService.clearBatch();
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   get applicationId$() {
-    return this.technicalRecordService.applicationId$;
+    return this.batchTechRecordService.applicationId$;
   }
 
   get batchVehiclesSuccess$() {
-    return this.technicalRecordService.batchVehiclesSuccess$;
+    return this.batchTechRecordService.batchVehiclesSuccess$;
   }
 
   get vehicleStatus() {
@@ -51,26 +57,26 @@ export class BatchTrlResultsComponent implements OnDestroy {
   }
 
   get batchCount$() {
-    return this.technicalRecordService.batchCount$;
+    return this.batchTechRecordService.batchCount$;
   }
 
   get batchSuccessCount$() {
-    return this.technicalRecordService.batchSuccessCount$;
+    return this.batchTechRecordService.batchSuccessCount$;
   }
 
   get batchTotalCreatedCount$() {
-    return this.technicalRecordService.batchTotalCreatedCount$;
+    return this.batchTechRecordService.batchTotalCreatedCount$;
   }
 
   get batchTotalUpdatedCount$() {
-    return this.technicalRecordService.batchTotalUpdatedCount$;
+    return this.batchTechRecordService.batchTotalUpdatedCount$;
   }
 
   get batchCreatedCount$() {
-    return this.technicalRecordService.batchCreatedCount$;
+    return this.batchTechRecordService.batchCreatedCount$;
   }
 
   get batchUpdatedCount$() {
-    return this.technicalRecordService.batchUpdatedCount$;
+    return this.batchTechRecordService.batchUpdatedCount$;
   }
 }

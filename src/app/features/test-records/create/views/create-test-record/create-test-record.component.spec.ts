@@ -147,6 +147,7 @@ describe('CreateTestRecordComponent', () => {
 
       tick();
       fixture.detectChanges();
+      tick();
 
       expect(component.isAnyFormInvalid()).toBe(true);
       discardPeriodicTasks();

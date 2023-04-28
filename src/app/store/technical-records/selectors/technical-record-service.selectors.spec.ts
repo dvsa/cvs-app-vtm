@@ -1,7 +1,12 @@
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { initialState, TechnicalRecordServiceState } from '../reducers/technical-record-service.reducer';
-import { selectVehicleTechnicalRecordsBySystemNumber, technicalRecordsLoadingState, vehicleTechRecords } from './technical-record-service.selectors';
+import {
+  selectTechRecord,
+  selectVehicleTechnicalRecordsBySystemNumber,
+  technicalRecordsLoadingState,
+  vehicleTechRecords
+} from './technical-record-service.selectors';
 
 describe('Tech Record Selectors', () => {
   describe('selectedTestResultState', () => {
@@ -47,6 +52,64 @@ describe('Tech Record Selectors', () => {
       expect(selectedState?.techRecord[0].createdAt).toStrictEqual(expectedTechRecord[1].createdAt);
       expect(selectedState?.techRecord[1].createdAt).toStrictEqual(expectedTechRecord[2].createdAt);
       expect(selectedState?.techRecord[2].createdAt).toStrictEqual(expectedTechRecord[0].createdAt);
+    });
+  });
+
+  describe('selectTechRecord', () => {
+    const routes = [
+      {
+        statusExpected: 'provisional',
+        createdAt: undefined,
+        url: 'provisional',
+        vehicle: { techRecord: [{ statusCode: 'provisional' }] }
+      },
+      {
+        statusExpected: 'provisional',
+        createdAt: undefined,
+        url: 'tech-records',
+        vehicle: { techRecord: [{ statusCode: 'provisional' }] }
+      },
+      {
+        statusExpected: 'current',
+        createdAt: undefined,
+        url: 'tech-records',
+        vehicle: { techRecord: [{ statusCode: 'current' }, { statusCode: 'provisional' }] }
+      },
+      {
+        statusExpected: 'archived',
+        createdAt: new Date('2022-02-14').getTime(),
+        url: 'tech-records',
+        vehicle: { techRecord: [{ statusCode: 'archived', createdAt: '2022-02-14' }, { statusCode: 'provisional' }] }
+      },
+      {
+        statusExpected: 'archived',
+        createdAt: new Date('2022-12-27').getTime(),
+        url: 'tech-records',
+        vehicle: {
+          techRecord: [
+            { statusCode: 'archived', createdAt: '2022-02-14' },
+            { statusCode: 'archived', createdAt: '2022-12-27' }
+          ]
+        }
+      },
+      {
+        statusExpected: 'archived',
+        createdAt: undefined,
+        url: 'tech-records',
+        vehicle: { techRecord: [{ statusCode: 'archived', createdAt: '2022-02-14' }] }
+      },
+      {
+        statusExpected: 'provisional',
+        createdAt: undefined,
+        url: 'tech-records',
+        vehicle: { techRecord: [{ statusCode: 'archived', createdAt: '2022-02-14' }, { statusCode: 'provisional' }] }
+      }
+    ];
+    it.each(routes)('should return the $statusExpected record', ({ statusExpected, createdAt, url, vehicle }) => {
+      const techRecord = selectTechRecord.projector(vehicle, { techCreatedAt: createdAt }, url);
+      expect(techRecord).toBeDefined();
+      expect(techRecord?.statusCode).toBe(statusExpected);
+      createdAt && techRecord && expect(new Date(techRecord.createdAt).getTime()).toBe(createdAt);
     });
   });
 });
