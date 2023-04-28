@@ -106,7 +106,7 @@ describe('Tech Record Selectors', () => {
       }
     ];
     it.each(routes)('should return the $statusExpected record', ({ statusExpected, createdAt, url, vehicle }) => {
-      const techRecord = selectTechRecord.projector(vehicle, { techCreatedAt: createdAt }, url);
+      const techRecord = selectTechRecord.projector(vehicle as unknown as VehicleTechRecordModel, { techCreatedAt: createdAt }, url);
       expect(techRecord).toBeDefined();
       expect(techRecord?.statusCode).toBe(statusExpected);
       createdAt && techRecord && expect(new Date(techRecord.createdAt).getTime()).toBe(createdAt);
