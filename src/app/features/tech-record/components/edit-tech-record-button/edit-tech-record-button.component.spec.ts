@@ -290,7 +290,7 @@ describe('EditTechRecordButtonComponent', () => {
         });
 
         it('should prompt user if they wish to cancel', () => {
-          jest.spyOn(window, 'confirm');
+          jest.spyOn(window, 'confirm').mockImplementation(() => true);
 
           fixture.detectChanges();
 

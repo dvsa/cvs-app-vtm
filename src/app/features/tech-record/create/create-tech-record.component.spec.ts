@@ -135,18 +135,18 @@ describe('CreateNewVehicleRecordComponent', () => {
       expect(navigateSpy).toHaveBeenCalledTimes(0);
     });
 
-    it('should navigate to hydrate when successful', fakeAsync(() => {
+    it('should navigate to hydrate when successful', async () => {
       jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
       jest.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(true));
       const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       jest.spyOn(techRecordService, 'updateEditingTechRecord');
 
       component.vehicle = { techRecord: [{ vehicleType: VehicleTypes.HGV } as TechRecordModel] };
-      component.handleSubmit();
-      tick();
+      await component.handleSubmit();
 
+      fixture.detectChanges();
       expect(routerSpy).toHaveBeenCalledWith(['../create/new-record-details'], { relativeTo: route });
-    }));
+    });
   });
 
   describe('isVinUnique', () => {
