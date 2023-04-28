@@ -1,7 +1,8 @@
+import { Params } from '@angular/router';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export function createSingleSearchResult(systemNumber: string, vin: string): FormNode {
+export function createSingleSearchResult(systemNumber: string, queryParams?: Params): FormNode {
   return {
     name: 'singleSearchResult',
     type: FormNodeTypes.GROUP,
@@ -9,7 +10,8 @@ export function createSingleSearchResult(systemNumber: string, vin: string): For
     viewType: FormNodeViewTypes.SUBHEADING,
     subHeadingLink: {
       label: 'Select technical record',
-      url: `/tech-records/${systemNumber}`
+      url: `/tech-records/${systemNumber}`,
+      queryParams
     },
     children: [
       {

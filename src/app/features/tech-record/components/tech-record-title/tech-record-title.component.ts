@@ -19,7 +19,7 @@ export class TechRecordTitleComponent implements OnInit {
   @Input() hideActions: boolean = false;
   @Input() customTitle = '';
 
-  currentTechRecord$!: Observable<TechRecordModel | undefined>;
+  currentTechRecord$?: Observable<TechRecordModel | undefined>;
   queryableActions: string[] = [];
   vehicleMakeAndModel = '';
 
@@ -28,7 +28,7 @@ export class TechRecordTitleComponent implements OnInit {
   ngOnInit(): void {
     this.queryableActions = this.actions.split(',');
 
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicle!);
+    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$;
 
     this.currentTechRecord$
       .pipe(take(1))

@@ -15,7 +15,6 @@ export enum EmissionStandard {
   Euro4 = 'Euro 4',
   Euro5 = 'Euro 5',
   Euro6 = 'Euro 6',
-  EuroVI = 'Euro VI',
   FullElectric = 'Full Electric'
 }
 

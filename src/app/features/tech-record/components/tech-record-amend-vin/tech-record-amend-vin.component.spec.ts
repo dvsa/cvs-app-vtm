@@ -24,7 +24,7 @@ const mockTechRecordService = {
   updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn(),
   getVehicleTypeWithSmallTrl: jest.fn(),
-  validateVin: jest.fn().mockReturnValue(of(null))
+  validateVinForUpdate: jest.fn().mockReturnValue(of(null))
 };
 
 const mockDynamicFormService = {
@@ -66,7 +66,7 @@ describe('TechRecordChangeVrmComponent', () => {
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
     component.form.controls['vin'].clearAsyncValidators();
-    component.form.controls['vin'].setAsyncValidators(mockTechRecordService.validateVin.bind(this));
+    component.form.controls['vin'].setAsyncValidators(mockTechRecordService.validateVinForUpdate.bind(this));
   });
 
   it('should create', () => {

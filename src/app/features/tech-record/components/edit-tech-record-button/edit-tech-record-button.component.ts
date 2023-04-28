@@ -5,6 +5,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import {
   createProvisionalTechRecordSuccess,
@@ -34,20 +35,21 @@ export class EditTechRecordButtonComponent implements OnInit {
     private router: Router,
     private store: Store,
     private technicalRecordService: TechnicalRecordService,
-    private viewportScroller: ViewportScroller
+    private viewportScroller: ViewportScroller,
+    private routerService: RouterService
   ) {}
 
   ngOnInit() {
     this.actions$
       .pipe(
         ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
-        withLatestFrom(this.store.select(selectVehicleTechnicalRecordsBySystemNumber), this.technicalRecordService.techRecord$),
+        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.technicalRecordService.techRecord$),
         take(1)
       )
-      .subscribe(([, vehicleTechRecord, techRecord]) => {
+      .subscribe(([, systemNumber, techRecord]) => {
         const routeSuffix = techRecord?.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
 
-        this.router.navigateByUrl(`/tech-records/${vehicleTechRecord!.systemNumber}${routeSuffix}`);
+        this.router.navigateByUrl(`/tech-records/${systemNumber}${routeSuffix}`);
       });
   }
 
