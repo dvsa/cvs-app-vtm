@@ -56,8 +56,9 @@ export class ReferenceDataListComponent {
     this.router.navigate(['select-type'], { relativeTo: this.route });
   }
 
-  amend(): void {
-    console.log('HELP');
-    this.router.navigate(['amend'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+  amend(resourceKey: HTMLElement): void {
+    console.log(resourceKey.innerHTML);
+    const id: string = resourceKey.innerHTML;
+    this.router.navigate(['amend'], { relativeTo: this.route, queryParams: { id }, queryParamsHandling: 'merge' });
   }
 }

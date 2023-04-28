@@ -110,17 +110,15 @@ export class ReferenceDataAmendComponent {
   }
 
   handleSubmit() {
-    if (!this.isFormValid) return;
-
-    const referenceData: any = {};
-
-    Object.keys(this.form.controls)
-      .filter(control => control !== 'resourceKey')
-      .forEach(control => (referenceData[control] = this.form.get(control)?.value));
-
-    this.referenceDataService
-      .createNewReferenceDataItem(this.type, this.form.get('resourceKey')?.value, referenceData)
-      .pipe(take(1))
-      .subscribe(() => this.navigateBack());
+    // TODO: change for amending
+    // if (!this.isFormValid) return;
+    // const referenceData: any = {};
+    // Object.keys(this.form.controls)
+    //   .filter(control => control !== 'resourceKey')
+    //   .forEach(control => (referenceData[control] = this.form.get(control)?.value));
+    // this.referenceDataService
+    //   .createNewReferenceDataItem(this.type, this.form.get('resourceKey')?.value, referenceData)
+    //   .pipe(take(1))
+    //   .subscribe(() => this.navigateBack());
   }
 }
