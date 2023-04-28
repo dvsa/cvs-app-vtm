@@ -1,12 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
-import { RouterService } from '@services/router/router.service';
+import { Store, select } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
   createVehicle,
   editableTechRecord,
@@ -18,16 +15,11 @@ import {
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { catchError, debounceTime, filter, map, Observable, of, switchMap, take, tap, throwError, withLatestFrom } from 'rxjs';
+import { Observable, catchError, debounceTime, filter, map, of, switchMap, take, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(
-    private store: Store,
-    private techRecordHttpService: TechnicalRecordHttpService,
-    private router: Router,
-    private routerService: RouterService
-  ) {}
+  constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService) {}
 
   getVehicleTypeWithSmallTrl(techRecord: TechRecordModel): VehicleTypes {
     return techRecord.vehicleType === VehicleTypes.TRL &&

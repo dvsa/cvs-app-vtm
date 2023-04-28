@@ -16,15 +16,22 @@ describe('TechnicalRecordService', () => {
   let service: BatchTechnicalRecordService;
   let httpClient: HttpTestingController;
   let technicalRecordHttpService: TechnicalRecordHttpService;
+  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [BatchTechnicalRecordService, provideMockStore({ initialState: initialAppState }), TechnicalRecordHttpService]
+      providers: [
+        BatchTechnicalRecordService,
+        provideMockStore({ initialState: initialAppState }),
+        TechnicalRecordHttpService,
+        TechnicalRecordService
+      ]
     });
     httpClient = TestBed.inject(HttpTestingController);
     service = TestBed.inject(BatchTechnicalRecordService);
     technicalRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
+    technicalRecordService = TestBed.inject(TechnicalRecordService);
   });
 
   afterEach(() => {
@@ -83,7 +90,7 @@ describe('TechnicalRecordService', () => {
         testGroup.get('trailerId')!.setValue('');
         testGroup.get('vin')!.setValue('TESTVIN');
 
-        const isUniqueSpy = jest.spyOn(service, 'isUnique').mockReturnValueOnce(of(true));
+        const isUniqueSpy = jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
 
         const serviceCall = service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>;
         const errors = await firstValueFrom(serviceCall);
@@ -95,7 +102,7 @@ describe('TechnicalRecordService', () => {
         testGroup.get('trailerId')!.setValue('');
         const vinControl = testGroup.get('vin') as CustomFormControl;
         vinControl.setValue('TESTVIN');
-        jest.spyOn(service, 'isUnique').mockReturnValueOnce(of(false));
+        jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
         await firstValueFrom(service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>);
         expect(vinControl.meta.warning).toEqual('This VIN already exists, if you continue it will be associated with two vehicles');
       });
