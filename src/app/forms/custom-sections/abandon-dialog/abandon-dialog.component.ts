@@ -66,7 +66,7 @@ export class AbandonDialogComponent extends BaseDialogComponent implements OnIni
     const testTypeId = this.testResult?.testTypes[0].testTypeId ?? '';
 
     if (TEST_TYPES_GROUP5_13.includes(testTypeId)) {
-      return ABANDON_FORM(ReferenceDataResourceType.TIRReasonsForAbandoning);
+      return ABANDON_FORM(ReferenceDataResourceType.TirReasonsForAbandoning);
     } else if (TestRecordsService.getTestTypeGroup(testTypeId)?.includes('Specialist')) {
       return ABANDON_FORM(ReferenceDataResourceType.SpecialistReasonsForAbandoning);
     }

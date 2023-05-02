@@ -377,9 +377,11 @@ export interface TechRecord {
     dda?: Dda;
 }
 export namespace TechRecord {
-    export type FuelPropulsionSystemEnum = 'DieselPetrol' | 'Hybrid' | 'Electric' | 'CNG' | 'Fuel cell' | 'LNG' | 'Other';
+    export type FuelPropulsionSystemEnum = 'DieselPetrol' | 'Diesel' | 'Petrol' | 'Hybrid' | 'Electric' | 'CNG' | 'Fuel cell' | 'LNG' | 'Other';
     export const FuelPropulsionSystemEnum = {
-        DieselPetrol: 'DieselPetrol' as FuelPropulsionSystemEnum,
+        DieselPetrol: "DieselPetrol" as FuelPropulsionSystemEnum,
+        Diesel: 'Diesel' as FuelPropulsionSystemEnum,
+        Petrol: 'Petrol' as FuelPropulsionSystemEnum,
         Hybrid: 'Hybrid' as FuelPropulsionSystemEnum,
         Electric: 'Electric' as FuelPropulsionSystemEnum,
         CNG: 'CNG' as FuelPropulsionSystemEnum,
