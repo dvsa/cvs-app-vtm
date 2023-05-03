@@ -16,8 +16,8 @@ import { switchMap, take, tap } from 'rxjs';
   selector: 'app-reference-data-add',
   templateUrl: './reference-data-add.component.html'
 })
-export class AddReferenceDataComponent {
-  type!: ReferenceDataResourceType;
+export class ReferenceDataCreateComponent {
+  type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
 
   // todo: replace this with the switch-statement from the amend component
   form: CustomFormGroup = new CustomFormGroup(
