@@ -41,12 +41,6 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   get columns$(): Observable<Array<string>> {
-    // return this.store.pipe(
-    //   select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)),
-    //   map(referenceDataTemplate =>
-    //     referenceDataTemplate ? Object.keys(referenceDataTemplate).filter(property => property !== 'resourceType' && property !== 'resourceKey') : []
-    //   )
-    // );
     let templateListToReturn: Array<any>;
     switch (this.type) {
       case ReferenceDataResourceType.Brakes:
@@ -107,15 +101,15 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   addNew(): void {
-    this.router.navigate(['add'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+    this.router.navigate(['create'], { relativeTo: this.route });
   }
 
   back(): void {
-    this.router.navigate(['select-type']);
+    this.router.navigate(['reference-data']);
   }
 
   amend(resourceKey: HTMLElement): void {
     const key: string = resourceKey.innerHTML;
-    this.router.navigate(['amend', key], { relativeTo: this.route });
+    this.router.navigate([key], { relativeTo: this.route });
   }
 }

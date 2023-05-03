@@ -11,53 +11,27 @@ import { ReferenceDataSelectTypeComponent } from './reference-data-select-type/r
 const routes: Routes = [
   {
     path: '',
-    pathMatch: 'prefix',
     component: ReferenceDataSelectTypeComponent,
     data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
-    path: 'reference-data',
-    data: { title: 'Reference Data', roles: Roles.ReferenceDataView },
-    canActivate: [MsalGuard, RoleGuard],
-    children: [
-      {
-        path: '',
-        component: ReferenceDataListComponent,
-        data: { roles: Roles.ReferenceDataView },
-        canActivate: [MsalGuard, RoleGuard]
-      },
-      {
-        path: ':type',
-        component: ReferenceDataListComponent,
-        data: { roles: Roles.ReferenceDataView },
-        canActivate: [MsalGuard, RoleGuard]
-      },
-      {
-        path: ':type/amend/:key',
-        component: ReferenceDataAmendComponent,
-        data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataAmend },
-        canActivate: [MsalGuard, RoleGuard]
-      },
-      {
-        path: 'add',
-        component: AddReferenceDataComponent,
-        data: { title: 'Add Reference Data', roles: Roles.ReferenceDataView },
-        canActivate: [MsalGuard, RoleGuard]
-      },
-      {
-        path: 'add/:type',
-        component: AddReferenceDataComponent,
-        data: { title: 'Add Reference Data', roles: Roles.ReferenceDataView },
-        canActivate: [MsalGuard, RoleGuard]
-      },
-      {
-        path: 'amend',
-        component: ReferenceDataAmendComponent,
-        data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataAmend },
-        canActivate: [MsalGuard, RoleGuard]
-      }
-    ]
+    path: ':type',
+    component: ReferenceDataListComponent,
+    data: { roles: Roles.ReferenceDataView },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: ':type/create',
+    component: AddReferenceDataComponent,
+    data: { title: 'Add Reference Data', roles: Roles.ReferenceDataAmend },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: ':type/:key',
+    component: ReferenceDataAmendComponent,
+    data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataAmend },
+    canActivate: [MsalGuard, RoleGuard]
   }
 ];
 

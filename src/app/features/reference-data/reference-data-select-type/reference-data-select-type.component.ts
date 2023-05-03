@@ -62,6 +62,6 @@ export class ReferenceDataSelectTypeComponent {
   }
 
   navigateTo(type: string): void {
-    if (this.isFormValid) this.router.navigate(['reference-data', type], { relativeTo: this.route });
+    if (this.isFormValid) this.router.navigate([type], { relativeTo: this.route });
   }
 }

@@ -17,8 +17,9 @@ import { switchMap, take, tap } from 'rxjs';
   templateUrl: './reference-data-add.component.html'
 })
 export class AddReferenceDataComponent {
-  type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
+  type!: ReferenceDataResourceType;
 
+  // todo: replace this with the switch-statement from the amend component
   form: CustomFormGroup = new CustomFormGroup(
     { name: 'form', type: FormNodeTypes.GROUP },
     {
@@ -67,6 +68,14 @@ export class AddReferenceDataComponent {
             )
           );
       });
+  }
+
+  ngOnInit(): void {
+    this.route.params.pipe(take(1)).subscribe(params => {
+      this.type = params['type'];
+
+      console.log('This is the type by url params: ', this.type);
+    });
   }
 
   get roles(): typeof Roles {
