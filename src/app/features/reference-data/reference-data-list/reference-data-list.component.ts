@@ -5,7 +5,7 @@ import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, map, of, take } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 import { templateList as countryOfRegistrationTemplateList } from '@forms/templates/reference-data/country-of-registration';
 import { templateList as tyresTemplateList } from '@forms/templates/reference-data/tyres';
 import { templateList as brakesTemplateList } from '@forms/templates/reference-data/brakes';
@@ -47,32 +47,51 @@ export class ReferenceDataListComponent implements OnInit {
     //     referenceDataTemplate ? Object.keys(referenceDataTemplate).filter(property => property !== 'resourceType' && property !== 'resourceKey') : []
     //   )
     // );
+    let templateListToReturn: Array<any>;
     switch (this.type) {
       case ReferenceDataResourceType.Brakes:
-        return of(brakesTemplateList.map(data => data.column));
+        templateListToReturn = brakesTemplateList;
+        break;
       case ReferenceDataResourceType.CountryOfRegistration:
-        return of(countryOfRegistrationTemplateList.map(data => data.column));
+        templateListToReturn = countryOfRegistrationTemplateList;
+        break;
       case ReferenceDataResourceType.HgvMake:
-        return of(hgvTemplateList.map(data => data.column));
+        templateListToReturn = hgvTemplateList;
+        break;
       case ReferenceDataResourceType.PsvMake:
-        return of(psvTemplateList.map(data => data.column));
+        templateListToReturn = psvTemplateList;
+        break;
       case ReferenceDataResourceType.ReasonsForAbandoningHgv:
-        return of(reasonsForAbandoningHgvTemplateList.map(data => data.column));
+        templateListToReturn = reasonsForAbandoningHgvTemplateList;
+        break;
       case ReferenceDataResourceType.ReasonsForAbandoningPsv:
-        return of(reasonsForAbandoningPsvTemplateList.map(data => data.column));
+        templateListToReturn = reasonsForAbandoningPsvTemplateList;
+        break;
       case ReferenceDataResourceType.ReasonsForAbandoningTrl:
-        return of(reasonsForAbandoningTrlTemplateList.map(data => data.column));
+        templateListToReturn = reasonsForAbandoningTrlTemplateList;
+        break;
       case ReferenceDataResourceType.SpecialistReasonsForAbandoning:
-        return of(specialistReasonsForAbandoningTemplateList.map(data => data.column));
+        templateListToReturn = specialistReasonsForAbandoningTemplateList;
+        break;
       case ReferenceDataResourceType.TirReasonsForAbandoning:
-        return of(reasonsForAbandoningTirTemplateList.map(data => data.column));
+        templateListToReturn = reasonsForAbandoningTirTemplateList;
+        break;
       case ReferenceDataResourceType.TrlMake:
-        return of(trlTemplateList.map(data => data.column));
+        templateListToReturn = trlTemplateList;
+        break;
       case ReferenceDataResourceType.Tyres:
-        return of(tyresTemplateList.map(data => data.column));
+        templateListToReturn = tyresTemplateList;
+        break;
       default:
-        return of(['']);
+        templateListToReturn = [''];
+        break;
     }
+    console.log(
+      templateListToReturn.filter(data => {
+        if (data.column !== 'resourceKey') data.column;
+      })
+    );
+    return of(templateListToReturn.filter(data => data.column !== 'resourceKey').map(data => data.column));
   }
 
   public get roles(): typeof Roles {
