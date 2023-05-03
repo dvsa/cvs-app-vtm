@@ -42,7 +42,7 @@ import { template as trlTemplate } from '@forms/templates/reference-data/trl-mak
 })
 export class ReferenceDataAmendComponent implements OnInit {
   type!: ReferenceDataResourceType;
-  id!: string;
+  key!: string;
   isEditing: boolean = true;
 
   constructor(
@@ -56,28 +56,27 @@ export class ReferenceDataAmendComponent implements OnInit {
 
   ngOnInit(): void {
     // query params
-    this.route.queryParams.pipe(take(1)).subscribe(params => {
-      this.type = params['type'];
-      this.id = params['id'];
-
-      if (this.type && this.id) {
-        console.log('This is the ID by query params: ', this.id);
-        this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.id }));
-        console.log('request sent to fetch reference data by key', this.type, this.id);
-      }
-    });
-
-    // url params
-    // this.route.params.pipe(take(1)).subscribe(params => {
+    // this.route.queryParams.pipe(take(1)).subscribe(params => {
     //   this.type = params['type'];
-    //   this.id = params['key'];
+    //   this.id = params['id'];
 
     //   if (this.type && this.id) {
-    //     console.log("This is the ID by url params: ", this.id);
-
+    //     console.log('This is the ID by query params: ', this.id);
     //     this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.id }));
+    //     console.log('request sent to fetch reference data by key', this.type, this.id);
     //   }
     // });
+
+    // url params
+    this.route.params.pipe(take(1)).subscribe(params => {
+      this.type = params['type'];
+      this.key = params['key'];
+
+      if (this.type && this.key) {
+        console.log('This is the key by url params: ', this.key);
+        this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.key }));
+      }
+    });
   }
 
   get roles(): typeof Roles {
@@ -85,7 +84,7 @@ export class ReferenceDataAmendComponent implements OnInit {
   }
 
   get data$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.id)));
+    return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)));
   }
 
   get widths(): typeof FormNodeWidth {
@@ -112,7 +111,7 @@ export class ReferenceDataAmendComponent implements OnInit {
   navigateBack() {
     this.globalErrorService.clearErrors();
     // TODO: we need to preserve the type but not the ID (Resource Key)
-    this.router.navigate(['..'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+    this.router.navigate(['amend', this.type], { relativeTo: this.route.parent });
   }
 
   handleSubmit() {
