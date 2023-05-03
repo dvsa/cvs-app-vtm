@@ -56,6 +56,18 @@ export class ReferenceDataService extends ReferenceDataApiService {
     );
   }
 
+  //  URL to PUT new reference data items: /reference/{ type capitalized }/{ new key } PUT
+
+  amendReferenceDataItem(type: ReferenceDataResourceType, key: string, data: any) {
+    return this.usersService.id$.pipe(
+      withLatestFrom(this.usersService.name$),
+      switchMap(([createdId, createdName]) => {
+        const referenceData = { ...data, createdId, createdName, createdAt: new Date() };
+        return this.referenceResourceTypeResourceKeyPut(type, key, referenceData, 'body', false);
+      })
+    );
+  }
+
   fetchReferenceData(resourceType: ReferenceDataResourceType, paginationToken?: string): Observable<ReferenceDataApiResponse> {
     if (!resourceType) {
       return throwError(() => new Error('Reference data resourceType is required'));
