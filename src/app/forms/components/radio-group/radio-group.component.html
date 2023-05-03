@@ -21,7 +21,7 @@
           (ngModelChange)="onChange($event)"
         />
 
-        <label class="govuk-label govuk-radios__label" [for]="option.value + '-radio'"> {{ option.label }} </label>
+        <label class="govuk-label govuk-radios__label" [for]="name + '-' + option.value + '-radio'"> {{ option.label }} </label>
 
         <div *ngIf="option.hint" id="{{ name }}-hint-{{ option.value }}" class="govuk-hint govuk-radios__hint">{{ option.hint }}</div>
       </div>
