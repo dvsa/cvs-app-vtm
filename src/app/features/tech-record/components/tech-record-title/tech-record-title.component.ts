@@ -2,11 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
-import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editableTechRecord } from '@store/technical-records';
-import { Observable, take } from 'rxjs';
+import { Observable, of, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-title[vehicle]',
@@ -19,6 +19,7 @@ export class TechRecordTitleComponent implements OnInit {
   @Input() hideActions: boolean = false;
   @Input() customTitle = '';
 
+  currentVehicleTechRecord$?: Observable<TechRecordModel | undefined>;
   currentTechRecord$?: Observable<TechRecordModel | undefined>;
   queryableActions: string[] = [];
   vehicleMakeAndModel = '';
@@ -28,7 +29,14 @@ export class TechRecordTitleComponent implements OnInit {
   ngOnInit(): void {
     this.queryableActions = this.actions.split(',');
 
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$;
+    this.currentVehicleTechRecord$ = this.technicalRecordService.viewableTechRecord$;
+
+    // On create new vehicle, when vehicleTechRecords is empty use the editableTechRecord
+    this.currentTechRecord$ = this.currentVehicleTechRecord$.pipe(
+      switchMap(value => {
+        return value ? of(value) : this.technicalRecordService.editableTechRecord$;
+      })
+    );
 
     this.currentTechRecord$
       .pipe(take(1))
