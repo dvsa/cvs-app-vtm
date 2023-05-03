@@ -28,15 +28,21 @@ const routes: Routes = [
         canActivate: [MsalGuard, RoleGuard]
       },
       {
-        path: 'add',
-        component: AddReferenceDataComponent,
-        data: { title: 'Add Reference Data', roles: Roles.ReferenceDataView },
+        path: ':type',
+        component: ReferenceDataListComponent,
+        data: { roles: Roles.ReferenceDataView },
         canActivate: [MsalGuard, RoleGuard]
       },
       {
-        path: 'amend',
+        path: ':type/amend/:key',
         component: ReferenceDataAmendComponent,
         data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataAmend },
+        canActivate: [MsalGuard, RoleGuard]
+      },
+      {
+        path: 'add',
+        component: AddReferenceDataComponent,
+        data: { title: 'Add Reference Data', roles: Roles.ReferenceDataView },
         canActivate: [MsalGuard, RoleGuard]
       },
       {
@@ -46,7 +52,7 @@ const routes: Routes = [
         canActivate: [MsalGuard, RoleGuard]
       },
       {
-        path: 'amend/:type/:key',
+        path: 'amend',
         component: ReferenceDataAmendComponent,
         data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataAmend },
         canActivate: [MsalGuard, RoleGuard]
