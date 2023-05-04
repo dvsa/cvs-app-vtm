@@ -41,5 +41,9 @@ describe('HGV technical record', () => {
     cy.get('#create-record-continue').click();
     cy.get('#vehicleType').should('have.text', ' HGV ');
     cy.get('#vin').should('have.text', ` ${vin.toUpperCase()} `);
+    cy.get('#current-vrm-span').should(vrmDisplay => {
+      const vrmSplit = vrm.slice(0, vrm.length - 3) + ' ' + vrm.slice(vrm.length - 3);
+      expect(vrmDisplay).to.contain(vrmSplit.toUpperCase());
+    });
   });
 });
