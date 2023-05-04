@@ -30,4 +30,16 @@ describe('HGV technical record', () => {
     cy.get('.govuk-accordion__show-all-text').click();
     cy.get('#test-approvalType').should('have.text', ' NTA ');
   });
+
+  it('should display the create vehicle page', () => {
+    const vin = randomString(10);
+    const vrm = randomString(7);
+    cy.get('#create-new-technical-record-link').click();
+    cy.get('#input-vin').type(vin);
+    cy.get('#input-vrm-or-trailer-id').type(vrm);
+    cy.get('#change-vehicle-type-select').select('1: hgv');
+    cy.get('#create-record-continue').click();
+    cy.get('#vehicleType').should('have.text', ' HGV ');
+    cy.get('#vin').should('have.text', ` ${vin.toUpperCase()} `);
+  });
 });
