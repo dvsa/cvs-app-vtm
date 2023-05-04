@@ -54,8 +54,8 @@ const routes: Routes = [
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
       },
       {
-        path: 'reference-data',
-        data: { title: 'Reference Data', roles: Roles.ReferenceDataView },
+        path: 'select-type',
+        data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/reference-data/reference-data.module').then(m => m.ReferenceDataModule)
       },

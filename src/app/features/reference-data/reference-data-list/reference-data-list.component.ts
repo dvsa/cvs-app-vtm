@@ -53,6 +53,6 @@ export class ReferenceDataListComponent {
   }
 
   back(): void {
-    this.router.navigate(['select-type'], { relativeTo: this.route });
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 }

@@ -11,20 +11,28 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'prefix',
-    component: ReferenceDataListComponent,
-    data: { title: 'View Reference Data', roles: Roles.ReferenceDataView }
-  },
-  {
-    path: 'select-type',
     component: ReferenceDataSelectTypeComponent,
     data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
-    path: 'add',
-    component: AddReferenceDataComponent,
-    data: { title: 'Add Reference Data', roles: Roles.ReferenceDataView },
-    canActivate: [MsalGuard, RoleGuard]
+    path: 'reference-data',
+    data: { title: 'Reference Data', roles: Roles.ReferenceDataView },
+    canActivate: [MsalGuard, RoleGuard],
+    children: [
+      {
+        path: '',
+        component: ReferenceDataListComponent,
+        data: { roles: Roles.ReferenceDataView },
+        canActivate: [MsalGuard, RoleGuard]
+      },
+      {
+        path: 'add',
+        component: AddReferenceDataComponent,
+        data: { roles: Roles.ReferenceDataView },
+        canActivate: [MsalGuard, RoleGuard]
+      }
+    ]
   }
 ];
 
