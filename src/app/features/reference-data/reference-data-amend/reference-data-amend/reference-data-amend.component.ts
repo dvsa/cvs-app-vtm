@@ -115,32 +115,51 @@ export class ReferenceDataAmendComponent implements OnInit {
   }
 
   get template(): FormNode {
+    let templateToReturn: FormNode;
     switch (this.type) {
       case ReferenceDataResourceType.Brakes:
-        return brakesTemplate;
+        templateToReturn = brakesTemplate;
+        break;
       case ReferenceDataResourceType.CountryOfRegistration:
-        return countryOfRegistrationTemplate;
+        templateToReturn = countryOfRegistrationTemplate;
+        break;
       case ReferenceDataResourceType.HgvMake:
-        return hgvTemplate;
+        templateToReturn = hgvTemplate;
+        break;
       case ReferenceDataResourceType.PsvMake:
-        return psvTemplate;
+        templateToReturn = psvTemplate;
+        break;
       case ReferenceDataResourceType.ReasonsForAbandoningHgv:
-        return reasonsForAbandoningHgvTemplate;
+        templateToReturn = reasonsForAbandoningHgvTemplate;
+        break;
       case ReferenceDataResourceType.ReasonsForAbandoningPsv:
-        return reasonsForAbandoningPsvTemplate;
+        templateToReturn = reasonsForAbandoningPsvTemplate;
+        break;
       case ReferenceDataResourceType.ReasonsForAbandoningTrl:
-        return reasonsForAbandoningTrlTemplate;
+        templateToReturn = reasonsForAbandoningTrlTemplate;
+        break;
       case ReferenceDataResourceType.SpecialistReasonsForAbandoning:
-        return specialistReasonsForAbandoningTemplate;
+        templateToReturn = specialistReasonsForAbandoningTemplate;
+        break;
       case ReferenceDataResourceType.TirReasonsForAbandoning:
-        return reasonsForAbandoningTirTemplate;
+        templateToReturn = reasonsForAbandoningTirTemplate;
+        break;
       case ReferenceDataResourceType.TrlMake:
-        return trlTemplate;
+        templateToReturn = trlTemplate;
+        break;
       case ReferenceDataResourceType.Tyres:
-        return tyresTemplate;
+        templateToReturn = tyresTemplate;
+        break;
       default:
-        return {} as FormNode;
+        templateToReturn = {} as FormNode;
+        break;
     }
+    templateToReturn.children?.forEach(child => {
+      if (child.name === 'resourceKey') {
+        child.disabled = true;
+      }
+    });
+    return templateToReturn;
   }
 
   handleFormChange(event: any) {

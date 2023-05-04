@@ -1,22 +1,34 @@
 import { Component } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { Form, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { switchMap, take, tap } from 'rxjs';
+import { template as countryOfRegistrationTemplate } from '@forms/templates/reference-data/country-of-registration';
+import { template as tyresTemplate } from '@forms/templates/reference-data/tyres';
+import { template as brakesTemplate } from '@forms/templates/reference-data/brakes';
+import { template as hgvTemplate } from '@forms/templates/reference-data/hgv-make';
+import { template as psvTemplate } from '@forms/templates/reference-data/psv-make';
+import { template as reasonsForAbandoningHgvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
+import { template as reasonsForAbandoningPsvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-psv';
+import { template as reasonsForAbandoningTirTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TIR';
+import { template as reasonsForAbandoningTrlTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
+import { template as specialistReasonsForAbandoningTemplate } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
+import { template as trlTemplate } from '@forms/templates/reference-data/trl-make';
 
 @Component({
   selector: 'app-reference-data-add',
   templateUrl: './reference-data-add.component.html'
 })
 export class ReferenceDataCreateComponent {
+  isEditing: boolean = true;
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
 
   // todo: replace this with the switch-statement from the amend component
@@ -40,34 +52,6 @@ export class ReferenceDataCreateComponent {
     private store: Store<ReferenceDataState>
   ) {
     this.referenceDataService.loadReferenceData(ReferenceDataResourceType.ReferenceDataAdminType);
-
-    this.route.queryParams
-      .pipe(
-        take(1),
-        tap(params => (this.type = params['type'])),
-        switchMap(params => this.store.select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, params['type'])))
-      )
-      .subscribe(referenceData => {
-        if (!referenceData) return;
-
-        Object.keys(referenceData)
-          .filter(property => property !== 'resourceType' && property !== 'resourceKey')
-          .forEach(property =>
-            this.form.addControl(
-              property,
-              new CustomFormControl(
-                {
-                  name: property,
-                  label: property,
-                  type: FormNodeTypes.CONTROL,
-                  editType: (referenceData as any)[property]
-                },
-                '',
-                [Validators.required]
-              )
-            )
-          );
-      });
   }
 
   ngOnInit(): void {
@@ -86,13 +70,52 @@ export class ReferenceDataCreateComponent {
     return FormNodeWidth;
   }
 
-  get isFormValid(): boolean {
-    if (!this.form) return false;
-
-    const errors: GlobalError[] = [];
-    DynamicFormService.validate(this.form, errors);
-    this.globalErrorService.setErrors(errors);
-    return this.form.valid;
+  get template(): FormNode {
+    let templateToReturn: FormNode;
+    switch (this.type) {
+      case ReferenceDataResourceType.Brakes:
+        templateToReturn = brakesTemplate;
+        break;
+      case ReferenceDataResourceType.CountryOfRegistration:
+        templateToReturn = countryOfRegistrationTemplate;
+        break;
+      case ReferenceDataResourceType.HgvMake:
+        templateToReturn = hgvTemplate;
+        break;
+      case ReferenceDataResourceType.PsvMake:
+        templateToReturn = psvTemplate;
+        break;
+      case ReferenceDataResourceType.ReasonsForAbandoningHgv:
+        templateToReturn = reasonsForAbandoningHgvTemplate;
+        break;
+      case ReferenceDataResourceType.ReasonsForAbandoningPsv:
+        templateToReturn = reasonsForAbandoningPsvTemplate;
+        break;
+      case ReferenceDataResourceType.ReasonsForAbandoningTrl:
+        templateToReturn = reasonsForAbandoningTrlTemplate;
+        break;
+      case ReferenceDataResourceType.SpecialistReasonsForAbandoning:
+        templateToReturn = specialistReasonsForAbandoningTemplate;
+        break;
+      case ReferenceDataResourceType.TirReasonsForAbandoning:
+        templateToReturn = reasonsForAbandoningTirTemplate;
+        break;
+      case ReferenceDataResourceType.TrlMake:
+        templateToReturn = trlTemplate;
+        break;
+      case ReferenceDataResourceType.Tyres:
+        templateToReturn = tyresTemplate;
+        break;
+      default:
+        templateToReturn = {} as FormNode;
+        break;
+    }
+    templateToReturn.children?.forEach(child => {
+      if (child.name === 'resourceKey') {
+        child.disabled = false;
+      }
+    });
+    return templateToReturn;
   }
 
   titleCaseHeading(input: ReferenceDataResourceType): string {
@@ -109,7 +132,7 @@ export class ReferenceDataCreateComponent {
   }
 
   handleSubmit() {
-    if (!this.isFormValid) return;
+    // if (!this.isFormValid) return;
 
     const referenceData: any = {};
 
@@ -121,5 +144,18 @@ export class ReferenceDataCreateComponent {
       .createNewReferenceDataItem(this.type, this.form.get('resourceKey')?.value, referenceData)
       .pipe(take(1))
       .subscribe(() => this.navigateBack());
+  }
+
+  handleFormChange(event: any) {
+    // TODO: needed?
+    //   let latestTest: any;
+    //   this.sections?.forEach(section => {
+    //     const { form } = section;
+    //     latestTest = merge(latestTest, form.getCleanValue(form));
+    //   });
+    //   const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
+    //   const customDefectsValue = this.customDefects?.form.getCleanValue(this.customDefects?.form);
+    //   latestTest = merge(latestTest, defectsValue, customDefectsValue, event);
+    //   latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
   }
 }
