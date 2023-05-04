@@ -21,7 +21,7 @@
           (focus)="handleEvent($event)"
         />
 
-        <label class="govuk-label govuk-checkboxes__label" [for]="name"> {{ option.label }} </label>
+        <label class="govuk-label govuk-checkboxes__label" [for]="name + '-' + option.value + '-checkbox'"> {{ option.label }} </label>
       </div>
     </div>
   </fieldset>
