@@ -41,8 +41,7 @@ export class CreateTechRecordComponent implements OnChanges {
       vrmTrm: new CustomFormControl({ name: 'input-vrm-or-trailer-id', label: 'VRM/TRM', type: FormNodeTypes.CONTROL }, '', [
         CustomValidators.alphanumeric(),
         CustomValidators.notZNumber,
-        Validators.maxLength(9),
-        Validators.minLength(1),
+        CustomValidators.validateVRMTrailerIdLength('vehicleType'),
         Validators.required
       ]),
       vehicleStatus: new CustomFormControl(
