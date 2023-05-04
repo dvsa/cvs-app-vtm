@@ -1,40 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import {
-  CustomFormControl,
-  CustomFormGroup,
-  FormNodeEditTypes,
-  FormNodeTypes,
-  FormNodeWidth,
-  FormNode,
-  FormNodeViewTypes
-} from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { Roles } from '@models/roles.enum';
-import { select, Store } from '@ngrx/store';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import {
-  ReferenceDataState,
-  selectAllReferenceDataByResourceType,
-  fetchReferenceDataByKey,
-  selectReferenceDataByResourceKey
-} from '@store/reference-data';
-import { map, Observable, switchMap, take, tap, from } from 'rxjs';
-import { template as countryOfRegistrationTemplate } from '@forms/templates/reference-data/country-of-registration';
-import { template as tyresTemplate } from '@forms/templates/reference-data/tyres';
+import { CustomFormGroup } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { template as brakesTemplate } from '@forms/templates/reference-data/brakes';
+import { template as countryOfRegistrationTemplate } from '@forms/templates/reference-data/country-of-registration';
 import { template as hgvTemplate } from '@forms/templates/reference-data/hgv-make';
 import { template as psvTemplate } from '@forms/templates/reference-data/psv-make';
-import { template as reasonsForAbandoningHgvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
-import { template as reasonsForAbandoningPsvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-psv';
 import { template as reasonsForAbandoningTirTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TIR';
 import { template as reasonsForAbandoningTrlTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
+import { template as reasonsForAbandoningHgvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
+import { template as reasonsForAbandoningPsvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-psv';
 import { template as specialistReasonsForAbandoningTemplate } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
 import { template as trlTemplate } from '@forms/templates/reference-data/trl-make';
+import { template as tyresTemplate } from '@forms/templates/reference-data/tyres';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { Roles } from '@models/roles.enum';
+import { Store, select } from '@ngrx/store';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { ReferenceDataState, fetchReferenceDataByKey, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { Observable, merge, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend',
@@ -44,6 +31,12 @@ export class ReferenceDataAmendComponent implements OnInit {
   type!: ReferenceDataResourceType;
   key!: string;
   isEditing: boolean = true;
+
+  amendedData: Array<string> = [];
+
+  @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
+
+  @Output() editedRefData = new EventEmitter<CustomFormGroup>();
 
   constructor(
     public globalErrorService: GlobalErrorService,
@@ -79,12 +72,11 @@ export class ReferenceDataAmendComponent implements OnInit {
   }
 
   // get isFormValid(): boolean {
-  //   if (!this.form) return false;
-
-  //   const errors: GlobalError[] = [];
-  //   DynamicFormService.validate(this.form, errors);
-  //   this.globalErrorService.setErrors(errors);
-  //   return this.form.valid;
+  //   this.sections?.forEach(section => {
+  //     const { form } = section;
+  //     console.log(form)
+  //   });
+  //   return true;
   // }
 
   titleCaseHeading(input: ReferenceDataResourceType): string {
@@ -102,6 +94,8 @@ export class ReferenceDataAmendComponent implements OnInit {
   }
 
   handleSubmit() {
+    console.log(this.sections);
+
     // TODO: change for amending
     // if (!this.isFormValid) return;
     // const referenceData: any = {};
@@ -163,15 +157,8 @@ export class ReferenceDataAmendComponent implements OnInit {
   }
 
   handleFormChange(event: any) {
-    // TODO: needed?
-    //   let latestTest: any;
-    //   this.sections?.forEach(section => {
-    //     const { form } = section;
-    //     latestTest = merge(latestTest, form.getCleanValue(form));
-    //   });
-    //   const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
-    //   const customDefectsValue = this.customDefects?.form.getCleanValue(this.customDefects?.form);
-    //   latestTest = merge(latestTest, defectsValue, customDefectsValue, event);
-    //   latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
+    Object.keys(event).length > 0 && this.editedRefData.emit(event);
+    //this gets updates the form values, they're in this.sections (there's a console log in onSubmit that logs sections and its
+    // in there under first > form > value and that's got all of the forms values) I just haven't worked out what to do with it yet
   }
 }
