@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output, QueryList, ViewChildren } from '@angular/core';
 import { Form, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -22,6 +22,7 @@ import { template as reasonsForAbandoningTirTemplate } from '@forms/templates/re
 import { template as reasonsForAbandoningTrlTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
 import { template as specialistReasonsForAbandoningTemplate } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
 import { template as trlTemplate } from '@forms/templates/reference-data/trl-make';
+import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 
 @Component({
   selector: 'app-reference-data-add',
@@ -30,19 +31,26 @@ import { template as trlTemplate } from '@forms/templates/reference-data/trl-mak
 export class ReferenceDataCreateComponent {
   isEditing: boolean = true;
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
+  amendedData: any;
+
+  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
+
+  @Output() editedRefData = new EventEmitter<CustomFormGroup>();
+  isFormDirty: boolean = false;
+  isFormInvalid: boolean = true;
 
   // todo: replace this with the switch-statement from the amend component
-  form: CustomFormGroup = new CustomFormGroup(
-    { name: 'form', type: FormNodeTypes.GROUP },
-    {
-      resourceKey: new CustomFormControl({
-        name: 'resourceKey',
-        label: 'Resource Key',
-        type: FormNodeTypes.CONTROL,
-        editType: FormNodeEditTypes.TEXT
-      })
-    }
-  );
+  // form: CustomFormGroup = new CustomFormGroup(
+  //   { name: 'form', type: FormNodeTypes.GROUP },
+  //   {
+  //     resourceKey: new CustomFormControl({
+  //       name: 'resourceKey',
+  //       label: 'Resource Key',
+  //       type: FormNodeTypes.CONTROL,
+  //       editType: FormNodeEditTypes.TEXT
+  //     })
+  //   }
+  // );
 
   constructor(
     public globalErrorService: GlobalErrorService,
@@ -132,30 +140,38 @@ export class ReferenceDataCreateComponent {
   }
 
   handleSubmit() {
-    // if (!this.isFormValid) return;
-
+    this.checkForms();
     const referenceData: any = {};
 
-    Object.keys(this.form.controls)
-      .filter(control => control !== 'resourceKey')
-      .forEach(control => (referenceData[control] = this.form.get(control)?.value));
+    Object.keys(this.amendedData)
+      .filter(amendDataKey => amendDataKey !== 'resourceamendDataKey')
+      .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
 
     this.referenceDataService
-      .createNewReferenceDataItem(this.type, this.form.get('resourceKey')?.value, referenceData)
+      .createNewReferenceDataItem(this.type, this.amendedData.resourceKey, referenceData)
       .pipe(take(1))
       .subscribe(() => this.navigateBack());
   }
 
   handleFormChange(event: any) {
-    // TODO: needed?
-    //   let latestTest: any;
-    //   this.sections?.forEach(section => {
-    //     const { form } = section;
-    //     latestTest = merge(latestTest, form.getCleanValue(form));
-    //   });
-    //   const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
-    //   const customDefectsValue = this.customDefects?.form.getCleanValue(this.customDefects?.form);
-    //   latestTest = merge(latestTest, defectsValue, customDefectsValue, event);
-    //   latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
+    this.amendedData = event;
+  }
+
+  checkForms(): void {
+    const forms = this.sections.map(section => section.form) as Array<CustomFormGroup>;
+
+    this.isFormDirty = forms.some(form => form.dirty);
+
+    this.setErrors(forms);
+
+    this.isFormInvalid = forms.some(form => form.invalid);
+  }
+
+  setErrors(forms: Array<CustomFormGroup>): void {
+    const errors: GlobalError[] = [];
+
+    forms.forEach(form => DynamicFormService.validate(form, errors));
+
+    errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
   }
 }
