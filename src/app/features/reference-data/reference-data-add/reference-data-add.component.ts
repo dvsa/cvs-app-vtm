@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -27,7 +27,7 @@ import { take } from 'rxjs';
   selector: 'app-reference-data-add',
   templateUrl: './reference-data-add.component.html'
 })
-export class ReferenceDataCreateComponent {
+export class ReferenceDataCreateComponent implements OnInit {
   isEditing: boolean = true;
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
   newRefData: any;
