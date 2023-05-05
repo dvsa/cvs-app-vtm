@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -80,7 +80,6 @@ export class ReferenceDataAmendComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    // TODO: we need to preserve the type but not the ID (Resource Key)
     this.router.navigate([this.type], { relativeTo: this.route.parent });
   }
 
