@@ -141,6 +141,9 @@ export class ReferenceDataCreateComponent {
 
   handleSubmit() {
     this.checkForms();
+
+    if (this.isFormInvalid) return;
+
     const referenceData: any = {};
 
     Object.keys(this.amendedData)
