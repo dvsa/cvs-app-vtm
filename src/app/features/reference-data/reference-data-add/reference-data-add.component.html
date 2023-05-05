@@ -15,5 +15,9 @@
 
       <app-button id="cancel" design="link" (clicked)="navigateBack()">Back</app-button>
     </app-button-group>
+
+    <pre>
+      {{ refDataAdminType$ | async | json }}
+    </pre>
   </div>
 </div>

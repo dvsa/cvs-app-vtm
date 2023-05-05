@@ -21,18 +21,20 @@ import { Roles } from '@models/roles.enum';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState } from '@store/reference-data';
-import { take } from 'rxjs';
+import { take, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-add',
   templateUrl: './reference-data-add.component.html'
 })
-export class ReferenceDataCreateComponent {
+export class ReferenceDataAddComponent {
   isEditing: boolean = true;
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
   newRefData: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
+
+  refDataAdminType$: Observable<any> = of(null);
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
@@ -51,6 +53,10 @@ export class ReferenceDataCreateComponent {
       this.type = params['type'];
 
       console.log('This is the type by url params: ', this.type);
+
+      // TODO: use this to get the correct template from Dynamo, then we won't need the templates in the app or the switch statement below
+      //       but it needs the API to return the template object in the response which it doesn't currently support (just returns template: null)
+      this.refDataAdminType$ = this.referenceDataService.getByKey$(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
     });
   }
 

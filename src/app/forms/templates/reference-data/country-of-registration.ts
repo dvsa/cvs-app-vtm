@@ -2,9 +2,9 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
 
 export const template: FormNode = {
-  name: 'countryOfRegistraion',
+  name: 'countryOfRegistration',
   type: FormNodeTypes.GROUP,
-  label: 'Country of Registraion',
+  label: 'Country of Registration',
   children: [
     {
       name: 'resourceKey',
