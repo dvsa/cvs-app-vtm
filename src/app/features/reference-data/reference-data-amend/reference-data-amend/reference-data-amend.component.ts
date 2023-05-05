@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -32,11 +33,13 @@ export class ReferenceDataAmendComponent implements OnInit {
   key!: string;
   isEditing: boolean = true;
 
-  amendedData: Array<string> = [];
+  amendedData: any;
 
-  @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
+  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
   @Output() editedRefData = new EventEmitter<CustomFormGroup>();
+  isFormDirty: boolean = false;
+  isFormInvalid: boolean = true;
 
   constructor(
     public globalErrorService: GlobalErrorService,
@@ -94,7 +97,9 @@ export class ReferenceDataAmendComponent implements OnInit {
   }
 
   handleSubmit() {
-    console.log(this.sections);
+    this.checkForms();
+
+    console.log(this.amendedData);
 
     // TODO: change for amending
     // if (!this.isFormValid) return;
@@ -157,8 +162,24 @@ export class ReferenceDataAmendComponent implements OnInit {
   }
 
   handleFormChange(event: any) {
-    Object.keys(event).length > 0 && this.editedRefData.emit(event);
-    //this gets updates the form values, they're in this.sections (there's a console log in onSubmit that logs sections and its
-    // in there under first > form > value and that's got all of the forms values) I just haven't worked out what to do with it yet
+    this.amendedData = event;
+  }
+
+  checkForms(): void {
+    const forms = this.sections.map(section => section.form) as Array<CustomFormGroup>;
+
+    this.isFormDirty = forms.some(form => form.dirty);
+
+    this.setErrors(forms);
+
+    this.isFormInvalid = forms.some(form => form.invalid);
+  }
+
+  setErrors(forms: Array<CustomFormGroup>): void {
+    const errors: GlobalError[] = [];
+
+    forms.forEach(form => DynamicFormService.validate(form, errors));
+
+    errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
   }
 }
