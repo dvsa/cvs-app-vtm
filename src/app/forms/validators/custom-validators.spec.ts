@@ -1,6 +1,7 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from './custom-validators';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 interface CustomPatternMessage {
   customPattern: {
     message: string;
@@ -432,5 +433,92 @@ describe('dateNotExceed', () => {
       const result = CustomValidators.dateNotExceed('sibling', 14)(form.controls['foo'] as AbstractControl);
       expect(result).toBeNull();
     });
+  });
+});
+
+describe('validate VRM/TrailerId Length', () => {
+  let form: FormGroup;
+
+  beforeEach(() => {
+    form = new FormGroup({
+      parent: new CustomFormGroup(
+        { name: 'parent', type: FormNodeTypes.GROUP },
+        {
+          child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }),
+          sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL })
+        }
+      )
+    });
+  });
+
+  it('should return null when value is null', () => {
+    const value = null;
+    const child = form.get(['parent', 'child']);
+    child?.patchValue(value);
+
+    const result = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result).toBeNull();
+  });
+
+  it('should return null when value is 7 characters long and Trailer is selected', () => {
+    const value = 'TESTTRL';
+    const child = form.get(['parent', 'child']);
+    const sibling = form.get(['parent', 'sibling']);
+    child?.patchValue(value);
+    sibling?.patchValue(VehicleTypes.TRL);
+
+    const result = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result).toBeNull();
+  });
+
+  it('should return null when value is 8 characters long and Trailer is selected', () => {
+    const value = 'TESTTRLR';
+    const child = form.get(['parent', 'child']);
+    const sibling = form.get(['parent', 'sibling']);
+    child?.patchValue(value);
+    sibling?.patchValue(VehicleTypes.TRL);
+
+    const result = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result).toBeNull();
+  });
+
+  it('should return null when value is 8 characters long', () => {
+    const value = 'TESTTRLR';
+    const child = form.get(['parent', 'child']);
+    child?.patchValue(value);
+
+    const result = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result).toBeNull();
+  });
+
+  it('should return VRM max length error when value length is greater than 9', () => {
+    const value = 'TESTVRM123';
+    const child = form.get(['parent', 'child']);
+    child?.patchValue(value);
+
+    const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result.validateVRMTrailerIdLength.message).toEqual('VRM must be less than or equal to 9 characters');
+  });
+
+  it('should return TrailerId min length error when value length is less than 7 and Trailer is selected', () => {
+    const value = 'TESTTR';
+    const child = form.get(['parent', 'child']);
+    const sibling = form.get(['parent', 'sibling']);
+    child?.patchValue(value);
+    sibling?.patchValue(VehicleTypes.TRL);
+
+    const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result.validateVRMTrailerIdLength.message).toEqual('Trailer ID must be greater than or equal to 7 characters');
+  });
+
+  it('should return TrailerId max length error when value length is greater than 8 and Trailer is selected', () => {
+    const value = 'TESTTRLRR';
+    const child = form.get(['parent', 'child']);
+    const sibling = form.get(['parent', 'sibling']);
+    child?.patchValue(value);
+    sibling?.patchValue(VehicleTypes.TRL);
+
+    const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result.validateVRMTrailerIdLength.message).toEqual('Trailer ID must be less than or equal to 8 characters');
   });
 });

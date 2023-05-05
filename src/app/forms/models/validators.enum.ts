@@ -18,6 +18,7 @@ export enum ValidatorNames {
   RequiredIfNotEquals = 'requiredIfNotEquals',
   Defined = 'defined',
   ValidateDefectNotes = 'validateDefectNotes',
+  ValidateVRMTrailerIdLength = 'validateVRMTrailerIdLength',
   PastDate = 'pastDate',
   FutureDate = 'futureDate',
   AheadOfDate = 'aheadOfDate',
