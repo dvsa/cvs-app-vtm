@@ -147,7 +147,7 @@ export class ReferenceDataCreateComponent {
     const referenceData: any = {};
 
     Object.keys(this.amendedData)
-      .filter(amendDataKey => amendDataKey !== 'resourceamendDataKey')
+      .filter(amendDataKey => amendDataKey !== 'resourceKey')
       .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
 
     this.referenceDataService

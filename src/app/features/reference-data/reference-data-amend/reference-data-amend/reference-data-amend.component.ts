@@ -4,8 +4,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup } from '@forms/services/dynamic-form.types';
-import { FormNode, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { template as brakesTemplate } from '@forms/templates/reference-data/brakes';
 import { template as countryOfRegistrationTemplate } from '@forms/templates/reference-data/country-of-registration';
 import { template as hgvTemplate } from '@forms/templates/reference-data/hgv-make';
@@ -22,7 +21,7 @@ import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, fetchReferenceDataByKey, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, merge, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend',
@@ -89,6 +88,19 @@ export class ReferenceDataAmendComponent implements OnInit {
 
   handleSubmit() {
     this.checkForms();
+
+    if (this.isFormInvalid) return;
+
+    const referenceData: any = {};
+
+    Object.keys(this.amendedData)
+      .filter(amendDataKey => amendDataKey !== 'resourceKey')
+      .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
+
+    this.referenceDataService
+      .amendReferenceDataItem(this.type, this.amendedData.resourceKey, referenceData)
+      .pipe(take(1))
+      .subscribe(() => this.navigateBack());
   }
 
   get template(): FormNode {
