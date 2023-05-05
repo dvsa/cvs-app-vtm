@@ -1,28 +1,27 @@
-import { Component, EventEmitter, Output, QueryList, ViewChildren } from '@angular/core';
-import { Form, Validators } from '@angular/forms';
+import { Component, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { template as brakesTemplate } from '@forms/templates/reference-data/brakes';
+import { template as countryOfRegistrationTemplate } from '@forms/templates/reference-data/country-of-registration';
+import { template as hgvTemplate } from '@forms/templates/reference-data/hgv-make';
+import { template as psvTemplate } from '@forms/templates/reference-data/psv-make';
+import { template as reasonsForAbandoningTirTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TIR';
+import { template as reasonsForAbandoningTrlTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
+import { template as reasonsForAbandoningHgvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
+import { template as reasonsForAbandoningPsvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-psv';
+import { template as specialistReasonsForAbandoningTemplate } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
+import { template as trlTemplate } from '@forms/templates/reference-data/trl-make';
+import { template as tyresTemplate } from '@forms/templates/reference-data/tyres';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { switchMap, take, tap } from 'rxjs';
-import { template as countryOfRegistrationTemplate } from '@forms/templates/reference-data/country-of-registration';
-import { template as tyresTemplate } from '@forms/templates/reference-data/tyres';
-import { template as brakesTemplate } from '@forms/templates/reference-data/brakes';
-import { template as hgvTemplate } from '@forms/templates/reference-data/hgv-make';
-import { template as psvTemplate } from '@forms/templates/reference-data/psv-make';
-import { template as reasonsForAbandoningHgvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
-import { template as reasonsForAbandoningPsvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-psv';
-import { template as reasonsForAbandoningTirTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TIR';
-import { template as reasonsForAbandoningTrlTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
-import { template as specialistReasonsForAbandoningTemplate } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
-import { template as trlTemplate } from '@forms/templates/reference-data/trl-make';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { ReferenceDataState } from '@store/reference-data';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-add',
@@ -31,26 +30,11 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 export class ReferenceDataCreateComponent {
   isEditing: boolean = true;
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
-  amendedData: any;
-
-  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
-
-  @Output() editedRefData = new EventEmitter<CustomFormGroup>();
+  newRefData: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
 
-  // todo: replace this with the switch-statement from the amend component
-  // form: CustomFormGroup = new CustomFormGroup(
-  //   { name: 'form', type: FormNodeTypes.GROUP },
-  //   {
-  //     resourceKey: new CustomFormControl({
-  //       name: 'resourceKey',
-  //       label: 'Resource Key',
-  //       type: FormNodeTypes.CONTROL,
-  //       editType: FormNodeEditTypes.TEXT
-  //     })
-  //   }
-  // );
+  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
   constructor(
     public globalErrorService: GlobalErrorService,
@@ -146,18 +130,18 @@ export class ReferenceDataCreateComponent {
 
     const referenceData: any = {};
 
-    Object.keys(this.amendedData)
-      .filter(amendDataKey => amendDataKey !== 'resourceKey')
-      .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
+    Object.keys(this.newRefData)
+      .filter(newRefDataKey => newRefDataKey !== 'resourceKey')
+      .forEach(dataKey => (referenceData[dataKey] = this.newRefData[dataKey]));
 
     this.referenceDataService
-      .createNewReferenceDataItem(this.type, this.amendedData.resourceKey, referenceData)
+      .createNewReferenceDataItem(this.type, this.newRefData.resourceKey, referenceData)
       .pipe(take(1))
       .subscribe(() => this.navigateBack());
   }
 
   handleFormChange(event: any) {
-    this.amendedData = event;
+    this.newRefData = event;
   }
 
   checkForms(): void {

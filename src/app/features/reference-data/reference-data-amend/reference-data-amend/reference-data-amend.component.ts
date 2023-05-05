@@ -32,12 +32,10 @@ export class ReferenceDataAmendComponent implements OnInit {
   key!: string;
   isEditing: boolean = true;
   amendedData: any;
-
-  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
-
-  @Output() editedRefData = new EventEmitter<CustomFormGroup>();
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
+
+  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
   constructor(
     public globalErrorService: GlobalErrorService,
