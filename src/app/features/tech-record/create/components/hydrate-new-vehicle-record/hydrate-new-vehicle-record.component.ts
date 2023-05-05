@@ -35,6 +35,10 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
     this.actions$
       .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
       .subscribe(({ vehicleTechRecords }) => this.navigate(vehicleTechRecords[0].systemNumber));
+
+    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
+      if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
+    });
   }
 
   ngOnDestroy(): void {

@@ -443,11 +443,11 @@ describe('validate VRM/TrailerId Length', () => {
     form = new FormGroup({
       parent: new CustomFormGroup(
         { name: 'parent', type: FormNodeTypes.GROUP },
-        { 
+        {
           child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }),
           sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL })
         }
-      ),
+      )
     });
   });
 
@@ -497,7 +497,7 @@ describe('validate VRM/TrailerId Length', () => {
     child?.patchValue(value);
 
     const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
-    expect(result.validateVRMTrailerIdLength.message).toEqual("VRM must be less than or equal to 9 characters");
+    expect(result.validateVRMTrailerIdLength.message).toEqual('VRM must be less than or equal to 9 characters');
   });
 
   it('should return TrailerId min length error when value length is less than 7 and Trailer is selected', () => {
@@ -508,7 +508,7 @@ describe('validate VRM/TrailerId Length', () => {
     sibling?.patchValue(VehicleTypes.TRL);
 
     const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
-    expect(result.validateVRMTrailerIdLength.message).toEqual("Trailer ID must be greater than or equal to 7 characters");
+    expect(result.validateVRMTrailerIdLength.message).toEqual('Trailer ID must be greater than or equal to 7 characters');
   });
 
   it('should return TrailerId max length error when value length is greater than 8 and Trailer is selected', () => {
@@ -519,6 +519,6 @@ describe('validate VRM/TrailerId Length', () => {
     sibling?.patchValue(VehicleTypes.TRL);
 
     const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
-    expect(result.validateVRMTrailerIdLength.message).toEqual("Trailer ID must be less than or equal to 8 characters");
+    expect(result.validateVRMTrailerIdLength.message).toEqual('Trailer ID must be less than or equal to 8 characters');
   });
-})
+});

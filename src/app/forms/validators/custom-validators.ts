@@ -120,26 +120,23 @@ export class CustomValidators {
       if (!control.value) {
         return null;
       }
-      
+
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
         const siblingValue = siblingControl.value;
 
         const isTrailerValueSelected = siblingValue === VehicleTypes.TRL;
-        
-        if(isTrailerValueSelected) {
-          if(control.value.length < 7) {
+
+        if (isTrailerValueSelected) {
+          if (control.value.length < 7) {
             return { validateVRMTrailerIdLength: { message: 'Trailer ID must be greater than or equal to 7 characters' } };
-          } 
-          else if (control.value.length > 8) {
+          } else if (control.value.length > 8) {
             return { validateVRMTrailerIdLength: { message: 'Trailer ID must be less than or equal to 8 characters' } };
           }
-        }
-        else {
-          if(control.value.length < 1) {
+        } else {
+          if (control.value.length < 1) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be less than or equal to 1 characters' } };
-          } 
-          else if (control.value.length > 9) {
+          } else if (control.value.length > 9) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be less than or equal to 9 characters' } };
           }
         }
