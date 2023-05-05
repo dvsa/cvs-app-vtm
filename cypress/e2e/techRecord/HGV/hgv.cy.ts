@@ -31,19 +31,36 @@ describe('HGV technical record', () => {
     cy.get('#test-approvalType').should('have.text', ' NTA ');
   });
 
-  it('should display the create vehicle page', () => {
-    const vin = randomString(10);
-    const vrm = randomString(7);
-    cy.get('#create-new-technical-record-link').click();
-    cy.get('#input-vin').type(vin);
-    cy.get('#input-vrm-or-trailer-id').type(vrm);
-    cy.get('#change-vehicle-type-select').select('1: hgv');
-    cy.get('#create-record-continue').click();
-    cy.get('#vehicleType').should('have.text', ' HGV ');
-    cy.get('#vin').should('have.text', ` ${vin.toUpperCase()} `);
-    cy.get('#current-vrm-span').should(vrmDisplay => {
-      const vrmSplit = vrm.slice(0, vrm.length - 3) + ' ' + vrm.slice(vrm.length - 3);
-      expect(vrmDisplay).to.contain(vrmSplit.toUpperCase());
+  describe('Create HGV technical record', () => {
+    it('should display the create vehicle page with details filled in', () => {
+      const vin = randomString(10);
+      const vrm = randomString(7);
+      cy.get('#create-new-technical-record-link').click();
+      cy.get('#input-vin').type(vin);
+      cy.get('#input-vrm-or-trailer-id').type(vrm);
+      cy.get('#change-vehicle-type-select').select('1: hgv');
+      cy.get('#create-record-continue').click();
+      cy.get('#vehicleType').should('have.text', ' HGV ');
+      cy.get('#vin').should('have.text', ` ${vin.toUpperCase()} `);
+      cy.get('#current-vrm-span').should(vrmDisplay => {
+        const vrmSplit = vrm.slice(0, vrm.length - 3) + ' ' + vrm.slice(vrm.length - 3);
+        expect(vrmDisplay).to.contain(vrmSplit.toUpperCase());
+      });
+    });
+
+    it('should navigate back on browser refresh', () => {
+      const vin = randomString(10);
+      const vrm = randomString(7);
+      cy.get('#create-new-technical-record-link').click();
+      cy.get('#input-vin').type(vin);
+      cy.get('#input-vrm-or-trailer-id').type(vrm);
+      cy.get('#change-vehicle-type-select').select('1: hgv');
+      cy.get('#create-record-continue').click();
+      cy.get('#vehicleType').should('have.text', ' HGV ');
+      cy.get('#vin').should('have.text', ` ${vin.toUpperCase()} `);
+      cy.reload();
+      cy.location('pathname').should('include', 'create');
+      cy.location('pathname').should('not.contain', 'new-record-details');
     });
   });
 });
