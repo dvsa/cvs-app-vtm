@@ -30,8 +30,6 @@ export class ReferenceDataListComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
-
-      console.log('This is the type by url params: ', this.type);
       this.referenceDataService.loadReferenceData(this.type);
     });
   }
