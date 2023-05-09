@@ -4,19 +4,19 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { initialAppState, State } from '@store/.';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { AddReferenceDataComponent } from './reference-data-add.component';
+import { ReferenceDataCreateComponent } from './reference-data-add.component';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 
-describe('AddReferenceDataComponent', () => {
-  let component: AddReferenceDataComponent;
-  let fixture: ComponentFixture<AddReferenceDataComponent>;
+describe('ReferenceDataCreateComponent', () => {
+  let component: ReferenceDataCreateComponent;
+  let fixture: ComponentFixture<ReferenceDataCreateComponent>;
   let store: MockStore<State>;
   let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddReferenceDataComponent],
+      declarations: [ReferenceDataCreateComponent],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, { provide: UserService, useValue: {} }]
     }).compileComponents();
@@ -24,7 +24,7 @@ describe('AddReferenceDataComponent', () => {
 
   beforeEach(() => {
     store = TestBed.inject(MockStore);
-    fixture = TestBed.createComponent(AddReferenceDataComponent);
+    fixture = TestBed.createComponent(ReferenceDataCreateComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     fixture.detectChanges();
