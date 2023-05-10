@@ -1,13 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
-import { RouterService } from '@services/router/router.service';
+import { Store, select } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateEditingTechRecordCancel } from '@store/technical-records';
 import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
@@ -24,32 +21,15 @@ import {
   selectGenerateNumber,
   selectIsBatch
 } from '@store/technical-records/selectors/batch-create.selectors';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class BatchTechnicalRecordService {
-  constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService) {}
-
-  isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
-    return this.techRecordHttpService.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
-      map(vehicleTechRecord => {
-        const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
-        if (allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED)) {
-          return true;
-        }
-
-        if (searchType === SEARCH_TYPES.VRM) {
-          const allVrms = vehicleTechRecord.flatMap(record => record.vrms);
-          return !allVrms.some(vrm => vrm.isPrimary && vrm.vrm === valueToCheck);
-        }
-
-        return false;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        return (error.status == 404 && of(true)) || throwError(() => error);
-      })
-    );
-  }
+  constructor(
+    private store: Store,
+    private techRecordHttpService: TechnicalRecordHttpService,
+    private technicalRecordService: TechnicalRecordService
+  ) {}
 
   validateForBatch(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -95,7 +75,7 @@ export class BatchTechnicalRecordService {
   }
 
   private validateVinForBatch(vinControl: CustomFormControl): Observable<null> {
-    return this.isUnique(vinControl.value, SEARCH_TYPES.VIN).pipe(
+    return this.technicalRecordService.isUnique(vinControl.value, SEARCH_TYPES.VIN).pipe(
       map(result => {
         if (!result) {
           vinControl.meta.warning = 'This VIN already exists, if you continue it will be associated with two vehicles';
