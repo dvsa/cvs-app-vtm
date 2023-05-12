@@ -30,17 +30,6 @@ export const template: FormNode = {
       ]
     },
     {
-      name: 'dateTimeStamp',
-      label: 'Date-Time',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN,
-      validators: [
-        {
-          name: ValidatorNames.Required
-        }
-      ]
-    },
-    {
       name: 'dtpNumber',
       label: 'DTp Number',
       type: FormNodeTypes.CONTROL,
@@ -98,17 +87,6 @@ export const template: FormNode = {
           args: 20
         }
       ]
-    },
-    {
-      name: 'userId',
-      label: 'User ID',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [
-        {
-          name: ValidatorNames.Required
-        }
-      ]
     }
   ]
 };
@@ -148,10 +126,5 @@ export const templateList = [
     column: 'psvChassisModel',
     heading: 'PSV Chassis Model',
     order: 7
-  },
-  {
-    column: 'userId',
-    heading: 'User ID',
-    order: 8
   }
 ];

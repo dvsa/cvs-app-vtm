@@ -31,17 +31,6 @@ export const template: FormNode = {
       ]
     },
     {
-      name: 'dateTimeStamp',
-      label: 'Date-Time',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN,
-      validators: [
-        {
-          name: ValidatorNames.Required
-        }
-      ]
-    },
-    {
       name: 'description',
       label: 'Description',
       type: FormNodeTypes.CONTROL,
@@ -99,17 +88,6 @@ export const template: FormNode = {
           args: 12
         }
       ]
-    },
-    {
-      name: 'userId',
-      label: 'User ID',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [
-        {
-          name: ValidatorNames.Required
-        }
-      ]
     }
   ]
 };
@@ -154,10 +132,5 @@ export const templateList = [
     column: 'tyreSize',
     heading: 'Tyre Size',
     order: 8
-  },
-  {
-    column: 'userId',
-    heading: 'User ID',
-    order: 9
   }
 ];
