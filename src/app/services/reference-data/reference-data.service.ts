@@ -68,6 +68,16 @@ export class ReferenceDataService extends ReferenceDataApiService {
     );
   }
 
+  deleteReferenceDataItem(type: ReferenceDataResourceType, key: string, reason: string) {
+    return this.usersService.id$.pipe(
+      withLatestFrom(this.usersService.name$),
+      switchMap(([createdId, createdName]) => {
+        const deleteObject = { createdId, createdName, createdAt: new Date(), reason };
+        return this.referenceResourceTypeResourceKeyDelete(type, key, reason, 'body', false);
+      })
+    );
+  }
+
   fetchReferenceData(resourceType: ReferenceDataResourceType, paginationToken?: string): Observable<ReferenceDataApiResponse> {
     if (!resourceType) {
       return throwError(() => new Error('Reference data resourceType is required'));

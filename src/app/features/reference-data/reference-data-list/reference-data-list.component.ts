@@ -112,4 +112,9 @@ export class ReferenceDataListComponent implements OnInit {
     const key: string = resourceKey.innerHTML;
     this.router.navigate([key], { relativeTo: this.route });
   }
+
+  delete(resourceKey: HTMLElement): void {
+    const key: string = resourceKey.innerHTML;
+    this.router.navigate([`${key}/delete`], { relativeTo: this.route });
+  }
 }

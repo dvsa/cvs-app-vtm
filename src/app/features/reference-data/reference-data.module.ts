@@ -9,9 +9,16 @@ import { ReferenceDataListComponent } from './reference-data-list/reference-data
 import { ReferenceDataRoutingModule } from './reference-data-routing.module';
 import { ReferenceDataSelectTypeComponent } from './reference-data-select-type/reference-data-select-type.component';
 import { ReferenceDataAmendComponent } from './reference-data-amend/reference-data-amend/reference-data-amend.component';
+import { ReferenceDataDeleteComponent } from './reference-data-delete/reference-data-delete.component';
 
 @NgModule({
-  declarations: [ReferenceDataSelectTypeComponent, ReferenceDataListComponent, ReferenceDataAddComponent, ReferenceDataAmendComponent],
+  declarations: [
+    ReferenceDataSelectTypeComponent,
+    ReferenceDataListComponent,
+    ReferenceDataAddComponent,
+    ReferenceDataAmendComponent,
+    ReferenceDataDeleteComponent
+  ],
   imports: [CommonModule, DynamicFormsModule, RouterModule, ReactiveFormsModule, ReferenceDataRoutingModule, SharedModule]
 })
 export class ReferenceDataModule {}

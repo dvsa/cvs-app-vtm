@@ -1,0 +1,23 @@
+<div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
+  <div class="govuk-grid-column-full">
+    <p class="govuk-heading-xl govuk-!-font-weight-bold">Delete {{ titleCaseHeading(type) }}</p>
+
+    <app-dynamic-form-group [id]="template.name" [template]="template" [data]="refData$ | async" [edit]="false"></app-dynamic-form-group>
+    <br />
+    <ng-container>
+      <app-dynamic-form-group
+        [id]="reasonTemplate.name"
+        [template]="reasonTemplate"
+        [data]=""
+        [edit]="true"
+        (formChange)="handleFormChange($event)"
+      ></app-dynamic-form-group>
+
+      <app-button-group>
+        <app-button id="submit" (clicked)="handleSubmit()">Delete</app-button>
+
+        <app-button id="cancel" design="link" (clicked)="navigateBack()">Back</app-button>
+      </app-button-group>
+    </ng-container>
+  </div>
+</div>

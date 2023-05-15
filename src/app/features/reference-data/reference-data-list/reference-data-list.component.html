@@ -23,7 +23,10 @@
           <td #resourceKey class="govuk-table__cell">{{ item.resourceKey }}</td>
           <td *ngFor="let column of columns$ | async" class="govuk-table__cell">{{ item[column] }}</td>
           <td class="govuk-table__cell">
-            <app-button id="amend" design="link" (clicked)="amend(resourceKey)">Amend</app-button>
+            <app-button-group>
+              <app-button id="amend" design="link" (clicked)="amend(resourceKey)">Amend</app-button>
+              <app-button id="delete" design="link" (clicked)="delete(resourceKey)">Delete</app-button>
+            </app-button-group>
           </td>
         </tr>
       </tbody>
