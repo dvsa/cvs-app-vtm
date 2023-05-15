@@ -181,7 +181,7 @@ export class ReferenceDataDeleteComponent {
     //   .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
 
     this.referenceDataService
-      .deleteReferenceDataItem(this.type, this.key, this.reasonForDeletion)
+      .deleteReferenceDataItem(this.type, this.key, this.reasonForDeletion.reason)
       .pipe(take(1))
       .subscribe(() => this.navigateBack());
   }

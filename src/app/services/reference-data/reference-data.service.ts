@@ -73,7 +73,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
       withLatestFrom(this.usersService.name$),
       switchMap(([createdId, createdName]) => {
         const deleteObject = { createdId, createdName, createdAt: new Date(), reason };
-        return this.referenceResourceTypeResourceKeyDelete(type, key, reason, 'body', false);
+        return this.referenceResourceTypeResourceKeyDelete(type, key, deleteObject, 'body', false);
       })
     );
   }
