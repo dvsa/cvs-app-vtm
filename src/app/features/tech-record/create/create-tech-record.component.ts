@@ -124,6 +124,7 @@ export class CreateTechRecordComponent implements OnChanges {
 
   async handleSubmit() {
     if (!this.isFormValid) {
+      console.log(this.form.getCleanValue(this.form));
       return;
     }
 
