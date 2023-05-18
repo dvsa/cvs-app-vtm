@@ -103,6 +103,6 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   back(): void {
-    this.router.navigate(['reference-data']);
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 }
