@@ -99,7 +99,7 @@ export const TestSectionGroup5And13: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              referenceData: ReferenceDataResourceType.TIRReasonsForAbandoning
+              referenceData: ReferenceDataResourceType.TirReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',

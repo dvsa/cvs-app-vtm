@@ -9,6 +9,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
 import { BodyComponent } from './body.component';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { UserService } from '@services/user-service/user-service';
 
 describe('BodyComponent', () => {
   let component: BodyComponent;
@@ -18,7 +20,12 @@ describe('BodyComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [BodyComponent],
       imports: [DynamicFormsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule],
-      providers: [MultiOptionsService, provideMockStore({ initialState: initialAppState })]
+      providers: [
+        MultiOptionsService,
+        provideMockStore({ initialState: initialAppState }),
+        ReferenceDataService,
+        { provide: UserService, useValue: {} }
+      ]
     }).compileComponents();
   });
 

@@ -11,6 +11,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { changeVehicleType } from '@store/technical-records';
@@ -49,7 +50,7 @@ describe('TechRecordChangeTypeComponent', () => {
         { provide: DynamicFormService, useValue: mockDynamicFormService },
         { provide: TechnicalRecordService, useValue: mockTechRecordService }
       ],
-      imports: [DynamicFormsModule, RouterTestingModule, SharedModule]
+      imports: [DynamicFormsModule, RouterTestingModule, SharedModule, FixNavigationTriggeredOutsideAngularZoneNgModule]
     }).compileComponents();
   });
 

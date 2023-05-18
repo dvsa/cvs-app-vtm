@@ -54,16 +54,12 @@ describe('SelectComponent', () => {
   describe('value', () => {
     it('should be propagated from element to the form control', () => {
       const select = fixture.debugElement.query(By.css('select')).nativeElement as HTMLSelectElement;
+      const foo = component.form.get('foo');
+      select.selectedIndex = 1;
+      select.dispatchEvent(new Event('change'));
 
-      select.options[0].dispatchEvent(new Event('click'));
-
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-
-        const foo = component.form.get('foo');
-        expect(foo?.value).toEqual('1');
-        expect(foo?.value).not.toBeNull();
-      });
+      expect(foo?.value).toEqual('1');
+      expect(foo?.value).not.toBeNull();
     });
 
     it('should select the right option when the form value is updated', () => {

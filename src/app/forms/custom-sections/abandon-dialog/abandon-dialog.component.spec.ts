@@ -40,7 +40,7 @@ describe('AbandonDialogComponent', () => {
       const mockTestResult = { testTypes: [{ testTypeId: TEST_TYPES_GROUP5_13[0] }] } as TestResultModel;
       component.testResult = mockTestResult;
       const ReasonsForAbandoning = component.getTemplate().children![0].children![0].children![0].referenceData;
-      expect(ReasonsForAbandoning).toEqual(ReferenceDataResourceType.TIRReasonsForAbandoning);
+      expect(ReasonsForAbandoning).toEqual(ReferenceDataResourceType.TirReasonsForAbandoning);
     });
     it('should get the specialist reasons for abandoning', () => {
       const mockTestResult = { testTypes: [{ testTypeId: SPECIALIST_TEST_TYPE_IDS[0] }] } as TestResultModel;

@@ -43,7 +43,7 @@ describe('NoQueryParamsGuard', () => {
     it('should return an empty url when the previous navigation is undefined', done => {
       const mockNavigation: Navigation = {
         id: 1,
-        initialUrl: '/some/path',
+        initialUrl: '/some/path' as unknown as UrlTree,
         extractedUrl: {} as UrlTree,
         trigger: 'hashchange',
         extras: {} as NavigationExtras,
@@ -60,7 +60,7 @@ describe('NoQueryParamsGuard', () => {
     it('should return the previous Url if the previous navigation is defined', done => {
       const mockNavigation: Navigation = {
         id: 1,
-        initialUrl: '/some/path',
+        initialUrl: '/some/path' as unknown as UrlTree,
         extractedUrl: {} as UrlTree,
         trigger: 'hashchange',
         extras: {} as NavigationExtras,

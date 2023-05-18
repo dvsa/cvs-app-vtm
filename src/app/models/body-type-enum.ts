@@ -15,6 +15,7 @@ export enum BodyTypeDescription {
   LOW_LOADER = 'low loader',
   MINI_BUS = 'mini bus',
   OTHER = 'other',
+  OTHER_TANKER = 'other tanker',
   PETROL_OR_OIL_TANKER = 'petrol/oil tanker',
   REFUSE = 'refuse',
   REFRIGERATED = 'refrigerated',
@@ -59,6 +60,7 @@ export const bodyTypeMap = new Map<BodyTypeDescription, BodyTypeCode>([
   [BodyTypeDescription.LOW_LOADER, BodyTypeCode.L],
   [BodyTypeDescription.MINI_BUS, BodyTypeCode.M],
   [BodyTypeDescription.OTHER, BodyTypeCode.O],
+  [BodyTypeDescription.OTHER_TANKER, BodyTypeCode.O],
   [BodyTypeDescription.PETROL_OR_OIL_TANKER, BodyTypeCode.M],
   [BodyTypeDescription.REFUSE, BodyTypeCode.B],
   [BodyTypeDescription.REFRIGERATED, BodyTypeCode.R],
@@ -95,6 +97,8 @@ const hgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   [BodyTypeCode.M, BodyTypeDescription.CONCRETE_MIXER],
   [BodyTypeCode.E, BodyTypeDescription.CURTAINSIDER],
   [BodyTypeCode.I, BodyTypeDescription.LIVESTOCK_CARRIER],
+  [BodyTypeCode.X, BodyTypeDescription.OTHER],
+  [BodyTypeCode.O, BodyTypeDescription.OTHER_TANKER],
   [BodyTypeCode.A, BodyTypeDescription.TRACTOR]
 ]);
 
@@ -105,6 +109,8 @@ const trlBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   [BodyTypeCode.E, BodyTypeDescription.CURTAINSIDER],
   [BodyTypeCode.I, BodyTypeDescription.LIVESTOCK_CARRIER],
   [BodyTypeCode.L, BodyTypeDescription.LOW_LOADER],
+  [BodyTypeCode.X, BodyTypeDescription.OTHER],
+  [BodyTypeCode.O, BodyTypeDescription.OTHER_TANKER],
   [BodyTypeCode.M, BodyTypeDescription.PETROL_OR_OIL_TANKER]
 ]);
 

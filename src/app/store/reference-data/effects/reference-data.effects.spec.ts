@@ -29,6 +29,7 @@ import {
 } from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
 import { ReferenceDataEffects } from './reference-data.effects';
+import { UserService } from '@services/user-service/user-service';
 
 describe('ReferenceDataEffects', () => {
   let effects: ReferenceDataEffects;
@@ -41,12 +42,11 @@ describe('ReferenceDataEffects', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        ReferenceDataEffects,
         provideMockActions(() => actions$),
+        provideMockStore({ initialState: initialAppState }),
+        ReferenceDataEffects,
         ReferenceDataService,
-        provideMockStore({
-          initialState: initialAppState
-        })
+        { provide: UserService, useValue: {} }
       ]
     });
 

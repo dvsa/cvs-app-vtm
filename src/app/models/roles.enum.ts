@@ -7,5 +7,7 @@ export enum Roles {
   TestResultView = 'CVSFullAccess,TestResult.View',
   TestResultAmend = 'CVSFullAccess,TestResult.Amend',
   TestResultCreateContingency = 'CVSFullAccess,TestResult.CreateContingency',
-  TestResultCreateDeskAssessment = 'CVSFullAccess,TestResult.CreateDeskBased'
+  TestResultCreateDeskAssessment = 'CVSFullAccess,TestResult.CreateDeskBased',
+  ReferenceDataView = 'CVSFullAccess,ReferenceData.View',
+  ReferenceDataAmend = 'CVSFullAccess,ReferenceData.Amend'
 }

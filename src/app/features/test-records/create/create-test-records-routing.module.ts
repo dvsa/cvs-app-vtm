@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefectSelectComponent } from '@forms/components/defect-select/defect-select.component';
 import { DefectComponent } from '@forms/custom-sections/defect/defect.component';
-import { RoleGuard } from '@guards/roles.guard';
+import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { TestStationStatuses } from '@models/test-stations/test-station.model';
 import { ContingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';

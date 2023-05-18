@@ -11,6 +11,7 @@ import { MultiOptions } from '@forms/models/options.model';
 import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
+import { UserService } from '@services/user-service/user-service';
 import {
   addSearchInformation,
   fetchReferenceData,
@@ -26,19 +27,33 @@ import {
   selectTyreSearchCriteria,
   selectTyreSearchReturn
 } from '@store/reference-data';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, switchMap, throwError, withLatestFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReferenceDataService extends ReferenceDataApiService {
   constructor(
-    httpClient: HttpClient,
     @Optional() @Inject(BASE_PATH) basePath: string,
     @Optional() configuration: Configuration,
+    httpClient: HttpClient,
+    private usersService: UserService,
     private store: Store<ReferenceDataState>
   ) {
     super(httpClient, basePath, configuration);
+  }
+
+  //  URL to POST new reference data items: /reference/{ type capitalized }/{ new key } POST
+
+  createNewReferenceDataItem(type: ReferenceDataResourceType, key: string, data: any) {
+    return this.usersService.id$.pipe(
+      withLatestFrom(this.usersService.name$),
+      switchMap(([createdId, createdName]) => {
+        const referenceData = { ...data, createdId, createdName, createdAt: new Date() };
+
+        return this.referenceResourceTypeResourceKeyPost(type, key, referenceData, 'body', false);
+      })
+    );
   }
 
   fetchReferenceData(resourceType: ReferenceDataResourceType, paginationToken?: string): Observable<ReferenceDataApiResponse> {
@@ -124,5 +139,17 @@ export class ReferenceDataService extends ReferenceDataApiService {
 
   getReferencePsvMakeDataLoading$(): Observable<boolean> {
     return this.store.pipe(select(referencePsvMakeLoadingState));
+  }
+
+  camelCaseToTitleCase(s: string): string {
+    return s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
+  }
+
+  macroCasetoTitleCase(input: string | number | boolean): string {
+    return input
+      .toString()
+      .split('_')
+      .map(s => s.charAt(0) + s.slice(1).toLowerCase())
+      .join(' ');
   }
 }

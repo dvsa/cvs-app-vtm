@@ -1,12 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { PostNewVehicleModel, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/index';
@@ -50,8 +51,9 @@ describe('TechnicalRecordServiceEffects', () => {
   let actions$ = new Observable<Action>();
   let effects: TechnicalRecordServiceEffects;
   let store: MockStore<State>;
-  let technicalRecordService: TechnicalRecordService;
+  let techRecordHttpService: TechnicalRecordHttpService;
   let testScheduler: TestScheduler;
+  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -66,6 +68,7 @@ describe('TechnicalRecordServiceEffects', () => {
     });
 
     effects = TestBed.inject(TechnicalRecordServiceEffects);
+    techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
   });
 
@@ -82,7 +85,7 @@ describe('TechnicalRecordServiceEffects', () => {
         actions$ = hot('-a--', { a: getByVin });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'getByVin').mockReturnValue(cold('--a|', { a: technicalRecord }));
+        jest.spyOn(techRecordHttpService, 'getByVin').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
@@ -102,7 +105,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 500,
           statusText: 'Internal server error'
         });
-        jest.spyOn(technicalRecordService, 'getByVin').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByVin').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByVinFailure({ error: 'There was a problem getting the Tech Record by vin', anchorLink: 'search-term' })
@@ -121,7 +124,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 404,
           statusText: 'Vehicle not found'
         });
-        jest.spyOn(technicalRecordService, 'getByVin').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByVin').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByVinFailure({
@@ -140,7 +143,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // mock service call
         const expectedError = 'string';
-        jest.spyOn(technicalRecordService, 'getByVin').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByVin').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByVinFailure({ error: 'string', anchorLink: 'search-term' }) });
       });
@@ -156,7 +159,7 @@ describe('TechnicalRecordServiceEffects', () => {
         actions$ = hot('-a--', { a: getByPartialVin });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'getByPartialVin').mockReturnValue(cold('--a|', { a: technicalRecord }));
+        jest.spyOn(techRecordHttpService, 'getByPartialVin').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
@@ -176,7 +179,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 500,
           statusText: 'Internal server error'
         });
-        jest.spyOn(technicalRecordService, 'getByPartialVin').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByPartialVin').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByPartialVinFailure({ error: 'There was a problem getting the Tech Record by partialVin', anchorLink: 'search-term' })
@@ -195,7 +198,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 404,
           statusText: 'Vehicle not found'
         });
-        jest.spyOn(technicalRecordService, 'getByPartialVin').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByPartialVin').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByPartialVinFailure({
@@ -214,7 +217,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // mock service call
         const expectedError = 'string';
-        jest.spyOn(technicalRecordService, 'getByPartialVin').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByPartialVin').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByPartialVinFailure({ error: 'string', anchorLink: 'search-term' }) });
       });
@@ -230,7 +233,7 @@ describe('TechnicalRecordServiceEffects', () => {
         actions$ = hot('-a--', { a: getByVrm });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValue(cold('--a|', { a: technicalRecord }));
+        jest.spyOn(techRecordHttpService, 'getByVrm').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
@@ -250,7 +253,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 500,
           statusText: 'Internal server error'
         });
-        jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByVrm').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByVrmFailure({ error: 'There was a problem getting the Tech Record by vrm', anchorLink: 'search-term' })
@@ -269,7 +272,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 404,
           statusText: 'Vehicle not found'
         });
-        jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByVrm').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByVrmFailure({
@@ -288,7 +291,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // mock service call
         const expectedError = 'string';
-        jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByVrm').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByVrmFailure({ error: 'string', anchorLink: 'search-term' }) });
       });
@@ -304,7 +307,7 @@ describe('TechnicalRecordServiceEffects', () => {
         actions$ = hot('-a--', { a: getByTrailerId });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'getByTrailerId').mockReturnValue(cold('--a|', { a: technicalRecord }));
+        jest.spyOn(techRecordHttpService, 'getByTrailerId').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
@@ -324,7 +327,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 500,
           statusText: 'Internal server error'
         });
-        jest.spyOn(technicalRecordService, 'getByTrailerId').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByTrailerId').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByTrailerIdFailure({ error: 'There was a problem getting the Tech Record by trailerId', anchorLink: 'search-term' })
@@ -343,7 +346,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 404,
           statusText: 'Vehicle not found'
         });
-        jest.spyOn(technicalRecordService, 'getByTrailerId').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByTrailerId').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByTrailerIdFailure({
@@ -362,7 +365,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // mock service call
         const expectedError = 'string';
-        jest.spyOn(technicalRecordService, 'getByTrailerId').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByTrailerId').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByTrailerIdFailure({ error: 'string', anchorLink: 'search-term' }) });
       });
@@ -378,7 +381,7 @@ describe('TechnicalRecordServiceEffects', () => {
         actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'PSV' }) });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: technicalRecord }));
+        jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
@@ -397,7 +400,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 500,
           statusText: 'Internal server error'
         });
-        jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getBySystemNumberFailure({ error: 'There was a problem getting the Tech Record by systemNumber', anchorLink: 'search-term' })
@@ -415,7 +418,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 404,
           statusText: 'Vehicle not found'
         });
-        jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getBySystemNumberFailure({
@@ -433,7 +436,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // mock service call
         const expectedError = 'string';
-        jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getBySystemNumberFailure({ error: 'string', anchorLink: 'search-term' })
@@ -451,7 +454,7 @@ describe('TechnicalRecordServiceEffects', () => {
         actions$ = hot('-a--', { a: getByAll });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--a|', { a: technicalRecord }));
+        jest.spyOn(techRecordHttpService, 'getByAll').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
@@ -471,7 +474,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 500,
           statusText: 'Internal server error'
         });
-        jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByAllFailure({ error: 'There was a problem getting the Tech Record by the current search criteria', anchorLink: 'search-term' })
@@ -490,7 +493,7 @@ describe('TechnicalRecordServiceEffects', () => {
           status: 404,
           statusText: 'Vehicle not found'
         });
-        jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByAllFailure({
@@ -509,7 +512,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // mock service call
         const expectedError = 'string';
-        jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByAllFailure({ error: 'string', anchorLink: 'search-term' }) });
       });
@@ -530,7 +533,7 @@ describe('TechnicalRecordServiceEffects', () => {
         actions$ = hot('-a--', { a: createVehicleRecord({ vehicle: { vin: 'xxx', techRecord: [{}] } as VehicleTechRecordModel }) });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'createVehicleRecord').mockReturnValue(cold('--a|', { a: expectedVehicle }));
+        jest.spyOn(techRecordHttpService, 'createVehicleRecord').mockReturnValue(cold('--a|', { a: expectedVehicle }));
 
         // expect effect to return success action
         expectObservable(effects.createVehicleRecord$).toBe('---b', {
@@ -547,7 +550,7 @@ describe('TechnicalRecordServiceEffects', () => {
         // mock service call
         const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
 
-        jest.spyOn(technicalRecordService, 'createVehicleRecord').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'createVehicleRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.createVehicleRecord$).toBe('---b', {
           b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN xxx' })
@@ -565,7 +568,7 @@ describe('TechnicalRecordServiceEffects', () => {
         actions$ = hot('-a--', { a: createProvisionalTechRecord });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'createProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
+        jest.spyOn(techRecordHttpService, 'createProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
 
         // expect effect to return success action
         expectObservable(effects.createProvisionalTechRecord$).toBe('---b', {
@@ -581,7 +584,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // mock service call
         const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
-        jest.spyOn(technicalRecordService, 'createProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'createProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.createProvisionalTechRecord$).toBe('---b', {
           b: createProvisionalTechRecordFailure({
@@ -601,7 +604,7 @@ describe('TechnicalRecordServiceEffects', () => {
         actions$ = hot('-a--', { a: updateTechRecords });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'updateTechRecords').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
+        jest.spyOn(techRecordHttpService, 'updateTechRecords').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
 
         // expect effect to return success action
         expectObservable(effects.updateTechRecords$).toBe('---b', {
@@ -617,7 +620,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // mock service call
         const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
-        jest.spyOn(technicalRecordService, 'updateTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'updateTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.updateTechRecords$).toBe('---b', {
           b: updateTechRecordsFailure({
@@ -637,7 +640,7 @@ describe('TechnicalRecordServiceEffects', () => {
         actions$ = hot('-a--', { a: createProvisionalTechRecord });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'createProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
+        jest.spyOn(techRecordHttpService, 'createProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
 
         // expect effect to return success action
         expectObservable(effects.createProvisionalTechRecord$).toBe('---b', {
@@ -656,7 +659,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // mock service call
         const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
-        jest.spyOn(technicalRecordService, 'createProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(techRecordHttpService, 'createProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.createProvisionalTechRecord$).toBe('---b', {
           b: createProvisionalTechRecordFailure({

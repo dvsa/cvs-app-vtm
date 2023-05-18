@@ -84,7 +84,13 @@ export const TestSectionGroup7: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }]
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'pass' }
+                },
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }
+              ]
             },
             {
               name: 'testNumber',

@@ -17,7 +17,7 @@ describe('TRL tests', () => {
     cy.get('#test-list-item-94').click();
     cy.get('#countryOfRegistration').type('g');
     cy.get('#countryOfRegistration__option--1').click();
-    cy.get('#euVehicleCategory').select('8: o2');
+    cy.get('#euVehicleCategory').select('9: o3');
     cy.get('#contingencyTestNumber').type('123456');
     cy.get('#testTypeStartTimestamp-day').type('14');
     cy.get('#testTypeStartTimestamp-month').type('02');
@@ -50,7 +50,7 @@ describe('TRL tests', () => {
     cy.get('#test-list-item-94').click();
     cy.get('#countryOfRegistration').type('g');
     cy.get('#countryOfRegistration__option--1').click();
-    cy.get('#euVehicleCategory').select('8: o2');
+    cy.get('#euVehicleCategory').select('9: o3');
     cy.get('#contingencyTestNumber').type('123456');
     cy.get('#testTypeStartTimestamp-day').type('14');
     cy.get('#testTypeStartTimestamp-month').type('02');

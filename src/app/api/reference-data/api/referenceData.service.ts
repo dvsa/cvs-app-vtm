@@ -445,4 +445,38 @@ export class ReferenceDataService {
       }
     );
   }
+
+  referenceResourceTypeResourceKeyPost(
+    resourceType: string,
+    resourceKey: ResourceKey,
+    body?: any,
+    observe: any = 'body',
+    reportProgress: boolean = false
+  ): Observable<any> {
+    if (!resourceType) {
+      throw new Error('Required parameter resourceType was null or undefined when calling referenceResourceTypeResourceKeyPut.');
+    }
+
+    if (!resourceKey) {
+      throw new Error('Required parameter resourceKey was null or undefined when calling referenceResourceTypeResourceKeyPut.');
+    }
+
+    let headers: HttpHeaders = this.defaultHeaders;
+
+    const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(['application/json']);
+    if (httpHeaderAcceptSelected != undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(['application/json']);
+    if (httpContentTypeSelected != undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    return this.httpClient.request<EmptyObject>(
+      'post',
+      `${this.basePath}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+      { body, withCredentials: this.configuration.withCredentials, headers, observe, reportProgress }
+    );
+  }
 }

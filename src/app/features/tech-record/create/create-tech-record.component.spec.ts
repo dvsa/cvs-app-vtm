@@ -8,7 +8,8 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
@@ -134,18 +135,18 @@ describe('CreateNewVehicleRecordComponent', () => {
       expect(navigateSpy).toHaveBeenCalledTimes(0);
     });
 
-    it('should navigate to hydrate when successful', fakeAsync(() => {
+    it('should navigate to hydrate when successful', async () => {
       jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
       jest.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(true));
       const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       jest.spyOn(techRecordService, 'updateEditingTechRecord');
 
       component.vehicle = { techRecord: [{ vehicleType: VehicleTypes.HGV } as TechRecordModel] };
-      component.handleSubmit();
-      tick();
+      await component.handleSubmit();
 
+      fixture.detectChanges();
       expect(routerSpy).toHaveBeenCalledWith(['../create/new-record-details'], { relativeTo: route });
-    }));
+    });
   });
 
   describe('isVinUnique', () => {

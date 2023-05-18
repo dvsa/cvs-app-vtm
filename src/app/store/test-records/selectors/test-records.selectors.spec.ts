@@ -22,7 +22,7 @@ import {
 describe('Test Results Selectors', () => {
   describe('adapter selectors', () => {
     it('should return correct state', () => {
-      const state = { ...initialTestResultsState, ids: ['1'], entities: { ['1']: { preparerId: '2' } } };
+      const state = { ...initialTestResultsState, ids: ['1'], entities: { ['1']: { preparerId: '2' } } } as unknown as TestResultsState;
       expect(selectTestResultIds.projector(state)).toEqual(['1']);
       expect(selectTestResultsEntities.projector(state)).toEqual({ ['1']: { preparerId: '2' } });
       expect(selectAllTestResults.projector(state)).toEqual([{ preparerId: '2' }]);
@@ -72,7 +72,7 @@ describe('Test Results Selectors', () => {
     });
 
     it('should return an empty array if there are no test types', () => {
-      const noTestTypeState = { ...state, testTypes: undefined };
+      const noTestTypeState = { ...state, testTypes: undefined } as unknown as TestResultModel;
       const testTypeState = selectDefectData.projector(noTestTypeState);
       expect(testTypeState?.length).toBe(0);
     });
@@ -179,7 +179,7 @@ describe('Test Results Selectors', () => {
     });
 
     it('should return empty array if testTypes is empty', () => {
-      expect(selectAmendedDefectData.projector({ testTypes: [] })).toEqual([]);
+      expect(selectAmendedDefectData.projector({ testTypes: [] } as unknown as TestResultModel)).toEqual([]);
     });
   });
 

@@ -9,7 +9,9 @@ import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/servic
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
+import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { firstValueFrom } from 'rxjs';
 
@@ -31,6 +33,7 @@ export class CreateTechRecordComponent implements OnChanges {
     { name: 'main-form', type: FormNodeTypes.GROUP },
     {
       vin: new CustomFormControl({ name: 'input-vin', label: 'Vin', type: FormNodeTypes.CONTROL }, '', [
+        CustomValidators.alphanumeric(),
         Validators.minLength(3),
         Validators.maxLength(21),
         Validators.required
@@ -38,8 +41,7 @@ export class CreateTechRecordComponent implements OnChanges {
       vrmTrm: new CustomFormControl({ name: 'input-vrm-or-trailer-id', label: 'VRM/TRM', type: FormNodeTypes.CONTROL }, '', [
         CustomValidators.alphanumeric(),
         CustomValidators.notZNumber,
-        Validators.maxLength(9),
-        Validators.minLength(1),
+        CustomValidators.validateVRMTrailerIdLength('vehicleType'),
         Validators.required
       ]),
       vehicleStatus: new CustomFormControl(
@@ -67,11 +69,12 @@ export class CreateTechRecordComponent implements OnChanges {
   constructor(
     private globalErrorService: GlobalErrorService,
     private technicalRecordService: TechnicalRecordService,
+    private batchTechRecordService: BatchTechnicalRecordService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store
   ) {
-    this.technicalRecordService.clearBatch();
+    this.batchTechRecordService.clearBatch();
   }
 
   ngOnChanges(): void {

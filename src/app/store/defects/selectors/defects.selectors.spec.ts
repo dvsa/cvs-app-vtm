@@ -9,7 +9,7 @@ import { defect, defects, defectsLoadingState, filteredDefects, selectByDeficien
 describe('Defects Selectors', () => {
   describe('adapter selectors', () => {
     it('should return correct state', () => {
-      const state = { ...initialDefectsState, ids: [1], entities: { [1]: { preparerId: 2 } } };
+      const state = { ...initialDefectsState, ids: [1], entities: { [1]: { preparerId: 2 } } } as unknown as DefectsState;
 
       expect(defects.projector(state)).toEqual([{ preparerId: 2 }]);
       expect(defect('1').projector(state)).toEqual({ preparerId: 2 });

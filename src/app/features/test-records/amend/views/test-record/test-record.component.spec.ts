@@ -156,26 +156,23 @@ describe('TestRecordComponent', () => {
       expect(updateTestResultStateSpy).not.toHaveBeenCalled();
     }));
 
-    it('should call updateTestResult with value of all forms merged into one', fakeAsync(() => {
-      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => {});
+    it('should call updateTestResult with value of all forms merged into one', async () => {
+      fixture.detectChanges();
+      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => Promise.resolve(true));
       const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
       store.overrideSelector(isTestTypeKeySame('testTypeId'), false);
       store.overrideSelector(testResultInEdit, testRecord);
       store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1']!));
 
-      tick(1000);
-      fixture.detectChanges();
-
       component.isAnyFormDirty = jest.fn().mockReturnValue(true);
       component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
 
-      component.handleSave();
+      await component.handleSave();
 
-      tick(1000);
-
+      fixture.detectChanges();
       expect(updateTestResultStateSpy).toHaveBeenCalledTimes(1);
       expect(updateTestResultStateSpy).toHaveBeenCalledWith(testRecord);
-    }));
+    });
   });
 
   describe('Render banner', () => {
