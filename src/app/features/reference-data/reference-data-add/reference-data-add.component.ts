@@ -20,8 +20,8 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { ReferenceDataState } from '@store/reference-data';
-import { take } from 'rxjs';
+import { fetchReferenceDataByKey, ReferenceDataState } from '@store/reference-data';
+import { catchError, filter, of, switchMap, take, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-add',
@@ -132,10 +132,26 @@ export class ReferenceDataCreateComponent implements OnInit {
       .filter(newRefDataKey => newRefDataKey !== 'resourceKey')
       .forEach(dataKey => (referenceData[dataKey] = this.newRefData[dataKey]));
 
-    this.referenceDataService
-      .createNewReferenceDataItem(this.type, this.newRefData.resourceKey, referenceData)
-      .pipe(take(1))
-      .subscribe(() => this.navigateBack());
+    this.globalErrorService.errors$
+      .pipe(
+        take(1),
+        filter(errors => !errors.length),
+        switchMap(() => this.referenceDataService.fetchReferenceDataByKey(this.type, this.newRefData.resourceKey)),
+        take(1),
+        catchError(error => (error.status == 200 ? of(true) : throwError(() => new Error('Error'))))
+      )
+      .subscribe({
+        next: res => {
+          if (res) return this.globalErrorService.addError({ error: 'Resource Key already exists', anchorLink: 'newReferenceData' });
+        },
+        error: e =>
+          e.status == 404
+            ? of(true)
+            : this.referenceDataService
+                .createNewReferenceDataItem(this.type, this.newRefData.resourceKey, referenceData)
+                .pipe(take(1))
+                .subscribe(() => this.navigateBack())
+      });
   }
 
   handleFormChange(event: any) {
