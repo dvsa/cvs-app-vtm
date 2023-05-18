@@ -22,7 +22,7 @@
               >
             </td>
             <td class="govuk-table__cell">
-              {{ defect.itemDescription + ' ' + defect.imDescription + ' ' + defect.deficiencyText | truncate: [47] }}
+              {{ defect.itemDescription + ' ' + defect.imDescription + ' ' + defect.deficiencyText | truncate : [47] }}
             </td>
             <td class="govuk-table__cell">
               <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
