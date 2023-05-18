@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editableTechRecord } from '@store/technical-records';
@@ -17,6 +17,7 @@ export class TechRecordTitleComponent implements OnInit {
   @Input() vehicle?: VehicleTechRecordModel;
   @Input() actions: TechRecordActions = TechRecordActions.NONE;
   @Input() hideActions: boolean = false;
+  @Input() customTitle = '';
 
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
   queryableActions: string[] = [];
@@ -36,8 +37,8 @@ export class TechRecordTitleComponent implements OnInit {
           (this.vehicleMakeAndModel =
             data?.make || data?.chassisMake
               ? data.vehicleType === this.vehicleTypes.PSV
-                ? `${data.chassisMake} ${data.chassisModel}`
-                : `${data?.make} ${data?.model}`
+                ? `${data.chassisMake} ${data.chassisModel ?? ''}`
+                : `${data?.make} ${data?.model ?? ''}`
               : '')
       );
   }
@@ -64,6 +65,10 @@ export class TechRecordTitleComponent implements OnInit {
 
   get statuses(): typeof StatusCodes {
     return StatusCodes;
+  }
+
+  getVehicleType(techRecord: TechRecordModel): VehicleTypes {
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord);
   }
 
   getCompletenessColor(completeness?: string): 'green' | 'red' {

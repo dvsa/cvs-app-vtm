@@ -13,6 +13,7 @@ import { ButtonComponent } from '@shared/components/button/button.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DefectsComponent', () => {
   let component: DefectsComponent;
@@ -22,7 +23,7 @@ describe('DefectsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule],
+      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, HttpClientTestingModule],
       declarations: [DefectComponent, DefectSelectComponent, DefectsComponent, ButtonComponent, TruncatePipe, TagComponent],
       providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();

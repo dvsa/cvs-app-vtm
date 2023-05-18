@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@a
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Roles } from '@models/roles.enum';
+import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 
 interface TestField {
   testTypeStartTimestamp: string | Date;
@@ -9,6 +10,7 @@ interface TestField {
   testNumber: string;
   testResult: resultOfTestEnum;
   testResultId: string;
+  testResultStatus?: TestResultStatus;
 }
 
 @Component({
@@ -25,7 +27,7 @@ export class TestRecordSummaryComponent {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  public get roles() {
+  public get roles(): typeof Roles {
     return Roles;
   }
 
@@ -33,7 +35,7 @@ export class TestRecordSummaryComponent {
     return this.testResults.length;
   }
 
-  get paginatedTestFields() {
+  get paginatedTestFields(): TestField[] {
     return this.sortedTestTypeFields.slice(this.pageStart, this.pageEnd);
   }
 
@@ -47,25 +49,30 @@ export class TestRecordSummaryComponent {
           testTypeName: testType.testTypeName,
           testNumber: testType.testNumber,
           testResult: testType.testResult,
-          testResultId: record.testResultId
+          testResultId: record.testResultId,
+          testResultStatus: record.testStatus
         }))
       )
       .sort(byDate);
   }
 
-  getTestTypeName(testResult: TestResultModel) {
+  getResult(test: TestField): string {
+    return test.testResultStatus === TestResultStatus.CANCELLED ? TestResultStatus.CANCELLED : test.testResult;
+  }
+
+  getTestTypeName(testResult: TestResultModel): string {
     return testResult.testTypes.map(t => t.testTypeName).join(',');
   }
 
-  getTestTypeResults(testResult: TestResultModel) {
+  getTestTypeResults(testResult: TestResultModel): string {
     return testResult.testTypes.map(t => t.testResult).join(',');
   }
 
-  trackByFn(i: number, t: TestField) {
+  trackByFn(i: number, t: TestField): string {
     return t.testNumber;
   }
 
-  handlePaginationChange({ start, end }: { start: number; end: number }) {
+  handlePaginationChange({ start, end }: { start: number; end: number }): void {
     this.pageStart = start;
     this.pageEnd = end;
     this.cdr.detectChanges();

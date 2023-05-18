@@ -31,7 +31,7 @@ export namespace TechRecordVehicleClass {
         _7: '7' as CodeEnum,
         _5: '5' as CodeEnum
     };
-    export type DescriptionEnum = 'motorbikes over 200cc or with a sidecar' | 'not applicable' | 'small psv (ie: less than or equal to 22 seats)' | 'motorbikes up to 200cc' | 'trailer' | 'large psv(ie: greater than 23 seats)' | '3 wheelers' | 'heavy goods vehicle' | 'MOT class 4' | 'MOT class 7' | 'MOT class 5' | 'PSV of unknown or unspecified size' | 'Not Known';
+    export type DescriptionEnum = 'motorbikes over 200cc or with a sidecar' | 'not applicable' | 'small psv (ie: less than or equal to 22 seats)' | 'motorbikes up to 200cc' | 'trailer' | 'large psv(ie: greater than 23 seats)' | '3 wheelers' | 'heavy goods vehicle' | 'MOT class 4' | 'MOT class 7' | 'MOT class 5';
     export const DescriptionEnum = {
         MotorbikesOver200ccOrWithASidecar: 'motorbikes over 200cc or with a sidecar' as DescriptionEnum,
         NotApplicable: 'not applicable' as DescriptionEnum,
@@ -44,7 +44,5 @@ export namespace TechRecordVehicleClass {
         MOTClass4: 'MOT class 4' as DescriptionEnum,
         MOTClass7: 'MOT class 7' as DescriptionEnum,
         MOTClass5: 'MOT class 5' as DescriptionEnum,
-        PSVOfUnknownOrUnspecifiedSize: 'PSV of unknown or unspecified size' as DescriptionEnum,
-        NotKnown: 'Not Known' as DescriptionEnum
     };
 }

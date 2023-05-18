@@ -5,6 +5,7 @@ import * as TechnicalRecordServiceActions from '../../technical-records/actions/
 import * as GlobalErrorActions from '../actions/global-error.actions';
 import * as ReferenceDataActions from '../../reference-data/actions/reference-data.actions';
 import { routerNavigatedAction } from '@ngrx/router-store';
+import { createVehicleRecordFailure } from '../../technical-records/actions/technical-record-service.actions';
 
 export const STORE_FEATURE_GLOBAL_ERROR_KEY = 'globalError';
 
@@ -60,7 +61,8 @@ export const globalErrorReducer = createReducer(
     ...state,
     errors: [...errors]
   })),
-  on(GlobalErrorActions.patchErrors, (state, { errors }) => ({ ...state, errors: [...state.errors, ...errors] }))
+  on(GlobalErrorActions.patchErrors, (state, { errors }) => ({ ...state, errors: [...state.errors, ...errors] })),
+  on(createVehicleRecordFailure, (state, action) => ({ errors: [...state.errors, { error: action.error }] }))
 );
 
 function successMethod(state: GlobalErrorState) {

@@ -110,7 +110,7 @@ describe('Reference Data Selectors', () => {
 
   it('should return true if any feature is loading state', () => {
     const state: ReferenceDataState = { ...initialReferenceDataState };
-    state.BODY_MAKE.loading = true;
+    state.HGV_MAKE.loading = true;
     const selectedState = referenceDataSelectors.referenceDataLoadingState.projector(state);
     expect(selectedState).toEqual(true);
   });

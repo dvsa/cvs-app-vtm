@@ -1,17 +1,16 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { TestType } from '@api/test-types';
 import { Condition, operatorEnum } from '@forms/models/condition.model';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
-import { catchError, map, Observable, of, take, tap } from 'rxjs';
+import { Observable, catchError, map, of, take, tap } from 'rxjs';
 
 export class CustomAsyncValidators {
   static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -84,7 +83,7 @@ export class CustomAsyncValidators {
           const testerEmail = control.parent?.get('testerEmailAddress');
           if (user && testerName && testerEmail) {
             testerName.setValue((user as User).name, { emitEvent: false, onlySelf: true });
-            testerEmail.setValue((user as User).resourceKey, { emitEvent: false, onlySelf: true });
+            testerEmail.setValue((user as User).email, { emitEvent: false, onlySelf: true });
           }
         }),
         map(() => null),

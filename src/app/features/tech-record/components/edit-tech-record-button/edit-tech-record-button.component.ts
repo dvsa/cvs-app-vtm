@@ -55,10 +55,6 @@ export class EditTechRecordButtonComponent implements OnInit {
     return !(this.viewableTechRecord.statusCode === StatusCodes.CURRENT || this.viewableTechRecord.statusCode === StatusCodes.PROVISIONAL);
   }
 
-  getLatestRecordTimestamp(record: VehicleTechRecordModel): number {
-    return Math.max(...record.techRecord.map(record => new Date(record.createdAt).getTime()));
-  }
-
   checkIfEditableReasonRequired() {
     this.viewableTechRecord.statusCode !== StatusCodes.PROVISIONAL
       ? this.router.navigate(['amend-reason'], { relativeTo: this.route })

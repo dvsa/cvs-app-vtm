@@ -1,14 +1,22 @@
 import { Injectable } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import {
+  EuVehicleCategories,
+  PostNewVehicleModel,
+  PutVehicleTechRecordModel,
+  TechRecordModel,
+  VehicleTechRecordModel,
+  VehicleTypes,
+  Vrm
+} from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
-import { catchError, concatMap, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import {
   archiveTechRecord,
   archiveTechRecordFailure,
@@ -21,6 +29,12 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
+  generateLetter,
+  generateLetterFailure,
+  generateLetterSuccess,
+  generatePlate,
+  generatePlateFailure,
+  generatePlateSuccess,
   getByAll,
   getByAllFailure,
   getByAllSuccess,
@@ -42,12 +56,6 @@ import {
   updateTechRecords,
   updateTechRecordsFailure,
   updateTechRecordsSuccess,
-  generatePlate,
-  generatePlateSuccess,
-  generatePlateFailure,
-  generateLetter,
-  generateLetterSuccess,
-  generateLetterFailure,
   updateVin,
   updateVinFailure,
   updateVinSuccess
@@ -121,13 +129,23 @@ export class TechnicalRecordServiceEffects {
   createVehicleRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createVehicleRecord),
-      withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
-      switchMap(([, record, name, id]) =>
-        this.technicalRecordService.createVehicleRecord(record!, { id, name }).pipe(
-          map(newVehicleRecord => createVehicleRecordSuccess({ vehicleTechRecords: [newVehicleRecord] })),
-          catchError(error => of(createVehicleRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createVehicleRecord') })))
-        )
-      )
+      withLatestFrom(this.technicalRecordService.applicationId$, this.userService.name$, this.userService.id$),
+      concatMap(([{ vehicle }, applicationId, name, id]) => {
+        const vehicleRecord = { ...vehicle, techRecord: [{ ...vehicle.techRecord[0], applicationId }] };
+
+        return this.technicalRecordService.createVehicleRecord(vehicleRecord, { id, name }).pipe(
+          map(response => createVehicleRecordSuccess({ vehicleTechRecords: [this.mapVehicleFromResponse(response)] })),
+          catchError(error =>
+            of(
+              createVehicleRecordFailure({
+                error: `Unable to create vehicle with VIN ${vehicle.vin}${
+                  error.error?.errors ? ' because:' + (error.error.errors?.map((e: string) => '\n' + e) as string[]).join() : ''
+                }`
+              })
+            )
+          )
+        );
+      })
     )
   );
 
@@ -148,7 +166,7 @@ export class TechnicalRecordServiceEffects {
     this.actions$.pipe(
       ofType(updateTechRecords),
       withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
-      switchMap(([action, record, name, id]) =>
+      concatMap(([action, record, name, id]) =>
         this.technicalRecordService
           .updateTechRecords(action.systemNumber, record!, { id, name }, action.recordToArchiveStatus, action.newStatus)
           .pipe(
@@ -180,6 +198,11 @@ export class TechnicalRecordServiceEffects {
         concatMap(([{ vehicleType }, editableTechRecord]) => {
           const techRecord = { ...cloneDeep(editableTechRecord), vehicleType };
 
+          if (vehicleType === VehicleTypes.SMALL_TRL) {
+            techRecord.vehicleType = VehicleTypes.TRL;
+            techRecord.euVehicleCategory = EuVehicleCategories.O1;
+          }
+
           const techRecordTemplate = vehicleTemplateMap.get(vehicleType) || [];
 
           return of(
@@ -201,10 +224,11 @@ export class TechnicalRecordServiceEffects {
         this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
         this.store.select(editableTechRecord),
         this.userService.name$,
-        this.userService.id$
+        this.userService.id$,
+        this.userService.userEmail$
       ),
-      switchMap(([{ reason }, vehicle, techRecord, name, id]) =>
-        this.technicalRecordService.generatePlate(vehicle!, techRecord!, reason, { name, id }).pipe(
+      switchMap(([{ reason }, vehicle, techRecord, name, id, email]) =>
+        this.technicalRecordService.generatePlate(vehicle!, techRecord!, reason, { name, id, email }).pipe(
           map(() => generatePlateSuccess()),
           catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
         )
@@ -215,10 +239,16 @@ export class TechnicalRecordServiceEffects {
   generateLetter$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateLetter),
-      withLatestFrom(this.store.pipe(select(editableTechRecord))),
-      switchMap(([{ techRecord, letterType }, record]) =>
-        this.technicalRecordService.generateLetter(techRecord, letterType).pipe(
-          map(value => generateLetterSuccess({ outcome: value })),
+      withLatestFrom(
+        this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
+        this.store.select(editableTechRecord),
+        this.userService.name$,
+        this.userService.id$,
+        this.userService.userEmail$
+      ),
+      switchMap(([{ letterType, paragraphId }, vehicle, techRecord, name, id, email]) =>
+        this.technicalRecordService.generateLetter(vehicle!, techRecord!, letterType, paragraphId, { name, id, email }).pipe(
+          map(value => generateLetterSuccess()),
           catchError(error => of(generateLetterFailure({ error: this.getTechRecordErrorMessage(error, 'generateLetter') })))
         )
       )
@@ -237,6 +267,18 @@ export class TechnicalRecordServiceEffects {
       )
     )
   );
+
+  mapVehicleFromResponse(response: PostNewVehicleModel | PutVehicleTechRecordModel): VehicleTechRecordModel {
+    const vrms: Vrm[] = [];
+
+    if (response.techRecord[0].vehicleType !== VehicleTypes.TRL) {
+      response.primaryVrm && vrms.push({ vrm: response.primaryVrm, isPrimary: true });
+
+      response.secondaryVrms && vrms.push(...response.secondaryVrms.map(vrm => ({ vrm, isPrimary: false })));
+    }
+
+    return { ...response, vrms };
+  }
 
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {
     if (typeof error !== 'object') {

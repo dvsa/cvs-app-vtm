@@ -44,7 +44,7 @@ export class TestResultsEffects {
     this.actions$.pipe(
       ofType(fetchTestResultsBySystemNumber),
       mergeMap(({ systemNumber }) =>
-        this.testRecordsService.fetchTestResultbySystemNumber(systemNumber).pipe(
+        this.testRecordsService.fetchTestResultbySystemNumber(systemNumber, { fromDateTime: new Date(1970) }).pipe(
           map(testResults => fetchTestResultsBySystemNumberSuccess({ payload: testResults })),
           catchError(e => {
             switch (e.status) {
@@ -64,16 +64,51 @@ export class TestResultsEffects {
       mergeMap(() => this.store.pipe(select(selectRouteNestedParams), take(1))),
       mergeMap(params => {
         const { systemNumber, testResultId } = params;
-        return this.testRecordsService.fetchTestResultbySystemNumber(systemNumber, { testResultId, version: 'all' }).pipe(
-          map(vehicleTestRecords => {
-            if (vehicleTestRecords && vehicleTestRecords.length === 1) {
-              return fetchSelectedTestResultSuccess({ payload: vehicleTestRecords[0] });
-            } else {
-              return fetchSelectedTestResultFailed({ error: 'Test result not found' });
-            }
-          }),
+        return this.testRecordsService
+          .fetchTestResultbySystemNumber(systemNumber, { fromDateTime: new Date(1970), testResultId, version: 'all' })
+          .pipe(
+            map(vehicleTestRecords => {
+              if (vehicleTestRecords && vehicleTestRecords.length === 1) {
+                return fetchSelectedTestResultSuccess({ payload: vehicleTestRecords[0] });
+              } else {
+                return fetchSelectedTestResultFailed({ error: 'Test result not found' });
+              }
+            }),
+            catchError(e => {
+              return of(fetchSelectedTestResultFailed({ error: e.message }));
+            })
+          );
+      })
+    )
+  );
+
+  /**
+   * Call POST Test Results API to update test result
+   */
+  createTestResult$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createTestResult),
+      switchMap(action => {
+        const testResult = action.value;
+        return this.testRecordsService.postTestResult(testResult).pipe(
+          take(1),
+          map(() => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
           catchError(e => {
-            return of(fetchSelectedTestResultFailed({ error: e.message }));
+            const validationsErrors: GlobalError[] = [];
+            if (e.status === 400) {
+              const {
+                error: { errors }
+              } = e;
+              Array.isArray(errors)
+                ? errors.forEach((error: string) => {
+                    const field = error.match(/"([^"]+)"/);
+                    validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
+                  })
+                : validationsErrors.push({ error: e.error });
+            } else if (e.status === 502) {
+              validationsErrors.push({ error: 'Internal Server Error, please contact technical support', anchorLink: '' });
+            }
+            return of(createTestResultFailed({ errors: validationsErrors }));
           })
         );
       })
@@ -220,39 +255,6 @@ export class TestResultsEffects {
         }
 
         return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl!), sectionsValue: mergedForms }));
-      })
-    )
-  );
-
-  /**
-   * Call POST Test Results API to update test result
-   */
-  createTestResult$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(createTestResult),
-      switchMap(action => {
-        const testResult = action.value;
-        return this.testRecordsService.postTestResult(testResult).pipe(
-          take(1),
-          map(() => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
-          catchError(e => {
-            const validationsErrors: GlobalError[] = [];
-            if (e.status === 400) {
-              const {
-                error: { errors }
-              } = e;
-              Array.isArray(errors)
-                ? errors.forEach((error: string) => {
-                    const field = error.match(/"([^"]+)"/);
-                    validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
-                  })
-                : validationsErrors.push({ error: e.error });
-            } else if (e.status === 502) {
-              validationsErrors.push({ error: 'Internal Server Error, please contact technical support', anchorLink: '' });
-            }
-            return of(createTestResultFailed({ errors: validationsErrors }));
-          })
-        );
       })
     )
   );

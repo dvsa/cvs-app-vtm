@@ -47,7 +47,14 @@
     ></app-date>
   </ng-template>
 
-  <app-number-input *ngSwitchCase="types.NUMBER" [formControlName]="name" [name]="name" [label]="label" [width]="width" [noBottomMargin]="true">
+  <app-number-input
+    *ngSwitchCase="types.NUMBER"
+    [formControlName]="name"
+    [name]="idExtension ? name + '-' + idExtension : name"
+    [label]="label"
+    [width]="width"
+    [noBottomMargin]="true"
+  >
     <ng-template *ngIf="prefix" appPrefix>{{ prefix }}</ng-template>
     <ng-template *ngIf="suffix" appSuffix>{{ suffix }}</ng-template>
   </app-number-input>
@@ -70,6 +77,7 @@
     [width]="width"
     [options]="options!"
     [noBottomMargin]="true"
+    [customId]="customId"
   ></app-select>
 
   <app-text-area

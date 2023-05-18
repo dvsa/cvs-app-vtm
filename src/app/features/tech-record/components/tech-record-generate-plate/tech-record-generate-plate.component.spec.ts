@@ -3,20 +3,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { generatePlate, generatePlateSuccess, updateTechRecordsSuccess } from '@store/technical-records';
+import { generatePlate, generatePlateSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { GeneratePlateComponent } from './tech-record-generate-plate.component';
 import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CustomFormGroup, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { UserService } from '@services/user-service/user-service';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
@@ -34,7 +32,6 @@ describe('TechRecordGeneratePlateComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: GeneratePlateComponent;
   let errorService: GlobalErrorService;
-  let expectedVehicle = {} as VehicleTechRecordModel;
   let fixture: ComponentFixture<GeneratePlateComponent>;
   let route: ActivatedRoute;
   let router: Router;
@@ -50,7 +47,13 @@ describe('TechRecordGeneratePlateComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService }
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
+        {
+          provide: UserService,
+          useValue: {
+            roles$: of(['TechRecord.Amend'])
+          }
+        }
       ],
       imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule]
     }).compileComponents();
@@ -90,6 +93,7 @@ describe('TechRecordGeneratePlateComponent', () => {
     });
 
     it('should navigate back on generatePlateSuccess', fakeAsync(() => {
+      component.ngOnInit();
       component.form.get('reason')?.setValue('Provisional');
 
       const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();

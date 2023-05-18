@@ -1,0 +1,43 @@
+{
+  "vehicleType": "lgv",
+  "typeOfTest": "desk-based",
+  "source": "vtm",
+  "testStatus": "submitted",
+  "vehicleClass": null,
+  "vehicleSubclass": ["c"],
+  "noOfAxles": 2,
+  "numberOfWheelsDriven": null,
+  "firstUseDate": null,
+  "createdByName": "CVS Cypress automation",
+  "lastUpdatedByName": "Tester",
+  "vehicleConfiguration": "other",
+  "reasonForCancellation": "",
+  "testTypes": [
+    {
+      "testTypeId": "433",
+      "testTypeName": "IVA17 Appeal for IVA",
+      "prohibitionIssued": null,
+      "name": "IVA17 Appeal for IVA",
+      "reasonForAbandoning": null,
+      "additionalCommentsForAbandon": null,
+      "secondaryCertificateNumber": null,
+      "testResult": "pass",
+      "certificateNumber": "123456",
+      "additionalNotesRecorded": "",
+      "customDefects": []
+    }
+  ],
+  "vrm": "PG4F03V",
+  "countryOfRegistration": "bg",
+  "euVehicleCategory": null,
+  "odometerReading": null,
+  "odometerReadingUnits": null,
+  "preparerName": "",
+  "preparerId": "",
+  "testStationName": "Swansea Test HQ",
+  "testStationPNumber": "123456",
+  "testStationType": "hq",
+  "testerName": "Tester",
+  "testerEmailAddress": "Tester",
+  "testerStaffId": "CVS cypress automation"
+}

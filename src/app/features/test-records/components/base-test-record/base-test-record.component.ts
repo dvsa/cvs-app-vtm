@@ -15,6 +15,7 @@ import merge from 'lodash.merge';
 import { map, Observable } from 'rxjs';
 import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -64,11 +65,16 @@ export class BaseTestRecordComponent implements AfterViewInit {
     return this.defectsStore.select(filteredDefects(type));
   }
 
-  public get isTestTypeGroupEditable$(): Observable<boolean> {
+  get isTestTypeGroupEditable$(): Observable<boolean> {
     return this.testRecordsService.isTestTypeGroupEditable$;
   }
-  public get roles() {
+
+  get roles(): typeof Roles {
     return Roles;
+  }
+
+  get statuses(): typeof TestResultStatus {
+    return TestResultStatus;
   }
 
   get sectionTemplates$(): Observable<FormNode[] | undefined> {

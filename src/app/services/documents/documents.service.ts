@@ -7,7 +7,7 @@ export class DocumentsService {
 
     const link = this.createFileLink(fileName, blob);
 
-    this.simmulateClick(link);
+    this.simulateClick(link);
   }
 
   convertToBlob(data: any): Blob {
@@ -35,7 +35,7 @@ export class DocumentsService {
     return link;
   }
 
-  simmulateClick(link: HTMLAnchorElement): void {
+  simulateClick(link: HTMLAnchorElement): void {
     document.body.appendChild(link);
 
     link.click();

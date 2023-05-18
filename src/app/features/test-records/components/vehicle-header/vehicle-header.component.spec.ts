@@ -5,8 +5,6 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
-import { of } from 'rxjs';
-import { ResultOfTestComponent } from '../result-of-test/result-of-test.component';
 import { VehicleHeaderComponent } from './vehicle-header.component';
 import { TechRecordModel, VehicleTypes, VehicleConfigurations } from '@models/vehicle-tech-record.model';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,7 +15,7 @@ describe('VehicleHeaderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [VehicleHeaderComponent, ResultOfTestComponent],
+      declarations: [VehicleHeaderComponent],
       imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
       providers: [TestTypesService, provideMockStore({ initialState: initialAppState }), ResultOfTestService]
     }).compileComponents();

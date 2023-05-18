@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -6,21 +6,21 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { catchError, filter, map, of, skipWhile, Subject, switchMap, take, takeUntil, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vrm',
   templateUrl: './tech-record-amend-vrm.component.html',
   styleUrls: ['./tech-record-amend-vrm.component.scss']
 })
-export class AmendVrmComponent implements OnInit {
+export class AmendVrmComponent implements OnDestroy {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
 
@@ -38,6 +38,8 @@ export class AmendVrmComponent implements OnInit {
     )
   });
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private actions$: Actions,
     public dfs: DynamicFormService,
@@ -47,9 +49,35 @@ export class AmendVrmComponent implements OnInit {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
+    this.technicalRecordService.selectedVehicleTechRecord$
+      .pipe(
+        take(1),
+        skipWhile(vehicle => !vehicle),
+        map(vehicle => {
+          const techRecord = vehicle?.techRecord.find(techRecord => techRecord.statusCode !== StatusCodes.ARCHIVED);
+          if (!vehicle || !techRecord) {
+            return this.navigateBack();
+          }
+          return { ...vehicle!, techRecord: [techRecord] };
+        })
+      )
+      .subscribe(vehicle => {
+        if (!vehicle) {
+          return;
+        }
+        this.vehicle = vehicle;
+      });
 
-    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.techRecord = techRecord));
+    this.technicalRecordService.editableTechRecord$
+      .pipe(take(1))
+      .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
+
+    this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get reasons(): Array<FormNodeOption<string>> {
@@ -63,12 +91,8 @@ export class AmendVrmComponent implements OnInit {
     return FormNodeWidth.L;
   }
 
-  ngOnInit(): void {
-    if (!this.techRecord) {
-      this.navigateBack();
-    }
-
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.navigateBack());
+  get vehicleType(): VehicleTypes | undefined {
+    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
   }
 
   get makeAndModel(): string {
@@ -120,7 +144,7 @@ export class AmendVrmComponent implements OnInit {
 
     const errors: GlobalError[] = [];
 
-    DynamicFormService.updateValidity(this.form, errors);
+    DynamicFormService.validate(this.form, errors);
 
     if (errors?.length) {
       this.globalErrorService.setErrors(errors);
@@ -151,7 +175,7 @@ export class AmendVrmComponent implements OnInit {
     const existingVrmObject = newModel.vrms.find(vrm => vrm.vrm == newVrm);
 
     if (!existingVrmObject) {
-      newModel.vrms.push({ vrm: newVrm.toUpperCase(), isPrimary: true });
+      newModel.vrms.push({ vrm: newVrm, isPrimary: true });
     } else {
       existingVrmObject.isPrimary = true;
     }

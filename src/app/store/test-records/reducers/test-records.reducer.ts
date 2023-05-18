@@ -59,27 +59,35 @@ export const testResultsReducer = createReducer(
   initialTestResultsState,
   on(fetchTestResults, state => ({ ...state, loading: true })),
   on(fetchTestResultsSuccess, (state, action) => ({ ...testResultAdapter.setAll(action.payload, state), loading: false })),
+
   on(fetchTestResultsBySystemNumber, state => ({ ...state, loading: true })),
   on(fetchTestResultsBySystemNumberSuccess, (state, action) => ({ ...testResultAdapter.setAll(action.payload, state), loading: false })),
   on(fetchTestResultsBySystemNumberFailed, state => ({ ...testResultAdapter.setAll([], state), loading: false })),
+
   on(fetchSelectedTestResult, state => ({ ...state, loading: true })),
   on(fetchSelectedTestResultSuccess, (state, action) => ({ ...testResultAdapter.upsertOne(action.payload, state), loading: false })),
   on(fetchSelectedTestResultFailed, state => ({ ...state, loading: false })),
-  on(updateTestResult, createTestResult, state => ({ ...state, loading: true })),
-  on(updateTestResultSuccess, (state, action) => ({ ...testResultAdapter.updateOne(action.payload, state), loading: false })),
-  on(updateTestResultFailed, createTestResultSuccess, createTestResultFailed, state => ({ ...state, loading: false })),
-  on(templateSectionsChanged, (state, action) => ({ ...state, sectionTemplates: action.sectionTemplates, editingTestResult: action.sectionsValue })),
-  on(cancelEditingTestResult, state => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
-  on(updateEditingTestResult, (state, action) => ({
-    ...state,
-    editingTestResult: merge({}, action.testResult)
+
+  on(createTestResult, updateTestResult, state => ({ ...state, loading: true })),
+  on(updateTestResultSuccess, (state, action) => ({
+    ...testResultAdapter.updateOne(action.payload, state),
+    loading: false
   })),
+  on(createTestResultSuccess, createTestResultFailed, updateTestResultFailed, state => ({ ...state, loading: false })),
+
   on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) })),
   on(setResultOfTest, (state, action) => ({ ...state, editingTestResult: setTestResult(state.editingTestResult, action.result) })),
+
+  on(updateEditingTestResult, (state, action) => ({ ...state, editingTestResult: merge({}, action.testResult) })),
+  on(cancelEditingTestResult, state => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
+
   on(initialContingencyTest, (state, action) => ({
     ...state,
     editingTestResult: { ...action.testResult } as TestResultModel
   })),
+
+  on(templateSectionsChanged, (state, action) => ({ ...state, sectionTemplates: action.sectionTemplates, editingTestResult: action.sectionsValue })),
+
   on(createDefect, (state, action) => ({ ...state, editingTestResult: createNewDefect(state.editingTestResult, action.defect) })),
   on(updateDefect, (state, action) => ({ ...state, editingTestResult: updateDefectAtIndex(state.editingTestResult, action.defect, action.index) })),
   on(removeDefect, (state, action) => ({ ...state, editingTestResult: removeDefectAtIndex(state.editingTestResult, action.index) }))

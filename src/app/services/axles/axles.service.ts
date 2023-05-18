@@ -16,6 +16,8 @@ export class AxlesService {
       newAxles = this.generateAxlesFromAxleSpacings(newAxleSpacings.length, newAxles);
     }
 
+    newAxles.sort((a, b) => a.axleNumber! - b.axleNumber!);
+
     return [newAxles, newAxleSpacings];
   }
 
@@ -47,7 +49,7 @@ export class AxlesService {
   generateEmptyAxle(axleNumber: number): Axle {
     const weights = { gbWeight: null, eecWeight: null, designWeight: null };
 
-    const tyres = { tyreSize: null, speedCategorySymbol: null, fitmentCode: null, dataTrAxles: null, plyRating: null, tyreCode: null };
+    const tyres = { tyreSize: null, fitmentCode: null, dataTrAxles: null, plyRating: null, tyreCode: null };
 
     return { axleNumber, weights, tyres };
   }

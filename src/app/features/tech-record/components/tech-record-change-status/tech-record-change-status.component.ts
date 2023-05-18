@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
@@ -9,13 +9,7 @@ import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import {
-  archiveTechRecord,
-  archiveTechRecordSuccess,
-  updateEditingTechRecordCancel,
-  updateTechRecords,
-  updateTechRecordsSuccess
-} from '@store/technical-records';
+import { archiveTechRecord, archiveTechRecordSuccess, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { Observable, take } from 'rxjs';
 
@@ -31,6 +25,7 @@ export class TechRecordChangeStatusComponent implements OnInit {
   form: CustomFormGroup;
 
   isPromotion = false;
+  isProvisional = false;
 
   constructor(
     private actions$: Actions,
@@ -48,13 +43,18 @@ export class TechRecordChangeStatusComponent implements OnInit {
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
+
+    this.isProvisional = this.router.url.includes('provisional');
   }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
 
     this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => {
-      this.navigateBack(), this.technicalRecordService.clearEditingTechRecord();
+      const relativePath = this.isProvisional ? '../..' : '..';
+      this.navigateBack(relativePath);
+
+      this.technicalRecordService.clearEditingTechRecord();
     });
   }
 
@@ -66,8 +66,8 @@ export class TechRecordChangeStatusComponent implements OnInit {
     return this.isPromotion ? 'Promote' : 'Archive';
   }
 
-  navigateBack(): void {
-    this.router.navigate(['..'], { relativeTo: this.route });
+  navigateBack(relativePath: string = '..'): void {
+    this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string }): void {

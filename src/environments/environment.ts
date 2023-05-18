@@ -11,7 +11,8 @@ export const environment = {
   VTM_REDIRECT_URI: '/',
   VTM_API_URI: '',
   VTM_API_CLIENT_ID: '',
-  DOCUMENT_RETRIEVAL_API_KEY: ''
+  DOCUMENT_RETRIEVAL_API_KEY: '',
+  FEEDBACK_URI: ''
 };
 
 /*

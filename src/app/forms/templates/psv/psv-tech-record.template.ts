@@ -119,6 +119,7 @@ export const PsvTechRecord: FormNode = {
           name: 'description',
           label: 'Vehicle class',
           value: '',
+          customId: 'vehicleClassDescription',
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING,
           editType: FormNodeEditTypes.SELECT,

@@ -1,17 +1,18 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { CreateTechRecordComponent } from './create-tech-record.component';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/index';
-import { of } from 'rxjs';
-import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
+import { initialAppState } from '@store/index';
+import { of } from 'rxjs';
+import { CreateTechRecordComponent } from './create-tech-record.component';
 
 describe('CreateNewVehicleRecordComponent', () => {
   let component: CreateTechRecordComponent;
@@ -26,7 +27,7 @@ describe('CreateNewVehicleRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateTechRecordComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule],
+      imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule],
       providers: [
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
@@ -70,19 +71,19 @@ describe('CreateNewVehicleRecordComponent', () => {
   });
 
   describe('get isFormValid', () => {
-    it('should call updateValidity with the vehicleForm and an empty array', () => {
-      const updateValiditySpy = jest.spyOn(DynamicFormService, 'updateValidity').mockImplementation();
-      component.isFormValid;
-      expect(updateValiditySpy).toHaveBeenCalledTimes(1);
-      expect(updateValiditySpy).toHaveBeenCalledWith(component.vehicleForm, []);
+    it('should call validate with the vehicleForm and an empty array', () => {
+      const validateSpy = jest.spyOn(DynamicFormService, 'validate').mockImplementation();
+      const valid = component.isFormValid;
+      expect(validateSpy).toHaveBeenCalledTimes(1);
+      expect(validateSpy).toHaveBeenCalledWith(component.form, []);
     });
 
     it('should call setErrors with an empty array', () => {
-      jest.spyOn(DynamicFormService, 'updateValidity').mockImplementation(() => {
+      jest.spyOn(DynamicFormService, 'validate').mockImplementation(() => {
         return;
       });
       const setErrorsSpy = jest.spyOn(errorService, 'setErrors').mockImplementation();
-      component.isFormValid;
+      const valid = component.isFormValid;
       expect(setErrorsSpy).toHaveBeenCalledTimes(1);
       expect(setErrorsSpy).toHaveBeenCalledWith([]);
     });
@@ -137,7 +138,7 @@ describe('CreateNewVehicleRecordComponent', () => {
       jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
       jest.spyOn(component, 'isFormValueUnique').mockImplementation(() => Promise.resolve(true));
       const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      const updateEditingSpy = jest.spyOn(techRecordService, 'updateEditingTechRecord');
+      jest.spyOn(techRecordService, 'updateEditingTechRecord');
 
       component.vehicle = { techRecord: [{ vehicleType: VehicleTypes.HGV } as TechRecordModel] };
       component.handleSubmit();
@@ -151,7 +152,7 @@ describe('CreateNewVehicleRecordComponent', () => {
     it('should call isUnique with an emptry string and the type of vin', async () => {
       const isUniqueSpy = jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
 
-      const result = await component.isVinUnique();
+      await component.isVinUnique();
 
       expect(isUniqueSpy).toBeCalledWith('', SEARCH_TYPES.VIN);
     });

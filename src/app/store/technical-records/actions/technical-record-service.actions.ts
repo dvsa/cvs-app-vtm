@@ -1,6 +1,6 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { PsvMake } from '@models/reference-data.model';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 
 const prefix = '[Technical Record Service]';
@@ -29,7 +29,7 @@ export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }
 export const getByAllSuccess = createOutcomeAction('getByAll', true);
 export const getByAllFailure = createOutcomeAction('getByAll');
 
-export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`);
+export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`, props<{ vehicle: VehicleTechRecordModel }>());
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
 export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord');
 
@@ -63,8 +63,8 @@ export const generatePlate = createAction(`${prefix} generatePlate`, props<{ rea
 export const generatePlateSuccess = createAction(`${prefix} generatePlate Success`);
 export const generatePlateFailure = createOutcomeAction('generatePlate');
 
-export const generateLetter = createAction(`${prefix} generateLetter`, props<{ techRecord: TechRecordModel; letterType: string }>());
-export const generateLetterSuccess = createOutcomeAction('generateLetter', true);
+export const generateLetter = createAction(`${prefix} generateLetter`, props<{ letterType: string; paragraphId: number }>());
+export const generateLetterSuccess = createAction(`${prefix} generateLetter Success`);
 export const generateLetterFailure = createOutcomeAction('generateLetter');
 
 export const updateBrakeForces = createAction(`${prefix} updateBrakesForces`, props<{ grossLadenWeight?: number; grossKerbWeight?: number }>());

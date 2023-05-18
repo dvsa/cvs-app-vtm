@@ -8,7 +8,7 @@
   <select
     [class]="style"
     class="govuk-select"
-    id="{{ name }}"
+    [id]="customId || name"
     name="{{ name }}"
     [(ngModel)]="value"
     [disabled]="disabled"
@@ -18,6 +18,6 @@
     (focus)="handleEvent($event)"
   >
     <option value="" selected disabled hidden></option>
-    <option *ngFor="let option of options; trackBy: trackBy" [value]="option.value" [selected]="value === option.value">{{ option.label }}</option>
+    <option *ngFor="let option of options; trackBy: trackBy" [ngValue]="option.value" [selected]="value === option.value">{{ option.label }}</option>
   </select>
 </div>

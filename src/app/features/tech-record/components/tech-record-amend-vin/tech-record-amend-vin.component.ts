@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -17,20 +17,10 @@ import { Subject, take, takeUntil } from 'rxjs';
   selector: 'app-change-amend-vin',
   templateUrl: './tech-record-amend-vin.component.html'
 })
-export class AmendVinComponent implements OnInit, OnDestroy {
+export class AmendVinComponent implements OnDestroy {
   vehicle?: VehicleTechRecordModel;
   techRecord?: TechRecordModel;
-  form = new FormGroup({
-    vin: new CustomFormControl(
-      {
-        name: 'input-vin',
-        label: 'Vin',
-        type: FormNodeTypes.CONTROL
-      },
-      '',
-      [Validators.minLength(3), Validators.maxLength(21), Validators.required]
-    )
-  });
+  form: FormGroup;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -41,13 +31,23 @@ export class AmendVinComponent implements OnInit, OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
-  }
+    this.technicalRecordService.selectedVehicleTechRecord$
+      .pipe(take(1))
+      .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
 
-  ngOnInit(): void {
-    if (!this.vehicle) {
-      this.navigateBack();
-    }
+    this.form = new FormGroup({
+      vin: new CustomFormControl(
+        {
+          name: 'input-vin',
+          label: 'Vin',
+          type: FormNodeTypes.CONTROL
+        },
+        '',
+        [Validators.minLength(3), Validators.maxLength(21), Validators.required],
+        [this.technicalRecordService.validateVin(this.vehicle?.vin)]
+      )
+    });
+
     this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
   }
 
@@ -71,12 +71,21 @@ export class AmendVinComponent implements OnInit, OnDestroy {
     return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
+  get vehicleType(): VehicleTypes | undefined {
+    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
+  }
+
   isFormValid(): boolean {
     const errors: GlobalError[] = [];
 
-    DynamicFormService.updateValidity(this.form, errors);
+    DynamicFormService.validate(this.form, errors);
 
     this.globalErrorService.setErrors(errors);
+
+    if (this.form.value.vin === this.vehicle?.vin) {
+      this.globalErrorService.addError({ error: 'You must provide a new VIN', anchorLink: 'newVin' });
+      return false;
+    }
 
     return this.form.valid;
   }
@@ -87,13 +96,9 @@ export class AmendVinComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit(): void {
-    if (this.form.invalid) return;
-
-    const payload = {
-      newVin: this.form.value.vin,
-      systemNumber: this.vehicle?.systemNumber ?? ''
-    };
-
-    this.store.dispatch(updateVin(payload));
+    if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
+      const payload = { newVin: this.form.value.vin, systemNumber: this.vehicle?.systemNumber ?? '' };
+      this.store.dispatch(updateVin(payload));
+    }
   }
 }

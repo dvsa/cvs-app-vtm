@@ -13,6 +13,7 @@ import { Observable, of, map } from 'rxjs';
 export class DynamicFormFieldComponent implements AfterContentInit {
   @Input() control?: KeyValue<string, CustomFormControl>;
   @Input() form?: FormGroup;
+  @Input() customId?: string;
 
   constructor(private optionsService: MultiOptionsService) {}
 

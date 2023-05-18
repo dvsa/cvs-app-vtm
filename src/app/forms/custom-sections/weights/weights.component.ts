@@ -93,7 +93,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   addAxle(): void {
-    if (this.vehicleTechRecord.axles!.length < 10) {
+    if (!this.vehicleTechRecord.axles || this.vehicleTechRecord.axles!.length < 10) {
       this.isError = false;
       this.store.dispatch(addAxle());
     } else {

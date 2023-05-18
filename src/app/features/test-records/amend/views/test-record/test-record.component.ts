@@ -45,7 +45,11 @@ export class TestRecordComponent implements OnInit, OnDestroy {
       switchMap(editingTestResult => (editingTestResult ? of(editingTestResult) : this.testRecordsService.testResult$))
     );
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
-    this.watchForUpdateSuccess();
+
+    this.actions$
+      .pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$))
+      .subscribe(() => this.router.navigate(['../..'], { relativeTo: this.route.parent }));
+
     combineLatest([this.testResult$, this.routerService.getQueryParam$('testType'), this.testRecordsService.sectionTemplates$])
       .pipe(
         take(1),
@@ -71,10 +75,6 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   public get Roles() {
     return Roles;
-  }
-
-  backToTestRecord(): void {
-    this.router.navigate(['../..'], { relativeTo: this.route.parent });
   }
 
   /**
@@ -122,7 +122,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     }
 
     forms.forEach(form => {
-      DynamicFormService.updateValidity(form, errors);
+      DynamicFormService.validate(form, errors);
     });
 
     if (errors.length > 0) {
@@ -142,12 +142,6 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   handleConfirmCancel() {
     this.router.navigate(['../..'], { relativeTo: this.route.parent });
-  }
-
-  watchForUpdateSuccess() {
-    this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
-      this.backToTestRecord();
-    });
   }
 
   get isTestTypeGroupEditable$(): Observable<boolean> {

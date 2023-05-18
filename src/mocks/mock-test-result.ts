@@ -8,6 +8,7 @@ import * as Emissions from '../app/models/test-types/emissions.enum';
 import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { mockDefectList } from './mock-defects';
 import { resultOfTestEnum } from '../app/models/test-types/test-type.model';
+import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
   createMockList<TestType>(numberOfItems, (i: number) => {
@@ -85,7 +86,7 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
     testStationType: TestStationType.ATF,
     testerName: 'John Smith',
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
-    testStatus: 'submitted',
+    testStatus: TestResultStatus.SUBMITTED,
     vehicleType,
     testVersion: 'Current',
     createdByName: 'Jane Doe',

@@ -106,6 +106,7 @@ export const TrlTechRecordTemplate: FormNode = {
           name: 'description',
           label: 'Vehicle class',
           value: '',
+          customId: 'vehicleClassDescription',
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING,
           editType: FormNodeEditTypes.SELECT,
@@ -167,7 +168,9 @@ export const TrlTechRecordTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories),
+      options: getOptionsFromEnum(EuVehicleCategories).filter(
+        option => option.value !== EuVehicleCategories.O1 && option.value !== EuVehicleCategories.O2
+      ),
       width: FormNodeWidth.S
     },
     {

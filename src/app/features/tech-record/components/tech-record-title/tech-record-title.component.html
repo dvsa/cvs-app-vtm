@@ -1,7 +1,7 @@
 <ng-container *ngIf="editableTechRecord$ | async as editableTechRecord">
   <div class="vehicle_heading">
     <h1 class="govuk-heading-l">
-      <span>{{ vehicleMakeAndModel }}</span>
+      <span>{{ customTitle || vehicleMakeAndModel }}</span>
       <app-icon [icon]="editableTechRecord.vehicleType || ''"></app-icon>
     </h1>
   </div>
@@ -10,7 +10,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Vehicle type</dt>
       <dd id="vehicleType" class="govuk-summary-list__value">
-        {{ editableTechRecord.vehicleType | uppercase | defaultNullOrEmpty }}
+        {{ getVehicleType(editableTechRecord) | uppercase | defaultNullOrEmpty }}
       </dd>
       <ng-container *appRoleRequired="roles.TechRecordAmend">
         <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
@@ -76,7 +76,7 @@
         </ng-container>
       </div>
 
-      <div class="govuk-summary-list__row" *ngIf="currentTechRecord.vehicleType !== 'trl' && currentTechRecord.euVehicleCategory !== 'o1'">
+      <div class="govuk-summary-list__row" *ngIf="getVehicleType(currentTechRecord) !== vehicleTypes.SMALL_TRL">
         <dt class="govuk-summary-list__key">Previous VRM</dt>
         <dd id="previous-vrm" class="govuk-summary-list__value">
           <app-number-plate
@@ -128,7 +128,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Record status</dt>
         <dd id="record-completeness" class="govuk-summary-list__value">
-          <app-tag [type]="getCompletenessColor(currentTechRecord.recordCompleteness)">
+          <app-tag *ngIf="currentTechRecord.recordCompleteness" [type]="getCompletenessColor(currentTechRecord.recordCompleteness)">
             {{ currentTechRecord.recordCompleteness | uppercase }}
           </app-tag>
         </dd>

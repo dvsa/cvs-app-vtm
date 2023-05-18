@@ -1,4 +1,3 @@
-import { LettersOfAuth } from '@api/vehicle/model/models';
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
 export interface VehicleTechRecordModel {
@@ -9,17 +8,12 @@ export interface VehicleTechRecordModel {
   techRecord: TechRecordModel[];
 }
 
-export interface postNewVehicleModel {
-  vin: string;
-  primaryVrm?: string;
-  trailerId?: string;
-  techRecord: TechRecordModel[];
-}
-
-export interface PutVehicleTechRecordModel extends Omit<VehicleTechRecordModel, 'vrms'> {
+export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'> {
   primaryVrm?: string;
   secondaryVrms?: string[];
 }
+
+export interface PutVehicleTechRecordModel extends PostNewVehicleModel {}
 
 export interface Vrm {
   vrm: string;
@@ -102,21 +96,21 @@ export enum EuVehicleCategories {
   M1 = 'm1',
   M2 = 'm2',
   M3 = 'm3',
-  n1 = 'n1',
-  n2 = 'n2',
-  n3 = 'n3',
-  o1 = 'o1',
-  o2 = 'o2',
-  o3 = 'o3',
-  o4 = 'o4',
-  l1e_a = 'l1e-a',
-  l1e = 'l1e',
-  l2e = 'l2e',
-  l3e = 'l3e',
-  l4e = 'l4e',
-  l5e = 'l5e',
-  l6e = 'l6e',
-  l7e = 'l7e'
+  N1 = 'n1',
+  N2 = 'n2',
+  N3 = 'n3',
+  O1 = 'o1',
+  O2 = 'o2',
+  O3 = 'o3',
+  O4 = 'o4',
+  L1E_A = 'l1e-a',
+  L1E = 'l1e',
+  L2E = 'l2e',
+  L3E = 'l3e',
+  L4E = 'l4e',
+  L5E = 'l5e',
+  L6E = 'l6e',
+  L7E = 'l7e'
 }
 
 export enum VehicleSizes {
@@ -138,12 +132,49 @@ export enum VehicleSubclass {
   W = 'w'
 }
 
+export interface LettersOfAuth {
+  letterType: string;
+  paragraphId: ParagraphId;
+  letterIssuer: string;
+  letterDateRequested: string;
+  letterContents: string;
+}
+
 export enum approvalType {
   NTA = 'NTA',
   ECTA = 'ECTA',
   IVA = 'IVA',
   NSSTA = 'NSSTA',
-  ECSSTA = 'ECSSTA'
+  ECSSTA = 'ECSSTA',
+  GB_WVTA = 'GB WVTA',
+  UKNI_WVTA = 'UKNI WVTA',
+  EU_WVTA_PRE_23 = 'EU WVTA Pre 23',
+  EU_WVTA_23_ON = 'EU WVTA 23 on',
+  QNIG = 'QNIG',
+  PROV_GB_WVTA = 'Prov.GB WVTA',
+  SMALL_SERIES = 'Small series',
+  IVA_VCA = 'IVA - VCA',
+  IVA_DVSA_NI = 'IVA - DVSA/NI'
+}
+
+export enum LettersIntoAuthApprovalType {
+  GB_WVTA = 'GB WVTA',
+  UKNI_WVTA = 'UKNI WVTA',
+  EU_WVTA_PRE_23 = 'EU WVTA Pre 23',
+  EU_WVTA_23_ON = 'EU WVTA 23 on',
+  QNIG = 'QNIG',
+  PROV_GB_WVTA = 'Prov.GB WVTA',
+  SMALL_SERIES = 'Small series',
+  IVA_VCA = 'IVA - VCA',
+  IVA_DVSA_NI = 'IVA - DVSA/NI'
+}
+
+export enum ParagraphId {
+  PARAGRAPH_3 = 3,
+  PARAGRAPH_4 = 4,
+  PARAGRAPH_5 = 5,
+  PARAGRAPH_6 = 6,
+  PARAGRAPH_7 = 7
 }
 
 export enum SpeedCategorySymbol {
@@ -317,8 +348,8 @@ export interface TechRecordModel {
   rearAxleToRearTrl?: number;
 
   // Front of vehicle to 5th wheel coupling
-  frontAxleTo5thWheelCouplingMin?: number;
-  frontAxleTo5thWheelCouplingMax?: number;
+  frontVehicleTo5thWheelCouplingMin?: number;
+  frontVehicleTo5thWheelCouplingMax?: number;
 
   // Front axle to 5th wheel
   frontAxleTo5thWheelMin?: number;
@@ -332,7 +363,7 @@ export interface TechRecordModel {
   couplingCenterToRearTrlMin?: number;
   couplingCenterToRearTrlMax?: number;
   plates?: Plates[];
-  lettersOfAuth?: LettersOfAuth[];
+  letterOfAuth?: LettersOfAuth;
   dda?: DDA;
   updateType?: string;
 

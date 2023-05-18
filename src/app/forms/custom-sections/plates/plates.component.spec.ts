@@ -119,4 +119,37 @@ describe('PlatesComponent', () => {
       expect(plateFetched).toBeUndefined();
     });
   });
+
+  describe('hasPlates', () => {
+    it('should return false if plates is undefined', () => {
+      component.techRecord = {
+        plates: undefined
+      } as TechRecordModel;
+
+      expect(component.hasPlates).toBeFalsy();
+    });
+
+    it('should return false if plates is empty', () => {
+      component.techRecord = {
+        plates: [] as Plates[]
+      } as TechRecordModel;
+
+      expect(component.hasPlates).toBeFalsy();
+    });
+
+    it('should return true if plates is not empty', () => {
+      component.techRecord = {
+        plates: [
+          {
+            plateIssueDate: new Date(),
+            plateSerialNumber: '123456',
+            plateIssuer: 'issuer',
+            plateReasonForIssue: 'Replacement'
+          } as Plates
+        ]
+      } as TechRecordModel;
+
+      expect(component.hasPlates).toBeTruthy();
+    });
+  });
 });

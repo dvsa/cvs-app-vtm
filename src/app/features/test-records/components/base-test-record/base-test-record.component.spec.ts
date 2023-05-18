@@ -5,7 +5,6 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { initialAppState } from '@store/.';
-import { ResultOfTestComponent } from '../result-of-test/result-of-test.component';
 import { BaseTestRecordComponent } from './base-test-record.component';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
@@ -25,7 +24,7 @@ describe('BaseTestRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BaseTestRecordComponent, ResultOfTestComponent, DefaultNullOrEmpty, VehicleHeaderComponent],
+      declarations: [BaseTestRecordComponent, DefaultNullOrEmpty, VehicleHeaderComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, SharedModule, RouterTestingModule],
       providers: [
         RouterService,

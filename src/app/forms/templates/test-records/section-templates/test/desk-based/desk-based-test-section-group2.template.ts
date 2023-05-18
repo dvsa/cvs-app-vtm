@@ -107,7 +107,7 @@ export const DeskBasedTestSectionGroup2And5: FormNode = {
   ]
 };
 
-export const AmendDeskBasedTestSectionGroup2: FormNode = {
+export const AmendDeskBasedTestSectionGroup2And5: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -142,6 +142,14 @@ export const AmendDeskBasedTestSectionGroup2: FormNode = {
           name: '0',
           type: FormNodeTypes.GROUP,
           children: [
+            {
+              name: 'testCode',
+              label: 'Test Code',
+              value: '',
+              disabled: true,
+              type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.XS
+            },
             {
               name: 'testResult',
               label: 'Result',

@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class TestCertificateComponent {
   @Input() testNumber!: string;
   @Input() vin!: string;
+  @Input() isClickable = true;
 
   get documentParams(): Map<string, string> {
     return new Map([

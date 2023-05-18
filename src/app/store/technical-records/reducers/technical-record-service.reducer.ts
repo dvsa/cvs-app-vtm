@@ -1,9 +1,10 @@
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
-import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
+import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '../actions/batch-create.actions';
 import {
   addAxle,
   archiveTechRecord,
@@ -15,6 +16,12 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
+  generateLetter,
+  generateLetterFailure,
+  generateLetterSuccess,
+  generatePlate,
+  generatePlateFailure,
+  generatePlateSuccess,
   getByAll,
   getByAllFailure,
   getByAllSuccess,
@@ -41,13 +48,11 @@ import {
   updateTechRecords,
   updateTechRecordsFailure,
   updateTechRecordsSuccess,
-  generatePlate,
-  generatePlateSuccess,
-  generatePlateFailure,
-  generateLetter,
-  generateLetterSuccess,
-  generateLetterFailure
+  updateVin,
+  updateVinSuccess,
+  updateVinFailure
 } from '../actions/technical-record-service.actions';
+import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
@@ -56,10 +61,12 @@ export interface TechnicalRecordServiceState {
   loading: boolean;
   editingTechRecord?: VehicleTechRecordModel;
   error?: unknown;
+  batchVehicles: BatchRecords;
 }
 
 export const initialState: TechnicalRecordServiceState = {
   vehicleTechRecords: [],
+  batchVehicles: initialBatchState,
   loading: false
 };
 
@@ -94,7 +101,7 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(createVehicleRecord, defaultArgs),
   on(createVehicleRecordSuccess, successArgs),
-  on(createVehicleRecordFailure, updateFailureArgs),
+  on(createVehicleRecordFailure, state => ({ ...state, loading: false })),
 
   on(createProvisionalTechRecord, defaultArgs),
   on(createProvisionalTechRecordSuccess, successArgs),
@@ -113,7 +120,7 @@ export const vehicleTechRecordReducer = createReducer(
   on(generatePlateFailure, failureArgs),
 
   on(generateLetter, defaultArgs),
-  on(generateLetterSuccess, successArgs),
+  on(generateLetterSuccess, state => ({ ...state, editingTechRecord: undefined })),
   on(generateLetterFailure, failureArgs),
 
   on(updateEditingTechRecord, (state, action) => ({ ...state, editingTechRecord: action.vehicleTechRecord })),
@@ -124,7 +131,24 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateBody, (state, action) => handleUpdateBody(state, action)),
 
   on(addAxle, state => handleAddAxle(state)),
-  on(removeAxle, (state, action) => handleRemoveAxle(state, action))
+  on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
+
+  on(updateVin, defaultArgs),
+  on(updateVinSuccess, state => ({ ...state, loading: false })),
+  on(updateVinFailure, updateFailureArgs),
+
+  on(
+    upsertVehicleBatch,
+    createVehicleRecordSuccess,
+    updateTechRecordsSuccess,
+    setApplicationId,
+    setGenerateNumberFlag,
+    clearBatch,
+    (state, action) => ({
+      ...state,
+      batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
+    })
+  )
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
@@ -194,21 +218,33 @@ function handleUpdateBody(state: TechnicalRecordServiceState, action: { psvMake:
 
 function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServiceState {
   const newState = cloneDeep(state);
+  const vehicleType = newState.editingTechRecord?.techRecord[0].vehicleType;
 
-  if (!newState.editingTechRecord?.techRecord[0].axles) return newState;
+  if (!newState.editingTechRecord) return newState;
+  if (!newState.editingTechRecord?.techRecord[0].axles) newState.editingTechRecord.techRecord[0].axles = [];
 
-  newState.editingTechRecord.techRecord[0].axles.push({
+  const newAxle: Axle = {
     axleNumber: newState.editingTechRecord.techRecord[0].axles.length + 1,
-    tyres: {},
-    weights: {},
+    tyres: { tyreSize: null, fitmentCode: null, dataTrAxles: null, plyRating: null, tyreCode: null },
+    weights: { gbWeight: null, designWeight: null },
     parkingBrakeMrk: false
-  });
+  };
+
+  if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) {
+    newAxle.weights!.eecWeight = null;
+  }
+  if (vehicleType === VehicleTypes.PSV) {
+    newAxle.weights!.kerbWeight = null;
+    newAxle.weights!.ladenWeight = null;
+    newAxle.tyres!.speedCategorySymbol = null;
+  }
+
+  newState.editingTechRecord.techRecord[0].axles.push(newAxle);
 
   newState.editingTechRecord.techRecord[0].noOfAxles = newState.editingTechRecord.techRecord[0].axles.length;
 
   newState.editingTechRecord.techRecord[0].dimensions ??= {};
 
-  const vehicleType = newState.editingTechRecord?.techRecord[0].vehicleType;
   if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) {
     newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
       newState.editingTechRecord?.techRecord[0].axles.length,

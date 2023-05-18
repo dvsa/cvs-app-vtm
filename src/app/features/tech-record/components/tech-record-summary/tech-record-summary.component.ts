@@ -23,14 +23,14 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { editableTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { cloneDeep, merge } from 'lodash';
+import { cloneDeep, mergeWith } from 'lodash';
 import { map, Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -50,17 +50,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(LettersComponent) letters!: LettersComponent;
 
   @Input() techRecord!: TechRecordModel;
+  @Input() isEditing: boolean = false;
 
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
-
-  private _isEditing: boolean = false;
-  get isEditing(): boolean {
-    return this._isEditing;
-  }
-  @Input() set isEditing(value: boolean) {
-    this._isEditing = value;
-  }
 
   techRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
@@ -77,6 +70,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    let isOnInit = true;
     this.store
       .pipe(
         select(editableTechRecord),
@@ -92,7 +86,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
               this.techRecord.axles = axles;
             }
 
-            this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
+            isOnInit && this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
 
             return { ...cloneDeep(this.techRecord), reasonForCreation: '' };
           }
@@ -105,6 +99,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
+    isOnInit = false;
   }
 
   ngOnDestroy(): void {
@@ -112,20 +107,20 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  get vehicleTemplates(): Array<FormNode> {
-    const vehicleTemplates = vehicleTemplateMap.get(this.techRecordCalculated.vehicleType);
+  get vehicleType() {
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated);
+  }
 
-    return vehicleTemplates
-      ? this.isEditing
-        ? vehicleTemplates
-        : vehicleTemplates.filter(t => t.name !== 'reasonForCreationSection')
-      : ([] as Array<FormNode>);
+  get vehicleTemplates(): Array<FormNode> {
+    return (
+      vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
+    );
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
     const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form];
 
-    switch (this.techRecordCalculated.vehicleType) {
+    switch (this.vehicleType) {
       case VehicleTypes.PSV:
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
@@ -138,7 +133,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   handleFormState(event: any): void {
-    this.techRecordCalculated = merge(cloneDeep(this.techRecordCalculated), event);
+    const isPrimitiveArray = (a: any, b: any) => (Array.isArray(a) && !a.some(i => typeof i === 'object') ? b : undefined);
+
+    this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
 
     this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated);
   }
@@ -156,7 +153,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   setErrors(forms: Array<CustomFormGroup | CustomFormArray>): void {
     const errors: GlobalError[] = [];
 
-    forms.forEach(form => DynamicFormService.updateValidity(form, errors));
+    forms.forEach(form => DynamicFormService.validate(form, errors));
 
     errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
   }

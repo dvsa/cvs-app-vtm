@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { approvalType, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -16,7 +16,7 @@ import { GenerateLetterComponent } from './tech-record-generate-letter.component
 import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CustomFormGroup, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { UserService } from '@services/user-service/user-service';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
@@ -50,7 +50,13 @@ describe('TechRecordGenerateLetterComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService }
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
+        {
+          provide: UserService,
+          useValue: {
+            roles$: of(['TechRecord.Amend'])
+          }
+        }
       ],
       imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule]
     }).compileComponents();
@@ -90,15 +96,13 @@ describe('TechRecordGenerateLetterComponent', () => {
     });
 
     it('should navigate back on generateLetterSuccess', fakeAsync(() => {
-      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.TRL);
-      component.currentTechRecord = expectedVehicle.techRecord[0];
-
-      component.ngOnInit();
+      component.form.get('letterType')?.setValue('trailer authorsation');
+      component.handleSubmit();
 
       const navigateBackSpy = jest.spyOn(component, 'navigateBack');
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      actions$.next(generateLetterSuccess({}));
+      actions$.next(generateLetterSuccess());
       tick();
 
       expect(navigateBackSpy).toHaveBeenCalled();
@@ -106,20 +110,51 @@ describe('TechRecordGenerateLetterComponent', () => {
   });
 
   describe('handleSubmit', () => {
+    beforeEach(() => {
+      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.TRL);
+    });
+
     it('should add an error when the field is not filled out', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
 
-      component.handleSubmit('');
+      component.handleSubmit();
 
       expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Letter type is required', anchorLink: 'letterType' });
     });
 
-    it('should dispatch the generateLetter action', () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
+    describe('it should dispatch the generateLetter action with the correct paragraphIds', () => {
+      it('should dispatch with id 3 on acceptance', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        component.currentTechRecord = expectedVehicle.techRecord[0];
+        component.currentTechRecord.approvalType = approvalType.SMALL_SERIES;
 
-      component.handleSubmit('Authorised');
+        component.form.get('letterType')?.setValue('trailer acceptance');
+        component.handleSubmit();
 
-      expect(dispatchSpy).toBeCalledWith(generateLetter({ techRecord: component.currentTechRecord!, letterType: 'Authorised' }));
+        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 3 }));
+      });
+
+      it('should dispatch with id 4 on rejection', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        component.currentTechRecord = expectedVehicle.techRecord[0];
+        component.currentTechRecord.approvalType = approvalType.GB_WVTA;
+
+        component.form.get('letterType')?.setValue('trailer rejection');
+        component.handleSubmit();
+
+        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer rejection', paragraphId: 4 }));
+      });
+
+      it('should dispatch with id 6 on acceptance', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        component.currentTechRecord = expectedVehicle.techRecord[0];
+        component.currentTechRecord.approvalType = approvalType.GB_WVTA;
+
+        component.form.get('letterType')?.setValue('trailer acceptance');
+        component.handleSubmit();
+
+        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 6 }));
+      });
     });
   });
 });

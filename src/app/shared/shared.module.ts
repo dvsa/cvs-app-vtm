@@ -10,12 +10,14 @@ import { BaseDialogComponent } from './components/base-dialog/base-dialog.compon
 import { ButtonGroupComponent } from './components/button-group/button-group.component';
 import { ButtonComponent } from './components/button/button.component';
 import { IconComponent } from './components/icon/icon.component';
+import { InputSpinnerComponent } from './components/input-spinner/input-spinner.component';
 import { NumberPlateComponent } from './components/number-plate/number-plate.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { RouterOutletComponent } from './components/router-outlet/router-outlet.component';
 import { TagComponent } from './components/tag/tag.component';
 import { TestCertificateComponent } from './components/test-certificate/test-certificate.component';
-import { RetrieveDocumentDirective } from './directives/retrieve-document/retrieve-document.directive';
 import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
+import { RetrieveDocumentDirective } from './directives/retrieve-document/retrieve-document.directive';
 import { DefaultNullOrEmpty } from './pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
 import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe';
@@ -40,7 +42,9 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     BaseDialogComponent,
     DigitGroupSeparatorPipe,
     RefDataDecodePipe,
-    RetrieveDocumentDirective
+    RetrieveDocumentDirective,
+    InputSpinnerComponent,
+    RouterOutletComponent
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -60,7 +64,9 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     BaseDialogComponent,
     DigitGroupSeparatorPipe,
     RefDataDecodePipe,
-    RetrieveDocumentDirective
+    RetrieveDocumentDirective,
+    InputSpinnerComponent,
+    RouterOutletComponent
   ],
   providers: [DocumentRetrievalService]
 })

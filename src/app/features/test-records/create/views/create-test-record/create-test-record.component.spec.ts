@@ -28,7 +28,6 @@ import { initialAppState, State } from '@store/.';
 import { sectionTemplates, testResultInEdit, toEditOrNotToEdit } from '@store/test-records';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
-import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 import { CreateTestRecordComponent } from './create-test-record.component';
 
@@ -50,7 +49,6 @@ describe('CreateTestRecordComponent', () => {
       declarations: [
         CreateTestRecordComponent,
         BaseTestRecordComponent,
-        ResultOfTestComponent,
         DefaultNullOrEmpty,
         TestTypeNamePipe,
         ButtonComponent,

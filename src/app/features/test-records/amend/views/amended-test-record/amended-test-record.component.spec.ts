@@ -14,7 +14,6 @@ import { initialAppState, State } from '@store/.';
 import { selectAmendedDefectData, selectedAmendedTestResultState } from '@store/test-records';
 import { of } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
-import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 import { AmendedTestRecordComponent } from './amended-test-record.component';
 
@@ -25,7 +24,7 @@ describe('AmendedTestRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AmendedTestRecordComponent, BaseTestRecordComponent, VehicleHeaderComponent, ResultOfTestComponent],
+      declarations: [AmendedTestRecordComponent, BaseTestRecordComponent, VehicleHeaderComponent],
       imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, TestResultsApiModule, RouterTestingModule],
       providers: [
         TestRecordsService,

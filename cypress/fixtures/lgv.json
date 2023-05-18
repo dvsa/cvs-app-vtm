@@ -1,0 +1,7 @@
+{
+  "reasonForCreation": "Cypress auto testing",
+  "vehicleType": "lgv",
+  "noOfAxles": 2,
+  "vehicleSubclass": ["c"],
+  "vehicleConfiguration": "other"
+}
