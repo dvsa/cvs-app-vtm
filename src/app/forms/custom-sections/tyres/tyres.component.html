@@ -1,7 +1,14 @@
+<!-- prettier-ignore -->
 <form [formGroup]="form">
   <ng-container *ngIf="isPsv">
-    <app-switchable-input [form]="form" [type]="types.NUMBER" name="speedRestriction" label="Speed Restriction" [isEditing]="isEditing" 
-    [width]="widths.XS" suffix="mph"
+    <app-switchable-input
+      [form]="form"
+      [type]="types.NUMBER"
+      name="speedRestriction"
+      label="Speed Restriction"
+      [isEditing]="isEditing"
+      [width]="widths.XS"
+      suffix="mph"
     ></app-switchable-input>
 
     <br />
@@ -112,4 +119,5 @@
       [isEditing]="isEditing"
     ></app-switchable-input>
   </ng-container>
+
 </form>
