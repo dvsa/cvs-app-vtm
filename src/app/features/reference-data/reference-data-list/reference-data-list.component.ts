@@ -1,14 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { Roles } from '@models/roles.enum';
-import { Store, select } from '@ngrx/store';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, of, take } from 'rxjs';
-import { templateList as countryOfRegistrationTemplateList } from '@forms/templates/reference-data/country-of-registration';
-import { templateList as tyresTemplateList } from '@forms/templates/reference-data/tyres';
 import { templateList as brakesTemplateList } from '@forms/templates/reference-data/brakes';
+import { templateList as countryOfRegistrationTemplateList } from '@forms/templates/reference-data/country-of-registration';
 import { templateList as hgvTemplateList } from '@forms/templates/reference-data/hgv-make';
 import { templateList as psvTemplateList } from '@forms/templates/reference-data/psv-make';
 import { templateList as reasonsForAbandoningHgvTemplateList } from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
@@ -17,6 +10,13 @@ import { templateList as reasonsForAbandoningTirTemplateList } from '@forms/temp
 import { templateList as reasonsForAbandoningTrlTemplateList } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
 import { templateList as specialistReasonsForAbandoningTemplateList } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
 import { templateList as trlTemplateList } from '@forms/templates/reference-data/trl-make';
+import { templateList as tyresTemplateList } from '@forms/templates/reference-data/tyres';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { Roles } from '@models/roles.enum';
+import { select, Store } from '@ngrx/store';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { selectAllReferenceDataByResourceType } from '@store/reference-data';
+import { Observable, of, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-list',
@@ -30,6 +30,8 @@ export class ReferenceDataListComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
+
+      console.log('This is the type by url params: ', this.type);
       this.referenceDataService.loadReferenceData(this.type);
     });
   }
@@ -103,11 +105,11 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   back(): void {
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.router.navigate(['select-type']);
   }
 
   amend(resourceKey: HTMLElement): void {
     const key: string = resourceKey.innerHTML;
-    this.router.navigate(['amend', this.type, key], { relativeTo: this.route });
+    this.router.navigate(['amend', key], { relativeTo: this.route });
   }
 }

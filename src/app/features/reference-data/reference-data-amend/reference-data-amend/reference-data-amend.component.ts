@@ -111,7 +111,7 @@ export class ReferenceDataAmendComponent implements OnInit {
   navigateBack() {
     this.globalErrorService.clearErrors();
     // TODO: we need to preserve the type but not the ID (Resource Key)
-    this.router.navigate(['amend', this.type], { relativeTo: this.route.parent });
+    this.router.navigate([this.type], { relativeTo: this.route.parent });
   }
 
   handleSubmit() {
