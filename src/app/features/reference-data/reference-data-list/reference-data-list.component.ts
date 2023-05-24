@@ -105,11 +105,11 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   back(): void {
-    this.router.navigate(['select-type']);
+    this.router.navigate(['reference-data']);
   }
 
   amend(resourceKey: HTMLElement): void {
     const key: string = resourceKey.innerHTML;
-    this.router.navigate(['amend', key], { relativeTo: this.route });
+    this.router.navigate([key], { relativeTo: this.route });
   }
 }

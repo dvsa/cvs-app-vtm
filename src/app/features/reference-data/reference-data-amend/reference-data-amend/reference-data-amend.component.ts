@@ -55,19 +55,6 @@ export class ReferenceDataAmendComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // query params
-    // this.route.queryParams.pipe(take(1)).subscribe(params => {
-    //   this.type = params['type'];
-    //   this.id = params['id'];
-
-    //   if (this.type && this.id) {
-    //     console.log('This is the ID by query params: ', this.id);
-    //     this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.id }));
-    //     console.log('request sent to fetch reference data by key', this.type, this.id);
-    //   }
-    // });
-
-    // url params
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.key = params['key'];
