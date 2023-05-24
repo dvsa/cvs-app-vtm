@@ -107,7 +107,6 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   amend(resourceKey: HTMLElement): void {
-    console.log(resourceKey.innerHTML);
     const id: string = resourceKey.innerHTML;
     this.router.navigate(['amend'], { relativeTo: this.route, queryParams: { id }, queryParamsHandling: 'merge' });
   }

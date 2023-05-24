@@ -30,7 +30,19 @@ const routes: Routes = [
   {
     path: 'amend',
     component: ReferenceDataAmendComponent,
-    data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataView },
+    data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataAmend },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: 'add/:type',
+    component: ReferenceDataCreateComponent,
+    data: { title: 'Add Reference Data', roles: Roles.ReferenceDataView },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: 'amend/:type/:key',
+    component: ReferenceDataAmendComponent,
+    data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataAmend },
     canActivate: [MsalGuard, RoleGuard]
   }
 ];
