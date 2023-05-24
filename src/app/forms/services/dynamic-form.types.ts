@@ -59,6 +59,7 @@ export enum FormNodeEditTypes {
 }
 
 export enum FormNodeWidth {
+  XXXL = 50,
   XXL = 30,
   XL = 20,
   L = 10,
