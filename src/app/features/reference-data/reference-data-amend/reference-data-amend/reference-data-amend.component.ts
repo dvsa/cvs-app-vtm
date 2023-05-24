@@ -32,7 +32,6 @@ export class ReferenceDataAmendComponent implements OnInit {
   type!: ReferenceDataResourceType;
   key!: string;
   isEditing: boolean = true;
-
   amendedData: any;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
@@ -74,14 +73,6 @@ export class ReferenceDataAmendComponent implements OnInit {
     return FormNodeWidth;
   }
 
-  // get isFormValid(): boolean {
-  //   this.sections?.forEach(section => {
-  //     const { form } = section;
-  //     console.log(form)
-  //   });
-  //   return true;
-  // }
-
   titleCaseHeading(input: ReferenceDataResourceType): string {
     return this.referenceDataService.macroCasetoTitleCase(input);
   }
@@ -98,19 +89,6 @@ export class ReferenceDataAmendComponent implements OnInit {
 
   handleSubmit() {
     this.checkForms();
-
-    console.log(this.amendedData);
-
-    // TODO: change for amending
-    // if (!this.isFormValid) return;
-    // const referenceData: any = {};
-    // Object.keys(this.form.controls)
-    //   .filter(control => control !== 'resourceKey')
-    //   .forEach(control => (referenceData[control] = this.form.get(control)?.value));
-    // this.referenceDataService
-    //   .createNewReferenceDataItem(this.type, this.form.get('resourceKey')?.value, referenceData)
-    //   .pipe(take(1))
-    //   .subscribe(() => this.navigateBack());
   }
 
   get template(): FormNode {
