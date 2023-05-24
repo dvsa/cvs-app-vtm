@@ -21,7 +21,7 @@ import { Roles } from '@models/roles.enum';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState } from '@store/reference-data';
-import { catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { catchError, filter, Observable, of, switchMap, take, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-add',
@@ -33,6 +33,8 @@ export class ReferenceDataCreateComponent implements OnInit {
   newRefData: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
+
+  refDataAdminType$: Observable<any> = of(null);
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
