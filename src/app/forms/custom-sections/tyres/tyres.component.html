@@ -24,7 +24,7 @@
         <th scope="col" class="govuk-table__header">Code</th>
         <th scope="col" class="govuk-table__header">Size</th>
         <th scope="col" class="govuk-table__header">Ply</th>
-        <th scope="col" class="govuk-table__header">Load Index</th>
+        <th scope="col" class="govuk-table__header tyre-table-ld-index__header">Load Index</th>
         <th *ngIf="isPsv" scope="col" class="govuk-table__header">SR</th>
         <th scope="col" class="govuk-table__header">S/D</th>
         <th *ngIf="isEditing" scope="col" class="govuk-table__header"></th>
@@ -54,7 +54,7 @@
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'dataTrAxles', type: types.NUMBER, width: widths.S }"
+            [ngTemplateOutletContext]="{ name: 'dataTrAxles', type: types.NUMBER, width: widths.XXS }"
           ></ng-template>
 
           <ng-template
@@ -99,18 +99,6 @@
         <p *ngIf="isError" class="govuk-error-message">{{ errorMessage }}</p>
       </tr>
 
-      <ng-container *ngIf="!isPsv">
-        <br />
-
-        <app-switchable-input
-          [form]="form"
-          [type]="types.TEXT"
-          name="tyreUseCode"
-          label="Tyre Use Code"
-          [isEditing]="isEditing"
-        ></app-switchable-input>
-      </ng-container>
-
       <ng-template #tdNumberInput let-name="name">
         <td class="govuk-table__cell">
           <app-switchable-input [form]="form" [type]="types.NUMBER" [name]="name" [isEditing]="isEditing"></app-switchable-input>
@@ -118,4 +106,17 @@
       </ng-template>
     </tbody>
   </table>
+
+  <ng-container *ngIf="!isPsv">
+    <br />
+
+    <app-switchable-input
+      [form]="form"
+      [type]="types.TEXT"
+      name="tyreUseCode"
+      label="Tyre Use Code"
+      [isEditing]="isEditing"
+    ></app-switchable-input>
+  </ng-container>
+  
 </form>
