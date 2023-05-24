@@ -22,6 +22,9 @@
         <tr class="govuk-table__row" *ngFor="let item of data$ | async">
           <td #resourceKey class="govuk-table__cell">{{ item.resourceKey }}</td>
           <td *ngFor="let column of columns$ | async" class="govuk-table__cell">{{ item[column] }}</td>
+          <td class="govuk-table__cell">
+            <app-button id="cancel" design="link" (clicked)="back()">Amend</app-button>
+          </td>
         </tr>
       </tbody>
     </table>
