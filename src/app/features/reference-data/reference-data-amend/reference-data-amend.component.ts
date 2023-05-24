@@ -80,7 +80,7 @@ export class ReferenceDataAmendComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    this.router.navigate([this.type], { relativeTo: this.route.parent });
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit() {
