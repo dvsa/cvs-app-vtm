@@ -107,6 +107,7 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   amend(): void {
+    console.log('HELP');
     this.router.navigate(['amend'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
   }
 }
