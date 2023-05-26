@@ -17,7 +17,7 @@ import {
   fetchReferenceData,
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
-  ReferenceDataEntityStateTyres,
+  ReferenceDataEntityStateSearch,
   ReferenceDataState,
   referencePsvMakeLoadingState,
   removeTyreSearch,
@@ -25,7 +25,7 @@ import {
   selectReasonsForAbandoning,
   selectReferenceDataByResourceKey,
   selectTyreSearchCriteria,
-  selectTyreSearchReturn
+  selectSearchReturn
 } from '@store/reference-data';
 import { Observable, of, switchMap, throwError, withLatestFrom } from 'rxjs';
 
@@ -109,10 +109,10 @@ export class ReferenceDataService extends ReferenceDataApiService {
   }
 
   getTyreSearchReturn$(): Observable<ReferenceDataTyre[] | null> {
-    return this.store.pipe(select(selectTyreSearchReturn));
+    return this.store.pipe(select(selectSearchReturn(ReferenceDataResourceType.Tyres))) as Observable<ReferenceDataTyre[] | null>;
   }
 
-  getTyreSearchCriteria$(): Observable<ReferenceDataEntityStateTyres> {
+  getTyreSearchCriteria$(): Observable<ReferenceDataEntityStateSearch> {
     return this.store.pipe(select(selectTyreSearchCriteria));
   }
 

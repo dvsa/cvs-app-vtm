@@ -19,7 +19,7 @@ import { TechRecordSearchTyresComponent } from './tech-record-search-tyres.compo
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { fetchReferenceDataByKeySearchSuccess, selectTyreSearchReturn } from '@store/reference-data';
+import { fetchReferenceDataByKeySearchSuccess, selectSearchReturn } from '@store/reference-data';
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 
 const mockGlobalErrorService = {
@@ -131,7 +131,7 @@ describe('TechRecordSearchTyresComponent', () => {
     it('should navigate and populate the search results on success action', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate');
       const mockTyreSearchReturn = ['foo', 'bar'] as any;
-      store.overrideSelector(selectTyreSearchReturn, mockTyreSearchReturn);
+      store.overrideSelector(selectSearchReturn, mockTyreSearchReturn);
       component.handleSearch('foo', 'bar');
       expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith('foo', 'bar');
       actions$.next(fetchReferenceDataByKeySearchSuccess);

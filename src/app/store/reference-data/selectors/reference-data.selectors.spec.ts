@@ -68,7 +68,7 @@ describe('Reference Data Selectors', () => {
         }
       };
 
-      const expectedState = referenceDataSelectors.selectTyreSearchReturn.projector(state);
+      const expectedState = referenceDataSelectors.selectSearchReturn.projector(state);
       expect(expectedState).toBe(value.payload);
     });
   });

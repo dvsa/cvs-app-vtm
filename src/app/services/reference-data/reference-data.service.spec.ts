@@ -16,7 +16,7 @@ import {
   referencePsvMakeLoadingState,
   removeTyreSearch,
   selectTyreSearchCriteria,
-  selectTyreSearchReturn,
+  selectSearchReturn,
   STORE_FEATURE_REFERENCE_DATA_KEY
 } from '@store/reference-data';
 import { testCases } from '@store/reference-data/reference-data.test-cases';
@@ -214,7 +214,7 @@ describe('ReferenceDataService', () => {
 
     it('should get the tyre search results', done => {
       const mockReferenceDataTyre = [{ code: 'foo' }] as ReferenceDataTyre[];
-      store.overrideSelector(selectTyreSearchReturn, mockReferenceDataTyre);
+      store.overrideSelector(selectSearchReturn, mockReferenceDataTyre);
       service
         .getTyreSearchReturn$()
         .pipe(take(1))

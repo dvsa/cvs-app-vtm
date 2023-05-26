@@ -19,5 +19,27 @@
 
       <app-button id="cancel" design="link" (clicked)="navigateBack()">Back</app-button>
     </app-button-group>
+
+    <ng-container *ngIf="dataAudit$ | async">
+      <p class="govuk-heading-xl govuk-!-font-weight-bold">{{ titleCaseHeading(type) }} history</p>
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th *ngFor="let column of columns$ | async" scope="col" class="govuk-table__header">{{ titleCaseColumn(column) }}</th>
+            <th scope="col" class="govuk-table__header">Created At</th>
+            <th scope="col" class="govuk-table__header">Created By</th>
+            <th scope="col" class="govuk-table__header"></th>
+          </tr>
+        </thead>
+
+        <tbody class="govuk-table__body">
+          <tr class="govuk-table__row" *ngFor="let item of dataAudit$ | async">
+            <td *ngFor="let column of columns$ | async" class="govuk-table__cell">{{ item[column] }}</td>
+            <td class="govuk-table__cell">{{ item.createdAt }}</td>
+            <td class="govuk-table__cell">{{ item.createdName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
   </div>
 </div>
