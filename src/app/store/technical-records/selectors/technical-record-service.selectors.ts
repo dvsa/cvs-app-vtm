@@ -35,7 +35,10 @@ export const selectTechRecord = createSelector(
     const lastTwoUrlParts = url?.split('/').slice(-2);
 
     if (lastTwoUrlParts?.includes(StatusCodes.PROVISIONAL)) {
-      return vehicle?.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL);
+      const provisionalRecord = vehicle?.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL);
+      if (provisionalRecord) {
+        return provisionalRecord;
+      }
     }
 
     if (techCreatedAt) {
