@@ -5,44 +5,47 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { template as brakesTemplate } from '@forms/templates/reference-data/brakes';
-import { template as countryOfRegistrationTemplate } from '@forms/templates/reference-data/country-of-registration';
-import { template as hgvTemplate } from '@forms/templates/reference-data/hgv-make';
-import { template as psvTemplate } from '@forms/templates/reference-data/psv-make';
-import { template as reasonsForAbandoningTirTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TIR';
-import { template as reasonsForAbandoningTrlTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
-import { template as reasonsForAbandoningHgvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
-import { template as reasonsForAbandoningPsvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-psv';
-import { template as specialistReasonsForAbandoningTemplate } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
-import { template as trlTemplate } from '@forms/templates/reference-data/trl-make';
-import { template as tyresTemplate } from '@forms/templates/reference-data/tyres';
-import { templateList as brakesTemplateList } from '@forms/templates/reference-data/brakes';
-import { templateList as countryOfRegistrationTemplateList } from '@forms/templates/reference-data/country-of-registration';
-import { templateList as hgvTemplateList } from '@forms/templates/reference-data/hgv-make';
-import { templateList as psvTemplateList } from '@forms/templates/reference-data/psv-make';
-import { templateList as reasonsForAbandoningHgvTemplateList } from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
-import { templateList as reasonsForAbandoningPsvTemplateList } from '@forms/templates/reference-data/reasons-for-abandoning-psv';
-import { templateList as reasonsForAbandoningTirTemplateList } from '@forms/templates/reference-data/reasons-for-abandoning-TIR';
-import { templateList as reasonsForAbandoningTrlTemplateList } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
-import { templateList as specialistReasonsForAbandoningTemplateList } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
-import { templateList as trlTemplateList } from '@forms/templates/reference-data/trl-make';
-import { templateList as tyresTemplateList } from '@forms/templates/reference-data/tyres';
-import { ReferenceDataResourceType, ReferenceDataModelBase, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import { template as brakesTemplate, templateList as brakesTemplateList } from '@forms/templates/reference-data/brakes';
+import {
+  template as countryOfRegistrationTemplate,
+  templateList as countryOfRegistrationTemplateList
+} from '@forms/templates/reference-data/country-of-registration';
+import { template as hgvTemplate, templateList as hgvTemplateList } from '@forms/templates/reference-data/hgv-make';
+import { template as psvTemplate, templateList as psvTemplateList } from '@forms/templates/reference-data/psv-make';
+import {
+  template as reasonsForAbandoningHgvTemplate,
+  templateList as reasonsForAbandoningHgvTemplateList
+} from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
+import {
+  template as reasonsForAbandoningPsvTemplate,
+  templateList as reasonsForAbandoningPsvTemplateList
+} from '@forms/templates/reference-data/reasons-for-abandoning-psv';
+import {
+  template as reasonsForAbandoningTirTemplate,
+  templateList as reasonsForAbandoningTirTemplateList
+} from '@forms/templates/reference-data/reasons-for-abandoning-TIR';
+import {
+  template as reasonsForAbandoningTrlTemplate,
+  templateList as reasonsForAbandoningTrlTemplateList
+} from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
+import {
+  template as specialistReasonsForAbandoningTemplate,
+  templateList as specialistReasonsForAbandoningTemplateList
+} from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
+import { template as trlTemplate, templateList as trlTemplateList } from '@forms/templates/reference-data/trl-make';
+import { template as tyresTemplate, templateList as tyresTemplateList } from '@forms/templates/reference-data/tyres';
+import { ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import {
-  ReferenceDataState,
   fetchReferenceDataByKey,
-  selectReferenceDataByResourceKey,
   fetchReferenceDataByKeySearch,
-  selectAllReferenceDataByResourceType,
-  selectSearchReturn,
-  fetchReferenceDataByKeySearchSuccess,
-  fetchReferenceDataByKeySuccess
+  ReferenceDataState,
+  selectReferenceDataByResourceKey,
+  selectSearchReturn
 } from '@store/reference-data';
-import { filter, map, mergeMap, Observable, of, take } from 'rxjs';
-import { Actions, ofType } from '@ngrx/effects';
+import { Observable, of, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend',
@@ -65,11 +68,8 @@ export class ReferenceDataAmendComponent implements OnInit {
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<ReferenceDataState>,
-    private actions$: Actions
+    private store: Store<ReferenceDataState>
   ) {}
-
-  public auditResults: Array<ReferenceDataModelBase> | null = null;
 
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
