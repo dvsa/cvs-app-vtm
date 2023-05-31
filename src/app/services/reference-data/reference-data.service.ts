@@ -15,6 +15,7 @@ import { UserService } from '@services/user-service/user-service';
 import {
   addSearchInformation,
   fetchReferenceData,
+  fetchReferenceDataByKey,
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
   ReferenceDataEntityStateTyres,
@@ -66,6 +67,10 @@ export class ReferenceDataService extends ReferenceDataApiService {
 
   fetchReferenceDataByKey(resourceType: ReferenceDataResourceType, resourceKey: string | number): Observable<ReferenceDataItemApiResponse> {
     return this.referenceResourceTypeResourceKeyGet(resourceType, resourceKey, 'body');
+  }
+
+  loadReferenceDataByKey(resourceType: ReferenceDataResourceType, resourceKey: string | number): void {
+    return this.store.dispatch(fetchReferenceDataByKey({ resourceType, resourceKey }));
   }
 
   fetchReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): Observable<ReferenceDataApiResponse> {

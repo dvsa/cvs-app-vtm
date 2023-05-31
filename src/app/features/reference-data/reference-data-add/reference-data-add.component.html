@@ -3,8 +3,8 @@
     <p class="govuk-heading-xl govuk-!-font-weight-bold">Add {{ titleCaseHeading(type) }}</p>
 
     <app-dynamic-form-group
-      [id]="template.name"
-      [template]="template"
+      [id]="(refDataAdminType$ | async).template.name"
+      [template]="(refDataAdminType$ | async).template"
       [data]=""
       [edit]="isEditing"
       (formChange)="handleFormChange($event)"
