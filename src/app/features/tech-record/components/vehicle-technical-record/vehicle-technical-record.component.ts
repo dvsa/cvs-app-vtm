@@ -45,6 +45,12 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const hasProvisionalRecord = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
+    const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
+
+    if (isProvisionalUrl && !hasProvisionalRecord) {
+      this.router.navigate(['../'], { relativeTo: this.route });
+    }
     this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$.pipe(
       tap(viewableTechRecord => {
         this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
