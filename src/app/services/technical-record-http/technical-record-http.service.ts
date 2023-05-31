@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   PostNewVehicleModel,
   PutVehicleTechRecordModel,
+  SearchResult,
   StatusCodes,
   TechRecordModel,
   VehicleTechRecordModel
@@ -46,35 +47,35 @@ export class TechnicalRecordHttpService {
     }
   }
 
-  getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
+  getByVin(vin: string): Observable<SearchResult[]> {
     return this.getVehicleTechRecordModels(vin, SEARCH_TYPES.VIN);
   }
 
-  getByPartialVin(partialVin: string): Observable<VehicleTechRecordModel[]> {
+  getByPartialVin(partialVin: string): Observable<SearchResult[]> {
     return this.getVehicleTechRecordModels(partialVin, SEARCH_TYPES.PARTIAL_VIN);
   }
 
-  getByVrm(vrm: string): Observable<VehicleTechRecordModel[]> {
+  getByVrm(vrm: string): Observable<SearchResult[]> {
     return this.getVehicleTechRecordModels(vrm, SEARCH_TYPES.VRM);
   }
 
-  getByTrailerId(id: string): Observable<VehicleTechRecordModel[]> {
+  getByTrailerId(id: string): Observable<SearchResult[]> {
     return this.getVehicleTechRecordModels(id, SEARCH_TYPES.TRAILER_ID);
   }
 
-  getBySystemNumber(systemNumber: string): Observable<VehicleTechRecordModel[]> {
+  getBySystemNumber(systemNumber: string): Observable<SearchResult[]> {
     return this.getVehicleTechRecordModels(systemNumber, SEARCH_TYPES.SYSTEM_NUMBER);
   }
 
-  getByAll(term: string): Observable<VehicleTechRecordModel[]> {
+  getByAll(term: string): Observable<SearchResult[]> {
     return this.getVehicleTechRecordModels(term, SEARCH_TYPES.ALL);
   }
 
-  getVehicleTechRecordModels(id: string, type: SEARCH_TYPES): Observable<VehicleTechRecordModel[]> {
-    const queryStr = `${id}/tech-records?status=all&metadata=true&searchCriteria=${type}`;
-    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
+  getVehicleTechRecordModels(id: string, type: SEARCH_TYPES): Observable<SearchResult[]> {
+    const queryStr = `${id}?searchCriteria=${type}`;
+    const url = `${environment.VTM_API_URI}/v3/vehicles/search/${queryStr}`;
 
-    return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
+    return this.http.get<SearchResult[]>(url, { responseType: 'json' });
   }
 
   createVehicleRecord(newVehicleRecord: VehicleTechRecordModel, user: { id?: string; name: string }): Observable<PostNewVehicleModel> {

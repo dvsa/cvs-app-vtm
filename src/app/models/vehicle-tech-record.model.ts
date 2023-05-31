@@ -1,5 +1,19 @@
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
+export interface SearchResult {
+  systemNumber: string;
+  createdTimestamp: string;
+  vin: string;
+  primaryVrm?: string;
+  trailerId?: string;
+  techRecord_vehicleType: string;
+  techRecord_manufactureYear?: number | null;
+  techRecord_chassisMake?: string;
+  techRecord_chassisModel?: string;
+  techRecord_make?: string;
+  techRecord_model?: string;
+}
+
 export interface VehicleTechRecordModel {
   vrms: Vrm[];
   vin: string;
