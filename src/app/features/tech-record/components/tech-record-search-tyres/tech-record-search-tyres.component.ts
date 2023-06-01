@@ -5,7 +5,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes, SearchParams } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
+import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -47,6 +47,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 
   public form!: CustomFormGroup;
   public searchResults: Array<ReferenceDataTyre> | null = null;
+  public loadIndex: Array<ReferenceDataTyreLoadIndex> = [];
   public vehicleTechRecord?: VehicleTechRecordModel;
   public viewableTechRecord: TechRecordModel | undefined = undefined;
   private params: SearchParams = {};
@@ -90,7 +91,10 @@ export class TechRecordSearchTyresComponent implements OnInit {
         this.form.controls['filter'].patchValue(v.filter);
         this.form.controls['term'].patchValue(v.term);
       });
-
+    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
+    this.referenceDataService
+      .getAll$(ReferenceDataResourceType.TyreLoadIndex)
+      .subscribe(data => (this.loadIndex = data as ReferenceDataTyreLoadIndex[]));
     if (!this.viewableTechRecord) {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
