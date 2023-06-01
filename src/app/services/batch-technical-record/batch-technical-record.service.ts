@@ -57,14 +57,14 @@ export class BatchTechnicalRecordService {
   private validateVinAndTrailerId(vin: string, trailerId: string, systemNumberControl: CustomFormControl): Observable<ValidationErrors | null> {
     return this.techRecordHttpService.getByVin(vin).pipe(
       map(result => {
-        const filteredResults = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId);
+        const filteredResults = result.filter(techRecords => techRecords.trailerId === trailerId);
         if (!filteredResults.length) {
           return { validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } };
         }
         if (filteredResults.length > 1) {
           return { validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } };
         }
-        if (filteredResults[0].techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT)) {
+        if (filteredResults.find(techRecord => techRecord.techRecord_status === StatusCodes.CURRENT)) {
           return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
         }
         systemNumberControl.setValue(result[0].systemNumber);

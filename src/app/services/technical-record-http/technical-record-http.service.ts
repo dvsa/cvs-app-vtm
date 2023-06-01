@@ -48,32 +48,32 @@ export class TechnicalRecordHttpService {
   }
 
   getByVin(vin: string): Observable<SearchResult[]> {
-    return this.getVehicleTechRecordModels(vin, SEARCH_TYPES.VIN);
+    return this.getTechRecordModels(vin, SEARCH_TYPES.VIN);
   }
 
   getByPartialVin(partialVin: string): Observable<SearchResult[]> {
-    return this.getVehicleTechRecordModels(partialVin, SEARCH_TYPES.PARTIAL_VIN);
+    return this.getTechRecordModels(partialVin, SEARCH_TYPES.PARTIAL_VIN);
   }
 
   getByVrm(vrm: string): Observable<SearchResult[]> {
-    return this.getVehicleTechRecordModels(vrm, SEARCH_TYPES.VRM);
+    return this.getTechRecordModels(vrm, SEARCH_TYPES.VRM);
   }
 
   getByTrailerId(id: string): Observable<SearchResult[]> {
-    return this.getVehicleTechRecordModels(id, SEARCH_TYPES.TRAILER_ID);
+    return this.getTechRecordModels(id, SEARCH_TYPES.TRAILER_ID);
   }
 
   getBySystemNumber(systemNumber: string): Observable<SearchResult[]> {
-    return this.getVehicleTechRecordModels(systemNumber, SEARCH_TYPES.SYSTEM_NUMBER);
+    return this.getTechRecordModels(systemNumber, SEARCH_TYPES.SYSTEM_NUMBER);
   }
 
   getByAll(term: string): Observable<SearchResult[]> {
-    return this.getVehicleTechRecordModels(term, SEARCH_TYPES.ALL);
+    return this.getTechRecordModels(term, SEARCH_TYPES.ALL);
   }
 
-  getVehicleTechRecordModels(id: string, type: SEARCH_TYPES): Observable<SearchResult[]> {
+  getTechRecordModels(id: string, type: SEARCH_TYPES): Observable<SearchResult[]> {
     const queryStr = `${id}?searchCriteria=${type}`;
-    const url = `${environment.VTM_API_URI}/v3/vehicles/search/${queryStr}`;
+    const url = `${environment.VTM_API_URI}/v3/technical-records/search/${queryStr}`;
 
     return this.http.get<SearchResult[]>(url, { responseType: 'json' });
   }

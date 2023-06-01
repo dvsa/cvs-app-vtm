@@ -12,6 +12,7 @@ export interface SearchResult {
   techRecord_chassisModel?: string;
   techRecord_make?: string;
   techRecord_model?: string;
+  techRecord_status?: string;
 }
 
 export interface VehicleTechRecordModel {

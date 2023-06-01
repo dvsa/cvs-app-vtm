@@ -29,16 +29,15 @@ export class TechnicalRecordService {
   }
 
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
-    return this.techRecordHttpService.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
-      map(vehicleTechRecord => {
-        const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
-        if (allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED)) {
+    return this.techRecordHttpService.getTechRecordModels(valueToCheck, searchType).pipe(
+      map(techRecords => {
+        if (techRecords.every(item => item.techRecord_status === StatusCodes.ARCHIVED)) {
           return true;
         }
 
         if (searchType === SEARCH_TYPES.VRM) {
-          const allVrms = vehicleTechRecord.flatMap(record => record.vrms);
-          return !allVrms.some(vrm => vrm.isPrimary && vrm.vrm === valueToCheck);
+          const allVrms = techRecords.map(record => record.primaryVrm);
+          return !allVrms.some(vrm => vrm === valueToCheck);
         }
 
         return false;
