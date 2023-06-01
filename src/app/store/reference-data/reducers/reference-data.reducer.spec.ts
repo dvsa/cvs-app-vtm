@@ -18,7 +18,7 @@ import {
   removeTyreSearch
 } from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
-import { initialReferenceDataState, ReferenceDataEntityStateTyres, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
+import { initialReferenceDataState, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
 
 describe('Reference Data Reducer', () => {
   describe('unknown action', () => {

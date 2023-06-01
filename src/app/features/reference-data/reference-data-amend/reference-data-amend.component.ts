@@ -34,17 +34,11 @@ import {
 } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
 import { template as trlTemplate, templateList as trlTemplateList } from '@forms/templates/reference-data/trl-make';
 import { template as tyresTemplate, templateList as tyresTemplateList } from '@forms/templates/reference-data/tyres';
-import { ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import {
-  fetchReferenceDataByKey,
-  fetchReferenceDataByKeySearch,
-  ReferenceDataState,
-  selectReferenceDataByResourceKey,
-  selectSearchReturn
-} from '@store/reference-data';
+import { fetchReferenceDataByKey, fetchReferenceDataByKeySearch, ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { Observable, of, take } from 'rxjs';
 
 @Component({
@@ -77,7 +71,6 @@ export class ReferenceDataAmendComponent implements OnInit {
       this.key = params['key'];
 
       if (this.type && this.key) {
-        console.log('This is the key by url params: ', this.key);
         this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.key }));
         // @ts-ignore
         this.store.dispatch(fetchReferenceDataByKeySearch({ resourceType: this.type + '#AUDIT', resourceKey: this.key }));
@@ -91,10 +84,6 @@ export class ReferenceDataAmendComponent implements OnInit {
 
   get data$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)));
-  }
-
-  get dataAudit$(): Observable<any[] | null> {
-    return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceTypeAudit)));
   }
 
   get widths(): typeof FormNodeWidth {

@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { map, Observable } from 'rxjs';
+import { ReferenceDataState, selectSearchReturn } from '@store/reference-data';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend-history',
@@ -12,24 +13,30 @@ import { map, Observable } from 'rxjs';
 export class ReferenceDataAmendHistoryComponent {
   @Input() type!: ReferenceDataResourceType;
   @Input() key!: string;
-  @Input() dataAudit!: Observable<any[] | null>;
+  // @Input() dataAudit!: Observable<any[] | null>;
   @Input() columns!: Observable<Array<string>>;
   @Input() titleCaseHeading: any;
   @Input() titleCaseColumn: any;
 
-  numberInDataAudit: any = [];
   pageStart?: number;
   pageEnd?: number;
+  auditResults: any[] = [];
+  result: any[] = [];
 
-  constructor(public dfs: DynamicFormService, private cdr: ChangeDetectorRef, private referenceDataService: ReferenceDataService) {}
+  constructor(private store: Store<ReferenceDataState>, private cdr: ChangeDetectorRef, private referenceDataService: ReferenceDataService) {}
 
-  get paginatedFields() {
-    this.dataAudit.pipe(map(item => this.numberInDataAudit.push(item)));
-    return this.numberInDataAudit.slice(this.pageStart, this.pageEnd) ?? [];
+  get dataAudit$(): Observable<any[] | null> {
+    return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceTypeAudit)));
   }
 
-  get numberOfRecords(): number {
-    return this.numberInDataAudit.length || 0;
+  get numberOfRecords() {
+    this.dataAudit$.subscribe(item => this.auditResults.push(item));
+    this.result = this.auditResults[0];
+    return this.result.length || 0;
+  }
+
+  get paginatedFields(): any {
+    return this.result.slice(this.pageStart, this.pageEnd);
   }
 
   handlePaginationChange({ start, end }: { start: number; end: number }) {
