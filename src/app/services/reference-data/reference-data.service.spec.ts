@@ -5,6 +5,7 @@ import { MultiOptions } from '@forms/models/options.model';
 import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import {
   addSearchInformation,
@@ -12,17 +13,16 @@ import {
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
   initialReferenceDataState,
-  ReferenceDataEntityStateTyres,
+  ReferenceDataEntityStateSearch,
   referencePsvMakeLoadingState,
   removeTyreSearch,
+  selectSearchReturn,
   selectTyreSearchCriteria,
-  selectTyreSearchReturn,
   STORE_FEATURE_REFERENCE_DATA_KEY
 } from '@store/reference-data';
 import { testCases } from '@store/reference-data/reference-data.test-cases';
 import { firstValueFrom, of, take } from 'rxjs';
 import { ReferenceDataService } from './reference-data.service';
-import { UserService } from '@services/user-service/user-service';
 
 describe('ReferenceDataService', () => {
   let service: ReferenceDataService;
@@ -214,7 +214,7 @@ describe('ReferenceDataService', () => {
 
     it('should get the tyre search results', done => {
       const mockReferenceDataTyre = [{ code: 'foo' }] as ReferenceDataTyre[];
-      store.overrideSelector(selectTyreSearchReturn, mockReferenceDataTyre);
+      store.overrideSelector(selectSearchReturn(ReferenceDataResourceType.Tyres), mockReferenceDataTyre);
       service
         .getTyreSearchReturn$()
         .pipe(take(1))
@@ -224,7 +224,7 @@ describe('ReferenceDataService', () => {
         });
     });
     it('should get the tyre search criteria', done => {
-      const mockState = { loading: false } as ReferenceDataEntityStateTyres;
+      const mockState = { loading: false } as ReferenceDataEntityStateSearch;
       store.overrideSelector(selectTyreSearchCriteria, mockState);
       service
         .getTyreSearchCriteria$()

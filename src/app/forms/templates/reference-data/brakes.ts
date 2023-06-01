@@ -19,6 +19,12 @@ export const template: FormNode = {
       ]
     },
     {
+      name: 'dateTimeStamp',
+      label: 'Date-Time',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
       name: 'description',
       label: 'Description',
       type: FormNodeTypes.CONTROL,

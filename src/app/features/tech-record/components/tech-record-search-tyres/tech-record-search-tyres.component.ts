@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess } from '@store/reference-data';
-import { selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
+import { selectSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { mergeMap, take } from 'rxjs';
@@ -128,12 +128,12 @@ export class TechRecordSearchTyresComponent implements OnInit {
     this.actions$
       .pipe(
         ofType(fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess),
-        mergeMap(() => this.store.select(selectTyreSearchReturn)),
+        mergeMap(() => this.store.select(selectSearchReturn(ReferenceDataResourceType.Tyres))),
         take(1)
       )
       .subscribe(data => {
         this.router.navigate(['.'], { relativeTo: this.route, queryParams: { 'search-results-page': 1 } });
-        this.searchResults = data;
+        this.searchResults = data as ReferenceDataTyre[];
       });
   }
 

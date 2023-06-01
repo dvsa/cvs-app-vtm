@@ -8,8 +8,9 @@ import { ReferenceDataCreateComponent } from './reference-data-add/reference-dat
 import { ReferenceDataListComponent } from './reference-data-list/reference-data-list.component';
 import { ReferenceDataRoutingModule } from './reference-data-routing.module';
 import { ReferenceDataSelectTypeComponent } from './reference-data-select-type/reference-data-select-type.component';
-import { ReferenceDataAmendComponent } from './reference-data-amend/reference-data-amend/reference-data-amend.component';
 import { ReferenceDataDeleteComponent } from './reference-data-delete/reference-data-delete.component';
+import { ReferenceDataAmendComponent } from './reference-data-amend/reference-data-amend.component';
+import { ReferenceDataAmendHistoryComponent } from './reference-data-amend-history/reference-data-amend-history.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ReferenceDataDeleteComponent } from './reference-data-delete/reference-
     ReferenceDataListComponent,
     ReferenceDataCreateComponent,
     ReferenceDataAmendComponent,
-    ReferenceDataDeleteComponent
+    ReferenceDataDeleteComponent,
+    ReferenceDataAmendHistoryComponent
   ],
   imports: [CommonModule, DynamicFormsModule, RouterModule, ReactiveFormsModule, ReferenceDataRoutingModule, SharedModule]
 })

@@ -96,7 +96,10 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   get vehicleStatusOptions(): MultiOptions {
-    return [{ label: 'Provisional', value: StatusCodes.PROVISIONAL }];
+    return [
+      { label: 'Provisional', value: StatusCodes.PROVISIONAL },
+      { label: 'Current', value: StatusCodes.CURRENT }
+    ];
   }
 
   get checkboxOptions(): MultiOptions {

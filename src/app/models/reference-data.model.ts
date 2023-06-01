@@ -14,10 +14,14 @@ export enum ReferenceDataResourceType {
   User = 'USER'
 }
 
+type AuditTypes = `${keyof Record<ReferenceDataResourceType, string>}#AUDIT`;
+export type ReferenceDataResourceTypeAudit = `${keyof Record<ReferenceDataResourceType, string>}` | AuditTypes;
 export interface ReferenceDataModelBase {
   resourceType: ReferenceDataResourceType;
   resourceKey: string | number;
   description?: string;
+  createdAt?: string;
+  createdName?: string;
 }
 
 export interface HgvMake extends ReferenceDataModelBase {}

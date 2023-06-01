@@ -1,0 +1,31 @@
+<div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
+  <div class="govuk-grid-column-full">
+    <p class="govuk-heading-xl govuk-!-font-weight-bold">Amend {{ titleCaseHeading(type) }}</p>
+
+    <div class="govuk-inset-text">
+      To amend the key, create a new {{ titleCaseHeading(type) }} with the correct value, then delete this {{ titleCaseHeading(type) }}
+    </div>
+
+    <app-dynamic-form-group
+      [id]="template.name"
+      [template]="template"
+      [data]="data$ | async"
+      [edit]="isEditing"
+      (formChange)="handleFormChange($event)"
+    ></app-dynamic-form-group>
+
+    <app-button-group>
+      <app-button id="submit" (clicked)="handleSubmit()">Amend</app-button>
+
+      <app-button id="cancel" design="link" (clicked)="navigateBack()">Back</app-button>
+    </app-button-group>
+
+    <app-reference-data-amend-history
+      [columns]="columns$"
+      [type]="type"
+      [key]="key"
+      [titleCaseHeading]="titleCaseHeading"
+      [titleCaseColumn]="titleCaseColumn"
+    ></app-reference-data-amend-history>
+  </div>
+</div>

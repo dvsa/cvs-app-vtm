@@ -9,10 +9,10 @@ import { template as brakesTemplate } from '@forms/templates/reference-data/brak
 import { template as countryOfRegistrationTemplate } from '@forms/templates/reference-data/country-of-registration';
 import { template as hgvTemplate } from '@forms/templates/reference-data/hgv-make';
 import { template as psvTemplate } from '@forms/templates/reference-data/psv-make';
-import { template as reasonsForAbandoningTirTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TIR';
-import { template as reasonsForAbandoningTrlTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
 import { template as reasonsForAbandoningHgvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
 import { template as reasonsForAbandoningPsvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-psv';
+import { template as reasonsForAbandoningTirTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TIR';
+import { template as reasonsForAbandoningTrlTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
 import { template as specialistReasonsForAbandoningTemplate } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
 import { template as trlTemplate } from '@forms/templates/reference-data/trl-make';
 import { template as tyresTemplate } from '@forms/templates/reference-data/tyres';
