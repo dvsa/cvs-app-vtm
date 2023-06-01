@@ -20,7 +20,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { Observable, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
 
 @Component({
@@ -33,6 +33,7 @@ export class ReferenceDataCreateComponent implements OnInit {
   newRefData: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
+  refDataAdminType: any | undefined;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
@@ -50,12 +51,15 @@ export class ReferenceDataCreateComponent implements OnInit {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
+      this.store
+        .pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
+        .subscribe(type => (this.refDataAdminType = type));
     });
   }
-
-  get refDataAdminType$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
-  }
+  //I feel like the issue is this being a getter, may want to be stored as a variable then accessed. A bit like tech records
+  // get refDataAdminType$(): Observable<any | undefined> {
+  //   return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
+  // }
 
   get roles(): typeof Roles {
     return Roles;
