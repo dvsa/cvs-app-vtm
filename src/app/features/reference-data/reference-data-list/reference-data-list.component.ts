@@ -11,7 +11,7 @@ import { templateList as reasonsForAbandoningTrlTemplateList } from '@forms/temp
 import { templateList as specialistReasonsForAbandoningTemplateList } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
 import { templateList as trlTemplateList } from '@forms/templates/reference-data/trl-make';
 import { templateList as tyresTemplateList } from '@forms/templates/reference-data/tyres';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
