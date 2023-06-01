@@ -1,10 +1,11 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { template as brakesTemplate } from '@forms/templates/reference-data/brakes';
 import { template as countryOfRegistrationTemplate } from '@forms/templates/reference-data/country-of-registration';
 import { template as hgvTemplate } from '@forms/templates/reference-data/hgv-make';
@@ -20,19 +21,40 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { ReferenceDataState, fetchReferenceDataByKey, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { Observable, of, take } from 'rxjs';
 
 @Component({
-  selector: 'app-reference-data-add',
-  templateUrl: './reference-data-add.component.html'
+  selector: 'app-reference-data-delete',
+  templateUrl: './reference-data-delete.component.html'
 })
-export class ReferenceDataCreateComponent implements OnInit {
-  isEditing: boolean = true;
-  type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
-  newRefData: any;
+export class ReferenceDataDeleteComponent {
+  type!: ReferenceDataResourceType;
+  key!: string;
+  reasonForDeletion: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
+
+  refDataAdminType$: Observable<any> = of(null);
+
+  reasonTemplate = {
+    name: 'reason-for-deletion',
+    type: FormNodeTypes.GROUP,
+    label: 'reason',
+    children: [
+      {
+        name: 'reason',
+        label: 'Reason for Deletion',
+        type: FormNodeTypes.CONTROL,
+        editType: FormNodeEditTypes.TEXTAREA,
+        validators: [
+          {
+            name: ValidatorNames.Required
+          }
+        ]
+      }
+    ]
+  };
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
@@ -49,16 +71,21 @@ export class ReferenceDataCreateComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
-      this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-    });
-  }
+      this.key = params['key'];
 
-  get refDataAdminType$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
+      if (this.type && this.key) {
+        console.log('This is the key by url params: ', this.key);
+        this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.key }));
+      }
+    });
   }
 
   get roles(): typeof Roles {
     return Roles;
+  }
+
+  get refData$(): Observable<any | undefined> {
+    return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)));
   }
 
   get widths(): typeof FormNodeWidth {
@@ -107,7 +134,7 @@ export class ReferenceDataCreateComponent implements OnInit {
     }
     templateToReturn.children?.forEach(child => {
       if (child.name === 'resourceKey') {
-        child.disabled = false;
+        child.disabled = true;
       }
     });
     return templateToReturn;
@@ -117,50 +144,9 @@ export class ReferenceDataCreateComponent implements OnInit {
     return this.referenceDataService.macroCasetoTitleCase(input);
   }
 
-  titleCaseField(s: string): string {
-    return this.referenceDataService.camelCaseToTitleCase(s);
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    this.router.navigate(['..'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
-  }
-
-  handleSubmit() {
-    this.checkForms();
-
-    if (this.isFormInvalid) return;
-
-    const referenceData: any = {};
-
-    Object.keys(this.newRefData)
-      .filter(newRefDataKey => newRefDataKey !== 'resourceKey')
-      .forEach(dataKey => (referenceData[dataKey] = this.newRefData[dataKey]));
-
-    this.globalErrorService.errors$
-      .pipe(
-        take(1),
-        filter(errors => !errors.length),
-        switchMap(() => this.referenceDataService.fetchReferenceDataByKey(this.type, this.newRefData.resourceKey)),
-        take(1),
-        catchError(error => (error.status == 200 ? of(true) : throwError(() => new Error('Error'))))
-      )
-      .subscribe({
-        next: res => {
-          if (res) return this.globalErrorService.addError({ error: 'Resource Key already exists', anchorLink: 'newReferenceData' });
-        },
-        error: e =>
-          e.status == 404
-            ? of(true)
-            : this.referenceDataService
-                .createNewReferenceDataItem(this.type, this.newRefData.resourceKey, referenceData)
-                .pipe(take(1))
-                .subscribe(() => this.navigateBack())
-      });
-  }
-
   handleFormChange(event: any) {
-    this.newRefData = event;
+    this.reasonForDeletion = event;
+    console.log(this.reasonForDeletion);
   }
 
   checkForms(): void {
@@ -179,5 +165,24 @@ export class ReferenceDataCreateComponent implements OnInit {
     forms.forEach(form => DynamicFormService.validate(form, errors));
 
     errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
+  }
+
+  navigateBack() {
+    this.globalErrorService.clearErrors();
+    this.router.navigate([this.type], { relativeTo: this.route.parent });
+  }
+
+  handleSubmit() {
+    this.checkForms();
+
+    if (this.isFormInvalid) return;
+    // Object.keys(this.amendedData)
+    //   .filter(amendDataKey => amendDataKey !== 'resourceKey')
+    //   .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
+
+    this.referenceDataService
+      .deleteReferenceDataItem(this.type, this.key, this.reasonForDeletion.reason)
+      .pipe(take(1))
+      .subscribe(() => this.navigateBack());
   }
 }

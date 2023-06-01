@@ -19,6 +19,12 @@
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row" *ngFor="let item of data$ | async">
           <td *ngFor="let column of (refDataAdminType$ | async).columns" class="govuk-table__cell">{{ item[column.name] }}</td>
+          <td class="govuk-table__cell">
+            <app-button-group>
+              <app-button id="amend" design="link" (clicked)="amend(item)">Amend</app-button>
+              <app-button id="delete" design="link" (clicked)="delete(item)">Delete</app-button>
+            </app-button-group>
+          </td>
         </tr>
       </tbody>
     </table>

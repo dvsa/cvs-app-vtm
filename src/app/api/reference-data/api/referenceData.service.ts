@@ -255,24 +255,28 @@ export class ReferenceDataService {
   public referenceResourceTypeResourceKeyDelete(
     resourceType: string,
     resourceKey: ResourceKey,
+    body?: any,
     observe?: 'body',
     reportProgress?: boolean
   ): Observable<DeleteItem>;
   public referenceResourceTypeResourceKeyDelete(
     resourceType: string,
     resourceKey: ResourceKey,
+    body?: any,
     observe?: 'response',
     reportProgress?: boolean
   ): Observable<HttpResponse<DeleteItem>>;
   public referenceResourceTypeResourceKeyDelete(
     resourceType: string,
     resourceKey: ResourceKey,
+    body?: any,
     observe?: 'events',
     reportProgress?: boolean
   ): Observable<HttpEvent<DeleteItem>>;
   public referenceResourceTypeResourceKeyDelete(
     resourceType: string,
     resourceKey: ResourceKey,
+    body?: any,
     observe: any = 'body',
     reportProgress: boolean = false
   ): Observable<any> {
@@ -300,6 +304,7 @@ export class ReferenceDataService {
       'delete',
       `${this.basePath}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
       {
+        body: body,
         withCredentials: this.configuration.withCredentials,
         headers: headers,
         observe: observe,

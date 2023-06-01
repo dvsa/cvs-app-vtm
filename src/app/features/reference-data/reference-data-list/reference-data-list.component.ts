@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -30,6 +30,8 @@ export class ReferenceDataListComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
+
+      console.log('This is the type by url params: ', this.type);
       this.referenceDataService.loadReferenceData(this.type);
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
     });
@@ -108,6 +110,14 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   back(): void {
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.router.navigate(['reference-data']);
+  }
+
+  amend(item: ReferenceDataModelBase): void {
+    this.router.navigate([item.resourceKey], { relativeTo: this.route });
+  }
+
+  delete(item: ReferenceDataModelBase): void {
+    this.router.navigate([`${item.resourceKey}/delete`], { relativeTo: this.route });
   }
 }

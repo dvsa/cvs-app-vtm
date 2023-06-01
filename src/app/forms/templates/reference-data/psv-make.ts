@@ -30,6 +30,17 @@ export const template: FormNode = {
       ]
     },
     {
+      name: 'dateTimeStamp',
+      label: 'Date-Time',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [
+        {
+          name: ValidatorNames.Required
+        }
+      ]
+    },
+    {
       name: 'dtpNumber',
       label: 'DTp Number',
       type: FormNodeTypes.CONTROL,

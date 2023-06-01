@@ -20,17 +20,18 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { ReferenceDataState, fetchReferenceDataByKey, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { Observable, take } from 'rxjs';
 
 @Component({
-  selector: 'app-reference-data-add',
-  templateUrl: './reference-data-add.component.html'
+  selector: 'app-reference-data-amend',
+  templateUrl: './reference-data-amend.component.html'
 })
-export class ReferenceDataCreateComponent implements OnInit {
+export class ReferenceDataAmendComponent implements OnInit {
+  type!: ReferenceDataResourceType;
+  key!: string;
   isEditing: boolean = true;
-  type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
-  newRefData: any;
+  amendedData: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
 
@@ -38,31 +39,65 @@ export class ReferenceDataCreateComponent implements OnInit {
 
   constructor(
     public globalErrorService: GlobalErrorService,
+    public dfs: DynamicFormService,
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<ReferenceDataState>
-  ) {
-    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.ReferenceDataAdminType);
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
-      this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-    });
-  }
+      this.key = params['key'];
 
-  get refDataAdminType$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
+      if (this.type && this.key) {
+        console.log('This is the key by url params: ', this.key);
+        this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.key }));
+      }
+    });
   }
 
   get roles(): typeof Roles {
     return Roles;
   }
 
+  get data$(): Observable<any | undefined> {
+    return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)));
+  }
+
   get widths(): typeof FormNodeWidth {
     return FormNodeWidth;
+  }
+
+  titleCaseHeading(input: ReferenceDataResourceType): string {
+    return this.referenceDataService.macroCasetoTitleCase(input);
+  }
+
+  titleCaseField(s: string): string {
+    return this.referenceDataService.camelCaseToTitleCase(s);
+  }
+
+  navigateBack() {
+    this.globalErrorService.clearErrors();
+    this.router.navigate([this.type], { relativeTo: this.route.parent });
+  }
+
+  handleSubmit() {
+    this.checkForms();
+
+    if (this.isFormInvalid) return;
+
+    const referenceData: any = {};
+
+    Object.keys(this.amendedData)
+      .filter(amendDataKey => amendDataKey !== 'resourceKey')
+      .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
+
+    this.referenceDataService
+      .amendReferenceDataItem(this.type, this.amendedData.resourceKey, referenceData)
+      .pipe(take(1))
+      .subscribe(() => this.navigateBack());
   }
 
   get template(): FormNode {
@@ -107,60 +142,14 @@ export class ReferenceDataCreateComponent implements OnInit {
     }
     templateToReturn.children?.forEach(child => {
       if (child.name === 'resourceKey') {
-        child.disabled = false;
+        child.disabled = true;
       }
     });
     return templateToReturn;
   }
 
-  titleCaseHeading(input: ReferenceDataResourceType): string {
-    return this.referenceDataService.macroCasetoTitleCase(input);
-  }
-
-  titleCaseField(s: string): string {
-    return this.referenceDataService.camelCaseToTitleCase(s);
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    this.router.navigate(['..'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
-  }
-
-  handleSubmit() {
-    this.checkForms();
-
-    if (this.isFormInvalid) return;
-
-    const referenceData: any = {};
-
-    Object.keys(this.newRefData)
-      .filter(newRefDataKey => newRefDataKey !== 'resourceKey')
-      .forEach(dataKey => (referenceData[dataKey] = this.newRefData[dataKey]));
-
-    this.globalErrorService.errors$
-      .pipe(
-        take(1),
-        filter(errors => !errors.length),
-        switchMap(() => this.referenceDataService.fetchReferenceDataByKey(this.type, this.newRefData.resourceKey)),
-        take(1),
-        catchError(error => (error.status == 200 ? of(true) : throwError(() => new Error('Error'))))
-      )
-      .subscribe({
-        next: res => {
-          if (res) return this.globalErrorService.addError({ error: 'Resource Key already exists', anchorLink: 'newReferenceData' });
-        },
-        error: e =>
-          e.status == 404
-            ? of(true)
-            : this.referenceDataService
-                .createNewReferenceDataItem(this.type, this.newRefData.resourceKey, referenceData)
-                .pipe(take(1))
-                .subscribe(() => this.navigateBack())
-      });
-  }
-
   handleFormChange(event: any) {
-    this.newRefData = event;
+    this.amendedData = event;
   }
 
   checkForms(): void {
