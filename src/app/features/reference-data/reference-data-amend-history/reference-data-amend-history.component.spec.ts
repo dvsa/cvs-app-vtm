@@ -27,6 +27,20 @@ describe('ReferenceDataAmendHistoryComponent', () => {
     fixture = TestBed.createComponent(ReferenceDataAmendHistoryComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
+    component.refDataAdminType = {
+      columns: [
+        {
+          heading: 'Key',
+          name: 'resourceKey',
+          order: 1
+        },
+        {
+          heading: 'Description',
+          name: 'description',
+          order: 2
+        }
+      ]
+    };
     fixture.detectChanges();
   });
 
