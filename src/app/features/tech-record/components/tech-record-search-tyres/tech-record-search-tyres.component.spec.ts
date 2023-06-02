@@ -17,9 +17,10 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/index';
-import { fetchReferenceDataByKeySearchSuccess, selectSearchReturn } from '@store/reference-data';
+import { fetchReferenceDataByKeySearchSuccess, initialReferenceDataState, ReferenceDataState, selectSearchReturn } from '@store/reference-data';
 import { of, ReplaySubject } from 'rxjs';
 import { TechRecordSearchTyresComponent } from './tech-record-search-tyres.component';
+import * as referenceDataSelectors from '@store/reference-data';
 
 const mockGlobalErrorService = {
   addError: jest.fn(),
@@ -130,13 +131,22 @@ describe('TechRecordSearchTyresComponent', () => {
     it('should navigate and populate the search results on success action', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate');
       const mockTyreSearchReturn = ['foo', 'bar'] as any;
-      store.overrideSelector(selectSearchReturn(ReferenceDataResourceType.Tyres), mockTyreSearchReturn);
+      const state: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.Tyres]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
+          loading: false,
+          searchReturn: mockTyreSearchReturn
+        }
+      };
+
+      const expectedState = referenceDataSelectors.selectSearchReturn(ReferenceDataResourceType.Tyres).projector(state);
       component.handleSearch('foo', 'bar');
       expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith('foo', 'bar');
       actions$.next(fetchReferenceDataByKeySearchSuccess);
       tick();
       expect(navigateSpy).toHaveBeenCalledWith(['.'], { relativeTo: route, queryParams: { 'search-results-page': 1 } });
-      expect(component.searchResults).toEqual(mockTyreSearchReturn);
+      expect(expectedState).toEqual(mockTyreSearchReturn);
     }));
 
     const testCases = [
