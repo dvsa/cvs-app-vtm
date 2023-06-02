@@ -25,11 +25,6 @@ export const globalErrorReducer = createReducer(
   initialGlobalErrorState,
   on(
     GlobalErrorActions.clearError,
-    TechnicalRecordServiceActions.getByVin,
-    TechnicalRecordServiceActions.getByPartialVin,
-    TechnicalRecordServiceActions.getByVrm,
-    TechnicalRecordServiceActions.getByTrailerId,
-    TechnicalRecordServiceActions.getByAll,
     TechnicalRecordServiceActions.createProvisionalTechRecord,
     TechnicalRecordServiceActions.updateTechRecords,
     TestResultActions.fetchTestResults,
@@ -43,11 +38,6 @@ export const globalErrorReducer = createReducer(
 
   on(
     GlobalErrorActions.addError,
-    TechnicalRecordServiceActions.getByVinFailure,
-    TechnicalRecordServiceActions.getByPartialVinFailure,
-    TechnicalRecordServiceActions.getByVrmFailure,
-    TechnicalRecordServiceActions.getByTrailerIdFailure,
-    TechnicalRecordServiceActions.getByAllFailure,
     TechnicalRecordServiceActions.createProvisionalTechRecordFailure,
     TechnicalRecordServiceActions.updateTechRecordsFailure,
     TestResultActions.fetchTestResultsFailed,

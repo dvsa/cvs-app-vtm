@@ -4,6 +4,11 @@ import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/fo
 import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
+import {
+  selectTechRecordSearchResults,
+  selectTechRecordSearchResultsBySystemNumber
+} from '@store/tech-record-search/selector/tech-record-search.selector';
 import {
   createVehicle,
   editableTechRecord,
@@ -29,16 +34,14 @@ export class TechnicalRecordService {
   }
 
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
-    return this.techRecordHttpService.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
-      map(vehicleTechRecord => {
-        const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
-        if (allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED)) {
+    return this.techRecordHttpService.search$(searchType, valueToCheck).pipe(
+      map(searchResults => {
+        if (searchResults.every(result => result.techRecord_statusCode === StatusCodes.ARCHIVED)) {
           return true;
         }
 
         if (searchType === SEARCH_TYPES.VRM) {
-          const allVrms = vehicleTechRecord.flatMap(record => record.vrms);
-          return !allVrms.some(vrm => vrm.isPrimary && vrm.vrm === valueToCheck);
+          return !searchResults.some(result => result.primaryVrm === valueToCheck);
         }
 
         return false;
@@ -167,6 +170,13 @@ export class TechnicalRecordService {
     return this.viewableTechRecord$;
   }
 
+  get searchResults$(): Observable<SearchResult[] | undefined> {
+    return this.store.pipe(select(selectTechRecordSearchResults));
+  }
+
+  get searchResultsWithUniqueSystemNumbers$(): Observable<SearchResult[] | undefined> {
+    return this.store.pipe(select(selectTechRecordSearchResultsBySystemNumber));
+  }
   get viewableRecordStatus$(): Observable<StatusCodes | undefined> {
     return this.viewableTechRecord$.pipe(map(techRecord => techRecord?.statusCode));
   }
