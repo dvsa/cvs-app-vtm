@@ -9,12 +9,12 @@ export class TyreAxleLoadPipe implements PipeTransform {
     axleLoad: string | undefined,
     index: string | undefined,
     factor: number,
-    loadIndex: ReferenceDataTyreLoadIndex[]
+    loadIndex: ReferenceDataTyreLoadIndex[] | null
   ): undefined | string | number {
     if (axleLoad) {
       return axleLoad;
     }
-    const axleLoadIndex = loadIndex.find(resource => resource.resourceKey === index);
+    const axleLoadIndex = loadIndex?.find(resource => resource.resourceKey === index);
     return axleLoadIndex?.load_index ? String(+axleLoadIndex.load_index * factor) : undefined;
   }
 }

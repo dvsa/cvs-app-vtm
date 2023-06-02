@@ -16,7 +16,7 @@ import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearch
 import { selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { mergeMap, take } from 'rxjs';
+import { mergeMap, Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-tyres-search',
@@ -47,7 +47,6 @@ export class TechRecordSearchTyresComponent implements OnInit {
 
   public form!: CustomFormGroup;
   public searchResults: Array<ReferenceDataTyre> | null = null;
-  public loadIndex: Array<ReferenceDataTyreLoadIndex> = [];
   public vehicleTechRecord?: VehicleTechRecordModel;
   public viewableTechRecord: TechRecordModel | undefined = undefined;
   private params: SearchParams = {};
@@ -92,9 +91,6 @@ export class TechRecordSearchTyresComponent implements OnInit {
         this.form.controls['term'].patchValue(v.term);
       });
     this.referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
-    this.referenceDataService
-      .getAll$(ReferenceDataResourceType.TyreLoadIndex)
-      .subscribe(data => (this.loadIndex = data as ReferenceDataTyreLoadIndex[]));
     if (!this.viewableTechRecord) {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
@@ -111,6 +107,10 @@ export class TechRecordSearchTyresComponent implements OnInit {
   }
   get numberOfResults(): number {
     return this.searchResults?.length ?? 0;
+  }
+
+  get loadIndex$(): Observable<ReferenceDataTyreLoadIndex[] | null> {
+    return this.referenceDataService.getAll$(ReferenceDataResourceType.TyreLoadIndex) as Observable<ReferenceDataTyreLoadIndex[]>;
   }
 
   handleSearch(filter: string, term: string): void {

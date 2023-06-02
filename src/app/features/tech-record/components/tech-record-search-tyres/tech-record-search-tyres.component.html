@@ -91,8 +91,12 @@
         <td class="govuk-table__cell">{{ tyre.plyRating }}</td>
         <td class="govuk-table__cell">{{ tyre.loadIndexSingleLoad }}</td>
         <td class="govuk-table__cell">{{ tyre.loadIndexTwinLoad }}</td>
-        <td class="govuk-table__cell">{{ tyre.axleLoadSingle | tyreAxleLoad : tyre.loadIndexSingleLoad : 2 : loadIndex | defaultNullOrEmpty }}</td>
-        <td class="govuk-table__cell">{{ tyre.axleLoadDouble | tyreAxleLoad : tyre.loadIndexTwinLoad : 4 : loadIndex | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">
+          {{ tyre.axleLoadSingle | tyreAxleLoad : tyre.loadIndexSingleLoad : 2 : (loadIndex$ | async) | defaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell">
+          {{ tyre.axleLoadDouble | tyreAxleLoad : tyre.loadIndexTwinLoad : 4 : (loadIndex$ | async) | defaultNullOrEmpty }}
+        </td>
         <td class="govuk-table__cell">
           <a id="add" class="govuk-link add-link" (click)="handleAddTyreToRecord(tyre)">Add</a>
         </td>
