@@ -52,7 +52,7 @@ export class ReferenceDataCreateComponent implements OnInit {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
       this.store
-        .pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
+        .pipe(take(1), select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
         .subscribe(type => (this.refDataAdminType = type));
     });
   }
@@ -69,53 +69,53 @@ export class ReferenceDataCreateComponent implements OnInit {
     return FormNodeWidth;
   }
 
-  get template(): FormNode {
-    let templateToReturn: FormNode;
-    switch (this.type) {
-      case ReferenceDataResourceType.Brakes:
-        templateToReturn = brakesTemplate;
-        break;
-      case ReferenceDataResourceType.CountryOfRegistration:
-        templateToReturn = countryOfRegistrationTemplate;
-        break;
-      case ReferenceDataResourceType.HgvMake:
-        templateToReturn = hgvTemplate;
-        break;
-      case ReferenceDataResourceType.PsvMake:
-        templateToReturn = psvTemplate;
-        break;
-      case ReferenceDataResourceType.ReasonsForAbandoningHgv:
-        templateToReturn = reasonsForAbandoningHgvTemplate;
-        break;
-      case ReferenceDataResourceType.ReasonsForAbandoningPsv:
-        templateToReturn = reasonsForAbandoningPsvTemplate;
-        break;
-      case ReferenceDataResourceType.ReasonsForAbandoningTrl:
-        templateToReturn = reasonsForAbandoningTrlTemplate;
-        break;
-      case ReferenceDataResourceType.SpecialistReasonsForAbandoning:
-        templateToReturn = specialistReasonsForAbandoningTemplate;
-        break;
-      case ReferenceDataResourceType.TirReasonsForAbandoning:
-        templateToReturn = reasonsForAbandoningTirTemplate;
-        break;
-      case ReferenceDataResourceType.TrlMake:
-        templateToReturn = trlTemplate;
-        break;
-      case ReferenceDataResourceType.Tyres:
-        templateToReturn = tyresTemplate;
-        break;
-      default:
-        templateToReturn = {} as FormNode;
-        break;
-    }
-    templateToReturn.children?.forEach(child => {
-      if (child.name === 'resourceKey') {
-        child.disabled = false;
-      }
-    });
-    return templateToReturn;
-  }
+  // get template(): FormNode {
+  //   let templateToReturn: FormNode;
+  //   switch (this.type) {
+  //     case ReferenceDataResourceType.Brakes:
+  //       templateToReturn = brakesTemplate;
+  //       break;
+  //     case ReferenceDataResourceType.CountryOfRegistration:
+  //       templateToReturn = countryOfRegistrationTemplate;
+  //       break;
+  //     case ReferenceDataResourceType.HgvMake:
+  //       templateToReturn = hgvTemplate;
+  //       break;
+  //     case ReferenceDataResourceType.PsvMake:
+  //       templateToReturn = psvTemplate;
+  //       break;
+  //     case ReferenceDataResourceType.ReasonsForAbandoningHgv:
+  //       templateToReturn = reasonsForAbandoningHgvTemplate;
+  //       break;
+  //     case ReferenceDataResourceType.ReasonsForAbandoningPsv:
+  //       templateToReturn = reasonsForAbandoningPsvTemplate;
+  //       break;
+  //     case ReferenceDataResourceType.ReasonsForAbandoningTrl:
+  //       templateToReturn = reasonsForAbandoningTrlTemplate;
+  //       break;
+  //     case ReferenceDataResourceType.SpecialistReasonsForAbandoning:
+  //       templateToReturn = specialistReasonsForAbandoningTemplate;
+  //       break;
+  //     case ReferenceDataResourceType.TirReasonsForAbandoning:
+  //       templateToReturn = reasonsForAbandoningTirTemplate;
+  //       break;
+  //     case ReferenceDataResourceType.TrlMake:
+  //       templateToReturn = trlTemplate;
+  //       break;
+  //     case ReferenceDataResourceType.Tyres:
+  //       templateToReturn = tyresTemplate;
+  //       break;
+  //     default:
+  //       templateToReturn = {} as FormNode;
+  //       break;
+  //   }
+  //   templateToReturn.children?.forEach(child => {
+  //     if (child.name === 'resourceKey') {
+  //       child.disabled = false;
+  //     }
+  //   });
+  //   return templateToReturn;
+  // }
 
   titleCaseHeading(input: ReferenceDataResourceType): string {
     return this.referenceDataService.macroCasetoTitleCase(input);
