@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -10,11 +10,10 @@ import { Observable } from 'rxjs';
   templateUrl: './reference-data-amend-history.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReferenceDataAmendHistoryComponent {
+export class ReferenceDataAmendHistoryComponent implements OnInit {
   @Input() type!: ReferenceDataResourceType;
   @Input() key!: string;
-  // @Input() dataAudit!: Observable<any[] | null>;
-  @Input() columns!: Observable<Array<string>>;
+  @Input() refDataAdminType: any | undefined;
   @Input() titleCaseHeading: any;
   @Input() titleCaseColumn: any;
 
@@ -22,8 +21,13 @@ export class ReferenceDataAmendHistoryComponent {
   pageEnd?: number;
   auditResults: any[] = [];
   result: any[] = [];
+  history: any;
 
   constructor(private store: Store<ReferenceDataState>, private cdr: ChangeDetectorRef, private referenceDataService: ReferenceDataService) {}
+
+  ngOnInit(): void {
+    this.history = this.refDataAdminType.columns.filter((items: any) => items.name != 'resourceKey');
+  }
 
   get dataAudit$(): Observable<any[] | null> {
     return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceTypeAudit)));

@@ -8,7 +8,7 @@
     </caption>
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
-        <th *ngFor="let column of columns | async" scope="col" class="govuk-table__header">{{ titleCaseColumn(column) }}</th>
+        <th *ngFor="let column of history" scope="col" class="govuk-table__header">{{ titleCaseColumn(column.heading) }}</th>
         <th scope="col" class="govuk-table__header">Created At</th>
         <th scope="col" class="govuk-table__header">Created By</th>
         <th scope="col" class="govuk-table__header"></th>
@@ -17,7 +17,7 @@
 
     <tbody class="govuk-table__body">
       <tr class="govuk-table__row" *ngFor="let item of paginatedFields">
-        <td *ngFor="let column of columns | async" class="govuk-table__cell">{{ item[column] }}</td>
+        <td *ngFor="let column of history" class="govuk-table__cell">{{ item[column.name] }}</td>
         <td class="govuk-table__cell">{{ item.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
         <td class="govuk-table__cell">{{ item.createdName }}</td>
       </tr>
