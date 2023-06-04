@@ -131,22 +131,17 @@ describe('TechRecordSearchTyresComponent', () => {
     it('should navigate and populate the search results on success action', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate');
       const mockTyreSearchReturn = ['foo', 'bar'] as any;
-      const state: ReferenceDataState = {
-        ...initialReferenceDataState,
-        [ReferenceDataResourceType.Tyres]: {
-          ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
-          loading: false,
-          searchReturn: mockTyreSearchReturn
-        }
-      };
 
-      const expectedState = referenceDataSelectors.selectSearchReturn(ReferenceDataResourceType.Tyres).projector(state);
+      jest.spyOn(store, 'select').mockReturnValue(of(mockTyreSearchReturn));
       component.handleSearch('foo', 'bar');
+
       expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith('foo', 'bar');
       actions$.next(fetchReferenceDataByKeySearchSuccess);
+
       tick();
+
       expect(navigateSpy).toHaveBeenCalledWith(['.'], { relativeTo: route, queryParams: { 'search-results-page': 1 } });
-      expect(expectedState).toEqual(mockTyreSearchReturn);
+      expect(component.searchResults).toEqual(mockTyreSearchReturn);
     }));
 
     const testCases = [
