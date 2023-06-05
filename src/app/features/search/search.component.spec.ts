@@ -69,7 +69,7 @@ describe('SearchComponent', () => {
         const expectedVrm = 'someVrm';
         component.navigateSearch(expectedVrm, SEARCH_TYPES.VRM);
 
-        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { vrm: expectedVrm } });
+        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { primaryVrm: expectedVrm } });
       });
 
       it('should navigate to trailerId search result', () => {

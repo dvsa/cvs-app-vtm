@@ -17,7 +17,7 @@ import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record
 export enum SEARCH_TYPES {
   VIN = 'vin',
   PARTIAL_VIN = 'partialVin',
-  VRM = 'vrm',
+  VRM = 'primaryVrm',
   TRAILER_ID = 'trailerId',
   SYSTEM_NUMBER = 'systemNumber',
   ALL = 'all'

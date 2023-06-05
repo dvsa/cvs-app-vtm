@@ -1,4 +1,4 @@
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from '../actions/tech-record-search.actions';
 import { TechSearchResultsEffects } from './tech-record-search.effect';
 import { fetchDefectSuccess } from '@store/defects';
@@ -69,13 +69,15 @@ describe('DefectsEffects', () => {
 
     it.each(testCases)('should return fetchSearchResults action on API error', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a--', { a: fetchSearchResult });
+        actions$ = hot('-a--', { a: fetchSearchResult({ searchBy: SEARCH_TYPES.VIN, term: 'foo' }) });
 
         const expectedError = new Error('Oopsi');
 
         jest.spyOn(service, 'search$').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.fetchSearchResults$).toBe('---b', { b: fetchSearchResultFailed({ error: 'Oopsi' }) });
+        expectObservable(effects.fetchSearchResults$).toBe('---b', {
+          b: fetchSearchResultFailed({ error: 'There was a problem getting the Tech Record by vin', anchorLink: 'search-term' })
+        });
       });
     });
   });

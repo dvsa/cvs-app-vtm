@@ -2,6 +2,7 @@ import { routerNavigatedAction, RouterNavigatedPayload, SerializedRouterStateSna
 import { globalErrorReducer, GlobalErrorState, initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { fetchTestResults, fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed } from '@store/test-records';
 import { patchErrors, setErrors } from '../actions/global-error.actions';
+import { fetchSearchResult, fetchSearchResultFailed } from '@store/tech-record-search/actions/tech-record-search.actions';
 
 describe('Global Error Reducer', () => {
   describe('unknown action', () => {
@@ -16,15 +17,18 @@ describe('Global Error Reducer', () => {
   });
 
   describe('Fail action', () => {
-    it.each([fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed])('should return the error state', actionMethod => {
-      const error = 'fetching test records failed';
-      const newState: GlobalErrorState = { ...initialGlobalErrorState, errors: [{ error: error, anchorLink: undefined }] };
-      const action = actionMethod({ error });
-      const state = globalErrorReducer(initialGlobalErrorState, action);
+    it.each([fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed, fetchSearchResultFailed])(
+      'should return the error state',
+      actionMethod => {
+        const error = 'fetching test records failed';
+        const newState: GlobalErrorState = { ...initialGlobalErrorState, errors: [{ error: error, anchorLink: undefined }] };
+        const action = actionMethod({ error });
+        const state = globalErrorReducer(initialGlobalErrorState, action);
 
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
+        expect(state).toEqual(newState);
+        expect(state).not.toBe(newState);
+      }
+    );
   });
 
   describe('Success action', () => {
