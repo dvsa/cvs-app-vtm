@@ -16,12 +16,11 @@ import {
   ReferenceDataEntityStateSearch,
   referencePsvMakeLoadingState,
   removeTyreSearch,
-  selectSearchReturn,
   selectTyreSearchCriteria,
   STORE_FEATURE_REFERENCE_DATA_KEY
 } from '@store/reference-data';
 import { testCases } from '@store/reference-data/reference-data.test-cases';
-import { Observable, firstValueFrom, of, take } from 'rxjs';
+import { firstValueFrom, of, take } from 'rxjs';
 import { ReferenceDataService } from './reference-data.service';
 
 describe('ReferenceDataService', () => {
@@ -214,7 +213,6 @@ describe('ReferenceDataService', () => {
 
     it('should get the tyre search results', done => {
       const mockReferenceDataTyre = [{ code: 'foo' }] as ReferenceDataTyre[];
-      const mockStoreReturn = jest.spyOn(store, 'select');
       jest.spyOn(service, 'getTyreSearchReturn$').mockReturnValue(of(mockReferenceDataTyre));
       service
         .getTyreSearchReturn$()

@@ -17,10 +17,9 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/index';
-import { fetchReferenceDataByKeySearchSuccess, initialReferenceDataState, ReferenceDataState, selectSearchReturn } from '@store/reference-data';
+import { fetchReferenceDataByKeySearchSuccess } from '@store/reference-data';
 import { of, ReplaySubject } from 'rxjs';
 import { TechRecordSearchTyresComponent } from './tech-record-search-tyres.component';
-import * as referenceDataSelectors from '@store/reference-data';
 
 const mockGlobalErrorService = {
   addError: jest.fn(),
