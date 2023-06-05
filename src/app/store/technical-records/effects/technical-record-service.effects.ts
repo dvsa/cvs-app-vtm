@@ -37,24 +37,9 @@ import {
   generatePlate,
   generatePlateFailure,
   generatePlateSuccess,
-  getByAll,
-  getByAllFailure,
-  getByAllSuccess,
-  getByPartialVin,
-  getByPartialVinFailure,
-  getByPartialVinSuccess,
   getBySystemNumber,
   getBySystemNumberFailure,
   getBySystemNumberSuccess,
-  getByTrailerId,
-  getByTrailerIdFailure,
-  getByTrailerIdSuccess,
-  getByVin,
-  getByVinFailure,
-  getByVinSuccess,
-  getByVrm,
-  getByVrmFailure,
-  getByVrmSuccess,
   updateTechRecords,
   updateTechRecordsFailure,
   updateTechRecordsSuccess,
@@ -78,54 +63,18 @@ export class TechnicalRecordServiceEffects {
 
   getTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getByVin, getByPartialVin, getByVrm, getByTrailerId, getBySystemNumber, getByAll),
+      ofType(getBySystemNumber),
       mergeMap(action => {
         const anchorLink = 'search-term';
 
-        switch (action.type) {
-          case getByVin.type:
-            return this.techRecordHttpService.getByVin(action.vin).pipe(
-              map(vehicleTechRecords => getByVinSuccess({ vehicleTechRecords })),
-              catchError(error => of(getByVinFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'vin'), anchorLink })))
-            );
-          case getByPartialVin.type:
-            return this.techRecordHttpService.getByPartialVin(action.partialVin).pipe(
-              map(vehicleTechRecords => getByPartialVinSuccess({ vehicleTechRecords })),
-              catchError(error =>
-                of(getByPartialVinFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'partialVin'), anchorLink }))
-              )
-            );
-          case getByVrm.type:
-            return this.techRecordHttpService.getByVrm(action.vrm).pipe(
-              map(vehicleTechRecords => getByVrmSuccess({ vehicleTechRecords })),
-              catchError(error => of(getByVrmFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'vrm'), anchorLink })))
-            );
-          case getByTrailerId.type:
-            return this.techRecordHttpService.getByTrailerId(action.trailerId).pipe(
-              map(vehicleTechRecords => getByTrailerIdSuccess({ vehicleTechRecords })),
-              catchError(error =>
-                of(getByTrailerIdFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'trailerId'), anchorLink }))
-              )
-            );
-          case getBySystemNumber.type:
-            return this.techRecordHttpService.getBySystemNumber(action.systemNumber).pipe(
-              map(vehicleTechRecords => {
-                return getBySystemNumberSuccess({ vehicleTechRecords: vehicleTechRecords });
-              }),
-              catchError(error =>
-                of(getBySystemNumberFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink }))
-              )
-            );
-          case getByAll.type:
-            return this.techRecordHttpService.getByAll(action.all).pipe(
-              map(vehicleTechRecords => getByAllSuccess({ vehicleTechRecords })),
-              catchError(error =>
-                of(
-                  getByAllFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'the current search criteria'), anchorLink })
-                )
-              )
-            );
-        }
+        return this.techRecordHttpService.getBySystemNumber(action.systemNumber).pipe(
+          map(vehicleTechRecords => {
+            return getBySystemNumberSuccess({ vehicleTechRecords: vehicleTechRecords });
+          }),
+          catchError(error =>
+            of(getBySystemNumberFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink }))
+          )
+        );
       })
     )
   );

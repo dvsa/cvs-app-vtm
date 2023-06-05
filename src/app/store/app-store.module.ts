@@ -14,6 +14,7 @@ import { ReferenceDataStateModule } from './reference-data/reference-data.module
 import { TestStationsStateModule } from './test-stations/test-stations-state.module';
 import { TestTypesStateModule } from './test-types/test-types.module';
 import { DefectsStateModule } from './defects/defects-state.module';
+import { TechRecordSearchStateModule } from './tech-record-search/tech-record-search-state.module';
 
 @NgModule({
   declarations: [],
@@ -37,7 +38,8 @@ import { DefectsStateModule } from './defects/defects-state.module';
     TestRecordsStateModule,
     TestStationsStateModule,
     TestTypesStateModule,
-    UserStateModule
+    UserStateModule,
+    TechRecordSearchStateModule
   ]
 })
 export class AppStoreModule {}

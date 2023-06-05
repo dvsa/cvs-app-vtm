@@ -12,24 +12,9 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
-  getByAll,
-  getByAllFailure,
-  getByAllSuccess,
-  getByPartialVin,
-  getByPartialVinFailure,
-  getByPartialVinSuccess,
-  getByTrailerId,
-  getByTrailerIdFailure,
-  getByTrailerIdSuccess,
   getBySystemNumber,
   getBySystemNumberFailure,
   getBySystemNumberSuccess,
-  getByVin,
-  getByVinFailure,
-  getByVinSuccess,
-  getByVrm,
-  getByVrmFailure,
-  getByVrmSuccess,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
   updateTechRecords,
@@ -51,164 +36,6 @@ describe('Vehicle Technical Record Reducer', () => {
       const state = vehicleTechRecordReducer(initialState, action);
 
       expect(state).toBe(initialState);
-    });
-  });
-
-  describe('getByPartialVIN', () => {
-    it('should set all vehicle technical records', () => {
-      const newState: TechnicalRecordServiceState = {
-        ...initialState,
-        loading: true
-      };
-      const action = getByPartialVin({ partialVin: 'somevin' });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByPartialVINSuccess', () => {
-    it('should set all vehicle technical records', () => {
-      const records = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
-      const newState: TechnicalRecordServiceState = {
-        ...initialState,
-        vehicleTechRecords: records
-      };
-      const action = getByPartialVinSuccess({ vehicleTechRecords: [...records] });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByPartialVINFailure', () => {
-    it('should set error state', () => {
-      const error = 'fetching vehicle tech records failed';
-      const newState = { ...initialState, error };
-      const action = getByPartialVinFailure({ error });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByVIN', () => {
-    it('should set all vehicle technical records', () => {
-      const newState: TechnicalRecordServiceState = {
-        ...initialState,
-        loading: true
-      };
-      const action = getByVin({ vin: 'somevin' });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByVINSuccess', () => {
-    it('should set all vehicle technical records', () => {
-      const records = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
-      const newState: TechnicalRecordServiceState = {
-        ...initialState,
-        vehicleTechRecords: records
-      };
-      const action = getByVinSuccess({ vehicleTechRecords: [...records] });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByVINFailure', () => {
-    it('should set error state', () => {
-      const error = 'fetching vehicle tech records failed';
-      const newState = { ...initialState, error };
-      const action = getByVinFailure({ error });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByVrm', () => {
-    it('should set all vehicle technical records', () => {
-      const newState: TechnicalRecordServiceState = { ...initialState, loading: true };
-      const action = getByVrm({ vrm: 'someVrm' });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByVrmSuccess', () => {
-    it('should set all vehicle technical records', () => {
-      const records = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
-      const newState: TechnicalRecordServiceState = {
-        ...initialState,
-        vehicleTechRecords: records
-      };
-      const action = getByVrmSuccess({ vehicleTechRecords: [...records] });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByVrmFailure', () => {
-    it('should set error state', () => {
-      const error = 'fetching vehicle tech records failed';
-      const newState = { ...initialState, error };
-      const action = getByVrmFailure({ error });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByTrailerId', () => {
-    it('should set all vehicle technical records', () => {
-      const newState: TechnicalRecordServiceState = { ...initialState, loading: true };
-      const action = getByTrailerId({ trailerId: 'someTrailerId' });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByTrailerIdSuccess', () => {
-    it('should set all vehicle technical records', () => {
-      const records = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
-      const newState: TechnicalRecordServiceState = {
-        ...initialState,
-        vehicleTechRecords: records
-      };
-      const action = getByTrailerIdSuccess({ vehicleTechRecords: [...records] });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByTrailerIdFailure', () => {
-    it('should set error state', () => {
-      const error = 'fetching vehicle tech records failed';
-      const newState = { ...initialState, error };
-      const action = getByTrailerIdFailure({ error });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
     });
   });
 
@@ -243,44 +70,6 @@ describe('Vehicle Technical Record Reducer', () => {
       const error = 'fetching vehicle tech records failed';
       const newState = { ...initialState, error };
       const action = getBySystemNumberFailure({ error });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByAll', () => {
-    it('should set all vehicle technical records', () => {
-      const newState: TechnicalRecordServiceState = { ...initialState, loading: true };
-      const action = getByAll({ all: '001' });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByAllSuccess', () => {
-    it('should set all vehicle technical records', () => {
-      const records = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
-      const newState: TechnicalRecordServiceState = {
-        ...initialState,
-        vehicleTechRecords: records
-      };
-      const action = getByAllSuccess({ vehicleTechRecords: [...records] });
-      const state = vehicleTechRecordReducer(initialState, action);
-
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
-    });
-  });
-
-  describe('getByAllFailure', () => {
-    it('should set error state', () => {
-      const error = 'fetching vehicle tech records failed';
-      const newState = { ...initialState, error };
-      const action = getByAllFailure({ error });
       const state = vehicleTechRecordReducer(initialState, action);
 
       expect(state).toEqual(newState);

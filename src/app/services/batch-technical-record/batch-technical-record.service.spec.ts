@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
@@ -11,6 +11,7 @@ import { initialAppState } from '@store/index';
 import cloneDeep from 'lodash.clonedeep';
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { BatchTechnicalRecordService } from './batch-technical-record.service';
+import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 
 describe('TechnicalRecordService', () => {
   let service: BatchTechnicalRecordService;
@@ -113,14 +114,13 @@ describe('TechnicalRecordService', () => {
         expect.assertions(1);
         testGroup.get('vin')!.setValue('TESTVIN');
         testGroup.get('trailerId')!.setValue('TESTTRAILERID');
-        const mockVehicleRecord = {
+        const mockSearchResult = {
           vin: 'TESTVIN',
           trailerId: 'TESTTRAILERID',
-          systemNumber: 'TESTSYSTEMNUMBER',
-          techRecord: []
-        } as unknown as VehicleTechRecordModel;
+          systemNumber: 'TESTSYSTEMNUMBER'
+        } as SearchResult;
 
-        jest.spyOn(technicalRecordHttpService, 'getByVin').mockReturnValue(of([mockVehicleRecord]));
+        jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
 
         const serviceCall = service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>;
         const errors = await firstValueFrom(serviceCall);
@@ -131,48 +131,42 @@ describe('TechnicalRecordService', () => {
         expect.assertions(1);
         testGroup.get('vin')!.setValue('TESTVIN');
         testGroup.get('trailerId')!.setValue('TESTTRAILERID');
-        const mockVehicleRecord = {
+        const mockSearchResult = {
           vin: 'TESTVIN',
           trailerId: 'TESTTRAILERID',
           systemNumber: 'TESTSYSTEMNUMBER',
-          techRecord: [{ statusCode: StatusCodes.CURRENT }]
-        } as unknown as VehicleTechRecordModel;
+          techRecord_statusCode: StatusCodes.CURRENT
+        } as SearchResult;
 
-        jest.spyOn(technicalRecordHttpService, 'getByVin').mockReturnValue(of([mockVehicleRecord]));
+        jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
 
         const serviceCall = service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>;
         const errors = await firstValueFrom(serviceCall);
         expect(errors).toEqual({ validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } });
       });
 
-      it('throws an error if more than 1 vehicle exists with those values', done => {
+      it('throws an error if more than 1 vehicle exists with those values', async () => {
         expect.assertions(1);
         testGroup.get('vin')!.setValue('TESTVIN');
         testGroup.get('trailerId')!.setValue('TESTTRAILERID');
-        const mockVehicleRecord = { vin: 'TESTVIN', trailerId: 'TESTTRAILERID' } as VehicleTechRecordModel;
+        const mockSearchResult = { vin: 'TESTVIN', trailerId: 'TESTTRAILERID' } as SearchResult;
 
-        jest.spyOn(technicalRecordHttpService, 'getByVin').mockReturnValue(of([cloneDeep(mockVehicleRecord), cloneDeep(mockVehicleRecord)]));
+        jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult, { ...mockSearchResult, systemNumber: 'foobar' }]));
 
-        const serviceCall = service.validateForBatch()(testGroup.get('vin')!);
-        (serviceCall as Observable<ValidationErrors | null>).subscribe(errors => {
-          expect(errors).toEqual({ validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } });
-          done();
-        });
+        const errors = await firstValueFrom(service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>);
+        expect(errors).toEqual({ validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } });
       });
+    });
 
-      it('throws an error if no vehicle exists with those values', done => {
-        expect.assertions(1);
-        testGroup.get('vin')!.setValue('TESTVIN');
-        testGroup.get('trailerId')!.setValue('TESTTRAILERID');
+    it('throws an error if no vehicle exists with those values', async () => {
+      expect.assertions(1);
+      testGroup.get('vin')!.setValue('TESTVIN');
+      testGroup.get('trailerId')!.setValue('TESTTRAILERID');
 
-        jest.spyOn(technicalRecordHttpService, 'getByVin').mockReturnValue(of([]));
+      jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([]));
 
-        const serviceCall = service.validateForBatch()(testGroup.get('vin')!);
-        (serviceCall as Observable<ValidationErrors | null>).subscribe(errors => {
-          expect(errors).toEqual({ validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } });
-          done();
-        });
-      });
+      const errors = await firstValueFrom(service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>);
+      expect(errors).toEqual({ validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } });
     });
   });
 });
