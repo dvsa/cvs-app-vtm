@@ -4,9 +4,9 @@
       <p class="govuk-heading-xl govuk-!-font-weight-bold">Add {{ titleCaseHeading(type) }}</p>
 
       <app-dynamic-form-group
-        *ngIf="refDataAdminType.template"
-        [id]="refDataAdminType.template.name"
-        [template]="refDataAdminType.template"
+        *ngIf="refDataAdminType.templateCreate"
+        [id]="refDataAdminType.templateCreate.name"
+        [template]="refDataAdminType.templateCreate"
         [data]=""
         [edit]="isEditing"
         (formChange)="handleFormChange($event)"

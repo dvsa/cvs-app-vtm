@@ -8,9 +8,9 @@
       </div>
 
       <app-dynamic-form-group
-        *ngIf="refDataAdminType.template"
-        [id]="refDataAdminType.template.name"
-        [template]="refDataAdminType.template"
+        *ngIf="refDataAdminType.templateAmend"
+        [id]="refDataAdminType.templateAmend.name"
+        [template]="refDataAdminType.templateAmend"
         [data]="data$ | async"
         [edit]="isEditing"
         (formChange)="handleFormChange($event)"
