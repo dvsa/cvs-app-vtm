@@ -6,6 +6,7 @@ import * as GlobalErrorActions from '../actions/global-error.actions';
 import * as ReferenceDataActions from '../../reference-data/actions/reference-data.actions';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { createVehicleRecordFailure } from '../../technical-records/actions/technical-record-service.actions';
+import { fetchSearchResult, fetchSearchResultFailed } from '@store/tech-record-search/actions/tech-record-search.actions';
 
 export const STORE_FEATURE_GLOBAL_ERROR_KEY = 'globalError';
 
@@ -32,6 +33,7 @@ export const globalErrorReducer = createReducer(
     TestResultActions.fetchSelectedTestResult,
     ReferenceDataActions.fetchReferenceData,
     ReferenceDataActions.fetchReferenceDataByKey,
+    fetchSearchResult,
     routerNavigatedAction,
     successMethod
   ),
@@ -45,6 +47,7 @@ export const globalErrorReducer = createReducer(
     TestResultActions.fetchSelectedTestResultFailed,
     ReferenceDataActions.fetchReferenceDataFailed,
     ReferenceDataActions.fetchReferenceDataByKeyFailed,
+    fetchSearchResultFailed,
     failureMethod
   ),
   on(GlobalErrorActions.setErrors, TestResultActions.updateTestResultFailed, TestResultActions.createTestResultFailed, (state, { errors }) => ({
