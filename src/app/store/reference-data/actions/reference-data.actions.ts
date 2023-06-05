@@ -1,6 +1,7 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { createAction, props } from '@ngrx/store';
+import { ReferenceDataEntityStateSearch } from '../reducers/reference-data.reducer';
 
 interface featureError extends GlobalError {
   resourceType: ReferenceDataResourceType;
@@ -72,5 +73,13 @@ export const addSearchInformation = createAction(
 );
 
 export const removeTyreSearch = createAction('[API/reference-data] Remove search return from state');
+
+export const removeReferenceDataByKey = createAction(
+  '[API/reference-data] Remove item from state',
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string;
+  }>()
+);
 
 export const fetchReasonsForAbandoning = createAction('[API/reference-data] Fetch reasons for abandoning');

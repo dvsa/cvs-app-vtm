@@ -26,7 +26,8 @@ import {
   selectReasonsForAbandoning,
   selectReferenceDataByResourceKey,
   selectTyreSearchCriteria,
-  selectSearchReturn
+  selectSearchReturn,
+  removeReferenceDataByKey
 } from '@store/reference-data';
 import { Observable, of, switchMap, throwError, withLatestFrom } from 'rxjs';
 
@@ -113,6 +114,10 @@ export class ReferenceDataService extends ReferenceDataApiService {
 
   loadReferenceData(resourceType: ReferenceDataResourceType): void {
     this.store.dispatch(fetchReferenceData({ resourceType }));
+  }
+
+  removeReferenceDataByKey(resourceType: ReferenceDataResourceType, resourceKey: string): void {
+    this.store.dispatch(removeReferenceDataByKey({ resourceType, resourceKey }));
   }
 
   addSearchInformation(filter: string, term: string): void {

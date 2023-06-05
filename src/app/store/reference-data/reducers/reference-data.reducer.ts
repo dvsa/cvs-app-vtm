@@ -15,6 +15,7 @@ import {
   fetchTyreReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearchFailed,
   fetchTyreReferenceDataByKeySearchSuccess,
+  removeReferenceDataByKey,
   removeTyreSearch
 } from '../actions/reference-data.actions';
 
@@ -132,6 +133,21 @@ export const referenceDataReducer = createReducer(
     ...state,
     [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null, filter: null, term: null }
   })),
+  on(removeReferenceDataByKey, (state, action) => {
+    const { resourceType, resourceKey } = action;
+    const currentState = { ...state };
+    const filteredEntities: (string | number)[] = [];
+    delete currentState[resourceType as ReferenceDataResourceType].entities[resourceKey];
+    currentState[resourceType as ReferenceDataResourceType].ids.forEach(id => {
+      if (id != resourceKey) {
+        filteredEntities.push(id);
+      }
+    });
+    currentState[resourceType as ReferenceDataResourceType].ids = filteredEntities as string[];
+    return {
+      ...currentState
+    };
+  }),
   on(addSearchInformation, (state, action) => ({
     ...state,
     [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], filter: action.filter, term: action.term }

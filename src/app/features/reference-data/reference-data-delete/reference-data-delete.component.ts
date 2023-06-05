@@ -120,6 +120,9 @@ export class ReferenceDataDeleteComponent implements OnInit {
     this.referenceDataService
       .deleteReferenceDataItem(this.type, this.key, this.reasonForDeletion.reason)
       .pipe(take(1))
-      .subscribe(() => this.navigateBack());
+      .subscribe(() => {
+        this.referenceDataService.removeReferenceDataByKey(this.type, this.key);
+        this.navigateBack();
+      });
   }
 }
