@@ -5,29 +5,9 @@ import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/st
 
 const prefix = '[Technical Record Service]';
 
-export const getByVin = createAction(`${prefix} getByVin`, props<{ vin: string }>());
-export const getByVinSuccess = createOutcomeAction('getByVin', true);
-export const getByVinFailure = createOutcomeAction('getByVin');
-
-export const getByPartialVin = createAction(`${prefix} getByPartialVin`, props<{ partialVin: string }>());
-export const getByPartialVinSuccess = createOutcomeAction('getByPartialVin', true);
-export const getByPartialVinFailure = createOutcomeAction('getByPartialVin');
-
-export const getByVrm = createAction(`${prefix} getByVrm`, props<{ vrm: string }>());
-export const getByVrmSuccess = createOutcomeAction('getByVrm', true);
-export const getByVrmFailure = createOutcomeAction('getByVrm');
-
-export const getByTrailerId = createAction(`${prefix} getByTrailerId`, props<{ trailerId: string }>());
-export const getByTrailerIdSuccess = createOutcomeAction('getByTrailerId', true);
-export const getByTrailerIdFailure = createOutcomeAction('getByTrailerId');
-
 export const getBySystemNumber = createAction(`${prefix} getBySystemNumber`, props<{ systemNumber: string }>());
 export const getBySystemNumberSuccess = createOutcomeAction('getBySystemNumber', true);
 export const getBySystemNumberFailure = createOutcomeAction('getBySystemNumber');
-
-export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }>());
-export const getByAllSuccess = createOutcomeAction('getByAll', true);
-export const getByAllFailure = createOutcomeAction('getByAll');
 
 export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`, props<{ vehicle: VehicleTechRecordModel }>());
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
