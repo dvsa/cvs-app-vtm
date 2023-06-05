@@ -1,10 +1,20 @@
-<div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
-  <div class="govuk-grid-column-full">
-    <p class="govuk-heading-xl govuk-!-font-weight-bold">Delete {{ titleCaseHeading(type) }}</p>
+<ng-container *ngIf="refData$ | async">
+  <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
+    <div class="govuk-grid-column-full">
+      <p class="govuk-heading-xl govuk-!-font-weight-bold">Delete {{ titleCaseHeading(type) }}</p>
 
-    <app-dynamic-form-group [id]="template.name" [template]="template" [data]="refData$ | async" [edit]="false"></app-dynamic-form-group>
-    <br />
-    <ng-container>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row" *ngFor="let column of (refDataAdminType$ | async).columns">
+          <dt class="govuk-summary-list__key">
+            {{ column.heading }}
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{ (refData$ | async)[column.name] }}
+          </dd>
+        </div>
+      </dl>
+
+      <br />
       <app-dynamic-form-group
         [id]="reasonTemplate.name"
         [template]="reasonTemplate"
@@ -18,6 +28,7 @@
 
         <app-button id="cancel" design="link" (clicked)="navigateBack()">Back</app-button>
       </app-button-group>
-    </ng-container>
+    </div>
   </div>
-</div>
+  <ng-container> </ng-container
+></ng-container>
