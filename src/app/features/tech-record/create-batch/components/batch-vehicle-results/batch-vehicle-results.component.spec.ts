@@ -4,25 +4,25 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { initialAppState, State } from '@store/.';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { BatchTrlResultsComponent } from './batch-trl-results.component';
+import { BatchVehicleResultsComponent } from './batch-vehicle-results.component';
 import { SharedModule } from '@shared/shared.module';
 
-describe('BatchTrlResultsComponent', () => {
-  let component: BatchTrlResultsComponent;
-  let fixture: ComponentFixture<BatchTrlResultsComponent>;
+describe('BatchVehicleResultsComponent', () => {
+  let component: BatchVehicleResultsComponent;
+  let fixture: ComponentFixture<BatchVehicleResultsComponent>;
   let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
-      declarations: [BatchTrlResultsComponent],
+      declarations: [BatchVehicleResultsComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
   beforeEach(() => {
     store = TestBed.inject(MockStore);
-    fixture = TestBed.createComponent(BatchTrlResultsComponent);
+    fixture = TestBed.createComponent(BatchVehicleResultsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

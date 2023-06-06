@@ -12,11 +12,11 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from 'rxjs';
 
 @Component({
-  selector: 'app-batch-trl-details',
-  templateUrl: './batch-trl-details.component.html',
-  styleUrls: ['./batch-trl-details.component.scss']
+  selector: 'app-batch-vehicle-details',
+  templateUrl: './batch-vehicle-details.component.html',
+  styleUrls: ['./batch-vehicle-details.component.scss']
 })
-export class BatchTrlDetailsComponent implements OnDestroy {
+export class BatchVehicleDetailsComponent implements OnDestroy {
   form: FormGroup;
   techRecord?: TechRecordModel;
   readonly maxNumberOfVehicles = 40;

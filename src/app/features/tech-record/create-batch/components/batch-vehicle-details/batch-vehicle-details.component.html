@@ -8,7 +8,7 @@
   </div>
 
   <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
-    <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-trl-details" class="govuk-fieldset">
+    <fieldset *ngFor="let group of vehicles.controls; let i = index" [formGroupName]="i" id="batch-vehicle-details" class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
         <h2 class="govuk-fieldset__heading">{{ 'Vehicle ' + (i + 1) }}</h2>
       </legend>

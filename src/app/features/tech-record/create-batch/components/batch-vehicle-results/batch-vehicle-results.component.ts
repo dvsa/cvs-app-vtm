@@ -6,10 +6,10 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { filter, race, Subject, take, withLatestFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-batch-trl-results',
-  templateUrl: './batch-trl-results.component.html'
+  selector: 'app-batch-vehicle-results',
+  templateUrl: './batch-vehicle-results.component.html'
 })
-export class BatchTrlResultsComponent implements OnDestroy {
+export class BatchVehicleResultsComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
   techRecord?: TechRecordModel;
 

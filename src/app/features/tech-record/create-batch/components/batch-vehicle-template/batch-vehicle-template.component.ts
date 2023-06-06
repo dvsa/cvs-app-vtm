@@ -11,10 +11,10 @@ import { map, Observable, take, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
-  selector: 'app-batch-trl-template',
-  templateUrl: './batch-trl-template.component.html'
+  selector: 'app-batch-vehicle-template',
+  templateUrl: './batch-vehicle-template.component.html'
 })
-export class BatchTrlTemplateComponent {
+export class BatchVehicleTemplateComponent {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
   isInvalid: boolean = false;
   batchForm?: FormGroup;

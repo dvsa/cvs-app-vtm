@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { BatchTrlTemplateComponent } from './batch-trl-template.component';
+import { BatchVehicleTemplateComponent } from './batch-vehicle-template.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { of } from 'rxjs';
@@ -13,7 +13,7 @@ import { BatchRecord } from '@store/technical-records/reducers/batch-create.redu
 import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Router } from '@angular/router';
-import { BatchTrlResultsComponent } from '../batch-trl-results/batch-trl-results.component';
+import { BatchVehicleResultsComponent } from '../batch-vehicle-results/batch-vehicle-results.component';
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 
@@ -39,9 +39,9 @@ class TechRecordSummaryStubComponent {
   checkForms() {}
 }
 
-describe('BatchTrlTemplateComponent', () => {
-  let component: BatchTrlTemplateComponent;
-  let fixture: ComponentFixture<BatchTrlTemplateComponent>;
+describe('BatchVehicleTemplateComponent', () => {
+  let component: BatchVehicleTemplateComponent;
+  let fixture: ComponentFixture<BatchVehicleTemplateComponent>;
   let store: MockStore<State>;
   let router: Router;
   let errorService: GlobalErrorService;
@@ -51,11 +51,11 @@ describe('BatchTrlTemplateComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes([{ path: 'batch-results', component: BatchTrlResultsComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'batch-results', component: BatchVehicleResultsComponent }]),
         HttpClientTestingModule,
         FixNavigationTriggeredOutsideAngularZoneNgModule
       ],
-      declarations: [BatchTrlTemplateComponent, TechRecordSummaryStubComponent],
+      declarations: [BatchVehicleTemplateComponent, TechRecordSummaryStubComponent],
       providers: [
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
@@ -66,7 +66,7 @@ describe('BatchTrlTemplateComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BatchTrlTemplateComponent);
+    fixture = TestBed.createComponent(BatchVehicleTemplateComponent);
     store = TestBed.inject(MockStore);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     errorService = TestBed.inject(GlobalErrorService);
