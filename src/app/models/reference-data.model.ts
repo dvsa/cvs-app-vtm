@@ -58,7 +58,7 @@ export interface ReferenceDataTyre extends ReferenceDataModelBase {
 }
 
 export interface ReferenceDataTyreLoadIndex extends ReferenceDataModelBase {
-  load_index: string;
+  loadIndex: string;
 }
 
 export interface User extends ReferenceDataModelBase {

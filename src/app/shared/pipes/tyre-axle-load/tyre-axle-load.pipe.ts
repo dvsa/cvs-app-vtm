@@ -15,6 +15,6 @@ export class TyreAxleLoadPipe implements PipeTransform {
       return axleLoad;
     }
     const axleLoadIndex = loadIndex?.find(resource => resource.resourceKey === index);
-    return axleLoadIndex?.load_index ? String(+axleLoadIndex.load_index * factor) : undefined;
+    return axleLoadIndex?.loadIndex ? String(+axleLoadIndex.loadIndex * factor) : undefined;
   }
 }
