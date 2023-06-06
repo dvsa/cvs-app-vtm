@@ -4,11 +4,15 @@ import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/refer
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { UserService } from '@services/user-service/user-service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State } from '@store/.';
 import { testResultInEdit } from '@store/test-records';
-import { catchError, map, mergeMap, of, switchMap, take } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
 import {
+  createReferenceDataItem,
+  createReferenceDataItemFailure,
+  createReferenceDataItemSuccess,
   fetchReasonsForAbandoning,
   fetchReferenceData,
   fetchReferenceDataByKey,
@@ -27,6 +31,13 @@ import { handleNotFound, sortReferenceData } from './operators';
 
 @Injectable()
 export class ReferenceDataEffects {
+  constructor(
+    private actions$: Actions,
+    private userService: UserService,
+    private referenceDataService: ReferenceDataService,
+    private store: Store<State>
+  ) {}
+
   fetchReferenceDataByType$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchReferenceData),
@@ -110,7 +121,19 @@ export class ReferenceDataEffects {
     )
   );
 
-  constructor(private actions$: Actions, private referenceDataService: ReferenceDataService, private store: Store<State>) {}
+  createReferenceDataItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createReferenceDataItem),
+      withLatestFrom(this.userService.id$, this.userService.name$),
+      switchMap(([{ resourceType, resourceKey, payload }, createdId, createdName]) => {
+        payload = { ...payload, createdId, createdName, createdAt: new Date().toISOString() } as ReferenceDataModelBase;
+        return this.referenceDataService.createReferenceDataItem(resourceType, resourceKey, payload).pipe(
+          map((result: ReferenceDataModelBase) => createReferenceDataItemSuccess({ result })),
+          catchError(error => of(createReferenceDataItemFailure({ error: error })))
+        );
+      })
+    )
+  );
 }
 
 function isPaginated(referenceDataApiResponse: ReferenceDataApiResponse): referenceDataApiResponse is ReferenceDataApiResponseWithPagination {

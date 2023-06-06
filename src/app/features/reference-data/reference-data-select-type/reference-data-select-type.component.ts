@@ -38,7 +38,12 @@ export class ReferenceDataSelectTypeComponent {
     return this.store.pipe(
       select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReferenceDataAdminType)),
       take(1),
-      map(types => types?.map(type => ({ label: this.titleCase(type.resourceKey), value: `${type.resourceKey}` })) ?? [])
+      map(
+        types =>
+          types
+            ?.sort((a: any, b: any) => (a.label ?? a.resourceType).localeCompare(b.label ?? b.resourceType))
+            .map(type => ({ label: this.titleCase(type.resourceKey), value: `${type.resourceKey}` })) ?? []
+      )
     );
   }
 

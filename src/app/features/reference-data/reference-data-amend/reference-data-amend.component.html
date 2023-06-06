@@ -3,8 +3,8 @@
     <p class="govuk-heading-xl govuk-!-font-weight-bold">Amend {{ (refDataAdminType$ | async).label }}</p>
 
     <div class="govuk-inset-text">
-      To amend the key, create a new {{ (refDataAdminType$ | async).label }} with the correct value, then delete this
-      {{ (refDataAdminType$ | async).label }}
+      To amend the key, create a new {{ (refDataAdminType$ | async).labelSingular }} with the correct value, then delete this
+      {{ (refDataAdminType$ | async).labelSingular }}
     </div>
 
     <app-dynamic-form-group

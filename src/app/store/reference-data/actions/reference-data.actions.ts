@@ -1,7 +1,9 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
-import { createAction, props } from '@ngrx/store';
+import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 import { ReferenceDataEntityStateSearch } from '../reducers/reference-data.reducer';
+
+const prefix = '[API/reference-data]';
 
 interface featureError extends GlobalError {
   resourceType: ReferenceDataResourceType;
@@ -83,3 +85,10 @@ export const removeReferenceDataByKey = createAction(
 );
 
 export const fetchReasonsForAbandoning = createAction('[API/reference-data] Fetch reasons for abandoning');
+
+export const createReferenceDataItem = createAction(
+  `${prefix} createReferenceDataItem`,
+  props<{ resourceType: ReferenceDataResourceType; resourceKey: string; payload: ReferenceDataModelBase }>()
+);
+export const createReferenceDataItemSuccess = createAction(`${prefix} createReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
+export const createReferenceDataItemFailure = createAction(`${prefix} createReferenceDataItemFailure`, props<GlobalError>());
