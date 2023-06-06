@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -43,8 +43,8 @@ export class BatchTrlTemplateComponent {
     return this.batchTechRecordService.batchCount$;
   }
 
-  get vehicleTypes(): typeof VehicleTypes {
-    return VehicleTypes;
+  getVehicleType(techRecord: TechRecordModel): VehicleTypes {
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord);
   }
 
   handleSubmit() {

@@ -4,8 +4,8 @@
   <ng-container content>
     <h2 class="govuk-heading-m">Technical records created</h2>
     <p class="govuk-body">
-      You have successfully processed {{ (batchSuccessCount$ | async) ?? 0 }} out of {{ (batchCount$ | async) ?? 0 }} trailer technical records using
-      application ID {{ applicationId$ | async }}.
+      You have successfully processed {{ (batchSuccessCount$ | async) ?? 0 }} out of {{ (batchCount$ | async) ?? 0 }} {{ vehicleType }} technical
+      records using application ID {{ applicationId$ | async }}.
     </p>
     <p class="govuk-body">
       {{ (batchCreatedCount$ | async) ?? 0 }} out of {{ (batchTotalCreatedCount$ | async) ?? 0 }} records successfully created.
@@ -23,7 +23,7 @@
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">VIN</th>
-      <th scope="col" class="govuk-table__header">Trailer ID</th>
+      <th scope="col" class="govuk-table__header">{{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }}</th>
       <th scope="col" class="govuk-table__header">Vehicle type</th>
       <th scope="col" class="govuk-table__header">Record type</th>
       <th scope="col" class="govuk-table__header"></th>
@@ -33,7 +33,7 @@
   <tbody class="govuk-table__body">
     <tr *ngFor="let vehicle of batchVehiclesSuccess$ | async; let i = index" class="govuk-table__row">
       <th scope="row" class="govuk-table__header">{{ vehicle.vin }}</th>
-      <td class="govuk-table__cell">{{ vehicle.trailerId }}</td>
+      <td class="govuk-table__cell">{{ vehicle.trailerId ?? vehicle.primaryVrm }}</td>
       <td class="govuk-table__cell">{{ vehicle.vehicleType }}</td>
       <td class="govuk-table__cell">
         <ng-container [ngSwitch]="vehicle.status">

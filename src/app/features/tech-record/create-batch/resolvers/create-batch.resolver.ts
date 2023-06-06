@@ -7,18 +7,18 @@ import { Observable, of, take } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CreateBatchTrlResolver implements Resolve<boolean> {
+export class CreateBatchResolver implements Resolve<boolean> {
   constructor(private trs: TechnicalRecordService) {}
-  resolve(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean> {
+  resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean> {
     this.trs.editableVehicleTechRecord$.pipe(take(1)).subscribe(
       vehicle =>
         !vehicle &&
         this.trs.updateEditingTechRecord({
-          techRecord: [{ vehicleType: VehicleTypes.TRL, statusCode: StatusCodes.PROVISIONAL }]
+          techRecord: [{ vehicleType: route.paramMap.get('vehicleType'), statusCode: StatusCodes.PROVISIONAL }]
         } as VehicleTechRecordModel)
     );
 
-    this.trs.generateEditingVehicleTechnicalRecordFromVehicleType(VehicleTypes.TRL);
+    this.trs.generateEditingVehicleTechnicalRecordFromVehicleType(route.paramMap.get('vehicleType') as VehicleTypes);
 
     return of(true);
   }

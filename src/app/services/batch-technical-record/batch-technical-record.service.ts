@@ -57,7 +57,9 @@ export class BatchTechnicalRecordService {
   private validateVinAndTrailerId(vin: string, trailerId: string, systemNumberControl: CustomFormControl): Observable<ValidationErrors | null> {
     return this.techRecordHttpService.search$(SEARCH_TYPES.VIN, vin).pipe(
       map(result => {
-        const recordsWithMatchingTrailerId = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId);
+        const recordsWithMatchingTrailerId = result.filter(
+          vehicleTechRecord => vehicleTechRecord.trailerId === trailerId || vehicleTechRecord.primaryVrm === trailerId
+        );
         if (!recordsWithMatchingTrailerId.length) {
           return { validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } };
         }
@@ -86,7 +88,7 @@ export class BatchTechnicalRecordService {
     );
   }
 
-  upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string }>) {
+  upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string; primaryVrm?: string }>) {
     this.store.dispatch(upsertVehicleBatch({ vehicles }));
   }
 

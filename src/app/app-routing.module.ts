@@ -35,10 +35,10 @@ const routes: Routes = [
         loadChildren: () => import('./features/tech-record/create/create-tech-records.module').then(m => m.CreateTechRecordsModule)
       },
       {
-        path: 'create-batch-trl',
-        data: { title: 'Trailer batch records', roles: Roles.TechRecordCreate },
+        path: 'create-batch',
+        data: { title: 'Select Vehicle Type', roles: Roles.TechRecordCreate },
         canActivate: [MsalGuard, RoleGuard],
-        loadChildren: () => import('./features/tech-record/create-batch-trl/create-batch-trl.module').then(m => m.CreateBatchTrlModule)
+        loadChildren: () => import('./features/tech-record/create-batch/create-batch.module').then(m => m.CreateBatchModule)
       },
       {
         path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',

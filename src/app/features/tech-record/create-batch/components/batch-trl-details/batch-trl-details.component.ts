@@ -6,6 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from 'rxjs';
@@ -17,7 +18,7 @@ import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from
 })
 export class BatchTrlDetailsComponent implements OnDestroy {
   form: FormGroup;
-
+  techRecord?: TechRecordModel;
   readonly maxNumberOfVehicles = 40;
 
   private destroy$ = new Subject<void>();
@@ -37,9 +38,9 @@ export class BatchTrlDetailsComponent implements OnDestroy {
 
     this.addVehicles(this.maxNumberOfVehicles);
 
-    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
-      if (!vehicle) this.back();
-    });
+    this.technicalRecordService.editableVehicleTechRecord$
+      .pipe(take(1))
+      .subscribe(vehicle => (!vehicle ? this.back() : (this.techRecord = vehicle.techRecord[0])));
 
     combineLatest([this.batchTechRecordService.batchVehicles$, this.batchTechRecordService.applicationId$])
       .pipe(take(1))
@@ -53,6 +54,10 @@ export class BatchTrlDetailsComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get vehicleType(): VehicleTypes | undefined {
+    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
   }
 
   get vehicles(): FormArray {

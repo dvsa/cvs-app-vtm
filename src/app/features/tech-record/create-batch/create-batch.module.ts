@@ -8,15 +8,16 @@ import { SharedModule } from '@shared/shared.module';
 import { CreateTechRecordsModule } from '../create/create-tech-records.module';
 import { SharedTechRecordsModule } from '../shared-tech-record.module';
 import { BatchTrlTemplateComponent } from './components/batch-trl-template/batch-trl-template.component';
-import { CreateBatchTrlRoutingModule } from './create-batch-trl-routing.module';
+import { CreateBatchRoutingModule } from './create-batch-routing.module';
 import { BatchTrlDetailsComponent } from './components/batch-trl-details/batch-trl-details.component';
 import { BatchTrlResultsComponent } from './components/batch-trl-results/batch-trl-results.component';
+import { SelectVehicleTypeComponent } from './components/select-vehicle-type/select-vehicle-type.component';
 
 @NgModule({
-  declarations: [BatchTrlTemplateComponent, BatchTrlDetailsComponent, BatchTrlResultsComponent],
+  declarations: [BatchTrlTemplateComponent, BatchTrlDetailsComponent, BatchTrlResultsComponent, SelectVehicleTypeComponent],
   imports: [
     CommonModule,
-    CreateBatchTrlRoutingModule,
+    CreateBatchRoutingModule,
     SharedTechRecordsModule,
     ReactiveFormsModule,
     DynamicFormsModule,
@@ -25,4 +26,4 @@ import { BatchTrlResultsComponent } from './components/batch-trl-results/batch-t
     CreateTechRecordsModule
   ]
 })
-export class CreateBatchTrlModule {}
+export class CreateBatchModule {}

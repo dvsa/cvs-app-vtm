@@ -8,10 +8,10 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { initialAppState, State } from '@store/index';
 import { ReplaySubject } from 'rxjs';
 
-import { CreateBatchTrlResolver } from './create-batch-trl.resolver';
+import { CreateBatchResolver } from './create-batch.resolver';
 
-describe('CreateBatchTrlResolver', () => {
-  let resolver: CreateBatchTrlResolver;
+describe('CreateBatchResolver', () => {
+  let resolver: CreateBatchResolver;
   let actions$ = new ReplaySubject<Action>();
   let store: MockStore<State>;
   let techRecordService: TechnicalRecordService;
@@ -21,7 +21,7 @@ describe('CreateBatchTrlResolver', () => {
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [provideMockStore({ initialState: initialAppState }), provideMockActions(() => actions$), TechnicalRecordService]
     });
-    resolver = TestBed.inject(CreateBatchTrlResolver);
+    resolver = TestBed.inject(CreateBatchResolver);
     store = TestBed.inject(MockStore);
     techRecordService = TestBed.inject(TechnicalRecordService);
   });

@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { filter, race, Subject, take, withLatestFrom } from 'rxjs';
@@ -11,15 +11,17 @@ import { filter, race, Subject, take, withLatestFrom } from 'rxjs';
 })
 export class BatchTrlResultsComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
+  techRecord?: TechRecordModel;
+
   constructor(
     private technicalRecordService: TechnicalRecordService,
     private router: Router,
     private route: ActivatedRoute,
     private batchTechRecordService: BatchTechnicalRecordService
   ) {
-    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
-      if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
-    });
+    this.technicalRecordService.editableVehicleTechRecord$
+      .pipe(take(1))
+      .subscribe(vehicle => (!vehicle ? this.router.navigate(['..'], { relativeTo: this.route }) : (this.techRecord = vehicle.techRecord[0])));
 
     this.batchTechRecordService.batchCount$.pipe(take(1)).subscribe(count => {
       if (!count) this.router.navigate(['../..'], { relativeTo: this.route });
@@ -42,6 +44,10 @@ export class BatchTrlResultsComponent implements OnDestroy {
     this.batchTechRecordService.clearBatch();
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get vehicleType(): VehicleTypes | undefined {
+    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
   }
 
   get applicationId$() {

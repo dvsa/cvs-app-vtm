@@ -8,6 +8,7 @@ export type BatchRecord = {
   vin: string;
   systemNumber?: string;
   trailerId?: string;
+  primaryVrm?: string;
   vehicleType?: string;
   status?: StatusCodes;
   created?: boolean;
@@ -43,13 +44,14 @@ export const vehicleBatchCreateReducer = createReducer(
 
 function vehicleRecordsToBatchRecordMapper(vehicles: VehicleTechRecordModel[], created = true, amendedRecord = false): Update<BatchRecord>[] {
   return vehicles.map(v => {
-    const { vin, systemNumber, techRecord, trailerId } = v;
+    const { vin, systemNumber, techRecord, trailerId, vrms } = v;
     return {
       id: vin,
       changes: {
         vin,
         systemNumber,
         trailerId,
+        primaryVrm: vrms[0].vrm,
         vehicleType: techRecord[0].vehicleType,
         status: techRecord[0].statusCode,
         created,

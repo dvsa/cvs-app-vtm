@@ -1,10 +1,10 @@
-<h1 class="govuk-heading-l title">Add batch of trailers</h1>
+<h1 class="govuk-heading-l title">Add batch of {{ vehicleType | uppercase }}</h1>
 <form [formGroup]="form">
   <app-text-input formControlName="applicationId" name="applicationId" label="Application ID" [width]="width.XL"></app-text-input>
   <div class="govuk-inset-text">
-    For creating trailers, populate the <strong>VIN field only</strong>.
+    For creating {{ vehicleType }}, populate the <strong>VIN field only</strong>.
     <br />
-    For updating existing trailers, populate the <strong>VIN field and the Trailer ID field</strong>.
+    For updating existing {{ vehicleType }}, populate the <strong>VIN field and the {{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }} field</strong>.
   </div>
 
   <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
@@ -35,7 +35,7 @@
         appToUppercase
         formControlName="trailerId"
         name="trailerId{{ i }}"
-        label="Trailer ID"
+        label="{{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }}"
         [width]="width.L"
         (focusout)="validate(group)"
       ></app-text-input>
