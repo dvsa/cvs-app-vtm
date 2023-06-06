@@ -1,30 +1,27 @@
-import { ChangeDetectionStrategy, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnChanges, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { fetchReferenceDataByKey, fetchReferenceDataByKeySearch, ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend',
-  templateUrl: './reference-data-amend.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './reference-data-amend.component.html'
 })
 export class ReferenceDataAmendComponent implements OnInit {
   type!: ReferenceDataResourceType;
   key!: string;
-  isEditing: boolean = true;
-  amendedData: any;
+  data: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
-  refDataAdminType: any | undefined;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
@@ -41,14 +38,14 @@ export class ReferenceDataAmendComponent implements OnInit {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.key = params['key'];
-      this.store
-        .pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
-        .subscribe(type => (this.refDataAdminType = type));
 
       if (this.type && this.key) {
-        this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.key }));
-        // @ts-ignore
-        this.store.dispatch(fetchReferenceDataByKeySearch({ resourceType: this.type + '#AUDIT', resourceKey: this.key }));
+        this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)))
+          .subscribe(data => this.data = data);
+
+        // load the reference data admin type, the current item and check if it has any audit history
+        this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
+        this.referenceDataService.loadReferenceDataByKey(this.type, this.key);
       }
     });
   }
@@ -57,24 +54,12 @@ export class ReferenceDataAmendComponent implements OnInit {
     return Roles;
   }
 
+  get refDataAdminType$(): Observable<any | undefined> {
+    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
+  }
+
   get data$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)));
-  }
-
-  get widths(): typeof FormNodeWidth {
-    return FormNodeWidth;
-  }
-
-  titleCaseHeading(input: ReferenceDataResourceType | string): string {
-    return this.referenceDataService.macroCasetoTitleCase(input);
-  }
-
-  titleCaseColumn(s: string): string {
-    return this.referenceDataService.camelCaseToTitleCase(s);
-  }
-
-  titleCaseField(s: string): string {
-    return this.referenceDataService.camelCaseToTitleCase(s);
   }
 
   navigateBack() {
@@ -87,20 +72,20 @@ export class ReferenceDataAmendComponent implements OnInit {
 
     if (this.isFormInvalid) return;
 
-    const referenceData: any = {};
+    // const referenceData: any = {};
 
-    Object.keys(this.amendedData)
-      .filter(amendDataKey => amendDataKey !== 'resourceKey')
-      .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
+    // Object.keys(this.data)
+    //   .filter(amendDataKey => amendDataKey !== 'resourceKey')
+    //   .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
 
     this.referenceDataService
-      .amendReferenceDataItem(this.type, this.amendedData.resourceKey, referenceData)
+      .amendReferenceDataItem(this.type, this.key, this.data)
       .pipe(take(1))
       .subscribe(() => this.navigateBack());
   }
 
   handleFormChange(event: any) {
-    this.amendedData = event;
+    // this.amendedData = event;
   }
 
   checkForms(): void {

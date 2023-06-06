@@ -1,46 +1,43 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ReferenceDataAdminColumn } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { ReferenceDataState, selectSearchReturn } from '@store/reference-data';
-import { Observable } from 'rxjs';
+import { fetchReferenceDataByKeySearch, ReferenceDataState } from '@store/reference-data';
+import { Observable, of, take, map } from 'rxjs';
+import { selectSearchReturn } from '@store/reference-data';
 
 @Component({
   selector: 'app-reference-data-amend-history',
   templateUrl: './reference-data-amend-history.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReferenceDataAmendHistoryComponent implements OnInit {
-  @Input() type!: ReferenceDataResourceType;
-  @Input() key!: string;
-  @Input() refDataAdminType: any | undefined;
-  @Input() titleCaseHeading: any;
-  @Input() titleCaseColumn: any;
+export class ReferenceDataAmendHistoryComponent {
+  @Input() type: string = '';
+  @Input() key: string = '';
+  @Input() title: string = '';
+  @Input() columns: ReferenceDataAdminColumn[] = [];
 
   pageStart?: number;
   pageEnd?: number;
-  auditResults: any[] = [];
-  result: any[] = [];
-  history: any;
 
-  constructor(private store: Store<ReferenceDataState>, private cdr: ChangeDetectorRef, private referenceDataService: ReferenceDataService) {}
+  constructor(private cdr: ChangeDetectorRef, private store: Store<ReferenceDataState>) {}
 
   ngOnInit(): void {
-    this.history = this.refDataAdminType.columns.filter((items: any) => items.name != 'resourceKey');
+    // load the audit history
+    // @ts-ignore
+    this.store.dispatch(fetchReferenceDataByKeySearch({ resourceType: this.type + '#AUDIT', resourceKey: this.key }));
   }
 
-  get dataAudit$(): Observable<any[] | null> {
+  get history$(): Observable<any[]> {
+    // @ts-ignore
     return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceTypeAudit)));
   }
 
-  get numberOfRecords() {
-    this.dataAudit$.subscribe(item => this.auditResults.push(item));
-    this.result = this.auditResults[0];
-    return this.result.length || 0;
+  get numberOfRecords$(): Observable<number> {
+    return this.history$.pipe(map(items => items?.length ?? 0));
   }
 
-  get paginatedFields(): any {
-    return this.result.slice(this.pageStart, this.pageEnd);
+  get paginatedItems$(): Observable<any[]> {
+    return this.history$.pipe(map(items => items?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
   handlePaginationChange({ start, end }: { start: number; end: number }) {
