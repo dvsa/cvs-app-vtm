@@ -33,7 +33,7 @@ describe('fetchSearchResults actions', () => {
 
     describe('fetchSearchResultsFailed', () => {
       it('should set error state', () => {
-        const newState = { ...initialTechSearchResultState, loading: false };
+        const newState = { ...initialTechSearchResultState, loading: false, error: ':cry:' };
         const action = fetchSearchResultFailed({ error: ':cry:' });
         const state = techSearchResultReducer({ ...initialTechSearchResultState, loading: true }, action);
 

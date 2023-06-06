@@ -241,7 +241,7 @@ export class TechnicalRecordServiceEffects {
     }
   }
 
-  private apiErrors: { [key: string]: string } = {
+  private apiErrors: Record<string, string> = {
     getTechnicalRecords_400: 'There was a problem getting the Tech Record by',
     getTechnicalRecords_404: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
     createVehicleRecord_400: 'Unable to create a new vehicle record',

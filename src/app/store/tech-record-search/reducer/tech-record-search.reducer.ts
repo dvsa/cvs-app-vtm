@@ -1,6 +1,7 @@
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from '../actions/tech-record-search.actions';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 
 export interface SearchResult {
   systemNumber: string;
@@ -36,5 +37,9 @@ export const techSearchResultReducer = createReducer(
   initialTechSearchResultState,
   on(fetchSearchResult, state => ({ ...state, loading: true })),
   on(fetchSearchResultSuccess, (state, action) => ({ ...techSearchResultAdapter.setAll(action.payload, state), loading: false })),
-  on(fetchSearchResultFailed, state => ({ ...techSearchResultAdapter.setAll([], state), loading: false }))
+  on(fetchSearchResultFailed, (state, action) => ({
+    ...techSearchResultAdapter.setAll([], state),
+    loading: false,
+    error: action.error
+  }))
 );

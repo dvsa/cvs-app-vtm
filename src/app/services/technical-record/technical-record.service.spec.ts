@@ -93,7 +93,7 @@ describe('TechnicalRecordService', () => {
       });
 
       // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vrm`);
+      const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=primaryVrm`);
       expect(req.request.method).toEqual('GET');
 
       // Provide each request with a mock response
@@ -109,7 +109,7 @@ describe('TechnicalRecordService', () => {
       });
 
       // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vrm`);
+      const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=primaryVrm`);
       expect(req.request.method).toEqual('GET');
 
       // Provide each request with a mock response
