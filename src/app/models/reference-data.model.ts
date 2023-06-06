@@ -11,7 +11,8 @@ export enum ReferenceDataResourceType {
   TirReasonsForAbandoning = 'TIR_REASONS_FOR_ABANDONING',
   TrlMake = 'TRL_MAKE',
   Tyres = 'TYRES',
-  User = 'USER'
+  User = 'USER',
+  TyreLoadIndex = 'TYRE_LOAD_INDEX'
 }
 
 export interface ReferenceDataModelBase {
@@ -54,6 +55,10 @@ export interface ReferenceDataTyre extends ReferenceDataModelBase {
   plyRating: string;
   axleLoadSingle?: string;
   axleLoadDouble?: string;
+}
+
+export interface ReferenceDataTyreLoadIndex extends ReferenceDataModelBase {
+  loadIndex: string;
 }
 
 export interface User extends ReferenceDataModelBase {

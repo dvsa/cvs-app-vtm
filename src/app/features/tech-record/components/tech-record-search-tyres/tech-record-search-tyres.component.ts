@@ -5,7 +5,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes, SearchParams } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
+import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -16,7 +16,7 @@ import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearch
 import { selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { mergeMap, take } from 'rxjs';
+import { mergeMap, Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-tyres-search',
@@ -90,7 +90,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
         this.form.controls['filter'].patchValue(v.filter);
         this.form.controls['term'].patchValue(v.term);
       });
-
+    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
     if (!this.viewableTechRecord) {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
@@ -107,6 +107,10 @@ export class TechRecordSearchTyresComponent implements OnInit {
   }
   get numberOfResults(): number {
     return this.searchResults?.length ?? 0;
+  }
+
+  get loadIndex$(): Observable<ReferenceDataTyreLoadIndex[] | null> {
+    return this.referenceDataService.getAll$(ReferenceDataResourceType.TyreLoadIndex) as Observable<ReferenceDataTyreLoadIndex[]>;
   }
 
   handleSearch(filter: string, term: string): void {

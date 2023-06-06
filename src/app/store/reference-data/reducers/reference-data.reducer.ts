@@ -57,7 +57,8 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
   [ReferenceDataResourceType.TirReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.TrlMake]: createAdapter(),
   [ReferenceDataResourceType.Tyres]: createAdapter(),
-  [ReferenceDataResourceType.User]: createAdapter()
+  [ReferenceDataResourceType.User]: createAdapter(),
+  [ReferenceDataResourceType.TyreLoadIndex]: createAdapter()
 };
 
 //IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching resourceType
@@ -75,7 +76,8 @@ export const initialReferenceDataState: ReferenceDataState = {
   [ReferenceDataResourceType.TirReasonsForAbandoning]: getInitialState(ReferenceDataResourceType.TirReasonsForAbandoning),
   [ReferenceDataResourceType.TrlMake]: getInitialState(ReferenceDataResourceType.TrlMake),
   [ReferenceDataResourceType.Tyres]: getInitialState(ReferenceDataResourceType.Tyres),
-  [ReferenceDataResourceType.User]: getInitialState(ReferenceDataResourceType.User)
+  [ReferenceDataResourceType.User]: getInitialState(ReferenceDataResourceType.User),
+  [ReferenceDataResourceType.TyreLoadIndex]: getInitialState(ReferenceDataResourceType.TyreLoadIndex)
 };
 
 export const referenceDataReducer = createReducer(
