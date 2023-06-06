@@ -61,10 +61,10 @@ export class BatchTechnicalRecordService {
           vehicleTechRecord => vehicleTechRecord.trailerId === trailerId || vehicleTechRecord.primaryVrm === trailerId
         );
         if (!recordsWithMatchingTrailerId.length) {
-          return { validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } };
+          return { validateForBatch: { message: 'Could not find a record with matching VIN and VRM/Trailer ID' } };
         }
         if (new Set(recordsWithMatchingTrailerId.map(record => record.systemNumber)).size > 1) {
-          return { validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } };
+          return { validateForBatch: { message: 'More than one vehicle has this VIN and VRM/Trailer ID' } };
         }
         if (recordsWithMatchingTrailerId.find(techRecord => techRecord.techRecord_statusCode === StatusCodes.CURRENT)) {
           return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };

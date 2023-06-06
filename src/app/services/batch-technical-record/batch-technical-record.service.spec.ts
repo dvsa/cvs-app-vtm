@@ -154,7 +154,7 @@ describe('TechnicalRecordService', () => {
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult, { ...mockSearchResult, systemNumber: 'foobar' }]));
 
         const errors = await firstValueFrom(service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>);
-        expect(errors).toEqual({ validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } });
+        expect(errors).toEqual({ validateForBatch: { message: 'More than one vehicle has this VIN and VRM/Trailer ID' } });
       });
     });
 
@@ -166,7 +166,7 @@ describe('TechnicalRecordService', () => {
       jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([]));
 
       const errors = await firstValueFrom(service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>);
-      expect(errors).toEqual({ validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } });
+      expect(errors).toEqual({ validateForBatch: { message: 'Could not find a record with matching VIN and VRM/Trailer ID' } });
     });
   });
 });
