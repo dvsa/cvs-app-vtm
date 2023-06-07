@@ -9,7 +9,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { Observable, take } from 'rxjs';
 
 @Component({
@@ -40,8 +40,7 @@ export class ReferenceDataAmendComponent implements OnInit {
       this.key = params['key'];
 
       if (this.type && this.key) {
-        this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)))
-          .subscribe(data => this.data = data);
+        this.store.pipe(select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key)))).subscribe(data => (this.data = data));
 
         // load the reference data admin type, the current item and check if it has any audit history
         this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
@@ -79,7 +78,7 @@ export class ReferenceDataAmendComponent implements OnInit {
     //   .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
 
     this.referenceDataService
-      .amendReferenceDataItem(this.type, this.key, this.data)
+      .amendReferenceDataItem(this.type, encodeURIComponent(String(this.key)), this.data)
       .pipe(take(1))
       .subscribe(() => this.navigateBack());
   }

@@ -94,7 +94,7 @@ export class ReferenceDataCreateComponent implements OnInit {
           e.status == 404
             ? of(true)
             : this.referenceDataService
-                .createReferenceDataItem(this.type, this.newRefData.resourceKey, referenceData)
+                .createReferenceDataItem(this.type, encodeURIComponent(String(this.newRefData.resourceKey)), referenceData)
                 .pipe(take(1))
                 .subscribe(() => this.navigateBack())
       });

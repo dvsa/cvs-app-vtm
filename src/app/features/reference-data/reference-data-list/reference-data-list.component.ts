@@ -53,10 +53,12 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   amend(item: ReferenceDataModelBase): void {
-    this.router.navigate([item.resourceKey], { relativeTo: this.route });
+    const key = encodeURIComponent(String(item.resourceKey));
+    this.router.navigate([key], { relativeTo: this.route });
   }
 
   delete(item: ReferenceDataModelBase): void {
-    this.router.navigate([`${item.resourceKey}/delete`], { relativeTo: this.route });
+    const key = encodeURIComponent(String(item.resourceKey));
+    this.router.navigate([`${key}/delete`], { relativeTo: this.route });
   }
 }
