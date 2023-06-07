@@ -51,7 +51,7 @@ function vehicleRecordsToBatchRecordMapper(vehicles: VehicleTechRecordModel[], c
         vin,
         systemNumber,
         trailerId,
-        primaryVrm: vrms[0].vrm,
+        primaryVrm: vrms[0]?.vrm,
         vehicleType: techRecord[0].vehicleType,
         status: techRecord[0].statusCode,
         created,
