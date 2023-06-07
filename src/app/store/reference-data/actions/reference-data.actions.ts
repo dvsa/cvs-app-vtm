@@ -88,7 +88,11 @@ export const fetchReasonsForAbandoning = createAction('[API/reference-data] Fetc
 
 export const createReferenceDataItem = createAction(
   `${prefix} createReferenceDataItem`,
-  props<{ resourceType: ReferenceDataResourceType; resourceKey: string; payload: ReferenceDataModelBase }>()
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string;
+    payload: ReferenceDataModelBase;
+  }>()
 );
 export const createReferenceDataItemSuccess = createAction(`${prefix} createReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
 export const createReferenceDataItemFailure = createAction(`${prefix} createReferenceDataItemFailure`, props<GlobalError>());

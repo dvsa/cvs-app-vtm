@@ -70,7 +70,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
   }
 
   get refData$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)));
+    return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key))));
   }
 
   get refDataAdminType$(): Observable<any | undefined> {
