@@ -1,10 +1,11 @@
-<h1 class="govuk-heading-l title">Add batch of {{ vehicleType | uppercase }}</h1>
+<h1 class="govuk-heading-l title">Add batch of {{ vehicleType | formatVehicleType }}</h1>
 <form [formGroup]="form">
   <app-text-input formControlName="applicationId" name="applicationId" label="Application ID" [width]="width.XL"></app-text-input>
   <div class="govuk-inset-text">
-    For creating {{ vehicleType }}, populate the <strong>VIN field only</strong>.
+    For creating {{ vehicleType | formatVehicleType }}, populate the <strong>VIN field only</strong>.
     <br />
-    For updating existing {{ vehicleType }}, populate the <strong>VIN field and the {{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }} field</strong>.
+    For updating existing {{ vehicleType | formatVehicleType }}, populate the
+    <strong>VIN field and the {{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }} field</strong>.
   </div>
 
   <div class="flex flex--wrap flex_gap--7 justify--flex-start" formArrayName="vehicles">
