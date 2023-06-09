@@ -5,6 +5,7 @@ export interface VehicleTechRecordModel {
   vin: string;
   trailerId?: string;
   systemNumber: string;
+  oldVehicleStatus: StatusCodes | undefined;
   techRecord: TechRecordModel[];
 }
 

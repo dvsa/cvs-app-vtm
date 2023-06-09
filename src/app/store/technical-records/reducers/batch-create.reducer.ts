@@ -13,6 +13,7 @@ export type BatchRecord = {
   status?: StatusCodes;
   created?: boolean;
   amendedRecord?: boolean;
+  oldVehicleStatus?: string;
 };
 
 export interface BatchRecords extends EntityState<BatchRecord> {

@@ -43,6 +43,7 @@ export class BatchTechnicalRecordService {
       const trailerIdControl = control.parent?.get('trailerId') as CustomFormControl;
       const vinControl = control.parent?.get('vin') as CustomFormControl;
       const systemNumberControl = control.parent?.get('systemNumber') as CustomFormControl;
+      const oldVehicleStatusControl = control.parent?.get('oldVehicleStatus') as CustomFormControl;
 
       if (trailerIdControl && vinControl) {
         const trailerId = trailerIdControl.value;
@@ -50,7 +51,7 @@ export class BatchTechnicalRecordService {
         delete vinControl.meta.warning;
 
         if (trailerId && vin) {
-          return this.validateVinAndTrailerId(vin, trailerId, systemNumberControl);
+          return this.validateVinAndTrailerId(vin, trailerId, systemNumberControl, oldVehicleStatusControl);
         } else if (!trailerId && vin) {
           return this.validateVinForBatch(vinControl);
         } else if (trailerId && !vin) {
@@ -61,7 +62,12 @@ export class BatchTechnicalRecordService {
     };
   }
 
-  private validateVinAndTrailerId(vin: string, trailerId: string, systemNumberControl: CustomFormControl): Observable<ValidationErrors | null> {
+  private validateVinAndTrailerId(
+    vin: string,
+    trailerId: string,
+    systemNumberControl: CustomFormControl,
+    oldVehicleStatusControl: CustomFormControl
+  ): Observable<ValidationErrors | null> {
     return this.techRecordHttpService.search$(SEARCH_TYPES.VIN, vin).pipe(
       map(result => {
         const recordsWithMatchingTrailerId = result.filter(
@@ -73,10 +79,15 @@ export class BatchTechnicalRecordService {
         if (new Set(recordsWithMatchingTrailerId.map(record => record.systemNumber)).size > 1) {
           return { validateForBatch: { message: 'More than one vehicle has this VIN and VRM/Trailer ID' } };
         }
-        if (recordsWithMatchingTrailerId.find(techRecord => techRecord.techRecord_statusCode === StatusCodes.CURRENT)) {
+        if (
+          recordsWithMatchingTrailerId.find(
+            techRecord => techRecord.techRecord_statusCode === StatusCodes.CURRENT && techRecord.techRecord_vehicleType === VehicleTypes.TRL
+          )
+        ) {
           return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
         }
         systemNumberControl.setValue(result[0].systemNumber);
+        oldVehicleStatusControl.setValue(result[0].techRecord_statusCode);
         return null;
       }),
       catchError(() => of({ validateForBatch: { message: 'Could not find a record with matching VIN' } }))

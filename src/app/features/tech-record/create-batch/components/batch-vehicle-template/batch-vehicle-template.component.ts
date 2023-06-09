@@ -22,15 +22,7 @@ import { TechRecordSummaryComponent } from '../../../components/tech-record-summ
 export class BatchVehicleTemplateComponent {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
   isInvalid: boolean = false;
-  form: CustomFormGroup = new CustomFormGroup(
-    { name: 'form-group', type: FormNodeTypes.GROUP },
-    {
-      vehicleStatus: new CustomFormControl({ name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL }, '', [
-        Validators.required
-      ])
-    }
-  );
-
+  form: CustomFormGroup;
   public vehicleStatusOptions: MultiOptions = [
     { label: 'Provisional', value: StatusCodes.PROVISIONAL },
     { label: 'Current', value: StatusCodes.CURRENT }
@@ -47,6 +39,16 @@ export class BatchVehicleTemplateComponent {
     this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
       if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
     });
+
+    this.form = new CustomFormGroup(
+      { name: 'form-group', type: FormNodeTypes.GROUP },
+      {
+        vehicleStatus: new CustomFormControl({ name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL }, '', [
+          Validators.required
+        ])
+      }
+    );
+
     this.batchTechRecordService.vehicleStatus$.pipe(take(1)).subscribe(vehicleStatus => {
       if (this.form) {
         this.form.patchValue({ vehicleStatus });
@@ -112,7 +114,8 @@ export class BatchVehicleTemplateComponent {
                   vin: v.vin,
                   vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
                   trailerId: v.trailerId ? v.trailerId : null,
-                  systemNumber: v.systemNumber ? v.systemNumber : null
+                  systemNumber: v.systemNumber ? v.systemNumber : null,
+                  oldVehicleStatus: v.oldVehicleStatus ? v.oldVehicleStatus : null
                 } as VehicleTechRecordModel)
             )
           )
@@ -126,8 +129,8 @@ export class BatchVehicleTemplateComponent {
               this.store.dispatch(
                 updateTechRecords({
                   systemNumber: vehicle.systemNumber,
-                  recordToArchiveStatus: StatusCodes.PROVISIONAL,
-                  newStatus: StatusCodes.CURRENT
+                  recordToArchiveStatus: vehicle.oldVehicleStatus ?? StatusCodes.PROVISIONAL,
+                  newStatus: vehicle.techRecord[0]?.statusCode ?? StatusCodes.CURRENT
                 })
               );
             }

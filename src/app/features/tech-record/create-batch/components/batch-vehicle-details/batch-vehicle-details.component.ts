@@ -85,7 +85,8 @@ export class BatchVehicleDetailsComponent implements OnDestroy {
         this.batchTechRecordService.validateForBatch()
       ),
       trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]],
-      systemNumber: ['']
+      systemNumber: [''],
+      oldVehicleStatus: ['']
     });
   }
 
