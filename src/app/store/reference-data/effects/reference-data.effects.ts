@@ -4,15 +4,16 @@ import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/refer
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { UserService } from '@services/user-service/user-service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { testResultInEdit } from '@store/test-records';
 import { catchError, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
 import {
+  amendReferenceDataItem,
+  amendReferenceDataItemFailure,
   createReferenceDataItem,
   createReferenceDataItemFailure,
-  createReferenceDataItemSuccess,
   fetchReasonsForAbandoning,
   fetchReferenceData,
   fetchReferenceDataByKey,
@@ -126,14 +127,30 @@ export class ReferenceDataEffects {
       ofType(createReferenceDataItem),
       withLatestFrom(this.userService.id$, this.userService.name$),
       switchMap(([{ resourceType, resourceKey, payload }, createdId, createdName]) => {
-        payload = { ...payload, createdId, createdName, createdAt: new Date().toISOString() } as ReferenceDataModelBase;
+        payload = { ...payload, createdId, createdName, createdAt: new Date().toISOString() };
         return this.referenceDataService.createReferenceDataItem(resourceType, resourceKey, payload).pipe(
-          map((result: ReferenceDataModelBase) => createReferenceDataItemSuccess({ result })),
+          map((result: ReferenceDataModelBase) => fetchReferenceData({ resourceType })),
           catchError(error => of(createReferenceDataItemFailure({ error: error })))
         );
       })
     )
   );
+
+  // The amend effect will work when the referenceData.service.ts is amended on line 395 from <EmptyObject> to <any>
+
+  // amendReferenceDataItem$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(amendReferenceDataItem),
+  //     withLatestFrom(this.userService.id$, this.userService.name$),
+  //     switchMap(([{ resourceType, resourceKey, payload }, createdId, createdName]) => {
+  //       payload = { ...payload, createdId, createdName, createdAt: new Date().toISOString() };
+  //       return this.referenceDataService.amendReferenceDataItem(resourceType, resourceKey, payload).pipe(
+  //         map((result: ReferenceDataModelBase) => fetchReferenceData({ resourceType })),
+  //         catchError(error => of(amendReferenceDataItemFailure({ error: error })))
+  //       );
+  //     })
+  //   )
+  // );
 }
 
 function isPaginated(referenceDataApiResponse: ReferenceDataApiResponse): referenceDataApiResponse is ReferenceDataApiResponseWithPagination {

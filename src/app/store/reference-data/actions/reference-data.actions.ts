@@ -1,7 +1,6 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
-import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
-import { ReferenceDataEntityStateSearch } from '../reducers/reference-data.reducer';
+import { createAction, props } from '@ngrx/store';
 
 const prefix = '[API/reference-data]';
 
@@ -96,3 +95,14 @@ export const createReferenceDataItem = createAction(
 );
 export const createReferenceDataItemSuccess = createAction(`${prefix} createReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
 export const createReferenceDataItemFailure = createAction(`${prefix} createReferenceDataItemFailure`, props<GlobalError>());
+
+export const amendReferenceDataItem = createAction(
+  `${prefix} amendReferenceDataItem`,
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string;
+    payload: ReferenceDataModelBase;
+  }>()
+);
+export const amendReferenceDataItemSuccess = createAction(`${prefix} amendReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
+export const amendReferenceDataItemFailure = createAction(`${prefix} amendReferenceDataItemFailure`, props<GlobalError>());

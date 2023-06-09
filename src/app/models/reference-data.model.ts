@@ -31,6 +31,7 @@ export interface ReferenceDataModelBase {
   description?: string;
   createdAt?: string;
   createdName?: string;
+  createdId?: string;
 }
 
 export interface HgvMake extends ReferenceDataModelBase {}

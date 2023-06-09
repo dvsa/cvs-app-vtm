@@ -7,10 +7,10 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { createReferenceDataItem, ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { catchError, filter, Observable, of, switchMap, take, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-add',
@@ -22,7 +22,6 @@ export class ReferenceDataCreateComponent implements OnInit {
   newRefData: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
-  refDataAdminType: any | undefined;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
@@ -40,9 +39,6 @@ export class ReferenceDataCreateComponent implements OnInit {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-      this.store
-        .pipe(take(1), select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
-        .subscribe(type => (this.refDataAdminType = type));
     });
   }
 
@@ -54,12 +50,8 @@ export class ReferenceDataCreateComponent implements OnInit {
     return FormNodeWidth;
   }
 
-  titleCaseHeading(input: ReferenceDataResourceType): string {
-    return this.referenceDataService.macroCasetoTitleCase(input);
-  }
-
-  titleCaseField(s: string): string {
-    return this.referenceDataService.camelCaseToTitleCase(s);
+  get refDataAdminType$(): Observable<any | undefined> {
+    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
   navigateBack() {
@@ -93,11 +85,15 @@ export class ReferenceDataCreateComponent implements OnInit {
         error: e =>
           e.status == 404
             ? of(true)
-            : this.referenceDataService
-                .createReferenceDataItem(this.type, encodeURIComponent(String(this.newRefData.resourceKey)), referenceData)
-                .pipe(take(1))
-                .subscribe(() => this.navigateBack())
+            : this.store.dispatch(
+                createReferenceDataItem({
+                  resourceType: this.type,
+                  resourceKey: encodeURIComponent(String(this.newRefData.resourceKey)),
+                  payload: referenceData
+                })
+              )
       });
+    this.navigateBack();
   }
 
   handleFormChange(event: any) {

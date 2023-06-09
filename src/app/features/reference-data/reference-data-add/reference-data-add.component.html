@@ -1,12 +1,11 @@
-<ng-container *ngIf="refDataAdminType">
+<ng-container *ngIf="refDataAdminType$ | async">
   <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
     <div class="govuk-grid-column-full">
-      <p class="govuk-heading-xl govuk-!-font-weight-bold">Add {{ titleCaseHeading(type) }}</p>
+      <p class="govuk-heading-xl govuk-!-font-weight-bold">Add {{ (refDataAdminType$ | async).label }}</p>
 
       <app-dynamic-form-group
-        *ngIf="refDataAdminType.templateCreate"
-        [id]="refDataAdminType.templateCreate.name"
-        [template]="refDataAdminType.templateCreate"
+        [id]="type"
+        [template]="(refDataAdminType$ | async).templateAmend"
         [data]=""
         [edit]="isEditing"
         (formChange)="handleFormChange($event)"
