@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateEditingTechRecordCancel } from '@store/technical-records';
-import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
+import {
+  clearBatch,
+  setApplicationId,
+  setGenerateNumberFlag,
+  upsertVehicleBatch,
+  setVehicleStatus
+} from '@store/technical-records/actions/batch-create.actions';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import {
   selectAllBatch,
@@ -19,7 +25,8 @@ import {
   selectBatchUpdatedCount,
   selectBatchUpdatedSuccessCount,
   selectGenerateNumber,
-  selectIsBatch
+  selectIsBatch,
+  selectVehicleStatus
 } from '@store/technical-records/selectors/batch-create.selectors';
 import { Observable, catchError, map, of } from 'rxjs';
 
@@ -102,6 +109,9 @@ export class BatchTechnicalRecordService {
   setGenerateNumberFlag(generateNumber: boolean) {
     this.store.dispatch(setGenerateNumberFlag({ generateNumber }));
   }
+  setVehicleStatus(vehicleStatus: string) {
+    this.store.dispatch(setVehicleStatus({ vehicleStatus }));
+  }
 
   clearBatch() {
     this.store.dispatch(clearBatch());
@@ -145,6 +155,10 @@ export class BatchTechnicalRecordService {
 
   get applicationId$(): Observable<string | undefined> {
     return this.store.pipe(select(selectApplicationId));
+  }
+
+  get vehicleStatus$(): Observable<string | undefined> {
+    return this.store.pipe(select(selectVehicleStatus));
   }
 
   get generateNumber$(): Observable<boolean> {

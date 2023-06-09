@@ -1,6 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { MultiOptions } from '@forms/models/options.model';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
@@ -17,15 +22,37 @@ import { TechRecordSummaryComponent } from '../../../components/tech-record-summ
 export class BatchVehicleTemplateComponent {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
   isInvalid: boolean = false;
-  batchForm?: FormGroup;
+  form: CustomFormGroup = new CustomFormGroup(
+    { name: 'form-group', type: FormNodeTypes.GROUP },
+    {
+      vehicleStatus: new CustomFormControl({ name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL }, '', [
+        Validators.required
+      ])
+    }
+  );
+
+  public vehicleStatusOptions: MultiOptions = [
+    { label: 'Provisional', value: StatusCodes.PROVISIONAL },
+    { label: 'Current', value: StatusCodes.CURRENT }
+  ];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
-    private batchTechRecordService: BatchTechnicalRecordService
-  ) {}
+    private batchTechRecordService: BatchTechnicalRecordService,
+    private globalErrorService: GlobalErrorService
+  ) {
+    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
+      if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
+    });
+    this.batchTechRecordService.vehicleStatus$.pipe(take(1)).subscribe(vehicleStatus => {
+      if (this.form) {
+        this.form.patchValue({ vehicleStatus });
+      }
+    });
+  }
 
   get vehicle$(): Observable<VehicleTechRecordModel | undefined> {
     return this.technicalRecordService.editableVehicleTechRecord$;
@@ -33,6 +60,10 @@ export class BatchVehicleTemplateComponent {
 
   get applicationId$() {
     return this.batchTechRecordService.applicationId$;
+  }
+
+  get vehicleStatus$() {
+    return this.batchTechRecordService.vehicleStatus$;
   }
 
   get isBatch$() {
@@ -47,10 +78,25 @@ export class BatchVehicleTemplateComponent {
     return this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord);
   }
 
+  statusChange(): void {
+    return this.batchTechRecordService.setVehicleStatus(this.form.get('vehicleStatus')?.value);
+  }
+
+  get isVehicleStatusValid(): boolean {
+    const errors: GlobalError[] = [];
+
+    DynamicFormService.validate(this.form, errors);
+
+    this.globalErrorService.setErrors(errors);
+
+    return this.form.valid;
+  }
+
   handleSubmit() {
     this.summary?.checkForms();
+    const check = this.isVehicleStatusValid;
 
-    if (!this.isInvalid) {
+    if (!this.isInvalid && check) {
       this.technicalRecordService.editableVehicleTechRecord$
         .pipe(
           withLatestFrom(this.batchTechRecordService.batchVehicles$),
@@ -60,6 +106,9 @@ export class BatchVehicleTemplateComponent {
               v =>
                 ({
                   ...record!,
+                  techRecord: [
+                    { ...record?.techRecord[0], statusCode: this.form.value.vehicleStatus ?? StatusCodes.PROVISIONAL } as unknown as TechRecordModel
+                  ],
                   vin: v.vin,
                   vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
                   trailerId: v.trailerId ? v.trailerId : null,
@@ -86,6 +135,8 @@ export class BatchVehicleTemplateComponent {
 
           this.router.navigate(['batch-results'], { relativeTo: this.route });
         });
+    } else {
+      return;
     }
   }
 }

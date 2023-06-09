@@ -6,8 +6,10 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-select-vehicle-type',
@@ -30,6 +32,7 @@ export class SelectVehicleTypeComponent {
   constructor(
     private globalErrorService: GlobalErrorService,
     private batchTechRecordService: BatchTechnicalRecordService,
+    private trs: TechnicalRecordService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -51,10 +54,20 @@ export class SelectVehicleTypeComponent {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  handleSubmit(type: string): void {
+  handleSubmit(type: VehicleTypes): void {
     if (!this.isFormValid) {
       return;
     }
+
+    this.trs.editableVehicleTechRecord$.pipe(take(1)).subscribe(
+      vehicle =>
+        !vehicle &&
+        this.trs.updateEditingTechRecord({
+          techRecord: [{ vehicleType: type, statusCode: StatusCodes.PROVISIONAL }]
+        } as VehicleTechRecordModel)
+    );
+
+    this.trs.generateEditingVehicleTechnicalRecordFromVehicleType(type);
     this.router.navigate([type], { relativeTo: this.route });
   }
 }
