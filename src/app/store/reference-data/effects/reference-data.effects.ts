@@ -128,6 +128,7 @@ export class ReferenceDataEffects {
       withLatestFrom(this.userService.id$, this.userService.name$),
       switchMap(([{ resourceType, resourceKey, payload }, createdId, createdName]) => {
         payload = { ...payload, createdId, createdName, createdAt: new Date().toISOString() };
+
         return this.referenceDataService.createReferenceDataItem(resourceType, resourceKey, payload).pipe(
           map((result: ReferenceDataModelBase) => fetchReferenceData({ resourceType })),
           catchError(error => of(createReferenceDataItemFailure({ error: error })))

@@ -22,6 +22,8 @@ export class ReferenceDataAmendComponent implements OnInit {
   data: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
+  refDataAdminType: any | undefined;
+  amendedData: any;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
@@ -45,16 +47,16 @@ export class ReferenceDataAmendComponent implements OnInit {
         // load the reference data admin type, the current item and check if it has any audit history
         this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
         this.referenceDataService.loadReferenceDataByKey(this.type, this.key);
+
+        this.store
+          .pipe(take(1), select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
+          .subscribe(type => (this.refDataAdminType = type));
       }
     });
   }
 
   get roles(): typeof Roles {
     return Roles;
-  }
-
-  get refDataAdminType$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
   get data$(): Observable<any | undefined> {
@@ -71,20 +73,20 @@ export class ReferenceDataAmendComponent implements OnInit {
 
     if (this.isFormInvalid) return;
 
-    // const referenceData: any = {};
+    const referenceData: any = {};
 
-    // Object.keys(this.data)
-    //   .filter(amendDataKey => amendDataKey !== 'resourceKey')
-    //   .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
+    Object.keys(this.data)
+      .filter(amendDataKey => amendDataKey !== 'resourceKey')
+      .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
 
     this.referenceDataService
-      .amendReferenceDataItem(this.type, encodeURIComponent(String(this.key)), this.data)
+      .amendReferenceDataItem(this.type, encodeURIComponent(String(this.key)), this.amendedData)
       .pipe(take(1))
       .subscribe(() => this.navigateBack());
   }
 
   handleFormChange(event: any) {
-    // this.amendedData = event;
+    this.amendedData = event;
   }
 
   checkForms(): void {

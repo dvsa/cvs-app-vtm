@@ -22,6 +22,7 @@ export class ReferenceDataCreateComponent implements OnInit {
   newRefData: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
+  refDataAdminType: any | undefined;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
@@ -39,6 +40,9 @@ export class ReferenceDataCreateComponent implements OnInit {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
+      this.store
+        .pipe(take(1), select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
+        .subscribe(type => (this.refDataAdminType = type));
     });
   }
 
@@ -48,10 +52,6 @@ export class ReferenceDataCreateComponent implements OnInit {
 
   get widths(): typeof FormNodeWidth {
     return FormNodeWidth;
-  }
-
-  get refDataAdminType$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
   navigateBack() {
