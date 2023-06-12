@@ -1,10 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormControlStatus, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
@@ -16,7 +16,7 @@ import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from
   templateUrl: './batch-vehicle-details.component.html',
   styleUrls: ['./batch-vehicle-details.component.scss']
 })
-export class BatchVehicleDetailsComponent implements OnDestroy {
+export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
   form: FormGroup;
   techRecord?: TechRecordModel;
   readonly maxNumberOfVehicles = 40;
@@ -36,8 +36,6 @@ export class BatchVehicleDetailsComponent implements OnDestroy {
       applicationId: new FormControl(null, [Validators.required])
     });
 
-    this.addVehicles(this.maxNumberOfVehicles);
-
     this.technicalRecordService.editableVehicleTechRecord$
       .pipe(take(1))
       .subscribe(vehicle => (!vehicle ? this.back() : (this.techRecord = vehicle.techRecord[0])));
@@ -49,6 +47,9 @@ export class BatchVehicleDetailsComponent implements OnDestroy {
           this.form.patchValue({ vehicles, applicationId });
         }
       });
+  }
+  ngOnInit(): void {
+    this.addVehicles(this.maxNumberOfVehicles);
   }
 
   ngOnDestroy(): void {
@@ -84,7 +85,20 @@ export class BatchVehicleDetailsComponent implements OnDestroy {
         [CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21)],
         this.batchTechRecordService.validateForBatch()
       ),
-      trailerId: ['', [Validators.minLength(7), Validators.maxLength(8), CustomValidators.alphanumeric()]],
+      trailerId: new CustomFormControl({ name: 'trailerId', type: FormNodeTypes.CONTROL }, '', [
+        CustomValidators.validateVRMTrailerIdLength('vehicleType'),
+        CustomValidators.alphanumeric()
+      ]),
+      vehicleType: new CustomFormControl(
+        {
+          name: 'change-vehicle-type-select',
+          label: 'Vehicle type',
+          type: FormNodeTypes.CONTROL,
+          viewType: FormNodeViewTypes.HIDDEN,
+          editType: FormNodeEditTypes.HIDDEN
+        },
+        this.techRecord?.vehicleType
+      ),
       systemNumber: [''],
       oldVehicleStatus: ['']
     });
