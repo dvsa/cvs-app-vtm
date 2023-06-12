@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
@@ -72,14 +73,14 @@ describe('SelectVehicleTypeComponent', () => {
     it('should do nothing if the form is not valid', () => {
       jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(false);
       const navigateSpy = jest.spyOn(router, 'navigate');
-      component.handleSubmit('trl');
+      component.handleSubmit(VehicleTypes.TRL);
       expect(navigateSpy).toHaveBeenCalledTimes(0);
     });
 
     it('should navigate to batch records when successful', async () => {
       jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
       const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      component.handleSubmit('hgv');
+      component.handleSubmit(VehicleTypes.HGV);
 
       fixture.detectChanges();
       expect(routerSpy).toHaveBeenCalledWith(['hgv'], { relativeTo: route });

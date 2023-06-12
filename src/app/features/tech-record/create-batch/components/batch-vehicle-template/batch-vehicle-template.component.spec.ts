@@ -20,7 +20,7 @@ import { BatchTechnicalRecordService } from '@services/batch-technical-record/ba
 let batchOfVehicles: BatchRecord[] = [];
 
 const mockTechRecordService = (<unknown>{
-  editableVehicleTechRecord$: of({}),
+  editableVehicleTechRecord$: of({ techRecord: [] }),
   updateEditingTechRecord: jest.fn(),
   createVehicleRecord: jest.fn()
 }) as TechnicalRecordService;
@@ -31,7 +31,10 @@ const mockBatchTechRecordService = (<unknown>{
   },
   applicationId$: of('TES_1_APPLICATION_ID'),
   isBatchCreate$: of(true),
-  batchCount$: of(2)
+  batchCount$: of(2),
+  get vehicleStatus$() {
+    return of('current');
+  }
 }) as BatchTechnicalRecordService;
 
 @Component({})
@@ -102,6 +105,7 @@ describe('BatchVehicleTemplateComponent', () => {
 
     it('given a batch of 0', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
+      jest.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
       component.handleSubmit();
       expect(dispatchSpy).toHaveBeenCalledTimes(0);
     });
@@ -110,6 +114,7 @@ describe('BatchVehicleTemplateComponent', () => {
       batchOfVehicles = [{ vin: 'EXAMPLEVIN000001' }, { vin: 'EXAMPLEVIN000002' }];
 
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
+      jest.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
       component.handleSubmit();
       expect(dispatchSpy).toHaveBeenCalledTimes(2);
     });
@@ -118,10 +123,12 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       batchOfVehicles = [
-        { vin: 'EXAMPLEVIN000001', trailerId: '1000001', systemNumber: '1' },
-        { vin: 'EXAMPLEVIN000002', trailerId: '1000002', systemNumber: '2' }
+        { vin: 'EXAMPLEVIN000001', trailerId: '1000001', systemNumber: '1', oldVehicleStatus: StatusCodes.PROVISIONAL },
+        { vin: 'EXAMPLEVIN000002', trailerId: '1000002', systemNumber: '2', oldVehicleStatus: StatusCodes.CURRENT }
       ];
       jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
+
+      jest.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
 
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
       component.handleSubmit();
@@ -136,7 +143,7 @@ describe('BatchVehicleTemplateComponent', () => {
 
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         2,
-        updateTechRecords({ systemNumber: '2', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+        updateTechRecords({ systemNumber: '2', recordToArchiveStatus: StatusCodes.CURRENT, newStatus: StatusCodes.CURRENT })
       );
     }));
 
@@ -144,15 +151,15 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       batchOfVehicles = [
-        { vin: 'EXAMPLEVIN000001', trailerId: '1000001', systemNumber: '1' },
+        { vin: 'EXAMPLEVIN000001', trailerId: '1000001', systemNumber: '1', oldVehicleStatus: StatusCodes.PROVISIONAL },
         { vin: 'EXAMPLEVIN000002' },
-        { vin: 'EXAMPLEVIN000003', trailerId: '1000002', systemNumber: '3' },
+        { vin: 'EXAMPLEVIN000003', trailerId: '1000002', systemNumber: '3', oldVehicleStatus: StatusCodes.PROVISIONAL },
         { vin: 'EXAMPLEVIN000004' },
         { vin: 'EXAMPLEVIN000005' }
       ];
 
       jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
-
+      jest.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
       component.handleSubmit();
 
@@ -180,6 +187,7 @@ describe('BatchVehicleTemplateComponent', () => {
       }
 
       jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
+      jest.spyOn(component, 'isVehicleStatusValid', 'get').mockReturnValue(true);
 
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation();
       component.handleSubmit();

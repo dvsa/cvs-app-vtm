@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { BatchUpdateVehicleModel, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -64,10 +64,6 @@ export class BatchVehicleTemplateComponent {
     return this.batchTechRecordService.applicationId$;
   }
 
-  get vehicleStatus$() {
-    return this.batchTechRecordService.vehicleStatus$;
-  }
-
   get isBatch$() {
     return this.batchTechRecordService.isBatchCreate$;
   }
@@ -116,7 +112,7 @@ export class BatchVehicleTemplateComponent {
                   trailerId: v.trailerId ? v.trailerId : null,
                   systemNumber: v.systemNumber ? v.systemNumber : null,
                   oldVehicleStatus: v.oldVehicleStatus ? v.oldVehicleStatus : null
-                } as VehicleTechRecordModel)
+                } as BatchUpdateVehicleModel)
             )
           )
         )

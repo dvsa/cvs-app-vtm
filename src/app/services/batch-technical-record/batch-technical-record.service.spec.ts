@@ -3,7 +3,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { StatusCodes, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -50,7 +50,9 @@ describe('TechnicalRecordService', () => {
       testGroup = new FormGroup({
         vin: new CustomFormControl({ name: 'vin', type: FormNodeTypes.CONTROL }, null, null),
         trailerId: new FormControl({ name: 'trailerId', value: '' }, null),
-        systemNumber: new FormControl({ name: 'systemNumber', value: '' }, null)
+        systemNumber: new FormControl({ name: 'systemNumber', value: '' }, null),
+        oldVehicleStatus: new FormControl({ name: 'oldVehicleStatus', value: '' }, null),
+        vehicleType: new FormControl({ name: 'vehicleType', value: '' }, null)
       });
     });
 
@@ -117,7 +119,8 @@ describe('TechnicalRecordService', () => {
         const mockSearchResult = {
           vin: 'TESTVIN',
           trailerId: 'TESTTRAILERID',
-          systemNumber: 'TESTSYSTEMNUMBER'
+          systemNumber: 'TESTSYSTEMNUMBER',
+          techRecord_statusCode: StatusCodes.PROVISIONAL
         } as SearchResult;
 
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
@@ -127,15 +130,17 @@ describe('TechnicalRecordService', () => {
         expect(errors).toBeNull();
       });
 
-      it('returns null if only 1 vehicle exists with those values with a current tech record', async () => {
+      it('throws error if only 1 trailer exists with those values with a current tech record', async () => {
         expect.assertions(1);
         testGroup.get('vin')!.setValue('TESTVIN');
         testGroup.get('trailerId')!.setValue('TESTTRAILERID');
+        testGroup.get('vehicleType')!.setValue(VehicleTypes.TRL);
         const mockSearchResult = {
           vin: 'TESTVIN',
           trailerId: 'TESTTRAILERID',
           systemNumber: 'TESTSYSTEMNUMBER',
-          techRecord_statusCode: StatusCodes.CURRENT
+          techRecord_statusCode: StatusCodes.CURRENT,
+          techRecord_vehicleType: VehicleTypes.TRL
         } as SearchResult;
 
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
@@ -145,11 +150,30 @@ describe('TechnicalRecordService', () => {
         expect(errors).toEqual({ validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } });
       });
 
+      it('returns null if only 1 vehicle other than trailer exists with those values with a current tech record', async () => {
+        expect.assertions(1);
+        testGroup.get('vin')!.setValue('TESTVIN');
+        testGroup.get('trailerId')!.setValue('TESTTRAILERID');
+        const mockSearchResult = {
+          vin: 'TESTVIN',
+          trailerId: 'TESTTRAILERID',
+          systemNumber: 'TESTSYSTEMNUMBER',
+          techRecord_statusCode: StatusCodes.CURRENT,
+          techRecord_vehicleType: VehicleTypes.PSV
+        } as SearchResult;
+
+        jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
+
+        const serviceCall = service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>;
+        const errors = await firstValueFrom(serviceCall);
+        expect(errors).toBeNull();
+      });
+
       it('throws an error if more than 1 vehicle exists with those values', async () => {
         expect.assertions(1);
         testGroup.get('vin')!.setValue('TESTVIN');
         testGroup.get('trailerId')!.setValue('TESTTRAILERID');
-        const mockSearchResult = { vin: 'TESTVIN', trailerId: 'TESTTRAILERID' } as SearchResult;
+        const mockSearchResult = { vin: 'TESTVIN', trailerId: 'TESTTRAILERID', techRecord_statusCode: StatusCodes.PROVISIONAL } as SearchResult;
 
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult, { ...mockSearchResult, systemNumber: 'foobar' }]));
 

@@ -5,8 +5,11 @@ export interface VehicleTechRecordModel {
   vin: string;
   trailerId?: string;
   systemNumber: string;
-  oldVehicleStatus: StatusCodes | undefined;
   techRecord: TechRecordModel[];
+}
+
+export interface BatchUpdateVehicleModel extends VehicleTechRecordModel {
+  oldVehicleStatus?: StatusCodes | undefined;
 }
 
 export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'> {
