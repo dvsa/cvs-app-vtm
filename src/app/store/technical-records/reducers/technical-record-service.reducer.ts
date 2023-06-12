@@ -4,7 +4,7 @@ import { Axle, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
-import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '../actions/batch-create.actions';
+import { clearBatch, setApplicationId, setGenerateNumberFlag, setVehicleStatus, upsertVehicleBatch } from '../actions/batch-create.actions';
 import {
   addAxle,
   archiveTechRecord,
@@ -107,6 +107,7 @@ export const vehicleTechRecordReducer = createReducer(
     createVehicleRecordSuccess,
     updateTechRecordsSuccess,
     setApplicationId,
+    setVehicleStatus,
     setGenerateNumberFlag,
     clearBatch,
     (state, action) => ({

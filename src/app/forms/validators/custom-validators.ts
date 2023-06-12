@@ -135,7 +135,7 @@ export class CustomValidators {
           }
         } else {
           if (control.value.length < 1) {
-            return { validateVRMTrailerIdLength: { message: 'VRM must be less than or equal to 1 characters' } };
+            return { validateVRMTrailerIdLength: { message: 'VRM must be greater than or equal to 1 character' } };
           } else if (control.value.length > 9) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be less than or equal to 9 characters' } };
           }

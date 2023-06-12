@@ -24,6 +24,7 @@ import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe'
 import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
 import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
 import { GetControlLabelPipe } from './pipes/get-control-label/get-control-label.pipe';
+import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicle-type.pipe';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { GetControlLabelPipe } from './pipes/get-control-label/get-control-label
     InputSpinnerComponent,
     RouterOutletComponent,
     TyreAxleLoadPipe,
-    GetControlLabelPipe
+    GetControlLabelPipe,
+    FormatVehicleTypePipe
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -72,7 +74,8 @@ import { GetControlLabelPipe } from './pipes/get-control-label/get-control-label
     InputSpinnerComponent,
     RouterOutletComponent,
     TyreAxleLoadPipe,
-    GetControlLabelPipe
+    GetControlLabelPipe,
+    FormatVehicleTypePipe
   ],
   providers: [DocumentRetrievalService]
 })
