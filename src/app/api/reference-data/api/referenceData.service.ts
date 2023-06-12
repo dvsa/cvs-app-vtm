@@ -304,7 +304,6 @@ export class ReferenceDataService {
       'delete',
       `${this.basePath}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
       {
-        body: body,
         withCredentials: this.configuration.withCredentials,
         headers: headers,
         observe: observe,
