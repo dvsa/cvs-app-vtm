@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
+import { DeleteItem, ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -14,6 +14,9 @@ import {
   amendReferenceDataItemFailure,
   createReferenceDataItem,
   createReferenceDataItemFailure,
+  deleteReferenceDataItem,
+  deleteReferenceDataItemFailure,
+  deleteReferenceDataItemSuccess,
   fetchReasonsForAbandoning,
   fetchReferenceData,
   fetchReferenceDataByKey,
@@ -125,9 +128,8 @@ export class ReferenceDataEffects {
   createReferenceDataItem$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createReferenceDataItem),
-      withLatestFrom(this.userService.id$, this.userService.name$),
-      switchMap(([{ resourceType, resourceKey, payload }, createdId, createdName]) => {
-        payload = { ...payload, createdId, createdName, createdAt: new Date().toISOString() };
+      switchMap(({ resourceType, resourceKey, payload }) => {
+        payload = { ...payload };
 
         return this.referenceDataService.createReferenceDataItem(resourceType, resourceKey, payload).pipe(
           map((result: ReferenceDataModelBase) => fetchReferenceData({ resourceType })),
@@ -152,6 +154,19 @@ export class ReferenceDataEffects {
   //     })
   //   )
   // );
+
+  deleteReferenceDataItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteReferenceDataItem),
+      switchMap(({ resourceType, resourceKey, reason }) => {
+        const payload = { reason: reason, createdAt: new Date().toISOString() };
+        return this.referenceDataService.deleteReferenceDataItem(resourceType, resourceKey, payload).pipe(
+          map((result: DeleteItem) => deleteReferenceDataItemSuccess({ resourceType, resourceKey })),
+          catchError(error => of(deleteReferenceDataItemFailure({ error: error })))
+        );
+      })
+    )
+  );
 }
 
 function isPaginated(referenceDataApiResponse: ReferenceDataApiResponse): referenceDataApiResponse is ReferenceDataApiResponseWithPagination {

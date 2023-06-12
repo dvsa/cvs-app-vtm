@@ -3,6 +3,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import {
   addSearchInformation,
+  deleteReferenceDataItemSuccess,
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
@@ -18,6 +19,7 @@ import {
   removeReferenceDataByKey,
   removeTyreSearch
 } from '../actions/reference-data.actions';
+import cloneDeep from 'lodash.clonedeep';
 
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
 
@@ -133,9 +135,9 @@ export const referenceDataReducer = createReducer(
     ...state,
     [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null, filter: null, term: null }
   })),
-  on(removeReferenceDataByKey, (state, action) => {
+  on(deleteReferenceDataItemSuccess, (state, action) => {
     const { resourceType, resourceKey } = action;
-    const currentState = { ...state };
+    let currentState: ReferenceDataState = cloneDeep(state);
     const filteredEntities: (string | number)[] = [];
     delete currentState[resourceType as ReferenceDataResourceType].entities[resourceKey];
     currentState[resourceType as ReferenceDataResourceType].ids.forEach(id => {

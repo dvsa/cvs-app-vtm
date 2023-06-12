@@ -70,11 +70,11 @@ export class ReferenceDataService extends ReferenceDataApiService {
     );
   }
 
-  deleteReferenceDataItem(type: ReferenceDataResourceType, key: string, reason: string) {
+  deleteReferenceDataItem(type: ReferenceDataResourceType, key: string, payload: any) {
     return this.usersService.id$.pipe(
       withLatestFrom(this.usersService.name$),
       switchMap(([createdId, createdName]) => {
-        const deleteObject = { createdId, createdName, createdAt: new Date(), reason };
+        const deleteObject = { ...payload, createdId, createdName, createdAt: new Date() };
         return this.referenceResourceTypeResourceKeyDelete(type, key, deleteObject, 'body', false);
       })
     );

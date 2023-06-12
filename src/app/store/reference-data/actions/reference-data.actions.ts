@@ -1,3 +1,4 @@
+import { DeleteItem } from '@api/reference-data';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { createAction, props } from '@ngrx/store';
@@ -106,3 +107,20 @@ export const amendReferenceDataItem = createAction(
 );
 export const amendReferenceDataItemSuccess = createAction(`${prefix} amendReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
 export const amendReferenceDataItemFailure = createAction(`${prefix} amendReferenceDataItemFailure`, props<GlobalError>());
+
+export const deleteReferenceDataItem = createAction(
+  `${prefix} deleteReferenceDataItem`,
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string;
+    reason: string;
+  }>()
+);
+export const deleteReferenceDataItemSuccess = createAction(
+  `${prefix} deleteReferenceDataItemSuccess`,
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string;
+  }>()
+);
+export const deleteReferenceDataItemFailure = createAction(`${prefix} deleteReferenceDataItemFailure`, props<GlobalError>());

@@ -10,7 +10,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { fetchReferenceDataByKey, ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { deleteReferenceDataItem, fetchReferenceDataByKey, ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { Observable, take } from 'rxjs';
 @Component({
   selector: 'app-reference-data-delete',
@@ -117,12 +117,20 @@ export class ReferenceDataDeleteComponent implements OnInit {
 
     if (this.isFormInvalid) return;
 
-    this.referenceDataService
-      .deleteReferenceDataItem(this.type, this.key, this.reasonForDeletion.reason)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.referenceDataService.removeReferenceDataByKey(this.type, this.key);
-        this.navigateBack();
-      });
+    this.store.dispatch(
+      deleteReferenceDataItem({
+        resourceType: this.type,
+        resourceKey: this.key,
+        reason: this.reasonForDeletion.reason
+      })
+    );
+    this.navigateBack();
+    // this.referenceDataService
+    //   .deleteReferenceDataItem(this.type, this.key, this.reasonForDeletion.reason)
+    //   .pipe(take(1))
+    //   .subscribe(() => {
+    //     this.referenceDataService.removeReferenceDataByKey(this.type, this.key);
+    //     this.navigateBack();
+    //   });
   }
 }
