@@ -9,13 +9,13 @@
     [options]="vehicleTypeOptions"
   ></app-radio-group>
 
-  <!-- <app-select
-    #vehicleStatus
-    formControlName="vehicleStatus"
-    name="change-vehicle-status-select"
-    label="Select vehicle status"
-    [options]="vehicleStatusOptions"
-  ></app-select> -->
+  <app-radio-group
+    *ngIf="vehicleType.value === 'trl'"
+    name="tes1-tes2"
+    label="Select form type"
+    formControlName="tes1Tes2"
+    [options]="tes1Tes2Options"
+  ></app-radio-group>
 
   <app-button id="create-batch-continue" (clicked)="handleSubmit(vehicleType.value)">Continue</app-button>
 

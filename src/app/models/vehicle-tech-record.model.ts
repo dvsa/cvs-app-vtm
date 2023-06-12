@@ -42,6 +42,11 @@ export enum VehicleTypes {
   MOTORCYCLE = 'motorcycle'
 }
 
+export enum TrailerFormType {
+  TES1 = 'tes1',
+  TES2 = 'tes2'
+}
+
 export enum FuelTypes {
   DIESELPETROL = 'DieselPetrol',
   DIESEL = 'Diesel',
