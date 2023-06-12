@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ReferenceDataAdminColumn } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
 import { fetchReferenceDataByKeySearch, ReferenceDataState } from '@store/reference-data';
@@ -10,7 +10,7 @@ import { selectSearchReturn } from '@store/reference-data';
   templateUrl: './reference-data-amend-history.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReferenceDataAmendHistoryComponent {
+export class ReferenceDataAmendHistoryComponent implements OnInit {
   @Input() type: string = '';
   @Input() key: string = '';
   @Input() title: string = '';

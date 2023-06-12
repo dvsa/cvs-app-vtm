@@ -94,7 +94,7 @@ export const createReferenceDataItem = createAction(
     payload: ReferenceDataModelBase;
   }>()
 );
-export const createReferenceDataItemSuccess = createAction(`${prefix} createReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
+// export const createReferenceDataItemSuccess = createAction(`${prefix} createReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
 export const createReferenceDataItemFailure = createAction(`${prefix} createReferenceDataItemFailure`, props<GlobalError>());
 
 export const amendReferenceDataItem = createAction(
@@ -105,7 +105,7 @@ export const amendReferenceDataItem = createAction(
     payload: ReferenceDataModelBase;
   }>()
 );
-export const amendReferenceDataItemSuccess = createAction(`${prefix} amendReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
+// export const amendReferenceDataItemSuccess = createAction(`${prefix} amendReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
 export const amendReferenceDataItemFailure = createAction(`${prefix} amendReferenceDataItemFailure`, props<GlobalError>());
 
 export const deleteReferenceDataItem = createAction(

@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -7,9 +7,9 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { Observable, take } from 'rxjs';
 
 @Component({
@@ -68,23 +68,6 @@ export class ReferenceDataAmendComponent implements OnInit {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  handleSubmit() {
-    this.checkForms();
-
-    if (this.isFormInvalid) return;
-
-    const referenceData: any = {};
-
-    Object.keys(this.data)
-      .filter(amendDataKey => amendDataKey !== 'resourceKey')
-      .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
-
-    this.referenceDataService
-      .amendReferenceDataItem(this.type, encodeURIComponent(String(this.key)), this.amendedData)
-      .pipe(take(1))
-      .subscribe(() => this.navigateBack());
-  }
-
   handleFormChange(event: any) {
     this.amendedData = event;
   }
@@ -105,5 +88,27 @@ export class ReferenceDataAmendComponent implements OnInit {
     forms.forEach(form => DynamicFormService.validate(form, errors));
 
     errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
+  }
+
+  handleSubmit() {
+    this.checkForms();
+
+    if (this.isFormInvalid) return;
+
+    const referenceData: any = {};
+
+    Object.keys(this.data)
+      .filter(amendDataKey => amendDataKey !== 'resourceKey')
+      .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
+
+    this.store.dispatch(
+      amendReferenceDataItem({
+        resourceType: this.type,
+        resourceKey: encodeURIComponent(String(this.key)),
+        payload: this.amendedData
+      })
+    );
+
+    this.navigateBack();
   }
 }

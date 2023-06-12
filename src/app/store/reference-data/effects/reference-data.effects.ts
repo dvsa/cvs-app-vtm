@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DeleteItem, ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
+import { DeleteItem, EmptyObject, ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -130,10 +130,9 @@ export class ReferenceDataEffects {
       ofType(createReferenceDataItem),
       switchMap(({ resourceType, resourceKey, payload }) => {
         payload = { ...payload };
-
         return this.referenceDataService.createReferenceDataItem(resourceType, resourceKey, payload).pipe(
           map((result: ReferenceDataModelBase) => fetchReferenceData({ resourceType })),
-          catchError(error => of(createReferenceDataItemFailure({ error: error })))
+          catchError(error => of(createReferenceDataItemFailure({ error: error.message })))
         );
       })
     )
@@ -141,28 +140,27 @@ export class ReferenceDataEffects {
 
   // The amend effect will work when the referenceData.service.ts is amended on line 395 from <EmptyObject> to <any>
 
-  // amendReferenceDataItem$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(amendReferenceDataItem),
-  //     withLatestFrom(this.userService.id$, this.userService.name$),
-  //     switchMap(([{ resourceType, resourceKey, payload }, createdId, createdName]) => {
-  //       payload = { ...payload, createdId, createdName, createdAt: new Date().toISOString() };
-  //       return this.referenceDataService.amendReferenceDataItem(resourceType, resourceKey, payload).pipe(
-  //         map((result: ReferenceDataModelBase) => fetchReferenceData({ resourceType })),
-  //         catchError(error => of(amendReferenceDataItemFailure({ error: error })))
-  //       );
-  //     })
-  //   )
-  // );
+  amendReferenceDataItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(amendReferenceDataItem),
+      switchMap(({ resourceType, resourceKey, payload }) => {
+        payload = { ...payload };
+        return this.referenceDataService.amendReferenceDataItem(resourceType, resourceKey, payload).pipe(
+          map(_ => fetchReferenceData({ resourceType })),
+          catchError(error => of(amendReferenceDataItemFailure({ error: error.message })))
+        );
+      })
+    )
+  );
 
   deleteReferenceDataItem$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteReferenceDataItem),
       switchMap(({ resourceType, resourceKey, reason }) => {
-        const payload = { reason: reason, createdAt: new Date().toISOString() };
+        const payload = { reason };
         return this.referenceDataService.deleteReferenceDataItem(resourceType, resourceKey, payload).pipe(
           map((result: DeleteItem) => deleteReferenceDataItemSuccess({ resourceType, resourceKey })),
-          catchError(error => of(deleteReferenceDataItemFailure({ error: error })))
+          catchError(error => of(deleteReferenceDataItemFailure({ error: error.message })))
         );
       })
     )
