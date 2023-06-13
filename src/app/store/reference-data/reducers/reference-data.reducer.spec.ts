@@ -19,6 +19,9 @@ import {
 } from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
 import { initialReferenceDataState, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
+import { deleteReferenceDataItem } from '../actions/reference-data.actions';
+import cloneDeep from 'lodash.clonedeep';
+import { deleteReferenceDataItemSuccess } from '../actions/reference-data.actions';
 
 describe('Reference Data Reducer', () => {
   describe('unknown action', () => {
@@ -341,6 +344,60 @@ describe('Reference Data Reducer', () => {
         expect(state).toEqual(newState);
         expect(state).not.toBe(newState);
       });
+    });
+  });
+  describe('deleteReferenceDataItemSuccess', () => {
+    it('should remove the specified item from the reference data state', () => {
+      const newItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test'] = newItem;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
+      const action = deleteReferenceDataItemSuccess({
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test'
+      });
+
+      const reducer = referenceDataReducer(inputState, action);
+
+      console.log(reducer);
+
+      expect(reducer).toEqual(initialReferenceDataState);
+    });
+    it('should leave any unspecified items in state', () => {
+      const newItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const newItem2 = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test2',
+        description: 'test2'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test'] = newItem;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test2'] = newItem2;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test2'];
+
+      const action = deleteReferenceDataItemSuccess({
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test'
+      });
+
+      const reducer = referenceDataReducer(inputState, action);
+
+      console.log(reducer);
+
+      expect(reducer).not.toEqual(initialReferenceDataState);
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test2: newItem2 });
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test2']);
     });
   });
 });
