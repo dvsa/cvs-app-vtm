@@ -18,6 +18,7 @@ import {
   amendReferenceDataItemSuccess,
   createReferenceDataItem,
   createReferenceDataItemFailure,
+  createReferenceDataItemSuccess,
   deleteReferenceDataItem,
   deleteReferenceDataItemFailure,
   deleteReferenceDataItemSuccess,
@@ -269,7 +270,7 @@ describe('ReferenceDataEffects', () => {
       });
     });
 
-    it('should return fetchTyreReferenceDataByKeySearchFailed on successful API call', () => {
+    it('should return fetchTyreReferenceDataByKeySearchFailed on unsuccessful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const resourceType = ReferenceDataResourceType.Tyres;
         actions$ = hot('-a--', { a: fetchTyreReferenceDataByKeySearch({ searchFilter: 'plyRating', searchTerm: null as any }) });
@@ -319,23 +320,23 @@ describe('ReferenceDataEffects', () => {
   });
 
   describe('createReferenceDataItem$', () => {
-    it('should return fetchReferenceData on a successful call', () => {
+    it('should return createReferenceDataItemSuccess on a successful call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const resourceType = ReferenceDataResourceType.CountryOfRegistration;
         const resourceKey = 'testKey';
         const body = {
           description: 'test country'
         };
-        const apiResponse = { data: { ...body, resourceType, resourceKey } };
+        const apiResponse = { ...body, resourceType, resourceKey };
 
         actions$ = hot('-a--', {
           a: createReferenceDataItem({ resourceType: resourceType, resourceKey: resourceKey, payload: body as ReferenceDataModelBase })
         });
 
-        jest.spyOn(referenceDataService, 'createReferenceDataItem').mockReturnValue(cold('--a-|', { data: apiResponse as ReferenceDataItem }));
+        jest.spyOn(referenceDataService, 'createReferenceDataItem').mockReturnValue(cold('--a|', { a: apiResponse }));
 
         expectObservable(effects.createReferenceDataItem$).toBe('---b', {
-          b: fetchReferenceData({ resourceType })
+          b: createReferenceDataItemSuccess({ result: apiResponse as ReferenceDataModelBase })
         });
       });
     });
@@ -376,7 +377,7 @@ describe('ReferenceDataEffects', () => {
           a: amendReferenceDataItem({ resourceType: resourceType, resourceKey: resourceKey, payload: body as ReferenceDataModelBase })
         });
 
-        jest.spyOn(referenceDataService, 'amendReferenceDataItem').mockReturnValue(cold('--a-|', { data: apiResponse as ReferenceDataItem }));
+        jest.spyOn(referenceDataService, 'amendReferenceDataItem').mockReturnValue(cold('--a-|', { a: apiResponse }));
 
         expectObservable(effects.amendReferenceDataItem$).toBe('---b', {
           b: amendReferenceDataItemSuccess({ result: apiResponse as ReferenceDataModelBase })
