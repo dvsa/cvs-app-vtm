@@ -55,4 +55,14 @@ describe('BatchVehicleDetailsComponent', () => {
       expect(mockGlobalErrorService.addError).toBeCalledWith({ error: 'At least 1 vehicle must be created or updated in a batch' });
     });
   });
+
+  describe('checkDuplicateVins', () => {
+    it('should return duplicate vins and their indexes', () => {
+      const arr = [{ vin: '123' }, { vin: '123' }, { vin: '123' }, { vin: '' }, { vin: '' }];
+      expect(component.checkDuplicateVins(arr)).toStrictEqual([
+        { vin: '123', anchor: 1 },
+        { vin: '123', anchor: 2 }
+      ]);
+    });
+  });
 });
