@@ -39,7 +39,9 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
     this.technicalRecordService.editableVehicleTechRecord$
       .pipe(take(1))
       .subscribe(vehicle => (!vehicle ? this.back() : (this.techRecord = vehicle.techRecord[0])));
-
+  }
+  ngOnInit(): void {
+    this.addVehicles(this.maxNumberOfVehicles);
     combineLatest([this.batchTechRecordService.batchVehicles$, this.batchTechRecordService.applicationId$])
       .pipe(take(1))
       .subscribe(([vehicles, applicationId]) => {
@@ -47,9 +49,6 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
           this.form.patchValue({ vehicles, applicationId });
         }
       });
-  }
-  ngOnInit(): void {
-    this.addVehicles(this.maxNumberOfVehicles);
   }
 
   ngOnDestroy(): void {
