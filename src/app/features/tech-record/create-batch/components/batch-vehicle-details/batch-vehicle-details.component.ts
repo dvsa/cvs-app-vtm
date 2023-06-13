@@ -144,7 +144,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 
   public checkDuplicateVins(input: { vin: string }[]) {
     const vinArray = input.map(item => item.vin);
-    let duplicates: { vin: string; anchor: number }[] = [];
+    const duplicates: { vin: string; anchor: number }[] = [];
     vinArray.forEach((item, index) => {
       if (!!item && vinArray.indexOf(item) !== index) {
         duplicates.push({ vin: item, anchor: index });
