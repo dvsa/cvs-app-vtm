@@ -131,7 +131,7 @@ export class ReferenceDataEffects {
       switchMap(({ resourceType, resourceKey, payload }) => {
         payload = { ...payload };
         return this.referenceDataService.createReferenceDataItem(resourceType, resourceKey, payload).pipe(
-          map((result: ReferenceDataModelBase) => fetchReferenceData({ resourceType })),
+          map((result: any) => fetchReferenceData({ resourceType })),
           catchError(error => of(createReferenceDataItemFailure({ error: error.message })))
         );
       })
