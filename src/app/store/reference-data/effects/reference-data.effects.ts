@@ -12,8 +12,10 @@ import { catchError, map, mergeMap, of, switchMap, take, withLatestFrom } from '
 import {
   amendReferenceDataItem,
   amendReferenceDataItemFailure,
+  amendReferenceDataItemSuccess,
   createReferenceDataItem,
   createReferenceDataItemFailure,
+  createReferenceDataItemSuccess,
   deleteReferenceDataItem,
   deleteReferenceDataItemFailure,
   deleteReferenceDataItemSuccess,
@@ -131,7 +133,7 @@ export class ReferenceDataEffects {
       switchMap(({ resourceType, resourceKey, payload }) => {
         payload = { ...payload };
         return this.referenceDataService.createReferenceDataItem(resourceType, resourceKey, payload).pipe(
-          map((result: any) => fetchReferenceData({ resourceType })),
+          map(result => createReferenceDataItemSuccess({ result: result as ReferenceDataModelBase })),
           catchError(error => of(createReferenceDataItemFailure({ error: error.message })))
         );
       })
@@ -146,7 +148,7 @@ export class ReferenceDataEffects {
       switchMap(({ resourceType, resourceKey, payload }) => {
         payload = { ...payload };
         return this.referenceDataService.amendReferenceDataItem(resourceType, resourceKey, payload).pipe(
-          map(_ => fetchReferenceData({ resourceType })),
+          map(result => amendReferenceDataItemSuccess({ result: result as ReferenceDataModelBase })),
           catchError(error => of(amendReferenceDataItemFailure({ error: error.message })))
         );
       })

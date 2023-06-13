@@ -15,6 +15,7 @@ import { TestScheduler } from 'rxjs/testing';
 import {
   amendReferenceDataItem,
   amendReferenceDataItemFailure,
+  amendReferenceDataItemSuccess,
   createReferenceDataItem,
   createReferenceDataItemFailure,
   deleteReferenceDataItem,
@@ -69,7 +70,7 @@ describe('ReferenceDataEffects', () => {
   });
 
   describe('fetchReferenceDataByType$', () => {
-    it.each(testCases)('should return fetchReferenceDataSuccess action on successfull API call', value => {
+    it.each(testCases)('should return fetchReferenceDataSuccess action on successful API call', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { resourceType, payload } = value;
         const apiResponse = { data: [...payload] };
@@ -88,7 +89,7 @@ describe('ReferenceDataEffects', () => {
     });
 
     it.each(testCases)(
-      'should return fetchReferenceDataSuccess and fetchReferenceData actions on successfull API call with pagination token',
+      'should return fetchReferenceDataSuccess and fetchReferenceData actions on successful API call with pagination token',
       value => {
         testScheduler.run(({ hot, cold, expectObservable }) => {
           const { resourceType, payload } = value;
@@ -331,7 +332,7 @@ describe('ReferenceDataEffects', () => {
           a: createReferenceDataItem({ resourceType: resourceType, resourceKey: resourceKey, payload: body as ReferenceDataModelBase })
         });
 
-        jest.spyOn(referenceDataService, 'createReferenceDataItem').mockReturnValue(cold('--a|', { a: apiResponse }));
+        jest.spyOn(referenceDataService, 'createReferenceDataItem').mockReturnValue(cold('--a-|', { data: apiResponse as ReferenceDataItem }));
 
         expectObservable(effects.createReferenceDataItem$).toBe('---b', {
           b: fetchReferenceData({ resourceType })
@@ -362,23 +363,23 @@ describe('ReferenceDataEffects', () => {
   });
 
   describe('amendReferenceDataItem$', () => {
-    it('should return fetchReferenceData on a successful call', () => {
+    it('should return amendReferenceDataI on a successful call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const resourceType = ReferenceDataResourceType.CountryOfRegistration;
         const resourceKey = 'testKey';
         const body = {
           description: 'test country'
         };
-        const apiResponse = { data: { ...body, resourceType, resourceKey } };
+        const apiResponse = { ...body, resourceType, resourceKey };
 
         actions$ = hot('-a--', {
           a: amendReferenceDataItem({ resourceType: resourceType, resourceKey: resourceKey, payload: body as ReferenceDataModelBase })
         });
 
-        jest.spyOn(referenceDataService, 'amendReferenceDataItem').mockReturnValue(cold('--a-|', { apiResponse }));
+        jest.spyOn(referenceDataService, 'amendReferenceDataItem').mockReturnValue(cold('--a-|', { data: apiResponse as ReferenceDataItem }));
 
         expectObservable(effects.amendReferenceDataItem$).toBe('---b', {
-          b: fetchReferenceData({ resourceType })
+          b: amendReferenceDataItemSuccess({ result: apiResponse as ReferenceDataModelBase })
         });
       });
     });

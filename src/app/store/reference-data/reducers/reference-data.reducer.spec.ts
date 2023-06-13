@@ -3,6 +3,8 @@ import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/refer
 import { Dictionary } from '@ngrx/entity';
 import {
   addSearchInformation,
+  amendReferenceDataItemSuccess,
+  createReferenceDataItemSuccess,
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
@@ -393,11 +395,107 @@ describe('Reference Data Reducer', () => {
 
       const reducer = referenceDataReducer(inputState, action);
 
+      expect(reducer).not.toEqual(initialReferenceDataState);
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test2: newItem2 });
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test2']);
+    });
+  });
+  describe('deleteReferenceDataItemSuccess', () => {
+    it('should remove the specified item from the reference data state', () => {
+      const newItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test'] = newItem;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
+      const action = deleteReferenceDataItemSuccess({
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test'
+      });
+
+      const reducer = referenceDataReducer(inputState, action);
+
       console.log(reducer);
+
+      expect(reducer).toEqual(initialReferenceDataState);
+    });
+    it('should leave any unspecified items in state', () => {
+      const newItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const newItem2 = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test2',
+        description: 'test2'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test'] = newItem;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test2'] = newItem2;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test2'];
+
+      const action = deleteReferenceDataItemSuccess({
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test'
+      });
+
+      const reducer = referenceDataReducer(inputState, action);
 
       expect(reducer).not.toEqual(initialReferenceDataState);
       expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test2: newItem2 });
       expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test2']);
+    });
+  });
+  describe('createReferenceDataItemSuccess', () => {
+    it('should insert the new item into the reference data state', () => {
+      const testItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const testItem2 = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test2',
+        description: 'test2'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities = { test2: testItem2 };
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test2'];
+
+      const action = createReferenceDataItemSuccess({ result: testItem });
+      const reducer = referenceDataReducer(inputState, action);
+
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test: testItem, test2: testItem2 });
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test', 'test2']);
+    });
+  });
+  describe('amendReferenceDataItemSuccess', () => {
+    it('should insert the new item into the reference data state', () => {
+      const itemToAmend = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const amendedItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'this has been amended'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities = { test: itemToAmend };
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
+
+      const action = amendReferenceDataItemSuccess({ result: amendedItem });
+      const reducer = referenceDataReducer(inputState, action);
+
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test: amendedItem });
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test']);
     });
   });
 });

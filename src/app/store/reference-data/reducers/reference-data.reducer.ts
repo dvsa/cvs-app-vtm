@@ -3,6 +3,8 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import {
   addSearchInformation,
+  amendReferenceDataItemSuccess,
+  createReferenceDataItemSuccess,
   deleteReferenceDataItemSuccess,
   fetchReferenceData,
   fetchReferenceDataByKey,
@@ -137,7 +139,7 @@ export const referenceDataReducer = createReducer(
   })),
   on(deleteReferenceDataItemSuccess, (state, action) => {
     const { resourceType, resourceKey } = action;
-    let currentState: ReferenceDataState = cloneDeep(state);
+    const currentState: ReferenceDataState = cloneDeep(state);
     const filteredEntities: (string | number)[] = [];
     delete currentState[resourceType as ReferenceDataResourceType].entities[resourceKey];
     currentState[resourceType as ReferenceDataResourceType].ids.forEach(id => {
@@ -146,9 +148,26 @@ export const referenceDataReducer = createReducer(
       }
     });
     currentState[resourceType as ReferenceDataResourceType].ids = filteredEntities as string[];
-    return {
-      ...currentState
-    };
+    return currentState;
+  }),
+  on(amendReferenceDataItemSuccess, (state, action) => {
+    const { result } = action;
+    const currentState: ReferenceDataState = cloneDeep(state);
+    currentState[result.resourceType as ReferenceDataResourceType].entities[result.resourceKey] = result as ReferenceDataModelBase;
+    return currentState;
+  }),
+  on(createReferenceDataItemSuccess, (state, action) => {
+    const { result } = action;
+    const currentState: ReferenceDataState = cloneDeep(state);
+    const newIds: string[] = [];
+    newIds.push(result.resourceKey as string);
+    currentState[result.resourceType as ReferenceDataResourceType].ids.forEach(id => {
+      newIds.push(id as string);
+    });
+
+    currentState[result.resourceType as ReferenceDataResourceType].entities[result.resourceKey] = result as ReferenceDataModelBase;
+    currentState[result.resourceType as ReferenceDataResourceType].ids = newIds;
+    return currentState;
   }),
   on(addSearchInformation, (state, action) => ({
     ...state,
