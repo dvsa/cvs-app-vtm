@@ -141,6 +141,17 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
     return input.filter(formInput => !!formInput.vin);
   }
 
+  public checkDuplicateVins(input: { vin: string }[]) {
+    const vinArray = input.map(item => item.vin);
+    const duplicates: { vin: string; anchor: number }[] = [];
+    vinArray.forEach((item, index) => {
+      if (!!item && vinArray.indexOf(item) !== index) {
+        duplicates.push({ vin: item, anchor: index });
+      }
+    });
+    return duplicates;
+  }
+
   async isFormValid(): Promise<boolean> {
     this.globalErrorService.clearErrors();
     this.form.markAllAsTouched();
@@ -156,6 +167,13 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
 
     if (this.cleanEmptyValues(this.vehicles.value).length == 0) {
       this.globalErrorService.addError({ error: 'At least 1 vehicle must be created or updated in a batch' });
+      return false;
+    }
+    const duplicates = this.checkDuplicateVins(this.vehicles.value);
+    if (duplicates.length > 0) {
+      duplicates.forEach(element => {
+        this.globalErrorService.addError({ error: `Remove duplicate VIN - ${element.vin}`, anchorLink: `input-vin${element.anchor.toString()}` });
+      });
       return false;
     }
     return this.form.valid;
