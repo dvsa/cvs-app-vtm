@@ -52,7 +52,6 @@ export class ReferenceDataService extends ReferenceDataApiService {
       withLatestFrom(this.usersService.name$),
       switchMap(([createdId, createdName]) => {
         const referenceData = { ...data, createdId, createdName, createdAt: new Date() };
-
         return this.referenceResourceTypeResourceKeyPost(type, key, referenceData, 'body', false);
       })
     );

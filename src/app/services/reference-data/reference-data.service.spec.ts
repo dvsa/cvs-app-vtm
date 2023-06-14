@@ -275,6 +275,12 @@ describe('ReferenceDataService', () => {
           done();
         });
     });
+    it('should add an item to state', done => {
+      service.createReferenceDataItem(ReferenceDataResourceType.CountryOfRegistration, 'newKey', { description: 'for test' }).subscribe(data => {
+        expect(data).toEqual({});
+        done();
+      });
+    });
   });
 
   describe('helper function', () => {
