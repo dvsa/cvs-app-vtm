@@ -18,8 +18,8 @@ export class SelectVehicleTypeComponent {
   form: CustomFormGroup = new CustomFormGroup(
     { name: 'form-group', type: FormNodeTypes.GROUP },
     {
-      vehicleType: new CustomFormControl({ name: 'vehicle-type', label: 'Vehicle Type', type: FormNodeTypes.CONTROL }, '', [Validators.required]),
-      tes1Tes2: new CustomFormControl({ name: 'tes1-tes2', label: 'Trailer form Type', type: FormNodeTypes.CONTROL }, '')
+      vehicleType: new CustomFormControl({ name: 'vehicle-type', label: 'Vehicle type', type: FormNodeTypes.CONTROL }, '', [Validators.required]),
+      tes1Tes2: new CustomFormControl({ name: 'tes1-tes2', label: 'Trailer form type', type: FormNodeTypes.CONTROL }, '')
     }
   );
 
