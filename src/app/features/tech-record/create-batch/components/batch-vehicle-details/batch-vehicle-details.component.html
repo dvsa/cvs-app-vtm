@@ -24,7 +24,13 @@
         [width]="width.L"
         [warning]="getVinControl(group)?.meta?.warning"
       >
-        <ng-container *ngIf="getVinControl(group)?.dirty && (getVinControl(group)?.status === 'VALID' || getVinControl(group)?.status === 'PENDING')">
+        <ng-container
+          *ngIf="
+            getVinControl(group)?.dirty &&
+            getVinControl(group)?.value &&
+            (getVinControl(group)?.status === 'VALID' || getVinControl(group)?.status === 'PENDING')
+          "
+        >
           <ng-template appSuffix>
             <app-input-spinner [isValid]="getVinControl(group)?.status || 'PENDING'"></app-input-spinner>
           </ng-template>
