@@ -140,45 +140,30 @@ export const referenceDataReducer = createReducer(
   on(deleteReferenceDataItemSuccess, (state, action) => {
     const { resourceType, resourceKey } = action;
     const currentState = cloneDeep(state);
-    const newResourceTypeState = resourceTypeAdapters[resourceType].removeOne(resourceKey as string, currentState[resourceType]);
 
-    currentState[resourceType] = newResourceTypeState;
+    currentState[resourceType] = resourceTypeAdapters[resourceType].removeOne(resourceKey as string, currentState[resourceType]);
+
     return currentState;
-    // const { resourceType, resourceKey } = action;
-    // const currentState: ReferenceDataState = cloneDeep(state);
-    // const filteredEntities: (string | number)[] = [];
-    // delete currentState[resourceType as ReferenceDataResourceType].entities[resourceKey];
-    // currentState[resourceType as ReferenceDataResourceType].ids.forEach(id => {
-    //   if (id != resourceKey) {
-    //     filteredEntities.push(id);
-    //   }
-    // });
-    // currentState[resourceType as ReferenceDataResourceType].ids = filteredEntities as string[];
-    // return currentState;
   }),
   on(amendReferenceDataItemSuccess, (state, action) => {
     const { result } = action;
-    const currentState: ReferenceDataState = cloneDeep(state);
-    currentState[result.resourceType as ReferenceDataResourceType].entities[result.resourceKey] = result as ReferenceDataModelBase;
+    const currentState = cloneDeep(state);
+    const id = result.resourceKey as string;
+
+    currentState[result.resourceType] = resourceTypeAdapters[result.resourceType].updateOne(
+      { id, changes: result },
+      currentState[result.resourceType]
+    );
+
     return currentState;
   }),
   on(createReferenceDataItemSuccess, (state, action) => {
     const { result } = action;
     const currentState = cloneDeep(state);
-    const newResourceTypeState = resourceTypeAdapters[result.resourceType].addOne(result, currentState[result.resourceType]);
 
-    currentState[result.resourceType] = newResourceTypeState;
+    currentState[result.resourceType] = resourceTypeAdapters[result.resourceType].addOne(result, currentState[result.resourceType]);
+
     return currentState;
-    // const { result } = action;
-    // const currentState: ReferenceDataState = cloneDeep(state);
-    // const newIds: string[] = [];
-    // newIds.push(result.resourceKey as string);
-    // currentState[result.resourceType as ReferenceDataResourceType].ids.forEach(id => {
-    //   newIds.push(id as string);
-
-    // currentState[result.resourceType as ReferenceDataResourceType].entities[result.resourceKey] = result as ReferenceDataModelBase;
-    // currentState[result.resourceType as ReferenceDataResourceType].ids = newIds;
-    // return currentState;
   }),
   on(addSearchInformation, (state, action) => ({
     ...state,
