@@ -1,8 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { StatusCodes, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import { filter, race, Subject, take, withLatestFrom } from 'rxjs';
 
 @Component({
@@ -11,7 +12,7 @@ import { filter, race, Subject, take, withLatestFrom } from 'rxjs';
 })
 export class BatchVehicleResultsComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
-  techRecord?: TechRecordModel;
+  vehicleRecord?: BatchRecord;
 
   constructor(
     private technicalRecordService: TechnicalRecordService,
@@ -19,10 +20,9 @@ export class BatchVehicleResultsComponent implements OnDestroy {
     private route: ActivatedRoute,
     private batchTechRecordService: BatchTechnicalRecordService
   ) {
-    this.technicalRecordService.editableVehicleTechRecord$
-      .pipe(take(1))
-      .subscribe(vehicle => (!vehicle ? this.router.navigate(['..'], { relativeTo: this.route }) : (this.techRecord = vehicle.techRecord[0])));
-
+    this.batchTechRecordService.batchVehicles$.pipe(take(1)).subscribe(batchVehicles => {
+      if (batchVehicles) this.vehicleRecord = batchVehicles[0];
+    });
     this.batchTechRecordService.batchCount$.pipe(take(1)).subscribe(count => {
       if (!count) this.router.navigate(['../..'], { relativeTo: this.route });
     });
@@ -47,7 +47,7 @@ export class BatchVehicleResultsComponent implements OnDestroy {
   }
 
   get vehicleType(): VehicleTypes | undefined {
-    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
+    return this.vehicleRecord ? (this.vehicleRecord.vehicleType as VehicleTypes) : undefined;
   }
 
   get applicationId$() {
