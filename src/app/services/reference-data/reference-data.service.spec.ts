@@ -147,6 +147,41 @@ describe('ReferenceDataService', () => {
       req.flush(expectedResult);
     });
   });
+  describe('createReferenceDataItem', () => {
+    it('should return the created item', () => {
+      const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+      const resourceKey = 'testKey';
+      const item = { description: 'test Item' };
+      const apiResponse = { resourceType, resourceKey, ...item };
+      service.createReferenceDataItem(resourceType, resourceKey, item).subscribe(data => {
+        expect(data).toEqual(apiResponse);
+      });
+    });
+  });
+
+  describe('amendReferenceDataItem', () => {
+    it('should return the amended item', () => {
+      const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+      const resourceKey = 'testKey';
+      const item = { description: 'test Item' };
+      const apiResponse = { resourceType, resourceKey, ...item };
+      service.amendReferenceDataItem(resourceType, resourceKey, item).subscribe(data => {
+        expect(data).toEqual(apiResponse);
+      });
+    });
+  });
+
+  describe('deleteReferenceDataItem', () => {
+    it('should return a delete item', () => {
+      const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+      const resourceKey = 'testKey';
+      const apiResponse = {};
+      service.deleteReferenceDataItem(resourceType, resourceKey, { createdId: 'test' }).subscribe(data => {
+        console.log(data);
+        expect(data).toEqual(apiResponse);
+      });
+    });
+  });
 
   describe('selectors', () => {
     beforeEach(() => {
@@ -274,12 +309,6 @@ describe('ReferenceDataService', () => {
           expect(data).toEqual([]);
           done();
         });
-    });
-    it('should add an item to state', done => {
-      service.createReferenceDataItem(ReferenceDataResourceType.CountryOfRegistration, 'newKey', { description: 'for test' }).subscribe(data => {
-        expect(data).toEqual({});
-        done();
-      });
     });
   });
 

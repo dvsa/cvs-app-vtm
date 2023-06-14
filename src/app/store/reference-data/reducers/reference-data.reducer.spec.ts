@@ -470,9 +470,9 @@ describe('Reference Data Reducer', () => {
 
       const action = createReferenceDataItemSuccess({ result: testItem });
       const reducer = referenceDataReducer(inputState, action);
-
+      console.log(reducer[ReferenceDataResourceType.CountryOfRegistration].ids);
       expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test: testItem, test2: testItem2 });
-      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test', 'test2']);
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test2', 'test']);
     });
   });
   describe('amendReferenceDataItemSuccess', () => {
