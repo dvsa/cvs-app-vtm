@@ -33,7 +33,9 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
   ) {
     this.form = this.fb.group({
       vehicles: this.fb.array([]),
-      applicationId: new FormControl(null, [Validators.required])
+      applicationId: new CustomFormControl({ name: 'applicationId', label: 'Application ID', type: FormNodeTypes.CONTROL }, null, [
+        Validators.required
+      ])
     });
 
     this.technicalRecordService.editableVehicleTechRecord$
