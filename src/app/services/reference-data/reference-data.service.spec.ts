@@ -154,8 +154,13 @@ describe('ReferenceDataService', () => {
       const item = { description: 'test Item' };
       const apiResponse = { resourceType, resourceKey, ...item };
       service.createReferenceDataItem(resourceType, resourceKey, item).subscribe(data => {
-        expect(data).toEqual(apiResponse);
+        expect(data).toEqual(item);
       });
+
+      const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
+      expect(req.request.method).toEqual('POST');
+
+      req.flush(apiResponse);
     });
   });
 
@@ -168,6 +173,11 @@ describe('ReferenceDataService', () => {
       service.amendReferenceDataItem(resourceType, resourceKey, item).subscribe(data => {
         expect(data).toEqual(apiResponse);
       });
+
+      const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
+      expect(req.request.method).toEqual('PUT');
+
+      req.flush(apiResponse);
     });
   });
 
@@ -175,11 +185,14 @@ describe('ReferenceDataService', () => {
     it('should return a delete item', () => {
       const resourceType = ReferenceDataResourceType.CountryOfRegistration;
       const resourceKey = 'testKey';
-      const apiResponse = {};
+      const apiResponse = { success: 'true' };
       service.deleteReferenceDataItem(resourceType, resourceKey, { createdId: 'test' }).subscribe(data => {
-        console.log(data);
         expect(data).toEqual(apiResponse);
       });
+      const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
+      expect(req.request.method).toEqual('DELETE');
+
+      req.flush(apiResponse);
     });
   });
 
