@@ -1,6 +1,7 @@
-import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourceTypeAudit, ReferenceDataTyre } from '@models/reference-data.model';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
+import cloneDeep from 'lodash.clonedeep';
 import {
   addSearchInformation,
   amendReferenceDataItemSuccess,
@@ -18,10 +19,8 @@ import {
   fetchTyreReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearchFailed,
   fetchTyreReferenceDataByKeySearchSuccess,
-  removeReferenceDataByKey,
   removeTyreSearch
 } from '../actions/reference-data.actions';
-import cloneDeep from 'lodash.clonedeep';
 
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
 
