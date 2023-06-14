@@ -1,8 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReferenceDataService } from '@api/reference-data';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/.';
@@ -13,6 +14,8 @@ describe('ReferenceDataAmendComponent', () => {
   let fixture: ComponentFixture<ReferenceDataAmendComponent>;
   let store: MockStore<State>;
   let router: Router;
+  let route: ActivatedRoute;
+  let errorService: GlobalErrorService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,10 +30,32 @@ describe('ReferenceDataAmendComponent', () => {
     fixture = TestBed.createComponent(ReferenceDataAmendComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
+    errorService = TestBed.inject(GlobalErrorService);
+    route = TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('navigateBack', () => {
+    it('should clear all errors', () => {
+      jest.spyOn(router, 'navigate').mockImplementation();
+
+      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+
+      component.navigateBack();
+
+      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should navigate back to the previous page', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+      component.navigateBack();
+
+      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+    });
   });
 });

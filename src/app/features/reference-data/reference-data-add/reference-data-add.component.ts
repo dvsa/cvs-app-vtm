@@ -56,7 +56,7 @@ export class ReferenceDataCreateComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    this.router.navigate(['..'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit() {
