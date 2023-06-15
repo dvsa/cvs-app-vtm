@@ -81,10 +81,6 @@ export class ReferenceDataDeleteComponent implements OnInit {
     return FormNodeWidth;
   }
 
-  titleCaseHeading(input: ReferenceDataResourceType): string {
-    return this.referenceDataService.macroCasetoTitleCase(input);
-  }
-
   handleFormChange(event: any) {
     this.reasonForDeletion = event;
   }

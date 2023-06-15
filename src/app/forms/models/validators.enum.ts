@@ -25,5 +25,6 @@ export enum ValidatorNames {
   DateNotExceed = 'dateNotExceed',
   CopyValueToRootControl = 'copyValueToRootControl',
   ValidateProhibitionIssued = 'validateProhibitionIssued',
-  NotZNumber = 'notZNumber'
+  NotZNumber = 'notZNumber',
+  MustEqualSibling = 'mustEqualSibling'
 }

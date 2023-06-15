@@ -36,14 +36,6 @@ export class ReferenceDataListComponent implements OnInit {
     return Roles;
   }
 
-  titleCaseHeading(input: ReferenceDataResourceType): string {
-    return this.referenceDataService.macroCasetoTitleCase(input);
-  }
-
-  titleCaseColumn(s: string): string {
-    return this.referenceDataService.camelCaseToTitleCase(s);
-  }
-
   addNew(): void {
     this.router.navigate(['create'], { relativeTo: this.route });
   }

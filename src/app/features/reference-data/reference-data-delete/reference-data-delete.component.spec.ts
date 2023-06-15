@@ -64,13 +64,6 @@ describe('ReferenceDataAddComponent', () => {
       expect(navigateSpy).toBeCalledWith(['COUNTRY_OF_REGISTRATION'], { relativeTo: route.parent });
     });
   });
-  describe('titleCaseHeading', () => {
-    it('should change reference data type to title case', () => {
-      const title = component.titleCaseHeading(ReferenceDataResourceType.CountryOfRegistration);
-
-      expect(title).toBe('Country Of Registration');
-    });
-  });
   describe('handleFormChange', () => {
     it('should change reason for deletion to the form value', () => {
       component.handleFormChange({ reason: 'test reason' });

@@ -42,7 +42,7 @@ export class ReferenceDataSelectTypeComponent {
         types =>
           types
             ?.sort((a: any, b: any) => (a.label ?? a.resourceType).localeCompare(b.label ?? b.resourceType))
-            .map(type => ({ label: this.titleCase(type.resourceKey), value: `${type.resourceKey}` })) ?? []
+            .map(type => ({ label: (type as any).label ?? type.resourceKey, value: type.resourceKey.toString() })) ?? []
       )
     );
   }
@@ -56,10 +56,6 @@ export class ReferenceDataSelectTypeComponent {
     DynamicFormService.validate(this.form, errors);
     this.globalErrorService.setErrors(errors);
     return this.form.valid;
-  }
-
-  titleCase(input: string | number | boolean): string {
-    return this.referenceDataService.macroCasetoTitleCase(input);
   }
 
   cancel(): void {

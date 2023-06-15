@@ -64,14 +64,6 @@ describe('ReferenceDataComponent', () => {
     });
   });
 
-  describe('titleCase', () => {
-    it('should change the case to titleCase', () => {
-      const string = component.titleCase(ReferenceDataResourceType.CountryOfRegistration);
-
-      expect(string).toBe('Country Of Registration');
-    });
-  });
-
   describe('isFormValid', () => {
     it('checks the form is valid', () => {
       jest.spyOn(DynamicFormService, 'validate').mockReturnValueOnce();

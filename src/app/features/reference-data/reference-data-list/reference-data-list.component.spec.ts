@@ -71,18 +71,4 @@ describe('DataTypeListComponent', () => {
       expect(navigateSpy).toBeCalledWith(['create'], { relativeTo: route });
     });
   });
-  describe('titleCaseHeading', () => {
-    it('coverts a reference data resource type to title case', () => {
-      const heading = component.titleCaseHeading(ReferenceDataResourceType.CountryOfRegistration);
-
-      expect(heading).toBe('Country Of Registration');
-    });
-  });
-  describe('titleCaseColumn', () => {
-    it('converts camel case to title case', () => {
-      const heading = component.titleCaseColumn('thisIsAColumn');
-
-      expect(heading).toBe('This Is A Column');
-    });
-  });
 });

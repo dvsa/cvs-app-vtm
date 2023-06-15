@@ -171,16 +171,4 @@ export class ReferenceDataService extends ReferenceDataApiService {
   getReferencePsvMakeDataLoading$(): Observable<boolean> {
     return this.store.pipe(select(referencePsvMakeLoadingState));
   }
-
-  camelCaseToTitleCase(s: string): string {
-    return s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
-  }
-
-  macroCasetoTitleCase(input: string | number | boolean): string {
-    return input
-      .toString()
-      .split('_')
-      .map(s => s.charAt(0) + s.slice(1).toLowerCase())
-      .join(' ');
-  }
 }

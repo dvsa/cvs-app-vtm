@@ -10,7 +10,7 @@ import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, createReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-add',
@@ -40,10 +40,11 @@ export class ReferenceDataCreateComponent implements OnInit {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-      this.store
-        .pipe(take(1), select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
-        .subscribe(type => (this.refDataAdminType = type));
     });
+  }
+
+  get refDataAdminType$(): Observable<any | undefined> {
+    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
   get roles(): typeof Roles {

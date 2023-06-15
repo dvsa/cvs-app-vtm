@@ -241,6 +241,24 @@ describe('Required validators', () => {
       expect(result).toBeNull();
     });
   });
+
+  describe('Must Equal Sibling', () => {
+    it('should return null if content of sibling matches a value', () => {
+      const value = 'some value';
+      form.controls['foo'].patchValue(value);
+      form.controls['sibling'].patchValue(value);
+      const result = CustomValidators.mustEqualSibling('sibling')(form.controls['foo'] as AbstractControl);
+      expect(result).toBeNull();
+    });
+
+    it('should return ValidationErrors if content of sibling does not match the value', () => {
+      const value = 'some value';
+      form.controls['foo'].patchValue(value);
+      form.controls['sibling'].patchValue('some other value');
+      const result = CustomValidators.mustEqualSibling('sibling')(form.controls['foo'] as AbstractControl);
+      expect(result).toEqual({ mustEqualSibling: { sibling: 'Sibling' } });
+    });
+  });
 });
 
 describe('numeric', () => {

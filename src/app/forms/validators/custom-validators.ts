@@ -115,6 +115,22 @@ export class CustomValidators {
     };
   };
 
+  static mustEqualSibling = (sibling: string): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control?.parent) {
+        const siblingControl = control.parent.get(sibling) as CustomFormControl;
+        const siblingValue = siblingControl.value;
+        const isEqual = Array.isArray(control.value) ? control.value.includes(siblingValue) : siblingValue === control.value;
+
+        if (!isEqual) {
+          return { mustEqualSibling: { sibling: siblingControl.meta.label } };
+        }
+      }
+
+      return null;
+    };
+  };
+
   static validateVRMTrailerIdLength = (sibling: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) {

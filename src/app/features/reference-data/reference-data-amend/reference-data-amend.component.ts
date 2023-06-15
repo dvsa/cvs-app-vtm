@@ -10,7 +10,7 @@ import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, take } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend',
@@ -22,7 +22,6 @@ export class ReferenceDataAmendComponent implements OnInit {
   data: any;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
-  refDataAdminType: any | undefined;
   amendedData: any;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
@@ -47,12 +46,12 @@ export class ReferenceDataAmendComponent implements OnInit {
         // load the reference data admin type, the current item and check if it has any audit history
         this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
         this.referenceDataService.loadReferenceDataByKey(this.type, this.key);
-
-        this.store
-          .pipe(take(1), select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
-          .subscribe(type => (this.refDataAdminType = type));
       }
     });
+  }
+
+  get refDataAdminType$(): Observable<any | undefined> {
+    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
   get roles(): typeof Roles {
