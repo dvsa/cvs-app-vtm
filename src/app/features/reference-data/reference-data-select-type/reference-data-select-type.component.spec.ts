@@ -8,6 +8,8 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { UserService } from '@services/user-service/user-service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { of } from 'rxjs';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
 
 describe('ReferenceDataComponent', () => {
   let component: ReferenceDataSelectTypeComponent;
@@ -67,6 +69,14 @@ describe('ReferenceDataComponent', () => {
       const string = component.titleCase(ReferenceDataResourceType.CountryOfRegistration);
 
       expect(string).toBe('Country Of Registration');
+    });
+  });
+
+  describe('isFormValid', () => {
+    it('checks the form is valid', () => {
+      jest.spyOn(DynamicFormService, 'validate').mockReturnValueOnce();
+      component.form.setValue({ referenceType: 'COUNTRY_OF_REGISTRATION' });
+      expect(component.isFormValid).toBe(true);
     });
   });
 });

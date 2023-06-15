@@ -12,6 +12,7 @@ import { State, initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { ReferenceDataCreateComponent } from './reference-data-add.component';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
+import { globalErrorReducer } from '@store/global-error/reducers/global-error-service.reducer';
 
 const mockRefDataService = {
   loadReferenceData: jest.fn(),
