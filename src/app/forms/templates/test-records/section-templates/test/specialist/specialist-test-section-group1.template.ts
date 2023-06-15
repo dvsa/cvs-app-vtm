@@ -51,6 +51,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
               options: [
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' },
+                { value: 'prs', label: 'PRS' },
                 { value: 'abandoned', label: 'Abandoned' }
               ],
               validators: [
