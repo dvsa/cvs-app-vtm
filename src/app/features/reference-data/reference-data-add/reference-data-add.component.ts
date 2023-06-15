@@ -20,9 +20,9 @@ export class ReferenceDataCreateComponent implements OnInit {
   isEditing: boolean = true;
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
   newRefData: any;
+  refDataAdminType: any | undefined;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
-  refDataAdminType: any | undefined;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 

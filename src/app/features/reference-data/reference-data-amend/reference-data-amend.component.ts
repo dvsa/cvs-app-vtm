@@ -95,12 +95,6 @@ export class ReferenceDataAmendComponent implements OnInit {
 
     if (this.isFormInvalid) return;
 
-    const referenceData: any = {};
-
-    Object.keys(this.data)
-      .filter(amendDataKey => amendDataKey !== 'resourceKey')
-      .forEach(amendDataKey => (referenceData[amendDataKey] = this.amendedData[amendDataKey]));
-
     this.store.dispatch(
       amendReferenceDataItem({
         resourceType: this.type,
