@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Router } from '@angular/router';
 import { BatchVehicleResultsComponent } from '../batch-vehicle-results/batch-vehicle-results.component';
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
@@ -32,6 +32,7 @@ const mockBatchTechRecordService = (<unknown>{
   applicationId$: of('TES_1_APPLICATION_ID'),
   isBatchCreate$: of(true),
   batchCount$: of(2),
+  vehicleType$: of(VehicleTypes.TRL),
   get vehicleStatus$() {
     return of('current');
   }
@@ -96,6 +97,10 @@ describe('BatchVehicleTemplateComponent', () => {
 
   it('should expose the batchCount$ observable', () => {
     expect(component.batchCount$).toBeTruthy();
+  });
+
+  it('should expose the vehicleType$ observable', () => {
+    expect(component.vehicleType$).toBeTruthy();
   });
 
   describe('should dispatch the createVehicleTechRecord action for every vin and trailerId given', () => {

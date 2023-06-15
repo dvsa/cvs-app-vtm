@@ -11,7 +11,8 @@ import {
   setApplicationId,
   setGenerateNumberFlag,
   upsertVehicleBatch,
-  setVehicleStatus
+  setVehicleStatus,
+  setVehicleType
 } from '@store/technical-records/actions/batch-create.actions';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import {
@@ -26,7 +27,8 @@ import {
   selectBatchUpdatedSuccessCount,
   selectGenerateNumber,
   selectIsBatch,
-  selectVehicleStatus
+  selectVehicleStatus,
+  selectVehicleType
 } from '@store/technical-records/selectors/batch-create.selectors';
 import { Observable, catchError, map, of } from 'rxjs';
 
@@ -123,6 +125,9 @@ export class BatchTechnicalRecordService {
   setVehicleStatus(vehicleStatus: string) {
     this.store.dispatch(setVehicleStatus({ vehicleStatus }));
   }
+  setVehicleType(vehicleType: VehicleTypes) {
+    this.store.dispatch(setVehicleType({ vehicleType }));
+  }
 
   clearBatch() {
     this.store.dispatch(clearBatch());
@@ -170,6 +175,10 @@ export class BatchTechnicalRecordService {
 
   get vehicleStatus$(): Observable<string | undefined> {
     return this.store.pipe(select(selectVehicleStatus));
+  }
+
+  get vehicleType$(): Observable<VehicleTypes | undefined> {
+    return this.store.pipe(select(selectVehicleType));
   }
 
   get generateNumber$(): Observable<boolean> {

@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from 'rxjs';
@@ -18,7 +18,7 @@ import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from
 })
 export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  techRecord?: TechRecordModel;
+  vehicleType?: VehicleTypes;
   readonly maxNumberOfVehicles = 40;
 
   private destroy$ = new Subject<void>();
@@ -38,9 +38,11 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
       ])
     });
 
-    this.technicalRecordService.editableVehicleTechRecord$
-      .pipe(take(1))
-      .subscribe(vehicle => (!vehicle ? this.back() : (this.techRecord = vehicle.techRecord[0])));
+    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
+      if (!vehicle) return this.back();
+    });
+
+    this.batchTechRecordService.vehicleType$.pipe(take(1)).subscribe(vehicleType => (this.vehicleType = vehicleType));
   }
   ngOnInit(): void {
     this.addVehicles(this.maxNumberOfVehicles);
@@ -56,10 +58,6 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  get vehicleType(): VehicleTypes | undefined {
-    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
   }
 
   get vehicles(): FormArray {
@@ -98,7 +96,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
           viewType: FormNodeViewTypes.HIDDEN,
           editType: FormNodeEditTypes.HIDDEN
         },
-        this.techRecord?.vehicleType
+        this.vehicleType
       ),
       systemNumber: [''],
       oldVehicleStatus: ['']

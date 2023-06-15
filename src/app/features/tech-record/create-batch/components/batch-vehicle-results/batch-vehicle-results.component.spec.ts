@@ -40,5 +40,6 @@ describe('BatchVehicleResultsComponent', () => {
     expect(component.batchTotalUpdatedCount$).toBeTruthy();
     expect(component.applicationId$).toBeTruthy();
     expect(component.batchVehiclesSuccess$).toBeTruthy();
+    expect(component.vehicleType$).toBeTruthy();
   });
 });
