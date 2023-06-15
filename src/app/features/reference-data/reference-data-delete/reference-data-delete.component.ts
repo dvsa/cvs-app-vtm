@@ -115,7 +115,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
   handleSubmit() {
     this.checkForms();
 
-    if (this.isFormInvalid) return;
+    if (this.isFormInvalid || !this.reasonForDeletion) return;
 
     this.store.dispatch(
       deleteReferenceDataItem({
@@ -125,12 +125,5 @@ export class ReferenceDataDeleteComponent implements OnInit {
       })
     );
     this.navigateBack();
-    // this.referenceDataService
-    //   .deleteReferenceDataItem(this.type, this.key, this.reasonForDeletion.reason)
-    //   .pipe(take(1))
-    //   .subscribe(() => {
-    //     this.referenceDataService.removeReferenceDataByKey(this.type, this.key);
-    //     this.navigateBack();
-    //   });
   }
 }

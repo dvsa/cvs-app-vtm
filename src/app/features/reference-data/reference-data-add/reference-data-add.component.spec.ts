@@ -11,6 +11,7 @@ import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { ReferenceDataCreateComponent } from './reference-data-add.component';
+import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 
 const mockRefDataService = {
   loadReferenceData: jest.fn(),
