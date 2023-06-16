@@ -9,6 +9,7 @@ import { StatusCodes, TrailerFormType, VehicleTechRecordModel, VehicleTypes } fr
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { take } from 'rxjs';
+import { CustomValidators } from '@forms/validators/custom-validators';
 
 @Component({
   selector: 'app-select-vehicle-type',
@@ -19,7 +20,9 @@ export class SelectVehicleTypeComponent {
     { name: 'form-group', type: FormNodeTypes.GROUP },
     {
       vehicleType: new CustomFormControl({ name: 'vehicle-type', label: 'Vehicle type', type: FormNodeTypes.CONTROL }, '', [Validators.required]),
-      tes1Tes2: new CustomFormControl({ name: 'tes1-tes2', label: 'Trailer form type', type: FormNodeTypes.CONTROL }, '')
+      tes1Tes2: new CustomFormControl({ name: 'tes1-tes2', label: 'Trailer form type', type: FormNodeTypes.CONTROL }, '', [
+        CustomValidators.requiredIfEquals('vehicleType', VehicleTypes.TRL)
+      ])
     }
   );
 
