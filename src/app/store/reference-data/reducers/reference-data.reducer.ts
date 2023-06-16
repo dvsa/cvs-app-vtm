@@ -148,21 +148,22 @@ export const referenceDataReducer = createReducer(
   }),
   on(amendReferenceDataItemSuccess, (state, action) => {
     const { result } = action;
+    const { resourceKey, resourceType } = result;
     const currentState = cloneDeep(state);
-    const id = result.resourceKey as string;
 
-    currentState[result.resourceType] = resourceTypeAdapters[result.resourceType].updateOne(
-      { id, changes: result },
-      currentState[result.resourceType]
+    currentState[resourceType] = resourceTypeAdapters[resourceType].updateOne(
+      { id: resourceKey.toString(), changes: result },
+      currentState[resourceType]
     );
 
     return currentState;
   }),
   on(createReferenceDataItemSuccess, (state, action) => {
     const { result } = action;
+    const { resourceType } = result;
     const currentState = cloneDeep(state);
 
-    currentState[result.resourceType] = resourceTypeAdapters[result.resourceType].addOne(result, currentState[result.resourceType]);
+    currentState[resourceType] = resourceTypeAdapters[resourceType].addOne(result, currentState[resourceType]);
 
     return currentState;
   }),

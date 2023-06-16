@@ -8,7 +8,8 @@
     </div>
 
     <app-dynamic-form-group
-      [id]="key"
+      *ngIf="(refDataAdminType$ | async).templateAmend"
+      [id]="(refDataAdminType$ | async).templateAmend.name"
       [template]="(refDataAdminType$ | async).templateAmend"
       [data]="data"
       [edit]="true"
@@ -23,7 +24,7 @@
     <app-reference-data-amend-history
       [type]="type"
       [key]="key"
-      [title]="(refDataAdminType$ | async).labelSingular || ''"
+      [title]="(refDataAdminType$ | async).labelSingular"
       [columns]="(refDataAdminType$ | async).columns || []"
     ></app-reference-data-amend-history>
   </div>
