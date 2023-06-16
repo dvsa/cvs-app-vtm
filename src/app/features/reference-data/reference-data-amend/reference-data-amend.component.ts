@@ -23,6 +23,7 @@ export class ReferenceDataAmendComponent implements OnInit {
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
   amendedData: any;
+  refDataAdminType: any;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
@@ -46,12 +47,13 @@ export class ReferenceDataAmendComponent implements OnInit {
         // load the reference data admin type, the current item and check if it has any audit history
         this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
         this.referenceDataService.loadReferenceDataByKey(this.type, this.key);
+        this.store
+          .pipe(take(1), select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
+          .subscribe(item => {
+            this.refDataAdminType = item;
+          });
       }
     });
-  }
-
-  get refDataAdminType$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
   get roles(): typeof Roles {
