@@ -4,7 +4,7 @@ import { Axle, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
-import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '../actions/batch-create.actions';
+import { clearBatch, setApplicationId, setGenerateNumberFlag, setVehicleStatus, upsertVehicleBatch } from '../actions/batch-create.actions';
 import {
   addAxle,
   archiveTechRecord,
@@ -22,24 +22,9 @@ import {
   generatePlate,
   generatePlateFailure,
   generatePlateSuccess,
-  getByAll,
-  getByAllFailure,
-  getByAllSuccess,
-  getByPartialVin,
-  getByPartialVinFailure,
-  getByPartialVinSuccess,
   getBySystemNumber,
   getBySystemNumberFailure,
   getBySystemNumberSuccess,
-  getByTrailerId,
-  getByTrailerIdFailure,
-  getByTrailerIdSuccess,
-  getByVin,
-  getByVinFailure,
-  getByVinSuccess,
-  getByVrm,
-  getByVrmFailure,
-  getByVrmSuccess,
   removeAxle,
   updateBody,
   updateBrakeForces,
@@ -75,29 +60,9 @@ export const getVehicleTechRecordState = createFeatureSelector<TechnicalRecordSe
 export const vehicleTechRecordReducer = createReducer(
   initialState,
 
-  on(getByVin, defaultArgs),
-  on(getByVinSuccess, successArgs),
-  on(getByVinFailure, failureArgs),
-
-  on(getByPartialVin, defaultArgs),
-  on(getByPartialVinSuccess, successArgs),
-  on(getByPartialVinFailure, failureArgs),
-
-  on(getByVrm, defaultArgs),
-  on(getByVrmSuccess, successArgs),
-  on(getByVrmFailure, failureArgs),
-
-  on(getByTrailerId, defaultArgs),
-  on(getByTrailerIdSuccess, successArgs),
-  on(getByTrailerIdFailure, failureArgs),
-
   on(getBySystemNumber, defaultArgs),
   on(getBySystemNumberSuccess, successArgs),
   on(getBySystemNumberFailure, failureArgs),
-
-  on(getByAll, defaultArgs),
-  on(getByAllSuccess, successArgs),
-  on(getByAllFailure, failureArgs),
 
   on(createVehicleRecord, defaultArgs),
   on(createVehicleRecordSuccess, successArgs),
@@ -142,6 +107,7 @@ export const vehicleTechRecordReducer = createReducer(
     createVehicleRecordSuccess,
     updateTechRecordsSuccess,
     setApplicationId,
+    setVehicleStatus,
     setGenerateNumberFlag,
     clearBatch,
     (state, action) => ({

@@ -9,23 +9,23 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
 import { of } from 'rxjs';
-import { BatchTrlDetailsComponent } from './batch-trl-details.component';
+import { BatchVehicleDetailsComponent } from './batch-vehicle-details.component';
 
 const mockGlobalErrorService = {
   addError: jest.fn(),
   clearErrors: jest.fn(),
   setErrors: jest.fn()
 };
-describe('BatchTrlDetailsComponent', () => {
-  let component: BatchTrlDetailsComponent;
-  let fixture: ComponentFixture<BatchTrlDetailsComponent>;
+describe('BatchVehicleDetailsComponent', () => {
+  let component: BatchVehicleDetailsComponent;
+  let fixture: ComponentFixture<BatchVehicleDetailsComponent>;
   let router: Router;
   let store: MockStore<State>;
   let errorService: GlobalErrorService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BatchTrlDetailsComponent],
+      declarations: [BatchVehicleDetailsComponent],
       imports: [DynamicFormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
       providers: [FormBuilder, { provide: GlobalErrorService, useValue: mockGlobalErrorService }, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
@@ -34,7 +34,7 @@ describe('BatchTrlDetailsComponent', () => {
   beforeEach(() => {
     store = TestBed.inject(MockStore);
     router = TestBed.inject(Router);
-    fixture = TestBed.createComponent(BatchTrlDetailsComponent);
+    fixture = TestBed.createComponent(BatchVehicleDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     errorService = TestBed.inject(GlobalErrorService);
@@ -53,6 +53,16 @@ describe('BatchTrlDetailsComponent', () => {
       await component.isFormValid();
       component.vehicleForm.updateValueAndValidity();
       expect(mockGlobalErrorService.addError).toBeCalledWith({ error: 'At least 1 vehicle must be created or updated in a batch' });
+    });
+  });
+
+  describe('checkDuplicateVins', () => {
+    it('should return duplicate vins and their indexes', () => {
+      const arr = [{ vin: '123' }, { vin: '123' }, { vin: '123' }, { vin: '' }, { vin: '' }];
+      expect(component.checkDuplicateVins(arr)).toStrictEqual([
+        { vin: '123', anchor: 1 },
+        { vin: '123', anchor: 2 }
+      ]);
     });
   });
 });

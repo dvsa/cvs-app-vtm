@@ -8,15 +8,16 @@ import {
   VehicleTechRecordModel
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { getByAll, getByPartialVin, getByTrailerId, getByVin, getByVrm } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
+import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
 
 export enum SEARCH_TYPES {
   VIN = 'vin',
   PARTIAL_VIN = 'partialVin',
-  VRM = 'vrm',
+  VRM = 'primaryVrm',
   TRAILER_ID = 'trailerId',
   SYSTEM_NUMBER = 'systemNumber',
   ALL = 'all'
@@ -26,52 +27,19 @@ export enum SEARCH_TYPES {
 export class TechnicalRecordHttpService {
   constructor(private http: HttpClient, private store: Store) {}
 
-  searchBy(type: SEARCH_TYPES, term: string): void {
-    switch (type) {
-      case SEARCH_TYPES.VIN:
-        this.store.dispatch(getByVin({ [type]: term }));
-        break;
-      case SEARCH_TYPES.PARTIAL_VIN:
-        this.store.dispatch(getByPartialVin({ [type]: term }));
-        break;
-      case SEARCH_TYPES.VRM:
-        this.store.dispatch(getByVrm({ [type]: term }));
-        break;
-      case SEARCH_TYPES.TRAILER_ID:
-        this.store.dispatch(getByTrailerId({ [type]: term }));
-        break;
-      case SEARCH_TYPES.ALL:
-        this.store.dispatch(getByAll({ [type]: term }));
-        break;
-    }
+  search$(type: SEARCH_TYPES, term: string): Observable<SearchResult[]> {
+    const queryStr = `${term}?searchCriteria=${type}`;
+    const url = `${environment.VTM_API_URI}/v3/technical-records/search/${queryStr}`;
+
+    return this.http.get<SearchResult[]>(url, { responseType: 'json' });
   }
 
-  getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(vin, SEARCH_TYPES.VIN);
-  }
-
-  getByPartialVin(partialVin: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(partialVin, SEARCH_TYPES.PARTIAL_VIN);
-  }
-
-  getByVrm(vrm: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(vrm, SEARCH_TYPES.VRM);
-  }
-
-  getByTrailerId(id: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(id, SEARCH_TYPES.TRAILER_ID);
+  searchBy(type: SEARCH_TYPES | undefined, term: string): void {
+    this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
   }
 
   getBySystemNumber(systemNumber: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(systemNumber, SEARCH_TYPES.SYSTEM_NUMBER);
-  }
-
-  getByAll(term: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(term, SEARCH_TYPES.ALL);
-  }
-
-  getVehicleTechRecordModels(id: string, type: SEARCH_TYPES): Observable<VehicleTechRecordModel[]> {
-    const queryStr = `${id}/tech-records?status=all&metadata=true&searchCriteria=${type}`;
+    const queryStr = `${systemNumber}/tech-records?status=all&metadata=true&searchCriteria=${SEARCH_TYPES.SYSTEM_NUMBER}`;
     const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
 
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });

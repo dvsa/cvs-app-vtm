@@ -8,6 +8,10 @@ export interface VehicleTechRecordModel {
   techRecord: TechRecordModel[];
 }
 
+export interface BatchUpdateVehicleModel extends VehicleTechRecordModel {
+  oldVehicleStatus?: StatusCodes | undefined;
+}
+
 export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'> {
   primaryVrm?: string;
   secondaryVrms?: string[];
@@ -39,6 +43,11 @@ export enum VehicleTypes {
   CAR = 'car',
   SMALL_TRL = 'small trl',
   MOTORCYCLE = 'motorcycle'
+}
+
+export enum TrailerFormType {
+  TES1 = 'tes1',
+  TES2 = 'tes2'
 }
 
 export enum FuelTypes {
