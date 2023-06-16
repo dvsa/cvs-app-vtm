@@ -89,7 +89,8 @@ export class BatchTechnicalRecordService {
           return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
         }
         systemNumberControl.setValue(result[0].systemNumber);
-        oldVehicleStatusControl.setValue(result[0].techRecord_statusCode);
+        const techRecordToUpdate = recordsWithMatchingTrailerId.find(techRecord => techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED);
+        oldVehicleStatusControl.setValue(techRecordToUpdate?.techRecord_statusCode);
         return null;
       }),
       catchError(() => of({ validateForBatch: { message: 'Could not find a record with matching VIN' } }))
