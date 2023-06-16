@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
@@ -13,13 +13,13 @@ import {
   updateEditingTechRecordCancel,
   updateTechRecordsSuccess
 } from '@store/technical-records';
-import { take, withLatestFrom } from 'rxjs';
+import { Subject, take, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-edit-tech-record-button[vehicle][viewableTechRecord]',
   templateUrl: './edit-tech-record-button.component.html'
 })
-export class EditTechRecordButtonComponent implements OnInit {
+export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
   @Input() vehicle!: VehicleTechRecordModel;
   @Input() viewableTechRecord!: TechRecordModel;
   @Input() isEditing = false;
@@ -27,6 +27,7 @@ export class EditTechRecordButtonComponent implements OnInit {
 
   @Output() isEditingChange = new EventEmitter<boolean>();
   @Output() submitChange = new EventEmitter();
+  ngDestroy$ = new Subject();
 
   constructor(
     private actions$: Actions,
@@ -44,13 +45,17 @@ export class EditTechRecordButtonComponent implements OnInit {
       .pipe(
         ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
         withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.technicalRecordService.techRecord$),
-        take(1)
+        takeUntil(this.ngDestroy$)
       )
       .subscribe(([, systemNumber, techRecord]) => {
         const routeSuffix = techRecord?.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
-
         this.router.navigateByUrl(`/tech-records/${systemNumber}${routeSuffix}`);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.ngDestroy$.next(true);
+    this.ngDestroy$.complete();
   }
 
   get isArchived(): boolean {
