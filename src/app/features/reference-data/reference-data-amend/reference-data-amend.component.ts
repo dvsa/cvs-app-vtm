@@ -1,5 +1,5 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
@@ -10,7 +10,8 @@ import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, map, take } from 'rxjs';
+import { listeners } from 'process';
+import { Observable, Subject, Subscription, first, last, map, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend',
@@ -23,7 +24,10 @@ export class ReferenceDataAmendComponent implements OnInit {
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
   amendedData: any;
-  refDataAdminType: any;
+
+  destroy$ = new Subject<void>();
+
+  // destroy$ = new Subject<void>()
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
@@ -37,27 +41,29 @@ export class ReferenceDataAmendComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(take(1)).subscribe(params => {
+    this.router.onSameUrlNavigation = 'reload';
+    this.route.params.pipe(first()).subscribe(params => {
       this.type = params['type'];
       this.key = params['key'];
 
       if (this.type && this.key) {
-        this.store.pipe(select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key)))).subscribe(data => (this.data = data));
+        this.store
+          .pipe(first(), select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key))))
+          .subscribe(data => (this.data = data));
 
         // load the reference data admin type, the current item and check if it has any audit history
         this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
         this.referenceDataService.loadReferenceDataByKey(this.type, this.key);
-        this.store
-          .pipe(take(1), select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
-          .subscribe(item => {
-            this.refDataAdminType = item;
-          });
       }
     });
   }
 
   get roles(): typeof Roles {
     return Roles;
+  }
+
+  get refDataAdminType$(): Observable<any | undefined> {
+    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
   get data$(): Observable<any | undefined> {
@@ -71,6 +77,7 @@ export class ReferenceDataAmendComponent implements OnInit {
 
   handleFormChange(event: any) {
     this.amendedData = event;
+    console.log(this.amendedData, 'handle form changes');
   }
 
   checkForms(): void {
@@ -103,6 +110,10 @@ export class ReferenceDataAmendComponent implements OnInit {
         payload: this.amendedData
       })
     );
+
+    this.sections.forEach(form => {
+      form.ngOnDestroy();
+    });
 
     this.navigateBack();
   }
