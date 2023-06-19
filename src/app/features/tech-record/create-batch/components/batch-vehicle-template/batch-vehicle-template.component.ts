@@ -1,12 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { BatchUpdateVehicleModel, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { BatchUpdateVehicleModel, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -72,8 +72,8 @@ export class BatchVehicleTemplateComponent {
     return this.batchTechRecordService.batchCount$;
   }
 
-  getVehicleType(techRecord: TechRecordModel): VehicleTypes {
-    return this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord);
+  get vehicleType$() {
+    return this.batchTechRecordService.vehicleType$;
   }
 
   statusChange(): void {

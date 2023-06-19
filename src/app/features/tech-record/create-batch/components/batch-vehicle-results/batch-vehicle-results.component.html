@@ -5,7 +5,7 @@
     <h2 class="govuk-heading-m">Technical records created</h2>
     <p class="govuk-body">
       You have successfully processed {{ (batchSuccessCount$ | async) ?? 0 }} out of {{ (batchCount$ | async) ?? 0 }}
-      {{ vehicleType | formatVehicleType }} technical records using application ID {{ applicationId$ | async }}.
+      {{ vehicleType$ | async | formatVehicleType }} technical records using application ID {{ applicationId$ | async }}.
     </p>
     <p class="govuk-body">
       {{ (batchCreatedCount$ | async) ?? 0 }} out of {{ (batchTotalCreatedCount$ | async) ?? 0 }} records successfully created.
@@ -23,7 +23,7 @@
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">VIN</th>
-      <th scope="col" class="govuk-table__header">{{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }}</th>
+      <th scope="col" class="govuk-table__header">{{ (vehicleType$ | async) === 'trl' ? 'Trailer ID' : 'VRM' }}</th>
       <th scope="col" class="govuk-table__header">Vehicle type</th>
       <th scope="col" class="govuk-table__header">Record type</th>
       <th scope="col" class="govuk-table__header"></th>

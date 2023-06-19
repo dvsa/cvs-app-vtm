@@ -71,6 +71,9 @@ export class SelectVehicleTypeComponent {
     } else if (type === VehicleTypes.TRL && this.form.value.tes1Tes2 === TrailerFormType.TES2) {
       this.batchTechRecordService.setVehicleStatus(StatusCodes.PROVISIONAL);
     }
+
+    this.batchTechRecordService.setVehicleType(type);
+
     this.trs.editableVehicleTechRecord$.pipe(take(1)).subscribe(
       vehicle =>
         !vehicle &&
