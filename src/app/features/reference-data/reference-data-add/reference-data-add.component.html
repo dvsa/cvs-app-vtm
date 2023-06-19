@@ -1,22 +1,20 @@
-<ng-container *ngIf="refDataAdminType$ | async">
-  <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
-    <div class="govuk-grid-column-full">
-      <p class="govuk-heading-xl govuk-!-font-weight-bold">Add a new {{ (refDataAdminType$ | async).labelSingular }}</p>
+<div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
+  <div class="govuk-grid-column-full">
+    <p class="govuk-heading-xl govuk-!-font-weight-bold">Add a new {{ (refDataAdminType$ | async).labelSingular }}</p>
 
-      <app-dynamic-form-group
-        *ngIf="(refDataAdminType$ | async).templateCreate"
-        [id]="(refDataAdminType$ | async).templateCreate.name"
-        [template]="(refDataAdminType$ | async).templateCreate"
-        [data]=""
-        [edit]="isEditing"
-        (formChange)="handleFormChange($event)"
-      ></app-dynamic-form-group>
+    <app-dynamic-form-group
+      *ngIf="(refDataAdminType$ | async).templateCreate"
+      [id]="(refDataAdminType$ | async).templateCreate.name"
+      [template]="(refDataAdminType$ | async).templateCreate"
+      [data]=""
+      [edit]="isEditing"
+      (formChange)="handleFormChange($event)"
+    ></app-dynamic-form-group>
 
-      <app-button-group>
-        <app-button id="submit" (clicked)="handleSubmit()">Add</app-button>
+    <app-button-group>
+      <app-button id="submit" (clicked)="handleSubmit()">Add</app-button>
 
-        <app-button id="cancel" design="link" (clicked)="navigateBack()">Back</app-button>
-      </app-button-group>
-    </div>
+      <app-button id="cancel" design="link" (clicked)="navigateBack()">Back</app-button>
+    </app-button-group>
   </div>
-</ng-container>
+</div>
