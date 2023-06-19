@@ -27,13 +27,12 @@ export class ReferenceDataCreateComponent implements OnInit {
 
   constructor(
     public globalErrorService: GlobalErrorService,
+    public dfs: DynamicFormService,
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<ReferenceDataState>
-  ) {
-    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.ReferenceDataAdminType);
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
@@ -60,7 +59,6 @@ export class ReferenceDataCreateComponent implements OnInit {
   }
 
   handleFormChange(event: any) {
-    console.log('event', event);
     this.newRefData = event;
   }
 
