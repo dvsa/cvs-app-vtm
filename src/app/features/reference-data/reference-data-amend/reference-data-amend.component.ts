@@ -35,7 +35,6 @@ export class ReferenceDataAmendComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.router.onSameUrlNavigation = 'reload';
     this.route.params.pipe(first()).subscribe(params => {
       this.type = params['type'];
       this.key = decodeURIComponent(params['key']);
