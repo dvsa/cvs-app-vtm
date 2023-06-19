@@ -85,7 +85,6 @@ describe('ReferenceDataAmendComponent', () => {
 
   describe('handleSubmit', () => {
     it('should dispatch if form is valid', () => {
-      component.data = { description: 'test' };
       component.amendedData = { description: 'testing' };
       jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
         component.isFormInvalid = false;
