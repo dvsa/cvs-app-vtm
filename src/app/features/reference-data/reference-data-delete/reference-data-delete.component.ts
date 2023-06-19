@@ -55,7 +55,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
-      this.key = params['key'];
+      this.key = decodeURIComponent(params['key']);
 
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
 
