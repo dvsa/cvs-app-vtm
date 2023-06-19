@@ -1,6 +1,6 @@
 <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
-    <p class="govuk-heading-xl govuk-!-font-weight-bold">Search for {{ titleCaseHeading(type) }}</p>
+    <p class="govuk-heading-xl govuk-!-font-weight-bold">Search for {{ (refDataAdminType$ | async).label }}</p>
 
     <app-button-group>
       <app-button id="submit" (clicked)="addNew()">Add New</app-button>
@@ -11,17 +11,20 @@
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Resource Key</th>
-
-          <th *ngFor="let column of columns$ | async" scope="col" class="govuk-table__header">{{ titleCaseColumn(column) }}</th>
+          <th *ngFor="let column of (refDataAdminType$ | async).columns" scope="col" class="govuk-table__header">{{ column.heading }}</th>
           <th scope="col" class="govuk-table__header"></th>
         </tr>
       </thead>
 
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row" *ngFor="let item of data$ | async">
-          <td #resourceKey class="govuk-table__cell">{{ item.resourceKey }}</td>
-          <td *ngFor="let column of columns$ | async" class="govuk-table__cell">{{ item[column] }}</td>
+          <td *ngFor="let column of (refDataAdminType$ | async).columns" class="govuk-table__cell">{{ item[column.name] }}</td>
+          <td class="govuk-table__cell">
+            <app-button-group>
+              <app-button id="amend" design="link" (clicked)="amend(item)">Amend</app-button>
+              <app-button id="delete" design="link" (clicked)="delete(item)">Delete</app-button>
+            </app-button-group>
+          </td>
         </tr>
       </tbody>
     </table>

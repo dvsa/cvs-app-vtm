@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ReferenceDataItem } from '@api/reference-data';
+import { DeleteItem, EmptyObject, ReferenceDataItem } from '@api/reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -13,6 +13,15 @@ import { testResultInEdit } from '@store/test-records';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import {
+  amendReferenceDataItem,
+  amendReferenceDataItemFailure,
+  amendReferenceDataItemSuccess,
+  createReferenceDataItem,
+  createReferenceDataItemFailure,
+  createReferenceDataItemSuccess,
+  deleteReferenceDataItem,
+  deleteReferenceDataItemFailure,
+  deleteReferenceDataItemSuccess,
   fetchReasonsForAbandoning,
   fetchReferenceData,
   fetchReferenceDataByKey,
@@ -62,7 +71,7 @@ describe('ReferenceDataEffects', () => {
   });
 
   describe('fetchReferenceDataByType$', () => {
-    it.each(testCases)('should return fetchReferenceDataSuccess action on successfull API call', value => {
+    it.each(testCases)('should return fetchReferenceDataSuccess action on successful API call', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { resourceType, payload } = value;
         const apiResponse = { data: [...payload] };
@@ -81,7 +90,7 @@ describe('ReferenceDataEffects', () => {
     });
 
     it.each(testCases)(
-      'should return fetchReferenceDataSuccess and fetchReferenceData actions on successfull API call with pagination token',
+      'should return fetchReferenceDataSuccess and fetchReferenceData actions on successful API call with pagination token',
       value => {
         testScheduler.run(({ hot, cold, expectObservable }) => {
           const { resourceType, payload } = value;
@@ -261,7 +270,7 @@ describe('ReferenceDataEffects', () => {
       });
     });
 
-    it('should return fetchTyreReferenceDataByKeySearchFailed on successful API call', () => {
+    it('should return fetchTyreReferenceDataByKeySearchFailed on unsuccessful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const resourceType = ReferenceDataResourceType.Tyres;
         actions$ = hot('-a--', { a: fetchTyreReferenceDataByKeySearch({ searchFilter: 'plyRating', searchTerm: null as any }) });
@@ -306,6 +315,130 @@ describe('ReferenceDataEffects', () => {
         b: fetchReferenceData({
           resourceType
         })
+      });
+    });
+  });
+
+  describe('createReferenceDataItem$', () => {
+    it('should return createReferenceDataItemSuccess on a successful call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+        const resourceKey = 'testKey';
+        const body = {
+          description: 'test country'
+        };
+        const apiResponse = { ...body, resourceType, resourceKey };
+
+        actions$ = hot('-a--', {
+          a: createReferenceDataItem({ resourceType: resourceType, resourceKey: resourceKey, payload: body as ReferenceDataModelBase })
+        });
+
+        jest.spyOn(referenceDataService, 'createReferenceDataItem').mockReturnValue(cold('--a|', { a: apiResponse }));
+
+        expectObservable(effects.createReferenceDataItem$).toBe('---b', {
+          b: createReferenceDataItemSuccess({ result: apiResponse as ReferenceDataModelBase })
+        });
+      });
+    });
+    it('should return createReferenceDataItemFailure if an error is returned', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+        const resourceKey = 'testKey';
+        const body = {
+          description: 'test country'
+        };
+
+        actions$ = hot('-a--', {
+          a: createReferenceDataItem({ resourceType: resourceType, resourceKey: resourceKey, payload: body as ReferenceDataModelBase })
+        });
+
+        const expectedError = new Error('Something went wrong');
+
+        jest.spyOn(referenceDataService, 'createReferenceDataItem').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.createReferenceDataItem$).toBe('---b', {
+          b: createReferenceDataItemFailure({ error: 'Something went wrong' })
+        });
+      });
+    });
+  });
+
+  describe('amendReferenceDataItem$', () => {
+    it('should return amendReferenceDataI on a successful call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+        const resourceKey = 'testKey';
+        const body = {
+          description: 'test country'
+        };
+        const apiResponse = { ...body, resourceType, resourceKey };
+
+        actions$ = hot('-a--', {
+          a: amendReferenceDataItem({ resourceType: resourceType, resourceKey: resourceKey, payload: body as ReferenceDataModelBase })
+        });
+
+        jest.spyOn(referenceDataService, 'amendReferenceDataItem').mockReturnValue(cold('--a-|', { a: apiResponse }));
+
+        expectObservable(effects.amendReferenceDataItem$).toBe('---b', {
+          b: amendReferenceDataItemSuccess({ result: apiResponse as ReferenceDataModelBase })
+        });
+      });
+    });
+    it('should return amendReferenceDataItemFailure if an error is returned', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+        const resourceKey = 'testKey';
+        const body = {
+          description: 'test country'
+        };
+
+        actions$ = hot('-a--', {
+          a: amendReferenceDataItem({ resourceType: resourceType, resourceKey: resourceKey, payload: body as ReferenceDataModelBase })
+        });
+
+        const expectedError = new Error('Something went wrong');
+
+        jest.spyOn(referenceDataService, 'amendReferenceDataItem').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.amendReferenceDataItem$).toBe('---b', {
+          b: amendReferenceDataItemFailure({ error: 'Something went wrong' })
+        });
+      });
+    });
+  });
+
+  describe('deleteReferenceDataItem$', () => {
+    it('should return deleteReferenceDataSuccess on a successful call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+        const resourceKey = 'testKey';
+        const reason = 'for test';
+        const apiResponse = { result: true };
+
+        actions$ = hot('-a--', { a: deleteReferenceDataItem({ resourceType: resourceType, resourceKey: resourceKey, reason: reason }) });
+
+        jest.spyOn(referenceDataService, 'deleteReferenceDataItem').mockReturnValue(cold('--a-|', { a: apiResponse as DeleteItem }));
+
+        expectObservable(effects.deleteReferenceDataItem$).toBe('---b', {
+          b: deleteReferenceDataItemSuccess({ resourceType, resourceKey })
+        });
+      });
+    });
+    it('should return deleteReferenceDataFailure if an error is returned', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+        const resourceKey = 'testKey';
+        const reason = 'testing';
+
+        actions$ = hot('-a--', { a: deleteReferenceDataItem({ resourceType, resourceKey, reason }) });
+
+        const expectedError = new Error('Something went wrong');
+
+        jest.spyOn(referenceDataService, 'deleteReferenceDataItem').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.deleteReferenceDataItem$).toBe('---b', {
+          b: deleteReferenceDataItemFailure({ error: 'Something went wrong' })
+        });
       });
     });
   });

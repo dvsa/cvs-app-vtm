@@ -49,7 +49,8 @@ export class DynamicFormService {
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
     [ValidatorNames.ValidateVRMTrailerIdLength]: (args: { sibling: string }) => CustomValidators.validateVRMTrailerIdLength(args.sibling),
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
-    [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued
+    [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued,
+    [ValidatorNames.MustEqualSibling]: (args: { sibling: string }) => CustomValidators.mustEqualSibling(args.sibling)
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

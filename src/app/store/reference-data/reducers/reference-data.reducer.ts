@@ -1,8 +1,12 @@
-import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
+import cloneDeep from 'lodash.clonedeep';
 import {
   addSearchInformation,
+  amendReferenceDataItemSuccess,
+  createReferenceDataItemSuccess,
+  deleteReferenceDataItemSuccess,
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
@@ -27,14 +31,14 @@ interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase> {
   loading: boolean;
 }
 
-export interface ReferenceDataEntityStateTyres extends EntityState<ReferenceDataModelBase> {
+export interface ReferenceDataEntityStateSearch extends EntityState<ReferenceDataModelBase> {
   loading: boolean;
-  searchReturn: ReferenceDataTyre[] | null;
+  searchReturn: ReferenceDataModelBase[] | null;
   term: string | null;
   filter: string | null;
 }
 
-export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState | ReferenceDataEntityStateTyres>;
+export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState | ReferenceDataEntityStateSearch>;
 
 function createAdapter() {
   return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey as any });
@@ -134,6 +138,35 @@ export const referenceDataReducer = createReducer(
     ...state,
     [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null, filter: null, term: null }
   })),
+  on(deleteReferenceDataItemSuccess, (state, action) => {
+    const { resourceType, resourceKey } = action;
+    const currentState = cloneDeep(state);
+
+    currentState[resourceType] = resourceTypeAdapters[resourceType].removeOne(resourceKey as string, currentState[resourceType]);
+
+    return currentState;
+  }),
+  on(amendReferenceDataItemSuccess, (state, action) => {
+    const { result } = action;
+    const { resourceKey, resourceType } = result;
+    const currentState = cloneDeep(state);
+
+    currentState[resourceType] = resourceTypeAdapters[resourceType].updateOne(
+      { id: resourceKey.toString(), changes: result },
+      currentState[resourceType]
+    );
+
+    return currentState;
+  }),
+  on(createReferenceDataItemSuccess, (state, action) => {
+    const { result } = action;
+    const { resourceType } = result;
+    const currentState = cloneDeep(state);
+
+    currentState[resourceType] = resourceTypeAdapters[resourceType].addOne(result, currentState[resourceType]);
+
+    return currentState;
+  }),
   on(addSearchInformation, (state, action) => ({
     ...state,
     [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], filter: action.filter, term: action.term }

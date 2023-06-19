@@ -1,3 +1,5 @@
+import { isNgTemplate } from '@angular/compiler';
+
 export enum ReferenceDataResourceType {
   Brakes = 'BRAKES',
   CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',
@@ -15,10 +17,22 @@ export enum ReferenceDataResourceType {
   TyreLoadIndex = 'TYRE_LOAD_INDEX'
 }
 
+type AuditTypes = `${keyof Record<ReferenceDataResourceType, string>}#AUDIT`;
+export type ReferenceDataResourceTypeAudit = `${keyof Record<ReferenceDataResourceType, string>}` | AuditTypes;
+
+export interface ReferenceDataAdminColumn {
+  name: string;
+  heading: string;
+  order: number;
+}
+
 export interface ReferenceDataModelBase {
   resourceType: ReferenceDataResourceType;
   resourceKey: string | number;
   description?: string;
+  createdAt?: string;
+  createdName?: string;
+  createdId?: string;
 }
 
 export interface HgvMake extends ReferenceDataModelBase {}

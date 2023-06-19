@@ -1,14 +1,24 @@
 import { Injectable } from '@angular/core';
-import { ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
+import { DeleteItem, EmptyObject, ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { testResultInEdit } from '@store/test-records';
-import { catchError, map, mergeMap, of, switchMap, take } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
 import {
+  amendReferenceDataItem,
+  amendReferenceDataItemFailure,
+  amendReferenceDataItemSuccess,
+  createReferenceDataItem,
+  createReferenceDataItemFailure,
+  createReferenceDataItemSuccess,
+  deleteReferenceDataItem,
+  deleteReferenceDataItemFailure,
+  deleteReferenceDataItemSuccess,
   fetchReasonsForAbandoning,
   fetchReferenceData,
   fetchReferenceDataByKey,
@@ -27,6 +37,13 @@ import { handleNotFound, sortReferenceData } from './operators';
 
 @Injectable()
 export class ReferenceDataEffects {
+  constructor(
+    private actions$: Actions,
+    private userService: UserService,
+    private referenceDataService: ReferenceDataService,
+    private store: Store<State>
+  ) {}
+
   fetchReferenceDataByType$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchReferenceData),
@@ -110,7 +127,46 @@ export class ReferenceDataEffects {
     )
   );
 
-  constructor(private actions$: Actions, private referenceDataService: ReferenceDataService, private store: Store<State>) {}
+  createReferenceDataItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createReferenceDataItem),
+      switchMap(({ resourceType, resourceKey, payload }) => {
+        payload = { ...payload };
+        return this.referenceDataService.createReferenceDataItem(resourceType, resourceKey, payload).pipe(
+          map(result => createReferenceDataItemSuccess({ result: result as ReferenceDataModelBase })),
+          catchError(error => of(createReferenceDataItemFailure({ error: error.message })))
+        );
+      })
+    )
+  );
+
+  // The amend effect will work when the referenceData.service.ts is amended on line 395 from <EmptyObject> to <any>
+
+  amendReferenceDataItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(amendReferenceDataItem),
+      switchMap(({ resourceType, resourceKey, payload }) => {
+        payload = { ...payload };
+        return this.referenceDataService.amendReferenceDataItem(resourceType, resourceKey, payload).pipe(
+          map(result => amendReferenceDataItemSuccess({ result: result as ReferenceDataModelBase })),
+          catchError(error => of(amendReferenceDataItemFailure({ error: error.message })))
+        );
+      })
+    )
+  );
+
+  deleteReferenceDataItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteReferenceDataItem),
+      switchMap(({ resourceType, resourceKey, reason }) => {
+        const payload = { reason };
+        return this.referenceDataService.deleteReferenceDataItem(resourceType, resourceKey, payload).pipe(
+          map((result: DeleteItem) => deleteReferenceDataItemSuccess({ resourceType, resourceKey })),
+          catchError(error => of(deleteReferenceDataItemFailure({ error: error.message })))
+        );
+      })
+    )
+  );
 }
 
 function isPaginated(referenceDataApiResponse: ReferenceDataApiResponse): referenceDataApiResponse is ReferenceDataApiResponseWithPagination {

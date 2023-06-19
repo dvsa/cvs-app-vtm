@@ -2,17 +2,16 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ReferenceDataApiResponse, ReferenceDataItemApiResponse } from '@api/reference-data';
+import { ReferenceDataService } from '@api/reference-data';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { State, initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
+import { ReferenceDataAmendComponent } from './reference-data-amend.component';
 import { of } from 'rxjs';
-import { ReferenceDataCreateComponent } from './reference-data-add.component';
-import { CustomFormGroup } from '@forms/services/dynamic-form.types';
-import { globalErrorReducer } from '@store/global-error/reducers/global-error-service.reducer';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { QueryList } from '@angular/core';
 
 const mockRefDataService = {
   loadReferenceData: jest.fn(),
@@ -20,9 +19,9 @@ const mockRefDataService = {
   fetchReferenceDataByKey: jest.fn()
 };
 
-describe('ReferenceDataCreateComponent', () => {
-  let component: ReferenceDataCreateComponent;
-  let fixture: ComponentFixture<ReferenceDataCreateComponent>;
+describe('ReferenceDataAmendComponent', () => {
+  let component: ReferenceDataAmendComponent;
+  let fixture: ComponentFixture<ReferenceDataAmendComponent>;
   let store: MockStore<State>;
   let router: Router;
   let route: ActivatedRoute;
@@ -31,10 +30,9 @@ describe('ReferenceDataCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ReferenceDataCreateComponent],
+      declarations: [ReferenceDataAmendComponent],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
-        GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
         { provide: UserService, useValue: {} },
@@ -45,14 +43,12 @@ describe('ReferenceDataCreateComponent', () => {
 
   beforeEach(() => {
     store = TestBed.inject(MockStore);
-    fixture = TestBed.createComponent(ReferenceDataCreateComponent);
+    fixture = TestBed.createComponent(ReferenceDataAmendComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    fixture.detectChanges();
     errorService = TestBed.inject(GlobalErrorService);
     route = TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
-    component.checkForms = jest.fn();
   });
 
   it('should create', () => {
@@ -80,16 +76,16 @@ describe('ReferenceDataCreateComponent', () => {
   });
 
   describe('handleFormChange', () => {
-    it('should set newRefData', () => {
+    it('should set amendedData', () => {
       component.handleFormChange({ foo: 'bar' });
 
-      expect(component.newRefData).toEqual({ foo: 'bar' });
+      expect(component.amendedData).toEqual({ foo: 'bar' });
     });
   });
 
   describe('handleSubmit', () => {
     it('should dispatch if form is valid', () => {
-      component.newRefData = { description: 'test' };
+      component.amendedData = { description: 'testing' };
       jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
         component.isFormInvalid = false;
       });
@@ -99,19 +95,11 @@ describe('ReferenceDataCreateComponent', () => {
 
       expect(dispatch).toHaveBeenCalled();
     });
+
     it('should not dispatch if form is invalid', () => {
       jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
         component.isFormInvalid = true;
       });
-      const dispatch = jest.spyOn(store, 'dispatch');
-
-      component.handleSubmit();
-
-      expect(dispatch).not.toHaveBeenCalled();
-    });
-    it('should not dispatch if ref data already exists', () => {
-      jest.spyOn(mockRefDataService, 'fetchReferenceDataByKey').mockReturnValueOnce(of({ foo: 'bar' }));
-
       const dispatch = jest.spyOn(store, 'dispatch');
 
       component.handleSubmit();

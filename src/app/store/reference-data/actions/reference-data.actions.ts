@@ -1,6 +1,9 @@
+import { DeleteItem, ReferenceDataItem } from '@api/reference-data';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { createAction, props } from '@ngrx/store';
+
+const prefix = '[API/reference-data]';
 
 interface featureError extends GlobalError {
   resourceType: ReferenceDataResourceType;
@@ -73,4 +76,51 @@ export const addSearchInformation = createAction(
 
 export const removeTyreSearch = createAction('[API/reference-data] Remove search return from state');
 
+export const removeReferenceDataByKey = createAction(
+  '[API/reference-data] Remove item from state',
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string;
+  }>()
+);
+
 export const fetchReasonsForAbandoning = createAction('[API/reference-data] Fetch reasons for abandoning');
+
+export const createReferenceDataItem = createAction(
+  `${prefix} createReferenceDataItem`,
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string;
+    payload: ReferenceDataModelBase;
+  }>()
+);
+export const createReferenceDataItemSuccess = createAction(`${prefix} createReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
+export const createReferenceDataItemFailure = createAction(`${prefix} createReferenceDataItemFailure`, props<GlobalError>());
+
+export const amendReferenceDataItem = createAction(
+  `${prefix} amendReferenceDataItem`,
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string;
+    payload: ReferenceDataModelBase;
+  }>()
+);
+export const amendReferenceDataItemSuccess = createAction(`${prefix} amendReferenceDataItemSuccess`, props<{ result: ReferenceDataModelBase }>());
+export const amendReferenceDataItemFailure = createAction(`${prefix} amendReferenceDataItemFailure`, props<GlobalError>());
+
+export const deleteReferenceDataItem = createAction(
+  `${prefix} deleteReferenceDataItem`,
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string;
+    reason: string;
+  }>()
+);
+export const deleteReferenceDataItemSuccess = createAction(
+  `${prefix} deleteReferenceDataItemSuccess`,
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string;
+  }>()
+);
+export const deleteReferenceDataItemFailure = createAction(`${prefix} deleteReferenceDataItemFailure`, props<GlobalError>());

@@ -4,33 +4,22 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { template as brakesTemplate } from '@forms/templates/reference-data/brakes';
-import { template as countryOfRegistrationTemplate } from '@forms/templates/reference-data/country-of-registration';
-import { template as hgvTemplate } from '@forms/templates/reference-data/hgv-make';
-import { template as psvTemplate } from '@forms/templates/reference-data/psv-make';
-import { template as reasonsForAbandoningTirTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TIR';
-import { template as reasonsForAbandoningTrlTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-TRL';
-import { template as reasonsForAbandoningHgvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-hgv';
-import { template as reasonsForAbandoningPsvTemplate } from '@forms/templates/reference-data/reasons-for-abandoning-psv';
-import { template as specialistReasonsForAbandoningTemplate } from '@forms/templates/reference-data/specialist-reasons-for-abandoning';
-import { template as trlTemplate } from '@forms/templates/reference-data/trl-make';
-import { template as tyresTemplate } from '@forms/templates/reference-data/tyres';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { CustomFormGroup, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { fetchReferenceDataByKey, ReferenceDataState } from '@store/reference-data';
-import { catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { ReferenceDataState, createReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { Observable, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-add',
   templateUrl: './reference-data-add.component.html'
 })
 export class ReferenceDataCreateComponent implements OnInit {
-  isEditing: boolean = true;
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
   newRefData: any;
+  data: any = {};
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
 
@@ -49,7 +38,12 @@ export class ReferenceDataCreateComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
+      this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
     });
+  }
+
+  get refDataAdminType$(): Observable<any | undefined> {
+    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
   get roles(): typeof Roles {
@@ -60,65 +54,14 @@ export class ReferenceDataCreateComponent implements OnInit {
     return FormNodeWidth;
   }
 
-  get template(): FormNode {
-    let templateToReturn: FormNode;
-    switch (this.type) {
-      case ReferenceDataResourceType.Brakes:
-        templateToReturn = brakesTemplate;
-        break;
-      case ReferenceDataResourceType.CountryOfRegistration:
-        templateToReturn = countryOfRegistrationTemplate;
-        break;
-      case ReferenceDataResourceType.HgvMake:
-        templateToReturn = hgvTemplate;
-        break;
-      case ReferenceDataResourceType.PsvMake:
-        templateToReturn = psvTemplate;
-        break;
-      case ReferenceDataResourceType.ReasonsForAbandoningHgv:
-        templateToReturn = reasonsForAbandoningHgvTemplate;
-        break;
-      case ReferenceDataResourceType.ReasonsForAbandoningPsv:
-        templateToReturn = reasonsForAbandoningPsvTemplate;
-        break;
-      case ReferenceDataResourceType.ReasonsForAbandoningTrl:
-        templateToReturn = reasonsForAbandoningTrlTemplate;
-        break;
-      case ReferenceDataResourceType.SpecialistReasonsForAbandoning:
-        templateToReturn = specialistReasonsForAbandoningTemplate;
-        break;
-      case ReferenceDataResourceType.TirReasonsForAbandoning:
-        templateToReturn = reasonsForAbandoningTirTemplate;
-        break;
-      case ReferenceDataResourceType.TrlMake:
-        templateToReturn = trlTemplate;
-        break;
-      case ReferenceDataResourceType.Tyres:
-        templateToReturn = tyresTemplate;
-        break;
-      default:
-        templateToReturn = {} as FormNode;
-        break;
-    }
-    templateToReturn.children?.forEach(child => {
-      if (child.name === 'resourceKey') {
-        child.disabled = false;
-      }
-    });
-    return templateToReturn;
-  }
-
-  titleCaseHeading(input: ReferenceDataResourceType): string {
-    return this.referenceDataService.macroCasetoTitleCase(input);
-  }
-
-  titleCaseField(s: string): string {
-    return this.referenceDataService.camelCaseToTitleCase(s);
-  }
-
   navigateBack() {
     this.globalErrorService.clearErrors();
-    this.router.navigate(['..'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+    this.router.navigate(['..'], { relativeTo: this.route });
+  }
+
+  handleFormChange(event: any) {
+    console.log('event', event);
+    this.newRefData = event;
   }
 
   handleSubmit() {
@@ -144,18 +87,21 @@ export class ReferenceDataCreateComponent implements OnInit {
         next: res => {
           if (res) return this.globalErrorService.addError({ error: 'Resource Key already exists', anchorLink: 'newReferenceData' });
         },
-        error: e =>
-          e.status == 404
-            ? of(true)
-            : this.referenceDataService
-                .createNewReferenceDataItem(this.type, this.newRefData.resourceKey, referenceData)
-                .pipe(take(1))
-                .subscribe(() => this.navigateBack())
+        error: e => {
+          if (e.status == 404) {
+            of(true);
+          } else {
+            this.store.dispatch(
+              createReferenceDataItem({
+                resourceType: this.type,
+                resourceKey: encodeURIComponent(String(this.newRefData.resourceKey)),
+                payload: referenceData
+              })
+            );
+            this.navigateBack();
+          }
+        }
       });
-  }
-
-  handleFormChange(event: any) {
-    this.newRefData = event;
   }
 
   checkForms(): void {
