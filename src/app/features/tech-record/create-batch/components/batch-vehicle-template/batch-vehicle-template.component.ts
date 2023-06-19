@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { BatchUpdateVehicleModel, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { BatchUpdateVehicleModel, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -108,8 +108,8 @@ export class BatchVehicleTemplateComponent {
                     { ...record?.techRecord[0], statusCode: this.form.value.vehicleStatus ?? StatusCodes.PROVISIONAL } as unknown as TechRecordModel
                   ],
                   vin: v.vin,
-                  vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
-                  trailerId: v.trailerId ? v.trailerId : null,
+                  vrms: v.vehicleType !== VehicleTypes.TRL && v.trailerIdOrVrm ? [{ vrm: v.trailerIdOrVrm, isPrimary: true }] : null,
+                  trailerId: v.vehicleType === VehicleTypes.TRL && v.trailerIdOrVrm ? v.trailerIdOrVrm : null,
                   systemNumber: v.systemNumber ? v.systemNumber : null,
                   oldVehicleStatus: v.oldVehicleStatus ? v.oldVehicleStatus : null
                 } as BatchUpdateVehicleModel)

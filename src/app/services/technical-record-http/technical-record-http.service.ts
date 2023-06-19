@@ -107,7 +107,7 @@ export class TechnicalRecordHttpService {
   private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {
     const secondaryVrms: string[] = [];
     const putVehicleTechRecordModel: PutVehicleTechRecordModel = { ...vehicleTechRecord, secondaryVrms };
-    vehicleTechRecord.vrms.forEach(vrm => {
+    vehicleTechRecord.vrms?.forEach(vrm => {
       vrm.isPrimary ? (putVehicleTechRecordModel.primaryVrm = vrm.vrm) : putVehicleTechRecordModel.secondaryVrms!.push(vrm.vrm);
     });
     delete (putVehicleTechRecordModel as any).vrms;
