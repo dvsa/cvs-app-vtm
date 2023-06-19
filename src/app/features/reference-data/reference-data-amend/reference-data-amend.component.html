@@ -11,7 +11,7 @@
       <app-dynamic-form-group
         *ngIf="refDataAdminType$ | async"
         [template]="(refDataAdminType$ | async).templateAmend"
-        [data]="data"
+        [data]="data$ | async"
         [edit]="true"
         (formChange)="handleFormChange($event)"
       ></app-dynamic-form-group>

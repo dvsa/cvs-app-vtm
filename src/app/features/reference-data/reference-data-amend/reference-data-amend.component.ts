@@ -19,7 +19,6 @@ import { Observable, Subject, first } from 'rxjs';
 export class ReferenceDataAmendComponent implements OnInit {
   type!: ReferenceDataResourceType;
   key!: string;
-  data: any = {};
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
   amendedData: any;
@@ -42,8 +41,6 @@ export class ReferenceDataAmendComponent implements OnInit {
       this.key = decodeURIComponent(params['key']);
 
       if (this.type && this.key) {
-        this.store.pipe(first(), select(selectReferenceDataByResourceKey(this.type, this.key))).subscribe(data => (this.data = data));
-
         // load the reference data admin type, the current item and check if it has any audit history
         this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
         this.referenceDataService.loadReferenceDataByKey(this.type, this.key);
