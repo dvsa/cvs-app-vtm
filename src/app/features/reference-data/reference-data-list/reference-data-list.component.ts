@@ -46,7 +46,7 @@ export class ReferenceDataListComponent implements OnInit {
 
   amend(item: ReferenceDataModelBase): void {
     const key = encodeURIComponent(String(item.resourceKey));
-    this.router.navigate([`${item.resourceKey}`], { relativeTo: this.route }).then(() => {
+    this.router.navigate([`${key}`], { relativeTo: this.route }).then(() => {
       window.location.reload();
     });
   }
