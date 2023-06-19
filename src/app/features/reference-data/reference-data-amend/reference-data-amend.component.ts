@@ -43,12 +43,10 @@ export class ReferenceDataAmendComponent implements OnInit {
     this.router.onSameUrlNavigation = 'reload';
     this.route.params.pipe(first()).subscribe(params => {
       this.type = params['type'];
-      this.key = params['key'];
+      this.key = decodeURIComponent(params['key']);
 
       if (this.type && this.key) {
-        this.store
-          .pipe(first(), select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key))))
-          .subscribe(data => (this.data = data));
+        this.store.pipe(first(), select(selectReferenceDataByResourceKey(this.type, this.key))).subscribe(data => (this.data = data));
 
         // load the reference data admin type, the current item and check if it has any audit history
         this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
