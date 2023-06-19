@@ -14,8 +14,7 @@ import { createVehicleRecordSuccess, updateTechRecordsSuccess } from '../actions
 export type BatchRecord = {
   vin: string;
   systemNumber?: string;
-  trailerId?: string;
-  primaryVrm?: string;
+  trailerIdOrVrm?: string;
   vehicleType?: string;
   status?: StatusCodes;
   created?: boolean;
@@ -62,8 +61,7 @@ function vehicleRecordsToBatchRecordMapper(vehicles: VehicleTechRecordModel[], c
       changes: {
         vin,
         systemNumber,
-        trailerId,
-        primaryVrm: vrms[0]?.vrm,
+        trailerIdOrVrm: trailerId ?? vrms[0]?.vrm,
         vehicleType: techRecord[0].vehicleType,
         status: techRecord[0].statusCode,
         created,

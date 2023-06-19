@@ -128,8 +128,8 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       batchOfVehicles = [
-        { vin: 'EXAMPLEVIN000001', trailerId: '1000001', systemNumber: '1', oldVehicleStatus: StatusCodes.PROVISIONAL },
-        { vin: 'EXAMPLEVIN000002', trailerId: '1000002', systemNumber: '2', oldVehicleStatus: StatusCodes.CURRENT }
+        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1', oldVehicleStatus: StatusCodes.PROVISIONAL },
+        { vin: 'EXAMPLEVIN000002', trailerIdOrVrm: '1000002', systemNumber: '2', oldVehicleStatus: StatusCodes.CURRENT }
       ];
       jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
 
@@ -156,9 +156,9 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       batchOfVehicles = [
-        { vin: 'EXAMPLEVIN000001', trailerId: '1000001', systemNumber: '1', oldVehicleStatus: StatusCodes.PROVISIONAL },
+        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1', oldVehicleStatus: StatusCodes.PROVISIONAL },
         { vin: 'EXAMPLEVIN000002' },
-        { vin: 'EXAMPLEVIN000003', trailerId: '1000002', systemNumber: '3', oldVehicleStatus: StatusCodes.PROVISIONAL },
+        { vin: 'EXAMPLEVIN000003', trailerIdOrVrm: '1000002', systemNumber: '3', oldVehicleStatus: StatusCodes.PROVISIONAL },
         { vin: 'EXAMPLEVIN000004' },
         { vin: 'EXAMPLEVIN000005' }
       ];
@@ -188,7 +188,7 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       batchOfVehicles = [];
       for (let i = 1; i <= 40; i++) {
-        batchOfVehicles.push({ vin: `EXAMPLEVIN0000${i}`, trailerId: `100000${i}` });
+        batchOfVehicles.push({ vin: `EXAMPLEVIN0000${i}`, trailerIdOrVrm: `100000${i}` });
       }
 
       jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));

@@ -84,7 +84,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
         [CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21)],
         this.batchTechRecordService.validateForBatch()
       ),
-      trailerId: new CustomFormControl({ name: 'trailerId', type: FormNodeTypes.CONTROL }, '', [
+      trailerIdOrVrm: new CustomFormControl({ name: 'trailerIdOrVrm', type: FormNodeTypes.CONTROL }, '', [
         CustomValidators.validateVRMTrailerIdLength('vehicleType'),
         CustomValidators.alphanumeric()
       ]),
@@ -137,7 +137,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
     this.back();
   }
 
-  private cleanEmptyValues(input: { vin: string; trailerId?: string }[]): { vin: string; trailerId?: string }[] {
+  private cleanEmptyValues(input: { vin: string; trailerIdOrVrm?: string }[]): { vin: string; trailerIdOrVrm?: string }[] {
     return input.filter(formInput => !!formInput.vin);
   }
 
