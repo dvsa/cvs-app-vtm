@@ -1,17 +1,17 @@
-<ng-container *ngIf="refDataAdminType$ | async">
+<ng-container *ngIf="refDataAdminType">
   <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataAmend">
     <div class="govuk-grid-column-full">
-      <p class="govuk-heading-xl govuk-!-font-weight-bold">Amend this {{ (refDataAdminType$ | async).labelSingular }}</p>
+      <p class="govuk-heading-xl govuk-!-font-weight-bold">Amend this {{ refDataAdminType.labelSingular }}</p>
 
       <div class="govuk-inset-text">
-        To amend the key, create a new {{ (refDataAdminType$ | async).labelSingular }} with the correct value, then delete this
-        {{ (refDataAdminType$ | async).labelSingular }}
+        To amend the key, create a new {{ refDataAdminType.labelSingular }} with the correct value, then delete this
+        {{ refDataAdminType.labelSingular }}
       </div>
 
       <app-dynamic-form-group
-        *ngIf="refDataAdminType$ | async"
-        [template]="(refDataAdminType$ | async).templateAmend"
-        [data]="data$ | async"
+        *ngIf="refDataAdminType"
+        [template]="refDataAdminType.templateAmend"
+        [data]="data"
         [edit]="true"
         (formChange)="handleFormChange($event)"
       ></app-dynamic-form-group>
@@ -24,8 +24,8 @@
       <app-reference-data-amend-history
         [type]="type"
         [key]="key"
-        [title]="(refDataAdminType$ | async).labelSingular"
-        [columns]="(refDataAdminType$ | async).columns || []"
+        [title]="refDataAdminType.labelSingular"
+        [columns]="refDataAdminType.columns || []"
       ></app-reference-data-amend-history>
     </div>
   </div>

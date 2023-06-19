@@ -22,28 +22,32 @@ export class ReferenceDataCreateComponent implements OnInit {
   data: any = {};
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
+  refDataAdminType: any;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
   constructor(
     public globalErrorService: GlobalErrorService,
+    public dfs: DynamicFormService,
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<ReferenceDataState>
-  ) {
-    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.ReferenceDataAdminType);
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
-      this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
+      this.store
+        .pipe(take(1), select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
+        .subscribe(dataType => {
+          if (!dataType) {
+            return this.navigateBack();
+          } else {
+            this.refDataAdminType = dataType;
+          }
+        });
     });
-  }
-
-  get refDataAdminType$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
   get roles(): typeof Roles {
@@ -60,7 +64,6 @@ export class ReferenceDataCreateComponent implements OnInit {
   }
 
   handleFormChange(event: any) {
-    console.log('event', event);
     this.newRefData = event;
   }
 

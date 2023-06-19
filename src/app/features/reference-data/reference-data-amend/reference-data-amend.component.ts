@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -10,53 +10,59 @@ import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, Subject, first } from 'rxjs';
+import { Observable, Subject, first, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend',
   templateUrl: './reference-data-amend.component.html'
 })
-export class ReferenceDataAmendComponent implements OnInit {
+export class ReferenceDataAmendComponent implements OnInit, OnDestroy {
   type!: ReferenceDataResourceType;
   key!: string;
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
+  refDataAdminType: any;
+  data: any;
   amendedData: any;
+
+  destroy$ = new Subject<void>();
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
   constructor(
     public globalErrorService: GlobalErrorService,
     public dfs: DynamicFormService,
-    private referenceDataService: ReferenceDataService,
+    // private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<ReferenceDataState>
   ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(first()).subscribe(params => {
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
       this.type = params['type'];
       this.key = decodeURIComponent(params['key']);
-
-      if (this.type && this.key) {
-        // load the reference data admin type, the current item and check if it has any audit history
-        this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-        this.referenceDataService.loadReferenceDataByKey(this.type, this.key);
-      }
+      this.store
+        .pipe(take(1), select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)))
+        .subscribe(refDataType => {
+          if (!refDataType) {
+            return this.navigateBack();
+          } else {
+            this.refDataAdminType = refDataType;
+          }
+        });
+      this.store.pipe(take(1), select(selectReferenceDataByResourceKey(this.type, this.key))).subscribe(data => {
+        if (!data) {
+          return this.navigateBack();
+        } else {
+          this.data = data;
+        }
+      });
     });
   }
 
   get roles(): typeof Roles {
     return Roles;
-  }
-
-  get refDataAdminType$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
-  }
-
-  get data$(): Observable<any | undefined> {
-    return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)));
   }
 
   navigateBack() {
@@ -99,10 +105,11 @@ export class ReferenceDataAmendComponent implements OnInit {
       })
     );
 
-    this.sections.forEach(form => {
-      form.ngOnDestroy();
-    });
-
     this.navigateBack();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
