@@ -83,18 +83,21 @@ export class ReferenceDataCreateComponent implements OnInit {
         next: res => {
           if (res) return this.globalErrorService.addError({ error: 'Resource Key already exists', anchorLink: 'newReferenceData' });
         },
-        error: e =>
-          e.status == 404
-            ? of(true)
-            : this.store.dispatch(
-                createReferenceDataItem({
-                  resourceType: this.type,
-                  resourceKey: encodeURIComponent(String(this.newRefData.resourceKey)),
-                  payload: referenceData
-                })
-              )
+        error: e => {
+          if (e.status == 404) {
+            of(true);
+          } else {
+            this.store.dispatch(
+              createReferenceDataItem({
+                resourceType: this.type,
+                resourceKey: encodeURIComponent(String(this.newRefData.resourceKey)),
+                payload: referenceData
+              })
+            );
+            this.navigateBack();
+          }
+        }
       });
-    this.navigateBack();
   }
 
   handleFormChange(event: any) {
