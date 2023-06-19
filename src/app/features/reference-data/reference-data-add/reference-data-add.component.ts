@@ -5,7 +5,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -17,10 +17,9 @@ import { Observable, catchError, filter, of, switchMap, take, throwError } from 
   templateUrl: './reference-data-add.component.html'
 })
 export class ReferenceDataCreateComponent implements OnInit {
-  isEditing: boolean = true;
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
   newRefData: any;
-  refDataAdminType: any | undefined;
+  data: any = {};
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
 
@@ -58,6 +57,11 @@ export class ReferenceDataCreateComponent implements OnInit {
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
+  }
+
+  handleFormChange(event: any) {
+    console.log('event', event);
+    this.newRefData = event;
   }
 
   handleSubmit() {
@@ -98,10 +102,6 @@ export class ReferenceDataCreateComponent implements OnInit {
           }
         }
       });
-  }
-
-  handleFormChange(event: any) {
-    this.newRefData = event;
   }
 
   checkForms(): void {

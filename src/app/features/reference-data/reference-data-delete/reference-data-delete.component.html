@@ -15,13 +15,7 @@
       </dl>
 
       <br />
-      <app-dynamic-form-group
-        [id]="reasonTemplate.name"
-        [template]="reasonTemplate"
-        [data]=""
-        [edit]="true"
-        (formChange)="handleFormChange($event)"
-      ></app-dynamic-form-group>
+      <app-dynamic-form-group [template]="reasonTemplate" [data]="" [edit]="true" (formChange)="handleFormChange($event)"></app-dynamic-form-group>
 
       <app-button-group>
         <app-button id="submit" (clicked)="handleSubmit()">Delete</app-button>

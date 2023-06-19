@@ -19,14 +19,10 @@ import { Observable, Subject, first } from 'rxjs';
 export class ReferenceDataAmendComponent implements OnInit {
   type!: ReferenceDataResourceType;
   key!: string;
-  data: any;
+  data: any = {};
   isFormDirty: boolean = false;
   isFormInvalid: boolean = true;
   amendedData: any;
-
-  destroy$ = new Subject<void>();
-
-  // destroy$ = new Subject<void>()
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 

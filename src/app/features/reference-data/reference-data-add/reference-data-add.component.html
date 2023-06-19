@@ -3,11 +3,10 @@
     <p class="govuk-heading-xl govuk-!-font-weight-bold">Add a new {{ (refDataAdminType$ | async).labelSingular }}</p>
 
     <app-dynamic-form-group
-      *ngIf="(refDataAdminType$ | async).templateCreate"
-      [id]="(refDataAdminType$ | async).templateCreate.name"
+      *ngIf="refDataAdminType$ | async"
       [template]="(refDataAdminType$ | async).templateCreate"
-      [data]=""
-      [edit]="isEditing"
+      [data]="data"
+      [edit]="true"
       (formChange)="handleFormChange($event)"
     ></app-dynamic-form-group>
 
