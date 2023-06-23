@@ -108,6 +108,10 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     }
   }
 
+  showCreateTestButton(vehicleType: VehicleTypes): boolean {
+    return !this.isArchived && !this.isEditing && (this.isCurrent || vehicleType === VehicleTypes.TRL || vehicleType === VehicleTypes.HGV);
+  }
+
   createTest(techRecord?: TechRecordModel): void {
     if (techRecord?.hiddenInVta) {
       alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
