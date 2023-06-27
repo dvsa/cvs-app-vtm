@@ -297,9 +297,9 @@ describe('Vehicle Technical Record Reducer', () => {
         expect(updatedBrakes?.brakeForceWheelsNotLocked?.secondaryBrakeForceA).toBe(Math.round((2000 * 22.5) / 100));
         expect(updatedBrakes?.brakeForceWheelsNotLocked?.parkingBrakeForceA).toBe(Math.round((2000 * 45) / 100));
 
-        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.serviceBrakeForceB).toBe(50);
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.serviceBrakeForceB).toBe(10);
         expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.secondaryBrakeForceB).toBe(30);
-        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.parkingBrakeForceB).toBe(10);
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.parkingBrakeForceB).toBe(50);
       });
 
       it('should not update half locked brake forces with no gross laden weight', () => {
@@ -315,9 +315,9 @@ describe('Vehicle Technical Record Reducer', () => {
         const updatedBrakes = newState.editingTechRecord?.techRecord[0].brakes;
         expect(updatedBrakes?.brakeCode).toBe('1234');
 
-        expect(updatedBrakes?.brakeForceWheelsNotLocked?.serviceBrakeForceA).toBe(50);
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.serviceBrakeForceA).toBe(10);
         expect(updatedBrakes?.brakeForceWheelsNotLocked?.secondaryBrakeForceA).toBe(30);
-        expect(updatedBrakes?.brakeForceWheelsNotLocked?.parkingBrakeForceA).toBe(10);
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.parkingBrakeForceA).toBe(50);
 
         expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.serviceBrakeForceB).toBe(Math.round((1000 * 16) / 100));
         expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.secondaryBrakeForceB).toBe(Math.round((1000 * 25) / 100));
