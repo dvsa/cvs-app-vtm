@@ -24,7 +24,12 @@ export class ReferenceDataAmendHistoryComponent implements OnInit {
   ngOnInit(): void {
     // load the audit history
     // @ts-ignore
-    this.store.dispatch(fetchReferenceDataByKeySearch({ resourceType: this.type + '#AUDIT', resourceKey: decodeURIComponent(this.key) }));
+    this.store.dispatch(
+      fetchReferenceDataByKeySearch({
+        resourceType: (resourceType + '#AUDIT') as ReferenceDataResourceType,
+        resourceKey: decodeURIComponent(this.key) + '#'
+      })
+    );
   }
 
   get history$(): Observable<any[]> {

@@ -10,7 +10,7 @@ import {
   selectSearchReturn
 } from '@store/reference-data';
 import { it } from 'node:test';
-import { combineLatest, map, Observable, of, skip, skipUntil, skipWhile, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
+import { combineLatest, map, Observable, of, pipe, skip, skipUntil, skipWhile, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
 
 @Pipe({
   name: 'refDataDecode$'
@@ -36,7 +36,9 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
     }
 
     this.store.dispatch(fetchReferenceData({ resourceType: resourceType as ReferenceDataResourceType }));
-    this.store.dispatch(fetchReferenceDataByKeySearch({ resourceType: (resourceType + '#AUDIT') as ReferenceDataResourceType, resourceKey: value }));
+    this.store.dispatch(
+      fetchReferenceDataByKeySearch({ resourceType: (resourceType + '#AUDIT') as ReferenceDataResourceType, resourceKey: value + '#' })
+    );
 
     return combineLatest([
       this.store.select(selectReferenceDataByResourceKey(resourceType as ReferenceDataResourceType, value)),
