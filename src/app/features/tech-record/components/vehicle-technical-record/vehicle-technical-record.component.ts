@@ -109,7 +109,11 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   }
 
   showCreateTestButton(vehicleType: VehicleTypes): boolean {
-    return !this.isArchived && !this.isEditing && (this.isCurrent || vehicleType === VehicleTypes.TRL || vehicleType === VehicleTypes.HGV);
+    return (
+      !this.isArchived &&
+      !this.isEditing &&
+      (this.isCurrent || vehicleType === VehicleTypes.TRL || vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV)
+    );
   }
 
   createTest(techRecord?: TechRecordModel): void {
