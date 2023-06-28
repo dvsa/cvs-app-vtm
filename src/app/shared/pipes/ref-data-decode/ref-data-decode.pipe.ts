@@ -3,7 +3,7 @@ import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourc
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { fetchReferenceData, fetchReferenceDataByKeySearch, selectReferenceDataByResourceKey, selectSearchReturn } from '@store/reference-data';
-import { combineLatest, concatMap, map, merge, mergeMap, Observable, of, skipUntil, Subject, take, takeUntil, timer } from 'rxjs';
+import { map, merge, Observable, of, Subject, takeUntil } from 'rxjs';
 
 @Pipe({
   name: 'refDataDecode$'
