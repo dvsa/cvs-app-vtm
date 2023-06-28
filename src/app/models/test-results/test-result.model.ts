@@ -5,7 +5,7 @@ import { TestType } from '@models/test-types/test-type.model';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
-import { VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TestResultStatus } from './test-result-status.enum';
 import { TestCodes } from './testCodes.enum';
 import { TypeOfTest } from './typeOfTest.enum';
@@ -63,6 +63,7 @@ export interface TestResultModel {
   vehicleClass?: VehicleClass;
   vehicleSubclass?: Array<VehicleSubclass>;
   numberOfWheelsDriven?: number;
+  statusCode?: StatusCodes;
   /**
    * Used only for TRL
    */
