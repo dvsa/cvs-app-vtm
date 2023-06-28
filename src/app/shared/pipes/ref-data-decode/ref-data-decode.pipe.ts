@@ -1,16 +1,9 @@
 import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { State } from '@store/index';
-import {
-  fetchReferenceData,
-  fetchReferenceDataByKey,
-  fetchReferenceDataByKeySearch,
-  selectReferenceDataByResourceKey,
-  selectSearchReturn
-} from '@store/reference-data';
-import { it } from 'node:test';
-import { combineLatest, map, Observable, of, pipe, skip, skipUntil, skipWhile, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
+import { fetchReferenceData, fetchReferenceDataByKeySearch, selectReferenceDataByResourceKey, selectSearchReturn } from '@store/reference-data';
+import { combineLatest, map, Observable, of, skipUntil, Subject, timer } from 'rxjs';
 
 @Pipe({
   name: 'refDataDecode$'
@@ -44,7 +37,7 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
       this.store.select(selectReferenceDataByResourceKey(resourceType as ReferenceDataResourceType, value)),
       this.store.select(selectSearchReturn((resourceType + '#AUDIT') as ReferenceDataResourceTypeAudit))
     ]).pipe(
-      skipWhile(([_, refDataItemAuditSelector]) => refDataItemAuditSelector === undefined),
+      skipUntil(timer(0, 5000)),
       map(([refDataItem, refDataItemAudit]) => {
         if (!refDataItem) {
           return refDataItemAudit?.[0].description ?? value;
