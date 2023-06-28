@@ -9,7 +9,6 @@ import { map, merge, Observable, of, Subject, takeUntil } from 'rxjs';
   name: 'refDataDecode$'
 })
 export class RefDataDecodePipe implements PipeTransform, OnDestroy {
-  data: any;
   constructor(private store: Store<State>) {}
 
   private destroy$ = new Subject<void>();
