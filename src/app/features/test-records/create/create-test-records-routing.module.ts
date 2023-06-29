@@ -27,7 +27,7 @@ const routes: Routes = [
         path: 'type',
         component: CreateTestTypeComponent,
         data: { title: 'Create contingency test' },
-        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver }
+        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, contingencyTest: ContingencyTestResolver }
       },
       {
         path: 'test-details',
