@@ -1,17 +1,11 @@
-import { style } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import { ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import {
-  fetchReferenceData,
-  selectAllReferenceDataByResourceType,
-  selectReferenceDataByResourceKey,
-  selectSearchReturn
-} from '@store/reference-data';
-import { Observable, map, take } from 'rxjs';
+import { fetchReferenceDataAudit, selectReferenceDataByResourceKey, selectSearchReturn } from '@store/reference-data';
+import { map, Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-deleted-list',
@@ -35,7 +29,9 @@ export class ReferenceDataDeletedListComponent implements OnInit {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-      this.referenceDataService.loadReferenceData(this.type);
+      // load the audit history
+      // @ts-ignore
+      this.store.dispatch(fetchReferenceDataAudit({ resourceType: (this.type + '#AUDIT') as ReferenceDataResourceType }));
     });
   }
 
@@ -44,7 +40,8 @@ export class ReferenceDataDeletedListComponent implements OnInit {
   }
 
   get data$(): Observable<any | undefined> {
-    return this.store.select(selectAllReferenceDataByResourceType(this.type));
+    // @ts-ignore
+    return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceTypeAudit)));
   }
 
   public get roles(): typeof Roles {

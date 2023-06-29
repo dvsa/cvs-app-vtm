@@ -21,6 +21,9 @@ import {
   deleteReferenceDataItemSuccess,
   fetchReasonsForAbandoning,
   fetchReferenceData,
+  fetchReferenceDataAudit,
+  fetchReferenceDataAuditFailed,
+  fetchReferenceDataAuditSuccess,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
   fetchReferenceDataByKeySearch,
@@ -61,6 +64,28 @@ export class ReferenceDataEffects {
             return of(fetchReferenceDataSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[], paginated: false }));
           }),
           catchError(e => of(fetchReferenceDataFailed({ error: e.message, resourceType })))
+        )
+      )
+    )
+  );
+
+  fetchReferenceDataByAuditType$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchReferenceData),
+      mergeMap(({ resourceType, paginationToken }) =>
+        this.referenceDataService.fetchReferenceDataAudit(resourceType, paginationToken).pipe(
+          handleNotFound(resourceType),
+          sortReferenceData(resourceType),
+          switchMap(data => {
+            if (isPaginated(data)) {
+              return of(
+                fetchReferenceDataAuditSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[], paginated: true }),
+                fetchReferenceDataAudit({ resourceType, paginationToken: data.paginationToken })
+              );
+            }
+            return of(fetchReferenceDataAuditSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[], paginated: false }));
+          }),
+          catchError(e => of(fetchReferenceDataAuditFailed({ error: e.message, resourceType })))
         )
       )
     )

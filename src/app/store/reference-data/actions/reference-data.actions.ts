@@ -19,6 +19,16 @@ export const fetchReferenceDataSuccess = createAction(
 );
 export const fetchReferenceDataFailed = createAction('[API/reference-data] Fetch all of ResourceType Failed', props<featureError>());
 
+export const fetchReferenceDataAudit = createAction(
+  '[API/reference-data] Fetch all of ResourceType',
+  props<{ resourceType: ReferenceDataResourceType; paginationToken?: string }>()
+);
+export const fetchReferenceDataAuditSuccess = createAction(
+  '[API/reference-data] Fetch all of ResourceType Success',
+  props<{ resourceType: ReferenceDataResourceType; payload: Array<ReferenceDataModelBase>; paginated: boolean }>()
+);
+export const fetchReferenceDataAuditFailed = createAction('[API/reference-data] Fetch all of ResourceType Failed', props<featureError>());
+
 export const fetchReferenceDataByKey = createAction(
   '[API/reference-data] Fetch ResourceType by Key',
   props<{ resourceType: ReferenceDataResourceType; resourceKey: string | number }>()
