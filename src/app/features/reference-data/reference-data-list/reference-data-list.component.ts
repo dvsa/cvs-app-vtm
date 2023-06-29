@@ -1,20 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { style } from '@angular/animations';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, take } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-list',
-  templateUrl: './reference-data-list.component.html'
+  templateUrl: './reference-data-list.component.html',
+  styleUrls: ['./reference-data-list.component.scss']
 })
 export class ReferenceDataListComponent implements OnInit {
   type!: ReferenceDataResourceType;
 
-  constructor(private referenceDataService: ReferenceDataService, private route: ActivatedRoute, private router: Router, private store: Store) {}
+  pageStart?: number;
+  pageEnd?: number;
+
+  constructor(
+    private referenceDataService: ReferenceDataService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private store: Store,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
@@ -56,5 +67,19 @@ export class ReferenceDataListComponent implements OnInit {
   delete(item: ReferenceDataModelBase): void {
     const key = encodeURIComponent(String(item.resourceKey));
     this.router.navigate([`${key}/delete`], { relativeTo: this.route });
+  }
+
+  handlePaginationChange({ start, end }: { start: number; end: number }) {
+    this.pageStart = start;
+    this.pageEnd = end;
+    this.cdr.detectChanges();
+  }
+
+  get paginatedItems$(): Observable<any[]> {
+    return this.data$.pipe(map(items => items?.slice(this.pageStart, this.pageEnd) ?? []));
+  }
+
+  get numberOfRecords$(): Observable<number> {
+    return this.data$.pipe(map(items => items?.length ?? 0));
   }
 }

@@ -17,9 +17,9 @@
       </thead>
 
       <tbody class="govuk-table__body">
-        <tr class="govuk-table__row" *ngFor="let item of data$ | async">
+        <tr class="govuk-table__row" *ngFor="let item of paginatedItems$ | async">
           <td *ngFor="let column of (refDataAdminType$ | async).columns" class="govuk-table__cell">{{ item[column.name] }}</td>
-          <td class="govuk-table__cell">
+          <td class="govuk-table__cell" id="buttons">
             <app-button-group>
               <app-button id="amend" design="link" (clicked)="amend(item)">Amend</app-button>
               <app-button id="delete" design="link" (clicked)="delete(item)">Delete</app-button>
@@ -28,5 +28,11 @@
         </tr>
       </tbody>
     </table>
+    <app-pagination
+      tableName="reference-data-items"
+      [numberOfItems]="(numberOfRecords$ | async) ?? 0"
+      (paginationOptions)="handlePaginationChange($event)"
+      [itemsPerPage]="25"
+    ></app-pagination>
   </div>
 </div>

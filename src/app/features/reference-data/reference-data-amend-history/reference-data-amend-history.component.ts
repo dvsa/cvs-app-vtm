@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ReferenceDataAdminColumn } from '@models/reference-data.model';
-import { select, Store } from '@ngrx/store';
-import { fetchReferenceDataByKeySearch, ReferenceDataState } from '@store/reference-data';
-import { Observable, of, take, map } from 'rxjs';
-import { selectSearchReturn } from '@store/reference-data';
+import { Store, select } from '@ngrx/store';
+import { ReferenceDataState, fetchReferenceDataByKeySearch, selectSearchReturn } from '@store/reference-data';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend-history',
