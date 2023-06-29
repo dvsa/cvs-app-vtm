@@ -50,6 +50,10 @@ export interface TestType {
      */
     forVehicleType: Array<TestType.ForVehicleTypeEnum>;
     /**
+     * Used to filter test types that allow creating tests on Provisional Records
+     */
+    forProvisionalStatus?: boolean;
+    /**
      * This category is applying only to these vehicle sizes. The vehicle sizes should descend from its parent, but should not be necessarily the same
      */
     forVehicleSize?: Array<TestType.ForVehicleSizeEnum>;

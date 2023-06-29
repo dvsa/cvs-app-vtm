@@ -32,9 +32,9 @@ export const selectTechRecord = createSelector(
   selectRouteNestedParams,
   selectUrl,
   (vehicle, { techCreatedAt }, url) => {
-    const lastTwoUrlParts = url?.split('/').slice(-2);
+    const urlParts = url?.split('/');
 
-    if (lastTwoUrlParts?.includes(StatusCodes.PROVISIONAL)) {
+    if (urlParts?.includes(StatusCodes.PROVISIONAL)) {
       return vehicle?.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL);
     }
 

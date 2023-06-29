@@ -9,9 +9,4 @@ import { FormNodeWidth } from '@forms/services/dynamic-form.types';
 export class FieldErrorMessageComponent {
   @Input() name: string = '';
   @Input() error?: string | null;
-  @Input() width?: FormNodeWidth;
-
-  get style(): string {
-    return this.width ? 'width-' + this.width : '';
-  }
 }
