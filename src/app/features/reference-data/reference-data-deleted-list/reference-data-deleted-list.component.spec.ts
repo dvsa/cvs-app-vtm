@@ -6,7 +6,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/.';
-import { ReferenceDataDeletedListComponent } from './reference-data-deleted-listcomponent';
+import { ReferenceDataDeletedListComponent } from './reference-data-deleted-list.component';
 
 describe('DataTypeListComponent', () => {
   let component: ReferenceDataDeletedListComponent;
@@ -36,12 +36,12 @@ describe('DataTypeListComponent', () => {
   });
 
   describe('back', () => {
-    it('should navigate to reference-data', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+    it('should navigate back to the previous page', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.back();
+      component.navigateBack();
 
-      expect(navigateSpy).toBeCalledWith(['reference-data']);
+      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
   });
 });

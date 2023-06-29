@@ -1,11 +1,16 @@
 import { style } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
+import {
+  fetchReferenceData,
+  selectAllReferenceDataByResourceType,
+  selectReferenceDataByResourceKey,
+  selectSearchReturn
+} from '@store/reference-data';
 import { Observable, map, take } from 'rxjs';
 
 @Component({
@@ -29,8 +34,8 @@ export class ReferenceDataDeletedListComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
-      this.referenceDataService.loadReferenceData(this.type);
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
+      this.referenceDataService.loadReferenceData(this.type);
     });
   }
 
@@ -38,16 +43,16 @@ export class ReferenceDataDeletedListComponent implements OnInit {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
-  get data$(): Observable<any[] | undefined> {
-    return this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
+  get data$(): Observable<any | undefined> {
+    return this.store.select(selectAllReferenceDataByResourceType(this.type));
   }
 
   public get roles(): typeof Roles {
     return Roles;
   }
 
-  back(): void {
-    this.router.navigate(['reference-data']);
+  navigateBack(): void {
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handlePaginationChange({ start, end }: { start: number; end: number }) {

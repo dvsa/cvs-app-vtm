@@ -8,7 +8,7 @@ import { ReferenceDataAmendComponent } from './reference-data-amend/reference-da
 import { ReferenceDataListComponent } from './reference-data-list/reference-data-list.component';
 import { ReferenceDataSelectTypeComponent } from './reference-data-select-type/reference-data-select-type.component';
 import { ReferenceDataDeleteComponent } from './reference-data-delete/reference-data-delete.component';
-import { ReferenceDataDeletedListComponent } from './reference-data-deleted-list/reference-data-deleted-listcomponent';
+import { ReferenceDataDeletedListComponent } from './reference-data-deleted-list/reference-data-deleted-list.component';
 
 const routes: Routes = [
   {

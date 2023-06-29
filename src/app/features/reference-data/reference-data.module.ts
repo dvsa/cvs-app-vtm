@@ -11,7 +11,7 @@ import { ReferenceDataSelectTypeComponent } from './reference-data-select-type/r
 import { ReferenceDataDeleteComponent } from './reference-data-delete/reference-data-delete.component';
 import { ReferenceDataAmendComponent } from './reference-data-amend/reference-data-amend.component';
 import { ReferenceDataAmendHistoryComponent } from './reference-data-amend-history/reference-data-amend-history.component';
-import { ReferenceDataDeletedListComponent } from './reference-data-deleted-list/reference-data-deleted-listcomponent';
+import { ReferenceDataDeletedListComponent } from './reference-data-deleted-list/reference-data-deleted-list.component';
 
 @NgModule({
   declarations: [

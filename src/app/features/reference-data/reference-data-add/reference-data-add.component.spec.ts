@@ -2,17 +2,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ReferenceDataApiResponse, ReferenceDataItemApiResponse } from '@api/reference-data';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { State, initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { of } from 'rxjs';
 import { ReferenceDataCreateComponent } from './reference-data-add.component';
-import { CustomFormGroup } from '@forms/services/dynamic-form.types';
-import { globalErrorReducer } from '@store/global-error/reducers/global-error-service.reducer';
 
 const mockRefDataService = {
   loadReferenceData: jest.fn(),

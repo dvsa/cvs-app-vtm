@@ -91,7 +91,7 @@ export const referenceDataReducer = createReducer(
     const { resourceType, payload, paginated } = action;
     return {
       ...state,
-      [resourceType]: { ...resourceTypeAdapters[resourceType].upsertMany(payload, state[resourceType]), loading: paginated }
+      [resourceType]: { ...resourceTypeAdapters[resourceType]?.upsertMany(payload, state[resourceType]), loading: paginated }
     };
   }),
   on(fetchReferenceDataFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
