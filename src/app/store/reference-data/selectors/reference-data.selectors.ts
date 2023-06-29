@@ -35,7 +35,7 @@ export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
 
 export const selectSearchReturn = (type: ReferenceDataResourceTypeAudit) =>
   createSelector(referenceDataFeatureState, state => {
-    const data = (state[type as ReferenceDataResourceType] as ReferenceDataEntityStateSearch).searchReturn;
+    const data = (state[type as ReferenceDataResourceType] as ReferenceDataEntityStateSearch)?.searchReturn;
     return data?.sort((a, b) => b.resourceKey.toString().localeCompare(a.resourceKey.toString()));
   });
 

@@ -1,9 +1,9 @@
 import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
-import { fetchReferenceDataByKey, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { map, Observable, of, Subject, takeUntil } from 'rxjs';
+import { fetchReferenceData, fetchReferenceDataByKeySearch, selectReferenceDataByResourceKey, selectSearchReturn } from '@store/reference-data';
+import { Observable, Subject, combineLatest, map, of } from 'rxjs';
 
 @Pipe({
   name: 'refDataDecode$'
@@ -21,19 +21,25 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
   transform(
     value: string | number | undefined,
     resourceType: string | undefined,
-    decodeKey: string = 'description'
+    decodeKey: string | number = 'description'
   ): Observable<string | number | undefined> {
     if (!resourceType || !value) {
       return of(value);
     }
 
-    this.store.dispatch(fetchReferenceDataByKey({ resourceType: resourceType as ReferenceDataResourceType, resourceKey: value }));
+    this.store.dispatch(fetchReferenceData({ resourceType: resourceType as ReferenceDataResourceType }));
+    this.store.dispatch(
+      fetchReferenceDataByKeySearch({ resourceType: (resourceType + '#AUDIT') as ReferenceDataResourceType, resourceKey: value + '#' })
+    );
 
-    return this.store.select(selectReferenceDataByResourceKey(resourceType as ReferenceDataResourceType, value)).pipe(
-      takeUntil(this.destroy$),
-      map(refDataItem => {
-        if (!refDataItem) return value;
-
+    return combineLatest([
+      this.store.select(selectReferenceDataByResourceKey(resourceType as ReferenceDataResourceType, value)),
+      this.store.select(selectSearchReturn((resourceType + '#AUDIT') as ReferenceDataResourceTypeAudit))
+    ]).pipe(
+      map(([refDataItem, refDataItemAudit]) => {
+        if (!refDataItem) {
+          return refDataItemAudit?.[0].description ?? value;
+        }
         return refDataItem[decodeKey as keyof ReferenceDataModelBase] ?? value;
       })
     );
