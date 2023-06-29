@@ -3,7 +3,7 @@ import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourc
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { fetchReferenceData, fetchReferenceDataByKeySearch, selectReferenceDataByResourceKey, selectSearchReturn } from '@store/reference-data';
-import { map, merge, Observable, of, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatest, map, of } from 'rxjs';
 
 @Pipe({
   name: 'refDataDecode$'
@@ -32,17 +32,15 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
       fetchReferenceDataByKeySearch({ resourceType: (resourceType + '#AUDIT') as ReferenceDataResourceType, resourceKey: value + '#' })
     );
 
-    return merge(
+    return combineLatest([
       this.store.select(selectReferenceDataByResourceKey(resourceType as ReferenceDataResourceType, value)),
       this.store.select(selectSearchReturn((resourceType + '#AUDIT') as ReferenceDataResourceTypeAudit))
-    ).pipe(
-      takeUntil(this.destroy$),
-      map(item => {
-        if (Array.isArray(item)) {
-          return item[0][decodeKey as keyof ReferenceDataModelBase] ?? value;
-        } else {
-          return item?.[decodeKey as keyof ReferenceDataModelBase] ?? value;
+    ]).pipe(
+      map(([refDataItem, refDataItemAudit]) => {
+        if (!refDataItem) {
+          return refDataItemAudit?.[0].description ?? value;
         }
+        return refDataItem[decodeKey as keyof ReferenceDataModelBase] ?? value;
       })
     );
   }
