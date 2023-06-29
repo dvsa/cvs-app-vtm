@@ -9,11 +9,10 @@ import { selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey 
 import { Observable, map, take } from 'rxjs';
 
 @Component({
-  selector: 'app-reference-data-list',
-  templateUrl: './reference-data-list.component.html',
-  styleUrls: ['./reference-data-list.component.scss']
+  selector: 'app-reference-data-deleted-list',
+  templateUrl: './reference-data-deleted-list.component.html'
 })
-export class ReferenceDataListComponent implements OnInit {
+export class ReferenceDataDeletedListComponent implements OnInit {
   type!: ReferenceDataResourceType;
 
   pageStart?: number;
@@ -47,32 +46,8 @@ export class ReferenceDataListComponent implements OnInit {
     return Roles;
   }
 
-  addNew(): void {
-    this.router.navigate(['create'], { relativeTo: this.route }).then(() => {
-      window.location.reload();
-    });
-  }
-
-  deletedItems(): void {
-    this.router.navigate(['deleted-items'], { relativeTo: this.route }).then(() => {
-      window.location.reload();
-    });
-  }
-
   back(): void {
     this.router.navigate(['reference-data']);
-  }
-
-  amend(item: ReferenceDataModelBase): void {
-    const key = encodeURIComponent(String(item.resourceKey));
-    this.router.navigate([key], { relativeTo: this.route }).then(() => {
-      window.location.reload();
-    });
-  }
-
-  delete(item: ReferenceDataModelBase): void {
-    const key = encodeURIComponent(String(item.resourceKey));
-    this.router.navigate([`${key}/delete`], { relativeTo: this.route });
   }
 
   handlePaginationChange({ start, end }: { start: number; end: number }) {

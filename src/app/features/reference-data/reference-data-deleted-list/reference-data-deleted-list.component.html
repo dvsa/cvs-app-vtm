@@ -1,10 +1,8 @@
 <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
-    <p class="govuk-heading-xl govuk-!-font-weight-bold">Search for {{ (refDataAdminType$ | async).label }}</p>
+    <p class="govuk-heading-xl govuk-!-font-weight-bold">Deleted {{ (refDataAdminType$ | async).label }}</p>
 
     <app-button-group>
-      <app-button id="submit" (clicked)="addNew()">Add New</app-button>
-      <app-button id="submit" (clicked)="deletedItems()">Deleted Items</app-button>
       <app-button id="cancel" design="link" (clicked)="back()">Back</app-button>
     </app-button-group>
 
@@ -19,12 +17,6 @@
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row" *ngFor="let item of paginatedItems$ | async">
           <td *ngFor="let column of (refDataAdminType$ | async).columns" class="govuk-table__cell">{{ item[column.name] }}</td>
-          <td class="govuk-table__cell" id="buttons">
-            <app-button-group>
-              <app-button id="amend" design="link" (clicked)="amend(item)">Amend</app-button>
-              <app-button id="delete" design="link" (clicked)="delete(item)">Delete</app-button>
-            </app-button-group>
-          </td>
         </tr>
       </tbody>
     </table>
