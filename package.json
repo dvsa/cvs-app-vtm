@@ -42,7 +42,7 @@
     "@angular/platform-browser": "^15.2.8",
     "@angular/platform-browser-dynamic": "^15.2.8",
     "@angular/router": "^15.2.8",
-    "@azure/msal-angular": "^2.5.5",
+    "@azure/msal-angular": "^2.5.8",
     "@azure/msal-browser": "^2.37.0",
     "@ngrx/effects": "^15.4.0",
     "@ngrx/entity": "^15.4.0",
