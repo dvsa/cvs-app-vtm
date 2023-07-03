@@ -21,7 +21,7 @@ import { Observable, map, take, filter, switchMap, catchError, of, throwError } 
 })
 export class ReferenceDataListComponent implements OnInit {
   type!: ReferenceDataResourceType;
-  disabled!: boolean;
+  disabled: boolean = true;
   pageStart?: number;
   pageEnd?: number;
 
@@ -49,7 +49,7 @@ export class ReferenceDataListComponent implements OnInit {
           this.referenceDataService.fetchReferenceData((this.type + '#AUDIT') as ReferenceDataResourceType).pipe(
             map(array =>
               array.data.map(item => {
-                if (item.reason) {
+                if (item.reason !== undefined) {
                   this.disabled = false;
                 }
               })
