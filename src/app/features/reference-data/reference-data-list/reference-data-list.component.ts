@@ -2,11 +2,16 @@ import { style } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { fetchReferenceDataAudit, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
+import {
+  fetchReferenceDataAudit,
+  selectAllReferenceDataByResourceType,
+  selectReferenceDataByResourceKey,
+  selectSearchReturn
+} from '@store/reference-data';
 import { Observable, map, take, filter, switchMap, catchError, of, throwError } from 'rxjs';
 
 @Component({
@@ -40,14 +45,23 @@ export class ReferenceDataListComponent implements OnInit {
       .pipe(
         take(1),
         filter(errors => !errors.length),
-        switchMap(() => this.referenceDataService.fetchReferenceData((this.type + '#AUDIT') as ReferenceDataResourceType)),
+        switchMap(() =>
+          this.referenceDataService.fetchReferenceData((this.type + '#AUDIT') as ReferenceDataResourceType).pipe(
+            map(array =>
+              array.data.map(item => {
+                if (item.reason) {
+                  this.disabled = false;
+                }
+              })
+            )
+          )
+        ),
         take(1),
         catchError(error => {
           if (error.status == 404) {
             this.disabled = true;
             return of(true);
           }
-          this.disabled = false;
           return of(false);
         })
       )
