@@ -71,7 +71,7 @@ export class ReferenceDataEffects {
 
   fetchReferenceDataByAuditType$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(fetchReferenceData),
+      ofType(fetchReferenceDataAudit),
       mergeMap(({ resourceType, paginationToken }) =>
         this.referenceDataService.fetchReferenceDataAudit(resourceType, paginationToken).pipe(
           handleNotFound(resourceType),

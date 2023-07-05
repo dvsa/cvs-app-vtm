@@ -46,7 +46,7 @@ export class ReferenceDataListComponent implements OnInit {
         take(1),
         filter(errors => !errors.length),
         switchMap(() =>
-          this.referenceDataService.fetchReferenceData((this.type + '#AUDIT') as ReferenceDataResourceType).pipe(
+          this.referenceDataService.fetchReferenceDataAudit((this.type + '#AUDIT') as ReferenceDataResourceType).pipe(
             map(array =>
               array.data.map(item => {
                 if (item.reason !== undefined) {
