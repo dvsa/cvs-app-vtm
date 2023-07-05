@@ -1,5 +1,5 @@
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
-import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
 import {

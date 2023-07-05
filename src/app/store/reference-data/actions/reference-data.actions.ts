@@ -20,14 +20,14 @@ export const fetchReferenceDataSuccess = createAction(
 export const fetchReferenceDataFailed = createAction('[API/reference-data] Fetch all of ResourceType Failed', props<featureError>());
 
 export const fetchReferenceDataAudit = createAction(
-  '[API/reference-data] Fetch all of ResourceType',
+  '[API/reference-data] Fetch all of Audit ResourceType',
   props<{ resourceType: ReferenceDataResourceType; paginationToken?: string }>()
 );
 export const fetchReferenceDataAuditSuccess = createAction(
-  '[API/reference-data] Fetch all of ResourceType Success',
+  '[API/reference-data] Fetch all of Audit ResourceType Success',
   props<{ resourceType: ReferenceDataResourceType; payload: Array<ReferenceDataModelBase>; paginated: boolean }>()
 );
-export const fetchReferenceDataAuditFailed = createAction('[API/reference-data] Fetch all of ResourceType Failed', props<featureError>());
+export const fetchReferenceDataAuditFailed = createAction('[API/reference-data] Fetch all of Audit ResourceType Failed', props<featureError>());
 
 export const fetchReferenceDataByKey = createAction(
   '[API/reference-data] Fetch ResourceType by Key',
