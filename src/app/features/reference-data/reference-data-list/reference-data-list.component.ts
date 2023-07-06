@@ -93,10 +93,8 @@ export class ReferenceDataListComponent implements OnInit {
     });
   }
 
-  deletedItems(): void {
-    this.router.navigate(['deleted-items'], { relativeTo: this.route }).then(() => {
-      window.location.reload();
-    });
+  navigateToDeletedItems(): void {
+    this.router.navigate(['deleted-items'], { relativeTo: this.route }).then(() => {});
   }
 
   back(): void {
