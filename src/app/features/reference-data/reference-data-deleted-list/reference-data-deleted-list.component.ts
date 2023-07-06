@@ -28,8 +28,6 @@ export class ReferenceDataDeletedListComponent implements OnInit {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-      // load the audit history
-      // @ts-ignore
       this.store.dispatch(fetchReferenceDataAudit({ resourceType: (this.type + '#AUDIT') as ReferenceDataResourceType }));
     });
   }
