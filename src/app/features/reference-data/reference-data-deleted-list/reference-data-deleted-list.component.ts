@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -36,9 +36,8 @@ export class ReferenceDataDeletedListComponent implements OnInit {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
-  get data$(): Observable<any | undefined> {
-    // @ts-ignore
-    return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceTypeAudit)));
+  get data$(): Observable<ReferenceDataModelBase[] | undefined> {
+    return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceType)));
   }
 
   public get roles(): typeof Roles {
