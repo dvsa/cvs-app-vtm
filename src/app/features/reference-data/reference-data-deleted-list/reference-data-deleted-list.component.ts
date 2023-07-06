@@ -13,7 +13,6 @@ import { map, Observable, take } from 'rxjs';
 })
 export class ReferenceDataDeletedListComponent implements OnInit {
   type!: ReferenceDataResourceType;
-
   pageStart?: number;
   pageEnd?: number;
 
