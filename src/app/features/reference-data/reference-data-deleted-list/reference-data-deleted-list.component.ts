@@ -40,7 +40,7 @@ export class ReferenceDataDeletedListComponent implements OnInit {
     return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceType)));
   }
 
-  public get roles(): typeof Roles {
+  get roles(): typeof Roles {
     return Roles;
   }
 
