@@ -2,9 +2,7 @@
   <div class="govuk-grid-column-full">
     <p class="govuk-heading-xl govuk-!-font-weight-bold">Deleted {{ (refDataAdminType$ | async)?.label }}</p>
 
-    <app-button-group>
-      <app-button id="cancel" design="link" (clicked)="navigateBack()">Back</app-button>
-    </app-button-group>
+    <a [routerLink]="['..']" class="govuk-back-link">Back</a>
 
     <table class="govuk-table">
       <thead class="govuk-table__head">
