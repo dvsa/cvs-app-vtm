@@ -1,18 +1,12 @@
-import { style } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import {
-  fetchReferenceDataAudit,
-  selectAllReferenceDataByResourceType,
-  selectReferenceDataByResourceKey,
-  selectSearchReturn
-} from '@store/reference-data';
-import { Observable, map, take, filter, switchMap, catchError, of, throwError } from 'rxjs';
+import { selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { catchError, filter, map, Observable, of, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-list',
@@ -56,7 +50,6 @@ export class ReferenceDataListComponent implements OnInit {
             )
           )
         ),
-        take(1),
         catchError(error => {
           if (error.status == 404) {
             this.disabled = true;
@@ -66,12 +59,7 @@ export class ReferenceDataListComponent implements OnInit {
         })
       )
       .subscribe({
-        next: res => {
-          if (res) {
-            return of(true);
-          }
-          return of(false);
-        }
+        next: res => of(!!res)
       });
   }
 
