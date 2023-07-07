@@ -5,8 +5,8 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { fetchReferenceData, fetchReferenceDataByKeySearch, selectReferenceDataByResourceKey, selectSearchReturn } from '@store/reference-data';
-import { selectVehicleType } from '@store/technical-records/selectors/batch-create.selectors';
-import { Observable, Subject, combineLatest, map, of } from 'rxjs';
+import { getSingleVehicleType } from '@store/technical-records';
+import { Observable, Subject, combineLatest, map, of, take } from 'rxjs';
 
 @Pipe({
   name: 'refDataDecode$'
@@ -31,15 +31,20 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
     }
 
     if (resourceType === SpecialRefData.ReasonsForAbandoning) {
-      const type = this.store.select(selectVehicleType);
+      let type: any;
+      this.store
+        .select(getSingleVehicleType)
+        .pipe(take(1))
+        .subscribe(vehicleType => (type = vehicleType));
+
       switch (type) {
-        case of(VehicleTypes.HGV):
+        case VehicleTypes.HGV:
           resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
           break;
-        case of(VehicleTypes.PSV):
+        case VehicleTypes.PSV:
           resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
           break;
-        case of(VehicleTypes.TRL):
+        case VehicleTypes.TRL:
           resourceType = ReferenceDataResourceType.ReasonsForAbandoningTrl;
           break;
         default:
