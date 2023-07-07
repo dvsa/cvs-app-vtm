@@ -24,6 +24,9 @@ import {
   deleteReferenceDataItemSuccess,
   fetchReasonsForAbandoning,
   fetchReferenceData,
+  fetchReferenceDataAudit,
+  fetchReferenceDataAuditFailed,
+  fetchReferenceDataAuditSuccess,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
   fetchReferenceDataByKeySearch,
@@ -133,6 +136,77 @@ describe('ReferenceDataEffects', () => {
 
         expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
           b: fetchReferenceDataFailed({
+            error: `Reference data not found for resource type ${ReferenceDataResourceType.HgvMake}`,
+            resourceType: ReferenceDataResourceType.HgvMake
+          })
+        });
+      });
+    });
+  });
+
+  describe('fetchReferenceDataByAuditType$', () => {
+    it.each(testCases)('should return fetchReferenceDataAuditSuccess action on successful API call', value => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const { resourceType, payload } = value;
+        const apiResponse = { data: [...payload] };
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: fetchReferenceDataAudit({ resourceType }) });
+
+        // mock service call
+        jest.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--a|', { a: apiResponse }));
+
+        // expect effect to return success action
+        expectObservable(effects.fetchReferenceDataByAuditType$).toBe('---b', {
+          b: fetchReferenceDataAuditSuccess({ resourceType, payload, paginated: false })
+        });
+      });
+    });
+
+    it.each(testCases)(
+      'should return fetchReferenceDataAuditSuccess and fetchReferenceDataAudit actions on successful API call with pagination token',
+      value => {
+        testScheduler.run(({ hot, cold, expectObservable }) => {
+          const { resourceType, payload } = value;
+          const apiResponse = { data: [...payload], paginationToken: 'token' };
+
+          // mock action to trigger effect
+          actions$ = hot('-a--', { a: fetchReferenceDataAudit({ resourceType }) });
+
+          // mock service call
+          jest.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--a|', { a: apiResponse }));
+
+          // expect effect to return success action
+          expectObservable(effects.fetchReferenceDataByAuditType$).toBe('---(bc)', {
+            b: fetchReferenceDataAuditSuccess({ resourceType, payload, paginated: true }),
+            c: fetchReferenceDataAudit({ resourceType, paginationToken: 'token' })
+          });
+        });
+      }
+    );
+
+    it('should return fetchReferenceDataAuditFailed action on API error', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a--', { a: fetchReferenceDataAudit({ resourceType: null as any }) });
+
+        const expectedError = new Error('Reference data resourceType is required');
+
+        jest.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.fetchReferenceDataByAuditType$).toBe('---b', {
+          b: fetchReferenceDataAuditFailed({ error: 'Reference data resourceType is required', resourceType: null as any })
+        });
+      });
+    });
+
+    it('should return fetchReferenceDataAuditFailed action when data is not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a--', { a: fetchReferenceDataAudit({ resourceType: ReferenceDataResourceType.HgvMake }) });
+
+        jest.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--a|', { a: { data: [] } }));
+
+        expectObservable(effects.fetchReferenceDataByAuditType$).toBe('---b', {
+          b: fetchReferenceDataAuditFailed({
             error: `Reference data not found for resource type ${ReferenceDataResourceType.HgvMake}`,
             resourceType: ReferenceDataResourceType.HgvMake
           })
