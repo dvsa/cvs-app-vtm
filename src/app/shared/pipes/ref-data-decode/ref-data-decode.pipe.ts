@@ -31,26 +31,25 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
     }
 
     if (resourceType === SpecialRefData.ReasonsForAbandoning) {
-      let type: any;
       this.store
         .select(getSingleVehicleType)
         .pipe(take(1))
-        .subscribe(vehicleType => (type = vehicleType));
-
-      switch (type) {
-        case VehicleTypes.HGV:
-          resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
-          break;
-        case VehicleTypes.PSV:
-          resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
-          break;
-        case VehicleTypes.TRL:
-          resourceType = ReferenceDataResourceType.ReasonsForAbandoningTrl;
-          break;
-        default:
-          resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
-          break;
-      }
+        .subscribe(vehicleType => {
+          switch (vehicleType) {
+            case VehicleTypes.HGV:
+              resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
+              break;
+            case VehicleTypes.PSV:
+              resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
+              break;
+            case VehicleTypes.TRL:
+              resourceType = ReferenceDataResourceType.ReasonsForAbandoningTrl;
+              break;
+            default:
+              resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
+              break;
+          }
+        });
     }
 
     this.store.dispatch(fetchReferenceData({ resourceType: resourceType as ReferenceDataResourceType }));
