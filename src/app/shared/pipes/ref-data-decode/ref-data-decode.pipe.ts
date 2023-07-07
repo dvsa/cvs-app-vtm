@@ -40,7 +40,7 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
               resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
               break;
             case VehicleTypes.PSV:
-              resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
+              resourceType = ReferenceDataResourceType.ReasonsForAbandoningPsv;
               break;
             case VehicleTypes.TRL:
               resourceType = ReferenceDataResourceType.ReasonsForAbandoningTrl;
