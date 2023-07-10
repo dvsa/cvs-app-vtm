@@ -23,7 +23,10 @@ import {
   addAxle,
   removeAxle,
   updateBrakeForces,
-  updateBody
+  updateBody,
+  addSectionState,
+  removeSectionState,
+  clearAllSectionStates
 } from '../actions/technical-record-service.actions';
 import { initialState, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-record-service.reducer';
 
@@ -273,17 +276,48 @@ describe('Vehicle Technical Record Reducer', () => {
     });
   });
 
+  describe('Section state changes', () => {
+    it('should add the section name to the state', () => {
+      initialState.sectionState = [];
+      const action = addSectionState({ section: 'TEST_SECTION' });
+      const newState = vehicleTechRecordReducer(initialState, action);
+
+      expect(initialState).not.toEqual(newState);
+      expect(newState.sectionState).toEqual(['TEST_SECTION']);
+      expect(initialState).not.toBe(newState);
+    });
+
+    it('should remove the section name from the state', () => {
+      initialState.sectionState = ['TEST_SECTION1', 'TEST_SECTION2'];
+      const action = removeSectionState({ section: 'TEST_SECTION1' });
+      const newState = vehicleTechRecordReducer(initialState, action);
+
+      expect(initialState).not.toEqual(newState);
+      expect(newState.sectionState).toEqual(['TEST_SECTION2']);
+      expect(initialState).not.toBe(newState);
+    });
+
+    it('should clear all the section names from the state', () => {
+      initialState.sectionState = ['TEST_SECTION1', 'TEST_SECTION2'];
+      const action = clearAllSectionStates();
+      const newState = vehicleTechRecordReducer(initialState, action);
+
+      expect(initialState).not.toEqual(newState);
+      expect(newState.sectionState).toEqual([]);
+      expect(initialState).not.toBe(newState);
+    });
+  });
+
   describe('updating properties of the tech record in edit', () => {
     beforeEach(() => (initialState.editingTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV)));
 
     describe('updateBrakeForces', () => {
-
       it('should not update half locked brake forces with no gross kerb weight', () => {
         initialState.editingTechRecord!.techRecord[0].brakes!.brakeCodeOriginal = '80';
         initialState.editingTechRecord!.techRecord[0].brakes!.brakeForceWheelsUpToHalfLocked = {
           parkingBrakeForceB: 50,
           secondaryBrakeForceB: 30,
-          serviceBrakeForceB: 10 
+          serviceBrakeForceB: 10
         };
         const brakes = initialState.editingTechRecord?.techRecord[0].brakes;
         expect(brakes?.brakeCode).toBe('1234');
@@ -307,9 +341,9 @@ describe('Vehicle Technical Record Reducer', () => {
         initialState.editingTechRecord!.techRecord[0].brakes!.brakeForceWheelsNotLocked = {
           parkingBrakeForceA: 50,
           secondaryBrakeForceA: 30,
-          serviceBrakeForceA: 10 
+          serviceBrakeForceA: 10
         };
-        
+
         const newState = vehicleTechRecordReducer(initialState, updateBrakeForces({ grossKerbWeight: 1000 }));
 
         const updatedBrakes = newState.editingTechRecord?.techRecord[0].brakes;

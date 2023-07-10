@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/index';
 import { AccordionComponent } from './accordion.component';
 
 @Component({
@@ -15,7 +17,8 @@ describe('AccordionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccordionComponent, HostComponent]
+      declarations: [AccordionComponent, HostComponent],
+      providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
@@ -46,7 +49,7 @@ describe('AccordionComponent', () => {
 
   it('should set expanded value to true', () => {
     const markForCheckSpy = jest.spyOn(component['cdr'], 'markForCheck');
-    component.open();
+    component.open('TEST_SECTION');
     expect(component.isExpanded).toBeTruthy();
     expect(markForCheckSpy).toHaveBeenCalledTimes(1);
   });
@@ -54,7 +57,7 @@ describe('AccordionComponent', () => {
   it('should set expanded value to false', () => {
     const markForCheckSpy = jest.spyOn(component['cdr'], 'markForCheck');
     component.isExpanded = true;
-    component.close();
+    component.close('TEST_SECTION');
     expect(component.isExpanded).toBeFalsy();
     expect(markForCheckSpy).toHaveBeenCalledTimes(1);
   });
