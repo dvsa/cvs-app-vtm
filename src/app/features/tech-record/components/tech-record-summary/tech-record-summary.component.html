@@ -1,5 +1,5 @@
 <section class="govuk-grid-row">
-  <app-accordion-control [class]="'padding'" [sectionState]="sectionTemplateState$ | async">
+  <app-accordion-control [class]="'padding'" [sectionState]="sectionTemplatesState$ | async">
     <div class="govuk-grid-column-one-half">
       <ng-container *ngFor="let section of sectionTemplates; let i = index">
         <app-accordion *ngIf="i < middleIndex" [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">

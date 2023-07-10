@@ -22,7 +22,7 @@ export class AccordionControlComponent {
   @Input() isExpanded = false;
   @Input() layout?: string;
   @Input() class: string = '';
-  @Input() sectionState: (string | number)[] | undefined = [];
+  @Input() sectionState: (string | number)[] | undefined | null = [];
 
   constructor(private cdr: ChangeDetectorRef) {}
 

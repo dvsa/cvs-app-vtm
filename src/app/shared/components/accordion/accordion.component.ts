@@ -11,7 +11,7 @@ export class AccordionComponent {
   @Input() title: string | undefined = '';
   @Input() id: string | number = '';
 
-  @Input() isExpanded = false;
+  @Input() isExpanded: boolean | null | undefined = false;
 
   constructor(private cdr: ChangeDetectorRef, private store: Store) {}
 

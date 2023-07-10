@@ -28,7 +28,7 @@ import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
-import { map, Subject, take, takeUntil } from 'rxjs';
+import { map, Observable, Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary[techRecord]',
@@ -55,7 +55,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   techRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
-  sectionTemplateState: (string | number)[] | undefined;
 
   private destroy$ = new Subject<void>();
 
@@ -114,12 +113,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     );
   }
 
-  get sectionTemplatesState$ {
-    return this.technicalRecordService.sectionStates$
+  get sectionTemplatesState$() {
+    return this.technicalRecordService.sectionStates$;
   }
 
-  isSectionExpanded(sectionName: string | number) {
-    return this.sectionTemplatesState.pipe(map(sections => sections?.includes(sectionName));
+  isSectionExpanded$(sectionName: string | number) {
+    return this.sectionTemplatesState$?.pipe(map(sections => sections?.includes(sectionName)));
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
