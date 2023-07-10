@@ -16,7 +16,7 @@ export class AccordionControlComponent {
     value: QueryList<AccordionComponent> | undefined
   ) {
     this._accordions = value;
-    this.isExpanded ? this.toggleAccordions() : this.expandAccordians();
+    this.isExpanded ? this.toggleAccordions() : this.expandAccordions();
   }
 
   @Input() isExpanded = false;
