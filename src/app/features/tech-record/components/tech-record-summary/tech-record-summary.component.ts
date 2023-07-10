@@ -96,7 +96,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
 
-    this.technicalRecordService.sectionStates$.pipe(take(1)).subscribe(sectionStates => (this.sectionTemplateState = sectionStates));
     isOnInit = false;
   }
 
