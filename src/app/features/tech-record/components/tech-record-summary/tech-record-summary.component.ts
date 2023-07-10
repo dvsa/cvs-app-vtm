@@ -23,15 +23,12 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { EuVehicleCategories, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
+import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { editableTechRecord } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep, mergeWith } from 'lodash';
-import { map, Subject, takeUntil } from 'rxjs';
+import { map, Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary[techRecord]',
@@ -58,6 +55,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   techRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
+  sectionTemplateState: (string | number)[] | undefined;
 
   private destroy$ = new Subject<void>();
 
@@ -97,6 +95,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
+
+    this.technicalRecordService.sectionStates$.pipe(take(1)).subscribe(sectionStates => (this.sectionTemplateState = sectionStates));
     isOnInit = false;
   }
 
@@ -113,6 +113,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     return (
       vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
     );
+  }
+
+  isSectionExpanded(sectionName: string | number) {
+    return this.sectionTemplateState ? this.sectionTemplateState.includes(sectionName) : false;
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {

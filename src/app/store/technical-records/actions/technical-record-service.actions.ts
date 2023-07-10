@@ -54,6 +54,10 @@ export const updateBody = createAction(`${prefix} updatebody`, props<{ psvMake: 
 export const addAxle = createAction(`${prefix} addAxle`);
 export const removeAxle = createAction(`${prefix} removeAxle`, props<{ index: number }>());
 
+export const addSectionState = createAction(`${prefix} addSectionState`, props<{ section: string | number }>());
+export const removeSectionState = createAction(`${prefix} removeSectionState`, props<{ section: string | number }>());
+export const clearAllSectionStates = createAction(`${prefix} clearAllSectionState`);
+
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';
   const type = `${prefix} ${title} ${suffix}`;

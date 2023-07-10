@@ -10,9 +10,11 @@ import {
   selectTechRecordSearchResultsBySystemNumber
 } from '@store/tech-record-search/selector/tech-record-search.selector';
 import {
+  clearAllSectionStates,
   createVehicle,
   editableTechRecord,
   editableVehicleTechRecord,
+  selectSectionState,
   selectTechRecord,
   selectVehicleTechnicalRecordsBySystemNumber,
   updateEditingTechRecord,
@@ -179,5 +181,12 @@ export class TechnicalRecordService {
   }
   get viewableRecordStatus$(): Observable<StatusCodes | undefined> {
     return this.viewableTechRecord$.pipe(map(techRecord => techRecord?.statusCode));
+  }
+
+  get sectionStates$(): Observable<(string | number)[] | undefined> {
+    return this.store.pipe(select(selectSectionState));
+  }
+  clearSectionTemplateStates() {
+    this.store.dispatch(clearAllSectionStates());
   }
 }

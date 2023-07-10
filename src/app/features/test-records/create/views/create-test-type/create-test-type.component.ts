@@ -4,8 +4,9 @@ import { TestType } from '@api/test-types';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/.';
+import { clearAllSectionStates } from '@store/technical-records';
 import { contingencyTestTypeSelected } from '@store/test-records';
-import { mergeMap, of, take } from 'rxjs';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-create-test-type',
@@ -40,6 +41,7 @@ export class CreateTestTypeComponent implements AfterContentInit {
 
   handleSelectedTestType(testType: TestType) {
     this.store.dispatch(contingencyTestTypeSelected({ testType: testType.id }));
+    this.store.dispatch(clearAllSectionStates());
     this.router.navigate(['..', 'test-details'], {
       queryParams: { testType: testType.id },
       queryParamsHandling: 'merge',
