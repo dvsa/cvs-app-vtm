@@ -115,8 +115,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     );
   }
 
+  get sectionTemplatesState$ {
+    return this.technicalRecordService.sectionStates$
+  }
+
   isSectionExpanded(sectionName: string | number) {
-    return this.sectionTemplateState ? this.sectionTemplateState.includes(sectionName) : false;
+    return this.sectionTemplatesState.pipe(map(sections => sections?.includes(sectionName));
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
