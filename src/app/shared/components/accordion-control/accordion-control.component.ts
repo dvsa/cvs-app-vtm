@@ -36,7 +36,7 @@ export class AccordionControlComponent {
     this.cdr.markForCheck();
   }
 
-  private expandAccordians(): void {
+  private expandAccordions(): void {
     if (this.accordions && this.sectionState && this.sectionState.length > 0) {
       this.accordions?.forEach(a => (this.sectionState?.includes(a.id) ? a.open(a.id) : a.close(a.id)));
     }
