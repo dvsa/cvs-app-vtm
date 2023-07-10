@@ -49,7 +49,7 @@ describe('TechnicalRecordService', () => {
     beforeEach(() => {
       testGroup = new FormGroup({
         vin: new CustomFormControl({ name: 'vin', type: FormNodeTypes.CONTROL }, null, null),
-        trailerId: new FormControl({ name: 'trailerId', value: '' }, null),
+        trailerIdOrVrm: new FormControl({ name: 'trailerIdOrVrm', value: '' }, null),
         systemNumber: new FormControl({ name: 'systemNumber', value: '' }, null),
         oldVehicleStatus: new FormControl({ name: 'oldVehicleStatus', value: '' }, null),
         vehicleType: new FormControl({ name: 'vehicleType', value: '' }, null)
@@ -59,7 +59,7 @@ describe('TechnicalRecordService', () => {
     it('return null if vin and trailer id are not provided', done => {
       expect.assertions(1);
       testGroup.get('vin')!.setValue(null);
-      testGroup.get('trailerId')!.setValue(null);
+      testGroup.get('trailerIdOrVrm')!.setValue(null);
       const serviceCall = service.validateForBatch()(testGroup.get('vin')!);
       (serviceCall as Observable<ValidationErrors | null>).subscribe(errors => {
         expect(errors).toEqual(null);
@@ -79,7 +79,7 @@ describe('TechnicalRecordService', () => {
 
     it('throws an error if trailer id is provided but vin is not', done => {
       expect.assertions(1);
-      testGroup.get('trailerId')!.setValue('test');
+      testGroup.get('trailerIdOrVrm')!.setValue('test');
 
       const serviceCall = service.validateForBatch()(testGroup.get('vin')!);
       (serviceCall as Observable<ValidationErrors | null>).subscribe(errors => {
@@ -90,7 +90,7 @@ describe('TechnicalRecordService', () => {
 
     describe('when only vin is provided', () => {
       it('should return null when it is a unique vin', async () => {
-        testGroup.get('trailerId')!.setValue('');
+        testGroup.get('trailerIdOrVrm')!.setValue('');
         testGroup.get('vin')!.setValue('TESTVIN');
 
         const isUniqueSpy = jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
@@ -102,7 +102,7 @@ describe('TechnicalRecordService', () => {
       });
 
       it('should set a warning when it is not a unique vin', async () => {
-        testGroup.get('trailerId')!.setValue('');
+        testGroup.get('trailerIdOrVrm')!.setValue('');
         const vinControl = testGroup.get('vin') as CustomFormControl;
         vinControl.setValue('TESTVIN');
         jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
@@ -115,7 +115,7 @@ describe('TechnicalRecordService', () => {
       it('returns null if only 1 vehicle exists with those values with no current tech record', async () => {
         expect.assertions(1);
         testGroup.get('vin')!.setValue('TESTVIN');
-        testGroup.get('trailerId')!.setValue('TESTTRAILERID');
+        testGroup.get('trailerIdOrVrm')!.setValue('TESTTRAILERID');
         const mockSearchResult = {
           vin: 'TESTVIN',
           trailerId: 'TESTTRAILERID',
@@ -133,7 +133,7 @@ describe('TechnicalRecordService', () => {
       it('throws error if only 1 trailer exists with those values with a current tech record', async () => {
         expect.assertions(1);
         testGroup.get('vin')!.setValue('TESTVIN');
-        testGroup.get('trailerId')!.setValue('TESTTRAILERID');
+        testGroup.get('trailerIdOrVrm')!.setValue('TESTTRAILERID');
         testGroup.get('vehicleType')!.setValue(VehicleTypes.TRL);
         const mockSearchResult = {
           vin: 'TESTVIN',
@@ -153,7 +153,7 @@ describe('TechnicalRecordService', () => {
       it('returns null if only 1 vehicle other than trailer exists with those values with a current tech record', async () => {
         expect.assertions(1);
         testGroup.get('vin')!.setValue('TESTVIN');
-        testGroup.get('trailerId')!.setValue('TESTTRAILERID');
+        testGroup.get('trailerIdOrVrm')!.setValue('TESTTRAILERID');
         const mockSearchResult = {
           vin: 'TESTVIN',
           trailerId: 'TESTTRAILERID',
@@ -172,7 +172,7 @@ describe('TechnicalRecordService', () => {
       it('throws an error if more than 1 vehicle exists with those values', async () => {
         expect.assertions(1);
         testGroup.get('vin')!.setValue('TESTVIN');
-        testGroup.get('trailerId')!.setValue('TESTTRAILERID');
+        testGroup.get('trailerIdOrVrm')!.setValue('TESTTRAILERID');
         const mockSearchResult = { vin: 'TESTVIN', trailerId: 'TESTTRAILERID', techRecord_statusCode: StatusCodes.PROVISIONAL } as SearchResult;
 
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult, { ...mockSearchResult, systemNumber: 'foobar' }]));
@@ -185,7 +185,7 @@ describe('TechnicalRecordService', () => {
     it('throws an error if no vehicle exists with those values', async () => {
       expect.assertions(1);
       testGroup.get('vin')!.setValue('TESTVIN');
-      testGroup.get('trailerId')!.setValue('TESTTRAILERID');
+      testGroup.get('trailerIdOrVrm')!.setValue('TESTTRAILERID');
 
       jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([]));
 

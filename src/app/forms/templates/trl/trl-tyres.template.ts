@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const tyresTemplateTrl: FormNode = {
   name: 'tyreSection',
@@ -12,6 +12,7 @@ export const tyresTemplateTrl: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
+      width: FormNodeWidth.XS,
       validators: [
         { name: ValidatorNames.MaxLength, args: 2 },
         { name: ValidatorNames.Min, args: 0 }

@@ -146,29 +146,32 @@ function handleUpdateBrakeForces(
   data: { grossLadenWeight?: number; grossKerbWeight?: number }
 ): TechnicalRecordServiceState {
   const newState = cloneDeep(state);
-
   if (!newState.editingTechRecord) return newState;
 
-  const newGrossLadenWeight = data.grossLadenWeight ?? 0;
-  const newGrossKerbWeight = data.grossKerbWeight ?? 0;
+  if (data.grossLadenWeight) {
+    const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
 
-  const prefix = `${Math.round(newGrossLadenWeight / 100)}`;
+    newState.editingTechRecord.techRecord[0].brakes = {
+      ...newState.editingTechRecord?.techRecord[0].brakes,
+      brakeCode: (prefix.length <= 2 ? '0' + prefix : prefix) + newState.editingTechRecord.techRecord[0].brakes?.brakeCodeOriginal,
+      brakeForceWheelsNotLocked: {
+        serviceBrakeForceA: Math.round((data.grossLadenWeight * 16) / 100),
+        secondaryBrakeForceA: Math.round((data.grossLadenWeight * 22.5) / 100),
+        parkingBrakeForceA: Math.round((data.grossLadenWeight * 45) / 100)
+      }
+    };
+  }
 
-  newState.editingTechRecord.techRecord[0].brakes = {
-    ...newState.editingTechRecord?.techRecord[0].brakes,
-    brakeCode: (prefix.length <= 2 ? '0' + prefix : prefix) + newState.editingTechRecord.techRecord[0].brakes?.brakeCodeOriginal,
-    brakeForceWheelsNotLocked: {
-      serviceBrakeForceA: Math.round((newGrossLadenWeight * 16) / 100),
-      secondaryBrakeForceA: Math.round((newGrossLadenWeight * 22.5) / 100),
-      parkingBrakeForceA: Math.round((newGrossLadenWeight * 45) / 100)
-    },
-    brakeForceWheelsUpToHalfLocked: {
-      serviceBrakeForceB: Math.round((newGrossKerbWeight * 16) / 100),
-      secondaryBrakeForceB: Math.round((newGrossKerbWeight * 25) / 100),
-      parkingBrakeForceB: Math.round((newGrossKerbWeight * 50) / 100)
-    }
-  };
-
+  if (data.grossKerbWeight) {
+    newState.editingTechRecord.techRecord[0].brakes = {
+      ...newState.editingTechRecord?.techRecord[0].brakes,
+      brakeForceWheelsUpToHalfLocked: {
+        serviceBrakeForceB: Math.round((data.grossKerbWeight * 16) / 100),
+        secondaryBrakeForceB: Math.round((data.grossKerbWeight * 25) / 100),
+        parkingBrakeForceB: Math.round((data.grossKerbWeight * 50) / 100)
+      }
+    };
+  }
   return newState;
 }
 

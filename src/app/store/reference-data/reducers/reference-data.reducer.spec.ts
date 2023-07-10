@@ -1,11 +1,16 @@
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Dictionary } from '@ngrx/entity';
+import cloneDeep from 'lodash.clonedeep';
 import {
   addSearchInformation,
   amendReferenceDataItemSuccess,
   createReferenceDataItemSuccess,
+  deleteReferenceDataItemSuccess,
   fetchReferenceData,
+  fetchReferenceDataAudit,
+  fetchReferenceDataAuditFailed,
+  fetchReferenceDataAuditSuccess,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
   fetchReferenceDataByKeySearch,
@@ -21,9 +26,6 @@ import {
 } from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
 import { initialReferenceDataState, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
-import { deleteReferenceDataItem } from '../actions/reference-data.actions';
-import cloneDeep from 'lodash.clonedeep';
-import { deleteReferenceDataItemSuccess } from '../actions/reference-data.actions';
 
 describe('Reference Data Reducer', () => {
   describe('unknown action', () => {
@@ -78,6 +80,53 @@ describe('Reference Data Reducer', () => {
     it('should set error state', () => {
       const newState = { ...initialReferenceDataState };
       const action = fetchReferenceDataFailed({ error: 'unit testing error message', resourceType: ReferenceDataResourceType.CountryOfRegistration });
+      const state = referenceDataReducer({ ...initialReferenceDataState }, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('fetchReferenceDataAudit', () => {
+    it('should set loading to true', () => {
+      const newState: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.CountryOfRegistration]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
+          loading: true
+        }
+      };
+      const action = fetchReferenceDataAudit({ resourceType: ReferenceDataResourceType.CountryOfRegistration });
+      const state = referenceDataReducer(initialReferenceDataState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('fetchReferenceDataAuditSuccess', () => {
+    it.each(testCases)('should set the the resource data item based on the type', value => {
+      const { resourceType } = value;
+      const newState: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [resourceType]: { ...initialReferenceDataState[resourceType], searchReturn: value.payload, loading: false }
+      };
+
+      const action = fetchReferenceDataAuditSuccess({ resourceType, payload: value.payload, paginated: false });
+      const state = referenceDataReducer(initialReferenceDataState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('fetchReferenceDataAuditFailed', () => {
+    it('should set error state', () => {
+      const newState = { ...initialReferenceDataState };
+      const action = fetchReferenceDataAuditFailed({
+        error: 'unit testing error message',
+        resourceType: ReferenceDataResourceType.CountryOfRegistration
+      });
       const state = referenceDataReducer({ ...initialReferenceDataState }, action);
 
       expect(state).toEqual(newState);

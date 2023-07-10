@@ -40,8 +40,8 @@
         appNoSpace
         appTrimWhitespace
         appToUppercase
-        formControlName="trailerId"
-        name="trailerId{{ i }}"
+        formControlName="trailerIdOrVrm"
+        name="{{ vehicleType === 'trl' ? 'trailerId' : 'vrm' }}{{ i }}"
         label="{{ vehicleType === 'trl' ? 'Trailer ID' : 'VRM' }}"
         [width]="width.L"
         (focusout)="validate(group)"

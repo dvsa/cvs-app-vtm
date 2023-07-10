@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
@@ -19,10 +19,12 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   @Output() formChange = new EventEmitter();
 
   form!: CustomFormGroup;
+  pageStart?: number;
+  pageEnd?: number;
 
   private _formSubscription = new Subscription();
 
-  constructor(private dynamicFormService: DynamicFormService) {}
+  constructor(private dynamicFormService: DynamicFormService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(PlatesTemplate, this.techRecord) as CustomFormGroup;
@@ -49,10 +51,34 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     return this.techRecord.plates !== undefined && this.techRecord.plates.length > 0;
   }
 
+  get sortedPlates(): Plates[] | undefined {
+    return cloneDeep(this.techRecord.plates)?.sort((a, b) =>
+      a.plateIssueDate && b.plateIssueDate ? new Date(b.plateIssueDate).getTime() - new Date(a.plateIssueDate).getTime() : 0
+    );
+  }
+
+  get plates() {
+    return this.sortedPlates?.slice(this.pageStart, this.pageEnd) ?? [];
+  }
+
   get mostRecentPlate(): Plates | undefined {
     return cloneDeep(this.techRecord.plates)
       ?.sort((a, b) => (a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0))
       ?.pop();
+  }
+
+  get numberOfPlates(): number {
+    return this.sortedPlates?.length || 0;
+  }
+
+  handlePaginationChange({ start, end }: { start: number; end: number }) {
+    this.pageStart = start;
+    this.pageEnd = end;
+    this.cdr.detectChanges();
+  }
+
+  trackByFn(i: number, tr: Plates) {
+    return tr.plateIssueDate;
   }
 
   get documentParams(): Map<string, string> {

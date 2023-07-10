@@ -5,12 +5,12 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { ReferenceDataState, createReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, catchError, filter, of, switchMap, take, throwError } from 'rxjs';
+import { createReferenceDataItem, ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { catchError, filter, Observable, of, switchMap, take, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-add',

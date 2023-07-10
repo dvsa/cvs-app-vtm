@@ -277,6 +277,61 @@ describe('Vehicle Technical Record Reducer', () => {
     beforeEach(() => (initialState.editingTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV)));
 
     describe('updateBrakeForces', () => {
+      it('should not update half locked brake forces with no gross kerb weight', () => {
+        initialState.editingTechRecord!.techRecord[0].brakes!.brakeCodeOriginal = '80';
+        initialState.editingTechRecord!.techRecord[0].brakes!.brakeForceWheelsUpToHalfLocked = {
+          parkingBrakeForceB: 50,
+          secondaryBrakeForceB: 30,
+          serviceBrakeForceB: 10
+        };
+        const brakes = initialState.editingTechRecord?.techRecord[0].brakes;
+        expect(brakes?.brakeCode).toBe('1234');
+
+        const newState = vehicleTechRecordReducer(initialState, updateBrakeForces({ grossLadenWeight: 2000 }));
+
+        const updatedBrakes = newState.editingTechRecord?.techRecord[0].brakes;
+        expect(updatedBrakes?.brakeCode).toBe(`0${2000 / 100}${brakes?.brakeCodeOriginal}`);
+
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.serviceBrakeForceA).toBe(Math.round((2000 * 16) / 100));
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.secondaryBrakeForceA).toBe(Math.round((2000 * 22.5) / 100));
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.parkingBrakeForceA).toBe(Math.round((2000 * 45) / 100));
+
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.serviceBrakeForceB).toBe(10);
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.secondaryBrakeForceB).toBe(30);
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.parkingBrakeForceB).toBe(50);
+      });
+
+      it('should not update half locked brake forces with no gross laden weight', () => {
+        initialState.editingTechRecord!.techRecord[0].brakes!.brakeCodeOriginal = '80';
+        initialState.editingTechRecord!.techRecord[0].brakes!.brakeForceWheelsNotLocked = {
+          parkingBrakeForceA: 50,
+          secondaryBrakeForceA: 30,
+          serviceBrakeForceA: 10
+        };
+
+        const newState = vehicleTechRecordReducer(initialState, updateBrakeForces({ grossKerbWeight: 1000 }));
+
+        const updatedBrakes = newState.editingTechRecord?.techRecord[0].brakes;
+        expect(updatedBrakes?.brakeCode).toBe('1234');
+
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.serviceBrakeForceA).toBe(10);
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.secondaryBrakeForceA).toBe(30);
+        expect(updatedBrakes?.brakeForceWheelsNotLocked?.parkingBrakeForceA).toBe(50);
+
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.serviceBrakeForceB).toBe(Math.round((1000 * 16) / 100));
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.secondaryBrakeForceB).toBe(Math.round((1000 * 25) / 100));
+        expect(updatedBrakes?.brakeForceWheelsUpToHalfLocked?.parkingBrakeForceB).toBe(Math.round((1000 * 50) / 100));
+      });
+
+      it('should not update brakeCode with no gross laden weight', () => {
+        initialState.editingTechRecord!.techRecord[0].brakes!.brakeCodeOriginal = '80';
+        initialState.editingTechRecord!.techRecord[0].brakes!.brakeCode = '37';
+
+        const newState = vehicleTechRecordReducer(initialState, updateBrakeForces({ grossKerbWeight: 1000 }));
+        const updatedBrakes = newState.editingTechRecord?.techRecord[0].brakes;
+        expect(updatedBrakes?.brakeCode).toBe('37');
+      });
+
       it('should update brake forces', () => {
         initialState.editingTechRecord!.techRecord[0].brakes!.brakeCodeOriginal = '80';
         const brakes = initialState.editingTechRecord?.techRecord[0].brakes;

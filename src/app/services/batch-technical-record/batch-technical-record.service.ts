@@ -42,21 +42,21 @@ export class BatchTechnicalRecordService {
 
   validateForBatch(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const trailerIdControl = control.parent?.get('trailerId') as CustomFormControl;
+      const trailerIdOrVrmControl = control.parent?.get('trailerIdOrVrm') as CustomFormControl;
       const vinControl = control.parent?.get('vin') as CustomFormControl;
       const systemNumberControl = control.parent?.get('systemNumber') as CustomFormControl;
       const oldVehicleStatusControl = control.parent?.get('oldVehicleStatus') as CustomFormControl;
 
-      if (trailerIdControl && vinControl) {
-        const trailerId = trailerIdControl.value;
+      if (trailerIdOrVrmControl && vinControl) {
+        const trailerIdOrVrm = trailerIdOrVrmControl.value;
         const vin = vinControl.value;
         delete vinControl.meta.warning;
 
-        if (trailerId && vin) {
-          return this.validateVinAndTrailerId(vin, trailerId, systemNumberControl, oldVehicleStatusControl);
-        } else if (!trailerId && vin) {
+        if (trailerIdOrVrm && vin) {
+          return this.validateVinAndTrailerIdOrVrm(vin, trailerIdOrVrm, systemNumberControl, oldVehicleStatusControl);
+        } else if (!trailerIdOrVrm && vin) {
           return this.validateVinForBatch(vinControl);
-        } else if (trailerId && !vin) {
+        } else if (trailerIdOrVrm && !vin) {
           return of({ validateForBatch: { message: 'VIN is required' } });
         }
       }
@@ -64,16 +64,16 @@ export class BatchTechnicalRecordService {
     };
   }
 
-  private validateVinAndTrailerId(
+  private validateVinAndTrailerIdOrVrm(
     vin: string,
-    trailerId: string,
+    trailerIdOrVrm: string,
     systemNumberControl: CustomFormControl,
     oldVehicleStatusControl: CustomFormControl
   ): Observable<ValidationErrors | null> {
     return this.techRecordHttpService.search$(SEARCH_TYPES.VIN, vin).pipe(
       map(result => {
         const recordsWithMatchingTrailerId = result.filter(
-          vehicleTechRecord => vehicleTechRecord.trailerId === trailerId || vehicleTechRecord.primaryVrm === trailerId
+          vehicleTechRecord => vehicleTechRecord.trailerId === trailerIdOrVrm || vehicleTechRecord.primaryVrm === trailerIdOrVrm
         );
         if (!recordsWithMatchingTrailerId.length) {
           return { validateForBatch: { message: 'Could not find a record with matching VIN and VRM/Trailer ID' } };

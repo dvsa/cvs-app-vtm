@@ -2,7 +2,7 @@ import { TestType } from '@api/test-types';
 import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { VehicleSubclass } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleSubclass } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
@@ -86,12 +86,22 @@ export const selectTestType = (id: string | undefined) =>
 export const getTypeOfTest = (id: string | undefined) => createSelector(selectTestType(id), testTypes => testTypes?.typeOfTest);
 
 function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultModel): TestTypesTaxonomy {
-  const { vehicleType, euVehicleCategory, vehicleSize, vehicleConfiguration, noOfAxles, vehicleClass, vehicleSubclass, numberOfWheelsDriven } =
-    testResult;
+  const {
+    vehicleType,
+    statusCode,
+    euVehicleCategory,
+    vehicleSize,
+    vehicleConfiguration,
+    noOfAxles,
+    vehicleClass,
+    vehicleSubclass,
+    numberOfWheelsDriven
+  } = testResult;
 
   return (
     testTypes
       .filter(testTypes => !vehicleType || !testTypes.forVehicleType || testTypes.forVehicleType.includes(vehicleType))
+      .filter(testTypes => statusCode !== StatusCodes.PROVISIONAL || testTypes.forProvisionalStatus)
       .filter(testTypes => !euVehicleCategory || !testTypes.forEuVehicleCategory || testTypes.forEuVehicleCategory.includes(euVehicleCategory))
       .filter(testTypes => !vehicleSize || !testTypes.forVehicleSize || testTypes.forVehicleSize.includes(vehicleSize))
       .filter(

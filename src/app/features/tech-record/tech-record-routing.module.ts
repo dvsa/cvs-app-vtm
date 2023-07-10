@@ -45,7 +45,7 @@ const routes: Routes = [
     path: 'historic/:techCreatedAt',
     component: TechRecordComponent,
     data: { title: 'Historic tech record', isCustomLayout: true },
-    canActivate: [MsalGuard],
+    canActivate: [MsalGuard, CancelEditTechGuard],
     resolve: { load: TechRecordViewResolver }
   },
   {
