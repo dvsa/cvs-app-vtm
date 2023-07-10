@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/index';
+import { initialAppState, State } from '@store/.';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AccordionComponent } from './accordion.component';
+import { addSectionState, removeSectionState } from '@store/technical-records';
 
 @Component({
   selector: 'app-host',
@@ -14,12 +15,13 @@ class HostComponent {}
 describe('AccordionComponent', () => {
   let component: AccordionComponent;
   let fixture: ComponentFixture<HostComponent>;
-
+  let store: MockStore<State>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AccordionComponent, HostComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
+    store = TestBed.inject(MockStore);
   });
 
   beforeEach(() => {
@@ -49,16 +51,24 @@ describe('AccordionComponent', () => {
 
   it('should set expanded value to true', () => {
     const markForCheckSpy = jest.spyOn(component['cdr'], 'markForCheck');
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
     component.open('TEST_SECTION');
     expect(component.isExpanded).toBeTruthy();
     expect(markForCheckSpy).toHaveBeenCalledTimes(1);
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+    expect(dispatchSpy).toHaveBeenCalledWith(addSectionState({ section: 'TEST_SECTION' }));
   });
 
   it('should set expanded value to false', () => {
     const markForCheckSpy = jest.spyOn(component['cdr'], 'markForCheck');
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
     component.isExpanded = true;
     component.close('TEST_SECTION');
     expect(component.isExpanded).toBeFalsy();
     expect(markForCheckSpy).toHaveBeenCalledTimes(1);
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+    expect(dispatchSpy).toHaveBeenCalledWith(removeSectionState({ section: 'TEST_SECTION' }));
   });
 });

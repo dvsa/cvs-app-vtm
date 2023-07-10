@@ -287,6 +287,16 @@ describe('Vehicle Technical Record Reducer', () => {
       expect(initialState).not.toBe(newState);
     });
 
+    it('should avoid duplicating the section name', () => {
+      initialState.sectionState = ['TEST_SECTION'];
+      const action = addSectionState({ section: 'TEST_SECTION' });
+      const newState = vehicleTechRecordReducer(initialState, action);
+
+      expect(initialState).toEqual(newState);
+      expect(newState.sectionState).toEqual(['TEST_SECTION']);
+      expect(initialState).not.toBe(newState);
+    });
+
     it('should remove the section name from the state', () => {
       initialState.sectionState = ['TEST_SECTION1', 'TEST_SECTION2'];
       const action = removeSectionState({ section: 'TEST_SECTION1' });
