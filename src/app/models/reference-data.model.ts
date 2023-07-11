@@ -33,6 +33,7 @@ export interface ReferenceDataModelBase {
   createdAt?: string;
   createdName?: string;
   createdId?: string;
+  reason?: string;
 }
 
 export interface HgvMake extends ReferenceDataModelBase {}

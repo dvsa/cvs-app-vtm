@@ -2,10 +2,12 @@ import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-re
 import { createMock, createMockList } from 'ts-auto-mock';
 import { initialState, TechnicalRecordServiceState } from '../reducers/technical-record-service.reducer';
 import {
+  getSingleVehicleType,
   selectTechRecord,
   selectVehicleTechnicalRecordsBySystemNumber,
   technicalRecordsLoadingState,
-  vehicleTechRecords
+  vehicleTechRecords,
+  selectSectionState
 } from './technical-record-service.selectors';
 
 describe('Tech Record Selectors', () => {
@@ -110,6 +112,34 @@ describe('Tech Record Selectors', () => {
       expect(techRecord).toBeDefined();
       expect(techRecord?.statusCode).toBe(statusExpected);
       createdAt && techRecord && expect(new Date(techRecord.createdAt).getTime()).toBe(createdAt);
+    });
+  });
+
+  describe('getSingleVehicleType', () => {
+    it('should return the correct vehicle type', () => {
+      const systemNumber = 'VIN0001';
+      const vehicleTechRecords = createMockList<VehicleTechRecordModel>(1, i =>
+        createMock<VehicleTechRecordModel>({
+          systemNumber,
+          vin: '123',
+          techRecord: [
+            createMock<TechRecordModel>({
+              createdAt: new Date('2022-01-01').toISOString()
+            })
+          ]
+        })
+      );
+      const state: TechnicalRecordServiceState = { ...initialState, vehicleTechRecords };
+      const selectedVehicleType = getSingleVehicleType.projector(state);
+      expect(selectedVehicleType).toBe(vehicleTechRecords[0].techRecord[0].vehicleType);
+    });
+  });
+
+  describe('selectSectionState', () => {
+    it('should return the sectionState in the technical record state', () => {
+      const state: TechnicalRecordServiceState = { ...initialState, sectionState: ['TestSection1', 'TestSection2'] };
+      const selectedState = selectSectionState.projector(state);
+      expect(selectedState?.length).toEqual(2);
     });
   });
 });

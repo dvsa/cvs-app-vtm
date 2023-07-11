@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { ReferenceDataAdminColumn } from '@models/reference-data.model';
+import { ReferenceDataAdminColumn, ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
 import { fetchReferenceDataByKeySearch, ReferenceDataState } from '@store/reference-data';
 import { Observable, of, take, map } from 'rxjs';
@@ -24,12 +24,16 @@ export class ReferenceDataAmendHistoryComponent implements OnInit {
   ngOnInit(): void {
     // load the audit history
     // @ts-ignore
-    this.store.dispatch(fetchReferenceDataByKeySearch({ resourceType: this.type + '#AUDIT', resourceKey: decodeURIComponent(this.key) }));
+    this.store.dispatch(
+      fetchReferenceDataByKeySearch({
+        resourceType: (this.type + '#AUDIT') as ReferenceDataResourceType,
+        resourceKey: decodeURIComponent(this.key) + '#'
+      })
+    );
   }
 
-  get history$(): Observable<any[]> {
-    // @ts-ignore
-    return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceTypeAudit)));
+  get history$(): Observable<ReferenceDataModelBase[] | undefined> {
+    return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceType)));
   }
 
   get numberOfRecords$(): Observable<number> {

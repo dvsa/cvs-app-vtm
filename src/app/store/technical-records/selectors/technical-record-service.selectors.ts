@@ -7,6 +7,8 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 
 export const vehicleTechRecords = createSelector(getVehicleTechRecordState, state => state.vehicleTechRecords);
 
+export const getSingleVehicleType = createSelector(getVehicleTechRecordState, state => state.vehicleTechRecords[0].techRecord[0].vehicleType);
+
 export const editableVehicleTechRecord = createSelector(getVehicleTechRecordState, state => state.editingTechRecord);
 
 export const editableTechRecord = createSelector(editableVehicleTechRecord, vehicle => vehicle?.techRecord[0]);
@@ -32,9 +34,9 @@ export const selectTechRecord = createSelector(
   selectRouteNestedParams,
   selectUrl,
   (vehicle, { techCreatedAt }, url) => {
-    const lastTwoUrlParts = url?.split('/').slice(-2);
+    const urlParts = url?.split('/');
 
-    if (lastTwoUrlParts?.includes(StatusCodes.PROVISIONAL)) {
+    if (urlParts?.includes(StatusCodes.PROVISIONAL)) {
       return vehicle?.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.PROVISIONAL);
     }
 
@@ -46,3 +48,5 @@ export const selectTechRecord = createSelector(
     return vehicle && TechnicalRecordService.filterTechRecordByStatusCode(vehicle);
   }
 );
+
+export const selectSectionState = createSelector(getVehicleTechRecordState, state => state.sectionState);

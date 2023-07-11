@@ -8,12 +8,12 @@ import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import {
+  clearAllSectionStates,
   createProvisionalTechRecordSuccess,
-  selectVehicleTechnicalRecordsBySystemNumber,
   updateEditingTechRecordCancel,
   updateTechRecordsSuccess
 } from '@store/technical-records';
-import { Subject, take, takeUntil, withLatestFrom } from 'rxjs';
+import { Subject, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-edit-tech-record-button[vehicle][viewableTechRecord]',
@@ -79,6 +79,7 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
       this.toggleEditMode();
       this.errorService.clearErrors();
       this.store.dispatch(updateEditingTechRecordCancel());
+      this.store.dispatch(clearAllSectionStates());
       this.router.navigate(['../'], { relativeTo: this.route });
     }
   }
@@ -86,5 +87,6 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
   submit() {
     this.submitChange.emit();
     this.viewportScroller.scrollToPosition([0, 0]);
+    this.store.dispatch(clearAllSectionStates());
   }
 }
