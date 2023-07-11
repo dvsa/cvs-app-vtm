@@ -55,7 +55,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.2",
     "ngrx-store-localstorage": "^15.0.0",
-    "rxjs": "^7.8.0",
+    "rxjs": "^7.8.1",
     "tslib": "^2.5.0",
     "uuid": "^9.0.0",
     "validate-govuk-date": "^1.0.2",
