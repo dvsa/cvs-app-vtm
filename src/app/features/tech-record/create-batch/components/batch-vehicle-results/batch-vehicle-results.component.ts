@@ -37,6 +37,7 @@ export class BatchVehicleResultsComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.batchTechRecordService.clearBatch();
+    this.technicalRecordService.clearSectionTemplateStates();
     this.destroy$.next();
     this.destroy$.complete();
   }

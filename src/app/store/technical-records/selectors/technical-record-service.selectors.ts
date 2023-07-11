@@ -48,3 +48,5 @@ export const selectTechRecord = createSelector(
     return vehicle && TechnicalRecordService.filterTechRecordByStatusCode(vehicle);
   }
 );
+
+export const selectSectionState = createSelector(getVehicleTechRecordState, state => state.sectionState);

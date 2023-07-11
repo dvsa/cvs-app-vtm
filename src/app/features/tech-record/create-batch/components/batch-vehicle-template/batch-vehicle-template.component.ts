@@ -131,7 +131,7 @@ export class BatchVehicleTemplateComponent {
               );
             }
           });
-
+          this.technicalRecordService.clearSectionTemplateStates();
           this.router.navigate(['batch-results'], { relativeTo: this.route });
         });
     } else {

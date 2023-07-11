@@ -6,7 +6,8 @@ import {
   selectTechRecord,
   selectVehicleTechnicalRecordsBySystemNumber,
   technicalRecordsLoadingState,
-  vehicleTechRecords
+  vehicleTechRecords,
+  selectSectionState
 } from './technical-record-service.selectors';
 
 describe('Tech Record Selectors', () => {
@@ -131,6 +132,14 @@ describe('Tech Record Selectors', () => {
       const state: TechnicalRecordServiceState = { ...initialState, vehicleTechRecords };
       const selectedVehicleType = getSingleVehicleType.projector(state);
       expect(selectedVehicleType).toBe(vehicleTechRecords[0].techRecord[0].vehicleType);
+    });
+  });
+
+  describe('selectSectionState', () => {
+    it('should return the sectionState in the technical record state', () => {
+      const state: TechnicalRecordServiceState = { ...initialState, sectionState: ['TestSection1', 'TestSection2'] };
+      const selectedState = selectSectionState.projector(state);
+      expect(selectedState?.length).toEqual(2);
     });
   });
 });

@@ -22,7 +22,8 @@ let batchOfVehicles: BatchRecord[] = [];
 const mockTechRecordService = (<unknown>{
   editableVehicleTechRecord$: of({ techRecord: [] }),
   updateEditingTechRecord: jest.fn(),
-  createVehicleRecord: jest.fn()
+  createVehicleRecord: jest.fn(),
+  clearSectionTemplateStates: jest.fn()
 }) as TechnicalRecordService;
 
 const mockBatchTechRecordService = (<unknown>{

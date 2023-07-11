@@ -76,6 +76,9 @@ describe('VehicleTechnicalRecordComponent', () => {
             updateEditingTechRecord: () => {},
             get editableTechRecord$() {
               return of(mockVehicleTechnicalRecord().techRecord[2]);
+            },
+            get sectionStates$() {
+              return of(['TEST_SECTION']);
             }
           }
         }
