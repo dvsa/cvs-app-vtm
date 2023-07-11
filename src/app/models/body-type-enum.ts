@@ -15,6 +15,7 @@ export enum BodyTypeDescription {
   LOW_LOADER = 'low loader',
   MINI_BUS = 'mini bus',
   OTHER = 'other',
+  OTHER_TANKER = 'other tanker',
   PETROL_OR_OIL_TANKER = 'petrol/oil tanker',
   REFUSE = 'refuse',
   REFRIGERATED = 'refrigerated',
@@ -46,70 +47,51 @@ export enum BodyTypeCode {
   Y = 'y'
 }
 
-export const bodyTypeMap = new Map<BodyTypeDescription, BodyTypeCode>([
-  [BodyTypeDescription.ARTIC, BodyTypeCode.U],
-  [BodyTypeDescription.ARTICULATED, BodyTypeCode.A],
-  [BodyTypeDescription.BOX, BodyTypeCode.K],
-  [BodyTypeDescription.CAR_TRANSPORTER, BodyTypeCode.Y],
-  [BodyTypeDescription.CONCRETE_MIXER, BodyTypeCode.M],
-  [BodyTypeDescription.CURTAINSIDER, BodyTypeCode.E],
-  [BodyTypeDescription.DOUBLE_DECKER, BodyTypeCode.D],
-  [BodyTypeDescription.FLAT, BodyTypeCode.T],
-  [BodyTypeDescription.LIVESTOCK_CARRIER, BodyTypeCode.I],
-  [BodyTypeDescription.LOW_LOADER, BodyTypeCode.L],
-  [BodyTypeDescription.MINI_BUS, BodyTypeCode.M],
-  [BodyTypeDescription.OTHER, BodyTypeCode.O],
-  [BodyTypeDescription.PETROL_OR_OIL_TANKER, BodyTypeCode.M],
-  [BodyTypeDescription.REFUSE, BodyTypeCode.B],
-  [BodyTypeDescription.REFRIGERATED, BodyTypeCode.R],
-  [BodyTypeDescription.SINGLE_DECKER, BodyTypeCode.S],
-  [BodyTypeDescription.SKELETAL, BodyTypeCode.X],
-  [BodyTypeDescription.SKIP_LOADER, BodyTypeCode.F],
-  [BodyTypeDescription.TIPPER, BodyTypeCode.P],
-  [BodyTypeDescription.TRACTOR, BodyTypeCode.A]
-]);
-
 const commonBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
-  [BodyTypeCode.K, BodyTypeDescription.BOX],
+  [BodyTypeCode.B, BodyTypeDescription.BOX],
+  [BodyTypeCode.C, BodyTypeDescription.REFRIGERATED],
   [BodyTypeCode.D, BodyTypeDescription.DOUBLE_DECKER],
-  [BodyTypeCode.T, BodyTypeDescription.FLAT],
-  [BodyTypeCode.O, BodyTypeDescription.OTHER],
-  [BodyTypeCode.B, BodyTypeDescription.REFUSE],
-  [BodyTypeCode.R, BodyTypeDescription.REFRIGERATED],
-  [BodyTypeCode.S, BodyTypeDescription.SINGLE_DECKER],
-  [BodyTypeCode.X, BodyTypeDescription.SKELETAL],
-  [BodyTypeCode.F, BodyTypeDescription.SKIP_LOADER],
-  [BodyTypeCode.P, BodyTypeDescription.TIPPER]
+  [BodyTypeCode.E, BodyTypeDescription.CURTAINSIDER],
+  [BodyTypeCode.F, BodyTypeDescription.FLAT],
+  [BodyTypeCode.I, BodyTypeDescription.LIVESTOCK_CARRIER],
+  [BodyTypeCode.K, BodyTypeDescription.SKELETAL],
+  [BodyTypeCode.O, BodyTypeDescription.OTHER_TANKER],
+  [BodyTypeCode.P, BodyTypeDescription.PETROL_OR_OIL_TANKER],
+  [BodyTypeCode.S, BodyTypeDescription.SKIP_LOADER],
+  [BodyTypeCode.T, BodyTypeDescription.TIPPER],
+  [BodyTypeCode.X, BodyTypeDescription.OTHER],
+  [BodyTypeCode.Y, BodyTypeDescription.CAR_TRANSPORTER]
 ]);
 
 const psvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
-  ...commonBodyTypeCodeMap.entries(),
   [BodyTypeCode.A, BodyTypeDescription.ARTICULATED],
-  [BodyTypeCode.M, BodyTypeDescription.MINI_BUS]
+  [BodyTypeCode.D, BodyTypeDescription.DOUBLE_DECKER],
+  [BodyTypeCode.M, BodyTypeDescription.MINI_BUS],
+  [BodyTypeCode.S, BodyTypeDescription.SINGLE_DECKER],
+  [BodyTypeCode.O, BodyTypeDescription.OTHER]
 ]);
 
 const hgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   ...commonBodyTypeCodeMap.entries(),
-  [BodyTypeCode.U, BodyTypeDescription.ARTIC],
-  [BodyTypeCode.Y, BodyTypeDescription.CAR_TRANSPORTER],
+  [BodyTypeCode.A, BodyTypeDescription.TRACTOR],
   [BodyTypeCode.M, BodyTypeDescription.CONCRETE_MIXER],
-  [BodyTypeCode.E, BodyTypeDescription.CURTAINSIDER],
-  [BodyTypeCode.I, BodyTypeDescription.LIVESTOCK_CARRIER],
-  [BodyTypeCode.A, BodyTypeDescription.TRACTOR]
+  [BodyTypeCode.R, BodyTypeDescription.REFUSE],
+  [BodyTypeCode.U, BodyTypeDescription.ARTIC]
 ]);
 
 const trlBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   ...commonBodyTypeCodeMap.entries(),
-  [BodyTypeCode.A, BodyTypeDescription.ARTICULATED],
-  [BodyTypeCode.Y, BodyTypeDescription.CAR_TRANSPORTER],
-  [BodyTypeCode.E, BodyTypeDescription.CURTAINSIDER],
-  [BodyTypeCode.I, BodyTypeDescription.LIVESTOCK_CARRIER],
-  [BodyTypeCode.L, BodyTypeDescription.LOW_LOADER],
-  [BodyTypeCode.M, BodyTypeDescription.PETROL_OR_OIL_TANKER]
+  [BodyTypeCode.L, BodyTypeDescription.LOW_LOADER]
 ]);
 
 export const vehicleBodyTypeCodeMap = new Map<VehicleTypes, Map<BodyTypeCode, BodyTypeDescription>>([
   [VehicleTypes.PSV, psvBodyTypeCodeMap],
   [VehicleTypes.HGV, hgvBodyTypeCodeMap],
   [VehicleTypes.TRL, trlBodyTypeCodeMap]
+]);
+
+export const vehicleBodyTypeDescriptionMap = new Map<VehicleTypes, Map<BodyTypeDescription, BodyTypeCode>>([
+  [VehicleTypes.PSV, new Map([...psvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
+  [VehicleTypes.HGV, new Map([...hgvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
+  [VehicleTypes.TRL, new Map([...trlBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))]
 ]);

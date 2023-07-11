@@ -8,17 +8,16 @@ export interface VehicleTechRecordModel {
   techRecord: TechRecordModel[];
 }
 
-export interface postNewVehicleModel {
-  vin: string;
-  primaryVrm?: string;
-  trailerId?: string;
-  techRecord: TechRecordModel[];
+export interface BatchUpdateVehicleModel extends VehicleTechRecordModel {
+  oldVehicleStatus?: StatusCodes | undefined;
 }
 
-export interface PutVehicleTechRecordModel extends Omit<VehicleTechRecordModel, 'vrms'> {
+export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'> {
   primaryVrm?: string;
   secondaryVrms?: string[];
 }
+
+export interface PutVehicleTechRecordModel extends PostNewVehicleModel {}
 
 export interface Vrm {
   vrm: string;
@@ -46,8 +45,15 @@ export enum VehicleTypes {
   MOTORCYCLE = 'motorcycle'
 }
 
+export enum TrailerFormType {
+  TES1 = 'tes1',
+  TES2 = 'tes2'
+}
+
 export enum FuelTypes {
   DIESELPETROL = 'DieselPetrol',
+  DIESEL = 'Diesel',
+  PETROL = 'Petrol',
   HYBRID = 'Hybrid',
   ELECTRIC = 'Electric',
   CNG = 'CNG',

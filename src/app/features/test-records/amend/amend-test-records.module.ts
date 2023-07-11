@@ -6,6 +6,7 @@ import { SharedModule } from '@shared/shared.module';
 import { TestRecordsModule } from '../test-records.module';
 import { AmendTestRecordsRoutingModule } from './amend-test-records-routing.module';
 import { TestAmendmentHistoryComponent } from './components/test-amendment-history/test-amendment-history.component';
+import { AmendTestComponent } from './views/amend-test/amend-test.component';
 import { AmendedTestRecordComponent } from './views/amended-test-record/amended-test-record.component';
 import { ConfirmCancellationComponent } from './views/confirm-cancellation/confirm-cancellation.component';
 import { TestAmendReasonComponent } from './views/test-amend-reason/test-amend-reason.component';
@@ -16,6 +17,7 @@ import { TestTypeSelectWrapperComponent } from './views/test-type-select-wrapper
 
 @NgModule({
   declarations: [
+    AmendTestComponent,
     AmendedTestRecordComponent,
     ConfirmCancellationComponent,
     TestAmendmentHistoryComponent,

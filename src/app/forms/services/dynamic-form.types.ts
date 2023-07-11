@@ -17,6 +17,7 @@ import { State } from '@store/.';
 import { map, Observable } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
+import { Params } from '@angular/router';
 
 export enum FormNodeViewTypes {
   DATE = 'date',
@@ -58,6 +59,7 @@ export enum FormNodeEditTypes {
 }
 
 export enum FormNodeWidth {
+  XXXL = 50,
   XXL = 30,
   XL = 20,
   L = 10,
@@ -102,6 +104,7 @@ export interface FormNode {
   isoDate?: boolean;
   class?: string;
   customId?: string;
+  warning?: string;
 }
 
 export interface FormNodeValidator {
@@ -118,13 +121,14 @@ export interface FormNodeCombinationOptions {
 export interface SubHeadingLink {
   label: string;
   url: string;
+  queryParams?: Params;
 }
 
 export interface CustomControl extends FormControl {
   meta: FormNode;
 }
 
-export interface Params {
+export interface SearchParams {
   systemNumber?: string;
   vin?: string;
   reason?: string;

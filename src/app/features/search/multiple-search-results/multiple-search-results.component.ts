@@ -1,12 +1,13 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
-import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Roles } from '@models/roles.enum';
+import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 
 @Component({
   selector: 'app-multiple-search-results',
@@ -14,12 +15,13 @@ import { Roles } from '@models/roles.enum';
   styleUrls: ['multiple-search-results.component.scss']
 })
 export class MultipleSearchResultsComponent implements OnDestroy {
-  vehicleTechRecords$: Observable<VehicleTechRecordModel[]>;
+  searchResults$: Observable<SearchResult[] | undefined>;
   ngDestroy$ = new Subject();
 
   constructor(
     public globalErrorService: GlobalErrorService,
     private technicalRecordService: TechnicalRecordService,
+    private technicalRecordHttpService: TechnicalRecordHttpService,
     private store: Store,
     private location: Location
   ) {
@@ -30,12 +32,12 @@ export class MultipleSearchResultsComponent implements OnDestroy {
 
         if (searchTerm && Object.values(SEARCH_TYPES).includes(type)) {
           this.globalErrorService.clearErrors();
-          this.technicalRecordService.searchBy(type, searchTerm);
+          this.technicalRecordHttpService.searchBy(type, searchTerm);
         }
       }
     });
 
-    this.vehicleTechRecords$ = this.technicalRecordService.vehicleTechRecords$;
+    this.searchResults$ = this.technicalRecordService.searchResultsWithUniqueSystemNumbers$;
   }
 
   navigateBack() {

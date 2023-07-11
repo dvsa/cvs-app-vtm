@@ -47,8 +47,10 @@ export class DynamicFormService {
     [ValidatorNames.Required]: () => Validators.required,
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
+    [ValidatorNames.ValidateVRMTrailerIdLength]: (args: { sibling: string }) => CustomValidators.validateVRMTrailerIdLength(args.sibling),
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
-    [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued
+    [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued,
+    [ValidatorNames.MustEqualSibling]: (args: { sibling: string }) => CustomValidators.mustEqualSibling(args.sibling)
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
@@ -129,15 +131,11 @@ export class DynamicFormService {
         this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
       } else {
         value.markAsTouched();
-        updateValidity && this.updateValidity(value);
+        updateValidity && value.updateValueAndValidity();
         (value as CustomFormControl).meta?.changeDetection?.detectChanges();
         this.getControlErrors(value, errors);
       }
     });
-  }
-
-  static updateValidity(control: FormControl) {
-    control.updateValueAndValidity({ emitEvent: false });
   }
 
   private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {

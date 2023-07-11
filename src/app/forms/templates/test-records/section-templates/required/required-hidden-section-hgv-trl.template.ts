@@ -96,6 +96,7 @@ export const RequiredSectionHGVTRL: FormNode = {
     {
       name: 'numberOfWheelsDriven',
       type: FormNodeTypes.CONTROL,
+      value: null,
       editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },

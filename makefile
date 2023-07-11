@@ -9,12 +9,12 @@ help:
 
 init: #help Run through dependencies and check
 	git secrets
-	echo "Is this node 16?"
+	echo "Is this node 18?"
 	node -v
 	echo "If so, OK!"
 
 versioncheck:
-	if [ `node -v | cut -c 2-3` -lt 16 ]; then echo "Less than node v16."; exit 1; fi
+	if [ `node -v | cut -c 2-3` -lt 18 ]; then echo "Less than node v18."; exit 1; fi
 
 install: versioncheck #help Install packages
 	npm i
@@ -39,7 +39,7 @@ test: #help Run the unit tests
 	npm run sonar-scanner
 
 e2e: #help Run the e2e tests
-	@echo Not Implemented
+	npm run e2e
 
 plan: #help Plan to run any infra changes
 	@echo Not Implemented

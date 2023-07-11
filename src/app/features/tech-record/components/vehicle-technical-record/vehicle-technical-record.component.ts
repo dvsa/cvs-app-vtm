@@ -45,7 +45,13 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicle).pipe(
+    const hasProvisionalRecord = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
+    const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
+
+    if (isProvisionalUrl && !hasProvisionalRecord) {
+      this.router.navigate(['../'], { relativeTo: this.route });
+    }
+    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$.pipe(
       tap(viewableTechRecord => {
         this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
         this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
@@ -100,6 +106,14 @@ export class VehicleTechnicalRecordComponent implements OnInit {
       default:
         return 'Unknown Vehicle Type';
     }
+  }
+
+  showCreateTestButton(vehicleType: VehicleTypes): boolean {
+    return (
+      !this.isArchived &&
+      !this.isEditing &&
+      (this.isCurrent || vehicleType === VehicleTypes.TRL || vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV)
+    );
   }
 
   createTest(techRecord?: TechRecordModel): void {

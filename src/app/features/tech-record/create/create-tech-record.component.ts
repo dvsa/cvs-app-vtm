@@ -1,5 +1,5 @@
 import { Component, OnChanges } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -9,7 +9,9 @@ import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/servic
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
+import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { firstValueFrom } from 'rxjs';
 
@@ -31,6 +33,7 @@ export class CreateTechRecordComponent implements OnChanges {
     { name: 'main-form', type: FormNodeTypes.GROUP },
     {
       vin: new CustomFormControl({ name: 'input-vin', label: 'Vin', type: FormNodeTypes.CONTROL }, '', [
+        CustomValidators.alphanumeric(),
         Validators.minLength(3),
         Validators.maxLength(21),
         Validators.required
@@ -38,8 +41,7 @@ export class CreateTechRecordComponent implements OnChanges {
       vrmTrm: new CustomFormControl({ name: 'input-vrm-or-trailer-id', label: 'VRM/TRM', type: FormNodeTypes.CONTROL }, '', [
         CustomValidators.alphanumeric(),
         CustomValidators.notZNumber,
-        Validators.maxLength(9),
-        Validators.minLength(1),
+        CustomValidators.validateVRMTrailerIdLength('vehicleType'),
         Validators.required
       ]),
       vehicleStatus: new CustomFormControl(
@@ -67,11 +69,13 @@ export class CreateTechRecordComponent implements OnChanges {
   constructor(
     private globalErrorService: GlobalErrorService,
     private technicalRecordService: TechnicalRecordService,
+    private batchTechRecordService: BatchTechnicalRecordService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store
   ) {
-    this.technicalRecordService.clearBatch();
+    this.batchTechRecordService.clearBatch();
+    this.technicalRecordService.clearSectionTemplateStates();
   }
 
   ngOnChanges(): void {
@@ -93,7 +97,10 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   get vehicleStatusOptions(): MultiOptions {
-    return [{ label: 'Provisional', value: StatusCodes.PROVISIONAL }];
+    return [
+      { label: 'Provisional', value: StatusCodes.PROVISIONAL },
+      { label: 'Current', value: StatusCodes.CURRENT }
+    ];
   }
 
   get checkboxOptions(): MultiOptions {
@@ -137,6 +144,7 @@ export class CreateTechRecordComponent implements OnChanges {
 
     this.technicalRecordService.updateEditingTechRecord(this.vehicle as VehicleTechRecordModel);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.vehicle.techRecord![0].vehicleType);
+    this.technicalRecordService.clearSectionTemplateStates();
     this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
   }
 
@@ -179,7 +187,6 @@ export class CreateTechRecordComponent implements OnChanges {
 
   async isTrailerIdUnique() {
     this.vehicle.trailerId = this.form.value.vrmTrm;
-    this.vehicle.vrms = [{ vrm: this.form.value.vrmTrm, isPrimary: true }];
     const isTrailerIdUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.vehicle.trailerId!, SEARCH_TYPES.TRAILER_ID));
     if (!isTrailerIdUnique) {
       this.globalErrorService.addError({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });

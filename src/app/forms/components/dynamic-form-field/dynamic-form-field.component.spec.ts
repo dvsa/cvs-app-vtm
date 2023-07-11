@@ -9,6 +9,7 @@ import { TestStationsService } from '@services/test-stations/test-stations.servi
 import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { DynamicFormFieldComponent } from './dynamic-form-field.component';
+import { UserService } from '@services/user-service/user-service';
 
 describe('DynamicFormFieldComponent', () => {
   let component: DynamicFormFieldComponent;
@@ -19,7 +20,12 @@ describe('DynamicFormFieldComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [DynamicFormFieldComponent],
       imports: [FormsModule, HttpClientTestingModule, ReactiveFormsModule],
-      providers: [ReferenceDataService, TestStationsService, provideMockStore({ initialState: initialAppState })]
+      providers: [
+        provideMockStore({ initialState: initialAppState }),
+        ReferenceDataService,
+        TestStationsService,
+        { provide: UserService, useValue: {} }
+      ]
     }).compileComponents();
     service = TestBed.inject(ReferenceDataService);
   });

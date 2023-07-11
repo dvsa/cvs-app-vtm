@@ -28,7 +28,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
       switchMap(techRecord => {
         const { vin, vrms, systemNumber, trailerId } = techRecord!;
         const vrm = vrms.find(vrm => vrm.isPrimary);
-        return this.techRecordService.viewableTechRecord$(techRecord!).pipe(
+        return this.techRecordService.viewableTechRecord$.pipe(
           withLatestFrom(this.userService.user$),
           map(([viewableTechRecord, user]) => {
             const now = new Date();
@@ -38,6 +38,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               trailerId,
               systemNumber,
               vehicleType: viewableTechRecord?.vehicleType,
+              statusCode: viewableTechRecord?.statusCode,
               testResultId: uuidv4(),
               euVehicleCategory: viewableTechRecord?.euVehicleCategory ?? null,
               vehicleSize: viewableTechRecord?.vehicleSize,

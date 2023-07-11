@@ -10,7 +10,7 @@ This is used by the DVSA staff to create and update technical records & test res
 
 Prerequisites:
 
-- Node 16
+- Node 18
 - Git Secrets
 
 ### Using Make

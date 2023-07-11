@@ -4,6 +4,7 @@ import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FrameDescriptions } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { CouplingTypeOptions } from '@models/coupling-type-enum';
 
 export const TrlTechRecordTemplate: FormNode = {
   name: 'techRecordSummary',
@@ -119,8 +120,10 @@ export const TrlTechRecordTemplate: FormNode = {
       name: 'couplingType',
       label: 'Coupling type (optional)',
       value: '',
-      width: FormNodeWidth.M,
+      width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.SELECT,
+      options: CouplingTypeOptions,
       validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
       class: 'flex--half'
     },
@@ -168,7 +171,9 @@ export const TrlTechRecordTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories).filter(option => option.value !== EuVehicleCategories.O1),
+      options: getOptionsFromEnum(EuVehicleCategories).filter(
+        option => option.value !== EuVehicleCategories.O1 && option.value !== EuVehicleCategories.O2
+      ),
       width: FormNodeWidth.S
     },
     {

@@ -23,6 +23,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   @Input() width?: FormNodeWidth;
   @Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
   @Input() noBottomMargin = false;
+  @Input() warning?: string | null = null;
 
   public onChange = (event: any) => {};
   public onTouched = () => {};

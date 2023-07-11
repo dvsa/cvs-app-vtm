@@ -48,7 +48,7 @@ describe('TechRecordTitleComponent', () => {
   describe('the VRM fields', () => {
     it('should show primary VRM for current record', () => {
       const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
-      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockRecord));
       const mockVehicle = {
         vrms: [
           { vrm: 'TESTVRM', isPrimary: true },
@@ -68,7 +68,7 @@ describe('TechRecordTitleComponent', () => {
 
     it('should show the newest (last) secondary VRM', () => {
       const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
-      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockRecord));
       const mockVehicle = {
         vrms: [
           { vrm: 'TESTVRM6', isPrimary: true },
@@ -95,7 +95,7 @@ describe('TechRecordTitleComponent', () => {
     });
     it('should not create previous-vrm-span if no secondary vrm exists', () => {
       const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
-      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockRecord));
       const mockVehicle = {
         vrms: [{ vrm: 'TESTVRM', isPrimary: true }],
         vin: 'testvin',
@@ -111,7 +111,7 @@ describe('TechRecordTitleComponent', () => {
     });
     it('should show historicPrimaryVrm for an archived record', () => {
       const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
-      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockRecord));
       const mockVehicle = {
         vrms: [
           { vrm: 'TESTVRM', isPrimary: true },
@@ -132,7 +132,7 @@ describe('TechRecordTitleComponent', () => {
     });
     it('should show historicSecondaryVrm for an archived record', () => {
       const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
-      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockRecord));
       const mockVehicle = {
         vrms: [
           { vrm: 'TESTVRM3', isPrimary: true },
@@ -160,7 +160,7 @@ describe('TechRecordTitleComponent', () => {
   describe('trailer ID', () => {
     it('shows a trailer ID instead of VRM when vehicle type is a trailer', () => {
       const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
-      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockRecord));
       const mockVehicle = {
         trailerId: 'testId',
         techRecord: [mockRecord],
@@ -176,9 +176,11 @@ describe('TechRecordTitleComponent', () => {
       expect(trailerIdField.nativeElement.textContent).toContain('TestId');
     });
 
-    it('does not show secondary VRMs for small trailer', () => {
+    const smallTrailerEuVehicleCategories = [EuVehicleCategories.O1, EuVehicleCategories.O2];
+
+    it.each(smallTrailerEuVehicleCategories)('does not show secondary VRMs for small trailer', euVehicleCategory => {
       const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
-      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$').mockReturnValue(of(mockRecord));
+      const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockRecord));
       const mockVehicle = {
         trailerId: 'testId',
         techRecord: [mockRecord],
@@ -186,7 +188,7 @@ describe('TechRecordTitleComponent', () => {
         vin: 'testvin',
         systemNumber: 'testNumber'
       };
-      mockVehicle.techRecord[0].euVehicleCategory = EuVehicleCategories.O1;
+      mockVehicle.techRecord[0].euVehicleCategory = euVehicleCategory;
       component.vehicle = mockVehicle;
       store.overrideSelector(editableTechRecord, mockRecord);
       fixture.detectChanges();

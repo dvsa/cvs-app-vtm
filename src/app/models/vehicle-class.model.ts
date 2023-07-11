@@ -3,7 +3,7 @@ export interface VehicleClass {
   description?: VehicleClass.DescriptionEnum;
 }
 export namespace VehicleClass {
-  export type CodeEnum = '2' | 'n' | 's' | '1' | 't' | 'l' | '3' | 'v' | '4' | '7' | '5' | 'p' | 'u';
+  export type CodeEnum = '2' | 'n' | 's' | '1' | 't' | 'l' | '3' | 'v' | '4' | '7' | '5';
   export const CodeEnum = {
     _2: '2' as CodeEnum,
     N: 'n' as CodeEnum,
@@ -15,9 +15,7 @@ export namespace VehicleClass {
     V: 'v' as CodeEnum,
     _4: '4' as CodeEnum,
     _7: '7' as CodeEnum,
-    _5: '5' as CodeEnum,
-    P: 'p' as CodeEnum,
-    U: 'u' as CodeEnum
+    _5: '5' as CodeEnum
   };
   export type DescriptionEnum =
     | 'motorbikes over 200cc or with a sidecar'
@@ -30,9 +28,7 @@ export namespace VehicleClass {
     | 'heavy goods vehicle'
     | 'MOT class 4'
     | 'MOT class 7'
-    | 'MOT class 5'
-    | 'PSV of unknown or unspecified size'
-    | 'Not Known';
+    | 'MOT class 5';
   export const DescriptionEnum = {
     MotorbikesOver200ccOrWithASidecar: 'motorbikes over 200cc or with a sidecar' as DescriptionEnum,
     NotApplicable: 'not applicable' as DescriptionEnum,
@@ -44,8 +40,6 @@ export namespace VehicleClass {
     HeavyGoodsVehicle: 'heavy goods vehicle' as DescriptionEnum,
     MOTClass4: 'MOT class 4' as DescriptionEnum,
     MOTClass7: 'MOT class 7' as DescriptionEnum,
-    MOTClass5: 'MOT class 5' as DescriptionEnum,
-    PSVOfUnknownOrUnspecifiedSize: 'PSV of unknown or unspecified size' as DescriptionEnum,
-    NotKnown: 'Not Known' as DescriptionEnum
+    MOTClass5: 'MOT class 5' as DescriptionEnum
   };
 }

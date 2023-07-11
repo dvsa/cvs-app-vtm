@@ -47,7 +47,8 @@ export const ContingencyTestSectionSpecialistGroup3And4: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' }
+                { value: 'fail', label: 'Fail' },
+                { value: 'prs', label: 'PRS' }
               ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: ['pass'] } },

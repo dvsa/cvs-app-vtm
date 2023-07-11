@@ -32,6 +32,16 @@ describe('RefDataDecodePipe', () => {
           },
           loading: false
         },
+        [(ReferenceDataResourceType.CountryOfRegistration + '#AUDIT') as ReferenceDataResourceType]: {
+          searchReturn: [
+            {
+              resourceType: (ReferenceDataResourceType.CountryOfRegistration + '#AUDIT') as ReferenceDataResourceType,
+              resourceKey: 'a',
+              description: 'Austria'
+            }
+          ],
+          loading: false
+        },
         [ReferenceDataResourceType.Tyres]: {
           ids: ['101'],
           entities: {
@@ -57,6 +67,15 @@ describe('RefDataDecodePipe', () => {
 
     pipe.transform('gb', ReferenceDataResourceType.CountryOfRegistration).subscribe(val => {
       expect(val).toBe('Great Britain');
+      done();
+    });
+  });
+
+  it('should return description of deleted item', done => {
+    const pipe = new RefDataDecodePipe(store);
+
+    pipe.transform('a', ReferenceDataResourceType.CountryOfRegistration).subscribe(val => {
+      expect(val).toBe('Austria');
       done();
     });
   });

@@ -9,7 +9,8 @@ import { CustomValidators } from '@forms/validators/custom-validators';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
@@ -92,7 +93,7 @@ export class AmendVrmComponent implements OnDestroy {
   }
 
   get vehicleType(): VehicleTypes | undefined {
-    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord);
+    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
   }
 
   get makeAndModel(): string {

@@ -70,7 +70,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
         }
       });
 
-    this.optionsService.loadOptions(ReferenceDataResourceType.Brake);
+    this.optionsService.loadOptions(ReferenceDataResourceType.Brakes);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -102,7 +102,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get brakeCodeOptions$(): Observable<MultiOptions> {
-    return this.optionsService.getOptions(ReferenceDataResourceType.Brake) as Observable<MultiOptions>;
+    return this.optionsService.getOptions(ReferenceDataResourceType.Brakes) as Observable<MultiOptions>;
   }
 
   get editTypes(): typeof FormNodeEditTypes {

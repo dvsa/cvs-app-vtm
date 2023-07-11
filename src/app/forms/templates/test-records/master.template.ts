@@ -539,6 +539,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: SpecialistRequiredSectionLgvCarSmallTrl,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup5,
+      customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection

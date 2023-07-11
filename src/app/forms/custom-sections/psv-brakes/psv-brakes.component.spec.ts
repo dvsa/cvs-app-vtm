@@ -9,6 +9,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
 import { PsvBrakesComponent } from './psv-brakes.component';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { UserService } from '@services/user-service/user-service';
 
 describe('PsvBrakesComponent', () => {
   let component: PsvBrakesComponent;
@@ -18,7 +20,12 @@ describe('PsvBrakesComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [PsvBrakesComponent],
       imports: [DynamicFormsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule],
-      providers: [MultiOptionsService, provideMockStore({ initialState: initialAppState })]
+      providers: [
+        MultiOptionsService,
+        provideMockStore({ initialState: initialAppState }),
+        ReferenceDataService,
+        { provide: UserService, useValue: {} }
+      ]
     }).compileComponents();
   });
 

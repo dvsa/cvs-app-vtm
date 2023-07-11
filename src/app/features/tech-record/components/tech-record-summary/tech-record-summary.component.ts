@@ -23,15 +23,12 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { EuVehicleCategories, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
+import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { editableTechRecord } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep, mergeWith } from 'lodash';
-import { map, Subject, takeUntil } from 'rxjs';
+import { map, Observable, Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary[techRecord]',
@@ -65,14 +62,13 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private axlesService: AxlesService,
     private errorService: GlobalErrorService,
     private referenceDataService: ReferenceDataService,
-    private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {}
 
   ngOnInit(): void {
-    this.store
+    let isOnInit = true;
+    this.technicalRecordService.editableTechRecord$
       .pipe(
-        select(editableTechRecord),
         //Need to check that the editing tech record has more than just reason for creation on and is the full object.
         map(techRecord => {
           if (techRecord && Object.keys(techRecord).length > 1) {
@@ -85,7 +81,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
               this.techRecord.axles = axles;
             }
 
-            this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
+            isOnInit && this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
 
             return { ...cloneDeep(this.techRecord), reasonForCreation: '' };
           }
@@ -98,6 +94,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
+
+    isOnInit = false;
   }
 
   ngOnDestroy(): void {
@@ -105,27 +103,34 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  get vehicleTemplates(): Array<FormNode> {
-    const type =
-      this.techRecordCalculated.vehicleType === VehicleTypes.TRL && this.techRecordCalculated.euVehicleCategory === EuVehicleCategories.O1
-        ? VehicleTypes.SMALL_TRL
-        : this.techRecordCalculated.vehicleType;
+  get vehicleType() {
+    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated);
+  }
 
-    return vehicleTemplateMap.get(type)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? [];
+  get vehicleTemplates(): Array<FormNode> {
+    return (
+      vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
+    );
+  }
+
+  get sectionTemplatesState$() {
+    return this.technicalRecordService.sectionStates$;
+  }
+
+  isSectionExpanded$(sectionName: string | number) {
+    return this.sectionTemplatesState$?.pipe(map(sections => sections?.includes(sectionName)));
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
     const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form];
 
-    switch (this.techRecordCalculated.vehicleType) {
+    switch (this.vehicleType) {
       case VehicleTypes.PSV:
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
         return commonCustomSections;
       case VehicleTypes.TRL:
-        return this.techRecordCalculated.euVehicleCategory !== EuVehicleCategories.O1
-          ? [...commonCustomSections, this.trlBrakes!.form, this.letters!.form]
-          : [];
+        return [...commonCustomSections, this.trlBrakes!.form, this.letters!.form];
       default:
         return [];
     }

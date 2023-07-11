@@ -1,6 +1,6 @@
 const { pathsToModuleNameMapper } = require('ts-jest');
 const { compilerOptions } = require('./tsconfig.json');
-
+const { crypto } = require("crypto");
 module.exports = {
   preset: 'jest-preset-angular',
   roots: ['<rootDir>/src/'],
@@ -10,10 +10,10 @@ module.exports = {
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
   coverageDirectory: 'coverage/cvs-app-vtm',
   testPathIgnorePatterns: ['/node_modules/', '/archive/', '/dist/'],
-  coveragePathIgnorePatterns: ['/src/mocks/'],
+  coveragePathIgnorePatterns: ['/src/mocks/', '/src/app/api/'],
   testResultsProcessor: 'jest-sonar-reporter',
   globals: {
-    crypto: require("crypto"),
+    crypto: crypto,
   },
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
     prefix: '<rootDir>/'

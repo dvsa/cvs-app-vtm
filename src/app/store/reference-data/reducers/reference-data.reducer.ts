@@ -1,9 +1,16 @@
-import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
+import cloneDeep from 'lodash.clonedeep';
 import {
   addSearchInformation,
+  amendReferenceDataItemSuccess,
+  createReferenceDataItemSuccess,
+  deleteReferenceDataItemSuccess,
   fetchReferenceData,
+  fetchReferenceDataAudit,
+  fetchReferenceDataAuditFailed,
+  fetchReferenceDataAuditSuccess,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
   fetchReferenceDataByKeySearch,
@@ -27,14 +34,14 @@ interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase> {
   loading: boolean;
 }
 
-export interface ReferenceDataEntityStateTyres extends EntityState<ReferenceDataModelBase> {
+export interface ReferenceDataEntityStateSearch extends EntityState<ReferenceDataModelBase> {
   loading: boolean;
-  searchReturn: ReferenceDataTyre[] | null;
+  searchReturn: ReferenceDataModelBase[] | null;
   term: string | null;
   filter: string | null;
 }
 
-export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState | ReferenceDataEntityStateTyres>;
+export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState | ReferenceDataEntityStateSearch>;
 
 function createAdapter() {
   return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey as any });
@@ -45,35 +52,39 @@ function getInitialState(resourceType: ReferenceDataResourceType) {
 }
 
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
-  [ReferenceDataResourceType.Brake]: createAdapter(),
+  [ReferenceDataResourceType.Brakes]: createAdapter(),
   [ReferenceDataResourceType.CountryOfRegistration]: createAdapter(),
   [ReferenceDataResourceType.HgvMake]: createAdapter(),
   [ReferenceDataResourceType.PsvMake]: createAdapter(),
   [ReferenceDataResourceType.ReasonsForAbandoningHgv]: createAdapter(),
   [ReferenceDataResourceType.ReasonsForAbandoningPsv]: createAdapter(),
   [ReferenceDataResourceType.ReasonsForAbandoningTrl]: createAdapter(),
+  [ReferenceDataResourceType.ReferenceDataAdminType]: createAdapter(),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
-  [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.TirReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.TrlMake]: createAdapter(),
   [ReferenceDataResourceType.Tyres]: createAdapter(),
-  [ReferenceDataResourceType.User]: createAdapter()
+  [ReferenceDataResourceType.User]: createAdapter(),
+  [ReferenceDataResourceType.TyreLoadIndex]: createAdapter()
 };
 
 //IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching resourceType
 
 export const initialReferenceDataState: ReferenceDataState = {
-  [ReferenceDataResourceType.Brake]: getInitialState(ReferenceDataResourceType.Brake),
+  [ReferenceDataResourceType.Brakes]: getInitialState(ReferenceDataResourceType.Brakes),
   [ReferenceDataResourceType.CountryOfRegistration]: getInitialState(ReferenceDataResourceType.CountryOfRegistration),
   [ReferenceDataResourceType.HgvMake]: getInitialState(ReferenceDataResourceType.HgvMake),
   [ReferenceDataResourceType.PsvMake]: getInitialState(ReferenceDataResourceType.PsvMake),
   [ReferenceDataResourceType.ReasonsForAbandoningTrl]: getInitialState(ReferenceDataResourceType.ReasonsForAbandoningTrl),
   [ReferenceDataResourceType.ReasonsForAbandoningHgv]: getInitialState(ReferenceDataResourceType.ReasonsForAbandoningHgv),
   [ReferenceDataResourceType.ReasonsForAbandoningPsv]: getInitialState(ReferenceDataResourceType.ReasonsForAbandoningPsv),
+  [ReferenceDataResourceType.ReferenceDataAdminType]: getInitialState(ReferenceDataResourceType.ReferenceDataAdminType),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: getInitialState(ReferenceDataResourceType.SpecialistReasonsForAbandoning),
-  [ReferenceDataResourceType.TIRReasonsForAbandoning]: getInitialState(ReferenceDataResourceType.TIRReasonsForAbandoning),
+  [ReferenceDataResourceType.TirReasonsForAbandoning]: getInitialState(ReferenceDataResourceType.TirReasonsForAbandoning),
   [ReferenceDataResourceType.TrlMake]: getInitialState(ReferenceDataResourceType.TrlMake),
   [ReferenceDataResourceType.Tyres]: getInitialState(ReferenceDataResourceType.Tyres),
-  [ReferenceDataResourceType.User]: getInitialState(ReferenceDataResourceType.User)
+  [ReferenceDataResourceType.User]: getInitialState(ReferenceDataResourceType.User),
+  [ReferenceDataResourceType.TyreLoadIndex]: getInitialState(ReferenceDataResourceType.TyreLoadIndex)
 };
 
 export const referenceDataReducer = createReducer(
@@ -83,10 +94,19 @@ export const referenceDataReducer = createReducer(
     const { resourceType, payload, paginated } = action;
     return {
       ...state,
-      [resourceType]: { ...resourceTypeAdapters[resourceType].upsertMany(payload, state[resourceType]), loading: paginated }
+      [resourceType]: { ...resourceTypeAdapters[resourceType]?.upsertMany(payload, state[resourceType]), loading: paginated }
     };
   }),
   on(fetchReferenceDataFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
+  on(fetchReferenceDataAudit, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: true } })),
+  on(fetchReferenceDataAuditSuccess, (state, action) => {
+    const { resourceType, payload, paginated } = action;
+    return {
+      ...state,
+      [resourceType]: { ...state[action.resourceType], searchReturn: payload, loading: paginated }
+    };
+  }),
+  on(fetchReferenceDataAuditFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
   on(fetchReferenceDataByKey, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: true } })),
   on(fetchReferenceDataByKeySuccess, (state, action) => {
     const { resourceType, payload } = action;
@@ -130,6 +150,35 @@ export const referenceDataReducer = createReducer(
     ...state,
     [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null, filter: null, term: null }
   })),
+  on(deleteReferenceDataItemSuccess, (state, action) => {
+    const { resourceType, resourceKey } = action;
+    const currentState = cloneDeep(state);
+
+    currentState[resourceType] = resourceTypeAdapters[resourceType].removeOne(resourceKey as string, currentState[resourceType]);
+
+    return currentState;
+  }),
+  on(amendReferenceDataItemSuccess, (state, action) => {
+    const { result } = action;
+    const { resourceKey, resourceType } = result;
+    const currentState = cloneDeep(state);
+
+    currentState[resourceType] = resourceTypeAdapters[resourceType].updateOne(
+      { id: resourceKey.toString(), changes: result },
+      currentState[resourceType]
+    );
+
+    return currentState;
+  }),
+  on(createReferenceDataItemSuccess, (state, action) => {
+    const { result } = action;
+    const { resourceType } = result;
+    const currentState = cloneDeep(state);
+
+    currentState[resourceType] = resourceTypeAdapters[resourceType].addOne(result, currentState[resourceType]);
+
+    return currentState;
+  }),
   on(addSearchInformation, (state, action) => ({
     ...state,
     [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], filter: action.filter, term: action.term }

@@ -1,0 +1,23 @@
+<form [formGroup]="form">
+  <h1 class="govuk-heading-l title">Select the vehicle type to create a batch</h1>
+
+  <app-radio-group
+    #vehicleType
+    name="vehicle-type"
+    label="Vehicle type"
+    formControlName="vehicleType"
+    [options]="vehicleTypeOptions"
+  ></app-radio-group>
+
+  <app-radio-group
+    *ngIf="vehicleType.value === 'trl'"
+    name="tes1-tes2"
+    label="Trailer form type"
+    formControlName="tes1Tes2"
+    [options]="tes1Tes2Options"
+  ></app-radio-group>
+
+  <app-button id="create-batch-continue" (clicked)="handleSubmit(vehicleType.value)">Continue</app-button>
+
+  <app-button design="link" data-module="govuk-button" (clicked)="cancel()">Back</app-button>
+</form>
