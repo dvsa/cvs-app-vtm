@@ -16,6 +16,7 @@ export class AccordionControlComponent {
     value: QueryList<AccordionComponent> | undefined
   ) {
     this._accordions = value;
+    if (this._accordions?.length === this.sectionState?.length) this.isExpanded = true;
     this.isExpanded ? this.toggleAccordions() : this.expandAccordions();
   }
 
