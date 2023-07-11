@@ -42,7 +42,10 @@ import {
   updateTechRecordsSuccess,
   updateVin,
   updateVinSuccess,
-  updateVinFailure
+  updateVinFailure,
+  addSectionState,
+  removeSectionState,
+  clearAllSectionStates
 } from '../actions/technical-record-service.actions';
 import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
 
@@ -54,12 +57,14 @@ export interface TechnicalRecordServiceState {
   editingTechRecord?: VehicleTechRecordModel;
   error?: unknown;
   batchVehicles: BatchRecords;
+  sectionState?: (string | number)[];
 }
 
 export const initialState: TechnicalRecordServiceState = {
   vehicleTechRecords: [],
   batchVehicles: initialBatchState,
-  loading: false
+  loading: false,
+  sectionState: []
 };
 
 export const getVehicleTechRecordState = createFeatureSelector<TechnicalRecordServiceState>(STORE_FEATURE_TECHNICAL_RECORDS_KEY);
@@ -105,6 +110,10 @@ export const vehicleTechRecordReducer = createReducer(
   on(addAxle, state => handleAddAxle(state)),
   on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
 
+  on(addSectionState, (state, action) => handleAddSection(state, action)),
+  on(removeSectionState, (state, action) => handleRemoveSection(state, action)),
+  on(clearAllSectionStates, state => ({ ...state, sectionState: [] })),
+
   on(updateVin, defaultArgs),
   on(updateVinSuccess, state => ({ ...state, loading: false })),
   on(updateVinFailure, updateFailureArgs),
@@ -148,7 +157,7 @@ function handleUpdateBrakeForces(
   const newState = cloneDeep(state);
   if (!newState.editingTechRecord) return newState;
 
-  if(data.grossLadenWeight) {
+  if (data.grossLadenWeight) {
     const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
 
     newState.editingTechRecord.techRecord[0].brakes = {
@@ -159,10 +168,10 @@ function handleUpdateBrakeForces(
         secondaryBrakeForceA: Math.round((data.grossLadenWeight * 22.5) / 100),
         parkingBrakeForceA: Math.round((data.grossLadenWeight * 45) / 100)
       }
-    }
+    };
   }
 
-  if(data.grossKerbWeight) {
+  if (data.grossKerbWeight) {
     newState.editingTechRecord.techRecord[0].brakes = {
       ...newState.editingTechRecord?.techRecord[0].brakes,
       brakeForceWheelsUpToHalfLocked: {
@@ -170,7 +179,7 @@ function handleUpdateBrakeForces(
         secondaryBrakeForceB: Math.round((data.grossKerbWeight * 25) / 100),
         parkingBrakeForceB: Math.round((data.grossKerbWeight * 50) / 100)
       }
-    }
+    };
   }
   return newState;
 }
@@ -253,4 +262,16 @@ function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: n
   }
 
   return newState;
+}
+
+function handleAddSection(state: TechnicalRecordServiceState, action: { section: string | number }) {
+  const newState = cloneDeep(state);
+  if (newState.sectionState?.includes(action.section)) return newState;
+  return { ...newState, sectionState: newState.sectionState?.concat(action.section) };
+}
+
+function handleRemoveSection(state: TechnicalRecordServiceState, action: { section: string | number }) {
+  const newState = cloneDeep(state);
+  if (!newState.sectionState?.includes(action.section)) return newState;
+  return { ...newState, sectionState: newState.sectionState?.filter(section => section !== action.section) };
 }

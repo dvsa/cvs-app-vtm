@@ -87,6 +87,14 @@ export class ReferenceDataService extends ReferenceDataApiService {
     return this.referenceResourceTypeGet(resourceType, paginationToken, 'body');
   }
 
+  fetchReferenceDataAudit(resourceType: ReferenceDataResourceType, paginationToken?: string): Observable<ReferenceDataApiResponse> {
+    if (!resourceType) {
+      return throwError(() => new Error('Reference data resourceType is required'));
+    }
+
+    return this.referenceResourceTypeGet(resourceType, paginationToken, 'body');
+  }
+
   fetchReferenceDataByKey(resourceType: ReferenceDataResourceType, resourceKey: string | number): Observable<ReferenceDataItemApiResponse> {
     return this.referenceResourceTypeResourceKeyGet(resourceType, resourceKey, 'body');
   }

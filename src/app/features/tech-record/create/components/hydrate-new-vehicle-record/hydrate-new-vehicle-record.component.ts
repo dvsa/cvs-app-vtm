@@ -98,7 +98,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
       )
       .subscribe(([vehicleList, isBatch]) => {
         vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle })));
-
+        this.technicalRecordService.clearSectionTemplateStates();
         if (isBatch) this.navigate();
       });
   }

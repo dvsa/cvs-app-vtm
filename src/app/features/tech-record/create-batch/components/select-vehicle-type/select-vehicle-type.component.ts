@@ -45,6 +45,7 @@ export class SelectVehicleTypeComponent {
     private router: Router
   ) {
     this.batchTechRecordService.clearBatch();
+    this.trs.clearSectionTemplateStates();
   }
 
   get isFormValid(): boolean {

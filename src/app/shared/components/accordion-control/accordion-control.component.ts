@@ -16,12 +16,13 @@ export class AccordionControlComponent {
     value: QueryList<AccordionComponent> | undefined
   ) {
     this._accordions = value;
-    this.toggleAccordions();
+    this.isExpanded ? this.toggleAccordions() : this.expandAccordions();
   }
 
   @Input() isExpanded = false;
   @Input() layout?: string;
   @Input() class: string = '';
+  @Input() sectionState: (string | number)[] | undefined | null = [];
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -35,9 +36,15 @@ export class AccordionControlComponent {
     this.cdr.markForCheck();
   }
 
+  private expandAccordions(): void {
+    if (this.accordions && this.sectionState && this.sectionState.length > 0) {
+      this.accordions?.forEach(a => (this.sectionState?.includes(a.id) ? a.open(a.id) : a.close(a.id)));
+    }
+  }
+
   private toggleAccordions(): void {
     if (this.accordions) {
-      this.accordions.forEach(a => (this.isExpanded ? a.open() : a.close()));
+      this.accordions.forEach(a => (this.isExpanded ? a.open(a.id) : a.close(a.id)));
     }
   }
 }
