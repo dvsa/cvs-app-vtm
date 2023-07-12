@@ -13,31 +13,48 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const repos = (await github.rest.pulls.list({
+            const pullRequests = (await github.rest.pulls.list({
                 ...context.repo
             })).data
-            const promises = repos.map(repo => {
-                const { number } = repo
-                return github.rest.pulls.get({
-                    ...context.repo,
-                    pull_number: number
-                })
-            })
-            const prs = await Promise.allSettled(promises)
-            prs.forEach(pr => {
-                const data = pr.value.data
-                if (data.mergeable === false) {
-                    github.rest.issues.addLabels({
-                        ...context.repo,
-                        issue_number: data.number,
-                        labels: ["merge conflict"]
-                    })
-                } else if (data.mergeable === true 
-                    && data.labels.some(label => label.name === "merge conflict")) {
-                            github.rest.issues.removeLabel({
-                                ...context.repo,
-                                issue_number: data.number,
-                                name: "merge conflict"
-                            })
-                    }
-            })
+
+            const addMergeConflictTag = async (pullRequests) => {
+              const promises = pullRequests.map(pr => {
+                  const { number } = pr
+                  return github.rest.pulls.get({
+                      ...context.repo,
+                      pull_number: number
+                  })
+              })
+
+              const prs = await Promise.allSettled(promises)
+              const prsAwaitingCheck = []
+
+              prs.forEach(pr => {
+                  const data = pr.value.data
+                  if (data.mergeable === false) {
+                      github.rest.issues.addLabels({
+                          ...context.repo,
+                          issue_number: data.number,
+                          labels: ["merge conflict"]
+                      })
+                  } else if (data.mergeable === true 
+                      && data.labels.some(label => label.name === "merge conflict")) {
+                          github.rest.issues.removeLabel({
+                              ...context.repo,
+                              issue_number: data.number,
+                              name: "merge conflict"
+                          })
+                  } else if (data.mergeable === null) {
+                    prsAwaitingCheck.push({...data})
+                  }
+              })
+
+              if (prsAwaitingCheck.length) {
+                console.log("Some PRs are still waiting to calculate status...")
+                await new Promise(resolve => setTimeout(resolve, 5000))
+                addMergeConflictTag(prsAwaitingCheck)
+              }
+
+            }
+
+            await addMergeConflictTag(pullRequests)
