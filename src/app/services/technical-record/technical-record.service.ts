@@ -186,7 +186,7 @@ export class TechnicalRecordService {
   get sectionStates$(): Observable<(string | number)[] | undefined> {
     return this.store.pipe(select(selectSectionState));
   }
-  
+
   clearSectionTemplateStates() {
     this.store.dispatch(clearAllSectionStates());
   }
