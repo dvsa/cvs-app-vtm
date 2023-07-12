@@ -1,9 +1,9 @@
 name: Tag Merge Conflicts
 on:
   push:
-    branches: ['main']
+    branches: ['develop']
   pull_request:
-    branches: ['main']
+    branches: ['develop']
 jobs:
   merge-conflicts:
     runs-on: ubuntu-latest
