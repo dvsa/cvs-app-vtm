@@ -21,7 +21,7 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
   @Input() vehicle!: VehicleTechRecordModel;
 
-  currentTechRecord$!: Observable<TechRecordModel | undefined>;
+  currentTechRecord$: Observable<TechRecordModel | undefined>;
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
 
@@ -42,6 +42,13 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
     this.editingReason = this.activatedRoute.snapshot.data['reason'];
+    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$.pipe(
+      tap(viewableTechRecord => {
+        console.log(viewableTechRecord);
+        this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
+        this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
+      })
+    );
   }
 
   ngOnInit(): void {
@@ -51,12 +58,6 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     if (isProvisionalUrl && !hasProvisionalRecord) {
       this.router.navigate(['../'], { relativeTo: this.route });
     }
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$.pipe(
-      tap(viewableTechRecord => {
-        this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
-        this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
-      })
-    );
   }
 
   get currentVrm(): string | undefined {

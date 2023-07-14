@@ -30,11 +30,6 @@
     </div>
   </div>
   <div class="govuk-grid-column-two-thirds">
-    <app-tech-record-summary
-      [techRecord]="currentTechRecord"
-      [isEditing]="isEditing"
-      (isFormDirty)="isDirty = $event"
-      (isFormInvalid)="isInvalid = $event"
-    ></app-tech-record-summary>
+    <app-tech-record-summary (isFormDirty)="isDirty = $event" (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
   </div>
 </div>

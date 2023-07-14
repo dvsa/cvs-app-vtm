@@ -26,12 +26,14 @@ import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { updateEditingTechRecord } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
-import { map, Observable, Subject, take, takeUntil } from 'rxjs';
+import { Subject, map, take, takeUntil, tap, withLatestFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-tech-record-summary[techRecord]',
+  selector: 'app-tech-record-summary',
   templateUrl: './tech-record-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./tech-record-summary.component.scss']
@@ -46,7 +48,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
   @ViewChild(LettersComponent) letters!: LettersComponent;
 
-  @Input() techRecord!: TechRecordModel;
   @Input() isEditing: boolean = false;
 
   @Output() isFormDirty = new EventEmitter<boolean>();
@@ -66,25 +67,17 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    let isOnInit = true;
-    this.technicalRecordService.editableTechRecord$
+    console.log('fo');
+    this.technicalRecordService.viewableTechRecord$
       .pipe(
-        //Need to check that the editing tech record has more than just reason for creation on and is the full object.
-        map(techRecord => {
-          if (techRecord && Object.keys(techRecord).length > 1) {
-            return cloneDeep(techRecord);
-          } else {
-            if (this.techRecord.vehicleType === VehicleTypes.HGV || this.techRecord.vehicleType === VehicleTypes.TRL) {
-              const [axles, axleSpacing] = this.axlesService.normaliseAxles(this.techRecord.axles, this.techRecord.dimensions?.axleSpacing);
-              this.techRecord = cloneDeep(this.techRecord);
-              this.techRecord.dimensions = { ...this.techRecord.dimensions, axleSpacing };
-              this.techRecord.axles = axles;
-            }
-
-            isOnInit && this.technicalRecordService.updateEditingTechRecord(this.techRecord, true);
-
-            return { ...cloneDeep(this.techRecord), reasonForCreation: '' };
+        map(t => {
+          const techRecord = cloneDeep(t!);
+          if (techRecord.vehicleType === VehicleTypes.HGV || techRecord.vehicleType === VehicleTypes.TRL) {
+            const [axles, axleSpacing] = this.axlesService.normaliseAxles(techRecord.axles, techRecord.dimensions?.axleSpacing);
+            techRecord.dimensions = { ...techRecord.dimensions, axleSpacing };
+            techRecord.axles = axles;
           }
+          return techRecord;
         }),
         takeUntil(this.destroy$)
       )
@@ -94,8 +87,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
-
-    isOnInit = false;
   }
 
   ngOnDestroy(): void {

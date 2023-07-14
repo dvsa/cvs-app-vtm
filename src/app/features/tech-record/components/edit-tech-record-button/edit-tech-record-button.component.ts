@@ -44,7 +44,7 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
     this.actions$
       .pipe(
         ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
-        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.technicalRecordService.techRecord$),
+        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.technicalRecordService.viewableTechRecord$),
         takeUntil(this.ngDestroy$)
       )
       .subscribe(([, systemNumber, techRecord]) => {
@@ -66,7 +66,7 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
     this.viewableTechRecord.statusCode !== StatusCodes.PROVISIONAL
       ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
       : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route });
-    this.technicalRecordService.clearReasonForCreation(this.vehicle);
+    this.technicalRecordService.clearReasonForCreation();
   }
 
   toggleEditMode() {

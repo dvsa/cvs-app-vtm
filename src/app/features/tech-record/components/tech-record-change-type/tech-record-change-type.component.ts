@@ -86,7 +86,7 @@ export class ChangeVehicleTypeComponent {
 
     this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));
 
-    this.technicalRecordService.clearReasonForCreation(this.vehicle);
+    this.technicalRecordService.clearReasonForCreation();
 
     this.globalErrorService.clearErrors();
 
