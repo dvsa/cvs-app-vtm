@@ -44,7 +44,6 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     this.editingReason = this.activatedRoute.snapshot.data['reason'];
     this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$.pipe(
       tap(viewableTechRecord => {
-        console.log(viewableTechRecord);
         this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
         this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
       })

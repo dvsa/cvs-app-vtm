@@ -66,11 +66,12 @@ export class TechnicalRecordService {
         if (isEditing && !techRecord && nonEditingTechRecord) {
           this.updateEditingTechRecord(nonEditingTechRecord);
         }
-        console.log('something');
       }),
-      map(([techRecord]) => techRecord)
+      map(([techRecord, nonEditingTechRecord, isEditing]) => (isEditing && !techRecord ? nonEditingTechRecord : techRecord))
     );
   }
+
+  changeVehicleType(vehicleType: VehicleTypes) {}
 
   /**
    * A function which takes either a TechRecordModel or a VehicleTechRecordModel, maps the missing vehicle record information if passed

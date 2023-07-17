@@ -30,7 +30,8 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Subject, map, take, takeUntil, tap, withLatestFrom } from 'rxjs';
+import { Observable, Subject, UnsubscriptionError, firstValueFrom, map, take, takeUntil, tap, withLatestFrom } from 'rxjs';
+import { boolean } from 'yargs';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -48,14 +49,13 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
   @ViewChild(LettersComponent) letters!: LettersComponent;
 
-  @Input() isEditing: boolean = false;
-
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
 
   techRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
+  isEditing: boolean = false;
 
   private destroy$ = new Subject<void>();
 
@@ -63,11 +63,11 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private axlesService: AxlesService,
     private errorService: GlobalErrorService,
     private referenceDataService: ReferenceDataService,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private routerService: RouterService
   ) {}
 
   ngOnInit(): void {
-    console.log('fo');
     this.technicalRecordService.viewableTechRecord$
       .pipe(
         map(t => {
@@ -99,6 +99,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get vehicleTemplates(): Array<FormNode> {
+    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe(editing => (this.isEditing = editing));
     return (
       vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
     );
@@ -110,6 +111,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
   isSectionExpanded$(sectionName: string | number) {
     return this.sectionTemplatesState$?.pipe(map(sections => sections?.includes(sectionName)));
+  }
+
+  get isEditing$(): Observable<boolean> {
+    return this.routerService.getRouteDataProperty$('isEditing').pipe(map(isEditing => !!isEditing));
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {

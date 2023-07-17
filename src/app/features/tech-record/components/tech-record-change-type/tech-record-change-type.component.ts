@@ -40,7 +40,7 @@ export class ChangeVehicleTypeComponent {
 
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
-    this.technicalRecordService.editableTechRecord$
+    this.technicalRecordService.viewableTechRecord$
       .pipe(take(1))
       .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
   }
