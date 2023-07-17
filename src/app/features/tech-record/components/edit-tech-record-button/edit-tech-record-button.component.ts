@@ -26,7 +26,6 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
   @Output() isEditingChange = new EventEmitter<boolean>();
   @Output() submitChange = new EventEmitter();
   destroy$ = new Subject();
-  private viewableTechRecord$: Observable<TechRecordModel | undefined>;
 
   constructor(
     private actions$: Actions,
@@ -37,15 +36,13 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private viewportScroller: ViewportScroller,
     private routerService: RouterService
-  ) {
-    this.viewableTechRecord$ = this.technicalRecordService.viewableTechRecord$;
-  }
+  ) {}
 
   ngOnInit() {
     this.actions$
       .pipe(
         ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
-        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.viewableTechRecord$),
+        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.technicalRecordService.viewableTechRecord$),
         takeUntil(this.destroy$)
       )
       .subscribe(([, systemNumber, techRecord]) => {
@@ -60,13 +57,13 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
   }
 
   get isArchived$(): Observable<boolean> {
-    return this.viewableTechRecord$.pipe(
+    return this.technicalRecordService.viewableTechRecord$.pipe(
       map(techRecord => !(techRecord?.statusCode === StatusCodes.CURRENT || techRecord?.statusCode === StatusCodes.PROVISIONAL))
     );
   }
 
   checkIfEditableReasonRequired() {
-    this.viewableTechRecord$
+    this.technicalRecordService.viewableTechRecord$
       .pipe(
         map(techRecord => techRecord?.statusCode),
         takeUntil(this.destroy$)

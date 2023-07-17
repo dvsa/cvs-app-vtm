@@ -30,6 +30,8 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 import { CreateTestRecordComponent } from './create-test-record.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 describe('CreateTestRecordComponent', () => {
   let component: CreateTestRecordComponent;
@@ -39,6 +41,11 @@ describe('CreateTestRecordComponent', () => {
   let testRecordsService: TestRecordsService;
   let store: MockStore<State>;
 
+  const mockTechnicalRecordService = {
+    get viewableTechRecord$() {
+      return mockVehicleTechnicalRecord().techRecord.pop();
+    }
+  };
   const MockUserService = {
     getUserName$: jest.fn().mockReturnValue(new Observable()),
     roles$: of([Roles.TestResultAmend, Roles.TestResultView])
@@ -68,7 +75,8 @@ describe('CreateTestRecordComponent', () => {
         CreateTestResultsService,
         { provide: UserService, useValue: MockUserService },
         provideMockStore({ initialState: initialAppState }),
-        provideMockActions(() => actions$)
+        provideMockActions(() => actions$),
+        { provide: TechnicalRecordService, useValue: mockTechnicalRecordService }
       ]
     }).compileComponents();
   });

@@ -95,17 +95,18 @@ describe('EditTechRecordButtonComponent', () => {
   describe('when user clicks edit button', () => {
     it('component should navigate away for current amendments', () => {
       jest.spyOn(router, 'navigate');
-      jest.spyOn(component, 'isArchived$', 'get').mockReturnValueOnce(of(false));
+      jest.spyOn(component, 'isArchived$', 'get').mockReturnValue(of(false));
       jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
+      fixture.detectChanges();
 
       expect(router.navigate).toHaveBeenCalled();
     });
     it('component should navigate away for notifiable alterations', () => {
       jest.spyOn(router, 'navigate');
-      jest.spyOn(component, 'isArchived$', 'get').mockReturnValueOnce(of(false));
+      jest.spyOn(component, 'isArchived$', 'get').mockReturnValue(of(false));
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
