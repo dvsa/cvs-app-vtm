@@ -122,16 +122,18 @@ export class TechnicalRecordService {
     this.store.dispatch(createVehicle({ vehicleType: vehicleType }));
   }
 
-  clearReasonForCreation(vehicleTechRecord?: TechRecordModel): void {
-    this.viewableTechRecord$.pipe(
-      map(data => cloneDeep(data ?? vehicleTechRecord)),
-      tap(data => {
+  clearReasonForCreation(vehicleTechRecord?: VehicleTechRecordModel): void {
+    this.editableVehicleTechRecord$
+      .pipe(
+        map(data => cloneDeep(data ?? vehicleTechRecord)),
+        take(1)
+      )
+      .subscribe(data => {
         if (data) {
-          data.reasonForCreation = '';
+          data.techRecord[0].reasonForCreation = '';
           this.updateEditingTechRecord(data);
         }
-      })
-    );
+      });
   }
 
   validateVinForUpdate(originalVin?: string): AsyncValidatorFn {

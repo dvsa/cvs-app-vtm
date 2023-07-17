@@ -87,6 +87,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
+    this.isEditing && this.technicalRecordService.clearReasonForCreation();
   }
 
   ngOnDestroy(): void {
