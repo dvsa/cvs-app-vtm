@@ -71,8 +71,6 @@ export class TechnicalRecordService {
     );
   }
 
-  changeVehicleType(vehicleType: VehicleTypes) {}
-
   /**
    * A function which takes either a TechRecordModel or a VehicleTechRecordModel, maps the missing vehicle record information if passed
    * a TechRecordModel and dispatches the action to update the editing tech record.
