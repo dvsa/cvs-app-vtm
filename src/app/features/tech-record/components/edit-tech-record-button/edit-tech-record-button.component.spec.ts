@@ -22,17 +22,20 @@ import {
   updateTechRecordsSuccess
 } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { ReplaySubject } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 let component: EditTechRecordButtonComponent;
 let fixture: ComponentFixture<EditTechRecordButtonComponent>;
 let router: Router;
 let store: MockStore;
 let actions$: ReplaySubject<Action>;
+let technicalRecordService: TechnicalRecordService;
 
 const mockRouterService = {
-  getRouteNestedParam$: () => '1'
+  getRouteNestedParam$: () => '1',
+  getRouteDataProperty$: () => false
 };
 
 describe('EditTechRecordButtonComponent', () => {
@@ -48,7 +51,8 @@ describe('EditTechRecordButtonComponent', () => {
         GlobalErrorService,
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
-        { provide: APP_BASE_HREF, useValue: '/' }
+        { provide: APP_BASE_HREF, useValue: '/' },
+        TechnicalRecordService
       ],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule]
     }).compileComponents();
@@ -59,8 +63,7 @@ describe('EditTechRecordButtonComponent', () => {
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
-    component.vehicle = <VehicleTechRecordModel>{ techRecord: [<TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' }] };
-    component.viewableTechRecord = component.vehicle.techRecord[0];
+    technicalRecordService = TestBed.inject(TechnicalRecordService);
 
     fixture.detectChanges();
 
@@ -79,7 +82,7 @@ describe('EditTechRecordButtonComponent', () => {
       ['should be viewable', 'current', true],
       ['should not be viewable', 'archived', false]
     ])('edit button %s for %s record', (isViewable: string, statusCode: string, expected: boolean) => {
-      component.viewableTechRecord = <TechRecordModel>{ statusCode: statusCode, vehicleType: 'psv' };
+      jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValueOnce(of({ statusCode, vehicleType: 'psv' } as TechRecordModel));
 
       fixture.detectChanges();
 
@@ -92,7 +95,7 @@ describe('EditTechRecordButtonComponent', () => {
   describe('when user clicks edit button', () => {
     it('component should navigate away for current amendments', () => {
       jest.spyOn(router, 'navigate');
-      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current' };
+      jest.spyOn(component, 'isArchived$', 'get').mockReturnValueOnce(of(false));
       jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
 
       fixture.detectChanges();
@@ -102,7 +105,7 @@ describe('EditTechRecordButtonComponent', () => {
     });
     it('component should navigate away for notifiable alterations', () => {
       jest.spyOn(router, 'navigate');
-      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional' };
+      jest.spyOn(component, 'isArchived$', 'get').mockReturnValueOnce(of(false));
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
@@ -127,8 +130,7 @@ describe('EditTechRecordButtonComponent', () => {
         ]
       };
       store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
-      component.vehicle = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional', vehicleType: 'psv' }] };
-      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional', vehicleType: 'psv' };
+
       component.isEditing = true;
     });
 
@@ -183,8 +185,6 @@ describe('EditTechRecordButtonComponent', () => {
         ]
       };
       store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
-      component.vehicle = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional', vehicleType: 'psv' }] };
-      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional', vehicleType: 'psv' };
       component.isEditing = true;
     });
 
@@ -240,8 +240,6 @@ describe('EditTechRecordButtonComponent', () => {
       };
       store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
       store.overrideSelector(selectTechRecord, expectedResult.vehicleTechRecords[0].techRecord[0]);
-      component.vehicle = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
-      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
       component.isEditing = true;
     });
 

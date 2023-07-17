@@ -13,21 +13,20 @@ import {
   updateEditingTechRecordCancel,
   updateTechRecordsSuccess
 } from '@store/technical-records';
-import { Subject, takeUntil, withLatestFrom } from 'rxjs';
+import { Observable, Subject, map, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-edit-tech-record-button[vehicle][viewableTechRecord]',
+  selector: 'app-edit-tech-record-button',
   templateUrl: './edit-tech-record-button.component.html'
 })
 export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
-  @Input() vehicle!: VehicleTechRecordModel;
-  @Input() viewableTechRecord!: TechRecordModel;
   @Input() isEditing = false;
   @Input() isDirty = false;
 
   @Output() isEditingChange = new EventEmitter<boolean>();
   @Output() submitChange = new EventEmitter();
-  ngDestroy$ = new Subject();
+  destroy$ = new Subject();
+  private viewableTechRecord$: Observable<TechRecordModel | undefined>;
 
   constructor(
     private actions$: Actions,
@@ -38,14 +37,16 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private viewportScroller: ViewportScroller,
     private routerService: RouterService
-  ) {}
+  ) {
+    this.viewableTechRecord$ = this.technicalRecordService.viewableTechRecord$;
+  }
 
   ngOnInit() {
     this.actions$
       .pipe(
         ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
-        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.technicalRecordService.viewableTechRecord$),
-        takeUntil(this.ngDestroy$)
+        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.viewableTechRecord$),
+        takeUntil(this.destroy$)
       )
       .subscribe(([, systemNumber, techRecord]) => {
         const routeSuffix = techRecord?.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
@@ -54,18 +55,27 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.ngDestroy$.next(true);
-    this.ngDestroy$.complete();
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
-  get isArchived(): boolean {
-    return !(this.viewableTechRecord.statusCode === StatusCodes.CURRENT || this.viewableTechRecord.statusCode === StatusCodes.PROVISIONAL);
+  get isArchived$(): Observable<boolean> {
+    return this.viewableTechRecord$.pipe(
+      map(techRecord => !(techRecord?.statusCode === StatusCodes.CURRENT || techRecord?.statusCode === StatusCodes.PROVISIONAL))
+    );
   }
 
   checkIfEditableReasonRequired() {
-    this.viewableTechRecord.statusCode !== StatusCodes.PROVISIONAL
-      ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
-      : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route });
+    this.viewableTechRecord$
+      .pipe(
+        map(techRecord => techRecord?.statusCode),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(statusCode => {
+        statusCode !== StatusCodes.PROVISIONAL
+          ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
+          : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route });
+      });
     this.technicalRecordService.clearReasonForCreation();
   }
 

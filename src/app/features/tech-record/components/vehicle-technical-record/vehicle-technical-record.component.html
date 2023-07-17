@@ -6,8 +6,6 @@
 
         <app-edit-tech-record-button
           *appRoleRequired="roles.TechRecordAmend"
-          [vehicle]="vehicle"
-          [viewableTechRecord]="currentTechRecord"
           [(isEditing)]="isEditing"
           [isDirty]="isDirty"
           (submitChange)="handleSubmit()"

@@ -20,7 +20,9 @@ import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 const mockTechRecordService = {
   editableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
-  viewableTechRecord$: jest.fn(),
+  get viewableTechRecord$() {
+    return of(mockVehicleTechnicalRecord().techRecord.pop());
+  },
   updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn()
 };
