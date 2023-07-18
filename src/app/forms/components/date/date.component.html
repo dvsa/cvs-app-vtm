@@ -3,7 +3,7 @@
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ label }}</legend>
     <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
     <app-field-error-message
-      *ngIf="dayEl.dirty && monthEl.dirty && yearEl.dirty && (yearEl.value ?? '').length > 3"
+      *ngIf="(dayEl.dirty && monthEl.dirty && yearEl.dirty && (yearEl.value ?? '').length > 3) || displayTime"
       [error]="error"
       [name]="name"
     ></app-field-error-message>
@@ -86,6 +86,11 @@
       </div>
 
       <ng-container *ngIf="displayTime">
+        <app-field-error-message
+          *ngIf="(dayEl.dirty && monthEl.dirty && yearEl.dirty && (yearEl.value ?? '').length > 3) || (displayTime && hourEl.dirty)"
+          [error]="error"
+          [name]="name"
+        ></app-field-error-message>
         <div class="govuk-date-input__item">
           <div class="govuk-form-group">
             <label class="govuk-label govuk-date-input__label" for="{{ name }}-hour"> Hour </label>
