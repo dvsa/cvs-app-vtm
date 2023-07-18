@@ -72,7 +72,6 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
       minutes: this.originalDate ? new Date(this.originalDate).getMinutes() : '00',
       seconds: this.originalDate ? new Date(this.originalDate).getSeconds() : '00'
     };
-    // this.addValidators();
     this.valueWriteBack(this.value);
   }
 

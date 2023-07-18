@@ -20,10 +20,6 @@ export class DateValidators {
         return null;
       }
 
-      if (year.length < 4) {
-        return null;
-      }
-
       const { error, errors } = validateDate(day || '', month || '', year || '', label);
 
       if (error && errors?.length) {
