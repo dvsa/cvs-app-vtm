@@ -3,7 +3,7 @@
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ label }}</legend>
     <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
     <app-field-error-message
-      *ngIf="dayEl.dirty && monthEl.dirty && yearEl.dirty && yearEl.valid"
+      *ngIf="dayEl.dirty && monthEl.dirty && yearEl.dirty && (yearEl.value ?? '' > 3)"
       [error]="error"
       [name]="name"
     ></app-field-error-message>
@@ -17,7 +17,9 @@
             appFocusNext
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
-            [ngClass]="{ 'govuk-input--error': elementHasErrors(0) && dayEl.dirty && monthEl.dirty && yearEl.dirty && yearEl.valid }"
+            [ngClass]="{
+              'govuk-input--error': elementHasErrors(0) && dayEl.dirty && monthEl.dirty && yearEl.dirty && (yearEl.value ?? '').length > 3
+            }"
             id="{{ name }}-day"
             name="{{ name }}-day"
             type="number"
@@ -40,7 +42,9 @@
             appFocusNext
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
-            [ngClass]="{ 'govuk-input--error': dayEl.dirty && monthEl.dirty && yearEl.dirty && yearEl.valid && elementHasErrors(1) }"
+            [ngClass]="{
+              'govuk-input--error': dayEl.dirty && monthEl.dirty && yearEl.dirty && (yearEl.value ?? '').length > 3 && elementHasErrors(1)
+            }"
             id="{{ name }}-month"
             name="{{ name }}-month"
             type="number"
@@ -64,7 +68,8 @@
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-4"
             [ngClass]="{
-              'govuk-input--error': dayEl.dirty && monthEl.dirty && yearEl.dirty && yearEl.valid && (elementHasErrors(2) || yearEl.invalid)
+              'govuk-input--error':
+                dayEl.dirty && monthEl.dirty && yearEl.dirty && (yearEl.value ?? '').length > 3 && (elementHasErrors(2) || yearEl.invalid)
             }"
             id="{{ name }}-year"
             name="{{ name }}-year"
@@ -95,7 +100,7 @@
                   dayEl.dirty &&
                   monthEl.dirty &&
                   yearEl.dirty &&
-                  yearEl.valid &&
+                  (yearEl.value ?? '').length > 3 &&
                   displayTime &&
                   value &&
                   (undefined === hour || null === hour || hourEl.invalid)
@@ -127,7 +132,7 @@
                   dayEl.dirty &&
                   monthEl.dirty &&
                   yearEl.dirty &&
-                  yearEl.valid &&
+                  (yearEl.value ?? '').length > 3 &&
                   displayTime &&
                   value &&
                   (undefined === minute || null === minute || minuteEl.invalid)
