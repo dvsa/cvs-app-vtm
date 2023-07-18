@@ -41,13 +41,6 @@ describe('DateComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should add validators', () => {
-    const addValidatorsSpy = jest.spyOn(component.dateComponent!, 'addValidators');
-    fixture.detectChanges();
-
-    expect(addValidatorsSpy).toHaveBeenCalledTimes(1);
-  });
-
   describe('control values', () => {
     it.each([
       ['2342346-6213-234T00:00:00.000', 2342346, 6213, 234, 1, 6],

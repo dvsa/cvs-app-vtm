@@ -23,45 +23,6 @@ describe(DateValidators.validDate.name, () => {
       },
       '2000-00-01'
     ],
-    [
-      {
-        invalidDate: {
-          error: true,
-          index: 0,
-          reason: "'Date' must include a day"
-        }
-      },
-      '20-01-'
-    ],
-    [
-      {
-        invalidDate: {
-          error: true,
-          index: 1,
-          reason: "'Date' must include a month"
-        }
-      },
-      '20--01'
-    ],
-    [
-      {
-        invalidDate: {
-          error: true,
-          index: 2,
-          reason: "'Date' must include a year"
-        }
-      },
-      '-01-00'
-    ],
-    [
-      {
-        invalidDate: {
-          error: true,
-          reason: "'Date' year must be four digits"
-        }
-      },
-      '20-01-01'
-    ],
     [{ invalidDate: { error: true, reason: "'Date' must include time" } }, '2022-01-01T:00:00:000Z', true],
     [{ invalidDate: { error: true, reason: "'Date' hours must be between 0 and 23" } }, '2022-01-01T24:00:00:000Z', true],
     [{ invalidDate: { error: true, reason: "'Date' must include time" } }, '2022-01-01T00::00:000Z', true],

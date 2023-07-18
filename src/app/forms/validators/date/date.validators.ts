@@ -6,9 +6,24 @@ export class DateValidators {
       if (!control.value) {
         return null;
       }
-
       const [d, t] = (control.value as string).split('T');
       const [year, month, day] = d.split('-');
+
+      if (!day) {
+        return null;
+      }
+
+      if (!month) {
+        return null;
+      }
+      if (!year) {
+        return null;
+      }
+
+      if (year.length < 4) {
+        return null;
+      }
+
       const { error, errors } = validateDate(day || '', month || '', year || '', label);
 
       if (error && errors?.length) {

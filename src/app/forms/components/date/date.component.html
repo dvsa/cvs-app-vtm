@@ -21,7 +21,7 @@
             [(ngModel)]="day"
             [disabled]="disabled"
             (ngModelChange)="onDayChange($event)"
-            (blur)="onTouched(); handleEvent($event); validate()"
+            (blur)="onTouched(); handleEvent($event)"
             (focus)="handleEvent($event)"
           />
         </div>
@@ -44,7 +44,7 @@
             [(ngModel)]="month"
             [disabled]="disabled"
             (ngModelChange)="onMonthChange($event)"
-            (blur)="onTouched(); handleEvent($event); validate()"
+            (blur)="onTouched(); handleEvent($event)"
             (focus)="handleEvent($event)"
           />
         </div>
@@ -59,7 +59,7 @@
             appFocusNext
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-4"
-            [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
+            [ngClass]="{ 'govuk-input--error': (elementHasErrors(2) || yearEl.invalid) && (yearEl.dirty || yearEl.touched) }"
             id="{{ name }}-year"
             name="{{ name }}-year"
             type="number"
@@ -68,7 +68,7 @@
             [(ngModel)]="year"
             [disabled]="disabled"
             (ngModelChange)="onYearChange($event)"
-            (blur)="onTouched(); handleEvent($event); validate()"
+            (blur)="onTouched(); handleEvent($event); validate($event)"
             (focus)="handleEvent($event)"
           />
         </div>

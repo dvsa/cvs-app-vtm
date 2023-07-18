@@ -72,7 +72,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
       minutes: this.originalDate ? new Date(this.originalDate).getMinutes() : '00',
       seconds: this.originalDate ? new Date(this.originalDate).getSeconds() : '00'
     };
-    this.addValidators();
+    // this.addValidators();
     this.valueWriteBack(this.value);
   }
 
@@ -158,7 +158,22 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
     this.control?.addValidators([DateValidators.validDate(this.displayTime, this.label)]);
   }
 
-  validate() {
+  validate(event: Event) {
+    this.addValidators();
+    if (!this.day) {
+      return;
+    }
+
+    if (!this.month) {
+      return;
+    }
+    if (!this.year) {
+      return;
+    }
+
+    if (this.year && event.type !== 'blur') {
+      return;
+    }
     this.errors = validateDate(this.day || '', this.month || '', this.year || '', this.label);
   }
 
