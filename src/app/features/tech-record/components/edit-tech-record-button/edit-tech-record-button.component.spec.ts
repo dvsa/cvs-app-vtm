@@ -6,25 +6,18 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { clearError } from '@store/global-error/actions/global-error.actions';
-import {
-  createProvisionalTechRecordSuccess,
-  selectTechRecord,
-  selectVehicleTechnicalRecordsBySystemNumber,
-  updateEditingTechRecordCancel,
-  updateTechRecordsSuccess
-} from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { of, ReplaySubject } from 'rxjs';
+import { createProvisionalTechRecordSuccess, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
+import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 let component: EditTechRecordButtonComponent;
 let fixture: ComponentFixture<EditTechRecordButtonComponent>;
@@ -32,6 +25,8 @@ let router: Router;
 let store: MockStore;
 let actions$: ReplaySubject<Action>;
 let technicalRecordService: TechnicalRecordService;
+const mockTechnicalRecordObservable = new BehaviorSubject({ statusCode: StatusCodes.CURRENT } as TechRecordModel);
+const updateMockTechnicalRecord = (statusCode: StatusCodes) => mockTechnicalRecordObservable.next({ statusCode } as TechRecordModel);
 
 const mockRouterService = {
   getRouteNestedParam$: () => '1',
@@ -59,11 +54,12 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   beforeEach(() => {
+    technicalRecordService = TestBed.inject(TechnicalRecordService);
+    jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(mockTechnicalRecordObservable);
     fixture = TestBed.createComponent(EditTechRecordButtonComponent);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
 
     fixture.detectChanges();
 
@@ -82,6 +78,7 @@ describe('EditTechRecordButtonComponent', () => {
       ['should be viewable', 'current', true],
       ['should not be viewable', 'archived', false]
     ])('edit button %s for %s record', (isViewable: string, statusCode: string, expected: boolean) => {
+      jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode } as TechRecordModel));
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('#edit'));
@@ -93,6 +90,7 @@ describe('EditTechRecordButtonComponent', () => {
   describe('when user clicks edit button', () => {
     it('component should navigate away for current amendments', () => {
       jest.spyOn(router, 'navigate');
+      jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
       jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
 
       fixture.detectChanges();
@@ -102,6 +100,7 @@ describe('EditTechRecordButtonComponent', () => {
     });
     it('component should navigate away for notifiable alterations', () => {
       jest.spyOn(router, 'navigate');
+      jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'provisional' } as TechRecordModel));
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
@@ -110,79 +109,11 @@ describe('EditTechRecordButtonComponent', () => {
     });
   });
 
-  describe('when amending an empty vehicle', () => {
-    let expectedResult: TechnicalRecordServiceState;
-    let expectedDate: Date;
-    beforeEach(() => {
-      store = TestBed.inject(MockStore);
-      expectedDate = new Date();
-      expectedResult = <TechnicalRecordServiceState>{
-        vehicleTechRecords: [
-          {
-            systemNumber: '1',
-            vin: '1',
-            techRecord: <TechRecordModel[]>[]
-          } as VehicleTechRecordModel
-        ]
-      };
-      store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
-      component.isEditing = true;
-    });
-
-    describe('and the user submits their changes', () => {
-      it('component should emit event', fakeAsync(() => {
-        jest.spyOn(component.submitChange, 'emit');
-
-        fixture.detectChanges();
-        fixture.debugElement.query(By.css('button#submit')).nativeElement.click();
-        discardPeriodicTasks();
-
-        expect(component.submitChange.emit).toHaveBeenCalledTimes(1);
-      }));
-
-      it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
-        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
-
-        actions$.next(updateTechRecordsSuccess(expectedResult));
-
-        tick();
-
-        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
-      }));
-
-      it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
-        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
-
-        actions$.next(createProvisionalTechRecordSuccess(expectedResult));
-
-        tick();
-
-        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
-      }));
-    });
-  });
-
   describe('when amending a provisional tech record', () => {
-    let expectedResult: TechnicalRecordServiceState;
-    let expectedDate: Date;
     beforeEach(() => {
-      store = TestBed.inject(MockStore);
-      expectedDate = new Date();
-      expectedResult = <TechnicalRecordServiceState>{
-        vehicleTechRecords: [
-          {
-            systemNumber: '1',
-            vin: '1',
-            techRecord: [<TechRecordModel>{ createdAt: expectedDate, statusCode: StatusCodes.PROVISIONAL }]
-          } as VehicleTechRecordModel
-        ]
-      };
-      store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
+      updateMockTechnicalRecord(StatusCodes.PROVISIONAL);
       component.isEditing = true;
     });
-
     describe('and the user submits their changes', () => {
       it('component should emit event', fakeAsync(() => {
         jest.spyOn(component.submitChange, 'emit');
@@ -197,7 +128,8 @@ describe('EditTechRecordButtonComponent', () => {
       it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
         jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
 
-        actions$.next(updateTechRecordsSuccess(expectedResult));
+        fixture.detectChanges();
+        actions$.next(updateTechRecordsSuccess([]));
 
         tick();
 
@@ -208,7 +140,7 @@ describe('EditTechRecordButtonComponent', () => {
       it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
         jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
 
-        actions$.next(createProvisionalTechRecordSuccess(expectedResult));
+        actions$.next(createProvisionalTechRecordSuccess([]));
 
         tick();
 
@@ -219,25 +151,10 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   describe('when amending a current tech record', () => {
-    let expectedResult: TechnicalRecordServiceState;
-    let expectedDate: Date;
     beforeEach(() => {
-      store = TestBed.inject(MockStore);
-      expectedDate = new Date();
-      expectedResult = <TechnicalRecordServiceState>{
-        vehicleTechRecords: [
-          {
-            systemNumber: '1',
-            vin: '1',
-            techRecord: [<TechRecordModel>{ createdAt: expectedDate, statusCode: StatusCodes.CURRENT }]
-          } as VehicleTechRecordModel
-        ]
-      };
-      store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
-      store.overrideSelector(selectTechRecord, expectedResult.vehicleTechRecords[0].techRecord[0]);
+      updateMockTechnicalRecord(StatusCodes.CURRENT);
       component.isEditing = true;
     });
-
     describe('and the user submits their changes', () => {
       it('component should emit event', fakeAsync(() => {
         jest.spyOn(component.submitChange, 'emit');
@@ -251,8 +168,8 @@ describe('EditTechRecordButtonComponent', () => {
 
       it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
         jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
-
-        actions$.next(updateTechRecordsSuccess(expectedResult));
+        store.dispatch(updateTechRecordsSuccess({}));
+        actions$.next(updateTechRecordsSuccess({}));
 
         tick();
 
@@ -263,7 +180,7 @@ describe('EditTechRecordButtonComponent', () => {
       it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
         jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
 
-        actions$.next(createProvisionalTechRecordSuccess(expectedResult));
+        actions$.next(createProvisionalTechRecordSuccess({}));
 
         tick();
 
@@ -283,6 +200,8 @@ describe('EditTechRecordButtonComponent', () => {
         });
 
         it('should prompt user if they wish to cancel', () => {
+          jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
+          component.isEditing = true;
           jest.spyOn(window, 'confirm').mockImplementation(() => true);
 
           fixture.detectChanges();
@@ -294,6 +213,8 @@ describe('EditTechRecordButtonComponent', () => {
 
         describe('and the user cancels cancelling an amendment', () => {
           it('should keep user in edit view', fakeAsync(() => {
+            component.isEditing = true;
+            jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
             jest.spyOn(window, 'confirm').mockImplementation(() => false);
             jest.spyOn(store, 'dispatch');
 
@@ -315,6 +236,8 @@ describe('EditTechRecordButtonComponent', () => {
 
         describe('and the user confirms cancelling the amendment', () => {
           it('should return user back to non-edit view', fakeAsync(() => {
+            component.isEditing = true;
+            jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
             jest.spyOn(window, 'confirm').mockImplementation(() => true);
             jest.spyOn(store, 'dispatch');
 
@@ -341,6 +264,7 @@ describe('EditTechRecordButtonComponent', () => {
         });
 
         it('should not prompt user if they wish to cancel', fakeAsync(() => {
+          component.isEditing = true;
           jest.spyOn(window, 'confirm');
           fixture.detectChanges();
 
@@ -350,6 +274,7 @@ describe('EditTechRecordButtonComponent', () => {
         }));
 
         it('should return user to non-edit view', fakeAsync(() => {
+          component.isEditing = true;
           jest.spyOn(window, 'confirm');
           jest.spyOn(component, 'cancel');
           jest.spyOn(component, 'toggleEditMode');
