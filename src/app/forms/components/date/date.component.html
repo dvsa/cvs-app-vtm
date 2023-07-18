@@ -91,7 +91,14 @@
               [displayTime]="displayTime"
               class="govuk-input govuk-date-input__input govuk-input--width-2"
               [ngClass]="{
-                'govuk-input--error': (yearEl.dirty || yearEl.touched) && value && (undefined === hour || null === hour || hourEl.invalid)
+                'govuk-input--error':
+                  dayEl.dirty &&
+                  monthEl.dirty &&
+                  yearEl.dirty &&
+                  yearEl.valid &&
+                  displayTime &&
+                  value &&
+                  (undefined === hour || null === hour || hourEl.invalid)
               }"
               id="{{ name }}-hour"
               name="{{ name }}-hour"
@@ -116,7 +123,14 @@
               appNumberOnly
               class="govuk-input govuk-date-input__input govuk-input--width-2"
               [ngClass]="{
-                'govuk-input--error': (yearEl.dirty || yearEl.touched) && value && (undefined === minute || null === minute || minuteEl.invalid)
+                'govuk-input--error':
+                  dayEl.dirty &&
+                  monthEl.dirty &&
+                  yearEl.dirty &&
+                  yearEl.valid &&
+                  displayTime &&
+                  value &&
+                  (undefined === minute || null === minute || minuteEl.invalid)
               }"
               id="{{ name }}-minute"
               name="{{ name }}-minute"
