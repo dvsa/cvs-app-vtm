@@ -32,6 +32,7 @@ import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehic
 import { CreateTestRecordComponent } from './create-test-record.component';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
 
 describe('CreateTestRecordComponent', () => {
   let component: CreateTestRecordComponent;
@@ -40,6 +41,7 @@ describe('CreateTestRecordComponent', () => {
   let router: Router;
   let testRecordsService: TestRecordsService;
   let store: MockStore<State>;
+  let dynamicFormService: DynamicFormService;
 
   const mockTechnicalRecordService = {
     get viewableTechRecord$() {
@@ -76,7 +78,8 @@ describe('CreateTestRecordComponent', () => {
         { provide: UserService, useValue: MockUserService },
         provideMockStore({ initialState: initialAppState }),
         provideMockActions(() => actions$),
-        { provide: TechnicalRecordService, useValue: mockTechnicalRecordService }
+        { provide: TechnicalRecordService, useValue: mockTechnicalRecordService },
+        DynamicFormService
       ]
     }).compileComponents();
   });
@@ -86,6 +89,7 @@ describe('CreateTestRecordComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     testRecordsService = TestBed.inject(TestRecordsService);
+    dynamicFormService = TestBed.inject(DynamicFormService);
     store = TestBed.inject(MockStore);
   });
 
@@ -135,10 +139,10 @@ describe('CreateTestRecordComponent', () => {
   });
 
   describe(CreateTestRecordComponent.prototype.isAnyFormInvalid.name, () => {
-    let mockSestResultInEditSelector: MemoizedSelector<any, TestResultModel | undefined, DefaultProjectorFn<TestResultModel | undefined>>;
+    let mockTestResultInEditSelector: MemoizedSelector<any, TestResultModel | undefined, DefaultProjectorFn<TestResultModel | undefined>>;
     let mockToEditOrNotToEditSelector: MemoizedSelector<any, TestResultModel | undefined, DefaultProjectorFn<TestResultModel | undefined>>;
     beforeEach(() => {
-      mockSestResultInEditSelector = store.overrideSelector(testResultInEdit, mockTestResult());
+      mockTestResultInEditSelector = store.overrideSelector(testResultInEdit, mockTestResult());
       mockToEditOrNotToEditSelector = store.overrideSelector(toEditOrNotToEdit, undefined);
     });
 
@@ -146,20 +150,12 @@ describe('CreateTestRecordComponent', () => {
       store.resetSelectors();
     });
 
-    it('should return true if some forms are invalid', fakeAsync(() => {
-      const mockTest = mockTestResult();
-      mockTest.countryOfRegistration = '';
-      mockSestResultInEditSelector.setResult(mockTest);
-      mockToEditOrNotToEditSelector.setResult(mockTest);
-      store.refreshState();
-
-      tick();
-      fixture.detectChanges();
-      tick();
-
+    it('should return true if some forms are invalid', () => {
+      component.abandonDialog = { dynamicFormGroup: { form: { controls: { errors: 'foo' }, invalid: true } } } as any;
+      component.testMode = TestModeEnum.Abandon;
+      DynamicFormService.validate = jest.fn();
       expect(component.isAnyFormInvalid()).toBe(true);
-      discardPeriodicTasks();
-    }));
+    });
 
     it('should return false if no forms are invalid', fakeAsync(() => {
       tick();
