@@ -3,7 +3,7 @@
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ label }}</legend>
     <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
     <app-field-error-message
-      *ngIf="dayEl.dirty && monthEl.dirty && yearEl.dirty && (yearEl.value ?? '' > 3)"
+      *ngIf="dayEl.dirty && monthEl.dirty && yearEl.dirty && (yearEl.value ?? '').length > 3"
       [error]="error"
       [name]="name"
     ></app-field-error-message>
