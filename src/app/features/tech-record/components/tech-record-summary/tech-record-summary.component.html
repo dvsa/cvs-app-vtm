@@ -22,56 +22,56 @@
     <app-body
       *ngSwitchCase="'bodySection'"
       [techRecord]="techRecordCalculated"
-      [isEditing]="isEditing"
+      [isEditing]="(isEditing$ | async) ?? false"
       (formChange)="handleFormState($event)"
     ></app-body>
 
     <app-dimensions
       *ngSwitchCase="'dimensionsSection'"
       [vehicleTechRecord]="techRecordCalculated"
-      [isEditing]="isEditing"
+      [isEditing]="(isEditing$ | async) ?? false"
       (formChange)="handleFormState($event)"
     ></app-dimensions>
 
     <app-psv-brakes
       *ngSwitchCase="'psvBrakesSection'"
       [vehicleTechRecord]="techRecordCalculated"
-      [isEditing]="isEditing"
+      [isEditing]="(isEditing$ | async) ?? false"
       (formChange)="handleFormState($event)"
     ></app-psv-brakes>
 
     <app-trl-brakes
       *ngSwitchCase="'trlBrakesSection'"
       [vehicleTechRecord]="techRecordCalculated"
-      [isEditing]="isEditing"
+      [isEditing]="(isEditing$ | async) ?? false"
       (formChange)="handleFormState($event)"
     ></app-trl-brakes>
 
     <app-tyres
       *ngSwitchCase="'tyreSection'"
       [vehicleTechRecord]="techRecordCalculated"
-      [isEditing]="isEditing"
+      [isEditing]="(isEditing$ | async) ?? false"
       (formChange)="handleFormState($event)"
     ></app-tyres>
 
     <app-weights
       *ngSwitchCase="'weightsSection'"
       [vehicleTechRecord]="techRecordCalculated"
-      [isEditing]="isEditing"
+      [isEditing]="(isEditing$ | async) ?? false"
       (formChange)="handleFormState($event)"
     ></app-weights>
 
     <app-letters
       *ngSwitchCase="'lettersSection'"
       [techRecord]="techRecordCalculated"
-      [isEditing]="isEditing"
+      [isEditing]="(isEditing$ | async) ?? false"
       (formChange)="handleFormState($event)"
     ></app-letters>
 
     <app-plates
       *ngSwitchCase="'platesSection'"
       [techRecord]="techRecordCalculated"
-      [isEditing]="isEditing"
+      [isEditing]="(isEditing$ | async) ?? false"
       (formChange)="handleFormState($event)"
     ></app-plates>
 
@@ -79,7 +79,7 @@
       *ngSwitchDefault
       [data]="techRecordCalculated"
       [template]="section"
-      [edit]="isEditing"
+      [edit]="(isEditing$ | async) ?? false"
       (formChange)="handleFormState($event)"
     ></app-dynamic-form-group>
   </ng-container>

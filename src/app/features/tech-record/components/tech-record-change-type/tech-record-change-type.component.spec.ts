@@ -21,7 +21,9 @@ import { ChangeVehicleTypeComponent } from './tech-record-change-type.component'
 const mockTechRecordService = {
   editableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
-  viewableTechRecord$: jest.fn(),
+  get viewableTechRecord$() {
+    return of({});
+  },
   clearReasonForCreation: jest.fn()
 };
 

@@ -57,7 +57,7 @@ const routes: Routes = [
   {
     path: 'change-vrm',
     component: AmendVrmComponent,
-    data: { title: 'Change VRM', roles: Roles.TechRecordAmend },
+    data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
@@ -107,7 +107,7 @@ const routes: Routes = [
       {
         path: 'change-vehicle-type',
         component: ChangeVehicleTypeComponent,
-        data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+        data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend, isEditing: true },
         canActivate: [MsalGuard, RoleGuard]
       },
       {
@@ -119,7 +119,7 @@ const routes: Routes = [
       {
         path: 'change-vrm',
         component: AmendVrmComponent,
-        data: { title: 'Change VRM', roles: Roles.TechRecordAmend },
+        data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
         canActivate: [MsalGuard, RoleGuard]
       },
       {
@@ -161,7 +161,7 @@ const routes: Routes = [
   {
     path: 'change-vehicle-type',
     component: ChangeVehicleTypeComponent,
-    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },

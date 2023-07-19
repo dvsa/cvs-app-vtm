@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
-import { selectRouteNestedParams, selectUrl } from '@store/router/selectors/router.selectors';
+import { selectRouteDataProperty, selectRouteNestedParams, selectUrl } from '@store/router/selectors/router.selectors';
 import { getVehicleTechRecordState } from '../reducers/technical-record-service.reducer';
 import { selectQueryParams, selectRouteData } from '@store/router/selectors/router.selectors';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 export const vehicleTechRecords = createSelector(getVehicleTechRecordState, state => state.vehicleTechRecords);
@@ -29,11 +29,11 @@ export const selectVehicleTechnicalRecordsBySystemNumber = createSelector(
   }
 );
 
-export const selectTechRecord = createSelector(
+export const selectNonEditingTechRecord = createSelector(
   selectVehicleTechnicalRecordsBySystemNumber,
   selectRouteNestedParams,
   selectUrl,
-  (vehicle, { techCreatedAt }, url) => {
+  (vehicle, { techCreatedAt }, url): TechRecordModel | undefined => {
     const urlParts = url?.split('/');
 
     if (urlParts?.includes(StatusCodes.PROVISIONAL)) {
@@ -46,6 +46,15 @@ export const selectTechRecord = createSelector(
       );
     }
     return vehicle && TechnicalRecordService.filterTechRecordByStatusCode(vehicle);
+  }
+);
+
+export const selectTechRecord = createSelector(
+  selectNonEditingTechRecord,
+  selectRouteDataProperty('isEditing'),
+  editableTechRecord,
+  (techRecord, isEditing, editableTechRecord): TechRecordModel | undefined => {
+    return isEditing ? editableTechRecord : techRecord;
   }
 );
 

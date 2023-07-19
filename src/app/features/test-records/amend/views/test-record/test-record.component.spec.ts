@@ -17,7 +17,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
-import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { routeEditable, selectRouteData, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { initialTestResultsState, isTestTypeKeySame, sectionTemplates, testResultInEdit, updateTestResultSuccess } from '@store/test-records';
 import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../../forms/dynamic-forms.module';
@@ -71,6 +71,7 @@ describe('TestRecordComponent', () => {
 
     store.resetSelectors();
     store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testNumber: 'foo' } as Params);
+    store.overrideSelector(selectRouteData, { isEditing: false });
   });
 
   it('should create', () => {

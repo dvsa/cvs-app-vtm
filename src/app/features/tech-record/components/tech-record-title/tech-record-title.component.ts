@@ -32,11 +32,7 @@ export class TechRecordTitleComponent implements OnInit {
     this.currentVehicleTechRecord$ = this.technicalRecordService.viewableTechRecord$;
 
     // On create new vehicle, when vehicleTechRecords is empty use the editableTechRecord
-    this.currentTechRecord$ = this.currentVehicleTechRecord$.pipe(
-      switchMap(value => {
-        return value ? of(value) : this.technicalRecordService.editableTechRecord$;
-      })
-    );
+    this.currentTechRecord$ = this.currentVehicleTechRecord$;
 
     this.currentTechRecord$
       .pipe(take(1))
@@ -53,10 +49,6 @@ export class TechRecordTitleComponent implements OnInit {
 
   get currentVrm(): string | undefined {
     return this.vehicle?.vrms?.find(vrm => vrm.isPrimary)?.vrm;
-  }
-
-  get editableTechRecord$() {
-    return this.store.pipe(select(editableTechRecord));
   }
 
   get otherVrms(): Vrm[] | undefined {

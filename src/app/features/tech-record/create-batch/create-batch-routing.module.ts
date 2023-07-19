@@ -31,7 +31,7 @@ const routes: Routes = [
           {
             path: '',
             component: BatchVehicleTemplateComponent,
-            data: { title: 'Batch Record', roles: Roles.TechRecordCreate, isCustomLayout: true }
+            data: { title: 'Batch Record', roles: Roles.TechRecordCreate, isCustomLayout: true, isEditing: true }
             //resolve: [CreateBatchResolver]
           },
           {

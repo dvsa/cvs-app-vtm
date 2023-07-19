@@ -141,7 +141,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
       DynamicFormService.validate(form, errors);
     });
 
-    if (errors.length > 0) {
+    if (errors.length) {
       this.errorService.setErrors(errors);
     }
 

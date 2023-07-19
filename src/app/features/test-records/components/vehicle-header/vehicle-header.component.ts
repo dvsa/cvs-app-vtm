@@ -37,7 +37,7 @@ export class VehicleHeaderComponent {
   }
 
   get techRecord$(): Observable<TechRecordModel | undefined> {
-    return this.techRecordService.techRecord$;
+    return this.techRecordService.viewableTechRecord$;
   }
 
   get vehicleTypes() {

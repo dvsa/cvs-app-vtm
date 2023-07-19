@@ -1,13 +1,24 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TestTypesService } from '@api/test-types';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/.';
 import { VehicleHeaderComponent } from './vehicle-header.component';
 import { TechRecordModel, VehicleTypes, VehicleConfigurations } from '@models/vehicle-tech-record.model';
 import { RouterTestingModule } from '@angular/router/testing';
+import { RouterService } from '@services/router/router.service';
+import { selectRouteData } from '@store/router/selectors/router.selectors';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { of } from 'rxjs';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+
+const mockTechnicalRecordService = {
+  get viewableTechRecord$() {
+    return of(mockVehicleTechnicalRecord().techRecord.pop());
+  }
+};
 
 describe('VehicleHeaderComponent', () => {
   let component: VehicleHeaderComponent;
@@ -17,7 +28,12 @@ describe('VehicleHeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [VehicleHeaderComponent],
       imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
-      providers: [TestTypesService, provideMockStore({ initialState: initialAppState }), ResultOfTestService]
+      providers: [
+        TestTypesService,
+        provideMockStore({ initialState: initialAppState }),
+        ResultOfTestService,
+        { provide: TechnicalRecordService, useValue: mockTechnicalRecordService }
+      ]
     }).compileComponents();
   }));
 

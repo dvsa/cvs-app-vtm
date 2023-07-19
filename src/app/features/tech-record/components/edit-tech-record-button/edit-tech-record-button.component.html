@@ -1,4 +1,4 @@
-<ng-container *ngIf="!isArchived">
+<ng-container *ngIf="(isArchived$ | async) === false">
   <app-button *ngIf="!isEditing; else editing" id="edit" (clicked)="checkIfEditableReasonRequired()">Amend</app-button>
 
   <ng-template #editing>

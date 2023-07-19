@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 import {
@@ -14,6 +15,7 @@ import {
   createVehicle,
   editableTechRecord,
   editableVehicleTechRecord,
+  selectNonEditingTechRecord,
   selectSectionState,
   selectTechRecord,
   selectVehicleTechnicalRecordsBySystemNumber,
@@ -22,11 +24,11 @@ import {
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { Observable, catchError, debounceTime, filter, map, of, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, combineLatest, debounceTime, filter, map, of, switchMap, take, tap, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService) {}
+  constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService, private routerService: RouterService) {}
 
   getVehicleTypeWithSmallTrl(techRecord: TechRecordModel): VehicleTypes {
     return techRecord.vehicleType === VehicleTypes.TRL &&
@@ -54,13 +56,19 @@ export class TechnicalRecordService {
     );
   }
 
-  /**
-   * A function to get the correct tech record to create the summary display which uses time first then status code
-   * @param vehicleRecord This is a VehicleTechRecordModel passed in from the parent component
-   * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
-   */
   get viewableTechRecord$(): Observable<TechRecordModel | undefined> {
-    return this.store.pipe(select(selectTechRecord));
+    return combineLatest([
+      this.store.pipe(select(selectTechRecord)),
+      this.store.pipe(select(selectNonEditingTechRecord)),
+      this.routerService.getRouteDataProperty$('isEditing')
+    ]).pipe(
+      tap(([techRecord, nonEditingTechRecord, isEditing]) => {
+        if (isEditing && !techRecord && nonEditingTechRecord) {
+          this.updateEditingTechRecord(nonEditingTechRecord);
+        }
+      }),
+      map(([techRecord, nonEditingTechRecord, isEditing]) => (isEditing && !techRecord ? nonEditingTechRecord : techRecord))
+    );
   }
 
   /**
@@ -72,13 +80,15 @@ export class TechnicalRecordService {
    * @returns void
    */
   updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel, resetVehicleAttributes = false): void {
-    const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel => rec.hasOwnProperty('techRecord');
+    const isVehicleRecord = ((rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel => rec.hasOwnProperty('techRecord'))(
+      record
+    );
 
-    if (isVehicleRecord(record) && record.techRecord.length > 1) {
+    if (isVehicleRecord && record.techRecord.length > 1) {
       throw new Error('Editing tech record can only have one technical record!');
     }
 
-    const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord(record)
+    const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord
       ? of(record)
       : this.store.pipe(
           select(editableVehicleTechRecord),
@@ -166,10 +176,6 @@ export class TechnicalRecordService {
 
   get selectedVehicleTechRecord$(): Observable<VehicleTechRecordModel | undefined> {
     return this.store.pipe(select(selectVehicleTechnicalRecordsBySystemNumber));
-  }
-
-  get techRecord$(): Observable<TechRecordModel | undefined> {
-    return this.viewableTechRecord$;
   }
 
   get searchResults$(): Observable<SearchResult[] | undefined> {

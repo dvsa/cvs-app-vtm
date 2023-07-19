@@ -1,4 +1,4 @@
-<ng-container *ngIf="editableTechRecord$ | async as editableTechRecord">
+<ng-container *ngIf="currentTechRecord$ | async as editableTechRecord">
   <div class="vehicle_heading">
     <h1 class="govuk-heading-l">
       <span>{{ customTitle || vehicleMakeAndModel }}</span>
@@ -16,7 +16,7 @@
         <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
           <div class="govuk-summary-list__actions--flex">
             <app-button
-              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
+              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (currentTechRecord$ | async)?.vehicleType"
               design="link"
               id="change-type-link"
               (clicked)="navigateTo('change-vehicle-type')"
@@ -36,7 +36,7 @@
         <dd *ngIf="!hideActions" class="govuk-summary-list__actions">
           <div class="govuk-summary-list__actions--flex">
             <app-button
-              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (editableTechRecord$ | async)?.vehicleType"
+              *ngIf="currentTechRecord.statusCode !== 'archived' && currentTechRecord.vehicleType === (currentTechRecord$ | async)?.vehicleType"
               design="link"
               id="change-vin-link"
               (clicked)="navigateTo('change-vin')"

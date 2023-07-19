@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -11,18 +11,19 @@ import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
-import { Observable, take } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-visibility',
   templateUrl: './tech-record-change-visibility.component.html',
   styleUrls: ['./tech-record-change-visibility.component.scss']
 })
-export class TechRecordChangeVisibilityComponent implements OnInit {
+export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
   vehicle$: Observable<VehicleTechRecordModel | undefined>;
   techRecord?: TechRecordModel;
 
   form: CustomFormGroup;
+  subscription: Subscription;
 
   constructor(
     private actions$: Actions,
@@ -34,7 +35,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit {
   ) {
     this.vehicle$ = this.technicalRecordService.selectedVehicleTechRecord$;
 
-    this.technicalRecordService.techRecord$.subscribe(techRecord => (this.techRecord = techRecord));
+    this.subscription = this.technicalRecordService.viewableTechRecord$.subscribe(techRecord => (this.techRecord = techRecord));
 
     this.form = new CustomFormGroup(
       { name: 'reasonForChagingVisibility', type: FormNodeTypes.GROUP },
@@ -56,6 +57,10 @@ export class TechRecordChangeVisibilityComponent implements OnInit {
 
   ngOnInit(): void {
     this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.goBack());
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   goBack(): void {
