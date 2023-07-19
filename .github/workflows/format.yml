@@ -34,5 +34,5 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com 
           echo "Configured user..."
-          git add -A && git commit -m "[GHA] - Formatted by Github Action - Run ${{ github.run_id }} -n"
+          git add -A && git commit -m "[GHA] - Formatted by Github Action - Run ${{ github.run_id }}" -n
           git push --no-verify
