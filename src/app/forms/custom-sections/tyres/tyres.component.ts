@@ -54,7 +54,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.form = this.dynamicFormsService.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event: any) => {
+    this._formSubscription = this.form.cleanValueChanges.subscribe((event: any) => {
       if (event?.axles) {
         event.axles = (event.axles as Axle[]).filter(axle => !!axle?.axleNumber);
       }
