@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (event instanceof NavigationEnd) {
         this.googleAnalyticsService.pageView(document.title, event.urlAfterRedirects);
       }
-    })
+    });
   }
 
   ngOnInit() {
