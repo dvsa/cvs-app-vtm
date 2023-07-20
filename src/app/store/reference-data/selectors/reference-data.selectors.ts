@@ -1,4 +1,4 @@
-import { Brake, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import { Brake, ReferenceDataAdminType, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { ReferenceDataEntityStateSearch, referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
@@ -43,6 +43,18 @@ export const selectTyreSearchCriteria = createSelector(
   referenceDataFeatureState,
   state => state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateSearch
 );
+
+export const selectRefDataBySearchTerm = (searchTerm: string, referenceDataType: ReferenceDataResourceType) =>
+  createSelector(referenceDataFeatureState, state => {
+    const searchItem: Array<any> = [];
+    const keys = Object.keys(state[referenceDataType].entities);
+    keys.forEach(key => {
+      if ((state[referenceDataType].entities[key]?.resourceKey as string).includes(searchTerm)) {
+        searchItem.push(state[referenceDataType].entities[key]);
+      }
+    });
+    return searchItem;
+  });
 
 export const selectUserByResourceKey = (resourceKey: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.User].entities[resourceKey]);

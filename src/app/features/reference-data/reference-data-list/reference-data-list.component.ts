@@ -1,23 +1,41 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { catchError, filter, map, Observable, of, switchMap, take } from 'rxjs';
+import { selectAllReferenceDataByResourceType, selectRefDataBySearchTerm, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { catchError, filter, map, Observable, of, Subject, switchMap, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-list',
   templateUrl: './reference-data-list.component.html',
   styleUrls: ['./reference-data-list.component.scss']
 })
-export class ReferenceDataListComponent implements OnInit {
+export class ReferenceDataListComponent implements OnInit, OnDestroy {
   type!: ReferenceDataResourceType;
   disabled: boolean = true;
   pageStart?: number;
   pageEnd?: number;
+  data: Array<ReferenceDataModelBase> | undefined;
+  private destroy$ = new Subject<void>();
+
+  public form!: CustomFormGroup;
+  public searchResults: Array<ReferenceDataResourceType> | null = null;
+
+  public searchTemplate: FormNode = {
+    name: 'criteria',
+    type: FormNodeTypes.GROUP,
+    children: [
+      {
+        name: 'term',
+        value: '',
+        type: FormNodeTypes.CONTROL
+      }
+    ]
+  };
 
   constructor(
     private referenceDataService: ReferenceDataService,
@@ -61,6 +79,7 @@ export class ReferenceDataListComponent implements OnInit {
       .subscribe({
         next: res => of(!!res)
       });
+    this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)), takeUntil(this.destroy$)).subscribe(items => (this.data = items));
   }
 
   get refDataAdminType$(): Observable<any | undefined> {
@@ -108,10 +127,33 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   get paginatedItems$(): Observable<any[]> {
-    return this.data$.pipe(map(items => items?.slice(this.pageStart, this.pageEnd) ?? []));
+    return of(this.data?.slice(this.pageStart, this.pageEnd) ?? []);
   }
 
   get numberOfRecords$(): Observable<number> {
-    return this.data$.pipe(map(items => items?.length ?? 0));
+    return of(this.data?.length ?? 0);
+  }
+
+  search(term: string) {
+    console.log(term.trim());
+    let trimmedTerm = term.trim();
+
+    if (term === '') {
+      return;
+    }
+
+    this.store.pipe(select(selectRefDataBySearchTerm(term, this.type)), take(1)).subscribe(items => {
+      this.data = items;
+    });
+    console.log(this.data);
+  }
+
+  clear() {
+    this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)), takeUntil(this.destroy$)).subscribe(items => (this.data = items));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
