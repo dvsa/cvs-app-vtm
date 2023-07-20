@@ -2,11 +2,7 @@
   <fieldset class="govuk-fieldset" role="group" attr.aria-describedby="{{ name }}-hint">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ label }}</legend>
     <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
-    <app-field-error-message
-      *ngIf="dayEl.dirty && monthEl.dirty && yearEl.dirty && (yearEl.value ?? '').toString().length > 3 && !displayTime"
-      [error]="error"
-      [name]="name"
-    ></app-field-error-message>
+    <app-field-error-message *ngIf="showError" [error]="error" [name]="name"></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
@@ -86,19 +82,6 @@
       </div>
 
       <ng-container *ngIf="displayTime">
-        <app-field-error-message
-          *ngIf="
-            dayEl.dirty &&
-            monthEl.dirty &&
-            yearEl.dirty &&
-            displayTime &&
-            hourEl.dirty &&
-            minuteEl.dirty &&
-            (minuteEl.value ?? '').toString().length > 0
-          "
-          [error]="error"
-          [name]="name"
-        ></app-field-error-message>
         <div class="govuk-date-input__item">
           <div class="govuk-form-group">
             <label class="govuk-label govuk-date-input__label" for="{{ name }}-hour"> Hour </label>

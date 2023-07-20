@@ -50,6 +50,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public year?: number;
   public hour?: number;
   public minute?: number;
+  showError: boolean = false;
 
   constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
     super(injector, changeDetectorRef);
@@ -142,8 +143,16 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
-    if (this.isoDate)
+    if (this.isoDate) {
+      if (year > 999 && month > 0 && day > 0 && hour > 0 && minute > 0) {
+        this.showError = true;
+      }
+
       return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
+    }
+    if (year > 999 && month > 0 && day > 0) {
+      this.showError = true;
+    }
     return `${year || ''}-${this.padded(month)}-${this.padded(day)}`;
   }
 
