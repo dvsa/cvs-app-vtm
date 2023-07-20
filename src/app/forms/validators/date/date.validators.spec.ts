@@ -63,9 +63,9 @@ describe(DateValidators.validDate.name, () => {
       '20-01-01'
     ],
     [{ invalidDate: { error: true, reason: "'Date' must include time" } }, '2022-01-01T:00:00:000Z', true],
-    [{ invalidDate: { error: true, reason: "'Date' hours must be between 0 and 23" } }, '2022-01-01T24:00:00:000Z', true],
+    [{ invalidDate: { error: true, reason: "'Date' hours must be between 0 and 23" } }, '2022-01-01T24:1331:00:000Z', true],
     [{ invalidDate: { error: true, reason: "'Date' must include time" } }, '2022-01-01T00::00:000Z', true],
-    [{ invalidDate: { error: true, reason: "'Date' minutes must be between 0 and 59" } }, '2022-01-01T00:60:00:000Z', true],
+    [{ invalidDate: { error: true, reason: "'Date' minutes must be between 0 and 59" } }, '2022-01-01T23:60:00:000Z', true],
     [null, ''],
     [null, '2022-01-01T00:00:00.000Z']
   ])('should validate date and return %s for %p', (expected, date: string, displayTime = false) => {
