@@ -1,15 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  QueryList,
-  ViewChild,
-  ViewChildren
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
@@ -28,10 +17,8 @@ import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { updateEditingTechRecord } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, UnsubscriptionError, firstValueFrom, map, take, takeUntil, tap, withLatestFrom } from 'rxjs';
-import { boolean } from 'yargs';
+import { Observable, Subject, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -70,8 +57,11 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.technicalRecordService.viewableTechRecord$
       .pipe(
-        map(t => {
-          const techRecord = cloneDeep(t!);
+        map(record => {
+          if (!record) {
+            return;
+          }
+          const techRecord = cloneDeep(record);
           if (techRecord.vehicleType === VehicleTypes.HGV || techRecord.vehicleType === VehicleTypes.TRL) {
             const [axles, axleSpacing] = this.axlesService.normaliseAxles(techRecord.axles, techRecord.dimensions?.axleSpacing);
             techRecord.dimensions = { ...techRecord.dimensions, axleSpacing };
@@ -82,7 +72,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(techRecord => {
-        this.techRecordCalculated = techRecord;
+        if (techRecord) {
+          this.techRecordCalculated = techRecord;
+        }
         this.referenceDataService.removeTyreSearch();
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
