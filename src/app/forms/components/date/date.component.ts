@@ -51,6 +51,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public year?: number;
   public hour?: number;
   public minute?: number;
+  showError: boolean = false;
 
   constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
     super(injector, changeDetectorRef);
