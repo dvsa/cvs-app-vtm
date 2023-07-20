@@ -27,13 +27,13 @@ const routes: Routes = [
       {
         path: ':type',
         component: RouterOutletComponent,
-        data: { title: 'Search Data Type', roles: Roles.ReferenceDataView },
+        data: { title: 'Search Reference Data', roles: Roles.ReferenceDataView },
         canActivate: [MsalGuard, RoleGuard],
         children: [
           {
             path: '',
             component: ReferenceDataListComponent,
-            data: { title: 'Search Data Type', roles: Roles.ReferenceDataView },
+            data: { title: 'Search Reference Data', roles: Roles.ReferenceDataView },
             canActivate: [MsalGuard, RoleGuard]
           },
           {
