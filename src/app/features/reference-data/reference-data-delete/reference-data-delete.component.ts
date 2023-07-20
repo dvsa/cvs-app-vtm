@@ -53,11 +53,14 @@ export class ReferenceDataDeleteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(take(1)).subscribe(params => {
+    this.route.parent?.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
-      this.key = decodeURIComponent(params['key']);
 
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
+    });
+
+    this.route.params.pipe(take(1)).subscribe(params => {
+      this.key = decodeURIComponent(params['key']);
 
       if (this.type && this.key) {
         this.store.dispatch(fetchReferenceDataByKey({ resourceType: this.type, resourceKey: this.key }));
@@ -105,7 +108,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    this.router.navigate([this.type], { relativeTo: this.route.parent });
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 
   handleSubmit() {

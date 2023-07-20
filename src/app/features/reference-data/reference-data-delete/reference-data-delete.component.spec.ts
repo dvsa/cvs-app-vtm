@@ -57,11 +57,10 @@ describe('ReferenceDataAddComponent', () => {
 
     it('should navigate back to the previous page', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      component.type = ReferenceDataResourceType.CountryOfRegistration;
 
       component.navigateBack();
 
-      expect(navigateSpy).toBeCalledWith(['COUNTRY_OF_REGISTRATION'], { relativeTo: route.parent });
+      expect(navigateSpy).toBeCalledWith(['../..'], { relativeTo: route });
     });
   });
   describe('handleFormChange', () => {

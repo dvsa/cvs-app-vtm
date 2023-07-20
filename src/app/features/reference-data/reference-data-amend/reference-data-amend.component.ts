@@ -35,13 +35,17 @@ export class ReferenceDataAmendComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(first()).subscribe(params => {
+    this.route.parent?.params.pipe(first()).subscribe(params => {
       this.type = params['type'];
+      // load the reference data admin type
+      this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
+    });
+
+    this.route.params.pipe(first()).subscribe(params => {
       this.key = decodeURIComponent(params['key']);
 
       if (this.type && this.key) {
-        // load the reference data admin type, the current item and check if it has any audit history
-        this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
+        // load the current item
         this.referenceDataService.loadReferenceDataByKey(this.type, this.key);
       }
     });

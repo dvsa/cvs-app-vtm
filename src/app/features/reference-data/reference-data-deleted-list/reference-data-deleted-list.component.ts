@@ -25,7 +25,7 @@ export class ReferenceDataDeletedListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(take(1)).subscribe(params => {
+    this.route.parent?.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
       this.store.dispatch(fetchReferenceDataAudit({ resourceType: (this.type + '#AUDIT') as ReferenceDataResourceType }));
@@ -42,10 +42,6 @@ export class ReferenceDataDeletedListComponent implements OnInit {
 
   get roles(): typeof Roles {
     return Roles;
-  }
-
-  navigateBack(): void {
-    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handlePaginationChange({ start, end }: { start: number; end: number }) {
