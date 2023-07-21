@@ -13,7 +13,7 @@ import {
   updateEditingTechRecordCancel,
   updateTechRecordsSuccess
 } from '@store/technical-records';
-import { Observable, Subject, map, takeUntil, withLatestFrom } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-edit-tech-record-button',
@@ -66,7 +66,8 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
     this.technicalRecordService.viewableTechRecord$
       .pipe(
         map(techRecord => techRecord?.statusCode),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
+        distinctUntilChanged()
       )
       .subscribe(statusCode => {
         statusCode !== StatusCodes.PROVISIONAL
