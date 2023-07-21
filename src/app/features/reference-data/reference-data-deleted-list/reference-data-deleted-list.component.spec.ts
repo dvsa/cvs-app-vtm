@@ -34,14 +34,4 @@ describe('DataTypeListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  describe('back', () => {
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-
-      component.navigateBack();
-
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
-    });
-  });
 });

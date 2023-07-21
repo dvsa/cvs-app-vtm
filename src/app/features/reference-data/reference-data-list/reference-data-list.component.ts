@@ -85,10 +85,6 @@ export class ReferenceDataListComponent implements OnInit {
     this.router.navigate(['deleted-items'], { relativeTo: this.route });
   }
 
-  back(): void {
-    this.router.navigate(['reference-data']);
-  }
-
   amend(item: ReferenceDataModelBase): void {
     const key = encodeURIComponent(String(item.resourceKey));
     this.router.navigate([key], { relativeTo: this.route }).then(() => {
