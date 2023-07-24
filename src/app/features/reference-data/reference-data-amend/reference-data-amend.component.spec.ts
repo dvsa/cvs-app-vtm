@@ -8,10 +8,6 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/.';
 import { ReferenceDataAmendComponent } from './reference-data-amend.component';
-import { of } from 'rxjs';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { QueryList } from '@angular/core';
 
 const mockRefDataService = {
   loadReferenceData: jest.fn(),

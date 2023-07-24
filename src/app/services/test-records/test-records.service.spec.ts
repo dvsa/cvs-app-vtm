@@ -1,11 +1,10 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService, DefaultService } from '@api/test-results';
+import { GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService } from '@api/test-results';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { createTestResult, fetchTestResults, fetchTestResultsBySystemNumber, toEditOrNotToEdit, updateTestResult } from '@store/test-records';
-import { of } from 'rxjs';
 import { mockTestResult } from '../../../mocks/mock-test-result';
 import { TestRecordsService } from './test-records.service';
 

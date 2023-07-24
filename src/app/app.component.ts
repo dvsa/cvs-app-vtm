@@ -1,6 +1,6 @@
 ///<reference path="govuk.d.ts">
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, NavigationEnd, Event, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, Event } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (event instanceof NavigationEnd) {
         this.googleAnalyticsService.pageView(document.title, event.urlAfterRedirects);
       }
-    })
+    });
   }
 
   ngOnInit() {

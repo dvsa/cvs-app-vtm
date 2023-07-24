@@ -1,5 +1,4 @@
 import { Directive, HostListener } from '@angular/core';
-import { NgForm } from '@angular/forms';
 
 @Directive({
   selector: '[appTrimWhitespace]'

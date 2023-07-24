@@ -8,7 +8,7 @@ import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-re
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/.';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';

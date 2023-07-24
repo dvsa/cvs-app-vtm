@@ -23,7 +23,7 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { addAxle, removeAxle } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { debounceTime, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tyres',

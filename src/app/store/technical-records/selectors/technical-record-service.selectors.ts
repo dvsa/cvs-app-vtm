@@ -1,7 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import { selectRouteDataProperty, selectRouteNestedParams, selectUrl } from '@store/router/selectors/router.selectors';
 import { getVehicleTechRecordState } from '../reducers/technical-record-service.reducer';
-import { selectQueryParams, selectRouteData } from '@store/router/selectors/router.selectors';
 import { StatusCodes, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 

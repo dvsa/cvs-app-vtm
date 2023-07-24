@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DeleteItem, EmptyObject, ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
+import { DeleteItem, ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -8,7 +8,7 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { testResultInEdit } from '@store/test-records';
-import { catchError, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap, take } from 'rxjs';
 import {
   amendReferenceDataItem,
   amendReferenceDataItemFailure,
