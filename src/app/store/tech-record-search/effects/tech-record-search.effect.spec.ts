@@ -1,7 +1,6 @@
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from '../actions/tech-record-search.actions';
 import { TechSearchResultsEffects } from './tech-record-search.effect';
-import { fetchDefectSuccess } from '@store/defects';
 import { SearchResult } from '../reducer/tech-record-search.reducer';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Action } from '@ngrx/store';

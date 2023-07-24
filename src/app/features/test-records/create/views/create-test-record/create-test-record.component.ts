@@ -17,7 +17,7 @@ import { State } from '@store/index';
 import { createTestResultSuccess } from '@store/test-records';
 import { getTypeOfTest } from '@store/test-types/selectors/test-types.selectors';
 import cloneDeep from 'lodash.clonedeep';
-import { BehaviorSubject, filter, firstValueFrom, map, Observable, of, ReplaySubject, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, filter, firstValueFrom, map, Observable, of, Subject, take, takeUntil, tap } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({

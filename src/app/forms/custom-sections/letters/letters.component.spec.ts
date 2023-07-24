@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { createMockTrl } from '@mocks/trl-record.mock';
 import { Roles } from '@models/roles.enum';
-import { approvalType, LettersIntoAuthApprovalType, LettersOfAuth, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { approvalType, LettersOfAuth, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';

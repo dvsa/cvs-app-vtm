@@ -2,7 +2,7 @@ import { routerNavigatedAction, RouterNavigatedPayload, SerializedRouterStateSna
 import { globalErrorReducer, GlobalErrorState, initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { fetchTestResults, fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed } from '@store/test-records';
 import { patchErrors, setErrors } from '../actions/global-error.actions';
-import { fetchSearchResult, fetchSearchResultFailed } from '@store/tech-record-search/actions/tech-record-search.actions';
+import { fetchSearchResultFailed } from '@store/tech-record-search/actions/tech-record-search.actions';
 
 describe('Global Error Reducer', () => {
   describe('unknown action', () => {
