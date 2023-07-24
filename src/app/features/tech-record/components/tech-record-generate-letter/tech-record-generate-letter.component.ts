@@ -5,7 +5,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { LETTER_TYPES } from '@forms/templates/general/letter-types';
-import { approvalType, LettersOfAuth, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { LettersOfAuth, TechRecordModel, VehicleTechRecordModel, approvalType } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -53,7 +53,7 @@ export class GenerateLetterComponent {
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
 
-    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.currentTechRecord = techRecord));
+    this.technicalRecordService.viewableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.currentTechRecord = techRecord));
   }
 
   get reasons(): Array<FormNodeOption<string>> {

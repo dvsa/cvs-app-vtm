@@ -64,13 +64,15 @@ const routes: Routes = [
     path: 'generate-plate',
     component: GeneratePlateComponent,
     data: { title: 'Generate plate', roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard]
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordViewResolver }
   },
   {
     path: 'generate-letter',
     component: GenerateLetterComponent,
     data: { title: 'Generate letter', roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard]
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordViewResolver }
   },
   {
     path: 'provisional',
