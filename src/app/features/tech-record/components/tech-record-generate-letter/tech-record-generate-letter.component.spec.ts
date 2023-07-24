@@ -1,7 +1,9 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { approvalType, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -9,20 +11,17 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { UserService } from '@services/user-service/user-service';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
+import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { GenerateLetterComponent } from './tech-record-generate-letter.component';
-import { SharedModule } from '@shared/shared.module';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { ReactiveFormsModule } from '@angular/forms';
-import { UserService } from '@services/user-service/user-service';
-import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 
 const mockTechRecordService = {
-  editableTechRecord$: of({}),
+  viewableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
-  viewableTechRecord$: jest.fn(),
   updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn()
 };
