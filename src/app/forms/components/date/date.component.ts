@@ -44,13 +44,13 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public originalDate: string = '';
   public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
   private dateFieldOrDefault?: Record<'hours' | 'minutes' | 'seconds', string | number>;
+  public showError: boolean = false;
 
   public day?: number;
   public month?: number;
   public year?: number;
   public hour?: number;
   public minute?: number;
-  showError: boolean = false;
 
   constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
     super(injector, changeDetectorRef);
