@@ -33,7 +33,7 @@ export class GeneratePlateComponent implements OnInit {
     public userService: UserService,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.emailAddress$ = this.technicalRecordService.editableTechRecord$.pipe(
+    this.emailAddress$ = this.technicalRecordService.viewableTechRecord$.pipe(
       tap(record => {
         if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
       }),
