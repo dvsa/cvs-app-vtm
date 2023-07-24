@@ -22,7 +22,6 @@ import { GenerateLetterComponent } from './tech-record-generate-letter.component
 const mockTechRecordService = {
   viewableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
-  // viewableTechRecord$: jest.fn(),
   updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn()
 };

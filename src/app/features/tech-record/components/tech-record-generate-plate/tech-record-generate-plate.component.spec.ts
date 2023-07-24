@@ -19,7 +19,6 @@ import { GeneratePlateComponent } from './tech-record-generate-plate.component';
 const mockTechRecordService = {
   viewableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
-  // viewableTechRecord$: jest.fn(),
   updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn()
 };
