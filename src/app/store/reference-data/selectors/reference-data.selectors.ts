@@ -44,20 +44,15 @@ export const selectTyreSearchCriteria = createSelector(
   state => state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateSearch
 );
 
-export const selectRefDataBySearchTerm = (searchTerm: string, referenceDataType: ReferenceDataResourceType) =>
+export const selectRefDataBySearchTerm = (searchTerm: string, referenceDataType: ReferenceDataResourceType, filter: string) =>
   createSelector(referenceDataFeatureState, state => {
     const searchItem: Array<any> = [];
 
-    state[referenceDataType].ids.map(key => {
+    state[referenceDataType].ids.forEach(key => {
       const obj = state[referenceDataType].entities[key] as any;
-      const itemKeys = Object.keys(obj);
-
-      itemKeys.map(itemKey => {
-        if ((obj[itemKey] as string).toUpperCase().includes(searchTerm.toUpperCase())) {
-          searchItem.push(obj);
-        }
-        return;
-      });
+      if ((obj[filter] as string).toUpperCase().includes(searchTerm.toUpperCase())) {
+        searchItem.push(obj);
+      }
     });
     return searchItem;
   });

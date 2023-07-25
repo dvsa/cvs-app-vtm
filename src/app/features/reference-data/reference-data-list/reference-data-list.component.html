@@ -1,6 +1,6 @@
 <div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
   <div class="govuk-grid-column-full">
-    <p class="govuk-heading-xl govuk-!-font-weight-bold">Search for {{ (refDataAdminType$ | async).label }}</p>
+    <p class="govuk-heading-xl govuk-!-font-weight-bold" id="heading">Search for {{ (refDataAdminType$ | async).label }}</p>
 
     <div id="buttonsAndSearch">
       <app-button-group id="addCreateButtons">
@@ -10,39 +10,27 @@
       </app-button-group>
 
       <div [formGroup]="form" class="govuk-form-group" id="searchForm">
-        <label>Search by Primary Key:</label>
+        <app-select
+          #searchFilter
+          label="Search filter"
+          [formControlName]="form.meta.children![0].name"
+          [name]="form.meta.children![0].name"
+          [options]="(refDataAdminType$ | async).searchOptions"
+        ></app-select>
+
+        <br />
         <input
           id="refSearch"
           #searchTerm
-          formControlName="searchBox"
-          name="searchBox"
+          [formControlName]="form.meta.children![1].name"
+          [name]="form.meta.children![1].name"
           aria-describedby="term"
           type="text"
           class="govuk-input govuk-!-width-two-thirds"
+          placeholder="Search Term"
         />
-        <button
-          class="govuk-button margin-right search-btn"
-          type="submit"
-          data-module="govuk-button"
-          enterkeyhint="search"
-          data-gem-track-click-module-started="true"
-          (click)="search(searchTerm.value)"
-        >
-          <svg
-            class="gem-c-search__icon"
-            width="25"
-            height="25"
-            viewBox="0 0 25 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <circle cx="12.0161" cy="11.0161" r="8.51613" stroke="currentColor" stroke-width="3"></circle>
-            <line x1="17.8668" y1="17.3587" x2="26.4475" y2="25.9393" stroke="currentColor" stroke-width="3"></line>
-          </svg>
-        </button>
-        <app-button type="button" design="warning" (clicked)="clear()">Clear</app-button>
+        <app-button id="searchSubmit" type="button" (clicked)="search(searchTerm.value, searchFilter.value)">Search</app-button>
+        <app-button id="searchCancel" type="button" design="warning" (clicked)="clear()">Clear</app-button>
       </div>
     </div>
 
@@ -71,6 +59,7 @@
       [numberOfItems]="(numberOfRecords$ | async) ?? 0"
       (paginationOptions)="handlePaginationChange($event)"
       [itemsPerPage]="25"
+      [reset]="currentPage"
     ></app-pagination>
   </div>
 </div>

@@ -12,10 +12,28 @@
 }
 
 #refSearch {
-  width: 50% !important;
+  width: 220px !important;
+  margin-right: 15px;
 }
 
 #searchForm {
   width: 50%;
+  padding: 5px;
+  margin-bottom: 0px;
+  padding-bottom: 15px;
+}
+
+#searchSubmit {
+  margin-right: 15px;
+}
+
+#addCreateButtons {
   display: flex;
+  align-items: flex-end;
+  padding-top: 10px !important;
+  padding-bottom: 0px;
+}
+
+#heading {
+  margin-bottom: 10px !important;
 }
