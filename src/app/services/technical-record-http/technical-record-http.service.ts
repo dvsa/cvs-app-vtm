@@ -8,11 +8,11 @@ import {
   VehicleTechRecordModel
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
+import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
-import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
 
 export enum SEARCH_TYPES {
   VIN = 'vin',
@@ -131,17 +131,13 @@ export class TechnicalRecordHttpService {
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  generatePlate(
-    vehicleRecord: VehicleTechRecordModel,
-    techRecord: TechRecordModel,
-    reason: string,
-    user: { id?: string; name?: string; email?: string }
-  ) {
+  generatePlate(vehicleRecord: VehicleTechRecordModel, reason: string, user: { id?: string; name?: string; email?: string }) {
     const url = `${environment.VTM_API_URI}/vehicles/documents/plate`;
 
     const updatedVehicleRecord = cloneDeep(vehicleRecord);
     const currentRecordIndex = updatedVehicleRecord.techRecord.findIndex(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
     updatedVehicleRecord.techRecord[currentRecordIndex].axles?.sort((a, b) => a.axleNumber! - b.axleNumber!);
+    const techRecord = updatedVehicleRecord.techRecord[currentRecordIndex];
 
     const body = {
       vin: vehicleRecord.vin,
@@ -160,12 +156,13 @@ export class TechnicalRecordHttpService {
 
   generateLetter(
     vehicleRecord: VehicleTechRecordModel,
-    techRecord: TechRecordModel,
     letterType: string,
     paragraphId: number,
     user: { id?: string; name?: string; email?: string }
   ) {
     const url = `${environment.VTM_API_URI}/vehicles/documents/letter`;
+
+    const techRecord = vehicleRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
 
     const body = {
       vin: vehicleRecord.vin,
