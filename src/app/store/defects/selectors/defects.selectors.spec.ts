@@ -4,7 +4,7 @@ import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsState, initialDefectsState } from '../reducers/defects.reducer';
-import { defect, defects, defectsLoadingState, filteredDefects, selectByDeficiencyRef, selectByImNumber } from './defects.selectors';
+import { defect, defects, defectsLoadingState, selectByDeficiencyRef, selectByImNumber } from './defects.selectors';
 
 describe('Defects Selectors', () => {
   describe('adapter selectors', () => {

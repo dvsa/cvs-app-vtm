@@ -53,15 +53,6 @@ describe('DataTypeListComponent', () => {
       expect(navigateSpy).toBeCalledWith(['foo/delete'], { relativeTo: route });
     });
   });
-  describe('back', () => {
-    it('should navigate to reference-data', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
-
-      component.back();
-
-      expect(navigateSpy).toBeCalledWith(['reference-data']);
-    });
-  });
   describe('addNew', () => {
     it('should navigate to the selected items create', () => {
       const navigateSpy = jest.spyOn(router, 'navigate');

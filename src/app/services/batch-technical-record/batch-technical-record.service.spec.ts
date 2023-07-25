@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
@@ -8,7 +8,6 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import cloneDeep from 'lodash.clonedeep';
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { BatchTechnicalRecordService } from './batch-technical-record.service';
 import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';

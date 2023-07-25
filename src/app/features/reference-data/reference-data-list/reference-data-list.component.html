@@ -6,7 +6,6 @@
       <app-button-group id="addCreateButtons">
         <app-button id="submit" (clicked)="addNew()">Add New</app-button>
         <app-button id="submit" [disabled]="disabled" (clicked)="navigateToDeletedItems()">Deleted Items</app-button>
-        <app-button id="cancel" design="link" (clicked)="back()">Back</app-button>
       </app-button-group>
 
       <div [formGroup]="form" class="govuk-form-group" id="searchForm">

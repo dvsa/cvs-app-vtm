@@ -1,4 +1,3 @@
-import { DeleteItem, ReferenceDataItem } from '@api/reference-data';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { createAction, props } from '@ngrx/store';

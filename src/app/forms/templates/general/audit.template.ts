@@ -1,4 +1,3 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const Audit: FormNode = {

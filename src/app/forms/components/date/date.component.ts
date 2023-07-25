@@ -44,6 +44,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public originalDate: string = '';
   public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
   private dateFieldOrDefault?: Record<'hours' | 'minutes' | 'seconds', string | number>;
+  public showError: boolean = false;
 
   public day?: number;
   public month?: number;
@@ -142,8 +143,16 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
-    if (this.isoDate)
+    if (this.isoDate) {
+      if (year > 999 && month > 0 && day > 0 && hour > 0 && minute > 0) {
+        this.showError = true;
+      }
+
       return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
+    }
+    if (year > 999 && month > 0 && day > 0) {
+      this.showError = true;
+    }
     return `${year || ''}-${this.padded(month)}-${this.padded(day)}`;
   }
 

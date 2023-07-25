@@ -35,7 +35,7 @@ export class ReferenceDataCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(take(1)).subscribe(params => {
+    this.route.parent?.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
     });

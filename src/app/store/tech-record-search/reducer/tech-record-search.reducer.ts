@@ -1,7 +1,6 @@
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from '../actions/tech-record-search.actions';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
 
 export interface SearchResult {
   systemNumber: string;

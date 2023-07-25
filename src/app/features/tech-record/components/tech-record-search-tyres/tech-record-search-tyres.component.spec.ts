@@ -26,11 +26,10 @@ const mockGlobalErrorService = {
   clearErrors: jest.fn()
 };
 const mockTechRecordService = {
-  get editableTechRecord$() {
+  get viewableTechRecord$() {
     return of({});
   },
-  selectedVehicleTechRecord$: of({}),
-  viewableTechRecord$: jest.fn()
+  selectedVehicleTechRecord$: of({})
 };
 const mockReferenceDataService = {
   addSearchInformation: jest.fn(),
@@ -253,7 +252,7 @@ describe('TechRecordSearchTyresComponent', () => {
     });
     it('should navigate if there is no viewable tech record', () => {
       const routerSpy = jest.spyOn(router, 'navigate');
-      jest.spyOn(mockTechRecordService, 'editableTechRecord$', 'get').mockReturnValue(of(undefined) as any);
+      jest.spyOn(mockTechRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(undefined) as any);
       component.ngOnInit();
       expect(routerSpy).toHaveBeenCalledWith(['../..'], { relativeTo: route });
     });

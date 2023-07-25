@@ -16,7 +16,7 @@ import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearch
 import { selectSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { mergeMap, Observable, take } from 'rxjs';
+import { Observable, mergeMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-tyres-search',
@@ -76,7 +76,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
     this.route.params.pipe(take(1)).subscribe(p => (this.params = p));
-    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(data => (this.viewableTechRecord = data));
+    this.technicalRecordService.viewableTechRecord$.pipe(take(1)).subscribe(data => (this.viewableTechRecord = data));
     this.referenceDataService
       .getTyreSearchReturn$()
       .pipe(take(1))

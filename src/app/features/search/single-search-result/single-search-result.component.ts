@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { createSingleSearchResult } from '@forms/templates/search/single-search-result.template';
 import { Roles } from '@models/roles.enum';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 
 @Component({

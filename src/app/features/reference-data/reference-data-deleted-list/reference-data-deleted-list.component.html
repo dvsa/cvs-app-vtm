@@ -2,8 +2,6 @@
   <div class="govuk-grid-column-full">
     <p class="govuk-heading-xl govuk-!-font-weight-bold">Deleted {{ (refDataAdminType$ | async)?.label }}</p>
 
-    <a [routerLink]="['..']" class="govuk-back-link">Back</a>
-
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
@@ -18,7 +16,7 @@
         <tr class="govuk-table__row" *ngFor="let item of paginatedItems$ | async">
           <ng-container *ngIf="item.reason">
             <td *ngFor="let column of (refDataAdminType$ | async)?.columns" class="govuk-table__cell">{{ item[column.name] }}</td>
-            <td class="govuk-table__cell">{{ item.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
+            <td class="govuk-table__cell">{{ item.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
             <td class="govuk-table__cell">{{ item.createdName }}</td>
             <td class="govuk-table__cell">{{ item.reason }}</td>
           </ng-container>

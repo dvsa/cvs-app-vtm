@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } 
 import { ReferenceDataAdminColumn, ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
 import { fetchReferenceDataByKeySearch, ReferenceDataState } from '@store/reference-data';
-import { Observable, of, take, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { selectSearchReturn } from '@store/reference-data';
 
 @Component({
@@ -23,7 +23,6 @@ export class ReferenceDataAmendHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     // load the audit history
-    // @ts-ignore
     this.store.dispatch(
       fetchReferenceDataByKeySearch({
         resourceType: (this.type + '#AUDIT') as ReferenceDataResourceType,

@@ -1,5 +1,3 @@
-import { isNgTemplate } from '@angular/compiler';
-
 export enum ReferenceDataResourceType {
   Brakes = 'BRAKES',
   CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',

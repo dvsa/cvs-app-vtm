@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -25,7 +25,7 @@ export class ReferenceDataDeletedListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(take(1)).subscribe(params => {
+    this.route.parent?.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
       this.store.dispatch(fetchReferenceDataAudit({ resourceType: (this.type + '#AUDIT') as ReferenceDataResourceType }));
@@ -42,10 +42,6 @@ export class ReferenceDataDeletedListComponent implements OnInit {
 
   get roles(): typeof Roles {
     return Roles;
-  }
-
-  navigateBack(): void {
-    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handlePaginationChange({ start, end }: { start: number; end: number }) {

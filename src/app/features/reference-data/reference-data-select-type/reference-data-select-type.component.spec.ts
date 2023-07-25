@@ -8,7 +8,6 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { UserService } from '@services/user-service/user-service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { of } from 'rxjs';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 
 describe('ReferenceDataComponent', () => {

@@ -1,9 +1,8 @@
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { createMock, createMockList } from 'ts-auto-mock';
+import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { createMock } from 'ts-auto-mock';
 import { initialState, TechnicalRecordServiceState } from '../reducers/technical-record-service.reducer';
 import {
   getSingleVehicleType,
-  selectTechRecord,
   selectVehicleTechnicalRecordsBySystemNumber,
   technicalRecordsLoadingState,
   vehicleTechRecords,
