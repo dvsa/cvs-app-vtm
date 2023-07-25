@@ -50,7 +50,7 @@ export const selectRefDataBySearchTerm = (searchTerm: string, referenceDataType:
 
     state[referenceDataType].ids.forEach(key => {
       const obj = state[referenceDataType].entities[key] as any;
-      if ((obj[filter] as string).toUpperCase().includes(searchTerm.toUpperCase())) {
+      if (obj[filter].toString().toUpperCase().includes(searchTerm.toString().toUpperCase())) {
         searchItem.push(obj);
       }
     });
