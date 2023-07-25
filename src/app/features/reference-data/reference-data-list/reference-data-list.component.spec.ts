@@ -71,4 +71,13 @@ describe('DataTypeListComponent', () => {
       expect(navigateSpy).toBeCalledWith(['create'], { relativeTo: route });
     });
   });
+  describe('navigateToDeletedItems', () => {
+    it('should navigate to the selected items create', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      component.navigateToDeletedItems();
+
+      expect(navigateSpy).toBeCalledWith(['deleted-items'], { relativeTo: route });
+    });
+  });
 });
