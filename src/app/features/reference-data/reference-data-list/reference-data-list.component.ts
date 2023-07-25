@@ -127,7 +127,6 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.pageStart = start;
     this.pageEnd = end;
     this.cdr.detectChanges();
-    console.log(this.currentPage);
   }
 
   get paginatedItems$(): Observable<any[]> {
@@ -147,20 +146,22 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (term === '') {
-      return;
-    }
     this.currentPage = 1;
     this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filter)), take(1)).subscribe(items => {
-      this.searchReturned = true;
-      this.data = items;
+      if (items.length === 0) {
+        this.globalErrorService.addError({ error: 'Your search returned no results', anchorLink: 'term' });
+      } else {
+        this.searchReturned = true;
+        this.data = items;
+        this.handlePaginationChange({ start: 0, end: 24 });
+        this.currentPage = undefined;
+      }
     });
-    this.handlePaginationChange({ start: 0, end: 24 });
-    this.currentPage = undefined;
   }
 
   clear() {
     this.form.reset();
+    this.globalErrorService.clearErrors();
     if (this.searchReturned) {
       this.currentPage = 1;
       this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)), take(1)).subscribe(items => (this.data = items));
