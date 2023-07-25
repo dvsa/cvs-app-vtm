@@ -16,7 +16,7 @@
         <tr class="govuk-table__row" *ngFor="let item of paginatedItems$ | async">
           <ng-container *ngIf="item.reason">
             <td *ngFor="let column of (refDataAdminType$ | async)?.columns" class="govuk-table__cell">{{ item[column.name] }}</td>
-            <td class="govuk-table__cell">{{ item.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td class="govuk-table__cell">{{ item.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
             <td class="govuk-table__cell">{{ item.createdName }}</td>
             <td class="govuk-table__cell">{{ item.reason }}</td>
           </ng-container>
