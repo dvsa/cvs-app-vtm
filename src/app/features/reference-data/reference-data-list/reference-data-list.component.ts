@@ -17,7 +17,6 @@ import { Observable, Subject, catchError, filter, map, of, switchMap, take, take
   styleUrls: ['./reference-data-list.component.scss']
 })
 export class ReferenceDataListComponent implements OnInit, OnDestroy {
-  @ViewChild(PaginationComponent) child: PaginationComponent | undefined;
   type!: ReferenceDataResourceType;
   disabled: boolean = true;
   pageStart?: number;
@@ -27,7 +26,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   public form!: CustomFormGroup;
-  public searchResults: Array<ReferenceDataResourceType> | null = null;
+  public searchReturned: boolean = false;
 
   public searchTemplate: FormNode = {
     name: 'criteria',
@@ -63,7 +62,6 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
       this.type = params['type'];
       this.referenceDataService.loadReferenceData(this.type);
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-      console.log(this.child!.visiblePages);
     });
 
     this.globalErrorService.errors$
@@ -146,7 +144,6 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
 
   search(term: string, filter: string) {
     this.globalErrorService.clearErrors();
-    this.searchResults = [];
     const trimmedTerm = term?.trim();
     if (!trimmedTerm || !filter) {
       const error = !trimmedTerm ? 'You must provide a search criteria' : 'You must select a valid search filter';
@@ -157,18 +154,23 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     if (term === '') {
       return;
     }
-
+    this.currentPage = 1;
     this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filter)), take(1)).subscribe(items => {
+      this.searchReturned = true;
       this.data = items;
     });
+    this.handlePaginationChange({ start: 0, end: 24 });
+    this.currentPage = undefined;
   }
 
   clear() {
-    this.currentPage = 1;
-    this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)), take(1)).subscribe(items => (this.data = items));
-    this.handlePaginationChange({ start: 0, end: 24 });
-    this.currentPage = undefined;
-    console.log(this.child?.currentPage);
+    this.form.reset();
+    if (this.searchReturned) {
+      this.currentPage = 1;
+      this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)), take(1)).subscribe(items => (this.data = items));
+      this.handlePaginationChange({ start: 0, end: 24 });
+      this.currentPage = undefined;
+    }
   }
 
   ngOnDestroy(): void {
