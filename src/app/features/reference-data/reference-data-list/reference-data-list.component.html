@@ -29,9 +29,7 @@
           placeholder="Search Term"
         />
         <app-button id="searchSubmit" type="button" (clicked)="search(searchTerm.value, searchFilter.value)">Search</app-button>
-        <app-button id="searchCancel" type="button" design="warning" (clicked)="clear()" [disabled]="searchTerm.value ? false : true"
-          >Clear</app-button
-        >
+        <app-button id="searchCancel" type="button" design="warning" (clicked)="clear()">Clear</app-button>
       </div>
     </div>
 
