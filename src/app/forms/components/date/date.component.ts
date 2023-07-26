@@ -45,7 +45,6 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
   private dateFieldOrDefault?: Record<'hours' | 'minutes' | 'seconds', string | number>;
   public showError: boolean = false;
-  public minuteTouched: boolean = false;
 
   public day?: number;
   public month?: number;
@@ -99,7 +98,6 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   onMinuteChange(event: any) {
-    this.minuteTouched = true;
     this.minute_.next(event);
   }
 
@@ -154,11 +152,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   convertToNumber(input: string | number | undefined): number {
-    if (typeof input === 'number') {
-      return input;
-    } else {
-      return 0;
-    }
+    return typeof input === 'number' ? input : 0;
   }
   processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
     if (this.isoDate) {
