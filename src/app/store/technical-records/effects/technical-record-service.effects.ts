@@ -11,7 +11,7 @@ import {
   Vrm
 } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -173,13 +173,12 @@ export class TechnicalRecordServiceEffects {
       ofType(generatePlate),
       withLatestFrom(
         this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
-        this.store.select(editableTechRecord),
         this.userService.name$,
         this.userService.id$,
         this.userService.userEmail$
       ),
-      switchMap(([{ reason }, vehicle, techRecord, name, id, email]) =>
-        this.techRecordHttpService.generatePlate(vehicle!, techRecord!, reason, { name, id, email }).pipe(
+      switchMap(([{ reason }, vehicle, name, id, email]) =>
+        this.techRecordHttpService.generatePlate(vehicle!, reason, { name, id, email }).pipe(
           map(() => generatePlateSuccess()),
           catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
         )
@@ -192,13 +191,12 @@ export class TechnicalRecordServiceEffects {
       ofType(generateLetter),
       withLatestFrom(
         this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
-        this.store.select(editableTechRecord),
         this.userService.name$,
         this.userService.id$,
         this.userService.userEmail$
       ),
-      switchMap(([{ letterType, paragraphId }, vehicle, techRecord, name, id, email]) =>
-        this.techRecordHttpService.generateLetter(vehicle!, techRecord!, letterType, paragraphId, { name, id, email }).pipe(
+      switchMap(([{ letterType, paragraphId }, vehicle, name, id, email]) =>
+        this.techRecordHttpService.generateLetter(vehicle!, letterType, paragraphId, { name, id, email }).pipe(
           map(value => generateLetterSuccess()),
           catchError(error => of(generateLetterFailure({ error: this.getTechRecordErrorMessage(error, 'generateLetter') })))
         )
