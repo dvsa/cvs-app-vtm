@@ -20,6 +20,7 @@ export class DateValidators {
       }
 
       if (displayTime) {
+        console.log(t);
         return this.validateTime(t, label);
       }
 
@@ -29,7 +30,7 @@ export class DateValidators {
 
   private static validateTime(time: string, label: string | undefined) {
     const [hours, minutes] = time.split(':');
-    if (hours === '00' || minutes == '00') {
+    if (!hours || !minutes || (hours === '00' && minutes == '00')) {
       return { invalidDate: { error: true, reason: `'${label || 'Date'}' must include time` } };
     }
     if (23 < Number.parseInt(hours, 10)) {

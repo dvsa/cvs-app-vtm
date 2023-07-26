@@ -156,8 +156,13 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
   processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
     if (this.isoDate) {
-      if (year > 999 && month > -1 && day > -1 && hour > -1 && minute > -1) {
-        this.showError = true;
+      if (year > 999 && month > -1 && day > -1) {
+        if (hour > -1 && minute > -1) {
+          this.showError = true;
+        }
+        if (hour === 0 && minute === 0) {
+          this.showError = true;
+        }
       }
 
       return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
