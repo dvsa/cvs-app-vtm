@@ -137,20 +137,32 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
         minute = this.displayTime ? minute : this.dateFieldOrDefault?.minutes;
         const second = this.dateFieldOrDefault?.seconds;
 
-        this.onChange(this.processDate(year, month, day, hour, minute, second));
+        this.onChange(
+          this.processDate(
+            this.convertToNumber(year),
+            this.convertToNumber(month),
+            this.convertToNumber(day),
+            this.convertToNumber(hour),
+            this.convertToNumber(minute),
+            this.convertToNumber(second)
+          )
+        );
       }
     });
   }
 
+  convertToNumber(input: string | number | undefined): number {
+    return typeof input === 'number' ? input : 0;
+  }
   processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
     if (this.isoDate) {
-      if (year > 999 && month > 0 && day > 0 && hour > 0 && minute > 0) {
+      if (year > 999 && month > -1 && day > -1 && hour > -1 && minute > -1) {
         this.showError = true;
       }
 
       return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
     }
-    if (year > 999 && month > 0 && day > 0) {
+    if (year > 999 && month > -1 && day > -1) {
       this.showError = true;
     }
     return `${year || ''}-${this.padded(month)}-${this.padded(day)}`;
