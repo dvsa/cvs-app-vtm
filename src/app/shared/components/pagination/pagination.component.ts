@@ -12,12 +12,6 @@ export class PaginationComponent implements OnInit, OnDestroy {
   @Input() tableName!: string;
   @Input() numberOfItems: number = 0;
   @Input() itemsPerPage: number = 5;
-  @Input() set reset(page: number | undefined) {
-    if (page) {
-      this.currentPage = page;
-      this.pageQuery(page);
-    }
-  }
   @Output() paginationOptions = new EventEmitter<{ currentPage: number; itemsPerPage: number; start: number; end: number }>();
 
   currentPage = 1;

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
@@ -137,6 +137,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   }
 
   search(term: string, filter: string) {
+    console.log(this.route);
     this.globalErrorService.clearErrors();
     const trimmedTerm = term?.trim();
     if (!trimmedTerm || !filter) {
@@ -149,11 +150,12 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
       if (!items?.length) {
         this.globalErrorService.addError({ error: 'Your search returned no results', anchorLink: 'term' });
       } else {
-        this.currentPage = 1;
         this.data = of(items);
         this.searchReturned = true;
-        this.handlePaginationChange({ start: 0, end: 24 });
-        this.currentPage = undefined;
+        this.router.navigate([`../${this.type}`], {
+          relativeTo: this.route,
+          queryParams: { 'reference-data-items-page': 1 }
+        });
       }
     });
   }
@@ -162,10 +164,11 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.form.reset();
     this.globalErrorService.clearErrors();
     if (this.searchReturned) {
-      this.currentPage = 1;
       this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
-      this.handlePaginationChange({ start: 0, end: 24 });
-      this.currentPage = undefined;
+      this.router.navigate([`../${this.type}`], {
+        relativeTo: this.route,
+        queryParams: { 'reference-data-items-page': 1 }
+      });
     }
   }
 

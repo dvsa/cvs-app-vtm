@@ -81,7 +81,6 @@
       [numberOfItems]="(numberOfRecords$ | async) ?? 0"
       (paginationOptions)="handlePaginationChange($event)"
       [itemsPerPage]="25"
-      [reset]="currentPage"
     ></app-pagination>
   </div>
 </div>

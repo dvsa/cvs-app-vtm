@@ -99,27 +99,13 @@ describe('DataTypeListComponent', () => {
       component.clear();
       expect(component.form.controls['term'].value).toBe(null);
     });
-    it('should reset the start and end page if search returned is true', () => {
-      component.handlePaginationChange({ start: 13, end: 17 });
-      expect(component.pageStart).toBe(13);
-      expect(component.pageEnd).toBe(17);
-
+    it('should navigate to page 1 of pagination', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      component.type = ReferenceDataResourceType.Tyres;
       component.searchReturned = true;
       component.clear();
 
-      expect(component.pageStart).toBe(0);
-      expect(component.pageEnd).toBe(24);
-    });
-    it('should not reset start and end page if search returned is false', () => {
-      component.handlePaginationChange({ start: 13, end: 17 });
-      expect(component.pageStart).toBe(13);
-      expect(component.pageEnd).toBe(17);
-
-      component.searchReturned = false;
-      component.clear();
-
-      expect(component.pageStart).toBe(13);
-      expect(component.pageEnd).toBe(17);
+      expect(navigateSpy).toBeCalledWith(['../TYRES'], { relativeTo: route, queryParams: { 'reference-data-items-page': 1 } });
     });
   });
 
@@ -143,6 +129,20 @@ describe('DataTypeListComponent', () => {
       component.search('term', 'brakeCode');
 
       expect(errorSpy).toBeCalled();
+    });
+    it('should navigate to page 1 of pagination', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      component.type = ReferenceDataResourceType.Tyres;
+      component.searchReturned = true;
+      jest.spyOn(refSelectors, 'selectRefDataBySearchTerm').mockReturnValue(
+        createSelector(
+          v => v,
+          () => [{ resourceKey: 'foo', resourceType: 'bar' }] as unknown as any
+        )
+      );
+      component.search('foo', 'bar');
+
+      expect(navigateSpy).toBeCalledWith(['../TYRES'], { relativeTo: route, queryParams: { 'reference-data-items-page': 1 } });
     });
   });
 });
