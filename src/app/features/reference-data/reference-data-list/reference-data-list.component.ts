@@ -145,8 +145,8 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filter))).subscribe(items => {
-      if (!items) {
+    this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filter)), take(1)).subscribe(items => {
+      if (!items?.length) {
         this.globalErrorService.addError({ error: 'Your search returned no results', anchorLink: 'term' });
       } else {
         this.currentPage = 1;

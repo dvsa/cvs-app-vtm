@@ -2,18 +2,16 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { createSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/.';
-import { ReferenceDataListComponent } from './reference-data-list.component';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { addError } from '@store/global-error/actions/global-error.actions';
-import { GlobalErrorComponent } from '@core/components/global-error/global-error.component';
+import { State, initialAppState } from '@store/.';
 import * as refSelectors from '../../../store/reference-data/selectors/reference-data.selectors';
+import { ReferenceDataListComponent } from './reference-data-list.component';
 import { of } from 'rxjs';
-import { createSelector } from '@ngrx/store';
 
 describe('DataTypeListComponent', () => {
   let component: ReferenceDataListComponent;
@@ -138,17 +136,13 @@ describe('DataTypeListComponent', () => {
 
       expect(errorSpy).toBeCalled();
     });
-    it('should call set data', () => {
-      const storeSpy = jest.spyOn(refSelectors, 'selectRefDataBySearchTerm').mockReturnValue(
-        createSelector(
-          v => v,
-          () => [{ resourceKey: 'foo', resourceType: 'bar' }]
-        )
-      );
+    it('it should call add error if there are no items returned', () => {
+      const errorSpy = jest.spyOn(errorService, 'addError');
+      component.type = ReferenceDataResourceType.Tyres;
 
-      component.search('term ', 'tyreCode');
+      component.search('term', 'brakeCode');
 
-      expect(component.data).toEqual([{ resourceKey: 'foo', resourceType: 'bar' }]);
+      expect(errorSpy).toBeCalled();
     });
   });
 });
