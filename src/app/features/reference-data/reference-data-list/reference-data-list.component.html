@@ -3,34 +3,40 @@
     <p class="govuk-heading-xl govuk-!-font-weight-bold" id="heading">Search for {{ (refDataAdminType$ | async).label }}</p>
 
     <div id="buttonsAndSearch">
-      <app-button-group id="addCreateButtons">
+      <div [formGroup]="form" class="govuk-form-group" id="searchForm">
+        <div id="fields">
+          <div id="filterSelect">
+            <label class="govuk-label" for="searchFilter">Search Filter</label>
+            <app-select
+              #searchFilter
+              id="searchFilter"
+              [formControlName]="form.meta.children![0].name"
+              [name]="form.meta.children![0].name"
+              [options]="(refDataAdminType$ | async).searchOptions"
+            ></app-select>
+          </div>
+          <div id="searchInput">
+            <label class="govuk-label" for="searchFilter">Search Term</label>
+            <input
+              id="refSearch"
+              #searchTerm
+              [formControlName]="form.meta.children![1].name"
+              [name]="form.meta.children![1].name"
+              aria-describedby="term"
+              type="text"
+              class="govuk-input govuk-!-width-two-thirds"
+            />
+          </div>
+        </div>
+        <app-button-group id="searchButtons">
+          <app-button id="searchSubmit" type="button" (clicked)="search(searchTerm.value, searchFilter.value)">Search</app-button>
+          <app-button id="searchCancel" type="button" design="warning" (clicked)="clear()">Clear</app-button>
+        </app-button-group>
+      </div>
+      <app-button-group id="addDeleteButtons">
         <app-button id="submit" (clicked)="addNew()">Add New</app-button>
         <app-button id="submit" [disabled]="disabled" (clicked)="navigateToDeletedItems()">Deleted Items</app-button>
       </app-button-group>
-
-      <div [formGroup]="form" class="govuk-form-group" id="searchForm">
-        <app-select
-          #searchFilter
-          label="Search filter"
-          [formControlName]="form.meta.children![0].name"
-          [name]="form.meta.children![0].name"
-          [options]="(refDataAdminType$ | async).searchOptions"
-        ></app-select>
-
-        <br />
-        <input
-          id="refSearch"
-          #searchTerm
-          [formControlName]="form.meta.children![1].name"
-          [name]="form.meta.children![1].name"
-          aria-describedby="term"
-          type="text"
-          class="govuk-input govuk-!-width-two-thirds"
-          placeholder="Search Term"
-        />
-        <app-button id="searchSubmit" type="button" (clicked)="search(searchTerm.value, searchFilter.value)">Search</app-button>
-        <app-button id="searchCancel" type="button" design="warning" (clicked)="clear()">Clear</app-button>
-      </div>
     </div>
 
     <table class="govuk-table">

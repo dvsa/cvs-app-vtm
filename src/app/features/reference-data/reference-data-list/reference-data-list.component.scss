@@ -5,6 +5,7 @@
 #buttonsAndSearch {
   display: flex;
   width: 100%;
+  justify-content: space-around;
 }
 
 #addCreateButtons {
@@ -12,22 +13,27 @@
 }
 
 #refSearch {
-  width: 220px !important;
+  width: 150px !important;
+}
+
+#searchInput {
+  margin-left: 15px;
   margin-right: 15px;
 }
 
 #searchForm {
-  width: 50%;
   padding: 5px;
   margin-bottom: 0px;
   padding-bottom: 15px;
+  display: flex;
+  flex-direction: row;
 }
 
-#searchSubmit {
-  margin-right: 15px;
+#fields {
+  display: flex;
 }
 
-#addCreateButtons {
+#addDeleteButtons {
   display: flex;
   align-items: flex-end;
   padding-top: 10px !important;
