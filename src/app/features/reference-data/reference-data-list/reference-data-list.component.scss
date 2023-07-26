@@ -8,12 +8,18 @@
   justify-content: space-around;
 }
 
-#addCreateButtons {
-  width: 50%;
+#addDeleteButtons {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-right: 18px;
+  padding-top: 10px !important;
+  padding-bottom: 0px;
 }
 
 #refSearch {
-  width: 150px !important;
+  width: 200px !important;
 }
 
 #searchInput {
@@ -22,22 +28,12 @@
 }
 
 #searchForm {
+  width: 70%;
   padding: 5px;
   margin-bottom: 0px;
   padding-bottom: 15px;
   display: flex;
   flex-direction: row;
-}
-
-#fields {
-  display: flex;
-}
-
-#addDeleteButtons {
-  display: flex;
-  align-items: flex-end;
-  padding-top: 10px !important;
-  padding-bottom: 0px;
 }
 
 #heading {

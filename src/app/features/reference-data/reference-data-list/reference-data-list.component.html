@@ -4,34 +4,51 @@
 
     <div id="buttonsAndSearch">
       <div [formGroup]="form" class="govuk-form-group" id="searchForm">
-        <div id="fields">
-          <div id="filterSelect">
-            <label class="govuk-label" for="searchFilter">Search Filter</label>
-            <app-select
-              #searchFilter
-              id="searchFilter"
-              [formControlName]="form.meta.children![0].name"
-              [name]="form.meta.children![0].name"
-              [options]="(refDataAdminType$ | async).searchOptions"
-            ></app-select>
-          </div>
-          <div id="searchInput">
-            <label class="govuk-label" for="searchFilter">Search Term</label>
-            <input
-              id="refSearch"
-              #searchTerm
-              [formControlName]="form.meta.children![1].name"
-              [name]="form.meta.children![1].name"
-              aria-describedby="term"
-              type="text"
-              class="govuk-input govuk-!-width-two-thirds"
-            />
-          </div>
+        <div id="filterSelect">
+          <label class="govuk-label" for="searchFilter">Search Filter</label>
+          <app-select
+            #searchFilter
+            id="searchFilter"
+            [formControlName]="form.meta.children![0].name"
+            [name]="form.meta.children![0].name"
+            [options]="(refDataAdminType$ | async).searchOptions"
+          ></app-select>
         </div>
-        <app-button-group id="searchButtons">
-          <app-button id="searchSubmit" type="button" (clicked)="search(searchTerm.value, searchFilter.value)">Search</app-button>
+        <div id="searchInput">
+          <label class="govuk-label" for="searchFilter">Search Term</label>
+          <input
+            id="refSearch"
+            #searchTerm
+            [formControlName]="form.meta.children![1].name"
+            [name]="form.meta.children![1].name"
+            aria-describedby="term"
+            type="text"
+            class="govuk-input govuk-!-width-two-thirds"
+          />
+          <button
+            class="govuk-button margin-right search-btn"
+            type="submit"
+            data-module="govuk-button"
+            enterkeyhint="search"
+            data-gem-track-click-module-started="true"
+            (click)="search(searchTerm.value, searchFilter.value)"
+          >
+            <svg
+              class="gem-c-search__icon"
+              width="16"
+              height="16"
+              viewBox="0 0 25 25"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle cx="12.0161" cy="11.0161" r="8.51613" stroke="currentColor" stroke-width="3"></circle>
+              <line x1="17.8668" y1="17.3587" x2="26.4475" y2="25.9393" stroke="currentColor" stroke-width="3"></line>
+            </svg>
+          </button>
           <app-button id="searchCancel" type="button" design="warning" (clicked)="clear()">Clear</app-button>
-        </app-button-group>
+        </div>
       </div>
       <app-button-group id="addDeleteButtons">
         <app-button id="submit" (clicked)="addNew()">Add New</app-button>

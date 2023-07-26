@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, Params } from '@angular/router';
+import { map, of, ReplaySubject, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-pagination[tableName]',
@@ -15,6 +15,7 @@ export class PaginationComponent implements OnInit, OnDestroy {
   @Input() set reset(page: number | undefined) {
     if (page) {
       this.currentPage = page;
+      this.pageQuery(page);
     }
   }
   @Output() paginationOptions = new EventEmitter<{ currentPage: number; itemsPerPage: number; start: number; end: number }>();
