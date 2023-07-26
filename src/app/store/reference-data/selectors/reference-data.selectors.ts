@@ -54,10 +54,7 @@ export const selectRefDataBySearchTerm = (searchTerm: string, referenceDataType:
         searchItem.push(obj);
       }
     });
-    if (searchItem.length) {
-      return searchItem;
-    }
-    return;
+    return searchItem;
   });
 
 export const selectUserByResourceKey = (resourceKey: string) =>
