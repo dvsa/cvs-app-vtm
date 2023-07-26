@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -7,9 +7,8 @@ import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/refer
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { selectAllReferenceDataByResourceType, selectRefDataBySearchTerm, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, Subject, catchError, filter, lastValueFrom, map, of, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, filter, map, of, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-list',
