@@ -9,7 +9,7 @@ import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { selectAllReferenceDataByResourceType, selectRefDataBySearchTerm, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, Subject, catchError, filter, map, of, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, filter, lastValueFrom, map, of, switchMap, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-list',
@@ -22,7 +22,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   pageStart?: number;
   pageEnd?: number;
   currentPage?: number;
-  data: Array<ReferenceDataModelBase> | undefined;
+  data?: Observable<Array<any> | undefined>;
   private destroy$ = new Subject<void>();
 
   public form!: CustomFormGroup;
@@ -90,7 +90,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
       .subscribe({
         next: res => of(!!res)
       });
-    this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)), takeUntil(this.destroy$)).subscribe(items => (this.data = items));
+    this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
   }
 
   get refDataAdminType$(): Observable<any | undefined> {
@@ -130,14 +130,14 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   }
 
   get paginatedItems$(): Observable<any[]> {
-    return of(this.data?.slice(this.pageStart, this.pageEnd) ?? []);
+    return this.data!.pipe(map(items => items?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
   get numberOfRecords$(): Observable<number> {
-    return of(this.data?.length ?? 0);
+    return this.data!.pipe(map(items => items?.length ?? 0));
   }
 
-  search(term: string, filter: string) {
+  async search(term: string, filter: string) {
     this.globalErrorService.clearErrors();
     const trimmedTerm = term?.trim();
     if (!trimmedTerm || !filter) {
@@ -146,13 +146,13 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.currentPage = 1;
-    this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filter)), take(1)).subscribe(items => {
-      if (items.length === 0) {
+    this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filter))).subscribe(items => {
+      if (!items) {
         this.globalErrorService.addError({ error: 'Your search returned no results', anchorLink: 'term' });
       } else {
+        this.currentPage = 1;
+        this.data = of(items);
         this.searchReturned = true;
-        this.data = items;
         this.handlePaginationChange({ start: 0, end: 24 });
         this.currentPage = undefined;
       }
@@ -164,7 +164,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.globalErrorService.clearErrors();
     if (this.searchReturned) {
       this.currentPage = 1;
-      this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)), take(1)).subscribe(items => (this.data = items));
+      this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
       this.handlePaginationChange({ start: 0, end: 24 });
       this.currentPage = undefined;
     }
