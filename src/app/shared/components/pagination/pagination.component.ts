@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { map, of, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { ReplaySubject, Subject, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-pagination[tableName]',
