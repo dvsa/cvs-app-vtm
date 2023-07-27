@@ -5,6 +5,7 @@ import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countrie
 import { Dictionary } from '@ngrx/entity';
 import { testCases } from '../reference-data.test-cases';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { IterableDiffers } from '@angular/core';
 
 describe('Reference Data Selectors', () => {
   describe('selectAllReferenceDataByResourceType', () => {
@@ -123,5 +124,50 @@ describe('Reference Data Selectors', () => {
     expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningHgv);
     referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.TRL);
     expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningTrl);
+  });
+
+  describe('selectRefDataBySearchTerm', () => {
+    let state: ReferenceDataState;
+    beforeEach(() => {
+      state = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.Tyres]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
+          loading: false,
+          ids: [1, 11, 111, 101, 2],
+          entities: {
+            1: { resourceKey: 1, brakeCode: 1, resourceType: ReferenceDataResourceType.Tyres } as ReferenceDataModelBase,
+            11: { resourceKey: 11, brakeCode: 11, resourceType: ReferenceDataResourceType.Tyres } as ReferenceDataModelBase,
+            111: { resourceKey: 111, brakeCode: 111, resourceType: ReferenceDataResourceType.Tyres } as ReferenceDataModelBase,
+            101: { resourceKey: 101, brakeCode: 101, resourceType: ReferenceDataResourceType.Tyres } as ReferenceDataModelBase,
+            2: { resourceKey: 2, brakeCode: 2, resourceType: ReferenceDataResourceType.Tyres } as ReferenceDataModelBase
+          }
+        }
+      };
+    });
+    it('should return only items that contain the search', () => {
+      const expectedState = referenceDataSelectors.selectRefDataBySearchTerm('1', ReferenceDataResourceType.Tyres, 'brakeCode').projector(state);
+      expect(expectedState).toEqual([
+        { resourceKey: 1, brakeCode: 1, resourceType: ReferenceDataResourceType.Tyres },
+        { resourceKey: 11, brakeCode: 11, resourceType: ReferenceDataResourceType.Tyres },
+        { resourceKey: 111, brakeCode: 111, resourceType: ReferenceDataResourceType.Tyres },
+        { resourceKey: 101, brakeCode: 101, resourceType: ReferenceDataResourceType.Tyres }
+      ]);
+    });
+    it('should return only items that contain the search', () => {
+      const expectedState = referenceDataSelectors.selectRefDataBySearchTerm('11', ReferenceDataResourceType.Tyres, 'brakeCode').projector(state);
+      expect(expectedState).toEqual([
+        { resourceKey: 11, brakeCode: 11, resourceType: ReferenceDataResourceType.Tyres },
+        { resourceKey: 111, brakeCode: 111, resourceType: ReferenceDataResourceType.Tyres }
+      ]);
+    });
+    it('should return only items that contain the search', () => {
+      const expectedState = referenceDataSelectors.selectRefDataBySearchTerm('2', ReferenceDataResourceType.Tyres, 'brakeCode').projector(state);
+      expect(expectedState).toEqual([{ resourceKey: 2, brakeCode: 2, resourceType: ReferenceDataResourceType.Tyres }]);
+    });
+    it('should return an empty array if there are no items to return', () => {
+      const expectedState = referenceDataSelectors.selectRefDataBySearchTerm('3', ReferenceDataResourceType.Tyres, 'brakeCode').projector(state);
+      expect(expectedState).toEqual([]);
+    });
   });
 });

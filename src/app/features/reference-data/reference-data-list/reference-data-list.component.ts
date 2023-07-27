@@ -1,23 +1,49 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { catchError, filter, map, Observable, of, switchMap, take } from 'rxjs';
+import { selectAllReferenceDataByResourceType, selectRefDataBySearchTerm, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { Observable, Subject, catchError, filter, map, of, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-list',
   templateUrl: './reference-data-list.component.html',
   styleUrls: ['./reference-data-list.component.scss']
 })
-export class ReferenceDataListComponent implements OnInit {
+export class ReferenceDataListComponent implements OnInit, OnDestroy {
   type!: ReferenceDataResourceType;
   disabled: boolean = true;
   pageStart?: number;
   pageEnd?: number;
+  currentPage?: number;
+  data?: Observable<Array<any> | undefined>;
+  private destroy$ = new Subject<void>();
+
+  public form!: CustomFormGroup;
+  public searchReturned: boolean = false;
+
+  public searchTemplate: FormNode = {
+    name: 'criteria',
+    type: FormNodeTypes.GROUP,
+    children: [
+      {
+        name: 'filter',
+        label: 'Search filter',
+        value: '',
+        type: FormNodeTypes.CONTROL
+      },
+      {
+        name: 'term',
+        value: '',
+        type: FormNodeTypes.CONTROL
+      }
+    ]
+  };
 
   constructor(
     private referenceDataService: ReferenceDataService,
@@ -25,10 +51,12 @@ export class ReferenceDataListComponent implements OnInit {
     private router: Router,
     private store: Store,
     private cdr: ChangeDetectorRef,
-    private globalErrorService: GlobalErrorService
+    private globalErrorService: GlobalErrorService,
+    public dfs: DynamicFormService
   ) {}
 
   ngOnInit(): void {
+    this.form = this.dfs.createForm(this.searchTemplate) as CustomFormGroup;
     this.route.params.pipe(take(1)).subscribe(params => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceData(this.type);
@@ -61,14 +89,11 @@ export class ReferenceDataListComponent implements OnInit {
       .subscribe({
         next: res => of(!!res)
       });
+    this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
   }
 
   get refDataAdminType$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
-  }
-
-  get data$(): Observable<any[] | undefined> {
-    return this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
   }
 
   public get roles(): typeof Roles {
@@ -104,10 +129,51 @@ export class ReferenceDataListComponent implements OnInit {
   }
 
   get paginatedItems$(): Observable<any[]> {
-    return this.data$.pipe(map(items => items?.slice(this.pageStart, this.pageEnd) ?? []));
+    return this.data!.pipe(map(items => items?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
   get numberOfRecords$(): Observable<number> {
-    return this.data$.pipe(map(items => items?.length ?? 0));
+    return this.data!.pipe(map(items => items?.length ?? 0));
+  }
+
+  search(term: string, filter: string) {
+    console.log(this.route);
+    this.globalErrorService.clearErrors();
+    const trimmedTerm = term?.trim();
+    if (!trimmedTerm || !filter) {
+      const error = !trimmedTerm ? 'You must provide a search criteria' : 'You must select a valid search filter';
+      this.globalErrorService.addError({ error, anchorLink: 'term' });
+      return;
+    }
+
+    this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filter)), take(1)).subscribe(items => {
+      if (!items?.length) {
+        this.globalErrorService.addError({ error: 'Your search returned no results', anchorLink: 'term' });
+      } else {
+        this.data = of(items);
+        this.searchReturned = true;
+        this.router.navigate([`../${this.type}`], {
+          relativeTo: this.route,
+          queryParams: { 'reference-data-items-page': 1 }
+        });
+      }
+    });
+  }
+
+  clear() {
+    this.form.reset();
+    this.globalErrorService.clearErrors();
+    if (this.searchReturned) {
+      this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
+      this.router.navigate([`../${this.type}`], {
+        relativeTo: this.route,
+        queryParams: { 'reference-data-items-page': 1 }
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
