@@ -22,6 +22,7 @@ import { Observable, Subject, distinctUntilChanged, map, takeUntil, withLatestFr
 export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
   @Input() isEditing = false;
   @Input() isDirty = false;
+  @Input() customId = '';
 
   @Output() isEditingChange = new EventEmitter<boolean>();
   @Output() submitChange = new EventEmitter();
