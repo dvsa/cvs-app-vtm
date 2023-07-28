@@ -152,12 +152,12 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
         this.data = of([]);
       } else {
         this.data = of(items);
-        this.searchReturned = true;
-        this.router.navigate([`../${this.type}`], {
-          relativeTo: this.route,
-          queryParams: { 'reference-data-items-page': 1 }
-        });
       }
+      this.searchReturned = true;
+      this.router.navigate([`../${this.type}`], {
+        relativeTo: this.route,
+        queryParams: { 'reference-data-items-page': 1 }
+      });
     });
   }
 
