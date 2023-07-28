@@ -9,7 +9,7 @@
 }
 
 #addDeleteButtons {
-  width: 30%;
+  width: 40%;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
@@ -28,7 +28,7 @@
 }
 
 #searchForm {
-  width: 70%;
+  width: 60%;
   margin-bottom: 0px;
   padding-bottom: 15px;
   display: flex;
@@ -37,4 +37,10 @@
 
 #heading {
   margin-bottom: 10px !important;
+}
+
+.search-btn {
+  background-color: #1d70b8;
+  color: #fff;
+  border: none;
 }

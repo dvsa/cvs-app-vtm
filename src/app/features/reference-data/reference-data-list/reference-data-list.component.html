@@ -23,6 +23,7 @@
             [name]="form.meta.children![1].name"
             aria-describedby="term"
             type="text"
+            (keyup.enter)="search(searchTerm.value, searchFilter.value)"
             class="govuk-input govuk-!-width-two-thirds"
           />
           <button
@@ -35,8 +36,8 @@
           >
             <svg
               class="gem-c-search__icon"
-              width="16"
-              height="16"
+              width="20"
+              height="20"
               viewBox="0 0 25 25"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -47,10 +48,10 @@
               <line x1="17.8668" y1="17.3587" x2="26.4475" y2="25.9393" stroke="currentColor" stroke-width="3"></line>
             </svg>
           </button>
-          <app-button id="searchCancel" type="button" design="warning" (clicked)="clear()">Clear</app-button>
         </div>
       </div>
       <app-button-group id="addDeleteButtons">
+        <app-button id="searchCancel" type="button" design="secondary" (clicked)="clear()">Clear filters</app-button>
         <app-button id="submit" (clicked)="addNew()">Add New</app-button>
         <app-button id="submit" [disabled]="disabled" (clicked)="navigateToDeletedItems()">Deleted Items</app-button>
       </app-button-group>
