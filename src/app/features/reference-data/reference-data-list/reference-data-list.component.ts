@@ -137,7 +137,6 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   }
 
   search(term: string, filter: string) {
-    console.log(this.route);
     this.globalErrorService.clearErrors();
     const trimmedTerm = term?.trim();
     if (!trimmedTerm || !filter) {
@@ -152,12 +151,12 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
         this.data = of([]);
       } else {
         this.data = of(items);
+        this.router.navigate([`../${this.type}`], {
+          relativeTo: this.route,
+          queryParams: { 'reference-data-items-page': 1 }
+        });
       }
       this.searchReturned = true;
-      this.router.navigate([`../${this.type}`], {
-        relativeTo: this.route,
-        queryParams: { 'reference-data-items-page': 1 }
-      });
     });
   }
 
