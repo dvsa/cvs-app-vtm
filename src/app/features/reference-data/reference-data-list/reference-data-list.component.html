@@ -23,6 +23,7 @@
             [name]="form.meta.children![1].name"
             aria-describedby="term"
             type="text"
+            (keyup.enter)="search(searchTerm.value, searchFilter.value)"
             class="govuk-input govuk-!-width-two-thirds"
           />
           <button

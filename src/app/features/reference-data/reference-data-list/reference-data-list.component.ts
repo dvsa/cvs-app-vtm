@@ -149,6 +149,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filter)), take(1)).subscribe(items => {
       if (!items?.length) {
         this.globalErrorService.addError({ error: 'Your search returned no results', anchorLink: 'term' });
+        this.data = of([]);
       } else {
         this.data = of(items);
         this.searchReturned = true;
@@ -169,6 +170,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: { 'reference-data-items-page': 1 }
       });
+      this.searchReturned = false;
     }
   }
 
