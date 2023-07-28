@@ -269,7 +269,7 @@ describe('EditTechRecordButtonComponent', () => {
           fixture.detectChanges();
 
           fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
-
+          discardPeriodicTasks();
           expect(window.confirm).not.toHaveBeenCalled();
         }));
 
