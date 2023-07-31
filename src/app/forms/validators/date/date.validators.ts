@@ -20,7 +20,6 @@ export class DateValidators {
       }
 
       if (displayTime) {
-        console.log(t);
         return this.validateTime(t, label);
       }
 
