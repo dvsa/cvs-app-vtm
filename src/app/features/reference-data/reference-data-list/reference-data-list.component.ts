@@ -140,7 +140,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.globalErrorService.clearErrors();
     const trimmedTerm = term?.trim();
     if (!trimmedTerm || !filter) {
-      const error = !trimmedTerm ? 'You must provide a search criteria' : 'You must select a valid search filter';
+      const error = !trimmedTerm ? 'You must provide a search term' : 'You must select a valid search filter';
       this.globalErrorService.addError({ error, anchorLink: 'term' });
       return;
     }
