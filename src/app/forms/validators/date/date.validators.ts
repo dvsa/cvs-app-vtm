@@ -29,7 +29,8 @@ export class DateValidators {
 
   private static validateTime(time: string, label: string | undefined) {
     const [hours, minutes] = time.split(':');
-    if (!hours || !minutes || (hours === '00' && minutes == '00')) {
+
+    if (!hours || !minutes) {
       return { invalidDate: { error: true, reason: `'${label || 'Date'}' must include time` } };
     }
     if (23 < Number.parseInt(hours, 10)) {

@@ -44,7 +44,6 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public originalDate: string = '';
   public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
   private dateFieldOrDefault?: Record<'hours' | 'minutes' | 'seconds', string | number>;
-  public showError: boolean = false;
 
   public day?: number;
   public month?: number;
@@ -125,50 +124,23 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
     const dateFields: Segments = this.displayTime
       ? { day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ }
       : { day: this.day$, month: this.month$, year: this.year$ };
-
     return combineLatest(dateFields).subscribe({
       next: ({ day, month, year, hour, minute }) => {
         if (!day && !month && !year && !hour && !minute) {
           this.onChange(null);
           return;
         }
-
         hour = this.displayTime ? hour : this.dateFieldOrDefault?.hours;
         minute = this.displayTime ? minute : this.dateFieldOrDefault?.minutes;
         const second = this.dateFieldOrDefault?.seconds;
-
-        this.onChange(
-          this.processDate(
-            this.convertToNumber(year),
-            this.convertToNumber(month),
-            this.convertToNumber(day),
-            this.convertToNumber(hour),
-            this.convertToNumber(minute),
-            this.convertToNumber(second)
-          )
-        );
+        this.onChange(this.processDate(year, month, day, hour, minute, second));
       }
     });
   }
 
-  convertToNumber(input: string | number | undefined): number {
-    return typeof input === 'number' ? input : 0;
-  }
   processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
     if (this.isoDate) {
-      if (year > 999 && month > -1 && day > -1) {
-        if (hour > -1 && minute > -1) {
-          this.showError = true;
-        }
-        if (hour === 0 && minute === 0) {
-          this.showError = true;
-        }
-      }
-
       return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
-    }
-    if (year > 999 && month > -1 && day > -1) {
-      this.showError = true;
     }
     return `${year || ''}-${this.padded(month)}-${this.padded(day)}`;
   }
