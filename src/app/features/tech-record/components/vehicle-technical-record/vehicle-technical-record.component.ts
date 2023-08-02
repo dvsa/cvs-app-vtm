@@ -3,7 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { ReasonForEditing, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import {
+  ReasonForEditing,
+  StatusCodes,
+  TechRecordModel,
+  V3TechRecordModel,
+  VehicleTechRecordModel,
+  VehicleTypes,
+  Vrm
+} from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
@@ -19,9 +27,9 @@ import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-s
 })
 export class VehicleTechnicalRecordComponent implements OnInit {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
-  @Input() vehicle!: VehicleTechRecordModel;
+  @Input() vehicle!: V3TechRecordModel;
 
-  currentTechRecord$: Observable<TechRecordModel | undefined>;
+  currentTechRecord$: Observable<V3TechRecordModel | undefined>;
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
 
@@ -42,10 +50,10 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
     this.editingReason = this.activatedRoute.snapshot.data['reason'];
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$.pipe(
+    this.currentTechRecord$ = this.technicalRecordService.techRecord$.pipe(
       tap(viewableTechRecord => {
-        this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
-        this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
+        this.isCurrent = viewableTechRecord?.techRecord_statusCode === StatusCodes.CURRENT;
+        this.isArchived = viewableTechRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
       })
     );
   }
@@ -83,8 +91,8 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     return (techRecord.plates?.length ?? 0) > 0;
   }
 
-  getActions(techRecord?: TechRecordModel): TechRecordActions {
-    switch (techRecord?.statusCode) {
+  getActions(techRecord?: V3TechRecordModel): TechRecordActions {
+    switch (techRecord?.techRecord_statusCode) {
       case StatusCodes.CURRENT:
         return TechRecordActions.CURRENT;
       case StatusCodes.PROVISIONAL:
@@ -108,7 +116,7 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     }
   }
 
-  showCreateTestButton(vehicleType: VehicleTypes): boolean {
+  showCreateTestButton(vehicleType: VehicleTypes | string): boolean {
     return (
       !this.isArchived &&
       !this.isEditing &&
@@ -116,10 +124,10 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     );
   }
 
-  createTest(techRecord?: TechRecordModel): void {
-    if (techRecord?.hiddenInVta) {
+  createTest(techRecord?: V3TechRecordModel): void {
+    if (techRecord?.techRecord_hiddenInVta) {
       alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
-    } else if (techRecord?.recordCompleteness === 'complete' || techRecord?.recordCompleteness === 'testable') {
+    } else if (techRecord?.techRecord_recordCompleteness === 'complete' || techRecord?.techRecord_recordCompleteness === 'testable') {
       this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
       alert(

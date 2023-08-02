@@ -19,7 +19,7 @@
           [isEditing]="isEditing"
         ></app-test-record-summary>
 
-        <ng-container *ngIf="showCreateTestButton(currentTechRecord.vehicleType)">
+        <ng-container *ngIf="showCreateTestButton(currentTechRecord.techRecord_vehicleType!)">
           <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]">
             <a id="create-test" class="govuk-button" (click)="createTest(currentTechRecord)">Create a test for this vehicle</a>
           </div>
