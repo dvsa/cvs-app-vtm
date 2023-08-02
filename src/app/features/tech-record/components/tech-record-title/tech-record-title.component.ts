@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { selectTechRecord } from '@store/technical-records';
 import { Observable, take } from 'rxjs';
 
 @Component({
@@ -13,13 +14,13 @@ import { Observable, take } from 'rxjs';
   styleUrls: ['./tech-record-title.component.scss']
 })
 export class TechRecordTitleComponent implements OnInit {
-  @Input() vehicle?: VehicleTechRecordModel;
+  @Input() vehicle?: V3TechRecordModel;
   @Input() actions: TechRecordActions = TechRecordActions.NONE;
   @Input() hideActions: boolean = false;
   @Input() customTitle = '';
 
-  currentVehicleTechRecord$?: Observable<TechRecordModel | undefined>;
-  currentTechRecord$?: Observable<TechRecordModel | undefined>;
+  currentVehicleTechRecord$?: Observable<V3TechRecordModel | undefined>;
+  currentTechRecord$?: Observable<V3TechRecordModel | undefined>;
   queryableActions: string[] = [];
   vehicleMakeAndModel = '';
 
@@ -28,7 +29,7 @@ export class TechRecordTitleComponent implements OnInit {
   ngOnInit(): void {
     this.queryableActions = this.actions.split(',');
 
-    this.currentVehicleTechRecord$ = this.technicalRecordService.viewableTechRecord$;
+    this.currentVehicleTechRecord$ = this.store.select(selectTechRecord);
 
     // On create new vehicle, when vehicleTechRecords is empty use the editableTechRecord
     this.currentTechRecord$ = this.currentVehicleTechRecord$;
@@ -38,20 +39,20 @@ export class TechRecordTitleComponent implements OnInit {
       .subscribe(
         data =>
           (this.vehicleMakeAndModel =
-            data?.make || data?.chassisMake
-              ? data.vehicleType === this.vehicleTypes.PSV
-                ? `${data.chassisMake} ${data.chassisModel ?? ''}`
-                : `${data?.make} ${data?.model ?? ''}`
+            (data as any)?.make || (data as any)?.techRecord_chassisMake
+              ? (data as any).techRecord_vehicleType === this.vehicleTypes.PSV
+                ? `${(data as any).techRecord_chassisMake} ${(data as any).techRecord_chassisModel ?? ''}`
+                : `${(data as any)?.techRecord_make} ${(data as any)?.techRecord_model ?? ''}`
               : '')
       );
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicle?.vrms?.find(vrm => vrm.isPrimary)?.vrm;
+    return this.vehicle?.primaryVrm;
   }
 
   get otherVrms(): Vrm[] | undefined {
-    return this.vehicle?.vrms?.filter(vrm => !vrm.isPrimary);
+    return (this.vehicle as any).secondaryVrms;
   }
 
   get vehicleTypes(): typeof VehicleTypes {
