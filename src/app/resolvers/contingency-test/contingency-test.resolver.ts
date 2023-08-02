@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
+import { selectTechRecord } from '@store/technical-records';
 import { initialContingencyTest } from '@store/test-records';
 import { catchError, map, Observable, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -24,36 +25,37 @@ export class ContingencyTestResolver implements Resolve<boolean> {
   ) {}
 
   resolve(): Observable<boolean> {
-    return this.techRecordService.selectedVehicleTechRecord$.pipe(
+    return this.store.select(selectTechRecord).pipe(
       switchMap(techRecord => {
-        const { vin, vrms, systemNumber, trailerId } = techRecord!;
-        const vrm = vrms.find(vrm => vrm.isPrimary);
-        return this.techRecordService.viewableTechRecord$.pipe(
+        const { vin, primaryVrm, systemNumber } = techRecord!;
+        const trailerId = (techRecord as any).trailerId;
+        return this.store.select(selectTechRecord).pipe(
           withLatestFrom(this.userService.user$),
           map(([viewableTechRecord, user]) => {
             const now = new Date();
             return {
               vin,
-              vrm: vrm?.vrm,
+              vrm: primaryVrm,
               trailerId,
               systemNumber,
-              vehicleType: viewableTechRecord?.vehicleType,
-              statusCode: viewableTechRecord?.statusCode,
+              vehicleType: viewableTechRecord?.techRecord_vehicleType,
+              statusCode: viewableTechRecord?.techRecord_statusCode,
               testResultId: uuidv4(),
-              euVehicleCategory: viewableTechRecord?.euVehicleCategory ?? null,
-              vehicleSize: viewableTechRecord?.vehicleSize,
-              vehicleConfiguration: viewableTechRecord?.vehicleConfiguration ?? null,
-              vehicleClass: viewableTechRecord?.vehicleClass ?? null,
-              vehicleSubclass: viewableTechRecord?.vehicleSubclass ?? null,
-              noOfAxles: viewableTechRecord?.noOfAxles ?? 0,
-              numberOfWheelsDriven: viewableTechRecord?.numberOfWheelsDriven ?? null,
+              euVehicleCategory: viewableTechRecord?.techRecord_euVehicleCategory ?? null,
+              vehicleSize: (viewableTechRecord as any)?.techRecord_vehicleSize,
+              vehicleConfiguration: viewableTechRecord?.techRecord_vehicleConfiguration ?? null,
+              vehicleClass: (viewableTechRecord as any)?.techRecord_vehicleClass ?? null,
+              vehicleSubclass: (viewableTechRecord as any)?.techRecord_vehicleSubclass ?? null,
+              noOfAxles: viewableTechRecord?.techRecord_noOfAxles ?? 0,
+              numberOfWheelsDriven: (viewableTechRecord as any)?.techRecord_numberOfWheelsDriven ?? null,
               testStatus: 'submitted',
-              regnDate: viewableTechRecord?.regnDate,
-              numberOfSeats: (viewableTechRecord?.seatsLowerDeck ?? 0) + (viewableTechRecord?.seatsUpperDeck ?? 0),
+              regnDate: viewableTechRecord?.techRecord_regnDate,
+              numberOfSeats:
+                ((viewableTechRecord as any)?.techRecord_seatsLowerDeck ?? 0) + ((viewableTechRecord as any)?.techRecord_seatsUpperDeck ?? 0),
               reasonForCancellation: '',
               createdAt: now.toISOString(),
               lastUpdatedAt: now.toISOString(),
-              firstUseDate: viewableTechRecord?.firstUseDate ?? null,
+              firstUseDate: (viewableTechRecord as any)?.firstUseDate ?? null,
               createdByName: user.name,
               createdById: user.oid,
               lastUpdatedByName: user.name,
