@@ -22,7 +22,7 @@ import { Subscription, debounceTime, take } from 'rxjs';
   styleUrls: ['./letters.component.scss']
 })
 export class LettersComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() techRecord!: TechRecordModel;
+  @Input() techRecord!: V3TechRecordModel;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -61,11 +61,11 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get letter(): LettersOfAuth | undefined {
-    return this.techRecord?.letterOfAuth ?? undefined;
+    return (this.techRecord as any)?.techRecord_letterOfAuth ?? undefined;
   }
 
   get eligibleForLetter(): boolean {
-    const currentTechRecord = this.techRecord.statusCode === StatusCodes.CURRENT;
+    const currentTechRecord = this.techRecord.techRecord_statusCode === StatusCodes.CURRENT;
 
     return this.correctApprovalType && currentTechRecord && !this.isEditing;
   }
@@ -75,7 +75,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
       return 'This section is not available when amending or creating a technical record.';
     }
 
-    if (this.techRecord.statusCode !== StatusCodes.CURRENT) {
+    if (this.techRecord.techRecord_statusCode !== StatusCodes.CURRENT) {
       return 'Generating letters is only applicable to current technical records.';
     }
 
@@ -88,8 +88,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   get correctApprovalType(): boolean {
     return (
-      this.techRecord.approvalType !== undefined &&
-      (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.techRecord.approvalType!.valueOf())
+      (this.techRecord as any).techRecord_approvalType !== undefined &&
+      (Object.values(LettersIntoAuthApprovalType) as string[]).includes((this.techRecord as any).techRecord_approvalType!.valueOf())
     );
   }
 

@@ -3,7 +3,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
-import { Plates, StatusCodes, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Plates, StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { cloneDeep } from 'lodash';
 import { debounceTime, Subscription } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { debounceTime, Subscription } from 'rxjs';
   styleUrls: ['./plates.component.scss']
 })
 export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() techRecord!: TechRecordModel;
+  @Input() techRecord!: V3TechRecordModel;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -48,11 +48,11 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get hasPlates(): boolean {
-    return this.techRecord.plates !== undefined && this.techRecord.plates.length > 0;
+    return (this.techRecord as any).techRecord_plates !== undefined && (this.techRecord as any).techRecord_plates.length > 0;
   }
 
   get sortedPlates(): Plates[] | undefined {
-    return cloneDeep(this.techRecord.plates)?.sort((a, b) =>
+    return cloneDeep((this.techRecord as any).plates)?.sort((a: any, b: any) =>
       a.plateIssueDate && b.plateIssueDate ? new Date(b.plateIssueDate).getTime() - new Date(a.plateIssueDate).getTime() : 0
     );
   }
@@ -62,8 +62,10 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get mostRecentPlate(): Plates | undefined {
-    return cloneDeep(this.techRecord.plates)
-      ?.sort((a, b) => (a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0))
+    return cloneDeep((this.techRecord as any).techRecord_plates)
+      ?.sort((a: any, b: any) =>
+        a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0
+      )
       ?.pop();
   }
 
@@ -94,7 +96,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get eligibleForPlates(): boolean {
-    return this.techRecord.statusCode === StatusCodes.CURRENT && !this.isEditing;
+    return this.techRecord.techRecord_statusCode === StatusCodes.CURRENT && !this.isEditing;
   }
 
   get reasonForIneligibility(): string {
@@ -102,7 +104,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       return 'This section is not available when amending or creating a technical record.';
     }
 
-    if (this.techRecord.statusCode !== StatusCodes.CURRENT) {
+    if (this.techRecord.techRecord_statusCode !== StatusCodes.CURRENT) {
       return 'Generating plates is only applicable to current technical records.';
     }
     return '';

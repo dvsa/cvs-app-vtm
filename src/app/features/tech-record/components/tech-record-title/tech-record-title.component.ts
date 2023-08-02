@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { StatusCode, VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/skeleton';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
@@ -67,15 +68,15 @@ export class TechRecordTitleComponent implements OnInit {
     return StatusCodes;
   }
 
-  getVehicleType(techRecord: TechRecordModel): VehicleTypes {
+  getVehicleType(techRecord: V3TechRecordModel): VehicleTypes {
     return this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord);
   }
 
   getCompletenessColor(completeness?: string): 'green' | 'red' {
     return completeness === 'complete' ? 'green' : 'red';
   }
-
-  isVrmEditable(statusCode: StatusCodes | undefined, currentVehicleType: VehicleTypes, editableVehicleType: VehicleTypes): boolean {
+  //TODO: types status codes needs not to be a string
+  isVrmEditable(statusCode: StatusCode | undefined, currentVehicleType: VehicleType, editableVehicleType: VehicleType): boolean {
     return !this.hideActions && statusCode !== StatusCodes.ARCHIVED && currentVehicleType === editableVehicleType;
   }
 

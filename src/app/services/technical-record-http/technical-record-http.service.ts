@@ -58,7 +58,7 @@ export class TechnicalRecordHttpService {
     const body = {
       ...newVehicleRecord,
       vin: recordCopy.vin,
-      primaryVrm: recordCopy.primaryVrm,
+      primaryVrm: recordCopy.primaryVrm ?? null,
       trailerId: (recordCopy as any).trailerId ?? null
     };
 
