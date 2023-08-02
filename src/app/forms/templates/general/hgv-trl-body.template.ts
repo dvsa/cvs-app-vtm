@@ -30,7 +30,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 50 }]
     },
     {
       name: 'model',
