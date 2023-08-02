@@ -3,8 +3,17 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
-import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import {
+  LettersIntoAuthApprovalType,
+  LettersOfAuth,
+  StatusCodes,
+  TechRecordModel,
+  V3TechRecordModel,
+  VehicleTechRecordModel
+} from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { selectTechRecord } from '@store/technical-records';
 import { Subscription, debounceTime, take } from 'rxjs';
 
 @Component({
@@ -19,12 +28,15 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   @Output() formChange = new EventEmitter();
 
   form!: CustomFormGroup;
-  vehicle?: VehicleTechRecordModel;
+  vehicle?: V3TechRecordModel;
 
   private _formSubscription = new Subscription();
 
-  constructor(private dynamicFormService: DynamicFormService, private technicalRecordService: TechnicalRecordService) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
+  constructor(private dynamicFormService: DynamicFormService, private technicalRecordService: TechnicalRecordService, private store: Store) {
+    this.store
+      .select(selectTechRecord)
+      .pipe(take(1))
+      .subscribe(vehicle => (this.vehicle = vehicle));
   }
 
   ngOnInit(): void {
