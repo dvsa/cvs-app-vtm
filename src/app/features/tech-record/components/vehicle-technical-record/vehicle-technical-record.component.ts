@@ -59,7 +59,7 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const hasProvisionalRecord = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
+    const hasProvisionalRecord = this.vehicle.techRecord_statusCode === StatusCodes.PROVISIONAL;
     const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
 
     if (isProvisionalUrl && !hasProvisionalRecord) {
@@ -68,11 +68,11 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicle.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return this.vehicle.primaryVrm;
   }
 
   get otherVrms(): Vrm[] | undefined {
-    return this.vehicle.vrms.filter(vrm => vrm.isPrimary === false);
+    return (this.vehicle as any).secondaryVrms;
   }
 
   get roles(): typeof Roles {
@@ -143,17 +143,18 @@ export class VehicleTechnicalRecordComponent implements OnInit {
 
     if (!this.isInvalid) {
       const { systemNumber } = this.vehicle;
-      const hasProvisional = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
+      //TODO: figure out if the vehicle has a provisional record
+      // const hasProvisional = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
 
-      if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
-        this.store.dispatch(updateTechRecords({ systemNumber }));
-      } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-        hasProvisional
-          ? this.store.dispatch(
-              updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
-            )
-          : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
-      }
+      // if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
+      //   this.store.dispatch(updateTechRecords({ systemNumber }));
+      // } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+      //   hasProvisional
+      //     ? this.store.dispatch(
+      //         updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
+      //       )
+      //     : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
+      // }
     }
   }
 }
