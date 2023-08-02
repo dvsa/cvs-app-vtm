@@ -1,4 +1,6 @@
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
+import { TechRecordCompleteCarSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/complete';
+import { TechRecordSkeletonCarSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/skeleton';
 
 export interface VehicleTechRecordModel {
   vrms: Vrm[];
@@ -7,6 +9,8 @@ export interface VehicleTechRecordModel {
   systemNumber: string;
   techRecord: TechRecordModel[];
 }
+
+export type V3TechRecordModel = TechRecordCompleteCarSchema | TechRecordSkeletonCarSchema;
 
 export interface BatchUpdateVehicleModel extends VehicleTechRecordModel {
   oldVehicleStatus?: StatusCodes | undefined;
