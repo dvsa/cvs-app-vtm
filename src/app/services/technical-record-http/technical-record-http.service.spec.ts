@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
-import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/index';
 import { lastValueFrom } from 'rxjs';
@@ -78,7 +78,7 @@ describe('TechnicalRecordService', () => {
       it('should return an array with a new tech record having added provisional', fakeAsync(() => {
         const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.createProvisionalTechRecord(params.systemNumber, mockData[0].techRecord[0], params.user).subscribe();
+        service.createProvisionalTechRecord(mockData[0] as unknown as V3TechRecordModel).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
         const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/add-provisional/${params.systemNumber}`);
@@ -93,7 +93,7 @@ describe('TechnicalRecordService', () => {
       it('should return an array with a new tech record and updated status code', fakeAsync(() => {
         const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' }, oldStatusCode: StatusCodes.PROVISIONAL };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.updateTechRecords(params.systemNumber, mockData[0], params.user, params.oldStatusCode).subscribe();
+        service.updateTechRecords(mockData[0] as unknown as V3TechRecordModel).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
         const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/${params.systemNumber}?oldStatusCode=${params.oldStatusCode}`);
@@ -111,7 +111,7 @@ describe('TechnicalRecordService', () => {
       it('should return an array with a new tech record and updated status code using basic URL', fakeAsync(() => {
         const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.updateTechRecords(params.systemNumber, mockData[0], params.user).subscribe();
+        service.updateTechRecords(mockData[0] as unknown as V3TechRecordModel).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
         const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/${params.systemNumber}`);
@@ -136,7 +136,7 @@ describe('TechnicalRecordService', () => {
       it('should return a new tech record having added provisional', fakeAsync(() => {
         const params = { systemNumber: '12345', reasonForArchiving: 'some reason', user: { name: 'TEST', id: '1234' } };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.archiveTechnicalRecord(params.systemNumber, mockData[0].techRecord[0], params.reasonForArchiving, params.user).subscribe();
+        service.archiveTechnicalRecord(mockData[0].techRecord[0] as unknown as V3TechRecordModel).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
         const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/archive/${params.systemNumber}`);

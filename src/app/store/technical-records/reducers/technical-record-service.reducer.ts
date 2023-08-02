@@ -1,6 +1,6 @@
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
-import { Axle, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
@@ -52,22 +52,22 @@ import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './ba
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
 export interface TechnicalRecordServiceState {
-  vehicleTechRecords: Array<VehicleTechRecordModel>;
+  vehicleTechRecords: V3TechRecordModel | undefined;
   loading: boolean;
-  editingTechRecord?: VehicleTechRecordModel;
+  editingTechRecord?: V3TechRecordModel;
   error?: unknown;
   batchVehicles: BatchRecords;
   sectionState?: (string | number)[];
 }
 
 export const initialState: TechnicalRecordServiceState = {
-  vehicleTechRecords: [],
+  vehicleTechRecords: undefined,
   batchVehicles: initialBatchState,
   loading: false,
   sectionState: []
 };
 
-export const getVehicleTechRecordState = createFeatureSelector<TechnicalRecordServiceState>(STORE_FEATURE_TECHNICAL_RECORDS_KEY);
+export const getTechRecordState = createFeatureSelector<TechnicalRecordServiceState>(STORE_FEATURE_TECHNICAL_RECORDS_KEY);
 
 export const vehicleTechRecordReducer = createReducer(
   initialState,
@@ -138,7 +138,7 @@ function defaultArgs(state: TechnicalRecordServiceState) {
   return { ...state, loading: true };
 }
 
-function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecords: Array<VehicleTechRecordModel> }) {
+function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecords: V3TechRecordModel }) {
   return { ...state, vehicleTechRecords: data.vehicleTechRecords, loading: false };
 }
 
@@ -147,7 +147,7 @@ function updateFailureArgs(state: TechnicalRecordServiceState, data: { error: an
 }
 
 function failureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
-  return { ...state, vehicleTechRecords: [], error: data.error, loading: false };
+  return { ...state, vehicleTechRecords: undefined, error: data.error, loading: false };
 }
 
 function handleUpdateBrakeForces(
@@ -160,9 +160,9 @@ function handleUpdateBrakeForces(
   if (data.grossLadenWeight) {
     const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
 
-    newState.editingTechRecord.techRecord[0].brakes = {
-      ...newState.editingTechRecord?.techRecord[0].brakes,
-      brakeCode: (prefix.length <= 2 ? '0' + prefix : prefix) + newState.editingTechRecord.techRecord[0].brakes?.brakeCodeOriginal,
+    (newState.editingTechRecord as any).techRecord_brakes = {
+      ...(newState.editingTechRecord as any).techRecord[0].brakes,
+      brakeCode: (prefix.length <= 2 ? '0' + prefix : prefix) + (newState.editingTechRecord as any).techRecord[0].brakes?.brakeCodeOriginal,
       brakeForceWheelsNotLocked: {
         serviceBrakeForceA: Math.round((data.grossLadenWeight * 16) / 100),
         secondaryBrakeForceA: Math.round((data.grossLadenWeight * 22.5) / 100),
@@ -172,8 +172,8 @@ function handleUpdateBrakeForces(
   }
 
   if (data.grossKerbWeight) {
-    newState.editingTechRecord.techRecord[0].brakes = {
-      ...newState.editingTechRecord?.techRecord[0].brakes,
+    (newState.editingTechRecord as any).techRecord[0].brakes = {
+      ...(newState.editingTechRecord as any).techRecord[0].brakes,
       brakeForceWheelsUpToHalfLocked: {
         serviceBrakeForceB: Math.round((data.grossKerbWeight * 16) / 100),
         secondaryBrakeForceB: Math.round((data.grossKerbWeight * 25) / 100),
@@ -191,8 +191,8 @@ function handleUpdateBody(state: TechnicalRecordServiceState, action: { psvMake:
 
   const code = action.psvMake.psvBodyType.toLowerCase() as BodyTypeCode;
 
-  newState.editingTechRecord.techRecord[0] = {
-    ...newState.editingTechRecord.techRecord[0],
+  (newState.editingTechRecord as any).techRecord[0] = {
+    ...(newState.editingTechRecord as any).techRecord[0],
     bodyType: { code, description: vehicleBodyTypeCodeMap.get(VehicleTypes.PSV)?.get(code) },
     bodyMake: action.psvMake.psvBodyMake,
     chassisMake: action.psvMake.psvChassisMake,
@@ -204,13 +204,13 @@ function handleUpdateBody(state: TechnicalRecordServiceState, action: { psvMake:
 
 function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServiceState {
   const newState = cloneDeep(state);
-  const vehicleType = newState.editingTechRecord?.techRecord[0].vehicleType;
+  const vehicleType = (newState.editingTechRecord as any).techRecord[0].vehicleType;
 
   if (!newState.editingTechRecord) return newState;
-  if (!newState.editingTechRecord?.techRecord[0].axles) newState.editingTechRecord.techRecord[0].axles = [];
+  if ((!newState.editingTechRecord as any).techRecord[0].axles) (newState.editingTechRecord as any).techRecord[0].axles = [];
 
   const newAxle: Axle = {
-    axleNumber: newState.editingTechRecord.techRecord[0].axles.length + 1,
+    axleNumber: (newState.editingTechRecord as any).techRecord[0].axles.length + 1,
     tyres: { tyreSize: null, fitmentCode: null, dataTrAxles: null, plyRating: null, tyreCode: null },
     weights: { gbWeight: null, designWeight: null },
     parkingBrakeMrk: false
@@ -225,16 +225,16 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
     newAxle.tyres!.speedCategorySymbol = null;
   }
 
-  newState.editingTechRecord.techRecord[0].axles.push(newAxle);
+  (newState.editingTechRecord as any).techRecord[0].axles.push(newAxle);
 
-  newState.editingTechRecord.techRecord[0].noOfAxles = newState.editingTechRecord.techRecord[0].axles.length;
+  (newState.editingTechRecord as any).techRecord[0].noOfAxles = (newState.editingTechRecord as any).techRecord[0].axles.length;
 
-  newState.editingTechRecord.techRecord[0].dimensions ??= {};
+  (newState.editingTechRecord as any).techRecord[0].dimensions ??= {};
 
   if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) {
-    newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
-      newState.editingTechRecord?.techRecord[0].axles.length,
-      newState.editingTechRecord?.techRecord[0].dimensions.axleSpacing
+    (newState.editingTechRecord as any).techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
+      (newState.editingTechRecord as any).techRecord[0].axles.length,
+      (newState.editingTechRecord as any).techRecord[0].dimensions.axleSpacing
     );
   }
 
@@ -244,20 +244,20 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
 function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: number }): TechnicalRecordServiceState {
   const newState = cloneDeep(state);
 
-  if (!newState.editingTechRecord?.techRecord[0].axles) return newState;
+  if (!(newState.editingTechRecord as any).techRecord[0].axles) return newState;
 
-  newState.editingTechRecord.techRecord[0].axles.splice(action.index, 1);
+  (newState.editingTechRecord as any).techRecord[0].axles.splice(action.index, 1);
 
-  newState.editingTechRecord.techRecord[0].axles.forEach((axle, i) => (axle.axleNumber = i + 1));
+  (newState.editingTechRecord as any).techRecord[0].axles.forEach((axle: any, i: any) => (axle.axleNumber = i + 1));
 
-  newState.editingTechRecord.techRecord[0].noOfAxles = newState.editingTechRecord.techRecord[0].axles.length;
+  (newState.editingTechRecord as any).techRecord[0].noOfAxles = (newState.editingTechRecord as any).techRecord[0].axles.length;
 
-  newState.editingTechRecord.techRecord[0].dimensions ??= {};
+  (newState.editingTechRecord as any).techRecord[0].dimensions ??= {};
 
-  const vehicleType = newState.editingTechRecord?.techRecord[0].vehicleType;
+  const vehicleType = (newState.editingTechRecord as any).techRecord[0].vehicleType;
   if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) {
-    newState.editingTechRecord.techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
-      newState.editingTechRecord?.techRecord[0].axles.length
+    (newState.editingTechRecord as any).techRecord[0].dimensions.axleSpacing = new AxlesService().generateAxleSpacing(
+      (newState.editingTechRecord as any).techRecord[0].axles.length
     );
   }
 

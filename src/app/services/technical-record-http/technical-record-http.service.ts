@@ -5,6 +5,7 @@ import {
   PutVehicleTechRecordModel,
   StatusCodes,
   TechRecordModel,
+  V3TechRecordModel,
   VehicleTechRecordModel
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -45,88 +46,50 @@ export class TechnicalRecordHttpService {
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  createVehicleRecord(newVehicleRecord: VehicleTechRecordModel, user: { id?: string; name: string }): Observable<PostNewVehicleModel> {
+  getRecordV3(systemNumber: string, createdTimestamp: string): Observable<VehicleTechRecordModel[]> {
+    const url = `${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`;
+
+    return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
+  }
+
+  createVehicleRecord(newVehicleRecord: V3TechRecordModel, user: { id?: string; name: string }): Observable<PostNewVehicleModel> {
     const recordCopy = cloneDeep(newVehicleRecord);
 
     const body = {
-      msUserDetails: { msOid: user.id, msUser: user.name },
+      ...newVehicleRecord,
       vin: recordCopy.vin,
-      primaryVrm: recordCopy.vrms ? recordCopy.vrms[0].vrm : null,
-      trailerId: recordCopy.trailerId ?? null,
-      techRecord: recordCopy.techRecord
+      primaryVrm: recordCopy.primaryVrm,
+      trailerId: (recordCopy as any).trailerId ?? null
     };
 
     return this.http.post<PostNewVehicleModel>(`${environment.VTM_API_URI}/vehicles`, body);
   }
 
-  createProvisionalTechRecord(
-    systemNumber: string,
-    techRecord: TechRecordModel,
-    user: { id?: string; name: string }
-  ): Observable<VehicleTechRecordModel> {
+  createProvisionalTechRecord(techRecord: V3TechRecordModel): Observable<VehicleTechRecordModel> {
     // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
     const recordCopy = cloneDeep(techRecord);
-    recordCopy.statusCode = StatusCodes.PROVISIONAL;
-    delete recordCopy.updateType;
+    recordCopy.techRecord_statusCode = StatusCodes.PROVISIONAL;
+    delete recordCopy.techRecord_updateType;
 
-    const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;
+    const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${techRecord.systemNumber}`;
 
     const body = {
-      msUserDetails: { msOid: user.id, msUser: user.name },
       techRecord: [recordCopy]
     };
 
-    return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.patch<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  updateTechRecords(
-    systemNumber: string,
-    vehicleTechRecord: VehicleTechRecordModel,
-    user: { id?: string; name: string },
-    recordToArchiveStatus?: StatusCodes,
-    newStatus?: StatusCodes
-  ): Observable<PutVehicleTechRecordModel> {
-    const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
+  updateTechRecords(techRecord: V3TechRecordModel): Observable<PutVehicleTechRecordModel> {
+    const url = `${environment.VTM_API_URI}/v3/techical-records/${techRecord.systemNumber}${techRecord.createdTimestamp}`;
 
-    const newTechRecord = newVehicleTechRecord.techRecord[0];
-
-    newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
-    delete newTechRecord.updateType;
-
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${recordToArchiveStatus ? '?oldStatusCode=' + recordToArchiveStatus : ''}`;
-
-    const body: PutVehicleTechRecordModel & { msUserDetails: { msOid: string | undefined; msUser: string } } = {
-      ...this.formatVrmsForUpdatePayload(vehicleTechRecord),
-      msUserDetails: { msOid: user.id, msUser: user.name },
-      techRecord: [newTechRecord]
-    };
-
-    return this.http.put<PutVehicleTechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.put<PutVehicleTechRecordModel>(url, techRecord, { responseType: 'json' });
   }
 
-  private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {
-    const secondaryVrms: string[] = [];
-    const putVehicleTechRecordModel: PutVehicleTechRecordModel = { ...vehicleTechRecord, secondaryVrms };
-    vehicleTechRecord.vrms?.forEach(vrm => {
-      vrm.isPrimary ? (putVehicleTechRecordModel.primaryVrm = vrm.vrm) : putVehicleTechRecordModel.secondaryVrms!.push(vrm.vrm);
-    });
-    delete (putVehicleTechRecordModel as any).vrms;
-    return putVehicleTechRecordModel;
-  }
+  archiveTechnicalRecord(techRecord: V3TechRecordModel): Observable<VehicleTechRecordModel> {
+    const url = `${environment.VTM_API_URI}/vehicles/archive/${techRecord.systemNumber}`;
 
-  archiveTechnicalRecord(
-    systemNumber: string,
-    techRecord: TechRecordModel,
-    reason: string,
-    user: { id?: string; name: string }
-  ): Observable<VehicleTechRecordModel> {
-    const url = `${environment.VTM_API_URI}/vehicles/archive/${systemNumber}`;
-
-    const body = {
-      msUserDetails: { msOid: user.id, msUser: user.name },
-      techRecord: [techRecord],
-      reasonForArchiving: reason
-    };
+    const body = { techRecord };
 
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }

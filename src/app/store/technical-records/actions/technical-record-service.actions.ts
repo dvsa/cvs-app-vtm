@@ -1,6 +1,6 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { PsvMake } from '@models/reference-data.model';
-import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 
 const prefix = '[Technical Record Service]';
@@ -9,7 +9,11 @@ export const getBySystemNumber = createAction(`${prefix} getBySystemNumber`, pro
 export const getBySystemNumberSuccess = createOutcomeAction('getBySystemNumber', true);
 export const getBySystemNumberFailure = createOutcomeAction('getBySystemNumber');
 
-export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`, props<{ vehicle: VehicleTechRecordModel }>());
+export const getTechRecordV3 = createAction(`${prefix} getTechRecordV3`, props<{ systemNumber: string; createdTimestamp: string }>());
+export const getTechRecordV3Success = createOutcomeAction('getTechRecordV3', true);
+export const getTechRecordV3Failure = createOutcomeAction('getTechRecordV3');
+
+export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`, props<{ vehicle: V3TechRecordModel }>());
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
 export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord');
 
@@ -28,7 +32,7 @@ export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, pro
 export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
 export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord');
 
-export const updateEditingTechRecord = createAction(`${prefix} updateEditingTechRecord`, props<{ vehicleTechRecord: VehicleTechRecordModel }>());
+export const updateEditingTechRecord = createAction(`${prefix} updateEditingTechRecord`, props<{ vehicleTechRecord: V3TechRecordModel }>());
 export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditingTechRecordCancel`);
 
 export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ vehicleType: VehicleTypes }>());
