@@ -12,7 +12,7 @@ import { TechnicalRecordHttpService } from '@services/technical-record-http/tech
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/.';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
-import { vehicleTechRecords } from '@store/technical-records';
+import { techRecord } from '@store/technical-records';
 import { firstValueFrom, of, ReplaySubject } from 'rxjs';
 import { SingleSearchResultComponent } from '../single-search-result/single-search-result.component';
 import { MultipleSearchResultsComponent } from './multiple-search-results.component';
@@ -74,7 +74,7 @@ describe('MultipleSearchResultsComponent', () => {
   describe('searching', () => {
     beforeEach(() => {
       store = TestBed.inject(MockStore);
-      store.overrideSelector(vehicleTechRecords, mockVehicleTechnicalRecordList());
+      // store.overrideSelector(techRecord, mockVehicleTechnicalRecordList());
     });
 
     it('should search using a vin', async () => {
