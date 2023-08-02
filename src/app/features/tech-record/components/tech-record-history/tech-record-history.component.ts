@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
@@ -9,21 +9,22 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
   styleUrls: ['./tech-record-history.component.scss']
 })
 export class TechRecordHistoryComponent {
-  @Input() vehicle!: VehicleTechRecordModel;
-  @Input() currentTechRecord!: TechRecordModel;
+  @Input() vehicle!: V3TechRecordModel;
+  @Input() currentTechRecord!: V3TechRecordModel;
 
   pageStart?: number;
   pageEnd?: number;
 
   constructor(private cdr: ChangeDetectorRef, private techRecordService: TechnicalRecordService) {}
 
-  get techRecords() {
-    return this.vehicle.techRecord.slice(this.pageStart, this.pageEnd) ?? [];
-  }
+  //TODO: implement a new way of getting tech records
+  // get techRecords() {
+  //   return this.vehicle.techRecord.slice(this.pageStart, this.pageEnd) ?? [];
+  // }
 
-  get numberOfRecords(): number {
-    return this.vehicle.techRecord.length || 0;
-  }
+  // get numberOfRecords(): number {
+  //   return this.vehicle.techRecord.length || 0;
+  // }
 
   convertToUnix(date: Date): number {
     return new Date(date).getTime();
