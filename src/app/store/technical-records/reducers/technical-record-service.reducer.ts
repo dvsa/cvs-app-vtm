@@ -47,7 +47,9 @@ import {
   removeSectionState,
   clearAllSectionStates
 } from '../actions/technical-record-service.actions';
-import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
+//TODO: re-import vehicleBatchCreateReducer
+import { BatchRecords, initialBatchState } from './batch-create.reducer';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
@@ -100,7 +102,7 @@ export const vehicleTechRecordReducer = createReducer(
   on(generateLetterSuccess, state => ({ ...state, editingTechRecord: undefined })),
   on(generateLetterFailure, failureArgs),
 
-  on(updateEditingTechRecord, (state, action) => ({ ...state, editingTechRecord: action.vehicleTechRecord })),
+  on(updateEditingTechRecord, (state, action) => updateEditingTechRec(state, action)),
   on(updateEditingTechRecordCancel, state => ({ ...state, editingTechRecord: undefined })),
 
   on(updateBrakeForces, (state, action) => handleUpdateBrakeForces(state, action)),
@@ -128,8 +130,8 @@ export const vehicleTechRecordReducer = createReducer(
     setGenerateNumberFlag,
     clearBatch,
     (state, action) => ({
-      ...state,
-      batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
+      ...state
+      // batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
     })
   )
 );
@@ -274,4 +276,16 @@ function handleRemoveSection(state: TechnicalRecordServiceState, action: { secti
   const newState = cloneDeep(state);
   if (!newState.sectionState?.includes(action.section)) return newState;
   return { ...newState, sectionState: newState.sectionState?.filter(section => section !== action.section) };
+}
+
+function updateEditingTechRec(state: TechnicalRecordServiceState, action: { vehicleTechRecord: V3TechRecordModel }) {
+  const newState = { ...state };
+  const { editingTechRecord } = state;
+  const { vehicleTechRecord } = action;
+
+  newState.editingTechRecord = { ...editingTechRecord, ...vehicleTechRecord };
+
+  console.log(newState);
+
+  return newState;
 }

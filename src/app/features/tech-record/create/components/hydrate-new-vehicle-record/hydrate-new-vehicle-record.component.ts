@@ -66,11 +66,11 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
     return VehicleTypes;
   }
 
-  navigate(systemNumber?: string): void {
+  navigate(systemNumber?: string, createdTimestamp?: string): void {
     this.globalErrorService.clearErrors();
 
-    if (systemNumber) {
-      this.router.navigate(['/tech-records', systemNumber]);
+    if (systemNumber && createdTimestamp) {
+      this.router.navigate([`/tech-records/${systemNumber}/${createdTimestamp}`]);
     } else {
       this.router.navigate(['batch-results'], { relativeTo: this.route });
     }

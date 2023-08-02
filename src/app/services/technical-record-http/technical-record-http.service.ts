@@ -52,17 +52,14 @@ export class TechnicalRecordHttpService {
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  createVehicleRecord(newVehicleRecord: V3TechRecordModel, user: { id?: string; name: string }): Observable<PostNewVehicleModel> {
+  createVehicleRecord(newVehicleRecord: V3TechRecordModel): Observable<PostNewVehicleModel> {
     const recordCopy = cloneDeep(newVehicleRecord);
 
     const body = {
-      ...newVehicleRecord,
-      vin: recordCopy.vin,
-      primaryVrm: recordCopy.primaryVrm ?? null,
-      trailerId: (recordCopy as any).trailerId ?? null
+      ...recordCopy
     };
 
-    return this.http.post<PostNewVehicleModel>(`${environment.VTM_API_URI}/vehicles`, body);
+    return this.http.post<PostNewVehicleModel>(`${environment.VTM_API_URI}/v3/technical-records`, body);
   }
 
   createProvisionalTechRecord(techRecord: V3TechRecordModel): Observable<VehicleTechRecordModel> {

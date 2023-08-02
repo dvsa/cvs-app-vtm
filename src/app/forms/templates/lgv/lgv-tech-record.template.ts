@@ -10,7 +10,7 @@ export const LgvTechRecord: FormNode = {
   label: 'Vehicle Summary',
   children: [
     {
-      name: 'vehicleType',
+      name: 'techRecord_vehicleType',
       label: 'Vehicle type',
       value: '',
       width: FormNodeWidth.XS,
@@ -20,14 +20,14 @@ export const LgvTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'statusCode',
+      name: 'techRecord_statusCode',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
     {
-      name: 'regnDate',
+      name: 'techRecord_regnDate',
       label: 'Date of first registration',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -37,7 +37,7 @@ export const LgvTechRecord: FormNode = {
       isoDate: false
     },
     {
-      name: 'manufactureYear',
+      name: 'techRecord_manufactureYear',
       label: 'Year of manufacture',
       value: '',
       width: FormNodeWidth.XS,
@@ -49,7 +49,7 @@ export const LgvTechRecord: FormNode = {
       ]
     },
     {
-      name: 'noOfAxles',
+      name: 'techRecord_noOfAxles',
       label: 'Number of axles',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
@@ -58,7 +58,7 @@ export const LgvTechRecord: FormNode = {
       validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
-      name: 'vehicleSubclass',
+      name: 'techRecord_vehicleSubclass',
       label: 'Vehicle Subclass',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
@@ -66,7 +66,7 @@ export const LgvTechRecord: FormNode = {
       options: getOptionsFromEnum(VehicleSubclass)
     },
     {
-      name: 'vehicleConfiguration',
+      name: 'techRecord_vehicleConfiguration',
       label: 'Vehicle configuration',
       value: VehicleConfiguration.OTHER,
       type: FormNodeTypes.CONTROL,
@@ -75,7 +75,7 @@ export const LgvTechRecord: FormNode = {
       validators: [{ name: ValidatorNames.Required }]
     },
     {
-      name: 'euVehicleCategory',
+      name: 'techRecord_euVehicleCategory',
       label: 'EU vehicle category',
       value: '',
       type: FormNodeTypes.CONTROL,

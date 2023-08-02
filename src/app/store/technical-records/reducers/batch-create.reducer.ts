@@ -38,35 +38,35 @@ export const batchAdapter: EntityAdapter<BatchRecord> = createEntityAdapter<Batc
 export const initialBatchState: BatchRecords = batchAdapter.getInitialState({
   generateNumber: false
 });
+//TODO: Batch to use V3 records
+// export const vehicleBatchCreateReducer = createReducer(
+//   initialBatchState,
+//   on(upsertVehicleBatch, (state, action) => batchAdapter.setAll(action.vehicles, state)),
+//   on(setGenerateNumberFlag, (state, { generateNumber }) => ({ ...state, generateNumber })),
+//   on(setApplicationId, (state, { applicationId }) => ({ ...state, applicationId })),
+//   on(setVehicleStatus, (state, { vehicleStatus }) => ({ ...state, vehicleStatus })),
+//   on(setVehicleType, (state, { vehicleType }) => ({ ...state, vehicleType })),
+//   on(createVehicleRecordSuccess, (state, action) => batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecords)[0], state)),
+//   on(updateTechRecordsSuccess, (state, action) =>
+//     batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecords, true, true)[0], state)
+//   ),
+//   on(clearBatch, state => batchAdapter.removeAll({ ...state, vehicleStatus: '', applicationId: '', vehicleType: undefined }))
+// );
 
-export const vehicleBatchCreateReducer = createReducer(
-  initialBatchState,
-  on(upsertVehicleBatch, (state, action) => batchAdapter.setAll(action.vehicles, state)),
-  on(setGenerateNumberFlag, (state, { generateNumber }) => ({ ...state, generateNumber })),
-  on(setApplicationId, (state, { applicationId }) => ({ ...state, applicationId })),
-  on(setVehicleStatus, (state, { vehicleStatus }) => ({ ...state, vehicleStatus })),
-  on(setVehicleType, (state, { vehicleType }) => ({ ...state, vehicleType })),
-  on(createVehicleRecordSuccess, (state, action) => batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecords)[0], state)),
-  on(updateTechRecordsSuccess, (state, action) =>
-    batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecords, true, true)[0], state)
-  ),
-  on(clearBatch, state => batchAdapter.removeAll({ ...state, vehicleStatus: '', applicationId: '', vehicleType: undefined }))
-);
-
-function vehicleRecordsToBatchRecordMapper(vehicles: VehicleTechRecordModel[], created = true, amendedRecord = false): Update<BatchRecord>[] {
-  return vehicles.map(v => {
-    const { vin, systemNumber, techRecord, trailerId, vrms } = v;
-    return {
-      id: vin,
-      changes: {
-        vin,
-        systemNumber,
-        trailerIdOrVrm: trailerId ?? vrms[0]?.vrm,
-        vehicleType: techRecord[0].vehicleType,
-        status: techRecord[0].statusCode,
-        created,
-        amendedRecord
-      } as BatchRecord
-    };
-  });
-}
+// function vehicleRecordsToBatchRecordMapper(vehicles: VehicleTechRecordModel[], created = true, amendedRecord = false): Update<BatchRecord>[] {
+//   return vehicles.map(v => {
+//     const { vin, systemNumber, techRecord, trailerId, vrms } = v;
+//     return {
+//       id: vin,
+//       changes: {
+//         vin,
+//         systemNumber,
+//         trailerIdOrVrm: trailerId ?? vrms[0]?.vrm,
+//         vehicleType: techRecord[0].vehicleType,
+//         status: techRecord[0].statusCode,
+//         created,
+//         amendedRecord
+//       } as BatchRecord
+//     };
+//   });
+// }
