@@ -1,4 +1,4 @@
-<div *ngIf="vehicle && currentTechRecord?.vehicleType === 'trl'">
+<div *ngIf="currentTechRecord?.techRecord_vehicleType && currentTechRecord?.techRecord_vehicleType === 'trl'">
   <form [formGroup]="form">
     <app-radio-group #letterType formControlName="letterType" [options]="reasons"></app-radio-group>
 

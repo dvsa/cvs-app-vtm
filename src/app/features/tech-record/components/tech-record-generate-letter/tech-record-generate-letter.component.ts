@@ -5,12 +5,12 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { LETTER_TYPES } from '@forms/templates/general/letter-types';
-import { LettersOfAuth, TechRecordModel, VehicleTechRecordModel, approvalType } from '@models/vehicle-tech-record.model';
+import { LettersOfAuth, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, approvalType } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { generateLetter, generateLetterSuccess } from '@store/technical-records';
+import { generateLetter, generateLetterSuccess, selectTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { take } from 'rxjs';
 
@@ -20,8 +20,7 @@ import { take } from 'rxjs';
   styleUrls: ['./tech-record-generate-letter.component.scss']
 })
 export class GenerateLetterComponent {
-  vehicle?: VehicleTechRecordModel;
-  currentTechRecord?: TechRecordModel;
+  currentTechRecord?: V3TechRecordModel;
   form = new FormGroup({
     letterType: new CustomFormControl({ name: 'letterType', label: 'Type of letter to generate', type: FormNodeTypes.CONTROL }, '', [
       Validators.required
@@ -51,9 +50,10 @@ export class GenerateLetterComponent {
     private technicalRecordService: TechnicalRecordService,
     public userService: UserService
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
-
-    this.technicalRecordService.viewableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.currentTechRecord = techRecord));
+    this.store
+      .select(selectTechRecord)
+      .pipe(take(1))
+      .subscribe(techRecord => (this.currentTechRecord = techRecord));
   }
 
   get reasons(): Array<FormNodeOption<string>> {
@@ -64,11 +64,11 @@ export class GenerateLetterComponent {
   }
 
   get letter(): LettersOfAuth | undefined {
-    return this.currentTechRecord?.letterOfAuth ?? undefined;
+    return (this.currentTechRecord as any)?.letterOfAuth ?? undefined;
   }
-
+  // TODO: remove as any
   get emailAddress(): string | undefined {
-    return this.currentTechRecord?.applicantDetails?.emailAddress;
+    return (this.currentTechRecord as any)?.applicantDetails?.emailAddress;
   }
 
   navigateBack() {
@@ -85,7 +85,7 @@ export class GenerateLetterComponent {
       return this.globalErrorService.addError({ error: 'Could not retrieve current technical record' });
     }
 
-    const paragraphId = this.form.value.letterType == 'trailer acceptance' ? this.paragraphMap.get(this.currentTechRecord.approvalType!) : 4;
+    const paragraphId = this.form.value.letterType == 'trailer acceptance' ? this.paragraphMap.get((this.currentTechRecord as any).approvalType!) : 4;
 
     this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
 

@@ -3,13 +3,13 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import { selectTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Observable, Subscription, take } from 'rxjs';
 
@@ -19,11 +19,11 @@ import { Observable, Subscription, take } from 'rxjs';
   styleUrls: ['./tech-record-change-visibility.component.scss']
 })
 export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
-  vehicle$: Observable<VehicleTechRecordModel | undefined>;
-  techRecord?: TechRecordModel;
+  vehicle$: Observable<V3TechRecordModel | undefined>;
+  techRecord?: V3TechRecordModel;
 
   form: CustomFormGroup;
-  subscription: Subscription;
+  // subscription: Subscription;
 
   constructor(
     private actions$: Actions,
@@ -33,12 +33,12 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     private store: Store<State>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.vehicle$ = this.technicalRecordService.selectedVehicleTechRecord$;
-
-    this.subscription = this.technicalRecordService.viewableTechRecord$.subscribe(techRecord => (this.techRecord = techRecord));
+    this.vehicle$ = this.store.select(selectTechRecord);
+    // TODO:
+    // this.subscription = this.technicalRecordService.viewableTechRecord$.subscribe(techRecord => (this.techRecord = techRecord));
 
     this.form = new CustomFormGroup(
-      { name: 'reasonForChagingVisibility', type: FormNodeTypes.GROUP },
+      { name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
   }
@@ -52,7 +52,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
   }
 
   get isHidden(): boolean {
-    return this.techRecord?.hiddenInVta || false;
+    return this.techRecord?.techRecord_hiddenInVta || false;
   }
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
   goBack(): void {
@@ -71,17 +71,17 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     this.form.valid
       ? this.errorService.clearErrors()
       : this.errorService.setErrors([
-          { error: `Reason for ${this.isHidden ? 'showing' : 'hiding'} is required`, anchorLink: 'reasonForChagingVisibility' }
+          { error: `Reason for ${this.isHidden ? 'showing' : 'hiding'} is required`, anchorLink: 'reasonForChangingVisibility' }
         ]);
 
     if (!this.form.valid || !form.reason) {
       return;
     }
 
-    const updatedTechRecord: TechRecordModel = {
+    const updatedTechRecord: V3TechRecordModel = {
       ...cloneDeep(this.techRecord!),
-      reasonForCreation: form.reason,
-      hiddenInVta: !this.isHidden
+      techRecord_reasonForCreation: form.reason,
+      techRecord_hiddenInVta: !this.isHidden
     };
 
     this.technicalRecordService.updateEditingTechRecord(updatedTechRecord);

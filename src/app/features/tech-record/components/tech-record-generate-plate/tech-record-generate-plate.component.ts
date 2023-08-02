@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
-import { generatePlate, generatePlateSuccess } from '@store/technical-records';
+import { generatePlate, generatePlateSuccess, selectTechRecord } from '@store/technical-records';
 import { Observable, map, take, tap } from 'rxjs';
 
 @Component({
@@ -33,11 +33,12 @@ export class GeneratePlateComponent implements OnInit {
     public userService: UserService,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.emailAddress$ = this.technicalRecordService.viewableTechRecord$.pipe(
+    this.emailAddress$ = this.store.select(selectTechRecord).pipe(
       tap(record => {
-        if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
+        if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') this.navigateBack();
       }),
-      map(record => record?.applicantDetails?.emailAddress)
+      //TODO: remove as any
+      map(record => (record as any)?.applicantDetails?.emailAddress)
     );
   }
 

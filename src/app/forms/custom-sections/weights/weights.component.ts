@@ -4,7 +4,7 @@ import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
-import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { addAxle, removeAxle, updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
@@ -16,7 +16,7 @@ import { debounceTime, Subscription } from 'rxjs';
   styleUrls: ['./weights.component.scss']
 })
 export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() vehicleTechRecord!: TechRecordModel;
+  @Input() vehicleTechRecord!: V3TechRecordModel;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -56,7 +56,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get template(): FormNode {
-    switch (this.vehicleTechRecord.vehicleType) {
+    switch (this.vehicleTechRecord.techRecord_vehicleType) {
       case VehicleTypes.PSV:
         return PsvWeightsTemplate;
       case VehicleTypes.HGV:
@@ -69,15 +69,15 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get isPsv(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.PSV;
+    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
 
   get isHgv(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.HGV;
+    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.HGV;
   }
 
   get isTrl(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.TRL;
+    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.TRL;
   }
 
   get types(): typeof FormNodeEditTypes {
@@ -91,9 +91,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   getAxleWeights(i: number): CustomFormGroup {
     return this.axles.get([i, 'weights']) as CustomFormGroup;
   }
-
+  // TODO: remove as any
   addAxle(): void {
-    if (!this.vehicleTechRecord.axles || this.vehicleTechRecord.axles!.length < 10) {
+    if (!(this.vehicleTechRecord as any).axles || (this.vehicleTechRecord as any).axles!.length < 10) {
       this.isError = false;
       this.store.dispatch(addAxle());
     } else {
@@ -104,8 +104,8 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
-
-    if (this.vehicleTechRecord.axles!.length > minLength) {
+    // TODO: remove as any
+    if ((this.vehicleTechRecord as any).axles!.length > minLength) {
       this.isError = false;
       this.store.dispatch(removeAxle({ index }));
     } else {

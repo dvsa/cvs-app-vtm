@@ -4,7 +4,7 @@ import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNode
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
@@ -13,7 +13,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
   styleUrls: ['./dimensions.component.scss']
 })
 export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() vehicleTechRecord!: TechRecordModel;
+  @Input() vehicleTechRecord!: V3TechRecordModel;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
 
@@ -43,7 +43,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get template(): FormNode | undefined {
-    switch (this.vehicleTechRecord.vehicleType) {
+    switch (this.vehicleTechRecord.techRecord_vehicleType) {
       case VehicleTypes.PSV:
         return PsvDimensionsTemplate;
       case VehicleTypes.HGV:
@@ -56,11 +56,11 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get isPsv(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.PSV;
+    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
 
   get isTrl(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.TRL;
+    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.TRL;
   }
 
   get widths(): typeof FormNodeWidth {
@@ -74,9 +74,9 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   get dimensions(): CustomFormGroup {
     return this.form.get(['dimensions']) as CustomFormGroup;
   }
-
+  // TODO remove as any
   get hasAxleSpacings(): boolean {
-    return !!this.vehicleTechRecord.dimensions?.axleSpacing?.length;
+    return !!(this.vehicleTechRecord as any).dimensions?.axleSpacing?.length;
   }
 
   get axleSpacings(): CustomFormArray {
