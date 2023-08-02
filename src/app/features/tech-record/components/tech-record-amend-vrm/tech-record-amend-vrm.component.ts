@@ -6,15 +6,17 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import { selectTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { catchError, filter, map, of, skipWhile, Subject, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/skeleton';
 
 @Component({
   selector: 'app-change-amend-vrm',
@@ -22,8 +24,8 @@ import { catchError, filter, map, of, skipWhile, Subject, switchMap, take, takeU
   styleUrls: ['./tech-record-amend-vrm.component.scss']
 })
 export class AmendVrmComponent implements OnDestroy {
-  vehicle?: VehicleTechRecordModel;
-  techRecord?: TechRecordModel;
+  // vehicle?: VehicleTechRecordModel;
+  techRecord?: V3TechRecordModel;
 
   form = new FormGroup({
     newVrm: new CustomFormControl({ name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL }, '', [
@@ -50,28 +52,38 @@ export class AmendVrmComponent implements OnDestroy {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$
-      .pipe(
-        take(1),
-        skipWhile(vehicle => !vehicle),
-        map(vehicle => {
-          const techRecord = vehicle?.techRecord.find(techRecord => techRecord.statusCode !== StatusCodes.ARCHIVED);
-          if (!vehicle || !techRecord) {
-            return this.navigateBack();
-          }
-          return { ...vehicle!, techRecord: [techRecord] };
-        })
-      )
-      .subscribe(vehicle => {
-        if (!vehicle) {
-          return;
+    // this.technicalRecordService.selectedVehicleTechRecord$
+    //   .pipe(
+    //     take(1),
+    //     skipWhile(vehicle => !vehicle),
+    //     map(vehicle => {
+    //       const techRecord = vehicle?.techRecord.find(techRecord => techRecord.statusCode !== StatusCodes.ARCHIVED);
+    //       if (!vehicle || !techRecord) {
+    //         return this.navigateBack();
+    //       }
+    //       return { ...vehicle!, techRecord: [techRecord] };
+    //     })
+    //   )
+    //   .subscribe(vehicle => {
+    //     if (!vehicle) {
+    //       return;
+    //     }
+    //     this.vehicle = vehicle;
+    //   });
+    this.store
+      .select(selectTechRecord)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(record => {
+        // TODO: check status codes
+        if (record?.techRecord_statusCode === 'archived') {
+          return this.navigateBack();
         }
-        this.vehicle = vehicle;
+        this.techRecord = record;
       });
 
-    this.technicalRecordService.viewableTechRecord$
-      .pipe(take(1))
-      .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
+    // this.technicalRecordService.viewableTechRecord$
+    //   .pipe(take(1))
+    //   .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
 
     this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
   }
@@ -98,13 +110,11 @@ export class AmendVrmComponent implements OnDestroy {
 
   get makeAndModel(): string {
     const c = this.techRecord;
-    if (!c?.make && !c?.chassisMake) return '';
+    if (!(c as any)?.techRecord_make && !(c as any)?.techRecord_chassisMake) return '';
 
-    return `${c.vehicleType === 'psv' ? c.chassisMake : c.make} - ${c.vehicleType === 'psv' ? c.chassisModel : c.model}`;
-  }
-
-  get vrm(): string | undefined {
-    return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return `${c?.techRecord_vehicleType === 'psv' ? (c as any).techRecord_chassisMake : (c as any).techRecord_make} - ${
+      (c as any).vehicleType === 'psv' ? (c as any).chassisModel : (c as any).model
+    }`;
   }
 
   navigateBack() {
@@ -127,14 +137,14 @@ export class AmendVrmComponent implements OnDestroy {
         next: res => {
           if (!res) return this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
 
-          const newVehicleRecord = this.amendVrm(this.vehicle!, this.form.value.newVrm, this.form.value.isCherishedTransfer === 'true');
+          const newVehicleRecord: V3TechRecordModel = this.amendVrm(
+            this.techRecord!,
+            this.form.value.newVrm,
+            this.form.value.isCherishedTransfer === 'true'
+          );
 
-          if (newVehicleRecord.techRecord) {
-            newVehicleRecord.techRecord.forEach(record => (record.reasonForCreation = `Amending VRM.`));
-          }
-
-          this.technicalRecordService.updateEditingTechRecord({ ...newVehicleRecord });
-          this.store.dispatch(updateTechRecords({ systemNumber: this.vehicle!.systemNumber }));
+          this.technicalRecordService.updateEditingTechRecord(newVehicleRecord);
+          this.store.dispatch(updateTechRecords({ systemNumber: this.techRecord!.systemNumber }));
         },
         error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
       });
@@ -151,7 +161,7 @@ export class AmendVrmComponent implements OnDestroy {
       this.globalErrorService.setErrors(errors);
     }
 
-    if (this.form.value.newVrm === '' || (this.form.value.newVrm === this.vrm ?? '')) {
+    if (this.form.value.newVrm === '' || (this.form.value.newVrm === this.techRecord!.primaryVrm ?? '')) {
       this.globalErrorService.addError({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
       return false;
     }
@@ -163,36 +173,17 @@ export class AmendVrmComponent implements OnDestroy {
     return this.form.valid;
   }
 
-  amendVrm(record: VehicleTechRecordModel, newVrm: string, cherishedTransfer: boolean) {
-    const newModel: VehicleTechRecordModel = cloneDeep(record);
+  amendVrm(record: V3TechRecordModel, newVrm: string, cherishedTransfer: boolean) {
+    const newModel: V3TechRecordModel = cloneDeep(record);
 
-    if (!cherishedTransfer) {
-      const primaryVrm = newModel.vrms.find(vrm => vrm.isPrimary)!;
-      newModel.vrms.splice(newModel.vrms.indexOf(primaryVrm), 1);
+    if (cherishedTransfer) {
+      // TODO: remove as any
+      (newModel as any).secondaryVrms.push(newModel.primaryVrm);
     }
 
-    newModel.vrms.forEach(x => (x.isPrimary = false));
-
-    const existingVrmObject = newModel.vrms.find(vrm => vrm.vrm == newVrm);
-
-    if (!existingVrmObject) {
-      newModel.vrms.push({ vrm: newVrm, isPrimary: true });
-    } else {
-      existingVrmObject.isPrimary = true;
-    }
+    newModel.primaryVrm = newVrm;
+    newModel.techRecord_reasonForCreation = `Amending VRM.`;
 
     return newModel;
-  }
-
-  // Currently unused, to be discussed as a future ticket
-  mapVrmToTech(vehicleRecord: VehicleTechRecordModel, techRecord: TechRecordModel) {
-    const newTechModel: TechRecordModel = cloneDeep(techRecord);
-
-    newTechModel.historicSecondaryVrms = [];
-
-    vehicleRecord.vrms.forEach(vrm =>
-      vrm.isPrimary ? (newTechModel.historicPrimaryVrm = vrm.vrm) : newTechModel.historicSecondaryVrms!.push(vrm.vrm)
-    );
-    return newTechModel;
   }
 }

@@ -3,30 +3,29 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { archiveTechRecord, archiveTechRecordSuccess, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import { archiveTechRecord, archiveTechRecordSuccess, selectTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { Observable, Subscription, take } from 'rxjs';
+import { Observable, Subject, Subscription, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-status',
   templateUrl: './tech-record-change-status.component.html'
 })
 export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
-  vehicle$: Observable<VehicleTechRecordModel | undefined>;
-
-  techRecord?: TechRecordModel;
+  techRecord: V3TechRecordModel | undefined;
 
   form: CustomFormGroup;
 
   isPromotion = false;
   isProvisional = false;
-  subscription: Subscription;
+
+  destroy$ = new Subject<void>();
 
   constructor(
     private actions$: Actions,
@@ -36,10 +35,6 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
     private store: Store<State>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.vehicle$ = this.technicalRecordService.selectedVehicleTechRecord$;
-
-    this.subscription = this.technicalRecordService.viewableTechRecord$.subscribe(techRecord => (this.techRecord = techRecord));
-
     this.form = new CustomFormGroup(
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
@@ -49,6 +44,13 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.store
+      .select(selectTechRecord)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(record => {
+        this.techRecord = record;
+      });
+
     this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
 
     this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => {
@@ -60,7 +62,8 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.destroy$.next;
+    this.destroy$.complete;
   }
 
   get label(): string {
@@ -76,13 +79,13 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit(form: { reason: string }): void {
-    const newTechRecord: TechRecordModel = cloneDeep(this.techRecord!);
+    const newTechRecord: V3TechRecordModel = cloneDeep(this.techRecord!);
     if (!this.techRecord) {
       return;
     }
 
     if (this.isPromotion) {
-      newTechRecord.reasonForCreation = form.reason;
+      newTechRecord.techRecord_reasonForCreation = form.reason;
     }
 
     this.form.valid
