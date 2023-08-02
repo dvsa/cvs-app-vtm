@@ -25,7 +25,7 @@
 
     <app-radio-group formControlName="isCherishedTransfer" [options]="reasons"></app-radio-group>
 
-    <div *ngIf="newVrm.value.toUpperCase() !== vrm && newVrm.value.length">
+    <div *ngIf="newVrm.value.toUpperCase() !== techRecord.primaryVrm && newVrm.value.length">
       <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
       <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
     </div>

@@ -6,11 +6,11 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { updateVin, updateVinSuccess } from '@store/technical-records';
+import { selectTechRecord, updateVin, updateVinSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Subject, take, takeUntil } from 'rxjs';
 
@@ -19,8 +19,7 @@ import { Subject, take, takeUntil } from 'rxjs';
   templateUrl: './tech-record-amend-vin.component.html'
 })
 export class AmendVinComponent implements OnDestroy {
-  vehicle?: VehicleTechRecordModel;
-  techRecord?: TechRecordModel;
+  techRecord?: V3TechRecordModel;
   form: FormGroup;
   private destroy$ = new Subject<void>();
 
@@ -32,9 +31,10 @@ export class AmendVinComponent implements OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$
+    this.store
+      .select(selectTechRecord)
       .pipe(take(1))
-      .subscribe(vehicle => (!vehicle ? this.navigateBack() : (this.vehicle = vehicle)));
+      .subscribe(record => (!record ? this.navigateBack() : (this.techRecord = record)));
 
     this.form = new FormGroup({
       vin: new CustomFormControl(
@@ -45,7 +45,7 @@ export class AmendVinComponent implements OnDestroy {
         },
         '',
         [CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21), Validators.required],
-        [this.technicalRecordService.validateVinForUpdate(this.vehicle?.vin)]
+        [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)]
       )
     });
 
@@ -62,14 +62,13 @@ export class AmendVinComponent implements OnDestroy {
   }
 
   get makeAndModel(): string {
-    const c = this.techRecord;
-    if (!c?.make && !c?.chassisMake) return '';
+    //TODO: remove as any
+    const c = this.techRecord as any;
+    if (!c?.techRecord_make && !c?.techRecord_chassisMake) return '';
 
-    return `${c.vehicleType === 'psv' ? c.chassisMake : c.make} - ${c.vehicleType === 'psv' ? c.chassisModel : c.model}`;
-  }
-
-  get vrm(): string | undefined {
-    return this.vehicle?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return `${c.techRecord_vehicleType === 'psv' ? c.techRecord_chassisMake : c.techRecord_make} - ${
+      c.techRecord_vehicleType === 'psv' ? c.techRecord_chassisModel : c.techRecord_model
+    }`;
   }
 
   get vehicleType(): VehicleTypes | undefined {
@@ -83,7 +82,7 @@ export class AmendVinComponent implements OnDestroy {
 
     this.globalErrorService.setErrors(errors);
 
-    if (this.form.value.vin === this.vehicle?.vin) {
+    if (this.form.value.vin === this.techRecord?.vin) {
       this.globalErrorService.addError({ error: 'You must provide a new VIN', anchorLink: 'newVin' });
       return false;
     }
@@ -98,7 +97,7 @@ export class AmendVinComponent implements OnDestroy {
 
   handleSubmit(): void {
     if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
-      const payload = { newVin: this.form.value.vin, systemNumber: this.vehicle?.systemNumber ?? '' };
+      const payload = { newVin: this.form.value.vin, systemNumber: this.techRecord?.systemNumber ?? '' };
       this.store.dispatch(updateVin(payload));
     }
   }
