@@ -7,7 +7,7 @@ import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
@@ -142,7 +142,7 @@ export class CreateTechRecordComponent implements OnChanges {
       return;
     }
 
-    this.technicalRecordService.updateEditingTechRecord(this.vehicle as VehicleTechRecordModel);
+    this.technicalRecordService.updateEditingTechRecord(this.vehicle as V3TechRecordModel);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.vehicle.techRecord![0].vehicleType);
     this.technicalRecordService.clearSectionTemplateStates();
     this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
