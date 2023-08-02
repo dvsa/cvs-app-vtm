@@ -10,6 +10,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import {
   clearAllSectionStates,
   createProvisionalTechRecordSuccess,
+  selectTechRecord,
   updateEditingTechRecordCancel,
   updateTechRecordsSuccess
 } from '@store/technical-records';
@@ -43,11 +44,11 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
     this.actions$
       .pipe(
         ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
-        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.technicalRecordService.viewableTechRecord$),
+        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.store.select(selectTechRecord)),
         takeUntil(this.destroy$)
       )
       .subscribe(([, systemNumber, techRecord]) => {
-        const routeSuffix = techRecord?.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
+        const routeSuffix = techRecord?.techRecord_statusCode === StatusCodes.CURRENT ? '' : '/provisional';
         this.router.navigateByUrl(`/tech-records/${systemNumber}${routeSuffix}`);
       });
   }
@@ -58,15 +59,20 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
   }
 
   get isArchived$(): Observable<boolean> {
-    return this.technicalRecordService.viewableTechRecord$.pipe(
-      map(techRecord => !(techRecord?.statusCode === StatusCodes.CURRENT || techRecord?.statusCode === StatusCodes.PROVISIONAL))
-    );
+    return this.store
+      .select(selectTechRecord)
+      .pipe(
+        map(
+          techRecord => !(techRecord?.techRecord_statusCode === StatusCodes.CURRENT || techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL)
+        )
+      );
   }
 
   checkIfEditableReasonRequired() {
-    this.technicalRecordService.viewableTechRecord$
+    this.store
+      .select(selectTechRecord)
       .pipe(
-        map(techRecord => techRecord?.statusCode),
+        map(techRecord => techRecord?.techRecord_statusCode),
         takeUntil(this.destroy$),
         distinctUntilChanged()
       )
