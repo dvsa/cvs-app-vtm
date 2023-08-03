@@ -75,6 +75,7 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
+                { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
                 { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
               ]
@@ -209,6 +210,7 @@ export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
+                { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
                 { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
               ]
