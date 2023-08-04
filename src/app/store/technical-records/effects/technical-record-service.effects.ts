@@ -47,8 +47,7 @@ import {
   updateTechRecordsSuccess,
   getTechRecordV3,
   getTechRecordV3Success,
-  getTechRecordV3Failure,
-  updateTechRecords2
+  getTechRecordV3Failure
 } from '../actions/technical-record-service.actions';
 import { editableTechRecord, selectTechRecord, techRecord } from '../selectors/technical-record-service.selectors';
 import { StatusCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/complete';
@@ -140,21 +139,7 @@ export class TechnicalRecordServiceEffects {
   updateTechRecords$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTechRecords),
-      withLatestFrom(this.store.select(selectTechRecord)),
-      switchMap(([action, record]) =>
-        this.techRecordHttpService.updateTechRecords(record!).pipe(
-          map(vehicleTechRecord => updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
-          catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
-        )
-      )
-    )
-  );
-
-  updateTechRecords2$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(updateTechRecords2),
       switchMap(({ vehicleTechRecord }) => {
-        console.log('in the action');
         return this.techRecordHttpService.updateTechRecords(vehicleTechRecord).pipe(
           map(vehicleTechRecord => updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
           catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
@@ -162,19 +147,6 @@ export class TechnicalRecordServiceEffects {
       })
     )
   );
-
-  // updateTechRecords$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(updateTechRecords),
-  //     withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
-  //     concatMap(([action, record, name, id]) =>
-  //       this.techRecordHttpService.updateTechRecords(action.systemNumber, record!, { id, name }, action.recordToArchiveStatus, action.newStatus).pipe(
-  //         map(vehicleTechRecord => updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
-  //         catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
-  //       )
-  //     )
-  //   )
-  // );
 
   archiveTechRecord$ = createEffect(() =>
     this.actions$.pipe(

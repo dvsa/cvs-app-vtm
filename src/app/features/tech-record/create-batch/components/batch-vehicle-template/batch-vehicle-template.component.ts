@@ -131,14 +131,14 @@ export class BatchVehicleTemplateComponent {
               this.store.dispatch(createVehicleRecord({ vehicle: vehicle as unknown as V3TechRecordModel }));
             } else {
               this.technicalRecordService.updateEditingTechRecord(vehicle as unknown as V3TechRecordModel);
-              this.store.dispatch(
-                updateTechRecords()
-                // {
-                //   systemNumber: vehicle.systemNumber,
-                //   recordToArchiveStatus: vehicle.oldVehicleStatus ?? StatusCodes.PROVISIONAL,
-                //   newStatus: vehicle.techRecord[0]?.statusCode ?? StatusCodes.CURRENT
-                // })
-              );
+              // this.store.dispatch(
+              //   updateTechRecords()
+              // {
+              //   systemNumber: vehicle.systemNumber,
+              //   recordToArchiveStatus: vehicle.oldVehicleStatus ?? StatusCodes.PROVISIONAL,
+              //   newStatus: vehicle.techRecord[0]?.statusCode ?? StatusCodes.CURRENT
+              // })
+              // );
             }
           });
           this.technicalRecordService.clearSectionTemplateStates();

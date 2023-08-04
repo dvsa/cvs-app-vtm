@@ -101,12 +101,11 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
     this.technicalRecordService.updateEditingTechRecord(newTechRecord);
 
     this.store.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber }) => {
-      const action = this.isPromotion
-        ? updateTechRecords()
-        : // ? updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
-          archiveTechRecord({ systemNumber, reasonForArchiving: form.reason });
-
-      this.store.dispatch(action);
+      // const action = this.isPromotion
+      //   ? updateTechRecords()
+      // : // ? updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+      // archiveTechRecord({ systemNumber, reasonForArchiving: form.reason });
+      // this.store.dispatch(action);
     });
   }
 }

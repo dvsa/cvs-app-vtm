@@ -21,11 +21,9 @@ export const createProvisionalTechRecord = createAction(`${prefix} createProvisi
 export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
 export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
 
-export const updateTechRecords = createAction(`${prefix} updateTechRecords`);
+export const updateTechRecords = createAction(`${prefix} updateTechRecords2`, props<{ vehicleTechRecord: V3TechRecordModel }>());
 export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
-
-export const updateTechRecords2 = createAction(`${prefix} updateTechRecords2`, props<{ vehicleTechRecord: V3TechRecordModel }>());
 
 export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, props<{ systemNumber: string; reasonForArchiving: string }>());
 export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);

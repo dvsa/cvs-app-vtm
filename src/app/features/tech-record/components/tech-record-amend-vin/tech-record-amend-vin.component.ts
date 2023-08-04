@@ -10,7 +10,7 @@ import { TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, VehicleType
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectTechRecord, updateTechRecords, updateTechRecords2, updateTechRecordsSuccess } from '@store/technical-records';
+import { selectTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Subject, take, takeUntil } from 'rxjs';
 
@@ -50,7 +50,6 @@ export class AmendVinComponent implements OnDestroy {
     });
 
     this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(item => {
-      console.log(item.vehicleTechRecords);
       this.router.navigate([`/tech-records/${item.vehicleTechRecords[0].systemNumber}/${item.vehicleTechRecords[0].createdTimestamp}`]);
     });
   }
@@ -103,7 +102,7 @@ export class AmendVinComponent implements OnDestroy {
     record.vin = this.form.value.vin;
 
     if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
-      this.store.dispatch(updateTechRecords2({ vehicleTechRecord: record }));
+      this.store.dispatch(updateTechRecords({ vehicleTechRecord: record }));
     }
   }
 }

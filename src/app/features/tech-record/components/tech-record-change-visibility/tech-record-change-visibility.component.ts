@@ -86,10 +86,8 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 
     this.technicalRecordService.updateEditingTechRecord(updatedTechRecord);
 
-    this.store
-      .select(selectRouteNestedParams)
-      .pipe(take(1))
-      .subscribe(({ systemNumber }) => this.store.dispatch(updateTechRecords()));
+    this.store.select(selectRouteNestedParams).pipe(take(1));
+    // .subscribe(({ systemNumber }) => this.store.dispatch(updateTechRecords()));
     // .subscribe(({ systemNumber }) => this.store.dispatch(updateTechRecords({ systemNumber })));
   }
 }

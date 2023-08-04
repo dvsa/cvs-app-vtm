@@ -24,7 +24,6 @@ import { StatusCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/
   styleUrls: ['./tech-record-amend-vrm.component.scss']
 })
 export class AmendVrmComponent implements OnDestroy {
-  // vehicle?: VehicleTechRecordModel;
   techRecord?: V3TechRecordModel;
 
   form = new FormGroup({
@@ -52,24 +51,6 @@ export class AmendVrmComponent implements OnDestroy {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    // this.technicalRecordService.selectedVehicleTechRecord$
-    //   .pipe(
-    //     take(1),
-    //     skipWhile(vehicle => !vehicle),
-    //     map(vehicle => {
-    //       const techRecord = vehicle?.techRecord.find(techRecord => techRecord.statusCode !== StatusCodes.ARCHIVED);
-    //       if (!vehicle || !techRecord) {
-    //         return this.navigateBack();
-    //       }
-    //       return { ...vehicle!, techRecord: [techRecord] };
-    //     })
-    //   )
-    //   .subscribe(vehicle => {
-    //     if (!vehicle) {
-    //       return;
-    //     }
-    //     this.vehicle = vehicle;
-    //   });
     this.store
       .select(selectTechRecord)
       .pipe(takeUntil(this.destroy$))
@@ -81,11 +62,9 @@ export class AmendVrmComponent implements OnDestroy {
         this.techRecord = record;
       });
 
-    // this.technicalRecordService.viewableTechRecord$
-    //   .pipe(take(1))
-    //   .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
-
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
+    this.actions$
+      .pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$))
+      .subscribe(newRecord => this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]));
   }
 
   ngOnDestroy(): void {
@@ -143,9 +122,7 @@ export class AmendVrmComponent implements OnDestroy {
             this.form.value.isCherishedTransfer === 'true'
           );
 
-          this.technicalRecordService.updateEditingTechRecord(newVehicleRecord);
-          this.store.dispatch(updateTechRecords());
-          // this.store.dispatch(updateTechRecords({ systemNumber: this.techRecord!.systemNumber }));
+          this.store.dispatch(updateTechRecords({ vehicleTechRecord: newVehicleRecord }));
         },
         error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
       });
