@@ -99,14 +99,11 @@ export class AmendVinComponent implements OnDestroy {
   }
 
   handleSubmit(): void {
-    console.log(this.techRecord);
     const record: V3TechRecordModel = { ...this.techRecord! };
-    //TODO: original component had logic for checking if there was a provisional record
-
     record.vin = this.form.value.vin;
-    this.store.dispatch(updateTechRecords2({ vehicleTechRecord: record }));
+
     if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
-      const payload = { newVin: this.form.value.vin, systemNumber: this.techRecord?.systemNumber ?? '' };
+      this.store.dispatch(updateTechRecords2({ vehicleTechRecord: record }));
     }
   }
 }
