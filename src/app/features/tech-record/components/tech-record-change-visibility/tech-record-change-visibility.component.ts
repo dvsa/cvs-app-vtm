@@ -36,6 +36,9 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
       { name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
+    this.actions$
+      .pipe(ofType(updateTechRecordsSuccess), take(1))
+      .subscribe(newRecord => this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]));
   }
 
   get title(): string {
@@ -47,9 +50,6 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.actions$
-      .pipe(ofType(updateTechRecordsSuccess), take(1))
-      .subscribe(newRecord => this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]));
     this.store
       .select(techRecord)
       .pipe(take(1))

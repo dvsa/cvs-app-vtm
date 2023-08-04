@@ -61,7 +61,7 @@ export class AmendVrmComponent implements OnDestroy {
 
     this.actions$
       .pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$))
-      .subscribe(newRecord => this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]));
+      .subscribe(newRecord => this.router.navigate(['/tech-records', `${newRecord.systemNumber}`, `${newRecord.createdTimestamp}`]));
   }
 
   ngOnDestroy(): void {

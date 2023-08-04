@@ -60,6 +60,10 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
         this.isArchived = viewableTechRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
       })
     );
+    this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(newRecord => {
+      console.log(newRecord);
+      this.router.navigate(['../'], { relativeTo: this.route });
+    });
   }
   ngOnDestroy(): void {
     this.destroy$.next;

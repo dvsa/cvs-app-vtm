@@ -47,6 +47,11 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
+    this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), take(1)).subscribe(newRecord => {
+      this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);
+
+      this.technicalRecordService.clearEditingTechRecord();
+    });
 
     this.isProvisional = this.router.url.includes('provisional');
   }
@@ -60,12 +65,6 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
       });
 
     this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
-
-    this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), take(1)).subscribe(newRecord => {
-      this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);
-
-      this.technicalRecordService.clearEditingTechRecord();
-    });
   }
 
   ngOnDestroy(): void {
