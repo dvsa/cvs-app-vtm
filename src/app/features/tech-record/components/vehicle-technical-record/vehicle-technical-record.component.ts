@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
@@ -15,17 +15,18 @@ import {
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { createProvisionalTechRecord, editingTechRecord, updateTechRecords } from '@store/technical-records';
+import { createProvisionalTechRecord, editingTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, take, tap } from 'rxjs';
+import { Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-vehicle-technical-record[vehicle]',
   templateUrl: './vehicle-technical-record.component.html',
   styleUrls: ['./vehicle-technical-record.component.scss']
 })
-export class VehicleTechnicalRecordComponent implements OnInit {
+export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
   @Input() vehicle!: V3TechRecordModel;
 
@@ -39,13 +40,16 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   isDirty = false;
   isInvalid = false;
 
+  destroy$ = new Subject();
+
   constructor(
     testRecordService: TestRecordsService,
     private activatedRoute: ActivatedRoute,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private actions$: Actions
   ) {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
@@ -57,9 +61,11 @@ export class VehicleTechnicalRecordComponent implements OnInit {
       })
     );
   }
-
+  ngOnDestroy(): void {
+    this.destroy$.next;
+    this.destroy$.complete();
+  }
   ngOnInit(): void {
-    console.log(this.vehicle);
     const hasProvisionalRecord = this.vehicle.techRecord_statusCode === StatusCodes.PROVISIONAL;
     const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
 
@@ -141,15 +147,20 @@ export class VehicleTechnicalRecordComponent implements OnInit {
 
   handleSubmit(): void {
     this.summary.checkForms();
+
+    if (!this.isInvalid) {
+      this.store
+        .select(editingTechRecord)
+        .pipe(take(1))
+        .subscribe(record => {
+          this.store.dispatch(updateTechRecords({ vehicleTechRecord: record! }));
+        });
+    }
   }
   //1. check the form is valid
   //2. get the editing tech record
   //3. send the editing tech record.
   //   let recordToUpdate
-  //   if (!this.isInvalid) {
-  //     this.store.select(editingTechRecord).pipe(take(1)).subscribe(record => {
-  //     recordToUpdate = record
-  //   })
 
   //     this.store.dispatch(updateTechRecords({vehicleTechRecord: recordToUpdate!}))
   //   }
