@@ -59,6 +59,7 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.vehicle);
     const hasProvisionalRecord = this.vehicle.techRecord_statusCode === StatusCodes.PROVISIONAL;
     const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
 
@@ -141,20 +142,24 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   handleSubmit(): void {
     this.summary.checkForms();
 
+    //1.check the form is valid
+    //2.
+
     if (!this.isInvalid) {
       const { systemNumber } = this.vehicle;
-      //TODO: figure out if the vehicle has a provisional record
+      // TODO: figure out if the vehicle has a provisional record
       // const hasProvisional = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
-
-      // if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
-      //   this.store.dispatch(updateTechRecords({ systemNumber }));
-      // } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-      //   hasProvisional
-      //     ? this.store.dispatch(
-      //         updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
-      //       )
-      //     : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
-      // }
+      if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
+        this.store.dispatch(updateTechRecords());
+      } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+        console.log(this.editingReason);
+        this.store.dispatch(updateTechRecords());
+        // hasProvisional
+        // ? this.store.dispatch(
+        //     updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
+        //   )
+        // : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
+      }
     }
   }
 }

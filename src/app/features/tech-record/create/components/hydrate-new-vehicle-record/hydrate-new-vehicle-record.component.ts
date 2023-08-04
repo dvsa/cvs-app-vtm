@@ -35,7 +35,9 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
   ) {
     this.actions$
       .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
-      .subscribe(({ vehicleTechRecords }) => this.navigate(vehicleTechRecords[0].systemNumber));
+      .subscribe(({ vehicleTechRecords }) =>
+        this.router.navigate([`/tech-records/${vehicleTechRecords.systemNumber}/${vehicleTechRecords.createdTimestamp}`])
+      );
 
     this.store
       .select(selectTechRecord)

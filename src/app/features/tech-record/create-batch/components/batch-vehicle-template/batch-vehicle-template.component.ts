@@ -132,11 +132,12 @@ export class BatchVehicleTemplateComponent {
             } else {
               this.technicalRecordService.updateEditingTechRecord(vehicle as unknown as V3TechRecordModel);
               this.store.dispatch(
-                updateTechRecords({
-                  systemNumber: vehicle.systemNumber,
-                  recordToArchiveStatus: vehicle.oldVehicleStatus ?? StatusCodes.PROVISIONAL,
-                  newStatus: vehicle.techRecord[0]?.statusCode ?? StatusCodes.CURRENT
-                })
+                updateTechRecords()
+                // {
+                //   systemNumber: vehicle.systemNumber,
+                //   recordToArchiveStatus: vehicle.oldVehicleStatus ?? StatusCodes.PROVISIONAL,
+                //   newStatus: vehicle.techRecord[0]?.statusCode ?? StatusCodes.CURRENT
+                // })
               );
             }
           });

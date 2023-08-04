@@ -10,7 +10,7 @@ import { TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, VehicleType
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectTechRecord, updateVin, updateVinSuccess } from '@store/technical-records';
+import { selectTechRecord, updateTechRecords, updateTechRecords2, updateTechRecordsSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Subject, take, takeUntil } from 'rxjs';
 
@@ -49,7 +49,10 @@ export class AmendVinComponent implements OnDestroy {
       )
     });
 
-    this.actions$.pipe(ofType(updateVinSuccess), takeUntil(this.destroy$)).subscribe(() => this.navigateBack());
+    this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(item => {
+      console.log(item.vehicleTechRecords);
+      this.router.navigate([`/tech-records/${item.vehicleTechRecords[0].systemNumber}/${item.vehicleTechRecords[0].createdTimestamp}`]);
+    });
   }
 
   ngOnDestroy(): void {
@@ -96,9 +99,14 @@ export class AmendVinComponent implements OnDestroy {
   }
 
   handleSubmit(): void {
+    console.log(this.techRecord);
+    const record: V3TechRecordModel = { ...this.techRecord! };
+    //TODO: original component had logic for checking if there was a provisional record
+
+    record.vin = this.form.value.vin;
+    this.store.dispatch(updateTechRecords2({ vehicleTechRecord: record }));
     if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
       const payload = { newVin: this.form.value.vin, systemNumber: this.techRecord?.systemNumber ?? '' };
-      this.store.dispatch(updateVin(payload));
     }
   }
 }

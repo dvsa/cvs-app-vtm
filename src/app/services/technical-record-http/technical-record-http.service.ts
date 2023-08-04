@@ -12,8 +12,9 @@ import { Store } from '@ngrx/store';
 import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
 import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 import { cloneDeep } from 'lodash';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { TechRecordPUT } from '@api/vehicle';
 
 export enum SEARCH_TYPES {
   VIN = 'vin',
@@ -53,7 +54,7 @@ export class TechnicalRecordHttpService {
   }
 
   createVehicleRecord(newVehicleRecord: V3TechRecordModel): Observable<PostNewVehicleModel> {
-    const recordCopy = cloneDeep(newVehicleRecord);
+    const recordCopy: TechRecordPUT = cloneDeep(newVehicleRecord);
 
     const body = {
       ...recordCopy
@@ -77,10 +78,15 @@ export class TechnicalRecordHttpService {
     return this.http.patch<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  updateTechRecords(techRecord: V3TechRecordModel): Observable<PutVehicleTechRecordModel> {
-    const url = `${environment.VTM_API_URI}/v3/techical-records/${techRecord.systemNumber}${techRecord.createdTimestamp}`;
+  updateTechRecords(techRecord: V3TechRecordModel | undefined): Observable<PutVehicleTechRecordModel | undefined> {
+    console.log(techRecord);
+    const body = { ...techRecord };
+    if (techRecord) {
+      const url = `${environment.VTM_API_URI}/v3/technical-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`;
 
-    return this.http.put<PutVehicleTechRecordModel>(url, techRecord, { responseType: 'json' });
+      return this.http.patch<PutVehicleTechRecordModel>(url, body, { responseType: 'json' });
+    }
+    return of(undefined);
   }
 
   archiveTechnicalRecord(techRecord: V3TechRecordModel): Observable<VehicleTechRecordModel> {

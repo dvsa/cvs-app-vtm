@@ -102,8 +102,9 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 
     this.store.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber }) => {
       const action = this.isPromotion
-        ? updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
-        : archiveTechRecord({ systemNumber, reasonForArchiving: form.reason });
+        ? updateTechRecords()
+        : // ? updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+          archiveTechRecord({ systemNumber, reasonForArchiving: form.reason });
 
       this.store.dispatch(action);
     });

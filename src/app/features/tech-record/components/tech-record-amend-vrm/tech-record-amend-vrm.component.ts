@@ -144,7 +144,8 @@ export class AmendVrmComponent implements OnDestroy {
           );
 
           this.technicalRecordService.updateEditingTechRecord(newVehicleRecord);
-          this.store.dispatch(updateTechRecords({ systemNumber: this.techRecord!.systemNumber }));
+          this.store.dispatch(updateTechRecords());
+          // this.store.dispatch(updateTechRecords({ systemNumber: this.techRecord!.systemNumber }));
         },
         error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
       });

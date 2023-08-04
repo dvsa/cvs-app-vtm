@@ -40,12 +40,10 @@ import {
   updateTechRecords,
   updateTechRecordsFailure,
   updateTechRecordsSuccess,
-  updateVin,
-  updateVinSuccess,
-  updateVinFailure,
   addSectionState,
   removeSectionState,
-  clearAllSectionStates
+  clearAllSectionStates,
+  getTechRecordV3Success
 } from '../actions/technical-record-service.actions';
 //TODO: re-import vehicleBatchCreateReducer
 import { BatchRecords, initialBatchState } from './batch-create.reducer';
@@ -116,9 +114,9 @@ export const vehicleTechRecordReducer = createReducer(
   on(removeSectionState, (state, action) => handleRemoveSection(state, action)),
   on(clearAllSectionStates, state => ({ ...state, sectionState: [] })),
 
-  on(updateVin, defaultArgs),
-  on(updateVinSuccess, state => ({ ...state, loading: false })),
-  on(updateVinFailure, updateFailureArgs),
+  // on(updateVin, defaultArgs),
+  // on(updateVinSuccess, state => ({ ...state, loading: false })),
+  // on(updateVinFailure, updateFailureArgs),
 
   on(
     upsertVehicleBatch,
@@ -133,7 +131,9 @@ export const vehicleTechRecordReducer = createReducer(
       ...state
       // batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
     })
-  )
+  ),
+
+  on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecords: action.vehicleTechRecords }))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
@@ -282,10 +282,9 @@ function updateEditingTechRec(state: TechnicalRecordServiceState, action: { vehi
   const newState = { ...state };
   const { editingTechRecord } = state;
   const { vehicleTechRecord } = action;
+  console.log(vehicleTechRecord);
 
   newState.editingTechRecord = { ...editingTechRecord, ...vehicleTechRecord };
-
-  console.log(newState);
 
   return newState;
 }

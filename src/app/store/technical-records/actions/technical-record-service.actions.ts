@@ -21,12 +21,11 @@ export const createProvisionalTechRecord = createAction(`${prefix} createProvisi
 export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
 export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
 
-export const updateTechRecords = createAction(
-  `${prefix} updateTechRecords`,
-  props<{ systemNumber: string; recordToArchiveStatus?: StatusCodes; newStatus?: StatusCodes }>()
-);
+export const updateTechRecords = createAction(`${prefix} updateTechRecords`);
 export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
+
+export const updateTechRecords2 = createAction(`${prefix} updateTechRecords2`, props<{ vehicleTechRecord: V3TechRecordModel }>());
 
 export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, props<{ systemNumber: string; reasonForArchiving: string }>());
 export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
@@ -35,13 +34,13 @@ export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord')
 export const updateEditingTechRecord = createAction(`${prefix} updateEditingTechRecord`, props<{ vehicleTechRecord: V3TechRecordModel }>());
 export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditingTechRecordCancel`);
 
-export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ vehicleType: VehicleTypes }>());
+export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ techRecord_vehicleType: VehicleTypes }>());
 
-export const updateVin = createAction(`${prefix} updateVin`, props<{ newVin: string; systemNumber: string }>());
-export const updateVinSuccess = createAction(`${prefix} updateVin Success`);
-export const updateVinFailure = createOutcomeAction('updateVin');
+// export const updateVin = createAction(`${prefix} updateVin`, props<{ newVin: string; systemNumber: string }>());
+// export const updateVinSuccess = createAction(`${prefix} updateVin Success`);
+// export const updateVinFailure = createOutcomeAction('updateVin');
 
-export const createVehicle = createAction(`${prefix} createVehicle`, props<{ vehicleType: VehicleTypes }>());
+export const createVehicle = createAction(`${prefix} createVehicle`, props<{ techRecord_vehicleType: VehicleTypes }>());
 
 export const generatePlate = createAction(`${prefix} generatePlate`, props<{ reason: string }>());
 export const generatePlateSuccess = createAction(`${prefix} generatePlate Success`);

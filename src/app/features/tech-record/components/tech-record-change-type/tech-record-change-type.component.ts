@@ -80,8 +80,8 @@ export class ChangeVehicleTypeComponent {
     // TODO: remove as any
     if (
       selectedVehicleType === VehicleTypes.TRL &&
-      ((this.techRecord as any)?.euVehicleCategory === EuVehicleCategories.O1 ||
-        (this.techRecord as any)?.euVehicleCategory === EuVehicleCategories.O2)
+      ((this.techRecord as any)?.techRecord_euVehicleCategory === EuVehicleCategories.O1 ||
+        (this.techRecord as any)?.techRecord_euVehicleCategory === EuVehicleCategories.O2)
     ) {
       return this.globalErrorService.addError({
         error: "You cannot change vehicle type to TRL when EU vehicle category is set to 'O1' or 'O2'",
@@ -89,7 +89,7 @@ export class ChangeVehicleTypeComponent {
       });
     }
 
-    this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));
+    this.store.dispatch(changeVehicleType({ techRecord_vehicleType: selectedVehicleType }));
 
     this.technicalRecordService.clearReasonForCreation();
 

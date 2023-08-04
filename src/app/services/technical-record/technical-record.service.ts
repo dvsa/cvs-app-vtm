@@ -62,6 +62,7 @@ export class TechnicalRecordService {
   }
 
   get techRecord$(): Observable<V3TechRecordModel | undefined> {
+    console.log('in techrecord$');
     return combineLatest([
       this.store.pipe(select(selectTechRecord)),
       this.store.pipe(select(techRecord)),
@@ -102,7 +103,7 @@ export class TechnicalRecordService {
   }
 
   generateEditingVehicleTechnicalRecordFromVehicleType(vehicleType: VehicleTypes): void {
-    this.store.dispatch(createVehicle({ vehicleType: vehicleType }));
+    this.store.dispatch(createVehicle({ techRecord_vehicleType: vehicleType }));
   }
 
   clearReasonForCreation(vehicleTechRecord?: V3TechRecordModel): void {
