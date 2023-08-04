@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { selectTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import { selectTechRecord, techRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Observable, Subscription, take } from 'rxjs';
 
@@ -19,7 +19,6 @@ import { Observable, Subscription, take } from 'rxjs';
   styleUrls: ['./tech-record-change-visibility.component.scss']
 })
 export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
-  vehicle$: Observable<V3TechRecordModel | undefined>;
   techRecord?: V3TechRecordModel;
 
   form: CustomFormGroup;
@@ -33,10 +32,6 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     private store: Store<State>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.vehicle$ = this.store.select(selectTechRecord);
-    // TODO:
-    // this.subscription = this.technicalRecordService.viewableTechRecord$.subscribe(techRecord => (this.techRecord = techRecord));
-
     this.form = new CustomFormGroup(
       { name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
@@ -44,19 +39,24 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
   }
 
   get title(): string {
-    return `${this.isHidden ? 'Show' : 'Hide'} record in VTA`;
+    return `${this.techRecord?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record in VTA`;
   }
 
   get buttonLabel(): string {
-    return `${this.isHidden ? 'Show' : 'Hide'} record`;
-  }
-
-  get isHidden(): boolean {
-    return this.techRecord?.techRecord_hiddenInVta || false;
+    return `${this.techRecord?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record`;
   }
 
   ngOnInit(): void {
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.goBack());
+    this.actions$
+      .pipe(ofType(updateTechRecordsSuccess), take(1))
+      .subscribe(newRecord => this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]));
+    this.store
+      .select(techRecord)
+      .pipe(take(1))
+      .subscribe(record => {
+        console.log(record);
+        this.techRecord = record;
+      });
   }
 
   ngOnDestroy(): void {
@@ -71,7 +71,10 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     this.form.valid
       ? this.errorService.clearErrors()
       : this.errorService.setErrors([
-          { error: `Reason for ${this.isHidden ? 'showing' : 'hiding'} is required`, anchorLink: 'reasonForChangingVisibility' }
+          {
+            error: `Reason for ${this.techRecord?.techRecord_hiddenInVta ? 'showing' : 'hiding'} is required`,
+            anchorLink: 'reasonForChangingVisibility'
+          }
         ]);
 
     if (!this.form.valid || !form.reason) {
@@ -81,13 +84,11 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     const updatedTechRecord: V3TechRecordModel = {
       ...cloneDeep(this.techRecord!),
       techRecord_reasonForCreation: form.reason,
-      techRecord_hiddenInVta: !this.isHidden
+      techRecord_hiddenInVta: !this.techRecord?.techRecord_hiddenInVta
     };
 
     this.technicalRecordService.updateEditingTechRecord(updatedTechRecord);
 
-    this.store.select(selectRouteNestedParams).pipe(take(1));
-    // .subscribe(({ systemNumber }) => this.store.dispatch(updateTechRecords()));
-    // .subscribe(({ systemNumber }) => this.store.dispatch(updateTechRecords({ systemNumber })));
+    this.store.dispatch(updateTechRecords({ vehicleTechRecord: updatedTechRecord }));
   }
 }

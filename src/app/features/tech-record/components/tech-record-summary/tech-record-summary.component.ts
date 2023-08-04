@@ -18,7 +18,7 @@ import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectTechRecord } from '@store/technical-records';
+import { selectTechRecord, techRecord } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
 

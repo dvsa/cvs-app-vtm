@@ -9,7 +9,15 @@ import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { archiveTechRecord, archiveTechRecordSuccess, selectTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import {
+  archiveTechRecord,
+  archiveTechRecordSuccess,
+  promoteTechRecord,
+  promoteTechRecordSuccess,
+  selectTechRecord,
+  updateTechRecords,
+  updateTechRecordsSuccess
+} from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { Observable, Subject, Subscription, take, takeUntil } from 'rxjs';
 
@@ -53,9 +61,8 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 
     this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
 
-    this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => {
-      const relativePath = this.isProvisional ? '../..' : '..';
-      this.navigateBack(relativePath);
+    this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), take(1)).subscribe(newRecord => {
+      this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);
 
       this.technicalRecordService.clearEditingTechRecord();
     });
@@ -79,13 +86,8 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit(form: { reason: string }): void {
-    const newTechRecord: V3TechRecordModel = cloneDeep(this.techRecord!);
     if (!this.techRecord) {
       return;
-    }
-
-    if (this.isPromotion) {
-      newTechRecord.techRecord_reasonForCreation = form.reason;
     }
 
     this.form.valid
@@ -98,14 +100,22 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.technicalRecordService.updateEditingTechRecord(newTechRecord);
-
-    this.store.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber }) => {
-      // const action = this.isPromotion
-      //   ? updateTechRecords()
-      // : // ? updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
-      // archiveTechRecord({ systemNumber, reasonForArchiving: form.reason });
-      // this.store.dispatch(action);
-    });
+    if (this.isPromotion) {
+      this.store.dispatch(
+        promoteTechRecord({
+          systemNumber: this.techRecord.systemNumber,
+          createdTimestamp: this.techRecord.createdTimestamp,
+          reasonForPromoting: this.form.value.reason
+        })
+      );
+    } else {
+      this.store.dispatch(
+        archiveTechRecord({
+          systemNumber: this.techRecord.systemNumber,
+          createdTimestamp: this.techRecord.createdTimestamp,
+          reasonForArchiving: this.form.value.reason
+        })
+      );
+    }
   }
 }

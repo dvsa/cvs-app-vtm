@@ -25,9 +25,26 @@ export const updateTechRecords = createAction(`${prefix} updateTechRecords2`, pr
 export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
 
-export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, props<{ systemNumber: string; reasonForArchiving: string }>());
+export const amendVrm = createAction(
+  `${prefix} amendVrm`,
+  props<{ newVrm: string; cherishedTransfer: boolean; systemNumber: string; createdTimestamp: string }>()
+);
+export const amendVrmSuccess = createOutcomeAction('amendVrm', true);
+export const amendVrmFailure = createOutcomeAction('amendVrm');
+
+export const archiveTechRecord = createAction(
+  `${prefix} archiveTechRecord`,
+  props<{ systemNumber: string; createdTimestamp: string; reasonForArchiving: string }>()
+);
 export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
 export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord');
+
+export const promoteTechRecord = createAction(
+  `${prefix} promoteTechRecord`,
+  props<{ systemNumber: string; createdTimestamp: string; reasonForPromoting: string }>()
+);
+export const promoteTechRecordSuccess = createOutcomeAction('promoteTechRecord', true);
+export const promoteTechRecordFailure = createOutcomeAction('promoteTechRecord');
 
 export const updateEditingTechRecord = createAction(`${prefix} updateEditingTechRecord`, props<{ vehicleTechRecord: V3TechRecordModel }>());
 export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditingTechRecordCancel`);

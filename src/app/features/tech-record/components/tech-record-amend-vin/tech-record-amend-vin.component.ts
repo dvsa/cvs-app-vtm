@@ -50,7 +50,7 @@ export class AmendVinComponent implements OnDestroy {
     });
 
     this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(item => {
-      this.router.navigate([`/tech-records/${item.vehicleTechRecords[0].systemNumber}/${item.vehicleTechRecords[0].createdTimestamp}`]);
+      this.router.navigate([`/tech-records/${item.vehicleTechRecords.systemNumber}/${item.vehicleTechRecords.createdTimestamp}`]);
     });
   }
 

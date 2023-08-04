@@ -77,7 +77,7 @@ export class TechnicalRecordHttpService {
 
     return this.http.patch<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
-
+  // TODO: does this undefined need to be here?
   updateTechRecords(techRecord: V3TechRecordModel | undefined): Observable<PutVehicleTechRecordModel | undefined> {
     console.log(techRecord);
     const body = { ...techRecord };
@@ -89,12 +89,34 @@ export class TechnicalRecordHttpService {
     return of(undefined);
   }
 
-  archiveTechnicalRecord(techRecord: V3TechRecordModel): Observable<VehicleTechRecordModel> {
-    const url = `${environment.VTM_API_URI}/vehicles/archive/${techRecord.systemNumber}`;
+  amendVrm(
+    newVrm: string,
+    cherishedTransfer: boolean,
+    systemNumber: string,
+    createdTimestamp: string
+  ): Observable<PutVehicleTechRecordModel | undefined> {
+    const url = `${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`;
+    const body = {
+      newVrm,
+      cherishedTransfer
+    };
+    return this.http.patch<PutVehicleTechRecordModel>(url, body, { responseType: 'json' });
+  }
 
-    const body = { techRecord };
+  archiveTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForArchiving: string): Observable<VehicleTechRecordModel> {
+    const url = `${environment.VTM_API_URI}/v3/technical-records/archive/${systemNumber}/${createdTimestamp}`;
+
+    const body = { reasonForArchiving };
 
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+  }
+
+  promoteTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string): Observable<VehicleTechRecordModel> {
+    const url = `${environment.VTM_API_URI}/v3/technical-records/promote/${systemNumber}/${createdTimestamp}`;
+
+    const body = { reasonForPromoting };
+
+    return this.http.patch<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
   generatePlate(vehicleRecord: VehicleTechRecordModel, reason: string, user: { id?: string; name?: string; email?: string }) {

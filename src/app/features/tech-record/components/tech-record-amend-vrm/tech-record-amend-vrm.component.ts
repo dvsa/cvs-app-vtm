@@ -6,17 +6,15 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import { amendVrm, amendVrmSuccess, selectTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { catchError, filter, map, of, skipWhile, Subject, switchMap, take, takeUntil, throwError } from 'rxjs';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import { StatusCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/skeleton';
+import { Subject, catchError, filter, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vrm',
@@ -55,7 +53,6 @@ export class AmendVrmComponent implements OnDestroy {
       .select(selectTechRecord)
       .pipe(takeUntil(this.destroy$))
       .subscribe(record => {
-        // TODO: check status codes
         if (record?.techRecord_statusCode === 'archived') {
           return this.navigateBack();
         }
@@ -63,7 +60,7 @@ export class AmendVrmComponent implements OnDestroy {
       });
 
     this.actions$
-      .pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$))
+      .pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$))
       .subscribe(newRecord => this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]));
   }
 
@@ -116,13 +113,14 @@ export class AmendVrmComponent implements OnDestroy {
         next: res => {
           if (!res) return this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
 
-          const newVehicleRecord: V3TechRecordModel = this.amendVrm(
-            this.techRecord!,
-            this.form.value.newVrm,
-            this.form.value.isCherishedTransfer === 'true'
+          this.store.dispatch(
+            amendVrm({
+              newVrm: this.form.value.newVrm,
+              cherishedTransfer: this.form.value.isCherishedTransfer,
+              systemNumber: this.techRecord?.systemNumber!,
+              createdTimestamp: this.techRecord?.createdTimestamp!
+            })
           );
-
-          this.store.dispatch(updateTechRecords({ vehicleTechRecord: newVehicleRecord }));
         },
         error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
       });
