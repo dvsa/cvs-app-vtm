@@ -15,9 +15,9 @@ import {
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
+import { createProvisionalTechRecord, editingTechRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, tap } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 
 @Component({
@@ -141,25 +141,17 @@ export class VehicleTechnicalRecordComponent implements OnInit {
 
   handleSubmit(): void {
     this.summary.checkForms();
-
-    //1.check the form is valid
-    //2.
-
-    if (!this.isInvalid) {
-      const { systemNumber } = this.vehicle;
-      // TODO: figure out if the vehicle has a provisional record
-      // const hasProvisional = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
-      if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
-        // this.store.dispatch(updateTechRecords());
-      } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-        console.log(this.editingReason);
-        // this.store.dispatch(updateTechRecords());
-        // hasProvisional
-        // ? this.store.dispatch(
-        //     updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
-        //   )
-        // : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
-      }
-    }
   }
+  //1. check the form is valid
+  //2. get the editing tech record
+  //3. send the editing tech record.
+  //   let recordToUpdate
+  //   if (!this.isInvalid) {
+  //     this.store.select(editingTechRecord).pipe(take(1)).subscribe(record => {
+  //     recordToUpdate = record
+  //   })
+
+  //     this.store.dispatch(updateTechRecords({vehicleTechRecord: recordToUpdate!}))
+  //   }
+  // }
 }

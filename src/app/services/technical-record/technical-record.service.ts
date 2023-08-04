@@ -20,7 +20,7 @@ import {
 import {
   clearAllSectionStates,
   createVehicle,
-  editableTechRecord,
+  editingTechRecord,
   selectSectionState,
   selectTechRecord,
   techRecord,

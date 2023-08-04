@@ -11,7 +11,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/index';
-import { editableTechRecord } from '@store/technical-records';
+import { editingTechRecord } from '@store/technical-records';
 import { Observable, of } from 'rxjs';
 import { TechRecordTitleComponent } from './tech-record-title.component';
 
@@ -58,7 +58,7 @@ describe('TechRecordTitleComponent', () => {
         techRecord: [mockRecord]
       };
       component.vehicle = mockVehicle;
-      store.overrideSelector(editableTechRecord, mockRecord);
+      store.overrideSelector(editingTechRecord, mockRecord);
       fixture.detectChanges();
 
       const vrmField = fixture.nativeElement.querySelector('app-number-plate');
@@ -82,7 +82,7 @@ describe('TechRecordTitleComponent', () => {
         techRecord: [mockRecord]
       };
       component.vehicle = mockVehicle;
-      store.overrideSelector(editableTechRecord, mockRecord);
+      store.overrideSelector(editingTechRecord, mockRecord);
       fixture.detectChanges();
 
       const vrmField = fixture.nativeElement.querySelectorAll('app-number-plate')[1];
@@ -102,7 +102,7 @@ describe('TechRecordTitleComponent', () => {
         techRecord: [mockRecord]
       };
       component.vehicle = mockVehicle;
-      store.overrideSelector(editableTechRecord, mockRecord);
+      store.overrideSelector(editingTechRecord, mockRecord);
       fixture.detectChanges();
 
       const vrmField = fixture.debugElement.query(By.css('#previous-vrm-span'));
@@ -123,7 +123,7 @@ describe('TechRecordTitleComponent', () => {
       mockRecord.statusCode = StatusCodes.ARCHIVED;
       mockVehicle.techRecord[0].historicPrimaryVrm = 'TESTHIST';
       component.vehicle = mockVehicle;
-      store.overrideSelector(editableTechRecord, mockRecord);
+      store.overrideSelector(editingTechRecord, mockRecord);
       fixture.detectChanges();
 
       const vrmField = fixture.nativeElement.querySelector('app-number-plate');
@@ -146,7 +146,7 @@ describe('TechRecordTitleComponent', () => {
       mockVehicle.techRecord[0].historicPrimaryVrm = 'TESTVRM2';
       mockVehicle.techRecord[0].historicSecondaryVrms = ['TESTVRM'];
       component.vehicle = mockVehicle;
-      store.overrideSelector(editableTechRecord, mockRecord);
+      store.overrideSelector(editingTechRecord, mockRecord);
       fixture.detectChanges();
 
       const vrmField = fixture.nativeElement.querySelector('app-number-plate');
@@ -168,7 +168,7 @@ describe('TechRecordTitleComponent', () => {
         systemNumber: 'testNumber'
       };
       component.vehicle = mockVehicle;
-      store.overrideSelector(editableTechRecord, mockRecord);
+      store.overrideSelector(editingTechRecord, mockRecord);
       fixture.detectChanges();
 
       const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
@@ -189,7 +189,7 @@ describe('TechRecordTitleComponent', () => {
       };
       mockVehicle.techRecord[0].euVehicleCategory = euVehicleCategory;
       component.vehicle = mockVehicle;
-      store.overrideSelector(editableTechRecord, mockRecord);
+      store.overrideSelector(editingTechRecord, mockRecord);
       fixture.detectChanges();
 
       const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));

@@ -49,7 +49,7 @@ import {
   getTechRecordV3Success,
   getTechRecordV3Failure
 } from '../actions/technical-record-service.actions';
-import { editableTechRecord, selectTechRecord, techRecord } from '../selectors/technical-record-service.selectors';
+import { editingTechRecord, selectTechRecord, techRecord } from '../selectors/technical-record-service.selectors';
 import { StatusCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/complete';
 
 @Injectable()
@@ -165,7 +165,7 @@ export class TechnicalRecordServiceEffects {
     () =>
       this.actions$.pipe(
         ofType(changeVehicleType, createVehicle),
-        withLatestFrom(this.store.pipe(select(editableTechRecord))),
+        withLatestFrom(this.store.pipe(select(editingTechRecord))),
         concatMap(([{ techRecord_vehicleType }, editableTechRecord]) => {
           const techRecord = { ...cloneDeep(editableTechRecord), techRecord_vehicleType };
 

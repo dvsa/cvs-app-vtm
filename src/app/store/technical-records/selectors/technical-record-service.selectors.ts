@@ -8,14 +8,14 @@ export const techRecord = createSelector(getTechRecordState, state => state.vehi
 
 export const getSingleVehicleType = createSelector(getTechRecordState, state => state.vehicleTechRecords?.techRecord_vehicleType);
 
-export const editableTechRecord = createSelector(getTechRecordState, state => state.editingTechRecord);
+export const editingTechRecord = createSelector(getTechRecordState, state => state.editingTechRecord);
 
 export const technicalRecordsLoadingState = createSelector(getTechRecordState, state => state.loading);
 
 export const selectTechRecord = createSelector(
   techRecord,
   selectRouteDataProperty('isEditing'),
-  editableTechRecord,
+  editingTechRecord,
   (techRecord, isEditing, editableTechRecord): V3TechRecordModel | undefined => {
     return isEditing ? editableTechRecord : techRecord;
   }

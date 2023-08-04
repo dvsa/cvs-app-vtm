@@ -34,10 +34,6 @@ export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditi
 
 export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ techRecord_vehicleType: VehicleTypes }>());
 
-// export const updateVin = createAction(`${prefix} updateVin`, props<{ newVin: string; systemNumber: string }>());
-// export const updateVinSuccess = createAction(`${prefix} updateVin Success`);
-// export const updateVinFailure = createOutcomeAction('updateVin');
-
 export const createVehicle = createAction(`${prefix} createVehicle`, props<{ techRecord_vehicleType: VehicleTypes }>());
 
 export const generatePlate = createAction(`${prefix} generatePlate`, props<{ reason: string }>());
