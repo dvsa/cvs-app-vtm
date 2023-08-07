@@ -42,7 +42,6 @@ describe('DateComponent', () => {
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.componentInstance;
     store = TestBed.inject(MockStore);
-    //store.overrideSelector(globalErrorState, expectedErrors);
     errorService = TestBed.inject(GlobalErrorService);
   });
 
