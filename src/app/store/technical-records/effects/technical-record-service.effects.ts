@@ -59,15 +59,15 @@ export class TechnicalRecordServiceEffects {
     private dfs: DynamicFormService
   ) {}
 
-  getTechnicalRecord$ = createEffect(() =>
+  getTechnicalRecordHistory$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getBySystemNumber),
       mergeMap(action => {
         const anchorLink = 'search-term';
 
-        return this.techRecordHttpService.getBySystemNumber(action.systemNumber).pipe(
+        return this.techRecordHttpService.getBySystemNumber(action.systemNumber, 'systemNumber').pipe(
           map(vehicleTechRecords => {
-            return getBySystemNumberSuccess({ vehicleTechRecords: vehicleTechRecords });
+            return getBySystemNumberSuccess({ techRecordHistory: vehicleTechRecords });
           }),
           catchError(error =>
             of(getBySystemNumberFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink }))

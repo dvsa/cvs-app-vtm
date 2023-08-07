@@ -40,9 +40,9 @@ export class TechnicalRecordHttpService {
     this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
   }
 
-  getBySystemNumber(systemNumber: string): Observable<VehicleTechRecordModel[]> {
-    const queryStr = `${systemNumber}/tech-records?status=all&metadata=true&searchCriteria=${SEARCH_TYPES.SYSTEM_NUMBER}`;
-    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
+  getBySystemNumber(systemNumber: string, searchCriteria: string): Observable<VehicleTechRecordModel[]> {
+    const queryStr = `${systemNumber}?searchCriteria=${searchCriteria}`;
+    const url = `${environment.VTM_API_URI}/v3/technical-records/search/${queryStr}`;
 
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
@@ -98,7 +98,7 @@ export class TechnicalRecordHttpService {
     const url = `${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`;
     const body = {
       newVrm,
-      cherishedTransfer
+      isCherishedTransfer: cherishedTransfer
     };
     return this.http.patch<PutVehicleTechRecordModel>(url, body, { responseType: 'json' });
   }

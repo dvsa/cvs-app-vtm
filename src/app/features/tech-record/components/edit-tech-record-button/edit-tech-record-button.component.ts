@@ -41,16 +41,17 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.actions$
-      .pipe(
-        ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
-        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.store.select(selectTechRecord)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(([, systemNumber, techRecord]) => {
-        const routeSuffix = techRecord?.techRecord_statusCode === StatusCodes.CURRENT ? '' : '/provisional';
-        this.router.navigateByUrl(`/tech-records/${systemNumber}${routeSuffix}`);
-      });
+    //TODO: is this needed? causing issues when updating record.
+    // this.actions$
+    //   .pipe(
+    //     ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
+    //     withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'),this.routerService.getRouteNestedParam$('createdTimestamp'), this.store.select(selectTechRecord)),
+    //     takeUntil(this.destroy$)
+    //   )
+    //   .subscribe(([, systemNumber, createdTimestamp, techRecord]) => {
+    //     const routeSuffix = techRecord?.techRecord_statusCode === StatusCodes.CURRENT ? '' : '/provisional';
+    //     this.router.navigateByUrl(`/tech-records/${systemNumber}/${createdTimestamp}/${routeSuffix}`);
+    //   });
   }
 
   ngOnDestroy(): void {

@@ -60,9 +60,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
         this.isArchived = viewableTechRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
       })
     );
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(newRecord => {
-      console.log(newRecord);
-      this.router.navigate(['../'], { relativeTo: this.route });
+    this.actions$.pipe(ofType(updateTechRecordsSuccess)).subscribe(newRecord => {
+      this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);
     });
   }
   ngOnDestroy(): void {
@@ -151,22 +150,15 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
   handleSubmit(): void {
     this.summary.checkForms();
-
+    let recordToSend: any;
     if (!this.isInvalid) {
       this.store
         .select(editingTechRecord)
         .pipe(take(1))
         .subscribe(record => {
-          this.store.dispatch(updateTechRecords({ vehicleTechRecord: record! }));
+          recordToSend = record;
         });
+      this.store.dispatch(updateTechRecords({ vehicleTechRecord: recordToSend! }));
     }
   }
-  //1. check the form is valid
-  //2. get the editing tech record
-  //3. send the editing tech record.
-  //   let recordToUpdate
-
-  //     this.store.dispatch(updateTechRecords({vehicleTechRecord: recordToUpdate!}))
-  //   }
-  // }
 }

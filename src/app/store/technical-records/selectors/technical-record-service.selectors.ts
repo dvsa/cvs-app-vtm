@@ -12,6 +12,8 @@ export const editingTechRecord = createSelector(getTechRecordState, state => sta
 
 export const technicalRecordsLoadingState = createSelector(getTechRecordState, state => state.loading);
 
+export const selectTechRecordHistory = createSelector(getTechRecordState, state => state.techRecordHistory);
+
 export const selectTechRecord = createSelector(
   techRecord,
   selectRouteDataProperty('isEditing'),

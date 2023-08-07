@@ -56,6 +56,7 @@ export interface TechnicalRecordServiceState {
   loading: boolean;
   editingTechRecord?: V3TechRecordModel;
   error?: unknown;
+  techRecordHistory?: V3TechRecordModel[];
   batchVehicles: BatchRecords;
   sectionState?: (string | number)[];
 }
@@ -73,8 +74,8 @@ export const vehicleTechRecordReducer = createReducer(
   initialState,
 
   on(getBySystemNumber, defaultArgs),
-  on(getBySystemNumberSuccess, successArgs),
-  on(getBySystemNumberFailure, failureArgs),
+  on(getBySystemNumberSuccess, historyArgs),
+  on(getBySystemNumberFailure, historyFailArgs),
 
   on(createVehicleRecord, defaultArgs),
   on(createVehicleRecordSuccess, successArgs),
@@ -144,12 +145,20 @@ function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechReco
   return { ...state, vehicleTechRecords: data.vehicleTechRecords, loading: false };
 }
 
+function historyArgs(state: TechnicalRecordServiceState, data: { techRecordHistory: [V3TechRecordModel] }) {
+  return { ...state, techRecordHistory: data.techRecordHistory, loading: false };
+}
+
 function updateFailureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
   return { ...state, error: data.error, loading: false };
 }
 
 function failureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
   return { ...state, vehicleTechRecords: undefined, error: data.error, loading: false };
+}
+
+function historyFailArgs(state: TechnicalRecordServiceState, data: { error: any }) {
+  return { ...state, techRecordHistory: undefined, error: data.error, loading: false };
 }
 
 function handleUpdateBrakeForces(
