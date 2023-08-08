@@ -7,7 +7,7 @@ export const reasonForCreationSection: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'techRecord_reasonForCreation',
+      name: 'reasonForCreation',
       label: 'Reason for creation',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
@@ -23,7 +23,7 @@ export const reasonForCreationHiddenSection: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'techRecord_reasonForCreation',
+      name: 'reasonForCreation',
       label: 'Reason for creation',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,

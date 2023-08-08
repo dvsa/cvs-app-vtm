@@ -17,7 +17,7 @@ export const createMockHgv = (systemNumber: number): V3TechRecordModel =>
     systemNumber: `HGV`,
     vin: `XMGDE03FS0H0${12344 + systemNumber + 1}`,
     primaryVrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
-    // secondaryVrms: undefined,
+    secondaryVrms: undefined,
     createdTimestamp: new Date().toISOString(),
     techRecord_createdAt: new Date().toISOString() as string,
     techRecord_createdByName: 'Nathan',
@@ -26,7 +26,6 @@ export const createMockHgv = (systemNumber: number): V3TechRecordModel =>
     techRecord_regnDate: '1234',
     techRecord_manufactureYear: 2022,
     techRecord_noOfAxles: 2,
-    techRecord_axles: undefined,
     techRecord_brakes_dtpNumber: '1234',
     techRecord_speedLimiterMrk: true,
     techRecord_tachoExemptMrk: true,
@@ -44,12 +43,12 @@ export const createMockHgv = (systemNumber: number): V3TechRecordModel =>
     techRecord_reasonForCreation: 'Brake Failure',
     techRecord_approvalType: approvalType.ECSSTA,
     techRecord_approvalTypeNumber: 'approval123',
+    techRecord_axles: undefined,
     techRecord_ntaNumber: 'nta789',
     techRecord_variantNumber: 'variant123456',
     techRecord_variantVersionNumber: 'variantversion123456',
     techRecord_dimensions_length: 1,
     techRecord_dimensions_width: 2,
-    // techRecord_dimensions_height: 6,
     techRecord_dimensions_axleSpacing_axles: '1-2',
     techRecord_dimensions_axleSpacing_value: 4,
     techRecord_frontAxleToRearAxle: 3,
@@ -71,16 +70,16 @@ export const createMockHgv = (systemNumber: number): V3TechRecordModel =>
     techRecord_trainDesignWeight: 7
   });
 
-[
-  {
-    axleNumber: 1,
-    parkingBrakeMrk: false
-  } as HGVAxles,
-  {
-    axleNumber: 2,
-    parkingBrakeMrk: true
-  } as HGVAxles
-];
+// [
+//   {
+//     axleNumber: 1,
+//     parkingBrakeMrk: false
+//   } as HGVAxles,
+//   {
+//     axleNumber: 2,
+//     parkingBrakeMrk: true
+//   } as HGVAxles
+// ];
 
 // [
 //   {
