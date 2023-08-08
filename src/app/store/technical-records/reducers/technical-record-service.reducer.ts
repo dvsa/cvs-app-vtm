@@ -52,7 +52,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
 export interface TechnicalRecordServiceState {
-  vehicleTechRecords: V3TechRecordModel | undefined;
+  vehicleTechRecord: V3TechRecordModel | undefined;
   loading: boolean;
   editingTechRecord?: V3TechRecordModel;
   error?: unknown;
@@ -62,7 +62,7 @@ export interface TechnicalRecordServiceState {
 }
 
 export const initialState: TechnicalRecordServiceState = {
-  vehicleTechRecords: undefined,
+  vehicleTechRecord: undefined,
   batchVehicles: initialBatchState,
   loading: false,
   sectionState: []
@@ -134,7 +134,7 @@ export const vehicleTechRecordReducer = createReducer(
     })
   ),
 
-  on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecords: action.vehicleTechRecords }))
+  on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecord: action.vehicleTechRecords }))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {

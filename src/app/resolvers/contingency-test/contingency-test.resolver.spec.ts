@@ -46,7 +46,7 @@ describe('ContingencyTestResolver', () => {
 
   it('should return true and dispatch the initial contingency test action', async () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
-    jest.spyOn(techRecordService, 'selectedVehicleTechRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord()));
+    jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord()));
     jest.spyOn(techRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord().techRecord[0]));
     const resolveResult = await firstValueFrom(resolver.resolve());
     expect(resolveResult).toBe(true);

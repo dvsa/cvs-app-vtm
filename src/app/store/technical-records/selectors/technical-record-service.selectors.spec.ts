@@ -13,7 +13,7 @@ import {
 describe('Tech Record Selectors', () => {
   describe('selectedTestResultState', () => {
     it('should return vehicleTechRecords state', () => {
-      const state: TechnicalRecordServiceState = { ...initialState, vehicleTechRecords: [createMock<VehicleTechRecordModel>()] };
+      const state: TechnicalRecordServiceState = { ...initialState, vehicleTechRecord: [createMock<VehicleTechRecordModel>()] };
       const selectedState = vehicleTechRecords.projector(state);
       expect(selectedState.length).toEqual(1);
     });
@@ -139,7 +139,7 @@ describe('Tech Record Selectors', () => {
             ]
           } as unknown as VehicleTechRecordModel)
       );
-      const state: TechnicalRecordServiceState = { ...initialState, vehicleTechRecords };
+      const state: TechnicalRecordServiceState = { ...initialState, vehicleTechRecord: vehicleTechRecords };
       const selectedVehicleType = getSingleVehicleType.projector(state);
       expect(selectedVehicleType).toBe(vehicleTechRecords[0].techRecord[0].vehicleType);
     });

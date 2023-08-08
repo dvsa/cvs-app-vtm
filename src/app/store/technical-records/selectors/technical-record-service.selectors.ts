@@ -4,9 +4,9 @@ import { getTechRecordState } from '../reducers/technical-record-service.reducer
 import { StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
-export const techRecord = createSelector(getTechRecordState, state => state.vehicleTechRecords);
+export const techRecord = createSelector(getTechRecordState, state => state.vehicleTechRecord);
 
-export const getSingleVehicleType = createSelector(getTechRecordState, state => state.vehicleTechRecords?.techRecord_vehicleType);
+export const getSingleVehicleType = createSelector(getTechRecordState, state => state.vehicleTechRecord?.techRecord_vehicleType);
 
 export const editingTechRecord = createSelector(getTechRecordState, state => state.editingTechRecord);
 
