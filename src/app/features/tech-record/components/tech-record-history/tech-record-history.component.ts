@@ -24,7 +24,9 @@ export class TechRecordHistoryComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(getBySystemNumber({ systemNumber: this.currentTechRecord.systemNumber }));
     this.recordHistory$ = this.store.select(selectTechRecordHistory);
-    this.recordHistory$.subscribe(records => (this.recordHistory = records));
+    this.recordHistory$.subscribe(records => {
+      this.recordHistory = records?.sort((a, b) => (a.createdTimestamp < b.createdTimestamp ? 1 : a.createdTimestamp > b.createdTimestamp ? -1 : 0));
+    });
   }
 
   //TODO: implement a new way of getting tech records
