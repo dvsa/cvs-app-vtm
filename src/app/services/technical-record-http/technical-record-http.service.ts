@@ -108,7 +108,7 @@ export class TechnicalRecordHttpService {
 
     const body = { reasonForArchiving };
 
-    return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.patch<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
   promoteTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string): Observable<VehicleTechRecordModel> {
