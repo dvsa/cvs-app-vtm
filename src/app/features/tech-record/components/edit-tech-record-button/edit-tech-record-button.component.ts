@@ -41,7 +41,7 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    //TODO: is this needed? causing issues when updating record feels like the logic should be handled in the parent
+    //TODO: V3 is this needed? causing issues when updating record feels like the logic should be handled in the parent
     // this.actions$
     //   .pipe(
     //     ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),

@@ -52,7 +52,7 @@ export class ChangeVehicleTypeComponent {
 
   get makeAndModel(): string {
     const c = this.techRecord;
-    // TODO: remove as any - PSV?
+    // TODO: V3 remove as any - PSV?
     if (!(c as any)?.techRecord_make && !(c as any)?.techRecord_chassisMake) return '';
 
     return `${c!.techRecord_vehicleType === 'psv' ? (c as any).chassisMake : (c as any).make} - ${

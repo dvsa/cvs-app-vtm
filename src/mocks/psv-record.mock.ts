@@ -140,7 +140,7 @@ export const createMockPsv = (systemNumber: number): V3TechRecordModel =>
 //     weights_kerbWeight: 1,
 //     weights_ladenWeight: 2,
 //     weights_gbWeight: 3,
-//     // TODO: needs adding to type package
+//     // TODO: V3 needs adding to type package
 //     // weights_eecWeight: 4,
 //     weights_designWeight: 5
 

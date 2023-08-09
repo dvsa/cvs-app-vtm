@@ -74,7 +74,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   get dimensions(): CustomFormGroup {
     return this.form.get(['dimensions']) as CustomFormGroup;
   }
-  // TODO remove as any HGV TRL
+  // TODO V3 remove as any HGV TRL
   get hasAxleSpacings(): boolean {
     return !!(this.vehicleTechRecord as any).dimensions?.axleSpacing?.length;
   }

@@ -150,7 +150,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
 
   handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
     const axleIndex = Number(this.params.axleNumber!) - 1;
-    //TODO Remove all as any PSV HGV?
+    //TODO V3 Remove all as any PSV HGV?
     if ((this.viewableTechRecord as any)?.axles![axleIndex].tyres) {
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
 

@@ -45,8 +45,7 @@ import {
   clearAllSectionStates,
   getTechRecordV3Success
 } from '../actions/technical-record-service.actions';
-//TODO: re-import vehicleBatchCreateReducer
-
+//TODO: V3 re-import vehicleBatchCreateReducer from batch-create.reducer
 import { BatchRecords, initialBatchState } from './batch-create.reducer';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
@@ -116,10 +115,6 @@ export const vehicleTechRecordReducer = createReducer(
   on(removeSectionState, (state, action) => handleRemoveSection(state, action)),
   on(clearAllSectionStates, state => ({ ...state, sectionState: [] })),
 
-  // on(updateVin, defaultArgs),
-  // on(updateVinSuccess, state => ({ ...state, loading: false })),
-  // on(updateVinFailure, updateFailureArgs),
-
   on(
     upsertVehicleBatch,
     createVehicleRecordSuccess,
@@ -131,6 +126,7 @@ export const vehicleTechRecordReducer = createReducer(
     clearBatch,
     (state, action) => ({
       ...state
+      // TODO: V3 for batch vehicles
       // batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
     })
   ),

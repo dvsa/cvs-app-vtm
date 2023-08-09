@@ -66,7 +66,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
             return;
           }
           const techRecord = cloneDeep(record);
-          // TODO: for HGV's and TRL's
+          // TODO: V3 for HGV's and TRL's
           // if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.vehicleType === VehicleTypes.TRL) {
           //   const [axles, axleSpacing] = this.axlesService.normaliseAxles(techRecord.axles, techRecord.dimensions?.axleSpacing);
           //   techRecord.dimensions = { ...techRecord.dimensions, axleSpacing };

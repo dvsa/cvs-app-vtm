@@ -38,7 +38,7 @@ export const batchAdapter: EntityAdapter<BatchRecord> = createEntityAdapter<Batc
 export const initialBatchState: BatchRecords = batchAdapter.getInitialState({
   generateNumber: false
 });
-//TODO: Batch to use V3 records
+//TODO: V3 Batch to use V3 records
 // export const vehicleBatchCreateReducer = createReducer(
 //   initialBatchState,
 //   on(upsertVehicleBatch, (state, action) => batchAdapter.setAll(action.vehicles, state)),

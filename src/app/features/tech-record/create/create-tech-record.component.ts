@@ -184,7 +184,7 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   async isTrailerIdUnique() {
-    //TODO: remove as any TRL
+    //TODO: V3 remove as any TRL
     (this.vehicle as any).trailerId = this.form.value.vrmTrm;
     const isTrailerIdUnique = await firstValueFrom(this.technicalRecordService.isUnique((this.vehicle as any).trailerId!, SEARCH_TYPES.TRAILER_ID));
     if (!isTrailerIdUnique) {

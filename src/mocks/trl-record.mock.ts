@@ -26,13 +26,13 @@ export const createMockTrl = (systemNumber: number): V3TechRecordModel =>
     techRecord_noOfAxles: 2,
     techRecord_brakes_dtpNumber: '1234',
     techRecord_axles: undefined,
-    // TODO: height missing from types package
+    // TODO: V3 height missing from types package
     // techRecord_dimensions_height: 30000,
     techRecord_dimensions_length: 25000,
     techRecord_dimensions_width: 10000,
     techRecord_suspensionType: '1',
     techRecord_roadFriendly: true,
-    // TODO: missing from types package
+    // TODO: V3  missing from types package
     // techRecord_drawbarCouplingFitted: true,
 
     techRecord_vehicleClass_description: 'trailer',
