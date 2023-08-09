@@ -131,7 +131,7 @@ export const vehicleTechRecordReducer = createReducer(
     clearBatch,
     (state, action) => ({
       ...state
-      batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
+      // batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
     })
   ),
 
