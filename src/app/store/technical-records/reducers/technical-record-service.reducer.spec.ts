@@ -176,7 +176,7 @@ describe('Vehicle Technical Record Reducer', () => {
 
       expect(newState).toEqual(state);
       expect(newState).not.toBe(state);
-      expect(newState.vehicleTechRecord).toEqual({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVinNew' });
+      expect(newState.loading).toEqual(true);
     });
   });
 
@@ -189,7 +189,7 @@ describe('Vehicle Technical Record Reducer', () => {
         ...initialState,
         vehicleTechRecord: oldRecord
       };
-      const action = updateTechRecordsSuccess({ vehicleTechRecords: newRecord });
+      const action = updateTechRecordsSuccess({ vehicleTechRecord: newRecord });
       const newState = vehicleTechRecordReducer(state, action);
 
       expect(state).not.toEqual(newState);
@@ -210,7 +210,7 @@ describe('Vehicle Technical Record Reducer', () => {
   });
 
   describe('archiveTechRecord', () => {
-    it('should set the new vehicle tech records state after update', () => {
+    it('should set the state to loading', () => {
       const state: TechnicalRecordServiceState = {
         ...initialState,
         vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' },
@@ -221,20 +221,20 @@ describe('Vehicle Technical Record Reducer', () => {
 
       expect(state).toEqual(newState);
       expect(state).not.toBe(newState);
-      expect(state.vehicleTechRecord).toEqual({ systemNumber: 'foo', createdTimestamp: 'bar', reasonForArchiving: 'some reason' });
+      expect(state.loading).toEqual(true);
     });
   });
 
   describe('archiveTechRecordSuccess', () => {
     it('should set the new vehicle tech records state after update success', () => {
       const oldRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
-      const newRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+      const newRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVinNew' };
 
       const state: TechnicalRecordServiceState = {
         ...initialState,
         vehicleTechRecord: oldRecord
       };
-      const action = archiveTechRecordSuccess({ vehicleTechRecords: newRecord });
+      const action = archiveTechRecordSuccess({ vehicleTechRecord: newRecord });
       const newState = vehicleTechRecordReducer(state, action);
 
       expect(state).not.toEqual(newState);
