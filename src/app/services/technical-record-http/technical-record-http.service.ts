@@ -164,13 +164,4 @@ export class TechnicalRecordHttpService {
 
     return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
-
-  updateVin(newVin: string, systemNumber: string, user: { id?: string; name?: string }) {
-    const url = `${environment.VTM_API_URI}/vehicles/update-vin/${systemNumber}`;
-    const body = {
-      msUserDetails: { msOid: user.id, msUser: user.name },
-      newVin
-    };
-    return this.http.put(url, body, { responseType: 'json' });
-  }
 }

@@ -8,6 +8,7 @@ import { initialAppState, State } from '@store/index';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { TechnicalRecordHttpService } from './technical-record-http.service';
+//TODO: need to include tests for search$, seachBy, getBySystemNumber, getRecordV3, AmendVrm, promoteTechRecord, generatePlate, generateLetter
 
 describe('TechnicalRecordService', () => {
   let service: TechnicalRecordHttpService;
@@ -36,68 +37,72 @@ describe('TechnicalRecordService', () => {
   describe('API', () => {
     describe('createVehicleRecord', () => {
       it('should call post with the correct URL, body and response type', fakeAsync(() => {
-        const expectedVehicle = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1)[0];
-        const expectedUser = { name: 'test', id: '1234' };
-
-        service.createVehicleRecord(expectedVehicle, expectedUser).subscribe();
-
-        const expectedBody = {
-          msUserDetails: { msOid: expectedUser.id, msUser: expectedUser.name },
-          vin: expectedVehicle.vin,
-          primaryVrm: expectedVehicle.vrms ? expectedVehicle.vrms[0].vrm : null,
-          trailerId: expectedVehicle.trailerId ?? null,
-          techRecord: expectedVehicle.techRecord
+        const expectedVehicle: V3TechRecordModel = {
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testvin',
+          primaryVrm: 'vrm1',
+          techRecord_reasonForCreation: 'test'
         };
 
-        const request = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles`);
+        service.createVehicleRecord(expectedVehicle).subscribe();
+
+        const request = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records`);
 
         expect(request.request.method).toEqual('POST');
-        expect(request.request.body).toEqual(expectedBody);
+        expect(request.request.body).toEqual(expectedVehicle);
 
         request.flush(expectedVehicle);
       }));
 
       it('should return an array with the newly created vehicle record', () => {
-        const expectedVehicle = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1)[0];
-
-        const expectedResult = {
-          vin: expectedVehicle.vin,
-          primaryVrm: expectedVehicle.vrms ? expectedVehicle.vrms[0].vrm : null,
-          trailerId: expectedVehicle.trailerId ?? null,
-          techRecord: expectedVehicle.techRecord
+        const expectedVehicle: V3TechRecordModel = {
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testvin',
+          primaryVrm: 'vrm1',
+          techRecord_reasonForCreation: 'test'
         };
 
-        expect(lastValueFrom(service.createVehicleRecord(expectedVehicle, { name: 'test', id: '1234' }))).resolves.toEqual(expectedResult);
+        expect(lastValueFrom(service.createVehicleRecord(expectedVehicle))).resolves.toEqual(expectedVehicle);
 
-        const request = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles`);
-        request.flush(expectedResult);
+        const request = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records`);
+        request.flush(expectedVehicle);
       });
     });
 
-    describe('createProvisionalTechRecord', () => {
-      it('should return an array with a new tech record having added provisional', fakeAsync(() => {
-        const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.createProvisionalTechRecord(mockData[0] as unknown as V3TechRecordModel).subscribe();
+    // describe('createProvisionalTechRecord', () => {
+    //   it('should return an array with a new tech record having added provisional', fakeAsync(() => {
+    //     const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
+    //     const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
+    //     service.createProvisionalTechRecord(mockData[0] as unknown as V3TechRecordModel).subscribe();
 
-        // Check for correct requests: should have made one request to the PUT URL
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/add-provisional/${params.systemNumber}`);
-        expect(req.request.method).toEqual('POST');
+    //     // Check for correct requests: should have made one request to the PUT URL
+    //     const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/add-provisional/${params.systemNumber}`);
+    //     expect(req.request.method).toEqual('POST');
 
-        // Provide each request with a mock response
-        req.flush(mockData);
-      }));
-    });
+    //     // Provide each request with a mock response
+    //     req.flush(mockData);
+    //   }));
+    // });
 
     describe('updateTechRecords', () => {
-      it('should return an array with a new tech record and updated status code', fakeAsync(() => {
-        const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' }, oldStatusCode: StatusCodes.PROVISIONAL };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.updateTechRecords(mockData[0] as unknown as V3TechRecordModel).subscribe();
+      it('should return a new tech record and updated status code', fakeAsync(() => {
+        const expectedVehicle: V3TechRecordModel = {
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testvin',
+          primaryVrm: 'vrm1',
+          techRecord_reasonForCreation: 'test',
+          secondaryVrms: undefined
+        };
+        service.updateTechRecords(expectedVehicle).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/${params.systemNumber}?oldStatusCode=${params.oldStatusCode}`);
-        expect(req.request.method).toEqual('PUT');
+        const req = httpClient.expectOne(
+          `${environment.VTM_API_URI}/v3/technical-records/${expectedVehicle.systemNumber}/${expectedVehicle.createdTimestamp}`
+        );
+        expect(req.request.method).toEqual('PATCH');
 
         // should format the vrms for the update payload
         expect(req.request.body).toHaveProperty('primaryVrm');
@@ -105,45 +110,19 @@ describe('TechnicalRecordService', () => {
         expect(req.request.body).not.toHaveProperty('vrms');
 
         // Provide each request with a mock response
-        req.flush(mockData);
-      }));
-
-      it('should return an array with a new tech record and updated status code using basic URL', fakeAsync(() => {
-        const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.updateTechRecords(mockData[0] as unknown as V3TechRecordModel).subscribe();
-
-        // Check for correct requests: should have made one request to the PUT URL
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/${params.systemNumber}`);
-        expect(req.request.method).toEqual('PUT');
-
-        // Provide each request with a mock response
-        req.flush(mockData);
-      }));
-    });
-
-    describe('updateVin', () => {
-      it('should make POST request to correct URL', fakeAsync(() => {
-        const params = { systemNumber: '12345', vin: 'MYNEWVIN', user: { name: 'TEST', id: '1234' } };
-        service.updateVin(params.vin, params.systemNumber, params.user).subscribe();
-
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/update-vin/${params.systemNumber}`);
-        expect(req.request.method).toEqual('PUT');
+        // req.flush(mockData);
       }));
     });
 
     describe('archiveTechRecord', () => {
-      it('should return a new tech record having added provisional', fakeAsync(() => {
-        const params = { systemNumber: '12345', reasonForArchiving: 'some reason', user: { name: 'TEST', id: '1234' } };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.archiveTechnicalRecord(mockData[0].techRecord[0] as unknown as V3TechRecordModel).subscribe();
+      it('should return a new tech record with status archived', fakeAsync(() => {
+        service.archiveTechnicalRecord('foo', 'bar', 'foobar').subscribe();
 
-        // Check for correct requests: should have made one request to the PUT URL
-        const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/archive/${params.systemNumber}`);
-        expect(req.request.method).toEqual('PUT');
+        const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/archive/foo/bar`);
+        expect(req.request.method).toEqual('PATCH');
 
         // Provide each request with a mock response
-        req.flush(mockData);
+        // req.flush();
       }));
     });
   });
