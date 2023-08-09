@@ -34,7 +34,6 @@ import { Observable, catchError, combineLatest, debounceTime, filter, map, of, s
 export class TechnicalRecordService {
   constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService, private routerService: RouterService) {}
 
-  //TODO: need to change types so its returning vehicle types
   getVehicleTypeWithSmallTrl(techRecord: V3TechRecordModel): VehicleTypes {
     return techRecord.techRecord_vehicleType === VehicleTypes.TRL &&
       (techRecord.techRecord_euVehicleCategory === EuVehicleCategories.O1 || techRecord.techRecord_euVehicleCategory === EuVehicleCategories.O2)

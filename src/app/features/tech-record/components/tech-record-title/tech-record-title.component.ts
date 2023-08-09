@@ -75,7 +75,7 @@ export class TechRecordTitleComponent implements OnInit {
   getCompletenessColor(completeness?: string): 'green' | 'red' {
     return completeness === 'complete' ? 'green' : 'red';
   }
-  //TODO: types status codes needs not to be a string
+
   isVrmEditable(statusCode: StatusCode | undefined, currentVehicleType: VehicleType, editableVehicleType: VehicleType): boolean {
     return !this.hideActions && statusCode !== StatusCodes.ARCHIVED && currentVehicleType === editableVehicleType;
   }

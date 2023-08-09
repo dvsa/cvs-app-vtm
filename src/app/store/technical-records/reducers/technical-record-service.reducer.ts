@@ -46,6 +46,7 @@ import {
   getTechRecordV3Success
 } from '../actions/technical-record-service.actions';
 //TODO: re-import vehicleBatchCreateReducer
+
 import { BatchRecords, initialBatchState } from './batch-create.reducer';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
@@ -130,7 +131,7 @@ export const vehicleTechRecordReducer = createReducer(
     clearBatch,
     (state, action) => ({
       ...state
-      // batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
+      batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
     })
   ),
 

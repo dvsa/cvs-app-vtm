@@ -66,9 +66,8 @@ export class GenerateLetterComponent {
   get letter(): LettersOfAuth | undefined {
     return (this.currentTechRecord as any)?.letterOfAuth ?? undefined;
   }
-  // TODO: remove as any
   get emailAddress(): string | undefined {
-    return (this.currentTechRecord as any)?.applicantDetails?.emailAddress;
+    return this.currentTechRecord?.techRecord_applicantDetails_emailAddress ?? undefined;
   }
 
   navigateBack() {

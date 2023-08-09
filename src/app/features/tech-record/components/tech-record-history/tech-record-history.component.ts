@@ -29,7 +29,6 @@ export class TechRecordHistoryComponent implements OnInit {
     });
   }
 
-  //TODO: implement a new way of getting tech records
   get techRecords() {
     return this.recordHistory?.slice(this.pageStart, this.pageEnd) ?? [];
   }

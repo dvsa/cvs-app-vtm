@@ -77,16 +77,14 @@ export class TechnicalRecordHttpService {
 
     return this.http.patch<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
-  // TODO: does this undefined need to be here?
-  updateTechRecords(techRecord: V3TechRecordModel | undefined): Observable<PutVehicleTechRecordModel | undefined> {
+
+  updateTechRecords(techRecord: V3TechRecordModel): Observable<PutVehicleTechRecordModel> {
     console.log(techRecord);
     const body = { ...techRecord };
-    if (techRecord) {
-      const url = `${environment.VTM_API_URI}/v3/technical-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`;
 
-      return this.http.patch<PutVehicleTechRecordModel>(url, body, { responseType: 'json' });
-    }
-    return of(undefined);
+    const url = `${environment.VTM_API_URI}/v3/technical-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`;
+
+    return this.http.patch<PutVehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
   amendVrm(

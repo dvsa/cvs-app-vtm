@@ -64,7 +64,7 @@ export class AmendVinComponent implements OnDestroy {
   }
 
   get makeAndModel(): string {
-    //TODO: remove as any
+    //TODO: remove as any PSV? HGV?
     const c = this.techRecord as any;
     if (!c?.techRecord_make && !c?.techRecord_chassisMake) return '';
 

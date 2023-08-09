@@ -37,8 +37,7 @@ export class GeneratePlateComponent implements OnInit {
       tap(record => {
         if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') this.navigateBack();
       }),
-      //TODO: remove as any
-      map(record => (record as any)?.applicantDetails?.emailAddress)
+      map(record => record?.techRecord_applicantDetails_emailAddress ?? undefined)
     );
   }
 
