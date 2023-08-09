@@ -135,6 +135,9 @@ export class TechnicalRecordServiceEffects {
     this.actions$.pipe(
       ofType(updateTechRecords),
       switchMap(({ vehicleTechRecord }) => {
+        //TODO template for reason for creation used for both tests and tech records, we probably need seperate templates for each
+        if ((vehicleTechRecord as any).reasonForCreation)
+          vehicleTechRecord.techRecord_reasonForCreation = (vehicleTechRecord as any).reasonForCreation;
         return this.techRecordHttpService.updateTechRecords(vehicleTechRecord).pipe(
           map(vehicleTechRecord => updateTechRecordsSuccess(vehicleTechRecord)),
           catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))

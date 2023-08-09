@@ -102,6 +102,8 @@ export class AmendVinComponent implements OnDestroy {
     record.vin = this.form.value.vin;
 
     if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
+      record.techRecord_reasonForCreation = 'Vin changed';
+      console.log(record);
       this.store.dispatch(updateTechRecords({ vehicleTechRecord: record }));
     }
   }
