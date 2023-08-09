@@ -32,7 +32,8 @@ describe('PsvBrakesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PsvBrakesComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord = mockVehicleTechnicalRecord().techRecord.pop()!;
+    //TODO V3 This is for PSV
+    component.vehicleTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
     fixture.detectChanges();
   });
 

@@ -24,7 +24,7 @@ describe('WeightsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WeightsComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord = createMockPsv(12345).techRecord[0];
+    component.vehicleTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: 'hgv' };
     fixture.detectChanges();
   });
 

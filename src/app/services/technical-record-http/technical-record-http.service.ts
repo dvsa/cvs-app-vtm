@@ -40,81 +40,76 @@ export class TechnicalRecordHttpService {
     this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
   }
 
-  getBySystemNumber(systemNumber: string, searchCriteria: string): Observable<VehicleTechRecordModel[]> {
+  getBySystemNumber(systemNumber: string, searchCriteria: string): Observable<V3TechRecordModel[]> {
     const queryStr = `${systemNumber}?searchCriteria=${searchCriteria}`;
     const url = `${environment.VTM_API_URI}/v3/technical-records/search/${queryStr}`;
 
-    return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
+    return this.http.get<V3TechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  getRecordV3(systemNumber: string, createdTimestamp: string): Observable<VehicleTechRecordModel[]> {
+  getRecordV3(systemNumber: string, createdTimestamp: string): Observable<V3TechRecordModel[]> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`;
 
-    return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
+    return this.http.get<V3TechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  createVehicleRecord(newVehicleRecord: V3TechRecordModel): Observable<PostNewVehicleModel> {
+  createVehicleRecord(newVehicleRecord: V3TechRecordModel): Observable<V3TechRecordModel> {
     const recordCopy: TechRecordPUT = cloneDeep(newVehicleRecord);
 
     const body = {
       ...recordCopy
     };
 
-    return this.http.post<PostNewVehicleModel>(`${environment.VTM_API_URI}/v3/technical-records`, body);
+    return this.http.post<V3TechRecordModel>(`${environment.VTM_API_URI}/v3/technical-records`, body);
   }
+  //V3 are we still in need of this?
+  // createProvisionalTechRecord(techRecord: V3TechRecordModel): Observable<V3TechRecordModel> {
+  //   // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
+  //   const recordCopy = cloneDeep(techRecord);
+  //   recordCopy.techRecord_statusCode = StatusCodes.PROVISIONAL;
+  //   delete recordCopy.techRecord_updateType;
 
-  createProvisionalTechRecord(techRecord: V3TechRecordModel): Observable<VehicleTechRecordModel> {
-    // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
-    const recordCopy = cloneDeep(techRecord);
-    recordCopy.techRecord_statusCode = StatusCodes.PROVISIONAL;
-    delete recordCopy.techRecord_updateType;
+  //   const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${techRecord.systemNumber}`;
 
-    const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${techRecord.systemNumber}`;
+  //   const body = {
+  //     techRecord: [recordCopy]
+  //   };
 
-    const body = {
-      techRecord: [recordCopy]
-    };
+  //   return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
+  // }
 
-    return this.http.patch<VehicleTechRecordModel>(url, body, { responseType: 'json' });
-  }
-
-  updateTechRecords(techRecord: V3TechRecordModel): Observable<PutVehicleTechRecordModel> {
+  updateTechRecords(techRecord: V3TechRecordModel): Observable<V3TechRecordModel> {
     console.log(techRecord);
     const body = { ...techRecord };
 
     const url = `${environment.VTM_API_URI}/v3/technical-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`;
 
-    return this.http.patch<PutVehicleTechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  amendVrm(
-    newVrm: string,
-    cherishedTransfer: boolean,
-    systemNumber: string,
-    createdTimestamp: string
-  ): Observable<PutVehicleTechRecordModel | undefined> {
+  amendVrm(newVrm: string, cherishedTransfer: boolean, systemNumber: string, createdTimestamp: string): Observable<V3TechRecordModel | undefined> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`;
     const body = {
       newVrm,
       isCherishedTransfer: cherishedTransfer
     };
-    return this.http.patch<PutVehicleTechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  archiveTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForArchiving: string): Observable<VehicleTechRecordModel> {
+  archiveTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForArchiving: string): Observable<V3TechRecordModel> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/archive/${systemNumber}/${createdTimestamp}`;
 
     const body = { reasonForArchiving };
 
-    return this.http.patch<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  promoteTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string): Observable<VehicleTechRecordModel> {
+  promoteTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string): Observable<V3TechRecordModel> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/promote/${systemNumber}/${createdTimestamp}`;
 
     const body = { reasonForPromoting };
 
-    return this.http.patch<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
   }
 
   generatePlate(vehicleRecord: VehicleTechRecordModel, reason: string, user: { id?: string; name?: string; email?: string }) {

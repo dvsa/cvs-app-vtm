@@ -117,19 +117,19 @@ export class TechnicalRecordServiceEffects {
       })
     )
   );
-
-  createProvisionalTechRecord$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(createProvisionalTechRecord),
-      withLatestFrom(this.technicalRecordService.techRecord$),
-      switchMap(([action, record]) =>
-        this.techRecordHttpService.createProvisionalTechRecord(record!).pipe(
-          map(vehicleTechRecord => createProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
-          catchError(error => of(createProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createProvisionalTechRecord') })))
-        )
-      )
-    )
-  );
+  //V3 do we still need this?
+  // createProvisionalTechRecord$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(createProvisionalTechRecord),
+  //     withLatestFrom(this.technicalRecordService.techRecord$),
+  //     switchMap(([action, record]) =>
+  //       this.techRecordHttpService.createProvisionalTechRecord(record!).pipe(
+  //         map(vehicleTechRecord => createProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
+  //         catchError(error => of(createProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createProvisionalTechRecord') })))
+  //       )
+  //     )
+  //   )
+  // );
 
   updateTechRecords$ = createEffect(() =>
     this.actions$.pipe(
