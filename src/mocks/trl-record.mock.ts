@@ -32,8 +32,7 @@ export const createMockTrl = (systemNumber: number): V3TechRecordModel =>
     techRecord_dimensions_width: 10000,
     techRecord_suspensionType: '1',
     techRecord_roadFriendly: true,
-    // TODO: V3  missing from types package
-    // techRecord_drawbarCouplingFitted: true,
+    techRecord_drawbarCouplingFitted: true,
 
     techRecord_vehicleClass_description: 'trailer',
     techRecord_vehicleClass_code: '1',
