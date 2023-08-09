@@ -76,7 +76,7 @@ function createOutcomeAction(title: string, isSuccess: boolean = false): ActionC
   const suffix = isSuccess ? 'Success' : 'Failure';
   const type = `${prefix} ${title} ${suffix}`;
 
-  const actionCreator: ActionCreatorProps<any> = isSuccess ? props<{ vehicleTechRecords: Array<VehicleTechRecordModel> }>() : props<GlobalError>();
+  const actionCreator: ActionCreatorProps<any> = isSuccess ? props<{ vehicleTechRecord: Array<VehicleTechRecordModel> }>() : props<GlobalError>();
 
   return createAction(type, actionCreator);
 }

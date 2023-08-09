@@ -81,9 +81,9 @@ export const vehicleTechRecordReducer = createReducer(
   on(createVehicleRecordSuccess, successArgs),
   on(createVehicleRecordFailure, state => ({ ...state, loading: false })),
 
-  on(createProvisionalTechRecord, defaultArgs),
-  on(createProvisionalTechRecordSuccess, successArgs),
-  on(createProvisionalTechRecordFailure, updateFailureArgs),
+  // on(createProvisionalTechRecord, defaultArgs),
+  // on(createProvisionalTechRecordSuccess, successArgs),
+  // on(createProvisionalTechRecordFailure, updateFailureArgs),
 
   on(updateTechRecords, defaultArgs),
   on(updateTechRecordsSuccess, successArgs),
@@ -131,15 +131,16 @@ export const vehicleTechRecordReducer = createReducer(
     })
   ),
 
-  on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecord: action.vehicleTechRecords }))
+  on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecord: action.vehicleTechRecord }))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
   return { ...state, loading: true };
 }
 
-function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecords: V3TechRecordModel }) {
-  return { ...state, vehicleTechRecords: data.vehicleTechRecords, loading: false };
+function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecord: V3TechRecordModel }) {
+  console.log(data.vehicleTechRecord);
+  return { ...state, vehicleTechRecord: data.vehicleTechRecord, loading: false };
 }
 
 function historyArgs(state: TechnicalRecordServiceState, data: { techRecordHistory: [V3TechRecordModel] }) {
@@ -151,11 +152,11 @@ function updateFailureArgs(state: TechnicalRecordServiceState, data: { error: an
 }
 
 function failureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
-  return { ...state, vehicleTechRecords: undefined, error: data.error, loading: false };
+  return { ...state, vehicleTechRecord: undefined, error: data.error, loading: false };
 }
 
-function historyFailArgs(state: TechnicalRecordServiceState, data: { error: any }) {
-  return { ...state, techRecordHistory: undefined, error: data.error, loading: false };
+function historyFailArgs(state: TechnicalRecordServiceState, data: { techRecordHistory: [V3TechRecordModel] }) {
+  return { ...state, techRecordHistory: undefined, loading: false };
 }
 
 function handleUpdateBrakeForces(
@@ -288,7 +289,6 @@ function updateEditingTechRec(state: TechnicalRecordServiceState, action: { vehi
   const newState = { ...state };
   const { editingTechRecord } = state;
   const { vehicleTechRecord } = action;
-  console.log(vehicleTechRecord);
 
   newState.editingTechRecord = { ...editingTechRecord, ...vehicleTechRecord };
 

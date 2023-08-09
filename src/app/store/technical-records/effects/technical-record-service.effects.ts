@@ -19,9 +19,9 @@ import {
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
   changeVehicleType,
-  createProvisionalTechRecord,
-  createProvisionalTechRecordFailure,
-  createProvisionalTechRecordSuccess,
+  // createProvisionalTechRecord,
+  // createProvisionalTechRecordFailure,
+  // createProvisionalTechRecordSuccess,
   createVehicle,
   createVehicleRecord,
   createVehicleRecordFailure,
@@ -69,9 +69,7 @@ export class TechnicalRecordServiceEffects {
           map(vehicleTechRecords => {
             return getBySystemNumberSuccess({ techRecordHistory: vehicleTechRecords });
           }),
-          catchError(error =>
-            of(getBySystemNumberFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink }))
-          )
+          catchError(error => of(getBySystemNumberFailure({ techRecordHistory: [] })))
         );
       })
     )
@@ -103,7 +101,7 @@ export class TechnicalRecordServiceEffects {
         const vehicleRecord = { ...vehicle, applicationId };
 
         return this.techRecordHttpService.createVehicleRecord(vehicleRecord).pipe(
-          map(response => createVehicleRecordSuccess({ vehicleTechRecords: response })),
+          map(response => createVehicleRecordSuccess({ vehicleTechRecord: response })),
           catchError(error =>
             of(
               createVehicleRecordFailure({
@@ -135,11 +133,8 @@ export class TechnicalRecordServiceEffects {
     this.actions$.pipe(
       ofType(updateTechRecords),
       switchMap(({ vehicleTechRecord }) => {
-        //TODO template for reason for creation used for both tests and tech records, we probably need seperate templates for each
-        if ((vehicleTechRecord as any).reasonForCreation)
-          vehicleTechRecord.techRecord_reasonForCreation = (vehicleTechRecord as any).reasonForCreation;
         return this.techRecordHttpService.updateTechRecords(vehicleTechRecord).pipe(
-          map(vehicleTechRecord => updateTechRecordsSuccess(vehicleTechRecord)),
+          map(vehicleTechRecord => updateTechRecordsSuccess({ vehicleTechRecord })),
           catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
         );
       })
@@ -163,7 +158,7 @@ export class TechnicalRecordServiceEffects {
       ofType(archiveTechRecord),
       switchMap(({ systemNumber, createdTimestamp, reasonForArchiving }) =>
         this.techRecordHttpService.archiveTechnicalRecord(systemNumber, createdTimestamp, reasonForArchiving).pipe(
-          map(vehicleTechRecord => archiveTechRecordSuccess(vehicleTechRecord)),
+          map(vehicleTechRecord => archiveTechRecordSuccess({ vehicleTechRecord })),
           catchError(error => of(archiveTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'archiveTechRecord') })))
         )
       )
@@ -176,7 +171,7 @@ export class TechnicalRecordServiceEffects {
       switchMap(({ systemNumber, createdTimestamp, reasonForPromoting }) =>
         this.techRecordHttpService.promoteTechnicalRecord(systemNumber, createdTimestamp, reasonForPromoting).pipe(
           map(vehicleTechRecord => promoteTechRecordSuccess(vehicleTechRecord)),
-          catchError(error => of(promoteTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'archiveTechRecord') })))
+          catchError(error => of(promoteTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'promoteTechRecord') })))
         )
       )
     )
@@ -199,6 +194,7 @@ export class TechnicalRecordServiceEffects {
           return of(
             techRecordTemplate.reduce((mergedNodes, formNode) => {
               const form = this.dfs.createForm(formNode, techRecord);
+              console.log(merge(mergedNodes, form.getCleanValue(form)));
               return merge(mergedNodes, form.getCleanValue(form));
             }, {}) as V3TechRecordModel
           );
@@ -248,7 +244,9 @@ export class TechnicalRecordServiceEffects {
     getTechnicalRecords_400: 'There was a problem getting the Tech Record by',
     getTechnicalRecords_404: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
     createVehicleRecord_400: 'Unable to create a new vehicle record',
-    createProvisionalTechRecord_400: 'Unable to create a new provisional record',
-    updateTechnicalRecord_400: 'Unable to update technical record'
+    // createProvisionalTechRecord_400: 'Unable to create a new provisional record',
+    updateTechnicalRecord_400: 'Unable to update technical record',
+    archiveTechRecord_400: 'Unable to archive technical record',
+    promoteTechRecord_400: 'Unable to promote technical record'
   };
 }

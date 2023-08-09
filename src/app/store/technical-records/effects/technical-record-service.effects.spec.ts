@@ -14,6 +14,9 @@ import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { createMock } from 'ts-auto-mock';
 import {
+  archiveTechRecord,
+  archiveTechRecordFailure,
+  archiveTechRecordSuccess,
   changeVehicleType,
   createProvisionalTechRecord,
   createProvisionalTechRecordFailure,
@@ -60,43 +63,26 @@ describe('TechnicalRecordServiceEffects', () => {
     testScheduler = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
   });
 
-  describe('getBySystemNumber$', () => {
-    it('should return a technical record on successfull API call', () => {
+  describe('getTechnicalRecordHistory$', () => {
+    it('should return the technical record history on successfull API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const technicalRecord: V3TechRecordModel = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'PSV' }) });
+        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'foo' }) });
 
         // mock service call
-        jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(of([{ ...technicalRecord }]));
+        cold('--a|', { a: [technicalRecord] });
+        jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: [technicalRecord] }));
 
         // expect effect to return success action
-        expectObservable(effects.getTechRecordV3$).toBe('---b', {
-          b: getBySystemNumberSuccess({ vehicleTechRecords: technicalRecord })
+        expectObservable(effects.getTechnicalRecordHistory$).toBe('---b', {
+          b: getBySystemNumberSuccess({ techRecordHistory: [technicalRecord] })
         });
       });
     });
 
-    it('should return generic error message if not not found', () => {
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber' }) });
-
-        // mock service call
-        const expectedError = new HttpErrorResponse({
-          status: 500,
-          statusText: 'Internal server error'
-        });
-        jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
-
-        expectObservable(effects.getTechRecordV3$).toBe('---b', {
-          b: getBySystemNumberFailure({ error: 'There was a problem getting the Tech Record by systemNumber', anchorLink: 'search-term' })
-        });
-      });
-    });
-
-    it('should return not found error message if not found', () => {
+    it('techRecordHistory should be undefined if there is no history', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
         actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber' }) });
@@ -104,35 +90,16 @@ describe('TechnicalRecordServiceEffects', () => {
         // mock service call
         const expectedError = new HttpErrorResponse({
           status: 404,
-          statusText: 'Vehicle not found'
+          statusText: 'No tech record history found for this system number'
         });
         jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechRecordV3$).toBe('---b', {
-          b: getBySystemNumberFailure({
-            error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
-            anchorLink: 'search-term'
-          })
-        });
-      });
-    });
-
-    it('should return error message if error is a string', () => {
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber' }) });
-
-        // mock service call
-        const expectedError = 'string';
-        jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
-
-        expectObservable(effects.getTechRecordV3$).toBe('---b', {
-          b: getBySystemNumberFailure({ error: 'string', anchorLink: 'search-term' })
+        expectObservable(effects.getTechnicalRecordHistory$).toBe('---b', {
+          b: getBySystemNumberFailure({ techRecordHistory: [] })
         });
       });
     });
   });
-
   describe('createVehicleRecord', () => {
     it('should return a vehicle on successful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
@@ -149,12 +116,12 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.createVehicleRecord$).toBe('---b', {
-          b: createVehicleRecordSuccess({ vehicleTechRecords: [expectedVehicle] })
+          b: createVehicleRecordSuccess({ vehicleTechRecord: expectedVehicle })
         });
       });
     });
 
-    it('should return an error message if not found', () => {
+    it('should return an error message if not created', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
         actions$ = hot('-a--', { a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } }) });
@@ -165,7 +132,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(techRecordHttpService, 'createVehicleRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.createVehicleRecord$).toBe('---b', {
-          b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN xxx' })
+          b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN testVin' })
         });
       });
     });
@@ -220,12 +187,12 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.updateTechRecords$).toBe('---b', {
-          b: updateTechRecordsSuccess({ vehicleTechRecords: technicalRecord })
+          b: updateTechRecordsSuccess({ vehicleTechRecord: technicalRecord })
         });
       });
     });
 
-    it('should return an error message if not found', () => {
+    it('should return an error message if not updated', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
         actions$ = hot('-a--', { a: updateTechRecords });
@@ -249,14 +216,14 @@ describe('TechnicalRecordServiceEffects', () => {
         const technicalRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: createProvisionalTechRecord });
+        actions$ = hot('-a--', { a: archiveTechRecord });
 
         // mock service call
         jest.spyOn(techRecordHttpService, 'archiveTechnicalRecord').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.archiveTechRecord$).toBe('---b', {
-          b: createProvisionalTechRecordSuccess({ vehicleTechRecords: technicalRecord })
+          b: archiveTechRecordSuccess({ vehicleTechRecord: technicalRecord })
         });
       });
     });
@@ -267,15 +234,15 @@ describe('TechnicalRecordServiceEffects', () => {
     ])('should return an error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: createProvisionalTechRecord });
+        actions$ = hot('-a--', { a: archiveTechRecord });
 
         // mock service call
         const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
         jest.spyOn(techRecordHttpService, 'archiveTechnicalRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.archiveTechRecord$).toBe('---b', {
-          b: createProvisionalTechRecordFailure({
-            error: 'Unable to create a new provisional record null'
+          b: archiveTechRecordFailure({
+            error: 'Unable to archive technical record null'
           })
         });
       });
@@ -290,14 +257,16 @@ describe('TechnicalRecordServiceEffects', () => {
 
       it('should generate new techRecord based on vehicle type', fakeAsync(() => {
         const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-        const expectedTechRecord = { systemNumber: '', createdTimestamp: '', vin: '' };
+        const expectedTechRecord = getEmptyTechRecord();
 
         testScheduler.run(({ hot, expectObservable }) => {
-          const techRecord = createMock<TechRecordModel>({
-            vehicleType: VehicleTypes.HGV
+          store.overrideSelector(editingTechRecord, {
+            vin: 'foo',
+            primaryVrm: 'bar',
+            systemNumber: 'foobar',
+            createdTimestamp: 'barfoo',
+            techRecord_vehicleType: 'lgv'
           });
-
-          store.overrideSelector(editingTechRecord, { vin: '', primaryVrm: '', systemNumber: '', createdTimestamp: '' });
           // mock action to trigger effect
           actions$ = hot('-a--', {
             a: changeVehicleType({
@@ -318,79 +287,31 @@ describe('TechnicalRecordServiceEffects', () => {
   });
 });
 
-// function getEmptyTechRecord(): TechRecordModel {
-//   return {
-//     alterationMarker: '',
-//     approvalType: undefined,
-//     approvalTypeNumber: undefined,
-//     axles: [],
-//     bodyMake: '',
-//     bodyModel: '',
-//     bodyType: {
-//       description: ''
-//     },
-//     brakes: {
-//       brakeCode: '',
-//       brakeCodeOriginal: '',
-//       dataTrBrakeOne: '',
-//       dataTrBrakeThree: '',
-//       dataTrBrakeTwo: '',
-//       dtpNumber: '',
-//       retarderBrakeOne: '',
-//       retarderBrakeTwo: ''
-//     },
-//     chassisMake: '',
-//     chassisModel: '',
-//     coifCertifierName: undefined,
-//     coifDate: undefined,
-//     coifSerialNumber: undefined,
-//     conversionRefNo: '',
-//     dda: null,
-//     departmentalVehicleMarker: '',
-//     dimensions: {
-//       height: null,
-//       length: null,
-//       width: null
-//     },
-//     dispensations: undefined,
-//     emissionsLimit: null,
-//     euVehicleCategory: '',
-//     euroStandard: undefined,
-//     frontAxleToRearAxle: null,
-//     fuelPropulsionSystem: '',
-//     functionCode: '',
-//     grossDesignWeight: '',
-//     grossGbWeight: '',
-//     grossKerbWeight: '',
-//     grossLadenWeight: '',
-//     manufactureYear: '',
-//     maxTrainGbWeight: null,
-//     microfilm: null,
-//     modelLiteral: '',
-//     noOfAxles: '',
-//     numberOfWheelsDriven: null,
-//     ntaNumber: undefined,
-//     numberOfSeatbelts: '',
-//     regnDate: '',
-//     remarks: undefined,
-//     reasonForCreation: undefined,
-//     seatbeltInstallationApprovalDate: '',
-//     seatsLowerDeck: '',
-//     seatsUpperDeck: '',
-//     speedLimiterMrk: '',
-//     speedRestriction: '',
-//     standingCapacity: '',
-//     statusCode: '',
-//     tachoExemptMrk: '',
-//     trainDesignWeight: null,
-//     unladenWeight: '',
-//     variantNumber: undefined,
-//     variantVersionNumber: undefined,
-//     vehicleClass: {
-//       description: ''
-//     },
-//     vehicleConfiguration: '',
-//     vehicleSize: '',
-//     vehicleType: VehicleTypes.PSV
-//   } as unknown as TechRecordModel;
-// }
+function getEmptyTechRecord(): V3TechRecordModel {
+  return {
+    techRecord_createdAt: '',
+    techRecord_createdById: '',
+    techRecord_createdByName: '',
+    techRecord_euVehicleCategory: '',
+    techRecord_lastUpdatedAt: '',
+    techRecord_lastUpdatedById: '',
+    techRecord_lastUpdatedByName: '',
+    techRecord_manufactureYear: '',
+    techRecord_noOfAxles: 2,
+    techRecord_notes: undefined,
+    techRecord_purchaserDetails_address1: '',
+    techRecord_purchaserDetails_address2: '',
+    techRecord_purchaserDetails_address3: '',
+    techRecord_purchaserDetails_emailAddress: '',
+    techRecord_purchaserDetails_name: '',
+    techRecord_purchaserDetails_postCode: '',
+    techRecord_purchaserDetails_postTown: '',
+    techRecord_purchaserDetails_telephoneNumber: '',
+    techRecord_reasonForCreation: '',
+    techRecord_regnDate: '',
+    techRecord_statusCode: '',
+    techRecord_vehicleConfiguration: 'other',
+    techRecord_vehicleSubclass: undefined,
+    techRecord_vehicleType: 'car'
+  } as unknown as V3TechRecordModel;
+}
