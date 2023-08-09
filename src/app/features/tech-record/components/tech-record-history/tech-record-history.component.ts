@@ -25,6 +25,7 @@ export class TechRecordHistoryComponent implements OnInit {
     this.store.dispatch(getBySystemNumber({ systemNumber: this.currentTechRecord.systemNumber }));
     this.recordHistory$ = this.store.select(selectTechRecordHistory);
     this.recordHistory$.subscribe(records => {
+      //TODO: V3 this only sorts by created timestamp as its all that's available at the moment needs to sort by last updated when that becomes available
       this.recordHistory = records?.sort((a, b) => (a.createdTimestamp < b.createdTimestamp ? 1 : a.createdTimestamp > b.createdTimestamp ? -1 : 0));
     });
   }
