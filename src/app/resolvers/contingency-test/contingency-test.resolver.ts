@@ -74,13 +74,15 @@ export class ContingencyTestResolver implements Resolve<boolean> {
         );
       }),
       tap(testResult => {
+        console.log(testResult);
         this.store.dispatch(initialContingencyTest({ testResult }));
       }),
       take(1),
       map(() => {
         return true;
       }),
-      catchError(() => {
+      catchError(err => {
+        console.log(err);
         return of(false);
       })
     );

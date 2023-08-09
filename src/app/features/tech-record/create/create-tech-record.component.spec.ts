@@ -23,7 +23,7 @@ describe('CreateNewVehicleRecordComponent', () => {
   let router: Router;
   let store: MockStore;
   let techRecordService: TechnicalRecordService;
-  let expectedVehicle = { vrms: [{ vrm: '123', isPrimary: true }] };
+  let expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -61,13 +61,6 @@ describe('CreateNewVehicleRecordComponent', () => {
   describe('get vehicleStatusOptions', () => {
     it('should return the expected options', () => {
       expect(component.vehicleStatusOptions).toBeTruthy();
-    });
-  });
-
-  describe('get primaryVrm', () => {
-    it('should get the primary VRM', () => {
-      component.vehicle = expectedVehicle;
-      expect(component.primaryVrm).toBe(expectedVehicle.vrms.find(vrm => vrm.isPrimary)?.vrm);
     });
   });
 
@@ -141,7 +134,6 @@ describe('CreateNewVehicleRecordComponent', () => {
       const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       jest.spyOn(techRecordService, 'updateEditingTechRecord');
 
-      component.vehicle = { techRecord: [{ vehicleType: VehicleTypes.HGV } as TechRecordModel] };
       await component.handleSubmit();
 
       fixture.detectChanges();
