@@ -82,8 +82,8 @@ export class TechnicalRecordServiceEffects {
         const anchorLink = 'search-term';
 
         return this.techRecordHttpService.getRecordV3(action.systemNumber, action.createdTimestamp).pipe(
-          map(vehicleTechRecords => {
-            return getTechRecordV3Success({ vehicleTechRecords });
+          map(vehicleTechRecord => {
+            return getTechRecordV3Success({ vehicleTechRecord });
           }),
           catchError(error =>
             of(getTechRecordV3Failure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink }))
