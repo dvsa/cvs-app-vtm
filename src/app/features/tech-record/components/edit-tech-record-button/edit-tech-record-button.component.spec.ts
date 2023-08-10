@@ -19,7 +19,7 @@ import {
   createProvisionalTechRecordSuccess,
   selectTechRecord,
   updateEditingTechRecordCancel,
-  updateTechRecordsSuccess
+  updateTechRecordSuccess
 } from '@store/technical-records';
 import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';

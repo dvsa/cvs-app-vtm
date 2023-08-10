@@ -17,7 +17,7 @@ import {
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { createVehicleRecord, selectTechRecord, updateTechRecords } from '@store/technical-records';
+import { createVehicleRecord, selectTechRecord, updateTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { map, Observable, take, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';

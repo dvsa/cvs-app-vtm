@@ -17,9 +17,9 @@ import {
   getBySystemNumberSuccess,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
-  updateTechRecords,
-  updateTechRecordsFailure,
-  updateTechRecordsSuccess,
+  updateTechRecord,
+  updateTechRecordFailure,
+  updateTechRecordSuccess,
   addAxle,
   removeAxle,
   updateBrakeForces,
@@ -171,7 +171,7 @@ describe('Vehicle Technical Record Reducer', () => {
         vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' },
         loading: true
       };
-      const action = updateTechRecords({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVinNew' } });
+      const action = updateTechRecord({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVinNew' } });
       const newState = vehicleTechRecordReducer(state, action);
 
       expect(newState).toEqual(state);
@@ -189,7 +189,7 @@ describe('Vehicle Technical Record Reducer', () => {
         ...initialState,
         vehicleTechRecord: oldRecord
       };
-      const action = updateTechRecordsSuccess({ vehicleTechRecord: newRecord });
+      const action = updateTechRecordSuccess({ vehicleTechRecord: newRecord });
       const newState = vehicleTechRecordReducer(state, action);
 
       expect(state).not.toEqual(newState);
@@ -200,7 +200,7 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('updateTechRecordsFailure', () => {
     it('should set error state', () => {
       const error = 'fetching vehicle tech records failed';
-      const action = updateTechRecordsFailure({ error });
+      const action = updateTechRecordFailure({ error });
       const newState = vehicleTechRecordReducer(initialState, action);
 
       expect(initialState).not.toEqual(newState);

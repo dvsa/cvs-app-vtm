@@ -9,7 +9,7 @@ import {
   setVehicleStatus,
   setVehicleType
 } from '../actions/batch-create.actions';
-import { createVehicleRecordSuccess, updateTechRecordsSuccess } from '../actions/technical-record-service.actions';
+import { createVehicleRecordSuccess, updateTechRecordSuccess } from '../actions/technical-record-service.actions';
 
 export type BatchRecord = {
   vin: string;

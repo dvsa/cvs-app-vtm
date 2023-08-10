@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 import { Component } from '@angular/core';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
-import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
+import { createVehicleRecord, updateTechRecord } from '@store/technical-records';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Router } from '@angular/router';
 import { BatchVehicleResultsComponent } from '../batch-vehicle-results/batch-vehicle-results.component';
@@ -144,12 +144,12 @@ describe('BatchVehicleTemplateComponent', () => {
       expect(dispatchSpy).toHaveBeenCalledTimes(2);
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         1,
-        updateTechRecords({ systemNumber: '1', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+        updateTechRecord({ systemNumber: '1', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
       );
 
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         2,
-        updateTechRecords({ systemNumber: '2', recordToArchiveStatus: StatusCodes.CURRENT, newStatus: StatusCodes.CURRENT })
+        updateTechRecord({ systemNumber: '2', recordToArchiveStatus: StatusCodes.CURRENT, newStatus: StatusCodes.CURRENT })
       );
     }));
 
@@ -174,12 +174,12 @@ describe('BatchVehicleTemplateComponent', () => {
       expect(dispatchSpy).toHaveBeenCalledTimes(5);
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         1,
-        updateTechRecords({ systemNumber: '1', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+        updateTechRecord({ systemNumber: '1', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
       );
       expect(dispatchSpy).toHaveBeenNthCalledWith(2, createVehicleRecord({ vehicle: expect.anything() }));
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         3,
-        updateTechRecords({ systemNumber: '3', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+        updateTechRecord({ systemNumber: '3', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
       );
       expect(dispatchSpy).toHaveBeenNthCalledWith(4, createVehicleRecord({ vehicle: expect.anything() }));
       expect(dispatchSpy).toHaveBeenNthCalledWith(5, createVehicleRecord({ vehicle: expect.anything() }));

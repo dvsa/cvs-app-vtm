@@ -15,7 +15,7 @@ import {
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { createProvisionalTechRecord, editingTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import { createProvisionalTechRecord, editingTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
@@ -60,7 +60,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
         this.isArchived = viewableTechRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
       })
     );
-    this.actions$.pipe(ofType(updateTechRecordsSuccess)).subscribe(newRecord => {
+    this.actions$.pipe(ofType(updateTechRecordSuccess)).subscribe(newRecord => {
       this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);
     });
   }
@@ -158,7 +158,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
         .subscribe(record => {
           recordToSend = record;
         });
-      this.store.dispatch(updateTechRecords({ vehicleTechRecord: recordToSend! }));
+      this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend! }));
     }
   }
 }

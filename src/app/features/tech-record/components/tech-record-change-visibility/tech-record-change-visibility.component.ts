@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { selectTechRecord, techRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import { selectTechRecord, techRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Observable, Subscription, take } from 'rxjs';
 
@@ -37,7 +37,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
     this.actions$
-      .pipe(ofType(updateTechRecordsSuccess), take(1))
+      .pipe(ofType(updateTechRecordSuccess), take(1))
       .subscribe(newRecord => this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]));
   }
 
@@ -89,6 +89,6 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 
     this.technicalRecordService.updateEditingTechRecord(updatedTechRecord);
 
-    this.store.dispatch(updateTechRecords({ vehicleTechRecord: updatedTechRecord }));
+    this.store.dispatch(updateTechRecord({ vehicleTechRecord: updatedTechRecord }));
   }
 }

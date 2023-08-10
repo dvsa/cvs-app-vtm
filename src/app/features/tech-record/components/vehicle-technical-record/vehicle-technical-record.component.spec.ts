@@ -17,7 +17,7 @@ import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
+import { createProvisionalTechRecord, updateTechRecord } from '@store/technical-records';
 import { of } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
@@ -155,7 +155,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         tick();
         component.handleSubmit();
-        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecords({ systemNumber: component.vehicle.systemNumber }));
+        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ systemNumber: component.vehicle.systemNumber }));
       }));
     });
 
@@ -171,7 +171,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         tick();
         component.handleSubmit();
         expect(dispatchSpy).toHaveBeenCalledWith(
-          updateTechRecords({
+          updateTechRecord({
             systemNumber: component.vehicle.systemNumber,
             recordToArchiveStatus: StatusCodes.PROVISIONAL,
             newStatus: StatusCodes.PROVISIONAL

@@ -21,9 +21,9 @@ export const createProvisionalTechRecord = createAction(`${prefix} createProvisi
 export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
 export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
 
-export const updateTechRecords = createAction(`${prefix} updateTechRecords2`, props<{ vehicleTechRecord: V3TechRecordModel }>());
-export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
-export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
+export const updateTechRecord = createAction(`${prefix} updateTechRecords`, props<{ vehicleTechRecord: V3TechRecordModel }>());
+export const updateTechRecordSuccess = createOutcomeAction('updateTechRecords', true);
+export const updateTechRecordFailure = createOutcomeAction('updateTechRecords');
 
 export const amendVrm = createAction(
   `${prefix} amendVrm`,

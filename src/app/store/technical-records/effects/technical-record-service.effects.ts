@@ -41,9 +41,9 @@ import {
   promoteTechRecord,
   promoteTechRecordFailure,
   promoteTechRecordSuccess,
-  updateTechRecords,
-  updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecord,
+  updateTechRecordFailure,
+  updateTechRecordSuccess
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord, selectTechRecord } from '../selectors/technical-record-service.selectors';
 
@@ -129,13 +129,13 @@ export class TechnicalRecordServiceEffects {
   //   )
   // );
 
-  updateTechRecords$ = createEffect(() =>
+  updateTechRecord$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateTechRecords),
+      ofType(updateTechRecord),
       switchMap(({ vehicleTechRecord }) => {
         return this.techRecordHttpService.updateTechRecords(vehicleTechRecord).pipe(
-          map(vehicleTechRecord => updateTechRecordsSuccess({ vehicleTechRecord })),
-          catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
+          map(vehicleTechRecord => updateTechRecordSuccess({ vehicleTechRecord })),
+          catchError(error => of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
         );
       })
     )

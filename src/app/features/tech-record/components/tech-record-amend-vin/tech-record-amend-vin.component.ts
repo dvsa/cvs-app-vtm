@@ -10,7 +10,7 @@ import { TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, VehicleType
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectTechRecord, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import { selectTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Subject, take, takeUntil } from 'rxjs';
 
@@ -49,8 +49,8 @@ export class AmendVinComponent implements OnDestroy {
       )
     });
 
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), takeUntil(this.destroy$)).subscribe(newRecord => {
-      this.router.navigate([`/tech-records/${newRecord.vehicleTechRecords.systemNumber}/${newRecord.vehicleTechRecords.createdTimestamp}`]);
+    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(newRecord => {
+      this.router.navigate([`/tech-records/${newRecord.vehicleTechRecord.systemNumber}/${newRecord.vehicleTechRecord.createdTimestamp}`]);
     });
   }
 
@@ -104,7 +104,7 @@ export class AmendVinComponent implements OnDestroy {
     if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
       record.techRecord_reasonForCreation = 'Vin changed';
       console.log(record);
-      this.store.dispatch(updateTechRecords({ vehicleTechRecord: record }));
+      this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }));
     }
   }
 }

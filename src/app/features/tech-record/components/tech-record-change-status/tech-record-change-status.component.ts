@@ -15,8 +15,8 @@ import {
   promoteTechRecord,
   promoteTechRecordSuccess,
   selectTechRecord,
-  updateTechRecords,
-  updateTechRecordsSuccess
+  updateTechRecord,
+  updateTechRecordSuccess
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { Observable, Subject, Subscription, take, takeUntil } from 'rxjs';

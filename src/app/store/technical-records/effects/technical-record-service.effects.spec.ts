@@ -27,9 +27,9 @@ import {
   getBySystemNumber,
   getBySystemNumberFailure,
   getBySystemNumberSuccess,
-  updateTechRecords,
-  updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecord,
+  updateTechRecordFailure,
+  updateTechRecordSuccess
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord } from '../selectors/technical-record-service.selectors';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
@@ -180,14 +180,14 @@ describe('TechnicalRecordServiceEffects', () => {
         const technicalRecord: V3TechRecordModel = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: updateTechRecords });
+        actions$ = hot('-a--', { a: updateTechRecord });
 
         // mock service call
         jest.spyOn(techRecordHttpService, 'updateTechRecords').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
-        expectObservable(effects.updateTechRecords$).toBe('---b', {
-          b: updateTechRecordsSuccess({ vehicleTechRecord: technicalRecord })
+        expectObservable(effects.updateTechRecord$).toBe('---b', {
+          b: updateTechRecordSuccess({ vehicleTechRecord: technicalRecord })
         });
       });
     });
@@ -195,14 +195,14 @@ describe('TechnicalRecordServiceEffects', () => {
     it('should return an error message if not updated', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: updateTechRecords });
+        actions$ = hot('-a--', { a: updateTechRecord });
 
         // mock service call
         const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
         jest.spyOn(techRecordHttpService, 'updateTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.updateTechRecords$).toBe('---b', {
-          b: updateTechRecordsFailure({
+        expectObservable(effects.updateTechRecord$).toBe('---b', {
+          b: updateTechRecordFailure({
             error: 'Unable to update technical record null'
           })
         });

@@ -13,7 +13,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { amendVrm, amendVrmSuccess, updateTechRecordsSuccess } from '@store/technical-records';
+import { amendVrm, amendVrmSuccess, updateTechRecordSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 

@@ -12,7 +12,7 @@ import {
   createProvisionalTechRecordSuccess,
   selectTechRecord,
   updateEditingTechRecordCancel,
-  updateTechRecordsSuccess
+  updateTechRecordSuccess
 } from '@store/technical-records';
 import { Observable, Subject, distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs';
 
