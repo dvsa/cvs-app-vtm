@@ -25,6 +25,9 @@ describe('TechRecordTitleComponent', () => {
   let fixture: ComponentFixture<TechRecordTitleComponent>;
   let store: MockStore<State>;
   let technicalRecordService: TechnicalRecordService;
+  let viewableTechRecordSpy;
+  let mockRecord: V3TechRecordModel;
+  let mockVehicle: V3TechRecordModel;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -46,18 +49,21 @@ describe('TechRecordTitleComponent', () => {
   });
 
   describe('the VRM fields', () => {
-    it('should show primary VRM for current record', () => {
-      const mockRecord = {
+    beforeEach(() => {
+      mockRecord = {
         systemNumber: 'foo',
         createdTimestamp: 'bar',
         vin: 'testVin',
         primaryVrm: 'TESTVRM',
+        secondaryVrms: ['TESTVRM5', 'TESTVRM4', 'TESTVRM3', 'TESTVRM2', 'TESTVRM1'],
         techRecord_vehicleType: VehicleTypes.LGV
       } as unknown as V3TechRecordModel;
-      const viewableTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
-      const mockVehicle = mockRecord;
+      viewableTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
+      mockVehicle = mockRecord;
       component.vehicle = mockVehicle;
       store.overrideSelector(editingTechRecord, mockRecord);
+    });
+    it('should show primary VRM for current record', () => {
       fixture.detectChanges();
 
       const vrmField = fixture.nativeElement.querySelector('app-number-plate');
@@ -65,18 +71,6 @@ describe('TechRecordTitleComponent', () => {
     });
 
     it('should show the newest (last) secondary VRM', () => {
-      const mockRecord = {
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
-        vin: 'testVin',
-        primaryVrm: 'TESTVRM6',
-        secondaryVrms: ['TESTVRM5', 'TESTVRM4', 'TESTVRM3', 'TESTVRM2', 'TESTVRM'],
-        techRecord_vehicleType: VehicleTypes.LGV
-      } as unknown as V3TechRecordModel;
-      const viewableTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
-      const mockVehicle = mockRecord;
-      component.vehicle = mockVehicle;
-      store.overrideSelector(editingTechRecord, mockRecord);
       fixture.detectChanges();
 
       const vrmField = fixture.nativeElement.querySelectorAll('app-number-plate')[1];
@@ -87,16 +81,7 @@ describe('TechRecordTitleComponent', () => {
       expect(vrmField.textContent).not.toContain('TESTV RM4');
     });
     it('should not create previous-vrm-span if no secondary vrm exists', () => {
-      const mockRecord = {
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
-        vin: 'testVin',
-        techRecord_vehicleType: VehicleTypes.LGV
-      } as unknown as V3TechRecordModel;
-      const viewableTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
-      const mockVehicle = mockRecord;
-      component.vehicle = mockVehicle;
-      store.overrideSelector(editingTechRecord, mockRecord);
+      delete mockRecord.secondaryVrms;
       fixture.detectChanges();
 
       const vrmField = fixture.debugElement.query(By.css('#previous-vrm-span'));
