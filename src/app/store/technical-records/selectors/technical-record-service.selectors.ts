@@ -1,8 +1,7 @@
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
-import { selectRouteDataProperty, selectRouteNestedParams, selectUrl } from '@store/router/selectors/router.selectors';
+import { selectRouteDataProperty } from '@store/router/selectors/router.selectors';
 import { getTechRecordState } from '../reducers/technical-record-service.reducer';
-import { StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 export const techRecord = createSelector(getTechRecordState, state => state.vehicleTechRecord);
 
@@ -19,6 +18,7 @@ export const selectTechRecord = createSelector(
   selectRouteDataProperty('isEditing'),
   editingTechRecord,
   (techRecord, isEditing, editableTechRecord): V3TechRecordModel | undefined => {
+    console.log(isEditing ? editableTechRecord : techRecord);
     return isEditing ? editableTechRecord : techRecord;
   }
 );
