@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { TagType } from '@shared/components/tag/tag.component';
-import { selectTechRecord } from '@store/technical-records';
+import { selectTechRecord, techRecord } from '@store/technical-records';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -39,7 +39,7 @@ export class VehicleHeaderComponent {
   }
 
   get techRecord$(): Observable<V3TechRecordModel | undefined> {
-    return this.store.select(selectTechRecord);
+    return this.store.select(techRecord);
   }
 
   get vehicleTypes() {
