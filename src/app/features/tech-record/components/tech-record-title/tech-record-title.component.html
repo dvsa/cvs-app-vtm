@@ -64,12 +64,7 @@
       <div *ngSwitchDefault class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
         <dd id="current-vrm" class="govuk-summary-list__value">
-          <app-number-plate
-            *ngIf="currentTechRecord.techRecord_statusCode !== statuses.ARCHIVED && currentVrm; else historicPrimary"
-            [vrm]="currentVrm"
-          ></app-number-plate>
-
-          <ng-template #historicPrimary> <app-number-plate [vrm]="currentTechRecord.primaryVrm"></app-number-plate></ng-template>
+          <app-number-plate [vrm]="currentVrm"></app-number-plate>
         </dd>
         <ng-container
           *ngIf="
@@ -94,7 +89,7 @@
           <app-number-plate
             *ngIf="otherVrms && otherVrms.length"
             class="govuk-body govuk-!margin-bottom-0"
-            [vrm]="otherVrms[0].vrm"
+            [vrm]="otherVrms[0]"
             [isSecondary]="true"
           ></app-number-plate>
         </dd>

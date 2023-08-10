@@ -52,8 +52,8 @@ export class TechRecordTitleComponent implements OnInit {
     return this.vehicle?.primaryVrm;
   }
 
-  get otherVrms(): Vrm[] | undefined {
-    return (this.vehicle as any).secondaryVrms;
+  get otherVrms(): string[] | undefined {
+    return this.vehicle?.secondaryVrms;
   }
 
   get vehicleTypes(): typeof VehicleTypes {
