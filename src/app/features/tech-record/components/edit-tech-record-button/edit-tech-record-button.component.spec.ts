@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { StatusCodes, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -15,9 +15,15 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { clearError } from '@store/global-error/actions/global-error.actions';
-import { createProvisionalTechRecordSuccess, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
+import {
+  createProvisionalTechRecordSuccess,
+  selectTechRecord,
+  updateEditingTechRecordCancel,
+  updateTechRecordsSuccess
+} from '@store/technical-records';
 import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
+import { selectReasonsForAbandoning } from '@store/reference-data';
 
 let component: EditTechRecordButtonComponent;
 let fixture: ComponentFixture<EditTechRecordButtonComponent>;
@@ -55,7 +61,7 @@ describe('EditTechRecordButtonComponent', () => {
 
   beforeEach(() => {
     technicalRecordService = TestBed.inject(TechnicalRecordService);
-    jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(mockTechnicalRecordObservable);
+    // jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(mockTechnicalRecordObservable);
     fixture = TestBed.createComponent(EditTechRecordButtonComponent);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
@@ -74,11 +80,11 @@ describe('EditTechRecordButtonComponent', () => {
 
   describe('when viewing a tech record', () => {
     it.each([
-      ['should be viewable', 'provisional', true],
-      ['should be viewable', 'current', true],
-      ['should not be viewable', 'archived', false]
-    ])('edit button %s for %s record', (isViewable: string, statusCode: string, expected: boolean) => {
-      jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode } as TechRecordModel));
+      ['should be viewable', true, { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL }],
+      ['should be viewable', true, { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT }],
+      ['should not be viewable', false, { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED }]
+    ])('edit button %s for %s record', (isViewable: string, expected: boolean, record: V3TechRecordModel) => {
+      store.overrideSelector(selectTechRecord, record);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('#edit'));
@@ -90,22 +96,32 @@ describe('EditTechRecordButtonComponent', () => {
   describe('when user clicks edit button', () => {
     it('component should navigate away for current amendments', () => {
       jest.spyOn(router, 'navigate');
-      jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
+      store.overrideSelector(selectTechRecord, {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_statusCode: StatusCodes.PROVISIONAL
+      });
       jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
 
-      expect(router.navigate).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith(['notifiable-alteration-needed'], { relativeTo: expect.anything() });
     });
     it('component should navigate away for notifiable alterations', () => {
       jest.spyOn(router, 'navigate');
-      jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'provisional' } as TechRecordModel));
+      store.overrideSelector(selectTechRecord, {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_statusCode: StatusCodes.CURRENT
+      });
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
 
-      expect(router.navigate).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith(['amend-reason'], { relativeTo: expect.anything() });
     });
   });
 
@@ -124,29 +140,29 @@ describe('EditTechRecordButtonComponent', () => {
 
         expect(component.submitChange.emit).toHaveBeenCalledTimes(1);
       }));
+      // TODO V3 the button no longer listens for success and the parent component handles it
+      //     it.only('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
+      //       jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
 
-      it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
-        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+      //       fixture.detectChanges();
+      //       actions$.next(updateTechRecordsSuccess({vehicleRecord: {systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin'}}));
 
-        fixture.detectChanges();
-        actions$.next(updateTechRecordsSuccess([]));
+      //       tick();
 
-        tick();
+      //       expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+      //       expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
+      //     }));
 
-        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
-      }));
+      //     it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
+      //       jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
 
-      it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
-        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+      //       actions$.next(createProvisionalTechRecordSuccess([]));
 
-        actions$.next(createProvisionalTechRecordSuccess([]));
+      //       tick();
 
-        tick();
-
-        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
-      }));
+      //       expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+      //       expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
+      //     }));
     });
   });
 
@@ -165,28 +181,28 @@ describe('EditTechRecordButtonComponent', () => {
 
         expect(component.submitChange.emit).toHaveBeenCalledTimes(1);
       }));
+      // TODO V3 component not listening for success currently
+      // it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
+      //   jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+      //   store.dispatch(updateTechRecordsSuccess({}));
+      //   actions$.next(updateTechRecordsSuccess({}));
 
-      it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
-        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
-        store.dispatch(updateTechRecordsSuccess({}));
-        actions$.next(updateTechRecordsSuccess({}));
+      //   tick();
 
-        tick();
+      //   expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+      //   expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1');
+      // }));
 
-        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1');
-      }));
+      // it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
+      //   jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
 
-      it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
-        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+      //   actions$.next(createProvisionalTechRecordSuccess({}));
 
-        actions$.next(createProvisionalTechRecordSuccess({}));
+      //   tick();
 
-        tick();
-
-        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1');
-      }));
+      //   expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+      //   expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1');
+      // }));
     });
 
     describe('and the user cancels their changes', () => {
@@ -200,7 +216,7 @@ describe('EditTechRecordButtonComponent', () => {
         });
 
         it('should prompt user if they wish to cancel', () => {
-          jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
+          // jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
           component.isEditing = true;
           jest.spyOn(window, 'confirm').mockImplementation(() => true);
 
@@ -214,7 +230,7 @@ describe('EditTechRecordButtonComponent', () => {
         describe('and the user cancels cancelling an amendment', () => {
           it('should keep user in edit view', fakeAsync(() => {
             component.isEditing = true;
-            jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
+            // jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
             jest.spyOn(window, 'confirm').mockImplementation(() => false);
             jest.spyOn(store, 'dispatch');
 
@@ -237,7 +253,7 @@ describe('EditTechRecordButtonComponent', () => {
         describe('and the user confirms cancelling the amendment', () => {
           it('should return user back to non-edit view', fakeAsync(() => {
             component.isEditing = true;
-            jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
+            // jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
             jest.spyOn(window, 'confirm').mockImplementation(() => true);
             jest.spyOn(store, 'dispatch');
 
