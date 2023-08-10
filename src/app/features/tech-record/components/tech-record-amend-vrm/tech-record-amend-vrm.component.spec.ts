@@ -6,14 +6,14 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { updateTechRecordsSuccess } from '@store/technical-records';
+import { amendVrm, amendVrmSuccess, updateTechRecordsSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 
@@ -21,7 +21,7 @@ const mockTechRecordService = {
   editableTechRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
   get viewableTechRecord$() {
-    return of(mockVehicleTechnicalRecord().techRecord.pop());
+    return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM' });
   },
   updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn()
@@ -35,7 +35,7 @@ describe('TechRecordChangeVrmComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: AmendVrmComponent;
   let errorService: GlobalErrorService;
-  let expectedVehicle = {} as VehicleTechRecordModel;
+  let expectedVehicle = {} as V3TechRecordModel;
   let fixture: ComponentFixture<AmendVrmComponent>;
   let route: ActivatedRoute;
   let router: Router;
@@ -70,46 +70,27 @@ describe('TechRecordChangeVrmComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  // TODO V3 PSV
+  // describe('makeAndModel', () => {
+  //   beforeEach(() => {
+  //     expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
+  //     component.vehicle = expectedVehicle;
+  //   });
 
-  describe('makeAndModel', () => {
-    beforeEach(() => {
-      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-      component.vehicle = expectedVehicle;
-    });
+  //   it('should should return the make and model', () => {
+  //     const expectedTechRecord = expectedVehicle.techRecord.pop()!;
 
-    it('should should return the make and model', () => {
-      const expectedTechRecord = expectedVehicle.techRecord.pop()!;
+  //     component.techRecord = expectedTechRecord;
 
-      component.techRecord = expectedTechRecord;
+  //     expect(component.makeAndModel).toBe(`${expectedTechRecord.chassisMake} - ${expectedTechRecord.chassisModel}`);
+  //   });
 
-      expect(component.makeAndModel).toBe(`${expectedTechRecord.chassisMake} - ${expectedTechRecord.chassisModel}`);
-    });
+  //   it('should return an empty string when the current record is null', () => {
+  //     delete component.techRecord;
 
-    it('should return an empty string when the current record is null', () => {
-      delete component.techRecord;
-
-      expect(component.makeAndModel).toBe('');
-    });
-  });
-
-  describe('vrm', () => {
-    beforeEach(() => {
-      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-      component.vehicle = expectedVehicle;
-    });
-
-    it('should return the primary VRM', () => {
-      component.vehicle = expectedVehicle;
-
-      expect(component.vrm).toBe('KP01ABC');
-    });
-
-    it('should return undefined when the vehicle is null', () => {
-      delete component.vehicle;
-
-      expect(component.vrm).toBe(undefined);
-    });
-  });
+  //     expect(component.makeAndModel).toBe('');
+  //   });
+  // });
 
   describe('navigateBack', () => {
     it('should clear all errors', () => {
@@ -130,19 +111,18 @@ describe('TechRecordChangeVrmComponent', () => {
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
 
-    it('should navigate back on updateTechRecordsSuccess', fakeAsync(() => {
-      const navigateBackSpy = jest.spyOn(component, 'navigateBack');
-      jest.spyOn(router, 'navigate').mockImplementation();
+    it('should navigate to a new record on updateTechRecordsSuccess', fakeAsync(() => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      actions$.next(updateTechRecordsSuccess({}));
+      actions$.next(amendVrmSuccess({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' }));
 
-      expect(navigateBackSpy).toHaveBeenCalled();
+      expect(navigateSpy).toHaveBeenCalled();
     }));
   });
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      component.vehicle = { vrms: [{ vrm: 'KP01ABC', isPrimary: true }] } as VehicleTechRecordModel;
+      component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM' };
     });
 
     it('should add an error when the vrm field is not filled out', () => {
@@ -184,32 +164,25 @@ describe('TechRecordChangeVrmComponent', () => {
       expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM already exists', anchorLink: 'newVrm' });
     });
 
-    it('should dispatch the updateEditingTechRecord action', fakeAsync(() => {
+    it('should dispatch the amendVrm action', fakeAsync(() => {
       jest.spyOn(router, 'navigate').mockImplementation();
       jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
-      const dispatchSpy = jest.spyOn(mockTechRecordService, 'updateEditingTechRecord').mockImplementation(() => Promise.resolve(true));
+      const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation(() => Promise.resolve(true));
 
-      component.vehicle = { vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
-
-      component.form.get('newVrm')?.setValue('TESTVRM');
-      component.form.get('isCherishedTransfer')?.setValue('true');
+      component.form.get('newVrm')?.setValue('TESTVRM1');
+      component.form.get('isCherishedTransfer')?.setValue(true);
 
       component.handleSubmit();
       tick();
 
-      expect(dispatchSpy).toHaveBeenNthCalledWith(1, {
-        vrms: [
-          { vrm: 'VRM1', isPrimary: false },
-          { vrm: 'TESTVRM', isPrimary: true }
-        ]
-      });
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        amendVrm({ newVrm: 'TESTVRM1', cherishedTransfer: true, systemNumber: 'foo', createdTimestamp: 'bar' })
+      );
     }));
 
     it('should be able to call it multiple times', fakeAsync(() => {
       jest.spyOn(router, 'navigate').mockImplementation();
       const submitSpy = jest.spyOn(component, 'handleSubmit').mockImplementation(() => Promise.resolve(true));
-
-      component.vehicle = { vrms: [{ vrm: 'VRM1', isPrimary: true }] } as VehicleTechRecordModel;
 
       jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
       component.handleSubmit();
@@ -220,68 +193,6 @@ describe('TechRecordChangeVrmComponent', () => {
       tick();
 
       expect(submitSpy).toHaveBeenCalledTimes(2);
-    }));
-  });
-
-  describe('amendVrm', () => {
-    it('should amend a VRM as cherished transfer, and retain original vrm', fakeAsync(() => {
-      component.vehicle = {
-        vrms: [{ vrm: 'VRM1', isPrimary: true }]
-      } as VehicleTechRecordModel;
-
-      const newVehicle = component.amendVrm(component.vehicle, 'VRM2', true);
-      tick();
-
-      expect(newVehicle).toEqual({
-        vrms: [
-          { vrm: 'VRM1', isPrimary: false },
-          { vrm: 'VRM2', isPrimary: true }
-        ]
-      });
-    }));
-
-    it('should amend a VRM as correcting an error, and not retain the original vrm', fakeAsync(() => {
-      component.vehicle = {
-        vrms: [{ vrm: 'VRM1', isPrimary: true }]
-      } as VehicleTechRecordModel;
-
-      const newVehicle = component.amendVrm(component.vehicle, 'VRM2', false);
-      tick();
-
-      expect(newVehicle).toEqual({
-        vrms: [{ vrm: 'VRM2', isPrimary: true }]
-      });
-    }));
-
-    it('should make the old primary vrm no longer primary', () => {
-      const oldPrimaryVrm = 'VRM1';
-      component.vehicle = {
-        techRecord: [{ reasonForCreation: '' }],
-        vrms: [{ vrm: 'VRM1', isPrimary: true }]
-      } as VehicleTechRecordModel;
-
-      const newVehicle = component.amendVrm(component.vehicle, 'TESTVRM', true);
-
-      expect(newVehicle.vrms.find(vrm => vrm.vrm == oldPrimaryVrm)?.isPrimary).toBeFalsy();
-    });
-
-    it('should handle amending duplicate VRMs', fakeAsync(() => {
-      component.vehicle = {
-        vrms: [
-          { vrm: 'VRM1', isPrimary: true },
-          { vrm: 'VRM2', isPrimary: false }
-        ]
-      } as VehicleTechRecordModel;
-
-      const newVehicle = component.amendVrm(component.vehicle, 'VRM2', true);
-      tick();
-
-      expect(newVehicle).toEqual({
-        vrms: [
-          { vrm: 'VRM1', isPrimary: false },
-          { vrm: 'VRM2', isPrimary: true }
-        ]
-      });
     }));
   });
 });

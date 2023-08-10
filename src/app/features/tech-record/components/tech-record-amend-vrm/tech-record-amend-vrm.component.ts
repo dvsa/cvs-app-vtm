@@ -148,19 +148,4 @@ export class AmendVrmComponent implements OnDestroy {
 
     return this.form.valid;
   }
-
-  amendVrm(record: V3TechRecordModel, newVrm: string, cherishedTransfer: boolean) {
-    const newModel: V3TechRecordModel = cloneDeep(record);
-
-    if (cherishedTransfer && newModel.secondaryVrms) {
-      newModel.secondaryVrms.push(newModel.primaryVrm!);
-    } else if (cherishedTransfer) {
-      newModel.secondaryVrms = [newModel.primaryVrm!];
-    }
-
-    newModel.primaryVrm = newVrm;
-    newModel.techRecord_reasonForCreation = `Amending VRM.`;
-
-    return newModel;
-  }
 }
