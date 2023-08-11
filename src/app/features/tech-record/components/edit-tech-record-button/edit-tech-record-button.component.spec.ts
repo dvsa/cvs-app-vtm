@@ -15,12 +15,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { clearError } from '@store/global-error/actions/global-error.actions';
-import {
-  createProvisionalTechRecordSuccess,
-  selectTechRecord,
-  updateEditingTechRecordCancel,
-  updateTechRecordSuccess
-} from '@store/technical-records';
+import { selectTechRecord, updateEditingTechRecordCancel, updateTechRecordSuccess } from '@store/technical-records';
 import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
 import { selectReasonsForAbandoning } from '@store/reference-data';

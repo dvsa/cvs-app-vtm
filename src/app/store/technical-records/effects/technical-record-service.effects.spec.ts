@@ -18,9 +18,6 @@ import {
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
   changeVehicleType,
-  createProvisionalTechRecord,
-  createProvisionalTechRecordFailure,
-  createProvisionalTechRecordSuccess,
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
@@ -137,42 +134,6 @@ describe('TechnicalRecordServiceEffects', () => {
       });
     });
   });
-  // V3 do we need create provisional?
-  // describe('createProvisionalTechRecord', () => {
-  //   it('should return a technical record on successful API call', () => {
-  //     testScheduler.run(({ hot, cold, expectObservable }) => {
-  //       const technicalRecord = {systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin'}
-
-  //       // mock action to trigger effect
-  //       actions$ = hot('-a--', { a: createProvisionalTechRecord });
-
-  //       // mock service call
-  //       jest.spyOn(techRecordHttpService, 'createProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord }));
-
-  //       // expect effect to return success action
-  //       expectObservable(effects.createProvisionalTechRecord$).toBe('---b', {
-  //         b: createProvisionalTechRecordSuccess({ vehicleTechRecords: technicalRecord })
-  //       });
-  //     });
-  //   });
-
-  //   it('should return an error message if not found', () => {
-  //     testScheduler.run(({ hot, cold, expectObservable }) => {
-  //       // mock action to trigger effect
-  //       actions$ = hot('-a--', { a: createProvisionalTechRecord });
-
-  //       // mock service call
-  //       const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
-  //       jest.spyOn(techRecordHttpService, 'createProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
-
-  //       expectObservable(effects.createProvisionalTechRecord$).toBe('---b', {
-  //         b: createProvisionalTechRecordFailure({
-  //           error: 'Unable to create a new provisional record null'
-  //         })
-  //       });
-  //     });
-  //   });
-  // });
 
   describe('updateTechRecords$', () => {
     it('should return a technical record on successful API call', () => {

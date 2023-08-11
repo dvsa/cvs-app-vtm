@@ -6,9 +6,6 @@ import {
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
-  createProvisionalTechRecord,
-  // createProvisionalTechRecordFailure,
-  // createProvisionalTechRecordSuccess,
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
@@ -118,51 +115,6 @@ describe('Vehicle Technical Record Reducer', () => {
       expect(newState.loading).toBeFalsy();
     });
   });
-  // TODO V3 do we need createprovisional any more?
-  // describe('createProvisionalTechRecord', () => {
-  //   it('should set the new vehicle tech records state after update', () => {
-  //     const state: TechnicalRecordServiceState = {
-  //       ...initialState,
-  //       vehicleTechRecord: {systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin'},
-  //       loading: true
-  //     };
-  //     const action = createProvisionalTechRecord({ systemNumber: '001' });
-  //     const newState = vehicleTechRecordReducer(state, action);
-
-  //     expect(state).toEqual(newState);
-  //     expect(state).not.toBe(newState);
-  //     expect(state.vehicleTechRecord).toEqual({systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin'});
-  //   });
-  // });
-
-  // describe('createProvisionalTechRecordSuccess', () => {
-  //   it('should set the new vehicle tech records state after update success', () => {
-  //     const oldRecord = {systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin'};
-  //     const newRecord = {systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin2'};
-
-  //     const state: TechnicalRecordServiceState = {
-  //       ...initialState,
-  //       vehicleTechRecord: oldRecord
-  //     };
-  //     const action = createProvisionalTechRecordSuccess({ vehicleTechRecords: [...newRecord] });
-  //     const newState = vehicleTechRecordReducer(state, action);
-
-  //     expect(state).not.toEqual(newState);
-  //     expect(newState.vehicleTechRecord).toEqual(newRecord);
-  //   });
-  // });
-
-  // describe('createProvisionalTechRecordFailure', () => {
-  //   it('should set error state', () => {
-  //     const error = 'fetching vehicle tech records failed';
-  //     const action = createProvisionalTechRecordFailure({ error });
-  //     const newState = vehicleTechRecordReducer(initialState, action);
-
-  //     expect(initialState).not.toEqual(newState);
-  //     expect(newState.error).toEqual(error);
-  //     expect(initialState).not.toBe(newState);
-  //   });
-  // });
 
   describe('updateTechRecords', () => {
     it('should set the new vehicle tech records state after update', () => {
