@@ -7,7 +7,7 @@ import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { clearAllSectionStates, selectTechRecord, updateEditingTechRecordCancel } from '@store/technical-records';
+import { clearAllSectionStates, updateEditingTechRecordCancel } from '@store/technical-records';
 import { Observable, Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 
 @Component({
@@ -54,13 +54,9 @@ export class EditTechRecordButtonComponent implements OnDestroy {
   }
 
   get isArchived$(): Observable<boolean> {
-    return this.store
-      .select(selectTechRecord)
-      .pipe(
-        map(
-          techRecord => !(techRecord?.techRecord_statusCode === StatusCodes.CURRENT || techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL)
-        )
-      );
+    return this.technicalRecordService.techRecord$.pipe(
+      map(techRecord => !(techRecord?.techRecord_statusCode === StatusCodes.CURRENT || techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL))
+    );
   }
 
   checkIfEditableReasonRequired() {

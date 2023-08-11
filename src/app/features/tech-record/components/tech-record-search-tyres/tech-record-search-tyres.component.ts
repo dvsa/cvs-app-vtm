@@ -14,7 +14,6 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess } from '@store/reference-data';
 import { selectSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
-import { selectTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { Observable, mergeMap, take } from 'rxjs';
@@ -42,12 +41,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>,
     private actions$: Actions
-  ) {
-    this.store
-      .select(selectTechRecord)
-      .pipe(take(1))
-      .subscribe(data => (this.vehicleTechRecord = data));
-  }
+  ) {}
 
   public form!: CustomFormGroup;
   public searchResults: Array<ReferenceDataTyre> | null = null;
@@ -98,6 +92,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     if (!this.viewableTechRecord) {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(data => (this.vehicleTechRecord = data));
   }
 
   get roles() {

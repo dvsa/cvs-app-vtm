@@ -10,7 +10,7 @@ import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.mod
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
+import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Subject, take, takeUntil } from 'rxjs';
 
