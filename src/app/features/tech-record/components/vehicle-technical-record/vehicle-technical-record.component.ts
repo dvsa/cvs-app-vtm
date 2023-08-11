@@ -144,7 +144,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   // TODO: V3 the update lambda should automatically create a provisional if the vehicle doesn't have one. It doesn't seem to be doing this at the moment
   handleSubmit(): void {
     this.summary.checkForms();
-    let recordToSend;
+    let recordToSend: V3TechRecordModel | undefined;
     if (!this.isInvalid) {
       this.store
         .select(editingTechRecord)
@@ -152,13 +152,15 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
         .subscribe(record => {
           recordToSend = record;
         });
-      if (this.editingReason === ReasonForEditing.CORRECTING_AN_ERROR) {
-        this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend }));
-      } else if (this.editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-        const isProvisional = this.recordHistory?.some(record => record.techRecord_statusCode === StatusCodes.PROVISIONAL);
-        isProvisional
-          ? this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend }))
-          : this.store.dispatch(updateTechRecord({ vehicleTechRecord: { ...recordToSend, techRecord_statusCode: StatusCodes.PROVISIONAL } }));
+      if (recordToSend) {
+        if (this.editingReason === ReasonForEditing.CORRECTING_AN_ERROR) {
+          this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend }));
+        } else if (this.editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+          const isProvisional = this.recordHistory?.some(record => record.techRecord_statusCode === StatusCodes.PROVISIONAL);
+          isProvisional
+            ? this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend }))
+            : this.store.dispatch(updateTechRecord({ vehicleTechRecord: { ...recordToSend, techRecord_statusCode: StatusCodes.PROVISIONAL } }));
+        }
       }
     }
   }
