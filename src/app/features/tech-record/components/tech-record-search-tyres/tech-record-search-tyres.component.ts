@@ -80,10 +80,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
     this.route.params.pipe(take(1)).subscribe(p => (this.params = p));
-    this.store
-      .select(selectTechRecord)
-      .pipe(take(1))
-      .subscribe(data => (this.viewableTechRecord = data));
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(data => (this.viewableTechRecord = data));
     this.referenceDataService
       .getTyreSearchReturn$()
       .pipe(take(1))
