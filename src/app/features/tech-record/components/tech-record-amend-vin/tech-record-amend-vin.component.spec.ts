@@ -125,9 +125,9 @@ describe('TechRecordChangeVrmComponent', () => {
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
 
-    it('should navigate away updateVinSuccess', fakeAsync(() => {
+    it('should navigate away updateTechRecordSuccess', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate');
-      jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+      jest.spyOn(router, 'navigate').mockImplementation();
 
       actions$.next(updateTechRecordSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } }));
       tick();

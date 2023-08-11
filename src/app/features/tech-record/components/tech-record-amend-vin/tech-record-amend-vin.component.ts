@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -18,7 +18,7 @@ import { Subject, take, takeUntil } from 'rxjs';
   selector: 'app-change-amend-vin',
   templateUrl: './tech-record-amend-vin.component.html'
 })
-export class AmendVinComponent implements OnDestroy {
+export class AmendVinComponent implements OnDestroy, OnInit {
   techRecord?: V3TechRecordModel;
   form: FormGroup;
   private destroy$ = new Subject<void>();
@@ -31,11 +31,6 @@ export class AmendVinComponent implements OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>
   ) {
-    this.store
-      .select(selectTechRecord)
-      .pipe(take(1))
-      .subscribe(record => (!record ? this.navigateBack() : (this.techRecord = record)));
-
     this.form = new FormGroup({
       vin: new CustomFormControl(
         {
@@ -48,10 +43,13 @@ export class AmendVinComponent implements OnDestroy {
         [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)]
       )
     });
-
-    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(newRecord => {
-      this.router.navigate([`/tech-records/${newRecord.vehicleTechRecord.systemNumber}/${newRecord.vehicleTechRecord.createdTimestamp}`]);
+    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
     });
+  }
+
+  ngOnInit(): void {
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(record => (!record ? this.navigateBack() : (this.techRecord = record)));
   }
 
   ngOnDestroy(): void {

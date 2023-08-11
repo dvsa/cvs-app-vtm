@@ -117,6 +117,7 @@ export class TechnicalRecordServiceEffects {
     this.actions$.pipe(
       ofType(updateTechRecord),
       switchMap(({ vehicleTechRecord }) => {
+        console.log('in here');
         return this.techRecordHttpService.updateTechRecords(vehicleTechRecord).pipe(
           map(vehicleTechRecord => updateTechRecordSuccess({ vehicleTechRecord })),
           catchError(error => of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))

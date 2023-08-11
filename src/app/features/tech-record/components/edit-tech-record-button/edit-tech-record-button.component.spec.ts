@@ -15,13 +15,13 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { clearError } from '@store/global-error/actions/global-error.actions';
-import { selectTechRecord, updateEditingTechRecordCancel, updateTechRecordSuccess } from '@store/technical-records';
+import { selectTechRecord, updateEditingTechRecordCancel } from '@store/technical-records';
 import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
 import { selectReasonsForAbandoning } from '@store/reference-data';
 
-const mockTechRecordService = {git stash
-  techRecord$: of({})
+let mockTechRecordService = {
+  techRecord$: of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT })
 };
 
 let component: EditTechRecordButtonComponent;
@@ -52,7 +52,7 @@ describe('EditTechRecordButtonComponent', () => {
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
         { provide: APP_BASE_HREF, useValue: '/' },
-        TechnicalRecordService
+        { provide: TechnicalRecordService, useValue: mockTechRecordService }
       ],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule]
     }).compileComponents();
@@ -60,7 +60,6 @@ describe('EditTechRecordButtonComponent', () => {
 
   beforeEach(() => {
     technicalRecordService = TestBed.inject(TechnicalRecordService);
-    // jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(mockTechnicalRecordObservable);
     fixture = TestBed.createComponent(EditTechRecordButtonComponent);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
@@ -95,12 +94,6 @@ describe('EditTechRecordButtonComponent', () => {
   describe('when user clicks edit button', () => {
     it('component should navigate away for current amendments', () => {
       jest.spyOn(router, 'navigate');
-      store.overrideSelector(selectTechRecord, {
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
-        vin: 'testVin',
-        techRecord_statusCode: StatusCodes.PROVISIONAL
-      });
       jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
 
       fixture.detectChanges();
@@ -110,12 +103,6 @@ describe('EditTechRecordButtonComponent', () => {
     });
     it('component should navigate away for notifiable alterations', () => {
       jest.spyOn(router, 'navigate');
-      store.overrideSelector(selectTechRecord, {
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
-        vin: 'testVin',
-        techRecord_statusCode: StatusCodes.CURRENT
-      });
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
