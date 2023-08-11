@@ -181,7 +181,6 @@ describe('TestRecordComponent', () => {
       jest
         .spyOn(testRecordsService, 'testResult$', 'get')
         .mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
-      jest.spyOn(techRecordService, 'selectedVehicleTechRecord$', 'get').mockReturnValue(of(undefined));
     });
 
     it('should render the banner if the test type id is not supported', waitForAsync(() => {
