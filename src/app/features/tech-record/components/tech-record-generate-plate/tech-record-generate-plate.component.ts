@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
-import { generatePlate, generatePlateSuccess, selectTechRecord } from '@store/technical-records';
+import { generatePlate, generatePlateSuccess } from '@store/technical-records';
 import { Observable, map, take, tap } from 'rxjs';
 
 @Component({

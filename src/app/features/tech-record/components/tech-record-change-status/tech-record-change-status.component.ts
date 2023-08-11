@@ -8,7 +8,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { archiveTechRecord, archiveTechRecordSuccess, promoteTechRecord, promoteTechRecordSuccess, selectTechRecord } from '@store/technical-records';
+import { archiveTechRecord, archiveTechRecordSuccess, promoteTechRecord, promoteTechRecordSuccess } from '@store/technical-records';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({

@@ -5,17 +5,10 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MultiOptions } from '@forms/models/options.model';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
-import {
-  EuVehicleCategories,
-  StatusCodes,
-  TechRecordModel,
-  V3TechRecordModel,
-  VehicleTechRecordModel,
-  VehicleTypes
-} from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { changeVehicleType, selectTechRecord } from '@store/technical-records';
+import { changeVehicleType } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { take } from 'rxjs';
 
