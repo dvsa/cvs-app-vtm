@@ -180,7 +180,10 @@ export class CustomValidators {
   }
 
   static email(): ValidatorFn {
-    return this.customPattern(['^[-\\w.\\+]+@[-\\w]+\\.[A-Za-z]{2,}$', 'is an invalid format. An email must include an @ symbol and a .']);
+    return this.customPattern([
+      '^[-\\w.\\+]+@[-\\w]+\\.[A-Za-z]{2,}$',
+      'is an invalid format. An email must include an @ symbol, a full stop and end with two or more characters'
+    ]);
   }
 
   static customPattern([regEx, message]: string[]): ValidatorFn {
