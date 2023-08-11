@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestType } from '@api/test-types';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
-import { initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { TestTypeSelectComponent } from '../../../components/test-type-select/test-type-select.component';
 import { CreateTestTypeComponent } from './create-test-type.component';
@@ -17,7 +17,7 @@ describe('CreateTestTypeComponent', () => {
   let fixture: ComponentFixture<CreateTestTypeComponent>;
   let router: Router;
   let route: ActivatedRoute;
-  let techRecordService: TechnicalRecordService;
+  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -35,10 +35,10 @@ describe('CreateTestTypeComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateTestTypeComponent);
-    techRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
+    store = TestBed.inject(MockStore);
 
     jest.spyOn(window, 'alert').mockImplementation();
 
@@ -62,21 +62,27 @@ describe('CreateTestTypeComponent', () => {
   describe('AfterContentInit', () => {
     const testCases = [
       {
-        record: { recordCompleness: 'foo' },
+        record: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_recordCompleteness: 'foo' },
         message:
           'Incomplete vehicle record.\n\n' +
           'This vehicle does not have enough data to be tested. ' +
           'Call Technical Support to correct this record and use SAR to test this vehicle.'
       },
       {
-        record: { hiddenInVta: true },
+        record: {
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testVin',
+          techRecord_hiddenInVta: true,
+          techRecord_recordCompleteness: 'complete'
+        },
         message: 'Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.'
       }
     ];
 
     it.each(testCases)('should get the vehicle record and alert with the appropriate message', ({ record, message }) => {
       jest.resetAllMocks();
-      const mockTechRecordSpy = jest.spyOn(techRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(record as TechRecordModel));
+      const mockTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(record));
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation();
       const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
       component.ngAfterContentInit();

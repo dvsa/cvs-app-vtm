@@ -2,7 +2,6 @@ import { AfterContentInit, ChangeDetectionStrategy, Component } from '@angular/c
 import { ActivatedRoute, Router } from '@angular/router';
 import { TestType } from '@api/test-types';
 import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/.';
 import { clearAllSectionStates, selectTechRecord } from '@store/technical-records';
 import { contingencyTestTypeSelected } from '@store/test-records';
@@ -14,19 +13,14 @@ import { take } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateTestTypeComponent implements AfterContentInit {
-  constructor(
-    private store: Store<State>,
-    private router: Router,
-    private route: ActivatedRoute,
-    private technicalRecordService: TechnicalRecordService
-  ) {}
+  constructor(private store: Store<State>, private router: Router, private route: ActivatedRoute) {}
 
   ngAfterContentInit(): void {
     this.store
       .select(selectTechRecord)
       .pipe(take(1))
       .subscribe(techRecord => {
-        if ((techRecord as any)?.hiddenInVta) {
+        if ((techRecord as any)?.techRecord_hiddenInVta) {
           alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
 
           this.router.navigate(['../../..'], { relativeTo: this.route });
