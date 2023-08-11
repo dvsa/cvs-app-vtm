@@ -58,8 +58,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.store
-      .select(selectTechRecord)
+    this.technicalRecordService.techRecord$
       .pipe(
         map(record => {
           if (!record) {
