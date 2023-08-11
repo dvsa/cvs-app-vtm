@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -24,7 +24,7 @@ import { take } from 'rxjs';
   templateUrl: './tech-record-change-type.component.html',
   styleUrls: ['./tech-record-change-type.component.scss']
 })
-export class ChangeVehicleTypeComponent {
+export class ChangeVehicleTypeComponent implements OnInit {
   techRecord?: V3TechRecordModel;
 
   form: FormGroup = new FormGroup({
@@ -41,15 +41,14 @@ export class ChangeVehicleTypeComponent {
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
-  ) {
-    this.globalErrorService.clearErrors();
+  ) {}
 
-    this.store
-      .select(selectTechRecord)
+  ngOnInit(): void {
+    this.globalErrorService.clearErrors();
+    this.technicalRecordService.techRecord$
       .pipe(take(1))
       .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
   }
-
   get makeAndModel(): string {
     const c = this.techRecord;
     // TODO: V3 remove as any - PSV?
