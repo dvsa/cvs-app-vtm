@@ -79,7 +79,13 @@ export const TrlPurchasers: FormNode = {
           value: '',
           width: FormNodeWidth.XL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 255 }],
+          validators: [
+            { name: ValidatorNames.MaxLength, args: 255 },
+            {
+              name: ValidatorNames.CustomPattern,
+              args: ['^[-\\w.]+@[-\\w]+\\.[A-Za-z]{2,}$', 'is an invalid format. An email must include an @ symbol and a .']
+            }
+          ],
           customId: 'purchaserEmailAddress'
         },
         {

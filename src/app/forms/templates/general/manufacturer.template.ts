@@ -71,7 +71,13 @@ export const ManufacturerTemplate: FormNode = {
           label: 'Email address',
           type: FormNodeTypes.CONTROL,
           width: FormNodeWidth.XL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 255 }],
+          validators: [
+            { name: ValidatorNames.MaxLength, args: 255 },
+            {
+              name: ValidatorNames.CustomPattern,
+              args: ['^[-\\w.]+@[-\\w]+\\.[A-Za-z]{2,}$', 'is an invalid format. An email must include an @ symbol and a .']
+            }
+          ],
           customId: 'manufacturerEmailAddress'
         },
         {
