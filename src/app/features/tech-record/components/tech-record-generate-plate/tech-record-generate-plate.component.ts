@@ -22,7 +22,7 @@ export class GeneratePlateComponent implements OnInit {
     reason: new CustomFormControl({ name: 'reason', label: 'Reason for generating plate', type: FormNodeTypes.CONTROL }, '', [Validators.required])
   });
 
-  emailAddress$: Observable<string | undefined>;
+  emailAddress$: Observable<string | undefined | null>;
 
   constructor(
     private actions$: Actions,
@@ -37,7 +37,7 @@ export class GeneratePlateComponent implements OnInit {
       tap(record => {
         if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') this.navigateBack();
       }),
-      map(record => record?.techRecord_applicantDetails_emailAddress ?? undefined)
+      map(record => record?.techRecord_applicantDetails_emailAddress)
     );
   }
 

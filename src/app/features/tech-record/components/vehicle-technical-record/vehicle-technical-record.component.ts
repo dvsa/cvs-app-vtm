@@ -3,23 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import {
-  ReasonForEditing,
-  StatusCodes,
-  TechRecordModel,
-  V3TechRecordModel,
-  VehicleTechRecordModel,
-  VehicleTypes,
-  Vrm
-} from '@models/vehicle-tech-record.model';
-import { Store, select } from '@ngrx/store';
+import { ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { editingTechRecord, selectTechRecordHistory, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, Subject, take, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
-import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-vehicle-technical-record[vehicle]',
@@ -28,7 +20,7 @@ import { Actions, ofType } from '@ngrx/effects';
 })
 export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
-  @Input() vehicle!: V3TechRecordModel;
+  @Input() vehicle?: V3TechRecordModel;
 
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
@@ -54,20 +46,20 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
     this.editingReason = this.activatedRoute.snapshot.data['reason'];
-
-    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(vehicleTechRecord => {
-      this.router.navigate([
-        `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`
-      ]);
-    });
   }
   ngOnDestroy(): void {
     this.destroy$.next;
     this.destroy$.complete();
   }
   ngOnInit(): void {
-    const hasProvisionalRecord = this.vehicle.techRecord_statusCode === StatusCodes.PROVISIONAL;
+    const hasProvisionalRecord = this.vehicle?.techRecord_statusCode === StatusCodes.PROVISIONAL;
     const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
+
+    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(vehicleTechRecord => {
+      this.router.navigate([
+        `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`
+      ]);
+    });
 
     if (isProvisionalUrl && !hasProvisionalRecord) {
       this.router.navigate(['../'], { relativeTo: this.route });
@@ -80,7 +72,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicle.primaryVrm;
+    return this.vehicle?.primaryVrm;
   }
 
   get otherVrms(): Vrm[] | undefined {
@@ -152,7 +144,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   // TODO: V3 the update lambda should automatically create a provisional if the vehicle doesn't have one. It doesn't seem to be doing this at the moment
   handleSubmit(): void {
     this.summary.checkForms();
-    let recordToSend: any;
+    let recordToSend;
     if (!this.isInvalid) {
       this.store
         .select(editingTechRecord)
@@ -161,11 +153,11 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
           recordToSend = record;
         });
       if (this.editingReason === ReasonForEditing.CORRECTING_AN_ERROR) {
-        this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend! }));
+        this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend }));
       } else if (this.editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
         const isProvisional = this.recordHistory?.some(record => record.techRecord_statusCode === StatusCodes.PROVISIONAL);
         isProvisional
-          ? this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend! }))
+          ? this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend }))
           : this.store.dispatch(updateTechRecord({ vehicleTechRecord: { ...recordToSend, techRecord_statusCode: StatusCodes.PROVISIONAL } }));
       }
     }

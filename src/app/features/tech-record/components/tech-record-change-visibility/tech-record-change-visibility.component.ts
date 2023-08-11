@@ -55,7 +55,6 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
       .select(techRecord)
       .pipe(take(1))
       .subscribe(record => {
-        console.log(record);
         this.techRecord = record;
       });
   }

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
-import { Observable, take } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-history',
@@ -12,7 +12,7 @@ import { Observable, take } from 'rxjs';
   styleUrls: ['./tech-record-history.component.scss']
 })
 export class TechRecordHistoryComponent implements OnInit {
-  @Input() currentTechRecord!: V3TechRecordModel;
+  @Input() currentTechRecord?: V3TechRecordModel;
   recordHistory$?: Observable<V3TechRecordModel[] | undefined>;
   recordHistory?: V3TechRecordModel[];
 
@@ -22,12 +22,16 @@ export class TechRecordHistoryComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef, private techRecordService: TechnicalRecordService, private store: Store) {}
 
   ngOnInit(): void {
-    this.store.dispatch(getBySystemNumber({ systemNumber: this.currentTechRecord.systemNumber }));
-    this.recordHistory$ = this.store.select(selectTechRecordHistory);
-    this.recordHistory$.subscribe(records => {
-      //TODO: V3 this only sorts by created timestamp as its all that's available at the moment needs to sort by last updated when that becomes available
-      this.recordHistory = records?.sort((a, b) => (a.createdTimestamp < b.createdTimestamp ? 1 : a.createdTimestamp > b.createdTimestamp ? -1 : 0));
-    });
+    if (this.currentTechRecord) {
+      this.store.dispatch(getBySystemNumber({ systemNumber: this.currentTechRecord?.systemNumber }));
+      this.recordHistory$ = this.store.select(selectTechRecordHistory);
+      this.recordHistory$.subscribe(records => {
+        //TODO: V3 this only sorts by created timestamp as its all that's available at the moment needs to sort by last updated when that becomes available
+        this.recordHistory = records?.sort((a, b) =>
+          a.createdTimestamp < b.createdTimestamp ? 1 : a.createdTimestamp > b.createdTimestamp ? -1 : 0
+        );
+      });
+    }
   }
 
   get techRecords() {
@@ -55,11 +59,11 @@ export class TechRecordHistoryComponent implements OnInit {
   summaryLinkUrl(techRecord: V3TechRecordModel) {
     switch (techRecord.techRecord_statusCode) {
       case StatusCodes.PROVISIONAL:
-        return `/tech-records/${this.currentTechRecord.systemNumber}/${techRecord.createdTimestamp}/provisional`;
+        return `/tech-records/${this.currentTechRecord?.systemNumber}/${techRecord.createdTimestamp}/provisional`;
       case StatusCodes.ARCHIVED:
-        return `/tech-records/${this.currentTechRecord.systemNumber}/${techRecord.createdTimestamp}/historic/`;
+        return `/tech-records/${this.currentTechRecord?.systemNumber}/${techRecord.createdTimestamp}/historic/`;
       default:
-        return `/tech-records/${this.currentTechRecord.systemNumber}/${techRecord.createdTimestamp}`;
+        return `/tech-records/${this.currentTechRecord?.systemNumber}/${techRecord.createdTimestamp}`;
     }
   }
 }
