@@ -1,7 +1,5 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { EmailValidator } from '@angular/forms';
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
+import { FormNode, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const ApplicantDetails: FormNode = {
   name: 'techRecord',
