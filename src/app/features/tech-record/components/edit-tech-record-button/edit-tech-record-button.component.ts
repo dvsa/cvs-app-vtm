@@ -14,7 +14,7 @@ import { Observable, Subject, distinctUntilChanged, map, takeUntil, withLatestFr
   selector: 'app-edit-tech-record-button',
   templateUrl: './edit-tech-record-button.component.html'
 })
-export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
+export class EditTechRecordButtonComponent implements OnDestroy {
   @Input() isEditing = false;
   @Input() isDirty = false;
   @Input() customId = '';
@@ -34,19 +34,19 @@ export class EditTechRecordButtonComponent implements OnInit, OnDestroy {
     private routerService: RouterService
   ) {}
 
-  ngOnInit() {
-    //TODO: V3 is this needed? causing issues when updating record feels like the logic should be handled in the parent
-    // this.actions$
-    //   .pipe(
-    //     ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
-    //     withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'),this.routerService.getRouteNestedParam$('createdTimestamp'), this.store.select(selectTechRecord)),
-    //     takeUntil(this.destroy$)
-    //   )
-    //   .subscribe(([, systemNumber, createdTimestamp, techRecord]) => {
-    //     const routeSuffix = techRecord?.techRecord_statusCode === StatusCodes.CURRENT ? '' : '/provisional';
-    //     this.router.navigateByUrl(`/tech-records/${systemNumber}/${createdTimestamp}/${routeSuffix}`);
-    //   });
-  }
+  // ngOnInit() {
+  //TODO: V3 is this needed? causing issues when updating record feels like the logic should be handled in the parent
+  // this.actions$
+  //   .pipe(
+  //     ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
+  //     withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'),this.routerService.getRouteNestedParam$('createdTimestamp'), this.store.select(selectTechRecord)),
+  //     takeUntil(this.destroy$)
+  //   )
+  //   .subscribe(([, systemNumber, createdTimestamp, techRecord]) => {
+  //     const routeSuffix = techRecord?.techRecord_statusCode === StatusCodes.CURRENT ? '' : '/provisional';
+  //     this.router.navigateByUrl(`/tech-records/${systemNumber}/${createdTimestamp}/${routeSuffix}`);
+  //   });
+  // }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
