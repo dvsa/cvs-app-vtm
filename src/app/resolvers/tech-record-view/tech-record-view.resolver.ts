@@ -4,13 +4,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import {
-  getBySystemNumber,
-  getBySystemNumberFailure,
-  getBySystemNumberSuccess,
-  getTechRecordV3,
-  getTechRecordV3Success
-} from '@store/technical-records';
+import { getTechRecordV3, getTechRecordV3Success, getTechRecordV3Failure } from '@store/technical-records';
 import { fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
 import { count, map, Observable, take } from 'rxjs';
 
@@ -26,7 +20,7 @@ export class TechRecordViewResolver implements Resolve<boolean> {
     });
 
     return this.action$.pipe(
-      ofType(getTechRecordV3Success, fetchTestResultsBySystemNumberSuccess, getBySystemNumberFailure, fetchTestResultsBySystemNumberFailed),
+      ofType(getTechRecordV3Success, fetchTestResultsBySystemNumberSuccess, getTechRecordV3Failure, fetchTestResultsBySystemNumberFailed),
       take(2),
       count(action => action.type === getTechRecordV3Success.type || action.type === fetchTestResultsBySystemNumberSuccess.type),
       map(count => (count === 2 ? true : false))

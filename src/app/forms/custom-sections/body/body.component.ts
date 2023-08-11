@@ -96,7 +96,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get bodyTypes(): MultiOptions {
-    const map = vehicleBodyTypeCodeMap.get((this.techRecord as any).techRecord_vehicleType);
+    const map = vehicleBodyTypeCodeMap.get(this.techRecord.techRecord_vehicleType as VehicleTypes);
     const values = [...map!.values()];
     return getOptionsFromEnum(values.sort());
   }

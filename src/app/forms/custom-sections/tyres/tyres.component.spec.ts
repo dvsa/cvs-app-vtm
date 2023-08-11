@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { createMockPsv } from '@mocks/psv-record.mock';
-import { FitmentCode, SpeedCategorySymbol, Tyres } from '@models/vehicle-tech-record.model';
+import { FitmentCode, SpeedCategorySymbol, Tyres, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -32,7 +32,7 @@ describe('TyresComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TyresComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+    component.vehicleTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.PSV };
     fixture.detectChanges();
     spy = jest.spyOn(component, 'addTyreToTechRecord');
   });

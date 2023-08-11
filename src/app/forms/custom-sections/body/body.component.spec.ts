@@ -11,6 +11,7 @@ import { initialAppState } from '@store/index';
 import { BodyComponent } from './body.component';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 
 describe('BodyComponent', () => {
   let component: BodyComponent;
@@ -32,7 +33,7 @@ describe('BodyComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BodyComponent);
     component = fixture.componentInstance;
-    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.PSV };
     fixture.detectChanges();
   });
 
