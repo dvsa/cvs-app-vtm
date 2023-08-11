@@ -41,12 +41,9 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.store
-      .select(selectTechRecord)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(record => {
-        this.techRecord = record;
-      });
+    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
+      this.techRecord = record;
+    });
 
     this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(newRecord => {
       this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);

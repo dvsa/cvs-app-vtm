@@ -7,13 +7,12 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions, OnIdentifyEffects, ofType } from '@ngrx/effects';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { amendVrm, amendVrmSuccess, selectTechRecord } from '@store/technical-records';
+import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { cloneDeep } from 'lodash';
 import { Subject, catchError, filter, of, switchMap, take, takeUntil, throwError } from 'rxjs';
 
 @Component({
