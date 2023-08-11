@@ -71,11 +71,11 @@ describe('VehicleTechnicalRecordComponent', () => {
           provide: TechnicalRecordService,
           useValue: {
             get viewableTechRecord$() {
-              return of(mockVehicleTechnicalRecord().techRecord[2]);
+              return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT });
             },
             updateEditingTechRecord: () => {},
             get editableTechRecord$() {
-              return of(mockVehicleTechnicalRecord().techRecord[2]);
+              return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' });
             },
             get sectionStates$() {
               return of(['TEST_SECTION']);
@@ -121,7 +121,7 @@ describe('VehicleTechnicalRecordComponent', () => {
   });
 
   it('should get current tech record', () => {
-    component.vehicle.techRecord = component.vehicle.techRecord.filter(record => record.statusCode === StatusCodes.CURRENT);
+    component.vehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT };
     fixture.detectChanges();
 
     component.currentTechRecord$?.subscribe(record => expect(record).toBeTruthy());

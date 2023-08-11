@@ -30,7 +30,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
   @Input() vehicle!: V3TechRecordModel;
 
-  currentTechRecord$: Observable<V3TechRecordModel | undefined>;
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
 
@@ -54,12 +53,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
     this.editingReason = this.activatedRoute.snapshot.data['reason'];
-    this.currentTechRecord$ = this.technicalRecordService.techRecord$.pipe(
-      tap(viewableTechRecord => {
-        this.isCurrent = viewableTechRecord?.techRecord_statusCode === StatusCodes.CURRENT;
-        this.isArchived = viewableTechRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
-      })
-    );
+
     this.actions$.pipe(ofType(updateTechRecordSuccess)).subscribe(newRecord => {
       this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);
     });
