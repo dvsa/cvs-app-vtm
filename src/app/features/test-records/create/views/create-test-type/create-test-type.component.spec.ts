@@ -18,6 +18,7 @@ describe('CreateTestTypeComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
   let store: MockStore<State>;
+  let techRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -35,6 +36,7 @@ describe('CreateTestTypeComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateTestTypeComponent);
+    techRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
@@ -82,7 +84,7 @@ describe('CreateTestTypeComponent', () => {
 
     it.each(testCases)('should get the vehicle record and alert with the appropriate message', ({ record, message }) => {
       jest.resetAllMocks();
-      const mockTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(record));
+      const mockTechRecordSpy = jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(record));
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation();
       const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
       component.ngAfterContentInit();
