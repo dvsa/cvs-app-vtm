@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -7,7 +7,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions, OnIdentifyEffects, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -21,7 +21,7 @@ import { Subject, catchError, filter, of, switchMap, take, takeUntil, throwError
   templateUrl: './tech-record-amend-vrm.component.html',
   styleUrls: ['./tech-record-amend-vrm.component.scss']
 })
-export class AmendVrmComponent implements OnDestroy {
+export class AmendVrmComponent implements OnDestroy, OnInit {
   techRecord?: V3TechRecordModel;
 
   form = new FormGroup({
@@ -48,16 +48,15 @@ export class AmendVrmComponent implements OnDestroy {
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
-  ) {
-    this.store
-      .select(selectTechRecord)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(record => {
-        if (record?.techRecord_statusCode === 'archived') {
-          return this.navigateBack();
-        }
-        this.techRecord = record;
-      });
+  ) {}
+
+  ngOnInit(): void {
+    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
+      if (record?.techRecord_statusCode === 'archived') {
+        return this.navigateBack();
+      }
+      this.techRecord = record;
+    });
 
     this.actions$
       .pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$))

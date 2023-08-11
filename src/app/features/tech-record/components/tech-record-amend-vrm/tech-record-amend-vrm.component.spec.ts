@@ -110,7 +110,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
-
+    //TODO moved from constructor causes this test to fail
     it('should navigate to a new record on updateTechRecordsSuccess', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
