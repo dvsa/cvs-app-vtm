@@ -179,6 +179,10 @@ export class CustomValidators {
     return this.customPattern(['^\\d*$', 'must be a whole number']);
   }
 
+  static email(): ValidatorFn {
+    return this.customPattern(['^[-\\w.\\+]+@[-\\w]+\\.[A-Za-z]{2,}$', 'is an invalid format. An email must include an @ symbol and a .']);
+  }
+
   static customPattern([regEx, message]: string[]): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) {
