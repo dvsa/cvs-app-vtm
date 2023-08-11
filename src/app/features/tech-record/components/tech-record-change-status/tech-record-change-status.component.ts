@@ -3,23 +3,13 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import {
-  archiveTechRecord,
-  archiveTechRecordSuccess,
-  promoteTechRecord,
-  promoteTechRecordSuccess,
-  selectTechRecord,
-  updateTechRecord,
-  updateTechRecordSuccess
-} from '@store/technical-records';
-import { cloneDeep } from 'lodash';
-import { Observable, Subject, Subscription, take, takeUntil } from 'rxjs';
+import { archiveTechRecord, archiveTechRecordSuccess, promoteTechRecord, promoteTechRecordSuccess, selectTechRecord } from '@store/technical-records';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-status',
@@ -47,12 +37,6 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
-    this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), take(1)).subscribe(newRecord => {
-      this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);
-
-      this.technicalRecordService.clearEditingTechRecord();
-    });
-
     this.isProvisional = this.router.url.includes('provisional');
   }
 
@@ -64,7 +48,13 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
         this.techRecord = record;
       });
 
-    this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
+    this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(newRecord => {
+      this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);
+
+      this.technicalRecordService.clearEditingTechRecord();
+    });
+
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => (this.isPromotion = params.get('to') === 'current'));
   }
 
   ngOnDestroy(): void {

@@ -3,15 +3,14 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { TechRecordModel, V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { selectTechRecord, techRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
+import { techRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
-import { Observable, Subject, Subscription, take, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-visibility',

@@ -1,14 +1,14 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { clearAllSectionStates, selectTechRecord, updateEditingTechRecordCancel, updateTechRecordSuccess } from '@store/technical-records';
-import { Observable, Subject, distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs';
+import { clearAllSectionStates, selectTechRecord, updateEditingTechRecordCancel } from '@store/technical-records';
+import { Observable, Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-edit-tech-record-button',

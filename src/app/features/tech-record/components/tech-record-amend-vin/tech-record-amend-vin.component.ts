@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -103,7 +103,6 @@ export class AmendVinComponent implements OnDestroy {
 
     if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
       record.techRecord_reasonForCreation = 'Vin changed';
-      console.log(record);
       this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }));
     }
   }
