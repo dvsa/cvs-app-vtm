@@ -12,16 +12,10 @@ import {
   VehicleTypes,
   Vrm
 } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import {
-  createProvisionalTechRecord,
-  editingTechRecord,
-  selectTechRecordHistory,
-  updateTechRecord,
-  updateTechRecordSuccess
-} from '@store/technical-records';
+import { editingTechRecord, selectTechRecordHistory, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
@@ -38,6 +32,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
+  recordHistory?: V3TechRecordModel[];
 
   isCurrent = false;
   isArchived = false;
@@ -77,6 +72,11 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     if (isProvisionalUrl && !hasProvisionalRecord) {
       this.router.navigate(['../'], { relativeTo: this.route });
     }
+
+    this.store
+      .select(selectTechRecordHistory)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(history => (this.recordHistory = history));
   }
 
   get currentVrm(): string | undefined {
@@ -160,7 +160,14 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
         .subscribe(record => {
           recordToSend = record;
         });
-      this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend! }));
+      if (this.editingReason === ReasonForEditing.CORRECTING_AN_ERROR) {
+        this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend! }));
+      } else if (this.editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+        const isProvisional = this.recordHistory?.some(record => record.techRecord_statusCode === StatusCodes.PROVISIONAL);
+        isProvisional
+          ? this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend! }))
+          : this.store.dispatch(updateTechRecord({ vehicleTechRecord: { ...recordToSend, techRecord_statusCode: StatusCodes.PROVISIONAL } }));
+      }
     }
   }
 }

@@ -17,10 +17,6 @@ export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`,
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
 export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord');
 
-export const createProvisionalTechRecord = createAction(`${prefix} createProvisionalTechRecord`, props<{ systemNumber: string }>());
-export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
-export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
-
 export const updateTechRecord = createAction(`${prefix} updateTechRecords`, props<{ vehicleTechRecord: V3TechRecordModel }>());
 export const updateTechRecordSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordFailure = createOutcomeAction('updateTechRecords');

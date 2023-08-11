@@ -17,9 +17,6 @@ import {
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
-  createProvisionalTechRecord,
-  createProvisionalTechRecordFailure,
-  createProvisionalTechRecordSuccess,
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
@@ -80,10 +77,6 @@ export const vehicleTechRecordReducer = createReducer(
   on(createVehicleRecord, defaultArgs),
   on(createVehicleRecordSuccess, successArgs),
   on(createVehicleRecordFailure, state => ({ ...state, loading: false })),
-
-  // on(createProvisionalTechRecord, defaultArgs),
-  // on(createProvisionalTechRecordSuccess, successArgs),
-  // on(createProvisionalTechRecordFailure, updateFailureArgs),
 
   on(updateTechRecord, defaultArgs),
   on(updateTechRecordSuccess, successArgs),

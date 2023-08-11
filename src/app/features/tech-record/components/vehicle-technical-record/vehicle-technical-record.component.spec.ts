@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule } from '@api/test-results';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { ReasonForEditing, StatusCodes, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -15,8 +15,6 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/index';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { createProvisionalTechRecord, updateTechRecord } from '@store/technical-records';
 import { of } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
@@ -24,11 +22,13 @@ import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-s
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
+import { updateTechRecord } from '@store/technical-records';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
   let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;
   let store: MockStore<State>;
+  let techRecord: V3TechRecordModel;
 
   @Component({})
   class TechRecordSummaryStubComponent {
@@ -125,46 +125,48 @@ describe('VehicleTechnicalRecordComponent', () => {
   // });
 
   describe('handleSubmit', () => {
-    // V3 if the backend works correctly I'm not sure we really need to say its a notifiable or correcting an error?
-    // describe('correcting an error', () => {
-    //   beforeEach(() => {
-    //     component.editingReason = ReasonForEditing.CORRECTING_AN_ERROR;
-    //     fixture.detectChanges();
-    //     component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
-    //   });
-    //   it('should update the current for a valid form', fakeAsync(() => {
-    //     const dispatchSpy = jest.spyOn(store, 'dispatch');
-    //     tick();
-    //     component.handleSubmit();
-    //     expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ systemNumber: component.vehicle.systemNumber }));
-    //   }));
-    // });
-    // describe('notifiable alteration', () => {
-    //   beforeEach(() => {
-    //     component.editingReason = ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED;
-    //     fixture.detectChanges();
-    //     component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
-    //   });
-    //   it('should dispatch updateTechRecords with oldStatusCode to archive the prosional', fakeAsync(() => {
-    //     const dispatchSpy = jest.spyOn(store, 'dispatch');
-    //     tick();
-    //     component.handleSubmit();
-    //     expect(dispatchSpy).toHaveBeenCalledWith(
-    //       updateTechRecord({
-    //         systemNumber: component.vehicle.systemNumber,
-    //         recordToArchiveStatus: StatusCodes.PROVISIONAL,
-    //         newStatus: StatusCodes.PROVISIONAL
-    //       })
-    //     );
-    //   }));
-    //   it('should dispatch updateTechRecords to create a new provisional when one isnt present', fakeAsync(() => {
-    //     const dispatchSpy = jest.spyOn(store, 'dispatch');
-    //     //remove provisional
-    //     component.vehicle.techRecord.splice(0, 1);
-    //     tick();
-    //     component.handleSubmit();
-    //     expect(dispatchSpy).toHaveBeenCalledWith(createProvisionalTechRecord({ systemNumber: component.vehicle.systemNumber }));
-    //   }));
-    // });
+    describe('correcting an error', () => {
+      beforeEach(() => {
+        component.editingReason = ReasonForEditing.CORRECTING_AN_ERROR;
+        fixture.detectChanges();
+        component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
+        techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+      });
+      it('should update the current for a valid form', fakeAsync(() => {
+        const storeSpy = jest.spyOn(store, 'select').mockReturnValue(of(techRecord));
+
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        tick();
+        component.handleSubmit();
+        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ vehicleTechRecord: techRecord }));
+      }));
+    });
+    describe('notifiable alteration', () => {
+      beforeEach(() => {
+        component.editingReason = ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED;
+        fixture.detectChanges();
+        component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
+        techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+      });
+      it('should dispatch updateTechRecords with editingTechRecord unchanged', fakeAsync(() => {
+        const storeSpy = jest.spyOn(store, 'select').mockReturnValue(of(techRecord));
+        component.recordHistory = [{ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL }];
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        tick();
+        component.handleSubmit();
+        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ vehicleTechRecord: techRecord }));
+      }));
+      it('should dispatch updateTechRecords to create a new provisional when one isnt present', fakeAsync(() => {
+        const storeSpy = jest.spyOn(store, 'select').mockReturnValue(of(techRecord));
+        component.recordHistory = [{ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED }];
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+        tick();
+        component.handleSubmit();
+        expect(dispatchSpy).toHaveBeenCalledWith(
+          updateTechRecord({ vehicleTechRecord: { ...techRecord, techRecord_statusCode: StatusCodes.PROVISIONAL } })
+        );
+      }));
+    });
   });
 });

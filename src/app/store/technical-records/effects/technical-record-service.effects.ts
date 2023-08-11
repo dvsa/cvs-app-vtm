@@ -19,9 +19,6 @@ import {
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
   changeVehicleType,
-  // createProvisionalTechRecord,
-  // createProvisionalTechRecordFailure,
-  // createProvisionalTechRecordSuccess,
   createVehicle,
   createVehicleRecord,
   createVehicleRecordFailure,
@@ -115,19 +112,6 @@ export class TechnicalRecordServiceEffects {
       })
     )
   );
-  //V3 do we still need this?
-  // createProvisionalTechRecord$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(createProvisionalTechRecord),
-  //     withLatestFrom(this.technicalRecordService.techRecord$),
-  //     switchMap(([action, record]) =>
-  //       this.techRecordHttpService.createProvisionalTechRecord(record!).pipe(
-  //         map(vehicleTechRecord => createProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
-  //         catchError(error => of(createProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createProvisionalTechRecord') })))
-  //       )
-  //     )
-  //   )
-  // );
 
   updateTechRecord$ = createEffect(() =>
     this.actions$.pipe(

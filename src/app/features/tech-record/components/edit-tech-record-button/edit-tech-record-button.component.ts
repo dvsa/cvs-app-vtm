@@ -7,13 +7,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import {
-  clearAllSectionStates,
-  createProvisionalTechRecordSuccess,
-  selectTechRecord,
-  updateEditingTechRecordCancel,
-  updateTechRecordSuccess
-} from '@store/technical-records';
+import { clearAllSectionStates, selectTechRecord, updateEditingTechRecordCancel, updateTechRecordSuccess } from '@store/technical-records';
 import { Observable, Subject, distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
