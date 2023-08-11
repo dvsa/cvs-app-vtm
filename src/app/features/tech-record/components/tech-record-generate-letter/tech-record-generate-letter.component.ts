@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { LETTER_TYPES } from '@forms/templates/general/letter-types';
-import { LettersOfAuth, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, approvalType } from '@models/vehicle-tech-record.model';
+import { LettersOfAuth, V3TechRecordModel, approvalType } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { generateLetter, generateLetterSuccess, selectTechRecord } from '@store/technical-records';
+import { generateLetter, generateLetterSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { take } from 'rxjs';
 
@@ -19,7 +19,7 @@ import { take } from 'rxjs';
   templateUrl: './tech-record-generate-letter.component.html',
   styleUrls: ['./tech-record-generate-letter.component.scss']
 })
-export class GenerateLetterComponent {
+export class GenerateLetterComponent implements OnInit {
   currentTechRecord?: V3TechRecordModel;
   form = new FormGroup({
     letterType: new CustomFormControl({ name: 'letterType', label: 'Type of letter to generate', type: FormNodeTypes.CONTROL }, '', [
@@ -49,11 +49,10 @@ export class GenerateLetterComponent {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
     public userService: UserService
-  ) {
-    this.store
-      .select(selectTechRecord)
-      .pipe(take(1))
-      .subscribe(techRecord => (this.currentTechRecord = techRecord));
+  ) {}
+
+  ngOnInit(): void {
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(techRecord => (this.currentTechRecord = techRecord));
   }
 
   get reasons(): Array<FormNodeOption<string>> {
