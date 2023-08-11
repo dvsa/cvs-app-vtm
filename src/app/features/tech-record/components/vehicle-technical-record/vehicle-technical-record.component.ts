@@ -15,7 +15,13 @@ import {
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { createProvisionalTechRecord, editingTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
+import {
+  createProvisionalTechRecord,
+  editingTechRecord,
+  selectTechRecordHistory,
+  updateTechRecord,
+  updateTechRecordSuccess
+} from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
@@ -54,8 +60,10 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
     this.editingReason = this.activatedRoute.snapshot.data['reason'];
 
-    this.actions$.pipe(ofType(updateTechRecordSuccess)).subscribe(newRecord => {
-      this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);
+    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(vehicleTechRecord => {
+      this.router.navigate([
+        `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`
+      ]);
     });
   }
   ngOnDestroy(): void {
@@ -141,7 +149,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
       );
     }
   }
-
+  // TODO: V3 the update lambda should automatically create a provisional if the vehicle doesn't have one. It doesn't seem to be doing this at the moment
   handleSubmit(): void {
     this.summary.checkForms();
     let recordToSend: any;
