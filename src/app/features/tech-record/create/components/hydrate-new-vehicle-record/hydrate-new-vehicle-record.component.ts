@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -17,7 +17,7 @@ import { BatchRecord } from '@store/technical-records/reducers/batch-create.redu
   selector: 'app-hydrate-new-vehicle-record',
   templateUrl: './hydrate-new-vehicle-record.component.html'
 })
-export class HydrateNewVehicleRecordComponent implements OnDestroy {
+export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
   isInvalid: boolean = false;
   batchForm?: FormGroup;
@@ -32,7 +32,9 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
     private batchTechRecordService: BatchTechnicalRecordService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.actions$
       .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
       .subscribe(({ vehicleTechRecord }) =>

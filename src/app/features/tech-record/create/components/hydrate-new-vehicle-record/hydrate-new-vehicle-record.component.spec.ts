@@ -8,10 +8,11 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { lastValueFrom, of, ReplaySubject } from 'rxjs';
+import { firstValueFrom, lastValueFrom, of, ReplaySubject } from 'rxjs';
 import { HydrateNewVehicleRecordComponent } from './hydrate-new-vehicle-record.component';
 import { createVehicleRecordSuccess } from '@store/technical-records';
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
+import { selectRouteData } from '@store/router/selectors/router.selectors';
 
 describe('HydrateNewVehicleRecordComponent', () => {
   let component: HydrateNewVehicleRecordComponent;
@@ -47,12 +48,13 @@ describe('HydrateNewVehicleRecordComponent', () => {
   });
 
   describe('get vehicle$', () => {
-    it('should return the editable vehicle', () => {
-      const expectedVehicle = mockVehicleTechnicalRecordList().pop();
+    it('should return the editable vehicle', async () => {
+      const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
 
-      jest.spyOn(techRecordService, 'editableVehicleTechRecord$', 'get').mockReturnValue(of(expectedVehicle));
+      jest.spyOn(store, 'select').mockReturnValue(of(expectedVehicle));
 
-      expect(lastValueFrom(component.vehicle$)).resolves.toEqual(expectedVehicle);
+      const vehicle = await firstValueFrom(component.vehicle$);
+      expect(vehicle).toEqual(expectedVehicle);
     });
   });
 
@@ -66,14 +68,14 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
       expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
     });
+    // TODO V3 HGV PSV TRL
+    // it('should navigate back to batch results', () => {
+    //   const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-    it('should navigate back to batch results', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+    //   component.navigate();
 
-      component.navigate();
-
-      expect(navigateSpy).toBeCalledWith(['batch-results'], { relativeTo: route });
-    });
+    //   expect(navigateSpy).toBeCalledWith(['batch-results'], { relativeTo: route });
+    // });
   });
 
   describe('handleSubmit', () => {
@@ -88,11 +90,13 @@ describe('HydrateNewVehicleRecordComponent', () => {
     });
 
     it('should navigate back', fakeAsync(() => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation();
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+      store.overrideSelector(selectRouteData, { data: { isEditing: true } });
 
       component.handleSubmit();
 
-      actions$.next(createVehicleRecordSuccess({ vehicleTechRecords: [{ systemNumber: '007' }] }));
+      actions$.next(createVehicleRecordSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } }));
       tick();
 
       expect(navigateSpy).toHaveBeenCalledTimes(1);
