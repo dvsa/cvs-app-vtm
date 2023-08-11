@@ -64,8 +64,7 @@ export class EditTechRecordButtonComponent implements OnDestroy {
   }
 
   checkIfEditableReasonRequired() {
-    this.store
-      .select(selectTechRecord)
+    this.technicalRecordService.techRecord$
       .pipe(
         map(techRecord => techRecord?.techRecord_statusCode),
         takeUntil(this.destroy$),

@@ -20,6 +20,10 @@ import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
 import { selectReasonsForAbandoning } from '@store/reference-data';
 
+const mockTechRecordService = {git stash
+  techRecord$: of({})
+};
+
 let component: EditTechRecordButtonComponent;
 let fixture: ComponentFixture<EditTechRecordButtonComponent>;
 let router: Router;
