@@ -20,7 +20,7 @@ import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-s
 })
 export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
-  @Input() vehicle?: V3TechRecordModel;
+  @Input() techRecord?: V3TechRecordModel;
 
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
@@ -52,7 +52,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   ngOnInit(): void {
-    const hasProvisionalRecord = this.vehicle?.techRecord_statusCode === StatusCodes.PROVISIONAL;
+    const hasProvisionalRecord = this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL;
     const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
 
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(vehicleTechRecord => {
@@ -64,19 +64,14 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     if (isProvisionalUrl && !hasProvisionalRecord) {
       this.router.navigate(['../'], { relativeTo: this.route });
     }
-
-    this.store
-      .select(selectTechRecordHistory)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(history => (this.recordHistory = history));
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicle?.primaryVrm;
+    return this.techRecord?.primaryVrm;
   }
 
   get otherVrms(): Vrm[] | undefined {
-    return (this.vehicle as any).secondaryVrms;
+    return (this.techRecord as any).secondaryVrms;
   }
 
   get roles(): typeof Roles {

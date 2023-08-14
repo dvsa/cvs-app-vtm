@@ -83,12 +83,13 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   }
 
   get makeAndModel(): string {
-    const c = this.techRecord;
-    if (!(c as any)?.techRecord_make && !(c as any)?.techRecord_chassisMake) return '';
+    const currentRecord = this.techRecord;
+    // TODO remove as any HGV PSV TRL
+    if (!(currentRecord as any)?.techRecord_make && !(currentRecord as any)?.techRecord_chassisMake) return '';
 
-    return `${c?.techRecord_vehicleType === 'psv' ? (c as any).techRecord_chassisMake : (c as any).techRecord_make} - ${
-      (c as any).vehicleType === 'psv' ? (c as any).chassisModel : (c as any).model
-    }`;
+    return `${
+      currentRecord?.techRecord_vehicleType === 'psv' ? (currentRecord as any).techRecord_chassisMake : (currentRecord as any).techRecord_make
+    } - ${(currentRecord as any).vehicleType === 'psv' ? (currentRecord as any).chassisModel : (currentRecord as any).model}`;
   }
 
   navigateBack() {

@@ -20,7 +20,7 @@ import { take } from 'rxjs';
   styleUrls: ['./tech-record-generate-letter.component.scss']
 })
 export class GenerateLetterComponent implements OnInit {
-  currentTechRecord?: V3TechRecordModel;
+  techRecord?: V3TechRecordModel;
   form = new FormGroup({
     letterType: new CustomFormControl({ name: 'letterType', label: 'Type of letter to generate', type: FormNodeTypes.CONTROL }, '', [
       Validators.required
@@ -52,7 +52,7 @@ export class GenerateLetterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(techRecord => (this.currentTechRecord = techRecord));
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(techRecord => (this.techRecord = techRecord));
   }
 
   get reasons(): Array<FormNodeOption<string>> {
@@ -63,10 +63,11 @@ export class GenerateLetterComponent implements OnInit {
   }
 
   get letter(): LettersOfAuth | undefined {
-    return (this.currentTechRecord as any)?.letterOfAuth ?? undefined;
+    // TODO V3 remove as any TRL
+    return (this.techRecord as any)?.letterOfAuth ?? undefined;
   }
   get emailAddress(): string | undefined {
-    return this.currentTechRecord?.techRecord_applicantDetails_emailAddress ?? undefined;
+    return this.techRecord?.techRecord_applicantDetails_emailAddress ?? undefined;
   }
 
   navigateBack() {
@@ -79,11 +80,11 @@ export class GenerateLetterComponent implements OnInit {
     if (this.form.value.letterType === '') {
       return this.globalErrorService.addError({ error: 'Letter type is required', anchorLink: 'letterType' });
     }
-    if (!this.currentTechRecord) {
+    if (!this.techRecord) {
       return this.globalErrorService.addError({ error: 'Could not retrieve current technical record' });
     }
 
-    const paragraphId = this.form.value.letterType == 'trailer acceptance' ? this.paragraphMap.get((this.currentTechRecord as any).approvalType!) : 4;
+    const paragraphId = this.form.value.letterType == 'trailer acceptance' ? this.paragraphMap.get((this.techRecord as any).approvalType!) : 4;
 
     this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
 

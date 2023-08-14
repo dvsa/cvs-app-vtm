@@ -92,7 +92,7 @@ describe('VehicleTechnicalRecordComponent', () => {
     store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(VehicleTechnicalRecordComponent);
     component = fixture.componentInstance;
-    component.vehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
   });
 
   it('should create', () => {

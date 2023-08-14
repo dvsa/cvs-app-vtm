@@ -74,7 +74,6 @@ describe('MultipleSearchResultsComponent', () => {
   describe('searching', () => {
     beforeEach(() => {
       store = TestBed.inject(MockStore);
-      // store.overrideSelector(techRecord, mockVehicleTechnicalRecordList());
     });
 
     it('should search using a vin', async () => {
