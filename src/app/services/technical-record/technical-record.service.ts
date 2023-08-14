@@ -61,7 +61,6 @@ export class TechnicalRecordService {
   }
 
   get techRecord$(): Observable<V3TechRecordModel | undefined> {
-    console.log('in techrecord$');
     return combineLatest([
       this.store.pipe(select(selectTechRecord)),
       this.store.pipe(select(techRecord)),

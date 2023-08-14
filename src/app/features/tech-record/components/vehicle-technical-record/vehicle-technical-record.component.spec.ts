@@ -69,7 +69,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         {
           provide: TechnicalRecordService,
           useValue: {
-            get viewableTechRecord$() {
+            get techRecord$() {
               return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT });
             },
             updateEditingTechRecord: () => {},

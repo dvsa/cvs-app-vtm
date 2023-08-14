@@ -23,6 +23,7 @@ describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
   let fixture: ComponentFixture<TechRecordSummaryComponent>;
   let store: MockStore<State>;
+  let techRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -52,6 +53,7 @@ describe('TechRecordSummaryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TechRecordSummaryComponent);
     store = TestBed.inject(MockStore);
+    techRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
   });
 
@@ -71,20 +73,19 @@ describe('TechRecordSummaryComponent', () => {
     it('should show PSV record found', () => {
       component.isEditing = false;
       jest
-        .spyOn(store, 'select')
+        .spyOn(techRecordService, 'techRecord$', 'get')
         .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.PSV }));
       fixture.detectChanges();
-
+      console.log(component.vehicleType);
       checkHeadingAndForm();
       expect(component.vehicleType).toEqual(VehicleTypes.PSV);
     });
 
     it('should show PSV record found without dimensions', () => {
       component.isEditing = false;
-      const mockTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.LGV };
       jest
-        .spyOn(store, 'select')
-        .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.LGV }));
+        .spyOn(techRecordService, 'techRecord$', 'get')
+        .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.PSV }));
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -95,7 +96,7 @@ describe('TechRecordSummaryComponent', () => {
     it('should show HGV record found', () => {
       component.isEditing = false;
       jest
-        .spyOn(store, 'select')
+        .spyOn(techRecordService, 'techRecord$', 'get')
         .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.HGV }));
       fixture.detectChanges();
 
@@ -105,8 +106,9 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show HGV record found without dimensions', () => {
       component.isEditing = false;
-      const mockTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.HGV };
-      jest.spyOn(store, 'select').mockReturnValue(of(mockTechRecord));
+      jest
+        .spyOn(techRecordService, 'techRecord$', 'get')
+        .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.HGV }));
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -115,12 +117,18 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found', async () => {
       component.isEditing = false;
-      const mockTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.SMALL_TRL };
-      jest.spyOn(store, 'select').mockReturnValue(of(mockTechRecord));
+      jest
+        .spyOn(techRecordService, 'techRecord$', 'get')
+        .mockReturnValue(
+          of({
+            systemNumber: 'foo',
+            createdTimestamp: 'bar',
+            vin: 'testVin',
+            techRecord_vehicleType: VehicleTypes.TRL,
+            techRecord_euVehicleCategory: 'o2'
+          })
+        );
       fixture.detectChanges();
-      //TODO V3 TRL this test may need righting
-      // component.letters.vehicle = createMockTrl(12345);
-      // await fixture.whenStable();
 
       checkHeadingAndForm();
       expect(component.vehicleType).toEqual(VehicleTypes.SMALL_TRL);
@@ -128,8 +136,9 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found without dimensions', () => {
       component.isEditing = false;
-      const mockTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.TRL };
-      jest.spyOn(store, 'select').mockReturnValue(of(mockTechRecord));
+      jest
+        .spyOn(techRecordService, 'techRecord$', 'get')
+        .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.TRL }));
       fixture.detectChanges();
 
       checkHeadingAndForm();

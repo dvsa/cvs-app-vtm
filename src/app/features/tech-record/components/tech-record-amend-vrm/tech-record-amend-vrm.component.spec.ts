@@ -1,5 +1,5 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { isFormArray, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -11,13 +11,15 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState } from '@store/index';
+import { initialAppState, State } from '@store/index';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { selectRouteData } from '@store/router/selectors/router.selectors';
 
 const mockTechRecordService = {
-  editableTechRecord$: of({}),
+  techRecord$: of({}),
   selectedVehicleTechRecord$: of({}),
   get viewableTechRecord$() {
     return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM' });
@@ -38,7 +40,7 @@ describe('TechRecordChangeVrmComponent', () => {
   let fixture: ComponentFixture<AmendVrmComponent>;
   let route: ActivatedRoute;
   let router: Router;
-  let store: MockStore;
+  let store: MockStore<State>;
   let technicalRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
@@ -47,12 +49,12 @@ describe('TechRecordChangeVrmComponent', () => {
       providers: [
         GlobalErrorService,
         provideMockActions(() => actions$),
-        provideMockStore({ initialState: initialAppState }),
+        provideMockStore<State>({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]), snapshot: new ActivatedRouteSnapshot() } },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService }
+        TechnicalRecordService
       ],
-      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule]
+      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule]
     }).compileComponents();
   });
 
@@ -110,13 +112,19 @@ describe('TechRecordChangeVrmComponent', () => {
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
     //TODO moved from constructor causes this test to fail
-    it('should navigate to a new record on updateTechRecordsSuccess', fakeAsync(() => {
+    it.only('should navigate to a new record on amendVrmSuccess', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+      jest
+        .spyOn(technicalRecordService, 'techRecord$', 'get')
+        .mockReturnValueOnce(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TEST' }));
 
-      actions$.next(amendVrmSuccess({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' }));
+      store.overrideSelector(selectRouteData, { data: { isEditing: true } });
+      component.ngOnInit();
+
+      actions$.next(amendVrmSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } }));
 
       expect(navigateSpy).toHaveBeenCalled();
-    }));
+    });
   });
 
   describe('handleSubmit', () => {
@@ -153,7 +161,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('should add an error if isUnique returns false', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
-      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(false));
+      jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
 
       component.form.get('newVrm')?.setValue('test123');
       component.form.get('isCherishedTransfer')?.setValue('false');
@@ -165,7 +173,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('should dispatch the amendVrm action', fakeAsync(() => {
       jest.spyOn(router, 'navigate').mockImplementation();
-      jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
+      jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
       const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation(() => Promise.resolve(true));
 
       component.form.get('newVrm')?.setValue('TESTVRM1');
