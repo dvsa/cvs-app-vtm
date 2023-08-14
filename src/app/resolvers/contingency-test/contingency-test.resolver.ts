@@ -74,7 +74,6 @@ export class ContingencyTestResolver implements Resolve<boolean> {
         );
       }),
       tap(testResult => {
-        console.log(testResult);
         this.store.dispatch(initialContingencyTest({ testResult }));
       }),
       take(1),
