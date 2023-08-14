@@ -130,16 +130,7 @@ export class BatchVehicleTemplateComponent {
             if (!vehicle.systemNumber) {
               this.store.dispatch(createVehicleRecord({ vehicle: vehicle as unknown as V3TechRecordModel }));
             } else {
-              this.technicalRecordService.updateEditingTechRecord(vehicle as unknown as V3TechRecordModel);
-              // TODO V3: Implement the sending of the correct record for each in a batch
-              // this.store.dispatch(
-              //   updateTechRecords()
-              // {
-              //   systemNumber: vehicle.systemNumber,
-              //   recordToArchiveStatus: vehicle.oldVehicleStatus ?? StatusCodes.PROVISIONAL,
-              //   newStatus: vehicle.techRecord[0]?.statusCode ?? StatusCodes.CURRENT
-              // })
-              // );
+              this.store.dispatch(updateTechRecord({ vehicleTechRecord: vehicle as unknown as V3TechRecordModel }));
             }
           });
           this.technicalRecordService.clearSectionTemplateStates();
