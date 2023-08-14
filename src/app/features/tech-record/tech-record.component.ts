@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -14,8 +14,7 @@ import { Observable, of, take } from 'rxjs';
   selector: 'app-tech-record',
   templateUrl: './tech-record.component.html'
 })
-export class TechRecordComponent {
-  vehicle$: Observable<V3TechRecordModel | undefined>;
+export class TechRecordComponent implements OnInit {
   systemNumber?: string;
   createdTimestamp?: string;
 
@@ -26,13 +25,18 @@ export class TechRecordComponent {
     private store: Store<TechnicalRecordServiceState>,
     private route: ActivatedRoute
   ) {
-    this.vehicle$ = this.store.select(selectTechRecord);
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
+  ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe(params => {
       this.systemNumber = params['systemNumber'];
       this.createdTimestamp = params['createdTimestamp'];
     });
+  }
+
+  get techRecord$() {
+    return this.store.select(selectTechRecord);
   }
 
   get roles() {

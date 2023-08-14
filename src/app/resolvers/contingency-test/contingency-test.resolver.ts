@@ -82,7 +82,6 @@ export class ContingencyTestResolver implements Resolve<boolean> {
         return true;
       }),
       catchError(err => {
-        console.log(err);
         return of(false);
       })
     );
