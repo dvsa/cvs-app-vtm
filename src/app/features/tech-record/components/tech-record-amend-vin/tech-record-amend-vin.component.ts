@@ -63,11 +63,14 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   get makeAndModel(): string {
     //TODO: V3 remove as any PSV? HGV?
-    const c = this.techRecord as any;
-    if (!c?.techRecord_make && !c?.techRecord_chassisMake) return '';
+    if (!(this.techRecord as any)?.techRecord_make && !(this.techRecord as any)?.techRecord_chassisMake) return '';
 
-    return `${c.techRecord_vehicleType === 'psv' ? c.techRecord_chassisMake : c.techRecord_make} - ${
-      c.techRecord_vehicleType === 'psv' ? c.techRecord_chassisModel : c.techRecord_model
+    return `${
+      this.techRecord?.techRecord_vehicleType === 'psv' ? (this.techRecord as any).techRecord_chassisMake : (this.techRecord as any).techRecord_make
+    } - ${
+      (this.techRecord as any).techRecord_vehicleType === 'psv'
+        ? (this.techRecord as any).techRecord_chassisModel
+        : (this.techRecord as any).techRecord_model
     }`;
   }
 
