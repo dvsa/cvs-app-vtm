@@ -131,6 +131,7 @@ export class BatchVehicleTemplateComponent {
               this.store.dispatch(createVehicleRecord({ vehicle: vehicle as unknown as V3TechRecordModel }));
             } else {
               this.technicalRecordService.updateEditingTechRecord(vehicle as unknown as V3TechRecordModel);
+              // TODO V3: Implement the sending of the correct record for each in a batch
               // this.store.dispatch(
               //   updateTechRecords()
               // {
