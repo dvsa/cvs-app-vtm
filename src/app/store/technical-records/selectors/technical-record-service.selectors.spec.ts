@@ -65,7 +65,7 @@ describe('Tech Record Selectors', () => {
       },
       {
         statusExpected: 'archived',
-        techRecord_createdAt: new Date('2022-02-14').getTime(),
+        techRecord_createdAt: new Date('2022-02-14').toISOString(),
         isEditing: false,
         vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: 'archived' }
       },
@@ -78,7 +78,7 @@ describe('Tech Record Selectors', () => {
     ];
     beforeEach(() => {});
     it.each(routes)('should return the $statusExpected record', ({ statusExpected, techRecord_createdAt, isEditing, vehicle }) => {
-      const techRecord = selectTechRecord.projector(vehicle as unknown as V3TechRecordModel, isEditing, {
+      const techRecord = selectTechRecord.projector({ ...vehicle, techRecord_createdAt } as unknown as V3TechRecordModel, isEditing, {
         systemNumber: 'foo',
         createdTimestamp: 'bar',
         vin: 'testVin',
@@ -86,7 +86,7 @@ describe('Tech Record Selectors', () => {
       });
       expect(techRecord).toBeDefined();
       expect(techRecord?.techRecord_statusCode).toBe(statusExpected);
-      // techRecord_createdAt && techRecord && expect(new Date(techRecord.techRecord_createdAt).getTime()).toBe(techRecord_createdAt);
+      techRecord_createdAt && techRecord && expect(techRecord.techRecord_createdAt).toEqual(techRecord_createdAt);
     });
   });
 
