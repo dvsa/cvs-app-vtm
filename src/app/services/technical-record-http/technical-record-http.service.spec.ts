@@ -108,9 +108,6 @@ describe('TechnicalRecordService', () => {
         expect(req.request.body).toHaveProperty('primaryVrm');
         expect(req.request.body).toHaveProperty('secondaryVrms');
         expect(req.request.body).not.toHaveProperty('vrms');
-
-        // Provide each request with a mock response
-        // req.flush(mockData);
       }));
     });
 
@@ -120,9 +117,6 @@ describe('TechnicalRecordService', () => {
 
         const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/archive/foo/bar`);
         expect(req.request.method).toEqual('PATCH');
-
-        // Provide each request with a mock response
-        // req.flush();
       }));
     });
   });
