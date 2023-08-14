@@ -62,21 +62,6 @@ export class TechnicalRecordHttpService {
 
     return this.http.post<V3TechRecordModel>(`${environment.VTM_API_URI}/v3/technical-records`, body);
   }
-  //V3 are we still in need of this?
-  // createProvisionalTechRecord(techRecord: V3TechRecordModel): Observable<V3TechRecordModel> {
-  //   // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
-  //   const recordCopy = cloneDeep(techRecord);
-  //   recordCopy.techRecord_statusCode = StatusCodes.PROVISIONAL;
-  //   delete recordCopy.techRecord_updateType;
-
-  //   const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${techRecord.systemNumber}`;
-
-  //   const body = {
-  //     techRecord: [recordCopy]
-  //   };
-
-  //   return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
-  // }
 
   updateTechRecords(techRecord: V3TechRecordModel): Observable<V3TechRecordModel> {
     const body = { ...techRecord };

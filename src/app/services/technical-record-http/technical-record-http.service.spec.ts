@@ -71,21 +71,6 @@ describe('TechnicalRecordService', () => {
       });
     });
 
-    // describe('createProvisionalTechRecord', () => {
-    //   it('should return an array with a new tech record having added provisional', fakeAsync(() => {
-    //     const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
-    //     const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-    //     service.createProvisionalTechRecord(mockData[0] as unknown as V3TechRecordModel).subscribe();
-
-    //     // Check for correct requests: should have made one request to the PUT URL
-    //     const req = httpClient.expectOne(`${environment.VTM_API_URI}/vehicles/add-provisional/${params.systemNumber}`);
-    //     expect(req.request.method).toEqual('POST');
-
-    //     // Provide each request with a mock response
-    //     req.flush(mockData);
-    //   }));
-    // });
-
     describe('updateTechRecords', () => {
       it('should return a new tech record and updated status code', fakeAsync(() => {
         const expectedVehicle: V3TechRecordModel = {
