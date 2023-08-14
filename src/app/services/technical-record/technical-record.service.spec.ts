@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 import { State, initialAppState } from '@store/index';
@@ -113,6 +113,35 @@ describe('TechnicalRecordService', () => {
 
       // Provide each request with a mock response
       req.flush(mockData);
+    });
+  });
+
+  describe('getVehicleMakeAndModel', () => {
+    it('should return an empty string if there is no make and model', () => {
+      const record: V3TechRecordModel = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+      expect(service.getMakeAndModel(record)).toBe('');
+    });
+    it('for a PSV returns the chassis make and model', () => {
+      const record: V3TechRecordModel = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_vehicleType: VehicleTypes.PSV,
+        techRecord_chassisMake: 'test chassis make',
+        techRecord_chassisModel: 'chassis model'
+      } as unknown as V3TechRecordModel;
+      expect(service.getMakeAndModel(record)).toBe('test chassis make - chassis model');
+    });
+    it('for a any other type returns make and model', () => {
+      const record: V3TechRecordModel = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_vehicleType: VehicleTypes.HGV,
+        techRecord_make: 'make',
+        techRecord_model: 'model'
+      } as unknown as V3TechRecordModel;
+      expect(service.getMakeAndModel(record)).toBe('make - model');
     });
   });
 

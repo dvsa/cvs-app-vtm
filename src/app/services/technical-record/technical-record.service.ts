@@ -161,6 +161,14 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectSectionState));
   }
 
+  getMakeAndModel(techRecord: V3TechRecordModel): string {
+    if (!(techRecord as any)?.techRecord_make && !(techRecord as any)?.techRecord_chassisMake) return '';
+
+    return `${techRecord?.techRecord_vehicleType === 'psv' ? (techRecord as any).techRecord_chassisMake : (techRecord as any).techRecord_make} - ${
+      (techRecord as any).techRecord_vehicleType === 'psv' ? (techRecord as any).techRecord_chassisModel : (techRecord as any).techRecord_model
+    }`;
+  }
+
   clearSectionTemplateStates() {
     this.store.dispatch(clearAllSectionStates());
   }

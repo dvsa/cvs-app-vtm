@@ -19,6 +19,7 @@ import { take } from 'rxjs';
 })
 export class ChangeVehicleTypeComponent implements OnInit {
   techRecord?: V3TechRecordModel;
+  makeAndModel?: string;
 
   form: FormGroup = new FormGroup({
     selectVehicleType: new CustomFormControl(
@@ -41,14 +42,10 @@ export class ChangeVehicleTypeComponent implements OnInit {
     this.technicalRecordService.techRecord$
       .pipe(take(1))
       .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
-  }
-  get makeAndModel(): string {
-    // TODO: V3 remove as any - PSV?
-    if (!(this.techRecord as any)?.techRecord_make && !(this.techRecord as any)?.techRecord_chassisMake) return '';
 
-    return `${this.techRecord!.techRecord_vehicleType === 'psv' ? (this.techRecord as any).chassisMake : (this.techRecord as any).make} - ${
-      (this.techRecord as any).vehicleType === 'psv' ? (this.techRecord as any).chassisModel : (this.techRecord as any).model
-    }`;
+    if (this.techRecord) {
+      this.makeAndModel = this.technicalRecordService.getMakeAndModel(this.techRecord);
+    }
   }
 
   get vehicleType(): VehicleTypes | undefined {
