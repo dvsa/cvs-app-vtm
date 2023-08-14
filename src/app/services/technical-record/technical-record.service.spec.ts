@@ -121,7 +121,7 @@ describe('TechnicalRecordService', () => {
       it('should patch the missing information for the technical record and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         const mockVehicleRecord: V3TechRecordModel = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
-        // store.overrideSelector(editableVehicleTechRecord, mockVehicleRecord);
+
         service.updateEditingTechRecord(mockVehicleRecord);
         expect(dispatchSpy).toHaveBeenCalledTimes(1);
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
@@ -130,8 +130,7 @@ describe('TechnicalRecordService', () => {
       it('should patch from the selected record if the editing is not defined and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         const mockVehicleRecord: V3TechRecordModel = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
-        // store.overrideSelector(editableVehicleTechRecord, undefined);
-        // store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, mockVehicleRecord);
+
         service.updateEditingTechRecord(mockVehicleRecord);
         expect(dispatchSpy).toHaveBeenCalledTimes(1);
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
@@ -143,8 +142,6 @@ describe('TechnicalRecordService', () => {
 
         const mockEditableVehicleRecord: V3TechRecordModel = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'a random vin' };
 
-        // store.overrideSelector(editableVehicleTechRecord, mockEditableVehicleRecord);
-        // store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, mockVehicleRecord);
         service.updateEditingTechRecord(mockVehicleRecord);
         expect(dispatchSpy).toHaveBeenCalledTimes(1);
         expect(dispatchSpy).not.toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockEditableVehicleRecord }));
