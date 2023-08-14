@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
-import { Observable } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-history',
@@ -13,40 +12,30 @@ import { Observable } from 'rxjs';
 })
 export class TechRecordHistoryComponent implements OnInit {
   @Input() currentTechRecord?: V3TechRecordModel;
-  // recordHistory$?: Observable<V3TechRecordModel[] | undefined>;
-  recordHistory?: V3TechRecordModel[];
+
+  private destroy$ = new Subject<void>();
 
   pageStart?: number;
   pageEnd?: number;
 
-  constructor(private cdr: ChangeDetectorRef, private techRecordService: TechnicalRecordService, private store: Store) {}
+  constructor(private cdr: ChangeDetectorRef, private store: Store) {}
 
   ngOnInit(): void {
     if (this.currentTechRecord) {
       this.store.dispatch(getBySystemNumber({ systemNumber: this.currentTechRecord?.systemNumber }));
-      // this.recordHistory$ = this.store.select(selectTechRecordHistory);
-      // this.recordHistory$.subscribe(records => {
-      //TODO: V3 this only sorts by created timestamp as its all that's available at the moment needs to sort by last updated when that becomes available
-      // this.recordHistory = records?.sort((a, b) => {
-      //   const aTimeCode = new Date(a.createdTimestamp)
-      //   const bTimeCode = new Date(b.createdTimestamp)
-      //   return aTimeCode < bTimeCode ? 1 : aTimeCode > bTimeCode ? -1 : 0
-      // });
-      // }
-      // );
     }
   }
 
-  get recordHistory$() {
+  get techRecordHistory$() {
     return this.store.select(selectTechRecordHistory);
   }
 
-  get techRecords() {
-    return this.recordHistory?.slice(this.pageStart, this.pageEnd) ?? [];
+  get techRecords$() {
+    return this.techRecordHistory$?.pipe(map(records => records?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
-  get numberOfRecords(): number {
-    return this.recordHistory?.length || 0;
+  get numberOfRecords$(): Observable<number> {
+    return this.techRecordHistory$?.pipe(map(records => records?.length ?? 0));
   }
 
   convertToUnix(date: Date): number {

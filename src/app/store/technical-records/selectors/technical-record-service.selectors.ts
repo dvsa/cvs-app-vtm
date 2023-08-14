@@ -11,7 +11,13 @@ export const editingTechRecord = createSelector(getTechRecordState, state => sta
 
 export const technicalRecordsLoadingState = createSelector(getTechRecordState, state => state.loading);
 
-export const selectTechRecordHistory = createSelector(getTechRecordState, state => state.techRecordHistory);
+export const selectTechRecordHistory = createSelector(getTechRecordState, state =>
+  state.techRecordHistory?.sort((a, b) => {
+    const aTimeCode = new Date(a.createdTimestamp).getTime();
+    const bTimeCode = new Date(b.createdTimestamp).getTime();
+    return aTimeCode < bTimeCode ? 1 : aTimeCode > bTimeCode ? -1 : 0;
+  })
+);
 
 export const selectTechRecord = createSelector(
   techRecord,
