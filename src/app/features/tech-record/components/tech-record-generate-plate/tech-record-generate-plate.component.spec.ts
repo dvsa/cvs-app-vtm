@@ -17,13 +17,6 @@ import { of, ReplaySubject } from 'rxjs';
 import { GeneratePlateComponent } from './tech-record-generate-plate.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-const mockTechRecordService = {
-  viewableTechRecord$: of({}),
-  selectedVehicleTechRecord$: of({}),
-  updateEditingTechRecord: jest.fn(),
-  isUnique: jest.fn()
-};
-
 const mockDynamicFormService = {
   createForm: jest.fn()
 };
