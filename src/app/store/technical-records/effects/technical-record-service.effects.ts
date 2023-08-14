@@ -117,7 +117,6 @@ export class TechnicalRecordServiceEffects {
     this.actions$.pipe(
       ofType(updateTechRecord),
       switchMap(({ vehicleTechRecord }) => {
-        console.log('in here');
         return this.techRecordHttpService.updateTechRecords(vehicleTechRecord).pipe(
           map(vehicleTechRecord => updateTechRecordSuccess({ vehicleTechRecord })),
           catchError(error => of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
@@ -179,7 +178,6 @@ export class TechnicalRecordServiceEffects {
           return of(
             techRecordTemplate.reduce((mergedNodes, formNode) => {
               const form = this.dfs.createForm(formNode, techRecord);
-              console.log(merge(mergedNodes, form.getCleanValue(form)));
               return merge(mergedNodes, form.getCleanValue(form));
             }, {}) as V3TechRecordModel
           );

@@ -88,7 +88,6 @@ describe('TechRecordChangeTypeComponent', () => {
     it('should return all types except for the current one', () => {
       component.techRecord = expectedTechRecord;
       const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter(type => type.value !== VehicleTypes.PSV);
-      console.log(component.vehicleTypeOptions);
       expect(component.vehicleTypeOptions).toStrictEqual(expectedOptions);
     });
   });

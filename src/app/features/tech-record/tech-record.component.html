@@ -1,5 +1,5 @@
 <ng-container *ngIf="vehicle$ | async as vehicle; else noVehicle">
-  <app-vehicle-technical-record *appRoleRequired="roles.TechRecordView" [vehicle]="vehicle"></app-vehicle-technical-record>
+  <app-vehicle-technical-record *appRoleRequired="roles.TechRecordView" [techRecord]="vehicle"></app-vehicle-technical-record>
 </ng-container>
 
 <ng-template #noVehicle>

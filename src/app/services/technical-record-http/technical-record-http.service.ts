@@ -79,7 +79,6 @@ export class TechnicalRecordHttpService {
   // }
 
   updateTechRecords(techRecord: V3TechRecordModel): Observable<V3TechRecordModel> {
-    console.log(techRecord);
     const body = { ...techRecord };
 
     const url = `${environment.VTM_API_URI}/v3/technical-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`;

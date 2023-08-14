@@ -18,7 +18,6 @@ export const selectTechRecord = createSelector(
   selectRouteDataProperty('isEditing'),
   editingTechRecord,
   (techRecord, isEditing, editableTechRecord): V3TechRecordModel | undefined => {
-    console.log(isEditing ? editableTechRecord : techRecord);
     return isEditing ? editableTechRecord : techRecord;
   }
 );

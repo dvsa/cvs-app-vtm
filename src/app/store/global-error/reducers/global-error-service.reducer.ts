@@ -26,7 +26,7 @@ export const globalErrorReducer = createReducer(
   initialGlobalErrorState,
   on(
     GlobalErrorActions.clearError,
-    // TechnicalRecordServiceActions.updateTechRecords,
+    TechnicalRecordServiceActions.updateTechRecord,
     TestResultActions.fetchTestResults,
     TestResultActions.fetchTestResultsBySystemNumber,
     TestResultActions.fetchSelectedTestResult,

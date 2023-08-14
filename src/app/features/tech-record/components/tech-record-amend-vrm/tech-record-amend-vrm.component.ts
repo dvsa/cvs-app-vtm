@@ -137,7 +137,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
       this.globalErrorService.setErrors(errors);
     }
 
-    if (this.form.value.newVrm === '' || (this.form.value.newVrm === this.techRecord!.primaryVrm ?? '')) {
+    if (this.form.value.newVrm === '' || (this.form.value.newVrm === this.techRecord?.primaryVrm ?? '')) {
       this.globalErrorService.addError({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
       return false;
     }

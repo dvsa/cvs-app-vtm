@@ -14,7 +14,7 @@ import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 
 @Component({
-  selector: 'app-vehicle-technical-record[vehicle]',
+  selector: 'app-vehicle-technical-record',
   templateUrl: './vehicle-technical-record.component.html',
   styleUrls: ['./vehicle-technical-record.component.scss']
 })

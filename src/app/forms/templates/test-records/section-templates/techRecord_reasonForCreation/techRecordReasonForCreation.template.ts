@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const techRecord_reasonForCreationSection: FormNode = {
+export const TechRecordReasonForCreationSection: FormNode = {
   name: 'reasonForCreationSection',
   label: 'Reason for creation',
   type: FormNodeTypes.GROUP,
@@ -17,7 +17,7 @@ export const techRecord_reasonForCreationSection: FormNode = {
   ]
 };
 
-export const techRecord_reasonForCreationHiddenSection: FormNode = {
+export const TechRecordReasonForCreationHiddenSection: FormNode = {
   name: 'requiredSection',
   label: 'Reason for creation',
   type: FormNodeTypes.GROUP,

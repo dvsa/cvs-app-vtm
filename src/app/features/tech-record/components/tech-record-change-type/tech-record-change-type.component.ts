@@ -43,12 +43,11 @@ export class ChangeVehicleTypeComponent implements OnInit {
       .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
   }
   get makeAndModel(): string {
-    const c = this.techRecord;
     // TODO: V3 remove as any - PSV?
-    if (!(c as any)?.techRecord_make && !(c as any)?.techRecord_chassisMake) return '';
+    if (!(this.techRecord as any)?.techRecord_make && !(this.techRecord as any)?.techRecord_chassisMake) return '';
 
-    return `${c!.techRecord_vehicleType === 'psv' ? (c as any).chassisMake : (c as any).make} - ${
-      (c as any).vehicleType === 'psv' ? (c as any).chassisModel : (c as any).model
+    return `${this.techRecord!.techRecord_vehicleType === 'psv' ? (this.techRecord as any).chassisMake : (this.techRecord as any).make} - ${
+      (this.techRecord as any).vehicleType === 'psv' ? (this.techRecord as any).chassisModel : (this.techRecord as any).model
     }`;
   }
 

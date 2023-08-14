@@ -132,7 +132,6 @@ function defaultArgs(state: TechnicalRecordServiceState) {
 }
 
 function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecord: V3TechRecordModel }) {
-  console.log(data.vehicleTechRecord);
   return { ...state, vehicleTechRecord: data.vehicleTechRecord, loading: false };
 }
 

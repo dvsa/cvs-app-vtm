@@ -13,7 +13,7 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row" *ngFor="let techRecord of recordHistory; trackBy: trackByFn; let i = index">
+      <tr class="govuk-table__row" *ngFor="let techRecord of recordHistory$ | async; trackBy: trackByFn; let i = index">
         <th scope="row" class="govuk-table__header" [id]="techRecord.techRecord_statusCode + '-status-header-' + i">
           {{ techRecord.techRecord_statusCode }}
         </th>

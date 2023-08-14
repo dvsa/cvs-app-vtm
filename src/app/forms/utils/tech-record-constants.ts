@@ -25,8 +25,8 @@ import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { SmallTrailerTechRecord } from '@forms/templates/small-trailer/small-trailer-tech-record.template';
-import { reasonForCreationSection } from '@forms/templates/test-records/section-templates/reasonForCreation/reasonForCreation.template';
-import { techRecord_reasonForCreationSection } from '@forms/templates/test-records/section-templates/techRecord_reasonForCreation/techRecord_reasonForCreation.template';
+
+import { TechRecordReasonForCreationSection } from '@forms/templates/test-records/section-templates/techRecord_reasonForCreation/techRecord_reasonForCreation.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
@@ -44,7 +44,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
   [
     VehicleTypes.PSV,
     [
-      /*  1 */ techRecord_reasonForCreationSection,
+      /*  1 */ TechRecordReasonForCreationSection,
       /*  2 */ PsvNotes,
       /*  3 */ PsvTechRecord,
       /*  4 */ PsvTypeApprovalTemplate,
@@ -60,7 +60,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
   [
     VehicleTypes.HGV,
     [
-      /*  1 */ techRecord_reasonForCreationSection,
+      /*  1 */ TechRecordReasonForCreationSection,
       /*  2 */ NotesTemplate,
       /*  3 */ HgvTechRecord,
       /*  4 */ HgvAndTrlTypeApprovalTemplate,
@@ -76,7 +76,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
   [
     VehicleTypes.TRL,
     [
-      /*  1 */ techRecord_reasonForCreationSection,
+      /*  1 */ TechRecordReasonForCreationSection,
       /*  2 */ NotesTemplate,
       /*  3 */ TrlTechRecordTemplate,
       /*  4 */ HgvAndTrlTypeApprovalTemplate,
@@ -96,18 +96,18 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
   ],
   [
     VehicleTypes.SMALL_TRL,
-    [/* 1 */ techRecord_reasonForCreationSection, /* 2 */ SmallTrailerTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
+    [/* 1 */ TechRecordReasonForCreationSection, /* 2 */ SmallTrailerTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
   ],
   [
     VehicleTypes.LGV,
-    [/* 1 */ techRecord_reasonForCreationSection, /* 2 */ LgvTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
+    [/* 1 */ TechRecordReasonForCreationSection, /* 2 */ LgvTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
   ],
   [
     VehicleTypes.CAR,
-    [/* 1 */ techRecord_reasonForCreationSection, /* 2 */ CarTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
+    [/* 1 */ TechRecordReasonForCreationSection, /* 2 */ CarTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
   ],
   [
     VehicleTypes.MOTORCYCLE,
-    [/* 1 */ techRecord_reasonForCreationSection, /* 2 */ MotorcycleTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
+    [/* 1 */ TechRecordReasonForCreationSection, /* 2 */ MotorcycleTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
   ]
 ]);

@@ -76,7 +76,6 @@ describe('TechRecordSummaryComponent', () => {
         .spyOn(techRecordService, 'techRecord$', 'get')
         .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.PSV }));
       fixture.detectChanges();
-      console.log(component.vehicleType);
       checkHeadingAndForm();
       expect(component.vehicleType).toEqual(VehicleTypes.PSV);
     });
@@ -117,17 +116,15 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found', async () => {
       component.isEditing = false;
-      jest
-        .spyOn(techRecordService, 'techRecord$', 'get')
-        .mockReturnValue(
-          of({
-            systemNumber: 'foo',
-            createdTimestamp: 'bar',
-            vin: 'testVin',
-            techRecord_vehicleType: VehicleTypes.TRL,
-            techRecord_euVehicleCategory: 'o2'
-          })
-        );
+      jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
+        of({
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testVin',
+          techRecord_vehicleType: VehicleTypes.TRL,
+          techRecord_euVehicleCategory: 'o2'
+        })
+      );
       fixture.detectChanges();
 
       checkHeadingAndForm();
