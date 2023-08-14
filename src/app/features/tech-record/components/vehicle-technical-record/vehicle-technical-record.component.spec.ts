@@ -153,6 +153,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         component.recordHistory = [{ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL }];
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         tick();
+        component.ngOnInit();
         component.handleSubmit();
         expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ vehicleTechRecord: techRecord }));
       }));

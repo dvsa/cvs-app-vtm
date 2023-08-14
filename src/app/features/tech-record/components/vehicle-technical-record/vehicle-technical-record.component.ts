@@ -25,6 +25,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
   recordHistory?: V3TechRecordModel[];
+  hasAProvisional: Boolean = false;
 
   isCurrent = false;
   isArchived = false;
@@ -52,7 +53,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   ngOnInit(): void {
-    const hasProvisionalRecord = this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL;
+    this.hasAProvisional = this.recordHistory?.some(record => record.techRecord_statusCode === StatusCodes.PROVISIONAL) ?? false;
     const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
 
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(vehicleTechRecord => {
@@ -61,7 +62,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
       ]);
     });
 
-    if (isProvisionalUrl && !hasProvisionalRecord) {
+    if (isProvisionalUrl && !this.hasAProvisional) {
       this.router.navigate(['../'], { relativeTo: this.route });
     }
   }
@@ -148,8 +149,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
             if (this.editingReason === ReasonForEditing.CORRECTING_AN_ERROR) {
               this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }));
             } else if (this.editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-              const isProvisional = this.recordHistory?.some(record => record.techRecord_statusCode === StatusCodes.PROVISIONAL);
-              isProvisional
+              this.hasAProvisional
                 ? this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }))
                 : this.store.dispatch(updateTechRecord({ vehicleTechRecord: { ...record, techRecord_statusCode: StatusCodes.PROVISIONAL } }));
             }
