@@ -20,7 +20,7 @@ import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
 
 let mockTechRecordService = {
-  techRecord$: of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT })
+  techRecord$: of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel)
 };
 
 let component: EditTechRecordButtonComponent;
@@ -77,12 +77,20 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   describe('when viewing a tech record', () => {
+    afterAll(() => {
+      mockTechRecordService.techRecord$ = of({
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_statusCode: StatusCodes.CURRENT
+      } as V3TechRecordModel);
+    });
     it.each([
       ['should be viewable', true, { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL }],
       ['should be viewable', true, { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT }],
       ['should not be viewable', false, { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED }]
     ])('edit button %s for %s record', (isViewable: string, expected: boolean, record: V3TechRecordModel) => {
-      store.overrideSelector(selectTechRecord, record);
+      mockTechRecordService.techRecord$ = of(record);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('#edit'));
@@ -93,6 +101,12 @@ describe('EditTechRecordButtonComponent', () => {
 
   describe('when user clicks edit button', () => {
     it('component should navigate away for current amendments', () => {
+      mockTechRecordService.techRecord$ = of({
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_statusCode: StatusCodes.PROVISIONAL
+      } as V3TechRecordModel);
       jest.spyOn(router, 'navigate');
       jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
 
@@ -102,6 +116,12 @@ describe('EditTechRecordButtonComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith(['notifiable-alteration-needed'], { relativeTo: expect.anything() });
     });
     it('component should navigate away for notifiable alterations', () => {
+      mockTechRecordService.techRecord$ = of({
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_statusCode: StatusCodes.CURRENT
+      } as V3TechRecordModel);
       jest.spyOn(router, 'navigate');
 
       fixture.detectChanges();
@@ -113,7 +133,6 @@ describe('EditTechRecordButtonComponent', () => {
 
   describe('when amending a provisional tech record', () => {
     beforeEach(() => {
-      updateMockTechnicalRecord(StatusCodes.PROVISIONAL);
       component.isEditing = true;
     });
     describe('and the user submits their changes', () => {
@@ -215,7 +234,6 @@ describe('EditTechRecordButtonComponent', () => {
         describe('and the user cancels cancelling an amendment', () => {
           it('should keep user in edit view', fakeAsync(() => {
             component.isEditing = true;
-            // jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
             jest.spyOn(window, 'confirm').mockImplementation(() => false);
             jest.spyOn(store, 'dispatch');
 
