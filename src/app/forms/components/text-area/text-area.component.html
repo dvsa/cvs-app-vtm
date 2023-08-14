@@ -27,7 +27,5 @@
 </div>
 
 <ng-template #overLimit>
-  <div id="{{ name }}-max-length" class="govuk-error-message" *ngIf="maxLength">
-    You must remove at least {{ -(maxLength - value?.length) }} characters
-  </div>
+  <div id="{{ name }}-max-length" class="govuk-error-message" *ngIf="maxLength">You have {{ -(maxLength - value?.length) }} characters too many</div>
 </ng-template>
