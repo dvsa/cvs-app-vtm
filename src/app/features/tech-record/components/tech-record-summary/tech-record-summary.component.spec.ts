@@ -147,7 +147,6 @@ describe('TechRecordSummaryComponent', () => {
     it('should dispatch updateEditingTechRecord', () => {
       jest.spyOn(component, 'checkForms').mockImplementation();
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      //
       const mockTechRecord = {
         systemNumber: 'foo',
         createdTimestamp: 'bar',
@@ -157,8 +156,6 @@ describe('TechRecordSummaryComponent', () => {
       component.techRecordCalculated = mockTechRecord;
       jest.spyOn(store, 'select').mockReturnValue(of(mockTechRecord));
       component.sections = new QueryList<DynamicFormGroupComponent>();
-
-      // store.overrideSelector(editableVehicleTechRecord, { vrms: [], vin: '', systemNumber: '', techRecord: [] });
 
       component.handleFormState({});
 
