@@ -8,7 +8,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { editingTechRecord, selectTechRecordHistory, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
+import { editingTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
@@ -139,24 +139,22 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   // TODO: V3 the update lambda should automatically create a provisional if the vehicle doesn't have one. It doesn't seem to be doing this at the moment
   handleSubmit(): void {
     this.summary.checkForms();
-    let recordToSend: V3TechRecordModel | undefined;
     if (!this.isInvalid) {
       this.store
         .select(editingTechRecord)
         .pipe(take(1))
         .subscribe(record => {
-          recordToSend = record;
+          if (record) {
+            if (this.editingReason === ReasonForEditing.CORRECTING_AN_ERROR) {
+              this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }));
+            } else if (this.editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+              const isProvisional = this.recordHistory?.some(record => record.techRecord_statusCode === StatusCodes.PROVISIONAL);
+              isProvisional
+                ? this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }))
+                : this.store.dispatch(updateTechRecord({ vehicleTechRecord: { ...record, techRecord_statusCode: StatusCodes.PROVISIONAL } }));
+            }
+          }
         });
-      if (recordToSend) {
-        if (this.editingReason === ReasonForEditing.CORRECTING_AN_ERROR) {
-          this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend }));
-        } else if (this.editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-          const isProvisional = this.recordHistory?.some(record => record.techRecord_statusCode === StatusCodes.PROVISIONAL);
-          isProvisional
-            ? this.store.dispatch(updateTechRecord({ vehicleTechRecord: recordToSend }))
-            : this.store.dispatch(updateTechRecord({ vehicleTechRecord: { ...recordToSend, techRecord_statusCode: StatusCodes.PROVISIONAL } }));
-        }
-      }
     }
   }
 }
