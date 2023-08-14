@@ -1,12 +1,12 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -18,7 +18,6 @@ import { clearError } from '@store/global-error/actions/global-error.actions';
 import { selectTechRecord, updateEditingTechRecordCancel } from '@store/technical-records';
 import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
-import { selectReasonsForAbandoning } from '@store/reference-data';
 
 let mockTechRecordService = {
   techRecord$: of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT })
@@ -30,8 +29,9 @@ let router: Router;
 let store: MockStore;
 let actions$: ReplaySubject<Action>;
 let technicalRecordService: TechnicalRecordService;
-const mockTechnicalRecordObservable = new BehaviorSubject({ statusCode: StatusCodes.CURRENT } as TechRecordModel);
-const updateMockTechnicalRecord = (statusCode: StatusCodes) => mockTechnicalRecordObservable.next({ statusCode } as TechRecordModel);
+const mockTechnicalRecordObservable = new BehaviorSubject({ techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel);
+const updateMockTechnicalRecord = (techRecord_statusCode: StatusCodes) =>
+  mockTechnicalRecordObservable.next({ techRecord_statusCode } as V3TechRecordModel);
 
 const mockRouterService = {
   getRouteNestedParam$: () => '1',
@@ -202,7 +202,6 @@ describe('EditTechRecordButtonComponent', () => {
         });
 
         it('should prompt user if they wish to cancel', () => {
-          // jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
           component.isEditing = true;
           jest.spyOn(window, 'confirm').mockImplementation(() => true);
 
@@ -239,7 +238,6 @@ describe('EditTechRecordButtonComponent', () => {
         describe('and the user confirms cancelling the amendment', () => {
           it('should return user back to non-edit view', fakeAsync(() => {
             component.isEditing = true;
-            // jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of({ statusCode: 'current' } as TechRecordModel));
             jest.spyOn(window, 'confirm').mockImplementation(() => true);
             jest.spyOn(store, 'dispatch');
 
