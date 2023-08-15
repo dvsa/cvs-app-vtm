@@ -16,16 +16,16 @@ const optionalValidation = [
 export const PsvWeightsTemplate: FormNode = {
   name: 'weightsSection',
   label: 'Weights',
-  type: FormNodeTypes.GROUP,
+  type: FormNodeTypes.SECTION,
   children: [
     {
-      name: 'grossSection',
+      name: 'techRecord_weights_grossSection',
       label: 'Gross vehicle weight',
       value: '',
       type: FormNodeTypes.SECTION
     },
     {
-      name: 'grossKerbWeight',
+      name: 'techRecord_weights_grossKerbWeight',
       label: 'Kerb',
       customValidatorErrorName: 'Gross Kerb Weight',
       value: '',
@@ -33,7 +33,7 @@ export const PsvWeightsTemplate: FormNode = {
       validators: requiredValidation
     },
     {
-      name: 'grossLadenWeight',
+      name: 'techRecord_weights_grossLadenWeight',
       label: 'Laden',
       customValidatorErrorName: 'Gross Laden Weight',
       value: '',
@@ -41,7 +41,7 @@ export const PsvWeightsTemplate: FormNode = {
       validators: requiredValidation
     },
     {
-      name: 'grossGbWeight',
+      name: 'techRecord_weights_grossGbWeight',
       label: 'GB',
       customValidatorErrorName: 'Gross GB Weight',
       value: '',
@@ -49,7 +49,7 @@ export const PsvWeightsTemplate: FormNode = {
       validators: requiredValidation
     },
     {
-      name: 'grossDesignWeight',
+      name: 'techRecord_weights_grossDesignWeight',
       label: 'Design',
       customValidatorErrorName: 'Gross Design Weight',
       value: '',
@@ -57,27 +57,27 @@ export const PsvWeightsTemplate: FormNode = {
       validators: requiredValidation
     },
     {
-      name: 'unladenWeight',
+      name: 'techRecord_weights_unladenWeight',
       label: 'Unladen weight',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
     {
-      name: 'trainSection',
+      name: 'techRecord_weights_trainSection',
       label: 'Train weight',
       value: '',
       type: FormNodeTypes.SECTION
     },
     {
-      name: 'maxTrainGbWeight',
+      name: 'techRecord_weights_maxTrainGbWeight',
       label: 'Max train GB',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
     {
-      name: 'trainDesignWeight',
+      name: 'techRecord_weights_trainDesignWeight',
       label: 'Train design',
       value: null,
       type: FormNodeTypes.CONTROL,
@@ -90,7 +90,7 @@ export const PsvWeightsTemplate: FormNode = {
       type: FormNodeTypes.SECTION
     },
     {
-      name: 'axles',
+      name: 'techRecord_axles',
       value: '',
       type: FormNodeTypes.ARRAY,
       children: [
@@ -105,45 +105,38 @@ export const PsvWeightsTemplate: FormNode = {
               label: 'Axle Number',
               type: FormNodeTypes.CONTROL
             },
+
             {
-              name: 'weights',
-              label: 'Weights',
+              name: 'weights_kerbWeight',
+              label: 'Kerb weight',
+              customValidatorErrorName: 'Axle Kerb Weight',
               value: '',
-              type: FormNodeTypes.GROUP,
-              children: [
-                {
-                  name: 'kerbWeight',
-                  label: 'Kerb weight',
-                  customValidatorErrorName: 'Axle Kerb Weight',
-                  value: '',
-                  type: FormNodeTypes.CONTROL,
-                  validators: requiredValidation
-                },
-                {
-                  name: 'ladenWeight',
-                  label: 'Laden weight',
-                  customValidatorErrorName: 'Axle Laden Weight',
-                  value: '',
-                  type: FormNodeTypes.CONTROL,
-                  validators: requiredValidation
-                },
-                {
-                  name: 'gbWeight',
-                  label: 'GB weight',
-                  customValidatorErrorName: 'Axle GB Weight',
-                  value: '',
-                  type: FormNodeTypes.CONTROL,
-                  validators: requiredValidation
-                },
-                {
-                  name: 'designWeight',
-                  label: 'Design weight',
-                  customValidatorErrorName: 'Axle Design Weight',
-                  value: '',
-                  type: FormNodeTypes.CONTROL,
-                  validators: requiredValidation
-                }
-              ]
+              type: FormNodeTypes.CONTROL,
+              validators: requiredValidation
+            },
+            {
+              name: 'weights_ladenWeight',
+              label: 'Laden weight',
+              customValidatorErrorName: 'Axle Laden Weight',
+              value: '',
+              type: FormNodeTypes.CONTROL,
+              validators: requiredValidation
+            },
+            {
+              name: 'weights_gbWeight',
+              label: 'GB weight',
+              customValidatorErrorName: 'Axle GB Weight',
+              value: '',
+              type: FormNodeTypes.CONTROL,
+              validators: requiredValidation
+            },
+            {
+              name: 'weights_designWeight',
+              label: 'Design weight',
+              customValidatorErrorName: 'Axle Design Weight',
+              value: '',
+              type: FormNodeTypes.CONTROL,
+              validators: requiredValidation
             }
           ]
         }

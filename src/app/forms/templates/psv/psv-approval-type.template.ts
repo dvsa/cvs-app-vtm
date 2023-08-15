@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { approvalType } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
 
 export const PsvTypeApprovalTemplate: FormNode = {
   name: 'approvalSection',
@@ -9,7 +9,7 @@ export const PsvTypeApprovalTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'approvalType',
+      name: 'techRecord_approvalType',
       label: 'Approval type',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
@@ -17,35 +17,35 @@ export const PsvTypeApprovalTemplate: FormNode = {
       validators: []
     },
     {
-      name: 'approvalTypeNumber',
+      name: 'techRecord_approvalTypeNumber',
       label: 'Approval type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
     },
     {
-      name: 'ntaNumber',
+      name: 'techRecord_ntaNumber',
       label: 'National type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 40 }]
     },
     {
-      name: 'coifSerialNumber',
+      name: 'techRecord_coifSerialNumber',
       label: 'COIF Serial number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.M,
       validators: [{ name: ValidatorNames.MaxLength, args: 8 }]
     },
     {
-      name: 'coifCertifierName',
+      name: 'techRecord_coifCertifierName',
       label: 'COIF Certifier name',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 20 }]
     },
     {
-      name: 'coifDate',
+      name: 'techRecord_coifDate',
       label: 'COIF Certifier date',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
@@ -53,14 +53,14 @@ export const PsvTypeApprovalTemplate: FormNode = {
       isoDate: false
     },
     {
-      name: 'variantNumber',
+      name: 'techRecord_variantNumber',
       label: 'Variant number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
     },
     {
-      name: 'variantVersionNumber',
+      name: 'techRecord_variantVersionNumber',
       label: 'Variant version number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
