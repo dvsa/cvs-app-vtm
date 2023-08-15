@@ -12,7 +12,7 @@ export const HgvTechRecord: FormNode = {
   label: 'Vehicle Summary',
   children: [
     {
-      name: 'vehicleType',
+      name: 'techRecord_vehicleType',
       label: 'Vehicle type',
       value: '',
       width: FormNodeWidth.XS,
@@ -21,21 +21,21 @@ export const HgvTechRecord: FormNode = {
       disabled: true
     },
     {
-      name: 'statusCode',
+      name: 'techRecord_statusCode',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
     {
-      name: 'numberOfWheelsDriven',
+      name: 'techRecord_numberOfWheelsDriven',
       value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
     {
-      name: 'regnDate',
+      name: 'techRecord_regnDate',
       label: 'Date of first registration',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -45,7 +45,7 @@ export const HgvTechRecord: FormNode = {
       isoDate: false
     },
     {
-      name: 'manufactureYear',
+      name: 'techRecord_manufactureYear',
       label: 'Year of manufacture',
       value: null,
       width: FormNodeWidth.XS,
@@ -57,7 +57,7 @@ export const HgvTechRecord: FormNode = {
       ]
     },
     {
-      name: 'noOfAxles',
+      name: 'techRecord_noOfAxles',
       label: 'Number of axles',
       value: '',
       width: FormNodeWidth.XXS,
@@ -66,7 +66,7 @@ export const HgvTechRecord: FormNode = {
       disabled: true
     },
     {
-      name: 'speedLimiterMrk',
+      name: 'techRecord_speedLimiterMrk',
       label: 'Speed limiter exempt',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -79,7 +79,7 @@ export const HgvTechRecord: FormNode = {
       class: 'flex--half'
     },
     {
-      name: 'tachoExemptMrk',
+      name: 'techRecord_tachoExemptMrk',
       label: 'Tacho exempt',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -92,14 +92,14 @@ export const HgvTechRecord: FormNode = {
       class: 'flex--half'
     },
     {
-      name: 'euroStandard',
+      name: 'techRecord_euroStandard',
       label: 'Euro standard',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(EmissionStandard)
     },
     {
-      name: 'roadFriendly',
+      name: 'techRecord_roadFriendly',
       label: 'Road friendly suspension',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -110,7 +110,7 @@ export const HgvTechRecord: FormNode = {
       ]
     },
     {
-      name: 'fuelPropulsionSystem',
+      name: 'techRecord_fuelPropulsionSystem',
       label: 'Fuel / propulsion system',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -119,7 +119,7 @@ export const HgvTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'drawbarCouplingFitted',
+      name: 'techRecord_drawbarCouplingFitted',
       label: 'Drawbar coupling fitted',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -130,25 +130,17 @@ export const HgvTechRecord: FormNode = {
       ]
     },
     {
-      name: 'vehicleClass',
+      name: 'techRecord_vehicleClass_description',
       label: 'Vehicle class',
       value: '',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'description',
-          label: 'Vehicle class',
-          value: '',
-          customId: 'vehicleClassDescription',
-          type: FormNodeTypes.CONTROL,
-          editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
-          validators: [{ name: ValidatorNames.Required }]
-        }
-      ]
+      customId: 'vehicleClassDescription',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
-      name: 'vehicleConfiguration',
+      name: 'techRecord_vehicleConfiguration',
       label: 'Vehicle configuration',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -157,7 +149,7 @@ export const HgvTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'offRoad',
+      name: 'techRecord_offRoad',
       label: 'Off road vehicle',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -168,7 +160,7 @@ export const HgvTechRecord: FormNode = {
       ]
     },
     {
-      name: 'euVehicleCategory',
+      name: 'techRecord_euVehicleCategory',
       label: 'EU vehicle category',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -178,7 +170,7 @@ export const HgvTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'emissionsLimit',
+      name: 'techRecord_emissionsLimit',
       label: 'Emission limit (plate value)',
       value: null,
       width: FormNodeWidth.XXS,
@@ -187,7 +179,7 @@ export const HgvTechRecord: FormNode = {
       validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
-      name: 'departmentalVehicleMarker',
+      name: 'techRecord_departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -198,7 +190,7 @@ export const HgvTechRecord: FormNode = {
       ]
     },
     {
-      name: 'alterationMarker',
+      name: 'techRecord_alterationMarker',
       label: 'Alteration marker',
       value: '',
       type: FormNodeTypes.CONTROL,
