@@ -32,7 +32,7 @@ export function createSingleSearchResult(systemNumber: string, createdTimestamp:
         type: FormNodeTypes.CONTROL
       },
       {
-        name: 'vehicleType',
+        name: 'techRecord_vehicleType',
         label: 'Vehicle type',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING,
@@ -42,19 +42,19 @@ export function createSingleSearchResult(systemNumber: string, createdTimestamp:
         ]
       },
       {
-        name: 'manufactureYear',
+        name: 'techRecord_manufactureYear',
         label: 'Year of manufacture',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING
       },
       {
-        name: 'make',
+        name: 'techRecord_make',
         label: 'Make',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING
       },
       {
-        name: 'model',
+        name: 'techRecord_model',
         label: 'Model',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING
