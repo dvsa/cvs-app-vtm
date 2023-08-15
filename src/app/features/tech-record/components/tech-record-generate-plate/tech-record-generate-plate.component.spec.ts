@@ -15,13 +15,7 @@ import { initialAppState } from '@store/index';
 import { generatePlate, generatePlateSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { GeneratePlateComponent } from './tech-record-generate-plate.component';
-
-const mockTechRecordService = {
-  viewableTechRecord$: of({}),
-  selectedVehicleTechRecord$: of({}),
-  updateEditingTechRecord: jest.fn(),
-  isUnique: jest.fn()
-};
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const mockDynamicFormService = {
   createForm: jest.fn()
@@ -46,7 +40,7 @@ describe('TechRecordGeneratePlateComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService },
+        TechnicalRecordService,
         {
           provide: UserService,
           useValue: {
@@ -54,7 +48,7 @@ describe('TechRecordGeneratePlateComponent', () => {
           }
         }
       ],
-      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule]
+      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule]
     }).compileComponents();
   });
 
@@ -73,6 +67,9 @@ describe('TechRecordGeneratePlateComponent', () => {
   });
 
   describe('navigateBack', () => {
+    beforeEach(() => {
+      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' }));
+    });
     it('should clear all errors', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
 
@@ -107,6 +104,9 @@ describe('TechRecordGeneratePlateComponent', () => {
   });
 
   describe('handleSubmit', () => {
+    beforeEach(() => {
+      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' }));
+    });
     it('should add an error when the field is not filled out', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
 

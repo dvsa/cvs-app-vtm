@@ -1,4 +1,4 @@
-<ng-container *ngIf="techRecord.vehicleType === 'psv'">
+<ng-container *ngIf="techRecord.techRecord_vehicleType === 'psv'">
   <app-switchable-input
     [form]="brakesForm"
     [type]="editTypes.AUTOCOMPLETE"
@@ -60,7 +60,7 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="techRecord.vehicleType !== 'psv'">
+<ng-container *ngIf="techRecord.techRecord_vehicleType !== 'psv'">
   <app-switchable-input
     [form]="brakesForm"
     [type]="editTypes.TEXT"

@@ -1,22 +1,42 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { Roles } from '@models/roles.enum';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { Observable } from 'rxjs';
+import { getTechRecordV3, selectTechRecord } from '@store/technical-records';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { Observable, of, take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record',
   templateUrl: './tech-record.component.html'
 })
-export class TechRecordComponent {
-  vehicle$: Observable<VehicleTechRecordModel | undefined>;
+export class TechRecordComponent implements OnInit {
+  systemNumber?: string;
+  createdTimestamp?: string;
 
-  constructor(private techRecordService: TechnicalRecordService, private router: Router, public errorService: GlobalErrorService) {
-    this.vehicle$ = this.techRecordService.selectedVehicleTechRecord$;
+  constructor(
+    private techRecordService: TechnicalRecordService,
+    private router: Router,
+    public errorService: GlobalErrorService,
+    private store: Store<TechnicalRecordServiceState>,
+    private route: ActivatedRoute
+  ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
+
+  ngOnInit(): void {
+    this.route.params.pipe(take(1)).subscribe(params => {
+      this.systemNumber = params['systemNumber'];
+      this.createdTimestamp = params['createdTimestamp'];
+    });
+  }
+
+  get techRecord$() {
+    return this.store.select(selectTechRecord);
   }
 
   get roles() {

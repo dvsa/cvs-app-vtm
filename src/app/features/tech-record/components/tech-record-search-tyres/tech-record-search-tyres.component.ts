@@ -7,7 +7,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes, SearchParams } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -41,14 +41,12 @@ export class TechRecordSearchTyresComponent implements OnInit {
     private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>,
     private actions$: Actions
-  ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicleTechRecord = data));
-  }
+  ) {}
 
   public form!: CustomFormGroup;
   public searchResults: Array<ReferenceDataTyre> | null = null;
-  public vehicleTechRecord?: VehicleTechRecordModel;
-  public viewableTechRecord: TechRecordModel | undefined = undefined;
+  public vehicleTechRecord?: V3TechRecordModel;
+  public viewableTechRecord: V3TechRecordModel | undefined = undefined;
   private params: SearchParams = {};
   private pageStart?: number;
   private pageEnd?: number;
@@ -76,7 +74,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
     this.route.params.pipe(take(1)).subscribe(p => (this.params = p));
-    this.technicalRecordService.viewableTechRecord$.pipe(take(1)).subscribe(data => (this.viewableTechRecord = data));
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(data => (this.viewableTechRecord = data));
     this.referenceDataService
       .getTyreSearchReturn$()
       .pipe(take(1))
@@ -94,13 +92,14 @@ export class TechRecordSearchTyresComponent implements OnInit {
     if (!this.viewableTechRecord) {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(data => (this.vehicleTechRecord = data));
   }
 
   get roles() {
     return Roles;
   }
   get currentVrm(): string | undefined {
-    return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return this.vehicleTechRecord?.primaryVrm;
   }
   get paginatedFields(): ReferenceDataTyre[] {
     return this.searchResults?.slice(this.pageStart, this.pageEnd) ?? [];
@@ -143,21 +142,21 @@ export class TechRecordSearchTyresComponent implements OnInit {
 
   handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
     const axleIndex = Number(this.params.axleNumber!) - 1;
-
-    if (this.viewableTechRecord?.axles![axleIndex].tyres) {
+    //TODO V3 Remove all as any PSV HGV?
+    if ((this.viewableTechRecord as any)?.axles![axleIndex].tyres) {
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
 
-      this.viewableTechRecord.axles![axleIndex].tyres!.tyreCode = Number(tyre.code);
-      this.viewableTechRecord.axles![axleIndex].tyres!.tyreSize = tyre.tyreSize;
-      this.viewableTechRecord.axles![axleIndex].tyres!.plyRating = tyre.plyRating;
-      if (this.viewableTechRecord.axles![axleIndex].tyres!.fitmentCode) {
-        this.viewableTechRecord.axles![axleIndex].tyres!.dataTrAxles =
-          this.viewableTechRecord.axles![axleIndex].tyres!.fitmentCode === 'single'
+      (this.viewableTechRecord as any).axles![axleIndex].tyres!.tyreCode = Number(tyre.code);
+      (this.viewableTechRecord as any).axles![axleIndex].tyres!.tyreSize = tyre.tyreSize;
+      (this.viewableTechRecord as any).axles![axleIndex].tyres!.plyRating = tyre.plyRating;
+      if ((this.viewableTechRecord as any).axles![axleIndex].tyres!.fitmentCode) {
+        (this.viewableTechRecord as any)![axleIndex].tyres!.dataTrAxles =
+          (this.viewableTechRecord as any)![axleIndex].tyres!.fitmentCode === 'single'
             ? parseInt(tyre.loadIndexSingleLoad ?? '0')
             : parseInt(tyre.loadIndexTwinLoad ?? '0');
       }
 
-      this.technicalRecordService.updateEditingTechRecord(this.viewableTechRecord);
+      this.technicalRecordService.updateEditingTechRecord(this.viewableTechRecord as any);
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
   }

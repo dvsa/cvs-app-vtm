@@ -1,4 +1,4 @@
-<ng-container *ngIf="techRecords.length">
+<ng-container *ngIf="techRecordHistory$ | async">
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       Technical Records History
@@ -13,17 +13,23 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row" *ngFor="let techRecord of techRecords; trackBy: trackByFn; let i = index">
-        <th scope="row" class="govuk-table__header" [id]="techRecord.statusCode + '-status-header-' + i">{{ techRecord.statusCode }}</th>
-        <td class="govuk-table__cell word-break" [id]="techRecord.statusCode + '-reason-' + i">
-          {{ techRecord.reasonForCreation }}
+      <tr class="govuk-table__row" *ngFor="let techRecord of techRecords$ | async; trackBy: trackByFn; let i = index">
+        <th scope="row" class="govuk-table__header" [id]="techRecord.techRecord_statusCode + '-status-header-' + i">
+          {{ techRecord.techRecord_statusCode }}
+        </th>
+        <td class="govuk-table__cell word-break" [id]="techRecord.techRecord_statusCode + '-reason-' + i">
+          {{ techRecord.techRecord_reasonForCreation }}
         </td>
-        <td class="govuk-table__cell word-break" [id]="techRecord.statusCode + '-created-by-' + i">{{ techRecord.createdByName }}</td>
-        <td class="govuk-table__cell" [id]="techRecord.statusCode + '-created-at-' + i">{{ techRecord.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
+        <td class="govuk-table__cell word-break" [id]="techRecord.techRecord_statusCode + '-created-by-' + i">
+          {{ techRecord.techRecord_createdByName }}
+        </td>
+        <td class="govuk-table__cell" [id]="techRecord.createdTimestamp + '-created-at-' + i">
+          {{ techRecord.createdTimestamp | date : 'dd/MM/yyyy HH:mm' }}
+        </td>
         <td class="govuk-table__cell">
           <app-button
-            *ngIf="techRecord.createdAt !== currentTechRecord.createdAt"
-            id="view-test-{{ vehicle.vin }}"
+            *ngIf="techRecord.createdTimestamp !== currentTechRecord?.createdTimestamp"
+            id="view-test-{{ techRecord.vin }}"
             type="link"
             design="link"
             [routerLink]="[summaryLinkUrl(techRecord)]"
@@ -34,5 +40,9 @@
       </tr>
     </tbody>
   </table>
-  <app-pagination tableName="tech-history" [numberOfItems]="numberOfRecords" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
+  <app-pagination
+    tableName="tech-history"
+    [numberOfItems]="(numberOfRecords$ | async) ?? 0"
+    (paginationOptions)="handlePaginationChange($event)"
+  ></app-pagination>
 </ng-container>

@@ -1,29 +1,31 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { ReasonForEditing, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
+import { editingTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 
 @Component({
-  selector: 'app-vehicle-technical-record[vehicle]',
+  selector: 'app-vehicle-technical-record',
   templateUrl: './vehicle-technical-record.component.html',
   styleUrls: ['./vehicle-technical-record.component.scss']
 })
-export class VehicleTechnicalRecordComponent implements OnInit {
+export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
-  @Input() vehicle!: VehicleTechRecordModel;
+  @Input() techRecord?: V3TechRecordModel;
 
-  currentTechRecord$: Observable<TechRecordModel | undefined>;
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
+  recordHistory?: V3TechRecordModel[];
+  hasAProvisional: Boolean = false;
 
   isCurrent = false;
   isArchived = false;
@@ -31,40 +33,46 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   isDirty = false;
   isInvalid = false;
 
+  destroy$ = new Subject();
+
   constructor(
     testRecordService: TestRecordsService,
     private activatedRoute: ActivatedRoute,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private actions$: Actions
   ) {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
     this.editingReason = this.activatedRoute.snapshot.data['reason'];
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$.pipe(
-      tap(viewableTechRecord => {
-        this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
-        this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
-      })
-    );
   }
-
+  ngOnDestroy(): void {
+    this.destroy$.next;
+    this.destroy$.complete();
+  }
   ngOnInit(): void {
-    const hasProvisionalRecord = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
+    this.hasAProvisional = this.recordHistory?.some(record => record.techRecord_statusCode === StatusCodes.PROVISIONAL) ?? false;
     const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
 
-    if (isProvisionalUrl && !hasProvisionalRecord) {
+    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(vehicleTechRecord => {
+      this.router.navigate([
+        `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`
+      ]);
+    });
+
+    if (isProvisionalUrl && !this.hasAProvisional) {
       this.router.navigate(['../'], { relativeTo: this.route });
     }
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicle.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return this.techRecord?.primaryVrm;
   }
 
   get otherVrms(): Vrm[] | undefined {
-    return this.vehicle.vrms.filter(vrm => vrm.isPrimary === false);
+    return (this.techRecord as any).secondaryVrms;
   }
 
   get roles(): typeof Roles {
@@ -83,8 +91,8 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     return (techRecord.plates?.length ?? 0) > 0;
   }
 
-  getActions(techRecord?: TechRecordModel): TechRecordActions {
-    switch (techRecord?.statusCode) {
+  getActions(techRecord?: V3TechRecordModel): TechRecordActions {
+    switch (techRecord?.techRecord_statusCode) {
       case StatusCodes.CURRENT:
         return TechRecordActions.CURRENT;
       case StatusCodes.PROVISIONAL:
@@ -108,7 +116,7 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     }
   }
 
-  showCreateTestButton(vehicleType: VehicleTypes): boolean {
+  showCreateTestButton(vehicleType: VehicleTypes | string): boolean {
     return (
       !this.isArchived &&
       !this.isEditing &&
@@ -116,10 +124,10 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     );
   }
 
-  createTest(techRecord?: TechRecordModel): void {
-    if (techRecord?.hiddenInVta) {
+  createTest(techRecord?: V3TechRecordModel): void {
+    if (techRecord?.techRecord_hiddenInVta) {
       alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
-    } else if (techRecord?.recordCompleteness === 'complete' || techRecord?.recordCompleteness === 'testable') {
+    } else if (techRecord?.techRecord_recordCompleteness === 'complete' || techRecord?.techRecord_recordCompleteness === 'testable') {
       this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
       alert(
@@ -129,23 +137,24 @@ export class VehicleTechnicalRecordComponent implements OnInit {
       );
     }
   }
-
+  // TODO: V3 the update lambda should automatically create a provisional if the vehicle doesn't have one. It doesn't seem to be doing this at the moment
   handleSubmit(): void {
     this.summary.checkForms();
-
     if (!this.isInvalid) {
-      const { systemNumber } = this.vehicle;
-      const hasProvisional = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
-
-      if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
-        this.store.dispatch(updateTechRecords({ systemNumber }));
-      } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-        hasProvisional
-          ? this.store.dispatch(
-              updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
-            )
-          : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
-      }
+      this.store
+        .select(editingTechRecord)
+        .pipe(take(1))
+        .subscribe(record => {
+          if (record) {
+            if (this.editingReason === ReasonForEditing.CORRECTING_AN_ERROR) {
+              this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }));
+            } else if (this.editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+              this.hasAProvisional
+                ? this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }))
+                : this.store.dispatch(updateTechRecord({ vehicleTechRecord: { ...record, techRecord_statusCode: StatusCodes.PROVISIONAL } }));
+            }
+          }
+        });
     }
   }
 }

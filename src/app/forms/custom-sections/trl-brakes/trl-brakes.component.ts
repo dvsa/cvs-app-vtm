@@ -4,7 +4,7 @@ import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
-import { Axle, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Axle, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
@@ -13,7 +13,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
   styleUrls: ['./trl-brakes.component.scss']
 })
 export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() vehicleTechRecord!: TechRecordModel;
+  @Input() vehicleTechRecord!: V3TechRecordModel;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
 

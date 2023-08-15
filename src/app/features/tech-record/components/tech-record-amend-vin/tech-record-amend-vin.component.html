@@ -1,4 +1,4 @@
-<div *ngIf="vehicle">
+<div *ngIf="techRecord">
   <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
 
   <dl class="govuk-summary-list">
@@ -11,12 +11,12 @@
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">VRM</dt>
-      <app-number-plate *ngIf="vrm" [vrm]="vrm"></app-number-plate>
+      <app-number-plate *ngIf="techRecord?.primaryVrm" [vrm]="techRecord.primaryVrm"></app-number-plate>
     </div>
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">VIN/chassis number</dt>
-      <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicle.vin | defaultNullOrEmpty }}</dd>
+      <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
     </div>
   </dl>
 

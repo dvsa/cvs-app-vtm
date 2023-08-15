@@ -45,7 +45,7 @@ describe('CreateTestRecordComponent', () => {
 
   const mockTechnicalRecordService = {
     get viewableTechRecord$() {
-      return mockVehicleTechnicalRecord().techRecord.pop();
+      return { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
     }
   };
   const MockUserService = {

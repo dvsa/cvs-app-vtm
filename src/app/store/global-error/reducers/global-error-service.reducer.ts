@@ -26,8 +26,7 @@ export const globalErrorReducer = createReducer(
   initialGlobalErrorState,
   on(
     GlobalErrorActions.clearError,
-    TechnicalRecordServiceActions.createProvisionalTechRecord,
-    TechnicalRecordServiceActions.updateTechRecords,
+    TechnicalRecordServiceActions.updateTechRecord,
     TestResultActions.fetchTestResults,
     TestResultActions.fetchTestResultsBySystemNumber,
     TestResultActions.fetchSelectedTestResult,
@@ -40,8 +39,7 @@ export const globalErrorReducer = createReducer(
 
   on(
     GlobalErrorActions.addError,
-    TechnicalRecordServiceActions.createProvisionalTechRecordFailure,
-    TechnicalRecordServiceActions.updateTechRecordsFailure,
+    TechnicalRecordServiceActions.updateTechRecordFailure,
     TestResultActions.fetchTestResultsFailed,
     TestResultActions.fetchTestResultsBySystemNumberFailed,
     TestResultActions.fetchSelectedTestResultFailed,

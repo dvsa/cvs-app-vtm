@@ -1,21 +1,32 @@
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
 import { initialState, TechnicalRecordServiceState } from '../reducers/technical-record-service.reducer';
 import {
   getSingleVehicleType,
-  selectVehicleTechnicalRecordsBySystemNumber,
   technicalRecordsLoadingState,
-  vehicleTechRecords,
+  techRecord,
   selectSectionState,
-  selectNonEditingTechRecord
+  editingTechRecord,
+  selectTechRecordHistory,
+  selectTechRecord
 } from './technical-record-service.selectors';
+import { selectRouteDataProperty } from '@store/router/selectors/router.selectors';
+import { RouterService } from '@services/router/router.service';
+
+const mockRouterService = {
+  getRouteNestedParam$: () => '1',
+  getRouteDataProperty$: () => false
+};
 
 describe('Tech Record Selectors', () => {
   describe('selectedTestResultState', () => {
     it('should return vehicleTechRecords state', () => {
-      const state: TechnicalRecordServiceState = { ...initialState, vehicleTechRecords: [createMock<VehicleTechRecordModel>()] };
-      const selectedState = vehicleTechRecords.projector(state);
-      expect(selectedState.length).toEqual(1);
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
+        vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' }
+      };
+      const selectedState = techRecord.projector(state);
+      expect(selectedState).toEqual(state.vehicleTechRecord);
     });
   });
 
@@ -26,36 +37,15 @@ describe('Tech Record Selectors', () => {
       expect(selectedState).toBeTruthy();
     });
   });
-
-  describe(selectVehicleTechnicalRecordsBySystemNumber.name, () => {
-    it('should return the correct record by vin', () => {
-      const systemNumber = 'VIN0001';
-      const systemNumbers = ['VIN0001', 'VIN0002', 'VIN0003'];
-      const vehicleTechRecords = systemNumbers.map(
-        systemNumber =>
-          ({
-            systemNumber,
-            vin: '123',
-            techRecord: [
-              {
-                createdAt: new Date('2022-01-01').toISOString()
-              },
-              {
-                createdAt: new Date('2022-01-03').toISOString()
-              },
-              {
-                createdAt: new Date('2022-01-02').toISOString()
-              }
-            ]
-          } as unknown as VehicleTechRecordModel)
-      );
-
-      const selectedState = selectVehicleTechnicalRecordsBySystemNumber.projector(vehicleTechRecords, { systemNumber, vin: '123' });
-
-      const expectedTechRecord = vehicleTechRecords[0].techRecord;
-      expect(selectedState?.techRecord[0].createdAt).toStrictEqual(expectedTechRecord[1].createdAt);
-      expect(selectedState?.techRecord[1].createdAt).toStrictEqual(expectedTechRecord[2].createdAt);
-      expect(selectedState?.techRecord[2].createdAt).toStrictEqual(expectedTechRecord[0].createdAt);
+  describe('editingTechRecord', () => {
+    it('should return editingTechRecords state', () => {
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
+        vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' },
+        editingTechRecord: { systemNumber: 'bar', createdTimestamp: 'foo', vin: 'testVin2' }
+      };
+      const selectedState = editingTechRecord.projector(state);
+      expect(selectedState).toEqual(state.editingTechRecord);
     });
   });
 
@@ -63,85 +53,66 @@ describe('Tech Record Selectors', () => {
     const routes = [
       {
         statusExpected: 'provisional',
-        createdAt: undefined,
-        url: 'provisional',
-        vehicle: { techRecord: [{ statusCode: 'provisional' }] }
+        techRecord_createdAt: undefined,
+        isEditing: false,
+        vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: 'provisional' }
       },
       {
         statusExpected: 'provisional',
-        createdAt: undefined,
-        url: 'tech-records',
-        vehicle: { techRecord: [{ statusCode: 'provisional' }] }
+        techRecord_createdAt: undefined,
+        isEditing: false,
+        vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: 'provisional' }
+      },
+      {
+        statusExpected: 'archived',
+        techRecord_createdAt: new Date('2022-02-14').toISOString(),
+        isEditing: false,
+        vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: 'archived' }
       },
       {
         statusExpected: 'current',
-        createdAt: undefined,
-        url: 'tech-records',
-        vehicle: { techRecord: [{ statusCode: 'current' }, { statusCode: 'provisional' }] }
-      },
-      {
-        statusExpected: 'archived',
-        createdAt: new Date('2022-02-14').getTime(),
-        url: 'tech-records',
-        vehicle: { techRecord: [{ statusCode: 'archived', createdAt: '2022-02-14' }, { statusCode: 'provisional' }] }
-      },
-      {
-        statusExpected: 'archived',
-        createdAt: new Date('2022-12-27').getTime(),
-        url: 'tech-records',
-        vehicle: {
-          techRecord: [
-            { statusCode: 'archived', createdAt: '2022-02-14' },
-            { statusCode: 'archived', createdAt: '2022-12-27' }
-          ]
-        }
-      },
-      {
-        statusExpected: 'archived',
-        createdAt: undefined,
-        url: 'tech-records',
-        vehicle: { techRecord: [{ statusCode: 'archived', createdAt: '2022-02-14' }] }
-      },
-      {
-        statusExpected: 'provisional',
-        createdAt: undefined,
-        url: 'tech-records',
-        vehicle: { techRecord: [{ statusCode: 'archived', createdAt: '2022-02-14' }, { statusCode: 'provisional' }] }
+        techRecord_createdAt: undefined,
+        isEditing: true,
+        vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: 'provisional' }
       }
     ];
-    it.each(routes)('should return the $statusExpected record', ({ statusExpected, createdAt, url, vehicle }) => {
-      const techRecord = selectNonEditingTechRecord.projector(vehicle as unknown as VehicleTechRecordModel, { techCreatedAt: createdAt }, url);
+    beforeEach(() => {});
+    it.each(routes)('should return the $statusExpected record', ({ statusExpected, techRecord_createdAt, isEditing, vehicle }) => {
+      const techRecord = selectTechRecord.projector({ ...vehicle, techRecord_createdAt } as unknown as V3TechRecordModel, isEditing, {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_statusCode: 'current'
+      });
       expect(techRecord).toBeDefined();
-      expect(techRecord?.statusCode).toBe(statusExpected);
-      createdAt && techRecord && expect(new Date(techRecord.createdAt).getTime()).toBe(createdAt);
+      expect(techRecord?.techRecord_statusCode).toBe(statusExpected);
+      techRecord_createdAt && techRecord && expect(techRecord.techRecord_createdAt).toEqual(techRecord_createdAt);
     });
   });
 
   describe('getSingleVehicleType', () => {
     it('should return the correct vehicle type', () => {
-      const systemNumber = 'VIN0001';
-      const systemNumbers = ['VIN0001', 'VIN0002', 'VIN0003'];
-      const vehicleTechRecords = systemNumbers.map(
-        systemNumber =>
-          ({
-            systemNumber,
-            vin: '123',
-            techRecord: [
-              {
-                createdAt: new Date('2022-01-01').toISOString()
-              },
-              {
-                createdAt: new Date('2022-01-03').toISOString()
-              },
-              {
-                createdAt: new Date('2022-01-02').toISOString()
-              }
-            ]
-          } as unknown as VehicleTechRecordModel)
-      );
-      const state: TechnicalRecordServiceState = { ...initialState, vehicleTechRecords };
+      const vehicleTechRecord = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_vehicleType: 'foobar'
+      } as unknown as V3TechRecordModel;
+      const state: TechnicalRecordServiceState = { ...initialState, vehicleTechRecord: vehicleTechRecord };
       const selectedVehicleType = getSingleVehicleType.projector(state);
-      expect(selectedVehicleType).toBe(vehicleTechRecords[0].techRecord[0].vehicleType);
+      expect(selectedVehicleType).toBe(vehicleTechRecord.techRecord_vehicleType);
+    });
+  });
+
+  describe('techRecordHistory', () => {
+    it('should return the vehicles tech record history', () => {
+      const vehicleTechRecords = [
+        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' },
+        { systemNumber: 'bar', createdTimestamp: 'foo', vin: 'testVin2' }
+      ];
+      const state: TechnicalRecordServiceState = { ...initialState, techRecordHistory: vehicleTechRecords };
+      const selectedVehicleHistory = selectTechRecordHistory.projector(state);
+      expect(selectedVehicleHistory).toBe(vehicleTechRecords);
     });
   });
 
