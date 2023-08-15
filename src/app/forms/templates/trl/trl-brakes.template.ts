@@ -7,25 +7,19 @@ export const TrlBrakesTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'brakes',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'loadSensingValve',
-          label: 'Load sensing valve',
-          value: '',
-          type: FormNodeTypes.CONTROL
-        },
-        {
-          name: 'antilockBrakingSystem',
-          label: 'Antilock braking system',
-          value: '',
-          type: FormNodeTypes.CONTROL
-        }
-      ]
+      name: 'techRecord_brakes_loadSensingValve',
+      label: 'Load sensing valve',
+      value: '',
+      type: FormNodeTypes.CONTROL
     },
     {
-      name: 'axles',
+      name: 'techRecord_brakes_antilockBrakingSystem',
+      label: 'Antilock braking system',
+      value: '',
+      type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'techRecord_axles',
       value: '',
       type: FormNodeTypes.ARRAY,
       children: [
@@ -44,29 +38,23 @@ export const TrlBrakesTemplate: FormNode = {
               label: 'Parking Brake Mark',
               type: FormNodeTypes.CONTROL
             },
+
             {
-              name: 'brakes',
-              value: '',
-              type: FormNodeTypes.GROUP,
-              children: [
-                {
-                  name: 'brakeActuator',
-                  label: 'Brake actuator',
-                  type: FormNodeTypes.CONTROL,
-                  validators: [{ name: ValidatorNames.Max, args: 999 }]
-                },
-                {
-                  name: 'leverLength',
-                  label: 'Lever length',
-                  type: FormNodeTypes.CONTROL,
-                  validators: [{ name: ValidatorNames.Max, args: 999 }]
-                },
-                {
-                  name: 'springBrakeParking',
-                  label: 'Spring brake parking',
-                  type: FormNodeTypes.CONTROL
-                }
-              ]
+              name: 'brakes_brakeActuator',
+              label: 'Brake actuator',
+              type: FormNodeTypes.CONTROL,
+              validators: [{ name: ValidatorNames.Max, args: 999 }]
+            },
+            {
+              name: 'brakes_leverLength',
+              label: 'Lever length',
+              type: FormNodeTypes.CONTROL,
+              validators: [{ name: ValidatorNames.Max, args: 999 }]
+            },
+            {
+              name: 'brakes_springBrakeParking',
+              label: 'Spring brake parking',
+              type: FormNodeTypes.CONTROL
             }
           ]
         }
