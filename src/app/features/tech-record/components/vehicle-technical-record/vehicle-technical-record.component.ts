@@ -120,7 +120,11 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     return (
       !this.isArchived &&
       !this.isEditing &&
-      (this.isCurrent || vehicleType === VehicleTypes.TRL || vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV)
+      (this.isCurrent ||
+        vehicleType === VehicleTypes.TRL ||
+        vehicleType === VehicleTypes.HGV ||
+        vehicleType === VehicleTypes.PSV ||
+        vehicleType === VehicleTypes.LGV)
     );
   }
 

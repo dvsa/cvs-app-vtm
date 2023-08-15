@@ -130,7 +130,7 @@ export class TechnicalRecordServiceEffects {
       ofType(amendVrm),
       switchMap(({ newVrm, cherishedTransfer, systemNumber, createdTimestamp }) => {
         return this.techRecordHttpService.amendVrm(newVrm, cherishedTransfer, systemNumber, createdTimestamp).pipe(
-          map(vehicleTechRecord => amendVrmSuccess(vehicleTechRecord)),
+          map(vehicleTechRecord => amendVrmSuccess({ vehicleTechRecord })),
           catchError(error => of(amendVrmFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
         );
       })
