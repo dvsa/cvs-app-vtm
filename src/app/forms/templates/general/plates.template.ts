@@ -8,7 +8,7 @@ export const PlatesTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'plates',
+      name: 'techRecord_plates',
       type: FormNodeTypes.ARRAY,
       children: [
         {
