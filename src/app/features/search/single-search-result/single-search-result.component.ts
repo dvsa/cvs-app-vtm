@@ -25,7 +25,7 @@ export class SingleSearchResultComponent implements OnInit {
       vehicleType: this.searchResult.techRecord_vehicleType.toUpperCase()
     };
 
-    this.template = createSingleSearchResult(this.searchResult.systemNumber);
+    this.template = createSingleSearchResult(this.searchResult.systemNumber, this.searchResult.createdTimestamp);
   }
 
   public get roles() {

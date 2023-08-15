@@ -24,6 +24,7 @@ import { addAxle, removeAxle } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { Subscription } from 'rxjs';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Component({
   selector: 'app-tyres',
@@ -31,7 +32,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./tyres.component.scss']
 })
 export class TyresComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() vehicleTechRecord!: TechRecordModel;
+  @Input() vehicleTechRecord!: V3TechRecordModel;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -76,7 +77,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get template(): FormNode | undefined {
-    switch (this.vehicleTechRecord.vehicleType) {
+    switch (this.vehicleTechRecord.techRecord_vehicleType) {
       case VehicleTypes.PSV:
         return PsvTyresTemplate;
       case VehicleTypes.HGV:
@@ -89,11 +90,11 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get isPsv(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.PSV;
+    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
 
   get isTrl(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.TRL;
+    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.TRL;
   }
 
   get types(): typeof FormNodeEditTypes {
@@ -148,7 +149,8 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   searchTyres(name: any, axleNumber: number) {
     if (name === 'tyreCode') {
-      this.getTyresRefData(this.vehicleTechRecord.axles![axleNumber - 1].tyres!, axleNumber);
+      //TODO V3 remove as any HGV
+      this.getTyresRefData((this.vehicleTechRecord as any).axles![axleNumber - 1].tyres!, axleNumber);
     }
   }
 
@@ -180,12 +182,14 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {
     this.vehicleTechRecord = cloneDeep(this.vehicleTechRecord);
-    this.vehicleTechRecord.axles!.find(ax => ax.axleNumber === axleNumber)!.tyres = tyre;
+    //TODO V3 Remove as any HGV
+    (this.vehicleTechRecord as any).axles!.find((ax: any) => ax.axleNumber === axleNumber)!.tyres = tyre;
     this.form.patchValue(this.vehicleTechRecord);
   }
 
   addAxle(): void {
-    if (!this.vehicleTechRecord.axles || this.vehicleTechRecord.axles!.length < 10) {
+    //TODO V3 Remove as any HGV
+    if (!(this.vehicleTechRecord as any).axles || (this.vehicleTechRecord as any).axles!.length < 10) {
       this.isError = false;
       this.store.dispatch(addAxle());
     } else {
@@ -196,8 +200,8 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
-
-    if (this.vehicleTechRecord.axles!.length > minLength) {
+    //TODO V3 Remove as any HGV
+    if ((this.vehicleTechRecord as any).axles!.length > minLength) {
       this.isError = false;
       this.store.dispatch(removeAxle({ index }));
     } else {

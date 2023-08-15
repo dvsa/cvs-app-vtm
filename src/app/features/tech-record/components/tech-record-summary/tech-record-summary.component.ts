@@ -12,7 +12,8 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
@@ -39,7 +40,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
 
-  techRecordCalculated!: TechRecordModel;
+  techRecordCalculated!: V3TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
   isEditing: boolean = false;
@@ -51,22 +52,24 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private errorService: GlobalErrorService,
     private referenceDataService: ReferenceDataService,
     private technicalRecordService: TechnicalRecordService,
-    private routerService: RouterService
+    private routerService: RouterService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
-    this.technicalRecordService.viewableTechRecord$
+    this.technicalRecordService.techRecord$
       .pipe(
         map(record => {
           if (!record) {
             return;
           }
           const techRecord = cloneDeep(record);
-          if (techRecord.vehicleType === VehicleTypes.HGV || techRecord.vehicleType === VehicleTypes.TRL) {
-            const [axles, axleSpacing] = this.axlesService.normaliseAxles(techRecord.axles, techRecord.dimensions?.axleSpacing);
-            techRecord.dimensions = { ...techRecord.dimensions, axleSpacing };
-            techRecord.axles = axles;
-          }
+          // TODO: V3 for HGV's and TRL's
+          // if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.vehicleType === VehicleTypes.TRL) {
+          //   const [axles, axleSpacing] = this.axlesService.normaliseAxles(techRecord.axles, techRecord.dimensions?.axleSpacing);
+          //   techRecord.dimensions = { ...techRecord.dimensions, axleSpacing };
+          //   techRecord.axles = axles;
+          // }
           return techRecord;
         }),
         takeUntil(this.destroy$)

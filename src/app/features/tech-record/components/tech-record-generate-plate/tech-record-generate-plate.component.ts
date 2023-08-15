@@ -22,7 +22,7 @@ export class GeneratePlateComponent implements OnInit {
     reason: new CustomFormControl({ name: 'reason', label: 'Reason for generating plate', type: FormNodeTypes.CONTROL }, '', [Validators.required])
   });
 
-  emailAddress$: Observable<string | undefined>;
+  emailAddress$?: Observable<string | undefined | null>;
 
   constructor(
     private actions$: Actions,
@@ -32,19 +32,18 @@ export class GeneratePlateComponent implements OnInit {
     private store: Store<State>,
     public userService: UserService,
     private technicalRecordService: TechnicalRecordService
-  ) {
-    this.emailAddress$ = this.technicalRecordService.viewableTechRecord$.pipe(
-      tap(record => {
-        if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
-      }),
-      map(record => record?.applicantDetails?.emailAddress)
-    );
-  }
+  ) {}
 
   ngOnInit(): void {
     this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => {
       this.navigateBack();
     });
+    this.emailAddress$ = this.technicalRecordService.techRecord$.pipe(
+      tap(record => {
+        if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') this.navigateBack();
+      }),
+      map(record => record?.techRecord_applicantDetails_emailAddress)
+    );
   }
 
   get width(): FormNodeWidth {

@@ -7,7 +7,7 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
-import { Axle, Retarders, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Axle, Retarders, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataState, selectBrakeByCode } from '@store/reference-data';
 import { updateBrakeForces } from '@store/technical-records';
@@ -20,7 +20,7 @@ import { debounceTime, mergeMap, Observable, of, Subject, takeUntil, withLatestF
   styleUrls: ['./psv-brakes.component.scss']
 })
 export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() vehicleTechRecord!: TechRecordModel;
+  @Input() vehicleTechRecord!: V3TechRecordModel;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -114,7 +114,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get brakeCodePrefix(): string {
-    const prefix = `${Math.round(this.vehicleTechRecord!.grossLadenWeight! / 100)}`;
+    const prefix = `${Math.round((this.vehicleTechRecord as any)!.grossLadenWeight! / 100)}`;
 
     return prefix.length <= 2 ? '0' + prefix : prefix;
   }

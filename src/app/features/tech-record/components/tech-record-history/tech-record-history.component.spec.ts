@@ -28,8 +28,7 @@ describe('TechRecordHistoryComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
-    component.vehicle = mockVehicleTechnicalRecord();
-    component.currentTechRecord = mockVehicleTechnicalRecord().techRecord[0];
+    component.currentTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
     fixture.detectChanges();
   });
   it('should create', () => {

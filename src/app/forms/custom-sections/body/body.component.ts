@@ -9,7 +9,7 @@ import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { vehicleBodyTypeCodeMap, vehicleBodyTypeDescriptionMap } from '@models/body-type-enum';
 import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
-import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { BodyType, TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State } from '@store/index';
@@ -23,7 +23,7 @@ import { Subject, debounceTime, takeUntil, Observable, map, take, skipWhile, com
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() techRecord!: TechRecordModel;
+  @Input() techRecord!: V3TechRecordModel;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -40,7 +40,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.template = this.techRecord.vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
+    this.template = this.techRecord.techRecord_vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
     this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
     this.form.cleanValueChanges
       .pipe(
@@ -60,13 +60,13 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
         if (bodyType?.description) {
           // body type codes are specific to the vehicle type
-          const bodyTypes = vehicleBodyTypeDescriptionMap.get(this.techRecord.vehicleType);
+          const bodyTypes = vehicleBodyTypeDescriptionMap.get(this.techRecord.techRecord_vehicleType! as VehicleTypes);
           event.bodyType['code'] = bodyTypes!.get(bodyType.description);
         }
 
         this.formChange.emit(event);
 
-        if (this.techRecord.vehicleType === VehicleTypes.PSV && event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) {
+        if (this.techRecord.techRecord_vehicleType === VehicleTypes.PSV && event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) {
           this.store.dispatch(updateBody({ psvMake }));
         }
       });
@@ -96,15 +96,15 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get bodyTypes(): MultiOptions {
-    const map = vehicleBodyTypeCodeMap.get(this.techRecord.vehicleType);
+    const map = vehicleBodyTypeCodeMap.get(this.techRecord.techRecord_vehicleType as VehicleTypes);
     const values = [...map!.values()];
     return getOptionsFromEnum(values.sort());
   }
 
   get bodyMakes$(): Observable<MultiOptions | undefined> {
-    if (this.techRecord.vehicleType === VehicleTypes.HGV) {
+    if (this.techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
       return this.optionsService.getOptions(ReferenceDataResourceType.HgvMake);
-    } else if (this.techRecord.vehicleType === VehicleTypes.PSV) {
+    } else if (this.techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
       return this.optionsService.getOptions(ReferenceDataResourceType.PsvMake);
     } else {
       return this.optionsService.getOptions(ReferenceDataResourceType.TrlMake);
@@ -133,9 +133,9 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   loadOptions(): void {
-    if (this.techRecord.vehicleType === VehicleTypes.HGV) {
+    if (this.techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
       this.optionsService.loadOptions(ReferenceDataResourceType.HgvMake);
-    } else if (this.techRecord.vehicleType === VehicleTypes.PSV) {
+    } else if (this.techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
       this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
     } else {
       this.optionsService.loadOptions(ReferenceDataResourceType.TrlMake);

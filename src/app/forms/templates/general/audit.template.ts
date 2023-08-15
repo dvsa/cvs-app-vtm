@@ -6,46 +6,46 @@ export const Audit: FormNode = {
   label: 'Audit',
   children: [
     {
-      name: 'reasonForCreation',
+      name: 'techRecord_reasonForCreation',
       label: 'Reason for creation',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: []
     },
     {
-      name: 'createdAt',
+      name: 'techRecord_createdAt',
       label: 'Created at',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATETIME
     },
     {
-      name: 'createdByName',
+      name: 'techRecord_createdByName',
       label: 'Created by',
       value: '',
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'createdById',
+      name: 'techRecord_createdById',
       label: 'Created by ID',
       value: '',
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'lastUpdatedAt',
+      name: 'techRecord_lastUpdatedAt',
       label: 'Last updated at',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATETIME
     },
     {
-      name: 'lastUpdatedByName',
+      name: 'techRecord_lastUpdatedByName',
       label: 'Last updated by',
       value: '',
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'lastUpdatedById',
+      name: 'techRecord_lastUpdatedById',
       label: 'Last updated by ID',
       value: '',
       type: FormNodeTypes.CONTROL

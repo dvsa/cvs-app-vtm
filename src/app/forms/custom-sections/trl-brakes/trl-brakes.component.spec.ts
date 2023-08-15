@@ -23,7 +23,7 @@ describe('BrakesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TrlBrakesComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord = mockVehicleTechnicalRecord().techRecord.pop()!;
+    component.vehicleTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
     fixture.detectChanges();
   });
 
