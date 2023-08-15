@@ -61,6 +61,11 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`
       ]);
     });
+    if (this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED) {
+      this.isArchived = true;
+    } else if (this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT) {
+      this.isCurrent = true;
+    }
 
     if (isProvisionalUrl && !this.hasAProvisional) {
       this.router.navigate(['../'], { relativeTo: this.route });
@@ -120,11 +125,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     return (
       !this.isArchived &&
       !this.isEditing &&
-      (this.isCurrent ||
-        vehicleType === VehicleTypes.TRL ||
-        vehicleType === VehicleTypes.HGV ||
-        vehicleType === VehicleTypes.PSV ||
-        vehicleType === VehicleTypes.LGV)
+      (this.isCurrent || vehicleType === VehicleTypes.TRL || vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV)
     );
   }
 
