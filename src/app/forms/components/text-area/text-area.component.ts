@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
@@ -13,4 +14,8 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     }
   ]
 })
-export class TextAreaComponent extends BaseControlComponent {}
+export class TextAreaComponent extends BaseControlComponent {
+  get maxLength(): number | undefined {
+    return this.control?.meta.validators?.find(v => v.name === ValidatorNames.MaxLength)?.args;
+  }
+}
