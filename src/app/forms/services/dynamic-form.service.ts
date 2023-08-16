@@ -147,7 +147,7 @@ export class DynamicFormService {
       const errorList = Object.keys(errors);
       errorList.forEach(error => {
         let anchor = meta?.customId ? meta?.customId : meta?.name;
-        if (anchor === 'gbWeight' || 'eecWeight' || 'designWeight') {
+        if (anchor === 'gbWeight' || 'eecWeight' || 'designWeight' || 'kerbWeight' || 'ladenWeight') {
           anchor = anchor + '-1';
         }
 
