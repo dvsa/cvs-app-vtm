@@ -76,7 +76,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   }
   // TODO V3 remove as any HGV TRL
   get hasAxleSpacings(): boolean {
-    return !!(this.techRecord as any).techRecord_dimensions_axleSpacing.length;
+    return !!(this.techRecord as any).techRecord_dimensions_axleSpacing?.length;
   }
 
   get axleSpacings(): CustomFormArray {
