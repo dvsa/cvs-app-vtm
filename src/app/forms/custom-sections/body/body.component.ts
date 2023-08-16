@@ -48,7 +48,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.destroy$),
         mergeMap((event: any) =>
           this.store.pipe(
-            select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, event.brakes.dtpNumber)),
+            select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, event.techRecord_brakes_dtpNumber)),
             take(1),
             map(referenceData => [event, referenceData as PsvMake])
           )
@@ -56,17 +56,19 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       )
       .subscribe(([event, psvMake]) => {
         // Set the body type code automatically based selection
-        const bodyType = event?.bodyType as BodyType;
-
-        if (bodyType?.description) {
+        if (event?.techRecord_bodyType_description) {
           // body type codes are specific to the vehicle type
           const bodyTypes = vehicleBodyTypeDescriptionMap.get(this.techRecord.techRecord_vehicleType! as VehicleTypes);
-          event.bodyType['code'] = bodyTypes!.get(bodyType.description);
+          event.bodyType['code'] = bodyTypes!.get(event?.techRecord_bodyType_description);
         }
 
         this.formChange.emit(event);
 
-        if (this.techRecord.techRecord_vehicleType === VehicleTypes.PSV && event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) {
+        if (
+          this.techRecord.techRecord_vehicleType === VehicleTypes.PSV &&
+          event?.techRecord_brakes_dtpNumber &&
+          event.techRecord_brakes_dtpNumber.length >= 4
+        ) {
           this.store.dispatch(updateBody({ psvMake }));
         }
       });

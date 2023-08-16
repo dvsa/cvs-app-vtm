@@ -9,13 +9,19 @@ export const HgvAndTrlBodyTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'techRecord_brakes_dtpNumber',
-      label: 'DTp number',
-      value: '',
-      width: FormNodeWidth.L,
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
+      name: 'brakes',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'techRecord_brakes_dtpNumber',
+          label: 'DTp number',
+          value: '',
+          width: FormNodeWidth.L,
+          type: FormNodeTypes.CONTROL,
+          editType: FormNodeEditTypes.TEXT,
+          validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
+        }
+      ]
     },
     {
       name: 'techRecord_make',
