@@ -21,7 +21,6 @@ import { Subject, take, takeUntil } from 'rxjs';
 export class AmendVinComponent implements OnDestroy, OnInit {
   techRecord?: V3TechRecordModel;
   form: FormGroup;
-  makeAndModel?: string;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -51,9 +50,6 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(record => (!record ? this.navigateBack() : (this.techRecord = record)));
-    if (this.techRecord) {
-      this.makeAndModel = this.technicalRecordService.getMakeAndModel(this.techRecord);
-    }
   }
 
   ngOnDestroy(): void {
@@ -67,6 +63,10 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   get vehicleType(): VehicleTypes | undefined {
     return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
+  }
+
+  get makeAndModel(): string | undefined {
+    return this.techRecord ? this.technicalRecordService.getMakeAndModel(this.techRecord) : undefined;
   }
 
   isFormValid(): boolean {
