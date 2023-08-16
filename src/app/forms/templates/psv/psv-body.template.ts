@@ -7,13 +7,19 @@ export const PsvBodyTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'techRecord_brakes_dtpNumber',
-      label: 'DTP number',
-      value: '',
-      width: FormNodeWidth.S,
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.AUTOCOMPLETE,
-      validators: [{ name: ValidatorNames.Required }]
+      name: 'brakes',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'techRecord_brakes_dtpNumber',
+          label: 'DTP number',
+          value: '',
+          width: FormNodeWidth.S,
+          type: FormNodeTypes.CONTROL,
+          editType: FormNodeEditTypes.AUTOCOMPLETE,
+          validators: [{ name: ValidatorNames.Required }]
+        }
+      ]
     },
     {
       name: 'techRecord_modelLiteral',
