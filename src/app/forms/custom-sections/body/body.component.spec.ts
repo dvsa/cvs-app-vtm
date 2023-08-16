@@ -67,7 +67,6 @@ describe('BodyComponent', () => {
   });
   describe('The bodyModel value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      console.log((component.techRecord as any).techRecord_bodyModel);
       expect((component.techRecord as any).techRecord_chassisMake).toEqual(component.form.controls['techRecord_chassisMake'].value);
     });
   });
