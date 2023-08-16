@@ -28,7 +28,7 @@
 
     <app-dimensions
       *ngSwitchCase="'dimensionsSection'"
-      [vehicleTechRecord]="techRecordCalculated"
+      [techRecord]="techRecordCalculated"
       [isEditing]="(isEditing$ | async) ?? false"
       (formChange)="handleFormState($event)"
     ></app-dimensions>

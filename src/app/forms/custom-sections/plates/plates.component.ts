@@ -1,9 +1,11 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
-import { Plates, StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime } from 'rxjs';
 
@@ -51,7 +53,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     return (this.techRecord as any).techRecord_plates !== undefined && (this.techRecord as any).techRecord_plates.length > 0;
   }
 
-  get sortedPlates(): Plates[] | undefined {
+  get sortedPlates(): HGVPlates[] | TRLPlates[] | undefined {
     return cloneDeep((this.techRecord as any).plates)?.sort((a: any, b: any) =>
       a.plateIssueDate && b.plateIssueDate ? new Date(b.plateIssueDate).getTime() - new Date(a.plateIssueDate).getTime() : 0
     );
@@ -61,7 +63,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     return this.sortedPlates?.slice(this.pageStart, this.pageEnd) ?? [];
   }
 
-  get mostRecentPlate(): Plates | undefined {
+  get mostRecentPlate(): HGVPlates | TRLPlates | undefined {
     return cloneDeep((this.techRecord as any).techRecord_plates)
       ?.sort((a: any, b: any) =>
         a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0
@@ -79,7 +81,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     this.cdr.detectChanges();
   }
 
-  trackByFn(i: number, tr: Plates) {
+  trackByFn(i: number, tr: HGVPlates | TRLPlates) {
     return tr.plateIssueDate;
   }
 
