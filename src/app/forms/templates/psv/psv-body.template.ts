@@ -7,19 +7,13 @@ export const PsvBodyTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'brakes',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'techRecord_brakes_dtpNumber',
-          label: 'DTP number',
-          value: '',
-          width: FormNodeWidth.S,
-          type: FormNodeTypes.CONTROL,
-          editType: FormNodeEditTypes.AUTOCOMPLETE,
-          validators: [{ name: ValidatorNames.Required }]
-        }
-      ]
+      name: 'techRecord_brakes_dtpNumber',
+      label: 'DTP number',
+      value: '',
+      width: FormNodeWidth.S,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.AUTOCOMPLETE,
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'techRecord_modelLiteral',
@@ -60,21 +54,13 @@ export const PsvBodyTemplate: FormNode = {
       validators: [{ name: ValidatorNames.MaxLength, args: 20 }]
     },
     {
-      name: 'bodyType',
+      name: 'techRecord_bodyType_description',
       label: 'Body type',
       value: '',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'techRecord_bodyType_description',
-          label: 'Body type',
-          value: '',
-          customId: 'bodyType',
-          type: FormNodeTypes.CONTROL,
-          disabled: true,
-          validators: [{ name: ValidatorNames.Required }]
-        }
-      ]
+      customId: 'bodyType',
+      type: FormNodeTypes.CONTROL,
+      disabled: true,
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'techRecord_functionCode',

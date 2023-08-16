@@ -39,7 +39,9 @@ describe('BodyComponent', () => {
       vin: 'testVin',
       techRecord_vehicleType: VehicleTypes.PSV,
       techRecord_brakes_dtpNumber: '000000',
-      techRecord_techRecord_bodyModel: 'model'
+      techRecord_bodyModel: 'model',
+      techRecord_bodyType: 'type',
+      techRecord_chassisMake: 'chassisType'
     } as unknown as V3TechRecordModel;
     fixture.detectChanges();
   });
@@ -50,22 +52,23 @@ describe('BodyComponent', () => {
 
   describe('The DTpNumber value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect((component.techRecord as any).techRecord_brakes_dtpNumber).toStrictEqual(component.form.value.brakes.techRecord_brakes_dtpNumber);
+      expect((component.techRecord as any).techRecord_brakes_dtpNumber).toStrictEqual(component.form.value.techRecord_brakes_dtpNumber);
     });
   });
   describe('The bodyModel value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect((component.techRecord as any).techRecord_techRecord_bodyModel).toStrictEqual(component.form.value.techRecord_bodyModel);
+      expect((component.techRecord as any).techRecord_bodyModel).toStrictEqual(component.form.value.techRecord_bodyModel);
     });
   });
   describe('The bodyMake value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect((component.techRecord as any).techRecord.techRecord_bodyType).toStrictEqual(component.form.controls['bodyType'].value);
+      expect((component.techRecord as any).techRecord_bodyType).toStrictEqual(component.form.controls['techRecord_bodyType'].value);
     });
   });
   describe('The bodyModel value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect((component.techRecord as any).techRecord.techRecord_bodyModel).toStrictEqual(component.form.controls['bodyModel'].value);
+      console.log((component.techRecord as any).techRecord_bodyModel);
+      expect((component.techRecord as any).techRecord_chassisMake).toEqual(component.form.controls['techRecord_chassisMake'].value);
     });
   });
 });

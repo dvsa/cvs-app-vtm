@@ -126,14 +126,6 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  get bodyTypeForm(): FormGroup {
-    return this.form.get(['bodyType']) as FormGroup;
-  }
-
-  get brakesForm(): FormGroup {
-    return this.form.get(['brakes']) as FormGroup;
-  }
-
   loadOptions(): void {
     if (this.techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
       this.optionsService.loadOptions(ReferenceDataResourceType.HgvMake);
