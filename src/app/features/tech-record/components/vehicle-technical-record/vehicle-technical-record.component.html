@@ -6,8 +6,6 @@
 
         <app-edit-tech-record-button
           *appRoleRequired="roles.TechRecordAmend"
-          [vehicle]="vehicle"
-          [viewableTechRecord]="currentTechRecord"
           [(isEditing)]="isEditing"
           [isDirty]="isDirty"
           (submitChange)="handleSubmit()"
@@ -21,7 +19,7 @@
           [isEditing]="isEditing"
         ></app-test-record-summary>
 
-        <ng-container *ngIf="!isArchived && !isEditing">
+        <ng-container *ngIf="showCreateTestButton(currentTechRecord.vehicleType)">
           <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]">
             <a id="create-test" class="govuk-button" (click)="createTest(currentTechRecord)">Create a test for this vehicle</a>
           </div>
@@ -30,11 +28,14 @@
     </div>
   </div>
   <div class="govuk-grid-column-two-thirds">
-    <app-tech-record-summary
-      [techRecord]="currentTechRecord"
-      [isEditing]="isEditing"
-      (isFormDirty)="isDirty = $event"
-      (isFormInvalid)="isInvalid = $event"
-    ></app-tech-record-summary>
+    <app-tech-record-summary (isFormDirty)="isDirty = $event" (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
+    <app-edit-tech-record-button
+      class="right"
+      *appRoleRequired="roles.TechRecordAmend"
+      [(isEditing)]="isEditing"
+      [isDirty]="isDirty"
+      customId="bottom"
+      (submitChange)="handleSubmit()"
+    ></app-edit-tech-record-button>
   </div>
 </div>

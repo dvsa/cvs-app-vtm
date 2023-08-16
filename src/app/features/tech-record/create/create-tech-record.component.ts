@@ -1,5 +1,5 @@
 import { Component, OnChanges } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -75,6 +75,7 @@ export class CreateTechRecordComponent implements OnChanges {
     private store: Store
   ) {
     this.batchTechRecordService.clearBatch();
+    this.technicalRecordService.clearSectionTemplateStates();
   }
 
   ngOnChanges(): void {
@@ -96,7 +97,10 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   get vehicleStatusOptions(): MultiOptions {
-    return [{ label: 'Provisional', value: StatusCodes.PROVISIONAL }];
+    return [
+      { label: 'Provisional', value: StatusCodes.PROVISIONAL },
+      { label: 'Current', value: StatusCodes.CURRENT }
+    ];
   }
 
   get checkboxOptions(): MultiOptions {
@@ -140,6 +144,7 @@ export class CreateTechRecordComponent implements OnChanges {
 
     this.technicalRecordService.updateEditingTechRecord(this.vehicle as VehicleTechRecordModel);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.vehicle.techRecord![0].vehicleType);
+    this.technicalRecordService.clearSectionTemplateStates();
     this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
   }
 

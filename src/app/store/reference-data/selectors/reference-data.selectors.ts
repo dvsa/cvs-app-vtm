@@ -1,7 +1,7 @@
-import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
+import { Brake, ReferenceDataAdminType, ReferenceDataResourceType, ReferenceDataResourceTypeAudit } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
-import { ReferenceDataEntityStateTyres, referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
+import { ReferenceDataEntityStateSearch, referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
 
 const resourceTypeSelector = (resourceType: ReferenceDataResourceType) => createSelector(referenceDataFeatureState, state => state[resourceType]);
 
@@ -33,14 +33,33 @@ export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
   }
 };
 
-export const selectTyreSearchReturn = createSelector(
-  referenceDataFeatureState,
-  state => (state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres).searchReturn
-);
+export const selectSearchReturn = (type: ReferenceDataResourceTypeAudit) =>
+  createSelector(referenceDataFeatureState, state => {
+    const data = (state[type as ReferenceDataResourceType] as ReferenceDataEntityStateSearch)?.searchReturn;
+    return data?.sort((a, b) => b.resourceKey.toString().localeCompare(a.resourceKey.toString()));
+  });
+
 export const selectTyreSearchCriteria = createSelector(
   referenceDataFeatureState,
-  state => state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres
+  state => state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateSearch
 );
+
+export const selectRefDataBySearchTerm = (searchTerm: string, referenceDataType: ReferenceDataResourceType, filter: string) =>
+  createSelector(referenceDataFeatureState, state => {
+    const searchItem: Array<any> = [];
+
+    state[referenceDataType].ids.forEach(key => {
+      const obj = state[referenceDataType].entities[key] as any;
+      if (obj[filter].toString().toUpperCase().includes(searchTerm.toString().toUpperCase())) {
+        searchItem.push(obj);
+      }
+    });
+    if (searchTerm.length > 0) {
+      return searchItem;
+    } else {
+      return;
+    }
+  });
 
 export const selectUserByResourceKey = (resourceKey: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.User].entities[resourceKey]);

@@ -5,5 +5,29 @@
 }
 
 .govuk-table__cell {
-  padding: 10px 8px 10px 0;
+  padding: 10px 5px 10px 0;
+}
+
+.tyre-table-ld-index__header {
+  width: 0%;
+  padding-right: 5px;
+}
+
+.tyre-table__cell {
+  width: 23px;
+  height: 24px;
+  padding-right: 0%;
+  margin-right: 0%;
+
+  font-family: 'GDS Transport';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 24px;
+
+  color: #0b0c0c;
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
 }

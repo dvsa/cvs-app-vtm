@@ -15,9 +15,10 @@ import { UserService } from '@services/user-service/user-service';
 import {
   addSearchInformation,
   fetchReferenceData,
+  fetchReferenceDataByKey,
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
-  ReferenceDataEntityStateTyres,
+  ReferenceDataEntityStateSearch,
   ReferenceDataState,
   referencePsvMakeLoadingState,
   removeTyreSearch,
@@ -25,7 +26,8 @@ import {
   selectReasonsForAbandoning,
   selectReferenceDataByResourceKey,
   selectTyreSearchCriteria,
-  selectTyreSearchReturn
+  selectSearchReturn,
+  removeReferenceDataByKey
 } from '@store/reference-data';
 import { Observable, of, switchMap, throwError, withLatestFrom } from 'rxjs';
 
@@ -45,13 +47,34 @@ export class ReferenceDataService extends ReferenceDataApiService {
 
   //  URL to POST new reference data items: /reference/{ type capitalized }/{ new key } POST
 
-  createNewReferenceDataItem(type: ReferenceDataResourceType, key: string, data: any) {
+  createReferenceDataItem(type: ReferenceDataResourceType, key: string, data: any) {
     return this.usersService.id$.pipe(
       withLatestFrom(this.usersService.name$),
       switchMap(([createdId, createdName]) => {
         const referenceData = { ...data, createdId, createdName, createdAt: new Date() };
-
         return this.referenceResourceTypeResourceKeyPost(type, key, referenceData, 'body', false);
+      })
+    );
+  }
+
+  //  URL to PUT new reference data items: /reference/{ type capitalized }/{ new key } PUT
+
+  amendReferenceDataItem(type: ReferenceDataResourceType, key: string, data: any) {
+    return this.usersService.id$.pipe(
+      withLatestFrom(this.usersService.name$),
+      switchMap(([createdId, createdName]) => {
+        const referenceData = { ...data, createdId, createdName, createdAt: new Date() };
+        return this.referenceResourceTypeResourceKeyPut(type, key, referenceData, 'body', false);
+      })
+    );
+  }
+
+  deleteReferenceDataItem(type: ReferenceDataResourceType, key: string, payload: any) {
+    return this.usersService.id$.pipe(
+      withLatestFrom(this.usersService.name$),
+      switchMap(([createdId, createdName]) => {
+        const deleteObject = { ...payload, createdId, createdName, createdAt: new Date() };
+        return this.referenceResourceTypeResourceKeyDelete(type, key, deleteObject, 'body', false);
       })
     );
   }
@@ -64,8 +87,20 @@ export class ReferenceDataService extends ReferenceDataApiService {
     return this.referenceResourceTypeGet(resourceType, paginationToken, 'body');
   }
 
+  fetchReferenceDataAudit(resourceType: ReferenceDataResourceType, paginationToken?: string): Observable<ReferenceDataApiResponse> {
+    if (!resourceType) {
+      return throwError(() => new Error('Reference data resourceType is required'));
+    }
+
+    return this.referenceResourceTypeGet(resourceType, paginationToken, 'body');
+  }
+
   fetchReferenceDataByKey(resourceType: ReferenceDataResourceType, resourceKey: string | number): Observable<ReferenceDataItemApiResponse> {
     return this.referenceResourceTypeResourceKeyGet(resourceType, resourceKey, 'body');
+  }
+
+  loadReferenceDataByKey(resourceType: ReferenceDataResourceType, resourceKey: string | number): void {
+    return this.store.dispatch(fetchReferenceDataByKey({ resourceType, resourceKey }));
   }
 
   fetchReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): Observable<ReferenceDataApiResponse> {
@@ -88,6 +123,10 @@ export class ReferenceDataService extends ReferenceDataApiService {
     this.store.dispatch(fetchReferenceData({ resourceType }));
   }
 
+  removeReferenceDataByKey(resourceType: ReferenceDataResourceType, resourceKey: string): void {
+    this.store.dispatch(removeReferenceDataByKey({ resourceType, resourceKey }));
+  }
+
   addSearchInformation(filter: string, term: string): void {
     this.store.dispatch(addSearchInformation({ filter, term }));
   }
@@ -97,10 +136,10 @@ export class ReferenceDataService extends ReferenceDataApiService {
   }
 
   getTyreSearchReturn$(): Observable<ReferenceDataTyre[] | null> {
-    return this.store.pipe(select(selectTyreSearchReturn));
+    return this.store.pipe(select(selectSearchReturn(ReferenceDataResourceType.Tyres))) as Observable<ReferenceDataTyre[] | null>;
   }
 
-  getTyreSearchCriteria$(): Observable<ReferenceDataEntityStateTyres> {
+  getTyreSearchCriteria$(): Observable<ReferenceDataEntityStateSearch> {
     return this.store.pipe(select(selectTyreSearchCriteria));
   }
 
@@ -139,17 +178,5 @@ export class ReferenceDataService extends ReferenceDataApiService {
 
   getReferencePsvMakeDataLoading$(): Observable<boolean> {
     return this.store.pipe(select(referencePsvMakeLoadingState));
-  }
-
-  camelCaseToTitleCase(s: string): string {
-    return s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
-  }
-
-  macroCasetoTitleCase(input: string | number | boolean): string {
-    return input
-      .toString()
-      .split('_')
-      .map(s => s.charAt(0) + s.slice(1).toLowerCase())
-      .join(' ');
   }
 }

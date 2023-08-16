@@ -51,6 +51,7 @@ export const SpecialistTestSectionGroup5: FormNode = {
               options: [
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' },
+                { value: 'prs', label: 'PRS' },
                 { value: 'abandoned', label: 'Abandoned' }
               ],
               validators: [
@@ -127,6 +128,7 @@ export const SpecialistTestSectionGroup5: FormNode = {
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
+                { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
                 { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
               ]

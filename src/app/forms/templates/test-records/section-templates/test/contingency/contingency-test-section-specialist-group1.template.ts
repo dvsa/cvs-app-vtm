@@ -47,7 +47,8 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' }
+                { value: 'fail', label: 'Fail' },
+                { value: 'prs', label: 'PRS' }
               ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnCustomDefects },
@@ -118,6 +119,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
+                { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
                 { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
               ]

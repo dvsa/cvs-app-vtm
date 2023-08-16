@@ -4,7 +4,6 @@ import { DefectSelectComponent } from '@forms/components/defect-select/defect-se
 import { DefectComponent } from '@forms/custom-sections/defect/defect.component';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
-import { TestStationStatuses } from '@models/test-stations/test-station.model';
 import { ContingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
 import { DefectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
 import { TestStationsResolver } from 'src/app/resolvers/test-stations/test-stations.resolver';
@@ -27,7 +26,7 @@ const routes: Routes = [
         path: 'type',
         component: CreateTestTypeComponent,
         data: { title: 'Create contingency test' },
-        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver }
+        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, contingencyTest: ContingencyTestResolver }
       },
       {
         path: 'test-details',

@@ -11,13 +11,27 @@ export enum ReferenceDataResourceType {
   TirReasonsForAbandoning = 'TIR_REASONS_FOR_ABANDONING',
   TrlMake = 'TRL_MAKE',
   Tyres = 'TYRES',
-  User = 'USER'
+  User = 'USER',
+  TyreLoadIndex = 'TYRE_LOAD_INDEX'
+}
+
+type AuditTypes = `${keyof Record<ReferenceDataResourceType, string>}#AUDIT`;
+export type ReferenceDataResourceTypeAudit = `${keyof Record<ReferenceDataResourceType, string>}` | AuditTypes;
+
+export interface ReferenceDataAdminColumn {
+  name: string;
+  heading: string;
+  order: number;
 }
 
 export interface ReferenceDataModelBase {
   resourceType: ReferenceDataResourceType;
   resourceKey: string | number;
   description?: string;
+  createdAt?: string;
+  createdName?: string;
+  createdId?: string;
+  reason?: string;
 }
 
 export interface HgvMake extends ReferenceDataModelBase {}
@@ -54,6 +68,10 @@ export interface ReferenceDataTyre extends ReferenceDataModelBase {
   plyRating: string;
   axleLoadSingle?: string;
   axleLoadDouble?: string;
+}
+
+export interface ReferenceDataTyreLoadIndex extends ReferenceDataModelBase {
+  loadIndex: string;
 }
 
 export interface User extends ReferenceDataModelBase {

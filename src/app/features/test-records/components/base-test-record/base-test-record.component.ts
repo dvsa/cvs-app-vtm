@@ -41,7 +41,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
     private routerService: RouterService,
     private testRecordsService: TestRecordsService
   ) {
-    this.techRecord$ = this.techRecordService.techRecord$;
+    this.techRecord$ = this.techRecordService.viewableTechRecord$;
   }
 
   ngAfterViewInit(): void {

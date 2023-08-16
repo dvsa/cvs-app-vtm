@@ -1,0 +1,46 @@
+#buttons {
+  width: 18%;
+}
+
+#buttonsAndSearch {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+#addDeleteButtons {
+  width: 40%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-right: 18px;
+  padding-top: 10px !important;
+  padding-bottom: 0px;
+}
+
+#refSearch {
+  width: 200px !important;
+}
+
+#searchInput {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+#searchForm {
+  width: 60%;
+  margin-bottom: 0px;
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+}
+
+#heading {
+  margin-bottom: 10px !important;
+}
+
+.search-btn {
+  background-color: #1d70b8;
+  color: #fff;
+  border: none;
+}

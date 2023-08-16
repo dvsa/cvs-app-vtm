@@ -45,7 +45,7 @@ const routes: Routes = [
     path: 'historic/:techCreatedAt',
     component: TechRecordComponent,
     data: { title: 'Historic tech record', isCustomLayout: true },
-    canActivate: [MsalGuard],
+    canActivate: [MsalGuard, CancelEditTechGuard],
     resolve: { load: TechRecordViewResolver }
   },
   {
@@ -57,20 +57,22 @@ const routes: Routes = [
   {
     path: 'change-vrm',
     component: AmendVrmComponent,
-    data: { title: 'Change VRM', roles: Roles.TechRecordAmend },
+    data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
     path: 'generate-plate',
     component: GeneratePlateComponent,
     data: { title: 'Generate plate', roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard]
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordViewResolver }
   },
   {
     path: 'generate-letter',
     component: GenerateLetterComponent,
     data: { title: 'Generate letter', roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard]
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordViewResolver }
   },
   {
     path: 'provisional',
@@ -107,7 +109,7 @@ const routes: Routes = [
       {
         path: 'change-vehicle-type',
         component: ChangeVehicleTypeComponent,
-        data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+        data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend, isEditing: true },
         canActivate: [MsalGuard, RoleGuard]
       },
       {
@@ -119,7 +121,7 @@ const routes: Routes = [
       {
         path: 'change-vrm',
         component: AmendVrmComponent,
-        data: { title: 'Change VRM', roles: Roles.TechRecordAmend },
+        data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
         canActivate: [MsalGuard, RoleGuard]
       },
       {
@@ -161,7 +163,7 @@ const routes: Routes = [
   {
     path: 'change-vehicle-type',
     component: ChangeVehicleTypeComponent,
-    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },

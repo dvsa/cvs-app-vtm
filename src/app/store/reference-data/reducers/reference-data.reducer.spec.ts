@@ -1,9 +1,16 @@
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Dictionary } from '@ngrx/entity';
+import cloneDeep from 'lodash.clonedeep';
 import {
   addSearchInformation,
+  amendReferenceDataItemSuccess,
+  createReferenceDataItemSuccess,
+  deleteReferenceDataItemSuccess,
   fetchReferenceData,
+  fetchReferenceDataAudit,
+  fetchReferenceDataAuditFailed,
+  fetchReferenceDataAuditSuccess,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
   fetchReferenceDataByKeySearch,
@@ -18,7 +25,7 @@ import {
   removeTyreSearch
 } from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
-import { initialReferenceDataState, ReferenceDataEntityStateTyres, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
+import { initialReferenceDataState, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
 
 describe('Reference Data Reducer', () => {
   describe('unknown action', () => {
@@ -73,6 +80,53 @@ describe('Reference Data Reducer', () => {
     it('should set error state', () => {
       const newState = { ...initialReferenceDataState };
       const action = fetchReferenceDataFailed({ error: 'unit testing error message', resourceType: ReferenceDataResourceType.CountryOfRegistration });
+      const state = referenceDataReducer({ ...initialReferenceDataState }, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('fetchReferenceDataAudit', () => {
+    it('should set loading to true', () => {
+      const newState: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.CountryOfRegistration]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
+          loading: true
+        }
+      };
+      const action = fetchReferenceDataAudit({ resourceType: ReferenceDataResourceType.CountryOfRegistration });
+      const state = referenceDataReducer(initialReferenceDataState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('fetchReferenceDataAuditSuccess', () => {
+    it.each(testCases)('should set the the resource data item based on the type', value => {
+      const { resourceType } = value;
+      const newState: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [resourceType]: { ...initialReferenceDataState[resourceType], searchReturn: value.payload, loading: false }
+      };
+
+      const action = fetchReferenceDataAuditSuccess({ resourceType, payload: value.payload, paginated: false });
+      const state = referenceDataReducer(initialReferenceDataState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('fetchReferenceDataAuditFailed', () => {
+    it('should set error state', () => {
+      const newState = { ...initialReferenceDataState };
+      const action = fetchReferenceDataAuditFailed({
+        error: 'unit testing error message',
+        resourceType: ReferenceDataResourceType.CountryOfRegistration
+      });
       const state = referenceDataReducer({ ...initialReferenceDataState }, action);
 
       expect(state).toEqual(newState);
@@ -341,6 +395,149 @@ describe('Reference Data Reducer', () => {
         expect(state).toEqual(newState);
         expect(state).not.toBe(newState);
       });
+    });
+  });
+  describe('deleteReferenceDataItemSuccess', () => {
+    it('should remove the specified item from the reference data state', () => {
+      const newItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test'] = newItem;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
+      const action = deleteReferenceDataItemSuccess({
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test'
+      });
+
+      const reducer = referenceDataReducer(inputState, action);
+      expect(reducer).toEqual(initialReferenceDataState);
+    });
+    it('should leave any unspecified items in state', () => {
+      const newItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const newItem2 = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test2',
+        description: 'test2'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test'] = newItem;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test2'] = newItem2;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test2'];
+
+      const action = deleteReferenceDataItemSuccess({
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test'
+      });
+
+      const reducer = referenceDataReducer(inputState, action);
+
+      expect(reducer).not.toEqual(initialReferenceDataState);
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test2: newItem2 });
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test2']);
+    });
+  });
+  describe('deleteReferenceDataItemSuccess', () => {
+    it('should remove the specified item from the reference data state', () => {
+      const newItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test'] = newItem;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
+      const action = deleteReferenceDataItemSuccess({
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test'
+      });
+
+      const reducer = referenceDataReducer(inputState, action);
+      expect(reducer).toEqual(initialReferenceDataState);
+    });
+    it('should leave any unspecified items in state', () => {
+      const newItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const newItem2 = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test2',
+        description: 'test2'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test'] = newItem;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test2'] = newItem2;
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test2'];
+
+      const action = deleteReferenceDataItemSuccess({
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test'
+      });
+
+      const reducer = referenceDataReducer(inputState, action);
+
+      expect(reducer).not.toEqual(initialReferenceDataState);
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test2: newItem2 });
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test2']);
+    });
+  });
+  describe('createReferenceDataItemSuccess', () => {
+    it('should insert the new item into the reference data state', () => {
+      const testItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const testItem2 = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test2',
+        description: 'test2'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities = { test2: testItem2 };
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test2'];
+
+      const action = createReferenceDataItemSuccess({ result: testItem });
+      const reducer = referenceDataReducer(inputState, action);
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test: testItem, test2: testItem2 });
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test2', 'test']);
+    });
+  });
+  describe('amendReferenceDataItemSuccess', () => {
+    it('should insert the new item into the reference data state', () => {
+      const itemToAmend = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'test'
+      };
+      const amendedItem = {
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: 'test',
+        description: 'this has been amended'
+      };
+      const inputState = cloneDeep(initialReferenceDataState);
+      inputState[ReferenceDataResourceType.CountryOfRegistration].entities = { test: itemToAmend };
+      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
+
+      const action = amendReferenceDataItemSuccess({ result: amendedItem });
+      const reducer = referenceDataReducer(inputState, action);
+
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test: amendedItem });
+      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test']);
     });
   });
 });

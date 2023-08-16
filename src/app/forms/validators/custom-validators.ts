@@ -115,6 +115,22 @@ export class CustomValidators {
     };
   };
 
+  static mustEqualSibling = (sibling: string): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control?.parent) {
+        const siblingControl = control.parent.get(sibling) as CustomFormControl;
+        const siblingValue = siblingControl.value;
+        const isEqual = Array.isArray(control.value) ? control.value.includes(siblingValue) : siblingValue === control.value;
+
+        if (!isEqual) {
+          return { mustEqualSibling: { sibling: siblingControl.meta.label } };
+        }
+      }
+
+      return null;
+    };
+  };
+
   static validateVRMTrailerIdLength = (sibling: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) {
@@ -135,7 +151,7 @@ export class CustomValidators {
           }
         } else {
           if (control.value.length < 1) {
-            return { validateVRMTrailerIdLength: { message: 'VRM must be less than or equal to 1 characters' } };
+            return { validateVRMTrailerIdLength: { message: 'VRM must be greater than or equal to 1 character' } };
           } else if (control.value.length > 9) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be less than or equal to 9 characters' } };
           }
@@ -161,6 +177,10 @@ export class CustomValidators {
 
   static numeric(): ValidatorFn {
     return this.customPattern(['^\\d*$', 'must be a whole number']);
+  }
+
+  static email(): ValidatorFn {
+    return this.customPattern(['^[-\\w.\\+]+@[-\\w]+\\.[A-Za-z]{2,}$', 'Enter an email address in the correct format, like name@example.com']);
   }
 
   static customPattern([regEx, message]: string[]): ValidatorFn {

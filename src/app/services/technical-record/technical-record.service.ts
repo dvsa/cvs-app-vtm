@@ -3,11 +3,20 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 import {
+  selectTechRecordSearchResults,
+  selectTechRecordSearchResultsBySystemNumber
+} from '@store/tech-record-search/selector/tech-record-search.selector';
+import {
+  clearAllSectionStates,
   createVehicle,
   editableTechRecord,
   editableVehicleTechRecord,
+  selectNonEditingTechRecord,
+  selectSectionState,
   selectTechRecord,
   selectVehicleTechnicalRecordsBySystemNumber,
   updateEditingTechRecord,
@@ -15,11 +24,11 @@ import {
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { Observable, catchError, debounceTime, filter, map, of, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, combineLatest, debounceTime, filter, map, of, switchMap, take, tap, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService) {}
+  constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService, private routerService: RouterService) {}
 
   getVehicleTypeWithSmallTrl(techRecord: TechRecordModel): VehicleTypes {
     return techRecord.vehicleType === VehicleTypes.TRL &&
@@ -29,16 +38,14 @@ export class TechnicalRecordService {
   }
 
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
-    return this.techRecordHttpService.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
-      map(vehicleTechRecord => {
-        const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
-        if (allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED)) {
+    return this.techRecordHttpService.search$(searchType, valueToCheck).pipe(
+      map(searchResults => {
+        if (searchResults.every(result => result.techRecord_statusCode === StatusCodes.ARCHIVED)) {
           return true;
         }
 
         if (searchType === SEARCH_TYPES.VRM) {
-          const allVrms = vehicleTechRecord.flatMap(record => record.vrms);
-          return !allVrms.some(vrm => vrm.isPrimary && vrm.vrm === valueToCheck);
+          return !searchResults.some(result => result.primaryVrm === valueToCheck);
         }
 
         return false;
@@ -49,13 +56,19 @@ export class TechnicalRecordService {
     );
   }
 
-  /**
-   * A function to get the correct tech record to create the summary display which uses time first then status code
-   * @param vehicleRecord This is a VehicleTechRecordModel passed in from the parent component
-   * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
-   */
   get viewableTechRecord$(): Observable<TechRecordModel | undefined> {
-    return this.store.pipe(select(selectTechRecord));
+    return combineLatest([
+      this.store.pipe(select(selectTechRecord)),
+      this.store.pipe(select(selectNonEditingTechRecord)),
+      this.routerService.getRouteDataProperty$('isEditing')
+    ]).pipe(
+      tap(([techRecord, nonEditingTechRecord, isEditing]) => {
+        if (isEditing && !techRecord && nonEditingTechRecord) {
+          this.updateEditingTechRecord(nonEditingTechRecord);
+        }
+      }),
+      map(([techRecord, nonEditingTechRecord, isEditing]) => (isEditing && !techRecord ? nonEditingTechRecord : techRecord))
+    );
   }
 
   /**
@@ -67,13 +80,15 @@ export class TechnicalRecordService {
    * @returns void
    */
   updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel, resetVehicleAttributes = false): void {
-    const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel => rec.hasOwnProperty('techRecord');
+    const isVehicleRecord = ((rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel => rec.hasOwnProperty('techRecord'))(
+      record
+    );
 
-    if (isVehicleRecord(record) && record.techRecord.length > 1) {
+    if (isVehicleRecord && record.techRecord.length > 1) {
       throw new Error('Editing tech record can only have one technical record!');
     }
 
-    const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord(record)
+    const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord
       ? of(record)
       : this.store.pipe(
           select(editableVehicleTechRecord),
@@ -163,11 +178,22 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectVehicleTechnicalRecordsBySystemNumber));
   }
 
-  get techRecord$(): Observable<TechRecordModel | undefined> {
-    return this.viewableTechRecord$;
+  get searchResults$(): Observable<SearchResult[] | undefined> {
+    return this.store.pipe(select(selectTechRecordSearchResults));
   }
 
+  get searchResultsWithUniqueSystemNumbers$(): Observable<SearchResult[] | undefined> {
+    return this.store.pipe(select(selectTechRecordSearchResultsBySystemNumber));
+  }
   get viewableRecordStatus$(): Observable<StatusCodes | undefined> {
     return this.viewableTechRecord$.pipe(map(techRecord => techRecord?.statusCode));
+  }
+
+  get sectionStates$(): Observable<(string | number)[] | undefined> {
+    return this.store.pipe(select(selectSectionState));
+  }
+
+  clearSectionTemplateStates() {
+    this.store.dispatch(clearAllSectionStates());
   }
 }

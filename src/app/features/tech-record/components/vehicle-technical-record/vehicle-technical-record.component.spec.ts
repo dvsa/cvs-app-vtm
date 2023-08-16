@@ -8,7 +8,7 @@ import { ApiModule } from '@api/test-results';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { ReasonForEditing, StatusCodes } from '@models/vehicle-tech-record.model';
+import { ReasonForEditing, StatusCodes, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -76,6 +76,12 @@ describe('VehicleTechnicalRecordComponent', () => {
             updateEditingTechRecord: () => {},
             get editableTechRecord$() {
               return of(mockVehicleTechnicalRecord().techRecord[2]);
+            },
+            get sectionStates$() {
+              return of(['TEST_SECTION']);
+            },
+            getVehicleTypeWithSmallTrl: (techRecord: TechRecordModel) => {
+              return techRecord.vehicleType;
             }
           }
         }

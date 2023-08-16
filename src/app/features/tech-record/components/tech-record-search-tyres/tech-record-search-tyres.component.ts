@@ -5,7 +5,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes, SearchParams } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
+import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -13,10 +13,10 @@ import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess } from '@store/reference-data';
-import { selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
+import { selectSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import { mergeMap, take } from 'rxjs';
+import { Observable, mergeMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-tyres-search',
@@ -76,7 +76,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
     this.route.params.pipe(take(1)).subscribe(p => (this.params = p));
-    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(data => (this.viewableTechRecord = data));
+    this.technicalRecordService.viewableTechRecord$.pipe(take(1)).subscribe(data => (this.viewableTechRecord = data));
     this.referenceDataService
       .getTyreSearchReturn$()
       .pipe(take(1))
@@ -90,7 +90,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
         this.form.controls['filter'].patchValue(v.filter);
         this.form.controls['term'].patchValue(v.term);
       });
-
+    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
     if (!this.viewableTechRecord) {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
@@ -107,6 +107,10 @@ export class TechRecordSearchTyresComponent implements OnInit {
   }
   get numberOfResults(): number {
     return this.searchResults?.length ?? 0;
+  }
+
+  get loadIndex$(): Observable<ReferenceDataTyreLoadIndex[] | null> {
+    return this.referenceDataService.getAll$(ReferenceDataResourceType.TyreLoadIndex) as Observable<ReferenceDataTyreLoadIndex[]>;
   }
 
   handleSearch(filter: string, term: string): void {
@@ -128,12 +132,12 @@ export class TechRecordSearchTyresComponent implements OnInit {
     this.actions$
       .pipe(
         ofType(fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess),
-        mergeMap(() => this.store.select(selectTyreSearchReturn)),
+        mergeMap(() => this.store.select(selectSearchReturn(ReferenceDataResourceType.Tyres))),
         take(1)
       )
       .subscribe(data => {
         this.router.navigate(['.'], { relativeTo: this.route, queryParams: { 'search-results-page': 1 } });
-        this.searchResults = data;
+        this.searchResults = data as ReferenceDataTyre[];
       });
   }
 

@@ -21,7 +21,7 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
   @Input() vehicle!: VehicleTechRecordModel;
 
-  currentTechRecord$!: Observable<TechRecordModel | undefined>;
+  currentTechRecord$: Observable<TechRecordModel | undefined>;
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
 
@@ -42,15 +42,21 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
     this.editingReason = this.activatedRoute.snapshot.data['reason'];
-  }
-
-  ngOnInit(): void {
     this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$.pipe(
       tap(viewableTechRecord => {
         this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
         this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
       })
     );
+  }
+
+  ngOnInit(): void {
+    const hasProvisionalRecord = this.vehicle.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
+    const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
+
+    if (isProvisionalUrl && !hasProvisionalRecord) {
+      this.router.navigate(['../'], { relativeTo: this.route });
+    }
   }
 
   get currentVrm(): string | undefined {
@@ -100,6 +106,14 @@ export class VehicleTechnicalRecordComponent implements OnInit {
       default:
         return 'Unknown Vehicle Type';
     }
+  }
+
+  showCreateTestButton(vehicleType: VehicleTypes): boolean {
+    return (
+      !this.isArchived &&
+      !this.isEditing &&
+      (this.isCurrent || vehicleType === VehicleTypes.TRL || vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV)
+    );
   }
 
   createTest(techRecord?: TechRecordModel): void {

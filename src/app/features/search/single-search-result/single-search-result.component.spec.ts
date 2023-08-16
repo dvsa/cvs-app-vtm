@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { SingleSearchResultComponent } from './single-search-result.component';
@@ -42,21 +41,16 @@ describe('SingleSearchResultComponent', () => {
     store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(SingleSearchResultComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    component.searchResult = {
+      systemNumber: '123',
+      createdTimestamp: '123',
+      vin: '76890',
+      techRecord_vehicleType: 'psv'
+    };
   });
 
   it('should create', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
-  });
-
-  it('should handle vehicle with no tech records', () => {
-    component.vehicleTechRecord.techRecord = [];
-    fixture.detectChanges();
-  });
-
-  it('should handle vehicle with no vrms', () => {
-    component.vehicleTechRecord.vrms = [];
-    fixture.detectChanges();
   });
 });

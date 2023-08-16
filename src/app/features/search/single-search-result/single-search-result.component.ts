@@ -2,33 +2,30 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { createSingleSearchResult } from '@forms/templates/search/single-search-result.template';
 import { Roles } from '@models/roles.enum';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 
 @Component({
-  selector: 'app-single-search-result[vehicleTechRecord]',
+  selector: 'app-single-search-result[searchResult]',
   templateUrl: './single-search-result.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SingleSearchResultComponent implements OnInit {
-  @Input() vehicleTechRecord!: VehicleTechRecordModel;
+  @Input() searchResult!: SearchResult;
   vehicleDisplayData?: VehicleDisplayData;
   template?: FormNode;
 
   ngOnInit(): void {
-    const record = TechnicalRecordService.filterTechRecordByStatusCode(this.vehicleTechRecord);
-
     this.vehicleDisplayData = {
-      vin: this.vehicleTechRecord.vin,
-      vrm: this.vehicleTechRecord.vrms.find(vrm => vrm.isPrimary)?.vrm,
-      trailerId: this.vehicleTechRecord.trailerId,
-      make: record?.vehicleType == 'psv' ? record?.chassisMake : record?.make,
-      model: record?.vehicleType == 'psv' ? record?.chassisModel : record?.model,
-      manufactureYear: record?.manufactureYear,
-      vehicleType: record?.vehicleType.toUpperCase()
+      vin: this.searchResult.vin,
+      vrm: this.searchResult.primaryVrm,
+      trailerId: this.searchResult.trailerId,
+      make: this.searchResult.techRecord_vehicleType == 'psv' ? this.searchResult.techRecord_chassisMake : this.searchResult.techRecord_make,
+      model: this.searchResult.techRecord_vehicleType == 'psv' ? this.searchResult.techRecord_chassisModel : this.searchResult.techRecord_model,
+      manufactureYear: this.searchResult.techRecord_manufactureYear,
+      vehicleType: this.searchResult.techRecord_vehicleType.toUpperCase()
     };
 
-    this.template = createSingleSearchResult(this.vehicleTechRecord.systemNumber);
+    this.template = createSingleSearchResult(this.searchResult.systemNumber);
   }
 
   public get roles() {
@@ -42,6 +39,6 @@ interface VehicleDisplayData {
   trailerId?: string;
   make?: string;
   model?: string;
-  manufactureYear?: number;
+  manufactureYear?: number | null;
   vehicleType?: string;
 }

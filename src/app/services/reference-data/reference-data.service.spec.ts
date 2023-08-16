@@ -5,6 +5,7 @@ import { MultiOptions } from '@forms/models/options.model';
 import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import {
   addSearchInformation,
@@ -12,17 +13,15 @@ import {
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
   initialReferenceDataState,
-  ReferenceDataEntityStateTyres,
+  ReferenceDataEntityStateSearch,
   referencePsvMakeLoadingState,
   removeTyreSearch,
   selectTyreSearchCriteria,
-  selectTyreSearchReturn,
   STORE_FEATURE_REFERENCE_DATA_KEY
 } from '@store/reference-data';
 import { testCases } from '@store/reference-data/reference-data.test-cases';
 import { firstValueFrom, of, take } from 'rxjs';
 import { ReferenceDataService } from './reference-data.service';
-import { UserService } from '@services/user-service/user-service';
 
 describe('ReferenceDataService', () => {
   let service: ReferenceDataService;
@@ -148,6 +147,54 @@ describe('ReferenceDataService', () => {
       req.flush(expectedResult);
     });
   });
+  describe('createReferenceDataItem', () => {
+    it('should return the created item', () => {
+      const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+      const resourceKey = 'testKey';
+      const item = { description: 'test Item' };
+      const apiResponse = { resourceType, resourceKey, ...item };
+      service.createReferenceDataItem(resourceType, resourceKey, item).subscribe(data => {
+        expect(data).toEqual(item);
+      });
+
+      const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
+      expect(req.request.method).toEqual('POST');
+
+      req.flush(apiResponse);
+    });
+  });
+
+  describe('amendReferenceDataItem', () => {
+    it('should return the amended item', () => {
+      const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+      const resourceKey = 'testKey';
+      const item = { description: 'test Item' };
+      const apiResponse = { resourceType, resourceKey, ...item };
+      service.amendReferenceDataItem(resourceType, resourceKey, item).subscribe(data => {
+        expect(data).toEqual(apiResponse);
+      });
+
+      const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
+      expect(req.request.method).toEqual('PUT');
+
+      req.flush(apiResponse);
+    });
+  });
+
+  describe('deleteReferenceDataItem', () => {
+    it('should return a delete item', () => {
+      const resourceType = ReferenceDataResourceType.CountryOfRegistration;
+      const resourceKey = 'testKey';
+      const apiResponse = { success: 'true' };
+      service.deleteReferenceDataItem(resourceType, resourceKey, { createdId: 'test' }).subscribe(data => {
+        expect(data).toEqual(apiResponse);
+      });
+      const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
+      expect(req.request.method).toEqual('DELETE');
+
+      req.flush(apiResponse);
+    });
+  });
 
   describe('selectors', () => {
     beforeEach(() => {
@@ -214,7 +261,7 @@ describe('ReferenceDataService', () => {
 
     it('should get the tyre search results', done => {
       const mockReferenceDataTyre = [{ code: 'foo' }] as ReferenceDataTyre[];
-      store.overrideSelector(selectTyreSearchReturn, mockReferenceDataTyre);
+      jest.spyOn(service, 'getTyreSearchReturn$').mockReturnValue(of(mockReferenceDataTyre));
       service
         .getTyreSearchReturn$()
         .pipe(take(1))
@@ -224,7 +271,7 @@ describe('ReferenceDataService', () => {
         });
     });
     it('should get the tyre search criteria', done => {
-      const mockState = { loading: false } as ReferenceDataEntityStateTyres;
+      const mockState = { loading: false } as ReferenceDataEntityStateSearch;
       store.overrideSelector(selectTyreSearchCriteria, mockState);
       service
         .getTyreSearchCriteria$()

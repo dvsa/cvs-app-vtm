@@ -44,9 +44,7 @@ describe('TechnicalRecordService', () => {
       });
 
       // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(
-        `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`
-      );
+      const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin`);
       expect(req.request.method).toEqual('GET');
 
       // Provide each request with a mock response
@@ -56,16 +54,14 @@ describe('TechnicalRecordService', () => {
     it('should validate the search term to be unique when no matching results are returned', () => {
       const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
       const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-      mockData[0].techRecord.map(record => (record.statusCode = StatusCodes.ARCHIVED));
+      mockData[0].techRecord.forEach(record => (record.statusCode = StatusCodes.ARCHIVED));
 
       service.isUnique(searchParams.searchTerm, SEARCH_TYPES.VIN).subscribe(response => {
         expect(response).toEqual(true);
       });
 
       // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(
-        `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`
-      );
+      const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin`);
       expect(req.request.method).toEqual('GET');
 
       // Provide each request with a mock response
@@ -81,9 +77,7 @@ describe('TechnicalRecordService', () => {
       });
 
       // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(
-        `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`
-      );
+      const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=vin`);
       expect(req.request.method).toEqual('GET');
 
       // Provide each request with a mock response
@@ -99,9 +93,7 @@ describe('TechnicalRecordService', () => {
       });
 
       // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(
-        `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vrm`
-      );
+      const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=primaryVrm`);
       expect(req.request.method).toEqual('GET');
 
       // Provide each request with a mock response
@@ -117,9 +109,7 @@ describe('TechnicalRecordService', () => {
       });
 
       // Check for correct requests: should have made one request to search from expected URL
-      const req = httpClient.expectOne(
-        `${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vrm`
-      );
+      const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/search/${searchParams.searchTerm}?searchCriteria=primaryVrm`);
       expect(req.request.method).toEqual('GET');
 
       // Provide each request with a mock response

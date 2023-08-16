@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const TrlPurchasers: FormNode = {
   name: 'purchaserSection',
@@ -79,7 +79,7 @@ export const TrlPurchasers: FormNode = {
           value: '',
           width: FormNodeWidth.XL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 255 }],
+          validators: [{ name: ValidatorNames.MaxLength, args: 255 }, { name: ValidatorNames.Email }],
           customId: 'purchaserEmailAddress'
         },
         {

@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const PsvBodyTemplate: FormNode = {
   name: 'bodySection',
@@ -95,7 +95,7 @@ export const PsvBodyTemplate: FormNode = {
       label: 'Conversion ref no',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 10 }]
+      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
     },
     {
       name: 'modelLiteral',

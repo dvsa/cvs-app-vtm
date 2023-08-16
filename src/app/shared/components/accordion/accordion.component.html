@@ -7,7 +7,7 @@
         attr.aria-controls="accordion-details-{{ id }}"
         class="govuk-accordion__section-button"
         [attr.aria-expanded]="isExpanded"
-        (click)="isExpanded ? close() : open()"
+        (click)="isExpanded ? close(id) : open(id)"
       >
         <span class="govuk-accordion__section-heading-text" id="accordion-title-{{ id }}">
           <span class="govuk-accordion__section-heading-text-focus">{{ title }}</span>

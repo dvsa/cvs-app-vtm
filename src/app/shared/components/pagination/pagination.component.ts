@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { ReplaySubject, Subject, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-pagination[tableName]',
@@ -17,6 +17,7 @@ export class PaginationComponent implements OnInit, OnDestroy {
   currentPage = 1;
   currentPageSubject = new ReplaySubject<number>(this.currentPage);
   numberOfVisiblePages = 5;
+  _pages?: Array<number>;
 
   private destroy$ = new Subject<void>();
 

@@ -1,6 +1,7 @@
 export enum ValidatorNames {
   CustomPattern = 'customPattern',
   DisableIfEquals = 'disableIfEquals',
+  Email = 'email',
   EnableIfEquals = 'enableIfEquals',
   HideIfEmpty = 'hideIfEmpty',
   HideIfNotEqual = 'hideIfNotEqual',
@@ -25,5 +26,6 @@ export enum ValidatorNames {
   DateNotExceed = 'dateNotExceed',
   CopyValueToRootControl = 'copyValueToRootControl',
   ValidateProhibitionIssued = 'validateProhibitionIssued',
-  NotZNumber = 'notZNumber'
+  NotZNumber = 'notZNumber',
+  MustEqualSibling = 'mustEqualSibling'
 }

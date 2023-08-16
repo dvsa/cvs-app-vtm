@@ -88,8 +88,8 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
                 ({
                   ...record!,
                   vin: v.vin,
-                  vrms: v.trailerId ? [{ vrm: v.trailerId, isPrimary: true }] : null,
-                  trailerId: v.trailerId ?? null
+                  vrms: v.vehicleType !== VehicleTypes.TRL && v.trailerIdOrVrm ? [{ vrm: v.trailerIdOrVrm, isPrimary: true }] : null,
+                  trailerId: v.vehicleType === VehicleTypes.TRL && v.trailerIdOrVrm ? v.trailerIdOrVrm : null
                 } as VehicleTechRecordModel)
             )
           )
@@ -98,7 +98,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy {
       )
       .subscribe(([vehicleList, isBatch]) => {
         vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle })));
-
+        this.technicalRecordService.clearSectionTemplateStates();
         if (isBatch) this.navigate();
       });
   }

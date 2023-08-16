@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { FormNodeCombinationOptions } from '@forms/services/dynamic-form.types';
-import { FormNode, FormNodeOption } from '@forms/services/dynamic-form.types';
-import { option } from 'yargs';
+import { FormNodeOption } from '@forms/services/dynamic-form.types';
 
 @Pipe({
   name: 'getControlLabel'

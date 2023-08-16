@@ -1,6 +1,7 @@
-import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import validateDate from 'validate-govuk-date';
 import { DateValidators } from '../../validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
@@ -26,8 +27,6 @@ type Segments = {
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() displayTime = false;
   @Input() isoDate = true;
-  @ViewChild('dayEl')
-  dayEl?: ElementRef<HTMLInputElement>;
   @ViewChild('dayModel') dayModel?: AbstractControlDirective;
 
   private day_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
@@ -44,6 +43,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public originalDate: string = '';
   public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
   private dateFieldOrDefault?: Record<'hours' | 'minutes' | 'seconds', string | number>;
+  protected formSubmitted? = false;
 
   public day?: number;
   public month?: number;
@@ -51,13 +51,18 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public hour?: number;
   public minute?: number;
 
-  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
+  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef, public globalErrorService: GlobalErrorService) {
     super(injector, changeDetectorRef);
     this.day$ = this.day_.asObservable();
     this.month$ = this.month_.asObservable();
     this.year$ = this.year_.asObservable();
     this.hour$ = this.hour_.asObservable();
     this.minute$ = this.minute_.asObservable();
+    this.globalErrorService.errors$.subscribe((globalErrors: any) => {
+      if (globalErrors.length) {
+        this.formSubmitted = true;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -124,26 +129,24 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
     const dateFields: Segments = this.displayTime
       ? { day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ }
       : { day: this.day$, month: this.month$, year: this.year$ };
-
     return combineLatest(dateFields).subscribe({
       next: ({ day, month, year, hour, minute }) => {
         if (!day && !month && !year && !hour && !minute) {
           this.onChange(null);
           return;
         }
-
         hour = this.displayTime ? hour : this.dateFieldOrDefault?.hours;
         minute = this.displayTime ? minute : this.dateFieldOrDefault?.minutes;
         const second = this.dateFieldOrDefault?.seconds;
-
         this.onChange(this.processDate(year, month, day, hour, minute, second));
       }
     });
   }
 
   processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
-    if (this.isoDate)
+    if (this.isoDate) {
       return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
+    }
     return `${year || ''}-${this.padded(month)}-${this.padded(day)}`;
   }
 

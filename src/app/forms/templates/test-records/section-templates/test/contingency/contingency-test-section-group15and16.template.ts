@@ -116,6 +116,7 @@ export const ContingencyTestSectionGroup15and16: FormNode = {
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
+                { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
                 { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
               ]

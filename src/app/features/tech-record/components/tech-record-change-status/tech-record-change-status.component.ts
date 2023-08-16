@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
@@ -11,13 +11,13 @@ import { State } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { archiveTechRecord, archiveTechRecordSuccess, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { Observable, take } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-status',
   templateUrl: './tech-record-change-status.component.html'
 })
-export class TechRecordChangeStatusComponent implements OnInit {
+export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   vehicle$: Observable<VehicleTechRecordModel | undefined>;
 
   techRecord?: TechRecordModel;
@@ -26,6 +26,7 @@ export class TechRecordChangeStatusComponent implements OnInit {
 
   isPromotion = false;
   isProvisional = false;
+  subscription: Subscription;
 
   constructor(
     private actions$: Actions,
@@ -37,7 +38,7 @@ export class TechRecordChangeStatusComponent implements OnInit {
   ) {
     this.vehicle$ = this.technicalRecordService.selectedVehicleTechRecord$;
 
-    this.technicalRecordService.techRecord$.subscribe(techRecord => (this.techRecord = techRecord));
+    this.subscription = this.technicalRecordService.viewableTechRecord$.subscribe(techRecord => (this.techRecord = techRecord));
 
     this.form = new CustomFormGroup(
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
@@ -56,6 +57,10 @@ export class TechRecordChangeStatusComponent implements OnInit {
 
       this.technicalRecordService.clearEditingTechRecord();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   get label(): string {
