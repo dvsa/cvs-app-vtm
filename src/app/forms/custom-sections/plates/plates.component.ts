@@ -3,9 +3,9 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
-import { Plates, StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Plates, StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { cloneDeep } from 'lodash';
-import { debounceTime, Subscription } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-plates[techRecord]',
