@@ -1,20 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { GETTRLTechnicalRecordV3Complete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
-import {
-  LettersIntoAuthApprovalType,
-  LettersOfAuth,
-  StatusCodes,
-  TechRecordModel,
-  V3TechRecordModel,
-  VehicleTechRecordModel
-} from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectTechRecord } from '@store/technical-records';
-import { Subscription, debounceTime, take } from 'rxjs';
+import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-letters[techRecord]',
@@ -28,16 +19,10 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   @Output() formChange = new EventEmitter();
 
   form!: CustomFormGroup;
-  vehicle?: V3TechRecordModel;
 
   private _formSubscription = new Subscription();
 
-  constructor(private dynamicFormService: DynamicFormService, private technicalRecordService: TechnicalRecordService, private store: Store) {
-    this.store
-      .select(selectTechRecord)
-      .pipe(take(1))
-      .subscribe(vehicle => (this.vehicle = vehicle));
-  }
+  constructor(private dynamicFormService: DynamicFormService) {}
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
@@ -61,7 +46,15 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get letter(): LettersOfAuth | undefined {
-    return (this.techRecord as any)?.techRecord_letterOfAuth ?? undefined;
+    return (this.techRecord as GETTRLTechnicalRecordV3Complete)?.techRecord_letterOfAuth_letterType
+      ? {
+          letterType: (this.techRecord as GETTRLTechnicalRecordV3Complete)?.techRecord_letterOfAuth_letterType!,
+          paragraphId: (this.techRecord as GETTRLTechnicalRecordV3Complete)?.techRecord_letterOfAuth_paragraphId!,
+          letterIssuer: (this.techRecord as GETTRLTechnicalRecordV3Complete)?.techRecord_letterOfAuth_letterIssuer!,
+          letterDateRequested: (this.techRecord as GETTRLTechnicalRecordV3Complete)?.techRecord_letterOfAuth_letterDateRequested!,
+          letterContents: ''
+        }
+      : undefined;
   }
 
   get eligibleForLetter(): boolean {
@@ -94,12 +87,12 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get documentParams(): Map<string, string> {
-    if (!this.vehicle) {
+    if (!this.techRecord) {
       throw new Error('Could not find vehicle record associated with this technical record.');
     }
     return new Map([
-      ['systemNumber', this.vehicle!.systemNumber],
-      ['vinNumber', this.vehicle!.vin]
+      ['systemNumber', this.techRecord.systemNumber],
+      ['vinNumber', this.techRecord.vin]
     ]);
   }
 
@@ -107,9 +100,9 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.letter) {
       return '';
     }
-    if (!this.vehicle) {
+    if (!this.techRecord) {
       return '';
     }
-    return `letter_${this.vehicle.systemNumber}_${this.vehicle.vin}`;
+    return `letter_${this.techRecord.systemNumber}_${this.techRecord.vin}`;
   }
 }

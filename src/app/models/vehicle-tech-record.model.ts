@@ -1,11 +1,11 @@
-import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 import { TechRecordCompleteLGVSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/complete';
 import { TechRecordSkeletonCarSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/skeleton';
+import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 // import { GETHGVTechnicalRecordV3Complete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 // import { GETHGVTechnicalRecordV3Skeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/skeleton';
 // import { GETPSVTechnicalRecordV3Skeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 // import { GETPSVTechnicalRecordV3Complete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/complete';
-// import { GETTRLTechnicalRecordV3Complete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 // import { GETTRLTechnicalRecordV3Skeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/skeleton';
 // import { TechRecordCompleteMotorcycleSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/motorcycle/complete';
 // import { TechRecordSkeletonMotorcycleSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/motorcycle/skeleton';
@@ -157,7 +157,7 @@ export enum VehicleSubclass {
 
 export interface LettersOfAuth {
   letterType: string;
-  paragraphId: ParagraphId;
+  paragraphId: ParagraphIds;
   letterIssuer: string;
   letterDateRequested: string;
   letterContents: string;
