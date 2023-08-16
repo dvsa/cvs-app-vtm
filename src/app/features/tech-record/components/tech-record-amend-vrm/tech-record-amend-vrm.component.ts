@@ -22,7 +22,6 @@ import { Subject, catchError, filter, of, switchMap, take, takeUntil, throwError
 })
 export class AmendVrmComponent implements OnDestroy, OnInit {
   techRecord?: V3TechRecordModel;
-  makeAndModel?: string;
 
   form = new FormGroup({
     newVrm: new CustomFormControl({ name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL }, '', [
@@ -58,10 +57,6 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
       this.techRecord = record;
     });
 
-    if (this.techRecord) {
-      this.makeAndModel = this.technicalRecordService.getMakeAndModel(this.techRecord);
-    }
-
     this.actions$
       .pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$))
       .subscribe(({ vehicleTechRecord }) =>
@@ -87,6 +82,10 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   get vehicleType(): VehicleTypes | undefined {
     return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
+  }
+
+  get makeAndModel(): string | undefined {
+    return this.techRecord ? this.technicalRecordService.getMakeAndModel(this.techRecord) : undefined;
   }
 
   navigateBack() {
