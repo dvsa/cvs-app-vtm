@@ -20,7 +20,7 @@ import { debounceTime, mergeMap, Observable, of, Subject, takeUntil, withLatestF
   styleUrls: ['./psv-brakes.component.scss']
 })
 export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() vehicleTechRecord!: V3TechRecordModel;
+  @Input() vehicleTechRecord!: any;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -47,16 +47,16 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
         debounceTime(400),
         takeUntil(this.destroy$),
         mergeMap((event: any) =>
-          event?.brakes?.brakeCodeOriginal ? this.referenceDataStore.select(selectBrakeByCode(event.brakes.brakeCodeOriginal)) : of(undefined)
+          event?.techRecord_brakeCodeOriginal ? this.referenceDataStore.select(selectBrakeByCode(event.techRecord_brakeCodeOriginal)) : of(undefined)
         ),
         withLatestFrom(this.form.cleanValueChanges)
       )
       .subscribe(([selectedBrake, event]: [Brake | undefined, any]) => {
         // Set the brake details automatically based selection
-        if (selectedBrake && event?.brakes?.brakeCodeOriginal) {
-          event.brakes['dataTrBrakeOne'] = selectedBrake.service;
-          event.brakes['dataTrBrakeTwo'] = selectedBrake.secondary;
-          event.brakes['dataTrBrakeThree'] = selectedBrake.parking;
+        if (selectedBrake && event?.techRecord_brakeCodeOriginal) {
+          event.brakes['techRecord_brakes_dataTrBrakeOne'] = selectedBrake.service;
+          event.brakes['techRecord_brakes_dataTrBrakeTwo'] = selectedBrake.secondary;
+          event.brakes['techRecord_brakes_dataTrBrakeThree'] = selectedBrake.parking;
         }
 
         if (event?.axles) {
@@ -84,10 +84,6 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  get brakesForm(): FormGroup {
-    return this.form.get('brakes') as FormGroup;
   }
 
   get booleanOptions(): MultiOptions {
@@ -120,11 +116,11 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get axles(): FormArray {
-    return this.form.get(['axles']) as FormArray;
+    return this.form.get(['techRecord_axles']) as FormArray;
   }
 
   getAxleForm(i: number): FormGroup {
-    return this.form.get(['axles', i]) as FormGroup;
+    return this.form.get(['techRecord_axles', i]) as FormGroup;
   }
 
   round(n: number): number {

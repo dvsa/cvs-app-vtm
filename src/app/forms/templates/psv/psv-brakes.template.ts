@@ -4,7 +4,7 @@ import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 export const PsvBrakesTemplate: FormNode = {
   name: 'psvBrakesSection',
   label: 'Brakes',
-  type: FormNodeTypes.SECTION,
+  type: FormNodeTypes.GROUP,
   children: [
     {
       name: 'techRecord_brakes_brakeCodeOriginal',
