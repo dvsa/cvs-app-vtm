@@ -19,7 +19,7 @@
             {{ plate.plateSerialNumber | defaultNullOrEmpty }}
           </td>
           <td class="govuk-table__cell word-break" [id]="'plate-issue-date-' + i">{{ plate.plateIssueDate | date : 'dd/MM/yyyy HH:mm' }}</td>
-          <td class="govuk-table__cell word-break" [id]="'plate-issue-reason-' + i">{{ plate.plateReasonForIssue | defaultNullOrEmpty }}</td>
+          <td class="govuk-table__cell word-break" [id]="'plate-issue-reason-' + i">{{ plate.reasonForIssue | defaultNullOrEmpty }}</td>
           <td class="govuk-table__cell word-break" [id]="'plate-issuer-' + i">{{ plate.plateIssuer | defaultNullOrEmpty }}</td>
           <td class="govuk-table__cell" [id]="'plate-' + i">
             <button

@@ -4,7 +4,7 @@ import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNode
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
-import { TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
@@ -13,7 +13,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
   styleUrls: ['./dimensions.component.scss']
 })
 export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() vehicleTechRecord!: V3TechRecordModel;
+  @Input() techRecord!: V3TechRecordModel;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
 
@@ -24,16 +24,16 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.dfs.createForm(this.template!, this.techRecord) as CustomFormGroup;
 
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { vehicleTechRecord } = changes;
+    const { techRecord } = changes;
 
-    if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
-      this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
+    if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
+      this.form.patchValue(techRecord.currentValue, { emitEvent: false });
     }
   }
 
@@ -43,7 +43,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get template(): FormNode | undefined {
-    switch (this.vehicleTechRecord.techRecord_vehicleType) {
+    switch (this.techRecord.techRecord_vehicleType) {
       case VehicleTypes.PSV:
         return PsvDimensionsTemplate;
       case VehicleTypes.HGV:
@@ -56,11 +56,11 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get isPsv(): boolean {
-    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.PSV;
+    return this.techRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
 
   get isTrl(): boolean {
-    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.TRL;
+    return this.techRecord.techRecord_vehicleType === VehicleTypes.TRL;
   }
 
   get widths(): typeof FormNodeWidth {
@@ -76,7 +76,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   }
   // TODO V3 remove as any HGV TRL
   get hasAxleSpacings(): boolean {
-    return !!(this.vehicleTechRecord as any).dimensions?.axleSpacing?.length;
+    return !!(this.techRecord as any).techRecord_dimensions_axleSpacing.length;
   }
 
   get axleSpacings(): CustomFormArray {

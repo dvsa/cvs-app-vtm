@@ -20,7 +20,6 @@ export const TrlDimensionsTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
-    //TODO: is this correct? v3 match
     {
       name: 'techRecord_dimensions_axleSpacing',
       type: FormNodeTypes.ARRAY,

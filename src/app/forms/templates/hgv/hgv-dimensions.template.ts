@@ -7,41 +7,34 @@ export const HgvDimensionsTemplate: FormNode = {
   type: FormNodeTypes.SECTION,
   children: [
     {
-      name: 'dimensions',
-      value: '',
-      type: FormNodeTypes.GROUP,
+      name: 'techRecord_dimensions_length',
+      label: 'Length (mm)',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: 'techRecord_dimensions_width',
+      label: 'Width (mm)',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: 'techRecord_dimensions_axleSpacing',
+      type: FormNodeTypes.ARRAY,
       children: [
         {
-          name: 'techRecord_dimensions_length',
-          label: 'Length (mm)',
-          value: null,
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }]
-        },
-        {
-          name: 'techRecord_dimensions_width',
-          label: 'Width (mm)',
-          value: null,
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }]
-        },
-        {
-          name: 'axleSpacing',
-          type: FormNodeTypes.ARRAY,
+          name: '0',
+          type: FormNodeTypes.GROUP,
           children: [
             {
-              name: '0',
-              type: FormNodeTypes.GROUP,
-              children: [
-                {
-                  name: 'value',
-                  label: 'Axle to axle (mm)',
-                  value: null,
-                  editType: FormNodeEditTypes.NUMBER,
-                  type: FormNodeTypes.CONTROL,
-                  validators: [{ name: ValidatorNames.Max, args: 99999 }]
-                }
-              ]
+              name: 'value',
+              label: 'Axle to axle (mm)',
+              value: null,
+              editType: FormNodeEditTypes.NUMBER,
+              type: FormNodeTypes.CONTROL,
+              validators: [{ name: ValidatorNames.Max, args: 99999 }]
             }
           ]
         }
