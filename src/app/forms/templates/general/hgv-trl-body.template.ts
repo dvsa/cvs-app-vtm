@@ -36,15 +36,23 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
     },
     {
-      name: 'techRecord_bodyType_description',
+      name: 'bodyType',
       label: 'Body type',
       value: '',
-      customId: 'bodyType',
-      width: FormNodeWidth.L,
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(BodyTypeDescription),
-      validators: [{ name: ValidatorNames.Required }]
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'techRecord_bodyType_description',
+          label: 'Body type',
+          value: '',
+          customId: 'bodyType',
+          width: FormNodeWidth.L,
+          type: FormNodeTypes.CONTROL,
+          editType: FormNodeEditTypes.SELECT,
+          options: getOptionsFromEnum(BodyTypeDescription),
+          validators: [{ name: ValidatorNames.Required }]
+        }
+      ]
     },
     {
       name: 'techRecord_functionCode',
