@@ -40,12 +40,11 @@ describe('BodyComponent', () => {
       techRecord_vehicleType: VehicleTypes.PSV,
       techRecord_brakes_dtpNumber: '000000',
       techRecord_bodyModel: 'model',
-      techRecord_bodyType: 'type',
+      techRecord_bodyType_description: 'type',
       techRecord_chassisMake: 'chassisType'
     } as unknown as V3TechRecordModel;
     fixture.detectChanges();
   });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -60,14 +59,16 @@ describe('BodyComponent', () => {
       expect((component.techRecord as any).techRecord_bodyModel).toStrictEqual(component.form.value.techRecord_bodyModel);
     });
   });
-  describe('The bodyMake value on this.form', () => {
+  describe('The bodyType value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect((component.techRecord as any).techRecord_bodyType).toStrictEqual(component.form.controls['techRecord_bodyType'].value);
+      expect((component.techRecord as any).techRecord_bodyType_description).toStrictEqual(
+        component.form.controls['techRecord_bodyType_description']?.value
+      );
     });
   });
-  describe('The bodyModel value on this.form', () => {
+  describe('The chassisMake value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect((component.techRecord as any).techRecord_chassisMake).toStrictEqual(component.form.controls['techRecord_chassisMake'].value);
+      expect((component.techRecord as any).techRecord_chassisMake).toStrictEqual(component.form.controls['techRecord_chassisMake']?.value);
     });
   });
 });
