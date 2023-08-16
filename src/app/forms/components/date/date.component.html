@@ -7,10 +7,10 @@
       [error]="error"
       [name]="name"
     ></app-field-error-message>
-    <div class="govuk-date-input" id="{{ name }}">
+    <div class="govuk-date-input" id="{{ name }}-full">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-date-input__label" for="{{ name }}-day"> Day </label>
+          <label class="govuk-label govuk-date-input__label" for="{{ name }}"> Day </label>
           <input
             #dayEl="ngModel"
             appNumberOnly
@@ -18,8 +18,8 @@
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': elementHasErrors(0) && (dayEl.dirty || dayEl.touched) }"
-            id="{{ name }}-day"
-            name="{{ name }}-day"
+            id="{{ name }}"
+            name="{{ name }}"
             type="number"
             inputmode="numeric"
             [(ngModel)]="day"

@@ -145,9 +145,12 @@ export class DynamicFormService {
 
     if (errors) {
       const errorList = Object.keys(errors);
-
       errorList.forEach(error => {
-        const anchor = meta?.customId ? meta?.customId : meta?.name;
+        let anchor = meta?.customId ? meta?.customId : meta?.name;
+        if (anchor === 'gbWeight' || 'eecWeight' || 'designWeight') {
+          anchor = anchor + '-1';
+        }
+
         validationErrorList.push({
           error: ErrorMessageMap[error](errors[error], meta?.customValidatorErrorName ?? meta?.label),
           anchorLink: anchor
