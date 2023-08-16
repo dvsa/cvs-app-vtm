@@ -54,13 +54,21 @@ export const PsvBodyTemplate: FormNode = {
       validators: [{ name: ValidatorNames.MaxLength, args: 20 }]
     },
     {
-      name: 'techRecord_bodyType_description',
+      name: 'bodyType',
       label: 'Body type',
       value: '',
-      customId: 'bodyType',
-      type: FormNodeTypes.CONTROL,
-      disabled: true,
-      validators: [{ name: ValidatorNames.Required }]
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'techRecord_bodyType_description',
+          label: 'Body type',
+          value: '',
+          customId: 'bodyType',
+          type: FormNodeTypes.CONTROL,
+          disabled: true,
+          validators: [{ name: ValidatorNames.Required }]
+        }
+      ]
     },
     {
       name: 'techRecord_functionCode',
