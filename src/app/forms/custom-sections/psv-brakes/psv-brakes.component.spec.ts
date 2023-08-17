@@ -40,7 +40,7 @@ describe('PsvBrakesComponent', () => {
       vin: 'testVin',
       techRecord_vehicleType: VehicleTypes.PSV,
       techRecord_brakes_brakeCode: '000000',
-      techRecord_brakes_dataTrBrakeOne: 'brake1',
+      techRecord_brakes_retarderBrakeOne: 'brake2',
       techRecord_axles: [{ axleNumber: 1, parkingBrakeMrk: true }],
       techRecord_brakes_brakeCodeOriginal: 'original'
     };
@@ -57,7 +57,7 @@ describe('PsvBrakesComponent', () => {
   });
   describe('The dataTrBrakeOne value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect(component.vehicleTechRecord.techRecord_brakes_dataTrBrakeOne).toStrictEqual(component.form.value.techRecord_brakes_dataTrBrakeOne);
+      expect(component.vehicleTechRecord.techRecord_brakes_retarderBrakeOne).toStrictEqual(component.form.value.techRecord_brakes_retarderBrakeOne);
     });
   });
   describe('The brakeCodeOriginal value on this.form', () => {

@@ -24,8 +24,8 @@ export const PsvBrakesTemplate: FormNode = {
       name: 'techRecord_brakes_dataTrBrakeOne',
       label: 'Service *',
       value: '',
-      type: FormNodeTypes.CONTROL
-      // disabled: true
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'techRecord_brakes_dataTrBrakeTwo',
