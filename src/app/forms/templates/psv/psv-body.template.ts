@@ -9,7 +9,7 @@ export const PsvBodyTemplate: FormNode = {
     {
       name: 'techRecord_brakes_dtpNumber',
       label: 'DTP number',
-      value: '',
+      value: null,
       width: FormNodeWidth.S,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
@@ -18,7 +18,7 @@ export const PsvBodyTemplate: FormNode = {
     {
       name: 'techRecord_modelLiteral',
       label: 'Model literal',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
     },
@@ -65,7 +65,7 @@ export const PsvBodyTemplate: FormNode = {
     {
       name: 'techRecord_functionCode',
       label: 'Function code',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: [
@@ -77,14 +77,14 @@ export const PsvBodyTemplate: FormNode = {
     {
       name: 'techRecord_conversionRefNo',
       label: 'Conversion ref no',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
     },
     {
       name: 'techRecord_modelLiteral',
       label: 'Model literal',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
