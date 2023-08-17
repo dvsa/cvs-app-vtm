@@ -34,8 +34,7 @@
     </thead>
 
     <tbody class="govuk-table__body">
-      <tr *ngFor="let axle of axles.controls; let i = index" class="govuk-table__row" formArrayName="axles">
-        <ng-container [formGroupName]="i">
+      <tr *ngFor="let axle of axles.controls; let i = index" class="govuk-table__row" formArrayName="techRecord_axles">
           <th scope="row" class="tyre-table__cell">T{{ axle.value.axleNumber }}</th>
 
           <ng-template
@@ -91,7 +90,6 @@
               ></app-switchable-input>
             </td>
           </ng-template>
-        </ng-container>
       </tr>
 
       <tr *ngIf="isEditing">
