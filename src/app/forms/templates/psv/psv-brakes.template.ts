@@ -44,7 +44,7 @@ export const PsvBrakesTemplate: FormNode = {
     {
       name: 'techRecord_brakes_retarderBrakeOne',
       label: 'Retarder 1',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     },
     {

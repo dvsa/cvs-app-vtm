@@ -54,7 +54,7 @@
             <ng-template #axleTdNumberInput let-name="name">
               <td class="govuk-table__cell">
                 <app-switchable-input
-                  [form]="form"
+                  [form]="getAxleForm(i)"
                   [type]="types.NUMBER"
                   [name]="name"
                   [idExtension]="axle.value.axleNumber"

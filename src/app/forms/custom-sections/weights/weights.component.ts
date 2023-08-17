@@ -88,9 +88,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     return this.form.get(['techRecord_axles']) as CustomFormArray;
   }
 
-  // getAxleWeights(i: number): CustomFormGroup {
-  //   return this.axles.get([i, 'weights']) as CustomFormGroup;
-  // }
+  getAxleForm(i: number): CustomFormGroup {
+    return this.axles.get([i]) as CustomFormGroup;
+  }
 
   // TODO: V3 remove as any HGV
   addAxle(): void {
