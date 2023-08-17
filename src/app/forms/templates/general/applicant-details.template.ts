@@ -7,7 +7,7 @@ export const ApplicantDetails: FormNode = {
   label: 'Last Applicant',
   children: [
     {
-      name: 'techRecord_purchaserDetails_name',
+      name: 'techRecord_applicantDetails_name',
       label: 'Name or company',
       value: null,
       width: FormNodeWidth.XXL,
@@ -16,7 +16,7 @@ export const ApplicantDetails: FormNode = {
       customId: 'applicantName'
     },
     {
-      name: 'techRecord_purchaserDetails_address1',
+      name: 'techRecord_applicantDetails_address1',
       label: 'Address line 1',
       value: null,
       width: FormNodeWidth.XXL,
@@ -25,7 +25,7 @@ export const ApplicantDetails: FormNode = {
       customId: 'applicantAddress1'
     },
     {
-      name: 'techRecord_purchaserDetails_address2',
+      name: 'techRecord_applicantDetails_address2',
       label: 'Address line 2',
       value: null,
       width: FormNodeWidth.XXL,
@@ -34,7 +34,7 @@ export const ApplicantDetails: FormNode = {
       customId: 'applicantAddress2'
     },
     {
-      name: 'techRecord_purchaserDetails_postTown',
+      name: 'techRecord_applicantDetails_postTown',
       label: 'Town or City',
       value: null,
       width: FormNodeWidth.XL,
@@ -43,7 +43,7 @@ export const ApplicantDetails: FormNode = {
       customId: 'applicantPostTown'
     },
     {
-      name: 'techRecord_purchaserDetails_address3',
+      name: 'techRecord_applicantDetails_address3',
       label: 'County',
       value: null,
       width: FormNodeWidth.XL,
@@ -52,7 +52,7 @@ export const ApplicantDetails: FormNode = {
       customId: 'applicantCounty'
     },
     {
-      name: 'techRecord_purchaserDetails_postCode',
+      name: 'techRecord_applicantDetails_postCode',
       label: 'Postcode',
       value: null,
       width: FormNodeWidth.L,
@@ -61,7 +61,7 @@ export const ApplicantDetails: FormNode = {
       customId: 'applicantPostCode'
     },
     {
-      name: 'techRecord_purchaserDetails_telephoneNumber',
+      name: 'techRecord_applicantDetails_telephoneNumber',
       label: 'Telephone number',
       value: null,
       width: FormNodeWidth.XL,
@@ -70,7 +70,7 @@ export const ApplicantDetails: FormNode = {
       customId: 'applicantTelephoneNumber'
     },
     {
-      name: 'techRecord_purchaserDetails_emailAddress',
+      name: 'techRecord_applicantDetails_emailAddress',
       label: 'Email address',
       value: null,
       width: FormNodeWidth.XL,
