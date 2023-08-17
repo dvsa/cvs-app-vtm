@@ -9,13 +9,13 @@ export const TrlBrakesTemplate: FormNode = {
     {
       name: 'techRecord_brakes_loadSensingValve',
       label: 'Load sensing valve',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     },
     {
       name: 'techRecord_brakes_antilockBrakingSystem',
       label: 'Antilock braking system',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     },
     {

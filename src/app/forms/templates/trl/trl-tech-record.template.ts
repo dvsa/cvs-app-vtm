@@ -30,7 +30,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'techRecord_regnDate',
       label: 'Date of first registration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
@@ -62,7 +62,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'techRecord_noOfAxles',
       label: 'Number of axles',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
 
@@ -71,7 +71,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'techRecord_roadFriendly',
       label: 'Road friendly suspension',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -83,7 +83,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'techRecord_suspensionType',
       label: 'Suspension type (optional)',
-      value: '',
+      value: null,
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
@@ -111,7 +111,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'techRecord_couplingType',
       label: 'Coupling type (optional)',
-      value: '',
+      value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
@@ -132,7 +132,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'techRecord_vehicleConfiguration',
       label: 'Vehicle configuration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration)
@@ -140,7 +140,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'techRecord_frameDescription',
       label: 'Frame description (optional)',
-      value: '',
+      value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
@@ -149,7 +149,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'techRecord_departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -160,7 +160,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'techRecord_euVehicleCategory',
       label: 'EU vehicle category',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(EuVehicleCategories).filter(
@@ -171,7 +171,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'techRecord_alterationMarker',
       label: 'Alteration marker',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.RADIO,

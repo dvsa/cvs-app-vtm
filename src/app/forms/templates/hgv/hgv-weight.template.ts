@@ -28,7 +28,7 @@ export const HgvWeight: FormNode = {
       name: 'techRecord_grossGbWeight',
       label: 'GB',
       customValidatorErrorName: 'Gross GB Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
@@ -45,7 +45,7 @@ export const HgvWeight: FormNode = {
       name: 'techRecord_grossDesignWeight',
       label: 'Design',
       customValidatorErrorName: 'Gross Design Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
@@ -59,7 +59,7 @@ export const HgvWeight: FormNode = {
       name: 'techRecord_trainGbWeight',
       label: 'GB',
       customValidatorErrorName: 'Train GB Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
@@ -90,7 +90,7 @@ export const HgvWeight: FormNode = {
       name: 'techRecord_maxTrainGbWeight',
       label: 'GB',
       customValidatorErrorName: 'Max Train GB Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
@@ -137,7 +137,7 @@ export const HgvWeight: FormNode = {
               name: 'weights_gbWeight',
               label: 'GB weight',
               customValidatorErrorName: 'Axle GB Weight',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               validators: requiredValidation
             },
@@ -154,7 +154,7 @@ export const HgvWeight: FormNode = {
               name: 'weights_designWeight',
               label: 'Design weight',
               customValidatorErrorName: 'Axle Design Weight',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               validators: requiredValidation
             }

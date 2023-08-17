@@ -9,7 +9,7 @@ export const tyresTemplateHgv: FormNode = {
     {
       name: 'techRecord_tyreUseCode',
       label: 'Tyre use code',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       width: FormNodeWidth.XS,
@@ -37,7 +37,7 @@ export const tyresTemplateHgv: FormNode = {
             {
               name: 'tyres_tyreCode',
               label: 'Tyre Code',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.NUMBER,
               validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Min, args: 0 }]
@@ -45,7 +45,7 @@ export const tyresTemplateHgv: FormNode = {
             {
               name: 'tyres_tyreSize',
               label: 'Tyre Size',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               disabled: true,
               validators: [
@@ -56,7 +56,7 @@ export const tyresTemplateHgv: FormNode = {
             {
               name: 'tyres_plyRating',
               label: 'Ply Rating',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               disabled: true,
               validators: [
@@ -67,7 +67,7 @@ export const tyresTemplateHgv: FormNode = {
             {
               name: 'tyres_fitmentCode',
               label: 'Fitment code',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               validators: []
             },

@@ -58,7 +58,7 @@ export const TrlDimensionsTemplate: FormNode = {
     {
       name: 'techRecord_centreOfRearmostAxleToRearOfTrl',
       label: 'Center of Rear axle to rear of trailer',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },

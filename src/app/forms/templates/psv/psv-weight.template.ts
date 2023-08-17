@@ -21,14 +21,14 @@ export const PsvWeightsTemplate: FormNode = {
     {
       name: 'techRecord_grossSection',
       label: 'Gross vehicle weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.SECTION
     },
     {
       name: 'techRecord_grossKerbWeight',
       label: 'Kerb',
       customValidatorErrorName: 'Gross Kerb Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
@@ -36,7 +36,7 @@ export const PsvWeightsTemplate: FormNode = {
       name: 'techRecord_grossLadenWeight',
       label: 'Laden',
       customValidatorErrorName: 'Gross Laden Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
@@ -44,7 +44,7 @@ export const PsvWeightsTemplate: FormNode = {
       name: 'techRecord_grossGbWeight',
       label: 'GB',
       customValidatorErrorName: 'Gross GB Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
@@ -52,21 +52,21 @@ export const PsvWeightsTemplate: FormNode = {
       name: 'techRecord_grossDesignWeight',
       label: 'Design',
       customValidatorErrorName: 'Gross Design Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
     {
       name: 'techRecord_unladenWeight',
       label: 'Unladen weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
     {
       name: 'techRecord_trainSection',
       label: 'Train weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.SECTION
     },
     {
@@ -110,7 +110,7 @@ export const PsvWeightsTemplate: FormNode = {
               name: 'weights_kerbWeight',
               label: 'Kerb weight',
               customValidatorErrorName: 'Axle Kerb Weight',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               validators: requiredValidation
             },
@@ -118,7 +118,7 @@ export const PsvWeightsTemplate: FormNode = {
               name: 'weights_ladenWeight',
               label: 'Laden weight',
               customValidatorErrorName: 'Axle Laden Weight',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               validators: requiredValidation
             },
@@ -126,7 +126,7 @@ export const PsvWeightsTemplate: FormNode = {
               name: 'weights_gbWeight',
               label: 'GB weight',
               customValidatorErrorName: 'Axle GB Weight',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               validators: requiredValidation
             },
@@ -134,7 +134,7 @@ export const PsvWeightsTemplate: FormNode = {
               name: 'weights_designWeight',
               label: 'Design weight',
               customValidatorErrorName: 'Axle Design Weight',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               validators: requiredValidation
             }

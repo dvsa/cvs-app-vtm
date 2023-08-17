@@ -9,35 +9,35 @@ export const PsvBrakesTemplate: FormNode = {
     {
       name: 'techRecord_brakes_brakeCodeOriginal',
       label: 'Brake code',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
     },
     {
       name: 'techRecord_brakes_brakeCode',
       label: 'Brake code',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
     },
     {
       name: 'techRecord_brakes_dataTrBrakeOne',
       label: 'Service *',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       disabled: true
     },
     {
       name: 'techRecord_brakes_dataTrBrakeTwo',
       label: 'Secondary *',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       disabled: true
     },
     {
       name: 'techRecord_brakes_dataTrBrakeThree',
       label: 'Parking *',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       disabled: true
     },
@@ -50,7 +50,7 @@ export const PsvBrakesTemplate: FormNode = {
     {
       name: 'techRecord_brakes_retarderBrakeTwo',
       label: 'Retarder 2',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     },
     {

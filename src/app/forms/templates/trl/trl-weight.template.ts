@@ -28,7 +28,7 @@ export const TrlWeight: FormNode = {
       name: 'techRecord_grossGbWeight',
       label: 'GB',
       customValidatorErrorName: 'Gross GB Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
@@ -45,7 +45,7 @@ export const TrlWeight: FormNode = {
       name: 'techRecord_grossDesignWeight',
       label: 'Design',
       customValidatorErrorName: 'Gross Design Weight',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
@@ -76,7 +76,7 @@ export const TrlWeight: FormNode = {
               name: 'weights_gbWeight',
               label: 'GB weight',
               customValidatorErrorName: 'Axle GB Weight',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               validators: requiredValidation
             },
@@ -84,7 +84,7 @@ export const TrlWeight: FormNode = {
               name: 'weights_eecWeight',
               label: 'EEC (optional)',
               customValidatorErrorName: 'Axle EEC Weight',
-              value: '',
+              value: null,
               editType: FormNodeEditTypes.NUMBER,
               type: FormNodeTypes.CONTROL,
               validators: optionalValidation
@@ -93,7 +93,7 @@ export const TrlWeight: FormNode = {
               name: 'weights_designWeight',
               label: 'Design weight',
               customValidatorErrorName: 'Axle Design Weight',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               validators: requiredValidation
             }

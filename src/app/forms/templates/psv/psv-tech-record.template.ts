@@ -38,7 +38,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_regnDate',
       label: 'Date of first registration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
@@ -48,7 +48,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_manufactureYear',
       label: 'Year of manufacture',
-      value: '',
+      value: null,
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -60,7 +60,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_noOfAxles',
       label: 'Number of axles',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       validators: [],
@@ -69,7 +69,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_speedLimiterMrk',
       label: 'Speed limiter exempt',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -82,7 +82,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_tachoExemptMrk',
       label: 'Tacho exempt',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -102,7 +102,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_fuelPropulsionSystem',
       label: 'Fuel / propulsion system',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.SELECT,
@@ -124,7 +124,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_vehicleConfiguration',
       label: 'Vehicle configuration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
@@ -133,7 +133,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_euVehicleCategory',
       label: 'EU vehicle category',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
@@ -153,7 +153,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_seatsUpperDeck',
       label: 'Upper deck',
-      value: '',
+      value: null,
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -163,7 +163,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_seatsLowerDeck',
       label: 'Lower deck',
-      value: '',
+      value: null,
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -173,7 +173,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_standingCapacity',
       label: 'Standing capacity',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -182,7 +182,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_numberOfSeatbelts',
       label: 'Number of seat belts',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMERICSTRING,
@@ -191,7 +191,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_seatbeltInstallationApprovalDate',
       label: 'Seatbelt installation approval date / type approved',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
@@ -200,7 +200,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_vehicleSize',
       label: 'Vehicle size',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(VehicleSize),
@@ -209,7 +209,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -221,7 +221,7 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'techRecord_alterationMarker',
       label: 'Alteration marker',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.RADIO,
