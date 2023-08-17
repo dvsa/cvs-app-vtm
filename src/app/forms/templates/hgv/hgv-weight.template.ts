@@ -64,7 +64,7 @@ export const HgvWeight: FormNode = {
       validators: requiredValidation
     },
     {
-      name: 'techRecord_maxTrainEecWeight',
+      name: 'techRecord_trainEecWeight',
       label: 'EEC (optional)',
       customValidatorErrorName: 'Train EEC Weight',
       value: null,
@@ -73,7 +73,7 @@ export const HgvWeight: FormNode = {
       validators: optionalValidation
     },
     {
-      name: 'techRecord_maxTrainDesignWeight',
+      name: 'techRecord_trainDesignWeight',
       label: 'Design (optional)',
       customValidatorErrorName: 'Train Design Weight',
       value: null,

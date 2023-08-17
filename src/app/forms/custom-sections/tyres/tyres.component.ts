@@ -12,7 +12,6 @@ import {
   FitmentCode,
   ReasonForEditing,
   SpeedCategorySymbol,
-  TechRecordModel,
   Tyres,
   Tyre,
   VehicleTypes,
