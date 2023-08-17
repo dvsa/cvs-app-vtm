@@ -72,7 +72,7 @@ export const tyresTemplateHgv: FormNode = {
               validators: []
             },
             {
-              name: 'techRecord_tyres_dataTrAxles',
+              name: 'tyres_dataTrAxles',
               label: 'Load index',
               value: null,
               type: FormNodeTypes.CONTROL,

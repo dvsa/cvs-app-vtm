@@ -117,7 +117,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   getAxleTyres(i: number): CustomFormGroup {
-    return this.axles.get([i, 'tyres']) as CustomFormGroup;
+    return this.axles.get([i]) as CustomFormGroup;
   }
 
   checkFitmentCodeHasChanged(simpleChanges: SimpleChanges): boolean {

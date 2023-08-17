@@ -4,7 +4,7 @@
     <app-switchable-input
       [form]="form"
       [type]="types.NUMBER"
-      name="speedRestriction"
+      name="techRecord_tyres_speedRestriction"
       label="Speed Restriction"
       [isEditing]="isEditing"
       [width]="widths.XS"
@@ -40,33 +40,33 @@
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'tyreCode', type: types.NUMBER, width: widths.XS }"
+            [ngTemplateOutletContext]="{ name: 'tyres_tyreCode', type: types.NUMBER, width: widths.XS }"
           ></ng-template>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'tyreSize', type: types.TEXT, width: widths.XXXL }"
+            [ngTemplateOutletContext]="{ name: 'tyres_tyreSize', type: types.TEXT, width: widths.XXXL }"
           ></ng-template>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'plyRating', type: types.TEXT, width: widths.XXS }"
+            [ngTemplateOutletContext]="{ name: 'tyres_plyRating', type: types.TEXT, width: widths.XXS }"
           ></ng-template>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'dataTrAxles', type: types.NUMBER, width: widths.XXS }"
+            [ngTemplateOutletContext]="{ name: 'tyres_dataTrAxles', type: types.NUMBER, width: widths.XXS }"
           ></ng-template>
 
           <ng-template
             *ngIf="isPsv"
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'speedCategorySymbol', type: types.DROPDOWN, width: widths.XXS, options: speedCategorySymbol }"
+            [ngTemplateOutletContext]="{ name: 'tyres_speedCategorySymbol', type: types.DROPDOWN, width: widths.XXS, options: speedCategorySymbol }"
           ></ng-template>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'fitmentCode', type: types.DROPDOWN, width: widths.XXS, options: fitmentCode }"
+            [ngTemplateOutletContext]="{ name: 'tyres_fitmentCode', type: types.DROPDOWN, width: widths.XXS, options: fitmentCode }"
           ></ng-template>
 
           <td *ngIf="isEditing" class="govuk-table__cell">
