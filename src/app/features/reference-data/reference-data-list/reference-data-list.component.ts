@@ -140,14 +140,16 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.globalErrorService.clearErrors();
     const trimmedTerm = term?.trim();
     if (!trimmedTerm || !filter) {
-      const error = !trimmedTerm ? 'You must provide a search term' : 'You must select a valid search filter';
-      this.globalErrorService.addError({ error, anchorLink: 'term' });
+      const error = !trimmedTerm
+        ? { error: 'You must provide a search term', anchorLink: 'refSearch' }
+        : { error: 'You must select a valid search filter', anchorLink: 'filter' };
+      this.globalErrorService.addError(error);
       return;
     }
 
     this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filter)), take(1)).subscribe(items => {
       if (!items?.length) {
-        this.globalErrorService.addError({ error: 'Your search returned no results', anchorLink: 'term' });
+        this.globalErrorService.addError({ error: 'Your search returned no results', anchorLink: 'refSearch' });
         this.data = of([]);
       } else {
         this.data = of(items);
