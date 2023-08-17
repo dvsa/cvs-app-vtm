@@ -39,7 +39,11 @@
 
             <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_gbWeight' }"></ng-template>
 
-            <ng-template *ngIf="!isPsv" [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_eecWeight' }"></ng-template>
+            <ng-template
+              *ngIf="!isPsv"
+              [ngTemplateOutlet]="axleTdNumberInput"
+              [ngTemplateOutletContext]="{ name: 'weights_eecWeight' }"
+            ></ng-template>
 
             <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'weights_designWeight' }"></ng-template>
 
@@ -65,10 +69,10 @@
       <ng-container *ngIf="isPsv; else hgvAndTrlWeights">
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Gross</th>
-          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_weights_grossKerbWeight' }"></ng-template>
-          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_weights_grossLadenWeight' }"></ng-template>
-          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_weights_grossGbWeight' }"></ng-template>
-          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_weights_grossDesignWeight' }"></ng-template>
+          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossKerbWeight' }"></ng-template>
+          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossLadenWeight' }"></ng-template>
+          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossGbWeight' }"></ng-template>
+          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_grossDesignWeight' }"></ng-template>
           <td *ngIf="isEditing" class="govuk-table__cell"></td>
         </tr>
 
@@ -76,8 +80,8 @@
           <th scope="row" class="govuk-table__header">Train</th>
           <td class="govuk-table__cell"></td>
           <td class="govuk-table__cell"></td>
-          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_weights_maxTrainGbWeight' }"></ng-template>
-          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_weights_trainDesignWeight' }"></ng-template>
+          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_maxTrainGbWeight' }"></ng-template>
+          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'techRecord_trainDesignWeight' }"></ng-template>
           <td *ngIf="isEditing" class="govuk-table__cell"></td>
         </tr>
       </ng-container>
