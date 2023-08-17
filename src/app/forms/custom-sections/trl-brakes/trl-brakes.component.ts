@@ -13,7 +13,8 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
   styleUrls: ['./trl-brakes.component.scss']
 })
 export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() vehicleTechRecord!: V3TechRecordModel;
+  //TODO V3 cast as V3TechRecord
+  @Input() vehicleTechRecord!: any;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
 
@@ -57,20 +58,16 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
     return FormNodeEditTypes;
   }
 
-  get brakes(): FormGroup {
-    return this.form.get(['brakes']) as FormGroup;
-  }
-
   get axles(): FormArray {
-    return this.form.get(['axles']) as FormArray;
+    return this.form.get(['techRecord_axles']) as FormArray;
   }
 
   getAxleForm(i: number): FormGroup {
-    return this.form.get(['axles', i]) as FormGroup;
+    return this.form.get(['techRecord_axles', i]) as FormGroup;
   }
 
   getAxleBrakes(i: number): FormGroup {
-    return this.form.get(['axles', i, 'brakes']) as FormGroup;
+    return this.form.get(['techRecord_axles', i, 'brakes']) as FormGroup;
   }
 
   pascalCase = (s: string): string =>

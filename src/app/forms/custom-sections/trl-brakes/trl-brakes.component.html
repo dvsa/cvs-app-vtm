@@ -13,18 +13,23 @@
       <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
 
       <td class="govuk-table__cell">
-        <app-switchable-input [form]="getAxleBrakes(i)" [type]="types.NUMBER" name="brakeActuator" [isEditing]="isEditing"></app-switchable-input>
+        <app-switchable-input
+          [form]="getAxleForm(i)"
+          [type]="types.NUMBER"
+          name="brakes_brakeActuator"
+          [isEditing]="isEditing"
+        ></app-switchable-input>
       </td>
 
       <td class="govuk-table__cell">
-        <app-switchable-input [form]="getAxleBrakes(i)" [type]="types.NUMBER" name="leverLength" [isEditing]="isEditing"></app-switchable-input>
+        <app-switchable-input [form]="getAxleForm(i)" [type]="types.NUMBER" name="brakes_leverLength" [isEditing]="isEditing"></app-switchable-input>
       </td>
 
       <td class="govuk-table__cell">
         <app-switchable-input
-          [form]="getAxleBrakes(i)"
+          [form]="getAxleForm(i)"
           [type]="types.DROPDOWN"
-          name="springBrakeParking"
+          name="brakes_springBrakeParking"
           [isEditing]="isEditing"
           [options]="booleanOptions"
         ></app-switchable-input>
@@ -34,13 +39,13 @@
 </table>
 
 <div class="radio-buttons">
-  <ng-template [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{ name: 'loadSensingValve' }"></ng-template>
+  <ng-template [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{ name: 'techRecord_brakes_loadSensingValve' }"></ng-template>
 
-  <ng-template [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{ name: 'antilockBrakingSystem' }"></ng-template>
+  <ng-template [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{ name: 'techRecord_brakes_antilockBrakingSystem' }"></ng-template>
 
   <ng-template #radio let-name="name">
     <app-switchable-input
-      [form]="brakes"
+      [form]="form"
       [type]="types.RADIO"
       [name]="name"
       [label]="pascalCase(name)"
