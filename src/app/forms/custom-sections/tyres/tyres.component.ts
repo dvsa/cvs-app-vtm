@@ -9,13 +9,14 @@ import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import {
+  Axle,
   FitmentCode,
   ReasonForEditing,
   SpeedCategorySymbol,
-  Tyres,
   Tyre,
-  VehicleTypes,
-  Axle
+  Tyres,
+  V3TechRecordModel,
+  VehicleTypes
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -23,7 +24,6 @@ import { addAxle, removeAxle } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { Subscription } from 'rxjs';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Component({
   selector: 'app-tyres',
@@ -113,7 +113,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get axles(): CustomFormArray {
-    return this.form.get(['axles']) as CustomFormArray;
+    return this.form.get(['techRecord_axles']) as CustomFormArray;
   }
 
   getAxleTyres(i: number): CustomFormGroup {
