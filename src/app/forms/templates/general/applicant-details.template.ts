@@ -9,7 +9,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_purchaserDetails_name',
       label: 'Name or company',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 150 }],
@@ -18,7 +18,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_purchaserDetails_address1',
       label: 'Address line 1',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
@@ -27,7 +27,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_purchaserDetails_address2',
       label: 'Address line 2',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
@@ -36,7 +36,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_purchaserDetails_postTown',
       label: 'Town or City',
-      value: '',
+      value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
@@ -45,7 +45,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_purchaserDetails_address3',
       label: 'County',
-      value: '',
+      value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
@@ -54,7 +54,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_purchaserDetails_postCode',
       label: 'Postcode',
-      value: '',
+      value: null,
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 12 }],
@@ -63,7 +63,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_purchaserDetails_telephoneNumber',
       label: 'Telephone number',
-      value: '',
+      value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
@@ -72,7 +72,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_purchaserDetails_emailAddress',
       label: 'Email address',
-      value: '',
+      value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 255 }],

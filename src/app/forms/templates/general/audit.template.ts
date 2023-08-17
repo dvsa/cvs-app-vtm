@@ -22,32 +22,32 @@ export const Audit: FormNode = {
     {
       name: 'techRecord_createdByName',
       label: 'Created by',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     },
     {
       name: 'techRecord_createdById',
       label: 'Created by ID',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     },
     {
       name: 'techRecord_lastUpdatedAt',
       label: 'Last updated at',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATETIME
     },
     {
       name: 'techRecord_lastUpdatedByName',
       label: 'Last updated by',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     },
     {
       name: 'techRecord_lastUpdatedById',
       label: 'Last updated by ID',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     }
   ]

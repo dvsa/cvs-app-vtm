@@ -18,7 +18,7 @@ export const PlatesTemplate: FormNode = {
             {
               name: 'plateSerialNumber',
               label: 'Plate serial number',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.L,
               disabled: true
@@ -26,7 +26,7 @@ export const PlatesTemplate: FormNode = {
             {
               name: 'plateIssueDate',
               label: 'Plate issue date',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.L,
               disabled: true
@@ -34,7 +34,7 @@ export const PlatesTemplate: FormNode = {
             {
               name: 'plateReasonForIssue',
               label: 'Plate reason for issue',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.SELECT,
               options: getOptionsFromEnum(PlateReasonForIssue),
@@ -43,7 +43,7 @@ export const PlatesTemplate: FormNode = {
             {
               name: 'plateIssuer',
               label: 'Plate issuer',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.L,
               disabled: true

@@ -15,7 +15,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
         {
           name: 'techRecord_brakes_dtpNumber',
           label: 'DTp number',
-          value: '',
+          value: null,
           width: FormNodeWidth.L,
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.TEXT,
@@ -26,7 +26,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
     {
       name: 'techRecord_make',
       label: 'Body make',
-      value: '',
+      value: null,
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
@@ -35,7 +35,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
     {
       name: 'techRecord_model',
       label: 'Body model',
-      value: '',
+      value: null,
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
@@ -63,7 +63,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
     {
       name: 'techRecord_functionCode',
       label: 'Function code',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
@@ -76,7 +76,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
     {
       name: 'techRecord_conversionRefNo',
       label: 'Conversion ref no',
-      value: '',
+      value: null,
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
