@@ -57,7 +57,6 @@ describe('PsvBrakesComponent', () => {
   });
   describe('The dataTrBrakeOne value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      console.log(component.form.value);
       expect(component.vehicleTechRecord.techRecord_brakes_dataTrBrakeOne).toStrictEqual(component.form.value.techRecord_brakes_dataTrBrakeOne);
     });
   });

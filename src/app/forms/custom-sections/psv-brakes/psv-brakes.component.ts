@@ -7,12 +7,12 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
-import { Axle, Retarders, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Axle, Retarders } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataState, selectBrakeByCode } from '@store/reference-data';
 import { updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { debounceTime, mergeMap, Observable, of, Subject, takeUntil, withLatestFrom } from 'rxjs';
+import { Observable, Subject, debounceTime, mergeMap, of, takeUntil, tap, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-psv-brakes',
@@ -20,6 +20,7 @@ import { debounceTime, mergeMap, Observable, of, Subject, takeUntil, withLatestF
   styleUrls: ['./psv-brakes.component.scss']
 })
 export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
+  //TODO V3 remove any
   @Input() vehicleTechRecord!: any;
   @Input() isEditing = false;
 
@@ -46,17 +47,24 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(
         debounceTime(400),
         takeUntil(this.destroy$),
-        mergeMap((event: any) =>
-          event?.techRecord_brakeCodeOriginal ? this.referenceDataStore.select(selectBrakeByCode(event.techRecord_brakeCodeOriginal)) : of(undefined)
-        ),
+        mergeMap((event: any) => {
+          tap(event => {
+            console.log('here');
+            console.log(event);
+          });
+          return event?.techRecord_brakes_brakeCodeOriginal
+            ? this.referenceDataStore.select(selectBrakeByCode(event.techRecord_brakes_brakeCodeOriginal))
+            : of(undefined);
+        }),
         withLatestFrom(this.form.cleanValueChanges)
       )
       .subscribe(([selectedBrake, event]: [Brake | undefined, any]) => {
+        console.log('here');
         // Set the brake details automatically based selection
-        if (selectedBrake && event?.techRecord_brakeCodeOriginal) {
-          event.brakes['techRecord_brakes_dataTrBrakeOne'] = selectedBrake.service;
-          event.brakes['techRecord_brakes_dataTrBrakeTwo'] = selectedBrake.secondary;
-          event.brakes['techRecord_brakes_dataTrBrakeThree'] = selectedBrake.parking;
+        if (selectedBrake && event?.techRecord_brakes_brakeCodeOriginal) {
+          event.techRecord_brakes_dataTrBrakeOne = selectedBrake.service;
+          event.techRecord_brakes_dataTrBrakeTwo = selectedBrake.secondary;
+          event.techRecord_brakes_dataTrBrakeThree = selectedBrake.parking;
         }
 
         if (event?.axles) {
@@ -65,7 +73,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 
         this.formChange.emit(event);
 
-        if (event.brakes?.brakeCodeOriginal) {
+        if (event.brakes?.techRecord_brakes_brakeCodeOriginal) {
           this.store.dispatch(updateBrakeForces({}));
         }
       });
@@ -110,7 +118,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get brakeCodePrefix(): string {
-    const prefix = `${Math.round((this.vehicleTechRecord as any)!.grossLadenWeight! / 100)}`;
+    const prefix = `${Math.round((this.vehicleTechRecord as any)!.techRecord_grossLadenWeight! / 100)}`;
 
     return prefix.length <= 2 ? '0' + prefix : prefix;
   }
