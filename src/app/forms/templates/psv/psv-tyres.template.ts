@@ -3,11 +3,11 @@ import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dyna
 
 export const PsvTyresTemplate: FormNode = {
   name: 'tyreSection',
-  type: FormNodeTypes.SECTION,
+  type: FormNodeTypes.GROUP,
   label: 'Tyres',
   children: [
     {
-      name: 'techRecord_tyres_speedRestriction',
+      name: 'techRecord_speedRestriction',
       label: 'Speed Restriction',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -15,7 +15,7 @@ export const PsvTyresTemplate: FormNode = {
       validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 99 }, { name: ValidatorNames.Min, args: 0 }]
     },
     {
-      name: 'axles',
+      name: 'techRecord_axles',
       value: '',
       type: FormNodeTypes.ARRAY,
       children: [
