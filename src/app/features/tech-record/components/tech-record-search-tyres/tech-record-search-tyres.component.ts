@@ -143,15 +143,15 @@ export class TechRecordSearchTyresComponent implements OnInit {
   handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
     const axleIndex = Number(this.params.axleNumber!) - 1;
     //TODO V3 Remove all as any PSV HGV?
-    if ((this.viewableTechRecord as any)?.axles![axleIndex].tyres) {
+    if ((this.viewableTechRecord as any)?.techRecord_axles![axleIndex].tyres_tyreCode) {
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
 
-      (this.viewableTechRecord as any).axles![axleIndex].tyres!.tyreCode = Number(tyre.code);
-      (this.viewableTechRecord as any).axles![axleIndex].tyres!.tyreSize = tyre.tyreSize;
-      (this.viewableTechRecord as any).axles![axleIndex].tyres!.plyRating = tyre.plyRating;
-      if ((this.viewableTechRecord as any).axles![axleIndex].tyres!.fitmentCode) {
-        (this.viewableTechRecord as any)![axleIndex].tyres!.dataTrAxles =
-          (this.viewableTechRecord as any)![axleIndex].tyres!.fitmentCode === 'single'
+      (this.viewableTechRecord as any).techRecord_axles![axleIndex].tyres_tyreCode = Number(tyre.code);
+      (this.viewableTechRecord as any).techRecord_axles![axleIndex].tyres_tyreSize = tyre.tyreSize;
+      (this.viewableTechRecord as any).techRecord_axles![axleIndex].tyres_plyRating = tyre.plyRating;
+      if ((this.viewableTechRecord as any).techRecord_axles![axleIndex].tyres_fitmentCode) {
+        (this.viewableTechRecord as any).techRecord_axles![axleIndex].tyres_dataTrAxles =
+          (this.viewableTechRecord as any).techRecord_axles![axleIndex].tyres_fitmentCode === 'single'
             ? parseInt(tyre.loadIndexSingleLoad ?? '0')
             : parseInt(tyre.loadIndexTwinLoad ?? '0');
       }
