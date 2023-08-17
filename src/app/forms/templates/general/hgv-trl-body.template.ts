@@ -9,19 +9,13 @@ export const HgvAndTrlBodyTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'brakes',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'techRecord_brakes_dtpNumber',
-          label: 'DTp number',
-          value: null,
-          width: FormNodeWidth.L,
-          type: FormNodeTypes.CONTROL,
-          editType: FormNodeEditTypes.TEXT,
-          validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
-        }
-      ]
+      name: 'techRecord_brakes_dtpNumber',
+      label: 'DTp number',
+      value: null,
+      width: FormNodeWidth.L,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXT,
+      validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
     },
     {
       name: 'techRecord_make',
@@ -42,23 +36,15 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
     },
     {
-      name: 'bodyType',
+      name: 'techRecord_bodyType_description',
       label: 'Body type',
       value: '',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'techRecord_bodyType_description',
-          label: 'Body type',
-          value: '',
-          customId: 'bodyType',
-          width: FormNodeWidth.L,
-          type: FormNodeTypes.CONTROL,
-          editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(BodyTypeDescription),
-          validators: [{ name: ValidatorNames.Required }]
-        }
-      ]
+      customId: 'bodyType',
+      width: FormNodeWidth.L,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(BodyTypeDescription),
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'techRecord_functionCode',
