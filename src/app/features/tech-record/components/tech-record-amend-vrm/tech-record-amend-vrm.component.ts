@@ -59,8 +59,10 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
     this.actions$
       .pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$))
-      .subscribe(({ vehicleTechRecord }) =>
-        this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`])
+      .subscribe(({ vehicleTechRecord }) => {
+          console.log(vehicleTechRecord);
+          this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`])
+        }
       );
   }
 
