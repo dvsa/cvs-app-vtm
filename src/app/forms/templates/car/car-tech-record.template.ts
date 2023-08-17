@@ -28,7 +28,7 @@ export const CarTechRecord: FormNode = {
     {
       name: 'techRecord_regnDate',
       label: 'Date of first registration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
@@ -37,7 +37,7 @@ export const CarTechRecord: FormNode = {
     {
       name: 'techRecord_manufactureYear',
       label: 'Year of manufacture',
-      value: '',
+      value: null,
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
@@ -75,7 +75,7 @@ export const CarTechRecord: FormNode = {
     {
       name: 'techRecord_euVehicleCategory',
       label: 'EU vehicle category',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(EuVehicleCategories),

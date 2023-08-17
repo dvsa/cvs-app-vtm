@@ -37,7 +37,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_regnDate',
       label: 'Date of first registration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
@@ -59,7 +59,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_noOfAxles',
       label: 'Number of axles',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       validators: [],
@@ -68,7 +68,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_speedLimiterMrk',
       label: 'Speed limiter exempt',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -81,7 +81,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_tachoExemptMrk',
       label: 'Tacho exempt',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -101,7 +101,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_roadFriendly',
       label: 'Road friendly suspension',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -112,7 +112,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_fuelPropulsionSystem',
       label: 'Fuel / propulsion system',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(FuelTypes),
@@ -121,7 +121,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_drawbarCouplingFitted',
       label: 'Drawbar coupling fitted',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -142,7 +142,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_vehicleConfiguration',
       label: 'Vehicle configuration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
@@ -151,7 +151,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_offRoad',
       label: 'Off road vehicle',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -162,7 +162,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_euVehicleCategory',
       label: 'EU vehicle category',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
@@ -181,7 +181,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -192,7 +192,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'techRecord_alterationMarker',
       label: 'Alteration marker',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.RADIO,
