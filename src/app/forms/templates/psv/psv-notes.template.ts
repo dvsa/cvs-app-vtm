@@ -7,7 +7,7 @@ export const PsvNotes: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'techRecord_notes_remarks',
+      name: 'techRecord_remarks',
       label: 'Notes',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
@@ -15,7 +15,7 @@ export const PsvNotes: FormNode = {
       validators: [{ name: ValidatorNames.MaxLength, args: 800 }]
     },
     {
-      name: 'techRecord_notes_dispensations',
+      name: 'techRecord_dispensations',
       type: FormNodeTypes.CONTROL,
       label: 'Dispensations',
       viewType: FormNodeViewTypes.STRING,
