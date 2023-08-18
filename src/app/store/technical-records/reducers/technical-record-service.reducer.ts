@@ -1,6 +1,6 @@
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
-import { Axle, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
@@ -14,9 +14,11 @@ import {
 } from '../actions/batch-create.actions';
 import {
   addAxle,
+  addSectionState,
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
+  clearAllSectionStates,
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
@@ -29,22 +31,19 @@ import {
   getBySystemNumber,
   getBySystemNumberFailure,
   getBySystemNumberSuccess,
+  getTechRecordV3Success,
   removeAxle,
+  removeSectionState,
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
   updateTechRecord,
   updateTechRecordFailure,
-  updateTechRecordSuccess,
-  addSectionState,
-  removeSectionState,
-  clearAllSectionStates,
-  getTechRecordV3Success
+  updateTechRecordSuccess
 } from '../actions/technical-record-service.actions';
 //TODO: V3 re-import vehicleBatchCreateReducer from batch-create.reducer
 import { BatchRecords, initialBatchState } from './batch-create.reducer';
-import { Action } from 'rxjs/internal/scheduler/Action';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
@@ -192,8 +191,8 @@ function handleUpdateBody(state: TechnicalRecordServiceState, action: { psvMake:
 
   const code = action.psvMake.psvBodyType.toLowerCase() as BodyTypeCode;
 
-  (newState.editingTechRecord as any).techRecord[0] = {
-    ...(newState.editingTechRecord as any).techRecord[0],
+  (newState.editingTechRecord as any).techRecord = {
+    ...(newState.editingTechRecord as any).techRecord,
     bodyType: { code, description: vehicleBodyTypeCodeMap.get(VehicleTypes.PSV)?.get(code) },
     bodyMake: action.psvMake.psvBodyMake,
     chassisMake: action.psvMake.psvChassisMake,
