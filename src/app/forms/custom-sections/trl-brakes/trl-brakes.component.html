@@ -48,7 +48,7 @@
       [form]="form"
       [type]="types.RADIO"
       [name]="name"
-      [label]="pascalCase(name)"
+      [label]="stripName(name)"
       [isEditing]="isEditing"
       [options]="booleanOptions"
     ></app-switchable-input>

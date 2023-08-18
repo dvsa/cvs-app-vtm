@@ -61,6 +61,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`
       ]);
     });
+    this.isArchived = this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
+    this.isCurrent = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT;
 
     if (isProvisionalUrl && !this.hasAProvisional) {
       this.router.navigate(['../'], { relativeTo: this.route });

@@ -4,7 +4,7 @@ import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
-import { Axle, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Axle } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
@@ -70,10 +70,14 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
     return this.form.get(['techRecord_axles', i, 'brakes']) as FormGroup;
   }
 
-  pascalCase = (s: string): string =>
-    s.charAt(0).toUpperCase() +
-    s
-      .slice(1)
-      .replace(/([A-Z])/g, ' $1')
-      .toLowerCase();
+  stripName = (s: string): string => {
+    const splitString = s.split('_').pop() ?? '';
+    return (
+      splitString.charAt(0).toUpperCase() +
+      splitString
+        .slice(1)
+        .replace(/([A-Z])/g, ' $1')
+        .toLowerCase()
+    );
+  };
 }
