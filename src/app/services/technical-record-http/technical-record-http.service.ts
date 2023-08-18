@@ -96,24 +96,13 @@ export class TechnicalRecordHttpService {
     return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  generatePlate(vehicleRecord: VehicleTechRecordModel, reason: string, user: { id?: string; name?: string; email?: string }) {
-    const url = `${environment.VTM_API_URI}/vehicles/documents/plate`;
-
-    const updatedVehicleRecord = cloneDeep(vehicleRecord);
-    const currentRecordIndex = updatedVehicleRecord.techRecord.findIndex(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
-    updatedVehicleRecord.techRecord[currentRecordIndex].axles?.sort((a, b) => a.axleNumber! - b.axleNumber!);
-    const techRecord = updatedVehicleRecord.techRecord[currentRecordIndex];
+  generatePlate(vehicleRecord: V3TechRecordModel, reason: string, user: { id?: string; name?: string; email?: string }) {
+    const url = `${environment.VTM_API_URI}/v3/technical-records/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`;
 
     const body = {
-      vin: vehicleRecord.vin,
-      primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)?.vrm : undefined,
-      systemNumber: vehicleRecord.systemNumber,
-      trailerId: techRecord.vehicleType === 'trl' ? vehicleRecord.trailerId : undefined,
-      msUserDetails: { msOid: user.id, msUser: user.name },
-      techRecord: updatedVehicleRecord.techRecord,
       reasonForCreation: reason,
       vtmUsername: user.name,
-      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails.emailAddress : user.email
+      recipientEmailAddress: (vehicleRecord as any)?.techRecord_applicantDetails_emailAddress ?? user.email
     };
 
     return this.http.post(url, body, { responseType: 'json' });
