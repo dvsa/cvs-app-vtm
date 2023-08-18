@@ -102,6 +102,7 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
     testTypes
       .filter(testTypes => !vehicleType || !testTypes.forVehicleType || testTypes.forVehicleType.includes(vehicleType))
       .filter(testTypes => statusCode !== StatusCodes.PROVISIONAL || testTypes.forProvisionalStatus)
+      .filter(testTypes => !testTypes.forProvisionalStatusOnly || statusCode === StatusCodes.PROVISIONAL)
       .filter(testTypes => !euVehicleCategory || !testTypes.forEuVehicleCategory || testTypes.forEuVehicleCategory.includes(euVehicleCategory))
       .filter(testTypes => !vehicleSize || !testTypes.forVehicleSize || testTypes.forVehicleSize.includes(vehicleSize))
       .filter(
