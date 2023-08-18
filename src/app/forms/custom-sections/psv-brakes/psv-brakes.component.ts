@@ -49,7 +49,6 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.destroy$),
         mergeMap((event: any) => {
           tap(event => {
-            console.log('here');
             console.log(event);
           });
           return event?.techRecord_brakes_brakeCodeOriginal
@@ -59,7 +58,6 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
         withLatestFrom(this.form.cleanValueChanges)
       )
       .subscribe(([selectedBrake, event]: [Brake | undefined, any]) => {
-        console.log('here');
         // Set the brake details automatically based selection
         if (selectedBrake && event?.techRecord_brakes_brakeCodeOriginal) {
           event.techRecord_brakes_dataTrBrakeOne = selectedBrake.service;
