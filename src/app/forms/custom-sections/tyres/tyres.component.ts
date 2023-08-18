@@ -182,13 +182,13 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {
     this.vehicleTechRecord = cloneDeep(this.vehicleTechRecord);
     //TODO V3 Remove as any HGV
-    (this.vehicleTechRecord as any).axles!.find((ax: any) => ax.axleNumber === axleNumber)!.tyres = tyre;
+    (this.vehicleTechRecord as any).techRecord_axles!.find((ax: any) => ax.axleNumber === axleNumber)!.tyres = tyre;
     this.form.patchValue(this.vehicleTechRecord);
   }
 
   addAxle(): void {
     //TODO V3 Remove as any HGV
-    if (!(this.vehicleTechRecord as any).axles || (this.vehicleTechRecord as any).axles!.length < 10) {
+    if (!(this.vehicleTechRecord as any).techRecord_axles || (this.vehicleTechRecord as any).techRecord_axles!.length < 10) {
       this.isError = false;
       this.store.dispatch(addAxle());
     } else {
@@ -200,7 +200,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
     //TODO V3 Remove as any HGV
-    if ((this.vehicleTechRecord as any).axles!.length > minLength) {
+    if ((this.vehicleTechRecord as any).techRecord_axles!.length > minLength) {
       this.isError = false;
       this.store.dispatch(removeAxle({ index }));
     } else {

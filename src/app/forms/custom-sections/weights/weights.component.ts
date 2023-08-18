@@ -94,7 +94,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   // TODO: V3 remove as any HGV
   addAxle(): void {
-    if (!(this.vehicleTechRecord as any).axles || (this.vehicleTechRecord as any).axles!.length < 10) {
+    if (!(this.vehicleTechRecord as any).techRecord_axles || (this.vehicleTechRecord as any).techRecord_axles!.length < 10) {
       this.isError = false;
       this.store.dispatch(addAxle());
     } else {
@@ -106,7 +106,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
     // TODO: V3 remove as any HGV
-    if ((this.vehicleTechRecord as any).axles!.length > minLength) {
+    if ((this.vehicleTechRecord as any).techRecord_axles!.length > minLength) {
       this.isError = false;
       this.store.dispatch(removeAxle({ index }));
     } else {
