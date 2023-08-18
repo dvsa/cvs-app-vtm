@@ -19,11 +19,10 @@ import { of, ReplaySubject } from 'rxjs';
 import { ChangeVehicleTypeComponent } from './tech-record-change-type.component';
 
 const mockTechRecordService = {
-  editableTechRecord$: of({}),
-  selectedVehicleTechRecord$: of({}),
-  get viewableTechRecord$() {
+  get techRecord$() {
     return of({});
   },
+  getMakeAndModel: jest.fn(),
   clearReasonForCreation: jest.fn()
 };
 
@@ -63,26 +62,42 @@ describe('TechRecordChangeTypeComponent', () => {
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
-    expectedTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.PSV };
+    (expectedTechRecord as any) = {
+      systemNumber: 'foo',
+      createdTimestamp: 'bar',
+      vin: 'testVin',
+      techRecord_vehicleType: VehicleTypes.PSV,
+      techRecord_chassisMake: 'test-make',
+      techRecord_chassisModel: 'test-model'
+    };
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
   // TODO V3 PSV HGV TRL
-  // describe('makeAndModel', () => {
-  //   it('should should return the make and model', () => {
-  //     component.techRecord = expectedTechRecord;
+  describe('makeAndModel', () => {
+    it('should should return the make and model', () => {
 
-  //     expect(component.makeAndModel).toBe(`${expectedTechRecord.chassisMake} - ${expectedTechRecord.chassisModel}`);
-  //   });
+      const expectedMakeModel: string = `${(expectedTechRecord as any).techRecord_chassisMake} - ${(expectedTechRecord as any).techRecord_chassisModel}`;
 
-  //   it('should return an empty string when the current record is null', () => {
-  //     delete component.techRecord;
+      jest
+      .spyOn(mockTechRecordService, 'getMakeAndModel')
+      .mockReturnValueOnce(expectedMakeModel);
 
-  //     expect(component.makeAndModel).toBe('');
-  //   });
-  // });
+      component.techRecord = expectedTechRecord;
+      component.ngOnInit();
+
+      expect(component.makeAndModel).toBe(expectedMakeModel);
+    });
+
+    it('should return an empty string when the current record is null', () => {
+      delete component.techRecord;
+      component.ngOnInit();
+
+      expect(component.makeAndModel).toBe(undefined);
+    });
+  });
 
   describe('vehicleTypeOptions', () => {
     it('should return all types except for the current one', () => {
