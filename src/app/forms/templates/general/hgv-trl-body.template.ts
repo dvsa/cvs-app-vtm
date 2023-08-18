@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { BodyTypeDescription } from '@models/body-type-enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const HgvAndTrlBodyTemplate: FormNode = {
   name: 'bodySection',
@@ -42,23 +42,22 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
     },
     {
-      name: 'bodyType',
+      name: 'techRecord_bodyType_description',
       label: 'Body type',
-      value: '',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'techRecord_bodyType_description',
-          label: 'Body type',
-          value: '',
-          customId: 'bodyType',
-          width: FormNodeWidth.L,
-          type: FormNodeTypes.CONTROL,
-          editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(BodyTypeDescription),
-          validators: [{ name: ValidatorNames.Required }]
-        }
-      ]
+      value: null,
+      customId: 'techRecord_bodyType_description',
+      width: FormNodeWidth.L,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(BodyTypeDescription),
+      validators: [{ name: ValidatorNames.Required }]
+    },
+    {
+      name: 'techRecord_bodyType_code',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'techRecord_functionCode',

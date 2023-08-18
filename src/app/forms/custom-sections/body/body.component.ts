@@ -59,7 +59,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
         if (event?.techRecord_bodyType_description) {
           // body type codes are specific to the vehicle type
           const bodyTypes = vehicleBodyTypeDescriptionMap.get(this.techRecord.techRecord_vehicleType! as VehicleTypes);
-          event.bodyType['code'] = bodyTypes!.get(event?.techRecord_bodyType_description);
+          event.techRecord_bodyType_code = bodyTypes!.get(event?.techRecord_bodyType_description);
         }
 
         this.formChange.emit(event);
