@@ -63,7 +63,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     return this.sortedPlates?.slice(this.pageStart, this.pageEnd) ?? [];
   }
 
-  get mostRecentPlate(): HGVPlates | TRLPlates | undefined {
+  get mostRecentPlate(): any | undefined {
     return cloneDeep((this.techRecord as any).techRecord_plates)
       ?.sort((a: any, b: any) =>
         a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0
