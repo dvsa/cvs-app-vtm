@@ -18,4 +18,11 @@ export class NumberInputComponent extends BaseControlComponent {
   get style(): string {
     return 'govuk-input ' + (this.width ? 'govuk-input--width-' + this.width : '');
   }
+
+  override ngAfterContentInit(): void {
+    super.ngAfterContentInit();
+    if (this.control) {
+      this.control.meta.customId = this.name;
+    }
+  }
 }
