@@ -7,7 +7,6 @@ import { createSelector } from '@ngrx/store';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
 
-const testsForProvisionalRecords = ['443', '444', '445', '446', '447', '448'];
 const { selectIds, selectEntities, selectAll, selectTotal } = testTypesAdapter.getSelectors();
 
 // select the array of ids
@@ -103,7 +102,7 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
     testTypes
       .filter(testTypes => !vehicleType || !testTypes.forVehicleType || testTypes.forVehicleType.includes(vehicleType))
       .filter(testTypes => statusCode !== StatusCodes.PROVISIONAL || testTypes.forProvisionalStatus)
-      .filter(testTypes => !testsForProvisionalRecords.includes(testTypes.id) || statusCode === StatusCodes.PROVISIONAL)
+      .filter(testTypes => !testTypes.forProvisionalStatusOnly || statusCode === StatusCodes.PROVISIONAL)
       .filter(testTypes => !euVehicleCategory || !testTypes.forEuVehicleCategory || testTypes.forEuVehicleCategory.includes(euVehicleCategory))
       .filter(testTypes => !vehicleSize || !testTypes.forVehicleSize || testTypes.forVehicleSize.includes(vehicleSize))
       .filter(

@@ -39,6 +39,10 @@ export interface TestTypeCategory {
      */
     forProvisionalStatus?: boolean;
     /**
+     * Used to filter test types that allow creating tests on Provisional Records and not current
+     */
+     forProvisionalStatusOnly?: boolean;
+    /**
      * Used to filter in test types with a specific typeOfTest, send as a query param in the request
      */
     typeOfTest?: string;
