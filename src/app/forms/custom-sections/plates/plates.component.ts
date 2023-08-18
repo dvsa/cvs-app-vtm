@@ -54,7 +54,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get sortedPlates(): HGVPlates[] | TRLPlates[] | undefined {
-    return cloneDeep((this.techRecord as any).plates)?.sort((a: any, b: any) =>
+    return cloneDeep((this.techRecord as any).techRecord_plates)?.sort((a: any, b: any) =>
       a.plateIssueDate && b.plateIssueDate ? new Date(b.plateIssueDate).getTime() - new Date(a.plateIssueDate).getTime() : 0
     );
   }

@@ -3,7 +3,6 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
-import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -24,7 +23,6 @@ export class EditTechRecordButtonComponent implements OnDestroy {
   destroy$ = new Subject();
 
   constructor(
-    private actions$: Actions,
     private errorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -33,20 +31,6 @@ export class EditTechRecordButtonComponent implements OnDestroy {
     private viewportScroller: ViewportScroller,
     private routerService: RouterService
   ) {}
-
-  // ngOnInit() {
-  //TODO: V3 is this needed? causing issues when updating record feels like the logic should be handled in the parent
-  // this.actions$
-  //   .pipe(
-  //     ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
-  //     withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'),this.routerService.getRouteNestedParam$('createdTimestamp'), this.store.select(selectTechRecord)),
-  //     takeUntil(this.destroy$)
-  //   )
-  //   .subscribe(([, systemNumber, createdTimestamp, techRecord]) => {
-  //     const routeSuffix = techRecord?.techRecord_statusCode === StatusCodes.CURRENT ? '' : '/provisional';
-  //     this.router.navigateByUrl(`/tech-records/${systemNumber}/${createdTimestamp}/${routeSuffix}`);
-  //   });
-  // }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);

@@ -67,7 +67,7 @@ describe('PlatesComponent', () => {
           plateIssueDate: new Date().toISOString(),
           plateSerialNumber: '123456',
           plateIssuer: 'issuer',
-          reasonForIssue: 'Replacement'
+          plateReasonForIssue: 'Replacement'
         }
       ];
       const plateFetched = component.mostRecentPlate;

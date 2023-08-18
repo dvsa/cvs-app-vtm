@@ -89,7 +89,7 @@
           <app-number-plate
             *ngIf="otherVrms && otherVrms.length"
             class="govuk-body govuk-!margin-bottom-0"
-            [vrm]="otherVrms[0]"
+            [vrm]="otherVrms[otherVrms.length - 1]"
             [isSecondary]="true"
           ></app-number-plate>
         </dd>
