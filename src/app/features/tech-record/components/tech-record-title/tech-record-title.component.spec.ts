@@ -55,7 +55,7 @@ describe('TechRecordTitleComponent', () => {
         createdTimestamp: 'bar',
         vin: 'testVin',
         primaryVrm: 'TESTVRM',
-        secondaryVrms: ['TESTVRM5', 'TESTVRM4', 'TESTVRM3', 'TESTVRM2', 'TESTVRM1'],
+        secondaryVrms: ['TESTVRM1', 'TESTVRM2', 'TESTVRM3', 'TESTVRM4', 'TESTVRM5'],
         techRecord_vehicleType: VehicleTypes.LGV
       } as unknown as V3TechRecordModel;
       viewableTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
