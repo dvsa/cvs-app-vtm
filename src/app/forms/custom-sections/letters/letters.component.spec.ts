@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { GETTRLTechnicalRecordV3Complete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
 import { approvalType } from '@models/vehicle-tech-record.model';
@@ -48,7 +48,12 @@ describe('LettersComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LettersComponent);
     component = fixture.componentInstance;
-    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: 'current' };
+    component.techRecord = {
+      systemNumber: 'foo',
+      createdTimestamp: 'bar',
+      vin: 'testVin',
+      techRecord_statusCode: 'current'
+    } as TechRecordType<'trl'>;
     fixture.detectChanges();
   });
 
@@ -57,28 +62,28 @@ describe('LettersComponent', () => {
   });
   describe('eligibleForLetter', () => {
     it('should return true if the approval type is valid', () => {
-      (component.techRecord as GETTRLTechnicalRecordV3Complete).techRecord_approvalType = approvalType.EU_WVTA_23_ON;
+      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = approvalType.EU_WVTA_23_ON;
       expect(component.eligibleForLetter).toBeTruthy();
     });
 
     it('should return false if the approval type is valid', () => {
-      (component.techRecord as GETTRLTechnicalRecordV3Complete).techRecord_approvalType = approvalType.NTA;
+      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = approvalType.NTA;
       expect(component.eligibleForLetter).toBeFalsy();
     });
   });
 
   describe('letter', () => {
     it('should return the letter if it exists', () => {
-      (component.techRecord as GETTRLTechnicalRecordV3Complete).techRecord_letterOfAuth_letterType = 'trailer accept';
-      (component.techRecord as GETTRLTechnicalRecordV3Complete).techRecord_letterOfAuth_paragraphId = '3';
-      (component.techRecord as GETTRLTechnicalRecordV3Complete).techRecord_letterOfAuth_letterIssuer = 'issuer';
+      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterType = 'trailer accept';
+      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_paragraphId = '3';
+      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterIssuer = 'issuer';
       expect(component.letter).toBeTruthy();
       expect(component.letter!.paragraphId).toEqual('3');
       expect(component.letter!.letterIssuer).toEqual('issuer');
     });
 
     it('should return undefined if it does not exist', () => {
-      (component.techRecord as GETTRLTechnicalRecordV3Complete).techRecord_letterOfAuth_letterType = undefined;
+      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterType = undefined;
 
       expect(component.letter).toBe(undefined);
     });

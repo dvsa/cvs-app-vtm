@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { GETTRLTechnicalRecordV3Complete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
 import { Plates } from '@models/vehicle-tech-record.model';
@@ -52,7 +52,7 @@ describe('PlatesComponent', () => {
     component = fixture.componentInstance;
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
-    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'trl'>;
     fixture.detectChanges();
   });
 
@@ -62,7 +62,7 @@ describe('PlatesComponent', () => {
 
   describe('mostRecentPlate', () => {
     it('should fetch the plate if only 1 exists', () => {
-      (component.techRecord as GETTRLTechnicalRecordV3Complete).techRecord_plates = [
+      (component.techRecord as TechRecordType<'trl'>).techRecord_plates = [
         {
           plateIssueDate: new Date().toISOString(),
           plateSerialNumber: '123456',

@@ -1,10 +1,9 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
-import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/index';
+import { State, initialAppState } from '@store/index';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { TechnicalRecordHttpService } from './technical-record-http.service';
@@ -37,13 +36,13 @@ describe('TechnicalRecordService', () => {
   describe('API', () => {
     describe('createVehicleRecord', () => {
       it('should call post with the correct URL, body and response type', fakeAsync(() => {
-        const expectedVehicle: V3TechRecordModel = {
+        const expectedVehicle = {
           systemNumber: 'foo',
           createdTimestamp: 'bar',
           vin: 'testvin',
           primaryVrm: 'vrm1',
           techRecord_reasonForCreation: 'test'
-        };
+        } as unknown as TechRecordType<'put'>;
 
         service.createVehicleRecord(expectedVehicle).subscribe();
 
@@ -56,13 +55,13 @@ describe('TechnicalRecordService', () => {
       }));
 
       it('should return an array with the newly created vehicle record', () => {
-        const expectedVehicle: V3TechRecordModel = {
+        const expectedVehicle = {
           systemNumber: 'foo',
           createdTimestamp: 'bar',
           vin: 'testvin',
           primaryVrm: 'vrm1',
           techRecord_reasonForCreation: 'test'
-        };
+        } as unknown as TechRecordType<'put'>;
 
         expect(lastValueFrom(service.createVehicleRecord(expectedVehicle))).resolves.toEqual(expectedVehicle);
 
@@ -73,15 +72,15 @@ describe('TechnicalRecordService', () => {
 
     describe('updateTechRecords', () => {
       it('should return a new tech record and updated status code', fakeAsync(() => {
-        const expectedVehicle: V3TechRecordModel = {
+        const expectedVehicle = {
           systemNumber: 'foo',
           createdTimestamp: 'bar',
           vin: 'testvin',
           primaryVrm: 'vrm1',
           techRecord_reasonForCreation: 'test',
           secondaryVrms: undefined
-        };
-        service.updateTechRecords(expectedVehicle).subscribe();
+        } as TechRecordType<'get'>;
+        service.updateTechRecords(expectedVehicle as TechRecordType<'put'>).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
         const req = httpClient.expectOne(

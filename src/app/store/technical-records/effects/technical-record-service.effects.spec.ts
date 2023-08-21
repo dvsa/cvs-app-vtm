@@ -2,7 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { PostNewVehicleModel, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -12,7 +13,6 @@ import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/index';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { createMock } from 'ts-auto-mock';
 import {
   archiveTechRecord,
   archiveTechRecordFailure,
@@ -63,7 +63,7 @@ describe('TechnicalRecordServiceEffects', () => {
   describe('getTechnicalRecordHistory$', () => {
     it('should return the technical record history on successfull API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const technicalRecord: V3TechRecordModel = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+        const technicalRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'foo' }) });
@@ -101,12 +101,14 @@ describe('TechnicalRecordServiceEffects', () => {
     it('should return a vehicle on successful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const mockVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
-        const expectedVehicle: V3TechRecordModel = {
+        const expectedVehicle = {
           ...mockVehicle
-        };
+        } as TechRecordType<'get'>;
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } }) });
+        actions$ = hot('-a--', {
+          a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'> })
+        });
 
         // mock service call
         jest.spyOn(techRecordHttpService, 'createVehicleRecord').mockReturnValue(cold('--a|', { a: expectedVehicle }));
@@ -121,7 +123,9 @@ describe('TechnicalRecordServiceEffects', () => {
     it('should return an error message if not created', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } }) });
+        actions$ = hot('-a--', {
+          a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'> })
+        });
 
         // mock service call
         const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
@@ -138,7 +142,7 @@ describe('TechnicalRecordServiceEffects', () => {
   describe('updateTechRecords$', () => {
     it('should return a technical record on successful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const technicalRecord: V3TechRecordModel = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+        const technicalRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: updateTechRecord });
@@ -174,7 +178,7 @@ describe('TechnicalRecordServiceEffects', () => {
   describe('archiveTechRecord', () => {
     it('should return an archived technical record on successful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const technicalRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+        const technicalRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: archiveTechRecord });
@@ -227,7 +231,7 @@ describe('TechnicalRecordServiceEffects', () => {
             systemNumber: 'foobar',
             createdTimestamp: 'barfoo',
             techRecord_vehicleType: 'lgv'
-          });
+          } as unknown as TechRecordType<'put'>);
           // mock action to trigger effect
           actions$ = hot('-a--', {
             a: changeVehicleType({
