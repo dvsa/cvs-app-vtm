@@ -6,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -182,6 +181,7 @@ describe('CreateNewVehicleRecordComponent', () => {
   describe('isTrailerIdUnique', () => {
     it('should return true when the trailer ID is unique', async () => {
       jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
+      component.techRecord = { techRecord_vehicleType: 'trl' };
 
       const result = await component.isTrailerIdUnique();
 
@@ -191,6 +191,7 @@ describe('CreateNewVehicleRecordComponent', () => {
     it('should call addError when the trailer ID is not unique', async () => {
       jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(false));
       const addErrorSpy = jest.spyOn(errorService, 'addError').mockImplementation();
+      component.techRecord = { techRecord_vehicleType: 'trl' };
 
       const result = await component.isTrailerIdUnique();
 
