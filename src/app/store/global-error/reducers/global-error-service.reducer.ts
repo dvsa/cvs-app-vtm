@@ -40,6 +40,8 @@ export const globalErrorReducer = createReducer(
   on(
     GlobalErrorActions.addError,
     TechnicalRecordServiceActions.updateTechRecordFailure,
+    TechnicalRecordServiceActions.generateLetterFailure,
+    TechnicalRecordServiceActions.generatePlateFailure,
     TestResultActions.fetchTestResultsFailed,
     TestResultActions.fetchTestResultsBySystemNumberFailed,
     TestResultActions.fetchSelectedTestResultFailed,

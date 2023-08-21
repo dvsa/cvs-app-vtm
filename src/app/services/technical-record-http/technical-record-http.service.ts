@@ -89,7 +89,7 @@ export class TechnicalRecordHttpService {
     return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  generatePlate(vehicleRecord: TechRecordType<'get'>, reason: string, user: { id?: string; name?: string; email?: string }) {
+  generatePlate(vehicleRecord: TechRecordType<'get'>, reason: string, user: { name?: string; email?: string }) {
     const url = `${environment.VTM_API_URI}/v3/technical-records/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`;
 
     const body = {
@@ -101,28 +101,18 @@ export class TechnicalRecordHttpService {
     return this.http.post(url, body, { responseType: 'json' });
   }
 
-  generateLetter(
-    vehicleRecord: VehicleTechRecordModel,
-    letterType: string,
-    paragraphId: number,
-    user: { id?: string; name?: string; email?: string }
-  ) {
-    const url = `${environment.VTM_API_URI}/vehicles/documents/letter`;
-
-    const techRecord = vehicleRecord.techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
+  generateLetter(vehicleRecord: TechRecordType<'get'>, letterType: string, paragraphId: number, user: { name?: string; email?: string }) {
+    const url = `${environment.VTM_API_URI}/v3/technical-records/letter/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`;
 
     const body = {
-      vin: vehicleRecord.vin,
-      primaryVrm: undefined,
-      systemNumber: vehicleRecord.systemNumber,
-      trailerId: vehicleRecord.trailerId,
-      techRecord: vehicleRecord.techRecord,
       vtmUsername: user.name,
       letterType: letterType,
       paragraphId: paragraphId,
-      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails?.emailAddress : user.email
+      recipientEmailAddress: vehicleRecord.techRecord_applicantDetails_emailAddress
+        ? (vehicleRecord as any).techRecord_applicantDetails_emailAddress
+        : user.email
     };
 
-    return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.post(url, body, { responseType: 'text' });
   }
 }
