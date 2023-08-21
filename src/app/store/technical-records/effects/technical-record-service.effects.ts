@@ -191,9 +191,9 @@ export class TechnicalRecordServiceEffects {
   generatePlate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generatePlate),
-      withLatestFrom(this.store.select(selectTechRecord), this.userService.name$, this.userService.id$, this.userService.userEmail$),
-      switchMap(([{ reason }, vehicle, name, id, email]) =>
-        this.techRecordHttpService.generatePlate(vehicle! as any, reason, { name, id, email }).pipe(
+      withLatestFrom(this.store.select(selectTechRecord), this.userService.name$, this.userService.userEmail$),
+      switchMap(([{ reason }, vehicle, name, email]) =>
+        this.techRecordHttpService.generatePlate(vehicle! as any, reason, { name, email }).pipe(
           map(() => generatePlateSuccess()),
           catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
         )
@@ -204,9 +204,9 @@ export class TechnicalRecordServiceEffects {
   generateLetter$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateLetter),
-      withLatestFrom(this.store.select(selectTechRecord), this.userService.name$, this.userService.id$, this.userService.userEmail$),
-      switchMap(([{ letterType, paragraphId }, vehicle, name, id, email]) =>
-        this.techRecordHttpService.generateLetter(vehicle! as any, letterType, paragraphId, { name, id, email }).pipe(
+      withLatestFrom(this.store.select(selectTechRecord), this.userService.name$, this.userService.userEmail$),
+      switchMap(([{ letterType, paragraphId }, vehicle, name, email]) =>
+        this.techRecordHttpService.generateLetter(vehicle! as any, letterType, paragraphId, { name, email }).pipe(
           map(value => generateLetterSuccess()),
           catchError(error => of(generateLetterFailure({ error: this.getTechRecordErrorMessage(error, 'generateLetter') })))
         )
