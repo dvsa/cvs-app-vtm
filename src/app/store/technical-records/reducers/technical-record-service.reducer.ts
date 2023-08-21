@@ -160,27 +160,31 @@ function handleUpdateBrakeForces(
   if (data.grossLadenWeight) {
     const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
 
-    (newState.editingTechRecord as any).techRecord_brakes = {
-      ...(newState.editingTechRecord as any).techRecord[0].brakes,
-      brakeCode: (prefix.length <= 2 ? '0' + prefix : prefix) + (newState.editingTechRecord as any).techRecord[0].brakes?.brakeCodeOriginal,
-      brakeForceWheelsNotLocked: {
-        serviceBrakeForceA: Math.round((data.grossLadenWeight * 16) / 100),
-        secondaryBrakeForceA: Math.round((data.grossLadenWeight * 22.5) / 100),
-        parkingBrakeForceA: Math.round((data.grossLadenWeight * 45) / 100)
-      }
-    };
+    (newState.editingTechRecord as any).techRecord_brakes_brakeCode =
+      (prefix.length <= 2 ? '0' + prefix : prefix) + (newState.editingTechRecord as any).techRecord_brakes_brakeCodeOriginal;
+    (newState.editingTechRecord as any).techRecord_brakes_brakeForceWheelsNotLocked_serviceBrakeForceA = Math.round(
+      (data.grossLadenWeight * 16) / 100
+    );
+    (newState.editingTechRecord as any).techRecord_brakes_brakeForceWheelsNotLocked_secondaryBrakeForceA = Math.round(
+      (data.grossLadenWeight * 22.5) / 100
+    );
+    (newState.editingTechRecord as any).techRecord_brakes_brakeForceWheelsNotLocked_parkingBrakeForceA = Math.round(
+      (data.grossLadenWeight * 45) / 100
+    );
   }
 
   if (data.grossKerbWeight) {
-    (newState.editingTechRecord as any).techRecord[0].brakes = {
-      ...(newState.editingTechRecord as any).techRecord[0].brakes,
-      brakeForceWheelsUpToHalfLocked: {
-        serviceBrakeForceB: Math.round((data.grossKerbWeight * 16) / 100),
-        secondaryBrakeForceB: Math.round((data.grossKerbWeight * 25) / 100),
-        parkingBrakeForceB: Math.round((data.grossKerbWeight * 50) / 100)
-      }
-    };
+    (newState.editingTechRecord as any).techRecord_brakes_brakeForceWheelsUpToHalfLocked_serviceBrakeForceB = Math.round(
+      (data.grossKerbWeight * 16) / 100
+    );
+    (newState.editingTechRecord as any).techRecord_brakes_brakeForceWheelsUpToHalfLocked_secondaryBrakeForceB = Math.round(
+      (data.grossKerbWeight * 25) / 100
+    );
+    (newState.editingTechRecord as any).techRecord_brakes_brakeForceWheelsUpToHalfLocked_parkingBrakeForceB = Math.round(
+      (data.grossKerbWeight * 50) / 100
+    );
   }
+
   return newState;
 }
 
