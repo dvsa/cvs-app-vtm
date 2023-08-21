@@ -3,12 +3,11 @@ import { SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { createMockPsv } from '@mocks/psv-record.mock';
 import { FitmentCode, SpeedCategorySymbol, Tyres, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { initialAppState, State } from '@store/index';
+import { State, initialAppState } from '@store/index';
 import { of, throwError } from 'rxjs';
 import { TyresComponent } from './tyres.component';
 
@@ -191,6 +190,7 @@ describe('TyresComponent', () => {
 
       component.addTyreToTechRecord(tyre, 1);
 
+      //TODO: remove the anys
       expect((component.vehicleTechRecord as any).axles![0].tyres).toBe(tyre);
     });
   });

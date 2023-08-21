@@ -25,6 +25,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
     private userService: UserService
   ) {}
 
+  //TODO: remove the anys
   resolve(): Observable<boolean> {
     return this.store.select(selectTechRecord).pipe(
       switchMap(techRecord => {

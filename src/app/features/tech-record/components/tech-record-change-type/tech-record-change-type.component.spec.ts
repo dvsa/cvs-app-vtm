@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -15,7 +15,7 @@ import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { changeVehicleType } from '@store/technical-records';
-import { of, ReplaySubject } from 'rxjs';
+import { ReplaySubject, of } from 'rxjs';
 import { ChangeVehicleTypeComponent } from './tech-record-change-type.component';
 
 const mockTechRecordService = {
@@ -62,14 +62,14 @@ describe('TechRecordChangeTypeComponent', () => {
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
-    (expectedTechRecord as any) = {
+    expectedTechRecord = {
       systemNumber: 'foo',
       createdTimestamp: 'bar',
       vin: 'testVin',
       techRecord_vehicleType: VehicleTypes.PSV,
       techRecord_chassisMake: 'test-make',
       techRecord_chassisModel: 'test-model'
-    };
+    } as V3TechRecordModel;
   });
 
   it('should create', () => {
@@ -78,8 +78,8 @@ describe('TechRecordChangeTypeComponent', () => {
   // TODO V3 PSV HGV TRL
   describe('makeAndModel', () => {
     it('should should return the make and model', () => {
-      const expectedMakeModel: string = `${(expectedTechRecord as any).techRecord_chassisMake} - ${
-        (expectedTechRecord as any).techRecord_chassisModel
+      const expectedMakeModel: string = `${(expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisMake} - ${
+        (expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisModel
       }`;
 
       jest.spyOn(mockTechRecordService, 'getMakeAndModel').mockReturnValueOnce(expectedMakeModel);

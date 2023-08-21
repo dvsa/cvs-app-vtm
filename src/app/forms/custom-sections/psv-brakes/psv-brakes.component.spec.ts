@@ -4,14 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
-import { PsvBrakesComponent } from './psv-brakes.component';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { VehicleTypes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { PsvBrakesComponent } from './psv-brakes.component';
 
 describe('PsvBrakesComponent', () => {
   let component: PsvBrakesComponent;
@@ -67,6 +66,7 @@ describe('PsvBrakesComponent', () => {
       );
     });
   });
+  //TODO: remove the anys
   describe('The axle value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
       expect((component.vehicleTechRecord as any).techRecord_axles).toStrictEqual(component.form.controls['techRecord_axles']?.value);

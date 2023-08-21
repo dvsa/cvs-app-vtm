@@ -76,6 +76,7 @@ describe('PlatesComponent', () => {
       expect(plateFetched!.plateSerialNumber).toEqual('123456');
     });
 
+    //TODO: Remove the anys
     it('should fetch the latest plate if more than 1 exists', () => {
       (component.techRecord as any) = {
         techRecord_plates: [

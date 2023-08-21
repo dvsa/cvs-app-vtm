@@ -43,6 +43,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.form = this.dfs.createForm(PsvBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
 
+    //TODO: remove the anys
     this.form.cleanValueChanges
       .pipe(
         debounceTime(400),
@@ -115,6 +116,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
     return FormNodeWidth;
   }
 
+  //TODO: remove the anys
   get brakeCodePrefix(): string {
     const prefix = `${Math.round((this.vehicleTechRecord as any)!.techRecord_grossLadenWeight! / 100)}`;
 

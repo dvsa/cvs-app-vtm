@@ -8,6 +8,7 @@ import { LettersComponent } from '@forms/custom-sections/letters/letters.compone
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 
+import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Roles } from '@models/roles.enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -93,8 +94,7 @@ describe('TechRecordSummaryComponent', () => {
       fixture.detectChanges();
 
       checkHeadingAndForm();
-      //TODO V3 HGV remove as any
-      expect((component.techRecordCalculated as unknown as any).techRecord_dimensions_height).toBe(undefined);
+      expect((component.techRecordCalculated as TechRecordTypeByVehicle<'psv'>).techRecord_dimensions_height).toBe(undefined);
     });
 
     it('should show HGV record found', () => {

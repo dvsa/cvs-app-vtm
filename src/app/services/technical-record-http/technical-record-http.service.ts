@@ -89,6 +89,7 @@ export class TechnicalRecordHttpService {
     return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
   }
 
+  //TODO: remove the anys
   generatePlate(vehicleRecord: TechRecordType<'get'>, reason: string, user: { id?: string; name?: string; email?: string }) {
     const url = `${environment.VTM_API_URI}/v3/technical-records/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`;
 
