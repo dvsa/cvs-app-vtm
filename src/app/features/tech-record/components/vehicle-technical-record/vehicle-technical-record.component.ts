@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
@@ -25,7 +26,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
-  recordHistory?: V3TechRecordModel[];
+  recordHistory?: TechRecordSearchSchema[];
   hasAProvisional: Boolean = false;
 
   isCurrent = false;

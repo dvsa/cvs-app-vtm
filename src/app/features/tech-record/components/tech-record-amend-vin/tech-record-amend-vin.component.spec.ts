@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -12,9 +13,9 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
+import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVinComponent } from './tech-record-amend-vin.component';
-import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
@@ -91,12 +92,17 @@ describe('TechRecordChangeVrmComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      expectedTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+      expectedTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;
       component.techRecord = expectedTechRecord;
     });
     it('should dispatch the updateTechRecord action with the new vin', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      const payload = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'myNewVin', techRecord_reasonForCreation: 'Vin changed' };
+      const payload = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'myNewVin',
+        techRecord_reasonForCreation: 'Vin changed'
+      } as unknown as TechRecordType<'put'>;
 
       component.form.controls['vin'].setValue('myNewVin');
 

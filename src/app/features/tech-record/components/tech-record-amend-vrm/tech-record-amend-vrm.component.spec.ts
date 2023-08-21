@@ -1,5 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { isFormArray, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -12,11 +13,10 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/index';
+import { selectRouteData } from '@store/router/selectors/router.selectors';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { selectRouteData } from '@store/router/selectors/router.selectors';
 
 const mockTechRecordService = {
   techRecord$: of({}),
@@ -116,7 +116,7 @@ describe('TechRecordChangeVrmComponent', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       jest
         .spyOn(technicalRecordService, 'techRecord$', 'get')
-        .mockReturnValueOnce(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TEST' }));
+        .mockReturnValueOnce(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TEST' } as V3TechRecordModel));
 
       store.overrideSelector(selectRouteData, { data: { isEditing: true } });
       component.ngOnInit();
@@ -129,7 +129,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM' };
+      component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM' } as V3TechRecordModel;
     });
 
     it('should add an error when the vrm field is not filled out', () => {

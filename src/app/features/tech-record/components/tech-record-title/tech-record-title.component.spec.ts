@@ -2,15 +2,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Roles } from '@models/roles.enum';
-import { EuVehicleCategories, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/index';
+import { State, initialAppState } from '@store/index';
 import { editingTechRecord } from '@store/technical-records';
 import { Observable, of } from 'rxjs';
 import { TechRecordTitleComponent } from './tech-record-title.component';
@@ -57,7 +57,7 @@ describe('TechRecordTitleComponent', () => {
         primaryVrm: 'TESTVRM',
         secondaryVrms: ['TESTVRM1', 'TESTVRM2', 'TESTVRM3', 'TESTVRM4', 'TESTVRM5'],
         techRecord_vehicleType: VehicleTypes.LGV
-      } as unknown as V3TechRecordModel;
+      } as unknown as TechRecordType<'put'>;
       viewableTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
       mockVehicle = mockRecord;
       component.vehicle = mockVehicle;
@@ -81,7 +81,7 @@ describe('TechRecordTitleComponent', () => {
       expect(vrmField.textContent).not.toContain('TESTV RM4');
     });
     it('should not create previous-vrm-span if no secondary vrm exists', () => {
-      delete mockRecord.secondaryVrms;
+      delete (mockRecord as any).secondaryVrms;
       fixture.detectChanges();
 
       const vrmField = fixture.debugElement.query(By.css('#previous-vrm-span'));

@@ -78,12 +78,11 @@ describe('TechRecordChangeTypeComponent', () => {
   // TODO V3 PSV HGV TRL
   describe('makeAndModel', () => {
     it('should should return the make and model', () => {
+      const expectedMakeModel: string = `${(expectedTechRecord as any).techRecord_chassisMake} - ${
+        (expectedTechRecord as any).techRecord_chassisModel
+      }`;
 
-      const expectedMakeModel: string = `${(expectedTechRecord as any).techRecord_chassisMake} - ${(expectedTechRecord as any).techRecord_chassisModel}`;
-
-      jest
-      .spyOn(mockTechRecordService, 'getMakeAndModel')
-      .mockReturnValueOnce(expectedMakeModel);
+      jest.spyOn(mockTechRecordService, 'getMakeAndModel').mockReturnValueOnce(expectedMakeModel);
 
       component.techRecord = expectedTechRecord;
       component.ngOnInit();

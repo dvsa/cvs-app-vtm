@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -5,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -15,7 +17,6 @@ import { initialAppState } from '@store/index';
 import { generatePlate, generatePlateSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { GeneratePlateComponent } from './tech-record-generate-plate.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const mockDynamicFormService = {
   createForm: jest.fn()
@@ -68,7 +69,9 @@ describe('TechRecordGeneratePlateComponent', () => {
 
   describe('navigateBack', () => {
     beforeEach(() => {
-      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' }));
+      jest
+        .spyOn(technicalRecordService, 'techRecord$', 'get')
+        .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
     });
     it('should clear all errors', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
@@ -105,7 +108,9 @@ describe('TechRecordGeneratePlateComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' }));
+      jest
+        .spyOn(technicalRecordService, 'techRecord$', 'get')
+        .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
     });
     it('should add an error when the field is not filled out', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');

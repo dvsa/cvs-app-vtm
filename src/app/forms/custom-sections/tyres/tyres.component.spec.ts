@@ -32,8 +32,7 @@ describe('TyresComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TyresComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord =
-    {
+    component.vehicleTechRecord = {
       systemNumber: 'foo',
       createdTimestamp: 'bar',
       vin: 'testVin',
