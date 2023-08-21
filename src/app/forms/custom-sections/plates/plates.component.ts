@@ -60,7 +60,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get plates() {
-    return this.sortedPlates?.slice(this.pageStart, this.pageEnd) ?? [];
+    return (this.sortedPlates?.slice(this.pageStart, this.pageEnd) as any) ?? [];
   }
 
   get mostRecentPlate(): any | undefined {

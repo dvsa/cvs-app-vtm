@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
-import { Observable, Subject, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-history',
@@ -12,8 +12,6 @@ import { Observable, Subject, map } from 'rxjs';
 })
 export class TechRecordHistoryComponent implements OnInit {
   @Input() currentTechRecord?: V3TechRecordModel;
-
-  private destroy$ = new Subject<void>();
 
   pageStart?: number;
   pageEnd?: number;
