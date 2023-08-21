@@ -1,20 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  PostNewVehicleModel,
-  PutVehicleTechRecordModel,
-  StatusCodes,
-  TechRecordModel,
-  V3TechRecordModel,
-  VehicleTechRecordModel
-} from '@models/vehicle-tech-record.model';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { StatusCodes, V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
 import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 import { cloneDeep } from 'lodash';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { TechRecordPUT } from '@api/vehicle';
 
 export enum SEARCH_TYPES {
   VIN = 'vin',
@@ -53,22 +46,22 @@ export class TechnicalRecordHttpService {
     return this.http.get<V3TechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  createVehicleRecord(newVehicleRecord: V3TechRecordModel): Observable<V3TechRecordModel> {
-    const recordCopy: TechRecordPUT = cloneDeep(newVehicleRecord);
+  createVehicleRecord(newVehicleRecord: V3TechRecordModel): Observable<TechRecordType<'get'>> {
+    const recordCopy: TechRecordType<'put'> = cloneDeep(newVehicleRecord) as TechRecordType<'put'>;
 
     const body = {
       ...recordCopy
     };
 
-    return this.http.post<V3TechRecordModel>(`${environment.VTM_API_URI}/v3/technical-records`, body);
+    return this.http.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body);
   }
 
-  updateTechRecords(techRecord: V3TechRecordModel): Observable<V3TechRecordModel> {
-    const body = { ...techRecord };
+  updateTechRecords(techRecord: TechRecordType<'put'>): Observable<TechRecordType<'get'>> {
+    const body = { ...techRecord } as TechRecordType<'get'>;
 
-    const url = `${environment.VTM_API_URI}/v3/technical-records/${techRecord.systemNumber}/${techRecord.createdTimestamp}`;
+    const url = `${environment.VTM_API_URI}/v3/technical-records/${body.systemNumber}/${body.createdTimestamp}`;
 
-    return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
   amendVrm(newVrm: string, cherishedTransfer: boolean, systemNumber: string, createdTimestamp: string): Observable<V3TechRecordModel | undefined> {
@@ -96,7 +89,7 @@ export class TechnicalRecordHttpService {
     return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  generatePlate(vehicleRecord: V3TechRecordModel, reason: string, user: { id?: string; name?: string; email?: string }) {
+  generatePlate(vehicleRecord: TechRecordType<'get'>, reason: string, user: { id?: string; name?: string; email?: string }) {
     const url = `${environment.VTM_API_URI}/v3/technical-records/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`;
 
     const body = {

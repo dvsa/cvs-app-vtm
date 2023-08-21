@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   EuVehicleCategories,
   StatusCodes,
@@ -20,7 +21,6 @@ import {
 import {
   clearAllSectionStates,
   createVehicle,
-  editingTechRecord,
   selectSectionState,
   selectTechRecord,
   techRecord,
@@ -68,7 +68,7 @@ export class TechnicalRecordService {
     ]).pipe(
       tap(([techRecord, nonEditingTechRecord, isEditing]) => {
         if (isEditing && !techRecord && nonEditingTechRecord) {
-          this.updateEditingTechRecord(nonEditingTechRecord);
+          this.updateEditingTechRecord(nonEditingTechRecord as TechRecordType<'put'>);
         }
       }),
       map(([techRecord, nonEditingTechRecord, isEditing]) => (isEditing && !techRecord ? nonEditingTechRecord : techRecord))
@@ -83,7 +83,7 @@ export class TechnicalRecordService {
    * the VehicleTechRecordModel to the un-edited information present in state for that vehicle. Only used if passed a TechRecordModel.
    * @returns void
    */
-  updateEditingTechRecord(record: V3TechRecordModel): void {
+  updateEditingTechRecord(record: TechRecordType<'put'>): void {
     this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: record }));
   }
 
@@ -104,7 +104,7 @@ export class TechnicalRecordService {
     this.store.dispatch(createVehicle({ techRecord_vehicleType: vehicleType }));
   }
 
-  clearReasonForCreation(vehicleTechRecord?: V3TechRecordModel): void {
+  clearReasonForCreation(vehicleTechRecord?: TechRecordType<'put'>): void {
     this.techRecord$
       .pipe(
         map(data => cloneDeep(data ?? vehicleTechRecord)),
@@ -113,7 +113,7 @@ export class TechnicalRecordService {
       .subscribe(data => {
         if (data) {
           data.techRecord_reasonForCreation = '';
-          this.updateEditingTechRecord(data);
+          this.updateEditingTechRecord(data as TechRecordType<'put'>);
         }
       });
   }

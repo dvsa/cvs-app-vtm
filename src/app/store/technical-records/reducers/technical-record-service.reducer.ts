@@ -1,6 +1,6 @@
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
@@ -43,16 +43,18 @@ import {
   updateTechRecordSuccess
 } from '../actions/technical-record-service.actions';
 //TODO: V3 re-import vehicleBatchCreateReducer from batch-create.reducer
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BatchRecords, initialBatchState } from './batch-create.reducer';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
 export interface TechnicalRecordServiceState {
-  vehicleTechRecord: V3TechRecordModel | undefined;
+  vehicleTechRecord: TechRecordType<'get'> | undefined;
   loading: boolean;
-  editingTechRecord?: V3TechRecordModel;
+  editingTechRecord?: TechRecordType<'put'>;
   error?: unknown;
-  techRecordHistory?: V3TechRecordModel[];
+  techRecordHistory?: TechRecordSearchSchema[];
   batchVehicles: BatchRecords;
   sectionState?: (string | number)[];
 }
@@ -130,11 +132,11 @@ function defaultArgs(state: TechnicalRecordServiceState) {
   return { ...state, loading: true };
 }
 
-function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecord: V3TechRecordModel }) {
+function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecord: TechRecordType<'get'> }) {
   return { ...state, vehicleTechRecord: data.vehicleTechRecord, loading: false };
 }
 
-function historyArgs(state: TechnicalRecordServiceState, data: { techRecordHistory: [V3TechRecordModel] }) {
+function historyArgs(state: TechnicalRecordServiceState, data: { techRecordHistory: [TechRecordSearchSchema] }) {
   return { ...state, techRecordHistory: data.techRecordHistory, loading: false };
 }
 
@@ -146,7 +148,7 @@ function failureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
   return { ...state, vehicleTechRecord: undefined, error: data.error, loading: false };
 }
 
-function historyFailArgs(state: TechnicalRecordServiceState, data: { techRecordHistory: [V3TechRecordModel] }) {
+function historyFailArgs(state: TechnicalRecordServiceState, data: { techRecordHistory: [TechRecordSearchSchema] }) {
   return { ...state, techRecordHistory: undefined, loading: false };
 }
 
@@ -279,12 +281,12 @@ function handleRemoveSection(state: TechnicalRecordServiceState, action: { secti
   return { ...newState, sectionState: newState.sectionState?.filter(section => section !== action.section) };
 }
 
-function updateEditingTechRec(state: TechnicalRecordServiceState, action: { vehicleTechRecord: V3TechRecordModel }) {
+function updateEditingTechRec(state: TechnicalRecordServiceState, action: { vehicleTechRecord: TechRecordType<'put'> }) {
   const newState = { ...state };
   const { editingTechRecord } = state;
   const { vehicleTechRecord } = action;
 
-  newState.editingTechRecord = { ...editingTechRecord, ...vehicleTechRecord };
+  newState.editingTechRecord = { ...editingTechRecord, ...vehicleTechRecord } as TechRecordType<'put'>;
 
   return newState;
 }

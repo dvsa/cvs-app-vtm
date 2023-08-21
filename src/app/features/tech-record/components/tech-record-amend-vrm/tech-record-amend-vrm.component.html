@@ -11,7 +11,7 @@
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">VRM</dt>
-      <app-number-plate *ngIf="techRecord?.primaryVrm" [vrm]="techRecord.primaryVrm"></app-number-plate>
+      <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
     </div>
 
     <div class="govuk-summary-list__row">
@@ -25,7 +25,7 @@
 
     <app-radio-group formControlName="isCherishedTransfer" [options]="reasons"></app-radio-group>
 
-    <div *ngIf="newVrm.value.toUpperCase() !== techRecord.primaryVrm && newVrm.value.length">
+    <div *ngIf="newVrm.value.toUpperCase() !== currentVrm && newVrm.value.length">
       <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
       <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
     </div>

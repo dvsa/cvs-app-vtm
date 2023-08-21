@@ -28,7 +28,7 @@
         </td>
         <td class="govuk-table__cell">
           <app-button
-            *ngIf="techRecord.createdTimestamp !== currentTechRecord?.createdTimestamp"
+            *ngIf="techRecord.createdTimestamp !== currentTimeStamp"
             id="view-test-{{ techRecord.vin }}"
             type="link"
             design="link"

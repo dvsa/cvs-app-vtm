@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { GETTRLTechnicalRecordV3Complete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType as TechRecordTypeVehicleVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
-import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@models/vehicle-tech-record.model';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -13,7 +14,7 @@ import { Subscription, debounceTime } from 'rxjs';
   styleUrls: ['./letters.component.scss']
 })
 export class LettersComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() techRecord!: V3TechRecordModel;
+  @Input() techRecord?: TechRecordType<'trl'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -30,7 +31,9 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.form?.patchValue(this.techRecord, { emitEvent: false });
+    if (this.techRecord) {
+      this.form?.patchValue(this.techRecord, { emitEvent: false });
+    }
   }
 
   ngOnDestroy(): void {
@@ -46,19 +49,19 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get letter(): LettersOfAuth | undefined {
-    return (this.techRecord as GETTRLTechnicalRecordV3Complete)?.techRecord_letterOfAuth_letterType
+    return this.techRecord?.techRecord_letterOfAuth_letterType
       ? {
-          letterType: (this.techRecord as GETTRLTechnicalRecordV3Complete)?.techRecord_letterOfAuth_letterType!,
-          paragraphId: (this.techRecord as GETTRLTechnicalRecordV3Complete)?.techRecord_letterOfAuth_paragraphId!,
-          letterIssuer: (this.techRecord as GETTRLTechnicalRecordV3Complete)?.techRecord_letterOfAuth_letterIssuer!,
-          letterDateRequested: (this.techRecord as GETTRLTechnicalRecordV3Complete)?.techRecord_letterOfAuth_letterDateRequested!,
+          letterType: this.techRecord?.techRecord_letterOfAuth_letterType!,
+          paragraphId: this.techRecord?.techRecord_letterOfAuth_paragraphId!,
+          letterIssuer: this.techRecord?.techRecord_letterOfAuth_letterIssuer!,
+          letterDateRequested: this.techRecord?.techRecord_letterOfAuth_letterDateRequested!,
           letterContents: ''
         }
       : undefined;
   }
 
   get eligibleForLetter(): boolean {
-    const currentTechRecord = this.techRecord.techRecord_statusCode === StatusCodes.CURRENT;
+    const currentTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT;
 
     return this.correctApprovalType && currentTechRecord && !this.isEditing;
   }
@@ -68,7 +71,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
       return 'This section is not available when amending or creating a technical record.';
     }
 
-    if (this.techRecord.techRecord_statusCode !== StatusCodes.CURRENT) {
+    if (this.techRecord?.techRecord_statusCode !== StatusCodes.CURRENT) {
       return 'Generating letters is only applicable to current technical records.';
     }
 
@@ -91,8 +94,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
       throw new Error('Could not find vehicle record associated with this technical record.');
     }
     return new Map([
-      ['systemNumber', this.techRecord.systemNumber],
-      ['vinNumber', this.techRecord.vin]
+      ['systemNumber', (this.techRecord as TechRecordTypeVehicleVerb<'trl', 'get'>)?.systemNumber],
+      ['vinNumber', this.techRecord?.vin]
     ]);
   }
 
@@ -103,6 +106,6 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.techRecord) {
       return '';
     }
-    return `letter_${this.techRecord.systemNumber}_${this.techRecord.vin}`;
+    return `letter_${(this.techRecord as TechRecordTypeVehicleVerb<'trl', 'get'>).systemNumber}_${this.techRecord.vin}`;
   }
 }

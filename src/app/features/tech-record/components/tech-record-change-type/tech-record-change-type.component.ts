@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
@@ -56,6 +57,10 @@ export class ChangeVehicleTypeComponent implements OnInit {
     return getOptionsFromEnumAcronym(VehicleTypes).filter(type => type.value !== this.techRecord?.techRecord_vehicleType);
   }
 
+  get currentVrm() {
+    return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm : undefined;
+  }
+
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
@@ -68,8 +73,8 @@ export class ChangeVehicleTypeComponent implements OnInit {
 
     if (
       selectedVehicleType === VehicleTypes.TRL &&
-      (this.techRecord?.techRecord_euVehicleCategory === EuVehicleCategories.O1 ||
-        this.techRecord?.techRecord_euVehicleCategory === EuVehicleCategories.O2)
+      ((this.techRecord as TechRecordTypeByVehicle<'trl'>)?.techRecord_euVehicleCategory === EuVehicleCategories.O1 ||
+        (this.techRecord as TechRecordTypeByVehicle<'trl'>)?.techRecord_euVehicleCategory === EuVehicleCategories.O2)
     ) {
       return this.globalErrorService.addError({
         error: "You cannot change vehicle type to TRL when EU vehicle category is set to 'O1' or 'O2'",

@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -70,7 +71,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   }
 
   get currentVrm(): string | undefined {
-    return this.techRecord?.primaryVrm;
+    return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
   }
 
   get otherVrms(): Vrm[] | undefined {
@@ -129,7 +130,10 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   createTest(techRecord?: V3TechRecordModel): void {
     if (techRecord?.techRecord_hiddenInVta) {
       alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
-    } else if (techRecord?.techRecord_recordCompleteness === 'complete' || techRecord?.techRecord_recordCompleteness === 'testable') {
+    } else if (
+      (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'complete' ||
+      (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'testable'
+    ) {
       this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
       alert(

@@ -3,11 +3,12 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { NotTrailer, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
@@ -138,7 +139,7 @@ export class CreateTechRecordComponent implements OnChanges {
       return;
     }
 
-    this.technicalRecordService.updateEditingTechRecord(this.techRecord as V3TechRecordModel);
+    this.technicalRecordService.updateEditingTechRecord(this.techRecord as TechRecordType<'put'>);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.techRecord.techRecord_vehicleType as VehicleTypes);
     this.technicalRecordService.clearSectionTemplateStates();
     this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
@@ -175,8 +176,10 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   async isVrmUnique() {
-    this.techRecord.primaryVrm = this.form.value.vrmTrm;
-    const isVrmUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.techRecord.primaryVrm!.replace(/\s+/g, ''), SEARCH_TYPES.VRM));
+    (this.techRecord as NotTrailer).primaryVrm = this.form.value.vrmTrm;
+    const isVrmUnique = await firstValueFrom(
+      this.technicalRecordService.isUnique((this.techRecord as NotTrailer).primaryVrm?.replace(/\s+/g, '') ?? '', SEARCH_TYPES.VRM)
+    );
     if (!isVrmUnique) {
       this.globalErrorService.addError({ error: 'Vrm not unique', anchorLink: 'input-vrm-or-trailer-id' });
     }
@@ -184,14 +187,14 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   async isTrailerIdUnique() {
-    //TODO: V3 remove as any TRL
-    (this.techRecord as any).trailerId = this.form.value.vrmTrm;
-    const isTrailerIdUnique = await firstValueFrom(
-      this.technicalRecordService.isUnique((this.techRecord as any).trailerId!, SEARCH_TYPES.TRAILER_ID)
-    );
-    if (!isTrailerIdUnique) {
-      this.globalErrorService.addError({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });
+    if (this.techRecord.techRecord_vehicleType === 'trl') {
+      this.techRecord.trailerId = this.form.value.vrmTrm;
+      const isTrailerIdUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.techRecord.trailerId!, SEARCH_TYPES.TRAILER_ID));
+      if (!isTrailerIdUnique) {
+        this.globalErrorService.addError({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });
+      }
+      return isTrailerIdUnique;
     }
-    return isTrailerIdUnique;
+    return false;
   }
 }

@@ -67,7 +67,7 @@ export class GenerateLetterComponent implements OnInit {
     return (this.techRecord as any)?.letterOfAuth ?? undefined;
   }
   get emailAddress(): string | undefined {
-    return this.techRecord?.techRecord_applicantDetails_emailAddress ?? undefined;
+    return this.techRecord?.techRecord_vehicleType === 'trl' ? this.techRecord?.techRecord_applicantDetails_emailAddress ?? '' : undefined;
   }
 
   navigateBack() {

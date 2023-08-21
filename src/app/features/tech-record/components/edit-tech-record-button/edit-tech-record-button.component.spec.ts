@@ -15,7 +15,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { clearError } from '@store/global-error/actions/global-error.actions';
-import { selectTechRecord, updateEditingTechRecordCancel } from '@store/technical-records';
+import { updateEditingTechRecordCancel } from '@store/technical-records';
 import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
 
@@ -83,12 +83,24 @@ describe('EditTechRecordButtonComponent', () => {
         createdTimestamp: 'bar',
         vin: 'testVin',
         techRecord_statusCode: StatusCodes.CURRENT
-      } as V3TechRecordModel);
+      } as unknown as V3TechRecordModel);
     });
     it.each([
-      ['should be viewable', true, { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL }],
-      ['should be viewable', true, { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT }],
-      ['should not be viewable', false, { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED }]
+      [
+        'should be viewable',
+        true,
+        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL } as V3TechRecordModel
+      ],
+      [
+        'should be viewable',
+        true,
+        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel
+      ],
+      [
+        'should not be viewable',
+        false,
+        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED } as V3TechRecordModel
+      ]
     ])('edit button %s for %s record', (isViewable: string, expected: boolean, record: V3TechRecordModel) => {
       mockTechRecordService.techRecord$ = of(record);
       fixture.detectChanges();

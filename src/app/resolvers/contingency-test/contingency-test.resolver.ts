@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestType } from '@models/test-types/test-type.model';
@@ -27,23 +28,24 @@ export class ContingencyTestResolver implements Resolve<boolean> {
   resolve(): Observable<boolean> {
     return this.store.select(selectTechRecord).pipe(
       switchMap(techRecord => {
-        const { vin, primaryVrm, systemNumber } = techRecord!;
-        const trailerId = (techRecord as any).trailerId;
+        const { vin, systemNumber } = techRecord as TechRecordType<'get'>;
+        const vrm = techRecord?.techRecord_vehicleType !== 'trl' ? techRecord?.primaryVrm : undefined;
+        const trailerId = techRecord?.techRecord_vehicleType === 'trl' ? techRecord.trailerId : undefined;
         return this.store.select(selectTechRecord).pipe(
           withLatestFrom(this.userService.user$),
           map(([viewableTechRecord, user]) => {
             const now = new Date();
             return {
               vin,
-              vrm: primaryVrm,
+              vrm,
               trailerId,
               systemNumber,
               vehicleType: viewableTechRecord?.techRecord_vehicleType,
               statusCode: viewableTechRecord?.techRecord_statusCode,
               testResultId: uuidv4(),
-              euVehicleCategory: viewableTechRecord?.techRecord_euVehicleCategory ?? null,
+              euVehicleCategory: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_euVehicleCategory ?? null,
               vehicleSize: (viewableTechRecord as any)?.techRecord_vehicleSize,
-              vehicleConfiguration: viewableTechRecord?.techRecord_vehicleConfiguration ?? null,
+              vehicleConfiguration: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_vehicleConfiguration ?? null,
               vehicleClass: (viewableTechRecord as any)?.techRecord_vehicleClass ?? null,
               vehicleSubclass: (viewableTechRecord as any)?.techRecord_vehicleSubclass ?? null,
               noOfAxles: viewableTechRecord?.techRecord_noOfAxles ?? 0,

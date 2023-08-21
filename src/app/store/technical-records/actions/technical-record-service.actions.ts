@@ -1,6 +1,7 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { PsvMake } from '@models/reference-data.model';
-import { StatusCodes, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 
 const prefix = '[Technical Record Service]';
@@ -13,11 +14,11 @@ export const getTechRecordV3 = createAction(`${prefix} getTechRecordV3`, props<{
 export const getTechRecordV3Success = createOutcomeAction('getTechRecordV3', true);
 export const getTechRecordV3Failure = createOutcomeAction('getTechRecordV3');
 
-export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`, props<{ vehicle: V3TechRecordModel }>());
+export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`, props<{ vehicle: TechRecordType<'put'> }>());
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
 export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord');
 
-export const updateTechRecord = createAction(`${prefix} updateTechRecords`, props<{ vehicleTechRecord: V3TechRecordModel }>());
+export const updateTechRecord = createAction(`${prefix} updateTechRecords`, props<{ vehicleTechRecord: TechRecordType<'put'> }>());
 export const updateTechRecordSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordFailure = createOutcomeAction('updateTechRecords');
 
@@ -42,7 +43,7 @@ export const promoteTechRecord = createAction(
 export const promoteTechRecordSuccess = createOutcomeAction('promoteTechRecord', true);
 export const promoteTechRecordFailure = createOutcomeAction('promoteTechRecord');
 
-export const updateEditingTechRecord = createAction(`${prefix} updateEditingTechRecord`, props<{ vehicleTechRecord: V3TechRecordModel }>());
+export const updateEditingTechRecord = createAction(`${prefix} updateEditingTechRecord`, props<{ vehicleTechRecord: TechRecordType<'put'> }>());
 export const updateEditingTechRecordCancel = createAction(`${prefix} updateEditingTechRecordCancel`);
 
 export const changeVehicleType = createAction(`${prefix} changeVehicleType`, props<{ techRecord_vehicleType: VehicleTypes }>());

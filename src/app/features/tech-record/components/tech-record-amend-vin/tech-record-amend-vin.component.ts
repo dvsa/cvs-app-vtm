@@ -3,6 +3,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
@@ -69,6 +70,10 @@ export class AmendVinComponent implements OnDestroy, OnInit {
     return this.techRecord ? this.technicalRecordService.getMakeAndModel(this.techRecord) : undefined;
   }
 
+  get currentVrm(): string | undefined {
+    return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
+  }
+
   isFormValid(): boolean {
     const errors: GlobalError[] = [];
 
@@ -90,7 +95,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
   }
 
   handleSubmit(): void {
-    const record: V3TechRecordModel = { ...this.techRecord! };
+    const record = { ...this.techRecord! } as TechRecordType<'put'>;
     record.vin = this.form.value.vin;
 
     if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {

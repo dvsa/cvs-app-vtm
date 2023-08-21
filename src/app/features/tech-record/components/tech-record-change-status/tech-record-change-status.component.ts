@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -16,7 +16,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './tech-record-change-status.component.html'
 })
 export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
-  techRecord: V3TechRecordModel | undefined;
+  techRecord: TechRecordType<'get'> | undefined;
 
   form: CustomFormGroup;
 
@@ -42,7 +42,7 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
-      this.techRecord = record;
+      this.techRecord = record as TechRecordType<'get'>;
     });
 
     this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(newRecord => {

@@ -3,6 +3,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
@@ -86,6 +87,10 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     return this.techRecord ? this.technicalRecordService.getMakeAndModel(this.techRecord) : undefined;
   }
 
+  get currentVrm(): string | undefined {
+    return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
+  }
+
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
@@ -109,8 +114,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
             amendVrm({
               newVrm: this.form.value.newVrm,
               cherishedTransfer: this.form.value.isCherishedTransfer,
-              systemNumber: this.techRecord?.systemNumber!,
-              createdTimestamp: this.techRecord?.createdTimestamp!
+              systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
+              createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
             })
           );
         },
@@ -119,6 +124,10 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   }
 
   isFormValid(): boolean {
+    if (this.techRecord?.techRecord_vehicleType === 'trl') {
+      return false;
+    }
+
     this.globalErrorService.clearErrors();
 
     const errors: GlobalError[] = [];

@@ -69,7 +69,7 @@
         <ng-container
           *ngIf="
             isVrmEditable(
-              currentTechRecord.techRecord_statusCode,
+              currentTechRecord.techRecord_statusCode ?? undefined,
               currentTechRecord.techRecord_vehicleType!,
               editableTechRecord.techRecord_vehicleType!
             )

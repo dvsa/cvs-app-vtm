@@ -61,12 +61,14 @@
       (formChange)="handleFormState($event)"
     ></app-weights>
 
-    <app-letters
-      *ngSwitchCase="'lettersSection'"
-      [techRecord]="techRecordCalculated"
-      [isEditing]="(isEditing$ | async) ?? false"
-      (formChange)="handleFormState($event)"
-    ></app-letters>
+    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'trl'">
+      <app-letters
+        *ngSwitchCase="'lettersSection'"
+        [techRecord]="techRecordCalculated"
+        [isEditing]="(isEditing$ | async) ?? false"
+        (formChange)="handleFormState($event)"
+      ></app-letters>
+    </ng-container>
 
     <app-plates
       *ngSwitchCase="'platesSection'"

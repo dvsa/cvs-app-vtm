@@ -42,7 +42,12 @@ export class GeneratePlateComponent implements OnInit {
       tap(record => {
         if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') this.navigateBack();
       }),
-      map(record => record?.techRecord_applicantDetails_emailAddress)
+      map(record => {
+        if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') {
+          return undefined;
+        }
+        return record?.techRecord_applicantDetails_emailAddress;
+      })
     );
   }
 
