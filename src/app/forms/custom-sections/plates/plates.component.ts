@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
@@ -15,7 +16,7 @@ import { Subscription, debounceTime } from 'rxjs';
   styleUrls: ['./plates.component.scss']
 })
 export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() techRecord!: V3TechRecordModel;
+  @Input() techRecord!: TechRecordType<'trl'> | TechRecordType<'hgv'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();

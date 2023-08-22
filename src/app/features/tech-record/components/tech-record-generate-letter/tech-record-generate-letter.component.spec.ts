@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { approvalType, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -18,6 +18,7 @@ import { initialAppState } from '@store/index';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { GenerateLetterComponent } from './tech-record-generate-letter.component';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
 const mockTechRecordService = {
   get techRecord$() {
@@ -35,7 +36,7 @@ describe('TechRecordGenerateLetterComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: GenerateLetterComponent;
   let errorService: GlobalErrorService;
-  let expectedVehicle = {} as V3TechRecordModel;
+  let expectedVehicle = {} as TechRecordType<'trl'>;
   let fixture: ComponentFixture<GenerateLetterComponent>;
   let route: ActivatedRoute;
   let router: Router;
@@ -109,7 +110,7 @@ describe('TechRecordGenerateLetterComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      expectedVehicle = mockVehicleTechnicalRecord('trl');
+      expectedVehicle = mockVehicleTechnicalRecord('trl') as TechRecordType<'trl'>;
     });
 
     it('should add an error when the field is not filled out', () => {
@@ -124,7 +125,7 @@ describe('TechRecordGenerateLetterComponent', () => {
       it('should dispatch with id 3 on acceptance', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.techRecord = expectedVehicle;
-        (component.techRecord as any).techRecord_approvalType = 'UKNI WVTA';
+        component.techRecord.techRecord_approvalType = 'UKNI WVTA';
 
         component.form.get('letterType')?.setValue('trailer acceptance');
         component.handleSubmit();
@@ -135,7 +136,7 @@ describe('TechRecordGenerateLetterComponent', () => {
       it('should dispatch with id 4 on rejection', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.techRecord = expectedVehicle;
-        (component.techRecord as any).techRecord_approvalType = 'GB WVTA';
+        component.techRecord.techRecord_approvalType = 'GB WVTA';
 
         component.form.get('letterType')?.setValue('trailer rejection');
         component.handleSubmit();
@@ -146,7 +147,7 @@ describe('TechRecordGenerateLetterComponent', () => {
       it('should dispatch with id 6 on acceptance', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.techRecord = expectedVehicle;
-        (component.techRecord as any).techRecord_approvalType = 'GB WVTA';
+        component.techRecord.techRecord_approvalType = 'GB WVTA';
 
         component.form.get('letterType')?.setValue('trailer acceptance');
         component.handleSubmit();
