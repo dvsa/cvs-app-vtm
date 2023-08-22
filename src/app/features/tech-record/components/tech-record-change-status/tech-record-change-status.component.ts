@@ -45,8 +45,8 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
       this.techRecord = record as TechRecordType<'get'>;
     });
 
-    this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(newRecord => {
-      this.router.navigate([`/tech-records/${newRecord.systemNumber}/${newRecord.createdTimestamp}`]);
+    this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
 
       this.technicalRecordService.clearEditingTechRecord();
     });

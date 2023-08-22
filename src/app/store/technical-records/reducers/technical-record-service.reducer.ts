@@ -28,9 +28,6 @@ import {
   generatePlate,
   generatePlateFailure,
   generatePlateSuccess,
-  getBySystemNumber,
-  getBySystemNumberFailure,
-  getBySystemNumberSuccess,
   getTechRecordV3Success,
   removeAxle,
   removeSectionState,
@@ -70,10 +67,6 @@ export const getTechRecordState = createFeatureSelector<TechnicalRecordServiceSt
 
 export const vehicleTechRecordReducer = createReducer(
   initialState,
-
-  on(getBySystemNumber, defaultArgs),
-  on(getBySystemNumberSuccess, historyArgs),
-  on(getBySystemNumberFailure, historyFailArgs),
 
   on(createVehicleRecord, defaultArgs),
   on(createVehicleRecordSuccess, successArgs),
@@ -136,20 +129,12 @@ function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechReco
   return { ...state, vehicleTechRecord: data.vehicleTechRecord, loading: false };
 }
 
-function historyArgs(state: TechnicalRecordServiceState, data: { techRecordHistory: [TechRecordSearchSchema] }) {
-  return { ...state, techRecordHistory: data.techRecordHistory, loading: false };
-}
-
 function updateFailureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
   return { ...state, error: data.error, loading: false };
 }
 
 function failureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
   return { ...state, vehicleTechRecord: undefined, error: data.error, loading: false };
-}
-
-function historyFailArgs(state: TechnicalRecordServiceState, data: { techRecordHistory: [TechRecordSearchSchema] }) {
-  return { ...state, techRecordHistory: undefined, loading: false };
 }
 
 //TODO: remove the anys

@@ -63,11 +63,11 @@ export class TechnicalRecordServiceEffects {
       mergeMap(action => {
         const anchorLink = 'search-term';
 
-        return this.techRecordHttpService.getBySystemNumber(action.systemNumber, 'systemNumber').pipe(
+        return this.techRecordHttpService.getBySystemNumber(action.systemNumber).pipe(
           map(vehicleTechRecords => {
             return getBySystemNumberSuccess({ techRecordHistory: vehicleTechRecords });
           }),
-          catchError(error => of(getBySystemNumberFailure({ techRecordHistory: [] })))
+          catchError(error => of(getBySystemNumberFailure({ error: 'could not find technical record history', anchorLink })))
         );
       })
     )
@@ -155,7 +155,7 @@ export class TechnicalRecordServiceEffects {
       ofType(promoteTechRecord),
       switchMap(({ systemNumber, createdTimestamp, reasonForPromoting }) =>
         this.techRecordHttpService.promoteTechnicalRecord(systemNumber, createdTimestamp, reasonForPromoting).pipe(
-          map(vehicleTechRecord => promoteTechRecordSuccess(vehicleTechRecord)),
+          map(vehicleTechRecord => promoteTechRecordSuccess({ vehicleTechRecord })),
           catchError(error => of(promoteTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'promoteTechRecord') })))
         )
       )

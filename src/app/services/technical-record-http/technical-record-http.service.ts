@@ -33,17 +33,14 @@ export class TechnicalRecordHttpService {
     this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
   }
 
-  getBySystemNumber(systemNumber: string, searchCriteria: string): Observable<V3TechRecordModel[]> {
-    const queryStr = `${systemNumber}?searchCriteria=${searchCriteria}`;
-    const url = `${environment.VTM_API_URI}/v3/technical-records/search/${queryStr}`;
-
-    return this.http.get<V3TechRecordModel[]>(url, { responseType: 'json' });
+  getBySystemNumber(systemNumber: string): Observable<SearchResult[]> {
+    return this.search$(SEARCH_TYPES.SYSTEM_NUMBER, systemNumber);
   }
 
-  getRecordV3(systemNumber: string, createdTimestamp: string): Observable<V3TechRecordModel[]> {
+  getRecordV3(systemNumber: string, createdTimestamp: string): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`;
 
-    return this.http.get<V3TechRecordModel[]>(url, { responseType: 'json' });
+    return this.http.get<TechRecordType<'get'>>(url, { responseType: 'json' });
   }
 
   createVehicleRecord(newVehicleRecord: V3TechRecordModel): Observable<TechRecordType<'get'>> {
@@ -64,29 +61,29 @@ export class TechnicalRecordHttpService {
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
-  amendVrm(newVrm: string, cherishedTransfer: boolean, systemNumber: string, createdTimestamp: string): Observable<V3TechRecordModel | undefined> {
+  amendVrm(newVrm: string, cherishedTransfer: boolean, systemNumber: string, createdTimestamp: string): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`;
     const body = {
       newVrm,
       isCherishedTransfer: cherishedTransfer
     };
-    return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
-  archiveTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForArchiving: string): Observable<V3TechRecordModel> {
+  archiveTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForArchiving: string): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/archive/${systemNumber}/${createdTimestamp}`;
 
     const body = { reasonForArchiving };
 
-    return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
-  promoteTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string): Observable<V3TechRecordModel> {
+  promoteTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/promote/${systemNumber}/${createdTimestamp}`;
 
     const body = { reasonForPromoting };
 
-    return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
+    return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
   //TODO: remove the anys

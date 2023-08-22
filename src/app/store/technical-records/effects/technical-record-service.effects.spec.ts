@@ -21,9 +21,6 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
-  getBySystemNumber,
-  getBySystemNumberFailure,
-  getBySystemNumberSuccess,
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess
@@ -60,43 +57,6 @@ describe('TechnicalRecordServiceEffects', () => {
     testScheduler = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
   });
 
-  describe('getTechnicalRecordHistory$', () => {
-    it('should return the technical record history on successfull API call', () => {
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        const technicalRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
-
-        // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'foo' }) });
-
-        // mock service call
-        cold('--a|', { a: [technicalRecord] });
-        jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: [technicalRecord] }));
-
-        // expect effect to return success action
-        expectObservable(effects.getTechnicalRecordHistory$).toBe('---b', {
-          b: getBySystemNumberSuccess({ techRecordHistory: [technicalRecord] })
-        });
-      });
-    });
-
-    it('techRecordHistory should be undefined if there is no history', () => {
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber' }) });
-
-        // mock service call
-        const expectedError = new HttpErrorResponse({
-          status: 404,
-          statusText: 'No tech record history found for this system number'
-        });
-        jest.spyOn(techRecordHttpService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
-
-        expectObservable(effects.getTechnicalRecordHistory$).toBe('---b', {
-          b: getBySystemNumberFailure({ techRecordHistory: [] })
-        });
-      });
-    });
-  });
   describe('createVehicleRecord', () => {
     it('should return a vehicle on successful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
@@ -178,7 +138,7 @@ describe('TechnicalRecordServiceEffects', () => {
   describe('archiveTechRecord', () => {
     it('should return an archived technical record on successful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const technicalRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+        const technicalRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: archiveTechRecord });
