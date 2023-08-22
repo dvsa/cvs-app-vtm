@@ -52,7 +52,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
   //TODO: remove the anys
   get hasPlates(): boolean {
-    return (this.techRecord as any).techRecord_plates !== undefined && (this.techRecord as any).techRecord_plates.length > 0;
+    return this.techRecord.techRecord_plates?.length ? true : false;
   }
 
   //TODO: remove the anys

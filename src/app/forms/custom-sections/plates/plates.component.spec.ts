@@ -109,7 +109,7 @@ describe('PlatesComponent', () => {
     });
 
     it('should return null if plates are empty', () => {
-      component.techRecord = {} as TechRecordType<'trl'>;
+      component.techRecord = { techRecord_plates: [] } as unknown as TechRecordType<'trl'>;
 
       const plateFetched = component.mostRecentPlate;
 
@@ -119,13 +119,13 @@ describe('PlatesComponent', () => {
 
   describe('hasPlates', () => {
     it('should return false if plates is undefined', () => {
-      component.techRecord = {} as TechRecordType<'trl'>;
+      component.techRecord = { techRecord_plates: undefined } as unknown as TechRecordType<'trl'>;
 
       expect(component.hasPlates).toBeFalsy();
     });
 
     it('should return false if plates is empty', () => {
-      component.techRecord = {} as TechRecordType<'trl'>;
+      component.techRecord = { techRecord_plates: [] } as unknown as TechRecordType<'trl'>;
 
       expect(component.hasPlates).toBeFalsy();
     });
