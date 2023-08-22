@@ -56,22 +56,22 @@ describe('VehicleHeaderComponent', () => {
   it('should display the reading if the unit is undefined', () => {
     expect(component.combinedOdometerReading('1234', undefined)).toEqual('1234 ');
   });
-  // TODO: V3 HGV PSV TRL
-  // it('should display the correct data based on vehicle type', () => {
-  //   const mockRecord = {
-  //     techRecord_vehicleConfiguration: VehicleConfigurations.RIGID,
-  //     techRecord_bodyMake: 'testBody',
-  //     techRecord_bodyModel: 'testBodyModel',
-  //     techRecord_chassisMake: 'testChassis',
-  //     techRecord_chassisModel: 'testChassisModel',
-  //     techRecord_make: 'testHGV',
-  //     techRecord_model: 'testHGVModel'
-  //   } as unknown as V3TechRecordModel;
 
-  //   expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toEqual('rigid');
-  //   expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toEqual('testBody-testBodyModel');
-  //   expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toEqual('testHGV-testHGVModel');
-  // });
+  it('should display the correct data based on vehicle type', () => {
+    const mockRecord = {
+      techRecord_vehicleConfiguration: VehicleConfigurations.RIGID,
+      techRecord_bodyMake: 'testBody',
+      techRecord_bodyModel: 'testBodyModel',
+      techRecord_chassisMake: 'testChassis',
+      techRecord_chassisModel: 'testChassisModel',
+      techRecord_make: 'testHGV',
+      techRecord_model: 'testHGVModel'
+    } as unknown as V3TechRecordModel;
+
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toEqual('rigid');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toEqual('testBody-testBodyModel');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toEqual('testHGV-testHGVModel');
+  });
 
   it('should display an empty string if all required data cannot be retrieved', () => {
     const mockRecord = {

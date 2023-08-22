@@ -29,7 +29,6 @@ export class TechRecordHistoryComponent implements OnInit {
     return this.store.select(selectTechRecordHistory);
   }
 
-  //TODO: Update types schema/terraform to include reason for creation and other fields in search result
   get techRecords$(): Observable<any[]> {
     return this.techRecordHistory$?.pipe(map(records => records?.slice(this.pageStart, this.pageEnd) ?? []));
   }

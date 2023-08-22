@@ -11,8 +11,8 @@ import { createMock } from 'ts-auto-mock';
 import { BodyTypeDescription } from '@models/body-type-enum';
 import { HGVAxles, HGVPlates, PlateReasonForIssue, VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 
-export const createMockHgv = (systemNumber: number): TechRecordType<"hgv"> =>
-  createMock<TechRecordType<"hgv">>({
+export const createMockHgv = (systemNumber: number): TechRecordType<'hgv'> =>
+  createMock<TechRecordType<'hgv'>>({
     systemNumber: `HGV`,
     vin: `XMGDE03FS0H0${12344 + systemNumber + 1}`,
     primaryVrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
@@ -48,8 +48,6 @@ export const createMockHgv = (systemNumber: number): TechRecordType<"hgv"> =>
     techRecord_variantVersionNumber: 'variantversion123456',
     techRecord_dimensions_length: 1,
     techRecord_dimensions_width: 2,
-    techRecord_dimensions_axleSpacing_axles: '1-2',
-    techRecord_dimensions_axleSpacing_value: 4,
     techRecord_frontAxleToRearAxle: 3,
     techRecord_frontVehicleTo5thWheelCouplingMin: 5,
     techRecord_frontVehicleTo5thWheelCouplingMax: 6,

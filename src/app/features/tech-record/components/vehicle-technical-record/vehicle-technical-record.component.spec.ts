@@ -102,30 +102,6 @@ describe('VehicleTechnicalRecordComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // TODO V3 I don't think this is needed anymore
-  // it('should get current tech record', () => {
-  //   component.vehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT };
-  //   fixture.detectChanges();
-
-  //   component.currentTechRecord$?.subscribe(record => expect(record).toBeTruthy());
-  // });
-
-  // it('should get archived tech record', () => {
-  //   component.vehicle.techRecord = component.vehicle.techRecord.filter(record => record.statusCode === StatusCodes.ARCHIVED);
-  //   fixture.detectChanges();
-
-  //   component.currentTechRecord$?.subscribe(record => expect(record).toBeTruthy());
-  // });
-
-  // it('should get tech record using created date', () => {
-  //   const expectedDate = new Date();
-  //   store.overrideSelector(selectRouteNestedParams, { techCreatedAt: expectedDate });
-  //   component.vehicle.techRecord[0].createdAt = expectedDate;
-  //   fixture.detectChanges();
-
-  //   component.currentTechRecord$?.subscribe(record => expect(record).toBeTruthy());
-  // });
-
   describe('handleSubmit', () => {
     describe('correcting an error', () => {
       beforeEach(() => {

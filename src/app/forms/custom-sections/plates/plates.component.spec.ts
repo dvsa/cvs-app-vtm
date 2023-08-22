@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
-import { Plates } from '@models/vehicle-tech-record.model';
+import { Plates, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
@@ -14,6 +14,7 @@ import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { PlatesComponent } from './plates.component';
+import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 
 describe('PlatesComponent', () => {
   let component: PlatesComponent;
@@ -78,28 +79,28 @@ describe('PlatesComponent', () => {
 
     //TODO: Remove the anys
     it('should fetch the latest plate if more than 1 exists', () => {
-      (component.techRecord as any) = {
+      component.techRecord = {
         techRecord_plates: [
           {
             plateIssueDate: new Date(new Date().getTime()).toISOString(),
             plateSerialNumber: '123456',
             plateIssuer: 'issuer',
-            reasonForIssue: 'Replacement'
+            plateReasonForIssue: 'Replacement'
           },
           {
             plateIssueDate: new Date(new Date().getTime() + 5).toISOString(),
             plateSerialNumber: '234567',
             plateIssuer: 'issuer',
-            reasonForIssue: 'Replacement'
+            plateReasonForIssue: 'Replacement'
           },
           {
             plateIssueDate: new Date(new Date().getTime() - 5).toISOString(),
             plateSerialNumber: '345678',
             plateIssuer: 'issuer',
-            reasonForIssue: 'Replacement'
+            plateReasonForIssue: 'Replacement'
           }
         ]
-      };
+      } as TechRecordType<'trl'>;
 
       const plateFetched = component.mostRecentPlate;
 
@@ -108,9 +109,7 @@ describe('PlatesComponent', () => {
     });
 
     it('should return null if plates are empty', () => {
-      (component.techRecord as any) = {
-        techRecord_plates: [] as Plates[]
-      };
+      component.techRecord = {} as TechRecordType<'trl'>;
 
       const plateFetched = component.mostRecentPlate;
 
@@ -120,32 +119,28 @@ describe('PlatesComponent', () => {
 
   describe('hasPlates', () => {
     it('should return false if plates is undefined', () => {
-      (component.techRecord as any) = {
-        techRecord_plates: undefined
-      };
+      component.techRecord = {} as TechRecordType<'trl'>;
 
       expect(component.hasPlates).toBeFalsy();
     });
 
     it('should return false if plates is empty', () => {
-      (component.techRecord as any) = {
-        techRecord_plates: [] as Plates[]
-      };
+      component.techRecord = {} as TechRecordType<'trl'>;
 
       expect(component.hasPlates).toBeFalsy();
     });
 
     it('should return true if plates is not empty', () => {
-      (component.techRecord as any) = {
+      component.techRecord = {
         techRecord_plates: [
           {
             plateIssueDate: new Date().toISOString(),
             plateSerialNumber: '123456',
             plateIssuer: 'issuer',
-            reasonForIssue: 'Replacement'
+            plateReasonForIssue: 'Replacement'
           }
         ]
-      };
+      } as TechRecordType<'trl'>;
 
       expect(component.hasPlates).toBeTruthy();
     });
