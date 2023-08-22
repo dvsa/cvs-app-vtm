@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { approvalType, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { approvalType, V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -20,8 +20,9 @@ import { of, ReplaySubject } from 'rxjs';
 import { GenerateLetterComponent } from './tech-record-generate-letter.component';
 
 const mockTechRecordService = {
-  viewableTechRecord$: of({}),
-  selectedVehicleTechRecord$: of({}),
+  get techRecord$() {
+    return of(mockVehicleTechnicalRecord('trl'));
+  },
   updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn()
 };
@@ -34,7 +35,7 @@ describe('TechRecordGenerateLetterComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: GenerateLetterComponent;
   let errorService: GlobalErrorService;
-  let expectedVehicle = {} as VehicleTechRecordModel;
+  let expectedVehicle = {} as V3TechRecordModel;
   let fixture: ComponentFixture<GenerateLetterComponent>;
   let route: ActivatedRoute;
   let router: Router;
@@ -76,87 +77,82 @@ describe('TechRecordGenerateLetterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // TODO TRL
+  describe('navigateBack', () => {
+    it('should clear all errors', () => {
+      jest.spyOn(router, 'navigate').mockImplementation();
 
-  // describe('navigateBack', () => {
-  //   it('should clear all errors', () => {
-  //     jest.spyOn(router, 'navigate').mockImplementation();
+      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-  //     const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+      component.navigateBack();
 
-  //     component.navigateBack();
+      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
+    });
 
-  //     expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-  //   });
+    it('should navigate back to the previous page', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-  //   it('should navigate back to the previous page', () => {
-  //     const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+      component.navigateBack();
 
-  //     component.navigateBack();
+      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+    });
 
-  //     expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
-  //   });
+    it('should navigate back on generateLetterSuccess', () => {
+      const navigateBackSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-  //   it('should navigate back on generateLetterSuccess', fakeAsync(() => {
-  //     component.form.get('letterType')?.setValue('trailer authorsation');
-  //     component.handleSubmit();
+      component.ngOnInit();
 
-  //     const navigateBackSpy = jest.spyOn(component, 'navigateBack');
-  //     jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+      actions$.next(generateLetterSuccess());
 
-  //     actions$.next(generateLetterSuccess());
-  //     tick();
+      expect(navigateBackSpy).toHaveBeenCalled();
+    });
+  });
 
-  //     expect(navigateBackSpy).toHaveBeenCalled();
-  //   }));
-  // });
+  describe('handleSubmit', () => {
+    beforeEach(() => {
+      expectedVehicle = mockVehicleTechnicalRecord('trl');
+    });
 
-  // describe('handleSubmit', () => {
-  //   beforeEach(() => {
-  //     expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.TRL);
-  //   });
+    it('should add an error when the field is not filled out', () => {
+      const addErrorSpy = jest.spyOn(errorService, 'addError');
 
-  //   it('should add an error when the field is not filled out', () => {
-  //     const addErrorSpy = jest.spyOn(errorService, 'addError');
+      component.handleSubmit();
 
-  //     component.handleSubmit();
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Letter type is required', anchorLink: 'letterType' });
+    });
 
-  //     expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Letter type is required', anchorLink: 'letterType' });
-  //   });
+    describe('it should dispatch the generateLetter action with the correct paragraphIds', () => {
+      it('should dispatch with id 3 on acceptance', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        component.techRecord = expectedVehicle;
+        (component.techRecord as any).techRecord_approvalType = 'UKNI WVTA';
 
-  //   describe('it should dispatch the generateLetter action with the correct paragraphIds', () => {
-  //     it('should dispatch with id 3 on acceptance', () => {
-  //       const dispatchSpy = jest.spyOn(store, 'dispatch');
-  //       component.currentTechRecord = expectedVehicle.techRecord[0];
-  //       component.currentTechRecord.approvalType = approvalType.SMALL_SERIES;
+        component.form.get('letterType')?.setValue('trailer acceptance');
+        component.handleSubmit();
 
-  //       component.form.get('letterType')?.setValue('trailer acceptance');
-  //       component.handleSubmit();
+        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 3 }));
+      });
 
-  //       expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 3 }));
-  //     });
+      it('should dispatch with id 4 on rejection', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        component.techRecord = expectedVehicle;
+        (component.techRecord as any).techRecord_approvalType = 'GB WVTA';
 
-  //     it('should dispatch with id 4 on rejection', () => {
-  //       const dispatchSpy = jest.spyOn(store, 'dispatch');
-  //       component.currentTechRecord = expectedVehicle.techRecord[0];
-  //       component.currentTechRecord.approvalType = approvalType.GB_WVTA;
+        component.form.get('letterType')?.setValue('trailer rejection');
+        component.handleSubmit();
 
-  //       component.form.get('letterType')?.setValue('trailer rejection');
-  //       component.handleSubmit();
+        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer rejection', paragraphId: 4 }));
+      });
 
-  //       expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer rejection', paragraphId: 4 }));
-  //     });
+      it('should dispatch with id 6 on acceptance', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        component.techRecord = expectedVehicle;
+        (component.techRecord as any).techRecord_approvalType = 'GB WVTA';
 
-  //     it('should dispatch with id 6 on acceptance', () => {
-  //       const dispatchSpy = jest.spyOn(store, 'dispatch');
-  //       component.currentTechRecord = expectedVehicle.techRecord[0];
-  //       component.currentTechRecord.approvalType = approvalType.GB_WVTA;
+        component.form.get('letterType')?.setValue('trailer acceptance');
+        component.handleSubmit();
 
-  //       component.form.get('letterType')?.setValue('trailer acceptance');
-  //       component.handleSubmit();
-
-  //       expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 6 }));
-  //     });
-  //   });
-  // });
+        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 6 }));
+      });
+    });
+  });
 });

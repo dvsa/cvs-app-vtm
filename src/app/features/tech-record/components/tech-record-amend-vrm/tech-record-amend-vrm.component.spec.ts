@@ -20,7 +20,6 @@ import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 
 const mockTechRecordService = {
   techRecord$: of({}),
-  selectedVehicleTechRecord$: of({}),
   get viewableTechRecord$() {
     return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM' });
   },
@@ -71,27 +70,6 @@ describe('TechRecordChangeVrmComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  // TODO V3 PSV
-  // describe('makeAndModel', () => {
-  //   beforeEach(() => {
-  //     expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-  //     component.vehicle = expectedVehicle;
-  //   });
-
-  //   it('should should return the make and model', () => {
-  //     const expectedTechRecord = expectedVehicle.techRecord.pop()!;
-
-  //     component.techRecord = expectedTechRecord;
-
-  //     expect(component.makeAndModel).toBe(`${expectedTechRecord.chassisMake} - ${expectedTechRecord.chassisModel}`);
-  //   });
-
-  //   it('should return an empty string when the current record is null', () => {
-  //     delete component.techRecord;
-
-  //     expect(component.makeAndModel).toBe('');
-  //   });
-  // });
 
   describe('navigateBack', () => {
     it('should clear all errors', () => {
@@ -111,7 +89,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
-    //TODO moved from constructor causes this test to fail
+
     it('should navigate to a new record on amendVrmSuccess', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       jest

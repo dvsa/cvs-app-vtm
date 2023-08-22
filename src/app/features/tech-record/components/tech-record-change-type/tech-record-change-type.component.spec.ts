@@ -75,7 +75,7 @@ describe('TechRecordChangeTypeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  // TODO V3 PSV HGV TRL
+
   describe('makeAndModel', () => {
     it('should should return the make and model', () => {
       const expectedMakeModel: string = `${(expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisMake} - ${
