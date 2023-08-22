@@ -17,6 +17,7 @@ import { selectRouteData } from '@store/router/selectors/router.selectors';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
+import { TechRecordGETCar } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 
 const mockTechRecordService = {
   techRecord$: of({}),
@@ -99,7 +100,7 @@ describe('TechRecordChangeVrmComponent', () => {
       store.overrideSelector(selectRouteData, { data: { isEditing: true } });
       component.ngOnInit();
 
-      actions$.next(amendVrmSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } }));
+      actions$.next(amendVrmSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordGETCar }));
 
       expect(navigateSpy).toHaveBeenCalled();
     });
