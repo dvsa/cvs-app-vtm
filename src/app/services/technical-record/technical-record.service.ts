@@ -75,14 +75,6 @@ export class TechnicalRecordService {
     );
   }
 
-  /**
-   * A function which takes either a TechRecordModel or a VehicleTechRecordModel, maps the missing vehicle record information if passed
-   * a TechRecordModel and dispatches the action to update the editing tech record.
-   * @param record - TechRecordModel or VehicleTechRecordModel
-   * @param resetVehicleAttributes [resetVehicleAttributes=false] - Used to overwrite the attributes inside of the properties inside
-   * the VehicleTechRecordModel to the un-edited information present in state for that vehicle. Only used if passed a TechRecordModel.
-   * @returns void
-   */
   updateEditingTechRecord(record: TechRecordType<'put'>): void {
     this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: record }));
   }

@@ -39,6 +39,7 @@ import {
   updateTechRecordFailure,
   updateTechRecordSuccess
 } from '../actions/technical-record-service.actions';
+import { vehicleBatchCreateReducer } from './batch-create.reducer';
 //TODO: V3 re-import vehicleBatchCreateReducer from batch-create.reducer
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -112,9 +113,8 @@ export const vehicleTechRecordReducer = createReducer(
     setGenerateNumberFlag,
     clearBatch,
     (state, action) => ({
-      ...state
-      // TODO: V3 for batch vehicles
-      // batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
+      ...state,
+      batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action)
     })
   ),
 

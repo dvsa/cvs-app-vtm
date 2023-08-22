@@ -106,22 +106,21 @@ export class BatchVehicleTemplateComponent {
           take(1),
           map(([record, batch]) =>
             batch.map(
-              v =>
+              (v): BatchUpdateVehicleModel =>
                 ({
                   ...record,
-                  techRecord_statusCode: this.form.value.vehicleStatus ?? (StatusCodes.PROVISIONAL as string),
+                  techRecord_statusCode: this.form.value.vehicleStatus ?? StatusCodes.PROVISIONAL,
                   vin: v.vin,
-                  vrms: v.vehicleType !== VehicleTypes.TRL && v.trailerIdOrVrm ? [{ vrm: v.trailerIdOrVrm, isPrimary: true }] : null,
-                  trailerId: v.vehicleType === VehicleTypes.TRL && v.trailerIdOrVrm ? v.trailerIdOrVrm : null,
+                  trailerId: v.vehicleType === VehicleTypes.TRL && v.trailerIdOrVrm ? v.trailerIdOrVrm : undefined,
                   systemNumber: v.systemNumber ? v.systemNumber : null,
-                  oldVehicleStatus: v.oldVehicleStatus ? v.oldVehicleStatus : null
-                } as unknown as BatchUpdateVehicleModel)
+                  createdTimestamp: v.createdTimestamp
+                } as BatchUpdateVehicleModel)
             )
           )
         )
         .subscribe(vehicleList => {
           vehicleList.forEach(vehicle => {
-            if (!vehicle.systemNumber) {
+            if (!(vehicle as TechRecordType<'get'>).systemNumber) {
               this.store.dispatch(createVehicleRecord({ vehicle: vehicle as unknown as TechRecordType<'put'> }));
             } else {
               this.store.dispatch(updateTechRecord({ vehicleTechRecord: vehicle as unknown as TechRecordType<'put'> }));

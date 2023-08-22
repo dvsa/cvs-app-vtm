@@ -20,7 +20,7 @@ export type BatchRecord = {
   status?: StatusCodes;
   created?: boolean;
   amendedRecord?: boolean;
-  oldVehicleStatus?: string;
+  createdTimestamp?: string;
 };
 
 export interface BatchRecords extends EntityState<BatchRecord> {
@@ -47,27 +47,25 @@ export const vehicleBatchCreateReducer = createReducer(
   on(setApplicationId, (state, { applicationId }) => ({ ...state, applicationId })),
   on(setVehicleStatus, (state, { vehicleStatus }) => ({ ...state, vehicleStatus })),
   on(setVehicleType, (state, { vehicleType }) => ({ ...state, vehicleType })),
-  on(createVehicleRecordSuccess, (state, action) => batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper([action.vehicleTechRecord])[0], state)),
+  on(createVehicleRecordSuccess, (state, action) => batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecord), state)),
   on(updateTechRecordSuccess, (state, action) =>
-    batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper([action.vehicleTechRecord], true, true)[0], state)
+    batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecord, true, true), state)
   ),
   on(clearBatch, state => batchAdapter.removeAll({ ...state, vehicleStatus: '', applicationId: '', vehicleType: undefined }))
 );
 
-function vehicleRecordsToBatchRecordMapper(technicalRecords: TechRecordType<'get'>[], created = true, amendedRecord = false): Update<BatchRecord>[] {
-  return technicalRecords.map(record => {
-    const { vin, systemNumber } = record;
-    return {
-      id: vin,
-      changes: {
-        vin,
-        systemNumber,
-        trailerIdOrVrm: record.techRecord_vehicleType !== 'trl' ? record.primaryVrm : record.trailerId,
-        vehicleType: record.techRecord_vehicleType,
-        status: record.techRecord_statusCode,
-        created,
-        amendedRecord
-      } as BatchRecord
-    };
-  });
+function vehicleRecordsToBatchRecordMapper(techRecord: TechRecordType<'get'>, created = true, amendedRecord = false): Update<BatchRecord> {
+  return {
+    id: techRecord.vin,
+    changes: {
+      vin: techRecord.vin,
+      systemNumber: techRecord.systemNumber,
+      trailerIdOrVrm: techRecord.techRecord_vehicleType !== 'trl' ? techRecord.primaryVrm ?? '' : techRecord.trailerId,
+      vehicleType: techRecord.techRecord_vehicleType,
+      status: (techRecord.techRecord_statusCode as StatusCodes) ?? undefined,
+      created,
+      amendedRecord,
+      createdTimestamp: techRecord.createdTimestamp
+    }
+  };
 }

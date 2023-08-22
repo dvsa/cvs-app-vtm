@@ -19,9 +19,9 @@ export type NotTrailer =
   | TechRecordTypeByVehicle<'lgv'>
   | TechRecordTypeByVehicle<'car'>;
 
-export interface BatchUpdateVehicleModel extends VehicleTechRecordModel {
-  oldVehicleStatus?: StatusCodes | undefined;
-}
+export type BatchUpdateVehicleModel = TechRecordType<'put'> & {
+  createdTimestamp: string;
+};
 
 export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'> {
   primaryVrm?: string;
