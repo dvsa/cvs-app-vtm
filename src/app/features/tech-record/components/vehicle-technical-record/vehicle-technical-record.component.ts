@@ -5,7 +5,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -73,10 +73,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
   get currentVrm(): string | undefined {
     return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
-  }
-
-  get otherVrms(): Vrm[] | undefined {
-    return (this.techRecord as any).secondaryVrms;
   }
 
   get roles(): typeof Roles {

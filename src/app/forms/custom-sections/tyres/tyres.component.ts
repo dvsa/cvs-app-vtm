@@ -124,20 +124,20 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     const { vehicleTechRecord } = simpleChanges;
 
     if (vehicleTechRecord.firstChange !== undefined && vehicleTechRecord.firstChange === false) {
-      const currentAxles = vehicleTechRecord.currentValue.axles;
-      const previousAxles = vehicleTechRecord.previousValue.axles;
+      const currentAxles = vehicleTechRecord.currentValue.techRecord_axles;
+      const previousAxles = vehicleTechRecord.previousValue.techRecord_axles;
 
       if (!previousAxles) return false;
 
       for (let [index, axle] of currentAxles.entries()) {
         if (
-          axle?.tyres !== undefined &&
+          axle?.tyres_fitmentCode !== undefined &&
           previousAxles[index] &&
-          previousAxles[index].tyres !== undefined &&
-          axle.tyres.fitmentCode !== previousAxles[index].tyres.fitmentCode &&
-          axle.tyres.tyreCode === previousAxles[index].tyres.tyreCode
+          previousAxles[index].tyres_fitmentCode !== undefined &&
+          axle.tyres_fitmentCode !== previousAxles[index].tyres_fitmentCode &&
+          axle.tyres_tyreCode === previousAxles[index].tyres_tyreCode
         ) {
-          this.getTyresRefData(axle.tyres, axle.axleNumber);
+          this.getTyresRefData('tyres_tyreCode', axle.axleNumber);
           return true;
         }
       }
@@ -146,31 +146,39 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     return false;
   }
 
-  searchTyres(name: any, axleNumber: number) {
-    if (name === 'tyreCode') {
-      //TODO V3 remove as any HGV
-      this.getTyresRefData((this.vehicleTechRecord as any).axles![axleNumber - 1].tyres!, axleNumber);
+  getTyresRefData(name: string, axleNumber: number): void {
+    if (name === 'tyres_tyreCode') {
+      this.isError = false;
+      this.referenceDataService
+        .fetchReferenceDataByKey(
+          ReferenceDataResourceType.Tyres,
+          String((this.vehicleTechRecord as any).techRecord_axles![axleNumber - 1].tyres_tyreCode)
+        )
+        .subscribe({
+          next: data => {
+            const refTyre = data as ReferenceDataTyre;
+            const indexLoad =
+              (this.vehicleTechRecord as any).techRecord_axles![axleNumber - 1].tyres_fitmentCode === FitmentCode.SINGLE
+                ? Number(refTyre.loadIndexSingleLoad)
+                : Number(refTyre.loadIndexTwinLoad);
+            const newTyre = new Tyre({
+              tyreCode: (this.vehicleTechRecord as any).techRecord_axles![axleNumber - 1].tyres_tyreCode,
+              tyreSize: refTyre.tyreSize,
+              plyRating: refTyre.plyRating,
+              dataTrAxles: indexLoad
+            });
+
+            this.addTyreToTechRecord(newTyre, axleNumber);
+          },
+          error: _e => {
+            this.errorMessage = 'Cannot find data of this tyre on axle ' + axleNumber;
+            this.isError = true;
+            const newTyre = new Tyre({ tyreCode: null, tyreSize: null, plyRating: null, dataTrAxles: null });
+
+            this.addTyreToTechRecord(newTyre, axleNumber);
+          }
+        });
     }
-  }
-
-  getTyresRefData(tyres: Tyres, axleNumber: number): void {
-    this.isError = false;
-    this.referenceDataService.fetchReferenceDataByKey(ReferenceDataResourceType.Tyres, String(tyres.tyreCode)).subscribe({
-      next: data => {
-        const refTyre = data as ReferenceDataTyre;
-        const indexLoad = tyres.fitmentCode === FitmentCode.SINGLE ? Number(refTyre.loadIndexSingleLoad) : Number(refTyre.loadIndexTwinLoad);
-        const newTyre = new Tyre({ ...tyres, tyreSize: refTyre.tyreSize, plyRating: refTyre.plyRating, dataTrAxles: indexLoad });
-
-        this.addTyreToTechRecord(newTyre, axleNumber);
-      },
-      error: _e => {
-        this.errorMessage = 'Cannot find data of this tyre on axle ' + axleNumber;
-        this.isError = true;
-        const newTyre = new Tyre({ ...tyres, tyreCode: null, tyreSize: null, plyRating: null, dataTrAxles: null });
-
-        this.addTyreToTechRecord(newTyre, axleNumber);
-      }
-    });
   }
 
   getTyreSearchPage(axleNumber: number) {
@@ -182,7 +190,11 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {
     this.vehicleTechRecord = cloneDeep(this.vehicleTechRecord);
     //TODO V3 Remove as any HGV
-    (this.vehicleTechRecord as any).techRecord_axles!.find((ax: any) => ax.axleNumber === axleNumber)!.tyres = tyre;
+    const axle = (this.vehicleTechRecord as any).techRecord_axles!.find((ax: any) => ax.axleNumber === axleNumber)!;
+    axle.tyres_tyreCode = tyre.tyreCode;
+    axle.tyres_tyreSize = tyre.tyreSize;
+    axle.tyres_plyRating = tyre.plyRating;
+    axle.tyres_dataTrAxles = tyre.dataTrAxles;
     this.form.patchValue(this.vehicleTechRecord);
   }
 

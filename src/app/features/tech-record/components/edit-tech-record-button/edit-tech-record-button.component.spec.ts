@@ -157,29 +157,6 @@ describe('EditTechRecordButtonComponent', () => {
 
         expect(component.submitChange.emit).toHaveBeenCalledTimes(1);
       }));
-      // TODO V3 the button no longer listens for success and the parent component handles it
-      //     it.only('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
-      //       jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
-
-      //       fixture.detectChanges();
-      //       actions$.next(updateTechRecordsSuccess({vehicleRecord: {systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin'}}));
-
-      //       tick();
-
-      //       expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-      //       expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
-      //     }));
-
-      //     it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
-      //       jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
-
-      //       actions$.next(createProvisionalTechRecordSuccess([]));
-
-      //       tick();
-
-      //       expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-      //       expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/provisional');
-      //     }));
     });
   });
 
@@ -198,28 +175,6 @@ describe('EditTechRecordButtonComponent', () => {
 
         expect(component.submitChange.emit).toHaveBeenCalledTimes(1);
       }));
-      // TODO V3 component not listening for success currently
-      // it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
-      //   jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
-      //   store.dispatch(updateTechRecordsSuccess({}));
-      //   actions$.next(updateTechRecordsSuccess({}));
-
-      //   tick();
-
-      //   expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-      //   expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1');
-      // }));
-
-      // it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
-      //   jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
-
-      //   actions$.next(createProvisionalTechRecordSuccess({}));
-
-      //   tick();
-
-      //   expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-      //   expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1');
-      // }));
     });
 
     describe('and the user cancels their changes', () => {

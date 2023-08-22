@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { StatusCodes, V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
 import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
@@ -89,6 +89,7 @@ export class TechnicalRecordHttpService {
     return this.http.patch<V3TechRecordModel>(url, body, { responseType: 'json' });
   }
 
+  //TODO: remove the anys
   generatePlate(vehicleRecord: TechRecordType<'get'>, reason: string, user: { name?: string; email?: string }) {
     const url = `${environment.VTM_API_URI}/v3/technical-records/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`;
 

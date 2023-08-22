@@ -186,4 +186,15 @@ describe('TechnicalRecordService', () => {
       });
     });
   });
+
+  describe('getMakeAndModel', () => {
+    it('should should return the make and model', () => {
+      const record = {};
+      expect(service.getMakeAndModel({ techRecord_make: 'Test', techRecord_model: 'Car' } as V3TechRecordModel)).toBe('Test - Car');
+    });
+
+    it('should return an empty string when the current record has no values for make and model', () => {
+      expect(service.getMakeAndModel({ techRecord_make: undefined, techRecord_model: undefined } as V3TechRecordModel)).toBe('');
+    });
+  });
 });

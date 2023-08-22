@@ -161,6 +161,7 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectSectionState));
   }
 
+  //TODO: remove the anys
   getMakeAndModel(techRecord: V3TechRecordModel): string {
     if (!(techRecord as any)?.techRecord_make && !(techRecord as any)?.techRecord_chassisMake) return '';
 

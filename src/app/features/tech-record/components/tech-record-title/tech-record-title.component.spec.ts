@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
-import { EuVehicleCategories, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, NotTrailer, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
@@ -80,7 +80,7 @@ describe('TechRecordTitleComponent', () => {
       expect(vrmField.textContent).not.toContain('TESTV RM4');
     });
     it('should not create previous-vrm-span if no secondary vrm exists', () => {
-      delete (mockRecord as any).secondaryVrms;
+      delete (mockRecord as NotTrailer).secondaryVrms;
       fixture.detectChanges();
 
       const vrmField = fixture.debugElement.query(By.css('#previous-vrm-span'));

@@ -152,6 +152,7 @@ function historyFailArgs(state: TechnicalRecordServiceState, data: { techRecordH
   return { ...state, techRecordHistory: undefined, loading: false };
 }
 
+//TODO: remove the anys
 function handleUpdateBrakeForces(
   state: TechnicalRecordServiceState,
   data: { grossLadenWeight?: number; grossKerbWeight?: number }
@@ -190,6 +191,7 @@ function handleUpdateBrakeForces(
   return newState;
 }
 
+//TODO: remove the anys
 function handleUpdateBody(state: TechnicalRecordServiceState, action: { psvMake: PsvMake }): TechnicalRecordServiceState {
   const newState = cloneDeep(state);
 
@@ -206,6 +208,7 @@ function handleUpdateBody(state: TechnicalRecordServiceState, action: { psvMake:
   return newState;
 }
 
+//TODO: remove the anys
 function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServiceState {
   const newState = cloneDeep(state);
   const vehicleType = (newState.editingTechRecord as any).techRecord_vehicleType;
@@ -248,6 +251,7 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
   return newState;
 }
 
+//TODO: remove the anys
 function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: number }): TechnicalRecordServiceState {
   const newState = cloneDeep(state);
 

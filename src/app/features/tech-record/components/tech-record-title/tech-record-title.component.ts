@@ -33,17 +33,11 @@ export class TechRecordTitleComponent implements OnInit {
 
     this.currentTechRecord$ = this.store.select(selectTechRecord) as Observable<TechRecordType<'get'> | undefined>;
 
-    this.currentTechRecord$
-      .pipe(take(1))
-      .subscribe(
-        data =>
-          (this.vehicleMakeAndModel =
-            (data as any)?.make || (data as any)?.techRecord_chassisMake
-              ? (data as any).techRecord_vehicleType === this.vehicleTypes.PSV
-                ? `${(data as any).techRecord_chassisMake} ${(data as any).techRecord_chassisModel ?? ''}`
-                : `${(data as any)?.techRecord_make} ${(data as any)?.techRecord_model ?? ''}`
-              : '')
-      );
+    this.currentTechRecord$.pipe(take(1)).subscribe(data => {
+      if (data) {
+        this.vehicleMakeAndModel = this.technicalRecordService.getMakeAndModel(data);
+      }
+    });
   }
 
   get currentVrm(): string | undefined {

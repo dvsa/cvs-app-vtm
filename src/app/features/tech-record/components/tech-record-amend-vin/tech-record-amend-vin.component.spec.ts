@@ -73,23 +73,6 @@ describe('TechRecordChangeVrmComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // describe('makeAndModel', () => {
-  //   beforeEach(() => {
-  //     expectedTechRecord = {systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin'};
-  //     component.techRecord = expectedTechRecord;
-  //   });
-  //   // TODO: V3 PSV HGV TRL
-  //   // it('should should return the make and model', () => {
-  //   //   expect(component.makeAndModel).toBe(`${expectedTechRecord.chassisMake} - ${expectedTechRecord.chassisModel}`);
-  //   // });
-
-  //   // it('should return an empty string when the current record is null', () => {
-  //   //   delete component.techRecord;
-
-  //   //   expect(component.makeAndModel).toBe('');
-  //   // });
-  // });
-
   describe('handleSubmit', () => {
     beforeEach(() => {
       expectedTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;

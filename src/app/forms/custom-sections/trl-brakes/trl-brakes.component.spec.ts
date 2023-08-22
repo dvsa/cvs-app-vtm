@@ -2,12 +2,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
-import { TrlBrakesComponent } from './trl-brakes.component';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TrlBrakesComponent } from './trl-brakes.component';
 
 describe('BrakesComponent', () => {
   let component: TrlBrakesComponent;
@@ -59,6 +58,7 @@ describe('BrakesComponent', () => {
       );
     });
   });
+  //TODO: remove the anys
   describe('The axle value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
       expect((component.vehicleTechRecord as any).techRecord_axles).toStrictEqual(component.form.controls['techRecord_axles']?.value);
