@@ -1,23 +1,19 @@
 import {
-  VehicleTechRecordModel,
   StatusCodes,
   VehicleTypes,
   Retarders,
-  SpeedCategorySymbol,
-  FitmentCode,
   FuelTypes,
   VehicleConfigurations,
   EuVehicleCategories,
   VehicleSizes,
   approvalType,
-  MicrofilmDocumentType,
-  V3TechRecordModel
 } from '../app/models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
 import { BodyTypeDescription } from '@models/body-type-enum';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
-export const createMockPsv = (systemNumber: number): V3TechRecordModel =>
-  createMock<V3TechRecordModel>({
+export const createMockPsv = (systemNumber: number): TechRecordType<"psv"> =>
+  createMock<TechRecordType<"psv">>({
     systemNumber: `PSV`,
     vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
     primaryVrm: `KP01ABC`,
@@ -25,9 +21,9 @@ export const createMockPsv = (systemNumber: number): V3TechRecordModel =>
     techRecord_createdAt: new Date().toISOString() as string,
     techRecord_createdByName: 'Nathan',
     techRecord_statusCode: StatusCodes.PROVISIONAL,
-    techRecord_vehicleType: VehicleTypes.PSV,
+    techRecord_vehicleType: 'psv',
     techRecord_regnDate: '1234',
-    techRecord_manufactureYear: 2022,
+    //techRecord_manufactureYear: '2022',
     techRecord_noOfAxles: 2,
     techRecord_brakes_dtpNumber: '1234',
     techRecord_brakes_brakeCode: '1234',
@@ -84,9 +80,9 @@ export const createMockPsv = (systemNumber: number): V3TechRecordModel =>
     techRecord_applicantDetails_telephoneNumber: '0121',
     techRecord_applicantDetails_emailAddress: 'test@email.com',
 
-    techRecord_microfilmDocumentType: 'AAT - Trailer Annual Test',
-    techRecord_microfilmRollNumber: 'nb123456',
-    techRecord_microfilmSerialNumber: 'ser123456',
+    //techRecord_microfilmDocumentType: 'AAT - Trailer Annual Test',
+    //techRecord_microfilmRollNumber: 'nb123456',
+    //techRecord_microfilmSerialNumber: 'ser123456',
     techRecord_remarks: 'Some notes about the vehicle',
     techRecord_dispensations: 'reason given',
     techRecord_reasonForCreation: 'Brake Failure',

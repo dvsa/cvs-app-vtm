@@ -17,7 +17,7 @@ import { Observable, take } from 'rxjs';
   styleUrls: ['./tech-record-title.component.scss']
 })
 export class TechRecordTitleComponent implements OnInit {
-  @Input() vehicle?: V3TechRecordModel;
+  @Input() vehicle?: V3TechRecordModel | any;
   @Input() actions: TechRecordActions = TechRecordActions.NONE;
   @Input() hideActions: boolean = false;
   @Input() customTitle = '';

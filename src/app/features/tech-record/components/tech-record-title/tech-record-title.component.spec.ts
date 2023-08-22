@@ -5,15 +5,16 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
-import { editingTechRecord } from '@store/technical-records';
+import { editingTechRecord, selectTechRecord } from '@store/technical-records';
 import { Observable, of } from 'rxjs';
 import { TechRecordTitleComponent } from './tech-record-title.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 const MockUserService = {
   getUserName$: jest.fn().mockReturnValue(new Observable()),
@@ -27,7 +28,6 @@ describe('TechRecordTitleComponent', () => {
   let technicalRecordService: TechnicalRecordService;
   let viewableTechRecordSpy;
   let mockRecord: V3TechRecordModel;
-  let mockVehicle: V3TechRecordModel;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -59,8 +59,7 @@ describe('TechRecordTitleComponent', () => {
         techRecord_vehicleType: VehicleTypes.LGV
       } as unknown as TechRecordType<'put'>;
       viewableTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
-      mockVehicle = mockRecord;
-      component.vehicle = mockVehicle;
+      component.vehicle = mockRecord;
       store.overrideSelector(editingTechRecord, mockRecord);
     });
     it('should show primary VRM for current record', () => {
@@ -88,47 +87,35 @@ describe('TechRecordTitleComponent', () => {
       expect(vrmField).toBe(null);
     });
   });
-  // TODO V3 TRL
-  // describe('trailer ID', () => {
-  //   it('shows a trailer ID instead of VRM when vehicle type is a trailer', () => {
-  //     const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
-  //     const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockRecord));
-  //     const mockVehicle = {
-  //       trailerId: 'testId',
-  //       techRecord: [mockRecord],
-  //       vrms: [],
-  //       vin: 'testvin',
-  //       systemNumber: 'testNumber'
-  //     };
-  //     component.vehicle = mockVehicle;
-  //     store.overrideSelector(editingTechRecord, mockRecord);
-  //     fixture.detectChanges();
+  describe('trailer ID', () => {
+    it('shows a trailer ID instead of VRM when vehicle type is a trailer', () => {
+      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL)!;
+      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecord));
 
-  //     const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
-  //     expect(trailerIdField.nativeElement.textContent).toContain('TestId');
-  //   });
+      component.vehicle = mockRecord;
 
-  //   const smallTrailerEuVehicleCategories = [EuVehicleCategories.O1, EuVehicleCategories.O2];
+      store.overrideSelector(selectTechRecord, mockRecord as any);
+      fixture.detectChanges();
 
-  //   it.each(smallTrailerEuVehicleCategories)('does not show secondary VRMs for small trailer', euVehicleCategory => {
-  //     const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
-  //     const viewableTechRecordSpy = jest.spyOn(technicalRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockRecord));
-  //     const mockVehicle = {
-  //       trailerId: 'testId',
-  //       techRecord: [mockRecord],
-  //       vrms: [],
-  //       vin: 'testvin',
-  //       systemNumber: 'testNumber'
-  //     };
-  //     mockVehicle.techRecord[0].euVehicleCategory = euVehicleCategory;
-  //     component.vehicle = mockVehicle;
-  //     store.overrideSelector(editingTechRecord, mockRecord);
-  //     fixture.detectChanges();
+      const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
+      expect(trailerIdField.nativeElement.textContent).toContain('TestId');
+    });
 
-  //     const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
-  //     expect(trailerIdField.nativeElement.textContent).toContain('TestId');
-  //     const secondaryVrmField = fixture.debugElement.query(By.css('#previous-vrm'));
-  //     expect(secondaryVrmField).toBe(null);
-  //   });
-  // });
+    const smallTrailerEuVehicleCategories = [EuVehicleCategories.O1, EuVehicleCategories.O2];
+
+    it.each(smallTrailerEuVehicleCategories)('does not show secondary VRMs for small trailer', euVehicleCategory => {
+      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL)!;
+      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecord));
+      mockRecord.techRecord_euVehicleCategory = euVehicleCategory;
+      component.vehicle = mockRecord;
+      console.log(component.vehicle);
+      store.overrideSelector(selectTechRecord, mockRecord as any);
+      fixture.detectChanges();
+
+      const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
+      expect(trailerIdField.nativeElement.textContent).toContain('TestId');
+      const secondaryVrmField = fixture.debugElement.query(By.css('#previous-vrm'));
+      expect(secondaryVrmField).toBe(null);
+    });
+  });
 });
