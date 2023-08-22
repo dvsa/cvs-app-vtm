@@ -50,26 +50,22 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     return FormNodeEditTypes;
   }
 
-  //TODO: remove the anys
   get hasPlates(): boolean {
     return this.techRecord.techRecord_plates?.length ? true : false;
   }
 
-  //TODO: remove the anys
   get sortedPlates(): HGVPlates[] | TRLPlates[] | undefined {
-    return cloneDeep((this.techRecord as any).techRecord_plates)?.sort((a: any, b: any) =>
+    return cloneDeep(this.techRecord.techRecord_plates)?.sort((a: any, b: any) =>
       a.plateIssueDate && b.plateIssueDate ? new Date(b.plateIssueDate).getTime() - new Date(a.plateIssueDate).getTime() : 0
     );
   }
 
-  //TODO: remove the anys
   get plates() {
-    return (this.sortedPlates?.slice(this.pageStart, this.pageEnd) as any) ?? [];
+    return this.sortedPlates?.slice(this.pageStart, this.pageEnd) ?? [];
   }
 
-  //TODO: remove the anys
   get mostRecentPlate(): any | undefined {
-    return cloneDeep((this.techRecord as any).techRecord_plates)
+    return cloneDeep(this.techRecord.techRecord_plates)
       ?.sort((a: any, b: any) =>
         a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0
       )
