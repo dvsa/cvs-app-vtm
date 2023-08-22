@@ -85,7 +85,7 @@ describe('TechRecordSearchTyresComponent', () => {
     const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink!);
     expect(expectedResult).toBe(expectedError);
   });
-  // TODO V3 PSV HGV
+
   describe('handleSearch', () => {
     it('should set search results to an empty array before populating data', () => {
       component.handleSearch('', '');

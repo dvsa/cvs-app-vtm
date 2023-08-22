@@ -140,7 +140,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
       );
     }
   }
-  // TODO: V3 the update lambda should automatically create a provisional if the vehicle doesn't have one. It doesn't seem to be doing this at the moment
+
   handleSubmit(): void {
     this.summary.checkForms();
     if (!this.isInvalid) {
