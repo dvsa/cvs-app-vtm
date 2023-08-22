@@ -70,12 +70,14 @@
       ></app-letters>
     </ng-container>
 
-    <app-plates
-      *ngSwitchCase="'platesSection'"
-      [techRecord]="techRecordCalculated"
-      [isEditing]="(isEditing$ | async) ?? false"
-      (formChange)="handleFormState($event)"
-    ></app-plates>
+    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl'">
+      <app-plates
+        *ngSwitchCase="'platesSection'"
+        [techRecord]="techRecordCalculated"
+        [isEditing]="(isEditing$ | async) ?? false"
+        (formChange)="handleFormState($event)"
+      ></app-plates>
+    </ng-container>
 
     <app-dynamic-form-group
       *ngSwitchDefault
