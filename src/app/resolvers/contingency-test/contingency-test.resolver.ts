@@ -46,9 +46,17 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               statusCode: viewableTechRecord?.techRecord_statusCode,
               testResultId: uuidv4(),
               euVehicleCategory: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_euVehicleCategory ?? null,
-              vehicleSize: (viewableTechRecord as any)?.techRecord_vehicleSize,
+              vehicleSize: viewableTechRecord?.techRecord_vehicleType === 'psv' ? viewableTechRecord?.techRecord_vehicleSize : null,
               vehicleConfiguration: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_vehicleConfiguration ?? null,
-              vehicleClass: (viewableTechRecord as any)?.techRecord_vehicleClass ?? null,
+              vehicleClass:
+                viewableTechRecord?.techRecord_vehicleType === 'psv' ||
+                viewableTechRecord?.techRecord_vehicleType === 'trl' ||
+                viewableTechRecord?.techRecord_vehicleType === 'hgv'
+                  ? {
+                      code: viewableTechRecord?.techRecord_vehicleClass_code,
+                      description: viewableTechRecord?.techRecord_vehicleClass_description
+                    }
+                  : null,
               vehicleSubclass: (viewableTechRecord as any)?.techRecord_vehicleSubclass ?? null,
               noOfAxles: viewableTechRecord?.techRecord_noOfAxles ?? 0,
               numberOfWheelsDriven: (viewableTechRecord as any)?.techRecord_numberOfWheelsDriven ?? null,
@@ -60,7 +68,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               reasonForCancellation: '',
               createdAt: now.toISOString(),
               lastUpdatedAt: now.toISOString(),
-              firstUseDate: (viewableTechRecord as any)?.techRecord_firstUseDate ?? null,
+              firstUseDate: viewableTechRecord?.techRecord_vehicleType === 'trl' ? viewableTechRecord?.techRecord_firstUseDate : null,
               createdByName: user.name,
               createdById: user.oid,
               lastUpdatedByName: user.name,
