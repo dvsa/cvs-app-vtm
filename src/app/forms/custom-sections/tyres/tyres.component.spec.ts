@@ -3,14 +3,14 @@ import { SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { Tyres, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { Tyres } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State, initialAppState } from '@store/index';
 import { of, throwError } from 'rxjs';
 import { TyresComponent } from './tyres.component';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 const mockReferenceDataService = {
   fetchReferenceDataByKey: jest.fn()
@@ -202,7 +202,7 @@ describe('TyresComponent', () => {
   });
 
   describe('addTyreToTechRecord', () => {
-    it.only('should update the tech record with the new tyre', () => {
+    it('should update the tech record with the new tyre', () => {
       const tyre = {
         tyreSize: '123',
         dataTrAxles: 123,

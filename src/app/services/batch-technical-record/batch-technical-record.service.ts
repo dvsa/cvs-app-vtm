@@ -75,7 +75,6 @@ export class BatchTechnicalRecordService {
         const recordsWithTrailerIdOrVrm = result.filter(
           vehicleTechRecord => vehicleTechRecord.trailerId === trailerIdOrVrm || vehicleTechRecord.primaryVrm === trailerIdOrVrm
         );
-        console.log('inside map');
         if (!recordsWithTrailerIdOrVrm.length) {
           return { validateForBatch: { message: 'Could not find a record with matching VIN and VRM/Trailer ID' } };
         }

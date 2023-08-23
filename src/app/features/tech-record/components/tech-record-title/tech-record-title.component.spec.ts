@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Roles } from '@models/roles.enum';
 import { EuVehicleCategories, NotTrailer, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -14,7 +15,6 @@ import { State, initialAppState } from '@store/index';
 import { editingTechRecord, selectTechRecord } from '@store/technical-records';
 import { Observable, of } from 'rxjs';
 import { TechRecordTitleComponent } from './tech-record-title.component';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 const MockUserService = {
   getUserName$: jest.fn().mockReturnValue(new Observable()),
@@ -108,7 +108,6 @@ describe('TechRecordTitleComponent', () => {
       jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecord));
       mockRecord.techRecord_euVehicleCategory = euVehicleCategory;
       component.vehicle = mockRecord;
-      console.log(component.vehicle);
       store.overrideSelector(selectTechRecord, mockRecord as any);
       fixture.detectChanges();
 

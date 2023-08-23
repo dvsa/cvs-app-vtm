@@ -5,10 +5,9 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TrlBrakesComponent } from './trl-brakes.component';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TrlBrakesComponent } from './trl-brakes.component';
 
 describe('BrakesComponent', () => {
   let component: TrlBrakesComponent;
@@ -100,7 +99,6 @@ describe('BrakesComponent', () => {
 
   describe('The axle value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      console.log(component.form.controls['techRecord_axles']?.value[0]);
       expect(component.vehicleTechRecord.techRecord_axles![0]).toEqual(
         expect.objectContaining(component.form.controls['techRecord_axles']?.value[0])
       );
