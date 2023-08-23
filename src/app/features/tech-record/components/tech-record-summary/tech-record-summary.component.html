@@ -33,12 +33,14 @@
       (formChange)="handleFormState($event)"
     ></app-dimensions>
 
-    <app-psv-brakes
-      *ngSwitchCase="'psvBrakesSection'"
-      [vehicleTechRecord]="techRecordCalculated"
-      [isEditing]="(isEditing$ | async) ?? false"
-      (formChange)="handleFormState($event)"
-    ></app-psv-brakes>
+    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'psv'">
+      <app-psv-brakes
+        *ngSwitchCase="'psvBrakesSection'"
+        [vehicleTechRecord]="techRecordCalculated"
+        [isEditing]="(isEditing$ | async) ?? false"
+        (formChange)="handleFormState($event)"
+      ></app-psv-brakes>
+    </ng-container>
 
     <app-trl-brakes
       *ngSwitchCase="'trlBrakesSection'"

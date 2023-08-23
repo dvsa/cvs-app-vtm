@@ -47,7 +47,7 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('getBySystemNumberSuccess', () => {
     it('should set all vehicle technical records', () => {
-      const record = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+      const record = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordSearchSchema;
       const newState: TechnicalRecordServiceState = {
         ...initialState,
         techRecordHistory: [{ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordSearchSchema]
@@ -63,7 +63,7 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('getBySystemNumberFailure', () => {
     it('should history to an empty array', () => {
       const newState = { ...initialState };
-      const action = getBySystemNumberFailure({ techRecordHistory: [] });
+      const action = getBySystemNumberFailure({ error: 'error' });
       const state = vehicleTechRecordReducer(initialState, action);
 
       expect(state).toEqual(newState);
@@ -92,9 +92,9 @@ describe('Vehicle Technical Record Reducer', () => {
         vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>
       };
 
-      const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+      const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
 
-      const action = createVehicleRecordSuccess({ vehicleTechRecords: expectedVehicle });
+      const action = createVehicleRecordSuccess({ vehicleTechRecord: expectedVehicle });
 
       const newState = vehicleTechRecordReducer(oldState, action);
 
@@ -131,8 +131,8 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('updateTechRecordsSuccess', () => {
     it('should set the new vehicle tech records state after update success', () => {
-      const oldRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
-      const newRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVinNew' };
+      const oldRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
+      const newRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVinNew' } as TechRecordType<'get'>;
 
       const state: TechnicalRecordServiceState = {
         ...initialState,
@@ -177,7 +177,7 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('archiveTechRecordSuccess', () => {
     it('should set the new vehicle tech records state after update success', () => {
       const oldRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'get'>;
-      const newRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVinNew' };
+      const newRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVinNew' } as unknown as TechRecordType<'get'>;
 
       const state: TechnicalRecordServiceState = {
         ...initialState,

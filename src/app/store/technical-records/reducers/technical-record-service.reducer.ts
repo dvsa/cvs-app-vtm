@@ -28,6 +28,9 @@ import {
   generatePlate,
   generatePlateFailure,
   generatePlateSuccess,
+  getBySystemNumber,
+  getBySystemNumberFailure,
+  getBySystemNumberSuccess,
   getTechRecordV3Success,
   removeAxle,
   removeSectionState,
@@ -72,6 +75,10 @@ export const vehicleTechRecordReducer = createReducer(
   on(createVehicleRecord, defaultArgs),
   on(createVehicleRecordSuccess, successArgs),
   on(createVehicleRecordFailure, state => ({ ...state, loading: false })),
+
+  on(getBySystemNumber, state => ({ ...state, loading: true })),
+  on(getBySystemNumberSuccess, (state, action) => ({ ...state, loading: false, techRecordHistory: action.techRecordHistory })),
+  on(getBySystemNumberFailure, state => ({ ...state, loading: false, techRecordHistory: [] })),
 
   on(updateTechRecord, defaultArgs),
   on(updateTechRecordSuccess, successArgs),

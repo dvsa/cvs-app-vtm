@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
@@ -21,7 +22,7 @@ import { Observable, Subject, debounceTime, mergeMap, of, takeUntil, tap, withLa
 })
 export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   //TODO V3 remove any
-  @Input() vehicleTechRecord!: any;
+  @Input() vehicleTechRecord!: TechRecordType<'psv'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -116,9 +117,8 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
     return FormNodeWidth;
   }
 
-  //TODO: remove the anys
   get brakeCodePrefix(): string {
-    const prefix = `${Math.round((this.vehicleTechRecord as any)!.techRecord_grossLadenWeight! / 100)}`;
+    const prefix = `${Math.round(this.vehicleTechRecord!.techRecord_grossLadenWeight! / 100)}`;
 
     return prefix.length <= 2 ? '0' + prefix : prefix;
   }
