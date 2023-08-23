@@ -51,7 +51,8 @@ describe('TechnicalRecordService', () => {
         trailerIdOrVrm: new FormControl({ name: 'trailerIdOrVrm', value: '' }, null),
         systemNumber: new FormControl({ name: 'systemNumber', value: '' }, null),
         oldVehicleStatus: new FormControl({ name: 'oldVehicleStatus', value: '' }, null),
-        vehicleType: new FormControl({ name: 'vehicleType', value: '' }, null)
+        vehicleType: new FormControl({ name: 'vehicleType', value: '' }, null),
+        createdTimestamp: new FormControl({ name: 'createdTimestamp', value: '' }, null)
       });
     });
 
@@ -119,7 +120,8 @@ describe('TechnicalRecordService', () => {
           vin: 'TESTVIN',
           trailerId: 'TESTTRAILERID',
           systemNumber: 'TESTSYSTEMNUMBER',
-          techRecord_statusCode: StatusCodes.PROVISIONAL
+          techRecord_statusCode: StatusCodes.PROVISIONAL,
+          createdTimestamp: '1234'
         } as TechRecordSearchSchema;
 
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
@@ -146,7 +148,7 @@ describe('TechnicalRecordService', () => {
 
         const serviceCall = service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>;
         const errors = await firstValueFrom(serviceCall);
-        expect(errors).toEqual({ validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } });
+        expect(errors).toEqual({ validateForBatch: { message: 'This record cannot be updated as it has a current tech record' } });
       });
 
       it('returns null if only 1 vehicle other than trailer exists with those values with a current tech record', async () => {
@@ -154,11 +156,12 @@ describe('TechnicalRecordService', () => {
         testGroup.get('vin')!.setValue('TESTVIN');
         testGroup.get('trailerIdOrVrm')!.setValue('TESTTRAILERID');
         const mockSearchResult = {
-          vin: 'TESTVIN',
+          vin: '1234',
           trailerId: 'TESTTRAILERID',
           systemNumber: 'TESTSYSTEMNUMBER',
           techRecord_statusCode: StatusCodes.CURRENT,
-          techRecord_vehicleType: VehicleTypes.PSV
+          techRecord_vehicleType: VehicleTypes.PSV,
+          createdTimestamp: '1234'
         } as TechRecordSearchSchema;
 
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
