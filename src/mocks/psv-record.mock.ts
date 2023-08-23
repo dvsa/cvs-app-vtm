@@ -11,6 +11,8 @@ import {
 import { createMock } from 'ts-auto-mock';
 import { BodyTypeDescription } from '@models/body-type-enum';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
+import { PSVAxlesComplete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/complete';
 
 export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> =>
   createMock<TechRecordType<'psv'>>({
@@ -18,6 +20,7 @@ export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> =>
     vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
     primaryVrm: `KP01ABC`,
     secondaryVrms: undefined,
+    createdTimestamp: 'now',
     techRecord_createdAt: new Date().toISOString() as string,
     techRecord_createdByName: 'Nathan',
     techRecord_statusCode: StatusCodes.PROVISIONAL,

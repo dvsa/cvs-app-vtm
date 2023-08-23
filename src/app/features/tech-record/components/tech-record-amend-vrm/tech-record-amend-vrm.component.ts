@@ -7,7 +7,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { NotTrailer, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
@@ -22,7 +22,8 @@ import { Subject, catchError, filter, of, switchMap, take, takeUntil, throwError
   styleUrls: ['./tech-record-amend-vrm.component.scss']
 })
 export class AmendVrmComponent implements OnDestroy, OnInit {
-  techRecord?: V3TechRecordModel;
+  techRecord?: NotTrailer;
+  makeAndModel?: string;
 
   form = new FormGroup({
     newVrm: new CustomFormControl({ name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL }, '', [
@@ -52,10 +53,11 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
-      if (record?.techRecord_statusCode === 'archived') {
+      if (record?.techRecord_statusCode === 'archived' || !record) {
         return this.navigateBack();
       }
-      this.techRecord = record;
+      this.techRecord = record as NotTrailer;
+      this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
     });
 
     this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
@@ -83,13 +85,13 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
   }
 
-  get makeAndModel(): string | undefined {
-    return this.techRecord ? this.technicalRecordService.getMakeAndModel(this.techRecord) : undefined;
-  }
+  // get makeAndModel(): string | undefined {
+  //   return this.techRecord ? this.technicalRecordService.getMakeAndModel(this.techRecord) : undefined;
+  // }
 
-  get currentVrm(): string | undefined {
-    return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
-  }
+  // get currentVrm(): string | undefined {
+  //   return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
+  // }
 
   navigateBack() {
     this.globalErrorService.clearErrors();
@@ -124,10 +126,6 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   }
 
   isFormValid(): boolean {
-    if (this.techRecord?.techRecord_vehicleType === 'trl') {
-      return false;
-    }
-
     this.globalErrorService.clearErrors();
 
     const errors: GlobalError[] = [];
