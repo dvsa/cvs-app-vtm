@@ -12,7 +12,7 @@ export const PsvNotes: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXTAREA,
-      validators: [{ name: ValidatorNames.MaxLength, args: 800 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }]
     },
     {
       name: 'techRecord_dispensations',
