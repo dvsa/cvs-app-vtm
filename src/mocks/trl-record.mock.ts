@@ -9,8 +9,8 @@ import {
 } from '../app/models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
 
-export const createMockTrl = (systemNumber: number): TechRecordType<"trl"> =>
-  createMock<TechRecordType<"trl">>({
+export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
+  createMock<TechRecordType<'trl'>>({
     systemNumber: `TRL`,
     vin: `XMGDE04FS0H0${12344 + systemNumber + 1}`,
     trailerId: 'TestId',
@@ -23,6 +23,8 @@ export const createMockTrl = (systemNumber: number): TechRecordType<"trl"> =>
     //techRecord_manufactureYear: '2022',
     techRecord_noOfAxles: 2,
     techRecord_brakes_dtpNumber: '1234',
+    techRecord_brakes_loadSensingValve: true,
+    techRecord_brakes_antilockBrakingSystem: true,
     techRecord_axles: undefined,
     // TODO: V3 height missing from types package
     // techRecord_dimensions_height: 30000,

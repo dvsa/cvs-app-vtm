@@ -34,7 +34,7 @@ describe('PsvBrakesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PsvBrakesComponent);
     component = fixture.componentInstance;
-    //V3 TODO cast this as a V3record
+
     component.vehicleTechRecord = mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>;
     component.vehicleTechRecord.techRecord_axles = [
       {
