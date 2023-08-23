@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
@@ -13,8 +14,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
   styleUrls: ['./trl-brakes.component.scss']
 })
 export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
-  //TODO V3 cast as V3TechRecord
-  @Input() vehicleTechRecord!: any;
+  @Input() vehicleTechRecord!: TechRecordType<'trl'>;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
 
