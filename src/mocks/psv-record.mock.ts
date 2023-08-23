@@ -6,14 +6,14 @@ import {
   VehicleConfigurations,
   EuVehicleCategories,
   VehicleSizes,
-  approvalType,
+  approvalType
 } from '../app/models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
 import { BodyTypeDescription } from '@models/body-type-enum';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
-export const createMockPsv = (systemNumber: number): TechRecordType<"psv"> =>
-  createMock<TechRecordType<"psv">>({
+export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> =>
+  createMock<TechRecordType<'psv'>>({
     systemNumber: `PSV`,
     vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
     primaryVrm: `KP01ABC`,
@@ -32,13 +32,13 @@ export const createMockPsv = (systemNumber: number): TechRecordType<"psv"> =>
     techRecord_brakes_dataTrBrakeThree: '56',
     techRecord_brakes_retarderBrakeOne: Retarders.ELECTRIC,
     techRecord_brakes_retarderBrakeTwo: Retarders.ELECTRIC,
+    techRecord_brakes_brakeCodeOriginal: 'original',
     techRecord_brakes_brakeForceWheelsNotLocked_parkingBrakeForceA: 1234,
     techRecord_brakes_brakeForceWheelsNotLocked_secondaryBrakeForceA: 1234,
     techRecord_brakes_brakeForceWheelsNotLocked_serviceBrakeForceA: 1234,
     techRecord_brakes_brakeForceWheelsUpToHalfLocked_parkingBrakeForceB: 1234,
     techRecord_brakes_brakeForceWheelsUpToHalfLocked_secondaryBrakeForceB: 1234,
     techRecord_brakes_brakeForceWheelsUpToHalfLocked_serviceBrakeForceB: 1234,
-    techRecord_axles: undefined,
     techRecord_speedLimiterMrk: true,
     techRecord_speedRestriction: 54,
     techRecord_tachoExemptMrk: true,
@@ -121,63 +121,59 @@ export const createMockPsv = (systemNumber: number): TechRecordType<"psv"> =>
     techRecord_dda_ddaNotes: 'This is a note'
   });
 
-// axels from mock
-// [
-//   {
-//     axleNumber: 1,
-//     tyres_tyreSize: '295/80-22.5',
-//     tyres_speedCategorySymbol: SpeedCategorySymbol.P,
-//     tyres_fitmentCode: FitmentCode.DOUBLE,
-//     tyres_dataTrAxles: 0,
-//     tyres_plyRating: 'A',
-//     tyres_tyreCode: 456,
-//     parkingBrakeMrk: false,
+const axles: Array<any> = [
+  {
+    axleNumber: 1,
+    tyres_tyreSize: '295/80-22.5',
+    tyres_speedCategorySymbol: 'p',
+    tyres_fitmentCode: 'double',
+    tyres_dataTrAxles: 0,
+    tyres_plyRating: 'A',
+    tyres_tyreCode: 456,
+    parkingBrakeMrk: 'false',
 
-//     weights_kerbWeight: 1,
-//     weights_ladenWeight: 2,
-//     weights_gbWeight: 3,
-//     // TODO: V3 2 eecweights in type package, which is this?
-//     // weights_eecWeight: 4,
-//     weights_designWeight: 5
+    weights_kerbWeight: 1,
+    weights_ladenWeight: 2,
+    weights_gbWeight: 3,
+    // TODO: V3 2 eecweights in type package, which is this?
+    // weights_eecWeight: 4,
+    weights_designWeight: 5
+  },
+  {
+    axleNumber: 2,
+    parkingBrakeMrk: 'true',
 
-//   },
-//   {
-//     axleNumber: 2,
-//     parkingBrakeMrk: true,
+    tyres_tyreSize: '295/80-22.5',
+    tyres_speedCategorySymbol: 'p',
+    tyres_fitmentCode: 'double',
+    tyres_dataTrAxles: 0,
+    tyres_plyRating: 'A',
+    tyres_tyreCode: 456,
 
-//     tyres_tyreSize: '295/80-22.5',
-//     tyres_speedCategorySymbol: SpeedCategorySymbol.P,
-//     tyres_fitmentCode: FitmentCode.DOUBLE,
-//     tyres_dataTrAxles: 0,
-//     tyres_plyRating: 'A',
-//     tyres_tyreCode: 456,
+    weights_kerbWeight: 1,
+    weights_ladenWeight: 2,
+    weights_gbWeight: 3,
+    // weights_eecWeight: 4,
+    weights_designWeight: 5
+  },
+  {
+    axleNumber: 3,
+    parkingBrakeMrk: 'true',
 
-//     weights_kerbWeight: 1,
-//     weights_ladenWeight: 2,
-//     weights_gbWeight: 3,
-//     // weights_eecWeight: 4,
-//     weights_designWeight: 5
+    tyres_tyreSize: '295/80-22.5',
+    tyres_speedCategorySymbol: 'p',
+    tyres_fitmentCode: 'double',
+    tyres_dataTrAxles: 0,
+    tyres_plyRating: 'A',
+    tyres_tyreCode: 456,
 
-//   },
-//   {
-//     axleNumber: 3,
-//     parkingBrakeMrk: true,
-
-//     tyres_tyreSize: '295/80-22.5',
-//     tyres_speedCategorySymbol: SpeedCategorySymbol.P,
-//     tyres_fitmentCode: FitmentCode.DOUBLE,
-//     tyres_dataTrAxles: 0,
-//     tyres_plyRating: 'A',
-//     tyres_tyreCode: 456,
-
-//     weights_kerbWeight: 1,
-//     weights_ladenWeight: 2,
-//     weights_gbWeight: 3,
-//     // weights_eecWeight: 4,
-//     weights_designWeight: 5
-
-//   }
-// ]
+    weights_kerbWeight: 1,
+    weights_ladenWeight: 2,
+    weights_gbWeight: 3,
+    // weights_eecWeight: 4,
+    weights_designWeight: 5
+  }
+];
 
 // const provisionalTechRecord = {
 //   createdAt: new Date(),
@@ -604,3 +600,60 @@ export const createMockPsv = (systemNumber: number): TechRecordType<"psv"> =>
 //   maxTrainGbWeight: 7,
 //   trainDesignWeight: 8
 // };
+
+// original axles
+
+// [{
+//   axleNumber: 1,
+//   tyres_tyreSize: '295/80-22.5',
+//   tyres_speedCategorySymbol: 'p',
+//   tyres_fitmentCode: 'double',
+//   tyres_dataTrAxles: 0,
+//   tyres_plyRating: 'A',
+//   tyres_tyreCode: 456,
+//   parkingBrakeMrk: false,
+
+//   weights_kerbWeight: 1,
+//   weights_ladenWeight: 2,
+//   weights_gbWeight: 3,
+//   // TODO: V3 2 eecweights in type package, which is this?
+//   // weights_eecWeight: 4,
+//   weights_designWeight: 5,
+// },
+// {
+//   axleNumber: 2,
+//   parkingBrakeMrk: true,
+
+//   tyres_tyreSize: '295/80-22.5',
+//   tyres_speedCategorySymbol: 'p',
+//   tyres_fitmentCode: 'double',
+//   tyres_dataTrAxles: 0,
+//   tyres_plyRating: 'A',
+//   tyres_tyreCode: 456,
+
+//   weights_kerbWeight: 1,
+//   weights_ladenWeight: 2,
+//   weights_gbWeight: 3,
+//   // weights_eecWeight: 4,
+//   weights_designWeight: 5
+
+// },
+// {
+//   axleNumber: 3,
+//   parkingBrakeMrk: true,
+
+//   tyres_tyreSize: '295/80-22.5',
+//   tyres_speedCategorySymbol: 'p',
+//   tyres_fitmentCode: 'double',
+//   tyres_dataTrAxles: 0,
+//   tyres_plyRating: 'A',
+//   tyres_tyreCode: 456,
+
+//   weights_kerbWeight: 1,
+//   weights_ladenWeight: 2,
+//   weights_gbWeight: 3,
+//   // weights_eecWeight: 4,
+//   weights_designWeight: 5
+
+// }
+// ]

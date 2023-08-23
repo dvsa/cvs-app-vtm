@@ -118,7 +118,9 @@ describe('TechRecordChangeVrmComponent', () => {
       const navigateSpy = jest.spyOn(router, 'navigate');
       jest.spyOn(router, 'navigate').mockImplementation();
 
-      actions$.next(updateTechRecordSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } }));
+      actions$.next(
+        updateTechRecordSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'> })
+      );
       tick();
 
       expect(navigateSpy).toHaveBeenCalled();
