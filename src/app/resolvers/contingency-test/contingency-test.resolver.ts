@@ -58,7 +58,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               reasonForCancellation: '',
               createdAt: now.toISOString(),
               lastUpdatedAt: now.toISOString(),
-              firstUseDate: (viewableTechRecord as any)?.firstUseDate ?? null,
+              firstUseDate: (viewableTechRecord as any)?.techRecord_firstUseDate ?? null,
               createdByName: user.name,
               createdById: user.oid,
               lastUpdatedByName: user.name,
