@@ -13,6 +13,7 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
+import { vehicleClassCodeMap } from '@models/vehicle-class-enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
@@ -71,6 +72,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
           //   techRecord.dimensions = { ...techRecord.dimensions, axleSpacing };
           //   techRecord.axles = axles;
           // }
+          if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+            techRecord.techRecord_vehicleClass_code = vehicleClassCodeMap.get(techRecord.techRecord_vehicleClass_description) ?? '';
+          }
           return techRecord;
         }),
         takeUntil(this.destroy$)
