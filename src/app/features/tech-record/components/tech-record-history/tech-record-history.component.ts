@@ -29,6 +29,7 @@ export class TechRecordHistoryComponent implements OnInit {
     return this.store.select(selectTechRecordHistory);
   }
 
+  //TODO: update the type of TechRecordSearch in cvs-type-definitions to include the new fields on GSI in table
   get techRecords$(): Observable<any[]> {
     return this.techRecordHistory$?.pipe(map(records => records?.slice(this.pageStart, this.pageEnd) ?? []));
   }
