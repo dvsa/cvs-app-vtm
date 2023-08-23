@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { NotTrailer, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -17,7 +17,8 @@ import { selectRouteData } from '@store/router/selectors/router.selectors';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
-import { TechRecordGETCar } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { TechRecordGETCar, TechRecordGETPSV, TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 const mockTechRecordService = {
   techRecord$: of({}),
@@ -93,14 +94,12 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('should navigate to a new record on amendVrmSuccess', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      jest
-        .spyOn(technicalRecordService, 'techRecord$', 'get')
-        .mockReturnValueOnce(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TEST' } as V3TechRecordModel));
+      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValueOnce(of(mockVehicleTechnicalRecord('psv') as NotTrailer));
 
       store.overrideSelector(selectRouteData, { data: { isEditing: true } });
       component.ngOnInit();
 
-      actions$.next(amendVrmSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordGETCar }));
+      actions$.next(amendVrmSuccess({ vehicleTechRecord: mockVehicleTechnicalRecord('psv') as TechRecordGETPSV }));
 
       expect(navigateSpy).toHaveBeenCalled();
     });
@@ -108,7 +107,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM' } as V3TechRecordModel;
+      component.techRecord = mockVehicleTechnicalRecord('psv') as TechRecordGETPSV;
     });
 
     it('should add an error when the vrm field is not filled out', () => {
@@ -162,7 +161,7 @@ describe('TechRecordChangeVrmComponent', () => {
       tick();
 
       expect(dispatchSpy).toHaveBeenCalledWith(
-        amendVrm({ newVrm: 'TESTVRM1', cherishedTransfer: true, systemNumber: 'foo', createdTimestamp: 'bar' })
+        amendVrm({ newVrm: 'TESTVRM1', cherishedTransfer: true, systemNumber: 'PSV', createdTimestamp: 'now' })
       );
     }));
 

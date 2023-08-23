@@ -4,6 +4,7 @@ import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/fo
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   EuVehicleCategories,
+  NotTrailer,
   StatusCodes,
   TechRecordModel,
   V3TechRecordModel,
@@ -154,7 +155,7 @@ export class TechnicalRecordService {
   }
 
   //TODO: remove the anys
-  getMakeAndModel(techRecord: V3TechRecordModel): string {
+  getMakeAndModel(techRecord: V3TechRecordModel | NotTrailer): string {
     if (!(techRecord as any)?.techRecord_make && !(techRecord as any)?.techRecord_chassisMake) return '';
 
     return `${techRecord?.techRecord_vehicleType === 'psv' ? (techRecord as any).techRecord_chassisMake : (techRecord as any).techRecord_make} - ${
