@@ -1,5 +1,6 @@
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from '../actions/tech-record-search.actions';
-import { SearchResult, SearchResultState, initialTechSearchResultState, techSearchResultReducer } from './tech-record-search.reducer';
+import { SearchResultState, initialTechSearchResultState, techSearchResultReducer } from './tech-record-search.reducer';
 
 describe('fetchSearchResults actions', () => {
   it('should set loading to true', () => {
@@ -18,7 +19,7 @@ describe('fetchSearchResults actions', () => {
           systemNumber: '123456',
           createdTimestamp: '10-22-10'
         }
-      ] as SearchResult[];
+      ] as TechRecordSearchSchema[];
       const newState: SearchResultState = {
         ...initialTechSearchResultState,
         ids: ['123456#10-22-10'],
