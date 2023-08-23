@@ -42,12 +42,14 @@
       ></app-psv-brakes>
     </ng-container>
 
-    <app-trl-brakes
-      *ngSwitchCase="'trlBrakesSection'"
-      [vehicleTechRecord]="techRecordCalculated"
-      [isEditing]="(isEditing$ | async) ?? false"
-      (formChange)="handleFormState($event)"
-    ></app-trl-brakes>
+    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'trl'">
+      <app-trl-brakes
+        *ngSwitchCase="'trlBrakesSection'"
+        [vehicleTechRecord]="techRecordCalculated"
+        [isEditing]="(isEditing$ | async) ?? false"
+        (formChange)="handleFormState($event)"
+      ></app-trl-brakes>
+    </ng-container>
 
     <app-tyres
       *ngSwitchCase="'tyreSection'"
