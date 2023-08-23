@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
-import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -22,18 +22,18 @@ export enum SEARCH_TYPES {
 export class TechnicalRecordHttpService {
   constructor(private http: HttpClient, private store: Store) {}
 
-  search$(type: SEARCH_TYPES, term: string): Observable<SearchResult[]> {
+  search$(type: SEARCH_TYPES, term: string): Observable<TechRecordSearchSchema[]> {
     const queryStr = `${term}?searchCriteria=${type}`;
     const url = `${environment.VTM_API_URI}/v3/technical-records/search/${queryStr}`;
 
-    return this.http.get<SearchResult[]>(url, { responseType: 'json' });
+    return this.http.get<TechRecordSearchSchema[]>(url, { responseType: 'json' });
   }
 
   searchBy(type: SEARCH_TYPES | undefined, term: string): void {
     this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
   }
 
-  getBySystemNumber(systemNumber: string): Observable<SearchResult[]> {
+  getBySystemNumber(systemNumber: string): Observable<TechRecordSearchSchema[]> {
     return this.search$(SEARCH_TYPES.SYSTEM_NUMBER, systemNumber);
   }
 

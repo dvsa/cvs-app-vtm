@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   EuVehicleCategories,
@@ -13,7 +14,6 @@ import {
 import { Store, select } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
-import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 import {
   selectTechRecordSearchResults,
   selectTechRecordSearchResultsBySystemNumber
@@ -138,11 +138,11 @@ export class TechnicalRecordService {
     this.store.dispatch(updateEditingTechRecordCancel());
   }
 
-  get searchResults$(): Observable<SearchResult[] | undefined> {
+  get searchResults$(): Observable<TechRecordSearchSchema[] | undefined> {
     return this.store.pipe(select(selectTechRecordSearchResults));
   }
 
-  get searchResultsWithUniqueSystemNumbers$(): Observable<SearchResult[] | undefined> {
+  get searchResultsWithUniqueSystemNumbers$(): Observable<TechRecordSearchSchema[] | undefined> {
     return this.store.pipe(select(selectTechRecordSearchResultsBySystemNumber));
   }
   get techRecordStatus$(): Observable<StatusCodes | undefined> {

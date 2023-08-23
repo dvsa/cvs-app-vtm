@@ -1,15 +1,15 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 import { TypedAction } from '@ngrx/store/src/models';
-import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 
 const prefix = '[Technical Record Service]';
 
 export const getBySystemNumber = createAction(`${prefix} getBySystemNumber`, props<{ systemNumber: string }>());
-export const getBySystemNumberSuccess = createAction(`${prefix} getBySystemNumber Success`, props<{ techRecordHistory: SearchResult[] }>());
+export const getBySystemNumberSuccess = createAction(`${prefix} getBySystemNumber Success`, props<{ techRecordHistory: TechRecordSearchSchema[] }>());
 export const getBySystemNumberFailure = createAction(`${prefix} getBySystemNumber Failure`, props<GlobalError>());
 
 export const getTechRecordV3 = createAction(`${prefix} getTechRecordV3`, props<{ systemNumber: string; createdTimestamp: string }>());
