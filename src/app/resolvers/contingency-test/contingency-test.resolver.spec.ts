@@ -10,6 +10,9 @@ import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/.';
 import { Observable, ReplaySubject, firstValueFrom, of, throwError } from 'rxjs';
 import { ContingencyTestResolver } from './contingency-test.resolver';
+import { initialContingencyTest } from '@store/test-records';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
 describe('ContingencyTestResolver', () => {
   let resolver: ContingencyTestResolver;
@@ -42,25 +45,20 @@ describe('ContingencyTestResolver', () => {
   it('should be created', () => {
     expect(resolver).toBeTruthy();
   });
-  // TODO: V3 issue with isEditing typeError: Cannot read properties of undefined (reading 'isEditing')
-  // it('should return true and dispatch the initial contingency test action', async () => {
-  //   const dispatchSpy = jest.spyOn(store, 'dispatch');
-  //   jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of({systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin'}));
-  //   mockVehicleTechnicalRecord()
-  //   jest.spyOn(techRecordService, 'techRecord$', 'get')
-  //   // jest.spyOn(techRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord().techRecord[0]));
 
-  //   const resolveResult = await firstValueFrom(resolver.resolve());
-  //   expect(resolveResult).toBe(true);
-  //   expect(dispatchSpy).toHaveBeenCalledTimes(1);
-  //   expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: initialContingencyTest.type, testResult: expect.anything() }));
-  // });
+  it('should return true and dispatch the initial contingency test action', async () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+    jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
+
+    const resolveResult = await firstValueFrom(resolver.resolve());
+
+    expect(resolveResult).toBe(true);
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+    expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: initialContingencyTest.type, testResult: expect.anything() }));
+  });
 
   it('should return false if there is an error', async () => {
-    jest
-      .spyOn(techRecordService, 'techRecord$', 'get')
-      .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
-    // jest.spyOn(techRecordService, 'viewableTechRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord().techRecord[0]));
+    jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
     jest.spyOn(MockUserService, 'user$', 'get').mockImplementationOnce(() => throwError(() => new Error('foo')));
     const resolveResult = await firstValueFrom(resolver.resolve());
     expect(resolveResult).toBe(false);

@@ -93,7 +93,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     return this.axles.get([i]) as CustomFormGroup;
   }
 
-  // TODO: V3 remove as any HGV
   addAxle(): void {
     if (!this.vehicleTechRecord.techRecord_axles || this.vehicleTechRecord.techRecord_axles!.length < 10) {
       this.isError = false;
@@ -106,7 +105,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
-    // TODO: V3 remove as any HGV
+
     if (this.vehicleTechRecord.techRecord_axles!.length > minLength) {
       this.isError = false;
       this.store.dispatch(removeAxle({ index }));
