@@ -50,7 +50,13 @@
         (formChange)="handleFormState($event)"
       ></app-trl-brakes>
     </ng-container>
-    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === ('trl' || 'hgv' || 'psv')">
+    <ng-container
+      *ngIf="
+        techRecordCalculated.techRecord_vehicleType === 'trl' ||
+        techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+        techRecordCalculated.techRecord_vehicleType === 'psv'
+      "
+    >
       <app-tyres
         *ngSwitchCase="'tyreSection'"
         [vehicleTechRecord]="techRecordCalculated"
@@ -59,7 +65,13 @@
       ></app-tyres>
     </ng-container>
 
-    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === ('trl' || 'psv' || 'hgv')">
+    <ng-container
+      *ngIf="
+        techRecordCalculated.techRecord_vehicleType === 'trl' ||
+        techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+        techRecordCalculated.techRecord_vehicleType === 'psv'
+      "
+    >
       <app-weights
         *ngSwitchCase="'weightsSection'"
         [vehicleTechRecord]="techRecordCalculated"
