@@ -50,13 +50,14 @@
         (formChange)="handleFormState($event)"
       ></app-trl-brakes>
     </ng-container>
-
-    <app-tyres
-      *ngSwitchCase="'tyreSection'"
-      [vehicleTechRecord]="techRecordCalculated"
-      [isEditing]="(isEditing$ | async) ?? false"
-      (formChange)="handleFormState($event)"
-    ></app-tyres>
+    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === ('trl' || 'hgv' || 'psv')">
+      <app-tyres
+        *ngSwitchCase="'tyreSection'"
+        [vehicleTechRecord]="techRecordCalculated"
+        [isEditing]="(isEditing$ | async) ?? false"
+        (formChange)="handleFormState($event)"
+      ></app-tyres>
+    </ng-container>
 
     <app-weights
       *ngSwitchCase="'weightsSection'"

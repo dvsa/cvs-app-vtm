@@ -10,6 +10,7 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { State, initialAppState } from '@store/index';
 import { of, throwError } from 'rxjs';
 import { TyresComponent } from './tyres.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 const mockReferenceDataService = {
   fetchReferenceDataByKey: jest.fn()
@@ -31,17 +32,61 @@ describe('TyresComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TyresComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord = {
-      systemNumber: 'foo',
-      createdTimestamp: 'bar',
-      vin: 'testVin',
-      techRecord_axles: [
+    (component.vehicleTechRecord = mockVehicleTechnicalRecord('psv')),
+      (component.vehicleTechRecord.techRecord_axles = [
         {
-          axleNumber: 1
+          axleNumber: 1,
+          tyres_tyreSize: '295/80-22.5',
+          tyres_speedCategorySymbol: 'p',
+          tyres_fitmentCode: 'double',
+          tyres_dataTrAxles: 0,
+          tyres_plyRating: 'A',
+          tyres_tyreCode: 456,
+          parkingBrakeMrk: false,
+
+          weights_kerbWeight: 1,
+          weights_ladenWeight: 2,
+          weights_gbWeight: 3,
+          // TODO: V3 2 eecweights in type package, which is this?
+          // weights_eecWeight: 4,
+          weights_designWeight: 5
+        },
+        {
+          axleNumber: 2,
+          parkingBrakeMrk: true,
+
+          tyres_tyreSize: '295/80-22.5',
+          tyres_speedCategorySymbol: 'p',
+          tyres_fitmentCode: 'double',
+          tyres_dataTrAxles: 0,
+          tyres_plyRating: 'A',
+          tyres_tyreCode: 456,
+
+          weights_kerbWeight: 1,
+          weights_ladenWeight: 2,
+          weights_gbWeight: 3,
+          // weights_eecWeight: 4,
+          weights_designWeight: 5
+        },
+        {
+          axleNumber: 3,
+          parkingBrakeMrk: true,
+
+          tyres_tyreSize: '295/80-22.5',
+          tyres_speedCategorySymbol: 'p',
+          tyres_fitmentCode: 'double',
+          tyres_dataTrAxles: 0,
+          tyres_plyRating: 'A',
+          tyres_tyreCode: 456,
+
+          weights_kerbWeight: 1,
+          weights_ladenWeight: 2,
+          weights_gbWeight: 3,
+          // weights_eecWeight: 4,
+          weights_designWeight: 5
         }
-      ],
-      techRecord_vehicleType: VehicleTypes.PSV
-    } as unknown as V3TechRecordModel;
+      ]);
+
     fixture.detectChanges();
     spy = jest.spyOn(component, 'addTyreToTechRecord');
   });
@@ -157,7 +202,7 @@ describe('TyresComponent', () => {
   });
 
   describe('addTyreToTechRecord', () => {
-    it('should update the tech record with the new tyre', () => {
+    it.only('should update the tech record with the new tyre', () => {
       const tyre = {
         tyreSize: '123',
         dataTrAxles: 123,
@@ -167,11 +212,10 @@ describe('TyresComponent', () => {
 
       component.addTyreToTechRecord(tyre, 1);
 
-      //TODO: Remove the anys
-      expect((component.vehicleTechRecord as any).techRecord_axles![0].tyres_tyreSize).toBe(tyre.tyreSize);
-      expect((component.vehicleTechRecord as any).techRecord_axles![0].tyres_dataTrAxles).toBe(tyre.dataTrAxles);
-      expect((component.vehicleTechRecord as any).techRecord_axles![0].tyres_plyRating).toBe(tyre.plyRating);
-      expect((component.vehicleTechRecord as any).techRecord_axles![0].tyres_tyreCode).toBe(tyre.tyreCode);
+      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_tyreSize).toBe(tyre.tyreSize);
+      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_dataTrAxles).toBe(tyre.dataTrAxles);
+      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_plyRating).toBe(tyre.plyRating);
+      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_tyreCode).toBe(tyre.tyreCode);
     });
   });
 });
