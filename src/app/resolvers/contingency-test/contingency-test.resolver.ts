@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechRecordType as VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestType } from '@models/test-types/test-type.model';
@@ -27,7 +28,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
 
   //TODO: remove the anys
   resolve(): Observable<boolean> {
-    return this.store.select(selectTechRecord).pipe(
+    return this.techRecordService.techRecord$.pipe(
       switchMap(techRecord => {
         const { vin, systemNumber } = techRecord as TechRecordType<'get'>;
         const vrm = techRecord?.techRecord_vehicleType !== 'trl' ? techRecord?.primaryVrm : undefined;
@@ -54,7 +55,8 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               testStatus: 'submitted',
               regnDate: viewableTechRecord?.techRecord_regnDate,
               numberOfSeats:
-                ((viewableTechRecord as any)?.techRecord_seatsLowerDeck ?? 0) + ((viewableTechRecord as any)?.techRecord_seatsUpperDeck ?? 0),
+                ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsLowerDeck ?? 0) +
+                ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsUpperDeck ?? 0),
               reasonForCancellation: '',
               createdAt: now.toISOString(),
               lastUpdatedAt: now.toISOString(),
