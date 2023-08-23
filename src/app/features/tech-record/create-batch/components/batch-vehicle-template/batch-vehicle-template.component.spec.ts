@@ -4,6 +4,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
@@ -129,8 +130,8 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       batchOfVehicles = [
-        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1', oldVehicleStatus: StatusCodes.PROVISIONAL },
-        { vin: 'EXAMPLEVIN000002', trailerIdOrVrm: '1000002', systemNumber: '2', oldVehicleStatus: StatusCodes.CURRENT }
+        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1' },
+        { vin: 'EXAMPLEVIN000002', trailerIdOrVrm: '1000002', systemNumber: '2' }
       ];
       jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
 
@@ -144,12 +145,24 @@ describe('BatchVehicleTemplateComponent', () => {
       expect(dispatchSpy).toHaveBeenCalledTimes(2);
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         1,
-        updateTechRecord({ systemNumber: '1', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+        updateTechRecord({
+          vehicleTechRecord: {
+            systemNumber: '1',
+            recordToArchiveStatus: StatusCodes.PROVISIONAL,
+            newStatus: StatusCodes.CURRENT
+          } as unknown as TechRecordType<'put'>
+        })
       );
 
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         2,
-        updateTechRecord({ systemNumber: '2', recordToArchiveStatus: StatusCodes.CURRENT, newStatus: StatusCodes.CURRENT })
+        updateTechRecord({
+          vehicleTechRecord: {
+            systemNumber: '2',
+            recordToArchiveStatus: StatusCodes.CURRENT,
+            newStatus: StatusCodes.CURRENT
+          } as unknown as TechRecordType<'put'>
+        })
       );
     }));
 
@@ -157,9 +170,9 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       batchOfVehicles = [
-        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1', oldVehicleStatus: StatusCodes.PROVISIONAL },
+        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1' },
         { vin: 'EXAMPLEVIN000002' },
-        { vin: 'EXAMPLEVIN000003', trailerIdOrVrm: '1000002', systemNumber: '3', oldVehicleStatus: StatusCodes.PROVISIONAL },
+        { vin: 'EXAMPLEVIN000003', trailerIdOrVrm: '1000002', systemNumber: '3' },
         { vin: 'EXAMPLEVIN000004' },
         { vin: 'EXAMPLEVIN000005' }
       ];
@@ -174,12 +187,24 @@ describe('BatchVehicleTemplateComponent', () => {
       expect(dispatchSpy).toHaveBeenCalledTimes(5);
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         1,
-        updateTechRecord({ systemNumber: '1', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+        updateTechRecord({
+          vehicleTechRecord: {
+            systemNumber: '1',
+            recordToArchiveStatus: StatusCodes.PROVISIONAL,
+            newStatus: StatusCodes.CURRENT
+          } as unknown as TechRecordType<'put'>
+        })
       );
       expect(dispatchSpy).toHaveBeenNthCalledWith(2, createVehicleRecord({ vehicle: expect.anything() }));
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         3,
-        updateTechRecord({ systemNumber: '3', recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+        updateTechRecord({
+          vehicleTechRecord: {
+            systemNumber: '3',
+            recordToArchiveStatus: StatusCodes.PROVISIONAL,
+            newStatus: StatusCodes.CURRENT
+          } as unknown as TechRecordType<'put'>
+        })
       );
       expect(dispatchSpy).toHaveBeenNthCalledWith(4, createVehicleRecord({ vehicle: expect.anything() }));
       expect(dispatchSpy).toHaveBeenNthCalledWith(5, createVehicleRecord({ vehicle: expect.anything() }));
