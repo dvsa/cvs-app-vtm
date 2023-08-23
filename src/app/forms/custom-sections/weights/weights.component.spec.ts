@@ -8,6 +8,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { NumberInputComponent } from '../../components/number-input/number-input.component';
 import { WeightsComponent } from './weights.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
 describe('WeightsComponent', () => {
   let component: WeightsComponent;
@@ -24,12 +26,7 @@ describe('WeightsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WeightsComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord = {
-      systemNumber: 'foo',
-      createdTimestamp: 'bar',
-      vin: 'testVin',
-      techRecord_vehicleType: 'hgv'
-    } as V3TechRecordModel;
+    component.vehicleTechRecord = mockVehicleTechnicalRecord('trl') as TechRecordType<'trl'>;
     fixture.detectChanges();
   });
 
