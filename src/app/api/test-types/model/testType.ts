@@ -54,6 +54,11 @@ export interface TestType {
      */
     forProvisionalStatus?: boolean;
     /**
+     * Used to filter test types that allow creating tests on Provisional Records and not current
+     */
+     forProvisionalStatusOnly?: boolean;
+    /**
+     * 
      * This category is applying only to these vehicle sizes. The vehicle sizes should descend from its parent, but should not be necessarily the same
      */
     forVehicleSize?: Array<TestType.ForVehicleSizeEnum>;
