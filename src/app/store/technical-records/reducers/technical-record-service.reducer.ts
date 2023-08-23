@@ -220,7 +220,7 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
   const vehicleType = (newState.editingTechRecord as any).techRecord_vehicleType;
 
   if (!newState.editingTechRecord) return newState;
-  if ((!newState.editingTechRecord as any).techRecord_axles) (newState.editingTechRecord as any).techRecord_axles = [];
+  if (!(newState.editingTechRecord as any).techRecord_axles) (newState.editingTechRecord as any).techRecord_axles = [];
 
   const newAxle: any = {
     axleNumber: (newState.editingTechRecord as any).techRecord_axles.length + 1,
