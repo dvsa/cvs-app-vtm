@@ -70,7 +70,7 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('getBySystemNumberFailure', () => {
     it('should history to an empty array', () => {
-      const newState = { ...initialState };
+      const newState = { ...initialState, techRecordHistory: [] };
       const action = getBySystemNumberFailure({ error: 'error' });
       const state = vehicleTechRecordReducer(initialState, action);
 
