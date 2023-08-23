@@ -148,8 +148,11 @@ describe('BatchVehicleTemplateComponent', () => {
         updateTechRecord({
           vehicleTechRecord: {
             systemNumber: '1',
-            recordToArchiveStatus: StatusCodes.PROVISIONAL,
-            newStatus: StatusCodes.CURRENT
+            createdTimestamp: undefined,
+            techRecord_statusCode: StatusCodes.CURRENT,
+            trailerId: undefined,
+            primaryVrm: '1000001',
+            vin: 'EXAMPLEVIN000001'
           } as unknown as TechRecordType<'put'>
         })
       );
@@ -159,8 +162,11 @@ describe('BatchVehicleTemplateComponent', () => {
         updateTechRecord({
           vehicleTechRecord: {
             systemNumber: '2',
-            recordToArchiveStatus: StatusCodes.CURRENT,
-            newStatus: StatusCodes.CURRENT
+            createdTimeStamp: undefined,
+            trailerId: undefined,
+            primaryVrm: '1000002',
+            techRecord_statusCode: StatusCodes.CURRENT,
+            vin: 'EXAMPLEVIN000002'
           } as unknown as TechRecordType<'put'>
         })
       );
@@ -190,8 +196,11 @@ describe('BatchVehicleTemplateComponent', () => {
         updateTechRecord({
           vehicleTechRecord: {
             systemNumber: '1',
-            recordToArchiveStatus: StatusCodes.PROVISIONAL,
-            newStatus: StatusCodes.CURRENT
+            techRecord_statusCode: StatusCodes.CURRENT,
+            vin: 'EXAMPLEVIN000001',
+            trailerId: undefined,
+            primaryVrm: '1000001',
+            createdTimestamp: undefined
           } as unknown as TechRecordType<'put'>
         })
       );
@@ -201,8 +210,11 @@ describe('BatchVehicleTemplateComponent', () => {
         updateTechRecord({
           vehicleTechRecord: {
             systemNumber: '3',
-            recordToArchiveStatus: StatusCodes.PROVISIONAL,
-            newStatus: StatusCodes.CURRENT
+            techRecord_statusCode: StatusCodes.CURRENT,
+            vin: 'EXAMPLEVIN000003',
+            trailerId: undefined,
+            primaryVrm: '1000002',
+            createdTimestamp: undefined
           } as unknown as TechRecordType<'put'>
         })
       );

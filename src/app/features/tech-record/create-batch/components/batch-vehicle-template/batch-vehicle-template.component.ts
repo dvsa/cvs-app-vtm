@@ -111,7 +111,8 @@ export class BatchVehicleTemplateComponent {
                   ...record,
                   techRecord_statusCode: this.form.value.vehicleStatus ?? StatusCodes.PROVISIONAL,
                   vin: v.vin,
-                  trailerId: v.vehicleType === VehicleTypes.TRL && v.trailerIdOrVrm ? v.trailerIdOrVrm : undefined,
+                  trailerId: v.vehicleType === VehicleTypes.TRL ? v.trailerIdOrVrm : undefined,
+                  primaryVrm: v.vehicleType !== VehicleTypes.TRL ? v.trailerIdOrVrm : undefined,
                   systemNumber: v.systemNumber ? v.systemNumber : null,
                   createdTimestamp: v.createdTimestamp
                 } as BatchUpdateVehicleModel)
