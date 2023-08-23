@@ -15,6 +15,9 @@ import {
 import {
   addAxle,
   addSectionState,
+  amendVrm,
+  amendVrmFailure,
+  amendVrmSuccess,
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
@@ -32,6 +35,9 @@ import {
   getBySystemNumberFailure,
   getBySystemNumberSuccess,
   getTechRecordV3Success,
+  promoteTechRecord,
+  promoteTechRecordFailure,
+  promoteTechRecordSuccess,
   removeAxle,
   removeSectionState,
   updateBody,
@@ -87,6 +93,14 @@ export const vehicleTechRecordReducer = createReducer(
   on(archiveTechRecord, defaultArgs),
   on(archiveTechRecordSuccess, successArgs),
   on(archiveTechRecordFailure, updateFailureArgs),
+
+  on(promoteTechRecord, defaultArgs),
+  on(promoteTechRecordSuccess, successArgs),
+  on(promoteTechRecordFailure, updateFailureArgs),
+
+  on(amendVrm, defaultArgs),
+  on(amendVrmSuccess, successArgs),
+  on(amendVrmFailure, updateFailureArgs),
 
   on(generatePlate, defaultArgs),
   on(generatePlateSuccess, state => ({ ...state, editingTechRecord: undefined, loading: false })),
