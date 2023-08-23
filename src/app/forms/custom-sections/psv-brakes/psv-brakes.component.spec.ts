@@ -11,6 +11,8 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 import { PsvBrakesComponent } from './psv-brakes.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
 describe('PsvBrakesComponent', () => {
   let component: PsvBrakesComponent;
@@ -33,16 +35,61 @@ describe('PsvBrakesComponent', () => {
     fixture = TestBed.createComponent(PsvBrakesComponent);
     component = fixture.componentInstance;
     //V3 TODO cast this as a V3record
-    component.vehicleTechRecord = {
-      systemNumber: 'foo',
-      createdTimestamp: 'bar',
-      vin: 'testVin',
-      techRecord_vehicleType: VehicleTypes.PSV,
-      techRecord_brakes_brakeCode: '000000',
-      techRecord_brakes_retarderBrakeOne: 'brake2',
-      techRecord_axles: [{ axleNumber: 1, parkingBrakeMrk: true }],
-      techRecord_brakes_brakeCodeOriginal: 'original'
-    };
+    component.vehicleTechRecord = mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>;
+    component.vehicleTechRecord.techRecord_axles = [
+      {
+        axleNumber: 1,
+        tyres_tyreSize: '295/80-22.5',
+        tyres_speedCategorySymbol: 'p',
+        tyres_fitmentCode: 'double',
+        tyres_dataTrAxles: 0,
+        tyres_plyRating: 'A',
+        tyres_tyreCode: 456,
+        parkingBrakeMrk: false,
+
+        weights_kerbWeight: 1,
+        weights_ladenWeight: 2,
+        weights_gbWeight: 3,
+        // TODO: V3 2 eecweights in type package, which is this?
+        // weights_eecWeight: 4,
+        weights_designWeight: 5
+      },
+      {
+        axleNumber: 2,
+        parkingBrakeMrk: true,
+
+        tyres_tyreSize: '295/80-22.5',
+        tyres_speedCategorySymbol: 'p',
+        tyres_fitmentCode: 'double',
+        tyres_dataTrAxles: 0,
+        tyres_plyRating: 'A',
+        tyres_tyreCode: 456,
+
+        weights_kerbWeight: 1,
+        weights_ladenWeight: 2,
+        weights_gbWeight: 3,
+        // weights_eecWeight: 4,
+        weights_designWeight: 5
+      },
+      {
+        axleNumber: 3,
+        parkingBrakeMrk: true,
+
+        tyres_tyreSize: '295/80-22.5',
+        tyres_speedCategorySymbol: 'p',
+        tyres_fitmentCode: 'double',
+        tyres_dataTrAxles: 0,
+        tyres_plyRating: 'A',
+        tyres_tyreCode: 456,
+
+        weights_kerbWeight: 1,
+        weights_ladenWeight: 2,
+        weights_gbWeight: 3,
+        // weights_eecWeight: 4,
+        weights_designWeight: 5
+      }
+    ];
+
     fixture.detectChanges();
   });
 
@@ -66,10 +113,12 @@ describe('PsvBrakesComponent', () => {
       );
     });
   });
-  //TODO: remove the anys
+
   describe('The axle value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect((component.vehicleTechRecord as any).techRecord_axles).toStrictEqual(component.form.controls['techRecord_axles']?.value);
+      expect(component.vehicleTechRecord.techRecord_axles![0]).toEqual(
+        expect.objectContaining(component.form.controls['techRecord_axles']?.value[0])
+      );
     });
   });
 });
