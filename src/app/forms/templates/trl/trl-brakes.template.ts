@@ -34,6 +34,7 @@ export const TrlBrakesTemplate: FormNode = {
               type: FormNodeTypes.CONTROL
             },
             {
+              value: false,
               name: 'parkingBrakeMrk',
               label: 'Parking Brake Mark',
               type: FormNodeTypes.CONTROL

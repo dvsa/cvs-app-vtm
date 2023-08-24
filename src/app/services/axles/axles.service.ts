@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
-import { Axle, AxleSpacing } from '@models/vehicle-tech-record.model';
+import { AxleSpacing } from '@models/vehicle-tech-record.model';
 import cloneDeep from 'lodash.clonedeep';
 
 @Injectable({
@@ -56,10 +56,16 @@ export class AxlesService {
   }
 
   generateEmptyAxle(axleNumber: number): any {
-    const weights = { gbWeight: null, eecWeight: null, designWeight: null };
-
-    const tyres = { tyreSize: null, fitmentCode: null, dataTrAxles: null, plyRating: null, tyreCode: null };
-
-    return { axleNumber, weights, tyres };
+    return {
+      axleNumber: axleNumber,
+      weights_gbWeight: null,
+      weights_eecWeight: null,
+      weights_designedWeight: null,
+      tyres_tyreSize: null,
+      tyres_fitmentCode: null,
+      tyres_dataTrAxles: null,
+      tyres_plyRating: null,
+      tyres_tyreCode: null
+    };
   }
 }

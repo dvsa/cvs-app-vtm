@@ -90,8 +90,8 @@ describe('AxlesService', () => {
       const result = service.generateAxlesFromAxleSpacings(2);
 
       expect(result.length).toBe(3);
-      expect(result[0].axleNumber).toBe(1);
-      expect(result[2].axleNumber).toBe(3);
+      expect(result[0]?.axleNumber).toBe(1);
+      expect(result[2]?.axleNumber).toBe(3);
     });
 
     it('should generate 3 axles from 1 previous axle', () => {
@@ -99,8 +99,8 @@ describe('AxlesService', () => {
       const result = service.generateAxlesFromAxleSpacings(2, previousAxles);
 
       expect(result.length).toBe(3);
-      expect(result[0].axleNumber).toBe(1);
-      expect(result[2].axleNumber).toBe(3);
+      expect(result[0]?.axleNumber).toBe(1);
+      expect(result[2]?.axleNumber).toBe(3);
     });
   });
 });
