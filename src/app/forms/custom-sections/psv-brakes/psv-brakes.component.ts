@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
@@ -7,12 +8,12 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
-import { Axle, Retarders, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Axle, Retarders } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataState, selectBrakeByCode } from '@store/reference-data';
 import { updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { debounceTime, mergeMap, Observable, of, Subject, takeUntil, withLatestFrom } from 'rxjs';
+import { Observable, Subject, debounceTime, mergeMap, of, takeUntil, tap, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-psv-brakes',
@@ -20,7 +21,7 @@ import { debounceTime, mergeMap, Observable, of, Subject, takeUntil, withLatestF
   styleUrls: ['./psv-brakes.component.scss']
 })
 export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() vehicleTechRecord!: V3TechRecordModel;
+  @Input() vehicleTechRecord!: TechRecordType<'psv'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -42,21 +43,27 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.form = this.dfs.createForm(PsvBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
 
+    //TODO: remove the anys
     this.form.cleanValueChanges
       .pipe(
         debounceTime(400),
         takeUntil(this.destroy$),
-        mergeMap((event: any) =>
-          event?.brakes?.brakeCodeOriginal ? this.referenceDataStore.select(selectBrakeByCode(event.brakes.brakeCodeOriginal)) : of(undefined)
-        ),
+        mergeMap((event: any) => {
+          tap(event => {
+            console.log(event);
+          });
+          return event?.techRecord_brakes_brakeCodeOriginal
+            ? this.referenceDataStore.select(selectBrakeByCode(event.techRecord_brakes_brakeCodeOriginal))
+            : of(undefined);
+        }),
         withLatestFrom(this.form.cleanValueChanges)
       )
       .subscribe(([selectedBrake, event]: [Brake | undefined, any]) => {
         // Set the brake details automatically based selection
-        if (selectedBrake && event?.brakes?.brakeCodeOriginal) {
-          event.brakes['dataTrBrakeOne'] = selectedBrake.service;
-          event.brakes['dataTrBrakeTwo'] = selectedBrake.secondary;
-          event.brakes['dataTrBrakeThree'] = selectedBrake.parking;
+        if (selectedBrake && event?.techRecord_brakes_brakeCodeOriginal) {
+          event.techRecord_brakes_dataTrBrakeOne = selectedBrake.service;
+          event.techRecord_brakes_dataTrBrakeTwo = selectedBrake.secondary;
+          event.techRecord_brakes_dataTrBrakeThree = selectedBrake.parking;
         }
 
         if (event?.axles) {
@@ -65,7 +72,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 
         this.formChange.emit(event);
 
-        if (event.brakes?.brakeCodeOriginal) {
+        if (event.brakes?.techRecord_brakes_brakeCodeOriginal) {
           this.store.dispatch(updateBrakeForces({}));
         }
       });
@@ -84,10 +91,6 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  get brakesForm(): FormGroup {
-    return this.form.get('brakes') as FormGroup;
   }
 
   get booleanOptions(): MultiOptions {
@@ -114,17 +117,17 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get brakeCodePrefix(): string {
-    const prefix = `${Math.round((this.vehicleTechRecord as any)!.grossLadenWeight! / 100)}`;
+    const prefix = `${Math.round(this.vehicleTechRecord!.techRecord_grossLadenWeight! / 100)}`;
 
     return prefix.length <= 2 ? '0' + prefix : prefix;
   }
 
   get axles(): FormArray {
-    return this.form.get(['axles']) as FormArray;
+    return this.form.get(['techRecord_axles']) as FormArray;
   }
 
   getAxleForm(i: number): FormGroup {
-    return this.form.get(['axles', i]) as FormGroup;
+    return this.form.get(['techRecord_axles', i]) as FormGroup;
   }
 
   round(n: number): number {

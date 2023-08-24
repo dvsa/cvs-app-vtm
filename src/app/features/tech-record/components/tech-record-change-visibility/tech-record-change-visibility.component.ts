@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -82,8 +83,8 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const updatedTechRecord: V3TechRecordModel = {
-      ...cloneDeep(this.techRecord!),
+    const updatedTechRecord: TechRecordType<'put'> = {
+      ...cloneDeep(this.techRecord as TechRecordType<'put'>),
       techRecord_reasonForCreation: form.reason,
       techRecord_hiddenInVta: !this.techRecord?.techRecord_hiddenInVta
     };

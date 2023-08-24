@@ -52,14 +52,13 @@
         </dd>
       </ng-container>
     </div>
-    <!-- TODO: V3 fix trailer ID -->
     <ng-container [ngSwitch]="currentTechRecord.techRecord_vehicleType">
-      <!-- <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
+      <div *ngSwitchCase="'trl'" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Trailer ID</dt>
         <dd id="trailer-id" class="govuk-summary-list__value">
           {{ vehicle.trailerId | defaultNullOrEmpty }}
         </dd>
-      </div> -->
+      </div>
 
       <div *ngSwitchDefault class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
@@ -69,7 +68,7 @@
         <ng-container
           *ngIf="
             isVrmEditable(
-              currentTechRecord.techRecord_statusCode,
+              currentTechRecord.techRecord_statusCode ?? undefined,
               currentTechRecord.techRecord_vehicleType!,
               editableTechRecord.techRecord_vehicleType!
             )
@@ -83,13 +82,13 @@
         </ng-container>
       </div>
 
-      <div class="govuk-summary-list__row" *ngIf="getVehicleType(currentTechRecord) !== vehicleTypes.SMALL_TRL">
+      <div class="govuk-summary-list__row" *ngIf="getVehicleType(currentTechRecord) !== 'small trl'">
         <dt class="govuk-summary-list__key">Previous VRM</dt>
         <dd id="previous-vrm" class="govuk-summary-list__value">
           <app-number-plate
             *ngIf="otherVrms && otherVrms.length"
             class="govuk-body govuk-!margin-bottom-0"
-            [vrm]="otherVrms[0]"
+            [vrm]="otherVrms[otherVrms.length - 1]"
             [isSecondary]="true"
           ></app-number-plate>
         </dd>

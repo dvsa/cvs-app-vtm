@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TestTypesTaxonomy } from '@api/test-types';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { resultOfTestEnum, TestType } from '@models/test-types/test-type.model';
-import { TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { TagType } from '@shared/components/tag/tag.component';
-import { selectTechRecord, techRecord } from '@store/technical-records';
+import { techRecord } from '@store/technical-records';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -77,19 +78,25 @@ export class VehicleHeaderComponent {
   getVehicleDescription(techRecord: V3TechRecordModel, vehicleType: VehicleTypes | undefined) {
     switch (vehicleType) {
       case VehicleTypes.TRL:
-        return techRecord.techRecord_vehicleConfiguration ?? '';
+        return (techRecord as TechRecordType<typeof vehicleType>).techRecord_vehicleConfiguration ?? '';
       case VehicleTypes.PSV:
-        return (techRecord as any).techRecord_bodyMake && (techRecord as any).techRecord_bodyModel
-          ? `${(techRecord as any).bodyMake}-${(techRecord as any).bodyModel}`
+        return (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyMake &&
+          (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel
+          ? `${(techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyMake}-${
+              (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel
+            }`
           : '';
       case VehicleTypes.HGV:
+        return (techRecord as TechRecordType<typeof vehicleType>).techRecord_make &&
+          (techRecord as TechRecordType<typeof vehicleType>).techRecord_model
+          ? `${(techRecord as TechRecordType<typeof vehicleType>).techRecord_make}-${
+              (techRecord as TechRecordType<typeof vehicleType>).techRecord_model
+            }`
+          : '';
+      case VehicleTypes.MOTORCYCLE:
       case VehicleTypes.LGV:
       case VehicleTypes.CAR:
-      case VehicleTypes.SMALL_TRL:
-      case VehicleTypes.MOTORCYCLE:
-        return (techRecord as any).techRecord_make && (techRecord as any).techRecord_model
-          ? `${(techRecord as any).techRecord_make}-${(techRecord as any).techRecord_model}`
-          : '';
+        return '';
       default:
         return 'Unknown Vehicle Type';
     }

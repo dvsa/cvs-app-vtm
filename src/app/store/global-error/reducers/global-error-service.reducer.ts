@@ -1,12 +1,12 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
-import * as TestResultActions from '@store/test-records';
-import * as TechnicalRecordServiceActions from '../../technical-records/actions/technical-record-service.actions';
-import * as GlobalErrorActions from '../actions/global-error.actions';
-import * as ReferenceDataActions from '../../reference-data/actions/reference-data.actions';
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { createVehicleRecordFailure } from '../../technical-records/actions/technical-record-service.actions';
+import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 import { fetchSearchResult, fetchSearchResultFailed } from '@store/tech-record-search/actions/tech-record-search.actions';
+import * as TestResultActions from '@store/test-records';
+import * as ReferenceDataActions from '../../reference-data/actions/reference-data.actions';
+import * as TechnicalRecordServiceActions from '../../technical-records/actions/technical-record-service.actions';
+import { createVehicleRecordFailure } from '../../technical-records/actions/technical-record-service.actions';
+import * as GlobalErrorActions from '../actions/global-error.actions';
 
 export const STORE_FEATURE_GLOBAL_ERROR_KEY = 'globalError';
 
@@ -40,6 +40,9 @@ export const globalErrorReducer = createReducer(
   on(
     GlobalErrorActions.addError,
     TechnicalRecordServiceActions.updateTechRecordFailure,
+    TechnicalRecordServiceActions.generateLetterFailure,
+    TechnicalRecordServiceActions.generatePlateFailure,
+    TechnicalRecordServiceActions.archiveTechRecordFailure,
     TestResultActions.fetchTestResultsFailed,
     TestResultActions.fetchTestResultsBySystemNumberFailed,
     TestResultActions.fetchSelectedTestResultFailed,
@@ -60,6 +63,6 @@ function successMethod(state: GlobalErrorState) {
   return { ...state, errors: [] };
 }
 
-function failureMethod(state: GlobalErrorState, errorMessage: { error: any; anchorLink: any }) {
+function failureMethod(state: GlobalErrorState, errorMessage: { error: any; anchorLink?: any }) {
   return { ...state, errors: [...state.errors, { error: errorMessage.error, anchorLink: errorMessage.anchorLink }] };
 }

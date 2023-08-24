@@ -1,29 +1,22 @@
-import { V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { createMock } from 'ts-auto-mock';
-import { initialState, TechnicalRecordServiceState } from '../reducers/technical-record-service.reducer';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechnicalRecordServiceState, initialState } from '../reducers/technical-record-service.reducer';
 import {
-  getSingleVehicleType,
-  technicalRecordsLoadingState,
-  techRecord,
-  selectSectionState,
   editingTechRecord,
+  getSingleVehicleType,
+  selectSectionState,
+  selectTechRecord,
   selectTechRecordHistory,
-  selectTechRecord
+  techRecord,
+  technicalRecordsLoadingState
 } from './technical-record-service.selectors';
-import { selectRouteDataProperty } from '@store/router/selectors/router.selectors';
-import { RouterService } from '@services/router/router.service';
-
-const mockRouterService = {
-  getRouteNestedParam$: () => '1',
-  getRouteDataProperty$: () => false
-};
 
 describe('Tech Record Selectors', () => {
   describe('selectedTestResultState', () => {
     it('should return vehicleTechRecords state', () => {
       const state: TechnicalRecordServiceState = {
         ...initialState,
-        vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' }
+        vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'get'>
       };
       const selectedState = techRecord.projector(state);
       expect(selectedState).toEqual(state.vehicleTechRecord);
@@ -41,8 +34,8 @@ describe('Tech Record Selectors', () => {
     it('should return editingTechRecords state', () => {
       const state: TechnicalRecordServiceState = {
         ...initialState,
-        vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' },
-        editingTechRecord: { systemNumber: 'bar', createdTimestamp: 'foo', vin: 'testVin2' }
+        vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>,
+        editingTechRecord: { systemNumber: 'bar', createdTimestamp: 'foo', vin: 'testVin2' } as unknown as TechRecordType<'put'>
       };
       const selectedState = editingTechRecord.projector(state);
       expect(selectedState).toEqual(state.editingTechRecord);
@@ -78,12 +71,12 @@ describe('Tech Record Selectors', () => {
     ];
     beforeEach(() => {});
     it.each(routes)('should return the $statusExpected record', ({ statusExpected, techRecord_createdAt, isEditing, vehicle }) => {
-      const techRecord = selectTechRecord.projector({ ...vehicle, techRecord_createdAt } as unknown as V3TechRecordModel, isEditing, {
+      const techRecord = selectTechRecord.projector({ ...vehicle, techRecord_createdAt } as unknown as TechRecordType<'get'>, isEditing, {
         systemNumber: 'foo',
         createdTimestamp: 'bar',
         vin: 'testVin',
         techRecord_statusCode: 'current'
-      });
+      } as unknown as TechRecordType<'put'>);
       expect(techRecord).toBeDefined();
       expect(techRecord?.techRecord_statusCode).toBe(statusExpected);
       techRecord_createdAt && techRecord && expect(techRecord.techRecord_createdAt).toEqual(techRecord_createdAt);
@@ -97,7 +90,7 @@ describe('Tech Record Selectors', () => {
         createdTimestamp: 'bar',
         vin: 'testVin',
         techRecord_vehicleType: 'foobar'
-      } as unknown as V3TechRecordModel;
+      } as unknown as TechRecordType<'get'>;
       const state: TechnicalRecordServiceState = { ...initialState, vehicleTechRecord: vehicleTechRecord };
       const selectedVehicleType = getSingleVehicleType.projector(state);
       expect(selectedVehicleType).toBe(vehicleTechRecord.techRecord_vehicleType);
@@ -109,7 +102,7 @@ describe('Tech Record Selectors', () => {
       const vehicleTechRecords = [
         { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' },
         { systemNumber: 'bar', createdTimestamp: 'foo', vin: 'testVin2' }
-      ];
+      ] as TechRecordSearchSchema[];
       const state: TechnicalRecordServiceState = { ...initialState, techRecordHistory: vehicleTechRecords };
       const selectedVehicleHistory = selectTechRecordHistory.projector(state);
       expect(selectedVehicleHistory).toBe(vehicleTechRecords);

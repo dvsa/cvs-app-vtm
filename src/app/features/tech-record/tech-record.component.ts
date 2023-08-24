@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { Roles } from '@models/roles.enum';
-import { V3TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { getTechRecordV3, selectTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, of, take } from 'rxjs';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record',
@@ -36,7 +34,7 @@ export class TechRecordComponent implements OnInit {
   }
 
   get techRecord$() {
-    return this.store.select(selectTechRecord);
+    return this.techRecordService.techRecord$;
   }
 
   get roles() {

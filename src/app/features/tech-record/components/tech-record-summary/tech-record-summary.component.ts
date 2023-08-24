@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
@@ -12,6 +13,7 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
+import { vehicleClassCodeMap } from '@models/vehicle-class-enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
@@ -64,12 +66,22 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
             return;
           }
           const techRecord = cloneDeep(record);
-          // TODO: V3 for HGV's and TRL's
-          // if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.vehicleType === VehicleTypes.TRL) {
-          //   const [axles, axleSpacing] = this.axlesService.normaliseAxles(techRecord.axles, techRecord.dimensions?.axleSpacing);
-          //   techRecord.dimensions = { ...techRecord.dimensions, axleSpacing };
-          //   techRecord.axles = axles;
-          // }
+
+          if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+            const [axles, axleSpacing] = this.axlesService.normaliseAxles(
+              techRecord.techRecord_axles ?? [],
+              techRecord.techRecord_dimensions_axleSpacing
+            );
+            techRecord.techRecord_dimensions_axleSpacing = axleSpacing;
+            techRecord.techRecord_axles = axles;
+          }
+          if (
+            techRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+            techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+            techRecord.techRecord_vehicleType === VehicleTypes.PSV
+          ) {
+            techRecord.techRecord_vehicleClass_code = vehicleClassCodeMap.get(techRecord.techRecord_vehicleClass_description ?? '');
+          }
           return techRecord;
         }),
         takeUntil(this.destroy$)
@@ -133,7 +145,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
     this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
 
-    this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated);
+    this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
   }
 
   checkForms(): void {

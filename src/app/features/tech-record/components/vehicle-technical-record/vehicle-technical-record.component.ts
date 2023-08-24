@@ -1,9 +1,11 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -24,7 +26,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
-  recordHistory?: V3TechRecordModel[];
+  recordHistory?: TechRecordSearchSchema[];
   hasAProvisional: Boolean = false;
 
   isCurrent = false;
@@ -70,11 +72,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   }
 
   get currentVrm(): string | undefined {
-    return this.techRecord?.primaryVrm;
-  }
-
-  get otherVrms(): Vrm[] | undefined {
-    return (this.techRecord as any).secondaryVrms;
+    return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
   }
 
   get roles(): typeof Roles {
@@ -129,7 +127,10 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   createTest(techRecord?: V3TechRecordModel): void {
     if (techRecord?.techRecord_hiddenInVta) {
       alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
-    } else if (techRecord?.techRecord_recordCompleteness === 'complete' || techRecord?.techRecord_recordCompleteness === 'testable') {
+    } else if (
+      (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'complete' ||
+      (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'testable'
+    ) {
       this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
       alert(
@@ -139,7 +140,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
       );
     }
   }
-  // TODO: V3 the update lambda should automatically create a provisional if the vehicle doesn't have one. It doesn't seem to be doing this at the moment
+
   handleSubmit(): void {
     this.summary.checkForms();
     if (!this.isInvalid) {

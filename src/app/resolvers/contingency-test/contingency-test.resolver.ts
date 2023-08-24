@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechRecordType as VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestType } from '@models/test-types/test-type.model';
@@ -24,38 +26,49 @@ export class ContingencyTestResolver implements Resolve<boolean> {
     private userService: UserService
   ) {}
 
+  //TODO: remove the anys
   resolve(): Observable<boolean> {
-    return this.store.select(selectTechRecord).pipe(
+    return this.techRecordService.techRecord$.pipe(
       switchMap(techRecord => {
-        const { vin, primaryVrm, systemNumber } = techRecord!;
-        const trailerId = (techRecord as any).trailerId;
+        const { vin, systemNumber } = techRecord as TechRecordType<'get'>;
+        const vrm = techRecord?.techRecord_vehicleType !== 'trl' ? techRecord?.primaryVrm : undefined;
+        const trailerId = techRecord?.techRecord_vehicleType === 'trl' ? techRecord.trailerId : undefined;
         return this.store.select(selectTechRecord).pipe(
           withLatestFrom(this.userService.user$),
           map(([viewableTechRecord, user]) => {
             const now = new Date();
             return {
               vin,
-              vrm: primaryVrm,
+              vrm,
               trailerId,
               systemNumber,
               vehicleType: viewableTechRecord?.techRecord_vehicleType,
               statusCode: viewableTechRecord?.techRecord_statusCode,
               testResultId: uuidv4(),
-              euVehicleCategory: viewableTechRecord?.techRecord_euVehicleCategory ?? null,
-              vehicleSize: (viewableTechRecord as any)?.techRecord_vehicleSize,
-              vehicleConfiguration: viewableTechRecord?.techRecord_vehicleConfiguration ?? null,
-              vehicleClass: (viewableTechRecord as any)?.techRecord_vehicleClass ?? null,
+              euVehicleCategory: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_euVehicleCategory ?? null,
+              vehicleSize: viewableTechRecord?.techRecord_vehicleType === 'psv' ? viewableTechRecord?.techRecord_vehicleSize : null,
+              vehicleConfiguration: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_vehicleConfiguration ?? null,
+              vehicleClass:
+                viewableTechRecord?.techRecord_vehicleType === 'psv' ||
+                viewableTechRecord?.techRecord_vehicleType === 'trl' ||
+                viewableTechRecord?.techRecord_vehicleType === 'hgv'
+                  ? {
+                      code: viewableTechRecord?.techRecord_vehicleClass_code,
+                      description: viewableTechRecord?.techRecord_vehicleClass_description
+                    }
+                  : null,
               vehicleSubclass: (viewableTechRecord as any)?.techRecord_vehicleSubclass ?? null,
               noOfAxles: viewableTechRecord?.techRecord_noOfAxles ?? 0,
               numberOfWheelsDriven: (viewableTechRecord as any)?.techRecord_numberOfWheelsDriven ?? null,
               testStatus: 'submitted',
               regnDate: viewableTechRecord?.techRecord_regnDate,
               numberOfSeats:
-                ((viewableTechRecord as any)?.techRecord_seatsLowerDeck ?? 0) + ((viewableTechRecord as any)?.techRecord_seatsUpperDeck ?? 0),
+                ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsLowerDeck ?? 0) +
+                ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsUpperDeck ?? 0),
               reasonForCancellation: '',
               createdAt: now.toISOString(),
               lastUpdatedAt: now.toISOString(),
-              firstUseDate: (viewableTechRecord as any)?.firstUseDate ?? null,
+              firstUseDate: viewableTechRecord?.techRecord_vehicleType === 'trl' ? viewableTechRecord?.techRecord_firstUseDate : null,
               createdByName: user.name,
               createdById: user.oid,
               lastUpdatedByName: user.name,

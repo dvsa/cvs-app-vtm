@@ -3,10 +3,11 @@ import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { NotTrailer, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
@@ -21,7 +22,7 @@ import { Subject, catchError, filter, of, switchMap, take, takeUntil, throwError
   styleUrls: ['./tech-record-amend-vrm.component.scss']
 })
 export class AmendVrmComponent implements OnDestroy, OnInit {
-  techRecord?: V3TechRecordModel;
+  techRecord?: NotTrailer;
   makeAndModel?: string;
 
   form = new FormGroup({
@@ -52,21 +53,16 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
-      if (record?.techRecord_statusCode === 'archived') {
+      if (record?.techRecord_statusCode === 'archived' || !record) {
         return this.navigateBack();
       }
-      this.techRecord = record;
+      this.techRecord = record as NotTrailer;
+      this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
     });
 
-    if (this.techRecord) {
-      this.makeAndModel = this.technicalRecordService.getMakeAndModel(this.techRecord);
-    }
-
-    this.actions$
-      .pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$))
-      .subscribe(({ vehicleTechRecord }) =>
-        this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`])
-      );
+    this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
+    });
   }
 
   ngOnDestroy(): void {
@@ -112,8 +108,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
             amendVrm({
               newVrm: this.form.value.newVrm,
               cherishedTransfer: this.form.value.isCherishedTransfer,
-              systemNumber: this.techRecord?.systemNumber!,
-              createdTimestamp: this.techRecord?.createdTimestamp!
+              systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
+              createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
             })
           );
         },

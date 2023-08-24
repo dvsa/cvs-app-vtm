@@ -23,6 +23,7 @@ export class DynamicFormService {
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
     [ValidatorNames.Alphanumeric]: () => CustomValidators.alphanumeric(),
+    [ValidatorNames.Email]: () => CustomValidators.email(),
     [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg),
     [ValidatorNames.CustomPattern]: (args: string[]) => CustomValidators.customPattern([...args]),
     [ValidatorNames.DateNotExceed]: (args: { sibling: string; months: number }) => CustomValidators.dateNotExceed(args.sibling, args.months),
@@ -144,11 +145,10 @@ export class DynamicFormService {
 
     if (errors) {
       const errorList = Object.keys(errors);
-
       errorList.forEach(error => {
         validationErrorList.push({
           error: ErrorMessageMap[error](errors[error], meta?.customValidatorErrorName ?? meta?.label),
-          anchorLink: meta?.name
+          anchorLink: meta?.customId ?? meta?.name
         } as GlobalError);
       });
     }

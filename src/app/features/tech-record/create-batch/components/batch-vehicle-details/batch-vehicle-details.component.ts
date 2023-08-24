@@ -7,11 +7,9 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectTechRecord } from '@store/technical-records';
-import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from 'rxjs';
+import { Observable, Subject, combineLatest, filter, firstValueFrom, take } from 'rxjs';
 
 @Component({
   selector: 'app-batch-vehicle-details',
@@ -31,8 +29,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private technicalRecordService: TechnicalRecordService,
-    private batchTechRecordService: BatchTechnicalRecordService,
-    private store: Store
+    private batchTechRecordService: BatchTechnicalRecordService
   ) {
     this.form = this.fb.group({
       vehicles: this.fb.array([]),
@@ -41,12 +38,9 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
       ])
     });
 
-    this.store
-      .select(selectTechRecord)
-      .pipe(take(1))
-      .subscribe(vehicle => {
-        if (!vehicle) return this.back();
-      });
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(vehicle => {
+      if (!vehicle) return this.back();
+    });
 
     this.batchTechRecordService.vehicleType$.pipe(take(1)).subscribe(vehicleType => (this.vehicleType = vehicleType));
   }
@@ -104,13 +98,13 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
         },
         this.vehicleType
       ),
-      systemNumber: [''],
-      oldVehicleStatus: ['']
+      createdTimestamp: [''],
+      systemNumber: ['']
     });
   }
 
   validate(group: AbstractControl): void {
-    group.get('vin')!.updateValueAndValidity();
+    group.get('vin')?.updateValueAndValidity();
   }
 
   getVinControl(group: AbstractControl): CustomFormControl | null {

@@ -1,30 +1,30 @@
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import {
-  VehicleTechRecordModel,
   StatusCodes,
   VehicleTypes,
   VehicleConfigurations,
   FrameDescriptions,
   EuVehicleCategories,
-  approvalType,
-  PlateReasonForIssue,
-  V3TechRecordModel
+  approvalType
 } from '../app/models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
 
-export const createMockTrl = (systemNumber: number): V3TechRecordModel =>
-  createMock<V3TechRecordModel>({
+export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
+  createMock<TechRecordType<'trl'>>({
     systemNumber: `TRL`,
     vin: `XMGDE04FS0H0${12344 + systemNumber + 1}`,
-    trailerId: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
+    trailerId: 'TestId',
     techRecord_createdAt: new Date().toISOString(),
     techRecord_createdByName: 'Nathan',
     techRecord_statusCode: StatusCodes.CURRENT,
-    techRecord_vehicleType: VehicleTypes.TRL,
+    techRecord_vehicleType: 'trl',
     techRecord_regnDate: '1234',
     techRecord_firstUseDate: '1234',
-    techRecord_manufactureYear: 2022,
+    //techRecord_manufactureYear: '2022',
     techRecord_noOfAxles: 2,
     techRecord_brakes_dtpNumber: '1234',
+    techRecord_brakes_loadSensingValve: true,
+    techRecord_brakes_antilockBrakingSystem: true,
     techRecord_axles: undefined,
     // TODO: V3 height missing from types package
     // techRecord_dimensions_height: 30000,
@@ -32,7 +32,7 @@ export const createMockTrl = (systemNumber: number): V3TechRecordModel =>
     techRecord_dimensions_width: 10000,
     techRecord_suspensionType: '1',
     techRecord_roadFriendly: true,
-    techRecord_drawbarCouplingFitted: true,
+    //techRecord_drawbarCouplingFitted: true,
 
     techRecord_vehicleClass_description: 'trailer',
     techRecord_vehicleClass_code: '1',

@@ -1,25 +1,23 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { createMockTrl } from '@mocks/trl-record.mock';
 import { Roles } from '@models/roles.enum';
-import { approvalType, LettersOfAuth, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { approvalType } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/index';
+import { State, initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { LettersComponent } from './letters.component';
 
 describe('LettersComponent', () => {
   let component: LettersComponent;
   let fixture: ComponentFixture<LettersComponent>;
-  let route: ActivatedRoute;
-  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -50,39 +48,44 @@ describe('LettersComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LettersComponent);
     component = fixture.componentInstance;
-    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+    component.techRecord = {
+      systemNumber: 'foo',
+      createdTimestamp: 'bar',
+      vin: 'testVin',
+      techRecord_statusCode: 'current'
+    } as TechRecordType<'trl'>;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  //TODO V3 TRL's
-  // describe('eligibleForLetter', () => {
-  //   it('should return true if the approval type is valid', () => {
-  //     component.techRecord.approvalType = approvalType.EU_WVTA_23_ON;
-  //     expect(component.eligibleForLetter).toBeTruthy();
-  //   });
+  describe('eligibleForLetter', () => {
+    it('should return true if the approval type is valid', () => {
+      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = approvalType.EU_WVTA_23_ON;
+      expect(component.eligibleForLetter).toBeTruthy();
+    });
 
-  //   it('should return false if the approval type is valid', () => {
-  //     component.techRecord.approvalType = approvalType.NTA;
-  //     expect(component.eligibleForLetter).toBeFalsy();
-  //   });
-  // });
+    it('should return false if the approval type is valid', () => {
+      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = approvalType.NTA;
+      expect(component.eligibleForLetter).toBeFalsy();
+    });
+  });
 
-  // describe('letter', () => {
-  //   it('should return the letter if it exists', () => {
-  //     component.techRecord.letterOfAuth = { paragraphId: 3, letterIssuer: 'issuer' } as LettersOfAuth;
+  describe('letter', () => {
+    it('should return the letter if it exists', () => {
+      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterType = 'trailer acceptance';
+      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_paragraphId = 3;
+      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterIssuer = 'issuer';
+      expect(component.letter).toBeTruthy();
+      expect(component.letter!.paragraphId).toEqual(3);
+      expect(component.letter!.letterIssuer).toEqual('issuer');
+    });
 
-  //     expect(component.letter).toBeTruthy();
-  //     expect(component.letter!.paragraphId).toEqual(3);
-  //     expect(component.letter!.letterIssuer).toEqual('issuer');
-  //   });
+    it('should return undefined if it does not exist', () => {
+      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterType = undefined;
 
-  //   it('should return undefined if it does not exist', () => {
-  //     component.techRecord.letterOfAuth = undefined;
-
-  //     expect(component.letter).toBe(undefined);
-  //   });
-  // });
+      expect(component.letter).toBe(undefined);
+    });
+  });
 });

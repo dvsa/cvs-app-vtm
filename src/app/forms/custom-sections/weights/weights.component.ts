@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
@@ -16,7 +17,7 @@ import { Subscription, debounceTime } from 'rxjs';
   styleUrls: ['./weights.component.scss']
 })
 export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() vehicleTechRecord!: V3TechRecordModel;
+  @Input() vehicleTechRecord!: TechRecordType<'psv'> | TechRecordType<'trl'> | TechRecordType<'hgv'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -85,15 +86,15 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get axles(): CustomFormArray {
-    return this.form.get(['axles']) as CustomFormArray;
+    return this.form.get(['techRecord_axles']) as CustomFormArray;
   }
 
-  getAxleWeights(i: number): CustomFormGroup {
-    return this.axles.get([i, 'weights']) as CustomFormGroup;
+  getAxleForm(i: number): CustomFormGroup {
+    return this.axles.get([i]) as CustomFormGroup;
   }
-  // TODO: V3 remove as any HGV
+
   addAxle(): void {
-    if (!(this.vehicleTechRecord as any).axles || (this.vehicleTechRecord as any).axles!.length < 10) {
+    if (!this.vehicleTechRecord.techRecord_axles || this.vehicleTechRecord.techRecord_axles!.length < 10) {
       this.isError = false;
       this.store.dispatch(addAxle());
     } else {
@@ -104,8 +105,8 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
-    // TODO: V3 remove as any HGV
-    if ((this.vehicleTechRecord as any).axles!.length > minLength) {
+
+    if (this.vehicleTechRecord.techRecord_axles!.length > minLength) {
       this.isError = false;
       this.store.dispatch(removeAxle({ index }));
     } else {

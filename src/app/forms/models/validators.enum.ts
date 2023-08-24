@@ -1,6 +1,7 @@
 export enum ValidatorNames {
   CustomPattern = 'customPattern',
   DisableIfEquals = 'disableIfEquals',
+  Email = 'email',
   EnableIfEquals = 'enableIfEquals',
   HideIfEmpty = 'hideIfEmpty',
   HideIfNotEqual = 'hideIfNotEqual',

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
@@ -9,13 +8,13 @@ import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { vehicleBodyTypeCodeMap, vehicleBodyTypeDescriptionMap } from '@models/body-type-enum';
 import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
-import { BodyType, TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State } from '@store/index';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
 import { updateBody } from '@store/technical-records';
-import { Subject, debounceTime, takeUntil, Observable, map, take, skipWhile, combineLatest, mergeMap } from 'rxjs';
+import { Observable, Subject, combineLatest, debounceTime, map, mergeMap, skipWhile, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-body',
@@ -48,7 +47,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.destroy$),
         mergeMap((event: any) =>
           this.store.pipe(
-            select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, event.brakes.dtpNumber)),
+            select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, event.techRecord_brakes_dtpNumber)),
             take(1),
             map(referenceData => [event, referenceData as PsvMake])
           )
@@ -56,17 +55,19 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       )
       .subscribe(([event, psvMake]) => {
         // Set the body type code automatically based selection
-        const bodyType = event?.bodyType as BodyType;
-
-        if (bodyType?.description) {
+        if (event?.techRecord_bodyType_description) {
           // body type codes are specific to the vehicle type
           const bodyTypes = vehicleBodyTypeDescriptionMap.get(this.techRecord.techRecord_vehicleType! as VehicleTypes);
-          event.bodyType['code'] = bodyTypes!.get(bodyType.description);
+          event.techRecord_bodyType_code = bodyTypes!.get(event?.techRecord_bodyType_description);
         }
 
         this.formChange.emit(event);
 
-        if (this.techRecord.techRecord_vehicleType === VehicleTypes.PSV && event?.brakes?.dtpNumber && event.brakes.dtpNumber.length >= 4) {
+        if (
+          this.techRecord.techRecord_vehicleType === VehicleTypes.PSV &&
+          event?.techRecord_brakes_dtpNumber &&
+          event.techRecord_brakes_dtpNumber.length >= 4
+        ) {
           this.store.dispatch(updateBody({ psvMake }));
         }
       });
@@ -122,14 +123,6 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
         return data?.map(option => ({ value: option.resourceKey, label: option.resourceKey })) as MultiOptions;
       })
     );
-  }
-
-  get bodyTypeForm(): FormGroup {
-    return this.form.get(['bodyType']) as FormGroup;
-  }
-
-  get brakesForm(): FormGroup {
-    return this.form.get(['brakes']) as FormGroup;
   }
 
   loadOptions(): void {

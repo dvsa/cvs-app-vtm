@@ -1,28 +1,27 @@
 import {
-  VehicleTechRecordModel,
   StatusCodes,
   VehicleTypes,
   FuelTypes,
   VehicleConfigurations,
   EuVehicleCategories,
-  approvalType,
-  V3TechRecordModel
+  approvalType
 } from '../app/models/vehicle-tech-record.model';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { createMock } from 'ts-auto-mock';
 import { BodyTypeDescription } from '@models/body-type-enum';
 import { HGVAxles, HGVPlates, PlateReasonForIssue, VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 
-export const createMockHgv = (systemNumber: number): V3TechRecordModel =>
-  createMock<V3TechRecordModel>({
+export const createMockHgv = (systemNumber: number): TechRecordType<'hgv'> =>
+  createMock<TechRecordType<'hgv'>>({
     systemNumber: `HGV`,
     vin: `XMGDE03FS0H0${12344 + systemNumber + 1}`,
     primaryVrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
-    secondaryVrms: undefined,
+    secondaryVrms: null,
     createdTimestamp: new Date().toISOString(),
     techRecord_createdAt: new Date().toISOString() as string,
     techRecord_createdByName: 'Nathan',
     techRecord_statusCode: StatusCodes.CURRENT,
-    techRecord_vehicleType: VehicleTypes.HGV,
+    techRecord_vehicleType: 'hgv',
     techRecord_regnDate: '1234',
     techRecord_manufactureYear: 2022,
     techRecord_noOfAxles: 2,
@@ -49,8 +48,6 @@ export const createMockHgv = (systemNumber: number): V3TechRecordModel =>
     techRecord_variantVersionNumber: 'variantversion123456',
     techRecord_dimensions_length: 1,
     techRecord_dimensions_width: 2,
-    techRecord_dimensions_axleSpacing_axles: '1-2',
-    techRecord_dimensions_axleSpacing_value: 4,
     techRecord_frontAxleToRearAxle: 3,
     techRecord_frontVehicleTo5thWheelCouplingMin: 5,
     techRecord_frontVehicleTo5thWheelCouplingMax: 6,

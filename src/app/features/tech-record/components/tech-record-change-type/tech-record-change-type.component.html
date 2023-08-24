@@ -10,7 +10,7 @@
 
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">VRM</dt>
-    <app-number-plate *ngIf="techRecord?.primaryVrm" [vrm]="techRecord?.primaryVrm"></app-number-plate>
+    <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
   </div>
 
   <div class="govuk-summary-list__row">

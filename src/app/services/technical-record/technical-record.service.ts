@@ -1,8 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   EuVehicleCategories,
+  NotTrailer,
   StatusCodes,
   TechRecordModel,
   V3TechRecordModel,
@@ -12,7 +15,6 @@ import {
 import { Store, select } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
-import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 import {
   selectTechRecordSearchResults,
   selectTechRecordSearchResultsBySystemNumber
@@ -20,7 +22,6 @@ import {
 import {
   clearAllSectionStates,
   createVehicle,
-  editingTechRecord,
   selectSectionState,
   selectTechRecord,
   techRecord,
@@ -68,22 +69,14 @@ export class TechnicalRecordService {
     ]).pipe(
       tap(([techRecord, nonEditingTechRecord, isEditing]) => {
         if (isEditing && !techRecord && nonEditingTechRecord) {
-          this.updateEditingTechRecord(nonEditingTechRecord);
+          this.updateEditingTechRecord(nonEditingTechRecord as TechRecordType<'put'>);
         }
       }),
       map(([techRecord, nonEditingTechRecord, isEditing]) => (isEditing && !techRecord ? nonEditingTechRecord : techRecord))
     );
   }
 
-  /**
-   * A function which takes either a TechRecordModel or a VehicleTechRecordModel, maps the missing vehicle record information if passed
-   * a TechRecordModel and dispatches the action to update the editing tech record.
-   * @param record - TechRecordModel or VehicleTechRecordModel
-   * @param resetVehicleAttributes [resetVehicleAttributes=false] - Used to overwrite the attributes inside of the properties inside
-   * the VehicleTechRecordModel to the un-edited information present in state for that vehicle. Only used if passed a TechRecordModel.
-   * @returns void
-   */
-  updateEditingTechRecord(record: V3TechRecordModel): void {
+  updateEditingTechRecord(record: TechRecordType<'put'>): void {
     this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: record }));
   }
 
@@ -104,7 +97,7 @@ export class TechnicalRecordService {
     this.store.dispatch(createVehicle({ techRecord_vehicleType: vehicleType }));
   }
 
-  clearReasonForCreation(vehicleTechRecord?: V3TechRecordModel): void {
+  clearReasonForCreation(vehicleTechRecord?: TechRecordType<'put'>): void {
     this.techRecord$
       .pipe(
         map(data => cloneDeep(data ?? vehicleTechRecord)),
@@ -113,7 +106,7 @@ export class TechnicalRecordService {
       .subscribe(data => {
         if (data) {
           data.techRecord_reasonForCreation = '';
-          this.updateEditingTechRecord(data);
+          this.updateEditingTechRecord(data as TechRecordType<'put'>);
         }
       });
   }
@@ -146,11 +139,11 @@ export class TechnicalRecordService {
     this.store.dispatch(updateEditingTechRecordCancel());
   }
 
-  get searchResults$(): Observable<SearchResult[] | undefined> {
+  get searchResults$(): Observable<TechRecordSearchSchema[] | undefined> {
     return this.store.pipe(select(selectTechRecordSearchResults));
   }
 
-  get searchResultsWithUniqueSystemNumbers$(): Observable<SearchResult[] | undefined> {
+  get searchResultsWithUniqueSystemNumbers$(): Observable<TechRecordSearchSchema[] | undefined> {
     return this.store.pipe(select(selectTechRecordSearchResultsBySystemNumber));
   }
   get techRecordStatus$(): Observable<StatusCodes | undefined> {
@@ -161,7 +154,8 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectSectionState));
   }
 
-  getMakeAndModel(techRecord: V3TechRecordModel): string {
+  //TODO: remove the anys
+  getMakeAndModel(techRecord: V3TechRecordModel | NotTrailer): string {
     if (!(techRecord as any)?.techRecord_make && !(techRecord as any)?.techRecord_chassisMake) return '';
 
     return `${techRecord?.techRecord_vehicleType === 'psv' ? (techRecord as any).techRecord_chassisMake : (techRecord as any).techRecord_make} - ${

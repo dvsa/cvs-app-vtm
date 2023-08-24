@@ -1,14 +1,7 @@
+import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
-import { TechRecordCompleteLGVSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/complete';
-import { TechRecordSkeletonCarSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/skeleton';
-// import { GETHGVTechnicalRecordV3Complete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
-// import { GETHGVTechnicalRecordV3Skeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/skeleton';
-// import { GETPSVTechnicalRecordV3Skeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
-// import { GETPSVTechnicalRecordV3Complete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/complete';
-// import { GETTRLTechnicalRecordV3Complete } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
-// import { GETTRLTechnicalRecordV3Skeleton } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/skeleton';
-// import { TechRecordCompleteMotorcycleSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/motorcycle/complete';
-// import { TechRecordSkeletonMotorcycleSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/motorcycle/skeleton';
 
 export interface VehicleTechRecordModel {
   vrms: Vrm[];
@@ -18,11 +11,17 @@ export interface VehicleTechRecordModel {
   techRecord: TechRecordModel[];
 }
 
-export type V3TechRecordModel = TechRecordCompleteLGVSchema | TechRecordSkeletonCarSchema;
+export type V3TechRecordModel = TechRecordType<'get'> | TechRecordType<'put'>;
+export type NotTrailer =
+  | TechRecordTypeByVehicle<'hgv'>
+  | TechRecordTypeByVehicle<'psv'>
+  | TechRecordTypeByVehicle<'motorcycle'>
+  | TechRecordTypeByVehicle<'lgv'>
+  | TechRecordTypeByVehicle<'car'>;
 
-export interface BatchUpdateVehicleModel extends VehicleTechRecordModel {
-  oldVehicleStatus?: StatusCodes | undefined;
-}
+export type BatchUpdateVehicleModel = TechRecordType<'put'> & {
+  createdTimestamp: string;
+};
 
 export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'> {
   primaryVrm?: string;
@@ -157,7 +156,7 @@ export enum VehicleSubclass {
 
 export interface LettersOfAuth {
   letterType: string;
-  paragraphId: ParagraphId;
+  paragraphId: ParagraphIds;
   letterIssuer: string;
   letterDateRequested: string;
   letterContents: string;

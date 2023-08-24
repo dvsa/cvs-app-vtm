@@ -2,16 +2,17 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { V3TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
-import { createVehicleRecord, createVehicleRecordSuccess, selectTechRecord } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { map, Observable, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
-import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 import { Actions, ofType } from '@ngrx/effects';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { createVehicleRecord, createVehicleRecordSuccess, selectTechRecord } from '@store/technical-records';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { Observable, Subject, map, take, takeUntil, withLatestFrom } from 'rxjs';
+import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
   selector: 'app-hydrate-new-vehicle-record',
@@ -106,7 +107,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
         withLatestFrom(this.isBatch$)
       )
       .subscribe(([vehicleList, isBatch]) => {
-        vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle: vehicle as V3TechRecordModel })));
+        vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle: vehicle as TechRecordType<'put'> })));
         this.technicalRecordService.clearSectionTemplateStates();
         if (isBatch) this.navigate();
       });

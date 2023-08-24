@@ -168,4 +168,12 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   elementHasErrors(i: number) {
     return this.day || this.month || this.year ? this.errors?.errors?.some(e => e.index === i) : false;
   }
+
+  getId(name: string) {
+    const id = name + '-day';
+    if (this.control) {
+      this.control.meta.customId = id;
+    }
+    return id;
+  }
 }

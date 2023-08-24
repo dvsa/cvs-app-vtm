@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestType } from '@api/test-types';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
@@ -63,7 +64,7 @@ describe('CreateTestTypeComponent', () => {
   describe('AfterContentInit', () => {
     const testCases = [
       {
-        record: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_recordCompleteness: 'foo' },
+        record: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_recordCompleteness: 'foo' } as V3TechRecordModel,
         message:
           'Incomplete vehicle record.\n\n' +
           'This vehicle does not have enough data to be tested. ' +
@@ -76,7 +77,7 @@ describe('CreateTestTypeComponent', () => {
           vin: 'testVin',
           techRecord_hiddenInVta: true,
           techRecord_recordCompleteness: 'complete'
-        },
+        } as V3TechRecordModel,
         message: 'Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.'
       }
     ];

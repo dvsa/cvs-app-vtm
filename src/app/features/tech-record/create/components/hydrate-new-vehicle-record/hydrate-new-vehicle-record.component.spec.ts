@@ -3,16 +3,16 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { firstValueFrom, lastValueFrom, of, ReplaySubject } from 'rxjs';
-import { HydrateNewVehicleRecordComponent } from './hydrate-new-vehicle-record.component';
-import { createVehicleRecordSuccess } from '@store/technical-records';
-import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
+import { createVehicleRecordSuccess } from '@store/technical-records';
+import { firstValueFrom, of, ReplaySubject } from 'rxjs';
+import { HydrateNewVehicleRecordComponent } from './hydrate-new-vehicle-record.component';
 
 describe('HydrateNewVehicleRecordComponent', () => {
   let component: HydrateNewVehicleRecordComponent;
@@ -69,13 +69,13 @@ describe('HydrateNewVehicleRecordComponent', () => {
       expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
     });
     // TODO V3 HGV PSV TRL
-    // it('should navigate back to batch results', () => {
-    //   const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+    it('should navigate back to batch results', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-    //   component.navigate();
+      component.navigate();
 
-    //   expect(navigateSpy).toBeCalledWith(['batch-results'], { relativeTo: route });
-    // });
+      expect(navigateSpy).toBeCalledWith(['batch-results'], { relativeTo: route });
+    });
   });
 
   describe('handleSubmit', () => {
@@ -96,7 +96,11 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
       component.handleSubmit();
 
-      actions$.next(createVehicleRecordSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } }));
+      actions$.next(
+        createVehicleRecordSuccess({
+          vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>
+        })
+      );
       tick();
 
       expect(navigateSpy).toHaveBeenCalledTimes(1);

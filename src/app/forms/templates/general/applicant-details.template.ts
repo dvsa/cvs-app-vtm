@@ -1,5 +1,5 @@
-import { FormNode, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { FormNode, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const ApplicantDetails: FormNode = {
   name: 'techRecord',
@@ -9,7 +9,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_applicantDetails_name',
       label: 'Name or company',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 150 }],
@@ -18,7 +18,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_applicantDetails_address1',
       label: 'Address line 1',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
@@ -27,7 +27,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_applicantDetails_address2',
       label: 'Address line 2',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
@@ -36,7 +36,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_applicantDetails_postTown',
       label: 'Town or City',
-      value: '',
+      value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
@@ -45,7 +45,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_applicantDetails_address3',
       label: 'County',
-      value: '',
+      value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
@@ -54,7 +54,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_applicantDetails_postCode',
       label: 'Postcode',
-      value: '',
+      value: null,
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 12 }],
@@ -63,7 +63,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_applicantDetails_telephoneNumber',
       label: 'Telephone number',
-      value: '',
+      value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
@@ -72,7 +72,7 @@ export const ApplicantDetails: FormNode = {
     {
       name: 'techRecord_applicantDetails_emailAddress',
       label: 'Email address',
-      value: '',
+      value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 255 }],

@@ -3,6 +3,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
@@ -21,7 +22,6 @@ import { Subject, take, takeUntil } from 'rxjs';
 export class AmendVinComponent implements OnDestroy, OnInit {
   techRecord?: V3TechRecordModel;
   form: FormGroup;
-  makeAndModel?: string;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -51,9 +51,6 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(record => (!record ? this.navigateBack() : (this.techRecord = record)));
-    if (this.techRecord) {
-      this.makeAndModel = this.technicalRecordService.getMakeAndModel(this.techRecord);
-    }
   }
 
   ngOnDestroy(): void {
@@ -67,6 +64,14 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   get vehicleType(): VehicleTypes | undefined {
     return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
+  }
+
+  get makeAndModel(): string | undefined {
+    return this.techRecord ? this.technicalRecordService.getMakeAndModel(this.techRecord) : undefined;
+  }
+
+  get currentVrm(): string | undefined {
+    return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
   }
 
   isFormValid(): boolean {
@@ -90,7 +95,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
   }
 
   handleSubmit(): void {
-    const record: V3TechRecordModel = { ...this.techRecord! };
+    const record = { ...this.techRecord! } as TechRecordType<'put'>;
     record.vin = this.form.value.vin;
 
     if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
