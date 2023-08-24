@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { ReferenceDataState, selectBrakeByCode } from '@store/reference-data';
 import { updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { debounceTime, mergeMap, Observable, of, Subject, takeUntil, withLatestFrom } from 'rxjs';
+import { Observable, Subject, debounceTime, mergeMap, of, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-psv-brakes',
@@ -54,6 +54,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(([selectedBrake, event]: [Brake | undefined, any]) => {
         // Set the brake details automatically based selection
         if (selectedBrake && event?.brakes?.brakeCodeOriginal) {
+          event.brakes['brakeCode'] = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
           event.brakes['dataTrBrakeOne'] = selectedBrake.service;
           event.brakes['dataTrBrakeTwo'] = selectedBrake.secondary;
           event.brakes['dataTrBrakeThree'] = selectedBrake.parking;
@@ -84,6 +85,10 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get brakeCode(): string {
+    return `${this.brakeCodePrefix}${this.form.get('brakes.brakeCodeOriginal')?.value}`;
   }
 
   get brakesForm(): FormGroup {
