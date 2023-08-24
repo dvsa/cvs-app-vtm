@@ -74,8 +74,8 @@ describe('LettersComponent', () => {
 
   describe('letter', () => {
     it('should return the letter if it exists', () => {
-      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterType = 'trailer accept';
-      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_paragraphId = '3';
+      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterType = 'trailer acceptance';
+      (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_paragraphId = 3;
       (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterIssuer = 'issuer';
       expect(component.letter).toBeTruthy();
       expect(component.letter!.paragraphId).toEqual('3');
