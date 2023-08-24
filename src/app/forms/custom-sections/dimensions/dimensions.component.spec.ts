@@ -7,6 +7,8 @@ import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 import { DimensionsComponent } from './dimensions.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
 describe('DimensionsComponent', () => {
   let component: DimensionsComponent;
@@ -23,7 +25,7 @@ describe('DimensionsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DimensionsComponent);
     component = fixture.componentInstance;
-    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+    component.techRecord = mockVehicleTechnicalRecord('psv') as TechRecordType<'hgv'>;
   });
   it('should create', () => {
     expect(component).toBeTruthy();

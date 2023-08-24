@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
@@ -13,7 +14,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
   styleUrls: ['./dimensions.component.scss']
 })
 export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() techRecord!: V3TechRecordModel;
+  @Input() techRecord!: TechRecordType<'trl'> | TechRecordType<'psv'> | TechRecordType<'hgv'>;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
 
@@ -74,9 +75,12 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   get dimensions(): CustomFormGroup {
     return this.form.get(['dimensions']) as CustomFormGroup;
   }
-  //TODO: remove the anys
+
   get hasAxleSpacings(): boolean {
-    return !!(this.techRecord as any).techRecord_dimensions_axleSpacing?.length;
+    if (this.techRecord.techRecord_vehicleType === 'psv') {
+      return false;
+    }
+    return !!this.techRecord.techRecord_dimensions_axleSpacing?.length;
   }
 
   get axleSpacings(): CustomFormArray {

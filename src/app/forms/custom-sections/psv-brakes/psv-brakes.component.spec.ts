@@ -6,8 +6,6 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
-
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 import { PsvBrakesComponent } from './psv-brakes.component';
