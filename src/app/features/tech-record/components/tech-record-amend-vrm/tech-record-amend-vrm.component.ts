@@ -85,14 +85,6 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
   }
 
-  // get makeAndModel(): string | undefined {
-  //   return this.techRecord ? this.technicalRecordService.getMakeAndModel(this.techRecord) : undefined;
-  // }
-
-  // get currentVrm(): string | undefined {
-  //   return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
-  // }
-
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
