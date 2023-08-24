@@ -33,17 +33,17 @@ export class TechnicalRecordHttpService {
     this.store.dispatch(fetchSearchResult({ searchBy: type, term }));
   }
 
-  getBySystemNumber(systemNumber: string): Observable<TechRecordSearchSchema[]> {
+  getBySystemNumber$(systemNumber: string): Observable<TechRecordSearchSchema[]> {
     return this.search$(SEARCH_TYPES.SYSTEM_NUMBER, systemNumber);
   }
 
-  getRecordV3(systemNumber: string, createdTimestamp: string): Observable<TechRecordType<'get'>> {
+  getRecordV3$(systemNumber: string, createdTimestamp: string): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`;
 
     return this.http.get<TechRecordType<'get'>>(url, { responseType: 'json' });
   }
 
-  createVehicleRecord(newVehicleRecord: V3TechRecordModel): Observable<TechRecordType<'get'>> {
+  createVehicleRecord$(newVehicleRecord: V3TechRecordModel): Observable<TechRecordType<'get'>> {
     const recordCopy: TechRecordType<'put'> = cloneDeep(newVehicleRecord) as TechRecordType<'put'>;
 
     const body = {
@@ -53,7 +53,7 @@ export class TechnicalRecordHttpService {
     return this.http.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body);
   }
 
-  updateTechRecords(techRecord: TechRecordType<'put'>): Observable<TechRecordType<'get'>> {
+  updateTechRecords$(techRecord: TechRecordType<'put'>): Observable<TechRecordType<'get'>> {
     const body = { ...techRecord } as TechRecordType<'get'>;
 
     const url = `${environment.VTM_API_URI}/v3/technical-records/${body.systemNumber}/${body.createdTimestamp}`;
@@ -61,7 +61,7 @@ export class TechnicalRecordHttpService {
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
-  amendVrm(newVrm: string, cherishedTransfer: boolean, systemNumber: string, createdTimestamp: string): Observable<TechRecordType<'get'>> {
+  amendVrm$(newVrm: string, cherishedTransfer: boolean, systemNumber: string, createdTimestamp: string): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`;
     const body = {
       newVrm,
@@ -70,7 +70,7 @@ export class TechnicalRecordHttpService {
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
-  archiveTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForArchiving: string): Observable<TechRecordType<'get'>> {
+  archiveTechnicalRecord$(systemNumber: string, createdTimestamp: string, reasonForArchiving: string): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/archive/${systemNumber}/${createdTimestamp}`;
 
     const body = { reasonForArchiving };
@@ -78,7 +78,7 @@ export class TechnicalRecordHttpService {
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
-  promoteTechnicalRecord(systemNumber: string, createdTimestamp: string, reasonForPromoting: string): Observable<TechRecordType<'get'>> {
+  promoteTechnicalRecord$(systemNumber: string, createdTimestamp: string, reasonForPromoting: string): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/promote/${systemNumber}/${createdTimestamp}`;
 
     const body = { reasonForPromoting };
@@ -86,20 +86,24 @@ export class TechnicalRecordHttpService {
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
-  //TODO: remove the anys
-  generatePlate(vehicleRecord: TechRecordType<'get'>, reason: string, user: { name?: string; email?: string }) {
+  generatePlate$(vehicleRecord: TechRecordType<'get'>, reason: string, user: { name?: string; email?: string }): Observable<Object> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`;
 
     const body = {
       reasonForCreation: reason,
       vtmUsername: user.name,
-      recipientEmailAddress: (vehicleRecord as any)?.techRecord_applicantDetails_emailAddress ?? user.email
+      recipientEmailAddress: (vehicleRecord as TechRecordType<'get'>)?.techRecord_applicantDetails_emailAddress ?? user.email
     };
 
     return this.http.post(url, body, { responseType: 'json' });
   }
 
-  generateLetter(vehicleRecord: TechRecordType<'get'>, letterType: string, paragraphId: number, user: { name?: string; email?: string }) {
+  generateLetter$(
+    vehicleRecord: TechRecordType<'get'>,
+    letterType: string,
+    paragraphId: number,
+    user: { name?: string; email?: string }
+  ): Observable<string> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/letter/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`;
 
     const body = {
@@ -107,7 +111,7 @@ export class TechnicalRecordHttpService {
       letterType: letterType,
       paragraphId: paragraphId,
       recipientEmailAddress: vehicleRecord.techRecord_applicantDetails_emailAddress
-        ? (vehicleRecord as any).techRecord_applicantDetails_emailAddress
+        ? (vehicleRecord as TechRecordType<'get'>).techRecord_applicantDetails_emailAddress
         : user.email
     };
 
