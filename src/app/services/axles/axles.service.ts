@@ -55,7 +55,7 @@ export class AxlesService {
     return axles;
   }
 
-  generateEmptyAxle(axleNumber: number): Axle {
+  generateEmptyAxle(axleNumber: number): any {
     const weights = { gbWeight: null, eecWeight: null, designWeight: null };
 
     const tyres = { tyreSize: null, fitmentCode: null, dataTrAxles: null, plyRating: null, tyreCode: null };
