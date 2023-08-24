@@ -70,10 +70,10 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     this.destroy$.complete();
   }
 
-  get reasons(): Array<FormNodeOption<string>> {
+  get reasons(): Array<FormNodeOption<boolean>> {
     return [
-      { label: 'Cherished transfer', value: 'true', hint: 'Current VRM will be archived' },
-      { label: 'Correcting an error', value: 'false', hint: 'Current VRM will not be archived' }
+      { label: 'Cherished transfer', value: true, hint: 'Current VRM will be archived' },
+      { label: 'Correcting an error', value: false, hint: 'Current VRM will not be archived' }
     ];
   }
 
