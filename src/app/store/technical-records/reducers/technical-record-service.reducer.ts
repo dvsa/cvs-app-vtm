@@ -49,7 +49,6 @@ import {
   updateTechRecordSuccess
 } from '../actions/technical-record-service.actions';
 import { vehicleBatchCreateReducer } from './batch-create.reducer';
-//TODO: V3 re-import vehicleBatchCreateReducer from batch-create.reducer
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BatchRecords, initialBatchState } from './batch-create.reducer';

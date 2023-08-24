@@ -21,7 +21,6 @@ import { Observable, Subject, debounceTime, mergeMap, of, takeUntil, tap, withLa
   styleUrls: ['./psv-brakes.component.scss']
 })
 export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
-  //TODO V3 remove any
   @Input() vehicleTechRecord!: TechRecordType<'psv'>;
   @Input() isEditing = false;
 
