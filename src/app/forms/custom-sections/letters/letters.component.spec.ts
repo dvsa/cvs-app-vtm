@@ -78,7 +78,7 @@ describe('LettersComponent', () => {
       (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_paragraphId = 3;
       (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterIssuer = 'issuer';
       expect(component.letter).toBeTruthy();
-      expect(component.letter!.paragraphId).toEqual('3');
+      expect(component.letter!.paragraphId).toEqual(3);
       expect(component.letter!.letterIssuer).toEqual('issuer');
     });
 
