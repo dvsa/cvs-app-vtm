@@ -48,7 +48,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
   public form!: CustomFormGroup;
   public searchResults: Array<ReferenceDataTyre> | null = null;
   public vehicleTechRecord?: V3TechRecordModel;
-  public viewableTechRecord: V3TechRecordModel | undefined = undefined;
+  public viewableTechRecord?: TechRecordType<'hgv'> | TechRecordType<'psv'> | TechRecordType<'trl'>;
   private params: SearchParams = {};
   private pageStart?: number;
   private pageEnd?: number;
@@ -76,7 +76,9 @@ export class TechRecordSearchTyresComponent implements OnInit {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
     this.route.params.pipe(take(1)).subscribe(p => (this.params = p));
-    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(data => (this.viewableTechRecord = data));
+    this.technicalRecordService.techRecord$
+      .pipe(take(1))
+      .subscribe(data => (this.viewableTechRecord = data as TechRecordType<'hgv'> | TechRecordType<'psv'> | TechRecordType<'trl'>));
     this.referenceDataService
       .getTyreSearchReturn$()
       .pipe(take(1))
@@ -144,18 +146,18 @@ export class TechRecordSearchTyresComponent implements OnInit {
 
   handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
     const axleIndex = Number(this.params.axleNumber!) - 1;
-    if ((this.viewableTechRecord as TechRecordType<'hgv'> | TechRecordType<'psv'>)?.techRecord_axles?.[axleIndex].tyres_tyreCode) {
+
+    if (this.viewableTechRecord?.techRecord_axles?.[axleIndex]) {
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
-      (this.viewableTechRecord as TechRecordType<'hgv'> | TechRecordType<'psv'>).techRecord_axles![axleIndex].tyres_tyreCode = Number(tyre.code);
-      (this.viewableTechRecord as TechRecordType<'hgv'> | TechRecordType<'psv'>).techRecord_axles![axleIndex].tyres_tyreSize = tyre.tyreSize;
-      (this.viewableTechRecord as TechRecordType<'hgv'> | TechRecordType<'psv'>).techRecord_axles![axleIndex].tyres_plyRating = tyre.plyRating;
-      if ((this.viewableTechRecord as TechRecordType<'hgv'> | TechRecordType<'psv'>).techRecord_axles![axleIndex].tyres_fitmentCode) {
-        (this.viewableTechRecord as TechRecordType<'hgv'> | TechRecordType<'psv'>).techRecord_axles![axleIndex].tyres_dataTrAxles =
-          (this.viewableTechRecord as TechRecordType<'hgv'> | TechRecordType<'psv'>).techRecord_axles![axleIndex].tyres_fitmentCode === 'single'
+      this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_tyreCode = Number(tyre.code);
+      this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_tyreSize = tyre.tyreSize;
+      this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_plyRating = tyre.plyRating;
+      if (this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_fitmentCode) {
+        this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_dataTrAxles =
+          this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_fitmentCode === 'single'
             ? parseInt(tyre.loadIndexSingleLoad ?? '0')
             : parseInt(tyre.loadIndexTwinLoad ?? '0');
       }
-
       this.technicalRecordService.updateEditingTechRecord(this.viewableTechRecord as TechRecordTypeByVerb<'put'>);
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
