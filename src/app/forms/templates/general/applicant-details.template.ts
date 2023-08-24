@@ -75,7 +75,7 @@ export const ApplicantDetails: FormNode = {
       value: null,
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 255 }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 255 }, { name: ValidatorNames.Email }],
       customId: 'applicantEmailAddress'
     }
   ]
