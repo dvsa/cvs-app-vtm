@@ -402,7 +402,7 @@ describe('Vehicle Technical Record Reducer', () => {
           expect(updatedTechRecord?.techRecord_noOfAxles).toBe(4);
           expect(updatedTechRecord?.techRecord_axles?.length).toBe(4);
 
-          const newAxleField = updatedTechRecord?.techRecord_axles || [];
+          const newAxleField = updatedTechRecord?.techRecord_axles ?? [];
 
           expect(newAxleField[3].tyres_dataTrAxles).toBeNull();
           expect(newAxleField[3].tyres_fitmentCode).toBeNull();
