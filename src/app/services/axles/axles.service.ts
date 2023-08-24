@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
+import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { Axle, AxleSpacing } from '@models/vehicle-tech-record.model';
 import cloneDeep from 'lodash.clonedeep';
 
@@ -6,7 +9,10 @@ import cloneDeep from 'lodash.clonedeep';
   providedIn: 'root'
 })
 export class AxlesService {
-  normaliseAxles(axles?: Axle[], axleSpacings?: AxleSpacing[]): [Axle[] | undefined, AxleSpacing[] | undefined] {
+  normaliseAxles(
+    axles?: HGVAxles[] | PSVAxles[] | TRLAxles[],
+    axleSpacings?: AxleSpacing[]
+  ): [HGVAxles[] | PSVAxles[] | TRLAxles[] | undefined, AxleSpacing[] | undefined] {
     let newAxles = cloneDeep(axles ?? []);
     let newAxleSpacings = cloneDeep(axleSpacings ?? []);
 
@@ -16,7 +22,7 @@ export class AxlesService {
       newAxles = this.generateAxlesFromAxleSpacings(newAxleSpacings.length, newAxles);
     }
 
-    newAxles.sort((a, b) => a.axleNumber! - b.axleNumber!);
+    newAxles.sort((a, b) => a?.axleNumber! - b?.axleNumber!);
 
     return [newAxles, newAxleSpacings];
   }
@@ -36,7 +42,10 @@ export class AxlesService {
     return axleSpacing;
   }
 
-  generateAxlesFromAxleSpacings(vehicleAxleSpacingsLength: number, previousAxles?: Axle[]): Axle[] {
+  generateAxlesFromAxleSpacings(
+    vehicleAxleSpacingsLength: number,
+    previousAxles?: HGVAxles[] | PSVAxles[] | TRLAxles[]
+  ): HGVAxles[] | PSVAxles[] | TRLAxles[] {
     const axles = previousAxles ?? [];
 
     for (let i = axles.length; i < vehicleAxleSpacingsLength + 1; i++) {
