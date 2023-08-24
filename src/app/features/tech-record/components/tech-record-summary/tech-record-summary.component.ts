@@ -75,8 +75,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
             techRecord.techRecord_dimensions_axleSpacing = axleSpacing;
             techRecord.techRecord_axles = axles;
           }
-          if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
-            techRecord.techRecord_vehicleClass_code = vehicleClassCodeMap.get(techRecord.techRecord_vehicleClass_description) ?? '';
+          if (
+            techRecord.techRecord_vehicleType === VehicleTypes.TRL ||
+            techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+            techRecord.techRecord_vehicleType === VehicleTypes.PSV
+          ) {
+            techRecord.techRecord_vehicleClass_code = vehicleClassCodeMap.get(techRecord.techRecord_vehicleClass_description ?? '');
           }
           return techRecord;
         }),
