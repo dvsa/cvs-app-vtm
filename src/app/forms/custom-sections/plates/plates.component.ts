@@ -51,7 +51,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get hasPlates(): boolean {
-    return this.techRecord.techRecord_plates?.length ? true : false;
+    return !!this.techRecord.techRecord_plates?.length;
   }
 
   get sortedPlates(): HGVPlates[] | TRLPlates[] | undefined {
