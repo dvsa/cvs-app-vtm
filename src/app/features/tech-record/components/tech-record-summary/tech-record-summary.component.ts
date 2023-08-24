@@ -14,7 +14,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { vehicleClassCodeMap } from '@models/vehicle-class-enum';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -66,12 +66,15 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
             return;
           }
           const techRecord = cloneDeep(record);
-          // TODO: V3 for HGV's and TRL's
-          // if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.vehicleType === VehicleTypes.TRL) {
-          //   const [axles, axleSpacing] = this.axlesService.normaliseAxles(techRecord.axles, techRecord.dimensions?.axleSpacing);
-          //   techRecord.dimensions = { ...techRecord.dimensions, axleSpacing };
-          //   techRecord.axles = axles;
-          // }
+
+          if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+            const [axles, axleSpacing] = this.axlesService.normaliseAxles(
+              techRecord.techRecord_axles as Axle[],
+              techRecord.techRecord_dimensions_axleSpacing
+            );
+            techRecord.techRecord_dimensions_axleSpacing = axleSpacing;
+            techRecord.techRecord_axles = axles;
+          }
           if (techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
             techRecord.techRecord_vehicleClass_code = vehicleClassCodeMap.get(techRecord.techRecord_vehicleClass_description) ?? '';
           }
