@@ -17,7 +17,6 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess } from '@store/reference-data';
 import { selectSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { cloneDeep } from 'lodash';
 import { Observable, mergeMap, take } from 'rxjs';
 
 @Component({
@@ -146,15 +145,20 @@ export class TechRecordSearchTyresComponent implements OnInit {
 
   handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
     const axleIndex = Number(this.params.axleNumber!) - 1;
+    if (this.viewableTechRecord && !this.viewableTechRecord.techRecord_axles) {
+      this.viewableTechRecord.techRecord_axles = [];
+    }
+    if (this.viewableTechRecord?.techRecord_axles && !this.viewableTechRecord?.techRecord_axles?.[axleIndex]) {
+      this.viewableTechRecord.techRecord_axles[axleIndex] = {};
+    }
 
-    if (this.viewableTechRecord?.techRecord_axles?.[axleIndex]) {
-      this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
-      this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_tyreCode = Number(tyre.code);
-      this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_tyreSize = tyre.tyreSize;
-      this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_plyRating = tyre.plyRating;
-      if (this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_fitmentCode) {
-        this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_dataTrAxles =
-          this.viewableTechRecord!.techRecord_axles![axleIndex].tyres_fitmentCode === 'single'
+    if (this.viewableTechRecord?.techRecord_axles) {
+      this.viewableTechRecord.techRecord_axles[axleIndex].tyres_tyreCode = Number(tyre.code);
+      this.viewableTechRecord.techRecord_axles[axleIndex].tyres_tyreSize = tyre.tyreSize;
+      this.viewableTechRecord.techRecord_axles[axleIndex].tyres_plyRating = tyre.plyRating;
+      if (this.viewableTechRecord.techRecord_axles[axleIndex].tyres_fitmentCode) {
+        this.viewableTechRecord.techRecord_axles[axleIndex].tyres_dataTrAxles =
+          this.viewableTechRecord.techRecord_axles[axleIndex].tyres_fitmentCode === 'single'
             ? parseInt(tyre.loadIndexSingleLoad ?? '0')
             : parseInt(tyre.loadIndexTwinLoad ?? '0');
       }
