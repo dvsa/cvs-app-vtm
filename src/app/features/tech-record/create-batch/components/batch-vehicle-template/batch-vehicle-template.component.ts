@@ -113,7 +113,7 @@ export class BatchVehicleTemplateComponent {
                   vin: v.vin,
                   trailerId: v.vehicleType === VehicleTypes.TRL ? v.trailerIdOrVrm : undefined,
                   primaryVrm: v.vehicleType !== VehicleTypes.TRL ? v.trailerIdOrVrm : undefined,
-                  systemNumber: v.systemNumber ? v.systemNumber : null,
+                  systemNumber: v.systemNumber,
                   createdTimestamp: v.createdTimestamp
                 } as BatchUpdateVehicleModel)
             )

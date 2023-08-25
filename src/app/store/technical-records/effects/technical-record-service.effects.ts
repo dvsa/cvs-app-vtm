@@ -117,7 +117,7 @@ export class TechnicalRecordServiceEffects {
   updateTechRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTechRecord),
-      switchMap(({ vehicleTechRecord }) => {
+      concatMap(({ vehicleTechRecord }) => {
         return this.techRecordHttpService.updateTechRecords$(vehicleTechRecord).pipe(
           map(vehicleTechRecord => updateTechRecordSuccess({ vehicleTechRecord })),
           catchError(error => of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
