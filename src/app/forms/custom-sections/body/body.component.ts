@@ -66,7 +66,8 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
         if (
           this.techRecord.techRecord_vehicleType === VehicleTypes.PSV &&
           event?.techRecord_brakes_dtpNumber &&
-          event.techRecord_brakes_dtpNumber.length >= 4
+          event.techRecord_brakes_dtpNumber.length >= 4 &&
+          psvMake
         ) {
           this.store.dispatch(updateBody({ psvMake }));
         }
