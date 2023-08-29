@@ -11,6 +11,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { of } from 'rxjs';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
 const mockTechnicalRecordService = {
   get techRecord$() {
@@ -58,34 +59,27 @@ describe('VehicleHeaderComponent', () => {
   });
 
   it('should display the correct data based on vehicle type', () => {
-    const mockRecord = {
-      techRecord_vehicleConfiguration: VehicleConfigurations.RIGID,
-      techRecord_bodyMake: 'testBody',
-      techRecord_bodyModel: 'testBodyModel',
-      techRecord_chassisMake: 'testChassis',
-      techRecord_chassisModel: 'testChassisModel',
-      techRecord_make: 'testHGV',
-      techRecord_model: 'testHGVModel'
-    } as unknown as V3TechRecordModel;
+    const mockTrl = mockVehicleTechnicalRecord('trl');
+    const mockPsv = mockVehicleTechnicalRecord('psv');
+    const mockHgv = mockVehicleTechnicalRecord('hgv');
 
-    expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toEqual('rigid');
-    expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toEqual('testBody-testBodyModel');
-    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toEqual('testHGV-testHGVModel');
+    expect(component.getVehicleDescription(mockTrl, VehicleTypes.TRL)).toEqual('articulated');
+    expect(component.getVehicleDescription(mockPsv, VehicleTypes.PSV)).toEqual('Body make-Body model');
+    expect(component.getVehicleDescription(mockHgv, VehicleTypes.HGV)).toEqual('1234-1234');
   });
 
   it('should display an empty string if all required data cannot be retrieved', () => {
-    const mockRecord = {
-      techRecord_bodyMake: '',
-      techRecord_bodyModel: 'testBodyModel',
-      techRecord_chassisMake: '',
-      techRecord_chassisModel: 'testChassisModel',
-      techRecord_make: '',
-      techRecord_model: 'testHGVModel'
-    } as unknown as V3TechRecordModel;
+    const mockTrl = mockVehicleTechnicalRecord('trl');
+    const mockPsv = mockVehicleTechnicalRecord('psv');
+    const mockHgv = mockVehicleTechnicalRecord('hgv');
 
-    expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toBeFalsy();
-    expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toBeFalsy();
-    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toBeFalsy();
+    delete mockTrl.techRecord_vehicleConfiguration;
+    delete (mockPsv as TechRecordType<'psv'>).techRecord_bodyMake;
+    delete (mockHgv as TechRecordType<'hgv'>).techRecord_make;
+
+    expect(component.getVehicleDescription(mockTrl, VehicleTypes.TRL)).toBeFalsy();
+    expect(component.getVehicleDescription(mockPsv, VehicleTypes.PSV)).toBeFalsy();
+    expect(component.getVehicleDescription(mockHgv, VehicleTypes.HGV)).toBeFalsy();
   });
 
   it('should display "Unknown Vehicle Type" if vehicle type is unknown/undefined', () => {

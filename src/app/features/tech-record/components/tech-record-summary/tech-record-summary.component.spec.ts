@@ -83,7 +83,11 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show PSV record found without dimensions', () => {
       component.isEditing = false;
-      jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('psv')));
+      const record = mockVehicleTechnicalRecord('psv') as TechRecordTypeByVehicle<'psv'>;
+      delete record.techRecord_dimensions_height;
+      delete record.techRecord_dimensions_width;
+      delete record.techRecord_dimensions_length;
+      jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(record));
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -113,12 +117,9 @@ describe('TechRecordSummaryComponent', () => {
       const vehicle = mockVehicleTechnicalRecord('trl');
       jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
         of({
-          systemNumber: 'foo',
-          createdTimestamp: 'bar',
-          vin: 'testVin',
-          techRecord_vehicleType: VehicleTypes.TRL,
+          ...vehicle,
           techRecord_euVehicleCategory: 'o2'
-        } as V3TechRecordModel)
+        })
       );
       fixture.detectChanges();
 
@@ -128,11 +129,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found without dimensions', () => {
       component.isEditing = false;
-      jest
-        .spyOn(techRecordService, 'techRecord$', 'get')
-        .mockReturnValue(
-          of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.TRL } as V3TechRecordModel)
-        );
+      jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('trl')));
       fixture.detectChanges();
 
       checkHeadingAndForm();

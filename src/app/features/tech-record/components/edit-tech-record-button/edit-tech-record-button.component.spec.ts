@@ -16,11 +16,13 @@ import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { clearError } from '@store/global-error/actions/global-error.actions';
 import { updateEditingTechRecordCancel } from '@store/technical-records';
-import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
 let mockTechRecordService = {
-  techRecord$: of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel)
+  techRecord$: of({})
 };
 
 let component: EditTechRecordButtonComponent;
@@ -29,9 +31,8 @@ let router: Router;
 let store: MockStore;
 let actions$: ReplaySubject<Action>;
 let technicalRecordService: TechnicalRecordService;
-const mockTechnicalRecordObservable = new BehaviorSubject({ techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel);
-const updateMockTechnicalRecord = (techRecord_statusCode: StatusCodes) =>
-  mockTechnicalRecordObservable.next({ techRecord_statusCode } as V3TechRecordModel);
+const mockTechnicalRecordObservable = new BehaviorSubject({ techRecord_statusCode: StatusCodes.CURRENT });
+const updateMockTechnicalRecord = (techRecord_statusCode: StatusCodes) => mockTechnicalRecordObservable.next({ techRecord_statusCode });
 
 const mockRouterService = {
   getRouteNestedParam$: () => '1',
@@ -78,29 +79,13 @@ describe('EditTechRecordButtonComponent', () => {
 
   describe('when viewing a tech record', () => {
     afterAll(() => {
-      mockTechRecordService.techRecord$ = of({
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
-        vin: 'testVin',
-        techRecord_statusCode: StatusCodes.CURRENT
-      } as unknown as V3TechRecordModel);
+      mockTechRecordService.techRecord$ = of(mockVehicleTechnicalRecord('hgv'));
     });
+    const vehicle = mockVehicleTechnicalRecord('hgv');
     it.each([
-      [
-        'should be viewable',
-        true,
-        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL } as V3TechRecordModel
-      ],
-      [
-        'should be viewable',
-        true,
-        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel
-      ],
-      [
-        'should not be viewable',
-        false,
-        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED } as V3TechRecordModel
-      ]
+      ['should be viewable', true, { ...vehicle, techRecord_statusCode: StatusCodes.PROVISIONAL }],
+      ['should be viewable', true, { ...vehicle, techRecord_statusCode: StatusCodes.CURRENT }],
+      ['should not be viewable', false, { ...vehicle, techRecord_statusCode: StatusCodes.ARCHIVED }]
     ])('edit button %s for %s record', (isViewable: string, expected: boolean, record: V3TechRecordModel) => {
       mockTechRecordService.techRecord$ = of(record);
       fixture.detectChanges();
@@ -113,12 +98,7 @@ describe('EditTechRecordButtonComponent', () => {
 
   describe('when user clicks edit button', () => {
     it('component should navigate away for current amendments', () => {
-      mockTechRecordService.techRecord$ = of({
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
-        vin: 'testVin',
-        techRecord_statusCode: StatusCodes.PROVISIONAL
-      } as V3TechRecordModel);
+      mockTechRecordService.techRecord$ = of(mockVehicleTechnicalRecord('psv'));
       jest.spyOn(router, 'navigate');
       jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
 
@@ -128,12 +108,7 @@ describe('EditTechRecordButtonComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith(['notifiable-alteration-needed'], { relativeTo: expect.anything() });
     });
     it('component should navigate away for notifiable alterations', () => {
-      mockTechRecordService.techRecord$ = of({
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
-        vin: 'testVin',
-        techRecord_statusCode: StatusCodes.CURRENT
-      } as V3TechRecordModel);
+      mockTechRecordService.techRecord$ = of(mockVehicleTechnicalRecord('hgv'));
       jest.spyOn(router, 'navigate');
 
       fixture.detectChanges();

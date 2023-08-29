@@ -95,7 +95,7 @@ describe('VehicleTechnicalRecordComponent', () => {
     store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(VehicleTechnicalRecordComponent);
     component = fixture.componentInstance;
-    component.techRecord = mockVehicleTechnicalRecord('psv') as V3TechRecordModel;
+    component.techRecord = mockVehicleTechnicalRecord('psv');
   });
 
   it('should create', () => {
@@ -109,7 +109,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         component.editingReason = ReasonForEditing.CORRECTING_AN_ERROR;
         fixture.detectChanges();
         component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
-        techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+        techRecord = mockVehicleTechnicalRecord('psv');
       });
       it('should update the current for a valid form', fakeAsync(() => {
         const storeSpy = jest.spyOn(store, 'select').mockReturnValue(of(techRecord));
@@ -125,7 +125,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         component.editingReason = ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED;
         fixture.detectChanges();
         component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
-        techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+        techRecord = mockVehicleTechnicalRecord('psv');
       });
       it('should dispatch updateTechRecords with editingTechRecord unchanged', fakeAsync(() => {
         const storeSpy = jest.spyOn(store, 'select').mockReturnValue(of(techRecord));
