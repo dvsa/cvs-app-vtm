@@ -17,6 +17,7 @@ import { initialAppState } from '@store/index';
 import { changeVehicleType } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { ChangeVehicleTypeComponent } from './tech-record-change-type.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 const mockTechRecordService = {
   get techRecord$() {
@@ -34,7 +35,7 @@ describe('TechRecordChangeTypeComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: ChangeVehicleTypeComponent;
   let errorService: GlobalErrorService;
-  let expectedTechRecord = {} as V3TechRecordModel;
+  let expectedTechRecord: V3TechRecordModel;
   let fixture: ComponentFixture<ChangeVehicleTypeComponent>;
   let route: ActivatedRoute;
   let router: Router;
@@ -62,14 +63,7 @@ describe('TechRecordChangeTypeComponent', () => {
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
-    expectedTechRecord = {
-      systemNumber: 'foo',
-      createdTimestamp: 'bar',
-      vin: 'testVin',
-      techRecord_vehicleType: VehicleTypes.PSV,
-      techRecord_chassisMake: 'test-make',
-      techRecord_chassisModel: 'test-model'
-    } as V3TechRecordModel;
+    expectedTechRecord = mockVehicleTechnicalRecord('psv');
   });
 
   it('should create', () => {

@@ -16,6 +16,7 @@ import { initialAppState } from '@store/index';
 import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVinComponent } from './tech-record-amend-vin.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
@@ -35,7 +36,7 @@ describe('TechRecordChangeVrmComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: AmendVinComponent;
   let errorService: GlobalErrorService;
-  let expectedTechRecord = {} as V3TechRecordModel;
+  let expectedTechRecord: V3TechRecordModel;
   let fixture: ComponentFixture<AmendVinComponent>;
   let route: ActivatedRoute;
   let router: Router;
@@ -75,14 +76,13 @@ describe('TechRecordChangeVrmComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      expectedTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;
+      expectedTechRecord = mockVehicleTechnicalRecord('psv');
       component.techRecord = expectedTechRecord;
     });
     it('should dispatch the updateTechRecord action with the new vin', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const payload = {
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
+        ...expectedTechRecord,
         vin: 'myNewVin',
         techRecord_reasonForCreation: 'Vin changed'
       } as unknown as TechRecordType<'put'>;

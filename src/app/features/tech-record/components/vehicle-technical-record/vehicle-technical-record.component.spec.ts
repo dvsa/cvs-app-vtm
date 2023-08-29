@@ -25,6 +25,7 @@ import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-s
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -94,7 +95,7 @@ describe('VehicleTechnicalRecordComponent', () => {
     store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(VehicleTechnicalRecordComponent);
     component = fixture.componentInstance;
-    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+    component.techRecord = mockVehicleTechnicalRecord('psv') as V3TechRecordModel;
   });
 
   it('should create', () => {

@@ -37,7 +37,7 @@ describe('TechRecordChangeVrmComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: AmendVrmComponent;
   let errorService: GlobalErrorService;
-  let expectedVehicle = {} as V3TechRecordModel;
+  let expectedVehicle: V3TechRecordModel;
   let fixture: ComponentFixture<AmendVrmComponent>;
   let route: ActivatedRoute;
   let router: Router;

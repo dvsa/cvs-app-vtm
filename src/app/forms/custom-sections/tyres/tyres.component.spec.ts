@@ -32,60 +32,7 @@ describe('TyresComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TyresComponent);
     component = fixture.componentInstance;
-    (component.vehicleTechRecord = mockVehicleTechnicalRecord('psv')),
-      (component.vehicleTechRecord.techRecord_axles = [
-        {
-          axleNumber: 1,
-          tyres_tyreSize: '295/80-22.5',
-          tyres_speedCategorySymbol: 'p',
-          tyres_fitmentCode: 'double',
-          tyres_dataTrAxles: 0,
-          tyres_plyRating: 'A',
-          tyres_tyreCode: 456,
-          parkingBrakeMrk: false,
-
-          weights_kerbWeight: 1,
-          weights_ladenWeight: 2,
-          weights_gbWeight: 3,
-          // TODO: V3 2 eecweights in type package, which is this?
-          // weights_eecWeight: 4,
-          weights_designWeight: 5
-        },
-        {
-          axleNumber: 2,
-          parkingBrakeMrk: true,
-
-          tyres_tyreSize: '295/80-22.5',
-          tyres_speedCategorySymbol: 'p',
-          tyres_fitmentCode: 'double',
-          tyres_dataTrAxles: 0,
-          tyres_plyRating: 'A',
-          tyres_tyreCode: 456,
-
-          weights_kerbWeight: 1,
-          weights_ladenWeight: 2,
-          weights_gbWeight: 3,
-          // weights_eecWeight: 4,
-          weights_designWeight: 5
-        },
-        {
-          axleNumber: 3,
-          parkingBrakeMrk: true,
-
-          tyres_tyreSize: '295/80-22.5',
-          tyres_speedCategorySymbol: 'p',
-          tyres_fitmentCode: 'double',
-          tyres_dataTrAxles: 0,
-          tyres_plyRating: 'A',
-          tyres_tyreCode: 456,
-
-          weights_kerbWeight: 1,
-          weights_ladenWeight: 2,
-          weights_gbWeight: 3,
-          // weights_eecWeight: 4,
-          weights_designWeight: 5
-        }
-      ]);
+    component.vehicleTechRecord = mockVehicleTechnicalRecord('psv');
 
     fixture.detectChanges();
     spy = jest.spyOn(component, 'addTyreToTechRecord');

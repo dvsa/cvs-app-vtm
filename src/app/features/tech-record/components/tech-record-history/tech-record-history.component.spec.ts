@@ -8,6 +8,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { TechRecordHistoryComponent } from './tech-record-history.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('TechRecordHistoryComponent', () => {
   let component: TechRecordHistoryComponent;
@@ -28,7 +29,7 @@ describe('TechRecordHistoryComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
-    component.currentTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+    component.currentTechRecord = mockVehicleTechnicalRecord('hgv');
     fixture.detectChanges();
   });
   it('should create', () => {

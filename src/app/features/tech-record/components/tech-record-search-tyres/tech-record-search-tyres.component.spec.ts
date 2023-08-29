@@ -20,6 +20,7 @@ import { TechRecordSearchTyresComponent } from './tech-record-search-tyres.compo
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { fetchReferenceDataByKeySearchSuccess } from '@store/reference-data';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 const mockGlobalErrorService = {
   addError: jest.fn(),
@@ -199,12 +200,10 @@ describe('TechRecordSearchTyresComponent', () => {
 
   describe('Getters', () => {
     it('should get the currentVrm', () => {
-      const mockVehicleRecord = {
-        primaryVrm: 'bar',
-        secondaryVrms: ['foo']
-      } as V3TechRecordModel;
+      const mockVehicleRecord = mockVehicleTechnicalRecord('psv');
+
       component.vehicleTechRecord = mockVehicleRecord;
-      expect(component.currentVrm).toEqual('bar');
+      expect(component.currentVrm).toEqual('KP01ABC');
     });
     it('should get the paginated fields', () => {
       component.searchResults = ['foo', 'bar', 'foobar'] as any;

@@ -25,59 +25,7 @@ describe('BrakesComponent', () => {
     fixture = TestBed.createComponent(TrlBrakesComponent);
     component = fixture.componentInstance;
     component.vehicleTechRecord = mockVehicleTechnicalRecord('trl') as TechRecordType<'trl'>;
-    component.vehicleTechRecord.techRecord_axles = [
-      {
-        parkingBrakeMrk: true,
-        axleNumber: 1,
-        brakes_brakeActuator: 1,
-        brakes_leverLength: 1,
-        brakes_springBrakeParking: true,
-        weights_gbWeight: 1,
-        weights_designWeight: 2,
-        weights_ladenWeight: 3,
-        weights_kerbWeight: 4,
-        tyres_tyreCode: 1,
-        tyres_tyreSize: '2',
-        tyres_plyRating: '3',
-        tyres_fitmentCode: 'single',
-        tyres_dataTrAxles: 1,
-        tyres_speedCategorySymbol: 'a7'
-      },
-      {
-        parkingBrakeMrk: true,
-        axleNumber: 2,
-        brakes_brakeActuator: 1,
-        brakes_leverLength: 1,
-        brakes_springBrakeParking: false,
-        weights_gbWeight: 1,
-        weights_designWeight: 2,
-        weights_ladenWeight: 3,
-        weights_kerbWeight: 4,
-        tyres_tyreCode: 1,
-        tyres_tyreSize: '2',
-        tyres_plyRating: '3',
-        tyres_fitmentCode: 'single',
-        tyres_dataTrAxles: 1,
-        tyres_speedCategorySymbol: 'a7'
-      },
-      {
-        parkingBrakeMrk: false,
-        axleNumber: 3,
-        brakes_brakeActuator: 1,
-        brakes_leverLength: 1,
-        brakes_springBrakeParking: true,
-        weights_gbWeight: 1,
-        weights_designWeight: 2,
-        weights_ladenWeight: 3,
-        weights_kerbWeight: 4,
-        tyres_tyreCode: 1,
-        tyres_tyreSize: '2',
-        tyres_plyRating: '3',
-        tyres_fitmentCode: 'single',
-        tyres_dataTrAxles: 1,
-        tyres_speedCategorySymbol: 'a7'
-      }
-    ];
+
     fixture.detectChanges();
   });
 

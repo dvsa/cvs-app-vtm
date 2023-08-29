@@ -17,6 +17,7 @@ import { initialAppState } from '@store/index';
 import { generatePlate, generatePlateSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { GeneratePlateComponent } from './tech-record-generate-plate.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 const mockDynamicFormService = {
   createForm: jest.fn()
@@ -69,9 +70,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 
   describe('navigateBack', () => {
     beforeEach(() => {
-      jest
-        .spyOn(technicalRecordService, 'techRecord$', 'get')
-        .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
+      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('hgv')));
     });
     it('should clear all errors', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
@@ -108,9 +107,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      jest
-        .spyOn(technicalRecordService, 'techRecord$', 'get')
-        .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
+      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('hgv')));
     });
     it('should add an error when the field is not filled out', () => {
       const addErrorSpy = jest.spyOn(errorService, 'addError');
