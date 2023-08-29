@@ -9,6 +9,7 @@ import { State, initialAppState } from '@store/index';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { environment } from '../../../environments/environment';
 import { TechnicalRecordService } from './technical-record.service';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('TechnicalRecordService', () => {
   let service: TechnicalRecordService;
@@ -163,6 +164,21 @@ describe('TechnicalRecordService', () => {
         service.updateEditingTechRecord(mockVehicleRecord);
         expect(dispatchSpy).toHaveBeenCalledTimes(1);
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
+      });
+
+      it('should update the number of axles based on the axles array', () => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        const mockVehicleRecord = mockVehicleTechnicalRecord('trl');
+        mockVehicleRecord.techRecord_noOfAxles = 0;
+        mockVehicleRecord.techRecord_axles = [{}, {}];
+
+        service.updateEditingTechRecord(mockVehicleRecord as TechRecordType<'put'>);
+
+        expect(dispatchSpy).toHaveBeenCalledWith(
+          updateEditingTechRecord({
+            vehicleTechRecord: { ...mockVehicleRecord, techRecord_axles: [{}, {}], techRecord_noOfAxles: 2 } as TechRecordType<'put'>
+          })
+        );
       });
 
       it('override the editable tech record and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
