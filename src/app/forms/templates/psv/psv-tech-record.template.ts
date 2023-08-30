@@ -1,11 +1,10 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { EmissionStandard } from '@models/test-types/emissions.enum';
-import { VehicleClass } from '@models/vehicle-class.model';
-import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
-import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { EmissionStandard } from '@models/test-types/emissions.enum';
+import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
+import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const PsvTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -123,7 +122,19 @@ export const PsvTechRecord: FormNode = {
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING,
           editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+          options: [
+            { label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
+            { label: 'not applicable', value: 'not applicable' },
+            { label: 'small psv (ie: less than or equal to 22 passengers)', value: 'small psv (ie: less than or equal to 22 seats)' },
+            { label: 'motorbikes over 200cc', value: 'motorbikes over 200cc' },
+            { label: 'trailer', value: 'trailer' },
+            { label: 'large psv(ie: greater than or equal to 23 passengers)', value: 'large psv(ie: greater than 23 seats)' },
+            { label: '3 wheelers', value: '3 wheelers' },
+            { label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
+            { label: 'MOT class 4', value: 'MOT class 4' },
+            { label: 'MOT class 7', value: 'MOT class 7' },
+            { label: 'MOT class 5', value: 'MOT class 5' }
+          ],
           class: '.govuk-input--width-10',
           validators: [{ name: ValidatorNames.Required }]
         }
