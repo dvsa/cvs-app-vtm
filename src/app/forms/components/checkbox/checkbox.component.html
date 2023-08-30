@@ -20,7 +20,7 @@
       (focus)="handleEvent($event)"
     />
 
-    <label class="govuk-label govuk-checkboxes__label" [for]="name">{{ label }}</label>
+    <label class="govuk-label govuk-checkboxes__label" [for]="customId ?? name">{{ label }}</label>
 
     <div *ngIf="suffix" class="govuk-input__suffix" aria-hidden="true">
       <ng-container [ngTemplateOutlet]="suffix.templateRef"></ng-container>

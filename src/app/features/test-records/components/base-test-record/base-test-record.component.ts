@@ -5,7 +5,7 @@ import { FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -16,6 +16,7 @@ import { map, Observable } from 'rxjs';
 import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
+import { selectTechRecord } from '@store/technical-records';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -34,14 +35,15 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
   @Output() newTestResult = new EventEmitter<TestResultModel>();
 
-  techRecord$: Observable<TechRecordModel | undefined>;
+  techRecord$: Observable<V3TechRecordModel | undefined>;
   constructor(
     private defectsStore: Store<DefectsState>,
     private techRecordService: TechnicalRecordService,
     private routerService: RouterService,
-    private testRecordsService: TestRecordsService
+    private testRecordsService: TestRecordsService,
+    private store: Store
   ) {
-    this.techRecord$ = this.techRecordService.techRecord$;
+    this.techRecord$ = this.store.select(selectTechRecord);
   }
 
   ngAfterViewInit(): void {

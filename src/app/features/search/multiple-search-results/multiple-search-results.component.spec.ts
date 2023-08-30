@@ -4,15 +4,14 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/.';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
-import { vehicleTechRecords } from '@store/technical-records';
-import { of, ReplaySubject } from 'rxjs';
+import { firstValueFrom, of, ReplaySubject } from 'rxjs';
 import { SingleSearchResultComponent } from '../single-search-result/single-search-result.component';
 import { MultipleSearchResultsComponent } from './multiple-search-results.component';
 
@@ -21,6 +20,7 @@ describe('MultipleSearchResultsComponent', () => {
   let fixture: ComponentFixture<MultipleSearchResultsComponent>;
   let store: MockStore<State>;
   let actions$ = new ReplaySubject<Action>();
+  let techRecordHttpService: TechnicalRecordHttpService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -34,7 +34,8 @@ describe('MultipleSearchResultsComponent', () => {
           useValue: {
             roles$: of(['TechRecord.View'])
           }
-        }
+        },
+        TechnicalRecordHttpService
       ]
     }).compileComponents();
   });
@@ -42,6 +43,7 @@ describe('MultipleSearchResultsComponent', () => {
   describe('default tests', () => {
     beforeEach(() => {
       store = TestBed.inject(MockStore);
+      techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
       store.overrideSelector(selectQueryParams, { vin: '123456' });
 
       fixture = TestBed.createComponent(MultipleSearchResultsComponent);
@@ -70,51 +72,46 @@ describe('MultipleSearchResultsComponent', () => {
   describe('searching', () => {
     beforeEach(() => {
       store = TestBed.inject(MockStore);
-      store.overrideSelector(vehicleTechRecords, mockVehicleTechnicalRecordList());
     });
 
-    it('should search using a vin', () => {
+    it('should search using a vin', async () => {
       store.overrideSelector(selectQueryParams, { vin: '123456' });
 
       fixture = TestBed.createComponent(MultipleSearchResultsComponent);
       component = fixture.componentInstance;
+      const searchResult = await firstValueFrom(component.searchResults$);
 
-      fixture.detectChanges();
-
-      component.vehicleTechRecords$.subscribe(record => expect(record).toBeTruthy());
+      expect(searchResult).toBeDefined();
     });
 
-    it('should search using a partial vin', () => {
+    it('should search using a partial vin', async () => {
       store.overrideSelector(selectQueryParams, { partialVin: '123456' });
 
       fixture = TestBed.createComponent(MultipleSearchResultsComponent);
       component = fixture.componentInstance;
+      const searchResult = await firstValueFrom(component.searchResults$);
 
-      fixture.detectChanges();
-
-      component.vehicleTechRecords$.subscribe(record => expect(record).toBeTruthy());
+      expect(searchResult).toBeDefined();
     });
 
-    it('should search using a vrm', () => {
+    it('should search using a vrm', async () => {
       store.overrideSelector(selectQueryParams, { vrm: '123456' });
 
       fixture = TestBed.createComponent(MultipleSearchResultsComponent);
       component = fixture.componentInstance;
+      const searchResult = await firstValueFrom(component.searchResults$);
 
-      fixture.detectChanges();
-
-      component.vehicleTechRecords$.subscribe(record => expect(record).toBeTruthy());
+      expect(searchResult).toBeDefined();
     });
 
-    it('should search using a trailer id', () => {
+    it('should search using a trailer id', async () => {
       store.overrideSelector(selectQueryParams, { trailerId: '123456' });
 
       fixture = TestBed.createComponent(MultipleSearchResultsComponent);
       component = fixture.componentInstance;
+      const searchResult = await firstValueFrom(component.searchResults$);
 
-      fixture.detectChanges();
-
-      component.vehicleTechRecords$.subscribe(record => expect(record).toBeTruthy());
+      expect(searchResult).toBeDefined();
     });
   });
 });

@@ -16,5 +16,18 @@
     (blur)="onTouched(); handleEvent($event)"
     (focus)="handleEvent($event)"
     attr.aria-describedby="{{ name }}"
+    [ngClass]="{ 'govuk-!-margin-bottom-2': maxLength }"
   ></textarea>
+
+  <ng-container *ngIf="maxLength">
+    <div id="{{ name }}-max-length" class="govuk-character-count__message govuk-hint" *ngIf="maxLength - value?.length >= 0; else overLimit">
+      You have {{ maxLength - value?.length }} character{{ maxLength - value?.length !== 1 ? 's' : '' }} remaining
+    </div>
+  </ng-container>
 </div>
+
+<ng-template #overLimit>
+  <div id="{{ name }}-max-length" class="govuk-error-message" *ngIf="maxLength">
+    You have {{ -(maxLength - value?.length) }} character{{ -(maxLength - value?.length) !== 1 ? 's' : '' }} too many
+  </div>
+</ng-template>

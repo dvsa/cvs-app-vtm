@@ -3,13 +3,13 @@ import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlatesInner } from '@api/vehicle';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { CustomFormControl, FormNodeTypes, FormNodeWidth, FormNodeOption } from '@forms/services/dynamic-form.types';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
-import { generatePlateSuccess, generatePlate, editableTechRecord } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { State } from '@store/index';
+import { generatePlate, generatePlateSuccess } from '@store/technical-records';
 import { Observable, map, take, tap } from 'rxjs';
 
 @Component({
@@ -22,28 +22,33 @@ export class GeneratePlateComponent implements OnInit {
     reason: new CustomFormControl({ name: 'reason', label: 'Reason for generating plate', type: FormNodeTypes.CONTROL }, '', [Validators.required])
   });
 
-  emailAddress$: Observable<string | undefined>;
+  emailAddress$?: Observable<string | undefined | null>;
 
   constructor(
     private actions$: Actions,
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<TechnicalRecordServiceState>,
-    public userService: UserService
-  ) {
-    this.emailAddress$ = this.store.select(editableTechRecord).pipe(
-      tap(record => {
-        if (record?.vehicleType !== 'hgv' && record?.vehicleType !== 'trl') this.navigateBack();
-      }),
-      map(record => record?.applicantDetails?.emailAddress)
-    );
-  }
+    private store: Store<State>,
+    public userService: UserService,
+    private technicalRecordService: TechnicalRecordService
+  ) {}
 
   ngOnInit(): void {
     this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => {
       this.navigateBack();
     });
+    this.emailAddress$ = this.technicalRecordService.techRecord$.pipe(
+      tap(record => {
+        if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') this.navigateBack();
+      }),
+      map(record => {
+        if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') {
+          return undefined;
+        }
+        return record?.techRecord_applicantDetails_emailAddress;
+      })
+    );
   }
 
   get width(): FormNodeWidth {

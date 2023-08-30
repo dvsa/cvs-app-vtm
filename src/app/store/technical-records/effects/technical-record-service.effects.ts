@@ -1,30 +1,25 @@
 import { Injectable } from '@angular/core';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import {
-  EuVehicleCategories,
-  PostNewVehicleModel,
-  PutVehicleTechRecordModel,
-  TechRecordModel,
-  VehicleTechRecordModel,
-  VehicleTypes,
-  Vrm
-} from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
+import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
+import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
 import { catchError, concatMap, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import {
+  amendVrm,
+  amendVrmFailure,
+  amendVrmSuccess,
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
   changeVehicleType,
-  createProvisionalTechRecord,
-  createProvisionalTechRecordFailure,
-  createProvisionalTechRecordSuccess,
   createVehicle,
   createVehicleRecord,
   createVehicleRecordFailure,
@@ -35,93 +30,63 @@ import {
   generatePlate,
   generatePlateFailure,
   generatePlateSuccess,
-  getByAll,
-  getByAllFailure,
-  getByAllSuccess,
-  getByPartialVin,
-  getByPartialVinFailure,
-  getByPartialVinSuccess,
   getBySystemNumber,
   getBySystemNumberFailure,
   getBySystemNumberSuccess,
-  getByTrailerId,
-  getByTrailerIdFailure,
-  getByTrailerIdSuccess,
-  getByVin,
-  getByVinFailure,
-  getByVinSuccess,
-  getByVrm,
-  getByVrmFailure,
-  getByVrmSuccess,
-  updateTechRecords,
-  updateTechRecordsFailure,
-  updateTechRecordsSuccess,
-  updateVin,
-  updateVinFailure,
-  updateVinSuccess
+  getTechRecordV3,
+  getTechRecordV3Failure,
+  getTechRecordV3Success,
+  promoteTechRecord,
+  promoteTechRecordFailure,
+  promoteTechRecordSuccess,
+  updateTechRecord,
+  updateTechRecordFailure,
+  updateTechRecordSuccess
 } from '../actions/technical-record-service.actions';
-import { editableTechRecord, selectVehicleTechnicalRecordsBySystemNumber } from '../selectors/technical-record-service.selectors';
+import { editingTechRecord, selectTechRecord } from '../selectors/technical-record-service.selectors';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
   constructor(
     private actions$: Actions,
+    private techRecordHttpService: TechnicalRecordHttpService,
     private technicalRecordService: TechnicalRecordService,
+    private batchTechRecordService: BatchTechnicalRecordService,
     private userService: UserService,
     private store: Store<State>,
     private dfs: DynamicFormService
   ) {}
 
-  getTechnicalRecord$ = createEffect(() =>
+  getTechnicalRecordHistory$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getByVin, getByPartialVin, getByVrm, getByTrailerId, getBySystemNumber, getByAll),
+      ofType(getBySystemNumber),
       mergeMap(action => {
         const anchorLink = 'search-term';
 
-        switch (action.type) {
-          case getByVin.type:
-            return this.technicalRecordService.getByVin(action.vin).pipe(
-              map(vehicleTechRecords => getByVinSuccess({ vehicleTechRecords })),
-              catchError(error => of(getByVinFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'vin'), anchorLink })))
-            );
-          case getByPartialVin.type:
-            return this.technicalRecordService.getByPartialVin(action.partialVin).pipe(
-              map(vehicleTechRecords => getByPartialVinSuccess({ vehicleTechRecords })),
-              catchError(error =>
-                of(getByPartialVinFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'partialVin'), anchorLink }))
-              )
-            );
-          case getByVrm.type:
-            return this.technicalRecordService.getByVrm(action.vrm).pipe(
-              map(vehicleTechRecords => getByVrmSuccess({ vehicleTechRecords })),
-              catchError(error => of(getByVrmFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'vrm'), anchorLink })))
-            );
-          case getByTrailerId.type:
-            return this.technicalRecordService.getByTrailerId(action.trailerId).pipe(
-              map(vehicleTechRecords => getByTrailerIdSuccess({ vehicleTechRecords })),
-              catchError(error =>
-                of(getByTrailerIdFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'trailerId'), anchorLink }))
-              )
-            );
-          case getBySystemNumber.type:
-            return this.technicalRecordService.getBySystemNumber(action.systemNumber).pipe(
-              map(vehicleTechRecords => {
-                return getBySystemNumberSuccess({ vehicleTechRecords: vehicleTechRecords });
-              }),
-              catchError(error =>
-                of(getBySystemNumberFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink }))
-              )
-            );
-          case getByAll.type:
-            return this.technicalRecordService.getByAll(action.all).pipe(
-              map(vehicleTechRecords => getByAllSuccess({ vehicleTechRecords })),
-              catchError(error =>
-                of(
-                  getByAllFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'the current search criteria'), anchorLink })
-                )
-              )
-            );
-        }
+        return this.techRecordHttpService.getBySystemNumber$(action.systemNumber).pipe(
+          map(vehicleTechRecords => {
+            return getBySystemNumberSuccess({ techRecordHistory: vehicleTechRecords });
+          }),
+          catchError(error => of(getBySystemNumberFailure({ error: 'could not find technical record history', anchorLink })))
+        );
+      })
+    )
+  );
+
+  getTechRecordV3$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getTechRecordV3),
+      mergeMap(action => {
+        const anchorLink = 'search-term';
+
+        return this.techRecordHttpService.getRecordV3$(action.systemNumber, action.createdTimestamp).pipe(
+          map(vehicleTechRecord => {
+            return getTechRecordV3Success({ vehicleTechRecord });
+          }),
+          catchError(error =>
+            of(getTechRecordV3Failure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink }))
+          )
+        );
       })
     )
   );
@@ -129,12 +94,12 @@ export class TechnicalRecordServiceEffects {
   createVehicleRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createVehicleRecord),
-      withLatestFrom(this.technicalRecordService.applicationId$, this.userService.name$, this.userService.id$),
+      withLatestFrom(this.batchTechRecordService.applicationId$, this.userService.name$, this.userService.id$),
       concatMap(([{ vehicle }, applicationId, name, id]) => {
-        const vehicleRecord = { ...vehicle, techRecord: [{ ...vehicle.techRecord[0], applicationId }] };
+        const vehicleRecord = { ...vehicle, applicationId };
 
-        return this.technicalRecordService.createVehicleRecord(vehicleRecord, { id, name }).pipe(
-          map(response => createVehicleRecordSuccess({ vehicleTechRecords: [this.mapVehicleFromResponse(response)] })),
+        return this.techRecordHttpService.createVehicleRecord$(vehicleRecord).pipe(
+          map(response => createVehicleRecordSuccess({ vehicleTechRecord: response })),
           catchError(error =>
             of(
               createVehicleRecordFailure({
@@ -149,67 +114,73 @@ export class TechnicalRecordServiceEffects {
     )
   );
 
-  createProvisionalTechRecord$ = createEffect(() =>
+  updateTechRecord$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(createProvisionalTechRecord),
-      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.name$, this.userService.id$),
-      switchMap(([action, record, name, id]) =>
-        this.technicalRecordService.createProvisionalTechRecord(action.systemNumber, record!, { id, name }).pipe(
-          map(vehicleTechRecord => createProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
-          catchError(error => of(createProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createProvisionalTechRecord') })))
-        )
-      )
+      ofType(updateTechRecord),
+      concatMap(({ vehicleTechRecord }) => {
+        return this.techRecordHttpService.updateTechRecords$(vehicleTechRecord).pipe(
+          map(vehicleTechRecord => updateTechRecordSuccess({ vehicleTechRecord })),
+          catchError(error => of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
+        );
+      })
     )
   );
 
-  updateTechRecords$ = createEffect(() =>
+  amendVrm$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateTechRecords),
-      withLatestFrom(this.technicalRecordService.editableVehicleTechRecord$, this.userService.name$, this.userService.id$),
-      concatMap(([action, record, name, id]) =>
-        this.technicalRecordService
-          .updateTechRecords(action.systemNumber, record!, { id, name }, action.recordToArchiveStatus, action.newStatus)
-          .pipe(
-            map(vehicleTechRecord => updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
-            catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
-          )
-      )
+      ofType(amendVrm),
+      switchMap(({ newVrm, cherishedTransfer, systemNumber, createdTimestamp }) => {
+        return this.techRecordHttpService.amendVrm$(newVrm, cherishedTransfer, systemNumber, createdTimestamp).pipe(
+          map(vehicleTechRecord => amendVrmSuccess({ vehicleTechRecord })),
+          catchError(error => of(amendVrmFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
+        );
+      })
     )
   );
 
   archiveTechRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(archiveTechRecord),
-      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.name$, this.userService.id$),
-      switchMap(([action, record, name, id]) =>
-        this.technicalRecordService.archiveTechnicalRecord(action.systemNumber, record!, action.reasonForArchiving, { id, name }).pipe(
-          map(vehicleTechRecord => archiveTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
+      switchMap(({ systemNumber, createdTimestamp, reasonForArchiving }) =>
+        this.techRecordHttpService.archiveTechnicalRecord$(systemNumber, createdTimestamp, reasonForArchiving).pipe(
+          map(vehicleTechRecord => archiveTechRecordSuccess({ vehicleTechRecord })),
           catchError(error => of(archiveTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'archiveTechRecord') })))
         )
       )
     )
   );
 
+  promoteTechRecord$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(promoteTechRecord),
+      switchMap(({ systemNumber, createdTimestamp, reasonForPromoting }) =>
+        this.techRecordHttpService.promoteTechnicalRecord$(systemNumber, createdTimestamp, reasonForPromoting).pipe(
+          map(vehicleTechRecord => promoteTechRecordSuccess({ vehicleTechRecord })),
+          catchError(error => of(promoteTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'promoteTechRecord') })))
+        )
+      )
+    )
+  );
   generateTechRecordBasedOnSectionTemplates$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(changeVehicleType, createVehicle),
-        withLatestFrom(this.store.pipe(select(editableTechRecord))),
-        concatMap(([{ vehicleType }, editableTechRecord]) => {
-          const techRecord = { ...cloneDeep(editableTechRecord), vehicleType };
+        withLatestFrom(this.store.pipe(select(editingTechRecord))),
+        concatMap(([{ techRecord_vehicleType }, editableTechRecord]) => {
+          const techRecord = { ...cloneDeep(editableTechRecord), techRecord_vehicleType };
 
-          if (vehicleType === VehicleTypes.SMALL_TRL) {
-            techRecord.vehicleType = VehicleTypes.TRL;
-            techRecord.euVehicleCategory = EuVehicleCategories.O1;
+          if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
+            techRecord.techRecord_vehicleType = VehicleTypes.TRL;
+            (techRecord as any).euVehicleCategory = EuVehicleCategories.O1;
           }
 
-          const techRecordTemplate = vehicleTemplateMap.get(vehicleType) || [];
+          const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
 
           return of(
             techRecordTemplate.reduce((mergedNodes, formNode) => {
               const form = this.dfs.createForm(formNode, techRecord);
               return merge(mergedNodes, form.getCleanValue(form));
-            }, {}) as TechRecordModel
+            }, {}) as TechRecordType<'put'>
           );
         }),
         tap(mergedForms => this.technicalRecordService.updateEditingTechRecord(mergedForms))
@@ -220,15 +191,9 @@ export class TechnicalRecordServiceEffects {
   generatePlate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generatePlate),
-      withLatestFrom(
-        this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
-        this.store.select(editableTechRecord),
-        this.userService.name$,
-        this.userService.id$,
-        this.userService.userEmail$
-      ),
-      switchMap(([{ reason }, vehicle, techRecord, name, id, email]) =>
-        this.technicalRecordService.generatePlate(vehicle!, techRecord!, reason, { name, id, email }).pipe(
+      withLatestFrom(this.store.select(selectTechRecord), this.userService.name$, this.userService.userEmail$),
+      switchMap(([{ reason }, vehicle, name, email]) =>
+        this.techRecordHttpService.generatePlate$(vehicle! as any, reason, { name, email }).pipe(
           map(() => generatePlateSuccess()),
           catchError(error => of(generatePlateFailure({ error: this.getTechRecordErrorMessage(error, 'generatePlate') })))
         )
@@ -239,46 +204,15 @@ export class TechnicalRecordServiceEffects {
   generateLetter$ = createEffect(() =>
     this.actions$.pipe(
       ofType(generateLetter),
-      withLatestFrom(
-        this.store.select(selectVehicleTechnicalRecordsBySystemNumber),
-        this.store.select(editableTechRecord),
-        this.userService.name$,
-        this.userService.id$,
-        this.userService.userEmail$
-      ),
-      switchMap(([{ letterType, paragraphId }, vehicle, techRecord, name, id, email]) =>
-        this.technicalRecordService.generateLetter(vehicle!, techRecord!, letterType, paragraphId, { name, id, email }).pipe(
+      withLatestFrom(this.store.select(selectTechRecord), this.userService.name$, this.userService.userEmail$),
+      switchMap(([{ letterType, paragraphId }, vehicle, name, email]) =>
+        this.techRecordHttpService.generateLetter$(vehicle! as any, letterType, paragraphId, { name, email }).pipe(
           map(value => generateLetterSuccess()),
           catchError(error => of(generateLetterFailure({ error: this.getTechRecordErrorMessage(error, 'generateLetter') })))
         )
       )
     )
   );
-
-  updateVin$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(updateVin),
-      withLatestFrom(this.userService.name$, this.userService.id$),
-      switchMap(([{ newVin, systemNumber }, name, id]) =>
-        this.technicalRecordService.updateVin(newVin, systemNumber, { id, name }).pipe(
-          map(() => updateVinSuccess()),
-          catchError(error => of(updateVinFailure({ error: error })))
-        )
-      )
-    )
-  );
-
-  mapVehicleFromResponse(response: PostNewVehicleModel | PutVehicleTechRecordModel): VehicleTechRecordModel {
-    const vrms: Vrm[] = [];
-
-    if (response.techRecord[0].vehicleType !== VehicleTypes.TRL) {
-      response.primaryVrm && vrms.push({ vrm: response.primaryVrm, isPrimary: true });
-
-      response.secondaryVrms && vrms.push(...response.secondaryVrms.map(vrm => ({ vrm, isPrimary: false })));
-    }
-
-    return { ...response, vrms };
-  }
 
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {
     if (typeof error !== 'object') {
@@ -290,11 +224,13 @@ export class TechnicalRecordServiceEffects {
     }
   }
 
-  private apiErrors: { [key: string]: string } = {
+  private apiErrors: Record<string, string> = {
     getTechnicalRecords_400: 'There was a problem getting the Tech Record by',
     getTechnicalRecords_404: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
     createVehicleRecord_400: 'Unable to create a new vehicle record',
-    createProvisionalTechRecord_400: 'Unable to create a new provisional record',
-    updateTechnicalRecord_400: 'Unable to update technical record'
+    // createProvisionalTechRecord_400: 'Unable to create a new provisional record',
+    updateTechnicalRecord_400: 'Unable to update technical record',
+    archiveTechRecord_400: 'Unable to archive technical record',
+    promoteTechRecord_400: 'Unable to promote technical record'
   };
 }

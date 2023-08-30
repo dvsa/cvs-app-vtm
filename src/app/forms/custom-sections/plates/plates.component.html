@@ -1,30 +1,44 @@
 <form [formGroup]="form">
+  <ng-container *ngIf="hasPlates && !isEditing">
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">
+        Plates History
+      </caption>
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Serial number</th>
+          <th scope="col" class="govuk-table__header">Issue date</th>
+          <th scope="col" class="govuk-table__header">Reason</th>
+          <th scope="col" class="govuk-table__header">Issuer</th>
+          <th scope="col" class="govuk-table__header"></th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row" *ngFor="let plate of plates; trackBy: trackByFn; let i = index">
+          <td class="govuk-table__cell word-break" [id]="'plate-serial-number-' + i">
+            {{ plate.plateSerialNumber | defaultNullOrEmpty }}
+          </td>
+          <td class="govuk-table__cell word-break" [id]="'plate-issue-date-' + i">{{ plate.plateIssueDate | date : 'dd/MM/yyyy HH:mm' }}</td>
+          <td class="govuk-table__cell word-break" [id]="'plate-issue-reason-' + i">{{ plate.plateReasonForIssue | defaultNullOrEmpty }}</td>
+          <td class="govuk-table__cell word-break" [id]="'plate-issuer-' + i">{{ plate.plateIssuer | defaultNullOrEmpty }}</td>
+          <td class="govuk-table__cell" [id]="'plate-' + i">
+            <button
+              *ngIf="eligibleForPlates && mostRecentPlate?.plateIssueDate === plate.plateIssueDate"
+              [id]="'plate-link' + i"
+              class="link"
+              appRetrieveDocument
+              [params]="documentParams"
+              [fileName]="fileName"
+            >
+              View plate
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination tableName="plate-history" [numberOfItems]="numberOfPlates" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
+  </ng-container>
   <ng-container *ngIf="eligibleForPlates">
-    <dl class="govuk-summary-list">
-      <ng-container *ngIf="hasPlates">
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Plate serial number</dt>
-          <dd id="plate-serial-number" class="govuk-summary-list__value">{{ mostRecentPlate?.plateSerialNumber | defaultNullOrEmpty }}</dd>
-          <dd id="plate" class="govuk-summary-list__value">
-            <button id="plate-link" class="link" appRetrieveDocument [params]="documentParams" [fileName]="fileName">View plate</button>
-          </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Plate issue date</dt>
-          <dd id="plate-issue-date" class="govuk-summary-list__value">{{ mostRecentPlate?.plateIssueDate | date: 'dd/MM/yyyy HH:mm' }}</dd>
-        </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Plate issuer</dt>
-          <dd id="plate-issuer" class="govuk-summary-list__value">{{ mostRecentPlate?.plateIssuer | defaultNullOrEmpty }}</dd>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="!hasPlates">
-        <div>
-          <dt class="govuk-summary-list__key">This vehicle does not have a plate.</dt>
-        </div>
-      </ng-container>
-    </dl>
-
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         <app-button id="generate-plate-link" type="link" routerLink="generate-plate" *appRoleRequired="roles.TechRecordAmend"
@@ -33,7 +47,6 @@
       </div>
     </div>
   </ng-container>
-
   <dl class="govuk-summary-list" *ngIf="!eligibleForPlates">
     <div>
       <dt class="govuk-summary-list__key">{{ reasonForIneligibility }}</dt>

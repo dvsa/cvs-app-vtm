@@ -10,7 +10,7 @@ export const CarTechRecord: FormNode = {
   label: 'Vehicle Summary',
   children: [
     {
-      name: 'vehicleType',
+      name: 'techRecord_vehicleType',
       label: 'Vehicle type',
       value: '',
       width: FormNodeWidth.XS,
@@ -19,35 +19,35 @@ export const CarTechRecord: FormNode = {
       disabled: true
     },
     {
-      name: 'statusCode',
+      name: 'techRecord_statusCode',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
     {
-      name: 'regnDate',
+      name: 'techRecord_regnDate',
       label: 'Date of first registration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       isoDate: false
     },
     {
-      name: 'manufactureYear',
+      name: 'techRecord_manufactureYear',
       label: 'Year of manufacture',
-      value: '',
+      value: null,
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.NUMBER,
+      editType: FormNodeEditTypes.TEXT,
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 }
       ]
     },
     {
-      name: 'noOfAxles',
+      name: 'techRecord_noOfAxles',
       label: 'Number of axles',
       value: 2,
       width: FormNodeWidth.XXS,
@@ -56,7 +56,7 @@ export const CarTechRecord: FormNode = {
       validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
-      name: 'vehicleSubclass',
+      name: 'techRecord_vehicleSubclass',
       label: 'Vehicle Subclass',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
@@ -64,7 +64,7 @@ export const CarTechRecord: FormNode = {
       options: getOptionsFromEnum(VehicleSubclass)
     },
     {
-      name: 'vehicleConfiguration',
+      name: 'techRecord_vehicleConfiguration',
       label: 'Vehicle configuration',
       value: VehicleConfiguration.OTHER,
       type: FormNodeTypes.CONTROL,
@@ -73,9 +73,9 @@ export const CarTechRecord: FormNode = {
       validators: [{ name: ValidatorNames.Required }]
     },
     {
-      name: 'euVehicleCategory',
+      name: 'techRecord_euVehicleCategory',
       label: 'EU vehicle category',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(EuVehicleCategories),

@@ -1,210 +1,56 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   EuVehicleCategories,
-  PostNewVehicleModel,
-  PutVehicleTechRecordModel,
+  NotTrailer,
   StatusCodes,
   TechRecordModel,
+  V3TechRecordModel,
   VehicleTechRecordModel,
   VehicleTypes
 } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { Store, select } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
+import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import {
+  selectTechRecordSearchResults,
+  selectTechRecordSearchResultsBySystemNumber
+} from '@store/tech-record-search/selector/tech-record-search.selector';
+import {
+  clearAllSectionStates,
   createVehicle,
-  editableTechRecord,
-  editableVehicleTechRecord,
-  getByAll,
-  getByPartialVin,
-  getByTrailerId,
-  getByVin,
-  getByVrm,
-  selectVehicleTechnicalRecordsBySystemNumber,
+  selectSectionState,
+  selectTechRecord,
+  techRecord,
   updateEditingTechRecord,
-  updateEditingTechRecordCancel,
-  vehicleTechRecords
+  updateEditingTechRecordCancel
 } from '@store/technical-records';
-import { clearBatch, setApplicationId, setGenerateNumberFlag, upsertVehicleBatch } from '@store/technical-records/actions/batch-create.actions';
-import {
-  selectBatchCount,
-  selectAllBatch,
-  selectIsBatch,
-  selectGenerateNumber,
-  selectBatchSuccess,
-  selectBatchSuccessCount,
-  selectApplicationId,
-  selectBatchUpdatedSuccessCount,
-  selectBatchUpdatedCount,
-  selectBatchCreatedCount,
-  selectBatchCreatedSuccessCount
-} from '@store/technical-records/selectors/batch-create.selectors';
 import { cloneDeep } from 'lodash';
-import { catchError, Observable, of, map, switchMap, take, throwError, debounceTime, filter } from 'rxjs';
-import { environment } from '../../../environments/environment';
-
-export enum SEARCH_TYPES {
-  VIN = 'vin',
-  PARTIAL_VIN = 'partialVin',
-  VRM = 'vrm',
-  TRAILER_ID = 'trailerId',
-  SYSTEM_NUMBER = 'systemNumber',
-  ALL = 'all'
-}
+import { Observable, catchError, combineLatest, debounceTime, filter, map, of, switchMap, take, tap, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(private http: HttpClient, private router: Router, private store: Store, private globalErrorService: GlobalErrorService) {}
+  constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService, private routerService: RouterService) {}
 
-  get vehicleTechRecords$(): Observable<VehicleTechRecordModel[]> {
-    return this.store.pipe(select(vehicleTechRecords));
-  }
-
-  get editableTechRecord$(): Observable<TechRecordModel | undefined> {
-    return this.store.pipe(select(editableTechRecord));
-  }
-
-  get editableVehicleTechRecord$(): Observable<VehicleTechRecordModel | undefined> {
-    return this.store.pipe(select(editableVehicleTechRecord));
-  }
-
-  get selectedVehicleTechRecord$(): Observable<VehicleTechRecordModel | undefined> {
-    return this.store.pipe(select(selectVehicleTechnicalRecordsBySystemNumber));
-  }
-
-  get techRecord$(): Observable<TechRecordModel | undefined> {
-    return this.selectedVehicleTechRecord$.pipe(switchMap(vehicle => (vehicle ? this.viewableTechRecord$(vehicle) : of(undefined))));
-  }
-
-  getVehicleTypeWithSmallTrl(techRecord: TechRecordModel): VehicleTypes {
-    return techRecord.vehicleType === VehicleTypes.TRL &&
-      (techRecord.euVehicleCategory === EuVehicleCategories.O1 || techRecord.euVehicleCategory === EuVehicleCategories.O2)
-      ? VehicleTypes.SMALL_TRL
-      : techRecord.vehicleType;
-  }
-
-  getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(vin, SEARCH_TYPES.VIN);
-  }
-
-  getByPartialVin(partialVin: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(partialVin, SEARCH_TYPES.PARTIAL_VIN);
-  }
-
-  getByVrm(vrm: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(vrm, SEARCH_TYPES.VRM);
-  }
-
-  getByTrailerId(id: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(id, SEARCH_TYPES.TRAILER_ID);
-  }
-
-  getBySystemNumber(systemNumber: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(systemNumber, SEARCH_TYPES.SYSTEM_NUMBER);
-  }
-
-  getByAll(term: string): Observable<VehicleTechRecordModel[]> {
-    return this.getVehicleTechRecordModels(term, SEARCH_TYPES.ALL);
-  }
-
-  private getVehicleTechRecordModels(id: string, type: SEARCH_TYPES): Observable<VehicleTechRecordModel[]> {
-    const queryStr = `${id}/tech-records?status=all&metadata=true&searchCriteria=${type}`;
-    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
-
-    return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
-  }
-
-  createVehicleRecord(newVehicleRecord: VehicleTechRecordModel, user: { id?: string; name: string }): Observable<PostNewVehicleModel> {
-    const recordCopy = cloneDeep(newVehicleRecord);
-
-    const body = {
-      msUserDetails: { msOid: user.id, msUser: user.name },
-      vin: recordCopy.vin,
-      primaryVrm: recordCopy.vrms ? recordCopy.vrms[0].vrm : null,
-      trailerId: recordCopy.trailerId ?? null,
-      techRecord: recordCopy.techRecord
-    };
-
-    return this.http.post<PostNewVehicleModel>(`${environment.VTM_API_URI}/vehicles`, body);
-  }
-
-  createProvisionalTechRecord(
-    systemNumber: string,
-    techRecord: TechRecordModel,
-    user: { id?: string; name: string }
-  ): Observable<VehicleTechRecordModel> {
-    // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
-    const recordCopy = cloneDeep(techRecord);
-    recordCopy.statusCode = StatusCodes.PROVISIONAL;
-    delete recordCopy.updateType;
-
-    const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;
-
-    const body = {
-      msUserDetails: { msOid: user.id, msUser: user.name },
-      techRecord: [recordCopy]
-    };
-
-    return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
-  }
-
-  updateTechRecords(
-    systemNumber: string,
-    vehicleTechRecord: VehicleTechRecordModel,
-    user: { id?: string; name: string },
-    recordToArchiveStatus?: StatusCodes,
-    newStatus?: StatusCodes
-  ): Observable<PutVehicleTechRecordModel> {
-    const newVehicleTechRecord = cloneDeep(vehicleTechRecord);
-
-    const newTechRecord = newVehicleTechRecord.techRecord[0];
-
-    newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
-    delete newTechRecord.updateType;
-
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${recordToArchiveStatus ? '?oldStatusCode=' + recordToArchiveStatus : ''}`;
-
-    const body: PutVehicleTechRecordModel & { msUserDetails: { msOid: string | undefined; msUser: string } } = {
-      ...this.formatVrmsForUpdatePayload(vehicleTechRecord),
-      msUserDetails: { msOid: user.id, msUser: user.name },
-      techRecord: [newTechRecord]
-    };
-
-    return this.http.put<PutVehicleTechRecordModel>(url, body, { responseType: 'json' });
-  }
-
-  archiveTechnicalRecord(
-    systemNumber: string,
-    techRecord: TechRecordModel,
-    reason: string,
-    user: { id?: string; name: string }
-  ): Observable<VehicleTechRecordModel> {
-    const url = `${environment.VTM_API_URI}/vehicles/archive/${systemNumber}`;
-
-    const body = {
-      msUserDetails: { msOid: user.id, msUser: user.name },
-      techRecord: [techRecord],
-      reasonForArchiving: reason
-    };
-
-    return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+  getVehicleTypeWithSmallTrl(techRecord: V3TechRecordModel): VehicleTypes {
+    return techRecord.techRecord_vehicleType === VehicleTypes.TRL &&
+      (techRecord.techRecord_euVehicleCategory === EuVehicleCategories.O1 || techRecord.techRecord_euVehicleCategory === EuVehicleCategories.O2)
+      ? (VehicleTypes.SMALL_TRL as VehicleTypes)
+      : (techRecord.techRecord_vehicleType as VehicleTypes);
   }
 
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
-    const isUnique = this.getVehicleTechRecordModels(valueToCheck, searchType).pipe(
-      map(vehicleTechRecord => {
-        const allTechRecords = vehicleTechRecord.flatMap(record => record.techRecord);
-        if (allTechRecords.every(record => record.statusCode === StatusCodes.ARCHIVED)) {
+    return this.techRecordHttpService.search$(searchType, valueToCheck).pipe(
+      map(searchResults => {
+        if (searchResults.every(result => result.techRecord_statusCode === StatusCodes.ARCHIVED)) {
           return true;
         }
 
         if (searchType === SEARCH_TYPES.VRM) {
-          const allVrms = vehicleTechRecord.flatMap(record => record.vrms);
-          return !allVrms.some(vrm => vrm.isPrimary && vrm.vrm == valueToCheck);
+          return !searchResults.some(result => result.primaryVrm === valueToCheck);
         }
 
         return false;
@@ -213,65 +59,25 @@ export class TechnicalRecordService {
         return (error.status == 404 && of(true)) || throwError(() => error);
       })
     );
-    return isUnique;
   }
 
-  /**
-   * A function to get the correct tech record to create the summary display which uses time first then status code
-   * @param vehicleRecord This is a VehicleTechRecordModel passed in from the parent component
-   * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
-   */
-  viewableTechRecord$(vehicleRecord: VehicleTechRecordModel): Observable<TechRecordModel | undefined> {
-    return this.store.pipe(
-      select(selectRouteNestedParams),
-      map(params => {
-        const lastTwoUrlParts = this.router.url.split('/').slice(-2);
-
-        if (lastTwoUrlParts.includes('provisional')) {
-          return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL);
+  get techRecord$(): Observable<V3TechRecordModel | undefined> {
+    return combineLatest([
+      this.store.pipe(select(selectTechRecord)),
+      this.store.pipe(select(techRecord)),
+      this.routerService.getRouteDataProperty$('isEditing')
+    ]).pipe(
+      tap(([techRecord, nonEditingTechRecord, isEditing]) => {
+        if (isEditing && !techRecord && nonEditingTechRecord) {
+          this.updateEditingTechRecord(nonEditingTechRecord as TechRecordType<'put'>);
         }
-
-        const createdAt = params['techCreatedAt'];
-
-        if (createdAt) {
-          return vehicleRecord.techRecord.find(
-            techRecord => new Date(techRecord.createdAt).getTime() == createdAt && techRecord.statusCode === StatusCodes.ARCHIVED
-          );
-        }
-
-        return this.filterTechRecordByStatusCode(vehicleRecord);
-      })
+      }),
+      map(([techRecord, nonEditingTechRecord, isEditing]) => (isEditing && !techRecord ? nonEditingTechRecord : techRecord))
     );
   }
 
-  /**
-   * A function which takes either a TechRecordModel or a VehicleTechRecordModel, maps the missing vehicle record information if passed
-   * a TechRecordModel and dispatches the action to update the editing tech record.
-   * @param record - TechRecordModel or VehicleTechRecordModel
-   * @param resetVehicleAttributes [resetVehicleAttributes=false] - Used to overwrite the attributes inside of the properties inside
-   * the VehicleTechRecordModel to the un-edited information present in state for that vehicle. Only used if passed a TechRecordModel.
-   * @returns void
-   */
-  updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel, resetVehicleAttributes = false): void {
-    const isVehicleRecord = (rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel => rec.hasOwnProperty('techRecord');
-
-    if (isVehicleRecord(record) && record.techRecord.length > 1) {
-      throw new Error('Editing tech record can only have one technical record!');
-    }
-
-    const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord(record)
-      ? of(record)
-      : this.store.pipe(
-          select(editableVehicleTechRecord),
-          switchMap(vehicleRecord => (vehicleRecord && !resetVehicleAttributes ? of(vehicleRecord) : this.selectedVehicleTechRecord$)),
-          map(vehicleRecord => vehicleRecord && { ...vehicleRecord, techRecord: [record] })
-        );
-
-    vehicleTechRecord$.pipe(take(1)).subscribe(vehicleRecord => {
-      if (vehicleRecord) {
-        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
-      }
-    });
+  updateEditingTechRecord(record: TechRecordType<'put'>): void {
+    this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: record }));
   }
 
   /**
@@ -279,7 +85,7 @@ export class TechnicalRecordService {
    * @param record This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
-  private filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
+  static filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
     return (
       record.techRecord.find(record => record.statusCode === StatusCodes.CURRENT) ??
       record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL) ??
@@ -287,119 +93,25 @@ export class TechnicalRecordService {
     );
   }
 
-  searchBy(type: SEARCH_TYPES, term: string): void {
-    switch (type) {
-      case SEARCH_TYPES.VIN:
-        this.store.dispatch(getByVin({ [type]: term }));
-        break;
-      case SEARCH_TYPES.PARTIAL_VIN:
-        this.store.dispatch(getByPartialVin({ [type]: term }));
-        break;
-      case SEARCH_TYPES.VRM:
-        this.store.dispatch(getByVrm({ [type]: term }));
-        break;
-      case SEARCH_TYPES.TRAILER_ID:
-        this.store.dispatch(getByTrailerId({ [type]: term }));
-        break;
-      case SEARCH_TYPES.ALL:
-        this.store.dispatch(getByAll({ [type]: term }));
-        break;
-    }
-  }
-
   generateEditingVehicleTechnicalRecordFromVehicleType(vehicleType: VehicleTypes): void {
-    this.store.dispatch(createVehicle({ vehicleType: vehicleType }));
+    this.store.dispatch(createVehicle({ techRecord_vehicleType: vehicleType }));
   }
 
-  clearReasonForCreation(vehicleTechRecord?: VehicleTechRecordModel): void {
-    this.editableVehicleTechRecord$
+  clearReasonForCreation(vehicleTechRecord?: TechRecordType<'put'>): void {
+    this.techRecord$
       .pipe(
         map(data => cloneDeep(data ?? vehicleTechRecord)),
         take(1)
       )
       .subscribe(data => {
         if (data) {
-          data.techRecord[0].reasonForCreation = '';
-          this.updateEditingTechRecord(data);
+          data.techRecord_reasonForCreation = '';
+          this.updateEditingTechRecord(data as TechRecordType<'put'>);
         }
       });
   }
 
-  generatePlate(
-    vehicleRecord: VehicleTechRecordModel,
-    techRecord: TechRecordModel,
-    reason: string,
-    user: { id?: string; name?: string; email?: string }
-  ) {
-    const url = `${environment.VTM_API_URI}/vehicles/documents/plate`;
-
-    const updatedVehicleRecord = cloneDeep(vehicleRecord);
-    const currentRecordIndex = updatedVehicleRecord.techRecord.findIndex(techRecord => techRecord.statusCode === StatusCodes.CURRENT);
-    updatedVehicleRecord.techRecord[currentRecordIndex].axles?.sort((a, b) => a.axleNumber! - b.axleNumber!);
-
-    const body = {
-      vin: vehicleRecord.vin,
-      primaryVrm: techRecord.vehicleType !== 'trl' ? vehicleRecord.vrms.find(x => x.isPrimary)?.vrm : undefined,
-      systemNumber: vehicleRecord.systemNumber,
-      trailerId: techRecord.vehicleType === 'trl' ? vehicleRecord.trailerId : undefined,
-      msUserDetails: { msOid: user.id, msUser: user.name },
-      techRecord: updatedVehicleRecord.techRecord,
-      reasonForCreation: reason,
-      vtmUsername: user.name,
-      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails.emailAddress : user.email
-    };
-
-    return this.http.post(url, body, { responseType: 'json' });
-  }
-
-  generateLetter(
-    vehicleRecord: VehicleTechRecordModel,
-    techRecord: TechRecordModel,
-    letterType: string,
-    paragraphId: number,
-    user: { id?: string; name?: string; email?: string }
-  ) {
-    const url = `${environment.VTM_API_URI}/vehicles/documents/letter`;
-
-    const body = {
-      vin: vehicleRecord.vin,
-      primaryVrm: undefined,
-      systemNumber: vehicleRecord.systemNumber,
-      trailerId: vehicleRecord.trailerId,
-      techRecord: vehicleRecord.techRecord,
-      vtmUsername: user.name,
-      letterType: letterType,
-      paragraphId: paragraphId,
-      recipientEmailAddress: techRecord?.applicantDetails?.emailAddress ? techRecord.applicantDetails?.emailAddress : user.email
-    };
-
-    return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
-  }
-
-  private formatVrmsForUpdatePayload(vehicleTechRecord: VehicleTechRecordModel): PutVehicleTechRecordModel {
-    const secondaryVrms: string[] = [];
-    const putVehicleTechRecordModel: PutVehicleTechRecordModel = { ...vehicleTechRecord, secondaryVrms };
-    vehicleTechRecord.vrms.forEach(vrm => {
-      vrm.isPrimary ? (putVehicleTechRecordModel.primaryVrm = vrm.vrm) : putVehicleTechRecordModel.secondaryVrms!.push(vrm.vrm);
-    });
-    delete (putVehicleTechRecordModel as any).vrms;
-    return putVehicleTechRecordModel;
-  }
-
-  clearEditingTechRecord() {
-    this.store.dispatch(updateEditingTechRecordCancel());
-  }
-
-  updateVin(newVin: string, systemNumber: string, user: { id?: string; name?: string }) {
-    const url = `${environment.VTM_API_URI}/vehicles/update-vin/${systemNumber}`;
-    const body = {
-      msUserDetails: { msOid: user.id, msUser: user.name },
-      newVin
-    };
-    return this.http.put(url, body, { responseType: 'json' });
-  }
-
-  validateVin(originalVin?: string): AsyncValidatorFn {
+  validateVinForUpdate(originalVin?: string): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return of(control.value).pipe(
         filter((value: string) => !!value),
@@ -416,124 +128,42 @@ export class TechnicalRecordService {
                   : { validateVin: { message: 'This VIN already exists, if you continue it will be associated with two vehicles' } };
               }
             }),
-            catchError(error => of(null))
+            catchError(() => of(null))
           );
         })
       );
     };
   }
 
-  validateForBatch(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const trailerIdControl = control.parent?.get('trailerId') as CustomFormControl;
-      const vinControl = control.parent?.get('vin') as CustomFormControl;
-      const systemNumberControl = control.parent?.get('systemNumber') as CustomFormControl;
-
-      if (trailerIdControl && vinControl) {
-        const trailerId = trailerIdControl.value;
-        const vin = vinControl.value;
-        delete vinControl.meta.warning;
-
-        if (trailerId && vin) {
-          return this.validateVinAndTrailerId(vin, trailerId, systemNumberControl);
-        } else if (!trailerId && vin) {
-          return this.validateVinForBatch(vinControl);
-        } else if (trailerId && !vin) {
-          return of({ validateForBatch: { message: 'VIN is required' } });
-        }
-      }
-      return of(null);
-    };
+  clearEditingTechRecord() {
+    this.store.dispatch(updateEditingTechRecordCancel());
   }
 
-  private validateVinAndTrailerId(vin: string, trailerId: string, systemNumberControl: CustomFormControl): Observable<ValidationErrors | null> {
-    return this.getByVin(vin).pipe(
-      map(result => {
-        const filteredResults = result.filter(vehicleTechRecord => vehicleTechRecord.trailerId === trailerId);
-        if (!filteredResults.length) {
-          return { validateForBatch: { message: 'Could not find a record with matching VIN and Trailer ID' } };
-        }
-        if (filteredResults.length > 1) {
-          return { validateForBatch: { message: 'More than one vehicle has this VIN and Trailer ID' } };
-        }
-        if (filteredResults[0].techRecord.find(techRecord => techRecord.statusCode === StatusCodes.CURRENT)) {
-          return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
-        }
-        systemNumberControl.setValue(result[0].systemNumber);
-        return null;
-      }),
-      catchError(error => of({ validateForBatch: { message: 'Could not find a record with matching VIN' } }))
-    );
+  get searchResults$(): Observable<TechRecordSearchSchema[] | undefined> {
+    return this.store.pipe(select(selectTechRecordSearchResults));
   }
 
-  private validateVinForBatch(vinControl: CustomFormControl): Observable<null> {
-    return this.isUnique(vinControl.value, SEARCH_TYPES.VIN).pipe(
-      map(result => {
-        if (!result) {
-          vinControl.meta.warning = 'This VIN already exists, if you continue it will be associated with two vehicles';
-        }
-        return null;
-      }),
-      catchError(error => of(null))
-    );
+  get searchResultsWithUniqueSystemNumbers$(): Observable<TechRecordSearchSchema[] | undefined> {
+    return this.store.pipe(select(selectTechRecordSearchResultsBySystemNumber));
+  }
+  get techRecordStatus$(): Observable<StatusCodes | undefined> {
+    return this.techRecord$.pipe(map(techRecord => techRecord?.techRecord_statusCode as StatusCodes | undefined));
   }
 
-  upsertVehicleBatch(vehicles: Array<{ vin: string; trailerId?: string }>) {
-    this.store.dispatch(upsertVehicleBatch({ vehicles }));
+  get sectionStates$(): Observable<(string | number)[] | undefined> {
+    return this.store.pipe(select(selectSectionState));
   }
 
-  get batchVehicles$() {
-    return this.store.pipe(select(selectAllBatch));
+  //TODO: remove the anys
+  getMakeAndModel(techRecord: V3TechRecordModel | NotTrailer): string {
+    if (!(techRecord as any)?.techRecord_make && !(techRecord as any)?.techRecord_chassisMake) return '';
+
+    return `${techRecord?.techRecord_vehicleType === 'psv' ? (techRecord as any).techRecord_chassisMake : (techRecord as any).techRecord_make} - ${
+      (techRecord as any).techRecord_vehicleType === 'psv' ? (techRecord as any).techRecord_chassisModel : (techRecord as any).techRecord_model
+    }`;
   }
 
-  get batchVehiclesSuccess$() {
-    return this.store.pipe(select(selectBatchSuccess));
-  }
-
-  get isBatchCreate$() {
-    return this.store.pipe(select(selectIsBatch));
-  }
-
-  get batchCount$() {
-    return this.store.pipe(select(selectBatchCount));
-  }
-
-  get batchSuccessCount$() {
-    return this.store.pipe(select(selectBatchSuccessCount));
-  }
-
-  get batchCreatedCount$() {
-    return this.store.pipe(select(selectBatchCreatedSuccessCount));
-  }
-
-  get batchTotalCreatedCount$() {
-    return this.store.pipe(select(selectBatchCreatedCount));
-  }
-
-  get batchUpdatedCount$() {
-    return this.store.pipe(select(selectBatchUpdatedSuccessCount));
-  }
-
-  get batchTotalUpdatedCount$() {
-    return this.store.pipe(select(selectBatchUpdatedCount));
-  }
-
-  get applicationId$() {
-    return this.store.pipe(select(selectApplicationId));
-  }
-
-  get generateNumber$() {
-    return this.store.pipe(select(selectGenerateNumber));
-  }
-
-  setApplicationId(applicationId: string) {
-    this.store.dispatch(setApplicationId({ applicationId }));
-  }
-  setGenerateNumberFlag(generateNumber: boolean) {
-    this.store.dispatch(setGenerateNumberFlag({ generateNumber }));
-  }
-
-  clearBatch() {
-    this.store.dispatch(clearBatch());
+  clearSectionTemplateStates() {
+    this.store.dispatch(clearAllSectionStates());
   }
 }

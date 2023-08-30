@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { RoleGuard } from '@guards/roles.guard';
+import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { TitleResolver } from './resolvers/title/title.resolver';
 import { Roles } from '@models/roles.enum';
 import { TechRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
@@ -35,10 +35,10 @@ const routes: Routes = [
         loadChildren: () => import('./features/tech-record/create/create-tech-records.module').then(m => m.CreateTechRecordsModule)
       },
       {
-        path: 'create-batch-trl',
-        data: { title: 'Trailer batch records', roles: Roles.TechRecordCreate },
+        path: 'create-batch',
+        data: { title: 'Select Vehicle Type', roles: Roles.TechRecordCreate },
         canActivate: [MsalGuard, RoleGuard],
-        loadChildren: () => import('./features/tech-record/create-batch-trl/create-batch-trl.module').then(m => m.CreateBatchTrlModule)
+        loadChildren: () => import('./features/tech-record/create-batch/create-batch.module').then(m => m.CreateBatchModule)
       },
       {
         path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
@@ -48,10 +48,16 @@ const routes: Routes = [
         loadChildren: () => import('./features/test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
       },
       {
-        path: 'tech-records/:systemNumber',
+        path: 'tech-records/:systemNumber/:createdTimestamp',
         data: { title: 'Tech Record', roles: Roles.TechRecordView },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
+      },
+      {
+        path: 'reference-data',
+        data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
+        canActivate: [MsalGuard, RoleGuard],
+        loadChildren: () => import('./features/reference-data/reference-data.module').then(m => m.ReferenceDataModule)
       },
       {
         path: 'error',

@@ -4,12 +4,12 @@ import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsState, initialDefectsState } from '../reducers/defects.reducer';
-import { defect, defects, defectsLoadingState, filteredDefects, selectByDeficiencyRef, selectByImNumber } from './defects.selectors';
+import { defect, defects, defectsLoadingState, selectByDeficiencyRef, selectByImNumber } from './defects.selectors';
 
 describe('Defects Selectors', () => {
   describe('adapter selectors', () => {
     it('should return correct state', () => {
-      const state = { ...initialDefectsState, ids: [1], entities: { [1]: { preparerId: 2 } } };
+      const state = { ...initialDefectsState, ids: [1], entities: { [1]: { preparerId: 2 } } } as unknown as DefectsState;
 
       expect(defects.projector(state)).toEqual([{ preparerId: 2 }]);
       expect(defect('1').projector(state)).toEqual({ preparerId: 2 });

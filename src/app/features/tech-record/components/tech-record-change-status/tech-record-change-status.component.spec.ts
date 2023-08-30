@@ -12,7 +12,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { of, ReplaySubject } from 'rxjs';
+import { ReplaySubject, of } from 'rxjs';
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 
 import { TechRecordChangeStatusComponent } from './tech-record-change-status.component';

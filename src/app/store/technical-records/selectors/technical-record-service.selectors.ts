@@ -1,28 +1,31 @@
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { getVehicleTechRecordState } from '../reducers/technical-record-service.reducer';
+import { selectRouteDataProperty } from '@store/router/selectors/router.selectors';
+import { getTechRecordState } from '../reducers/technical-record-service.reducer';
 
-export const vehicleTechRecords = createSelector(getVehicleTechRecordState, state => state.vehicleTechRecords);
+export const techRecord = createSelector(getTechRecordState, state => state.vehicleTechRecord);
 
-export const editableVehicleTechRecord = createSelector(getVehicleTechRecordState, state => state.editingTechRecord);
+export const getSingleVehicleType = createSelector(getTechRecordState, state => state.vehicleTechRecord?.techRecord_vehicleType);
 
-export const editableTechRecord = createSelector(editableVehicleTechRecord, vehicle => vehicle?.techRecord[0]);
+export const editingTechRecord = createSelector(getTechRecordState, state => state.editingTechRecord);
 
-export const technicalRecordsLoadingState = createSelector(getVehicleTechRecordState, state => state.loading);
+export const technicalRecordsLoadingState = createSelector(getTechRecordState, state => state.loading);
 
-export const selectVehicleTechnicalRecordsBySystemNumber = createSelector(
-  vehicleTechRecords,
-  selectRouteNestedParams,
-  (techRecords, { systemNumber }) => {
-    const foundRecord = techRecords.find(record => record.systemNumber === systemNumber);
+export const selectTechRecordHistory = createSelector(getTechRecordState, state =>
+  state.techRecordHistory?.sort((a, b) => {
+    const aTimeCode = new Date(a.createdTimestamp).getTime();
+    const bTimeCode = new Date(b.createdTimestamp).getTime();
+    return aTimeCode < bTimeCode ? 1 : aTimeCode > bTimeCode ? -1 : 0;
+  })
+);
 
-    const sortByDate = function (a: Date, b: Date): number {
-      return new Date(b).getTime() - new Date(a).getTime();
-    };
-
-    return foundRecord
-      ? ({ ...foundRecord, techRecord: [...foundRecord.techRecord].sort((a, b) => sortByDate(a.createdAt, b.createdAt)) } as VehicleTechRecordModel)
-      : undefined;
+export const selectTechRecord = createSelector(
+  techRecord,
+  selectRouteDataProperty('isEditing'),
+  editingTechRecord,
+  (techRecord, isEditing, editableTechRecord): V3TechRecordModel | undefined => {
+    return isEditing ? editableTechRecord : techRecord;
   }
 );
+
+export const selectSectionState = createSelector(getTechRecordState, state => state.sectionState);

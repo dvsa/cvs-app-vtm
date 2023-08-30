@@ -23,6 +23,7 @@ export class DynamicFormService {
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
     [ValidatorNames.Alphanumeric]: () => CustomValidators.alphanumeric(),
+    [ValidatorNames.Email]: () => CustomValidators.email(),
     [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg),
     [ValidatorNames.CustomPattern]: (args: string[]) => CustomValidators.customPattern([...args]),
     [ValidatorNames.DateNotExceed]: (args: { sibling: string; months: number }) => CustomValidators.dateNotExceed(args.sibling, args.months),
@@ -47,8 +48,10 @@ export class DynamicFormService {
     [ValidatorNames.Required]: () => Validators.required,
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
+    [ValidatorNames.ValidateVRMTrailerIdLength]: (args: { sibling: string }) => CustomValidators.validateVRMTrailerIdLength(args.sibling),
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
-    [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued
+    [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued,
+    [ValidatorNames.MustEqualSibling]: (args: { sibling: string }) => CustomValidators.mustEqualSibling(args.sibling)
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
@@ -142,11 +145,10 @@ export class DynamicFormService {
 
     if (errors) {
       const errorList = Object.keys(errors);
-
       errorList.forEach(error => {
         validationErrorList.push({
           error: ErrorMessageMap[error](errors[error], meta?.customValidatorErrorName ?? meta?.label),
-          anchorLink: meta?.name
+          anchorLink: meta?.customId ?? meta?.name
         } as GlobalError);
       });
     }

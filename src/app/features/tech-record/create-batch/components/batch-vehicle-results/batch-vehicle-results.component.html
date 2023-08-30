@@ -1,0 +1,58 @@
+<app-banner>
+  <ng-container title>Success</ng-container>
+
+  <ng-container content>
+    <h2 class="govuk-heading-m">Technical records created</h2>
+    <p class="govuk-body">
+      You have successfully processed {{ (batchSuccessCount$ | async) ?? 0 }} out of {{ (batchCount$ | async) ?? 0 }}
+      {{ vehicleType$ | async | formatVehicleType }} technical records using application ID {{ applicationId$ | async }}.
+    </p>
+    <p class="govuk-body">
+      {{ (batchCreatedCount$ | async) ?? 0 }} out of {{ (batchTotalCreatedCount$ | async) ?? 0 }} records successfully created.
+    </p>
+    <p class="govuk-body">
+      {{ (batchUpdatedCount$ | async) ?? 0 }} out of {{ (batchTotalUpdatedCount$ | async) ?? 0 }} records successfully updated.
+    </p>
+  </ng-container>
+</app-banner>
+
+<table class="govuk-table">
+  <caption class="govuk-table__caption govuk-table__caption--m">
+    Technical record batch
+  </caption>
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">VIN</th>
+      <th scope="col" class="govuk-table__header">{{ (vehicleType$ | async) === 'trl' ? 'Trailer ID' : 'VRM' }}</th>
+      <th scope="col" class="govuk-table__header">Vehicle type</th>
+      <th scope="col" class="govuk-table__header">Record type</th>
+      <th scope="col" class="govuk-table__header"></th>
+      <th scope="col" class="govuk-table__header"></th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr *ngFor="let vehicle of batchVehiclesSuccess$ | async; let i = index" class="govuk-table__row">
+      <th scope="row" class="govuk-table__header">{{ vehicle.vin }}</th>
+      <td class="govuk-table__cell">{{ vehicle.trailerIdOrVrm }}</td>
+      <td class="govuk-table__cell">{{ vehicle.vehicleType | uppercase | defaultNullOrEmpty }}</td>
+      <td class="govuk-table__cell">
+        <ng-container [ngSwitch]="vehicle.status">
+          <app-tag *ngSwitchCase="'provisional'" type="blue"> {{ vehicleStatus.PROVISIONAL }} </app-tag>
+          <app-tag *ngSwitchCase="'archived'" type="green"> {{ vehicleStatus.CURRENT }} </app-tag>
+          <app-tag *ngSwitchCase="'current'" type="green"> {{ vehicleStatus.CURRENT }} </app-tag>
+        </ng-container>
+      </td>
+      <td class="govuk-table__cell"></td>
+      <td class="govuk-table__cell">
+        <a
+          id="view-{{ i + 1 }}"
+          [routerLink]="['/', 'tech-records', vehicle.systemNumber, vehicle.createdTimestamp]"
+          class="govuk-link"
+          rel="noreferrer noopener"
+          target="_blank"
+          >View (opens in a new tab)</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,11 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { StatusCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/lgv/skeleton';
+import { VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
-import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
+import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { editableTechRecord } from '@store/technical-records';
+import { selectTechRecord } from '@store/technical-records';
 import { Observable, take } from 'rxjs';
 
 @Component({
@@ -14,12 +17,12 @@ import { Observable, take } from 'rxjs';
   styleUrls: ['./tech-record-title.component.scss']
 })
 export class TechRecordTitleComponent implements OnInit {
-  @Input() vehicle?: VehicleTechRecordModel;
+  @Input() vehicle?: V3TechRecordModel | any;
   @Input() actions: TechRecordActions = TechRecordActions.NONE;
   @Input() hideActions: boolean = false;
   @Input() customTitle = '';
 
-  currentTechRecord$!: Observable<TechRecordModel | undefined>;
+  currentTechRecord$?: Observable<TechRecordType<'get'> | undefined>;
   queryableActions: string[] = [];
   vehicleMakeAndModel = '';
 
@@ -28,31 +31,21 @@ export class TechRecordTitleComponent implements OnInit {
   ngOnInit(): void {
     this.queryableActions = this.actions.split(',');
 
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicle!);
+    this.currentTechRecord$ = this.store.select(selectTechRecord) as Observable<TechRecordType<'get'> | undefined>;
 
-    this.currentTechRecord$
-      .pipe(take(1))
-      .subscribe(
-        data =>
-          (this.vehicleMakeAndModel =
-            data?.make || data?.chassisMake
-              ? data.vehicleType === this.vehicleTypes.PSV
-                ? `${data.chassisMake} ${data.chassisModel ?? ''}`
-                : `${data?.make} ${data?.model ?? ''}`
-              : '')
-      );
+    this.currentTechRecord$.pipe(take(1)).subscribe(data => {
+      if (data) {
+        this.vehicleMakeAndModel = this.technicalRecordService.getMakeAndModel(data);
+      }
+    });
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicle?.vrms?.find(vrm => vrm.isPrimary)?.vrm;
+    return this.vehicle?.techRecord_vehicleType !== 'trl' ? this.vehicle?.primaryVrm ?? '' : undefined;
   }
 
-  get editableTechRecord$() {
-    return this.store.pipe(select(editableTechRecord));
-  }
-
-  get otherVrms(): Vrm[] | undefined {
-    return this.vehicle?.vrms?.filter(vrm => !vrm.isPrimary);
+  get otherVrms(): string[] | undefined {
+    return this.vehicle?.techRecord_vehicleType !== 'trl' ? this.vehicle?.secondaryVrms ?? [] : undefined;
   }
 
   get vehicleTypes(): typeof VehicleTypes {
@@ -67,7 +60,7 @@ export class TechRecordTitleComponent implements OnInit {
     return StatusCodes;
   }
 
-  getVehicleType(techRecord: TechRecordModel): VehicleTypes {
+  getVehicleType(techRecord: V3TechRecordModel): VehicleTypes {
     return this.technicalRecordService.getVehicleTypeWithSmallTrl(techRecord);
   }
 
@@ -75,7 +68,7 @@ export class TechRecordTitleComponent implements OnInit {
     return completeness === 'complete' ? 'green' : 'red';
   }
 
-  isVrmEditable(statusCode: StatusCodes | undefined, currentVehicleType: VehicleTypes, editableVehicleType: VehicleTypes): boolean {
+  isVrmEditable(statusCode: StatusCode | undefined, currentVehicleType: VehicleType, editableVehicleType: VehicleType): boolean {
     return !this.hideActions && statusCode !== StatusCodes.ARCHIVED && currentVehicleType === editableVehicleType;
   }
 

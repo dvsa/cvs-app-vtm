@@ -4,16 +4,17 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { GlobalErrorStateModule } from '@store/global-error/global-error-state.module';
+import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
 import { environment } from '../../environments/environment';
+import { DefectsStateModule } from './defects/defects-state.module';
+import { ReferenceDataStateModule } from './reference-data/reference-data.module';
 import { RouterStateModule } from './router/router-state.module';
+import { TechRecordSearchStateModule } from './tech-record-search/tech-record-search-state.module';
 import { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';
 import { TestRecordsStateModule } from './test-records/test-records.module';
-import { UserStateModule } from './user/user-state.module';
-import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
-import { ReferenceDataStateModule } from './reference-data/reference-data.module';
 import { TestStationsStateModule } from './test-stations/test-stations-state.module';
 import { TestTypesStateModule } from './test-types/test-types.module';
-import { DefectsStateModule } from './defects/defects-state.module';
+import { UserStateModule } from './user/user-state.module';
 
 @NgModule({
   declarations: [],
@@ -37,7 +38,8 @@ import { DefectsStateModule } from './defects/defects-state.module';
     TestRecordsStateModule,
     TestStationsStateModule,
     TestTypesStateModule,
-    UserStateModule
+    UserStateModule,
+    TechRecordSearchStateModule
   ]
 })
 export class AppStoreModule {}

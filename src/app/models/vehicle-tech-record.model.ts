@@ -1,3 +1,6 @@
+import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
 export interface VehicleTechRecordModel {
@@ -7,6 +10,18 @@ export interface VehicleTechRecordModel {
   systemNumber: string;
   techRecord: TechRecordModel[];
 }
+
+export type V3TechRecordModel = TechRecordType<'get'> | TechRecordType<'put'>;
+export type NotTrailer =
+  | TechRecordTypeByVehicle<'hgv'>
+  | TechRecordTypeByVehicle<'psv'>
+  | TechRecordTypeByVehicle<'motorcycle'>
+  | TechRecordTypeByVehicle<'lgv'>
+  | TechRecordTypeByVehicle<'car'>;
+
+export type BatchUpdateVehicleModel = TechRecordType<'put'> & {
+  createdTimestamp: string;
+};
 
 export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'> {
   primaryVrm?: string;
@@ -41,8 +56,15 @@ export enum VehicleTypes {
   MOTORCYCLE = 'motorcycle'
 }
 
+export enum TrailerFormType {
+  TES1 = 'tes1',
+  TES2 = 'tes2'
+}
+
 export enum FuelTypes {
   DIESELPETROL = 'DieselPetrol',
+  DIESEL = 'Diesel',
+  PETROL = 'Petrol',
   HYBRID = 'Hybrid',
   ELECTRIC = 'Electric',
   CNG = 'CNG',
@@ -134,7 +156,7 @@ export enum VehicleSubclass {
 
 export interface LettersOfAuth {
   letterType: string;
-  paragraphId: ParagraphId;
+  paragraphId: ParagraphIds;
   letterIssuer: string;
   letterDateRequested: string;
   letterContents: string;

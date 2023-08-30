@@ -6,8 +6,17 @@ import { ResultOfTestService } from '@services/result-of-test/result-of-test.ser
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { VehicleHeaderComponent } from './vehicle-header.component';
-import { TechRecordModel, VehicleTypes, VehicleConfigurations } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTypes, VehicleConfigurations, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { of } from 'rxjs';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+
+const mockTechnicalRecordService = {
+  get techRecord$() {
+    return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' });
+  }
+};
 
 describe('VehicleHeaderComponent', () => {
   let component: VehicleHeaderComponent;
@@ -17,7 +26,12 @@ describe('VehicleHeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [VehicleHeaderComponent],
       imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
-      providers: [TestTypesService, provideMockStore({ initialState: initialAppState }), ResultOfTestService]
+      providers: [
+        TestTypesService,
+        provideMockStore({ initialState: initialAppState }),
+        ResultOfTestService,
+        { provide: TechnicalRecordService, useValue: mockTechnicalRecordService }
+      ]
     }).compileComponents();
   }));
 
@@ -45,14 +59,14 @@ describe('VehicleHeaderComponent', () => {
 
   it('should display the correct data based on vehicle type', () => {
     const mockRecord = {
-      vehicleConfiguration: VehicleConfigurations.RIGID,
-      bodyMake: 'testBody',
-      bodyModel: 'testBodyModel',
-      chassisMake: 'testChassis',
-      chassisModel: 'testChassisModel',
-      make: 'testHGV',
-      model: 'testHGVModel'
-    } as TechRecordModel;
+      techRecord_vehicleConfiguration: VehicleConfigurations.RIGID,
+      techRecord_bodyMake: 'testBody',
+      techRecord_bodyModel: 'testBodyModel',
+      techRecord_chassisMake: 'testChassis',
+      techRecord_chassisModel: 'testChassisModel',
+      techRecord_make: 'testHGV',
+      techRecord_model: 'testHGVModel'
+    } as unknown as V3TechRecordModel;
 
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toEqual('rigid');
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toEqual('testBody-testBodyModel');
@@ -61,13 +75,13 @@ describe('VehicleHeaderComponent', () => {
 
   it('should display an empty string if all required data cannot be retrieved', () => {
     const mockRecord = {
-      bodyMake: '',
-      bodyModel: 'testBodyModel',
-      chassisMake: '',
-      chassisModel: 'testChassisModel',
-      make: '',
-      model: 'testHGVModel'
-    } as TechRecordModel;
+      techRecord_bodyMake: '',
+      techRecord_bodyModel: 'testBodyModel',
+      techRecord_chassisMake: '',
+      techRecord_chassisModel: 'testChassisModel',
+      techRecord_make: '',
+      techRecord_model: 'testHGVModel'
+    } as unknown as V3TechRecordModel;
 
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toBeFalsy();
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toBeFalsy();
@@ -76,11 +90,11 @@ describe('VehicleHeaderComponent', () => {
 
   it('should display "Unknown Vehicle Type" if vehicle type is unknown/undefined', () => {
     const mockRecord = {
-      bodyMake: 'testBodyMake',
-      bodyModel: 'testBodyModel',
-      chassisMake: 'testChassisMake',
-      chassisModel: 'testChassisModel'
-    } as TechRecordModel;
+      techRecord_bodyMake: 'testBodyMake',
+      techRecord_bodyModel: 'testBodyModel',
+      techRecord_chassisMake: 'testChassisMake',
+      techRecord_chassisModel: 'testChassisModel'
+    } as unknown as V3TechRecordModel;
     expect(component.getVehicleDescription(mockRecord, undefined)).toEqual('Unknown Vehicle Type');
   });
 });

@@ -3,7 +3,6 @@ import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { resultOfTestSelector } from '@store/test-records';
-import { of } from 'rxjs';
 
 import { ResultOfTestService } from './result-of-test.service';
 

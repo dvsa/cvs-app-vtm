@@ -5,10 +5,11 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule } from '@api/test-results';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { ReasonForEditing, StatusCodes } from '@models/vehicle-tech-record.model';
+import { ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -16,8 +17,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/index';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
+import { updateTechRecord } from '@store/technical-records';
 import { of } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
@@ -30,6 +30,7 @@ describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
   let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;
   let store: MockStore<State>;
+  let techRecord: V3TechRecordModel;
 
   @Component({})
   class TechRecordSummaryStubComponent {
@@ -70,8 +71,19 @@ describe('VehicleTechnicalRecordComponent', () => {
         {
           provide: TechnicalRecordService,
           useValue: {
-            viewableTechRecord$: () => of(mockVehicleTechnicalRecord().techRecord[2]),
-            updateEditingTechRecord: () => {}
+            get techRecord$() {
+              return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT });
+            },
+            updateEditingTechRecord: () => {},
+            get editableTechRecord$() {
+              return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' });
+            },
+            get sectionStates$() {
+              return of(['TEST_SECTION']);
+            },
+            getVehicleTypeWithSmallTrl: (techRecord: TechRecordModel) => {
+              return techRecord.vehicleType;
+            }
           }
         }
       ]
@@ -82,54 +94,12 @@ describe('VehicleTechnicalRecordComponent', () => {
     store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(VehicleTechnicalRecordComponent);
     component = fixture.componentInstance;
-    component.vehicle = mockVehicleTechnicalRecord();
+    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
   });
 
   it('should create', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
-  });
-
-  it('should get current vrm', () => {
-    fixture.detectChanges();
-    expect(component.currentVrm).toEqual('KP01ABC');
-  });
-
-  it('should get other Vrms', () => {
-    fixture.detectChanges();
-    expect(component.otherVrms).toEqual([
-      {
-        vrm: '609859Z',
-        isPrimary: false
-      },
-      {
-        vrm: '609959Z',
-        isPrimary: false
-      }
-    ]);
-  });
-
-  it('should get current tech record', () => {
-    component.vehicle.techRecord = component.vehicle.techRecord.filter(record => record.statusCode === StatusCodes.CURRENT);
-    fixture.detectChanges();
-
-    component.currentTechRecord$?.subscribe(record => expect(record).toBeTruthy());
-  });
-
-  it('should get archived tech record', () => {
-    component.vehicle.techRecord = component.vehicle.techRecord.filter(record => record.statusCode === StatusCodes.ARCHIVED);
-    fixture.detectChanges();
-
-    component.currentTechRecord$?.subscribe(record => expect(record).toBeTruthy());
-  });
-
-  it('should get tech record using created date', () => {
-    const expectedDate = new Date();
-    store.overrideSelector(selectRouteNestedParams, { techCreatedAt: expectedDate });
-    component.vehicle.techRecord[0].createdAt = expectedDate;
-    fixture.detectChanges();
-
-    component.currentTechRecord$?.subscribe(record => expect(record).toBeTruthy());
   });
 
   describe('handleSubmit', () => {
@@ -138,43 +108,47 @@ describe('VehicleTechnicalRecordComponent', () => {
         component.editingReason = ReasonForEditing.CORRECTING_AN_ERROR;
         fixture.detectChanges();
         component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
+        techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
       });
-
       it('should update the current for a valid form', fakeAsync(() => {
+        const storeSpy = jest.spyOn(store, 'select').mockReturnValue(of(techRecord));
+
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         tick();
         component.handleSubmit();
-        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecords({ systemNumber: component.vehicle.systemNumber }));
+        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ vehicleTechRecord: techRecord as TechRecordType<'put'> }));
       }));
     });
-
     describe('notifiable alteration', () => {
       beforeEach(() => {
         component.editingReason = ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED;
         fixture.detectChanges();
         component.summary = TestBed.createComponent(TechRecordSummaryStubComponent).componentInstance as TechRecordSummaryComponent;
+        techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
       });
-
-      it('should dispatch updateTechRecords with oldStatusCode to archive the prosional', fakeAsync(() => {
+      it('should dispatch updateTechRecords with editingTechRecord unchanged', fakeAsync(() => {
+        const storeSpy = jest.spyOn(store, 'select').mockReturnValue(of(techRecord));
+        component.recordHistory = [
+          { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL }
+        ] as TechRecordSearchSchema[];
         const dispatchSpy = jest.spyOn(store, 'dispatch');
+        tick();
+        component.ngOnInit();
+        component.handleSubmit();
+        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ vehicleTechRecord: techRecord as TechRecordType<'put'> }));
+      }));
+      it('should dispatch updateTechRecords to create a new provisional when one isnt present', fakeAsync(() => {
+        const storeSpy = jest.spyOn(store, 'select').mockReturnValue(of(techRecord));
+        component.recordHistory = [
+          { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED }
+        ] as TechRecordSearchSchema[];
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+
         tick();
         component.handleSubmit();
         expect(dispatchSpy).toHaveBeenCalledWith(
-          updateTechRecords({
-            systemNumber: component.vehicle.systemNumber,
-            recordToArchiveStatus: StatusCodes.PROVISIONAL,
-            newStatus: StatusCodes.PROVISIONAL
-          })
+          updateTechRecord({ vehicleTechRecord: { ...techRecord, techRecord_statusCode: StatusCodes.PROVISIONAL } as TechRecordType<'put'> })
         );
-      }));
-
-      it('should dispatch updateTechRecords to create a new provisional when one isnt present', fakeAsync(() => {
-        const dispatchSpy = jest.spyOn(store, 'dispatch');
-        //remove provisional
-        component.vehicle.techRecord.splice(0, 1);
-        tick();
-        component.handleSubmit();
-        expect(dispatchSpy).toHaveBeenCalledWith(createProvisionalTechRecord({ systemNumber: component.vehicle.systemNumber }));
       }));
     });
   });

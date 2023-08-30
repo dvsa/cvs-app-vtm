@@ -5,10 +5,10 @@
         <div class="vehicle_heading">
           <h1 class="govuk-heading-l">
             <span>
-              {{ test?.testTypeId ?? '' | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}
+              {{ test?.testTypeId ?? '' | testTypeName : (selectAllTestTypes$ | async) | defaultNullOrEmpty }}
               {{ testCode | uppercase }}
             </span>
-            <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
+            <app-icon [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"></app-icon>
           </h1>
         </div>
       </div>
@@ -50,10 +50,10 @@
     <div class="test_result_header">
       <div class="test_name_and_date">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">
-          <span>{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }} {{ testCode | uppercase }}</span>
+          <span>{{ test?.testTypeId || '' | testTypeName : (selectAllTestTypes$ | async) }} {{ testCode | uppercase }}</span>
         </h1>
         <div class="date_and_result">
-          <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
+          <span class="govuk-caption-l">{{ testResult?.createdAt | date : 'dd MMM yyyy' }}</span>
           <app-tag [type]="tagType">{{ resultOfTest | defaultNullOrEmpty }}</app-tag>
         </div>
       </div>
@@ -80,7 +80,7 @@
           {{ getVehicleDescription(techRecord, testResult?.vehicleType) }}
         </ng-container>
 
-        <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
+        <app-icon [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"></app-icon>
       </h2>
     </div>
     <h3 class="govuk-heading-m">Vehicle overview</h3>
@@ -109,13 +109,13 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle type</dt>
         <dd id="test-vehicleType" class="govuk-summary-list__value">
-          {{ (techRecord$ | async)?.vehicleType | defaultNullOrEmpty | uppercase }}
+          {{ (techRecord$ | async)?.techRecord_vehicleType | defaultNullOrEmpty | uppercase }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Country of registration</dt>
         <dd id="test-cor" class="govuk-summary-list__value">
-          {{ testResult?.countryOfRegistration | refDataDecode$: referenceDataType.CountryOfRegistration | async | defaultNullOrEmpty | uppercase }}
+          {{ testResult?.countryOfRegistration | refDataDecode$ : referenceDataType.CountryOfRegistration | async | defaultNullOrEmpty | uppercase }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">

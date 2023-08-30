@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { RoleGuard } from '@guards/roles.guard';
+import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
+import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
-import { ChangeVehicleTypeComponent } from './components/tech-record-change-type/tech-record-change-type.component';
 import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
-import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
-import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
-import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
-import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
-import { TechRecordComponent } from './tech-record.component';
-import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
-import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
-import { GenerateLetterComponent } from './components/tech-record-generate-letter/tech-record-generate-letter.component';
 import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
-import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
+import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
+import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
+import { ChangeVehicleTypeComponent } from './components/tech-record-change-type/tech-record-change-type.component';
+import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
+import { GenerateLetterComponent } from './components/tech-record-generate-letter/tech-record-generate-letter.component';
+import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
+import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
+import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
+import { TechRecordComponent } from './tech-record.component';
 
 const routes: Routes = [
   {
@@ -42,10 +42,10 @@ const routes: Routes = [
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
-    path: 'historic/:techCreatedAt',
+    path: 'historic',
     component: TechRecordComponent,
     data: { title: 'Historic tech record', isCustomLayout: true },
-    canActivate: [MsalGuard],
+    canActivate: [MsalGuard, CancelEditTechGuard],
     resolve: { load: TechRecordViewResolver }
   },
   {
@@ -57,20 +57,22 @@ const routes: Routes = [
   {
     path: 'change-vrm',
     component: AmendVrmComponent,
-    data: { title: 'Change VRM', roles: Roles.TechRecordAmend },
+    data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
     path: 'generate-plate',
     component: GeneratePlateComponent,
     data: { title: 'Generate plate', roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard]
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordViewResolver }
   },
   {
     path: 'generate-letter',
     component: GenerateLetterComponent,
     data: { title: 'Generate letter', roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard]
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordViewResolver }
   },
   {
     path: 'provisional',
@@ -107,7 +109,7 @@ const routes: Routes = [
       {
         path: 'change-vehicle-type',
         component: ChangeVehicleTypeComponent,
-        data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+        data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend, isEditing: true },
         canActivate: [MsalGuard, RoleGuard]
       },
       {
@@ -119,7 +121,7 @@ const routes: Routes = [
       {
         path: 'change-vrm',
         component: AmendVrmComponent,
-        data: { title: 'Change VRM', roles: Roles.TechRecordAmend },
+        data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
         canActivate: [MsalGuard, RoleGuard]
       },
       {
@@ -161,7 +163,7 @@ const routes: Routes = [
   {
     path: 'change-vehicle-type',
     component: ChangeVehicleTypeComponent,
-    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
+    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },

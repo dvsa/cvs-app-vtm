@@ -1,4 +1,3 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const Audit: FormNode = {
@@ -7,48 +6,48 @@ export const Audit: FormNode = {
   label: 'Audit',
   children: [
     {
-      name: 'reasonForCreation',
+      name: 'techRecord_reasonForCreation',
       label: 'Reason for creation',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: []
     },
     {
-      name: 'createdAt',
+      name: 'techRecord_createdAt',
       label: 'Created at',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATETIME
     },
     {
-      name: 'createdByName',
+      name: 'techRecord_createdByName',
       label: 'Created by',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'createdById',
+      name: 'techRecord_createdById',
       label: 'Created by ID',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'lastUpdatedAt',
+      name: 'techRecord_lastUpdatedAt',
       label: 'Last updated at',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATETIME
     },
     {
-      name: 'lastUpdatedByName',
+      name: 'techRecord_lastUpdatedByName',
       label: 'Last updated by',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'lastUpdatedById',
+      name: 'techRecord_lastUpdatedById',
       label: 'Last updated by ID',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL
     }
   ]

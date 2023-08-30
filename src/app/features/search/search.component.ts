@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { SEARCH_TYPES } from '@services/technical-record/technical-record.service';
 import { map, Observable } from 'rxjs';
 import { Roles } from '@models/roles.enum';
+import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { clearAllSectionStates } from '@store/technical-records';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-search',
@@ -14,10 +16,11 @@ export class SearchComponent {
   missingTermErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
   missingTypeErrorMessage = 'You must select a valid search criteria';
 
-  constructor(public globalErrorService: GlobalErrorService, private router: Router) {}
+  constructor(public globalErrorService: GlobalErrorService, private router: Router, private store: Store) {}
 
   navigateSearch(term: string, type: string): void {
     this.globalErrorService.clearErrors();
+    this.store.dispatch(clearAllSectionStates());
     term = term.trim();
 
     if (!term) {

@@ -17,8 +17,8 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
-import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { initialTestResultsState, isTestTypeKeySame, sectionTemplates, testResultInEdit, updateTestResultSuccess } from '@store/test-records';
+import { routeEditable, selectRouteData, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { initialTestResultsState, isTestTypeKeySame, sectionTemplates, testResultInEdit } from '@store/test-records';
 import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
@@ -71,6 +71,7 @@ describe('TestRecordComponent', () => {
 
     store.resetSelectors();
     store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testNumber: 'foo' } as Params);
+    store.overrideSelector(selectRouteData, { isEditing: false });
   });
 
   it('should create', () => {
@@ -156,26 +157,23 @@ describe('TestRecordComponent', () => {
       expect(updateTestResultStateSpy).not.toHaveBeenCalled();
     }));
 
-    it('should call updateTestResult with value of all forms merged into one', fakeAsync(() => {
-      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => {});
+    it('should call updateTestResult with value of all forms merged into one', async () => {
+      fixture.detectChanges();
+      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => Promise.resolve(true));
       const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
       store.overrideSelector(isTestTypeKeySame('testTypeId'), false);
       store.overrideSelector(testResultInEdit, testRecord);
       store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1']!));
 
-      tick(1000);
-      fixture.detectChanges();
-
       component.isAnyFormDirty = jest.fn().mockReturnValue(true);
       component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
 
-      component.handleSave();
+      await component.handleSave();
 
-      tick(1000);
-
+      fixture.detectChanges();
       expect(updateTestResultStateSpy).toHaveBeenCalledTimes(1);
       expect(updateTestResultStateSpy).toHaveBeenCalledWith(testRecord);
-    }));
+    });
   });
 
   describe('Render banner', () => {
@@ -183,7 +181,6 @@ describe('TestRecordComponent', () => {
       jest
         .spyOn(testRecordsService, 'testResult$', 'get')
         .mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
-      jest.spyOn(techRecordService, 'selectedVehicleTechRecord$', 'get').mockReturnValue(of(undefined));
     });
 
     it('should render the banner if the test type id is not supported', waitForAsync(() => {

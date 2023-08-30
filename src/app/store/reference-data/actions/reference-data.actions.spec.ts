@@ -12,13 +12,20 @@ import {
   fetchTyreReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearchFailed,
   fetchTyreReferenceDataByKeySearchSuccess,
-  addSearchInformation
+  addSearchInformation,
+  fetchReferenceDataAudit,
+  fetchReferenceDataAuditSuccess,
+  fetchReferenceDataAuditFailed
 } from './reference-data.actions';
 describe('Test Result Actions', () => {
   it('should return correct types', () => {
     expect(fetchReferenceData.type).toBe('[API/reference-data] Fetch all of ResourceType');
     expect(fetchReferenceDataSuccess.type).toBe('[API/reference-data] Fetch all of ResourceType Success');
     expect(fetchReferenceDataFailed.type).toBe('[API/reference-data] Fetch all of ResourceType Failed');
+
+    expect(fetchReferenceDataAudit.type).toBe('[API/reference-data] Fetch all of Audit ResourceType');
+    expect(fetchReferenceDataAuditSuccess.type).toBe('[API/reference-data] Fetch all of Audit ResourceType Success');
+    expect(fetchReferenceDataAuditFailed.type).toBe('[API/reference-data] Fetch all of Audit ResourceType Failed');
 
     expect(fetchReferenceDataByKey.type).toBe('[API/reference-data] Fetch ResourceType by Key');
     expect(fetchReferenceDataByKeySuccess.type).toBe('[API/reference-data] Fetch ResourceType by Key Success');
