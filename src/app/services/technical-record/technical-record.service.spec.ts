@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType as VehicleRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
@@ -11,6 +10,7 @@ import { State, initialAppState } from '@store/index';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { environment } from '../../../environments/environment';
 import { TechnicalRecordService } from './technical-record.service';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('TechnicalRecordService', () => {
   let service: TechnicalRecordService;
