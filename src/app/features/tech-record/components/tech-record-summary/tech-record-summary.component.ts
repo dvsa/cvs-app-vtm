@@ -15,7 +15,6 @@ import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dyna
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { vehicleClassCodeMap } from '@models/vehicle-class-enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
@@ -54,8 +53,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private errorService: GlobalErrorService,
     private referenceDataService: ReferenceDataService,
     private technicalRecordService: TechnicalRecordService,
-    private routerService: RouterService,
-    private store: Store
+    private routerService: RouterService
   ) {}
 
   ngOnInit(): void {
