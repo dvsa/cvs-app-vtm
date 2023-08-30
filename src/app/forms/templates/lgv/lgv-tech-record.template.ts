@@ -42,7 +42,7 @@ export const LgvTechRecord: FormNode = {
       value: null,
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
+      editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 }

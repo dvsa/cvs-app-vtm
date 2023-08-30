@@ -48,8 +48,8 @@ export class TechRecordHistoryComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  trackByFn(i: number, tr: V3TechRecordModel) {
-    return tr.techRecord_createdAt;
+  trackByFn(i: number, tr: TechRecordType<'get'>) {
+    return tr.createdTimestamp;
   }
 
   summaryLinkUrl(techRecord: TechRecordType<'get'>) {
