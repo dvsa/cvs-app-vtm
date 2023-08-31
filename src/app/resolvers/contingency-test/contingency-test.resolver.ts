@@ -46,7 +46,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               statusCode: viewableTechRecord?.techRecord_statusCode,
               testResultId: uuidv4(),
               euVehicleCategory: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_euVehicleCategory ?? null,
-              vehicleSize: viewableTechRecord?.techRecord_vehicleType === 'psv' ? viewableTechRecord?.techRecord_vehicleSize : null,
+              vehicleSize: viewableTechRecord?.techRecord_vehicleType === 'psv' ? viewableTechRecord?.techRecord_vehicleSize : undefined,
               vehicleConfiguration: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_vehicleConfiguration ?? null,
               vehicleClass:
                 viewableTechRecord?.techRecord_vehicleType === 'psv' ||
