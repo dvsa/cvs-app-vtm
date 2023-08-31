@@ -12,7 +12,8 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleClass } from '@models/vehicle-class.model';
+import { TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
@@ -128,7 +129,11 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   handleFormState(event: any): void {
     const isPrimitiveArray = (a: any, b: any) => (Array.isArray(a) && !a.some(i => typeof i === 'object') ? b : undefined);
 
+    const techRecordCopy = cloneDeep(this.techRecordCalculated);
+
     this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
+
+    this.handlePsvSize(event, techRecordCopy);
 
     this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated);
   }
@@ -149,5 +154,58 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     forms.forEach(form => DynamicFormService.validate(form, errors));
 
     errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
+  }
+
+  handlePsvSize(event: any, record: TechRecordModel) {
+    if (record.vehicleType !== 'psv') return;
+
+    const allowedKeys = ['vehicleClass', 'vehicleSize', 'seatsLowerDeck', 'seatsUpperDeck', 'standingCapacity'];
+    const keys = Object.keys(event);
+
+    let filteredEvent: string = '';
+
+    keys.forEach(key => {
+      if (key === 'vehicleClass') {
+        if (event.vehicleClass.description !== record.vehicleClass?.description) {
+          filteredEvent = key;
+        }
+      } else if (event[key] !== record[key as keyof TechRecordModel]) {
+        filteredEvent = key;
+      }
+    });
+
+    if (allowedKeys.includes(filteredEvent)) {
+      switch (filteredEvent) {
+        case 'vehicleClass':
+          if (event.vehicleClass.description === VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats) {
+            this.techRecordCalculated.vehicleSize = VehicleSizes.LARGE;
+            break;
+          } else if (event.vehicleClass.description === VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats) {
+            this.techRecordCalculated.vehicleSize = VehicleSizes.SMALL;
+          }
+          break;
+        case 'vehicleSize':
+          if (event.vehicleSize === VehicleSizes.LARGE) {
+            this.techRecordCalculated.vehicleClass?.description === VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats;
+          } else {
+            this.techRecordCalculated.vehicleClass?.description === VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats;
+          }
+          break;
+        default:
+          if (event.seatsLowerDeck + event.seatsUpperDeck + event.standingCapacity <= 22) {
+            this.techRecordCalculated.vehicleClass = {
+              description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats,
+              code: VehicleClass.CodeEnum.S
+            };
+            this.techRecordCalculated.vehicleSize = VehicleSizes.SMALL;
+          } else {
+            this.techRecordCalculated.vehicleSize = VehicleSizes.LARGE;
+            this.techRecordCalculated.vehicleClass = {
+              description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats,
+              code: VehicleClass.CodeEnum.L
+            };
+          }
+      }
+    }
   }
 }

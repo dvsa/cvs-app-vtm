@@ -110,26 +110,6 @@ export const PsvTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'vehicleClass',
-      label: 'Vehicle class',
-      value: '',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'description',
-          label: 'Vehicle class',
-          value: '',
-          customId: 'vehicleClassDescription',
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING,
-          editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
-          class: '.govuk-input--width-10',
-          validators: [{ name: ValidatorNames.Required }]
-        }
-      ]
-    },
-    {
       name: 'vehicleConfiguration',
       label: 'Vehicle configuration',
       value: '',
@@ -186,6 +166,35 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 999 }]
+    },
+    {
+      name: 'vehicleClass',
+      label: 'Vehicle class',
+      value: '',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'description',
+          label: 'Vehicle class',
+          value: '',
+          customId: 'vehicleClassDescription',
+          type: FormNodeTypes.CONTROL,
+          viewType: FormNodeViewTypes.STRING,
+          editType: FormNodeEditTypes.SELECT,
+          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+          class: '.govuk-input--width-10',
+          validators: [{ name: ValidatorNames.Required }]
+        }
+      ]
+    },
+    {
+      name: 'vehicleSize',
+      label: 'Vehicle size',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.RADIO,
+      options: getOptionsFromEnum(VehicleSize),
+      validators: []
     },
     {
       name: 'numberOfSeatbelts',
