@@ -51,9 +51,10 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               vehicleClass:
                 viewableTechRecord?.techRecord_vehicleType === 'psv' ||
                 viewableTechRecord?.techRecord_vehicleType === 'trl' ||
-                viewableTechRecord?.techRecord_vehicleType === 'hgv'
+                viewableTechRecord?.techRecord_vehicleType === 'hgv' ||
+                viewableTechRecord?.techRecord_vehicleType === 'motorcycle'
                   ? {
-                      code: viewableTechRecord?.techRecord_vehicleClass_code,
+                      code: (viewableTechRecord as any)?.techRecord_vehicleClass_code,
                       description: viewableTechRecord?.techRecord_vehicleClass_description
                     }
                   : null,
