@@ -176,6 +176,7 @@ export const PsvTechRecord: FormNode = {
         {
           name: 'description',
           label: 'Vehicle class',
+          hint: 'The vehicle class is calculated automatically based on the number of seats and standing capacity. Only change the class if you need to',
           value: '',
           customId: 'vehicleClassDescription',
           type: FormNodeTypes.CONTROL,
@@ -191,6 +192,7 @@ export const PsvTechRecord: FormNode = {
       name: 'vehicleSize',
       label: 'Vehicle size',
       value: '',
+      hint: 'The vehicle size is calculated automatically based on the number of seats and standing capacity. Only change the size if you need to',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(VehicleSize),

@@ -10,15 +10,16 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { createMockTrl } from '@mocks/trl-record.mock';
 import { Roles } from '@models/roles.enum';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleClass } from '@models/vehicle-class.model';
+import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/index';
+import { State, initialAppState } from '@store/index';
 import { editableVehicleTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { of } from 'rxjs';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
@@ -157,6 +158,197 @@ describe('TechRecordSummaryComponent', () => {
       expect(dispatchSpy).toHaveBeenCalledWith(
         updateEditingTechRecord({ vehicleTechRecord: { vin: '', vrms: [], systemNumber: '', techRecord: [component.techRecordCalculated!] } })
       );
+    });
+  });
+
+  describe('handlePsvClassChange', () => {
+    it('should change the psv size to small when the vehicle class is changed to small psv', () => {
+      component.techRecordCalculated = {
+        vehicleClass: {
+          description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats,
+          code: VehicleClass.CodeEnum.L
+        },
+        createdAt: new Date(),
+        vehicleType: VehicleTypes.PSV,
+        vehicleSize: VehicleSizes.LARGE
+      };
+
+      component.handlePsvClassChange(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
+      fixture.detectChanges();
+
+      expect(component.techRecordCalculated.vehicleSize).toBe(VehicleSizes.SMALL);
+    });
+    it('should change the psv size to large when the vehicle class is changed to large psv', () => {
+      component.techRecordCalculated = {
+        vehicleClass: {
+          description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats,
+          code: VehicleClass.CodeEnum.S
+        },
+        createdAt: new Date(),
+        vehicleType: VehicleTypes.PSV,
+        vehicleSize: VehicleSizes.SMALL
+      };
+
+      component.handlePsvClassChange(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
+      fixture.detectChanges();
+
+      expect(component.techRecordCalculated.vehicleSize).toBe(VehicleSizes.LARGE);
+    });
+    it('should not change the vehicle size if class is changed to one other than the psv sizes', () => {
+      component.techRecordCalculated = {
+        vehicleClass: {
+          description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats,
+          code: VehicleClass.CodeEnum.S
+        },
+        createdAt: new Date(),
+        vehicleType: VehicleTypes.PSV,
+        vehicleSize: VehicleSizes.SMALL
+      };
+
+      component.handlePsvClassChange(VehicleClass.DescriptionEnum.MotorbikesOver200ccOrWithASidecar);
+      fixture.detectChanges();
+
+      expect(component.techRecordCalculated.vehicleSize).toBe(VehicleSizes.SMALL);
+    });
+  });
+
+  describe('handlePsvSizeChange', () => {
+    it('should change the vehicle class to small if vehicle size changed', () => {
+      component.techRecordCalculated = {
+        vehicleClass: {
+          description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats,
+          code: VehicleClass.CodeEnum.L
+        },
+        createdAt: new Date(),
+        vehicleType: VehicleTypes.PSV,
+        vehicleSize: VehicleSizes.LARGE
+      };
+
+      component.handlePsvSizeChange(VehicleSizes.SMALL);
+      fixture.detectChanges();
+
+      expect(component.techRecordCalculated.vehicleClass?.description).toBe(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
+    });
+    it('should change the vehicle class to large if vehicle size changed', () => {
+      component.techRecordCalculated = {
+        vehicleClass: {
+          description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats,
+          code: VehicleClass.CodeEnum.L
+        },
+        createdAt: new Date(),
+        vehicleType: VehicleTypes.PSV,
+        vehicleSize: VehicleSizes.SMALL
+      };
+
+      component.handlePsvSizeChange(VehicleSizes.LARGE);
+      fixture.detectChanges();
+
+      expect(component.techRecordCalculated.vehicleClass?.description).toBe(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
+    });
+  });
+
+  describe('handlePsvPassengersChange', () => {
+    it('should calculate the vehicle size and description based on passenger numbers', () => {
+      component.techRecordCalculated = {
+        vehicleClass: {
+          description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats,
+          code: VehicleClass.CodeEnum.L
+        },
+        createdAt: new Date(),
+        vehicleType: VehicleTypes.PSV,
+        vehicleSize: VehicleSizes.SMALL
+      };
+
+      component.handlePsvPassengersChange(10, 5, 13);
+      expect(component.techRecordCalculated.vehicleClass?.description).toBe(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
+      expect(component.techRecordCalculated.vehicleSize).toBe(VehicleSizes.LARGE);
+    });
+    it('should calculate the vehicle size and description based on passenger numbers', () => {
+      component.techRecordCalculated = {
+        vehicleClass: {
+          description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats,
+          code: VehicleClass.CodeEnum.L
+        },
+        createdAt: new Date(),
+        vehicleType: VehicleTypes.PSV,
+        vehicleSize: VehicleSizes.SMALL
+      };
+
+      component.handlePsvPassengersChange(1, 2, 19);
+      expect(component.techRecordCalculated.vehicleClass?.description).toBe(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
+      expect(component.techRecordCalculated.vehicleSize).toBe(VehicleSizes.SMALL);
+    });
+  });
+
+  describe('psvSizeCalculator', () => {
+    it('should call handlePsvClassChange when event changes the class', () => {
+      const record = {
+        vehicleClass: {
+          description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats,
+          code: VehicleClass.CodeEnum.L
+        },
+        createdAt: new Date(),
+        vehicleType: VehicleTypes.PSV,
+        vehicleSize: VehicleSizes.SMALL
+      };
+      component.techRecordCalculated = record;
+
+      const expectedRecord = {
+        ...record,
+        vehicleClass: { description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, code: VehicleClass.CodeEnum.L }
+      };
+
+      const methodSpy = jest.spyOn(component, 'handlePsvClassChange');
+      component.psvSizeCalculator(expectedRecord, record);
+      fixture.detectChanges();
+
+      expect(component.techRecordCalculated.vehicleSize).toBe(VehicleSizes.SMALL);
+      expect(methodSpy).toHaveBeenCalled();
+    });
+    it('should call handlePsvSize when event changes the size', () => {
+      const record = {
+        vehicleClass: {
+          description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats,
+          code: VehicleClass.CodeEnum.L
+        },
+        createdAt: new Date(),
+        vehicleType: VehicleTypes.PSV,
+        vehicleSize: VehicleSizes.SMALL
+      };
+      component.techRecordCalculated = record;
+
+      const expectedRecord = { ...record, vehicleSize: VehicleSizes.LARGE };
+
+      const methodSpy = jest.spyOn(component, 'handlePsvSizeChange');
+      component.psvSizeCalculator(expectedRecord, record);
+      fixture.detectChanges();
+
+      expect(component.techRecordCalculated.vehicleSize).toBe(VehicleSizes.SMALL);
+      expect(methodSpy).toHaveBeenCalled();
+    });
+    it('should call handlePsvPassengersChange when event changes the class', () => {
+      const record = {
+        vehicleClass: {
+          description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats,
+          code: VehicleClass.CodeEnum.L
+        },
+        createdAt: new Date(),
+        vehicleType: VehicleTypes.PSV,
+        vehicleSize: VehicleSizes.SMALL,
+        seatsLowerDeck: 3,
+        standingCapacity: 4
+      };
+      component.techRecordCalculated = record;
+
+      const expectedRecord = { ...record, seatsUpperDeck: 18 };
+
+      const methodSpy = jest.spyOn(component, 'handlePsvPassengersChange');
+      component.psvSizeCalculator(expectedRecord, record);
+      fixture.detectChanges();
+
+      expect(methodSpy).toHaveBeenCalled();
+      expect(component.techRecordCalculated.vehicleSize).toBe(VehicleSizes.LARGE);
+      expect(component.techRecordCalculated.vehicleClass?.description).toBe(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
     });
   });
 });

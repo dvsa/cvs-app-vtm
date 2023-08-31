@@ -133,7 +133,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
     this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
 
-    this.handlePsvSize(event, techRecordCopy);
+    this.psvSizeCalculator(event, techRecordCopy);
 
     this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated);
   }
@@ -156,55 +156,81 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
   }
 
-  handlePsvSize(event: any, record: TechRecordModel) {
+  psvSizeCalculator(event: any, record: TechRecordModel): void {
     if (record.vehicleType !== 'psv') return;
 
-    const allowedKeys = ['vehicleClass', 'vehicleSize', 'seatsLowerDeck', 'seatsUpperDeck', 'standingCapacity'];
+    const eventsToHandle = ['vehicleClass', 'vehicleSize', 'seatsLowerDeck', 'seatsUpperDeck', 'standingCapacity'];
     const keys = Object.keys(event);
 
-    let filteredEvent: string = '';
+    let fieldChanged: string = '';
 
     keys.forEach(key => {
       if (key === 'vehicleClass') {
         if (event.vehicleClass.description !== record.vehicleClass?.description) {
-          filteredEvent = key;
+          fieldChanged = key;
         }
       } else if (event[key] !== record[key as keyof TechRecordModel]) {
-        filteredEvent = key;
+        fieldChanged = key;
       }
     });
 
-    if (allowedKeys.includes(filteredEvent)) {
-      switch (filteredEvent) {
+    if (eventsToHandle.includes(fieldChanged)) {
+      switch (fieldChanged) {
         case 'vehicleClass':
-          if (event.vehicleClass.description === VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats) {
-            this.techRecordCalculated.vehicleSize = VehicleSizes.LARGE;
-            break;
-          } else if (event.vehicleClass.description === VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats) {
-            this.techRecordCalculated.vehicleSize = VehicleSizes.SMALL;
-          }
+          this.handlePsvClassChange(event.vehicleClass.description);
           break;
         case 'vehicleSize':
-          if (event.vehicleSize === VehicleSizes.LARGE) {
-            this.techRecordCalculated.vehicleClass?.description === VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats;
-          } else {
-            this.techRecordCalculated.vehicleClass?.description === VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats;
-          }
+          this.handlePsvSizeChange(event.vehicleSize);
           break;
         default:
-          if (event.seatsLowerDeck + event.seatsUpperDeck + event.standingCapacity <= 22) {
-            this.techRecordCalculated.vehicleClass = {
-              description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats,
-              code: VehicleClass.CodeEnum.S
-            };
-            this.techRecordCalculated.vehicleSize = VehicleSizes.SMALL;
-          } else {
-            this.techRecordCalculated.vehicleSize = VehicleSizes.LARGE;
-            this.techRecordCalculated.vehicleClass = {
-              description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats,
-              code: VehicleClass.CodeEnum.L
-            };
-          }
+          this.handlePsvPassengersChange(event.seatsLowerDeck, event.seatsUpperDeck, event.standingCapacity);
+      }
+    }
+  }
+
+  handlePsvClassChange(description: string): void {
+    switch (description) {
+      case VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats: {
+        this.techRecordCalculated.vehicleSize = VehicleSizes.LARGE;
+        break;
+      }
+      case VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats: {
+        this.techRecordCalculated.vehicleSize = VehicleSizes.SMALL;
+        break;
+      }
+    }
+  }
+
+  handlePsvSizeChange(vehicleSize: string): void {
+    switch (vehicleSize) {
+      case VehicleSizes.LARGE: {
+        this.techRecordCalculated.vehicleClass = { description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, code: '' };
+        break;
+      }
+      case VehicleSizes.SMALL: {
+        this.techRecordCalculated.vehicleClass = { description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, code: '' };
+        break;
+      }
+    }
+  }
+
+  handlePsvPassengersChange(seatsLowerDeck: number, seatsUpperDeck: number, standingCapacity: number): void {
+    const totalPassengers = seatsLowerDeck + seatsUpperDeck + standingCapacity;
+    switch (true) {
+      case totalPassengers <= 22: {
+        this.techRecordCalculated.vehicleSize = VehicleSizes.SMALL;
+        this.techRecordCalculated.vehicleClass = {
+          description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats,
+          code: ''
+        };
+        break;
+      }
+      default: {
+        this.techRecordCalculated.vehicleSize = VehicleSizes.LARGE;
+        this.techRecordCalculated.vehicleClass = {
+          description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats,
+          code: ''
+        };
       }
     }
   }
