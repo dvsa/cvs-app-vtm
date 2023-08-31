@@ -13,7 +13,6 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { vehicleClassCodeMap } from '@models/vehicle-class-enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
