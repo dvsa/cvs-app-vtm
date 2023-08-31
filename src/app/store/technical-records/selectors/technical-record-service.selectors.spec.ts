@@ -79,7 +79,7 @@ describe('Tech Record Selectors', () => {
       } as unknown as TechRecordType<'put'>);
       expect(techRecord).toBeDefined();
       expect(techRecord?.techRecord_statusCode).toBe(statusExpected);
-      techRecord_createdAt && techRecord && expect(techRecord.techRecord_createdAt).toEqual(techRecord_createdAt);
+      techRecord_createdAt && techRecord && expect((techRecord as TechRecordType<'get'>).techRecord_createdAt).toEqual(techRecord_createdAt);
     });
   });
 
