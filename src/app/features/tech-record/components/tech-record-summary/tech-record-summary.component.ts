@@ -204,11 +204,11 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   handlePsvSizeChange(vehicleSize: string): void {
     switch (vehicleSize) {
       case VehicleSizes.LARGE: {
-        this.techRecordCalculated.vehicleClass = { description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, code: '' };
+        this.techRecordCalculated.vehicleClass!.description = VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats;
         break;
       }
       case VehicleSizes.SMALL: {
-        this.techRecordCalculated.vehicleClass = { description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, code: '' };
+        this.techRecordCalculated.vehicleClass!.description = VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats;
         break;
       }
     }
@@ -219,18 +219,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     switch (true) {
       case totalPassengers <= 22: {
         this.techRecordCalculated.vehicleSize = VehicleSizes.SMALL;
-        this.techRecordCalculated.vehicleClass = {
-          description: VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats,
-          code: ''
-        };
+        this.techRecordCalculated.vehicleClass!.description = VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats;
         break;
       }
       default: {
         this.techRecordCalculated.vehicleSize = VehicleSizes.LARGE;
-        this.techRecordCalculated.vehicleClass = {
-          description: VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats,
-          code: ''
-        };
+        this.techRecordCalculated.vehicleClass!.description = VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats;
       }
     }
   }
