@@ -9,8 +9,11 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, tap } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { UserService } from '@services/user-service/user-service';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-vehicle-technical-record[vehicle]',
@@ -31,13 +34,18 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   isDirty = false;
   isInvalid = false;
 
+  hasTestResultAmend: boolean | undefined = false;
+
   constructor(
+    public globalErrorService: GlobalErrorService,
+    public userService: UserService,
     testRecordService: TestRecordsService,
     private activatedRoute: ActivatedRoute,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private viewportScroller: ViewportScroller
   ) {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
@@ -57,6 +65,12 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     if (isProvisionalUrl && !hasProvisionalRecord) {
       this.router.navigate(['../'], { relativeTo: this.route });
     }
+
+    this.userService.roles$.pipe(take(1)).subscribe(storedRoles => {
+      this.hasTestResultAmend = storedRoles?.some(role => {
+        return Roles.TestResultAmend.split(',').includes(role);
+      });
+    });
   }
 
   get currentVrm(): string | undefined {
@@ -118,15 +132,34 @@ export class VehicleTechnicalRecordComponent implements OnInit {
 
   createTest(techRecord?: TechRecordModel): void {
     if (techRecord?.hiddenInVta) {
-      alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
+      this.globalErrorService.setErrors([
+        {
+          error: 'Vehicle record is hidden in VTA. Show the vehicle record in VTA to start recording tests against it.',
+          anchorLink: 'create-test'
+        }
+      ]);
+      this.viewportScroller.scrollToPosition([0, 0]);
     } else if (techRecord?.recordCompleteness === 'complete' || techRecord?.recordCompleteness === 'testable') {
       this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
-      alert(
-        'Incomplete vehicle record.\n\n' +
-          'This vehicle does not have enough data to be tested. ' +
-          'Call Technical Support to correct this record and use SAR to test this vehicle.'
-      );
+      if (!this.hasTestResultAmend) {
+        this.globalErrorService.setErrors([
+          {
+            error:
+              'This vehicle does not have enough information to be tested. Call the Contact Centre to complete this record so tests can be recorded against it.',
+            anchorLink: 'create-test'
+          }
+        ]);
+      } else {
+        this.globalErrorService.setErrors([
+          {
+            error: 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.',
+            anchorLink: 'create-test'
+          }
+        ]);
+      }
+
+      this.viewportScroller.scrollToPosition([0, 0]);
     }
   }
 
