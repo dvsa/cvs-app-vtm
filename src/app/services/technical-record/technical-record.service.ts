@@ -169,7 +169,7 @@ export class TechnicalRecordService {
     const model = (techRecord.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisModel : techRecord.techRecord_model) ?? '';
 
     if (!make || !model) {
-      return make ?? model;
+      return make || model;
     }
 
     return `${make} - ${model}`;
