@@ -6,6 +6,7 @@ import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { VehicleSize } from '@models/vehicle-size.enum';
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 
 export const PsvTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -141,31 +142,40 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'seatsUpperDeck',
       label: 'Upper deck',
-      value: '',
+      value: undefined,
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 99 }],
+      validators: [
+        { name: ValidatorNames.Max, args: 99 },
+        { name: ValidatorNames.HandlePsvPassengersChange, args: { passengersOne: 'seatsLowerDeck', passengersTwo: 'standingCapacity' } }
+      ],
       class: 'flex--half'
     },
     {
       name: 'seatsLowerDeck',
       label: 'Lower deck',
-      value: '',
+      value: undefined,
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 999 }],
+      validators: [
+        { name: ValidatorNames.Max, args: 999 },
+        { name: ValidatorNames.HandlePsvPassengersChange, args: { passengersOne: 'standingCapacity', passengersTwo: 'seatsUpperDeck' } }
+      ],
       class: 'flex--half'
     },
     {
       name: 'standingCapacity',
       label: 'Standing capacity',
-      value: '',
+      value: undefined,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 999 }]
+      validators: [
+        { name: ValidatorNames.Max, args: 999 },
+        { name: ValidatorNames.HandlePsvPassengersChange, args: { passengersOne: 'seatsLowerDeck', passengersTwo: 'seatsUpperDeck' } }
+      ]
     },
     {
       name: 'vehicleClass',
@@ -184,7 +194,7 @@ export const PsvTechRecord: FormNode = {
           editType: FormNodeEditTypes.SELECT,
           options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
           class: '.govuk-input--width-10',
-          validators: [{ name: ValidatorNames.Required }]
+          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.HandlePsvClassChange }]
         }
       ]
     },
@@ -196,7 +206,7 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(VehicleSize),
-      validators: []
+      validators: [{ name: ValidatorNames.HandlePsvSizeChange }]
     },
     {
       name: 'numberOfSeatbelts',

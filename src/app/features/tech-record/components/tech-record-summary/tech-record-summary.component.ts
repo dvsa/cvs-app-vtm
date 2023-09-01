@@ -12,8 +12,7 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { VehicleClass } from '@models/vehicle-class.model';
-import { TechRecordModel, VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
@@ -129,11 +128,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   handleFormState(event: any): void {
     const isPrimitiveArray = (a: any, b: any) => (Array.isArray(a) && !a.some(i => typeof i === 'object') ? b : undefined);
 
-    const techRecordCopy = cloneDeep(this.techRecordCalculated);
-
     this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
-
-    this.psvSizeCalculator(event, techRecordCopy);
 
     this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated);
   }
@@ -154,78 +149,5 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     forms.forEach(form => DynamicFormService.validate(form, errors));
 
     errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
-  }
-
-  psvSizeCalculator(event: any, record: TechRecordModel): void {
-    if (record.vehicleType !== 'psv') return;
-
-    const eventsToHandle = ['vehicleClass', 'vehicleSize', 'seatsLowerDeck', 'seatsUpperDeck', 'standingCapacity'];
-    const keys = Object.keys(event);
-
-    let fieldChanged: string = '';
-
-    keys.forEach(key => {
-      if (key === 'vehicleClass') {
-        if (event.vehicleClass.description !== record.vehicleClass?.description) {
-          fieldChanged = key;
-        }
-      } else if (event[key] !== record[key as keyof TechRecordModel]) {
-        fieldChanged = key;
-      }
-    });
-
-    if (eventsToHandle.includes(fieldChanged)) {
-      switch (fieldChanged) {
-        case 'vehicleClass':
-          this.handlePsvClassChange(event.vehicleClass.description);
-          break;
-        case 'vehicleSize':
-          this.handlePsvSizeChange(event.vehicleSize);
-          break;
-        default:
-          this.handlePsvPassengersChange(event.seatsLowerDeck, event.seatsUpperDeck, event.standingCapacity);
-      }
-    }
-  }
-
-  handlePsvClassChange(description: string): void {
-    switch (description) {
-      case VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats: {
-        this.techRecordCalculated.vehicleSize = VehicleSizes.LARGE;
-        break;
-      }
-      case VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats: {
-        this.techRecordCalculated.vehicleSize = VehicleSizes.SMALL;
-        break;
-      }
-    }
-  }
-
-  handlePsvSizeChange(vehicleSize: string): void {
-    switch (vehicleSize) {
-      case VehicleSizes.LARGE: {
-        this.techRecordCalculated.vehicleClass!.description = VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats;
-        break;
-      }
-      case VehicleSizes.SMALL: {
-        this.techRecordCalculated.vehicleClass!.description = VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats;
-        break;
-      }
-    }
-  }
-
-  handlePsvPassengersChange(seatsLowerDeck: number, seatsUpperDeck: number, standingCapacity: number): void {
-    const totalPassengers = seatsLowerDeck + seatsUpperDeck + standingCapacity;
-    switch (true) {
-      case totalPassengers <= 22: {
-        this.techRecordCalculated.vehicleSize = VehicleSizes.SMALL;
-        this.techRecordCalculated.vehicleClass!.description = VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats;
-        break;
-      }
-      default: {
-        this.techRecordCalculated.vehicleSize = VehicleSizes.LARGE;
-        this.techRecordCalculated.vehicleClass!.description = VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats;
-      }
-    }
   }
 }

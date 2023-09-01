@@ -1,6 +1,8 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleClass } from '@models/vehicle-class.model';
+import { VehicleSize } from '@models/vehicle-size.enum';
+import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomValidators {
   static hideIfEmpty = (sibling: string): ValidatorFn => {
@@ -265,5 +267,71 @@ export class CustomValidators {
     const isZNumber = new RegExp('^[0-9]{7}[zZ]$').test(control.value);
 
     return !isZNumber ? null : { notZNumber: true };
+  };
+
+  static handlePsvClassChange = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const vehicleSizeControl = control.root.get('vehicleSize');
+      if (control.dirty) {
+        switch (control.value) {
+          case VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats: {
+            vehicleSizeControl?.setValue(VehicleSizes.LARGE, { onlySelf: true, emitEvent: false });
+            return null;
+          }
+          case VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats: {
+            vehicleSizeControl?.setValue(VehicleSizes.SMALL, { onlySelf: true, emitEvent: false });
+            return null;
+          }
+        }
+      }
+      return null;
+    };
+  };
+
+  static handlePsvSizeChange = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const vehicleClassControl = control.root.get('vehicleClass')?.get('description');
+      if (control.dirty) {
+        switch (control.value) {
+          case VehicleSizes.LARGE: {
+            vehicleClassControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, { onlySelf: true, emitEvent: false });
+            return null;
+          }
+          case VehicleSizes.SMALL: {
+            vehicleClassControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { onlySelf: true, emitEvent: false });
+            return null;
+          }
+        }
+      }
+      return null;
+    };
+  };
+
+  static handlePsvPassengersChange = (passengersOne: string, passengersTwo: string): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const controlOne: number = control.root.get(passengersOne)?.value ?? 0;
+      const controlTwo: number = control.root.get(passengersTwo)?.value ?? 0;
+      const controlThree: number = control.value ?? 0;
+
+      const classControl = control.root.get('vehicleClass')?.get('description');
+      const sizeControl = control.root.get('vehicleSize');
+
+      const totalPassengers = controlOne + controlTwo + controlThree;
+      console.log(totalPassengers);
+
+      switch (true) {
+        case totalPassengers <= 22: {
+          sizeControl?.setValue(VehicleSizes.SMALL, { emitEvent: false });
+          classControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
+          break;
+        }
+        case totalPassengers > 22: {
+          sizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
+          classControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
+          break;
+        }
+      }
+      return null;
+    };
   };
 }

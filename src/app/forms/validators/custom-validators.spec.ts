@@ -540,3 +540,5 @@ describe('validate VRM/TrailerId Length', () => {
     expect(result.validateVRMTrailerIdLength.message).toEqual('Trailer ID must be less than or equal to 8 characters');
   });
 });
+
+describe('handlePsvClassChange', () => {});

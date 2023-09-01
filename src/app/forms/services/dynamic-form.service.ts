@@ -51,7 +51,11 @@ export class DynamicFormService {
     [ValidatorNames.ValidateVRMTrailerIdLength]: (args: { sibling: string }) => CustomValidators.validateVRMTrailerIdLength(args.sibling),
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
     [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued,
-    [ValidatorNames.MustEqualSibling]: (args: { sibling: string }) => CustomValidators.mustEqualSibling(args.sibling)
+    [ValidatorNames.MustEqualSibling]: (args: { sibling: string }) => CustomValidators.mustEqualSibling(args.sibling),
+    [ValidatorNames.HandlePsvClassChange]: () => CustomValidators.handlePsvClassChange(),
+    [ValidatorNames.HandlePsvSizeChange]: () => CustomValidators.handlePsvSizeChange(),
+    [ValidatorNames.HandlePsvPassengersChange]: (args: { passengersOne: string; passengersTwo: string }) =>
+      CustomValidators.handlePsvPassengersChange(args.passengersOne, args.passengersTwo)
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
