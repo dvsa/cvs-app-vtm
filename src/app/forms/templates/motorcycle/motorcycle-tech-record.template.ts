@@ -11,7 +11,7 @@ export const MotorcycleTechRecord: FormNode = {
   label: 'Vehicle Summary',
   children: [
     {
-      name: 'vehicleType',
+      name: 'techRecord_vehicleType',
       label: 'Vehicle type',
       value: '',
       width: FormNodeWidth.M,
@@ -21,14 +21,14 @@ export const MotorcycleTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'statusCode',
+      name: 'techRecord_statusCode',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
     {
-      name: 'regnDate',
+      name: 'techRecord_regnDate',
       label: 'Date of first registration',
       value: '',
       type: FormNodeTypes.CONTROL,
@@ -38,9 +38,9 @@ export const MotorcycleTechRecord: FormNode = {
       isoDate: false
     },
     {
-      name: 'manufactureYear',
+      name: 'techRecord_manufactureYear',
       label: 'Year of manufacture',
-      value: '',
+      value: null,
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -50,7 +50,7 @@ export const MotorcycleTechRecord: FormNode = {
       ]
     },
     {
-      name: 'noOfAxles',
+      name: 'techRecord_noOfAxles',
       label: 'Number of axles',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
@@ -59,26 +59,19 @@ export const MotorcycleTechRecord: FormNode = {
       validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
-      name: 'vehicleClass',
+      name: 'techRecord_vehicleClass_description',
       label: 'Vehicle class',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'description',
-          label: 'Vehicle class',
-          value: '',
-          customId: 'vehicleClassDescription',
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING,
-          editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
-          class: '.govuk-input--width-10',
-          validators: [{ name: ValidatorNames.Required }]
-        }
-      ]
+      value: '',
+      customId: 'vehicleClassDescription',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+      class: '.govuk-input--width-10',
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
-      name: 'vehicleConfiguration',
+      name: 'techRecord_vehicleConfiguration',
       label: 'Vehicle configuration',
       value: VehicleConfiguration.OTHER,
       type: FormNodeTypes.CONTROL,
@@ -87,9 +80,9 @@ export const MotorcycleTechRecord: FormNode = {
       validators: [{ name: ValidatorNames.Required }]
     },
     {
-      name: 'euVehicleCategory',
+      name: 'techRecord_euVehicleCategory',
       label: 'EU vehicle category',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
@@ -97,7 +90,7 @@ export const MotorcycleTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'numberOfWheelsDriven',
+      name: 'techRecord_numberOfWheelsDriven',
       label: 'Number of wheels',
       value: '',
       width: FormNodeWidth.XXS,

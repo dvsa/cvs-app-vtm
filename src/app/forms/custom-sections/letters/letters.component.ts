@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType as TechRecordTypeVehicleVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
-import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { Subscription, debounceTime, take } from 'rxjs';
+import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@models/vehicle-tech-record.model';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-letters[techRecord]',
@@ -13,19 +14,16 @@ import { Subscription, debounceTime, take } from 'rxjs';
   styleUrls: ['./letters.component.scss']
 })
 export class LettersComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() techRecord!: TechRecordModel;
+  @Input() techRecord?: TechRecordType<'trl'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
 
   form!: CustomFormGroup;
-  vehicle?: VehicleTechRecordModel;
 
   private _formSubscription = new Subscription();
 
-  constructor(private dynamicFormService: DynamicFormService, private technicalRecordService: TechnicalRecordService) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
-  }
+  constructor(private dynamicFormService: DynamicFormService) {}
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
@@ -33,7 +31,9 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.form?.patchValue(this.techRecord, { emitEvent: false });
+    if (this.techRecord) {
+      this.form?.patchValue(this.techRecord, { emitEvent: false });
+    }
   }
 
   ngOnDestroy(): void {
@@ -49,11 +49,19 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get letter(): LettersOfAuth | undefined {
-    return this.techRecord?.letterOfAuth ?? undefined;
+    return this.techRecord?.techRecord_letterOfAuth_letterType
+      ? {
+          letterType: this.techRecord?.techRecord_letterOfAuth_letterType!,
+          paragraphId: this.techRecord?.techRecord_letterOfAuth_paragraphId!,
+          letterIssuer: this.techRecord?.techRecord_letterOfAuth_letterIssuer!,
+          letterDateRequested: this.techRecord?.techRecord_letterOfAuth_letterDateRequested!,
+          letterContents: ''
+        }
+      : undefined;
   }
 
   get eligibleForLetter(): boolean {
-    const currentTechRecord = this.techRecord.statusCode === StatusCodes.CURRENT;
+    const currentTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT;
 
     return this.correctApprovalType && currentTechRecord && !this.isEditing;
   }
@@ -63,7 +71,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
       return 'This section is not available when amending or creating a technical record.';
     }
 
-    if (this.techRecord.statusCode !== StatusCodes.CURRENT) {
+    if (this.techRecord?.techRecord_statusCode !== StatusCodes.CURRENT) {
       return 'Generating letters is only applicable to current technical records.';
     }
 
@@ -76,18 +84,18 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   get correctApprovalType(): boolean {
     return (
-      this.techRecord.approvalType !== undefined &&
-      (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.techRecord.approvalType!.valueOf())
+      this.techRecord?.techRecord_approvalType !== undefined &&
+      (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.techRecord.techRecord_approvalType!.valueOf())
     );
   }
 
   get documentParams(): Map<string, string> {
-    if (!this.vehicle) {
+    if (!this.techRecord) {
       throw new Error('Could not find vehicle record associated with this technical record.');
     }
     return new Map([
-      ['systemNumber', this.vehicle!.systemNumber],
-      ['vinNumber', this.vehicle!.vin]
+      ['systemNumber', (this.techRecord as TechRecordTypeVehicleVerb<'trl', 'get'>)?.systemNumber],
+      ['vinNumber', this.techRecord?.vin]
     ]);
   }
 
@@ -95,9 +103,9 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.letter) {
       return '';
     }
-    if (!this.vehicle) {
+    if (!this.techRecord) {
       return '';
     }
-    return `letter_${this.vehicle.systemNumber}_${this.vehicle.vin}`;
+    return `letter_${(this.techRecord as TechRecordTypeVehicleVerb<'trl', 'get'>).systemNumber}_${this.techRecord.vin}`;
   }
 }

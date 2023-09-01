@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { filter, race, Subject, take, withLatestFrom } from 'rxjs';
+import { Subject, filter, race, take, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-batch-vehicle-results',
@@ -23,9 +23,9 @@ export class BatchVehicleResultsComponent implements OnDestroy {
     });
 
     race(
-      this.batchTechRecordService.batchCreatedCount$.pipe(
-        withLatestFrom(this.batchTechRecordService.batchCount$),
-        filter(([created, total]) => created === total)
+      this.batchTechRecordService.batchCount$.pipe(
+        withLatestFrom(this.batchTechRecordService.batchCreatedCount$, this.batchTechRecordService.batchUpdatedCount$),
+        filter(([total, created, updated]) => total === created + updated)
       ),
       this.destroy$
     )

@@ -1,11 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { EuVehicleCategories, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import {
+  EuVehicleCategories,
+  StatusCodes,
+  TechRecordModel,
+  V3TechRecordModel,
+  VehicleTechRecordModel,
+  VehicleTypes
+} from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
-import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 import {
   selectTechRecordSearchResults,
   selectTechRecordSearchResultsBySystemNumber
@@ -13,15 +21,11 @@ import {
 import {
   clearAllSectionStates,
   createVehicle,
-  editableTechRecord,
-  editableVehicleTechRecord,
-  selectNonEditingTechRecord,
   selectSectionState,
   selectTechRecord,
-  selectVehicleTechnicalRecordsBySystemNumber,
+  techRecord,
   updateEditingTechRecord,
-  updateEditingTechRecordCancel,
-  vehicleTechRecords
+  updateEditingTechRecordCancel
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
 import { Observable, catchError, combineLatest, debounceTime, filter, map, of, switchMap, take, tap, throwError } from 'rxjs';
@@ -30,11 +34,11 @@ import { Observable, catchError, combineLatest, debounceTime, filter, map, of, s
 export class TechnicalRecordService {
   constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService, private routerService: RouterService) {}
 
-  getVehicleTypeWithSmallTrl(techRecord: TechRecordModel): VehicleTypes {
-    return techRecord.vehicleType === VehicleTypes.TRL &&
-      (techRecord.euVehicleCategory === EuVehicleCategories.O1 || techRecord.euVehicleCategory === EuVehicleCategories.O2)
-      ? VehicleTypes.SMALL_TRL
-      : techRecord.vehicleType;
+  getVehicleTypeWithSmallTrl(techRecord: V3TechRecordModel): VehicleTypes {
+    return techRecord.techRecord_vehicleType === VehicleTypes.TRL &&
+      (techRecord.techRecord_euVehicleCategory === EuVehicleCategories.O1 || techRecord.techRecord_euVehicleCategory === EuVehicleCategories.O2)
+      ? (VehicleTypes.SMALL_TRL as VehicleTypes)
+      : (techRecord.techRecord_vehicleType as VehicleTypes);
   }
 
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
@@ -56,51 +60,26 @@ export class TechnicalRecordService {
     );
   }
 
-  get viewableTechRecord$(): Observable<TechRecordModel | undefined> {
+  get techRecord$(): Observable<V3TechRecordModel | undefined> {
     return combineLatest([
       this.store.pipe(select(selectTechRecord)),
-      this.store.pipe(select(selectNonEditingTechRecord)),
+      this.store.pipe(select(techRecord)),
       this.routerService.getRouteDataProperty$('isEditing')
     ]).pipe(
       tap(([techRecord, nonEditingTechRecord, isEditing]) => {
         if (isEditing && !techRecord && nonEditingTechRecord) {
-          this.updateEditingTechRecord(nonEditingTechRecord);
+          this.updateEditingTechRecord(nonEditingTechRecord as TechRecordType<'put'>);
         }
       }),
       map(([techRecord, nonEditingTechRecord, isEditing]) => (isEditing && !techRecord ? nonEditingTechRecord : techRecord))
     );
   }
 
-  /**
-   * A function which takes either a TechRecordModel or a VehicleTechRecordModel, maps the missing vehicle record information if passed
-   * a TechRecordModel and dispatches the action to update the editing tech record.
-   * @param record - TechRecordModel or VehicleTechRecordModel
-   * @param resetVehicleAttributes [resetVehicleAttributes=false] - Used to overwrite the attributes inside of the properties inside
-   * the VehicleTechRecordModel to the un-edited information present in state for that vehicle. Only used if passed a TechRecordModel.
-   * @returns void
-   */
-  updateEditingTechRecord(record: TechRecordModel | VehicleTechRecordModel, resetVehicleAttributes = false): void {
-    const isVehicleRecord = ((rec: TechRecordModel | VehicleTechRecordModel): rec is VehicleTechRecordModel => rec.hasOwnProperty('techRecord'))(
-      record
-    );
-
-    if (isVehicleRecord && record.techRecord.length > 1) {
-      throw new Error('Editing tech record can only have one technical record!');
+  updateEditingTechRecord(record: TechRecordType<'put'>): void {
+    if (record.techRecord_vehicleType === 'psv' || record.techRecord_vehicleType === 'hgv' || record.techRecord_vehicleType === 'trl') {
+      record.techRecord_noOfAxles = record.techRecord_axles && record.techRecord_axles.length > 0 ? record.techRecord_axles?.length : null;
     }
-
-    const vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined> = isVehicleRecord
-      ? of(record)
-      : this.store.pipe(
-          select(editableVehicleTechRecord),
-          switchMap(vehicleRecord => (vehicleRecord && !resetVehicleAttributes ? of(vehicleRecord) : this.selectedVehicleTechRecord$)),
-          map(vehicleRecord => vehicleRecord && { ...vehicleRecord, techRecord: [record] })
-        );
-
-    vehicleTechRecord$.pipe(take(1)).subscribe(vehicleRecord => {
-      if (vehicleRecord) {
-        this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: vehicleRecord }));
-      }
-    });
+    this.store.dispatch(updateEditingTechRecord({ vehicleTechRecord: record }));
   }
 
   /**
@@ -117,19 +96,19 @@ export class TechnicalRecordService {
   }
 
   generateEditingVehicleTechnicalRecordFromVehicleType(vehicleType: VehicleTypes): void {
-    this.store.dispatch(createVehicle({ vehicleType: vehicleType }));
+    this.store.dispatch(createVehicle({ techRecord_vehicleType: vehicleType }));
   }
 
-  clearReasonForCreation(vehicleTechRecord?: VehicleTechRecordModel): void {
-    this.editableVehicleTechRecord$
+  clearReasonForCreation(vehicleTechRecord?: TechRecordType<'put'>): void {
+    this.techRecord$
       .pipe(
         map(data => cloneDeep(data ?? vehicleTechRecord)),
         take(1)
       )
       .subscribe(data => {
         if (data) {
-          data.techRecord[0].reasonForCreation = '';
-          this.updateEditingTechRecord(data);
+          data.techRecord_reasonForCreation = '';
+          this.updateEditingTechRecord(data as TechRecordType<'put'>);
         }
       });
   }
@@ -162,35 +141,38 @@ export class TechnicalRecordService {
     this.store.dispatch(updateEditingTechRecordCancel());
   }
 
-  get vehicleTechRecords$(): Observable<VehicleTechRecordModel[]> {
-    return this.store.pipe(select(vehicleTechRecords));
-  }
-
-  get editableTechRecord$(): Observable<TechRecordModel | undefined> {
-    return this.store.pipe(select(editableTechRecord));
-  }
-
-  get editableVehicleTechRecord$(): Observable<VehicleTechRecordModel | undefined> {
-    return this.store.pipe(select(editableVehicleTechRecord));
-  }
-
-  get selectedVehicleTechRecord$(): Observable<VehicleTechRecordModel | undefined> {
-    return this.store.pipe(select(selectVehicleTechnicalRecordsBySystemNumber));
-  }
-
-  get searchResults$(): Observable<SearchResult[] | undefined> {
+  get searchResults$(): Observable<TechRecordSearchSchema[] | undefined> {
     return this.store.pipe(select(selectTechRecordSearchResults));
   }
 
-  get searchResultsWithUniqueSystemNumbers$(): Observable<SearchResult[] | undefined> {
+  get searchResultsWithUniqueSystemNumbers$(): Observable<TechRecordSearchSchema[] | undefined> {
     return this.store.pipe(select(selectTechRecordSearchResultsBySystemNumber));
   }
-  get viewableRecordStatus$(): Observable<StatusCodes | undefined> {
-    return this.viewableTechRecord$.pipe(map(techRecord => techRecord?.statusCode));
+  get techRecordStatus$(): Observable<StatusCodes | undefined> {
+    return this.techRecord$.pipe(map(techRecord => techRecord?.techRecord_statusCode as StatusCodes | undefined));
   }
 
   get sectionStates$(): Observable<(string | number)[] | undefined> {
     return this.store.pipe(select(selectSectionState));
+  }
+
+  getMakeAndModel(techRecord: V3TechRecordModel): string {
+    if (
+      techRecord.techRecord_vehicleType === 'car' ||
+      techRecord.techRecord_vehicleType === 'motorcycle' ||
+      techRecord.techRecord_vehicleType === 'lgv'
+    ) {
+      return '';
+    }
+
+    const make = (techRecord?.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisMake : techRecord.techRecord_make) ?? '';
+    const model = (techRecord.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisModel : techRecord.techRecord_model) ?? '';
+
+    if (!make || !model) {
+      return make || model;
+    }
+
+    return `${make} - ${model}`;
   }
 
   clearSectionTemplateStates() {

@@ -3,16 +3,17 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { BatchUpdateVehicleModel, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { BatchUpdateVehicleModel, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { createVehicleRecord, updateTechRecords } from '@store/technical-records';
+import { createVehicleRecord, selectTechRecord, updateTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { map, Observable, take, withLatestFrom } from 'rxjs';
+import { Observable, map, take, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
@@ -36,9 +37,12 @@ export class BatchVehicleTemplateComponent {
     private batchTechRecordService: BatchTechnicalRecordService,
     private globalErrorService: GlobalErrorService
   ) {
-    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
-      if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
-    });
+    this.store
+      .select(selectTechRecord)
+      .pipe(take(1))
+      .subscribe(vehicle => {
+        if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
+      });
 
     this.form = new CustomFormGroup(
       { name: 'form-group', type: FormNodeTypes.GROUP },
@@ -56,8 +60,8 @@ export class BatchVehicleTemplateComponent {
     });
   }
 
-  get vehicle$(): Observable<VehicleTechRecordModel | undefined> {
-    return this.technicalRecordService.editableVehicleTechRecord$;
+  get vehicle$(): Observable<V3TechRecordModel | undefined> {
+    return this.store.select(selectTechRecord);
   }
 
   get applicationId$() {
@@ -95,40 +99,32 @@ export class BatchVehicleTemplateComponent {
     const check = this.isVehicleStatusValid;
 
     if (!this.isInvalid && check) {
-      this.technicalRecordService.editableVehicleTechRecord$
+      this.store
+        .select(selectTechRecord)
         .pipe(
           withLatestFrom(this.batchTechRecordService.batchVehicles$),
           take(1),
           map(([record, batch]) =>
             batch.map(
-              v =>
+              (v): BatchUpdateVehicleModel =>
                 ({
-                  ...record!,
-                  techRecord: [
-                    { ...record?.techRecord[0], statusCode: this.form.value.vehicleStatus ?? StatusCodes.PROVISIONAL } as unknown as TechRecordModel
-                  ],
+                  ...record,
+                  techRecord_statusCode: this.form.value.vehicleStatus ?? StatusCodes.PROVISIONAL,
                   vin: v.vin,
-                  vrms: v.vehicleType !== VehicleTypes.TRL && v.trailerIdOrVrm ? [{ vrm: v.trailerIdOrVrm, isPrimary: true }] : null,
-                  trailerId: v.vehicleType === VehicleTypes.TRL && v.trailerIdOrVrm ? v.trailerIdOrVrm : null,
-                  systemNumber: v.systemNumber ? v.systemNumber : null,
-                  oldVehicleStatus: v.oldVehicleStatus ? v.oldVehicleStatus : null
+                  trailerId: v.vehicleType === VehicleTypes.TRL ? v.trailerIdOrVrm : undefined,
+                  primaryVrm: v.vehicleType !== VehicleTypes.TRL ? v.trailerIdOrVrm : undefined,
+                  systemNumber: v.systemNumber,
+                  createdTimestamp: v.createdTimestamp
                 } as BatchUpdateVehicleModel)
             )
           )
         )
         .subscribe(vehicleList => {
           vehicleList.forEach(vehicle => {
-            if (!vehicle.systemNumber) {
-              this.store.dispatch(createVehicleRecord({ vehicle }));
+            if (!(vehicle as TechRecordType<'get'>).systemNumber) {
+              this.store.dispatch(createVehicleRecord({ vehicle: vehicle as unknown as TechRecordType<'put'> }));
             } else {
-              this.technicalRecordService.updateEditingTechRecord(vehicle);
-              this.store.dispatch(
-                updateTechRecords({
-                  systemNumber: vehicle.systemNumber,
-                  recordToArchiveStatus: vehicle.oldVehicleStatus ?? StatusCodes.PROVISIONAL,
-                  newStatus: vehicle.techRecord[0]?.statusCode ?? StatusCodes.CURRENT
-                })
-              );
+              this.store.dispatch(updateTechRecord({ vehicleTechRecord: vehicle as unknown as TechRecordType<'put'> }));
             }
           });
           this.technicalRecordService.clearSectionTemplateStates();
