@@ -1,7 +1,8 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from './custom-validators';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleClass } from '@models/vehicle-class.model';
 interface CustomPatternMessage {
   customPattern: {
     message: string;
@@ -541,4 +542,145 @@ describe('validate VRM/TrailerId Length', () => {
   });
 });
 
-describe('handlePsvClassChange', () => {});
+describe('handlePsvSizeChange', () => {
+  let form: FormGroup;
+  beforeEach(() => {
+    form = new FormGroup({
+      vehicleSize: new CustomFormControl({ name: 'vehicleSize', type: FormNodeTypes.CONTROL }, null),
+      vehicleClass: new CustomFormGroup(
+        { name: 'vehicleClass', type: FormNodeTypes.GROUP },
+        {
+          description: new CustomFormControl({ name: 'description', type: FormNodeTypes.CONTROL }, ''),
+          code: new CustomFormControl({ name: 'code', type: FormNodeTypes.CONTROL })
+        }
+      )
+    });
+  });
+  it('should change the psv class to small when the vehicle size is changed to small psv', () => {
+    const vehicleSize = form.get('vehicleSize');
+    const value = VehicleSizes.SMALL;
+
+    vehicleSize?.patchValue(value);
+    vehicleSize?.markAsDirty();
+
+    CustomValidators.handlePsvSizeChange()(vehicleSize as AbstractControl);
+    const vehicleClass = form.get('vehicleClass')?.get('description')?.value;
+
+    expect(vehicleClass).toBe(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
+  });
+  it('should change the psv class to large when the vehicle size is changed to small psv', () => {
+    const vehicleSize = form.get('vehicleSize');
+    const value = VehicleSizes.LARGE;
+
+    vehicleSize?.patchValue(value);
+    vehicleSize?.markAsDirty();
+
+    CustomValidators.handlePsvSizeChange()(vehicleSize as AbstractControl);
+    const vehicleClass = form.get('vehicleClass')?.get('description')?.value;
+
+    expect(vehicleClass).toBe(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
+  });
+});
+
+describe('handlePsvSizeChange', () => {
+  let form: FormGroup;
+  beforeEach(() => {
+    form = new FormGroup({
+      vehicleSize: new CustomFormControl({ name: 'vehicleSize', type: FormNodeTypes.CONTROL }, null),
+      vehicleClass: new CustomFormGroup(
+        { name: 'vehicleClass', type: FormNodeTypes.GROUP },
+        {
+          description: new CustomFormControl({ name: 'description', type: FormNodeTypes.CONTROL }, ''),
+          code: new CustomFormControl({ name: 'code', type: FormNodeTypes.CONTROL })
+        }
+      )
+    });
+  });
+  it('should change the vehicle size if the class is changed to large PSV', () => {
+    const vehicleClass = form.get('vehicleClass')?.get('description');
+    const value = VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats;
+
+    vehicleClass?.patchValue(value);
+    vehicleClass?.markAsDirty();
+
+    CustomValidators.handlePsvClassChange()(vehicleClass as AbstractControl);
+    const vehicleSize = form.get('vehicleSize')?.value;
+
+    expect(vehicleSize).toBe(VehicleSizes.LARGE);
+  });
+  it('should change the vehicle size if the class is changed to small PSV', () => {
+    const vehicleClass = form.get('vehicleClass')?.get('description');
+    const value = VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats;
+
+    vehicleClass?.patchValue(value);
+    vehicleClass?.markAsDirty();
+
+    CustomValidators.handlePsvClassChange()(vehicleClass as AbstractControl);
+    const vehicleSize = form.get('vehicleSize')?.value;
+
+    expect(vehicleSize).toBe(VehicleSizes.SMALL);
+  });
+  it('should not change the vehicle size if the class is changed to a non psv vehicle class', () => {
+    const vehicleClass = form.get('vehicleClass')?.get('description');
+    const value = VehicleClass.DescriptionEnum.MotorbikesOver200ccOrWithASidecar;
+
+    vehicleClass?.patchValue(value);
+    vehicleClass?.markAsDirty();
+
+    CustomValidators.handlePsvClassChange()(vehicleClass as AbstractControl);
+    const vehicleSize = form.get('vehicleSize')?.value;
+
+    expect(vehicleSize).toBe(null);
+  });
+});
+
+describe('handlePsvPassengersChange', () => {
+  let form: FormGroup;
+  beforeEach(() => {
+    form = new FormGroup({
+      vehicleSize: new CustomFormControl({ name: 'vehicleSize', type: FormNodeTypes.CONTROL }, null),
+      vehicleClass: new CustomFormGroup(
+        { name: 'vehicleClass', type: FormNodeTypes.GROUP },
+        {
+          description: new CustomFormControl({ name: 'description', type: FormNodeTypes.CONTROL }, ''),
+          code: new CustomFormControl({ name: 'code', type: FormNodeTypes.CONTROL })
+        }
+      ),
+      seatsLowerDeck: new CustomFormControl({ name: 'seatsLowerDeck', type: FormNodeTypes.CONTROL }, undefined),
+      seatsUpperDeck: new CustomFormControl({ name: 'seatsUpperDeck', type: FormNodeTypes.CONTROL }, undefined),
+      standingCapacity: new CustomFormControl({ name: 'standingCapacity', type: FormNodeTypes.CONTROL }, undefined)
+    });
+  });
+  it('should calculate vehicle size and class based on passenger numbers', () => {
+    const upper = form.get('seatsUpperDeck');
+    const lower = form.get('seatsLowerDeck');
+    const standing = form.get('standingCapacity');
+
+    upper?.patchValue(1);
+    lower?.patchValue(2);
+    standing?.patchValue(3);
+
+    CustomValidators.handlePsvPassengersChange('seatsUpperDeck', 'seatsLowerDeck')(standing as AbstractControl);
+    const vehicleSize = form.get('vehicleSize')?.value;
+    const vehicleClass = form.get('vehicleClass')?.get('description')?.value;
+
+    expect(vehicleSize).toBe(VehicleSizes.SMALL);
+    expect(vehicleClass).toBe(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
+  });
+  it('should calculate vehicle size and class based on passenger numbers', () => {
+    const upper = form.get('seatsUpperDeck');
+    const lower = form.get('seatsLowerDeck');
+    const standing = form.get('standingCapacity');
+
+    upper?.patchValue(13);
+    lower?.patchValue(22);
+    standing?.patchValue(1);
+
+    CustomValidators.handlePsvPassengersChange('seatsUpperDeck', 'seatsLowerDeck')(standing as AbstractControl);
+    const vehicleSize = form.get('vehicleSize')?.value;
+    const vehicleClass = form.get('vehicleClass')?.get('description')?.value;
+
+    expect(vehicleSize).toBe(VehicleSizes.LARGE);
+    expect(vehicleClass).toBe(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
+  });
+});
