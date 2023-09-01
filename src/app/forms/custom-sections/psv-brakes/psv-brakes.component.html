@@ -10,15 +10,18 @@
   [propOptions$]="brakeCodeOptions$"
 ></app-switchable-input>
 
-<ng-template #view [formGroup]="form">
-  <app-read-only formControlName="techRecord_brakes_brakeCode" name="brake-code" label="Brake code"></app-read-only>
+<ng-template #view>
+  <div>
+    <label class="govuk-label govuk-label--m" for="brake-code">Brake code</label>
+    <span class="govuk-body" id="brake-code">{{ brakeCode }}</span>
+  </div>
 </ng-template>
 
 <app-switchable-input
   [form]="form"
   [type]="editTypes.TEXT"
   name="techRecord_brakes_dataTrBrakeOne"
-  label="Service *"
+  label="Service"
   [isEditing]="isEditing"
   [width]="widths.XL"
 ></app-switchable-input>
@@ -27,7 +30,7 @@
   [form]="form"
   [type]="editTypes.TEXT"
   name="techRecord_brakes_dataTrBrakeTwo"
-  label="Secondary *"
+  label="Secondary"
   [isEditing]="isEditing"
   [width]="widths.XL"
 ></app-switchable-input>
@@ -36,7 +39,7 @@
   [form]="form"
   [type]="editTypes.TEXT"
   name="techRecord_brakes_dataTrBrakeThree"
-  label="Parking *"
+  label="Parking"
   [isEditing]="isEditing"
   [width]="widths.XL"
 ></app-switchable-input>

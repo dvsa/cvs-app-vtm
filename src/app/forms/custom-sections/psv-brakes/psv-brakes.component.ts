@@ -61,6 +61,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(([selectedBrake, event]: [Brake | undefined, any]) => {
         // Set the brake details automatically based selection
         if (selectedBrake && event?.techRecord_brakes_brakeCodeOriginal) {
+          event.techRecord_brakes_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
           event.techRecord_brakes_dataTrBrakeOne = selectedBrake.service;
           event.techRecord_brakes_dataTrBrakeTwo = selectedBrake.secondary;
           event.techRecord_brakes_dataTrBrakeThree = selectedBrake.parking;
@@ -91,6 +92,14 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get brakeCode(): string {
+    return `${this.brakeCodePrefix}${this.form.get('techRecord_brakes_brakeCodeOriginal')?.value}`;
+  }
+
+  get brakesForm(): FormGroup {
+    return this.form.get('brakes') as FormGroup;
   }
 
   get booleanOptions(): MultiOptions {
