@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordType as VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestType } from '@models/test-types/test-type.model';
@@ -46,12 +46,14 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               statusCode: viewableTechRecord?.techRecord_statusCode,
               testResultId: uuidv4(),
               euVehicleCategory: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_euVehicleCategory ?? null,
-              vehicleSize: viewableTechRecord?.techRecord_vehicleType === 'psv' ? viewableTechRecord?.techRecord_vehicleSize : null,
+              vehicleSize: viewableTechRecord?.techRecord_vehicleType === 'psv' ? viewableTechRecord?.techRecord_vehicleSize : undefined,
               vehicleConfiguration: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_vehicleConfiguration ?? null,
               vehicleClass:
-                viewableTechRecord?.techRecord_vehicleType === 'psv' ||
-                viewableTechRecord?.techRecord_vehicleType === 'trl' ||
-                viewableTechRecord?.techRecord_vehicleType === 'hgv'
+                (viewableTechRecord?.techRecord_vehicleType === 'psv' ||
+                  viewableTechRecord?.techRecord_vehicleType === 'trl' ||
+                  viewableTechRecord?.techRecord_vehicleType === 'hgv' ||
+                  viewableTechRecord?.techRecord_vehicleType === 'motorcycle') &&
+                'techRecord_vehicleClass_code' in viewableTechRecord
                   ? {
                       code: viewableTechRecord?.techRecord_vehicleClass_code,
                       description: viewableTechRecord?.techRecord_vehicleClass_description
