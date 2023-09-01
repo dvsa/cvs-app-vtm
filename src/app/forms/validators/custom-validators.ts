@@ -275,11 +275,11 @@ export class CustomValidators {
       if (control.dirty) {
         switch (control.value) {
           case VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats: {
-            vehicleSizeControl?.setValue(VehicleSizes.LARGE, { onlySelf: true, emitEvent: false });
+            vehicleSizeControl?.setValue(VehicleSizes.LARGE);
             return null;
           }
           case VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats: {
-            vehicleSizeControl?.setValue(VehicleSizes.SMALL, { onlySelf: true, emitEvent: false });
+            vehicleSizeControl?.setValue(VehicleSizes.SMALL);
             return null;
           }
         }
@@ -294,11 +294,11 @@ export class CustomValidators {
       if (control.dirty) {
         switch (control.value) {
           case VehicleSizes.LARGE: {
-            vehicleClassControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, { onlySelf: true, emitEvent: false });
+            vehicleClassControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
             return null;
           }
           case VehicleSizes.SMALL: {
-            vehicleClassControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { onlySelf: true, emitEvent: false });
+            vehicleClassControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
             return null;
           }
         }
@@ -317,17 +317,16 @@ export class CustomValidators {
       const sizeControl = control.root.get('vehicleSize');
 
       const totalPassengers = controlOne + controlTwo + controlThree;
-      console.log(totalPassengers);
 
       switch (true) {
         case totalPassengers <= 22: {
           sizeControl?.setValue(VehicleSizes.SMALL, { emitEvent: false });
-          classControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
+          classControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
           break;
         }
         case totalPassengers > 22: {
           sizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
-          classControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
+          classControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
           break;
         }
       }
