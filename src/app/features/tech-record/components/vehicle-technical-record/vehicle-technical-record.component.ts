@@ -131,33 +131,14 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   }
 
   createTest(techRecord?: TechRecordModel): void {
-    if (techRecord?.hiddenInVta) {
-      this.globalErrorService.setErrors([
-        {
-          error: 'Vehicle record is hidden in VTA. Show the vehicle record in VTA to start recording tests against it.',
-          anchorLink: 'create-test'
-        }
-      ]);
-      this.viewportScroller.scrollToPosition([0, 0]);
-    } else if (techRecord?.recordCompleteness === 'complete' || techRecord?.recordCompleteness === 'testable') {
+    if (techRecord?.recordCompleteness === 'complete' || techRecord?.recordCompleteness === 'testable') {
       this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
-      if (!this.hasTestResultAmend) {
-        this.globalErrorService.setErrors([
-          {
-            error:
-              'This vehicle does not have enough information to be tested. Call the Contact Centre to complete this record so tests can be recorded against it.',
-            anchorLink: 'create-test'
-          }
-        ]);
-      } else {
-        this.globalErrorService.setErrors([
-          {
-            error: 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.',
-            anchorLink: 'create-test'
-          }
-        ]);
-      }
+      this.globalErrorService.setErrors([
+      {
+        error: this.getCreateTestErrorMessage(techRecord?.hiddenInVta),
+        anchorLink: 'create-test'
+      }]);
 
       this.viewportScroller.scrollToPosition([0, 0]);
     }
@@ -180,5 +161,15 @@ export class VehicleTechnicalRecordComponent implements OnInit {
           : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
       }
     }
+  }
+
+  private getCreateTestErrorMessage(hiddenInVta: boolean | undefined): string {
+    if (hiddenInVta) {
+      return 'Vehicle record is hidden in VTA. Show the vehicle record in VTA to start recording tests against it.';
+    }
+
+    return this.hasTestResultAmend ?
+      'This vehicle does not have enough information to be tested. Call the Contact Centre to complete this record so tests can be recorded against it.' :
+      'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.';
   }
 }
