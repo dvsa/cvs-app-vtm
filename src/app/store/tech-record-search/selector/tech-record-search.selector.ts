@@ -1,5 +1,6 @@
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { createSelector } from '@ngrx/store';
-import { SearchResult, techSearchResultAdapter, techSearchResultFeatureState } from '../reducer/tech-record-search.reducer';
+import { techSearchResultAdapter, techSearchResultFeatureState } from '../reducer/tech-record-search.reducer';
 
 const { selectAll } = techSearchResultAdapter.getSelectors();
 
@@ -7,7 +8,7 @@ export const selectTechRecordSearchLoadingState = createSelector(techSearchResul
 export const selectTechRecordSearchResults = createSelector(techSearchResultFeatureState, state => selectAll(state));
 
 export const selectTechRecordSearchResultsBySystemNumber = createSelector(selectTechRecordSearchResults, searchResults => {
-  const records: SearchResult[] = [];
+  const records: TechRecordSearchSchema[] = [];
   const visitedSystemNumbers = new Set<string>();
   searchResults.forEach(result => {
     if (!visitedSystemNumbers.has(result.systemNumber)) {

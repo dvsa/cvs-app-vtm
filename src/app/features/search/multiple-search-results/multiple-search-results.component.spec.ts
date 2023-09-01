@@ -4,7 +4,6 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -12,7 +11,6 @@ import { TechnicalRecordHttpService } from '@services/technical-record-http/tech
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/.';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
-import { vehicleTechRecords } from '@store/technical-records';
 import { firstValueFrom, of, ReplaySubject } from 'rxjs';
 import { SingleSearchResultComponent } from '../single-search-result/single-search-result.component';
 import { MultipleSearchResultsComponent } from './multiple-search-results.component';
@@ -74,7 +72,6 @@ describe('MultipleSearchResultsComponent', () => {
   describe('searching', () => {
     beforeEach(() => {
       store = TestBed.inject(MockStore);
-      store.overrideSelector(vehicleTechRecords, mockVehicleTechnicalRecordList());
     });
 
     it('should search using a vin', async () => {

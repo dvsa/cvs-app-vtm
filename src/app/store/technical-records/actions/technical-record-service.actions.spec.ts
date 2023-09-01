@@ -3,9 +3,6 @@ import {
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
   changeVehicleType,
-  createProvisionalTechRecord,
-  createProvisionalTechRecordFailure,
-  createProvisionalTechRecordSuccess,
   createVehicle,
   createVehicleRecord,
   createVehicleRecordFailure,
@@ -15,9 +12,9 @@ import {
   getBySystemNumberSuccess,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
-  updateTechRecords,
-  updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecord,
+  updateTechRecordFailure,
+  updateTechRecordSuccess
 } from './technical-record-service.actions';
 
 const SUCCESS = ' Success';
@@ -33,13 +30,9 @@ describe('Technical record actions', () => {
     expect(createVehicleRecordSuccess.type).toBe(getMessage('createVehicleRecord', SUCCESS));
     expect(createVehicleRecordFailure.type).toBe(getMessage('createVehicleRecord', FAILURE));
 
-    expect(createProvisionalTechRecord.type).toBe(getMessage('createProvisionalTechRecord'));
-    expect(createProvisionalTechRecordSuccess.type).toBe(getMessage('createProvisionalTechRecord', SUCCESS));
-    expect(createProvisionalTechRecordFailure.type).toBe(getMessage('createProvisionalTechRecord', FAILURE));
-
-    expect(updateTechRecords.type).toBe(getMessage('updateTechRecords'));
-    expect(updateTechRecordsSuccess.type).toBe(getMessage('updateTechRecords', SUCCESS));
-    expect(updateTechRecordsFailure.type).toBe(getMessage('updateTechRecords', FAILURE));
+    expect(updateTechRecord.type).toBe(getMessage('updateTechRecords'));
+    expect(updateTechRecordSuccess.type).toBe(getMessage('updateTechRecords', SUCCESS));
+    expect(updateTechRecordFailure.type).toBe(getMessage('updateTechRecords', FAILURE));
 
     expect(archiveTechRecord.type).toBe(getMessage('archiveTechRecord'));
     expect(archiveTechRecordSuccess.type).toBe(getMessage('archiveTechRecord', SUCCESS));

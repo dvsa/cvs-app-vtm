@@ -1,19 +1,15 @@
-import { VehicleTechRecordModel, VehicleTypes } from '../app/models/vehicle-tech-record.model';
-import { createMockList } from 'ts-auto-mock';
 import { createMockPsv } from './psv-record.mock';
 import { createMockHgv } from './hgv-record.mock';
 import { createMockTrl } from './trl-record.mock';
+import { VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 
-export const mockVehicleTechnicalRecord = (vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: number = 0) => {
+export const mockVehicleTechnicalRecord = (vehicleType: VehicleType = 'psv', systemNumber: number = 0) => {
   switch (vehicleType) {
-    case VehicleTypes.HGV:
+    case 'hgv':
       return createMockHgv(systemNumber);
-    case VehicleTypes.TRL:
+    case 'trl':
       return createMockTrl(systemNumber);
     default:
       return createMockPsv(systemNumber);
   }
 };
-
-export const mockVehicleTechnicalRecordList = (vehicleType: VehicleTypes = VehicleTypes.PSV, items: number = 1) =>
-  createMockList<VehicleTechRecordModel>(items, systemNumber => mockVehicleTechnicalRecord(vehicleType, systemNumber));

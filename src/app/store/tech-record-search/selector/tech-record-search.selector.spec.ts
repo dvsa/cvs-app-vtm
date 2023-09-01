@@ -1,10 +1,11 @@
-import { SearchResult, initialTechSearchResultState } from '../reducer/tech-record-search.reducer';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { initialTechSearchResultState } from '../reducer/tech-record-search.reducer';
 import { selectTechRecordSearchResults, selectTechRecordSearchResultsBySystemNumber } from './tech-record-search.selector';
 
 describe('Tech Record Search Selectors', () => {
   describe('selectTechRecordsSearchResults', () => {
     it('should return the records in state', () => {
-      const state = { ...initialTechSearchResultState, ids: [1], entities: { [1]: { systemNumber: '123' } as SearchResult } };
+      const state = { ...initialTechSearchResultState, ids: [1], entities: { [1]: { systemNumber: '123' } as TechRecordSearchSchema } };
       const selectedState = selectTechRecordSearchResults.projector(state);
       expect(selectedState).toEqual([{ systemNumber: '123' }]);
     });
@@ -59,7 +60,7 @@ describe('Tech Record Search Selectors', () => {
           }
         ]
       }
-    ] as { results: SearchResult[] }[];
+    ] as { results: TechRecordSearchSchema[] }[];
 
     it.each(testCases)('should group the search results by systemNumber', ({ results }) => {
       const selectedState = selectTechRecordSearchResultsBySystemNumber.projector(results);
@@ -146,7 +147,7 @@ describe('Tech Record Search Selectors', () => {
         ],
         status: 'this is the right record'
       }
-    ] as { results: SearchResult[]; status: string }[];
+    ] as { results: TechRecordSearchSchema[]; status: string }[];
     it.each(statusCases)('should group the search results by systemNumber', ({ results, status }) => {
       const selectedState = selectTechRecordSearchResultsBySystemNumber.projector(results);
       expect(selectedState[0].techRecord_statusCode).toBe(status);

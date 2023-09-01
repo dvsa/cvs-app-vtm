@@ -8,7 +8,7 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
@@ -217,7 +217,7 @@ export class TestResultsEffects {
       concatMap(([action, editingTestResult, testTypeTaxonomy, testStation, user]) => {
         const id = action.testType;
 
-        const { vehicleType } = editingTestResult!;
+        const vehicleType = editingTestResult?.vehicleType;
         if (!vehicleType || !contingencyTestTemplates.hasOwnProperty(vehicleType)) {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }

@@ -7,76 +7,69 @@ export const HgvDimensionsTemplate: FormNode = {
   type: FormNodeTypes.SECTION,
   children: [
     {
-      name: 'dimensions',
-      value: '',
-      type: FormNodeTypes.GROUP,
+      name: 'techRecord_dimensions_length',
+      label: 'Length (mm)',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: 'techRecord_dimensions_width',
+      label: 'Width (mm)',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: 'techRecord_dimensions_axleSpacing',
+      type: FormNodeTypes.ARRAY,
       children: [
         {
-          name: 'length',
-          label: 'Length (mm)',
-          value: null,
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }]
-        },
-        {
-          name: 'width',
-          label: 'Width (mm)',
-          value: null,
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }]
-        },
-        {
-          name: 'axleSpacing',
-          type: FormNodeTypes.ARRAY,
+          name: '0',
+          type: FormNodeTypes.GROUP,
           children: [
             {
-              name: '0',
-              type: FormNodeTypes.GROUP,
-              children: [
-                {
-                  name: 'value',
-                  label: 'Axle to axle (mm)',
-                  value: null,
-                  editType: FormNodeEditTypes.NUMBER,
-                  type: FormNodeTypes.CONTROL,
-                  validators: [{ name: ValidatorNames.Max, args: 99999 }]
-                }
-              ]
+              name: 'value',
+              label: 'Axle to axle (mm)',
+              value: null,
+              editType: FormNodeEditTypes.NUMBER,
+              type: FormNodeTypes.CONTROL,
+              validators: [{ name: ValidatorNames.Max, args: 99999 }]
             }
           ]
         }
       ]
     },
     {
-      name: 'frontAxleToRearAxle',
+      name: 'techRecord_frontAxleToRearAxle',
       label: 'Front axle to rear axle (mm)',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'frontVehicleTo5thWheelCouplingMin',
+      name: 'techRecord_frontVehicleTo5thWheelCouplingMin',
       label: 'Minimum',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'frontVehicleTo5thWheelCouplingMax',
+      name: 'techRecord_frontVehicleTo5thWheelCouplingMax',
       label: 'Maximum',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'frontAxleTo5thWheelMin',
+      name: 'techRecord_frontAxleTo5thWheelMin',
       label: 'Minimum',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'frontAxleTo5thWheelMax',
+      name: 'techRecord_frontAxleTo5thWheelMax',
       label: 'Maximum',
       value: null,
       type: FormNodeTypes.CONTROL,

@@ -2,15 +2,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/.';
-import { SingleSearchResultComponent } from './single-search-result.component';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
+import { State, initialAppState } from '@store/.';
 import { ReplaySubject, of } from 'rxjs';
+import { SingleSearchResultComponent } from './single-search-result.component';
 
 describe('SingleSearchResultComponent', () => {
   let component: SingleSearchResultComponent;
@@ -45,7 +45,9 @@ describe('SingleSearchResultComponent', () => {
       systemNumber: '123',
       createdTimestamp: '123',
       vin: '76890',
-      techRecord_vehicleType: 'psv'
+      techRecord_vehicleType: 'psv',
+      techRecord_statusCode: 'current',
+      techRecord_manufactureYear: 1998
     };
   });
 
