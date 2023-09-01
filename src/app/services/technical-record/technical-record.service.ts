@@ -156,7 +156,6 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectSectionState));
   }
 
-  //TODO: remove the anys
   getMakeAndModel(techRecord: V3TechRecordModel): string {
     if (
       techRecord.techRecord_vehicleType === 'car' ||
@@ -166,9 +165,14 @@ export class TechnicalRecordService {
       return '';
     }
 
-    return `${techRecord?.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisMake : techRecord.techRecord_make} - ${
-      techRecord.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisModel : techRecord.techRecord_model
-    }`;
+    const make = (techRecord?.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisMake : techRecord.techRecord_make) ?? '';
+    const model = (techRecord.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisModel : techRecord.techRecord_model) ?? '';
+
+    if (!make || !model) {
+      return make ?? model;
+    }
+
+    return `${make} - ${model}`;
   }
 
   clearSectionTemplateStates() {

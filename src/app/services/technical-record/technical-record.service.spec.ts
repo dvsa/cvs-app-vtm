@@ -2,6 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
@@ -9,7 +10,6 @@ import { State, initialAppState } from '@store/index';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { environment } from '../../../environments/environment';
 import { TechnicalRecordService } from './technical-record.service';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('TechnicalRecordService', () => {
   let service: TechnicalRecordService;
@@ -205,7 +205,6 @@ describe('TechnicalRecordService', () => {
 
   describe('getMakeAndModel', () => {
     it('should should return the make and model', () => {
-      const record = {};
       expect(service.getMakeAndModel({ techRecord_make: 'Test', techRecord_model: 'Car' } as V3TechRecordModel)).toBe('Test - Car');
     });
 
