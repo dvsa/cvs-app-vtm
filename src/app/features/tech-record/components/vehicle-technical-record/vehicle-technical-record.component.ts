@@ -1,5 +1,7 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { Roles } from '@models/roles.enum';
@@ -10,6 +12,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { UserService } from '@services/user-service/user-service';
 import { editingTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
@@ -36,15 +39,19 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   isInvalid = false;
 
   destroy$ = new Subject();
+  hasTestResultAmend: boolean | undefined = false;
 
   constructor(
+    public globalErrorService: GlobalErrorService,
+    public userService: UserService,
     testRecordService: TestRecordsService,
     private activatedRoute: ActivatedRoute,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
-    private actions$: Actions
+    private actions$: Actions,
+    private viewportScroller: ViewportScroller
   ) {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
@@ -69,6 +76,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     if (isProvisionalUrl && !this.hasAProvisional) {
       this.router.navigate(['../'], { relativeTo: this.route });
     }
+
+    this.userService.roles$.pipe(take(1)).subscribe(storedRoles => {
+      this.hasTestResultAmend = storedRoles?.some(role => {
+        return Roles.TestResultAmend.split(',').includes(role);
+      });
+    });
   }
 
   get currentVrm(): string | undefined {
@@ -124,20 +137,21 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     );
   }
 
-  createTest(techRecord?: V3TechRecordModel): void {
-    if (techRecord?.techRecord_hiddenInVta) {
-      alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
-    } else if (
+  createTest(techRecord?: TechRecordType<'get'>): void {
+    if (
       (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'complete' ||
       (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'testable'
     ) {
       this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
-      alert(
-        'Incomplete vehicle record.\n\n' +
-          'This vehicle does not have enough data to be tested. ' +
-          'Call Technical Support to correct this record and use SAR to test this vehicle.'
-      );
+      this.globalErrorService.setErrors([
+        {
+          error: this.getCreateTestErrorMessage(techRecord?.techRecord_hiddenInVta ?? false),
+          anchorLink: 'create-test'
+        }
+      ]);
+
+      this.viewportScroller.scrollToPosition([0, 0]);
     }
   }
 
@@ -159,5 +173,15 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  private getCreateTestErrorMessage(hiddenInVta: boolean | undefined): string {
+    if (hiddenInVta) {
+      return 'Vehicle record is hidden in VTA. Show the vehicle record in VTA to start recording tests against it.';
+    }
+
+    return this.hasTestResultAmend
+      ? 'This vehicle does not have enough information to be tested. Call the Contact Centre to complete this record so tests can be recorded against it.'
+      : 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.';
   }
 }
