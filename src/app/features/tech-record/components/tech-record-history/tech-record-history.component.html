@@ -13,26 +13,26 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row" *ngFor="let techRecord of techRecords$ | async; trackBy: trackByFn; let i = index">
-        <th scope="row" class="govuk-table__header" [id]="techRecord.techRecord_statusCode + '-status-header-' + i">
-          {{ techRecord.techRecord_statusCode }}
+      <tr class="govuk-table__row" *ngFor="let searchResult of techRecordHistoryPage$ | async; trackBy: trackByFn; let i = index">
+        <th scope="row" class="govuk-table__header" [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
+          {{ searchResult.techRecord_statusCode }}
         </th>
-        <td class="govuk-table__cell word-break" [id]="techRecord.techRecord_statusCode + '-reason-' + i">
-          {{ techRecord.techRecord_reasonForCreation }}
+        <td class="govuk-table__cell word-break" [id]="searchResult.techRecord_statusCode + '-reason-' + i">
+          {{ searchResult.techRecord_reasonForCreation }}
         </td>
-        <td class="govuk-table__cell word-break" [id]="techRecord.techRecord_statusCode + '-created-by-' + i">
-          {{ techRecord.techRecord_createdByName }}
+        <td class="govuk-table__cell word-break" [id]="searchResult.techRecord_statusCode + '-created-by-' + i">
+          {{ searchResult.techRecord_createdByName }}
         </td>
-        <td class="govuk-table__cell" [id]="techRecord.createdTimestamp + '-created-at-' + i">
-          {{ techRecord.createdTimestamp | date : 'dd/MM/yyyy HH:mm' }}
+        <td class="govuk-table__cell" [id]="searchResult.createdTimestamp + '-created-at-' + i">
+          {{ searchResult.createdTimestamp | date : 'dd/MM/yyyy HH:mm' }}
         </td>
         <td class="govuk-table__cell">
           <app-button
-            *ngIf="techRecord.createdTimestamp !== currentTimeStamp"
-            id="view-test-{{ techRecord.vin }}"
+            *ngIf="searchResult.createdTimestamp !== currentTimeStamp"
+            id="view-test-{{ searchResult.vin }}"
             type="link"
             design="link"
-            [routerLink]="[summaryLinkUrl(techRecord)]"
+            [routerLink]="[summaryLinkUrl(searchResult)]"
           >
             View
           </app-button>

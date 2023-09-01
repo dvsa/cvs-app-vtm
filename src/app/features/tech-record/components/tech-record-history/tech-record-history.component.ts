@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -29,8 +30,7 @@ export class TechRecordHistoryComponent implements OnInit {
     return this.store.select(selectTechRecordHistory);
   }
 
-  //TODO: update the type of TechRecordSearch in cvs-type-definitions to include the new fields on GSI in table
-  get techRecords$(): Observable<any[]> {
+  get techRecordHistoryPage$(): Observable<TechRecordSearchSchema[]> {
     return this.techRecordHistory$?.pipe(map(records => records?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
@@ -48,18 +48,18 @@ export class TechRecordHistoryComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  trackByFn(i: number, tr: TechRecordType<'get'>) {
+  trackByFn(i: number, tr: TechRecordSearchSchema) {
     return tr.createdTimestamp;
   }
 
-  summaryLinkUrl(techRecord: TechRecordType<'get'>) {
-    switch (techRecord.techRecord_statusCode) {
+  summaryLinkUrl(searchResult: TechRecordSearchSchema) {
+    switch (searchResult.techRecord_statusCode) {
       case StatusCodes.PROVISIONAL:
-        return `/tech-records/${(this.currentTechRecord as TechRecordType<'get'>)?.systemNumber}/${techRecord.createdTimestamp}/provisional`;
+        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/provisional`;
       case StatusCodes.ARCHIVED:
-        return `/tech-records/${(this.currentTechRecord as TechRecordType<'get'>)?.systemNumber}/${techRecord.createdTimestamp}/historic/`;
+        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/historic/`;
       default:
-        return `/tech-records/${(this.currentTechRecord as TechRecordType<'get'>)?.systemNumber}/${techRecord.createdTimestamp}`;
+        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}`;
     }
   }
 
