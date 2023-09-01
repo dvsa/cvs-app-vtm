@@ -137,7 +137,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     );
   }
 
-  createTest(techRecord?: TechRecordType<'get'>): void {
+  createTest(techRecord?: V3TechRecordModel): void {
     if (
       (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'complete' ||
       (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'testable'
