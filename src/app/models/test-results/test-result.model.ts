@@ -40,7 +40,7 @@ export interface TestResultModel {
 
   reasonForCreation?: string;
   reasonForCancellation?: string;
-  vehicleType: VehicleTypes;
+  vehicleType: Exclude<VehicleTypes, 'small trl'>;
   testHistory?: TestResultModel[];
   testStatus?: TestResultStatus;
 
