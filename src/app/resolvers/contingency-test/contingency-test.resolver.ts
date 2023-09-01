@@ -26,7 +26,6 @@ export class ContingencyTestResolver implements Resolve<boolean> {
     private userService: UserService
   ) {}
 
-  //TODO: remove the anys
   resolve(): Observable<boolean> {
     return this.techRecordService.techRecord$.pipe(
       switchMap(techRecord => {
@@ -59,9 +58,13 @@ export class ContingencyTestResolver implements Resolve<boolean> {
                       description: viewableTechRecord?.techRecord_vehicleClass_description
                     }
                   : null,
-              vehicleSubclass: (viewableTechRecord as any)?.techRecord_vehicleSubclass ?? null,
+              vehicleSubclass:
+                viewableTechRecord && 'techRecord_vehicleSubclass' in viewableTechRecord ? viewableTechRecord.techRecord_vehicleSubclass : null,
               noOfAxles: viewableTechRecord?.techRecord_noOfAxles ?? 0,
-              numberOfWheelsDriven: (viewableTechRecord as any)?.techRecord_numberOfWheelsDriven ?? null,
+              numberOfWheelsDriven:
+                viewableTechRecord && 'techRecord_numberOfWheelsDriven' in viewableTechRecord
+                  ? viewableTechRecord.techRecord_numberOfWheelsDriven
+                  : null,
               testStatus: 'submitted',
               regnDate: viewableTechRecord?.techRecord_regnDate,
               numberOfSeats:

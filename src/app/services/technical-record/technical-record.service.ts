@@ -5,7 +5,6 @@ import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   EuVehicleCategories,
-  NotTrailer,
   StatusCodes,
   TechRecordModel,
   V3TechRecordModel,
@@ -157,13 +156,23 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectSectionState));
   }
 
-  //TODO: remove the anys
-  getMakeAndModel(techRecord: V3TechRecordModel | NotTrailer): string {
-    if (!(techRecord as any)?.techRecord_make && !(techRecord as any)?.techRecord_chassisMake) return '';
+  getMakeAndModel(techRecord: V3TechRecordModel): string {
+    if (
+      techRecord.techRecord_vehicleType === 'car' ||
+      techRecord.techRecord_vehicleType === 'motorcycle' ||
+      techRecord.techRecord_vehicleType === 'lgv'
+    ) {
+      return '';
+    }
 
-    return `${techRecord?.techRecord_vehicleType === 'psv' ? (techRecord as any).techRecord_chassisMake : (techRecord as any).techRecord_make} - ${
-      (techRecord as any).techRecord_vehicleType === 'psv' ? (techRecord as any).techRecord_chassisModel : (techRecord as any).techRecord_model
-    }`;
+    const make = (techRecord?.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisMake : techRecord.techRecord_make) ?? '';
+    const model = (techRecord.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisModel : techRecord.techRecord_model) ?? '';
+
+    if (!make || !model) {
+      return make || model;
+    }
+
+    return `${make} - ${model}`;
   }
 
   clearSectionTemplateStates() {
