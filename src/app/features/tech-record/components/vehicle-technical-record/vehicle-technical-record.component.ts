@@ -181,7 +181,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     }
 
     return this.hasTestResultAmend
-      ? 'This vehicle does not have enough information to be tested. Call the Contact Centre to complete this record so tests can be recorded against it.'
-      : 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.';
+      ? 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.'
+      : 'This vehicle does not have enough information to be tested. Call the Contact Centre to complete this record so tests can be recorded against it.';
   }
 }
