@@ -21,7 +21,7 @@ import { Observable, Subject, debounceTime, of, switchMap, takeUntil, withLatest
   styleUrls: ['./psv-brakes.component.scss']
 })
 export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() vehicleTechRecord!: TechRecordType<'psv'>;
+  @Input() vehicleTechRecord?: TechRecordType<'psv'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -122,7 +122,10 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get brakeCodePrefix(): string {
-    const prefix = `${Math.round(this.vehicleTechRecord!.techRecord_grossLadenWeight! / 100)}`;
+    if (!this.vehicleTechRecord?.techRecord_grossLadenWeight) {
+      return '';
+    }
+    const prefix = `${Math.round(this.vehicleTechRecord.techRecord_grossLadenWeight / 100)}`;
 
     return prefix.length <= 2 ? '0' + prefix : prefix;
   }
