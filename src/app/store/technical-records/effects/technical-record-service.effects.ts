@@ -117,8 +117,12 @@ export class TechnicalRecordServiceEffects {
   updateTechRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTechRecord),
-      concatMap(({ vehicleTechRecord }) => {
-        return this.techRecordHttpService.updateTechRecords$(vehicleTechRecord).pipe(
+      withLatestFrom(this.store.pipe(select(editingTechRecord))),
+      concatMap(([{ systemNumber, createdTimestamp }, techRecord]) => {
+        if (!techRecord) {
+          return of(updateTechRecordFailure({ error: 'There is not technical record in edit' }));
+        }
+        return this.techRecordHttpService.updateTechRecords$(systemNumber, createdTimestamp, techRecord).pipe(
           map(vehicleTechRecord => updateTechRecordSuccess({ vehicleTechRecord })),
           catchError(error => of(updateTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
         );

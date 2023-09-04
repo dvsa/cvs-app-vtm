@@ -53,12 +53,10 @@ export class TechnicalRecordHttpService {
     return this.http.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body);
   }
 
-  updateTechRecords$(techRecord: TechRecordType<'put'>): Observable<TechRecordType<'get'>> {
-    const body = { ...techRecord } as TechRecordType<'get'>;
+  updateTechRecords$(systemNumber: string, createdTimestamp: string, techRecord: TechRecordType<'put'>): Observable<TechRecordType<'get'>> {
+    const url = `${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`;
 
-    const url = `${environment.VTM_API_URI}/v3/technical-records/${body.systemNumber}/${body.createdTimestamp}`;
-
-    return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
+    return this.http.patch<TechRecordType<'get'>>(url, techRecord, { responseType: 'json' });
   }
 
   amendVrm$(newVrm: string, cherishedTransfer: boolean, systemNumber: string, createdTimestamp: string): Observable<TechRecordType<'get'>> {
