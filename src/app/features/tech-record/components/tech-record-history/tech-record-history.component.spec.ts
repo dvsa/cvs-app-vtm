@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
@@ -28,8 +28,7 @@ describe('TechRecordHistoryComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
-    component.vehicle = mockVehicleTechnicalRecord();
-    component.currentTechRecord = mockVehicleTechnicalRecord().techRecord[0];
+    component.currentTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
     fixture.detectChanges();
   });
   it('should create', () => {

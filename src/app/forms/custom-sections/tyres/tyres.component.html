@@ -4,7 +4,7 @@
     <app-switchable-input
       [form]="form"
       [type]="types.NUMBER"
-      name="speedRestriction"
+      name="techRecord_speedRestriction"
       label="Speed Restriction"
       [isEditing]="isEditing"
       [width]="widths.XS"
@@ -34,39 +34,38 @@
     </thead>
 
     <tbody class="govuk-table__body">
-      <tr *ngFor="let axle of axles.controls; let i = index" class="govuk-table__row" formArrayName="axles">
-        <ng-container [formGroupName]="i">
+      <tr *ngFor="let axle of axles.controls; let i = index" class="govuk-table__row" formArrayName="techRecord_axles">
           <th scope="row" class="tyre-table__cell">T{{ axle.value.axleNumber }}</th>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'tyreCode', type: types.NUMBER, width: widths.XS }"
+            [ngTemplateOutletContext]="{ name: 'tyres_tyreCode', type: types.NUMBER, width: widths.XS }"
           ></ng-template>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'tyreSize', type: types.TEXT, width: widths.XXXL }"
+            [ngTemplateOutletContext]="{ name: 'tyres_tyreSize', type: types.TEXT, width: widths.XXXL }"
           ></ng-template>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'plyRating', type: types.TEXT, width: widths.XXS }"
+            [ngTemplateOutletContext]="{ name: 'tyres_plyRating', type: types.TEXT, width: widths.XXS }"
           ></ng-template>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'dataTrAxles', type: types.NUMBER, width: widths.XXS }"
+            [ngTemplateOutletContext]="{ name: 'tyres_dataTrAxles', type: types.NUMBER, width: widths.XXS }"
           ></ng-template>
 
           <ng-template
             *ngIf="isPsv"
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'speedCategorySymbol', type: types.DROPDOWN, width: widths.XXS, options: speedCategorySymbol }"
+            [ngTemplateOutletContext]="{ name: 'tyres_speedCategorySymbol', type: types.DROPDOWN, width: widths.XXS, options: speedCategorySymbol }"
           ></ng-template>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'fitmentCode', type: types.DROPDOWN, width: widths.XXS, options: fitmentCode }"
+            [ngTemplateOutletContext]="{ name: 'tyres_fitmentCode', type: types.DROPDOWN, width: widths.XXS, options: fitmentCode }"
           ></ng-template>
 
           <td *ngIf="isEditing" class="govuk-table__cell">
@@ -87,11 +86,10 @@
                 [isEditing]="isEditing"
                 [width]="width"
                 [options]="options"
-                (focusout)="searchTyres(name, i + 1)"
+                (focusout)="getTyresRefData(name, i + 1)"
               ></app-switchable-input>
             </td>
           </ng-template>
-        </ng-container>
       </tr>
 
       <tr *ngIf="isEditing">
@@ -114,7 +112,7 @@
     <app-switchable-input
       [form]="form"
       [type]="types.TEXT"
-      name="tyreUseCode"
+      name="techRecord_tyreUseCode"
       label="Tyre Use Code"
       [width]="widths.XS"
       [isEditing]="isEditing"

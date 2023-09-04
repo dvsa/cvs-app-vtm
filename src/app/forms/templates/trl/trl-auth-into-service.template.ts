@@ -6,50 +6,44 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'authIntoService',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'cocIssueDate',
-          label: 'COC issue date',
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.DATE,
-          editType: FormNodeEditTypes.DATE,
-          isoDate: false
-        },
-        {
-          name: 'dateReceived',
-          label: 'Date received',
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.DATE,
-          editType: FormNodeEditTypes.DATE,
-          isoDate: false
-        },
-        {
-          name: 'datePending',
-          label: 'Date pending',
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.DATE,
-          editType: FormNodeEditTypes.DATE,
-          isoDate: false
-        },
-        {
-          name: 'dateAuthorised',
-          label: 'Date authorised',
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.DATE,
-          editType: FormNodeEditTypes.DATE,
-          isoDate: false
-        },
-        {
-          name: 'dateRejected',
-          label: 'Date rejected',
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.DATE,
-          editType: FormNodeEditTypes.DATE,
-          isoDate: false
-        }
-      ]
+      name: 'techRecord_authIntoService_cocIssueDate',
+      label: 'COC issue date',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.DATE,
+      editType: FormNodeEditTypes.DATE,
+      isoDate: false
+    },
+    {
+      name: 'techRecord_authIntoService_dateReceived',
+      label: 'Date received',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.DATE,
+      editType: FormNodeEditTypes.DATE,
+      isoDate: false
+    },
+    {
+      name: 'techRecord_authIntoService_datePending',
+      label: 'Date pending',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.DATE,
+      editType: FormNodeEditTypes.DATE,
+      isoDate: false
+    },
+    {
+      name: 'techRecord_authIntoService_dateAuthorised',
+      label: 'Date authorised',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.DATE,
+      editType: FormNodeEditTypes.DATE,
+      isoDate: false
+    },
+    {
+      name: 'techRecord_authIntoService_dateRejected',
+      label: 'Date rejected',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.DATE,
+      editType: FormNodeEditTypes.DATE,
+      isoDate: false
     }
   ]
 };

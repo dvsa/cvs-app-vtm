@@ -4,10 +4,10 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { RouterOutletComponent } from '@shared/components/router-outlet/router-outlet.component';
+import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { BatchVehicleDetailsComponent } from './components/batch-vehicle-details/batch-vehicle-details.component';
 import { BatchVehicleResultsComponent } from './components/batch-vehicle-results/batch-vehicle-results.component';
 import { BatchVehicleTemplateComponent } from './components/batch-vehicle-template/batch-vehicle-template.component';
-import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { SelectVehicleTypeComponent } from './components/select-vehicle-type/select-vehicle-type.component';
 
 const routes: Routes = [
@@ -32,12 +32,11 @@ const routes: Routes = [
             path: '',
             component: BatchVehicleTemplateComponent,
             data: { title: 'Batch Record', roles: Roles.TechRecordCreate, isCustomLayout: true, isEditing: true }
-            //resolve: [CreateBatchResolver]
           },
           {
             path: 'details',
             component: BatchVehicleDetailsComponent,
-            data: { title: 'Add batch of vehicles', roles: Roles.TechRecordCreate }
+            data: { title: 'Add batch of vehicles', roles: Roles.TechRecordCreate, isEditing: true }
           },
           {
             path: 'batch-results',

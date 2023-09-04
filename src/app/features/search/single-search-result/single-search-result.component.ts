@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { createSingleSearchResult } from '@forms/templates/search/single-search-result.template';
 import { Roles } from '@models/roles.enum';
-import { SearchResult } from '@store/tech-record-search/reducer/tech-record-search.reducer';
 
 @Component({
   selector: 'app-single-search-result[searchResult]',
@@ -10,7 +10,7 @@ import { SearchResult } from '@store/tech-record-search/reducer/tech-record-sear
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SingleSearchResultComponent implements OnInit {
-  @Input() searchResult!: SearchResult;
+  @Input() searchResult!: TechRecordSearchSchema;
   vehicleDisplayData?: VehicleDisplayData;
   template?: FormNode;
 
@@ -25,7 +25,7 @@ export class SingleSearchResultComponent implements OnInit {
       vehicleType: this.searchResult.techRecord_vehicleType.toUpperCase()
     };
 
-    this.template = createSingleSearchResult(this.searchResult.systemNumber);
+    this.template = createSingleSearchResult(this.searchResult.systemNumber, this.searchResult.createdTimestamp);
   }
 
   public get roles() {
@@ -37,8 +37,8 @@ interface VehicleDisplayData {
   vin?: string;
   vrm?: string;
   trailerId?: string;
-  make?: string;
-  model?: string;
+  make?: string | null;
+  model?: string | null;
   manufactureYear?: number | null;
   vehicleType?: string;
 }

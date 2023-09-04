@@ -8,31 +8,25 @@ export const DocumentsTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'microfilm',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'microfilmDocumentType',
-          label: 'Microfilm document type',
-          type: FormNodeTypes.CONTROL,
-          editType: FormNodeEditTypes.AUTOCOMPLETE,
-          options: DOCUMENT_TYPES
-        },
-        {
-          name: 'microfilmRollNumber',
-          label: 'Microfilm roll number',
-          type: FormNodeTypes.CONTROL,
-          editType: FormNodeEditTypes.TEXT,
-          validators: [{ name: ValidatorNames.MaxLength, args: 5 }]
-        },
-        {
-          name: 'microfilmSerialNumber',
-          label: 'Microfilm serial number',
-          type: FormNodeTypes.CONTROL,
-          editType: FormNodeEditTypes.TEXT,
-          validators: [{ name: ValidatorNames.MaxLength, args: 4 }]
-        }
-      ]
+      name: 'techRecord_microfilm_microfilmDocumentType',
+      label: 'Microfilm document type',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.AUTOCOMPLETE,
+      options: DOCUMENT_TYPES
+    },
+    {
+      name: 'techRecord_microfilm_microfilmRollNumber',
+      label: 'Microfilm roll number',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXT,
+      validators: [{ name: ValidatorNames.MaxLength, args: 5 }]
+    },
+    {
+      name: 'techRecord_microfilm_microfilmSerialNumber',
+      label: 'Microfilm serial number',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXT,
+      validators: [{ name: ValidatorNames.MaxLength, args: 4 }]
     }
   ]
 };
