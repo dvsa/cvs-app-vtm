@@ -271,7 +271,7 @@ export class CustomValidators {
 
   static handlePsvClassChange = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      const vehicleSizeControl = control.root.get('vehicleSize');
+      const vehicleSizeControl = control.root.get('techRecord_vehicleSize');
       if (control.dirty) {
         switch (control.value) {
           case VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats: {
@@ -290,7 +290,7 @@ export class CustomValidators {
 
   static handlePsvSizeChange = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      const vehicleClassControl = control.root.get('vehicleClass')?.get('description');
+      const vehicleClassControl = control.root.get('techRecord_vehicleClass_description');
       if (control.dirty) {
         switch (control.value) {
           case VehicleSizes.LARGE: {
@@ -309,25 +309,27 @@ export class CustomValidators {
 
   static handlePsvPassengersChange = (passengersOne: string, passengersTwo: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      const controlOne: number = control.root.get(passengersOne)?.value ?? 0;
-      const controlTwo: number = control.root.get(passengersTwo)?.value ?? 0;
-      const controlThree: number = control.value ?? 0;
+      if (control.dirty) {
+        const controlOne: number = control.root.get(passengersOne)?.value;
+        const controlTwo: number = control.root.get(passengersTwo)?.value;
+        const controlThree: number = control.value;
 
-      const classControl = control.root.get('vehicleClass')?.get('description');
-      const sizeControl = control.root.get('vehicleSize');
+        const classControl = control.root.get('techRecord_vehicleClass_description');
+        const sizeControl = control.root.get('techRecord_vehicleSize');
 
-      const totalPassengers = controlOne + controlTwo + controlThree;
+        const totalPassengers = controlOne + controlTwo + controlThree;
 
-      switch (true) {
-        case totalPassengers <= 22: {
-          sizeControl?.setValue(VehicleSizes.SMALL, { emitEvent: false });
-          classControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
-          break;
-        }
-        case totalPassengers > 22: {
-          sizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
-          classControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
-          break;
+        switch (true) {
+          case totalPassengers <= 22: {
+            sizeControl?.setValue(VehicleSizes.SMALL, { emitEvent: false });
+            classControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
+            break;
+          }
+          case totalPassengers > 22: {
+            sizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
+            classControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
+            break;
+          }
         }
       }
       return null;

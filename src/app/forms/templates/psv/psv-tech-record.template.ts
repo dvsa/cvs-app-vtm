@@ -110,18 +110,6 @@ export const PsvTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'techRecord_vehicleClass_description',
-      label: 'Vehicle class',
-      value: '',
-      customId: 'vehicleClassDescription',
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING,
-      editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
-      class: '.govuk-input--width-10',
-      validators: [{ name: ValidatorNames.Required }]
-    },
-    {
       name: 'techRecord_vehicleConfiguration',
       label: 'Vehicle configuration',
       value: null,
@@ -159,7 +147,10 @@ export const PsvTechRecord: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 99 },
-        { name: ValidatorNames.HandlePsvPassengersChange, args: { passengersOne: 'seatsLowerDeck', passengersTwo: 'standingCapacity' } }
+        {
+          name: ValidatorNames.HandlePsvPassengersChange,
+          args: { passengersOne: 'techRecord_seatsLowerDeck', passengersTwo: 'techRecord_standingCapacity' }
+        }
       ],
       class: 'flex--half'
     },
@@ -172,7 +163,10 @@ export const PsvTechRecord: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 999 },
-        { name: ValidatorNames.HandlePsvPassengersChange, args: { passengersOne: 'standingCapacity', passengersTwo: 'seatsUpperDeck' } }
+        {
+          name: ValidatorNames.HandlePsvPassengersChange,
+          args: { passengersOne: 'techRecord_standingCapacity', passengersTwo: 'techRecord_seatsUpperDeck' }
+        }
       ],
       class: 'flex--half'
     },
@@ -185,35 +179,31 @@ export const PsvTechRecord: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 999 },
-        { name: ValidatorNames.HandlePsvPassengersChange, args: { passengersOne: 'seatsLowerDeck', passengersTwo: 'seatsUpperDeck' } }
-      ]
-    },
-    {
-      name: 'vehicleClass',
-      label: 'Vehicle class',
-      value: '',
-      type: FormNodeTypes.GROUP,
-      children: [
         {
-          name: 'description',
-          label: 'Vehicle class',
-          hint: 'The vehicle class is calculated automatically based on the number of seats and standing capacity. Only change the class if you need to',
-          value: '',
-          customId: 'vehicleClassDescription',
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING,
-          editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
-          class: '.govuk-input--width-10',
-          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.HandlePsvClassChange }]
+          name: ValidatorNames.HandlePsvPassengersChange,
+          args: { passengersOne: 'techRecord_seatsLowerDeck', passengersTwo: 'techRecord_seatsUpperDeck' }
         }
       ]
     },
     {
-      name: 'vehicleSize',
+      name: 'techRecord_vehicleClass_description',
+      label: 'Vehicle class',
+      value: null,
+      hint: 'The Vehicle Class is calculated automatically based on the number of seats and standing capacity. Only change the Class if you need to',
+      customId: 'vehicleClassDescription',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+      class: '.govuk-input--width-10',
+      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.HandlePsvClassChange }]
+    },
+    {
+      name: 'techRecord_vehicleSize',
       label: 'Vehicle size',
-      value: '',
-      hint: 'The vehicle size is calculated automatically based on the number of seats and standing capacity. Only change the size if you need to',
+      value: null,
+      hint: 'The Vehicle Size is calculated automatically based on the number of seats and standing capacity. Only change the Size if you need to',
+      width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(VehicleSize),
@@ -236,15 +226,6 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       isoDate: false
-    },
-    {
-      name: 'techRecord_vehicleSize',
-      label: 'Vehicle size',
-      value: null,
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(VehicleSize),
-      validators: []
     },
     {
       name: 'techRecord_departmentalVehicleMarker',
