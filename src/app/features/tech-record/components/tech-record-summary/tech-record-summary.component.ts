@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -13,13 +14,13 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, map, takeUntil } from 'rxjs';
+import { Observable, Subject, map, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -52,7 +53,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private errorService: GlobalErrorService,
     private referenceDataService: ReferenceDataService,
     private technicalRecordService: TechnicalRecordService,
-    private routerService: RouterService
+    private routerService: RouterService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -64,7 +66,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
           }
           const techRecord = cloneDeep(record);
 
-          if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.TRL) {
+          if (
+            techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+            (techRecord.techRecord_vehicleType === VehicleTypes.TRL &&
+              techRecord.techRecord_euVehicleCategory !== 'o1' &&
+              techRecord.techRecord_euVehicleCategory !== 'o2')
+          ) {
             const [axles, axleSpacing] = this.axlesService.normaliseAxles(
               techRecord.techRecord_axles ?? [],
               techRecord.techRecord_dimensions_axleSpacing
@@ -85,6 +92,18 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
     this.isEditing && this.technicalRecordService.clearReasonForCreation();
+
+    const editingReason = this.activatedRoute.snapshot.data['reason'];
+    if (this.isEditing && editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+      this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe(techRecord => {
+        if (techRecord) {
+          this.technicalRecordService.updateEditingTechRecord({
+            ...(techRecord as TechRecordType<'put'>),
+            techRecord_statusCode: StatusCodes.PROVISIONAL
+          });
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {

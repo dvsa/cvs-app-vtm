@@ -20,7 +20,7 @@ export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`,
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
 export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord', false);
 
-export const updateTechRecord = createAction(`${prefix} updateTechRecords`, props<{ vehicleTechRecord: TechRecordType<'put'> }>());
+export const updateTechRecord = createAction(`${prefix} updateTechRecords`, props<{ systemNumber: string; createdTimestamp: string }>());
 export const updateTechRecordSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordFailure = createOutcomeAction('updateTechRecords', false);
 

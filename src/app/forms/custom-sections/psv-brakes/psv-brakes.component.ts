@@ -21,7 +21,7 @@ import { Observable, Subject, debounceTime, of, switchMap, takeUntil, withLatest
   styleUrls: ['./psv-brakes.component.scss']
 })
 export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() vehicleTechRecord!: TechRecordType<'psv'>;
+  @Input() vehicleTechRecord?: TechRecordType<'psv'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -57,6 +57,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(([selectedBrake, event]) => {
         // Set the brake details automatically based selection
         if (selectedBrake && event?.techRecord_brakes_brakeCodeOriginal) {
+          event.techRecord_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
           event.techRecord_brakes_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
           event.techRecord_brakes_dataTrBrakeOne = selectedBrake.service;
           event.techRecord_brakes_dataTrBrakeTwo = selectedBrake.secondary;
@@ -122,7 +123,10 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get brakeCodePrefix(): string {
-    const prefix = `${Math.round(this.vehicleTechRecord!.techRecord_grossLadenWeight! / 100)}`;
+    if (!this.vehicleTechRecord?.techRecord_grossLadenWeight) {
+      return '';
+    }
+    const prefix = `${Math.round(this.vehicleTechRecord.techRecord_grossLadenWeight / 100)}`;
 
     return prefix.length <= 2 ? '0' + prefix : prefix;
   }

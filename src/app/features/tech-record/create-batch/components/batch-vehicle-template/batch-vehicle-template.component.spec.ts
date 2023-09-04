@@ -4,8 +4,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -130,8 +129,8 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       batchOfVehicles = [
-        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1' },
-        { vin: 'EXAMPLEVIN000002', trailerIdOrVrm: '1000002', systemNumber: '2' }
+        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1', createdTimestamp: 'foobar' },
+        { vin: 'EXAMPLEVIN000002', trailerIdOrVrm: '1000002', systemNumber: '2', createdTimestamp: '2022' }
       ];
       jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
 
@@ -146,28 +145,16 @@ describe('BatchVehicleTemplateComponent', () => {
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         1,
         updateTechRecord({
-          vehicleTechRecord: {
-            systemNumber: '1',
-            createdTimestamp: undefined,
-            techRecord_statusCode: StatusCodes.CURRENT,
-            trailerId: undefined,
-            primaryVrm: '1000001',
-            vin: 'EXAMPLEVIN000001'
-          } as unknown as TechRecordType<'put'>
+          systemNumber: '1',
+          createdTimestamp: 'foobar'
         })
       );
 
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         2,
         updateTechRecord({
-          vehicleTechRecord: {
-            systemNumber: '2',
-            createdTimeStamp: undefined,
-            trailerId: undefined,
-            primaryVrm: '1000002',
-            techRecord_statusCode: StatusCodes.CURRENT,
-            vin: 'EXAMPLEVIN000002'
-          } as unknown as TechRecordType<'put'>
+          systemNumber: '2',
+          createdTimestamp: '2022'
         })
       );
     }));
@@ -176,9 +163,9 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       batchOfVehicles = [
-        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1' },
+        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1', createdTimestamp: '2022' },
         { vin: 'EXAMPLEVIN000002' },
-        { vin: 'EXAMPLEVIN000003', trailerIdOrVrm: '1000002', systemNumber: '3' },
+        { vin: 'EXAMPLEVIN000003', trailerIdOrVrm: '1000002', systemNumber: '3', createdTimestamp: '2023' },
         { vin: 'EXAMPLEVIN000004' },
         { vin: 'EXAMPLEVIN000005' }
       ];
@@ -194,28 +181,16 @@ describe('BatchVehicleTemplateComponent', () => {
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         1,
         updateTechRecord({
-          vehicleTechRecord: {
-            systemNumber: '1',
-            techRecord_statusCode: StatusCodes.CURRENT,
-            vin: 'EXAMPLEVIN000001',
-            trailerId: undefined,
-            primaryVrm: '1000001',
-            createdTimestamp: undefined
-          } as unknown as TechRecordType<'put'>
+          systemNumber: '1',
+          createdTimestamp: '2022'
         })
       );
       expect(dispatchSpy).toHaveBeenNthCalledWith(2, createVehicleRecord({ vehicle: expect.anything() }));
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         3,
         updateTechRecord({
-          vehicleTechRecord: {
-            systemNumber: '3',
-            techRecord_statusCode: StatusCodes.CURRENT,
-            vin: 'EXAMPLEVIN000003',
-            trailerId: undefined,
-            primaryVrm: '1000002',
-            createdTimestamp: undefined
-          } as unknown as TechRecordType<'put'>
+          systemNumber: '3',
+          createdTimestamp: '2023'
         })
       );
       expect(dispatchSpy).toHaveBeenNthCalledWith(4, createVehicleRecord({ vehicle: expect.anything() }));

@@ -10,10 +10,11 @@ import { CustomValidators } from '@forms/validators/custom-validators';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { State } from '@store/index';
 import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vin',
@@ -30,7 +31,8 @@ export class AmendVinComponent implements OnDestroy, OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private technicalRecordService: TechnicalRecordService,
-    private store: Store<TechnicalRecordServiceState>
+    private routerService: RouterService,
+    private store: Store<State>
   ) {
     this.form = new FormGroup({
       vin: new CustomFormControl(
@@ -50,7 +52,9 @@ export class AmendVinComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(record => (!record ? this.navigateBack() : (this.techRecord = record)));
+    this.technicalRecordService.techRecord$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(record => (!record ? this.navigateBack() : (this.techRecord = record)));
   }
 
   ngOnDestroy(): void {
@@ -99,8 +103,15 @@ export class AmendVinComponent implements OnDestroy, OnInit {
     record.vin = this.form.value.vin;
 
     if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
-      record.techRecord_reasonForCreation = 'Vin changed';
-      this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }));
+      this.technicalRecordService.updateEditingTechRecord({ ...record, techRecord_reasonForCreation: 'Vin changed' });
+      this.routerService
+        .getRouteNestedParam$('systemNumber')
+        .pipe(takeUntil(this.destroy$), withLatestFrom(this.routerService.getRouteNestedParam$('createdTimestamp')))
+        .subscribe(([systemNumber, createdTimestamp]) => {
+          if (systemNumber && createdTimestamp) {
+            this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
+          }
+        });
     }
   }
 }
