@@ -57,6 +57,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(([selectedBrake, event]) => {
         // Set the brake details automatically based selection
         if (selectedBrake && event?.techRecord_brakes_brakeCodeOriginal) {
+          event.techRecord_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
           event.techRecord_brakes_brakeCode = `${this.brakeCodePrefix}${selectedBrake.resourceKey}`;
           event.techRecord_brakes_dataTrBrakeOne = selectedBrake.service;
           event.techRecord_brakes_dataTrBrakeTwo = selectedBrake.secondary;
