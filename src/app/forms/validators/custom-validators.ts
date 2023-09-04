@@ -323,13 +323,11 @@ export class CustomValidators {
           case totalPassengers <= 22: {
             sizeControl?.setValue(VehicleSizes.SMALL, { emitEvent: false });
             classControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
-            return null;
             break;
           }
           case totalPassengers > 22: {
             sizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
             classControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
-            return null;
           }
         }
       }
