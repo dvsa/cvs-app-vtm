@@ -126,9 +126,7 @@ describe('Vehicle Technical Record Reducer', () => {
         vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>,
         loading: true
       };
-      const action = updateTechRecord({
-        vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVinNew' } as unknown as TechRecordType<'put'>
-      });
+      const action = updateTechRecord({ systemNumber: 'foo', createdTimestamp: 'bar' });
       const newState = vehicleTechRecordReducer(state, action);
 
       expect(newState).toEqual(state);

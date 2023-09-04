@@ -7,11 +7,12 @@ import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/servic
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { techRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, skipWhile, take, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-visibility',
@@ -30,17 +31,16 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<State>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private routerService: RouterService
   ) {
     this.form = new CustomFormGroup(
       { name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
-    this.actions$
-      .pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$))
-      .subscribe(({ vehicleTechRecord }) =>
-        this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`])
-      );
+    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+    });
   }
 
   get title(): string {
@@ -91,6 +91,17 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
 
     this.technicalRecordService.updateEditingTechRecord(updatedTechRecord);
 
-    this.store.dispatch(updateTechRecord({ vehicleTechRecord: updatedTechRecord }));
+    this.technicalRecordService.techRecord$
+      .pipe(
+        takeUntil(this.destroy$),
+        skipWhile(techRecord => techRecord?.techRecord_reasonForCreation === form.reason),
+        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp')),
+        take(1)
+      )
+      .subscribe(([_, systemNumber, createdTimestamp]) => {
+        if (systemNumber && createdTimestamp) {
+          this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
+        }
+      });
   }
 }
