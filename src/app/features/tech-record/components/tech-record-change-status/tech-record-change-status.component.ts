@@ -2,31 +2,28 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { archiveTechRecord, archiveTechRecordSuccess, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
-import { cloneDeep } from 'lodash';
-import { Observable, Subscription, take } from 'rxjs';
+import { archiveTechRecord, archiveTechRecordSuccess, promoteTechRecord, promoteTechRecordSuccess } from '@store/technical-records';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-status',
   templateUrl: './tech-record-change-status.component.html'
 })
 export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
-  vehicle$: Observable<VehicleTechRecordModel | undefined>;
-
-  techRecord?: TechRecordModel;
+  techRecord: TechRecordType<'get'> | undefined;
 
   form: CustomFormGroup;
 
   isPromotion = false;
   isProvisional = false;
-  subscription: Subscription;
+
+  destroy$ = new Subject<void>();
 
   constructor(
     private actions$: Actions,
@@ -36,31 +33,30 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
     private store: Store<State>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.vehicle$ = this.technicalRecordService.selectedVehicleTechRecord$;
-
-    this.subscription = this.technicalRecordService.viewableTechRecord$.subscribe(techRecord => (this.techRecord = techRecord));
-
     this.form = new CustomFormGroup(
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
-
     this.isProvisional = this.router.url.includes('provisional');
   }
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe(params => (this.isPromotion = params.get('to') === 'current'));
+    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
+      this.techRecord = record as TechRecordType<'get'>;
+    });
 
-    this.actions$.pipe(ofType(updateTechRecordsSuccess, archiveTechRecordSuccess), take(1)).subscribe(() => {
-      const relativePath = this.isProvisional ? '../..' : '..';
-      this.navigateBack(relativePath);
+    this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
 
       this.technicalRecordService.clearEditingTechRecord();
     });
+
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => (this.isPromotion = params.get('to') === 'current'));
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.destroy$.next;
+    this.destroy$.complete;
   }
 
   get label(): string {
@@ -76,13 +72,8 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit(form: { reason: string }): void {
-    const newTechRecord: TechRecordModel = cloneDeep(this.techRecord!);
     if (!this.techRecord) {
       return;
-    }
-
-    if (this.isPromotion) {
-      newTechRecord.reasonForCreation = form.reason;
     }
 
     this.form.valid
@@ -95,14 +86,22 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.technicalRecordService.updateEditingTechRecord(newTechRecord);
-
-    this.store.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber }) => {
-      const action = this.isPromotion
-        ? updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
-        : archiveTechRecord({ systemNumber, reasonForArchiving: form.reason });
-
-      this.store.dispatch(action);
-    });
+    if (this.isPromotion) {
+      this.store.dispatch(
+        promoteTechRecord({
+          systemNumber: this.techRecord.systemNumber,
+          createdTimestamp: this.techRecord.createdTimestamp,
+          reasonForPromoting: this.form.value.reason
+        })
+      );
+    } else {
+      this.store.dispatch(
+        archiveTechRecord({
+          systemNumber: this.techRecord.systemNumber,
+          createdTimestamp: this.techRecord.createdTimestamp,
+          reasonForArchiving: this.form.value.reason
+        })
+      );
+    }
   }
 }

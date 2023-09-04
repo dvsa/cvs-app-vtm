@@ -1,9 +1,9 @@
 <div class="main-dimensions">
   <app-switchable-input
     *ngIf="isPsv"
-    [form]="dimensions"
+    [form]="form"
     [type]="types.NUMBER"
-    name="height"
+    name="techRecord_dimensions_height"
     label="Height"
     [isEditing]="isEditing"
     [width]="widths.XS"
@@ -11,9 +11,9 @@
   ></app-switchable-input>
 
   <app-switchable-input
-    [form]="dimensions"
+    [form]="form"
     [type]="types.NUMBER"
-    name="length"
+    name="techRecord_dimensions_length"
     label="Length"
     [isEditing]="isEditing"
     [width]="widths.XS"
@@ -21,9 +21,9 @@
   ></app-switchable-input>
 
   <app-switchable-input
-    [form]="dimensions"
+    [form]="form"
     [type]="types.NUMBER"
-    name="width"
+    name="techRecord_dimensions_width"
     label="Width"
     [isEditing]="isEditing"
     [width]="widths.XS"
@@ -33,7 +33,7 @@
   <app-switchable-input
     [form]="form"
     [type]="types.NUMBER"
-    name="frontAxleToRearAxle"
+    name="techRecord_frontAxleToRearAxle"
     label="Front axle to rear axle"
     [isEditing]="isEditing"
     [width]="widths.XS"
@@ -44,7 +44,7 @@
     *ngIf="isTrl"
     [form]="form"
     [type]="types.NUMBER"
-    name="rearAxleToRearTrl"
+    name="techRecord_rearAxleToRearTrl"
     label="Rear axle to rear trailer"
     [isEditing]="isEditing"
     [width]="widths.XS"
@@ -73,7 +73,7 @@
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
-        name="couplingCenterToRearAxleMin"
+        name="techRecord_couplingCenterToRearAxleMin"
         label="Minimum"
         [isEditing]="isEditing"
         [width]="widths.XS"
@@ -83,7 +83,7 @@
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
-        name="couplingCenterToRearAxleMax"
+        name="techRecord_couplingCenterToRearAxleMax"
         label="Maximum"
         [isEditing]="isEditing"
         [width]="widths.XS"
@@ -95,7 +95,7 @@
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
-        name="frontVehicleTo5thWheelCouplingMin"
+        name="techRecord_frontVehicleTo5thWheelCouplingMin"
         label="Minimum"
         [isEditing]="isEditing"
         [width]="widths.XS"
@@ -105,7 +105,7 @@
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
-        name="frontVehicleTo5thWheelCouplingMax"
+        name="techRecord_frontVehicleTo5thWheelCouplingMax"
         label="Maximum"
         [isEditing]="isEditing"
         [width]="widths.XS"
@@ -121,7 +121,7 @@
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
-        name="couplingCenterToRearTrlMin"
+        name="techRecord_couplingCenterToRearTrlMin"
         label="Minimum"
         [isEditing]="isEditing"
         [width]="widths.XS"
@@ -131,7 +131,7 @@
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
-        name="couplingCenterToRearTrlMax"
+        name="techRecord_couplingCenterToRearTrlMax"
         label="Maximum"
         [isEditing]="isEditing"
         [width]="widths.XS"
@@ -141,7 +141,7 @@
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
-        name="centreOfRearmostAxleToRearOfTrl"
+        name="techRecord_centreOfRearmostAxleToRearOfTrl"
         label="Center of rear axle to rear of trailer"
         [isEditing]="isEditing"
         [width]="widths.XS"
@@ -153,7 +153,7 @@
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
-        name="frontAxleTo5thWheelMin"
+        name="techRecord_frontAxleTo5thWheelMin"
         label="Minimum"
         [isEditing]="isEditing"
         [width]="widths.XS"
@@ -163,7 +163,7 @@
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
-        name="frontAxleTo5thWheelMax"
+        name="techRecord_frontAxleTo5thWheelMax"
         label="Maximum"
         [isEditing]="isEditing"
         [width]="widths.XS"

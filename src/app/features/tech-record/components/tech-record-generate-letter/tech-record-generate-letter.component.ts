@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { LETTER_TYPES } from '@forms/templates/general/letter-types';
-import { LettersOfAuth, TechRecordModel, VehicleTechRecordModel, approvalType } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, approvalType } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -19,9 +20,8 @@ import { take } from 'rxjs';
   templateUrl: './tech-record-generate-letter.component.html',
   styleUrls: ['./tech-record-generate-letter.component.scss']
 })
-export class GenerateLetterComponent {
-  vehicle?: VehicleTechRecordModel;
-  currentTechRecord?: TechRecordModel;
+export class GenerateLetterComponent implements OnInit {
+  techRecord?: V3TechRecordModel;
   form = new FormGroup({
     letterType: new CustomFormControl({ name: 'letterType', label: 'Type of letter to generate', type: FormNodeTypes.CONTROL }, '', [
       Validators.required
@@ -50,10 +50,11 @@ export class GenerateLetterComponent {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
     public userService: UserService
-  ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => (this.vehicle = vehicle));
+  ) {}
 
-    this.technicalRecordService.viewableTechRecord$.pipe(take(1)).subscribe(techRecord => (this.currentTechRecord = techRecord));
+  ngOnInit(): void {
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(techRecord => (this.techRecord = techRecord));
+    this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 
   get reasons(): Array<FormNodeOption<string>> {
@@ -63,12 +64,8 @@ export class GenerateLetterComponent {
     ];
   }
 
-  get letter(): LettersOfAuth | undefined {
-    return this.currentTechRecord?.letterOfAuth ?? undefined;
-  }
-
   get emailAddress(): string | undefined {
-    return this.currentTechRecord?.applicantDetails?.emailAddress;
+    return this.techRecord?.techRecord_vehicleType === 'trl' ? this.techRecord?.techRecord_applicantDetails_emailAddress ?? '' : undefined;
   }
 
   navigateBack() {
@@ -81,13 +78,14 @@ export class GenerateLetterComponent {
     if (this.form.value.letterType === '') {
       return this.globalErrorService.addError({ error: 'Letter type is required', anchorLink: 'letterType' });
     }
-    if (!this.currentTechRecord) {
+    if (!this.techRecord) {
       return this.globalErrorService.addError({ error: 'Could not retrieve current technical record' });
     }
 
-    const paragraphId = this.form.value.letterType == 'trailer acceptance' ? this.paragraphMap.get(this.currentTechRecord.approvalType!) : 4;
-
-    this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
+    const paragraphId =
+      this.form.value.letterType == 'trailer acceptance'
+        ? this.paragraphMap.get((this.techRecord as TechRecordType<'trl'>)!.techRecord_approvalType as approvalType)
+        : 4;
 
     this.store.dispatch(generateLetter({ letterType: this.form.value.letterType, paragraphId: paragraphId ?? 4 }));
   }

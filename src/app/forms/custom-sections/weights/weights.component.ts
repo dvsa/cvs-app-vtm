@@ -1,14 +1,15 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
-import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { addAxle, removeAxle, updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { debounceTime, Subscription } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-weights[vehicleTechRecord]',
@@ -16,7 +17,7 @@ import { debounceTime, Subscription } from 'rxjs';
   styleUrls: ['./weights.component.scss']
 })
 export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() vehicleTechRecord!: TechRecordModel;
+  @Input() vehicleTechRecord!: TechRecordType<'psv'> | TechRecordType<'trl'> | TechRecordType<'hgv'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -56,7 +57,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get template(): FormNode {
-    switch (this.vehicleTechRecord.vehicleType) {
+    switch (this.vehicleTechRecord.techRecord_vehicleType) {
       case VehicleTypes.PSV:
         return PsvWeightsTemplate;
       case VehicleTypes.HGV:
@@ -69,15 +70,15 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get isPsv(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.PSV;
+    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
 
   get isHgv(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.HGV;
+    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.HGV;
   }
 
   get isTrl(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.TRL;
+    return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.TRL;
   }
 
   get types(): typeof FormNodeEditTypes {
@@ -85,15 +86,15 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get axles(): CustomFormArray {
-    return this.form.get(['axles']) as CustomFormArray;
+    return this.form.get(['techRecord_axles']) as CustomFormArray;
   }
 
-  getAxleWeights(i: number): CustomFormGroup {
-    return this.axles.get([i, 'weights']) as CustomFormGroup;
+  getAxleForm(i: number): CustomFormGroup {
+    return this.axles.get([i]) as CustomFormGroup;
   }
 
   addAxle(): void {
-    if (!this.vehicleTechRecord.axles || this.vehicleTechRecord.axles!.length < 10) {
+    if (!this.vehicleTechRecord.techRecord_axles || this.vehicleTechRecord.techRecord_axles!.length < 10) {
       this.isError = false;
       this.store.dispatch(addAxle());
     } else {
@@ -105,7 +106,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
 
-    if (this.vehicleTechRecord.axles!.length > minLength) {
+    if (this.vehicleTechRecord.techRecord_axles!.length > minLength) {
       this.isError = false;
       this.store.dispatch(removeAxle({ index }));
     } else {

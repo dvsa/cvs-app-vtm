@@ -3,13 +3,16 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { StatusCodes, TrailerFormType, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { CustomValidators } from '@forms/validators/custom-validators';
+import { StatusCodes, TrailerFormType, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { selectTechRecord } from '@store/technical-records';
 import { take } from 'rxjs';
-import { CustomValidators } from '@forms/validators/custom-validators';
 
 @Component({
   selector: 'app-select-vehicle-type',
@@ -42,7 +45,8 @@ export class SelectVehicleTypeComponent {
     private batchTechRecordService: BatchTechnicalRecordService,
     private trs: TechnicalRecordService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {
     this.batchTechRecordService.clearBatch();
     this.trs.clearSectionTemplateStates();
@@ -75,13 +79,10 @@ export class SelectVehicleTypeComponent {
 
     this.batchTechRecordService.setVehicleType(type);
 
-    this.trs.editableVehicleTechRecord$.pipe(take(1)).subscribe(
-      vehicle =>
-        !vehicle &&
-        this.trs.updateEditingTechRecord({
-          techRecord: [{ vehicleType: type }]
-        } as VehicleTechRecordModel)
-    );
+    this.store
+      .select(selectTechRecord)
+      .pipe(take(1))
+      .subscribe(vehicle => !vehicle && this.trs.updateEditingTechRecord({ ...vehicle!, techRecord_vehicleType: type } as TechRecordType<'put'>));
 
     this.trs.generateEditingVehicleTechnicalRecordFromVehicleType(type);
 

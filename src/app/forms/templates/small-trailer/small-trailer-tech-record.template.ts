@@ -1,7 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
 
@@ -11,7 +10,7 @@ export const SmallTrailerTechRecord: FormNode = {
   label: 'Vehicle Summary',
   children: [
     {
-      name: 'vehicleType',
+      name: 'techRecord_vehicleType',
       label: 'Vehicle type',
       value: '',
       width: FormNodeWidth.S,
@@ -21,16 +20,16 @@ export const SmallTrailerTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'statusCode',
+      name: 'techRecord_statusCode',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
     {
-      name: 'manufactureYear',
+      name: 'techRecord_manufactureYear',
       label: 'Year of manufacture',
-      value: '',
+      value: null,
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -40,32 +39,38 @@ export const SmallTrailerTechRecord: FormNode = {
       ]
     },
     {
-      name: 'noOfAxles',
+      name: 'techRecord_noOfAxles',
       label: 'Number of axles',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
-      name: 'vehicleClass',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          customId: 'vehicleClassDescription',
-          name: 'description',
-          label: 'Vehicle class',
-          value: '',
-          type: FormNodeTypes.CONTROL,
-          editType: FormNodeEditTypes.SELECT,
-          options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
-          validators: [{ name: ValidatorNames.Required }]
-        }
-      ]
+      customId: 'vehicleClassDescription',
+      name: 'techRecord_vehicleClass_description',
+      label: 'Vehicle class',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.SELECT,
+      options: [
+        { label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
+        { label: 'not applicable', value: 'not applicable' },
+        { label: 'small psv (ie: less than or equal to 22 passengers)', value: 'small psv (ie: less than or equal to 22 seats)' },
+        { label: 'motorbikes over 200cc', value: 'motorbikes over 200cc' },
+        { label: 'trailer', value: 'trailer' },
+        { label: 'large psv(ie: greater than or equal to 23 passengers)', value: 'large psv(ie: greater than 23 seats)' },
+        { label: '3 wheelers', value: '3 wheelers' },
+        { label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
+        { label: 'MOT class 4', value: 'MOT class 4' },
+        { label: 'MOT class 7', value: 'MOT class 7' },
+        { label: 'MOT class 5', value: 'MOT class 5' }
+      ],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
-      name: 'vehicleSubclass',
+      name: 'techRecord_vehicleSubclass',
       label: 'Vehicle Subclass',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
@@ -73,15 +78,15 @@ export const SmallTrailerTechRecord: FormNode = {
       options: getOptionsFromEnum(VehicleSubclass)
     },
     {
-      name: 'vehicleConfiguration',
+      name: 'techRecord_vehicleConfiguration',
       label: 'Vehicle configuration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration)
     },
     {
-      name: 'euVehicleCategory',
+      name: 'techRecord_euVehicleCategory',
       label: 'EU vehicle category',
       value: EuVehicleCategories.O1,
       type: FormNodeTypes.CONTROL,

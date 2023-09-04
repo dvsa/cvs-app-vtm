@@ -21,7 +21,6 @@ export class RetrieveDocumentDirective {
       .subscribe(response => {
         switch (response.type) {
           case HttpEventType.DownloadProgress:
-            console.log(response);
             break;
           case HttpEventType.Response:
             this.documentsService.openDocumentFromResponse(this.fileName, response.body);

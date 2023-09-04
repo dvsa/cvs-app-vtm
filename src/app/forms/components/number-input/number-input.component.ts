@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterContentInit, Component } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -14,7 +14,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     }
   ]
 })
-export class NumberInputComponent extends BaseControlComponent {
+export class NumberInputComponent extends BaseControlComponent implements AfterContentInit {
   get style(): string {
     return 'govuk-input ' + (this.width ? 'govuk-input--width-' + this.width : '');
   }

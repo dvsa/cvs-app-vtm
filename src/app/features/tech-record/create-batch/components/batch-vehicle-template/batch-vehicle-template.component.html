@@ -43,7 +43,7 @@
 
         <app-button-group>
           <app-button *ngIf="(isBatch$ | async) === false" id="add-to-batch" type="link" routerLink="details">Add to batch</app-button>
-          <app-button *ngIf="isBatch$ | async" id="submit-create-batch" (clicked)="handleSubmit()">Save and create batch</app-button>
+          <app-button *ngIf="isBatch$ | async" id="submit-create-batch" (clicked)="handleSubmit()">Save and process batch</app-button>
 
           <app-button id="cancel-create-batch" type="link" design="link" routerLink="../">Cancel</app-button>
         </app-button-group>

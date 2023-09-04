@@ -9,7 +9,7 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'approvalType',
+      name: 'techRecord_approvalType',
       label: 'Approval type',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
@@ -17,28 +17,28 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       validators: []
     },
     {
-      name: 'approvalTypeNumber',
+      name: 'techRecord_approvalTypeNumber',
       label: 'Approval type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
     },
     {
-      name: 'ntaNumber',
+      name: 'techRecord_ntaNumber',
       label: 'National type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
       validators: [{ name: ValidatorNames.MaxLength, args: 40 }]
     },
     {
-      name: 'variantNumber',
+      name: 'techRecord_variantNumber',
       label: 'Variant number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
     },
     {
-      name: 'variantVersionNumber',
+      name: 'techRecord_variantVersionNumber',
       label: 'Variant version number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,

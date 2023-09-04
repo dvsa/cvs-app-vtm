@@ -12,7 +12,7 @@ export const PsvTechRecord: FormNode = {
   label: 'Vehicle Summary',
   children: [
     {
-      name: 'vehicleType',
+      name: 'techRecord_vehicleType',
       label: 'Vehicle type',
       value: '',
       width: FormNodeWidth.XS,
@@ -21,23 +21,23 @@ export const PsvTechRecord: FormNode = {
       disabled: true
     },
     {
-      name: 'statusCode',
+      name: 'techRecord_statusCode',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
     {
-      name: 'numberOfWheelsDriven',
+      name: 'techRecord_numberOfWheelsDriven',
       value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
     {
-      name: 'regnDate',
+      name: 'techRecord_regnDate',
       label: 'Date of first registration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
@@ -45,9 +45,9 @@ export const PsvTechRecord: FormNode = {
       isoDate: false
     },
     {
-      name: 'manufactureYear',
+      name: 'techRecord_manufactureYear',
       label: 'Year of manufacture',
-      value: '',
+      value: null,
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -57,18 +57,18 @@ export const PsvTechRecord: FormNode = {
       ]
     },
     {
-      name: 'noOfAxles',
+      name: 'techRecord_noOfAxles',
       label: 'Number of axles',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       validators: [],
       disabled: true
     },
     {
-      name: 'speedLimiterMrk',
+      name: 'techRecord_speedLimiterMrk',
       label: 'Speed limiter exempt',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -79,9 +79,9 @@ export const PsvTechRecord: FormNode = {
       class: 'flex--half'
     },
     {
-      name: 'tachoExemptMrk',
+      name: 'techRecord_tachoExemptMrk',
       label: 'Tacho exempt',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -92,16 +92,16 @@ export const PsvTechRecord: FormNode = {
       class: 'flex--half'
     },
     {
-      name: 'euroStandard',
+      name: 'techRecord_euroStandard',
       label: 'Euro standard',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(EmissionStandard)
     },
     {
-      name: 'fuelPropulsionSystem',
+      name: 'techRecord_fuelPropulsionSystem',
       label: 'Fuel / propulsion system',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.SELECT,
@@ -109,50 +109,42 @@ export const PsvTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'vehicleClass',
+      name: 'techRecord_vehicleClass_description',
       label: 'Vehicle class',
       value: '',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'description',
-          label: 'Vehicle class',
-          value: '',
-          customId: 'vehicleClassDescription',
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING,
-          editType: FormNodeEditTypes.SELECT,
-          options: [
-            { label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
-            { label: 'not applicable', value: 'not applicable' },
-            { label: 'small psv (ie: less than or equal to 22 passengers)', value: 'small psv (ie: less than or equal to 22 seats)' },
-            { label: 'motorbikes over 200cc', value: 'motorbikes over 200cc' },
-            { label: 'trailer', value: 'trailer' },
-            { label: 'large psv(ie: greater than or equal to 23 passengers)', value: 'large psv(ie: greater than 23 seats)' },
-            { label: '3 wheelers', value: '3 wheelers' },
-            { label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
-            { label: 'MOT class 4', value: 'MOT class 4' },
-            { label: 'MOT class 7', value: 'MOT class 7' },
-            { label: 'MOT class 5', value: 'MOT class 5' }
-          ],
-          class: '.govuk-input--width-10',
-          validators: [{ name: ValidatorNames.Required }]
-        }
-      ]
+      customId: 'vehicleClassDescription',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.SELECT,
+      options: [
+        { label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
+        { label: 'not applicable', value: 'not applicable' },
+        { label: 'small psv (ie: less than or equal to 22 passengers)', value: 'small psv (ie: less than or equal to 22 seats)' },
+        { label: 'motorbikes over 200cc', value: 'motorbikes over 200cc' },
+        { label: 'trailer', value: 'trailer' },
+        { label: 'large psv(ie: greater than or equal to 23 passengers)', value: 'large psv(ie: greater than 23 seats)' },
+        { label: '3 wheelers', value: '3 wheelers' },
+        { label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
+        { label: 'MOT class 4', value: 'MOT class 4' },
+        { label: 'MOT class 7', value: 'MOT class 7' },
+        { label: 'MOT class 5', value: 'MOT class 5' }
+      ],
+      class: '.govuk-input--width-10',
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
-      name: 'vehicleConfiguration',
+      name: 'techRecord_vehicleConfiguration',
       label: 'Vehicle configuration',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
       validators: []
     },
     {
-      name: 'euVehicleCategory',
+      name: 'techRecord_euVehicleCategory',
       label: 'EU vehicle category',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
@@ -160,7 +152,7 @@ export const PsvTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'emissionsLimit',
+      name: 'techRecord_emissionsLimit',
       label: 'Emission limit (plate value)',
       value: null,
       width: FormNodeWidth.XXS,
@@ -170,9 +162,9 @@ export const PsvTechRecord: FormNode = {
     },
     { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
     {
-      name: 'seatsUpperDeck',
+      name: 'techRecord_seatsUpperDeck',
       label: 'Upper deck',
-      value: '',
+      value: null,
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -180,9 +172,9 @@ export const PsvTechRecord: FormNode = {
       class: 'flex--half'
     },
     {
-      name: 'seatsLowerDeck',
+      name: 'techRecord_seatsLowerDeck',
       label: 'Lower deck',
-      value: '',
+      value: null,
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
@@ -190,45 +182,45 @@ export const PsvTechRecord: FormNode = {
       class: 'flex--half'
     },
     {
-      name: 'standingCapacity',
+      name: 'techRecord_standingCapacity',
       label: 'Standing capacity',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 999 }]
     },
     {
-      name: 'numberOfSeatbelts',
+      name: 'techRecord_numberOfSeatbelts',
       label: 'Number of seat belts',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMERICSTRING,
       validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
-      name: 'seatbeltInstallationApprovalDate',
+      name: 'techRecord_seatbeltInstallationApprovalDate',
       label: 'Seatbelt installation approval date / type approved',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       isoDate: false
     },
     {
-      name: 'vehicleSize',
+      name: 'techRecord_vehicleSize',
       label: 'Vehicle size',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(VehicleSize),
       validators: []
     },
     {
-      name: 'departmentalVehicleMarker',
+      name: 'techRecord_departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -238,9 +230,9 @@ export const PsvTechRecord: FormNode = {
       validators: []
     },
     {
-      name: 'alterationMarker',
+      name: 'techRecord_alterationMarker',
       label: 'Alteration marker',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.RADIO,

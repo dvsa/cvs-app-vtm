@@ -1,15 +1,15 @@
-import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
-import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from '../actions/tech-record-search.actions';
-import { TechSearchResultsEffects } from './tech-record-search.effect';
-import { SearchResult } from '../reducer/tech-record-search.reducer';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
+import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { initialAppState } from '@store/index';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { TestBed } from '@angular/core/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/index';
+import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from '../actions/tech-record-search.actions';
+import { TechSearchResultsEffects } from './tech-record-search.effect';
 
 describe('DefectsEffects', () => {
   let effects: TechSearchResultsEffects;
@@ -17,7 +17,7 @@ describe('DefectsEffects', () => {
   let testScheduler: TestScheduler;
   let service: TechnicalRecordHttpService;
 
-  const expectedResult = { systemNumber: '1' } as SearchResult;
+  const expectedResult = { systemNumber: '1' } as TechRecordSearchSchema;
   const testCases = [
     {
       id: expectedResult.systemNumber,
