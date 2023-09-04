@@ -203,7 +203,6 @@ export const PsvTechRecord: FormNode = {
       label: 'Vehicle size',
       value: null,
       hint: 'The Vehicle Size is calculated automatically based on the number of seats and standing capacity. Only change the Size if you need to',
-      width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(VehicleSize),
