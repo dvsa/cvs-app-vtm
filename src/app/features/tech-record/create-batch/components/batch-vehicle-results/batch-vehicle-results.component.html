@@ -46,7 +46,7 @@
       <td class="govuk-table__cell">
         <a
           id="view-{{ i + 1 }}"
-          [routerLink]="['/', 'tech-records', vehicle.systemNumber]"
+          [routerLink]="['/', 'tech-records', vehicle.systemNumber, vehicle.createdTimestamp]"
           class="govuk-link"
           rel="noreferrer noopener"
           target="_blank"

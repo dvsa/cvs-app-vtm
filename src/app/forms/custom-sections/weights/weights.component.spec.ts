@@ -2,12 +2,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { createMockPsv } from '@mocks/psv-record.mock';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/index';
+import { State, initialAppState } from '@store/index';
 import { NumberInputComponent } from '../../components/number-input/number-input.component';
 import { WeightsComponent } from './weights.component';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
 describe('WeightsComponent', () => {
   let component: WeightsComponent;
@@ -24,7 +26,7 @@ describe('WeightsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WeightsComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord = createMockPsv(12345).techRecord[0];
+    component.vehicleTechRecord = mockVehicleTechnicalRecord('trl') as TechRecordType<'trl'>;
     fixture.detectChanges();
   });
 

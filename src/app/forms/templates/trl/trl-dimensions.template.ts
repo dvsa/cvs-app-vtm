@@ -7,91 +7,84 @@ export const TrlDimensionsTemplate: FormNode = {
   type: FormNodeTypes.SECTION,
   children: [
     {
-      name: 'dimensions',
+      name: 'techRecord_dimensions_length',
+      label: 'Length (mm)',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: 'techRecord_dimensions_width',
+      label: 'Width (mm)',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: 'techRecord_dimensions_axleSpacing',
+      type: FormNodeTypes.ARRAY,
       value: '',
-      type: FormNodeTypes.GROUP,
       children: [
         {
-          name: 'length',
-          label: 'Length (mm)',
-          value: null,
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }]
-        },
-        {
-          name: 'width',
-          label: 'Width (mm)',
-          value: null,
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }]
-        },
-        {
-          name: 'axleSpacing',
-          type: FormNodeTypes.ARRAY,
-          value: '',
+          name: '0',
+          type: FormNodeTypes.GROUP,
           children: [
             {
-              name: '0',
-              type: FormNodeTypes.GROUP,
-              children: [
-                {
-                  name: 'value',
-                  label: 'Axle to axle (mm)',
-                  value: null,
-                  editType: FormNodeEditTypes.NUMBER,
-                  type: FormNodeTypes.CONTROL,
-                  validators: [{ name: ValidatorNames.Max, args: 99999 }]
-                }
-              ]
+              name: 'value',
+              label: 'Axle to axle (mm)',
+              value: null,
+              editType: FormNodeEditTypes.NUMBER,
+              type: FormNodeTypes.CONTROL,
+              validators: [{ name: ValidatorNames.Max, args: 99999 }]
             }
           ]
         }
       ]
     },
     {
-      name: 'frontAxleToRearAxle',
+      name: 'techRecord_frontAxleToRearAxle',
       label: 'Front axle to rear axle (mm)',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'rearAxleToRearTrl',
+      name: 'techRecord_rearAxleToRearTrl',
       label: 'Rear axle to rear trailer',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'centreOfRearmostAxleToRearOfTrl',
+      name: 'techRecord_centreOfRearmostAxleToRearOfTrl',
       label: 'Center of Rear axle to rear of trailer',
-      value: '',
+      value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'couplingCenterToRearAxleMin',
+      name: 'techRecord_couplingCenterToRearAxleMin',
       label: 'Minimum',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'couplingCenterToRearAxleMax',
+      name: 'techRecord_couplingCenterToRearAxleMax',
       label: 'Maximum',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'couplingCenterToRearTrlMin',
+      name: 'techRecord_couplingCenterToRearTrlMin',
       label: 'Minimum',
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'couplingCenterToRearTrlMax',
+      name: 'techRecord_couplingCenterToRearTrlMax',
       label: 'Maximum',
       value: null,
       type: FormNodeTypes.CONTROL,

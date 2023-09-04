@@ -3,17 +3,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { updateVin, updateVinSuccess } from '@store/technical-records';
+import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVinComponent } from './tech-record-amend-vin.component';
 
@@ -35,7 +35,7 @@ describe('TechRecordChangeVrmComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: AmendVinComponent;
   let errorService: GlobalErrorService;
-  let expectedVehicle = {} as VehicleTechRecordModel;
+  let expectedTechRecord = {} as V3TechRecordModel;
   let fixture: ComponentFixture<AmendVinComponent>;
   let route: ActivatedRoute;
   let router: Router;
@@ -73,61 +73,25 @@ describe('TechRecordChangeVrmComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('makeAndModel', () => {
-    beforeEach(() => {
-      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-      component.vehicle = expectedVehicle;
-    });
-
-    it('should should return the make and model', () => {
-      const expectedTechRecord = expectedVehicle.techRecord.pop()!;
-
-      component.techRecord = expectedTechRecord;
-
-      expect(component.makeAndModel).toBe(`${expectedTechRecord.chassisMake} - ${expectedTechRecord.chassisModel}`);
-    });
-
-    it('should return an empty string when the current record is null', () => {
-      delete component.techRecord;
-
-      expect(component.makeAndModel).toBe('');
-    });
-  });
-
-  describe('vrm', () => {
-    beforeEach(() => {
-      expectedVehicle = mockVehicleTechnicalRecord(VehicleTypes.PSV);
-      component.vehicle = expectedVehicle;
-    });
-
-    it('should return the primary VRM', () => {
-      component.vehicle = expectedVehicle;
-
-      expect(component.vrm).toBe('KP01ABC');
-    });
-
-    it('should return undefined when the vehicle is null', () => {
-      delete component.vehicle;
-
-      expect(component.vrm).toBe(undefined);
-    });
-  });
-
   describe('handleSubmit', () => {
-    it('should dispatch the updateVin action with the new vin', () => {
+    beforeEach(() => {
+      expectedTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;
+      component.techRecord = expectedTechRecord;
+    });
+    it('should dispatch the updateTechRecord action with the new vin', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const payload = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'myNewVin',
+        techRecord_reasonForCreation: 'Vin changed'
+      } as unknown as TechRecordType<'put'>;
 
       component.form.controls['vin'].setValue('myNewVin');
-      component.vehicle!.systemNumber = '01234';
-
-      const payload = {
-        newVin: 'myNewVin',
-        systemNumber: '01234'
-      };
 
       component.handleSubmit();
 
-      expect(dispatchSpy).toHaveBeenCalledWith(updateVin(payload));
+      expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ vehicleTechRecord: payload }));
     });
   });
 
@@ -150,14 +114,16 @@ describe('TechRecordChangeVrmComponent', () => {
       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
     });
 
-    it('should navigate back on updateVinSuccess', fakeAsync(() => {
-      const navigateBackSpy = jest.spyOn(component, 'navigateBack');
+    it('should navigate away updateTechRecordSuccess', fakeAsync(() => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
       jest.spyOn(router, 'navigate').mockImplementation();
 
-      actions$.next(updateVinSuccess());
+      actions$.next(
+        updateTechRecordSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'> })
+      );
       tick();
 
-      expect(navigateBackSpy).toHaveBeenCalled();
+      expect(navigateSpy).toHaveBeenCalled();
     }));
   });
 });

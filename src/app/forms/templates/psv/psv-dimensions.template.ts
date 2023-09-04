@@ -7,35 +7,28 @@ export const PsvDimensionsTemplate: FormNode = {
   type: FormNodeTypes.SECTION,
   children: [
     {
-      name: 'dimensions',
-      value: '',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'height',
-          label: 'Height (mm)',
-          value: null,
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }]
-        },
-        {
-          name: 'length',
-          label: 'Length (mm)',
-          value: null,
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }]
-        },
-        {
-          name: 'width',
-          label: 'Width (mm)',
-          value: null,
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Max, args: 99999 }]
-        }
-      ]
+      name: 'techRecord_dimensions_height',
+      label: 'Height (mm)',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     },
     {
-      name: 'frontAxleToRearAxle',
+      name: 'techRecord_dimensions_length',
+      label: 'Length (mm)',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: 'techRecord_dimensions_width',
+      label: 'Width (mm)',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: 'techRecord_frontAxleToRearAxle',
       label: 'Front axle to rear axle (mm)',
       value: null,
       type: FormNodeTypes.CONTROL,

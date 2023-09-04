@@ -10,9 +10,9 @@ import {
   clearBatch,
   setApplicationId,
   setGenerateNumberFlag,
-  upsertVehicleBatch,
   setVehicleStatus,
-  setVehicleType
+  setVehicleType,
+  upsertVehicleBatch
 } from '@store/technical-records/actions/batch-create.actions';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import {
@@ -45,7 +45,7 @@ export class BatchTechnicalRecordService {
       const trailerIdOrVrmControl = control.parent?.get('trailerIdOrVrm') as CustomFormControl;
       const vinControl = control.parent?.get('vin') as CustomFormControl;
       const systemNumberControl = control.parent?.get('systemNumber') as CustomFormControl;
-      const oldVehicleStatusControl = control.parent?.get('oldVehicleStatus') as CustomFormControl;
+      const createdTimeStampControl = control.parent?.get('createdTimestamp') as CustomFormControl;
 
       if (trailerIdOrVrmControl && vinControl) {
         const trailerIdOrVrm = trailerIdOrVrmControl.value;
@@ -53,7 +53,7 @@ export class BatchTechnicalRecordService {
         delete vinControl.meta.warning;
 
         if (trailerIdOrVrm && vin) {
-          return this.validateVinAndTrailerIdOrVrm(vin, trailerIdOrVrm, systemNumberControl, oldVehicleStatusControl);
+          return this.validateVinAndTrailerIdOrVrm(vin, trailerIdOrVrm, systemNumberControl, createdTimeStampControl);
         } else if (!trailerIdOrVrm && vin) {
           return this.validateVinForBatch(vinControl);
         } else if (trailerIdOrVrm && !vin) {
@@ -68,29 +68,29 @@ export class BatchTechnicalRecordService {
     vin: string,
     trailerIdOrVrm: string,
     systemNumberControl: CustomFormControl,
-    oldVehicleStatusControl: CustomFormControl
+    createdTimestampControl: CustomFormControl
   ): Observable<ValidationErrors | null> {
     return this.techRecordHttpService.search$(SEARCH_TYPES.VIN, vin).pipe(
       map(result => {
-        const recordsWithMatchingTrailerId = result.filter(
+        const recordsWithTrailerIdOrVrm = result.filter(
           vehicleTechRecord => vehicleTechRecord.trailerId === trailerIdOrVrm || vehicleTechRecord.primaryVrm === trailerIdOrVrm
         );
-        if (!recordsWithMatchingTrailerId.length) {
+        if (!recordsWithTrailerIdOrVrm.length) {
           return { validateForBatch: { message: 'Could not find a record with matching VIN and VRM/Trailer ID' } };
         }
-        if (new Set(recordsWithMatchingTrailerId.map(record => record.systemNumber)).size > 1) {
+        if (new Set(recordsWithTrailerIdOrVrm.map(record => record.systemNumber)).size > 1) {
           return { validateForBatch: { message: 'More than one vehicle has this VIN and VRM/Trailer ID' } };
         }
         if (
-          recordsWithMatchingTrailerId.find(
+          recordsWithTrailerIdOrVrm.find(
             techRecord => techRecord.techRecord_statusCode === StatusCodes.CURRENT && techRecord.techRecord_vehicleType === VehicleTypes.TRL
           )
         ) {
-          return { validateForBatch: { message: 'This record cannot be updated as it has a Current tech record' } };
+          return { validateForBatch: { message: 'This record cannot be updated as it has a current tech record' } };
         }
         systemNumberControl.setValue(result[0].systemNumber);
-        const techRecordToUpdate = recordsWithMatchingTrailerId.find(techRecord => techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED);
-        oldVehicleStatusControl.setValue(techRecordToUpdate?.techRecord_statusCode);
+        const techRecordToUpdate = recordsWithTrailerIdOrVrm.find(techRecord => techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED);
+        createdTimestampControl.setValue(techRecordToUpdate?.createdTimestamp);
         return null;
       }),
       catchError(() => of({ validateForBatch: { message: 'Could not find a record with matching VIN' } }))

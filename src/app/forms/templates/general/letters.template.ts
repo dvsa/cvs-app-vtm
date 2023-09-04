@@ -7,38 +7,32 @@ export const LettersTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'letterOfAuth',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'letterIssuer',
-          label: 'Letter issuer',
-          type: FormNodeTypes.CONTROL,
-          options: LETTER_TYPES
-        },
-        {
-          name: 'letterType',
-          label: 'Type of letter',
-          type: FormNodeTypes.CONTROL,
-          options: LETTER_TYPES
-        },
-        {
-          name: 'letterDateRequested',
-          label: 'Date requested',
-          type: FormNodeTypes.CONTROL
-        },
-        {
-          name: 'paragraphId',
-          label: 'Paragraph ID',
-          type: FormNodeTypes.CONTROL
-        },
-        {
-          name: 'letterContents',
-          label: 'Content',
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.HIDDEN
-        }
-      ]
+      name: 'techRecord_letterOfAuth_letterIssuer',
+      label: 'Letter issuer',
+      type: FormNodeTypes.CONTROL,
+      options: LETTER_TYPES
+    },
+    {
+      name: 'techRecord_letterOfAuth_letterType',
+      label: 'Type of letter',
+      type: FormNodeTypes.CONTROL,
+      options: LETTER_TYPES
+    },
+    {
+      name: 'techRecord_letterOfAuth_letterDateRequested',
+      label: 'Date requested',
+      type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'techRecord_letterOfAuth_paragraphId',
+      label: 'Paragraph ID',
+      type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'techRecord_letterOfAuth_letterContents',
+      label: 'Content',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
     }
   ]
 };

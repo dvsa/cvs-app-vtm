@@ -1,23 +1,9 @@
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from '../actions/tech-record-search.actions';
 
-export interface SearchResult {
-  systemNumber: string;
-  createdTimestamp: string;
-  vin: string;
-  primaryVrm?: string;
-  trailerId?: string;
-  techRecord_vehicleType: string;
-  techRecord_manufactureYear?: number | null;
-  techRecord_chassisMake?: string;
-  techRecord_chassisModel?: string;
-  techRecord_make?: string;
-  techRecord_model?: string;
-  techRecord_statusCode?: string;
-}
-
-export interface SearchResultState extends EntityState<SearchResult> {
+export interface SearchResultState extends EntityState<TechRecordSearchSchema> {
   loading: boolean;
   error: string;
 }
@@ -26,7 +12,7 @@ export const STORE_FEATURE_SEARCH_TECH_RESULTS_KEY = 'techSearchResults';
 
 export const techSearchResultFeatureState = createFeatureSelector<SearchResultState>(STORE_FEATURE_SEARCH_TECH_RESULTS_KEY);
 
-export const techSearchResultAdapter: EntityAdapter<SearchResult> = createEntityAdapter<SearchResult>({
+export const techSearchResultAdapter: EntityAdapter<TechRecordSearchSchema> = createEntityAdapter<TechRecordSearchSchema>({
   selectId: result => `${result.systemNumber}#${result.createdTimestamp}`
 });
 

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+import { TechRecordType as VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestType } from '@models/test-types/test-type.model';
@@ -8,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
+import { selectTechRecord } from '@store/technical-records';
 import { initialContingencyTest } from '@store/test-records';
 import { catchError, map, Observable, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -24,36 +27,53 @@ export class ContingencyTestResolver implements Resolve<boolean> {
   ) {}
 
   resolve(): Observable<boolean> {
-    return this.techRecordService.selectedVehicleTechRecord$.pipe(
+    return this.techRecordService.techRecord$.pipe(
       switchMap(techRecord => {
-        const { vin, vrms, systemNumber, trailerId } = techRecord!;
-        const vrm = vrms.find(vrm => vrm.isPrimary);
-        return this.techRecordService.viewableTechRecord$.pipe(
+        const { vin, systemNumber } = techRecord as TechRecordType<'get'>;
+        const vrm = techRecord?.techRecord_vehicleType !== 'trl' ? techRecord?.primaryVrm : undefined;
+        const trailerId = techRecord?.techRecord_vehicleType === 'trl' ? techRecord.trailerId : undefined;
+        return this.store.select(selectTechRecord).pipe(
           withLatestFrom(this.userService.user$),
           map(([viewableTechRecord, user]) => {
             const now = new Date();
             return {
               vin,
-              vrm: vrm?.vrm,
+              vrm,
               trailerId,
               systemNumber,
-              vehicleType: viewableTechRecord?.vehicleType,
-              statusCode: viewableTechRecord?.statusCode,
+              vehicleType: viewableTechRecord?.techRecord_vehicleType,
+              statusCode: viewableTechRecord?.techRecord_statusCode,
               testResultId: uuidv4(),
-              euVehicleCategory: viewableTechRecord?.euVehicleCategory ?? null,
-              vehicleSize: viewableTechRecord?.vehicleSize,
-              vehicleConfiguration: viewableTechRecord?.vehicleConfiguration ?? null,
-              vehicleClass: viewableTechRecord?.vehicleClass ?? null,
-              vehicleSubclass: viewableTechRecord?.vehicleSubclass ?? null,
-              noOfAxles: viewableTechRecord?.noOfAxles ?? 0,
-              numberOfWheelsDriven: viewableTechRecord?.numberOfWheelsDriven ?? null,
+              euVehicleCategory: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_euVehicleCategory ?? null,
+              vehicleSize: viewableTechRecord?.techRecord_vehicleType === 'psv' ? viewableTechRecord?.techRecord_vehicleSize : undefined,
+              vehicleConfiguration: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_vehicleConfiguration ?? null,
+              vehicleClass:
+                (viewableTechRecord?.techRecord_vehicleType === 'psv' ||
+                  viewableTechRecord?.techRecord_vehicleType === 'trl' ||
+                  viewableTechRecord?.techRecord_vehicleType === 'hgv' ||
+                  viewableTechRecord?.techRecord_vehicleType === 'motorcycle') &&
+                'techRecord_vehicleClass_code' in viewableTechRecord
+                  ? {
+                      code: viewableTechRecord?.techRecord_vehicleClass_code,
+                      description: viewableTechRecord?.techRecord_vehicleClass_description
+                    }
+                  : null,
+              vehicleSubclass:
+                viewableTechRecord && 'techRecord_vehicleSubclass' in viewableTechRecord ? viewableTechRecord.techRecord_vehicleSubclass : null,
+              noOfAxles: viewableTechRecord?.techRecord_noOfAxles ?? 0,
+              numberOfWheelsDriven:
+                viewableTechRecord && 'techRecord_numberOfWheelsDriven' in viewableTechRecord
+                  ? viewableTechRecord.techRecord_numberOfWheelsDriven
+                  : null,
               testStatus: 'submitted',
-              regnDate: viewableTechRecord?.regnDate,
-              numberOfSeats: (viewableTechRecord?.seatsLowerDeck ?? 0) + (viewableTechRecord?.seatsUpperDeck ?? 0),
+              regnDate: viewableTechRecord?.techRecord_regnDate,
+              numberOfSeats:
+                ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsLowerDeck ?? 0) +
+                ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsUpperDeck ?? 0),
               reasonForCancellation: '',
               createdAt: now.toISOString(),
               lastUpdatedAt: now.toISOString(),
-              firstUseDate: viewableTechRecord?.firstUseDate ?? null,
+              firstUseDate: viewableTechRecord?.techRecord_vehicleType === 'trl' ? viewableTechRecord?.techRecord_firstUseDate : null,
               createdByName: user.name,
               createdById: user.oid,
               lastUpdatedByName: user.name,
@@ -78,7 +98,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
       map(() => {
         return true;
       }),
-      catchError(() => {
+      catchError(err => {
         return of(false);
       })
     );

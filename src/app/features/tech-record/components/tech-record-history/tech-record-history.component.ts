@@ -1,28 +1,41 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
+import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
+import { Observable, map } from 'rxjs';
 
 @Component({
-  selector: 'app-tech-record-history[vehicle][currentTechRecord]',
+  selector: 'app-tech-record-history',
   templateUrl: './tech-record-history.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./tech-record-history.component.scss']
 })
-export class TechRecordHistoryComponent {
-  @Input() vehicle!: VehicleTechRecordModel;
-  @Input() currentTechRecord!: TechRecordModel;
+export class TechRecordHistoryComponent implements OnInit {
+  @Input() currentTechRecord?: V3TechRecordModel;
 
   pageStart?: number;
   pageEnd?: number;
 
-  constructor(private cdr: ChangeDetectorRef, private techRecordService: TechnicalRecordService) {}
+  constructor(private cdr: ChangeDetectorRef, private store: Store) {}
 
-  get techRecords() {
-    return this.vehicle.techRecord.slice(this.pageStart, this.pageEnd) ?? [];
+  ngOnInit(): void {
+    if (this.currentTechRecord) {
+      this.store.dispatch(getBySystemNumber({ systemNumber: (this.currentTechRecord as TechRecordType<'get'>)?.systemNumber }));
+    }
   }
 
-  get numberOfRecords(): number {
-    return this.vehicle.techRecord.length || 0;
+  get techRecordHistory$() {
+    return this.store.select(selectTechRecordHistory);
+  }
+
+  get techRecordHistoryPage$(): Observable<TechRecordSearchSchema[]> {
+    return this.techRecordHistory$?.pipe(map(records => records?.slice(this.pageStart, this.pageEnd) ?? []));
+  }
+
+  get numberOfRecords$(): Observable<number> {
+    return this.techRecordHistory$?.pipe(map(records => records?.length ?? 0));
   }
 
   convertToUnix(date: Date): number {
@@ -35,18 +48,22 @@ export class TechRecordHistoryComponent {
     this.cdr.detectChanges();
   }
 
-  trackByFn(i: number, tr: TechRecordModel) {
-    return tr.createdAt;
+  trackByFn(i: number, tr: TechRecordSearchSchema) {
+    return tr.createdTimestamp;
   }
 
-  summaryLinkUrl(techRecord: TechRecordModel) {
-    switch (techRecord.statusCode) {
+  summaryLinkUrl(searchResult: TechRecordSearchSchema) {
+    switch (searchResult.techRecord_statusCode) {
       case StatusCodes.PROVISIONAL:
-        return `/tech-records/${this.vehicle.systemNumber}/provisional`;
+        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/provisional`;
       case StatusCodes.ARCHIVED:
-        return `/tech-records/${this.vehicle.systemNumber}/historic/${this.convertToUnix(techRecord.createdAt)}`;
+        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/historic/`;
       default:
-        return `/tech-records/${this.vehicle.systemNumber}/`;
+        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}`;
     }
+  }
+
+  get currentTimeStamp() {
+    return (this.currentTechRecord as TechRecordType<'get'>).createdTimestamp;
   }
 }
