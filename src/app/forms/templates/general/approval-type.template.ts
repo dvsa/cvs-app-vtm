@@ -21,28 +21,40 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       label: 'Approval type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
+      validators: [
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'approvalType', value: 'NTA' } },
+        { name: ValidatorNames.MaxLength, args: 25 }
+      ]
     },
     {
       name: 'ntaNumber',
       label: 'National type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 40 }]
+      validators: [
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'approvalType', value: 'NTA' } },
+        { name: ValidatorNames.MaxLength, args: 40 }
+      ]
     },
     {
       name: 'variantNumber',
       label: 'Variant number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
+      validators: [
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'approvalType', value: 'NTA' } },
+        { name: ValidatorNames.MaxLength, args: 25 }
+      ]
     },
     {
       name: 'variantVersionNumber',
       label: 'Variant version number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 35 }]
+      validators: [
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'approvalType', value: 'NTA' } },
+        { name: ValidatorNames.MaxLength, args: 35 }
+      ]
     }
   ]
 };
