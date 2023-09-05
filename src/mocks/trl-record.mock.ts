@@ -1,82 +1,71 @@
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import {
-  VehicleTechRecordModel,
   StatusCodes,
   VehicleTypes,
   VehicleConfigurations,
   FrameDescriptions,
   EuVehicleCategories,
-  approvalType,
-  PlateReasonForIssue
+  approvalType
 } from '../app/models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
 
-export const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
-  createMock<VehicleTechRecordModel>({
+export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
+  createMock<TechRecordType<'trl'>>({
     systemNumber: `TRL`,
     vin: `XMGDE04FS0H0${12344 + systemNumber + 1}`,
-    vrms: [
-      {
-        vrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
-        isPrimary: true
-      },
-      {
-        vrm: '609859Z',
-        isPrimary: false
-      }
-    ],
-    techRecord: [currentTechRecord]
-  });
+    trailerId: 'TestId',
+    techRecord_createdAt: new Date().toISOString(),
+    techRecord_createdByName: 'Nathan',
+    techRecord_statusCode: StatusCodes.CURRENT,
+    techRecord_vehicleType: 'trl',
+    techRecord_regnDate: '1234',
+    techRecord_firstUseDate: '1234',
+    //techRecord_manufactureYear: '2022',
+    techRecord_noOfAxles: 2,
+    techRecord_brakes_dtpNumber: '1234',
+    techRecord_brakes_loadSensingValve: true,
+    techRecord_brakes_antilockBrakingSystem: true,
+    techRecord_axles: undefined,
+    // TODO: V3 height missing from types package
+    // techRecord_dimensions_height: 30000,
+    techRecord_dimensions_length: 25000,
+    techRecord_dimensions_width: 10000,
+    techRecord_suspensionType: '1',
+    techRecord_roadFriendly: true,
+    //techRecord_drawbarCouplingFitted: true,
 
-const currentTechRecord = {
-  createdAt: new Date(),
-  createdByName: 'Nathan',
-  statusCode: StatusCodes.CURRENT,
-  vehicleType: VehicleTypes.TRL,
-  regnDate: '1234',
-  firstUseDate: '1234',
-  manufactureYear: 2022,
-  noOfAxles: 2,
-  brakes: {
-    dtpNumber: '1234'
-  },
-  axles: [
-    {
-      parkingBrakeMrk: false
-    },
-    {
-      parkingBrakeMrk: true
-    }
-  ],
-  dimensions: {
-    height: 30000,
-    length: 25000,
-    width: 10000
-  },
-  suspensionType: '1',
-  roadFriendly: true,
-  drawbarCouplingFitted: true,
-  vehicleClass: {
-    description: 'Description',
-    code: '1'
-  },
-  vehicleConfiguration: VehicleConfigurations.ARTICULATED,
-  couplingType: '1',
-  maxLoadOnCoupling: 1234,
-  frameDescription: FrameDescriptions.FRAME_SECTION,
-  euVehicleCategory: EuVehicleCategories.M1,
-  departmentalVehicleMarker: true,
-  reasonForCreation: 'Brake Failure',
-  approvalType: approvalType.ECSSTA,
-  approvalTypeNumber: 'approval123',
-  ntaNumber: 'nta789',
-  variantNumber: 'variant123456',
-  variantVersionNumber: 'variantversion123456',
-  plates: [
-    {
-      plateSerialNumber: '12345',
-      plateIssueDate: new Date(),
-      plateReasonForIssue: PlateReasonForIssue.REPLACEMENT,
-      plateIssuer: 'person'
-    }
-  ]
-};
+    techRecord_vehicleClass_description: 'trailer',
+    techRecord_vehicleClass_code: '1',
+    techRecord_vehicleConfiguration: VehicleConfigurations.ARTICULATED,
+    techRecord_couplingType: '1',
+    techRecord_maxLoadOnCoupling: 1234,
+    techRecord_frameDescription: FrameDescriptions.FRAME_SECTION,
+    techRecord_euVehicleCategory: EuVehicleCategories.M1,
+    techRecord_departmentalVehicleMarker: true,
+    techRecord_reasonForCreation: 'Brake Failure',
+    techRecord_approvalType: approvalType.ECSSTA,
+    techRecord_approvalTypeNumber: 'approval123',
+    techRecord_ntaNumber: 'nta789',
+    techRecord_variantNumber: 'variant123456',
+    techRecord_variantVersionNumber: 'variantversion123456',
+    techRecord_plates: undefined
+  });
+// Axels array
+// [
+//   {
+//     parkingBrakeMrk: false
+//   },
+//   {
+//     parkingBrakeMrk: true
+//   }
+// ]
+
+// plates array:
+// [
+//   {
+//     plateSerialNumber: '12345',
+//     plateIssueDate: new Date().toISOString(),
+//     reasonForIssue: 'Replacement',
+//     plateIssuer: 'person'
+//   }
+// ]

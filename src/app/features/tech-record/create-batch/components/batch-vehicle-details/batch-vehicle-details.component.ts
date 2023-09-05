@@ -9,7 +9,7 @@ import { CustomValidators } from '@forms/validators/custom-validators';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { combineLatest, filter, firstValueFrom, Observable, Subject, take } from 'rxjs';
+import { Observable, Subject, combineLatest, filter, firstValueFrom, take } from 'rxjs';
 
 @Component({
   selector: 'app-batch-vehicle-details',
@@ -38,7 +38,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
       ])
     });
 
-    this.technicalRecordService.editableVehicleTechRecord$.pipe(take(1)).subscribe(vehicle => {
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(vehicle => {
       if (!vehicle) return this.back();
     });
 
@@ -98,13 +98,13 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
         },
         this.vehicleType
       ),
-      systemNumber: [''],
-      oldVehicleStatus: ['']
+      createdTimestamp: [''],
+      systemNumber: ['']
     });
   }
 
   validate(group: AbstractControl): void {
-    group.get('vin')!.updateValueAndValidity();
+    group.get('vin')?.updateValueAndValidity();
   }
 
   getVinControl(group: AbstractControl): CustomFormControl | null {

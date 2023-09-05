@@ -42,7 +42,7 @@ const routes: Routes = [
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
-    path: 'historic/:techCreatedAt',
+    path: 'historic',
     component: TechRecordComponent,
     data: { title: 'Historic tech record', isCustomLayout: true },
     canActivate: [MsalGuard, CancelEditTechGuard],

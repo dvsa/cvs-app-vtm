@@ -6,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -23,7 +22,7 @@ describe('CreateNewVehicleRecordComponent', () => {
   let router: Router;
   let store: MockStore;
   let techRecordService: TechnicalRecordService;
-  let expectedVehicle = { vrms: [{ vrm: '123', isPrimary: true }] };
+  let expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -61,13 +60,6 @@ describe('CreateNewVehicleRecordComponent', () => {
   describe('get vehicleStatusOptions', () => {
     it('should return the expected options', () => {
       expect(component.vehicleStatusOptions).toBeTruthy();
-    });
-  });
-
-  describe('get primaryVrm', () => {
-    it('should get the primary VRM', () => {
-      component.vehicle = expectedVehicle;
-      expect(component.primaryVrm).toBe(expectedVehicle.vrms.find(vrm => vrm.isPrimary)?.vrm);
     });
   });
 
@@ -141,7 +133,6 @@ describe('CreateNewVehicleRecordComponent', () => {
       const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       jest.spyOn(techRecordService, 'updateEditingTechRecord');
 
-      component.vehicle = { techRecord: [{ vehicleType: VehicleTypes.HGV } as TechRecordModel] };
       await component.handleSubmit();
 
       fixture.detectChanges();
@@ -190,6 +181,7 @@ describe('CreateNewVehicleRecordComponent', () => {
   describe('isTrailerIdUnique', () => {
     it('should return true when the trailer ID is unique', async () => {
       jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(true));
+      component.techRecord = { techRecord_vehicleType: 'trl' };
 
       const result = await component.isTrailerIdUnique();
 
@@ -199,6 +191,7 @@ describe('CreateNewVehicleRecordComponent', () => {
     it('should call addError when the trailer ID is not unique', async () => {
       jest.spyOn(techRecordService, 'isUnique').mockImplementation(() => of(false));
       const addErrorSpy = jest.spyOn(errorService, 'addError').mockImplementation();
+      component.techRecord = { techRecord_vehicleType: 'trl' };
 
       const result = await component.isTrailerIdUnique();
 

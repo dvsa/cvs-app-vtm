@@ -2,15 +2,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/index';
-
-import { PsvBrakesComponent } from './psv-brakes.component';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
+import { initialAppState } from '@store/index';
+import { PsvBrakesComponent } from './psv-brakes.component';
 
 describe('PsvBrakesComponent', () => {
   let component: PsvBrakesComponent;
@@ -32,11 +32,91 @@ describe('PsvBrakesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PsvBrakesComponent);
     component = fixture.componentInstance;
-    component.vehicleTechRecord = mockVehicleTechnicalRecord().techRecord.pop()!;
+
+    component.vehicleTechRecord = mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>;
+    component.vehicleTechRecord.techRecord_axles = [
+      {
+        axleNumber: 1,
+        tyres_tyreSize: '295/80-22.5',
+        tyres_speedCategorySymbol: 'p',
+        tyres_fitmentCode: 'double',
+        tyres_dataTrAxles: 0,
+        tyres_plyRating: 'A',
+        tyres_tyreCode: 456,
+        parkingBrakeMrk: false,
+
+        weights_kerbWeight: 1,
+        weights_ladenWeight: 2,
+        weights_gbWeight: 3,
+        // TODO: V3 2 eecweights in type package, which is this?
+        // weights_eecWeight: 4,
+        weights_designWeight: 5
+      },
+      {
+        axleNumber: 2,
+        parkingBrakeMrk: true,
+
+        tyres_tyreSize: '295/80-22.5',
+        tyres_speedCategorySymbol: 'p',
+        tyres_fitmentCode: 'double',
+        tyres_dataTrAxles: 0,
+        tyres_plyRating: 'A',
+        tyres_tyreCode: 456,
+
+        weights_kerbWeight: 1,
+        weights_ladenWeight: 2,
+        weights_gbWeight: 3,
+        // weights_eecWeight: 4,
+        weights_designWeight: 5
+      },
+      {
+        axleNumber: 3,
+        parkingBrakeMrk: true,
+
+        tyres_tyreSize: '295/80-22.5',
+        tyres_speedCategorySymbol: 'p',
+        tyres_fitmentCode: 'double',
+        tyres_dataTrAxles: 0,
+        tyres_plyRating: 'A',
+        tyres_tyreCode: 456,
+
+        weights_kerbWeight: 1,
+        weights_ladenWeight: 2,
+        weights_gbWeight: 3,
+        // weights_eecWeight: 4,
+        weights_designWeight: 5
+      }
+    ];
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  describe('The brake code value on this.form', () => {
+    it('should match the corresponding values on vehicleTechRecord', () => {
+      expect(component.vehicleTechRecord?.techRecord_brakes_brakeCode).toStrictEqual(component.form.value.techRecord_brakes_brakeCode);
+    });
+  });
+  describe('The dataTrBrakeOne value on this.form', () => {
+    it('should match the corresponding values on vehicleTechRecord', () => {
+      expect(component.vehicleTechRecord?.techRecord_brakes_retarderBrakeOne).toStrictEqual(component.form.value.techRecord_brakes_retarderBrakeOne);
+    });
+  });
+  describe('The brakeCodeOriginal value on this.form', () => {
+    it('should match the corresponding values on vehicleTechRecord', () => {
+      expect(component.vehicleTechRecord?.techRecord_brakes_brakeCodeOriginal).toStrictEqual(
+        component.form.controls['techRecord_brakes_brakeCodeOriginal']?.value
+      );
+    });
+  });
+
+  describe('The axle value on this.form', () => {
+    it('should match the corresponding values on vehicleTechRecord', () => {
+      expect(component.vehicleTechRecord?.techRecord_axles![0]).toEqual(
+        expect.objectContaining(component.form.controls['techRecord_axles']?.value[0])
+      );
+    });
   });
 });

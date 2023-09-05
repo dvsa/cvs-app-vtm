@@ -1,3 +1,6 @@
+import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
 export interface VehicleTechRecordModel {
@@ -8,9 +11,18 @@ export interface VehicleTechRecordModel {
   techRecord: TechRecordModel[];
 }
 
-export interface BatchUpdateVehicleModel extends VehicleTechRecordModel {
-  oldVehicleStatus?: StatusCodes | undefined;
-}
+export type V3TechRecordModel = TechRecordType<'get'> | TechRecordType<'put'>;
+export type NotTrailer =
+  | TechRecordTypeByVehicle<'hgv'>
+  | TechRecordTypeByVehicle<'psv'>
+  | TechRecordTypeByVehicle<'motorcycle'>
+  | TechRecordTypeByVehicle<'lgv'>
+  | TechRecordTypeByVehicle<'car'>;
+
+export type BatchUpdateVehicleModel = TechRecordType<'put'> & {
+  createdTimestamp: string;
+  systemNumber?: string;
+};
 
 export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'> {
   primaryVrm?: string;
@@ -145,7 +157,7 @@ export enum VehicleSubclass {
 
 export interface LettersOfAuth {
   letterType: string;
-  paragraphId: ParagraphId;
+  paragraphId: ParagraphIds;
   letterIssuer: string;
   letterDateRequested: string;
   letterContents: string;

@@ -7,7 +7,7 @@ export const NotesTemplate: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'notes',
+      name: 'techRecord_notes',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.FULLWIDTH,
       editType: FormNodeEditTypes.TEXTAREA,

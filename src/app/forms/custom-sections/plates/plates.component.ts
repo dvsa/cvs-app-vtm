@@ -1,11 +1,14 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
-import { Plates, StatusCodes, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { cloneDeep } from 'lodash';
-import { debounceTime, Subscription } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-plates[techRecord]',
@@ -13,7 +16,7 @@ import { debounceTime, Subscription } from 'rxjs';
   styleUrls: ['./plates.component.scss']
 })
 export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() techRecord!: TechRecordModel;
+  @Input() techRecord!: TechRecordType<'trl'> | TechRecordType<'hgv'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -48,11 +51,11 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get hasPlates(): boolean {
-    return this.techRecord.plates !== undefined && this.techRecord.plates.length > 0;
+    return !!this.techRecord.techRecord_plates?.length;
   }
 
-  get sortedPlates(): Plates[] | undefined {
-    return cloneDeep(this.techRecord.plates)?.sort((a, b) =>
+  get sortedPlates(): HGVPlates[] | TRLPlates[] | undefined {
+    return cloneDeep(this.techRecord.techRecord_plates)?.sort((a: any, b: any) =>
       a.plateIssueDate && b.plateIssueDate ? new Date(b.plateIssueDate).getTime() - new Date(a.plateIssueDate).getTime() : 0
     );
   }
@@ -61,9 +64,11 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     return this.sortedPlates?.slice(this.pageStart, this.pageEnd) ?? [];
   }
 
-  get mostRecentPlate(): Plates | undefined {
-    return cloneDeep(this.techRecord.plates)
-      ?.sort((a, b) => (a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0))
+  get mostRecentPlate(): any | undefined {
+    return cloneDeep(this.techRecord.techRecord_plates)
+      ?.sort((a: any, b: any) =>
+        a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0
+      )
       ?.pop();
   }
 
@@ -77,7 +82,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     this.cdr.detectChanges();
   }
 
-  trackByFn(i: number, tr: Plates) {
+  trackByFn(i: number, tr: HGVPlates | TRLPlates) {
     return tr.plateIssueDate;
   }
 
@@ -94,7 +99,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get eligibleForPlates(): boolean {
-    return this.techRecord.statusCode === StatusCodes.CURRENT && !this.isEditing;
+    return this.techRecord.techRecord_statusCode === StatusCodes.CURRENT && !this.isEditing;
   }
 
   get reasonForIneligibility(): string {
@@ -102,7 +107,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       return 'This section is not available when amending or creating a technical record.';
     }
 
-    if (this.techRecord.statusCode !== StatusCodes.CURRENT) {
+    if (this.techRecord.techRecord_statusCode !== StatusCodes.CURRENT) {
       return 'Generating plates is only applicable to current technical records.';
     }
     return '';
