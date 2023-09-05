@@ -12,7 +12,8 @@ import { BaseControlComponent } from '../base-control/base-control.component';
       useExisting: RadioGroupComponent,
       multi: true
     }
-  ]
+  ],
+  styleUrls: ['./radio-group.component.scss']
 })
 export class RadioGroupComponent extends BaseControlComponent {
   @Input() options: FormNodeOption<string | number | boolean | null>[] = [];
