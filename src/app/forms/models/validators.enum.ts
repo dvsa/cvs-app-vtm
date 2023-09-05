@@ -27,5 +27,8 @@ export enum ValidatorNames {
   CopyValueToRootControl = 'copyValueToRootControl',
   ValidateProhibitionIssued = 'validateProhibitionIssued',
   NotZNumber = 'notZNumber',
-  MustEqualSibling = 'mustEqualSibling'
+  MustEqualSibling = 'mustEqualSibling',
+  HandlePsvClassChange = 'handlePsvClassChange',
+  HandlePsvSizeChange = 'handlePsvSizeChange',
+  HandlePsvPassengersChange = 'handlePsvPassengersChange'
 }
