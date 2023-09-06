@@ -26,16 +26,29 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   makeAndModel?: string;
 
   form = new FormGroup({
-    newVrm: new CustomFormControl({ name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL }, '', [
-      CustomValidators.alphanumeric(),
-      CustomValidators.notZNumber,
-      Validators.minLength(3),
-      Validators.maxLength(9)
-    ]),
     isCherishedTransfer: new CustomFormControl(
       { name: 'is-cherished-transfer', label: 'Why do you want to amend this VRM?', type: FormNodeTypes.CONTROL },
-      '',
+      false,
       [Validators.required]
+    ),
+    newVrm: new CustomFormControl(
+      { name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL },
+      '',
+      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
+      [this.technicalRecordService.validateVrmForUpdate(this.techRecord?.primaryVrm ?? undefined)]
+    ),
+    donorVrm: new CustomFormControl(
+      { name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL },
+      '',
+      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
+      [this.technicalRecordService.checkVehicleExists()]
+    ),
+    recipientVrm: new CustomFormControl({ name: 'recipient-vrm', label: 'recipient vehicle VRM', type: FormNodeTypes.CONTROL }),
+    newDonorVrm: new CustomFormControl(
+      { name: 'new-donor-vrm', label: 'Input a new VRM for donor vehicle', type: FormNodeTypes.CONTROL },
+      '',
+      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
+      [this.technicalRecordService.validateVrmForUpdate(this.techRecord?.primaryVrm ?? undefined)]
     )
   });
 
@@ -63,6 +76,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
       this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
     });
+    this.form.get('recipientVrm')?.setValue(this.techRecord?.primaryVrm);
+    this.form.get('recipientVrm')?.disable();
   }
 
   ngOnDestroy(): void {
@@ -92,29 +107,15 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   handleSubmit(): void {
     if (!this.isFormValid()) return;
-    this.globalErrorService.errors$
-      .pipe(
-        take(1),
-        filter(errors => !errors.length),
-        switchMap(() => this.technicalRecordService.isUnique(this.form.value.newVrm, SEARCH_TYPES.VRM)),
-        take(1),
-        catchError(error => (error.status == 404 ? of(true) : throwError(() => new Error('Error'))))
-      )
-      .subscribe({
-        next: res => {
-          if (!res) return this.globalErrorService.addError({ error: 'VRM already exists', anchorLink: 'newVrm' });
 
-          this.store.dispatch(
-            amendVrm({
-              newVrm: this.form.value.newVrm,
-              cherishedTransfer: this.form.value.isCherishedTransfer,
-              systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
-              createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
-            })
-          );
-        },
-        error: e => this.globalErrorService.addError({ error: 'Internal Server Error', anchorLink: 'newVrm' })
-      });
+    this.store.dispatch(
+      amendVrm({
+        newVrm: this.form.value.isCherishedTransfer ? this.form.value.donorVrm : this.form.value.newVrm,
+        cherishedTransfer: this.form.value.isCherishedTransfer,
+        systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
+        createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
+      })
+    );
   }
 
   isFormValid(): boolean {
