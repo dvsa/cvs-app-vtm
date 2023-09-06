@@ -207,7 +207,7 @@ export const PsvTechRecord: FormNode = {
         { label: 'MOT class 5', value: 'MOT class 5' }
       ],
       class: '.govuk-input--width-10',
-      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.HandlePsvClassChange }]
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'techRecord_vehicleSize',
@@ -216,8 +216,7 @@ export const PsvTechRecord: FormNode = {
       hint: 'The Vehicle Size is calculated automatically based on the number of seats and standing capacity. Only change the Size if you need to',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(VehicleSize),
-      validators: [{ name: ValidatorNames.HandlePsvSizeChange }]
+      options: getOptionsFromEnum(VehicleSize)
     },
     {
       name: 'techRecord_numberOfSeatbelts',
