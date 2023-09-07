@@ -67,6 +67,8 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.techRecord.techRecord_approvalType);
+    console.log(this.techRecord.techRecord_approvalTypeNumber);
     const { techRecord } = changes;
     if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
       this.form.patchValue(techRecord.currentValue, { emitEvent: false });

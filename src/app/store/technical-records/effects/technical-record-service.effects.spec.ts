@@ -100,6 +100,10 @@ describe('TechnicalRecordServiceEffects', () => {
   });
 
   describe('updateTechRecords$', () => {
+    beforeEach(() => {
+      store = TestBed.inject(MockStore);
+      store.overrideSelector(editingTechRecord, {} as unknown as TechRecordType<'put'>);
+    });
     it('should return a technical record on successful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const technicalRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;

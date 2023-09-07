@@ -21,6 +21,7 @@ export type NotTrailer =
 
 export type BatchUpdateVehicleModel = TechRecordType<'put'> & {
   createdTimestamp: string;
+  systemNumber?: string;
 };
 
 export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'> {

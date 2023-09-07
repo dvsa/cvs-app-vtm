@@ -101,40 +101,329 @@
   >
   </app-switchable-input>
 
-  <ng-template ngSwitchCase="ECTA">
-    <div>
-      ECTA: e
-      <app-switchable-input
-        [form]="form"
-        [type]="editTypes.TEXT"
-        name="techRecord_approvalTypeNumber"
-        label="XX"
-        #approvalTypeNumberInput
-        [isEditing]="isEditing"
-      >
-      </app-switchable-input>
-      *XXXX/XXXX*
-      <app-switchable-input
-        [form]="form"
-        [type]="editTypes.TEXT"
-        name="techRecord_approvalTypeNumber"
-        label="XXXXXX"
-        #approvalTypeNumberInput
-        [isEditing]="isEditing"
-      >
-      </app-switchable-input>
-    </div>
-  </ng-template>
+  <!--  <app-switchable-input-->
+  <!--    [form]="form"-->
+  <!--    [type]="editTypes.TEXT"-->
+  <!--    name="techRecord_approvalTypeNumber"-->
+  <!--    label="Approval type number"-->
+  <!--    #approvalTypeNumberInput-->
+  <!--    [isEditing]="isEditing"-->
+  <!--  >-->
+  <!--  </app-switchable-input>-->
 
-  <app-switchable-input
-    [form]="form"
-    [type]="editTypes.TEXT"
-    name="techRecord_approvalTypeNumber"
-    label="Approval type number"
-    #approvalTypeNumberInput
-    [isEditing]="isEditing"
-  >
-  </app-switchable-input>
+  <ng-container [ngSwitch]="approvalType">
+    <!-- NTA Template -->
+    <ng-template ngSwitchCase="NTA">
+      <div>
+        <!-- No specific formatting required, content is not editable -->
+      </div>
+    </ng-template>
+
+    <!-- ECTA Template -->
+    <ng-template ngSwitchCase="ECTA">
+      <div>
+        ECTA: e
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        *XXXX/XXXX*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- IVA Template -->
+    <ng-template ngSwitchCase="IVA">
+      <div>
+        <!-- No specific formatting required, content is not editable -->
+      </div>
+    </ng-template>
+
+    <!-- NSSTA Template -->
+    <ng-template ngSwitchCase="NSSTA">
+      <div>
+        NSSTA: e
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        *NKS*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- ECSSTA Template -->
+    <ng-template ngSwitchCase="ECSSTA">
+      <div>
+        ECSSTA: e
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        *KSXX/
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- GB WVTA Template -->
+    <ng-template ngSwitchCase="GB WVTA">
+      <div>
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        *XXXX/XXXX*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- UKNI WVTA Template -->
+    <ng-template ngSwitchCase="UKNI WVTA">
+      <div>
+        X11*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        *XXXX/XXXX*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- EU WVTA Pre 23 Template -->
+    <ng-template ngSwitchCase="EU WVTA Pre 23">
+      <div>
+        EU WVTA: e
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        *XXXX/XXXX*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- EU WVTA 23 on Template -->
+    <ng-template ngSwitchCase="EU WVTA 23 on">
+      <div>
+        EU WVTA: e
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        *XXXX/XXXX*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- QNIG Template -->
+    <ng-template ngSwitchCase="QNIG">
+      <div>
+        EU WVTA: e
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        *XXXX/XXXX*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- Prov.GB WVTA Template -->
+    <ng-template ngSwitchCase="Prov.GB WVTA">
+      <div>
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        *XXXX/XXXX*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- Small series Template -->
+    <ng-template ngSwitchCase="Small series">
+      <div>
+        X11*NKS*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        or X11*NKSXX*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- IVA – VCA Template -->
+    <ng-template ngSwitchCase="IVA – VCA">
+      <div>
+        IVA – VCA: n11*NIV
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+        *XXXX/XXXX*
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber"
+          label="XXXXXX"
+          #approvalTypeNumberInput
+          [isEditing]="isEditing"
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- IVA – DVSA/NI Template -->
+    <ng-template ngSwitchCase="IVA – DVSA/NI">
+      <div>
+        <!-- No specific formatting required, content is not editable -->
+      </div>
+    </ng-template>
+
+    <!-- Default Template -->
+    <ng-template ngSwitchDefault>
+      <div>
+        <!-- No specific format required for other "Approval type" values, content is not editable -->
+      </div>
+    </ng-template>
+  </ng-container>
 
   <app-switchable-input
     [form]="form"

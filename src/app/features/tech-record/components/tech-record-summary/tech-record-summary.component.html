@@ -54,6 +54,7 @@
         (formChange)="handleFormState($event)"
       ></app-approval-type>
     </ng-container>
+
     <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'psv'">
       <app-psv-brakes
         *ngSwitchCase="'psvBrakesSection'"

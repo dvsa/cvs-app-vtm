@@ -18,7 +18,7 @@ export class AxlesService {
 
     if (newAxles.length > newAxleSpacings.length + 1) {
       newAxleSpacings = this.generateAxleSpacing(newAxles.length, newAxleSpacings);
-    } else if (newAxles.length < newAxleSpacings.length + 1) {
+    } else if (newAxles.length < newAxleSpacings.length + 1 && newAxles.length) {
       newAxles = this.generateAxlesFromAxleSpacings(newAxleSpacings.length, newAxles);
     }
 
