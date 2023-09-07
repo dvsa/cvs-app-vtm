@@ -20,6 +20,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, map, takeUntil } from 'rxjs';
+import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -36,6 +37,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(TyresComponent) tyres!: TyresComponent;
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
   @ViewChild(LettersComponent) letters!: LettersComponent;
+  @ViewChild(ApprovalTypeComponent) approvalType!: ApprovalTypeComponent;
 
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
@@ -116,7 +118,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form];
+    const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form, this.approvalType?.form];
 
     switch (this.vehicleType) {
       case VehicleTypes.PSV:

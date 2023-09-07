@@ -22,7 +22,17 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'approvalType', value: 'NTA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'NTA' } },
+        { name: ValidatorNames.MaxLength, args: 25 }
+      ]
+    },
+    {
+      name: 'techRecord_approvalTypeNumber',
+      label: 'Approval type number',
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.XL,
+      validators: [
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'NTA' } },
         { name: ValidatorNames.MaxLength, args: 25 }
       ]
     },
@@ -32,7 +42,7 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
       validators: [
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'approvalType', value: 'NTA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'NTA' } },
         { name: ValidatorNames.MaxLength, args: 40 }
       ]
     },
@@ -42,7 +52,7 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'approvalType', value: 'NTA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'NTA' } },
         { name: ValidatorNames.MaxLength, args: 25 }
       ]
     },
@@ -52,7 +62,7 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
       validators: [
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'approvalType', value: 'NTA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'NTA' } },
         { name: ValidatorNames.MaxLength, args: 35 }
       ]
     }
