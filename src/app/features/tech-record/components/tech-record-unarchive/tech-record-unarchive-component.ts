@@ -5,13 +5,13 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { archiveTechRecordSuccess, getBySystemNumberSuccess, promoteTechRecordSuccess } from '@store/technical-records';
+import { selectTechRecordHistory } from '@store/technical-records';
 import { Subject, map, takeUntil } from 'rxjs';
-import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
+import { getBySystemNumber } from '@store/technical-records';
 
 @Component({
   selector: 'app-tech-record-unarchive',
@@ -19,9 +19,6 @@ import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-rec
 })
 export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   techRecord: TechRecordType<'get'> | undefined;
-  hasUnarchivedRecords: boolean | undefined = false;
-  techRecordHistory: any;
-
   statusCodes: Array<FormNodeOption<string>> = [
     { label: 'Provisional', value: StatusCodes.PROVISIONAL },
     { label: 'Current', value: StatusCodes.CURRENT }
@@ -54,20 +51,11 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
       this.store.dispatch(getBySystemNumber({ systemNumber: this.techRecord?.systemNumber as string }));
     });
 
-  //  this.store.select(selectTechRecordHistory).pipe(
-  //     map(techRecordHistory => {
-  //       this.hasUnarchivedRecords = techRecordHistory?.some((techRecordHistory) => {
-  //         return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED;
-  //       });
-  //     })
-  //   );
-
-    this.actions$.pipe(ofType(getBySystemNumberSuccess), takeUntil(this.destroy$)).subscribe(({ techRecordHistory }) => {
-      this.techRecordHistory = techRecordHistory;
-      this.hasUnarchivedRecords = techRecordHistory?.some((techRecordHistory) => {
-        return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED;
-      });
-    });
+    // this.actions$.pipe(ofType(getBySystemNumberSuccess), takeUntil(this.destroy$)).subscribe(({ techRecordHistory }) => {
+    //   this.hasUnarchivedRecords = techRecordHistory?.some((techRecordHistory) => {
+    //     return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED;
+    //   });
+    // });
   }
 
   ngOnDestroy(): void {
@@ -84,7 +72,7 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if(this.hasUnarchivedRecords){
+    if(this.hasNonArchivedRecords){
       this.errorService.setErrors([{ error: 'Cannot unarchive a record with Provisional or Current records' }]);
       return;
     }
@@ -115,6 +103,16 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     //     promoteTechRecord(body)
     //   );
     // }
+  }
+
+  private get hasNonArchivedRecords() {
+    return this.store.select(selectTechRecordHistory).pipe(
+      map(techRecordHistory => {
+        techRecordHistory?.some((techRecordHistory) => {
+          return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED;
+        });
+      })
+    );
   }
 
   private validateControls() {
