@@ -292,6 +292,7 @@ export class CustomValidators {
             classControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
           }
         }
+        control.markAsPristine();
       }
       return null;
     };
