@@ -50,6 +50,13 @@ const routes: Routes = [
     resolve: { load: TechRecordViewResolver }
   },
   {
+    path: 'historic/unarchive-record',
+    component: TechRecordUnarchiveComponent,
+    data: { title: 'Unarchive Record', roles: Roles.TechRecordUnarchive },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordViewResolver }
+  },
+  {
     path: 'change-vin',
     component: AmendVinComponent,
     data: { title: 'Change VIN', roles: Roles.TechRecordAmend },

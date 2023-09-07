@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -9,8 +9,9 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { archiveTechRecordSuccess, promoteTechRecordSuccess } from '@store/technical-records';
-import { Subject, takeUntil } from 'rxjs';
+import { archiveTechRecordSuccess, getBySystemNumberSuccess, promoteTechRecordSuccess } from '@store/technical-records';
+import { Subject, map, takeUntil } from 'rxjs';
+import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
 
 @Component({
   selector: 'app-tech-record-unarchive',
@@ -18,6 +19,8 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   techRecord: TechRecordType<'get'> | undefined;
+  hasUnarchivedRecords: boolean | undefined = false;
+  techRecordHistory: any;
 
   statusCodes: Array<FormNodeOption<string>> = [
     { label: 'Provisional', value: StatusCodes.PROVISIONAL },
@@ -25,9 +28,6 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   ];
 
   form: CustomFormGroup;
-
-  isPromotion = false;
-  isProvisional = false;
 
   destroy$ = new Subject<void>();
 
@@ -46,22 +46,28 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
         reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required])
       }
     );
-
-    this.isProvisional = this.router.url.includes('provisional');
   }
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
       this.techRecord = record as TechRecordType<'get'>;
+      this.store.dispatch(getBySystemNumber({ systemNumber: this.techRecord?.systemNumber as string }));
     });
 
-    this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+  //  this.store.select(selectTechRecordHistory).pipe(
+  //     map(techRecordHistory => {
+  //       this.hasUnarchivedRecords = techRecordHistory?.some((techRecordHistory) => {
+  //         return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED;
+  //       });
+  //     })
+  //   );
 
-      this.technicalRecordService.clearEditingTechRecord();
+    this.actions$.pipe(ofType(getBySystemNumberSuccess), takeUntil(this.destroy$)).subscribe(({ techRecordHistory }) => {
+      this.techRecordHistory = techRecordHistory;
+      this.hasUnarchivedRecords = techRecordHistory?.some((techRecordHistory) => {
+        return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED;
+      });
     });
-
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => (this.isPromotion = params.get('to') === 'current'));
   }
 
   ngOnDestroy(): void {
@@ -75,6 +81,11 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 
   handleSubmit(form: { reason: string, newRecordStatus: string }): void {
     if (!this.techRecord) {
+      return;
+    }
+
+    if(this.hasUnarchivedRecords){
+      this.errorService.setErrors([{ error: 'Cannot unarchive a record with Provisional or Current records' }]);
       return;
     }
 
