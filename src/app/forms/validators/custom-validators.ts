@@ -1,7 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { VehicleClass } from '@models/vehicle-class.model';
-import { VehicleSize } from '@models/vehicle-size.enum';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomValidators {
