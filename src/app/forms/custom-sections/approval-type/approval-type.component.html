@@ -1,0 +1,173 @@
+<ng-container *ngIf="techRecord.techRecord_vehicleType === 'psv'">
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.DROPDOWN"
+    name="techRecord_approvalType"
+    label="Approval type"
+    [isEditing]="isEditing"
+    [options]="getOptionsFromEnum(approvalType)"
+    [width]="widths.M"
+  >
+  </app-switchable-input>
+
+  <div class="node-row">
+    <app-switchable-input
+      [form]="form"
+      [type]="editTypes.TEXT"
+      name="techRecord_approvalTypeNumber"
+      label="Approval type number"
+      [isEditing]="isEditing"
+      [width]="widths.XL"
+      #approvalTypeNumberPsvInput
+    >
+    </app-switchable-input>
+  </div>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_ntaNumber"
+    label="National type number"
+    [isEditing]="isEditing"
+    [width]="widths.XL"
+    #ntaNumberPsvInput
+  ></app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_coifSerialNumber"
+    label="COIF Serial number"
+    [isEditing]="isEditing"
+    [width]="widths.XL"
+    #coifSerialNumberPsvInput
+  >
+    >
+  </app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_coifCertifierName"
+    label="COIF Certifier name"
+    [isEditing]="isEditing"
+    [width]="widths.XL"
+    #coifCertifierNamePsvInput
+  >
+    >
+  </app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_coifDate"
+    label="COIF Certifier date"
+    [isEditing]="isEditing"
+    [width]="widths.XL"
+    #coifDatePsvInput
+  ></app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_variantNumber"
+    label="Variant number"
+    [isEditing]="isEditing"
+    [width]="widths.XL"
+    #variantNumberPsvInput
+  ></app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_variantVersionNumber"
+    label="Variant version number"
+    [isEditing]="isEditing"
+    [width]="widths.XL"
+    #variantVersionNumberPsvInput
+  >
+  </app-switchable-input>
+</ng-container>
+
+<ng-container *ngIf="techRecord.techRecord_vehicleType === 'hgv' || techRecord.techRecord_vehicleType === 'trl'">
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.DROPDOWN"
+    name="techRecord_approvalType"
+    label="Approval type"
+    [isEditing]="isEditing"
+    [options]="getOptionsFromEnum(approvalType)"
+    [width]="widths.M"
+  >
+  </app-switchable-input>
+
+  <ng-template ngSwitchCase="ECTA">
+    <div>
+      ECTA: e
+      <app-switchable-input
+        [form]="form"
+        [type]="editTypes.TEXT"
+        name="techRecord_approvalTypeNumber"
+        label="XX"
+        #approvalTypeNumberInput
+        [isEditing]="isEditing"
+      >
+      </app-switchable-input>
+      *XXXX/XXXX*
+      <app-switchable-input
+        [form]="form"
+        [type]="editTypes.TEXT"
+        name="techRecord_approvalTypeNumber"
+        label="XXXXXX"
+        #approvalTypeNumberInput
+        [isEditing]="isEditing"
+      >
+      </app-switchable-input>
+    </div>
+  </ng-template>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_approvalTypeNumber"
+    label="Approval type number"
+    #approvalTypeNumberInput
+    [isEditing]="isEditing"
+  >
+  </app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_ntaNumber"
+    label="National type number"
+    [isEditing]="isEditing"
+    [width]="widths.XL"
+    #ntaNumberInput
+  >
+    <input [formControlName]="'techRecord_ntaNumber'" (input)="moveToNextInput(form, 'techRecord_variantNumber', 5)" />
+  </app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_variantNumber"
+    label="Variant number"
+    [isEditing]="isEditing"
+    [width]="widths.XL"
+    #variantNumberInput
+  >
+    <input [formControlName]="'techRecord_variantNumber'" (input)="moveToNextInput(form, 'techRecord_variantVersionNumber', 5)" />
+  </app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_variantVersionNumber"
+    label="Variant version number"
+    [isEditing]="isEditing"
+    [width]="widths.XL"
+    #variantVersionNumberInput
+  >
+  </app-switchable-input>
+</ng-container>

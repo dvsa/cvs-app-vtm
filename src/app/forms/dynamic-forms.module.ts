@@ -86,7 +86,8 @@ import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.direct
     PsvBrakesComponent,
     PrefixDirective,
     SuggestiveInputComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    ApprovalTypeComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -126,7 +127,8 @@ import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.direct
     CheckboxComponent,
     ToUppercaseDirective,
     NoSpaceDirective,
-    TrimWhitespaceDirective
+    TrimWhitespaceDirective,
+    ApprovalTypeComponent
   ]
 })
 export class DynamicFormsModule {}
