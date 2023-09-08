@@ -9,7 +9,7 @@ import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { selectTechRecordHistory } from '@store/technical-records';
+import { selectTechRecordHistory, unarchiveTechRecord } from '@store/technical-records';
 import { Subject, map, takeUntil } from 'rxjs';
 import { getBySystemNumber } from '@store/technical-records';
 
@@ -85,24 +85,14 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let body = {
-      systemNumber: this.techRecord.systemNumber,
-      createdTimestamp: this.techRecord.createdTimestamp,
-      reason: this.form.value.reason,
-      status: this.form.value.newRecordStatus
-    }
-
-    //TODO: Figure out what we're passing into the new end point
-
-    // if (this.isPromotion) {
-    //   this.store.dispatch(
-    //     promoteTechRecord(body)
-    //   );
-    // } else {
-    //   this.store.dispatch(
-    //     promoteTechRecord(body)
-    //   );
-    // }
+    this.store.dispatch(
+      unarchiveTechRecord({
+        systemNumber: this.techRecord.systemNumber,
+        createdTimestamp: this.techRecord.createdTimestamp,
+        reasonForUnarchiving: this.form.value.reason,
+        status: this.form.value.newRecordStatus
+      })
+    );
   }
 
   private get hasNonArchivedRecords() {
