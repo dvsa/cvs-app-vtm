@@ -10,12 +10,13 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-import { editingTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
+import { clearAllSectionStates, editingTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 
 @Component({
@@ -30,7 +31,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   testResults$: Observable<TestResultModel[]>;
   editingReason?: ReasonForEditing;
   recordHistory?: TechRecordSearchSchema[];
-  hasAProvisional: Boolean = false;
 
   isCurrent = false;
   isArchived = false;
@@ -51,7 +51,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
     private actions$: Actions,
-    private viewportScroller: ViewportScroller
+    private viewportScroller: ViewportScroller,
+    private routerService: RouterService
   ) {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
@@ -62,9 +63,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   ngOnInit(): void {
-    this.hasAProvisional = this.recordHistory?.some(record => record.techRecord_statusCode === StatusCodes.PROVISIONAL) ?? false;
-    const isProvisionalUrl = this.router.url?.split('/').slice(-2)?.includes(StatusCodes.PROVISIONAL);
-
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(vehicleTechRecord => {
       this.router.navigate([
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`
@@ -72,10 +70,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     });
     this.isArchived = this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
     this.isCurrent = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT;
-
-    if (isProvisionalUrl && !this.hasAProvisional) {
-      this.router.navigate(['../'], { relativeTo: this.route });
-    }
 
     this.userService.roles$.pipe(take(1)).subscribe(storedRoles => {
       this.hasTestResultAmend = storedRoles?.some(role => {
@@ -160,16 +154,14 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     if (!this.isInvalid) {
       this.store
         .select(editingTechRecord)
-        .pipe(take(1))
-        .subscribe(record => {
-          if (record) {
-            if (this.editingReason === ReasonForEditing.CORRECTING_AN_ERROR) {
-              this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }));
-            } else if (this.editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-              this.hasAProvisional
-                ? this.store.dispatch(updateTechRecord({ vehicleTechRecord: record }))
-                : this.store.dispatch(updateTechRecord({ vehicleTechRecord: { ...record, techRecord_statusCode: StatusCodes.PROVISIONAL } }));
-            }
+        .pipe(
+          take(1),
+          withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp'))
+        )
+        .subscribe(([record, systemNumber, createdTimestamp]) => {
+          if (record && systemNumber && createdTimestamp) {
+            this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
+            this.store.dispatch(clearAllSectionStates());
           }
         });
     }

@@ -1,14 +1,14 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/index';
+import { State, initialAppState } from '@store/index';
+import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
 import { lastValueFrom, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { SEARCH_TYPES, TechnicalRecordHttpService } from './technical-record-http.service';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
 //TODO: need to include tests for search$, seachBy, getBySystemNumber, getRecordV3, AmendVrm, promoteTechRecord, generatePlate, generateLetter
 
 describe('TechnicalRecordService', () => {
@@ -74,6 +74,8 @@ describe('TechnicalRecordService', () => {
 
     describe('updateTechRecords', () => {
       it('should return a new tech record and updated status code', fakeAsync(() => {
+        const systemNumber = '123456';
+        const createdTimestamp = '2022';
         const expectedVehicle = {
           systemNumber: 'foo',
           createdTimestamp: 'bar',
@@ -82,18 +84,15 @@ describe('TechnicalRecordService', () => {
           techRecord_reasonForCreation: 'test',
           secondaryVrms: undefined
         } as TechRecordType<'get'>;
-        service.updateTechRecords$(expectedVehicle as TechRecordType<'put'>).subscribe();
+        service.updateTechRecords$(systemNumber, createdTimestamp, expectedVehicle as TechRecordType<'put'>).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
-        const req = httpClient.expectOne(
-          `${environment.VTM_API_URI}/v3/technical-records/${expectedVehicle.systemNumber}/${expectedVehicle.createdTimestamp}`
-        );
+        const req = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`);
         expect(req.request.method).toEqual('PATCH');
 
         // should format the vrms for the update payload
         expect(req.request.body).toHaveProperty('primaryVrm');
         expect(req.request.body).toHaveProperty('secondaryVrms');
-        expect(req.request.body).not.toHaveProperty('vrms');
       }));
     });
 

@@ -1,7 +1,8 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from './custom-validators';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleClass } from '@models/vehicle-class.model';
 interface CustomPatternMessage {
   customPattern: {
     message: string;
@@ -538,5 +539,55 @@ describe('validate VRM/TrailerId Length', () => {
 
     const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
     expect(result.validateVRMTrailerIdLength.message).toEqual('Trailer ID must be less than or equal to 8 characters');
+  });
+});
+
+describe('handlePsvPassengersChange', () => {
+  let form: FormGroup;
+  beforeEach(() => {
+    form = new FormGroup({
+      techRecord_vehicleSize: new CustomFormControl({ name: 'techRecord_vehicleSize', type: FormNodeTypes.CONTROL }, undefined),
+      techRecord_vehicleClass_description: new CustomFormControl(
+        { name: 'techRecord_vehicleClass_description', type: FormNodeTypes.CONTROL },
+        undefined
+      ),
+      techRecord_seatsLowerDeck: new CustomFormControl({ name: 'techRecord_seatsLowerDeck', type: FormNodeTypes.CONTROL }, undefined),
+      techRecord_seatsUpperDeck: new CustomFormControl({ name: 'techRecord_seatsUpperDeck', type: FormNodeTypes.CONTROL }, undefined),
+      techRecord_standingCapacity: new CustomFormControl({ name: 'techRecord_standingCapacity', type: FormNodeTypes.CONTROL }, undefined)
+    });
+  });
+  it('should calculate vehicle size and class based on passenger numbers', () => {
+    const upper = form.get('techRecord_seatsUpperDeck');
+    const lower = form.get('techRecord_seatsLowerDeck');
+    const standing = form.get('techRecord_standingCapacity');
+
+    upper?.patchValue(1);
+    lower?.patchValue(2);
+    standing?.patchValue(3);
+    standing?.markAsDirty();
+
+    CustomValidators.handlePsvPassengersChange('techRecord_seatsUpperDeck', 'techRecord_seatsLowerDeck')(standing as AbstractControl);
+    const vehicleSize = form.get('techRecord_vehicleSize')?.value;
+    const vehicleClass = form.get('techRecord_vehicleClass_description')?.value;
+
+    expect(vehicleSize).toBe(VehicleSizes.SMALL);
+    expect(vehicleClass).toBe(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
+  });
+  it('should calculate vehicle size and class based on passenger numbers', () => {
+    const upper = form.get('techRecord_seatsUpperDeck');
+    const lower = form.get('techRecord_seatsLowerDeck');
+    const standing = form.get('techRecord_standingCapacity');
+
+    upper?.patchValue(13);
+    lower?.patchValue(22);
+    standing?.patchValue(1);
+    standing?.markAsDirty();
+
+    CustomValidators.handlePsvPassengersChange('techRecord_seatsUpperDeck', 'techRecord_seatsLowerDeck')(standing as AbstractControl);
+    const vehicleSize = form.get('techRecord_vehicleSize')?.value;
+    const vehicleClass = form.get('techRecord_vehicleClass_description')?.value;
+
+    expect(vehicleSize).toBe(VehicleSizes.LARGE);
+    expect(vehicleClass).toBe(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats);
   });
 });

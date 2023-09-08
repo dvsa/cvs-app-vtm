@@ -13,6 +13,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVinComponent } from './tech-record-amend-vin.component';
@@ -79,19 +80,16 @@ describe('TechRecordChangeVrmComponent', () => {
       component.techRecord = expectedTechRecord;
     });
     it('should dispatch the updateTechRecord action with the new vin', () => {
+      const createdTimestamp = '2022';
+      const systemNumber = '123456';
+      store.overrideSelector(selectRouteNestedParams, { createdTimestamp, systemNumber });
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      const payload = {
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
-        vin: 'myNewVin',
-        techRecord_reasonForCreation: 'Vin changed'
-      } as unknown as TechRecordType<'put'>;
 
       component.form.controls['vin'].setValue('myNewVin');
 
       component.handleSubmit();
 
-      expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ vehicleTechRecord: payload }));
+      expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ systemNumber, createdTimestamp }));
     });
   });
 
