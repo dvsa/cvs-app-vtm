@@ -16,6 +16,7 @@ type Segments = {
 @Component({
   selector: 'app-approval-type-input',
   templateUrl: './approval-type.component.html',
+  styleUrls: ['./approval-type.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -27,6 +28,8 @@ type Segments = {
 export class ApprovalTypeInput extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() isEditing = false;
   @Input() approvalType?: string;
+  public techRecord_approvalTypeNumber?: string;
+
   public form!: CustomFormGroup;
 
   private techRecord_approvalTypeNumber1_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
@@ -66,13 +69,6 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
 
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
-    // this.originalDate = this.value;
-    // this.dateFieldOrDefault = {
-    //   hours: this.originalDate ? new Date(this.originalDate).getHours() : '00',
-    //   minutes: this.originalDate ? new Date(this.originalDate).getMinutes() : '00',
-    //   seconds: this.originalDate ? new Date(this.originalDate).getSeconds() : '00'
-    // };
-    // this.addValidators();
     this.valueWriteBack(this.value);
   }
 
@@ -81,23 +77,29 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
   }
 
   onTechRecord_approvalTypeNumber1_Change(event: any) {
+    console.log('in onTechRecord_approvalTypeNumber1_Change');
     this.techRecord_approvalTypeNumber1_.next(event);
   }
 
   onTechRecord_approvalTypeNumber2_Change(event: any) {
+    console.log('in onTechRecord_approvalTypeNumber2_Change');
     this.techRecord_approvalTypeNumber2_.next(event);
   }
 
   onTechRecord_approvalTypeNumber3_Change(event: any) {
+    console.log('in onTechRecord_approvalTypeNumber3_Change');
     this.techRecord_approvalTypeNumber3_.next(event);
   }
 
   onTechRecord_approvalTypeNumber4_Change(event: any) {
+    console.log('in onTechRecord_approvalTypeNumber4_Change');
     this.techRecord_approvalTypeNumber4_.next(event);
   }
 
   valueWriteBack(value: string | null): void {
+    console.log('in value write back');
     if (value) {
+      console.log('in value write back IF');
       this.techRecord_approvalTypeNumber1_.next(this.techRecord_approvalTypeNumber1);
       this.techRecord_approvalTypeNumber2_.next(this.techRecord_approvalTypeNumber2);
       this.techRecord_approvalTypeNumber3_.next(this.techRecord_approvalTypeNumber3);
@@ -116,6 +118,7 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
       techRecord_approvalTypeNumber3: this.techRecord_approvalTypeNumber3$,
       techRecord_approvalTypeNumber4: this.techRecord_approvalTypeNumber4$
     };
+    console.log('subscribing and progating changes');
     return combineLatest(dateFields).subscribe({
       next: ({ techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4 }) => {
         if (
@@ -124,6 +127,7 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
           !techRecord_approvalTypeNumber3 &&
           !techRecord_approvalTypeNumber4
         ) {
+          console.log('this on change null event');
           this.onChange(null);
           return;
         }
@@ -153,7 +157,16 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
     techRecord_approvalTypeNumber3: any,
     techRecord_approvalTypeNumber4: any
   ) {
-    console.log(techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4);
-    return techRecord_approvalTypeNumber1 + techRecord_approvalTypeNumber2 + techRecord_approvalTypeNumber3 + techRecord_approvalTypeNumber4;
+    console.log('processing approval type number');
+    console.log(
+      techRecord_approvalTypeNumber1 ?? 'test',
+      techRecord_approvalTypeNumber2 ?? '',
+      techRecord_approvalTypeNumber3 ?? '',
+      techRecord_approvalTypeNumber4 ?? ''
+    );
+    this.techRecord_approvalTypeNumber =
+      techRecord_approvalTypeNumber1 + techRecord_approvalTypeNumber2 + techRecord_approvalTypeNumber3 + techRecord_approvalTypeNumber4;
+
+    return this.techRecord_approvalTypeNumber;
   }
 }
