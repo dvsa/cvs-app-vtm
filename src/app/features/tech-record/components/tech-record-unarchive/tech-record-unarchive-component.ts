@@ -5,11 +5,11 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
-import { Actions } from '@ngrx/effects';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { selectTechRecordHistory, unarchiveTechRecord } from '@store/technical-records';
+import { selectTechRecordHistory, unarchiveTechRecord, unarchiveTechRecordSuccess } from '@store/technical-records';
 import { Subject, map, takeUntil } from 'rxjs';
 import { getBySystemNumber } from '@store/technical-records';
 
@@ -51,11 +51,11 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
       this.store.dispatch(getBySystemNumber({ systemNumber: this.techRecord?.systemNumber as string }));
     });
 
-    // this.actions$.pipe(ofType(getBySystemNumberSuccess), takeUntil(this.destroy$)).subscribe(({ techRecordHistory }) => {
-    //   this.hasUnarchivedRecords = techRecordHistory?.some((techRecordHistory) => {
-    //     return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED;
-    //   });
-    // });
+    this.actions$.pipe(ofType(unarchiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+
+      this.technicalRecordService.clearEditingTechRecord();
+    });
   }
 
   ngOnDestroy(): void {
