@@ -14,6 +14,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
+import { approvalTypeNumberFormatValidator } from '@forms/validators/type-approval/type-approval.validators';
 
 @Component({
   selector: 'app-approval-type[techRecord]',
@@ -25,6 +26,11 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
   @Output() approvalTypeNumberChange = new EventEmitter<string>();
+
+  @ViewChild('techRecord_approvalTypeNumber1') approvalTypeNumber1Input!: ElementRef;
+  @ViewChild('techRecord_approvalTypeNumber2') approvalTypeNumber2Input!: ElementRef;
+  @ViewChild('techRecord_approvalTypeNumber3') approvalTypeNumber3Input!: ElementRef;
+  @ViewChild('techRecord_approvalTypeNumber4') approvalTypeNumber4Input!: ElementRef;
 
   public form!: CustomFormGroup;
   private destroy$ = new Subject<void>();
@@ -61,6 +67,10 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
       this.form.patchValue(techRecord.currentValue, { emitEvent: false });
       this.chosenApprovalType = techRecord.currentValue.techRecord_approvalType ? techRecord.currentValue.techRecord_approvalType : '';
+      console.log(this.approvalTypeNumber1Input);
+      console.log(this.approvalTypeNumber2Input);
+      console.log(this.approvalTypeNumber3Input);
+      console.log(this.approvalTypeNumber4Input);
     }
   }
 
