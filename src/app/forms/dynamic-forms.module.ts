@@ -44,6 +44,7 @@ import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { NoSpaceDirective } from './directives/app-no-space.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
+import { ApprovalTypeInput } from '@forms/components/approval-type/approval-type.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/appr
     PrefixDirective,
     SuggestiveInputComponent,
     CheckboxComponent,
-    ApprovalTypeComponent
+    ApprovalTypeComponent,
+    ApprovalTypeInput
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -129,7 +131,8 @@ import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/appr
     ToUppercaseDirective,
     NoSpaceDirective,
     TrimWhitespaceDirective,
-    ApprovalTypeComponent
+    ApprovalTypeComponent,
+    ApprovalTypeInput
   ]
 })
 export class DynamicFormsModule {}

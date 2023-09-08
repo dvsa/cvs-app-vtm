@@ -55,7 +55,8 @@ export enum FormNodeEditTypes {
   RADIO = 'radio',
   SELECT = 'select',
   TEXT = 'text',
-  TEXTAREA = 'textarea'
+  TEXTAREA = 'textarea',
+  APPROVAL_TYPE = 'approvalType'
 }
 
 export enum FormNodeWidth {

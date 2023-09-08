@@ -26,11 +26,6 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   @Output() formChange = new EventEmitter();
   @Output() approvalTypeNumberChange = new EventEmitter<string>();
 
-  @ViewChild('techRecord_approvalTypeNumber1') approvalTypeNumber1Input!: ElementRef;
-  @ViewChild('techRecord_approvalTypeNumber2') approvalTypeNumber2Input!: ElementRef;
-  @ViewChild('techRecord_approvalTypeNumber3') approvalTypeNumber3Input!: ElementRef;
-  @ViewChild('techRecord_approvalTypeNumber4') approvalTypeNumber4Input!: ElementRef;
-
   public form!: CustomFormGroup;
   private destroy$ = new Subject<void>();
   inputControls: FormControl[] = [];
@@ -51,13 +46,13 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
       this.formControls[key] = this.form.get(key) as FormControl;
     });
 
-    this.inputControls = [
-      this.form.get('techRecord_approvalType') as FormControl,
-      this.form.get('techRecord_approvalTypeNumber') as FormControl,
-      this.form.get('techRecord_ntaNumber') as FormControl,
-      this.form.get('techRecord_variantNumber') as FormControl,
-      this.form.get('techRecord_variantVersionNumber') as FormControl
-    ];
+    // this.inputControls = [
+    //   this.form.get('techRecord_approvalType') as FormControl,
+    //   this.form.get('techRecord_approvalTypeNumber') as FormControl,
+    //   this.form.get('techRecord_ntaNumber') as FormControl,
+    //   this.form.get('techRecord_variantNumber') as FormControl,
+    //   this.form.get('techRecord_variantVersionNumber') as FormControl
+    // ];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -66,11 +61,8 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
       this.form.patchValue(techRecord.currentValue, { emitEvent: false });
       this.chosenApprovalType = techRecord.currentValue.techRecord_approvalType ? techRecord.currentValue.techRecord_approvalType : '';
-      console.log(this.approvalTypeNumber1Input);
-      console.log(this.approvalTypeNumber2Input);
-      console.log(this.approvalTypeNumber3Input);
-      console.log(this.approvalTypeNumber4Input);
     }
+    console.log(this.form.get('techRecord_approvalTypeNumber')?.value);
   }
 
   ngOnDestroy(): void {

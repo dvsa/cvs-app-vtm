@@ -47,6 +47,9 @@
     ></app-date>
   </ng-template>
 
+  <app-approval-type-input *ngSwitchCase="types.APPROVAL_TYPE" [formControlName]="name" [approvalType]="'ECTA'" [label]="label" [width]="width">
+  </app-approval-type-input>
+
   <app-number-input
     *ngSwitchCase="types.NUMBER"
     [formControlName]="name"
