@@ -14,7 +14,6 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
-import { approvalTypeNumberFormatValidator } from '@forms/validators/type-approval/type-approval.validators';
 
 @Component({
   selector: 'app-approval-type[techRecord]',

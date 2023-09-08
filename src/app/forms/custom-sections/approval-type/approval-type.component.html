@@ -6,98 +6,7 @@
     label="Approval type"
     [isEditing]="isEditing"
     [options]="getOptionsFromEnum(approvalType)"
-    [width]="widths.M"
-  >
-  </app-switchable-input>
-
-  <div class="node-row">
-    <app-switchable-input
-      [form]="form"
-      [type]="editTypes.TEXT"
-      name="techRecord_approvalTypeNumber"
-      label="Approval type number"
-      [isEditing]="isEditing"
-      [width]="widths.XL"
-    >
-    </app-switchable-input>
-  </div>
-
-  <app-switchable-input
-    [form]="form"
-    [type]="editTypes.TEXT"
-    name="techRecord_ntaNumber"
-    label="National type number"
-    [isEditing]="isEditing"
-    [width]="widths.XL"
-  >
-  </app-switchable-input>
-
-  <app-switchable-input
-    [form]="form"
-    [type]="editTypes.TEXT"
-    name="techRecord_coifSerialNumber"
-    label="COIF Serial number"
-    [isEditing]="isEditing"
-    [width]="widths.XL"
-    #coifSerialNumberPsvInput
-  >
-    >
-  </app-switchable-input>
-
-  <app-switchable-input
-    [form]="form"
-    [type]="editTypes.TEXT"
-    name="techRecord_coifCertifierName"
-    label="COIF Certifier name"
-    [isEditing]="isEditing"
-    [width]="widths.XL"
-    #coifCertifierNamePsvInput
-  >
-    >
-  </app-switchable-input>
-
-  <app-switchable-input
-    [form]="form"
-    [type]="editTypes.TEXT"
-    name="techRecord_coifDate"
-    label="COIF Certifier date"
-    [isEditing]="isEditing"
-    [width]="widths.XL"
-    #coifDatePsvInput
-  ></app-switchable-input>
-
-  <app-switchable-input
-    [form]="form"
-    [type]="editTypes.TEXT"
-    name="techRecord_variantNumber"
-    label="Variant number"
-    [isEditing]="isEditing"
-    [width]="widths.XL"
-    #variantNumberPsvInput
-  ></app-switchable-input>
-
-  <app-switchable-input
-    [form]="form"
-    [type]="editTypes.TEXT"
-    name="techRecord_variantVersionNumber"
-    label="Variant version number"
-    [isEditing]="isEditing"
-    [width]="widths.XL"
-    #variantVersionNumberPsvInput
-  >
-  </app-switchable-input>
-</ng-container>
-
-<ng-container *ngIf="techRecord.techRecord_vehicleType === 'hgv' || techRecord.techRecord_vehicleType === 'trl'">
-  <app-switchable-input
-    [form]="form"
-    [type]="editTypes.DROPDOWN"
-    name="techRecord_approvalType"
-    label="Approval type"
-    [isEditing]="isEditing"
-    [options]="getOptionsFromEnum(approvalType)"
-    [width]="widths.M"
-  >
+    [width]="widths.M">
   </app-switchable-input>
 
   <ng-container [ngSwitch]="chosenApprovalType">
@@ -115,8 +24,9 @@
 
     <!-- ECTA Template -->
     <ng-template ngSwitchCase="ECTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
-        <span class="separator approvalTypeFormatting"> ECTA: e</span>
+        <span class="separator approvalTypeFormatting">e</span>
         <app-switchable-input
           [form]="form"
           [type]="editTypes.TEXT"
@@ -163,71 +73,90 @@
 
     <!-- NSSTA Template -->
     <ng-template ngSwitchCase="NSSTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
-        <span class="separator approvalTypeFormatting">NSSTA: e</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1" [width]="widths.S" [isEditing]="isEditing">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">*NKS*</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
       </div>
     </ng-template>
 
     <!-- ECSSTA Template -->
     <ng-template ngSwitchCase="ECSSTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
-        <span class="separator approvalTypeFormatting"> ECSSTA: e</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1" [width]="widths.S" [isEditing]="isEditing">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">KS</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">/</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
       </div>
     </ng-template>
 
     <!-- GB WVTA Template -->
     <ng-template ngSwitchCase="GB WVTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">*</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">/</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">*</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
       </div>
     </ng-template>
 
     <!-- UKNI WVTA Template -->
     <ng-template ngSwitchCase="UKNI WVTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
         <span class="separator approvalTypeFormatting">X11 *</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">/</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">*</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
       </div>
     </ng-template>
 
     <!-- EU WVTA Pre 23 Template -->
     <ng-template ngSwitchCase="EU WVTA Pre 23">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
-        <span class="separator approvalTypeFormatting">EU WVTA: e</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1" [width]="widths.S" [isEditing]="isEditing">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">*</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
 
         <span class="separator approvalTypeFormatting">/</span>
@@ -242,19 +171,23 @@
 
         <span class="separator approvalTypeFormatting">*</span>
 
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
       </div>
     </ng-template>
 
     <!-- EU WVTA 23 on Template -->
     <ng-template ngSwitchCase="EU WVTA 23 on">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
-        <span class="separator approvalTypeFormatting">EU WVTA: e</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1" [width]="widths.S" [isEditing]="isEditing">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">*</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
 
         <span class="separator approvalTypeFormatting">/</span>
@@ -269,19 +202,23 @@
 
         <span class="separator approvalTypeFormatting">*</span>
 
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
       </div>
     </ng-template>
 
     <!-- QNIG Template -->
     <ng-template ngSwitchCase="QNIG">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
-        <span class="separator approvalTypeFormatting">EU WVTA: e</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1" [width]="widths.S" [isEditing]="isEditing">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">*</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
 
         <span class="separator approvalTypeFormatting">/</span>
@@ -296,13 +233,15 @@
 
         <span class="separator approvalTypeFormatting">*</span>
 
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
       </div>
     </ng-template>
 
     <!-- Prov.GB WVTA Template -->
     <ng-template ngSwitchCase="Prov.GB WVTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
         <app-switchable-input
           [form]="form"
@@ -310,26 +249,30 @@
           name="techRecord_approvalTypeNumber1"
           label="XXX"
           [width]="widths.S"
-          [isEditing]="isEditing"
-        >
+          [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">*</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">/</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">*</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
       </div>
     </ng-template>
 
     <!-- Small series Template -->
     <ng-template ngSwitchCase="Small series">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
         <span class="separator approvalTypeFormatting">X11*NKS*</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <!--        <span class="separator approvalTypeFormatting">or X11*NKSXX*</span>-->
         <!--        <app-switchable-input-->
@@ -346,12 +289,15 @@
 
     <!-- IVA – VCA Template -->
     <ng-template ngSwitchCase="IVA – VCA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
       <div class="ecta-template separator">
-        <span class="separator approvalTypeFormatting">IVA – VCA: n11*NIV</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1" [width]="widths.S" [isEditing]="isEditing">
+        <span class="separator approvalTypeFormatting">n11*NIV</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">/</span>
-        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2" [width]="widths.S" [isEditing]="isEditing">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
         </app-switchable-input>
         <span class="separator approvalTypeFormatting">*</span>
       </div>
@@ -364,8 +310,7 @@
         [type]="editTypes.TEXT"
         name="techRecord_approvalTypeNumber1"
         label="Approval type number"
-        [isEditing]="isEditing"
-      >
+        [isEditing]="isEditing">
       </app-switchable-input>
     </ng-template>
 
@@ -377,8 +322,7 @@
         name="techRecord_approvalTypeNumber1"
         label="Approval type number"
         [width]="widths.XL"
-        [isEditing]="isEditing"
-      >
+        [isEditing]="isEditing">
       </app-switchable-input>
     </ng-template>
   </ng-container>
@@ -389,8 +333,7 @@
     name="techRecord_ntaNumber"
     label="National type number"
     [isEditing]="isEditing"
-    [width]="widths.XL"
-  >
+    [width]="widths.XL">
   </app-switchable-input>
 
   <app-switchable-input
@@ -399,8 +342,7 @@
     name="techRecord_variantNumber"
     label="Variant number"
     [isEditing]="isEditing"
-    [width]="widths.XL"
-  >
+    [width]="widths.XL">
   </app-switchable-input>
 
   <app-switchable-input
@@ -409,7 +351,418 @@
     name="techRecord_variantVersionNumber"
     label="Variant version number"
     [isEditing]="isEditing"
-    [width]="widths.XL"
+    [width]="widths.XL">
+  </app-switchable-input>
+</ng-container>
+<app-switchable-input
+  [form]="form"
+  [type]="editTypes.TEXT"
+  name="techRecord_ntaNumber"
+  label="National type number"
+  [isEditing]="isEditing"
+  [width]="widths.XL">
+</app-switchable-input>
+
+<app-switchable-input
+  [form]="form"
+  [type]="editTypes.TEXT"
+  name="techRecord_coifSerialNumber"
+  label="COIF Serial number"
+  [isEditing]="isEditing"
+  [width]="widths.XL">
+</app-switchable-input>
+
+<app-switchable-input
+  [form]="form"
+  [type]="editTypes.TEXT"
+  name="techRecord_coifCertifierName"
+  label="COIF Certifier name"
+  [isEditing]="isEditing"
+  [width]="widths.XL">
+</app-switchable-input>
+
+<app-switchable-input
+  [form]="form"
+  [type]="editTypes.TEXT"
+  name="techRecord_coifDate"
+  label="COIF Certifier date"
+  [isEditing]="isEditing"
+  [width]="widths.XL">
+</app-switchable-input>
+
+<app-switchable-input
+  [form]="form"
+  [type]="editTypes.TEXT"
+  name="techRecord_variantNumber"
+  label="Variant number"
+  [isEditing]="isEditing"
+  [width]="widths.XL">
+</app-switchable-input>
+
+<app-switchable-input
+  [form]="form"
+  [type]="editTypes.TEXT"
+  name="techRecord_variantVersionNumber"
+  label="Variant version number"
+  [isEditing]="isEditing"
+  [width]="widths.XL">
+</app-switchable-input>
+</ng-container>
+
+<ng-container *ngIf="techRecord.techRecord_vehicleType === 'hgv' || techRecord.techRecord_vehicleType === 'trl'">
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.DROPDOWN"
+    name="techRecord_approvalType"
+    label="Approval type"
+    [isEditing]="isEditing"
+    [options]="getOptionsFromEnum(approvalType)"
+    [width]="widths.M"
   >
+  </app-switchable-input>
+
+  <ng-container [ngSwitch]="chosenApprovalType">
+    <!-- NTA Template -->
+    <ng-template ngSwitchCase="NTA">
+      <app-switchable-input
+        [form]="form"
+        [type]="editTypes.TEXT"
+        name="techRecord_approvalTypeNumber1"
+        label="Approval type number"
+        [isEditing]="isEditing"
+      >
+      </app-switchable-input>
+    </ng-template>
+
+    <!-- ECTA Template -->
+    <ng-template ngSwitchCase="ECTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber1"
+          [width]="widths.S"
+          [isEditing]="isEditing"
+          #techRecord_approvalTypeNumber1
+        >
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">/</span>
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber2"
+          [width]="widths.S"
+          [isEditing]="isEditing"
+          #techRecord_approvalTypeNumber2
+        >
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*</span>
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber3"
+          [width]="widths.S"
+          [isEditing]="isEditing"
+          #techRecord_approvalTypeNumber3
+        >
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- IVA Template -->
+    <ng-template ngSwitchCase="IVA">
+      <app-switchable-input
+        [form]="form"
+        [type]="editTypes.TEXT"
+        name="techRecord_approvalTypeNumber1"
+        label="Approval type number"
+        [isEditing]="isEditing"
+      >
+      </app-switchable-input>
+    </ng-template>
+
+    <!-- NSSTA Template -->
+    <ng-template ngSwitchCase="NSSTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*NKS*</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- ECSSTA Template -->
+    <ng-template ngSwitchCase="ECSSTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">KS</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">/</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- GB WVTA Template -->
+    <ng-template ngSwitchCase="GB WVTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">/</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- UKNI WVTA Template -->
+    <ng-template ngSwitchCase="UKNI WVTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <span class="separator approvalTypeFormatting">X11 *</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">/</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- EU WVTA Pre 23 Template -->
+    <ng-template ngSwitchCase="EU WVTA Pre 23">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+
+        <span class="separator approvalTypeFormatting">/</span>
+
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber3"
+          [width]="widths.S"
+          [isEditing]="isEditing"
+        ></app-switchable-input>
+
+        <span class="separator approvalTypeFormatting">*</span>
+
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- EU WVTA 23 on Template -->
+    <ng-template ngSwitchCase="EU WVTA 23 on">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+
+        <span class="separator approvalTypeFormatting">/</span>
+
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber3"
+          [width]="widths.S"
+          [isEditing]="isEditing"
+        ></app-switchable-input>
+
+        <span class="separator approvalTypeFormatting">*</span>
+
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- QNIG Template -->
+    <ng-template ngSwitchCase="QNIG">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <span class="separator approvalTypeFormatting">e</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+
+        <span class="separator approvalTypeFormatting">/</span>
+
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber3"
+          [width]="widths.S"
+          [isEditing]="isEditing"
+        ></app-switchable-input>
+
+        <span class="separator approvalTypeFormatting">*</span>
+
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- Prov.GB WVTA Template -->
+    <ng-template ngSwitchCase="Prov.GB WVTA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <app-switchable-input
+          [form]="form"
+          [type]="editTypes.TEXT"
+          name="techRecord_approvalTypeNumber1"
+          label="XXX"
+          [width]="widths.S"
+          [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">/</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber3"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber4"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+      </div>
+    </ng-template>
+
+    <!-- Small series Template -->
+    <ng-template ngSwitchCase="Small series">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <span class="separator approvalTypeFormatting">X11*NKS*</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <!--        <span class="separator approvalTypeFormatting">or X11*NKSXX*</span>-->
+        <!--        <app-switchable-input-->
+        <!--          [form]="form"-->
+        <!--          [type]="editTypes.TEXT"-->
+        <!--          name="techRecord_approvalTypeNumber"-->
+        <!--          label="XXXXXX"-->
+        <!--          [width]=widths.S-->
+        <!--          [isEditing]="isEditing"-->
+        <!--        >-->
+        <!--        </app-switchable-input>-->
+      </div>
+    </ng-template>
+
+    <!-- IVA – VCA Template -->
+    <ng-template ngSwitchCase="IVA – VCA">
+      <label class="govuk-label govuk-label--m">Approval type number</label>
+      <div class="ecta-template separator">
+        <span class="separator approvalTypeFormatting">n11*NIV</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber1"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">/</span>
+        <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="techRecord_approvalTypeNumber2"
+                              [width]="widths.S" [isEditing]="isEditing">
+        </app-switchable-input>
+        <span class="separator approvalTypeFormatting">*</span>
+      </div>
+    </ng-template>
+
+    <!-- IVA – DVSA/NI Template -->
+    <ng-template ngSwitchCase="IVA – DVSA/NI">
+      <app-switchable-input
+        [form]="form"
+        [type]="editTypes.TEXT"
+        name="techRecord_approvalTypeNumber1"
+        label="Approval type number"
+        [isEditing]="isEditing">
+      </app-switchable-input>
+    </ng-template>
+
+    <!-- Default Template -->
+    <ng-template ngSwitchDefault>
+      <app-switchable-input
+        [form]="form"
+        [type]="editTypes.TEXT"
+        name="techRecord_approvalTypeNumber1"
+        label="Approval type number"
+        [width]="widths.XL"
+        [isEditing]="isEditing">
+      </app-switchable-input>
+    </ng-template>
+  </ng-container>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_ntaNumber"
+    label="National type number"
+    [isEditing]="isEditing"
+    [width]="widths.XL">
+  </app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_variantNumber"
+    label="Variant number"
+    [isEditing]="isEditing"
+    [width]="widths.XL">
+  </app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.TEXT"
+    name="techRecord_variantVersionNumber"
+    label="Variant version number"
+    [isEditing]="isEditing"
+    [width]="widths.XL">
   </app-switchable-input>
 </ng-container>
