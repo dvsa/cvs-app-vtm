@@ -40,20 +40,17 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
       this.techRecord
     ) as CustomFormGroup;
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
-
     Object.keys(this.form.controls).forEach(key => {
       this.formControls[key] = this.form.get(key) as FormControl;
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log(`ng changes ${JSON.stringify(this.approvalType)}`);
     const { techRecord } = changes;
     if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
       this.form.patchValue(techRecord.currentValue, { emitEvent: false });
       this.chosenApprovalType = techRecord.currentValue.techRecord_approvalType ? techRecord.currentValue.techRecord_approvalType : '';
     }
-    // console.log(this.form.get('techRecord_approvalTypeNumber')?.value);
   }
 
   ngOnDestroy(): void {
@@ -64,11 +61,11 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   get template(): FormNode {
     switch (this.techRecord.techRecord_vehicleType) {
       case VehicleTypes.PSV:
-        return PsvWeightsTemplate;
+        return PsvTypeApprovalTemplate;
       case VehicleTypes.HGV:
-        return HgvWeight;
+        return HgvAndTrlTypeApprovalTemplate;
       case VehicleTypes.TRL:
-        return TrlWeight;
+        return HgvAndTrlTypeApprovalTemplate;
       default:
         throw Error('Incorrect vehicle type!');
     }

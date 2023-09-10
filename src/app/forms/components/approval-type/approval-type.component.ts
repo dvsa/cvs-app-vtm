@@ -1,9 +1,8 @@
 import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
-import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 type Segments = {
@@ -14,13 +13,13 @@ type Segments = {
 };
 
 @Component({
-  selector: 'app-approval-type-input',
+  selector: './app-approval-type-input',
   templateUrl: './approval-type.component.html',
   styleUrls: ['./approval-type.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: ApprovalTypeComponent,
+      useExisting: ApprovalTypeInput,
       multi: true
     }
   ]
@@ -28,7 +27,6 @@ type Segments = {
 export class ApprovalTypeInput extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() isEditing = false;
   @Input() approvalType?: string;
-  public techRecord_approvalTypeNumber?: string;
 
   public form!: CustomFormGroup;
 
@@ -158,15 +156,57 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
     techRecord_approvalTypeNumber4: any
   ) {
     console.log('processing approval type number');
-    console.log(
-      techRecord_approvalTypeNumber1 ?? 'test',
-      techRecord_approvalTypeNumber2 ?? '',
-      techRecord_approvalTypeNumber3 ?? '',
-      techRecord_approvalTypeNumber4 ?? ''
-    );
-    this.techRecord_approvalTypeNumber =
-      techRecord_approvalTypeNumber1 + techRecord_approvalTypeNumber2 + techRecord_approvalTypeNumber3 + techRecord_approvalTypeNumber4;
+    // console.log(
+    //     techRecord_approvalTypeNumber1 ?? 'test',
+    //     techRecord_approvalTypeNumber2 ?? '',
+    //     techRecord_approvalTypeNumber3 ?? '',
+    //     techRecord_approvalTypeNumber4 ?? ''
+    // );
+    switch (this.approvalType) {
+      case 'NTA':
+        return techRecord_approvalTypeNumber1;
 
-    return this.techRecord_approvalTypeNumber;
+      case 'ECTA':
+        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'ECTA'.
+
+      case 'IVA':
+        return techRecord_approvalTypeNumber1;
+
+      case 'NSSTA':
+        console.log(`e${techRecord_approvalTypeNumber1}*NKS*${techRecord_approvalTypeNumber2}${techRecord_approvalTypeNumber3}`);
+        return `e${techRecord_approvalTypeNumber1}*NKS*${techRecord_approvalTypeNumber2}${techRecord_approvalTypeNumber3}`; // You can update this with the actual logic for 'NSSTA'.
+
+      case 'ECSSTA':
+        return `e${techRecord_approvalTypeNumber1}*KS${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'ECSSTA'.
+
+      case 'GB WVTA':
+        return `${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'GB WVTA'.
+
+      case 'UKNI WVTA':
+        return `X11*${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`; // You can update this with the actual logic for 'UKNI WVTA'.
+
+      case 'EU WVTA Pre 23':
+        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'EU WVTA Pre 23'.
+
+      case 'EU WVTA 23 on':
+        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'EU WVTA 23 on'.
+
+      case 'QNIG':
+        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'QNIG'.
+
+      case 'Prov.GB WVTA':
+        return `${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'Prov.GB WVTA'.
+
+      case 'Small series':
+        return `X11*NKS*${techRecord_approvalTypeNumber1}${techRecord_approvalTypeNumber2}`; // You can update this with the actual logic for 'Small series'.
+
+      case 'IVA – VCA':
+        return `n11*NIV${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`; // You can update this with the actual logic for 'IVA – VCA'.
+
+      case 'IVA – DVSA/NI':
+        return techRecord_approvalTypeNumber1;
+      default:
+        return 'Unknown approval type';
+    }
   }
 }
