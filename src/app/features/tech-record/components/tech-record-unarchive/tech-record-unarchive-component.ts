@@ -99,7 +99,8 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     return this.store.select(selectTechRecordHistory).pipe(
       map(techRecordHistory => {
         techRecordHistory?.some((techRecordHistory) => {
-          return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED;
+          return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED &&
+            techRecordHistory.primaryVrm === (this.techRecord as any).primaryVrm;
         });
       })
     );
