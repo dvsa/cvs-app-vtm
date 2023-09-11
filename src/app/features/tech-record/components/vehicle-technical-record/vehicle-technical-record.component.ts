@@ -14,7 +14,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-import { editingTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
+import { clearAllSectionStates, editingTechRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, Subject, take, takeUntil, withLatestFrom } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
@@ -161,6 +161,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
         .subscribe(([record, systemNumber, createdTimestamp]) => {
           if (record && systemNumber && createdTimestamp) {
             this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
+            this.store.dispatch(clearAllSectionStates());
           }
         });
     }
