@@ -61,7 +61,6 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
   }
 
   ngOnInit(): void {
-    console.log('TESTTTTTTT');
     this.subscriptions.push(this.subscribeAndPropagateChanges());
   }
 
@@ -75,29 +74,23 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
   }
 
   onTechRecord_approvalTypeNumber1_Change(event: any) {
-    console.log('in onTechRecord_approvalTypeNumber1_Change');
     this.techRecord_approvalTypeNumber1_.next(event);
   }
 
   onTechRecord_approvalTypeNumber2_Change(event: any) {
-    console.log('in onTechRecord_approvalTypeNumber2_Change');
     this.techRecord_approvalTypeNumber2_.next(event);
   }
 
   onTechRecord_approvalTypeNumber3_Change(event: any) {
-    console.log('in onTechRecord_approvalTypeNumber3_Change');
     this.techRecord_approvalTypeNumber3_.next(event);
   }
 
   onTechRecord_approvalTypeNumber4_Change(event: any) {
-    console.log('in onTechRecord_approvalTypeNumber4_Change');
     this.techRecord_approvalTypeNumber4_.next(event);
   }
 
   valueWriteBack(value: string | null): void {
-    console.log('in value write back');
     if (value) {
-      console.log('in value write back IF');
       this.techRecord_approvalTypeNumber1_.next(this.techRecord_approvalTypeNumber1);
       this.techRecord_approvalTypeNumber2_.next(this.techRecord_approvalTypeNumber2);
       this.techRecord_approvalTypeNumber3_.next(this.techRecord_approvalTypeNumber3);
@@ -116,7 +109,6 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
       techRecord_approvalTypeNumber3: this.techRecord_approvalTypeNumber3$,
       techRecord_approvalTypeNumber4: this.techRecord_approvalTypeNumber4$
     };
-    console.log('subscribing and propagating changes');
     return combineLatest(dateFields).subscribe({
       next: ({ techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4 }) => {
         if (
@@ -125,7 +117,6 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
           !techRecord_approvalTypeNumber3 &&
           !techRecord_approvalTypeNumber4
         ) {
-          console.log('this on change null event');
           this.onChange(null);
           return;
         }
@@ -155,7 +146,6 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
     techRecord_approvalTypeNumber3: any,
     techRecord_approvalTypeNumber4: any
   ) {
-    console.log('processing approval type number');
     switch (this.approvalType) {
       case 'NTA':
         return techRecord_approvalTypeNumber1;
@@ -167,7 +157,6 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
         return techRecord_approvalTypeNumber1;
 
       case 'NSSTA':
-        console.log(`e${techRecord_approvalTypeNumber1}*NKS*${techRecord_approvalTypeNumber2}`);
         return `e${techRecord_approvalTypeNumber1}*NKS*${techRecord_approvalTypeNumber2}`;
 
       case 'ECSSTA':
@@ -202,12 +191,5 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
       default:
         return 'Unknown approval type';
     }
-  }
-  getId(name: string) {
-    const id = name;
-    if (this.control) {
-      this.control.meta.customId = id;
-    }
-    return id;
   }
 }
