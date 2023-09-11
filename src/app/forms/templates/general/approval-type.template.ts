@@ -67,6 +67,18 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       width: FormNodeWidth.XXL,
       validators: [
         { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'NTA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'ECTA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'IVA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'NSSTA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'GB WVTA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'UKNI WVTA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'EU WVTA Pre 23' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'EU WVTA 23' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'QNIG' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'Prov.GB WVTA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'Small series' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'IVA – VCA' } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_approvalType', value: 'IVA – DVSA/NI' } },
         { name: ValidatorNames.MaxLength, args: 40 }
       ]
     },
