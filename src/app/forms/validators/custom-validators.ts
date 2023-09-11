@@ -1,7 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { VehicleClass } from '@models/vehicle-class.model';
-import { VehicleSize } from '@models/vehicle-size.enum';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomValidators {
@@ -269,44 +268,6 @@ export class CustomValidators {
     return !isZNumber ? null : { notZNumber: true };
   };
 
-  static handlePsvClassChange = (): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const vehicleSizeControl = control.root.get('techRecord_vehicleSize');
-      if (control.dirty) {
-        switch (control.value) {
-          case VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats: {
-            vehicleSizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
-            return null;
-          }
-          case VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats: {
-            vehicleSizeControl?.setValue(VehicleSizes.SMALL, { emitEvent: false });
-            return null;
-          }
-        }
-      }
-      return null;
-    };
-  };
-
-  static handlePsvSizeChange = (): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const vehicleClassControl = control.root.get('techRecord_vehicleClass_description');
-      if (control.dirty) {
-        switch (control.value) {
-          case VehicleSizes.LARGE: {
-            vehicleClassControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
-            return null;
-          }
-          case VehicleSizes.SMALL: {
-            vehicleClassControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
-            return null;
-          }
-        }
-      }
-      return null;
-    };
-  };
-
   static handlePsvPassengersChange = (passengersOne: string, passengersTwo: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.dirty) {
@@ -330,6 +291,7 @@ export class CustomValidators {
             classControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
           }
         }
+        control.markAsPristine();
       }
       return null;
     };

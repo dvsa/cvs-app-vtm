@@ -52,8 +52,6 @@ export class DynamicFormService {
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
     [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued,
     [ValidatorNames.MustEqualSibling]: (args: { sibling: string }) => CustomValidators.mustEqualSibling(args.sibling),
-    [ValidatorNames.HandlePsvClassChange]: () => CustomValidators.handlePsvClassChange(),
-    [ValidatorNames.HandlePsvSizeChange]: () => CustomValidators.handlePsvSizeChange(),
     [ValidatorNames.HandlePsvPassengersChange]: (args: { passengersOne: string; passengersTwo: string }) =>
       CustomValidators.handlePsvPassengersChange(args.passengersOne, args.passengersTwo)
   };

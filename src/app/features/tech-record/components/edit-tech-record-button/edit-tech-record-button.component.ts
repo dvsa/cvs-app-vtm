@@ -76,6 +76,5 @@ export class EditTechRecordButtonComponent implements OnDestroy {
   submit() {
     this.submitChange.emit();
     this.viewportScroller.scrollToPosition([0, 0]);
-    this.store.dispatch(clearAllSectionStates());
   }
 }
