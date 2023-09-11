@@ -116,7 +116,7 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
       techRecord_approvalTypeNumber3: this.techRecord_approvalTypeNumber3$,
       techRecord_approvalTypeNumber4: this.techRecord_approvalTypeNumber4$
     };
-    console.log('subscribing and progating changes');
+    console.log('subscribing and propagating changes');
     return combineLatest(dateFields).subscribe({
       next: ({ techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4 }) => {
         if (
@@ -156,57 +156,58 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
     techRecord_approvalTypeNumber4: any
   ) {
     console.log('processing approval type number');
-    // console.log(
-    //     techRecord_approvalTypeNumber1 ?? 'test',
-    //     techRecord_approvalTypeNumber2 ?? '',
-    //     techRecord_approvalTypeNumber3 ?? '',
-    //     techRecord_approvalTypeNumber4 ?? ''
-    // );
     switch (this.approvalType) {
       case 'NTA':
         return techRecord_approvalTypeNumber1;
 
       case 'ECTA':
-        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'ECTA'.
+        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
 
       case 'IVA':
         return techRecord_approvalTypeNumber1;
 
       case 'NSSTA':
-        console.log(`e${techRecord_approvalTypeNumber1}*NKS*${techRecord_approvalTypeNumber2}${techRecord_approvalTypeNumber3}`);
-        return `e${techRecord_approvalTypeNumber1}*NKS*${techRecord_approvalTypeNumber2}${techRecord_approvalTypeNumber3}`; // You can update this with the actual logic for 'NSSTA'.
+        console.log(`e${techRecord_approvalTypeNumber1}*NKS*${techRecord_approvalTypeNumber2}`);
+        return `e${techRecord_approvalTypeNumber1}*NKS*${techRecord_approvalTypeNumber2}`;
 
       case 'ECSSTA':
-        return `e${techRecord_approvalTypeNumber1}*KS${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'ECSSTA'.
+        return `e${techRecord_approvalTypeNumber1}*KS${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
 
       case 'GB WVTA':
-        return `${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'GB WVTA'.
+        return `${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
 
       case 'UKNI WVTA':
-        return `X11*${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`; // You can update this with the actual logic for 'UKNI WVTA'.
+        return `X11*${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`;
 
       case 'EU WVTA Pre 23':
-        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'EU WVTA Pre 23'.
+        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
 
       case 'EU WVTA 23 on':
-        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'EU WVTA 23 on'.
+        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
 
       case 'QNIG':
-        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'QNIG'.
+        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
 
       case 'Prov.GB WVTA':
-        return `${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`; // You can update this with the actual logic for 'Prov.GB WVTA'.
+        return `${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
 
       case 'Small series':
-        return `X11*NKS*${techRecord_approvalTypeNumber1}${techRecord_approvalTypeNumber2}`; // You can update this with the actual logic for 'Small series'.
+        return `X11*NKS*${techRecord_approvalTypeNumber1}${techRecord_approvalTypeNumber2}`;
 
       case 'IVA – VCA':
-        return `n11*NIV${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`; // You can update this with the actual logic for 'IVA – VCA'.
+        return `n11*NIV${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`;
 
       case 'IVA – DVSA/NI':
         return techRecord_approvalTypeNumber1;
       default:
         return 'Unknown approval type';
     }
+  }
+  getId(name: string) {
+    const id = name;
+    if (this.control) {
+      this.control.meta.customId = id;
+    }
+    return id;
   }
 }

@@ -45,6 +45,7 @@ import { NoSpaceDirective } from './directives/app-no-space.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { ApprovalTypeInput } from '@forms/components/approval-type/approval-type.component';
+import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { ApprovalTypeInput } from '@forms/components/approval-type/approval-type
     SuggestiveInputComponent,
     CheckboxComponent,
     ApprovalTypeComponent,
-    ApprovalTypeInput
+    ApprovalTypeInput,
+    ApprovalTypeFocusNextDirective
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -132,7 +134,8 @@ import { ApprovalTypeInput } from '@forms/components/approval-type/approval-type
     NoSpaceDirective,
     TrimWhitespaceDirective,
     ApprovalTypeComponent,
-    ApprovalTypeInput
+    ApprovalTypeInput,
+    ApprovalTypeFocusNextDirective
   ]
 })
 export class DynamicFormsModule {}
