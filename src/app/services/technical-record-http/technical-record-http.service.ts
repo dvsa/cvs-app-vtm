@@ -59,11 +59,18 @@ export class TechnicalRecordHttpService {
     return this.http.patch<TechRecordType<'get'>>(url, techRecord, { responseType: 'json' });
   }
 
-  amendVrm$(newVrm: string, cherishedTransfer: boolean, systemNumber: string, createdTimestamp: string): Observable<TechRecordType<'get'>> {
+  amendVrm$(
+    newVrm: string,
+    cherishedTransfer: boolean,
+    systemNumber: string,
+    createdTimestamp: string,
+    newDonorVrm?: string
+  ): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`;
     const body = {
       newVrm,
-      isCherishedTransfer: cherishedTransfer
+      isCherishedTransfer: cherishedTransfer,
+      newDonorVrm: newDonorVrm ?? undefined
     };
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }

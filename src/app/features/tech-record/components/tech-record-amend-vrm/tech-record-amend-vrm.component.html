@@ -21,7 +21,6 @@
   </dl>
 
   <form [formGroup]="form">
-    <app-radio-group formControlName="isCherishedTransfer" [options]="reasons"></app-radio-group>
     <app-text-input
       #newVrm
       appToUppercase
@@ -29,7 +28,7 @@
       appTrimWhitespace
       formControlName="newVrm"
       [width]="width"
-      [hidden]="form.value.isCherishedTransfer ? true : false"
+      [hidden]="isCherishedTransfer"
       label="New VRM"
     ></app-text-input>
     <app-text-input
@@ -40,7 +39,7 @@
       formControlName="donorVrm"
       [disabled]="true"
       [width]="width"
-      [hidden]="form.value.isCherishedTransfer ? false : true"
+      [hidden]="isCherishedTransfer ? false : true"
       label="Donor VRM"
     ></app-text-input>
     <app-text-input
@@ -51,7 +50,7 @@
       formControlName="recipientVrm"
       [disabled]="true"
       [width]="width"
-      [hidden]="form.value.isCherishedTransfer ? false : true"
+      [hidden]="isCherishedTransfer ? false : true"
       label="Recipient vehicle VRM"
     ></app-text-input>
     <app-text-input
@@ -62,9 +61,11 @@
       formControlName="newDonorVrm"
       [disabled]="true"
       [width]="width"
-      [hidden]="form.value.isCherishedTransfer ? false : true"
+      [hidden]="isCherishedTransfer ? false : true"
       label="New VRM for donor vehicle"
     ></app-text-input>
+
+    <!-- <app-dynamic-form-group [template]="formTemplate" [edit]="true"></app-dynamic-form-group> -->
 
     <div *ngIf="newVrm.value.toUpperCase() !== techRecord.primaryVrm && newVrm.value.length">
       <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>

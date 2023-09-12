@@ -141,42 +141,31 @@ export class TechnicalRecordService {
     };
   }
 
-  validateVrmForUpdate(originalVrm?: string): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return of(control.value).pipe(
-        filter((value: string) => !!value),
-        take(1),
-        switchMap(value => {
-          return this.isUnique(value, SEARCH_TYPES.VRM).pipe(
-            map(result => {
-              if (control.value === originalVrm) {
-                return { validateVin: { message: 'You must provide a new VRM' } };
-              } else {
-                return result ? null : { validateVin: { message: 'This VRM already exists on an active record' } };
-              }
-            }),
-            catchError(() => of(null))
-          );
-        })
-      );
-    };
+  validateVrmForUpdate(newVrm: string, originalVrm?: string) {
+    return this.isUnique(newVrm, SEARCH_TYPES.VRM).pipe(
+      map(result => {
+        if (newVrm === originalVrm) {
+          return { validateVin: { message: 'You must provide a new VRM' } };
+        } else {
+          return result ? null : { validateVin: { message: 'This VRM already exists on an active record' } };
+        }
+      })
+    );
   }
 
-  checkVehicleExists(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return of(control.value).pipe(
-        filter((value: string) => !!value),
-        take(1),
-        switchMap(value => {
-          return this.isUnique(value, SEARCH_TYPES.VRM).pipe(
-            map(result => {
-              return !result ? null : { validateVin: { message: 'This VRM does not exist on an active record' } };
-            }),
-            catchError(() => of(null))
-          );
-        })
-      );
-    };
+  cherishedTransferValidate(newVrm: string) {
+    return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, newVrm).pipe(
+      map(results => {
+        console.log(results);
+        if (results.some(result => result.techRecord_statusCode === StatusCodes.CURRENT)) {
+          return null;
+        }
+        return null;
+      }),
+      catchError((err: HttpErrorResponse) => {
+        return (err.status == 404 && of({ validateVin: { message: 'This VRM does not exist on a current record' } })) || throwError(() => err);
+      })
+    );
   }
 
   clearEditingTechRecord() {

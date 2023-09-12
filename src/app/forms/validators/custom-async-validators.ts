@@ -6,6 +6,7 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store, select } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { testResultInEdit } from '@store/test-records';
@@ -170,6 +171,31 @@ export class CustomAsyncValidators {
           return null;
         })
       );
+  }
+
+  static validateVrmDoesNotExist(techRecordService: TechnicalRecordService, originalVrm: string, controlName: string): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (control.dirty) {
+        control.markAsPristine();
+        if (controlName === 'newDonorVrm') {
+          control.root.get('donorVrm')?.updateValueAndValidity();
+        }
+        return techRecordService.validateVrmForUpdate(control.value, originalVrm);
+      }
+      return of(null);
+    };
+  }
+
+  static validateDonorVrmField(techRecordService: TechnicalRecordService, originalVrm: string): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      const newDonorVrm = control.root.get('newDonorVrm');
+      console.log(newDonorVrm);
+
+      if (newDonorVrm?.value !== '') {
+        return techRecordService.cherishedTransferValidate(control.value);
+      }
+      return techRecordService.validateVrmForUpdate(control.value, originalVrm);
+    };
   }
 
   private static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[]) {

@@ -17,6 +17,7 @@ import { GeneratePlateComponent } from './components/tech-record-generate-plate/
 import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
 import { TechRecordComponent } from './tech-record.component';
+import { AmendVrmReasonComponent } from './components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component';
 
 const routes: Routes = [
   {
@@ -56,6 +57,12 @@ const routes: Routes = [
   },
   {
     path: 'change-vrm',
+    component: AmendVrmReasonComponent,
+    data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: 'change-vrm/:reason',
     component: AmendVrmComponent,
     data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard]
@@ -120,6 +127,12 @@ const routes: Routes = [
       },
       {
         path: 'change-vrm',
+        component: AmendVrmReasonComponent,
+        data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
+        canActivate: [MsalGuard, RoleGuard]
+      },
+      {
+        path: 'change-vrm/:reason',
         component: AmendVrmComponent,
         data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
         canActivate: [MsalGuard, RoleGuard]
