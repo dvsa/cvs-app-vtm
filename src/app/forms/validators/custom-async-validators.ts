@@ -189,6 +189,7 @@ export class CustomAsyncValidators {
   static validateDonorVrmField(techRecordService: TechnicalRecordService, originalVrm: string): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const newDonorVrm = control.root.get('newDonorVrm');
+      console.log(newDonorVrm);
 
       if (newDonorVrm?.value !== '') {
         return techRecordService.cherishedTransferValidate(control.value);

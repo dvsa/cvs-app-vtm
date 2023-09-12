@@ -156,6 +156,7 @@ export class TechnicalRecordService {
   cherishedTransferValidate(newVrm: string) {
     return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, newVrm).pipe(
       map(results => {
+        console.log(results);
         if (results.some(result => result.techRecord_statusCode === StatusCodes.CURRENT)) {
           return null;
         }
