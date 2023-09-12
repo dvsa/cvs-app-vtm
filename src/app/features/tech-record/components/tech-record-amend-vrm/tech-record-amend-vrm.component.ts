@@ -90,8 +90,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
       this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
     });
-    // this.form.get('recipientVrm')?.setValue(this.techRecord?.primaryVrm);
-    // this.form.get('recipientVrm')?.disable();
+    this.form.get('recipientVrm')?.setValue(this.techRecord?.primaryVrm);
+    this.form.get('recipientVrm')?.disable();
 
     this.route.params.pipe(take(1)).subscribe(params => {
       this.isCherishedTransfer = params['reason'] === 'cherished-transfer' ? true : false;
@@ -191,7 +191,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   handleSubmit(): void {
     // this.checkForms();
 
-    if (this.isFormInvalid) return;
+    // if (this.isFormInvalid) return;
 
     // console.log({newVrm: form[0].value.newVrm,
     //   cherishedTransfer: this.reason === 'cherished-transfer' ? true : false,
@@ -199,15 +199,14 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     //   systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
     //   createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!})
 
-    // this.store.dispatch(
-
-    //   amendVrm({
-    //     newVrm: form[0].value.newVrm,
-    //     cherishedTransfer: this.reason === 'cherished-transfer' ? true : false,
-    //     newDonorVrm: form[0].value.newDonorVrm ?? '',
-    //     systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
-    //     createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
-    //   })
-    // );
+    this.store.dispatch(
+      amendVrm({
+        newVrm: this.isCherishedTransfer ? this.form.value.newDonorVrm : this.form.value.newVrm,
+        cherishedTransfer: this.isCherishedTransfer ?? false,
+        newDonorVrm: this.form.value.newDonorVrm ?? '',
+        systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
+        createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
+      })
+    );
   }
 }
