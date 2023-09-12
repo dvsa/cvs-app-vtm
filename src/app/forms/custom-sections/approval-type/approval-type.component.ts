@@ -95,4 +95,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   get isPsv(): boolean {
     return this.techRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
+  protected readonly TechRecord = TechRecord;
+  protected readonly getOptionsFromEnum = getOptionsFromEnum;
+  protected readonly approvalType = approvalType;
 }
