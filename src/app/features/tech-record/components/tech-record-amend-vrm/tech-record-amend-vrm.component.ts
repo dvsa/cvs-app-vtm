@@ -90,8 +90,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
       this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
     });
-    // this.form.get('recipientVrm')?.setValue(this.techRecord?.primaryVrm);
-    // this.form.get('recipientVrm')?.disable();
+    this.form.get('recipientVrm')?.setValue(this.techRecord?.primaryVrm);
+    this.form.get('recipientVrm')?.disable();
 
     this.route.params.pipe(take(1)).subscribe(params => {
       this.isCherishedTransfer = params['reason'] === 'cherished-transfer' ? true : false;
@@ -190,24 +190,27 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   handleSubmit(): void {
     // this.checkForms();
+    this.isFormValid();
 
-    if (this.isFormInvalid) return;
+    amendVrm({
+      newVrm: this.isCherishedTransfer ? this.form.value.newVrm : this.form.value.donorVrm,
+      cherishedTransfer: this.isCherishedTransfer ?? false,
+      newDonorVrm: this.form.value.newDonorVrm ?? '',
+      systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
+      createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
+    });
+  }
+  isFormValid(): boolean {
+    this.globalErrorService.clearErrors();
 
-    // console.log({newVrm: form[0].value.newVrm,
-    //   cherishedTransfer: this.reason === 'cherished-transfer' ? true : false,
-    //   newDonorVrm: form[0].value.newDonorVrm ?? '',
-    //   systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
-    //   createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!})
+    const errors: GlobalError[] = [];
 
-    // this.store.dispatch(
+    DynamicFormService.validate(this.form, errors);
 
-    //   amendVrm({
-    //     newVrm: form[0].value.newVrm,
-    //     cherishedTransfer: this.reason === 'cherished-transfer' ? true : false,
-    //     newDonorVrm: form[0].value.newDonorVrm ?? '',
-    //     systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
-    //     createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
-    //   })
-    // );
+    if (errors?.length) {
+      this.globalErrorService.setErrors(errors);
+    }
+
+    return this.form.valid;
   }
 }
