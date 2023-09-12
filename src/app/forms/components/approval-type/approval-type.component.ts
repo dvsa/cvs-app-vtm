@@ -1,15 +1,15 @@
-import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 type Segments = {
-  techRecord_approvalTypeNumber1: Observable<string | undefined>;
-  techRecord_approvalTypeNumber2: Observable<string | undefined>;
-  techRecord_approvalTypeNumber3: Observable<string | undefined>;
-  techRecord_approvalTypeNumber4?: Observable<string | undefined>;
+  approvalTypeNumber1: Observable<string | undefined>;
+  approvalTypeNumber2: Observable<string | undefined>;
+  approvalTypeNumber3: Observable<string | undefined>;
+  approvalTypeNumber4?: Observable<string | undefined>;
 };
 
 @Component({
@@ -19,45 +19,48 @@ type Segments = {
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: ApprovalTypeInput,
+      useExisting: ApprovalTypeInputComponent,
       multi: true
     }
   ]
 })
-export class ApprovalTypeInput extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
+export class ApprovalTypeInputComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() isEditing = false;
   @Input() approvalType?: string;
+  @Input() approvalTypeChange: boolean | undefined;
 
-  public form!: CustomFormGroup;
-
-  private techRecord_approvalTypeNumber1_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
-  private techRecord_approvalTypeNumber2_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
-  private techRecord_approvalTypeNumber3_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
-  private techRecord_approvalTypeNumber4_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
-  private techRecord_approvalTypeNumber1$: Observable<string | undefined>;
-  private techRecord_approvalTypeNumber2$: Observable<string | undefined>;
-  private techRecord_approvalTypeNumber3$: Observable<string | undefined>;
-  private techRecord_approvalTypeNumber4$: Observable<string | undefined>;
+  private approvalTypeNumber1_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+  private approvalTypeNumber2_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+  private approvalTypeNumber3_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+  private approvalTypeNumber4_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+  private approvalTypeNumber1$: Observable<string | undefined>;
+  private approvalTypeNumber2$: Observable<string | undefined>;
+  private approvalTypeNumber3$: Observable<string | undefined>;
+  private approvalTypeNumber4$: Observable<string | undefined>;
   private subscriptions: Array<Subscription | undefined> = [];
   public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
   protected formSubmitted? = false;
 
-  public techRecord_approvalTypeNumber1?: string;
-  public techRecord_approvalTypeNumber2?: string;
-  public techRecord_approvalTypeNumber3?: string;
-  public techRecord_approvalTypeNumber4?: string;
+  public approvalTypeNumber1?: string;
+  public approvalTypeNumber2?: string;
+  public approvalTypeNumber3?: string;
+  public approvalTypeNumber4?: string;
 
   constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef, public globalErrorService: GlobalErrorService) {
     super(injector, changeDetectorRef);
-    this.techRecord_approvalTypeNumber1$ = this.techRecord_approvalTypeNumber1_.asObservable();
-    this.techRecord_approvalTypeNumber2$ = this.techRecord_approvalTypeNumber2_.asObservable();
-    this.techRecord_approvalTypeNumber3$ = this.techRecord_approvalTypeNumber3_.asObservable();
-    this.techRecord_approvalTypeNumber4$ = this.techRecord_approvalTypeNumber4_.asObservable();
+    this.approvalTypeNumber1$ = this.approvalTypeNumber1_.asObservable();
+    this.approvalTypeNumber2$ = this.approvalTypeNumber2_.asObservable();
+    this.approvalTypeNumber3$ = this.approvalTypeNumber3_.asObservable();
+    this.approvalTypeNumber4$ = this.approvalTypeNumber4_.asObservable();
     this.globalErrorService.errors$.subscribe((globalErrors: any) => {
       if (globalErrors.length) {
         this.formSubmitted = true;
       }
     });
+  }
+
+  ngOnChanges(): void {
+    this.clearInput();
   }
 
   ngOnInit(): void {
@@ -74,62 +77,58 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
   }
 
   onTechRecord_approvalTypeNumber1_Change(event: any) {
-    this.techRecord_approvalTypeNumber1_.next(event);
+    this.approvalTypeNumber1_.next(event);
   }
 
   onTechRecord_approvalTypeNumber2_Change(event: any) {
-    this.techRecord_approvalTypeNumber2_.next(event);
+    this.approvalTypeNumber2_.next(event);
   }
 
   onTechRecord_approvalTypeNumber3_Change(event: any) {
-    this.techRecord_approvalTypeNumber3_.next(event);
+    this.approvalTypeNumber3_.next(event);
   }
 
   onTechRecord_approvalTypeNumber4_Change(event: any) {
-    this.techRecord_approvalTypeNumber4_.next(event);
+    this.approvalTypeNumber4_.next(event);
   }
 
   valueWriteBack(value: string | null): void {
     if (value) {
-      this.techRecord_approvalTypeNumber1_.next(this.techRecord_approvalTypeNumber1);
-      this.techRecord_approvalTypeNumber2_.next(this.techRecord_approvalTypeNumber2);
-      this.techRecord_approvalTypeNumber3_.next(this.techRecord_approvalTypeNumber3);
-      this.techRecord_approvalTypeNumber4_.next(this.techRecord_approvalTypeNumber4);
+      this.approvalTypeNumber1_.next(this.approvalTypeNumber1);
+      this.approvalTypeNumber2_.next(this.approvalTypeNumber2);
+      this.approvalTypeNumber3_.next(this.approvalTypeNumber3);
+      this.approvalTypeNumber4_.next(this.approvalTypeNumber4);
     }
   }
 
   /**
-   * Subscribes to all date segments and propagates value as `Date`.
+   * Subscribes to all date segments and propagates value as `string`.
    * @returns Subscription
    */
   subscribeAndPropagateChanges() {
     const dateFields: Segments = {
-      techRecord_approvalTypeNumber1: this.techRecord_approvalTypeNumber1$,
-      techRecord_approvalTypeNumber2: this.techRecord_approvalTypeNumber2$,
-      techRecord_approvalTypeNumber3: this.techRecord_approvalTypeNumber3$,
-      techRecord_approvalTypeNumber4: this.techRecord_approvalTypeNumber4$
+      approvalTypeNumber1: this.approvalTypeNumber1$,
+      approvalTypeNumber2: this.approvalTypeNumber2$,
+      approvalTypeNumber3: this.approvalTypeNumber3$,
+      approvalTypeNumber4: this.approvalTypeNumber4$
     };
     return combineLatest(dateFields).subscribe({
-      next: ({ techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4 }) => {
-        if (
-          !techRecord_approvalTypeNumber1 &&
-          !techRecord_approvalTypeNumber2 &&
-          !techRecord_approvalTypeNumber3 &&
-          !techRecord_approvalTypeNumber4
-        ) {
+      next: ({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) => {
+        if (!approvalTypeNumber1 && !approvalTypeNumber2 && !approvalTypeNumber3 && !approvalTypeNumber4) {
           this.onChange(null);
           return;
         }
-        this.onChange(
-          this.processApprovalTypeNumber(
-            techRecord_approvalTypeNumber1,
-            techRecord_approvalTypeNumber2,
-            techRecord_approvalTypeNumber3,
-            techRecord_approvalTypeNumber4
-          )
-        );
+        this.onChange(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
       }
     });
+  }
+
+  clearInput() {
+    this.approvalTypeNumber1 = '';
+    this.approvalTypeNumber2 = '';
+    this.approvalTypeNumber3 = '';
+    this.approvalTypeNumber4 = '';
+    this.onChange(null);
   }
 
   get widths(): typeof FormNodeWidth {
@@ -183,10 +182,10 @@ export class ApprovalTypeInput extends BaseControlComponent implements OnInit, O
       case 'Small series':
         return `X11*NKS*${techRecord_approvalTypeNumber1}${techRecord_approvalTypeNumber2}`;
 
-      case 'IVA – VCA':
+      case 'IVA - VCA':
         return `n11*NIV${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`;
 
-      case 'IVA – DVSA/NI':
+      case 'IVA - DVSA/NI':
         return techRecord_approvalTypeNumber1;
       default:
         return 'Unknown approval type';

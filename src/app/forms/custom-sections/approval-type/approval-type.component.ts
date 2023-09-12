@@ -9,11 +9,9 @@ import { approvalType, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechRecord } from '@api/vehicle';
 
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
-import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
-import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
+import { FormControl } from '@angular/forms';
+import { techRecord } from '@store/technical-records';
+import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
 
 @Component({
   selector: 'app-approval-type[techRecord]',
@@ -29,6 +27,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   public form!: CustomFormGroup;
   private destroy$ = new Subject<void>();
   protected chosenApprovalType: string | undefined;
+  protected approvalTypeChange: boolean = false;
   formControls: { [key: string]: FormControl } = {};
 
   constructor(private dfs: DynamicFormService) {}
@@ -40,15 +39,30 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
     ) as CustomFormGroup;
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
     Object.keys(this.form.controls).forEach(key => {
+      console.log(key);
       this.formControls[key] = this.form.get(key) as FormControl;
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.chosenApprovalType);
     const { techRecord } = changes;
     if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
       this.form.patchValue(techRecord.currentValue, { emitEvent: false });
       this.chosenApprovalType = techRecord.currentValue.techRecord_approvalType ? techRecord.currentValue.techRecord_approvalType : '';
+
+      if (
+        techRecord.currentValue.techRecord_approvalType != techRecord.previousValue.techRecord_approvalType &&
+        techRecord.previousValue.techRecord_approvalType != null
+      ) {
+        this.approvalTypeChange = true;
+        console.log(this.approvalTypeChange);
+      }
+      if ((techRecord.currentValue.techRecord_approvalType -= techRecord.previousValue.techRecord_approvalType && true)) {
+        {
+          this.approvalTypeChange = false;
+        }
+      }
     }
   }
 
@@ -81,9 +95,4 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   get isPsv(): boolean {
     return this.techRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
-
-  protected readonly TechRecord = TechRecord;
-  protected readonly getOptionsFromEnum = getOptionsFromEnum;
-  protected readonly approvalType = approvalType;
-  protected readonly console = console;
 }

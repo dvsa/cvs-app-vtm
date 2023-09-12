@@ -44,7 +44,7 @@ import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { NoSpaceDirective } from './directives/app-no-space.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
-import { ApprovalTypeInput } from '@forms/components/approval-type/approval-type.component';
+import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
 import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
 
 @NgModule({
@@ -91,7 +91,7 @@ import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/
     SuggestiveInputComponent,
     CheckboxComponent,
     ApprovalTypeComponent,
-    ApprovalTypeInput,
+    ApprovalTypeInputComponent,
     ApprovalTypeFocusNextDirective
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
@@ -134,7 +134,7 @@ import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/
     NoSpaceDirective,
     TrimWhitespaceDirective,
     ApprovalTypeComponent,
-    ApprovalTypeInput,
+    ApprovalTypeInputComponent,
     ApprovalTypeFocusNextDirective
   ]
 })
