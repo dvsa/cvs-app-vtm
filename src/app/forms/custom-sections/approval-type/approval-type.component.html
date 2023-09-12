@@ -6,7 +6,7 @@
     label="Approval type"
     [isEditing]="isEditing"
     [options]="getOptionsFromEnum(approvalType)"
-    [width]="widths.M"
+    [width]="widths.L"
   >
   </app-switchable-input>
 
@@ -16,8 +16,9 @@
     name="techRecord_approvalTypeNumber"
     label="Approval type number"
     [isEditing]="isEditing"
-    [width]="widths.M"
+    [width]="widths.L"
     [approvalType]="chosenApprovalType"
+    [approvalTypeChange]="approvalTypeChange"
   >
   </app-switchable-input>
 
@@ -90,7 +91,7 @@
     label="Approval type"
     [isEditing]="isEditing"
     [options]="getOptionsFromEnum(approvalType)"
-    [width]="widths.M"
+    [width]="widths.L"
   >
   </app-switchable-input>
 
@@ -100,8 +101,9 @@
     name="techRecord_approvalTypeNumber"
     label="Approval type number"
     [isEditing]="isEditing"
-    [width]="widths.M"
+    [width]="widths.XL"
     [approvalType]="chosenApprovalType"
+    [approvalTypeChange]="approvalTypeChange"
   >
   </app-switchable-input>
 

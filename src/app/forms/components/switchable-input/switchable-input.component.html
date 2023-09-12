@@ -47,7 +47,14 @@
     ></app-date>
   </ng-template>
 
-  <app-approval-type-input *ngSwitchCase="types.APPROVAL_TYPE" [formControlName]="name" [approvalType]="approvalType" [label]="label" [width]="width">
+  <app-approval-type-input
+    *ngSwitchCase="types.APPROVAL_TYPE"
+    [formControlName]="name"
+    [approvalType]="approvalType"
+    [approvalTypeChange]="approvalTypeChange"
+    [label]="label"
+    [width]="width"
+  >
   </app-approval-type-input>
 
   <app-number-input
