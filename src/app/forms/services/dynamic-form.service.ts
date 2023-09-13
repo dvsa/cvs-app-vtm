@@ -69,10 +69,10 @@ export class DynamicFormService {
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
-    [AsyncValidatorNames.ValidateDonorVrmField]: (args: { techRecService: TechnicalRecordService; originalVrm: string }) =>
-      CustomAsyncValidators.validateDonorVrmField(args.techRecService, args.originalVrm),
-    [AsyncValidatorNames.ValidateVrmDoesNotExist]: (args: { techRecService: TechnicalRecordService; originalVrm: string; controlName: string }) =>
-      CustomAsyncValidators.validateVrmDoesNotExist(args.techRecService, args.originalVrm, args.controlName)
+    [AsyncValidatorNames.ValidateDonorVrmField]: (args: { techRecService: TechnicalRecordService }) =>
+      CustomAsyncValidators.validateDonorVrmField(args.techRecService),
+    [AsyncValidatorNames.ValidateVrmDoesNotExist]: (args: { techRecService: TechnicalRecordService }) =>
+      CustomAsyncValidators.validateVrmDoesNotExist(args.techRecService)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
@@ -149,7 +149,6 @@ export class DynamicFormService {
   private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {
     const { errors } = control;
     const meta = (control as CustomFormControl).meta as FormNode | undefined;
-
     if (errors) {
       const errorList = Object.keys(errors);
       errorList.forEach(error => {

@@ -20,61 +20,51 @@
     </div>
   </dl>
 
-  <form [formGroup]="form">
-    <app-text-input
-      #newVrm
-      appToUppercase
-      appNoSpace
-      appTrimWhitespace
-      formControlName="newVrm"
-      [width]="width"
-      [hidden]="isCherishedTransfer"
-      label="New VRM"
-    ></app-text-input>
-    <app-text-input
-      #recipientVrm
-      appToUppercase
-      appNoSpace
-      appTrimWhitespace
-      formControlName="donorVrm"
-      [disabled]="true"
-      [width]="width"
-      [hidden]="isCherishedTransfer ? false : true"
-      label="Donor VRM"
-    ></app-text-input>
-    <app-text-input
-      #recipientVrm
-      appToUppercase
-      appNoSpace
-      appTrimWhitespace
-      formControlName="recipientVrm"
-      [disabled]="true"
-      [width]="width"
-      [hidden]="isCherishedTransfer ? false : true"
-      label="Recipient vehicle VRM"
-    ></app-text-input>
-    <app-text-input
-      #recipientVrm
-      appToUppercase
-      appNoSpace
-      appTrimWhitespace
-      formControlName="newDonorVrm"
-      [disabled]="true"
-      [width]="width"
-      [hidden]="isCherishedTransfer ? false : true"
-      label="New VRM for donor vehicle"
-    ></app-text-input>
-
-    <!-- <app-dynamic-form-group [template]="formTemplate" [edit]="true"></app-dynamic-form-group> -->
-
-    <div *ngIf="newVrm.value.toUpperCase() !== techRecord.primaryVrm && newVrm.value.length">
-      <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
-      <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
-    </div>
-
-    <app-button-group>
-      <app-button id="submit-vrm" (clicked)="handleSubmit()">Save</app-button>
-      <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
-    </app-button-group>
-  </form>
+  <ng-container [ngSwitch]="isCherishedTransfer">
+    <ng-container *ngSwitchCase="false">
+      <form [formGroup]="correctingAnErrorForm">
+        <app-text-input #newVrm appToUppercase appNoSpace appTrimWhitespace formControlName="newVrm" [width]="width" label="New VRM"></app-text-input>
+        <div *ngIf="newVrm.value.toUpperCase() !== techRecord.primaryVrm && newVrm.value.length">
+          <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
+          <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
+        </div>
+      </form>
+    </ng-container>
+    <ng-container *ngSwitchCase="true">
+      <form [formGroup]="cherishedTransferForm">
+        <app-text-input
+          #recipientVrm
+          appToUppercase
+          appNoSpace
+          appTrimWhitespace
+          formControlName="donorVrm"
+          [width]="width"
+          label="Donor VRM"
+        ></app-text-input>
+        <app-text-input
+          #recipientVrm
+          appToUppercase
+          appNoSpace
+          appTrimWhitespace
+          formControlName="recipientVrm"
+          [disabled]="true"
+          [width]="width"
+          label="Recipient vehicle VRM"
+        ></app-text-input>
+        <app-text-input
+          #recipientVrm
+          appToUppercase
+          appNoSpace
+          appTrimWhitespace
+          formControlName="newDonorVrm"
+          [width]="width"
+          label="New VRM for donor vehicle"
+        ></app-text-input>
+      </form>
+    </ng-container>
+  </ng-container>
+  <app-button-group>
+    <app-button id="submit-vrm" (clicked)="handleSubmit()">Save</app-button>
+    <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+  </app-button-group>
 </div>

@@ -5,6 +5,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import {
@@ -37,34 +38,36 @@ import { Subject, catchError, debounceTime, filter, mergeWith, of, switchMap, ta
 export class AmendVrmComponent implements OnDestroy, OnInit {
   techRecord?: NotTrailer;
   makeAndModel?: string;
-  isCherishedTransfer?: boolean;
+  isCherishedTransfer?: boolean = false;
   vrmInfo: any;
-  @Output() isFormDirty = new EventEmitter<boolean>();
-  @Output() isFormInvalid = new EventEmitter<boolean>();
-
-  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
-
-  form = new FormGroup({
-    newVrm: new CustomFormControl(
-      { name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL },
-      '',
-      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      [CustomAsyncValidators.validateVrmDoesNotExist(this.technicalRecordService, this.techRecord?.primaryVrm ?? '', 'newVrm')]
-    ),
+  cherishedTransferForm: FormGroup = new FormGroup({
     donorVrm: new CustomFormControl(
       { name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL },
       '',
-      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      [CustomAsyncValidators.validateDonorVrmField(this.technicalRecordService, this.techRecord?.primaryVrm ?? '')]
+      [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
+      [CustomAsyncValidators.validateDonorVrmField(this.technicalRecordService)]
     ),
-    recipientVrm: new CustomFormControl({ name: 'recipient-vrm', label: 'recipient vehicle VRM', type: FormNodeTypes.CONTROL }),
+    recipientVrm: new CustomFormControl({ name: 'recipient-vrm', label: 'recipient vehicle VRM', type: FormNodeTypes.CONTROL, disabled: true }),
     newDonorVrm: new CustomFormControl(
       { name: 'new-donor-vrm', label: 'Input a new VRM for donor vehicle', type: FormNodeTypes.CONTROL },
       '',
       [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      [CustomAsyncValidators.validateVrmDoesNotExist(this.technicalRecordService, this.techRecord?.primaryVrm ?? '', 'newDonorVrm')]
+      [CustomAsyncValidators.validateVrmDoesNotExist(this.technicalRecordService)]
     )
   });
+  correctingAnErrorForm: FormGroup = new FormGroup({
+    newVrm: new CustomFormControl(
+      { name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL },
+      '',
+      [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
+      [CustomAsyncValidators.validateVrmDoesNotExist(this.technicalRecordService)]
+    )
+  });
+
+  @Output() isFormDirty = new EventEmitter<boolean>();
+  @Output() isFormInvalid = new EventEmitter<boolean>();
+
+  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
   private destroy$ = new Subject<void>();
 
@@ -90,8 +93,9 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
       this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
     });
-    this.form.get('recipientVrm')?.setValue(this.techRecord?.primaryVrm);
-    this.form.get('recipientVrm')?.disable();
+
+    this.cherishedTransferForm.get('recipientVrm')?.setValue(this.techRecord?.primaryVrm);
+    this.cherishedTransferForm.get('recipientVrm')?.disable();
 
     this.route.params.pipe(take(1)).subscribe(params => {
       this.isCherishedTransfer = params['reason'] === 'cherished-transfer' ? true : false;
@@ -111,106 +115,57 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
   }
 
-  get formTemplate(): FormNode | undefined {
-    if (this.isCherishedTransfer) {
-      return {
-        name: 'cherishedTransfer',
-        type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'newVrm',
-            label: 'Donor VRM',
-            type: FormNodeTypes.CONTROL,
-            editType: FormNodeEditTypes.TEXT,
-            width: FormNodeWidth.L,
-            validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MinLength, args: 3 }, { name: ValidatorNames.MaxLength, args: 9 }]
-          },
-          {
-            name: 'recipientVrm',
-            label: 'Recipient VRM',
-            type: FormNodeTypes.CONTROL,
-            width: FormNodeWidth.L,
-            editType: FormNodeEditTypes.TEXT,
-            disabled: true,
-            value: this.techRecord?.primaryVrm
-          },
-          {
-            name: 'newDonorVrm',
-            label: 'New VRM for donor vehicle',
-            width: FormNodeWidth.L,
-            type: FormNodeTypes.CONTROL,
-            editType: FormNodeEditTypes.TEXT,
-            validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MinLength, args: 3 }, { name: ValidatorNames.MaxLength, args: 9 }]
-          }
-        ]
-      } as FormNode;
-    }
-    return {
-      name: 'correctingError',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'newVrm',
-          label: 'New Vrm',
-          type: FormNodeTypes.CONTROL,
-          width: FormNodeWidth.L,
-          editType: FormNodeEditTypes.TEXT,
-          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MinLength, args: 3 }, { name: ValidatorNames.MaxLength, args: 9 }]
-        }
-      ]
-    } as FormNode;
-  }
-
   navigateBack() {
     this.globalErrorService.clearErrors();
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  // handleFormChange(event: any) {
-  //   this.vrmInfo = mergeWith(cloneDeep(this.vrmInfo),event);
-  // }
-
-  // checkForms(): void {
-  //   const forms = this.sections?.map(section => section.form);
-
-  //   this.isFormDirty.emit(forms.some(form => form.dirty));
-
-  //   this.setErrors(forms);
-
-  //   this.isFormInvalid.emit(forms.some(form => form.invalid));
-  // }
-
-  // setErrors(forms: Array<CustomFormGroup | CustomFormArray>): void {
-  //   const errors: GlobalError[] = [];
-
-  //   forms.forEach(form => DynamicFormService.validate(form, errors));
-
-  //   errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
-  // }
+  handleFormChange(event: any) {
+    this.vrmInfo = event;
+  }
 
   handleSubmit(): void {
-    // this.checkForms();
-    this.isFormValid();
-
-    amendVrm({
-      newVrm: this.isCherishedTransfer ? this.form.value.newVrm : this.form.value.donorVrm,
-      cherishedTransfer: this.isCherishedTransfer ?? false,
-      newDonorVrm: this.form.value.newDonorVrm ?? '',
-      systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
-      createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
-    });
+    if (this.isCherishedTransfer) {
+      console.log(this.isFormValid(this.cherishedTransferForm));
+      if (this.isFormValid(this.cherishedTransferForm)) {
+        this.store.dispatch(
+          amendVrm({
+            newVrm: this.cherishedTransferForm.value.donorVrm,
+            cherishedTransfer: true,
+            newDonorVrm: this.cherishedTransferForm.value.newDonorVrm ?? '',
+            systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
+            createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
+          })
+        );
+        return;
+      }
+    } else {
+      if (this.isFormValid(this.correctingAnErrorForm)) {
+        this.store.dispatch(
+          amendVrm({
+            newVrm: this.correctingAnErrorForm.value.newVrm,
+            cherishedTransfer: false,
+            newDonorVrm: '',
+            systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
+            createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
+          })
+        );
+      }
+      return;
+    }
   }
-  isFormValid(): boolean {
+
+  isFormValid(form: FormGroup): boolean {
     this.globalErrorService.clearErrors();
 
     const errors: GlobalError[] = [];
 
-    DynamicFormService.validate(this.form, errors);
+    DynamicFormService.validate(form, errors, false);
 
     if (errors?.length) {
       this.globalErrorService.setErrors(errors);
     }
 
-    return this.form.valid;
+    return form.valid;
   }
 }

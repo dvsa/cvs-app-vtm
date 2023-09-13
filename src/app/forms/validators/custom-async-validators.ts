@@ -173,28 +173,43 @@ export class CustomAsyncValidators {
       );
   }
 
-  static validateVrmDoesNotExist(techRecordService: TechnicalRecordService, originalVrm: string, controlName: string): AsyncValidatorFn {
+  static validateVrmDoesNotExist(techRecordService: TechnicalRecordService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      if (control.dirty) {
-        control.markAsPristine();
-        if (controlName === 'newDonorVrm') {
-          control.root.get('donorVrm')?.updateValueAndValidity();
-        }
-        return techRecordService.validateVrmForUpdate(control.value, originalVrm);
+      const newVrm = control.root.get('donorVrm');
+      const originalVrm = control.root.get('recipientVrm')?.value;
+      if (newVrm?.value) {
+        newVrm.updateValueAndValidity();
       }
-      return of(null);
+      return techRecordService.validateVrmForUpdate(control.value, originalVrm).pipe(
+        take(1),
+        map(result => {
+          if (result) {
+            return result;
+          }
+          return null;
+        })
+      );
     };
   }
 
-  static validateDonorVrmField(techRecordService: TechnicalRecordService, originalVrm: string): AsyncValidatorFn {
+  static validateDonorVrmField(techRecordService: TechnicalRecordService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const newDonorVrm = control.root.get('newDonorVrm');
-      console.log(newDonorVrm);
-
-      if (newDonorVrm?.value !== '') {
-        return techRecordService.cherishedTransferValidate(control.value);
+      const newDonorVrm = control.root.get('newDonorVrm')?.value;
+      const recipientVrm = control.root.get('recipientVrm')?.value;
+      if (newDonorVrm !== '') {
+        return techRecordService.cherishedTransferValidate(control.value).pipe(
+          take(1),
+          map(result => {
+            return result;
+          })
+        );
       }
-      return techRecordService.validateVrmForUpdate(control.value, originalVrm);
+      return techRecordService.validateVrmForUpdate(control.value, recipientVrm).pipe(
+        take(1),
+        map(result => {
+          return result;
+        })
+      );
     };
   }
 

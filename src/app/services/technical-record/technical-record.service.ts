@@ -142,13 +142,21 @@ export class TechnicalRecordService {
   }
 
   validateVrmForUpdate(newVrm: string, originalVrm?: string) {
-    return this.isUnique(newVrm, SEARCH_TYPES.VRM).pipe(
-      map(result => {
+    return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, newVrm).pipe(
+      map(results => {
+        const currentRecord = results.filter(result => result.techRecord_statusCode === StatusCodes.CURRENT);
+        const provisionalRecord = results.filter(result => result.techRecord_statusCode === StatusCodes.PROVISIONAL);
+
         if (newVrm === originalVrm) {
-          return { validateVin: { message: 'You must provide a new VRM' } };
-        } else {
-          return result ? null : { validateVin: { message: 'This VRM already exists on an active record' } };
+          return { validateVrm: { message: 'You must provide a new VRM' } };
         }
+        if (currentRecord.length > 0) {
+          return { validateVrm: { message: `This VRM already exists on an active record with the VIN: ${currentRecord[0].vin}` } };
+        }
+        if (provisionalRecord.length > 0) {
+          return { validateVrm: { message: `This VRM already exists on an active record with the VIN: ${provisionalRecord[0].vin}` } };
+        }
+        return null;
       })
     );
   }
@@ -156,14 +164,13 @@ export class TechnicalRecordService {
   cherishedTransferValidate(newVrm: string) {
     return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, newVrm).pipe(
       map(results => {
-        console.log(results);
         if (results.some(result => result.techRecord_statusCode === StatusCodes.CURRENT)) {
           return null;
         }
-        return null;
+        return { validateVrm: { message: 'This VRM does not exist on a current record' } };
       }),
       catchError((err: HttpErrorResponse) => {
-        return (err.status == 404 && of({ validateVin: { message: 'This VRM does not exist on a current record' } })) || throwError(() => err);
+        return (err.status == 404 && of({ validateVrm: { message: 'This VRM does not exist on a current record' } })) || throwError(() => err);
       })
     );
   }
