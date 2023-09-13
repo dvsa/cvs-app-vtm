@@ -3,7 +3,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
-import { CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 type Segments = {
   approvalTypeNumber1: Observable<string | undefined>;
@@ -154,7 +154,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   ngOnChanges(): void {
-    console.log(this.approvalTypeChange);
     if (!this.formSubmitted && this.approvalTypeChange) {
       this.clearInput();
     }
