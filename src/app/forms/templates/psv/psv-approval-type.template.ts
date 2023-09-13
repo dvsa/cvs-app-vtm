@@ -42,8 +42,7 @@ export const PsvTypeApprovalTemplate: FormNode = {
               'IVA – DVSA/NI'
             ]
           }
-        },
-        { name: ValidatorNames.MaxLength, args: 25 }
+        }
       ]
     },
     {
