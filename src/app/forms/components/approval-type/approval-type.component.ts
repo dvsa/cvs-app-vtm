@@ -67,39 +67,95 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     });
   }
 
-  elementHasErrors(i: number) {
-    this.errors?.errors?.forEach(x => {
-      console.log(x);
-    });
-    return !this.approvalTypeNumber1 || !this.approvalTypeNumber2 || !this.approvalTypeNumber3 || !this.approvalTypeNumber4
-      ? this.errors?.errors?.some(e => {
-          return e.index === i;
-        })
-      : false;
-  }
-
   validate() {
-    if (
-      !this.approvalTypeNumber1 ||
-      !this.approvalTypeNumber2 ||
-      !this.approvalTypeNumber3 ||
-      (!this.approvalTypeNumber4 && this.approvalType != null)
-    ) {
-      this.errors = {
-        error: true,
-        errors: [
-          {
+    switch (this.approvalType) {
+      //1
+      case 'NTA':
+      case 'IVA':
+      case 'IVA - DVSA/NI':
+        if (!this.approvalTypeNumber1 && this.approvalType != null) {
+          this.errors = {
             error: true,
-            reason: `Approval type number is required with Approval type`,
-            index: 0
-          }
-        ]
-      };
+            errors: [
+              {
+                error: true,
+                reason: 'Approval type number is required with Approval type',
+                index: 0
+              }
+            ]
+          };
+        }
+        break;
+
+      //4
+      case 'GB WVTA':
+      case 'EU WVTA Pre 23':
+      case 'EU WVTA 23 on':
+      case 'Prov.GB WVTA':
+      case 'QNIG':
+      case 'ECSSTA':
+        if (
+          !this.approvalTypeNumber1 ||
+          !this.approvalTypeNumber2 ||
+          !this.approvalTypeNumber3 ||
+          (!this.approvalTypeNumber4 && this.approvalType != null)
+        ) {
+          this.errors = {
+            error: true,
+            errors: [
+              {
+                error: true,
+                reason: 'Approval type number is required with Approval type',
+                index: 0
+              }
+            ]
+          };
+        }
+        break;
+
+      //3
+      case 'ECTA':
+      case 'UKNI WVTA':
+      case 'IVA - VCA':
+        if (!this.approvalTypeNumber1 || !this.approvalTypeNumber2 || (!this.approvalTypeNumber3 && this.approvalType != null)) {
+          this.errors = {
+            error: true,
+            errors: [
+              {
+                error: true,
+                reason: 'Approval type number is required with Approval type',
+                index: 0
+              }
+            ]
+          };
+        }
+        break;
+
+      //2
+      case 'Small series':
+      case 'NSSTA':
+        if (!this.approvalTypeNumber1 || (!this.approvalTypeNumber2 && this.approvalType != null)) {
+          this.errors = {
+            error: true,
+            errors: [
+              {
+                error: true,
+                reason: 'Approval type number is required with Approval type',
+
+                index: 0
+              }
+            ]
+          };
+        }
+        break;
+      default:
+        break;
     }
   }
 
   ngOnChanges(): void {
-    if (!this.formSubmitted) {
+    console.log(this.approvalTypeChange);
+    if (!this.formSubmitted && this.approvalTypeChange) {
       this.clearInput();
     }
   }
@@ -165,14 +221,11 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   clearInput() {
-    console.log(this.error);
-    if (!this.formSubmitted) {
-      this.approvalTypeNumber1 = '';
-      this.approvalTypeNumber2 = '';
-      this.approvalTypeNumber3 = '';
-      this.approvalTypeNumber4 = '';
-      this.onChange(null);
-    }
+    this.approvalTypeNumber1 = '';
+    this.approvalTypeNumber2 = '';
+    this.approvalTypeNumber3 = '';
+    this.approvalTypeNumber4 = '';
+    this.onChange(null);
   }
 
   get widths(): typeof FormNodeWidth {
