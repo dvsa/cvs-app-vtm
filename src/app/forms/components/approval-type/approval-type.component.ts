@@ -38,7 +38,14 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   private approvalTypeNumber3$: Observable<string | undefined>;
   private approvalTypeNumber4$: Observable<string | undefined>;
   private subscriptions: Array<Subscription | undefined> = [];
-  public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
+  public errors?: {
+    error: boolean;
+    errors?: {
+      error: boolean;
+      reason: string;
+      index: number;
+    }[];
+  };
   protected formSubmitted? = false;
 
   public approvalTypeNumber1?: string;
@@ -55,12 +62,46 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.globalErrorService.errors$.subscribe((globalErrors: any) => {
       if (globalErrors.length) {
         this.formSubmitted = true;
+        console.log(globalErrors);
       }
     });
   }
 
+  elementHasErrors(i: number) {
+    this.errors?.errors?.forEach(x => {
+      console.log(x);
+    });
+    return !this.approvalTypeNumber1 || !this.approvalTypeNumber2 || !this.approvalTypeNumber3 || !this.approvalTypeNumber4
+      ? this.errors?.errors?.some(e => {
+          return e.index === i;
+        })
+      : false;
+  }
+
+  validate() {
+    if (
+      !this.approvalTypeNumber1 ||
+      !this.approvalTypeNumber2 ||
+      !this.approvalTypeNumber3 ||
+      (!this.approvalTypeNumber4 && this.approvalType != null)
+    ) {
+      this.errors = {
+        error: true,
+        errors: [
+          {
+            error: true,
+            reason: `Approval type number is required with Approval type`,
+            index: 0
+          }
+        ]
+      };
+    }
+  }
+
   ngOnChanges(): void {
-    this.clearInput();
+    if (!this.formSubmitted) {
+      this.clearInput();
+    }
   }
 
   ngOnInit(): void {
@@ -124,11 +165,14 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   clearInput() {
-    this.approvalTypeNumber1 = '';
-    this.approvalTypeNumber2 = '';
-    this.approvalTypeNumber3 = '';
-    this.approvalTypeNumber4 = '';
-    this.onChange(null);
+    console.log(this.error);
+    if (!this.formSubmitted) {
+      this.approvalTypeNumber1 = '';
+      this.approvalTypeNumber2 = '';
+      this.approvalTypeNumber3 = '';
+      this.approvalTypeNumber4 = '';
+      this.onChange(null);
+    }
   }
 
   get widths(): typeof FormNodeWidth {

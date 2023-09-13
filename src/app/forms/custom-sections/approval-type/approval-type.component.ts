@@ -1,7 +1,7 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { debounceTime, Subject, Subscription, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -10,8 +10,6 @@ import { TechRecord } from '@api/vehicle';
 
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { FormControl } from '@angular/forms';
-import { techRecord } from '@store/technical-records';
-import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
 
 @Component({
   selector: 'app-approval-type[techRecord]',
@@ -45,7 +43,6 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.chosenApprovalType);
     const { techRecord } = changes;
     if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
       this.form.patchValue(techRecord.currentValue, { emitEvent: false });
@@ -56,7 +53,6 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
         techRecord.previousValue.techRecord_approvalType != null
       ) {
         this.approvalTypeChange = true;
-        console.log(this.approvalTypeChange);
       }
       if ((techRecord.currentValue.techRecord_approvalType -= techRecord.previousValue.techRecord_approvalType && true)) {
         {
