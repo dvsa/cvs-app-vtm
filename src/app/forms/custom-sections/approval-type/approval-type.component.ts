@@ -37,7 +37,6 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
     ) as CustomFormGroup;
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
     Object.keys(this.form.controls).forEach(key => {
-      console.log(key);
       this.formControls[key] = this.form.get(key) as FormControl;
     });
   }
