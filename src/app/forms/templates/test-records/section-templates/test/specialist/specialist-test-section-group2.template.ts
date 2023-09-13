@@ -74,7 +74,7 @@ export const SpecialistTestSectionGroup2: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
+                  args: { sibling: 'testResult', value: ['abandoned'] }
                 }
               ],
               referenceData: ReferenceDataResourceType.SpecialistReasonsForAbandoning
@@ -89,7 +89,7 @@ export const SpecialistTestSectionGroup2: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
+                  args: { sibling: 'testResult', value: ['abandoned'] }
                 },
                 { name: ValidatorNames.MaxLength, args: 500 }
               ]
@@ -121,7 +121,7 @@ export const SpecialistTestSectionGroup2: FormNode = {
                 { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
+                  args: { sibling: 'testResult', value: ['pass'] }
                 },
                 { name: ValidatorNames.MaxLength, args: 20 }
               ],

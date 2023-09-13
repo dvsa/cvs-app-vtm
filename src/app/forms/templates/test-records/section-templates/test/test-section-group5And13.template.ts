@@ -96,7 +96,7 @@ export const TestSectionGroup5And13: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
+                  args: { sibling: 'testResult', value: ['abandoned'] }
                 }
               ],
               referenceData: ReferenceDataResourceType.TirReasonsForAbandoning
@@ -111,7 +111,7 @@ export const TestSectionGroup5And13: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
+                  args: { sibling: 'testResult', value: ['abandoned'] }
                 },
                 { name: ValidatorNames.MaxLength, args: 500 }
               ]
