@@ -208,19 +208,19 @@ describe('Required validators', () => {
 
   describe('Required if equals', () => {
     it('should be required (return ValidationErrors) if content of sibling matches a value', () => {
-      const result = CustomValidators.requiredIfEquals('sibling', 'some value')(form.controls['foo'] as AbstractControl);
+      const result = CustomValidators.requiredIfEquals('sibling', ['some value'])(form.controls['foo'] as AbstractControl);
       expect(result).toEqual({ requiredIfEquals: { sibling: 'Sibling' } });
     });
 
     it('should not be required (return null) if content of sibling does not match a value', () => {
       form.controls['sibling'].patchValue('some other value');
-      const result = CustomValidators.requiredIfEquals('sibling', 'some value')(form.controls['foo'] as AbstractControl);
+      const result = CustomValidators.requiredIfEquals('sibling', ['some value'])(form.controls['foo'] as AbstractControl);
       expect(result).toBeNull();
     });
 
     it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {
       form.controls['foo'].patchValue('some foo value');
-      const result = CustomValidators.requiredIfEquals('sibling', 'some value')(form.controls['foo'] as AbstractControl);
+      const result = CustomValidators.requiredIfEquals('sibling', ['some value'])(form.controls['foo'] as AbstractControl);
       expect(result).toBeNull();
     });
   });
@@ -238,7 +238,7 @@ describe('Required validators', () => {
 
     it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {
       form.controls['foo'].patchValue('some foo value');
-      const result = CustomValidators.requiredIfEquals('sibling', 'some othervalue')(form.controls['foo'] as AbstractControl);
+      const result = CustomValidators.requiredIfEquals('sibling', ['some othervalue'])(form.controls['foo'] as AbstractControl);
       expect(result).toBeNull();
     });
   });

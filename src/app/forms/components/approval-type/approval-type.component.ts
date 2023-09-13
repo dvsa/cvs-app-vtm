@@ -1,4 +1,15 @@
-import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
@@ -24,7 +35,7 @@ type Segments = {
     }
   ]
 })
-export class ApprovalTypeInputComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
+export class ApprovalTypeInputComponent extends BaseControlComponent implements OnChanges, OnInit, OnDestroy, AfterContentInit {
   @Input() isEditing = false;
   @Input() approvalType?: string;
   @Input() approvalTypeChange: boolean | undefined;
