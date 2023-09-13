@@ -35,7 +35,7 @@ export const SeatbeltSection: FormNode = {
               editType: FormNodeEditTypes.NUMBER,
               value: null,
               validators: [
-                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: [true] } },
                 { name: ValidatorNames.Max, args: 99 }
               ],
               width: FormNodeWidth.M
@@ -48,7 +48,7 @@ export const SeatbeltSection: FormNode = {
               editType: FormNodeEditTypes.DATE,
               value: null,
               validators: [
-                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: [true] } },
                 { name: ValidatorNames.PastDate }
               ]
             }

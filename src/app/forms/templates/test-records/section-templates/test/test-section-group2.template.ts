@@ -62,7 +62,7 @@ export const TestSectionGroup2: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
+                  args: { sibling: 'testResult', value: ['abandoned'] }
                 }
               ],
               referenceData: SpecialRefData.ReasonsForAbandoning
@@ -77,7 +77,7 @@ export const TestSectionGroup2: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
+                  args: { sibling: 'testResult', value: ['abandoned'] }
                 },
                 { name: ValidatorNames.MaxLength, args: 500 }
               ]
@@ -106,7 +106,7 @@ export const TestSectionGroup2: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
+                  args: { sibling: 'testResult', value: ['pass'] }
                 },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }
               ]
@@ -121,7 +121,7 @@ export const TestSectionGroup2: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
+                  args: { sibling: 'testResult', value: ['pass'] }
                 },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
                 { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
