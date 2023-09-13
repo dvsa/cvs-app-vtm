@@ -103,7 +103,7 @@ export const MotorcycleTechRecord: FormNode = {
     {
       name: 'techRecord_numberOfWheelsDriven',
       label: 'Number of wheels',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
