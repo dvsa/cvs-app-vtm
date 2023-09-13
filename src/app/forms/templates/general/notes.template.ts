@@ -11,7 +11,8 @@ export const NotesTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.FULLWIDTH,
       editType: FormNodeEditTypes.TEXTAREA,
-      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }],
+      tags: ['required']
     }
   ]
 };

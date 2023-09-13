@@ -60,6 +60,8 @@
 </ng-template>
 
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
+  <!-- <pre>{{ control.value | json }}</pre> -->
+  <label *ngIf="control.value.meta.tags?.includes('required')">Label</label>
   <ng-container [formGroup]="formGroup">
     <ng-container *ngIf="control.value.meta && !control.value.meta.hide" [ngSwitch]="edit">
       <ng-container *ngIf="control.value.meta.viewType !== 'hidden'">

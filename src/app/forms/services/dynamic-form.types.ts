@@ -9,15 +9,15 @@ import {
   FormGroup,
   ValidatorFn
 } from '@angular/forms';
+import { Params } from '@angular/router';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
-import { Params } from '@angular/router';
 
 export enum FormNodeViewTypes {
   DATE = 'date',
@@ -105,6 +105,7 @@ export interface FormNode {
   class?: string;
   customId?: string;
   warning?: string;
+  tags?: string[];
 }
 
 export interface FormNodeValidator {
