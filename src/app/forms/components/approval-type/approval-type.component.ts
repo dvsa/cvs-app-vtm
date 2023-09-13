@@ -104,6 +104,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'EU WVTA 23 on':
       case 'Prov.GB WVTA':
       case 'QNIG':
+      case 'ECTA':
       case 'ECSSTA':
         if (
           !this.approvalTypeNumber1 ||
@@ -125,7 +126,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
         break;
 
       //3
-      case 'ECTA':
       case 'UKNI WVTA':
       case 'IVA - VCA':
         if (!this.approvalTypeNumber1 || !this.approvalTypeNumber2 || (!this.approvalTypeNumber3 && this.approvalType != null)) {
@@ -152,7 +152,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
               {
                 error: true,
                 reason: 'Approval type number is required with Approval type',
-
                 index: 0
               }
             ]
@@ -254,46 +253,68 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   ) {
     switch (this.approvalType) {
       case 'NTA':
-        return techRecord_approvalTypeNumber1;
+        return techRecord_approvalTypeNumber1 ? techRecord_approvalTypeNumber1 : null;
 
       case 'ECTA':
-        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
+          ? `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
+          : null;
 
       case 'IVA':
-        return techRecord_approvalTypeNumber1;
+        return techRecord_approvalTypeNumber1 ? techRecord_approvalTypeNumber1 : null;
 
       case 'NSSTA':
-        return `e${techRecord_approvalTypeNumber1}*NKS*${techRecord_approvalTypeNumber2}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2
+          ? `e${techRecord_approvalTypeNumber1}*NKS*${techRecord_approvalTypeNumber2}`
+          : null;
 
       case 'ECSSTA':
-        return `e${techRecord_approvalTypeNumber1}*KS${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
+          ? `e${techRecord_approvalTypeNumber1}*KS${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
+          : null;
 
       case 'GB WVTA':
-        return `${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
+          ? `${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
+          : null;
 
       case 'UKNI WVTA':
-        return `X11*${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3
+          ? `X11*${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`
+          : null;
 
       case 'EU WVTA Pre 23':
-        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
+          ? `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
+          : null;
 
       case 'EU WVTA 23 on':
-        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
+          ? `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
+          : null;
 
       case 'QNIG':
-        return `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
+          ? `e${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
+          : null;
 
       case 'Prov.GB WVTA':
-        return `${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
+          ? `${techRecord_approvalTypeNumber1}*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
+          : null;
 
       case 'Small series':
-        return `X11*NKS*${techRecord_approvalTypeNumber1}${techRecord_approvalTypeNumber2}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2
+          ? `X11*NKS*${techRecord_approvalTypeNumber1}${techRecord_approvalTypeNumber2}`
+          : null;
 
       case 'IVA - VCA':
-        return `n11*NIV${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`;
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3
+          ? `n11*NIV${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`
+          : null;
 
       case 'IVA - DVSA/NI':
-        return techRecord_approvalTypeNumber1;
+        return techRecord_approvalTypeNumber1 ? techRecord_approvalTypeNumber1 : null;
       default:
         return 'Unknown approval type';
     }
