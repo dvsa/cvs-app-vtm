@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -21,6 +20,8 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, map, take, takeUntil } from 'rxjs';
+import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -37,6 +38,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(TyresComponent) tyres!: TyresComponent;
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
   @ViewChild(LettersComponent) letters!: LettersComponent;
+  @ViewChild(ApprovalTypeComponent) approvalType!: ApprovalTypeComponent;
 
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
@@ -135,7 +137,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form];
+    const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form, this.approvalType?.form];
 
     switch (this.vehicleType) {
       case VehicleTypes.PSV:

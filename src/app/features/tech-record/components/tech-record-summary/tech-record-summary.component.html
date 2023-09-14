@@ -40,6 +40,20 @@
         (formChange)="handleFormState($event)"
       ></app-dimensions>
     </ng-container>
+    <ng-container
+      *ngIf="
+        techRecordCalculated.techRecord_vehicleType === 'trl' ||
+        techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+        techRecordCalculated.techRecord_vehicleType === 'psv'
+      "
+    >
+      <app-approval-type
+        *ngSwitchCase="'approvalSection'"
+        [techRecord]="techRecordCalculated"
+        [isEditing]="(isEditing$ | async) ?? false"
+        (formChange)="handleFormState($event)"
+      ></app-approval-type>
+    </ng-container>
 
     <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'psv'">
       <app-psv-brakes
