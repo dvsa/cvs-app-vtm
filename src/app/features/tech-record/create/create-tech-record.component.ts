@@ -15,6 +15,7 @@ import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-h
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { firstValueFrom } from 'rxjs';
+import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 
 @Component({
   selector: 'app-create',
@@ -35,6 +36,7 @@ export class CreateTechRecordComponent implements OnChanges {
     {
       vin: new CustomFormControl({ name: 'input-vin', label: 'Vin', type: FormNodeTypes.CONTROL }, '', [
         CustomValidators.alphanumeric(),
+        CustomValidators.validateVinCharacters(),
         Validators.minLength(3),
         Validators.maxLength(21),
         Validators.required
@@ -81,6 +83,14 @@ export class CreateTechRecordComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.isVinUniqueCheckComplete = false;
+  }
+
+  validateVin() {
+    console.log('validating vin...');
+    this.techRecord.vin = this.form.value.vin;
+    console.log(this.techRecord.vin);
+    const pattern = /[oiq]/i;
+    return this.techRecord?.vin ? pattern.test(this.techRecord.vin) : false;
   }
 
   get isFormValid(): boolean {
