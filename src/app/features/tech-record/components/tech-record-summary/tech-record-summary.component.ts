@@ -41,7 +41,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
 
-  techRecordCalculated!: V3TechRecordModel;
+  techRecordCalculated?: V3TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
   isEditing: boolean = false;
@@ -112,11 +112,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get vehicleType() {
-    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated);
+    return this.techRecordCalculated ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated) : undefined;
   }
 
   get vehicleTemplates(): Array<FormNode> {
     this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe(editing => (this.isEditing = editing));
+    if (!this.vehicleType) {
+      return [];
+    }
     return (
       vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
     );
