@@ -26,7 +26,7 @@ export const updateTechRecordFailure = createOutcomeAction('updateTechRecords', 
 
 export const amendVrm = createAction(
   `${prefix} amendVrm`,
-  props<{ newVrm: string; cherishedTransfer: boolean; systemNumber: string; createdTimestamp: string; newDonorVrm: string }>()
+  props<{ newVrm: string; cherishedTransfer: boolean; systemNumber: string; createdTimestamp: string; newDonorVrm?: string }>()
 );
 export const amendVrmSuccess = createOutcomeAction('amendVrm', true);
 export const amendVrmFailure = createOutcomeAction('amendVrm', false);

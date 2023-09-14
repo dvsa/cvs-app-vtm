@@ -11,7 +11,6 @@ import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 
@@ -68,11 +67,7 @@ export class DynamicFormService {
       CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
-    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
-    [AsyncValidatorNames.ValidateDonorVrmField]: (args: { techRecService: TechnicalRecordService }) =>
-      CustomAsyncValidators.validateDonorVrmField(args.techRecService),
-    [AsyncValidatorNames.ValidateVrmDoesNotExist]: (args: { techRecService: TechnicalRecordService }) =>
-      CustomAsyncValidators.validateVrmDoesNotExist(args.techRecService)
+    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

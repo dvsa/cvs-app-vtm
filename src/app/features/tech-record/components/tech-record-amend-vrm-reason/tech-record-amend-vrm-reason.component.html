@@ -21,11 +21,9 @@
   </dl>
 
   <form [formGroup]="form">
-    <app-radio-group formControlName="isCherishedTransfer" [options]="reasons" label="what change are you performing?"></app-radio-group>
+    <app-radio-group formControlName="isCherishedTransfer" [options]="reasons" label="Reason for change"></app-radio-group>
     <app-button-group>
-      <app-button id="submit-vrm" (clicked)="submit(form.value.isCherishedTransfer === true ? 'cherished-transfer' : 'correcting-error')"
-        >Continue</app-button
-      >
+      <app-button id="submit-vrm" (clicked)="submit(form.value.isCherishedTransfer)">Continue</app-button>
       <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
     </app-button-group>
   </form>

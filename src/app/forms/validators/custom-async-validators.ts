@@ -6,7 +6,6 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store, select } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { testResultInEdit } from '@store/test-records';
@@ -171,46 +170,6 @@ export class CustomAsyncValidators {
           return null;
         })
       );
-  }
-
-  static validateVrmDoesNotExist(techRecordService: TechnicalRecordService): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const newVrm = control.root.get('donorVrm');
-      const originalVrm = control.root.get('recipientVrm')?.value;
-      if (newVrm?.value) {
-        newVrm.updateValueAndValidity();
-      }
-      return techRecordService.validateVrmForUpdate(control.value, originalVrm).pipe(
-        take(1),
-        map(result => {
-          if (result) {
-            return result;
-          }
-          return null;
-        })
-      );
-    };
-  }
-
-  static validateDonorVrmField(techRecordService: TechnicalRecordService): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const newDonorVrm = control.root.get('newDonorVrm')?.value;
-      const recipientVrm = control.root.get('recipientVrm')?.value;
-      if (newDonorVrm !== '') {
-        return techRecordService.cherishedTransferValidate(control.value).pipe(
-          take(1),
-          map(result => {
-            return result;
-          })
-        );
-      }
-      return techRecordService.validateVrmForUpdate(control.value, recipientVrm).pipe(
-        take(1),
-        map(result => {
-          return result;
-        })
-      );
-    };
   }
 
   private static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[]) {

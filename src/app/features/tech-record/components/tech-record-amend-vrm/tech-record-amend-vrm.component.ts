@@ -5,30 +5,16 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import {
-  CustomFormArray,
-  CustomFormControl,
-  CustomFormGroup,
-  FormNode,
-  FormNodeEditTypes,
-  FormNodeOption,
-  FormNodeTypes,
-  FormNodeWidth
-} from '@forms/services/dynamic-form.types';
-import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
+import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { NotTrailer, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { NotTrailer, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import cloneDeep from 'lodash.clonedeep';
-import { Subject, catchError, debounceTime, filter, mergeWith, of, switchMap, take, takeUntil, throwError } from 'rxjs';
+import { Subject, switchMap, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vrm',
@@ -39,28 +25,29 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   techRecord?: NotTrailer;
   makeAndModel?: string;
   isCherishedTransfer?: boolean = false;
-  vrmInfo: any;
-  cherishedTransferForm: FormGroup = new FormGroup({
-    donorVrm: new CustomFormControl(
-      { name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL },
+  systemNumber?: string;
+  createdTimestamp?: string;
+  cherishedTransferForm = new FormGroup({
+    currentVrm: new CustomFormControl(
+      { name: 'current-Vrm', type: FormNodeTypes.CONTROL },
       '',
       [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      [CustomAsyncValidators.validateDonorVrmField(this.technicalRecordService)]
+      [this.technicalRecordService.validateVrmForCherishedTransfer()]
     ),
-    recipientVrm: new CustomFormControl({ name: 'recipient-vrm', label: 'recipient vehicle VRM', type: FormNodeTypes.CONTROL, disabled: true }),
-    newDonorVrm: new CustomFormControl(
-      { name: 'new-donor-vrm', label: 'Input a new VRM for donor vehicle', type: FormNodeTypes.CONTROL },
-      '',
+    previousVrm: new CustomFormControl({ name: 'previous-Vrm', type: FormNodeTypes.CONTROL, disabled: true }),
+    thirdMark: new CustomFormControl(
+      { name: 'third-Mark', type: FormNodeTypes.CONTROL },
+      undefined,
       [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      [CustomAsyncValidators.validateVrmDoesNotExist(this.technicalRecordService)]
+      [this.technicalRecordService.validateVrmDoesNotExist()]
     )
   });
-  correctingAnErrorForm: FormGroup = new FormGroup({
+  correctingAnErrorForm = new FormGroup({
     newVrm: new CustomFormControl(
-      { name: 'new-vrm', label: 'Input a new VRM', type: FormNodeTypes.CONTROL },
+      { name: 'new-Vrm', type: FormNodeTypes.CONTROL },
       '',
       [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      [CustomAsyncValidators.validateVrmDoesNotExist(this.technicalRecordService)]
+      [this.technicalRecordService.validateVrmDoesNotExist()]
     )
   });
 
@@ -82,7 +69,12 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      this.systemNumber = params['systemNumber'];
+      this.createdTimestamp = params['createdTimestamp'];
+      this.isCherishedTransfer = params['reason'] === 'cherished-transfer' ? true : false;
+    });
+    this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe(record => {
       if (record?.techRecord_statusCode === 'archived' || !record) {
         return this.navigateBack();
       }
@@ -94,12 +86,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
       this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
     });
 
-    this.cherishedTransferForm.get('recipientVrm')?.setValue(this.techRecord?.primaryVrm);
-    this.cherishedTransferForm.get('recipientVrm')?.disable();
-
-    this.route.params.pipe(take(1)).subscribe(params => {
-      this.isCherishedTransfer = params['reason'] === 'cherished-transfer' ? true : false;
-    });
+    this.cherishedTransferForm.get('previousVrm')?.setValue(this.techRecord?.primaryVrm);
+    this.cherishedTransferForm.get('previousVrm')?.disable();
   }
 
   ngOnDestroy(): void {
@@ -117,22 +105,25 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
-  handleFormChange(event: any) {
-    this.vrmInfo = event;
+  handleFormChange() {
+    if (this.isCherishedTransfer) {
+      console.log(this.cherishedTransferForm.get('currentVrm')?.value);
+      this.cherishedTransferForm.get('currentVrm')?.updateValueAndValidity();
+      return;
+    }
   }
 
   handleSubmit(): void {
     if (this.isCherishedTransfer) {
-      console.log(this.isFormValid(this.cherishedTransferForm));
       if (this.isFormValid(this.cherishedTransferForm)) {
         this.store.dispatch(
           amendVrm({
-            newVrm: this.cherishedTransferForm.value.donorVrm,
+            newVrm: this.cherishedTransferForm.value.currentVrm,
             cherishedTransfer: true,
-            newDonorVrm: this.cherishedTransferForm.value.newDonorVrm ?? '',
+            newDonorVrm: this.cherishedTransferForm.value.thirdMark,
             systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
             createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
           })
@@ -162,10 +153,11 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
     DynamicFormService.validate(form, errors, false);
 
-    if (errors?.length) {
+    if (errors?.length > 0) {
       this.globalErrorService.setErrors(errors);
+      return false;
     }
 
-    return form.valid;
+    return true;
   }
 }

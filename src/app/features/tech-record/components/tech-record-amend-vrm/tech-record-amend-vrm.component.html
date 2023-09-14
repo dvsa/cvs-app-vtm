@@ -33,32 +33,34 @@
     <ng-container *ngSwitchCase="true">
       <form [formGroup]="cherishedTransferForm">
         <app-text-input
-          #recipientVrm
+          #previousVrm
           appToUppercase
           appNoSpace
           appTrimWhitespace
-          formControlName="donorVrm"
-          [width]="width"
-          label="Donor VRM"
-        ></app-text-input>
-        <app-text-input
-          #recipientVrm
-          appToUppercase
-          appNoSpace
-          appTrimWhitespace
-          formControlName="recipientVrm"
+          formControlName="previousVrm"
           [disabled]="true"
           [width]="width"
-          label="Recipient vehicle VRM"
+          label="Previous VRM"
         ></app-text-input>
         <app-text-input
-          #recipientVrm
+          #currentVrm
           appToUppercase
           appNoSpace
           appTrimWhitespace
-          formControlName="newDonorVrm"
+          formControlName="currentVrm"
           [width]="width"
-          label="New VRM for donor vehicle"
+          label="Current VRM"
+          (focusout)="handleFormChange()"
+        ></app-text-input>
+        <app-text-input
+          #thirdMark
+          appToUppercase
+          appNoSpace
+          appTrimWhitespace
+          formControlName="thirdMark"
+          [width]="width"
+          label="Third mark"
+          (focusout)="handleFormChange()"
         ></app-text-input>
       </form>
     </ng-container>
