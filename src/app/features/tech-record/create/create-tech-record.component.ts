@@ -85,14 +85,6 @@ export class CreateTechRecordComponent implements OnChanges {
     this.isVinUniqueCheckComplete = false;
   }
 
-  validateVin() {
-    console.log('validating vin...');
-    this.techRecord.vin = this.form.value.vin;
-    console.log(this.techRecord.vin);
-    const pattern = /[oiq]/i;
-    return this.techRecord?.vin ? pattern.test(this.techRecord.vin) : false;
-  }
-
   get isFormValid(): boolean {
     const errors: GlobalError[] = [];
 
