@@ -28,5 +28,5 @@ export enum ValidatorNames {
   ValidateProhibitionIssued = 'validateProhibitionIssued',
   NotZNumber = 'notZNumber',
   MustEqualSibling = 'mustEqualSibling',
-  HandlePsvPassengersChange = 'handlePsvPassengersChange'
+  HandlePsvPassengersChange = 'HandlePsvPassengersChange'
 }
