@@ -73,7 +73,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.globalErrorService.errors$.subscribe((globalErrors: any) => {
       if (globalErrors.length) {
         this.formSubmitted = true;
-        console.log(globalErrors);
       }
     });
   }
