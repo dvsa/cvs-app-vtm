@@ -121,9 +121,7 @@
         </dd>
         <dd *appRoleRequired="roles.TechRecordUnarchive" class="govuk-summary-list__actions">
           <div class="govuk-summary-list__actions--flex">
-            <app-button *ngIf="queryableActions.includes('unarchive')" design="link" id="unarchive-link"
-              (clicked)="navigateTo('unarchive-record')"
-              >Unarchive
+            <app-button *ngIf="queryableActions.includes('unarchive')" design="link" id="unarchive-link" (clicked)="navigateTo('unarchive-record')"> Unarchive
             </app-button>
           </div>
         </dd>

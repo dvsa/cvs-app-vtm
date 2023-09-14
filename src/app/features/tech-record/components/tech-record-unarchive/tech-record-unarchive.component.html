@@ -13,8 +13,7 @@
 
       <app-text-area name="reason" [label]="'Unarchival Reason'" formControlName="reason"></app-text-area>
 
-      <app-button id="submit-unarchive" data-prevent-double-click="true" (clicked)="handleSubmit(form.value)">
-       Unarchive record
+      <app-button id="submit-unarchive" data-prevent-double-click="true" (clicked)="handleSubmit(form.value)"> Unarchive record
       </app-button>
       <app-button design="link" id="tech-record-back-link" (clicked)="navigateBack()">Back</app-button>
     </form>
