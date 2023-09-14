@@ -1,8 +1,10 @@
 <div [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
   <fieldset class="govuk-fieldset" [disabled]="disabled">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-      <h1 class="govuk-fieldset__heading">{{ label }}</h1>
-      <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+      <h1 class="govuk-fieldset__heading">
+        {{ label }}
+        <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+      </h1>
 
       <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
     </legend>

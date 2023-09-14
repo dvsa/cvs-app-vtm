@@ -26,7 +26,7 @@ import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { SmallTrailerTechRecord } from '@forms/templates/small-trailer/small-trailer-tech-record.template';
 
-import { TechRecordReasonForCreationSection } from '@forms/templates/test-records/section-templates/techRecord_reasonForCreation/techRecordReasonForCreation.template';
+import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
