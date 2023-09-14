@@ -31,6 +31,10 @@ export enum FormNodeViewTypes {
   VRM = 'vrm'
 }
 
+export enum CustomTagTypes {
+  TESTABLE = 'TESTABLE'
+}
+
 export enum FormNodeTypes {
   ARRAY = 'array',
   COMBINATION = 'combination',
@@ -106,6 +110,7 @@ export interface FormNode {
   class?: string;
   customId?: string;
   warning?: string;
+  customTags?: string[];
 }
 
 export interface FormNodeValidator {

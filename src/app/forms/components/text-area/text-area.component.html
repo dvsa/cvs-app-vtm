@@ -1,5 +1,6 @@
 <div class="govuk-form-group">
   <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
+  <app-tag *ngIf="control?.meta?.customTags?.includes('TESTABLE')" type="red">TESTABLE</app-tag>
 
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
 

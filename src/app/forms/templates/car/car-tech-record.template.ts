@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomTagTypes, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
@@ -16,14 +16,16 @@ export const CarTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
-      disabled: true
+      disabled: true,
+      customTags: [CustomTagTypes.TESTABLE]
     },
     {
       name: 'techRecord_statusCode',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
+      customTags: [CustomTagTypes.TESTABLE]
     },
     {
       name: 'techRecord_regnDate',
@@ -53,7 +55,8 @@ export const CarTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 99 }]
+      validators: [{ name: ValidatorNames.Max, args: 99 }],
+      customTags: [CustomTagTypes.TESTABLE]
     },
     {
       name: 'techRecord_vehicleSubclass',
@@ -61,7 +64,8 @@ export const CarTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOXGROUP,
-      options: getOptionsFromEnum(VehicleSubclass)
+      options: getOptionsFromEnum(VehicleSubclass),
+      customTags: [CustomTagTypes.TESTABLE]
     },
     {
       name: 'techRecord_vehicleConfiguration',
