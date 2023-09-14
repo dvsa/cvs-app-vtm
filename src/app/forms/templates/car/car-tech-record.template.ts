@@ -1,8 +1,9 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { CustomTagTypes, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { TagTypeLabels, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
+import { TagType } from '@shared/components/tag/tag.component';
 
 export const CarTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -17,7 +18,7 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
-      customTags: [CustomTagTypes.TESTABLE]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
     },
     {
       name: 'techRecord_statusCode',
@@ -25,7 +26,7 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      customTags: [CustomTagTypes.TESTABLE]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
     },
     {
       name: 'techRecord_regnDate',
@@ -56,7 +57,7 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 99 }],
-      customTags: [CustomTagTypes.TESTABLE]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
     },
     {
       name: 'techRecord_vehicleSubclass',
@@ -65,7 +66,7 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOXGROUP,
       options: getOptionsFromEnum(VehicleSubclass),
-      customTags: [CustomTagTypes.TESTABLE]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
     },
     {
       name: 'techRecord_vehicleConfiguration',

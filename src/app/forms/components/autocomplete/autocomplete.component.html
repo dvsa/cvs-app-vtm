@@ -1,6 +1,7 @@
 <div [class]="style">
   <label for="{{ name }}-autocomplete" class="govuk-label govuk-label--m">
     {{ label }}
+    <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
 
     <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 

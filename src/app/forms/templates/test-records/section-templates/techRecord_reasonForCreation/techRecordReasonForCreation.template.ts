@@ -1,5 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { CustomTagTypes, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { TagTypeLabels, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { TagType } from '@shared/components/tag/tag.component';
 
 export const TechRecordReasonForCreationSection: FormNode = {
   name: 'reasonForCreationSection',
@@ -13,7 +14,7 @@ export const TechRecordReasonForCreationSection: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.TEXTAREA,
       validators: [{ name: ValidatorNames.MaxLength, args: 500 }, { name: ValidatorNames.Required }],
-      customTags: [CustomTagTypes.TESTABLE]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
     }
   ]
 };

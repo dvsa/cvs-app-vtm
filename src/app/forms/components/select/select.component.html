@@ -1,5 +1,8 @@
 <div [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
-  <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}"> {{ label }} </label>
+  <div>
+    <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}"> {{ label }} </label>
+    <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+  </div>
 
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 
