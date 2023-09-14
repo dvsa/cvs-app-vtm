@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
 import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
@@ -20,8 +22,6 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, map, take, takeUntil } from 'rxjs';
-import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -43,7 +43,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
 
-  techRecordCalculated!: V3TechRecordModel;
+  techRecordCalculated?: V3TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
   isEditing: boolean = false;
@@ -114,11 +114,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get vehicleType() {
-    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated);
+    return this.techRecordCalculated ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated) : undefined;
   }
 
   get vehicleTemplates(): Array<FormNode> {
     this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe(editing => (this.isEditing = editing));
+    if (!this.vehicleType) {
+      return [];
+    }
     return (
       vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
     );
