@@ -100,7 +100,7 @@ export const ContingencyTestSectionSpecialistGroup3And4: FormNode = {
                 { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
+                  args: { sibling: 'testResult', value: ['pass'] }
                 },
                 { name: ValidatorNames.MaxLength, args: 20 }
               ]

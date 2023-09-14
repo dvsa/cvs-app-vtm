@@ -24,7 +24,7 @@ export class SelectVehicleTypeComponent {
     {
       vehicleType: new CustomFormControl({ name: 'vehicle-type', label: 'Vehicle type', type: FormNodeTypes.CONTROL }, '', [Validators.required]),
       tes1Tes2: new CustomFormControl({ name: 'tes1-tes2', label: 'Trailer form type', type: FormNodeTypes.CONTROL }, '', [
-        CustomValidators.requiredIfEquals('vehicleType', VehicleTypes.TRL)
+        CustomValidators.requiredIfEquals('vehicleType', [VehicleTypes.TRL])
       ])
     }
   );

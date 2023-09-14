@@ -88,7 +88,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
                 { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
+                  args: { sibling: 'testResult', value: ['pass'] }
                 }
               ],
               required: true,
@@ -104,7 +104,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
+                  args: { sibling: 'testResult', value: ['pass'] }
                 },
                 { name: ValidatorNames.FutureDate }
               ]

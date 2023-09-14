@@ -66,7 +66,7 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
                 { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
+                  args: { sibling: 'testResult', value: ['pass'] }
                 }
               ],
               required: true,
@@ -168,7 +168,7 @@ export const AmendDeskBasedTestSectionGroup1Psv: FormNode = {
                 { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
+                  args: { sibling: 'testResult', value: ['pass'] }
                 }
               ],
               required: true,
