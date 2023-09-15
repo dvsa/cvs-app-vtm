@@ -23,6 +23,7 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     { label: 'Provisional', value: StatusCodes.PROVISIONAL },
     { label: 'Current', value: StatusCodes.CURRENT }
   ];
+  hasNonArchivedRecords: boolean | undefined;
 
   form: CustomFormGroup;
 
@@ -56,11 +57,23 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 
       this.technicalRecordService.clearEditingTechRecord();
     });
+
+    this.techRecordHistory$.pipe(map(records => records?.some((techRecordHistory) => {
+      return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED &&
+        this.techRecord?.techRecord_vehicleType !== 'trl' &&
+        techRecordHistory.primaryVrm === this.techRecord?.primaryVrm;
+      })),
+      takeUntil(this.destroy$))
+      .subscribe(value => this.hasNonArchivedRecords = value);
   }
 
   ngOnDestroy(): void {
     this.destroy$.next;
     this.destroy$.complete;
+  }
+
+  get techRecordHistory$() {
+    return this.store.select(selectTechRecordHistory);
   }
 
   navigateBack(relativePath: string = '..'): void {
@@ -91,17 +104,6 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
         createdTimestamp: this.techRecord.createdTimestamp,
         reasonForUnarchiving: this.form.value.reason,
         status: this.form.value.newRecordStatus
-      })
-    );
-  }
-
-  private get hasNonArchivedRecords() {
-    return this.store.select(selectTechRecordHistory).pipe(
-      map(techRecordHistory => {
-        techRecordHistory?.some((techRecordHistory) => {
-          return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED &&
-            techRecordHistory.primaryVrm === (this.techRecord as any).primaryVrm;
-        });
       })
     );
   }
