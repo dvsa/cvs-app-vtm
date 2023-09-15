@@ -21,7 +21,6 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, map, take, takeUntil } from 'rxjs';
-import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
