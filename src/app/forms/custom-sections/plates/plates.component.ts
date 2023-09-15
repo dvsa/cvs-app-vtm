@@ -6,9 +6,10 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
-import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime } from 'rxjs';
+import { hgvRequiredPlateFields } from './platesInterfaces';
 
 @Component({
   selector: 'app-plates[techRecord]',
@@ -25,6 +26,44 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   pageStart?: number;
   pageEnd?: number;
 
+  hgvRequiredFields: string[] = [
+    'primaryVrm',
+    'vin',
+    'techRecord_brakes_dtpNumber',
+    'techRecord_regnDate',
+    'techRecord_manufactureYear',
+    'techRecord_speedLimiterMrk',
+    'techRecord_approvalType',
+    'techRecord_variantNumber',
+    'techRecord_make',
+    'techRecord_model',
+    'techRecord_functionCode',
+    'techRecord_grossGbWeight',
+    'techRecord_grossEecWeight',
+    'techRecord_grossDesignWeight',
+    'techRecord_TrainGbWeight',
+    'techRecord_TrainEecWeight',
+    'techRecord_TrainDesignWeight',
+    'techRecord_maxTrainGbWeight',
+    'techRecord_maxTrainEecWeight',
+    'techRecord_frontVehicleTo5thWheelCouplingMin',
+    'techRecord_frontVehicleTo5thWheelCouplingMax',
+    'techRecord_dimensions_length',
+    'techRecord_dimensions_width'
+  ];
+
+  hgvAxleRequiredFields: string[] = [
+    'techRecord_Axles',
+    'weights_gbWeight',
+    'weights_eecWeight',
+    'weights_designWeight',
+    'tyres_tyreSize',
+    'tyres_plyRating',
+    'tyres_fitmentCode',
+    'tyres_tyreCode'
+  ];
+  // technicalRecord?: TechRecordType<'hgv'> | TechRecordType<'trl'>;
+
   private _formSubscription = new Subscription();
 
   constructor(private dynamicFormService: DynamicFormService, private cdr: ChangeDetectorRef) {}
@@ -32,6 +71,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(PlatesTemplate, this.techRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
+    // this.techRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => (this.technicalRecord = techRecord as TechRecordType<'trl'> | TechRecordType<'hgv'>));
   }
 
   ngOnChanges(): void {
@@ -111,5 +151,21 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       return 'Generating plates is only applicable to current technical records.';
     }
     return '';
+  }
+
+  validateTechRecordPlates(): void {
+    const output = this.hgvRequiredFields.filter(field => {
+      const value = (this.techRecord as TechRecordType<'hgv'>)[field as keyof TechRecordType<'hgv'>];
+      return value === undefined || value === null || value === '';
+    });
+    if (output.length > 0) {
+      console.log('invalid');
+      console.log(output);
+      return;
+    }
+    console.log('valid');
+    //invoke an error message here
+
+    //if it's an empty output then we can navigate to the next page
   }
 }
