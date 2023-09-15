@@ -53,7 +53,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
       ) {
         this.approvalTypeChange = true;
       }
-      if ((techRecord.currentValue.techRecord_approvalType -= techRecord.previousValue.techRecord_approvalType && true)) {
+      if (techRecord.currentValue.techRecord_approvalType != techRecord.previousValue.techRecord_approvalType && true) {
         {
           this.approvalTypeChange = false;
         }
