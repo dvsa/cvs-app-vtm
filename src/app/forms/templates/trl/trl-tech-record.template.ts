@@ -108,7 +108,7 @@ export const TrlTechRecordTemplate: FormNode = {
         { label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
         { label: 'not applicable', value: 'not applicable' },
         { label: 'small psv (ie: less than or equal to 22 passengers)', value: 'small psv (ie: less than or equal to 22 seats)' },
-        { label: 'motorbikes over 200cc', value: 'motorbikes over 200cc' },
+        { label: 'motorbikes up to 200cc', value: 'motorbikes up to 200cc' },
         { label: 'trailer', value: 'trailer' },
         { label: 'large psv(ie: greater than or equal to 23 passengers)', value: 'large psv(ie: greater than 23 seats)' },
         { label: '3 wheelers', value: '3 wheelers' },
