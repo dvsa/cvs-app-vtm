@@ -172,6 +172,9 @@ export class CustomValidators {
     };
   };
 
+  static validateVinCharacters() {
+    return this.customPattern(['^(?!.*[OIQ]).*$', 'VIN should not contain O, I and Q']);
+  }
   static alphanumeric(): ValidatorFn {
     return this.customPattern(['^[a-zA-Z0-9]*$', 'must be alphanumeric']);
   }
