@@ -51,11 +51,11 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     'techRecord_frontVehicleTo5thWheelCouplingMin',
     'techRecord_frontVehicleTo5thWheelCouplingMax',
     'techRecord_dimensions_length',
-    'techRecord_dimensions_width'
+    'techRecord_dimensions_width',
+    'techRecord_Axles'
   ];
 
   hgvAxleRequiredFields: string[] = [
-    'techRecord_Axles',
     'weights_gbWeight',
     'weights_eecWeight',
     'weights_designWeight',
@@ -168,10 +168,21 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       return value === undefined || value === null || value === '';
     });
     if (output.length > 0) {
-      console.log('invalid');
-      console.log(output);
-      this.globalErrorService.setErrors([{ error: 'All fields marked plate are mandatory to generate a plate.' }]);
-
+      this.globalErrorService.addError({ error: 'All fields marked plate are mandatory to generate a plate.' });
+      return;
+    }
+    let axle_output: string[] = [];
+    this.techRecord.techRecord_axles?.forEach(axle => {
+      const axles = this.hgvAxleRequiredFields.filter(field => {
+        const value = (axle as any)[field];
+        if (value === undefined || value === null || value === '') {
+          axle_output.push(field);
+        }
+      });
+      axle_output = [...axle_output, ...axles];
+    });
+    if (this.techRecord.techRecord_axles?.length === 0 || axle_output.length > 0) {
+      this.globalErrorService.addError({ error: 'All fields marked plate are mandatory to generate a plate.' });
       return;
     }
     this.router.navigate(['generate-plate'], { relativeTo: this.route });
