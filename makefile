@@ -2,7 +2,7 @@
 
 .PHONY: all help init install build run lint test e2e plan deploy versioncheck
 all: #help Full check
-	lint test run 
+	lint test run
 help:
 	@echo "-- HELP --"
 	@grep '#[h]elp' makefile | sed s/#[h]elp//g
