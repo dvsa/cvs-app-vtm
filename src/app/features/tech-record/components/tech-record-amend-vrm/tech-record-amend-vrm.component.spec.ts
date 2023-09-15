@@ -26,7 +26,7 @@ const mockTechRecordService = {
     return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM' });
   },
   updateEditingTechRecord: jest.fn(),
-  validateVrmDoesNotExist: jest.fn().mockReturnValue(of(null)),
+  validateVrmDoesNotExist: jest.fn(),
   validateVrmForCherishedTransfer: jest.fn().mockReturnValue(of(null))
 };
 
@@ -68,107 +68,111 @@ describe('TechRecordChangeVrmComponent', () => {
     store = TestBed.inject(MockStore);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
-    component.cherishedTransferForm.controls['currentVrm'].clearAsyncValidators();
-    component.cherishedTransferForm.controls['thirdMark'].clearAsyncValidators();
-    component.correctingAnErrorForm.controls['newVrm'].clearAsyncValidators();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  //   describe('navigateBack', () => {
-  //     it('should clear all errors', () => {
-  //       jest.spyOn(router, 'navigate').mockImplementation();
+  describe('navigateBack', () => {
+    it('should clear all errors', () => {
+      jest.spyOn(router, 'navigate').mockImplementation();
 
-  //       const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-  //       component.navigateBack();
+      component.navigateBack();
 
-  //       expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-  //     });
+      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
+    });
 
-  //     it('should navigate back to the previous page', () => {
-  //       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+    it('should navigate back to the previous page', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-  //       component.navigateBack();
+      component.navigateBack();
 
-  //       expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
-  //     });
+      expect(navigateSpy).toBeCalledWith(['../../'], { relativeTo: route });
+    });
 
-  //     it('should navigate to a new record on amendVrmSuccess', () => {
-  //       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-  //       jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValueOnce(of(mockVehicleTechnicalRecord('psv') as NotTrailer));
+    it('should navigate to a new record on amendVrmSuccess', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-  //       store.overrideSelector(selectRouteData, { data: { isEditing: true } });
-  //       component.ngOnInit();
+      store.overrideSelector(selectRouteData, { data: { isEditing: true } });
+      component.ngOnInit();
 
-  //       actions$.next(amendVrmSuccess({ vehicleTechRecord: mockVehicleTechnicalRecord('psv') as TechRecordGETPSV }));
+      actions$.next(amendVrmSuccess({ vehicleTechRecord: mockVehicleTechnicalRecord('psv') as TechRecordGETPSV }));
 
-  //       expect(navigateSpy).toHaveBeenCalled();
-  //     });
-  //   });
+      expect(navigateSpy).toHaveBeenCalled();
+    });
+  });
 
-  //   describe('handleSubmit', () => {
-  //     beforeEach(() => {
-  //       component.techRecord = mockVehicleTechnicalRecord('psv') as TechRecordGETPSV;
-  //     });
+  describe('handleSubmit', () => {
+    beforeEach(() => {
+      component.techRecord = mockVehicleTechnicalRecord('psv') as TechRecordGETPSV;
+      jest.resetAllMocks();
+    });
 
-  //     it('should add an error when the vrm field is not filled out', () => {
-  //       const addErrorSpy = jest.spyOn(errorService, 'addError');
+    it('should add an error when the vrm field is not filled out', () => {
+      const addErrorSpy = jest.spyOn(errorService, 'setErrors');
 
-  //       component.handleSubmit();
+      component.handleSubmit();
 
-  //       expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
-  //     });
+      expect(addErrorSpy).toHaveBeenCalledWith([{ anchorLink: 'new-Vrm', error: 'New VRM is required' }]);
+    });
 
-  //     it('should add an error when the field is equal to the current VRM', () => {
-  //       const addErrorSpy = jest.spyOn(errorService, 'addError');
+    // it.only('should add an error when the field is equal to the current VRM', () => {
+    //   mockTechRecordService.validateVrmDoesNotExist.mockReturnValue(of({ validateVrm: { message: 'hiya' } }));
+    //   component.correctingAnErrorForm.get('newVrm')?.setValue('1234');
+    //   const addErrorSpy = jest.spyOn(errorService, 'setErrors');
+    //   component.correctingAnErrorForm.get('newVrm')?.setValue('KP01ABC');
 
-  //       component.handleSubmit();
+    //   component.handleSubmit();
 
-  //       expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
-  //     });
+    //   expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
+    // });
 
-  //     it('should add an error if isUnique returns false', () => {
-  //       const addErrorSpy = jest.spyOn(errorService, 'addError');
-  //       mockTechRecordService.validateVrmDoesNotExist = of({validateVrm: {message: 'hi'}})
+    // it('should add an error if isUnique returns false', () => {
+    //   const addErrorSpy = jest.spyOn(errorService, 'setErrors');
+    //   mockTechRecordService.validateVrmDoesNotExist(of({validateVrm: {message: 'hi'}}))
+    //   component.correctingAnErrorForm.get('newVrm')?.setAsyncValidators(mockTechRecordService.validateVrmDoesNotExist);
+    //   component.correctingAnErrorForm.get('newVrm')?.setValue('KP01ABC')
+    //   mockTechRecordService.validateVrmDoesNotExist.mockResolvedValue(of({validateVrm: {message: 'hi'}}))
 
-  //     component.cherishedTransferForm.get('currentVrm')?.setValue('test123');
+    //   // component.cherishedTransferForm.get('currentVrm')?.setValue('test123');
+    //   // component.cherishedTransferForm.get('thirdMark')?.setValue('test123');
 
-  //     component.handleSubmit();
+    //   component.handleSubmit();
 
-  //     expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM already exists', anchorLink: 'newVrm' });
-  //   });
+    //   expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM already exists', anchorLink: 'newVrm' });
+    // });
 
-  //   it('should dispatch the amendVrm action', fakeAsync(() => {
-  //     jest.spyOn(router, 'navigate').mockImplementation();
-  //     jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
-  //     const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation(() => Promise.resolve(true));
+    //   it('should dispatch the amendVrm action', fakeAsync(() => {
+    //     jest.spyOn(router, 'navigate').mockImplementation();
+    //     jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
+    //     const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation(() => Promise.resolve(true));
 
-  //     component.cherishedTransferForm.get('currentVrm')?.setValue('TESTVRM1');
+    //     component.cherishedTransferForm.get('currentVrm')?.setValue('TESTVRM1');
 
-  //     component.handleSubmit();
-  //     tick();
+    //     component.handleSubmit();
+    //     tick();
 
-  //     expect(dispatchSpy).toHaveBeenCalledWith(
-  //       amendVrm({ newVrm: 'TESTVRM1', cherishedTransfer: true, systemNumber: 'PSV', createdTimestamp: 'now' })
-  //     );
-  //   }));
+    //     expect(dispatchSpy).toHaveBeenCalledWith(
+    //       amendVrm({ newVrm: 'TESTVRM1', cherishedTransfer: true, systemNumber: 'PSV', createdTimestamp: 'now' })
+    //     );
+    //   }));
 
-  //   it('should be able to call it multiple times', fakeAsync(() => {
-  //     jest.spyOn(router, 'navigate').mockImplementation();
-  //     const submitSpy = jest.spyOn(component, 'handleSubmit').mockImplementation(() => Promise.resolve(true));
+    //   it('should be able to call it multiple times', fakeAsync(() => {
+    //     jest.spyOn(router, 'navigate').mockImplementation();
+    //     const submitSpy = jest.spyOn(component, 'handleSubmit').mockImplementation(() => Promise.resolve(true));
 
-  //     // jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
-  //     // component.handleSubmit();
-  //     // tick();
+    //     // jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
+    //     // component.handleSubmit();
+    //     // tick();
 
-  //     // jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
-  //     // component.handleSubmit();
-  //     // tick();
+    //     // jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
+    //     // component.handleSubmit();
+    //     // tick();
 
-  //     expect(submitSpy).toHaveBeenCalledTimes(2);
-  //   }));
-  // });
+    //     expect(submitSpy).toHaveBeenCalledTimes(2);
+    //   }));
+  });
 });

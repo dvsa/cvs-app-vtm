@@ -225,7 +225,6 @@ export class TechnicalRecordService {
 
   checkVrmNotActive(control: AbstractControl) {
     const originalVrm = control.root.get('recipientVrm')?.value;
-    console.log(originalVrm);
     return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, control.value).pipe(
       map(results => {
         const currentRecord = results.filter(result => result.techRecord_statusCode === StatusCodes.CURRENT);
@@ -245,6 +244,9 @@ export class TechnicalRecordService {
           return { validateVrm: { message: `This VRM already exists on an active record with the VIN: ${provisionalRecord[0].vin}` } };
         }
         return null;
+      }),
+      catchError((err: HttpErrorResponse) => {
+        return (err.status == 404 && of(null)) || throwError(() => err);
       })
     );
   }

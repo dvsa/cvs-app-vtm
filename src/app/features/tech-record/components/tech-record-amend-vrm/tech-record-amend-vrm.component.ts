@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -27,16 +27,31 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   isCherishedTransfer?: boolean = false;
   systemNumber?: string;
   createdTimestamp?: string;
+  formValidity: boolean = false;
+
   cherishedTransferForm = new FormGroup({
     currentVrm: new CustomFormControl(
-      { name: 'current-Vrm', type: FormNodeTypes.CONTROL },
+      {
+        name: 'current-Vrm',
+        label: 'Current VRM',
+        type: FormNodeTypes.CONTROL
+      },
       '',
       [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      [this.technicalRecordService.validateVrmForCherishedTransfer()]
+      this.technicalRecordService.validateVrmForCherishedTransfer()
     ),
-    previousVrm: new CustomFormControl({ name: 'previous-Vrm', type: FormNodeTypes.CONTROL, disabled: true }),
+    previousVrm: new CustomFormControl({
+      name: 'previous-Vrm',
+      label: 'Previous VRM',
+      type: FormNodeTypes.CONTROL,
+      disabled: true
+    }),
     thirdMark: new CustomFormControl(
-      { name: 'third-Mark', type: FormNodeTypes.CONTROL },
+      {
+        name: 'third-Mark',
+        label: 'Third Mark',
+        type: FormNodeTypes.CONTROL
+      },
       undefined,
       [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
       [this.technicalRecordService.validateVrmDoesNotExist()]
@@ -44,7 +59,11 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   });
   correctingAnErrorForm = new FormGroup({
     newVrm: new CustomFormControl(
-      { name: 'new-Vrm', type: FormNodeTypes.CONTROL },
+      {
+        name: 'new-Vrm',
+        label: 'New VRM',
+        type: FormNodeTypes.CONTROL
+      },
       '',
       [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
       [this.technicalRecordService.validateVrmDoesNotExist()]
@@ -86,8 +105,17 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
       this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
     });
 
-    this.cherishedTransferForm.get('previousVrm')?.setValue(this.techRecord?.primaryVrm);
+    this.cherishedTransferForm.get('previousVrm')?.setValue(this.techRecord?.primaryVrm ?? '');
     this.cherishedTransferForm.get('previousVrm')?.disable();
+
+    this.cherishedTransferForm.statusChanges.pipe(takeUntil(this.destroy$)).subscribe(res => {
+      console.log(res);
+      if (res === 'VALID') {
+        this.formValidity = true;
+      }
+    });
+    // this.cherishedTransferForm.get('thirdMark')?.addAsyncValidators(this.technicalRecordService.validateVrmDoesNotExist());
+    // this.correctingAnErrorForm.get('newVrm')?.addAsyncValidators(this.technicalRecordService.validateVrmDoesNotExist());
   }
 
   ngOnDestroy(): void {
@@ -110,7 +138,6 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   handleFormChange() {
     if (this.isCherishedTransfer) {
-      console.log(this.cherishedTransferForm.get('currentVrm')?.value);
       this.cherishedTransferForm.get('currentVrm')?.updateValueAndValidity();
       return;
     }
@@ -150,14 +177,19 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     this.globalErrorService.clearErrors();
 
     const errors: GlobalError[] = [];
+    if (this.isCherishedTransfer) {
+      DynamicFormService.validate(this.cherishedTransferForm, errors);
 
-    DynamicFormService.validate(form, errors, false);
+      this.cherishedTransferForm.updateValueAndValidity();
+    }
+    if (!this.isCherishedTransfer) {
+      DynamicFormService.validate(this.correctingAnErrorForm, errors, false);
+    }
 
     if (errors?.length > 0) {
       this.globalErrorService.setErrors(errors);
-      return false;
     }
-
-    return true;
+    console.log(this.formValidity);
+    return false;
   }
 }
