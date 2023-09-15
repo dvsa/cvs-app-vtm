@@ -10,6 +10,8 @@ import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime } from 'rxjs';
 import { hgvRequiredPlateFields } from './platesInterfaces';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-plates[techRecord]',
@@ -66,7 +68,13 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
   private _formSubscription = new Subscription();
 
-  constructor(private dynamicFormService: DynamicFormService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private dynamicFormService: DynamicFormService,
+    private cdr: ChangeDetectorRef,
+    private globalErrorService: GlobalErrorService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(PlatesTemplate, this.techRecord) as CustomFormGroup;
@@ -154,6 +162,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   validateTechRecordPlates(): void {
+    this.globalErrorService.clearErrors();
     const output = this.hgvRequiredFields.filter(field => {
       const value = (this.techRecord as TechRecordType<'hgv'>)[field as keyof TechRecordType<'hgv'>];
       return value === undefined || value === null || value === '';
@@ -161,11 +170,10 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     if (output.length > 0) {
       console.log('invalid');
       console.log(output);
+      this.globalErrorService.setErrors([{ error: 'All fields marked plate are mandatory to generate a plate.' }]);
+
       return;
     }
-    console.log('valid');
-    //invoke an error message here
-
-    //if it's an empty output then we can navigate to the next page
+    this.router.navigate(['generate-plate'], { relativeTo: this.route });
   }
 }
