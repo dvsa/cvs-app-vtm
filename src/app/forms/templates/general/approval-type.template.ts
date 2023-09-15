@@ -50,120 +50,28 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       label: 'Approval type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_approvalType',
-            value: [
-              'NTA',
-              'ECTA',
-              'IVA',
-              'NSSTA',
-              'GB WVTA',
-              'UKNI WVTA',
-              'EU WVTA Pre 23',
-              'EU WVTA 23',
-              'QNIG',
-              'Prov.GB WVTA',
-              'Small series',
-              'IVA – VCA',
-              'IVA – DVSA/NI'
-            ]
-          }
-        },
-        { name: ValidatorNames.MaxLength, args: 25 }
-      ]
+      validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
     },
     {
       name: 'techRecord_ntaNumber',
       label: 'National type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_approvalType',
-            value: [
-              'NTA',
-              'ECTA',
-              'IVA',
-              'NSSTA',
-              'GB WVTA',
-              'UKNI WVTA',
-              'EU WVTA Pre 23',
-              'EU WVTA 23',
-              'QNIG',
-              'Prov.GB WVTA',
-              'Small series',
-              'IVA – VCA',
-              'IVA – DVSA/NI'
-            ]
-          }
-        },
-        { name: ValidatorNames.MaxLength, args: 40 }
-      ]
+      validators: [{ name: ValidatorNames.MaxLength, args: 40 }]
     },
     {
       name: 'techRecord_variantNumber',
       label: 'Variant number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_approvalType',
-            value: [
-              'NTA',
-              'ECTA',
-              'IVA',
-              'NSSTA',
-              'GB WVTA',
-              'UKNI WVTA',
-              'EU WVTA Pre 23',
-              'EU WVTA 23',
-              'QNIG',
-              'Prov.GB WVTA',
-              'Small series',
-              'IVA – VCA',
-              'IVA – DVSA/NI'
-            ]
-          }
-        },
-        { name: ValidatorNames.MaxLength, args: 25 }
-      ]
+      validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
     },
     {
       name: 'techRecord_variantVersionNumber',
       label: 'Variant version number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_approvalType',
-            value: [
-              'NTA',
-              'ECTA',
-              'IVA',
-              'NSSTA',
-              'GB WVTA',
-              'UKNI WVTA',
-              'EU WVTA Pre 23',
-              'EU WVTA 23',
-              'QNIG',
-              'Prov.GB WVTA',
-              'Small series',
-              'IVA – VCA',
-              'IVA – DVSA/NI'
-            ]
-          }
-        },
-        { name: ValidatorNames.MaxLength, args: 35 }
-      ]
+      validators: [{ name: ValidatorNames.MaxLength, args: 35 }]
     }
   ]
 };
