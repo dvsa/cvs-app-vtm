@@ -1,7 +1,8 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { BodyTypeDescription } from '@models/body-type-enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
+import { TagType } from '@shared/components/tag/tag.component';
 
 export const HgvAndTrlBodyTemplate: FormNode = {
   name: 'bodySection',
@@ -44,7 +45,8 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(BodyTypeDescription),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_bodyType_code',
