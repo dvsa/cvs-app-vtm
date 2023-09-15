@@ -19,7 +19,7 @@ export const SmallTrailerTechRecord: FormNode = {
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
       validators: [],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_statusCode',
@@ -27,7 +27,7 @@ export const SmallTrailerTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_manufactureYear',
@@ -49,7 +49,7 @@ export const SmallTrailerTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 99 }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       customId: 'vehicleClassDescription',
@@ -72,7 +72,7 @@ export const SmallTrailerTechRecord: FormNode = {
         { label: 'MOT class 5', value: 'MOT class 5' }
       ],
       validators: [{ name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_vehicleSubclass',
@@ -89,7 +89,7 @@ export const SmallTrailerTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_euVehicleCategory',
@@ -108,7 +108,7 @@ export const SmallTrailerTechRecord: FormNode = {
           value: EuVehicleCategories.O2
         }
       ],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     }
   ]
 };

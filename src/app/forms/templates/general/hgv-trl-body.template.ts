@@ -46,7 +46,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(BodyTypeDescription),
       validators: [{ name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_bodyType_code',

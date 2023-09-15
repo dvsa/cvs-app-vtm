@@ -14,7 +14,7 @@ export const TechRecordReasonForCreationSection: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.TEXTAREA,
       validators: [{ name: ValidatorNames.MaxLength, args: 500 }, { name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     }
   ]
 };

@@ -19,7 +19,7 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_statusCode',
@@ -27,7 +27,7 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_numberOfWheelsDriven',
@@ -66,7 +66,7 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       validators: [],
       disabled: true,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_speedLimiterMrk',
@@ -153,7 +153,7 @@ export const HgvTechRecord: FormNode = {
         { label: 'MOT class 5', value: 'MOT class 5' }
       ],
       validators: [{ name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_vehicleConfiguration',
@@ -163,7 +163,7 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
       validators: [],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.TESTABLE }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_offRoad',
