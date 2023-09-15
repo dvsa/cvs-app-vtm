@@ -46,13 +46,6 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       ]
     },
     {
-      name: 'techRecord_approvalTypeNumber',
-      label: 'Approval type number',
-      type: FormNodeTypes.CONTROL,
-      width: FormNodeWidth.XL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
-    },
-    {
       name: 'techRecord_ntaNumber',
       label: 'National type number',
       type: FormNodeTypes.CONTROL,
