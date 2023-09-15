@@ -4,7 +4,8 @@ import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
+import { TagType } from '@shared/components/tag/tag.component';
 
 export const PsvTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -18,14 +19,16 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
-      disabled: true
+      disabled: true,
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_statusCode',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_numberOfWheelsDriven',
@@ -63,7 +66,8 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       validators: [],
-      disabled: true
+      disabled: true,
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_speedLimiterMrk',
@@ -115,7 +119,8 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
-      validators: []
+      validators: [],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_euVehicleCategory',
@@ -151,7 +156,8 @@ export const PsvTechRecord: FormNode = {
           args: { passengersOne: 'techRecord_seatsLowerDeck', passengersTwo: 'techRecord_standingCapacity' }
         }
       ],
-      class: 'flex--half'
+      class: 'flex--half',
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_seatsLowerDeck',
@@ -167,7 +173,8 @@ export const PsvTechRecord: FormNode = {
           args: { passengersOne: 'techRecord_standingCapacity', passengersTwo: 'techRecord_seatsUpperDeck' }
         }
       ],
-      class: 'flex--half'
+      class: 'flex--half',
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_standingCapacity',
@@ -207,7 +214,8 @@ export const PsvTechRecord: FormNode = {
         { label: 'MOT class 5', value: 'MOT class 5' }
       ],
       class: '.govuk-input--width-10',
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_vehicleSize',
@@ -216,7 +224,8 @@ export const PsvTechRecord: FormNode = {
       hint: 'The Vehicle Size is calculated automatically based on the number of seats and standing capacity. Only change the Size if you need to',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(VehicleSize)
+      options: getOptionsFromEnum(VehicleSize),
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_numberOfSeatbelts',

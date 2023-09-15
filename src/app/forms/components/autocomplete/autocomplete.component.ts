@@ -59,7 +59,11 @@ export class AutocompleteComponent extends BaseControlComponent implements After
   }
 
   get style(): string {
-    return 'autocomplete__wrapper' + (this.width ? ' govuk-input--width-' + this.width : '') + (this.noBottomMargin ? '' : ' extra-margin');
+    return 'autocomplete__wrapper' + (this.noBottomMargin ? '' : ' extra-margin');
+  }
+
+  get innerStyle(): string {
+    return this.width ? ' govuk-input--width-' + this.width : '' + ' internal-wrapper';
   }
 
   handleChange(event: any) {
