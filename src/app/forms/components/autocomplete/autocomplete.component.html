@@ -7,7 +7,7 @@
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
-  <div class="internal-wrapper">
+  <div [class]="innerStyle">
     <div *ngIf="prefix" class="govuk-input__suffix prefix" aria-hidden="true">
       <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>
     </div>
