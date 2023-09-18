@@ -81,4 +81,20 @@ describe('TechRecordChangeVrmComponent', () => {
       expect(addErrorSpy).toHaveBeenCalledWith([{ error: 'Reason for change is required', anchorLink: 'is-cherished-transfer' }]);
     });
   });
+  describe('submit', () => {
+    it('should navigate to correct-error', () => {
+      const navigationSpy = jest.spyOn(router, 'navigate');
+      component.form.controls['isCherishedTransfer'].setValue('correcting-error');
+      component.submit();
+
+      expect(navigationSpy).toHaveBeenCalledWith(['correcting-error'], { relativeTo: expect.anything() });
+    });
+    it('should navigate to cherished-transfer', () => {
+      const navigationSpy = jest.spyOn(router, 'navigate');
+      component.form.controls['isCherishedTransfer'].setValue('cherished-transfer');
+      component.submit();
+
+      expect(navigationSpy).toHaveBeenCalledWith(['cherished-transfer'], { relativeTo: expect.anything() });
+    });
+  });
 });

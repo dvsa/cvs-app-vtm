@@ -81,7 +81,7 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
       return;
     }
 
-    this.router.navigate([this.form.value], { relativeTo: this.route });
+    this.router.navigate([this.form.controls['isCherishedTransfer'].value], { relativeTo: this.route });
   }
 
   get isFormValid(): boolean {
