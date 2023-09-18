@@ -318,4 +318,11 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
         return 'Unknown approval type';
     }
   }
+  getId(name: string) {
+    const id = name + '-day';
+    if (this.control) {
+      this.control.meta.customId = id;
+    }
+    return id;
+  }
 }

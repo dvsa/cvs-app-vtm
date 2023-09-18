@@ -85,6 +85,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   get correctApprovalType(): boolean {
     return (
       this.techRecord?.techRecord_approvalType !== undefined &&
+      this.techRecord?.techRecord_approvalType !== null &&
       (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.techRecord.techRecord_approvalType!.valueOf())
     );
   }
