@@ -20,58 +20,60 @@
     </div>
   </dl>
 
-  <ng-container [ngSwitch]="isCherishedTransfer">
-    <ng-container *ngSwitchCase="false">
-      <form [formGroup]="correctingAnErrorForm">
-        <app-text-input
-          #newVrm
-          appToUppercase
-          appNoSpace
-          appTrimWhitespace
-          name="new-vrm"
-          formControlName="newVrm"
-          [width]="width"
-          label="New VRM"
-        ></app-text-input>
-      </form>
-    </ng-container>
-    <ng-container *ngSwitchCase="true">
-      <form [formGroup]="cherishedTransferForm">
-        <app-text-input
-          appToUppercase
-          appNoSpace
-          appTrimWhitespace
-          formControlName="previousVrm"
-          name="previous-vrm"
-          [disabled]="true"
-          [width]="width"
-          label="Previous VRM"
-        ></app-text-input>
-        <app-text-input
-          #currentVrm
-          appToUppercase
-          appNoSpace
-          appTrimWhitespace
-          formControlName="currentVrm"
-          name="current-vrm"
-          [width]="width"
-          label="Current VRM"
-          (focusout)="handleFormChange()"
-        ></app-text-input>
-        <app-text-input
-          #thirdMark
-          appToUppercase
-          appNoSpace
-          appTrimWhitespace
-          formControlName="thirdMark"
-          name="third-mark"
-          [width]="width"
-          label="Third mark"
-          (focusout)="handleFormChange()"
-        ></app-text-input>
-      </form>
-    </ng-container>
+  <ng-container *ngIf="!isCherishedTransfer">
+    <form [formGroup]="correctingAnErrorForm">
+      <app-text-input
+        #newVrm
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+        name="new-vrm"
+        formControlName="newVrm"
+        [width]="width"
+        label="New VRM"
+      ></app-text-input>
+    </form>
   </ng-container>
+
+  <ng-container *ngIf="isCherishedTransfer">
+    <form [formGroup]="cherishedTransferForm">
+      <app-text-input
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+        formControlName="previousVrm"
+        name="previous-vrm"
+        [disabled]="true"
+        [width]="width"
+        label="Previous VRM"
+      ></app-text-input>
+
+      <app-text-input
+        #currentVrm
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+        formControlName="currentVrm"
+        name="current-vrm"
+        [width]="width"
+        label="Current VRM"
+        (focusout)="handleFormChange()"
+      ></app-text-input>
+
+      <app-text-input
+        #thirdMark
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+        formControlName="thirdMark"
+        name="third-mark"
+        [width]="width"
+        label="Third mark"
+        (focusout)="handleFormChange()"
+      ></app-text-input>
+    </form>
+  </ng-container>
+
   <app-button-group>
     <app-button id="submit-vrm" (clicked)="handleSubmit()">Save</app-button>
     <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>

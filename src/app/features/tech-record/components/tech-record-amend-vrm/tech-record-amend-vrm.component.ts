@@ -24,7 +24,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 export class AmendVrmComponent implements OnDestroy, OnInit {
   techRecord?: NotTrailer;
   makeAndModel?: string;
-  isCherishedTransfer?: boolean = false;
+  isCherishedTransfer: boolean = false;
   systemNumber?: string;
   createdTimestamp?: string;
   formValidity: boolean = false;
@@ -136,29 +136,20 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   }
 
   handleSubmit(): void {
-    if (this.isFormValid()) {
-      if (this.isCherishedTransfer) {
-        this.store.dispatch(
-          amendVrm({
-            newVrm: this.cherishedTransferForm.value.currentVrm,
-            cherishedTransfer: true,
-            thirdMark: this.cherishedTransferForm.value.thirdMark,
-            systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
-            createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
-          })
-        );
-      } else {
-        this.store.dispatch(
-          amendVrm({
-            newVrm: this.correctingAnErrorForm.value.newVrm,
-            cherishedTransfer: false,
-            thirdMark: '',
-            systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
-            createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
-          })
-        );
-      }
+    if (!this.isFormValid()) {
+      return;
     }
+
+    this.store.dispatch(
+      amendVrm({
+        newVrm: this.isCherishedTransfer ? this.cherishedTransferForm.value.currentVrm : this.correctingAnErrorForm.value.newVrm,
+        cherishedTransfer: this.isCherishedTransfer,
+        thirdMark: this.isCherishedTransfer ? this.cherishedTransferForm.value.thirdMark : undefined,
+        systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
+        createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
+      })
+    );
+
     return;
   }
 
