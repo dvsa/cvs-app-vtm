@@ -1,15 +1,4 @@
-import {
-  AfterContentInit,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
@@ -163,6 +152,8 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   ngOnChanges(): void {
+    console.log(this.formSubmitted);
+    console.log(this.approvalTypeChange);
     if (!this.formSubmitted && this.approvalTypeChange) {
       this.clearInput();
     }

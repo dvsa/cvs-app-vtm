@@ -55,7 +55,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
       ) {
         this.approvalTypeChange = true;
       }
-      if (techRecord.currentValue.techRecord_approvalType != techRecord.previousValue.techRecord_approvalType) {
+      if (techRecord.currentValue.techRecord_approvalType == techRecord.previousValue.techRecord_approvalType) {
         {
           this.approvalTypeChange = false;
         }
@@ -92,6 +92,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   get isPsv(): boolean {
     return this.techRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
+
   protected readonly TechRecord = TechRecord;
   protected readonly getOptionsFromEnum = getOptionsFromEnum;
   protected readonly approvalType = approvalType;
