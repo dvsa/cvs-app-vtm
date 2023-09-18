@@ -142,7 +142,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
           amendVrm({
             newVrm: this.cherishedTransferForm.value.currentVrm,
             cherishedTransfer: true,
-            newDonorVrm: this.cherishedTransferForm.value.thirdMark,
+            thirdMark: this.cherishedTransferForm.value.thirdMark,
             systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
             createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
           })
@@ -152,7 +152,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
           amendVrm({
             newVrm: this.correctingAnErrorForm.value.newVrm,
             cherishedTransfer: false,
-            newDonorVrm: '',
+            thirdMark: '',
             systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
             createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
           })

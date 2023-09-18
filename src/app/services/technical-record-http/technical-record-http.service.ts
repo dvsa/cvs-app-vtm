@@ -64,13 +64,13 @@ export class TechnicalRecordHttpService {
     cherishedTransfer: boolean,
     systemNumber: string,
     createdTimestamp: string,
-    newDonorVrm?: string
+    thirdMark?: string
   ): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`;
     const body = {
       newVrm,
       isCherishedTransfer: cherishedTransfer,
-      newDonorVrm: newDonorVrm ?? undefined
+      thirdMark: thirdMark ?? undefined
     };
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }

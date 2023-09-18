@@ -159,9 +159,9 @@ export class TechnicalRecordService {
         filter((control: AbstractControl) => !!control.value),
         take(1),
         switchMap(control => {
-          const newDonorVrm = control.root.get('thirdMark')?.value;
+          const thirdMark = control.root.get('thirdMark')?.value;
           const previousVrm = control.root.get('previousVrm')?.value;
-          if (newDonorVrm) {
+          if (thirdMark) {
             return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, control.value).pipe(
               map(results => {
                 if (results.some(result => result.techRecord_statusCode === StatusCodes.CURRENT)) {
