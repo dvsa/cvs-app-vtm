@@ -69,9 +69,11 @@ export const PsvTypeApprovalTemplate: FormNode = {
     {
       name: 'techRecord_coifDate',
       label: 'COIF Certifier date',
+      value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
+      validators: [],
       isoDate: false
     },
     {
