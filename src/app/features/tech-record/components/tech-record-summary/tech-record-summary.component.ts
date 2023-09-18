@@ -117,6 +117,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     return this.routerService.getRouteDataProperty$('isEditing').pipe(map(isEditing => !!isEditing));
   }
 
+  get hint(): string {
+    return 'Complete all required fields to create a testable record';
+  }
+
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
     const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form, this.approvalType?.form];
 

@@ -1,4 +1,5 @@
 <section class="govuk-grid-row">
+  <div [id]="'required-fields-hint'" class="govuk-hint">{{ hint }}</div>
   <app-accordion-control [class]="'padding'" [sectionState]="sectionTemplatesState$ | async">
     <div class="govuk-grid-column-one-half">
       <ng-container *ngFor="let section of sectionTemplates; let i = index">
