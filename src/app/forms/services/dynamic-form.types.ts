@@ -18,6 +18,8 @@ import { map, Observable } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
 import { Params } from '@angular/router';
+import { TagType } from '@shared/components/tag/tag.component';
+import { Dictionary } from '@ngrx/entity';
 
 export enum FormNodeViewTypes {
   DATE = 'date',
@@ -29,6 +31,10 @@ export enum FormNodeViewTypes {
   TIME = 'time',
   VEHICLETYPE = 'vehicleType',
   VRM = 'vrm'
+}
+
+export enum TagTypeLabels {
+  REQUIRED = 'Required'
 }
 
 export enum FormNodeTypes {
@@ -55,7 +61,8 @@ export enum FormNodeEditTypes {
   RADIO = 'radio',
   SELECT = 'select',
   TEXT = 'text',
-  TEXTAREA = 'textarea'
+  TEXTAREA = 'textarea',
+  APPROVAL_TYPE = 'approvalType'
 }
 
 export enum FormNodeWidth {
@@ -105,6 +112,12 @@ export interface FormNode {
   class?: string;
   customId?: string;
   warning?: string;
+  customTags?: CustomTag[];
+}
+
+export interface CustomTag {
+  label: TagTypeLabels;
+  colour: TagType;
 }
 
 export interface FormNodeValidator {

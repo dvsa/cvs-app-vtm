@@ -4,6 +4,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
 import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
@@ -37,11 +38,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(TyresComponent) tyres!: TyresComponent;
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
   @ViewChild(LettersComponent) letters!: LettersComponent;
+  @ViewChild(ApprovalTypeComponent) approvalType!: ApprovalTypeComponent;
 
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
 
-  techRecordCalculated!: V3TechRecordModel;
+  techRecordCalculated?: V3TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
   isEditing: boolean = false;
@@ -112,11 +114,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get vehicleType() {
-    return this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated);
+    return this.techRecordCalculated ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecordCalculated) : undefined;
   }
 
   get vehicleTemplates(): Array<FormNode> {
     this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe(editing => (this.isEditing = editing));
+    if (!this.vehicleType) {
+      return [];
+    }
     return (
       vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
     );
@@ -134,8 +139,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     return this.routerService.getRouteDataProperty$('isEditing').pipe(map(isEditing => !!isEditing));
   }
 
+  get hint(): string {
+    return 'Complete all required fields to create a testable record';
+  }
+
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form];
+    const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form, this.approvalType?.form];
 
     switch (this.vehicleType) {
       case VehicleTypes.PSV:

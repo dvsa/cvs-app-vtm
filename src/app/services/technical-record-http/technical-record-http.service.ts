@@ -122,4 +122,17 @@ export class TechnicalRecordHttpService {
 
     return this.http.post(url, body, { responseType: 'text' });
   }
+
+  unarchiveTechnicalRecord$(
+    systemNumber: string,
+    createdTimestamp: string,
+    reasonForUnarchiving: string,
+    status: string
+  ): Observable<TechRecordType<'get'>> {
+    const url = `${environment.VTM_API_URI}/v3/technical-records/unarchive/${systemNumber}/${createdTimestamp}`;
+
+    const body = { reasonForUnarchiving, status };
+
+    return this.http.post<TechRecordType<'get'>>(url, body, { responseType: 'json' });
+  }
 }

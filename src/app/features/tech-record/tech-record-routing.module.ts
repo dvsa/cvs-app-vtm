@@ -18,6 +18,7 @@ import { TechRecordSearchTyresComponent } from './components/tech-record-search-
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
 import { TechRecordComponent } from './tech-record.component';
 import { AmendVrmReasonComponent } from './components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component';
+import { TechRecordUnarchiveComponent } from './components/tech-record-unarchive/tech-record-unarchive-component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,13 @@ const routes: Routes = [
     component: TechRecordComponent,
     data: { title: 'Historic tech record', isCustomLayout: true },
     canActivate: [MsalGuard, CancelEditTechGuard],
+    resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'historic/unarchive-record',
+    component: TechRecordUnarchiveComponent,
+    data: { title: 'Unarchive Record', roles: Roles.TechRecordUnarchive },
+    canActivate: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
   },
   {
@@ -170,6 +178,13 @@ const routes: Routes = [
     path: 'change-status',
     component: TechRecordChangeStatusComponent,
     data: { title: 'Promote or Archive Tech Record', roles: Roles.TechRecordArchive },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'unarchive-record',
+    component: TechRecordUnarchiveComponent,
+    data: { title: 'Unarchive Record', roles: Roles.TechRecordUnarchive },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
   },

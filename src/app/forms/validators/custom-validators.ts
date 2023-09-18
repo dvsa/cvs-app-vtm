@@ -86,21 +86,18 @@ export class CustomValidators {
     };
   };
 
-  static requiredIfEquals = (sibling: string, value: any): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (control?.parent) {
-        const siblingControl = control.parent.get(sibling) as CustomFormControl;
-        const siblingValue = siblingControl.value;
-        const newValue = Array.isArray(value) ? value.includes(siblingValue) : siblingValue === value;
+  static requiredIfEquals =
+    (sibling: string, values: any[]): ValidatorFn =>
+    (control: AbstractControl): ValidationErrors | null => {
+      if (!control?.parent) return null;
 
-        if (newValue && (control.value === null || control.value === undefined || control.value === '')) {
-          return { requiredIfEquals: { sibling: siblingControl.meta.label } };
-        }
-      }
+      const siblingControl = control.parent.get(sibling) as CustomFormControl;
+      const siblingValue = siblingControl.value;
+      const isSiblingValueIncluded = values.includes(siblingValue);
+      const isControlValueEmpty = control.value === null || control.value === undefined || control.value === '';
 
-      return null;
+      return isSiblingValueIncluded && isControlValueEmpty ? { requiredIfEquals: { sibling: siblingControl.meta.label } } : null;
     };
-  };
 
   static requiredIfNotEqual = (sibling: string, value: any): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -174,6 +171,9 @@ export class CustomValidators {
     };
   };
 
+  static validateVinCharacters() {
+    return this.customPattern(['^(?!.*[OIQ]).*$', 'VIN should not contain O, I and Q']);
+  }
   static alphanumeric(): ValidatorFn {
     return this.customPattern(['^[a-zA-Z0-9]*$', 'must be alphanumeric']);
   }
@@ -298,4 +298,9 @@ export class CustomValidators {
       return null;
     };
   };
+}
+
+interface ValidatorArgs<T> {
+  sibling: keyof T;
+  values: T[keyof T] | T[keyof T][];
 }

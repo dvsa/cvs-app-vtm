@@ -105,6 +105,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
       case StatusCodes.PROVISIONAL:
         return TechRecordActions.PROVISIONAL;
       case StatusCodes.ARCHIVED:
+        return TechRecordActions.ARCHIVED;
       default:
         return TechRecordActions.NONE;
     }

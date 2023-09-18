@@ -1,4 +1,5 @@
 <section class="govuk-grid-row">
+  <div [id]="'required-fields-hint'" class="govuk-hint">{{ hint }}</div>
   <app-accordion-control [class]="'padding'" [sectionState]="sectionTemplatesState$ | async">
     <div class="govuk-grid-column-one-half">
       <ng-container *ngFor="let section of sectionTemplates; let i = index">
@@ -18,100 +19,110 @@
 </section>
 
 <ng-template #accordion let-sectionName="sectionName" let-section="section">
-  <ng-container [ngSwitch]="sectionName">
-    <app-body
-      *ngSwitchCase="'bodySection'"
-      [techRecord]="techRecordCalculated"
-      [isEditing]="(isEditing$ | async) ?? false"
-      (formChange)="handleFormState($event)"
-    ></app-body>
-
-    <ng-container
-      *ngIf="
-        techRecordCalculated.techRecord_vehicleType === 'trl' ||
-        techRecordCalculated.techRecord_vehicleType === 'hgv' ||
-        techRecordCalculated.techRecord_vehicleType === 'psv'
-      "
-    >
-      <app-dimensions
-        *ngSwitchCase="'dimensionsSection'"
+  <ng-container *ngIf="techRecordCalculated">
+    <ng-container [ngSwitch]="sectionName">
+      <app-body
+        *ngSwitchCase="'bodySection'"
         [techRecord]="techRecordCalculated"
         [isEditing]="(isEditing$ | async) ?? false"
         (formChange)="handleFormState($event)"
-      ></app-dimensions>
-    </ng-container>
+      ></app-body>
 
-    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'psv'">
-      <app-psv-brakes
-        *ngSwitchCase="'psvBrakesSection'"
-        [vehicleTechRecord]="techRecordCalculated"
-        [isEditing]="(isEditing$ | async) ?? false"
-        (formChange)="handleFormState($event)"
-      ></app-psv-brakes>
-    </ng-container>
+      <ng-container *ngSwitchCase="'dimensionsSection'">
+        <app-dimensions
+          *ngIf="
+            techRecordCalculated.techRecord_vehicleType === 'trl' ||
+            techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+            techRecordCalculated.techRecord_vehicleType === 'psv'
+          "
+          [techRecord]="techRecordCalculated"
+          [isEditing]="(isEditing$ | async) ?? false"
+          (formChange)="handleFormState($event)"
+        ></app-dimensions>
+      </ng-container>
 
-    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'trl'">
-      <app-trl-brakes
-        *ngSwitchCase="'trlBrakesSection'"
-        [vehicleTechRecord]="techRecordCalculated"
-        [isEditing]="(isEditing$ | async) ?? false"
-        (formChange)="handleFormState($event)"
-      ></app-trl-brakes>
-    </ng-container>
-    <ng-container
-      *ngIf="
-        techRecordCalculated.techRecord_vehicleType === 'trl' ||
-        techRecordCalculated.techRecord_vehicleType === 'hgv' ||
-        techRecordCalculated.techRecord_vehicleType === 'psv'
-      "
-    >
-      <app-tyres
-        *ngSwitchCase="'tyreSection'"
-        [vehicleTechRecord]="techRecordCalculated"
-        [isEditing]="(isEditing$ | async) ?? false"
-        (formChange)="handleFormState($event)"
-      ></app-tyres>
-    </ng-container>
+      <ng-container *ngSwitchCase="'approvalSection'">
+        <app-approval-type
+          *ngIf="
+            techRecordCalculated.techRecord_vehicleType === 'trl' ||
+            techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+            techRecordCalculated.techRecord_vehicleType === 'psv'
+          "
+          [techRecord]="techRecordCalculated"
+          [isEditing]="(isEditing$ | async) ?? false"
+          (formChange)="handleFormState($event)"
+        ></app-approval-type>
+      </ng-container>
 
-    <ng-container
-      *ngIf="
-        techRecordCalculated.techRecord_vehicleType === 'trl' ||
-        techRecordCalculated.techRecord_vehicleType === 'hgv' ||
-        techRecordCalculated.techRecord_vehicleType === 'psv'
-      "
-    >
-      <app-weights
-        *ngSwitchCase="'weightsSection'"
-        [vehicleTechRecord]="techRecordCalculated"
-        [isEditing]="(isEditing$ | async) ?? false"
-        (formChange)="handleFormState($event)"
-      ></app-weights>
-    </ng-container>
+      <ng-container *ngSwitchCase="'psvBrakesSection'">
+        <app-psv-brakes
+          *ngIf="techRecordCalculated.techRecord_vehicleType === 'psv'"
+          [vehicleTechRecord]="techRecordCalculated"
+          [isEditing]="(isEditing$ | async) ?? false"
+          (formChange)="handleFormState($event)"
+        ></app-psv-brakes>
+      </ng-container>
 
-    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'trl'">
-      <app-letters
-        *ngSwitchCase="'lettersSection'"
-        [techRecord]="techRecordCalculated"
-        [isEditing]="(isEditing$ | async) ?? false"
-        (formChange)="handleFormState($event)"
-      ></app-letters>
-    </ng-container>
+      <ng-container *ngSwitchCase="'trlBrakesSection'">
+        <app-trl-brakes
+          *ngIf="techRecordCalculated.techRecord_vehicleType === 'trl'"
+          [vehicleTechRecord]="techRecordCalculated"
+          [isEditing]="(isEditing$ | async) ?? false"
+          (formChange)="handleFormState($event)"
+        ></app-trl-brakes>
+      </ng-container>
 
-    <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl'">
-      <app-plates
-        *ngSwitchCase="'platesSection'"
-        [techRecord]="techRecordCalculated"
-        [isEditing]="(isEditing$ | async) ?? false"
-        (formChange)="handleFormState($event)"
-      ></app-plates>
-    </ng-container>
+      <ng-container *ngSwitchCase="'tyreSection'">
+        <app-tyres
+          *ngIf="
+            techRecordCalculated.techRecord_vehicleType === 'trl' ||
+            techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+            techRecordCalculated.techRecord_vehicleType === 'psv'
+          "
+          [vehicleTechRecord]="techRecordCalculated"
+          [isEditing]="(isEditing$ | async) ?? false"
+          (formChange)="handleFormState($event)"
+        ></app-tyres>
+      </ng-container>
 
-    <app-dynamic-form-group
-      *ngSwitchDefault
-      [data]="techRecordCalculated"
-      [template]="section"
-      [edit]="(isEditing$ | async) ?? false"
-      (formChange)="handleFormState($event)"
-    ></app-dynamic-form-group>
+      <ng-container *ngSwitchCase="'weightsSection'">
+        <app-weights
+          *ngIf="
+            techRecordCalculated.techRecord_vehicleType === 'trl' ||
+            techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+            techRecordCalculated.techRecord_vehicleType === 'psv'
+          "
+          [vehicleTechRecord]="techRecordCalculated"
+          [isEditing]="(isEditing$ | async) ?? false"
+          (formChange)="handleFormState($event)"
+        ></app-weights>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'lettersSection'">
+        <app-letters
+          *ngIf="techRecordCalculated.techRecord_vehicleType === 'trl'"
+          [techRecord]="techRecordCalculated"
+          [isEditing]="(isEditing$ | async) ?? false"
+          (formChange)="handleFormState($event)"
+        ></app-letters>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'platesSection'">
+        <app-plates
+          *ngIf="techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl'"
+          [techRecord]="techRecordCalculated"
+          [isEditing]="(isEditing$ | async) ?? false"
+          (formChange)="handleFormState($event)"
+        ></app-plates>
+      </ng-container>
+
+      <app-dynamic-form-group
+        *ngSwitchDefault
+        [data]="techRecordCalculated"
+        [template]="section"
+        [edit]="(isEditing$ | async) ?? false"
+        (formChange)="handleFormState($event)"
+      ></app-dynamic-form-group>
+    </ng-container>
   </ng-container>
 </ng-template>

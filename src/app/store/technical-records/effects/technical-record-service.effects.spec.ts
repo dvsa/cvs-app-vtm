@@ -21,6 +21,9 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
+  unarchiveTechRecord,
+  unarchiveTechRecordFailure,
+  unarchiveTechRecordSuccess,
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess
@@ -176,43 +179,96 @@ describe('TechnicalRecordServiceEffects', () => {
         });
       });
     });
+  });
 
-    describe('generateTechRecordBasedOnSectionTemplates', () => {
-      beforeEach(() => {
-        store = TestBed.inject(MockStore);
-        store.resetSelectors();
-        jest.resetModules();
+  describe('unarchiveTechRecord', () => {
+    it('should return an unarchived technical record on successful API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const technicalRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: unarchiveTechRecord });
+
+        // mock service call
+        jest.spyOn(techRecordHttpService, 'unarchiveTechnicalRecord$').mockReturnValue(cold('--a|', { a: technicalRecord }));
+
+        // expect effect to return success action
+        expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
+          b: unarchiveTechRecordSuccess({ vehicleTechRecord: technicalRecord })
+        });
       });
+    });
 
-      it('should generate new techRecord based on vehicle type', fakeAsync(() => {
-        const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
-        const expectedTechRecord = getEmptyTechRecord();
+    it('should return an error message if not there is a non-archived record with the same VRM', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: unarchiveTechRecord });
 
-        testScheduler.run(({ hot, expectObservable }) => {
-          store.overrideSelector(editingTechRecord, {
-            vin: 'foo',
-            primaryVrm: 'bar',
-            systemNumber: 'foobar',
-            createdTimestamp: 'barfoo',
-            techRecord_vehicleType: 'lgv'
-          } as unknown as TechRecordType<'put'>);
-          // mock action to trigger effect
-          actions$ = hot('-a--', {
-            a: changeVehicleType({
-              techRecord_vehicleType: VehicleTypes.CAR
-            })
-          });
+        // mock service call
+        const expectedError = new HttpErrorResponse({ status: 400, statusText: 'Cannot archive a record with unarchived records' });
+        jest.spyOn(techRecordHttpService, 'unarchiveTechnicalRecord$').mockReturnValue(cold('--#|', {}, expectedError));
 
-          expectObservable(effects.generateTechRecordBasedOnSectionTemplates$).toBe('-b', {
-            b: expectedTechRecord
-          });
+        expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
+          b: unarchiveTechRecordFailure({
+            error: 'Unable to unarchive technical record null'
+          })
+        });
+      });
+    });
+
+    it('should return an error message if there was an internal server error', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: unarchiveTechRecord });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Failed to unarchive record' });
+        jest.spyOn(techRecordHttpService, 'unarchiveTechnicalRecord$').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
+          b: unarchiveTechRecordFailure({
+            error: 'Unable to unarchive technical record null'
+          })
+        });
+      });
+    });
+  });
+
+  describe('generateTechRecordBasedOnSectionTemplates', () => {
+    beforeEach(() => {
+      store = TestBed.inject(MockStore);
+      store.resetSelectors();
+      jest.resetModules();
+    });
+
+    it('should generate new techRecord based on vehicle type', fakeAsync(() => {
+      const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
+      const expectedTechRecord = getEmptyTechRecord();
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(editingTechRecord, {
+          vin: 'foo',
+          primaryVrm: 'bar',
+          systemNumber: 'foobar',
+          createdTimestamp: 'barfoo',
+          techRecord_vehicleType: 'lgv'
+        } as unknown as TechRecordType<'put'>);
+        // mock action to trigger effect
+        actions$ = hot('-a--', {
+          a: changeVehicleType({
+            techRecord_vehicleType: VehicleTypes.CAR
+          })
         });
 
-        flush();
-        expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
-        expect(techRecordServiceSpy).toHaveBeenCalledWith(expectedTechRecord);
-      }));
-    });
+        expectObservable(effects.generateTechRecordBasedOnSectionTemplates$).toBe('-b', {
+          b: expectedTechRecord
+        });
+      });
+
+      flush();
+      expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
+      expect(techRecordServiceSpy).toHaveBeenCalledWith(expectedTechRecord);
+    }));
   });
 });
 

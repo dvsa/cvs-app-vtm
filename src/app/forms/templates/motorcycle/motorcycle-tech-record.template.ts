@@ -1,8 +1,9 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
+import { TagType } from '@shared/components/tag/tag.component';
 
 export const MotorcycleTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -17,14 +18,16 @@ export const MotorcycleTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
-      validators: []
+      validators: [],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_statusCode',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_regnDate',
@@ -55,7 +58,8 @@ export const MotorcycleTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       value: 2,
-      validators: [{ name: ValidatorNames.Max, args: 99 }]
+      validators: [{ name: ValidatorNames.Max, args: 99 }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_vehicleClass_description',
@@ -69,7 +73,7 @@ export const MotorcycleTechRecord: FormNode = {
         { label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
         { label: 'not applicable', value: 'not applicable' },
         { label: 'small psv (ie: less than or equal to 22 passengers)', value: 'small psv (ie: less than or equal to 22 seats)' },
-        { label: 'motorbikes over 200cc', value: 'motorbikes over 200cc' },
+        { label: 'motorbikes up to 200cc', value: 'motorbikes up to 200cc' },
         { label: 'trailer', value: 'trailer' },
         { label: 'large psv(ie: greater than or equal to 23 passengers)', value: 'large psv(ie: greater than 23 seats)' },
         { label: '3 wheelers', value: '3 wheelers' },
@@ -79,7 +83,8 @@ export const MotorcycleTechRecord: FormNode = {
         { label: 'MOT class 5', value: 'MOT class 5' }
       ],
       class: '.govuk-input--width-10',
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_vehicleConfiguration',
@@ -103,11 +108,12 @@ export const MotorcycleTechRecord: FormNode = {
     {
       name: 'techRecord_numberOfWheelsDriven',
       label: 'Number of wheels',
-      value: '',
+      value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 9999 }]
+      validators: [{ name: ValidatorNames.Max, args: 9999 }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     }
   ]
 };
