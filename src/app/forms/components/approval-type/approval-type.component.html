@@ -5,6 +5,7 @@
     <div class="govuk-date-input" id="{{ name }}">
       <label class="govuk-label govuk-label--m"> Approval type number </label>
       <input
+        [id]="getId(name)"
         maxlength="25"
         class="govuk-input govuk-input--width-20"
         name="techRecord_approvalTypeNumber1"
@@ -24,6 +25,7 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ecta'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -49,6 +51,7 @@
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ecta'"
               id="techRecord_approvalTypeNumber3-ecta"
               [maxlength]="5"
+              [characterLimit]="5"
               class="govuk-input govuk-date-input__input govuk-input--width-4 separator"
               name="techRecord_approvalTypeNumber3"
               [(ngModel)]="approvalTypeNumber3"
@@ -75,6 +78,7 @@
     <div class="govuk-date-input" id="{{ name }}">
       <label class="govuk-label govuk-label--m"> Approval type number </label>
       <input
+        [id]="getId(name)"
         maxlength="25"
         class="govuk-input govuk-date-input__input govuk-input--width-20"
         name="techRecord_approvalTypeNumber1"
@@ -94,6 +98,7 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-nssta'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -128,6 +133,7 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ecssta'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -183,6 +189,7 @@
           <label class="govuk-label govuk-label--m"> Approval type number </label>
           <div class="ecta-template separator">
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-gbwvta'"
               [characterLimit]="3"
               [maxlength]="3"
@@ -239,6 +246,7 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">X11 *</span>
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ukniwvta'"
               [characterLimit]="4"
               [maxlength]="4"
@@ -284,6 +292,7 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-euwvtapre'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -340,6 +349,7 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-euwvta'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -395,6 +405,7 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-qnig'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -450,6 +461,7 @@
           <label class="govuk-label govuk-label--m"> Approval type number </label>
           <div class="ecta-template separator">
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-provgbwvta'"
               [characterLimit]="3"
               [maxlength]="3"
@@ -504,6 +516,7 @@
           <label class="govuk-label govuk-label--m"> Approval type number </label>
           <div class="ecta-template separator">
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-smallseries'"
               [characterLimit]="1"
               [maxlength]="1"
@@ -549,6 +562,7 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">n11*NIV</span>
             <input
+              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ivavca'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -590,6 +604,7 @@
     <div class="govuk-date-input" id="{{ name }}">
       <label class="govuk-label govuk-label--m"> Approval type number </label>
       <input
+        [id]="getId(name)"
         maxlength="25"
         class="govuk-input govuk-date-input__input govuk-input--width-20"
         name="techRecord_approvalTypeNumber1"
