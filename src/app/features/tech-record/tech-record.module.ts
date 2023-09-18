@@ -8,6 +8,7 @@ import { TechRecordAmendReasonComponent } from './components/tech-record-amend-r
 import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
 import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
 import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
+import { TechRecordUnarchiveComponent } from './components/tech-record-unarchive/tech-record-unarchive-component';
 import { ChangeVehicleTypeComponent } from './components/tech-record-change-type/tech-record-change-type.component';
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 import { GenerateLetterComponent } from './components/tech-record-generate-letter/tech-record-generate-letter.component';
@@ -31,6 +32,7 @@ import { TechRecordComponent } from './tech-record.component';
     TechRecordAmendReasonComponent,
     TechRecordComponent,
     TechRecordChangeStatusComponent,
+    TechRecordUnarchiveComponent,
     TechRecordChangeVisibilityComponent,
     GeneratePlateComponent,
     GenerateLetterComponent,
