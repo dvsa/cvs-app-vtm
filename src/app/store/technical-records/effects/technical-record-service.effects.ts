@@ -41,7 +41,10 @@ import {
   promoteTechRecordSuccess,
   updateTechRecord,
   updateTechRecordFailure,
-  updateTechRecordSuccess
+  updateTechRecordSuccess,
+  unarchiveTechRecord,
+  unarchiveTechRecordFailure,
+  unarchiveTechRecordSuccess,
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord, selectTechRecord } from '../selectors/technical-record-service.selectors';
 
@@ -218,6 +221,18 @@ export class TechnicalRecordServiceEffects {
     )
   );
 
+  unarchiveTechRecord$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(unarchiveTechRecord),
+      switchMap(({ systemNumber, createdTimestamp, reasonForUnarchiving, status }) =>
+        this.techRecordHttpService.unarchiveTechnicalRecord$(systemNumber, createdTimestamp, reasonForUnarchiving, status).pipe(
+          map(vehicleTechRecord => unarchiveTechRecordSuccess({ vehicleTechRecord })),
+          catchError(error => of(unarchiveTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'unarchiveTechRecord') })))
+        )
+      )
+    )
+  );
+
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {
     if (typeof error !== 'object') {
       return error;
@@ -235,6 +250,7 @@ export class TechnicalRecordServiceEffects {
     // createProvisionalTechRecord_400: 'Unable to create a new provisional record',
     updateTechnicalRecord_400: 'Unable to update technical record',
     archiveTechRecord_400: 'Unable to archive technical record',
-    promoteTechRecord_400: 'Unable to promote technical record'
+    promoteTechRecord_400: 'Unable to promote technical record',
+    unarchiveTechRecord_400: 'Unable to unarchive technical record'
   };
 }
