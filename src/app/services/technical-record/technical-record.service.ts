@@ -141,13 +141,13 @@ export class TechnicalRecordService {
     };
   }
 
-  validateVrmDoesNotExist(): AsyncValidatorFn {
+  validateVrmDoesNotExist(previousVrm: string): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return of(control).pipe(
         filter((control: AbstractControl) => !!control.value),
         take(1),
         switchMap(control => {
-          return this.checkVrmNotActive(control);
+          return this.checkVrmNotActive(control, previousVrm);
         })
       );
     };
@@ -160,6 +160,7 @@ export class TechnicalRecordService {
         take(1),
         switchMap(control => {
           const newDonorVrm = control.root.get('thirdMark')?.value;
+          const previousVrm = control.root.get('previousVrm')?.value;
           if (newDonorVrm) {
             return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, control.value).pipe(
               map(results => {
@@ -175,7 +176,7 @@ export class TechnicalRecordService {
               })
             );
           }
-          return this.checkVrmNotActive(control);
+          return this.checkVrmNotActive(control, previousVrm);
         })
       );
     };
@@ -223,14 +224,13 @@ export class TechnicalRecordService {
     this.store.dispatch(clearAllSectionStates());
   }
 
-  checkVrmNotActive(control: AbstractControl) {
-    const originalVrm = control.root.get('recipientVrm')?.value;
+  checkVrmNotActive(control: AbstractControl, previousVrm: string) {
     return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, control.value).pipe(
       map(results => {
         const currentRecord = results.filter(result => result.techRecord_statusCode === StatusCodes.CURRENT);
         const provisionalRecord = results.filter(result => result.techRecord_statusCode === StatusCodes.PROVISIONAL);
 
-        if (control.value === originalVrm) {
+        if (control.value === previousVrm) {
           return { validateVrm: { message: 'You must provide a new VRM' } };
         }
         if (currentRecord.length > 0) {
@@ -241,7 +241,7 @@ export class TechnicalRecordService {
           };
         }
         if (provisionalRecord.length > 0) {
-          return { validateVrm: { message: `This VRM already exists on an active record with the VIN: ${provisionalRecord[0].vin}` } };
+          return { validateVrm: { message: `This VRM already exists on a provisional record with the VIN: ${provisionalRecord[0].vin}` } };
         }
         return null;
       }),

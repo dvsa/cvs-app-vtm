@@ -1,12 +1,10 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { AbstractControl, AsyncValidatorFn, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { NotTrailer, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -17,8 +15,8 @@ import { selectRouteData } from '@store/router/selectors/router.selectors';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
-import { TechRecordGETCar, TechRecordGETPSV, TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { NotTrailer } from '@models/vehicle-tech-record.model';
 
 const mockTechRecordService = {
   techRecord$: of({}),
@@ -27,12 +25,12 @@ const mockTechRecordService = {
   },
   updateEditingTechRecord: jest.fn(),
   validateVrmDoesNotExist: jest.fn(),
-  validateVrmForCherishedTransfer: jest.fn().mockReturnValue(of(null))
+  validateVrmForCherishedTransfer: jest.fn(),
+  checkVrmNotActive: jest.fn()
 };
 
 const mockDynamicFormService = {
-  createForm: jest.fn(),
-  validate: jest.fn()
+  createForm: jest.fn()
 };
 
 describe('TechRecordChangeVrmComponent', () => {
@@ -56,10 +54,9 @@ describe('TechRecordChangeVrmComponent', () => {
         { provide: DynamicFormService, useValue: mockDynamicFormService },
         { provide: TechnicalRecordService, useValue: mockTechRecordService }
       ],
-      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule]
+      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule]
     }).compileComponents();
   });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(AmendVrmComponent);
     errorService = TestBed.inject(GlobalErrorService);
@@ -68,6 +65,12 @@ describe('TechRecordChangeVrmComponent', () => {
     store = TestBed.inject(MockStore);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
+    // component.cherishedTransferForm.controls['currentVrm'].clearAsyncValidators();
+    // component.cherishedTransferForm.controls['currentVrm'].setAsyncValidators(mockTechRecordService.validateVrmForCherishedTransfer.bind(this));
+    component.cherishedTransferForm.controls['thirdMark'].clearAsyncValidators();
+    component.cherishedTransferForm.controls['thirdMark'].setAsyncValidators(mockTechRecordService.validateVrmDoesNotExist.bind(this));
+    component.correctingAnErrorForm.controls['newVrm'].clearAsyncValidators();
+    component.correctingAnErrorForm.controls['newVrm'].setAsyncValidators(mockTechRecordService.validateVrmDoesNotExist.bind(this));
   });
 
   it('should create', () => {
@@ -99,7 +102,7 @@ describe('TechRecordChangeVrmComponent', () => {
       store.overrideSelector(selectRouteData, { data: { isEditing: true } });
       component.ngOnInit();
 
-      actions$.next(amendVrmSuccess({ vehicleTechRecord: mockVehicleTechnicalRecord('psv') as TechRecordGETPSV }));
+      actions$.next(amendVrmSuccess({ vehicleTechRecord: mockVehicleTechnicalRecord('psv') as TechRecordType<'get'> }));
 
       expect(navigateSpy).toHaveBeenCalled();
     });
@@ -107,72 +110,59 @@ describe('TechRecordChangeVrmComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      component.techRecord = mockVehicleTechnicalRecord('psv') as TechRecordGETPSV;
+      component.techRecord = mockVehicleTechnicalRecord('psv') as NotTrailer;
       jest.resetAllMocks();
+      jest.resetModules();
     });
 
     it('should add an error when the vrm field is not filled out', () => {
       const addErrorSpy = jest.spyOn(errorService, 'setErrors');
+      component.cherishedTransferForm;
 
       component.handleSubmit();
 
       expect(addErrorSpy).toHaveBeenCalledWith([{ anchorLink: 'new-Vrm', error: 'New VRM is required' }]);
     });
 
-    // it.only('should add an error when the field is equal to the current VRM', () => {
-    //   mockTechRecordService.validateVrmDoesNotExist.mockReturnValue(of({ validateVrm: { message: 'hiya' } }));
-    //   component.correctingAnErrorForm.get('newVrm')?.setValue('1234');
-    //   const addErrorSpy = jest.spyOn(errorService, 'setErrors');
-    //   component.correctingAnErrorForm.get('newVrm')?.setValue('KP01ABC');
+    it('should not dispatch an action if isFormValid returns false', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-    //   component.handleSubmit();
+      component.handleSubmit();
 
-    //   expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new VRM', anchorLink: 'newVrm' });
-    // });
+      expect(dispatchSpy).not.toHaveBeenCalledWith(
+        amendVrm({
+          newVrm: '',
+          cherishedTransfer: false,
+          newDonorVrm: '',
+          systemNumber: 'PSV',
+          createdTimestamp: 'now'
+        })
+      );
+    });
+    it('should dispatch the amendVrm action', fakeAsync(() => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      mockTechRecordService.validateVrmDoesNotExist.mockReturnValue(of(null));
+      component.correctingAnErrorForm.controls['newVrm'].setValue('TESTVRM1');
 
-    // it('should add an error if isUnique returns false', () => {
-    //   const addErrorSpy = jest.spyOn(errorService, 'setErrors');
-    //   mockTechRecordService.validateVrmDoesNotExist(of({validateVrm: {message: 'hi'}}))
-    //   component.correctingAnErrorForm.get('newVrm')?.setAsyncValidators(mockTechRecordService.validateVrmDoesNotExist);
-    //   component.correctingAnErrorForm.get('newVrm')?.setValue('KP01ABC')
-    //   mockTechRecordService.validateVrmDoesNotExist.mockResolvedValue(of({validateVrm: {message: 'hi'}}))
+      component.handleSubmit();
 
-    //   // component.cherishedTransferForm.get('currentVrm')?.setValue('test123');
-    //   // component.cherishedTransferForm.get('thirdMark')?.setValue('test123');
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        amendVrm({ newVrm: 'TESTVRM1', cherishedTransfer: false, systemNumber: 'PSV', createdTimestamp: 'now', newDonorVrm: '' })
+      );
+    }));
+    it('should dispatch the action with the correct information', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      mockTechRecordService.validateVrmDoesNotExist.mockReturnValue(of(null));
+      mockTechRecordService.validateVrmForCherishedTransfer.mockReturnValue(of(null));
+      component.cherishedTransferForm.controls['currentVrm'].setValue('TESTVRM1');
+      component.cherishedTransferForm.controls['thirdMark'].setValue('3MARK');
+      component.isCherishedTransfer = true;
 
-    //   component.handleSubmit();
+      component.handleSubmit();
 
-    //   expect(addErrorSpy).toHaveBeenCalledWith({ error: 'VRM already exists', anchorLink: 'newVrm' });
-    // });
-
-    //   it('should dispatch the amendVrm action', fakeAsync(() => {
-    //     jest.spyOn(router, 'navigate').mockImplementation();
-    //     jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(true));
-    //     const dispatchSpy = jest.spyOn(store, 'dispatch').mockImplementation(() => Promise.resolve(true));
-
-    //     component.cherishedTransferForm.get('currentVrm')?.setValue('TESTVRM1');
-
-    //     component.handleSubmit();
-    //     tick();
-
-    //     expect(dispatchSpy).toHaveBeenCalledWith(
-    //       amendVrm({ newVrm: 'TESTVRM1', cherishedTransfer: true, systemNumber: 'PSV', createdTimestamp: 'now' })
-    //     );
-    //   }));
-
-    //   it('should be able to call it multiple times', fakeAsync(() => {
-    //     jest.spyOn(router, 'navigate').mockImplementation();
-    //     const submitSpy = jest.spyOn(component, 'handleSubmit').mockImplementation(() => Promise.resolve(true));
-
-    //     // jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
-    //     // component.handleSubmit();
-    //     // tick();
-
-    //     // jest.spyOn(mockTechRecordService, 'isUnique').mockReturnValueOnce(of(true));
-    //     // component.handleSubmit();
-    //     // tick();
-
-    //     expect(submitSpy).toHaveBeenCalledTimes(2);
-    //   }));
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        amendVrm({ newVrm: 'TESTVRM1', cherishedTransfer: true, systemNumber: 'PSV', createdTimestamp: 'now', newDonorVrm: '3MARK' })
+      );
+    });
   });
 });

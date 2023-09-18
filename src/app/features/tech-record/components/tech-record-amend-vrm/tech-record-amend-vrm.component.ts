@@ -28,6 +28,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   systemNumber?: string;
   createdTimestamp?: string;
   formValidity: boolean = false;
+  width: FormNodeWidth = FormNodeWidth.L;
 
   cherishedTransferForm = new FormGroup({
     currentVrm: new CustomFormControl(
@@ -53,8 +54,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
         type: FormNodeTypes.CONTROL
       },
       undefined,
-      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      [this.technicalRecordService.validateVrmDoesNotExist()]
+      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)]
     )
   });
   correctingAnErrorForm = new FormGroup({
@@ -65,8 +65,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
         type: FormNodeTypes.CONTROL
       },
       '',
-      [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      [this.technicalRecordService.validateVrmDoesNotExist()]
+      [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)]
     )
   });
 
@@ -105,26 +104,19 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
       this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
     });
 
-    this.cherishedTransferForm.get('previousVrm')?.setValue(this.techRecord?.primaryVrm ?? '');
-    this.cherishedTransferForm.get('previousVrm')?.disable();
-
-    this.cherishedTransferForm.statusChanges.pipe(takeUntil(this.destroy$)).subscribe(res => {
-      console.log(res);
-      if (res === 'VALID') {
-        this.formValidity = true;
-      }
-    });
-    // this.cherishedTransferForm.get('thirdMark')?.addAsyncValidators(this.technicalRecordService.validateVrmDoesNotExist());
-    // this.correctingAnErrorForm.get('newVrm')?.addAsyncValidators(this.technicalRecordService.validateVrmDoesNotExist());
+    this.cherishedTransferForm.controls['previousVrm'].setValue(this.techRecord?.primaryVrm ?? '');
+    this.cherishedTransferForm.controls['previousVrm'].disable();
+    this.cherishedTransferForm.controls['thirdMark'].setAsyncValidators(
+      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? '')
+    );
+    this.correctingAnErrorForm.controls['newVrm'].setAsyncValidators(
+      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? '')
+    );
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  get width(): FormNodeWidth {
-    return FormNodeWidth.L;
   }
 
   get vehicleType(): VehicleTypes | undefined {
@@ -144,8 +136,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   }
 
   handleSubmit(): void {
-    if (this.isCherishedTransfer) {
-      if (this.isFormValid(this.cherishedTransferForm)) {
+    if (this.isFormValid()) {
+      if (this.isCherishedTransfer) {
         this.store.dispatch(
           amendVrm({
             newVrm: this.cherishedTransferForm.value.currentVrm,
@@ -155,10 +147,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
             createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
           })
         );
-        return;
-      }
-    } else {
-      if (this.isFormValid(this.correctingAnErrorForm)) {
+      } else {
         this.store.dispatch(
           amendVrm({
             newVrm: this.correctingAnErrorForm.value.newVrm,
@@ -169,27 +158,23 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
           })
         );
       }
-      return;
     }
+    return;
   }
 
-  isFormValid(form: FormGroup): boolean {
+  isFormValid(): boolean {
     this.globalErrorService.clearErrors();
 
     const errors: GlobalError[] = [];
-    if (this.isCherishedTransfer) {
-      DynamicFormService.validate(this.cherishedTransferForm, errors);
 
-      this.cherishedTransferForm.updateValueAndValidity();
-    }
-    if (!this.isCherishedTransfer) {
-      DynamicFormService.validate(this.correctingAnErrorForm, errors, false);
-    }
+    this.isCherishedTransfer
+      ? DynamicFormService.validate(this.cherishedTransferForm, errors, false)
+      : DynamicFormService.validate(this.correctingAnErrorForm, errors, false);
 
     if (errors?.length > 0) {
       this.globalErrorService.setErrors(errors);
+      return false;
     }
-    console.log(this.formValidity);
-    return false;
+    return true;
   }
 }
