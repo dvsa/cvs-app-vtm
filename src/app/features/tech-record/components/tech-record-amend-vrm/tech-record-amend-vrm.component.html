@@ -33,10 +33,6 @@
           [width]="width"
           label="New VRM"
         ></app-text-input>
-        <div *ngIf="newVrm.value.toUpperCase() !== techRecord.primaryVrm && newVrm.value.length">
-          <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
-          <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
-        </div>
       </form>
     </ng-container>
     <ng-container *ngSwitchCase="true">
@@ -52,6 +48,7 @@
           label="Previous VRM"
         ></app-text-input>
         <app-text-input
+          #currentVrm
           appToUppercase
           appNoSpace
           appTrimWhitespace
