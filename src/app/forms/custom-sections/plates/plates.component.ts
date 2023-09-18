@@ -1,7 +1,10 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { axleRequiredFields, hgvRequiredFields, trlRequiredFields } from '@forms/models/plateRequiredFields.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
@@ -9,9 +12,6 @@ import { Roles } from '@models/roles.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime } from 'rxjs';
-import { hgvRequiredPlateFields } from './platesInterfaces';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-plates[techRecord]',
@@ -28,44 +28,6 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   pageStart?: number;
   pageEnd?: number;
 
-  hgvRequiredFields: string[] = [
-    'primaryVrm',
-    'vin',
-    'techRecord_brakes_dtpNumber',
-    'techRecord_regnDate',
-    'techRecord_manufactureYear',
-    'techRecord_speedLimiterMrk',
-    'techRecord_approvalType',
-    'techRecord_variantNumber',
-    'techRecord_make',
-    'techRecord_model',
-    'techRecord_functionCode',
-    'techRecord_grossGbWeight',
-    'techRecord_grossEecWeight',
-    'techRecord_grossDesignWeight',
-    'techRecord_TrainGbWeight',
-    'techRecord_TrainEecWeight',
-    'techRecord_TrainDesignWeight',
-    'techRecord_maxTrainGbWeight',
-    'techRecord_maxTrainEecWeight',
-    'techRecord_frontVehicleTo5thWheelCouplingMin',
-    'techRecord_frontVehicleTo5thWheelCouplingMax',
-    'techRecord_dimensions_length',
-    'techRecord_dimensions_width',
-    'techRecord_Axles'
-  ];
-
-  hgvAxleRequiredFields: string[] = [
-    'weights_gbWeight',
-    'weights_eecWeight',
-    'weights_designWeight',
-    'tyres_tyreSize',
-    'tyres_plyRating',
-    'tyres_fitmentCode',
-    'tyres_tyreCode'
-  ];
-  // technicalRecord?: TechRecordType<'hgv'> | TechRecordType<'trl'>;
-
   private _formSubscription = new Subscription();
 
   constructor(
@@ -79,7 +41,6 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(PlatesTemplate, this.techRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
-    // this.techRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => (this.technicalRecord = techRecord as TechRecordType<'trl'> | TechRecordType<'hgv'>));
   }
 
   ngOnChanges(): void {
@@ -163,26 +124,26 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
   validateTechRecordPlates(): void {
     this.globalErrorService.clearErrors();
-    const output = this.hgvRequiredFields.filter(field => {
+    const plateFieldsErrorMessage = 'All fields marked plate are mandatory to generate a plate.';
+    const plateValidationTable = this.techRecord.techRecord_vehicleType === 'trl' ? trlRequiredFields : hgvRequiredFields;
+    const plateValidationAxleTable = axleRequiredFields;
+
+    const isOneFieldEmpty = plateValidationTable.some(field => {
       const value = (this.techRecord as TechRecordType<'hgv'>)[field as keyof TechRecordType<'hgv'>];
       return value === undefined || value === null || value === '';
     });
-    if (output.length > 0) {
-      this.globalErrorService.addError({ error: 'All fields marked plate are mandatory to generate a plate.' });
+    if (isOneFieldEmpty) {
+      this.globalErrorService.addError({ error: plateFieldsErrorMessage });
       return;
     }
-    let axle_output: string[] = [];
-    this.techRecord.techRecord_axles?.forEach(axle => {
-      const axles = this.hgvAxleRequiredFields.filter(field => {
+    const areAxlesInvalid = this.techRecord.techRecord_axles?.some(axle => {
+      return plateValidationAxleTable.some(field => {
         const value = (axle as any)[field];
-        if (value === undefined || value === null || value === '') {
-          axle_output.push(field);
-        }
+        return value === undefined || value === null || value === '';
       });
-      axle_output = [...axle_output, ...axles];
     });
-    if (this.techRecord.techRecord_axles?.length === 0 || axle_output.length > 0) {
-      this.globalErrorService.addError({ error: 'All fields marked plate are mandatory to generate a plate.' });
+    if (!this.techRecord.techRecord_axles?.length || areAxlesInvalid) {
+      this.globalErrorService.addError({ error: plateFieldsErrorMessage });
       return;
     }
     this.router.navigate(['generate-plate'], { relativeTo: this.route });
