@@ -72,15 +72,13 @@ describe('TechRecordChangeVrmComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  describe('errors', () => {
+    it('should add an error when the reason for amending is not selected', () => {
+      const addErrorSpy = jest.spyOn(errorService, 'setErrors');
+
+      component.submit();
+
+      expect(addErrorSpy).toHaveBeenCalledWith([{ error: 'Reason for change is required', anchorLink: 'is-cherished-transfer' }]);
+    });
+  });
 });
-
-// it('should add an error when the reason for amending is not selected', () => {
-//   const addErrorSpy = jest.spyOn(errorService, 'addError');
-
-//   component.form.get('newVrm')?.setValue('test123');
-//   component.form.get('isCherishedTransfer')?.setValue(undefined);
-
-//   component.handleSubmit();
-
-//   expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a reason for amending', anchorLink: 'cherishedTransfer' });
-// });

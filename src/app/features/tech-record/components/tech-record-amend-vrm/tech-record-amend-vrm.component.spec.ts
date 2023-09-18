@@ -65,8 +65,8 @@ describe('TechRecordChangeVrmComponent', () => {
     store = TestBed.inject(MockStore);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
-    // component.cherishedTransferForm.controls['currentVrm'].clearAsyncValidators();
-    // component.cherishedTransferForm.controls['currentVrm'].setAsyncValidators(mockTechRecordService.validateVrmForCherishedTransfer.bind(this));
+    component.cherishedTransferForm.controls['currentVrm'].clearAsyncValidators();
+    component.cherishedTransferForm.controls['currentVrm'].setAsyncValidators(mockTechRecordService.validateVrmForCherishedTransfer.bind(this));
     component.cherishedTransferForm.controls['thirdMark'].clearAsyncValidators();
     component.cherishedTransferForm.controls['thirdMark'].setAsyncValidators(mockTechRecordService.validateVrmDoesNotExist.bind(this));
     component.correctingAnErrorForm.controls['newVrm'].clearAsyncValidators();
@@ -117,7 +117,6 @@ describe('TechRecordChangeVrmComponent', () => {
 
     it('should add an error when the vrm field is not filled out', () => {
       const addErrorSpy = jest.spyOn(errorService, 'setErrors');
-      component.cherishedTransferForm;
 
       component.handleSubmit();
 

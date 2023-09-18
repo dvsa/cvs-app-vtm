@@ -76,12 +76,12 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  submit(reason: string): void {
+  submit(): void {
     if (!this.isFormValid) {
       return;
     }
 
-    this.router.navigate([reason], { relativeTo: this.route });
+    this.router.navigate([this.form.value], { relativeTo: this.route });
   }
 
   get isFormValid(): boolean {
