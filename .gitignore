@@ -10,6 +10,7 @@
 /bazel-out
 /reports
 documentation.json
+report.json
 
 # Node
 /node_modules
