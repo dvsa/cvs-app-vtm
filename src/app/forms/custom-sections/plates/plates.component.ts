@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -11,10 +12,10 @@ import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { canGeneratePlate } from '@store/technical-records';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime } from 'rxjs';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { canGeneratePlate } from '@store/technical-records';
 
 @Component({
   selector: 'app-plates[techRecord]',
@@ -39,7 +40,8 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     private globalErrorService: GlobalErrorService,
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<TechnicalRecordServiceState>
+    private store: Store<TechnicalRecordServiceState>,
+    private viewportScroller: ViewportScroller
   ) {}
 
   ngOnInit(): void {
@@ -137,6 +139,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       return value === undefined || value === null || value === '';
     });
     if (isOneFieldEmpty) {
+      this.viewportScroller.scrollToPosition([0, 0]);
       this.globalErrorService.addError({ error: plateFieldsErrorMessage });
       return;
     }
@@ -147,6 +150,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       });
     });
     if (!this.techRecord.techRecord_axles?.length || areAxlesInvalid) {
+      this.viewportScroller.scrollToPosition([0, 0]);
       this.globalErrorService.addError({ error: plateFieldsErrorMessage });
       return;
     }
