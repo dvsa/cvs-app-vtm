@@ -149,8 +149,6 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
         createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
       })
     );
-
-    return;
   }
 
   isFormValid(): boolean {
