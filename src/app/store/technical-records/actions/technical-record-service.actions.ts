@@ -64,6 +64,13 @@ export const updateBrakeForces = createAction(`${prefix} updateBrakesForces`, pr
 
 export const updateBody = createAction(`${prefix} updatebody`, props<{ psvMake: PsvMake }>());
 
+export const unarchiveTechRecord = createAction(
+  `${prefix} unarchiveTechRecord`,
+  props<{ systemNumber: string; createdTimestamp: string; reasonForUnarchiving: string, status: string }>()
+);
+export const unarchiveTechRecordSuccess = createOutcomeAction('unarchiveTechRecord', true);
+export const unarchiveTechRecordFailure = createOutcomeAction('unarchiveTechRecord', false);
+
 export const addAxle = createAction(`${prefix} addAxle`);
 export const removeAxle = createAction(`${prefix} removeAxle`, props<{ index: number }>());
 

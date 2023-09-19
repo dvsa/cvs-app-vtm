@@ -1,15 +1,4 @@
-import {
-  AfterContentInit,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
@@ -317,5 +306,12 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       default:
         return 'Unknown approval type';
     }
+  }
+  getId(name: string) {
+    const id = name + '-day';
+    if (this.control) {
+      this.control.meta.customId = id;
+    }
+    return id;
   }
 }
