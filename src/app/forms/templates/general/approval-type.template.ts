@@ -1,7 +1,8 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { approvalType } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { approvalType } from '@models/vehicle-tech-record.model';
+import { TagType } from '@shared/components/tag/tag.component';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
 
 export const HgvAndTrlTypeApprovalTemplate: FormNode = {
   name: 'approvalSection',
@@ -14,7 +15,8 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(approvalType),
-      validators: []
+      validators: [],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_approvalTypeNumber',
@@ -57,7 +59,8 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       label: 'Variant number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_variantVersionNumber',

@@ -1,10 +1,12 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels } from '@forms/services/dynamic-form.types';
+import { TagType } from '@shared/components/tag/tag.component';
 
 export const tyresTemplateHgv: FormNode = {
   name: 'tyreSection',
   type: FormNodeTypes.GROUP,
   label: 'Tyres',
+  customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
   children: [
     {
       name: 'techRecord_tyreUseCode',
