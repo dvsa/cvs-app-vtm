@@ -7,19 +7,19 @@ import {
   FormControl,
   FormControlOptions,
   FormGroup,
+  ValidationErrors,
   ValidatorFn
 } from '@angular/forms';
+import { Params } from '@angular/router';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
+import { TagType } from '@shared/components/tag/tag.component';
 import { State } from '@store/.';
-import { map, Observable } from 'rxjs';
+import { Observable, firstValueFrom, map } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
-import { Params } from '@angular/router';
-import { TagType } from '@shared/components/tag/tag.component';
-import { Dictionary } from '@ngrx/entity';
 
 export enum FormNodeViewTypes {
   DATE = 'date',
@@ -111,8 +111,10 @@ export interface FormNode {
   isoDate?: boolean;
   class?: string;
   customId?: string;
-  warning?: string;
+  warning?: ValidationErrors | null;
   customTags?: CustomTag[];
+  warningValidators?: any[];
+  asyncWarningValidators?: any[];
 }
 
 export interface CustomTag {
@@ -148,8 +150,10 @@ export interface SearchParams {
   axleNumber?: number;
 }
 
-export class CustomFormControl extends FormControl implements CustomControl {
+export class CustomFormControl extends FormControl implements CustomControl, WarningValidation {
   meta: FormNode;
+  private warningValidators: ValidatorFn[] = [];
+  private asyncWarningValidators: AsyncValidatorFn[] = [];
 
   constructor(
     meta: FormNode,
@@ -160,6 +164,44 @@ export class CustomFormControl extends FormControl implements CustomControl {
     super(formState, validatorOrOpts, asyncValidator);
     this.meta = meta;
   }
+
+  addWarningValidators(fn: ValidatorFn) {
+    this.warningValidators = [...this.warningValidators, fn];
+  }
+  addAsyncWarningValidators(fn: AsyncValidatorFn) {
+    this.asyncWarningValidators = [...this.asyncWarningValidators, fn];
+  }
+
+  runWarningValidators(): void {
+    const errors: ValidationErrors[] = [];
+
+    this.warningValidators.forEach(validator => {
+      const error = validator(this);
+      if (error) {
+        errors.push(error);
+      }
+    });
+
+    this.asyncWarningValidators.forEach(async validator => {
+      const promiseOrObservable = validator(this);
+      const error = promiseOrObservable instanceof Promise ? await promiseOrObservable : await firstValueFrom(promiseOrObservable);
+      if (error) {
+        errors.push(error);
+      }
+    });
+
+    if (!errors.length) {
+      this.meta.warning = null;
+    } else {
+      this.meta.warning = errors;
+    }
+  }
+}
+
+interface WarningValidation {
+  addWarningValidators(fn: ValidatorFn): void;
+
+  addAsyncWarningValidators(fn: AsyncValidatorFn): void;
 }
 
 interface BaseForm {
@@ -178,8 +220,10 @@ export interface CustomGroup extends FormGroup {
   meta: FormNode;
 }
 
-export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm {
+export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm, WarningValidation {
   meta: FormNode;
+  private warningValidators: ValidatorFn[] = [];
+  private asyncWarningValidators: AsyncValidatorFn[] = [];
 
   constructor(
     meta: FormNode,
@@ -198,15 +242,50 @@ export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm 
   get cleanValueChanges() {
     return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
   }
+
+  addWarningValidators(fn: ValidatorFn) {
+    this.warningValidators = [...this.warningValidators, fn];
+  }
+  addAsyncWarningValidators(fn: AsyncValidatorFn) {
+    this.asyncWarningValidators = [...this.asyncWarningValidators, fn];
+  }
+
+  runWarningValidators(): void {
+    const errors: ValidationErrors[] = [];
+
+    this.warningValidators.forEach(validator => {
+      const error = validator(this);
+      if (error) {
+        errors.push(error);
+      }
+    });
+
+    this.asyncWarningValidators.forEach(async validator => {
+      const promiseOrObservable = validator(this);
+      const error = promiseOrObservable instanceof Promise ? await promiseOrObservable : await firstValueFrom(promiseOrObservable);
+      if (error) {
+        errors.push(error);
+      }
+    });
+
+    if (!errors.length) {
+      this.meta.warning = null;
+    } else {
+      this.meta.warning = errors;
+    }
+  }
 }
 
 export interface CustomArray extends FormArray {
   meta: FormNode;
 }
 
-export class CustomFormArray extends FormArray implements CustomArray, BaseForm {
+export class CustomFormArray extends FormArray implements CustomArray, BaseForm, WarningValidation {
   meta: FormNode;
   private dynamicFormService: DynamicFormService;
+
+  private warningValidators: ValidatorFn[] = [];
+  private asyncWarningValidators: AsyncValidatorFn[] = [];
 
   constructor(
     meta: FormNode,
@@ -250,6 +329,38 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
       super.patchValue(value, options);
     }
   }
+
+  addWarningValidators(fn: ValidatorFn) {
+    this.warningValidators = [...this.warningValidators, fn];
+  }
+  addAsyncWarningValidators(fn: AsyncValidatorFn) {
+    this.asyncWarningValidators = [...this.asyncWarningValidators, fn];
+  }
+
+  runWarningValidators(): void {
+    const errors: ValidationErrors[] = [];
+
+    this.warningValidators.forEach(validator => {
+      const error = validator(this);
+      if (error) {
+        errors.push(error);
+      }
+    });
+
+    this.asyncWarningValidators.forEach(async validator => {
+      const promiseOrObservable = validator(this);
+      const error = promiseOrObservable instanceof Promise ? await promiseOrObservable : await firstValueFrom(promiseOrObservable);
+      if (error) {
+        errors.push(error);
+      }
+    });
+
+    if (!errors.length) {
+      this.meta.warning = null;
+    } else {
+      this.meta.warning = errors;
+    }
+  }
 }
 
 //TODO: clean this
@@ -273,7 +384,7 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any
   return cleanValue;
 };
 
-function objectOrNull(obj: Object) {
+function objectOrNull(obj: object) {
   return Object.values(obj).some(value => undefined !== value) ? obj : null;
 }
 

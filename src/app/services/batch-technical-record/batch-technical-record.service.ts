@@ -101,7 +101,8 @@ export class BatchTechnicalRecordService {
     return this.technicalRecordService.isUnique(vinControl.value, SEARCH_TYPES.VIN).pipe(
       map(result => {
         if (!result) {
-          vinControl.meta.warning = 'This VIN already exists, if you continue it will be associated with two vehicles';
+          // the any casting will not be necessary once there is one way to do warnings
+          vinControl.meta.warning = 'This VIN already exists, if you continue it will be associated with two vehicles' as any;
         }
         return null;
       }),

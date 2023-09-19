@@ -22,8 +22,9 @@
         name="input-vin{{ i }}"
         label="VIN"
         [width]="width.L"
-        [warning]="getVinControl(group)?.meta?.warning"
+        [warning]="$any(getVinControl(group)?.meta?.warning)"
       >
+        <!-- the casting to any will not be necessary -->
         <ng-container
           *ngIf="
             getVinControl(group)?.dirty &&

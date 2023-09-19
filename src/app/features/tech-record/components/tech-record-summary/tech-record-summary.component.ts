@@ -1,4 +1,16 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -21,7 +33,6 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, map, take, takeUntil } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -29,7 +40,7 @@ import { ActivatedRoute } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./tech-record-summary.component.scss']
 })
-export class TechRecordSummaryComponent implements OnInit, OnDestroy {
+export class TechRecordSummaryComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
   @ViewChild(BodyComponent) body!: BodyComponent;
   @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
@@ -106,6 +117,18 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  ngAfterViewInit(): void {
+    // we have to do after view init here, because we use ViewChildren to get the forms
+
+    const forms = this.sections?.map(section => section.form).concat(this.customSectionForms);
+    const errors: GlobalError[] = [];
+
+    forms.forEach(form => DynamicFormService.generateWarnings(form, errors));
+
+    // will log an error if psv remarks contains the string foobar
+    errors.length && console.log(errors);
   }
 
   ngOnDestroy(): void {
