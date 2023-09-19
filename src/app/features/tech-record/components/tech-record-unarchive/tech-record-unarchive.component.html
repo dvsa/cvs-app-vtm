@@ -1,0 +1,20 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <app-tech-record-title [vehicle]="techRecord || undefined" [hideActions]="true"></app-tech-record-title>
+
+    <form [formGroup]="form">
+      <app-radio-group
+        #newRecordStatus
+        name="newRecordStatus"
+        label="Which Status do you want the unarchived record to have?"
+        formControlName="newRecordStatus"
+        [options]="statusCodes"
+      ></app-radio-group>
+
+      <app-text-area name="reason" [label]="'Unarchival Reason'" formControlName="reason"></app-text-area>
+
+      <app-button id="submit-unarchive" data-prevent-double-click="true" (clicked)="handleSubmit(form.value)">Unarchive record</app-button>
+      <app-button design="link" id="tech-record-back-link" (clicked)="navigateBack()">Back</app-button>
+    </form>
+  </div>
+</div>

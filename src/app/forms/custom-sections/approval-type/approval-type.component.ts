@@ -46,14 +46,16 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
       this.form.patchValue(techRecord.currentValue, { emitEvent: false });
       this.chosenApprovalType = techRecord.currentValue.techRecord_approvalType ? techRecord.currentValue.techRecord_approvalType : '';
-
+      techRecord.currentValue.techRecord_coifDate = techRecord.currentValue.techRecord_coifDate
+        ? techRecord.currentValue.techRecord_coifDate.split('T')[0]
+        : '';
       if (
         techRecord.currentValue.techRecord_approvalType != techRecord.previousValue.techRecord_approvalType &&
         techRecord.previousValue.techRecord_approvalType != null
       ) {
         this.approvalTypeChange = true;
       }
-      if ((techRecord.currentValue.techRecord_approvalType -= techRecord.previousValue.techRecord_approvalType && true)) {
+      if (techRecord.currentValue.techRecord_approvalType == techRecord.previousValue.techRecord_approvalType) {
         {
           this.approvalTypeChange = false;
         }
@@ -90,6 +92,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   get isPsv(): boolean {
     return this.techRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
+
   protected readonly TechRecord = TechRecord;
   protected readonly getOptionsFromEnum = getOptionsFromEnum;
   protected readonly approvalType = approvalType;

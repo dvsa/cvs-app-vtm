@@ -3,7 +3,8 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FrameDescriptions } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { TagTypeLabels, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { TagType } from '@shared/components/tag/tag.component';
 
 export const TrlTechRecordTemplate: FormNode = {
   name: 'techRecordSummary',
@@ -17,14 +18,16 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
-      disabled: true
+      disabled: true,
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_statusCode',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_regnDate',
@@ -64,8 +67,8 @@ export const TrlTechRecordTemplate: FormNode = {
       value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-
-      disabled: true
+      disabled: true,
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_roadFriendly',
@@ -117,7 +120,8 @@ export const TrlTechRecordTemplate: FormNode = {
         { label: 'MOT class 7', value: 'MOT class 7' },
         { label: 'MOT class 5', value: 'MOT class 5' }
       ],
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_couplingType',
@@ -146,7 +150,8 @@ export const TrlTechRecordTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(VehicleConfiguration)
+      options: getOptionsFromEnum(VehicleConfiguration),
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_frameDescription',

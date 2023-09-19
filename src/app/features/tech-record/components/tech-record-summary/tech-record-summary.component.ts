@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -22,6 +21,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, map, take, takeUntil } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -137,6 +137,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
   get isEditing$(): Observable<boolean> {
     return this.routerService.getRouteDataProperty$('isEditing').pipe(map(isEditing => !!isEditing));
+  }
+
+  get hint(): string {
+    return 'Complete all required fields to create a testable record';
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
