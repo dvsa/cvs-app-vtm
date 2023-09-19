@@ -1,6 +1,13 @@
 {
   "root": true,
   "ignorePatterns": ["projects/**/*"],
+  "plugins": ["@typescript-eslint"],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "parser": "@typescript-eslint/parser",
   "overrides": [
     {
       "files": ["*.ts"],
@@ -8,25 +15,18 @@
         "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
-      "extends": ["plugin:@angular-eslint/recommended", "prettier"],
+      "extends": [
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "@dvsa/eslint-config-ts",
+        "prettier"
+      ],
       "plugins": ["prettier"],
       "rules": {
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "type": "attribute",
-            "prefix": "app",
-            "style": "camelCase"
-          }
-        ],
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": "app",
-            "style": "kebab-case"
-          }
-        ]
+        "@typescript-eslint/lines-between-class-members": "off",
+        "no-return-assign": "off",
+        "consistent-return": "off"
       }
     },
     {
