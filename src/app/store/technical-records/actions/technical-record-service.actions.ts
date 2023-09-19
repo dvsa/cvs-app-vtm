@@ -55,6 +55,8 @@ export const createVehicle = createAction(`${prefix} createVehicle`, props<{ tec
 export const generatePlate = createAction(`${prefix} generatePlate`, props<{ reason: string }>());
 export const generatePlateSuccess = createAction(`${prefix} generatePlate Success`);
 export const generatePlateFailure = createOutcomeAction('generatePlate', false);
+export const canGeneratePlate = createAction(`${prefix} canGeneratePlate`);
+export const cannotGeneratePlate = createAction(`${prefix} cannotGeneratePlate`);
 
 export const generateLetter = createAction(`${prefix} generateLetter`, props<{ letterType: string; paragraphId: number }>());
 export const generateLetterSuccess = createAction(`${prefix} generateLetter Success`);

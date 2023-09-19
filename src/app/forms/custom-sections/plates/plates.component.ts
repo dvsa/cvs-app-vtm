@@ -10,8 +10,11 @@ import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime } from 'rxjs';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { canGeneratePlate } from '@store/technical-records';
 
 @Component({
   selector: 'app-plates[techRecord]',
@@ -35,7 +38,8 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     private cdr: ChangeDetectorRef,
     private globalErrorService: GlobalErrorService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store<TechnicalRecordServiceState>
   ) {}
 
   ngOnInit(): void {
@@ -146,6 +150,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       this.globalErrorService.addError({ error: plateFieldsErrorMessage });
       return;
     }
+    this.store.dispatch(canGeneratePlate());
     this.router.navigate(['generate-plate'], { relativeTo: this.route });
   }
 }
