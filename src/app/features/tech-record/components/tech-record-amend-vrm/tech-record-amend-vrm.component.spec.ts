@@ -146,7 +146,7 @@ describe('TechRecordChangeVrmComponent', () => {
       component.handleSubmit();
 
       expect(dispatchSpy).toHaveBeenCalledWith(
-        amendVrm({ newVrm: 'TESTVRM1', cherishedTransfer: false, systemNumber: 'PSV', createdTimestamp: 'now', thirdMark: '' })
+        amendVrm({ newVrm: 'TESTVRM1', cherishedTransfer: false, systemNumber: 'PSV', createdTimestamp: 'now', thirdMark: undefined })
       );
     }));
     it('should dispatch the action with the correct information', () => {
