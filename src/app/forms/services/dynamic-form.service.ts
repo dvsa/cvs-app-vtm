@@ -144,7 +144,6 @@ export class DynamicFormService {
   private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {
     const { errors } = control;
     const meta = (control as CustomFormControl).meta as FormNode | undefined;
-
     if (errors) {
       const errorList = Object.keys(errors);
       errorList.forEach(error => {
