@@ -58,13 +58,20 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
       this.technicalRecordService.clearEditingTechRecord();
     });
 
-    this.techRecordHistory$.pipe(map(records => records?.some((techRecordHistory) => {
-      return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED &&
-        this.techRecord?.techRecord_vehicleType !== 'trl' &&
-        techRecordHistory.primaryVrm === this.techRecord?.primaryVrm;
-      })),
-      takeUntil(this.destroy$))
-      .subscribe(value => this.hasNonArchivedRecords = value);
+    this.techRecordHistory$
+      .pipe(
+        map(records =>
+          records?.some(techRecordHistory => {
+            return (
+              techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED &&
+              this.techRecord?.techRecord_vehicleType !== 'trl' &&
+              techRecordHistory.primaryVrm === this.techRecord?.primaryVrm
+            );
+          })
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(value => (this.hasNonArchivedRecords = value));
   }
 
   ngOnDestroy(): void {
@@ -80,19 +87,17 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
-  handleSubmit(form: { reason: string, newRecordStatus: string }): void {
+  handleSubmit(form: { reason: string; newRecordStatus: string }): void {
     if (!this.techRecord) {
       return;
     }
 
-    if(this.hasNonArchivedRecords){
+    if (this.hasNonArchivedRecords) {
       this.errorService.setErrors([{ error: 'Cannot unarchive a record with Provisional or Current records' }]);
       return;
     }
 
-    this.form.valid
-      ? this.errorService.clearErrors()
-      : this.validateControls();
+    this.form.valid ? this.errorService.clearErrors() : this.validateControls();
 
     if (!this.form.valid || !form.reason || !form.newRecordStatus) {
       return;
@@ -113,11 +118,11 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     const newRecordStatus = this.form.controls['newRecordStatus'];
 
     let errors = [];
-    if(!reasonControl.valid){
+    if (!reasonControl.valid) {
       errors.push({ error: `Reason for unarchival is required`, anchorLink: 'reason' });
     }
 
-    if(!newRecordStatus.valid){
+    if (!newRecordStatus.valid) {
       errors.push({ error: 'New Record Status is required', anchorLink: 'newRecordStatus' });
     }
 
