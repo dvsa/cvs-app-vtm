@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
+  "ignorePatterns": ["projects/**/*", "**.spec.ts"],
   "plugins": ["@typescript-eslint"],
   "settings": {
     "import/resolver": {
@@ -15,14 +15,7 @@
         "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
-      "extends": [
-        "plugin:import/errors",
-        "plugin:import/warnings",
-        "plugin:import/typescript",
-        "@dvsa/eslint-config-ts",
-        "prettier"
-      ],
-      "plugins": ["prettier"],
+      "extends": ["plugin:import/errors", "plugin:import/warnings", "plugin:import/typescript", "@dvsa/eslint-config-ts"],
       "rules": {
         "@typescript-eslint/lines-between-class-members": "off",
         "no-return-assign": "off",
