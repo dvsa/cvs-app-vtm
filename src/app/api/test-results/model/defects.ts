@@ -10,5 +10,6 @@
  */
 import { Defect } from './defect';
 
-export interface Defects extends Array<Defect> { 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Defects extends Array<Defect> {
 }

@@ -9,55 +9,54 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent }                           from '@angular/common/http';
-import { CustomHttpUrlEncodingCodec }                        from '../encoder';
-
-import { Observable }                                        from 'rxjs';
+import { Inject, Injectable, Optional } from '@angular/core';
+import {
+  HttpClient, HttpHeaders, HttpParams,
+  HttpResponse, HttpEvent,
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { CustomHttpUrlEncodingCodec } from '../encoder';
 
 import { TestResults } from '../model/testResults';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
-
+import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { Configuration } from '../configuration';
 
 @Injectable()
 export class GetTestResultsService {
+  protected basePath = 'https://url/api/v1';
+  public defaultHeaders = new HttpHeaders();
+  public configuration = new Configuration();
 
-    protected basePath = 'https://url/api/v1';
-    public defaultHeaders = new HttpHeaders();
-    public configuration = new Configuration();
-
-    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
-        if (configuration) {
-            this.configuration = configuration;
-            this.basePath = basePath || configuration.basePath || this.basePath;
-        }
+  constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+    if (basePath) {
+      this.basePath = basePath;
     }
+    if (configuration) {
+      this.configuration = configuration;
+      this.basePath = basePath || configuration.basePath || this.basePath;
+    }
+  }
 
-    /**
+  /**
      * @param consumes string[] mime-types
      * @return true: consumes contains 'multipart/form-data', false: otherwise
      */
-    private canConsumeForm(consumes: string[]): boolean {
-        const form = 'multipart/form-data';
-        for (const consume of consumes) {
-            if (form === consume) {
-                return true;
-            }
-        }
-        return false;
+  private canConsumeForm(consumes: string[]): boolean {
+    const form = 'multipart/form-data';
+    // eslint-disable-next-line no-restricted-syntax
+    for (const consume of consumes) {
+      if (form === consume) {
+        return true;
+      }
     }
+    return false;
+  }
 
-
-    /**
+  /**
      * Get a test results, for a particular Vin with status specified.
-     * 
-     * @param systemNumber 
+     *
+     * @param systemNumber
      * @param status The test result status
      * @param fromDateTime The UTC ISO Date Time filter, if the fromDate and ToDate not specified by default to 2 years of data for now.
      * @param toDateTime The UTC ISO DateTime filter.
@@ -66,69 +65,70 @@ export class GetTestResultsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public testResultsSystemNumberGet(systemNumber: string, status?: string, fromDateTime?: Date, toDateTime?: Date, testResultId?: string, version?: string, observe?: 'body', reportProgress?: boolean): Observable<TestResults>;
-    public testResultsSystemNumberGet(systemNumber: string, status?: string, fromDateTime?: Date, toDateTime?: Date, testResultId?: string, version?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TestResults>>;
-    public testResultsSystemNumberGet(systemNumber: string, status?: string, fromDateTime?: Date, toDateTime?: Date, testResultId?: string, version?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TestResults>>;
-    public testResultsSystemNumberGet(systemNumber: string, status?: string, fromDateTime?: Date, toDateTime?: Date, testResultId?: string, version?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (systemNumber === null || systemNumber === undefined) {
-            throw new Error('Required parameter systemNumber was null or undefined when calling testResultsSystemNumberGet.');
-        }
-
-
-
-
-
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (status !== undefined && status !== null) {
-            queryParameters = queryParameters.set('status', <any>status);
-        }
-        if (fromDateTime !== undefined && fromDateTime !== null) {
-            queryParameters = queryParameters.set('fromDateTime', <any>fromDateTime.toISOString());
-        }
-        if (toDateTime !== undefined && toDateTime !== null) {
-            queryParameters = queryParameters.set('toDateTime', <any>toDateTime.toISOString());
-        }
-        if (testResultId !== undefined && testResultId !== null) {
-            queryParameters = queryParameters.set('testResultId', <any>testResultId);
-        }
-        if (version !== undefined && version !== null) {
-            queryParameters = queryParameters.set('version', <any>version);
-        }
-
-        let headers = this.defaultHeaders;
-
-        // authentication (OAuth2) required
-        if (this.configuration.accessToken) {
-            const accessToken = typeof this.configuration.accessToken === 'function'
-                ? this.configuration.accessToken()
-                : this.configuration.accessToken;
-            headers = headers.set('Authorization', 'Bearer ' + accessToken);
-        }
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<TestResults>('get',`${this.basePath}/test-results/${encodeURIComponent(String(systemNumber))}`,
-            {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
+  public testResultsSystemNumberGet(systemNumber: string, status?: string, fromDateTime?: Date, toDateTime?: Date, testResultId?: string, version?: string, observe?: 'body', reportProgress?: boolean): Observable<TestResults>;
+  public testResultsSystemNumberGet(systemNumber: string, status?: string, fromDateTime?: Date, toDateTime?: Date, testResultId?: string, version?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TestResults>>;
+  public testResultsSystemNumberGet(systemNumber: string, status?: string, fromDateTime?: Date, toDateTime?: Date, testResultId?: string, version?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TestResults>>;
+  public testResultsSystemNumberGet(systemNumber: string, status?: string, fromDateTime?: Date, toDateTime?: Date, testResultId?: string, version?: string, observe: any = 'body', reportProgress = false): Observable<any> {
+    if (systemNumber === null || systemNumber === undefined) {
+      throw new Error('Required parameter systemNumber was null or undefined when calling testResultsSystemNumberGet.');
     }
 
+    let queryParameters = new HttpParams({ encoder: new CustomHttpUrlEncodingCodec() });
+    if (status !== undefined && status !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      queryParameters = queryParameters.set('status', <any>status);
+    }
+    if (fromDateTime !== undefined && fromDateTime !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      queryParameters = queryParameters.set('fromDateTime', <any>fromDateTime.toISOString());
+    }
+    if (toDateTime !== undefined && toDateTime !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      queryParameters = queryParameters.set('toDateTime', <any>toDateTime.toISOString());
+    }
+    if (testResultId !== undefined && testResultId !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      queryParameters = queryParameters.set('testResultId', <any>testResultId);
+    }
+    if (version !== undefined && version !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      queryParameters = queryParameters.set('version', <any>version);
+    }
+
+    let headers = this.defaultHeaders;
+
+    // authentication (OAuth2) required
+    if (this.configuration.accessToken) {
+      const accessToken = typeof this.configuration.accessToken === 'function'
+        ? this.configuration.accessToken()
+        : this.configuration.accessToken;
+      headers = headers.set('Authorization', `Bearer ${accessToken}`);
+    }
+
+    // to determine the Accept header
+    const httpHeaderAccepts: string[] = [
+      'application/json',
+    ];
+    const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = [
+    ];
+
+    return this.httpClient.request<TestResults>(
+      'get',
+      `${this.basePath}/test-results/${encodeURIComponent(String(systemNumber))}`,
+      {
+        params: queryParameters,
+        withCredentials: this.configuration.withCredentials,
+        headers,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        observe,
+        reportProgress,
+      },
+    );
+  }
 }

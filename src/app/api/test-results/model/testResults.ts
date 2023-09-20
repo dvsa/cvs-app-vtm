@@ -10,5 +10,6 @@
  */
 import { CompleteTestResults } from './completeTestResults';
 
-export interface TestResults extends Array<CompleteTestResults> { 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TestResults extends Array<CompleteTestResults> {
 }

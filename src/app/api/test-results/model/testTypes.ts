@@ -13,5 +13,6 @@ import { TestTypeRecords } from './testTypeRecords';
 /**
  * Nullable only for Cancelled tests.
  */
-export interface TestTypes extends Array<TestTypeRecords> { 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TestTypes extends Array<TestTypeRecords> {
 }
