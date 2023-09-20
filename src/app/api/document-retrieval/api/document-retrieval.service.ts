@@ -1,4 +1,6 @@
-import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import {
+  HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpResponse,
+} from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Configuration } from '../configuration';
@@ -14,7 +16,7 @@ export class DocumentRetrievalService {
   constructor(
     protected httpClient: HttpClient,
     @Optional() @Inject(DOCUMENT_RETRIEVAL_BASE_PATH) basePath: string,
-    @Optional() configuration: Configuration
+    @Optional() configuration: Configuration,
   ) {
     if (basePath) {
       this.basePath = basePath;
@@ -46,9 +48,11 @@ export class DocumentRetrievalService {
     // Set query parameters
     let params = new HttpParams({ encoder: new CustomHttpUrlEncodingCodec() });
     if (testNumber) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       params = params.set('testNumber', <any>testNumber);
     }
     if (vin) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       params = params.set('vinNumber', <any>vin);
     }
 
@@ -57,18 +61,19 @@ export class DocumentRetrievalService {
     // authentication (OAuth2) required
     if (this.configuration.accessToken) {
       const accessToken = typeof this.configuration.accessToken === 'function' ? this.configuration.accessToken() : this.configuration.accessToken;
-      headers = headers.set('Authorization', 'Bearer ' + accessToken);
+      headers = headers.set('Authorization', `Bearer ${accessToken}`);
     }
 
     // api keys
     if (this.configuration.apiKeys) {
+      // eslint-disable-next-line guard-for-in,no-restricted-syntax
       for (const key in this.configuration.apiKeys) {
         headers = headers.set(key, this.configuration.apiKeys[key]);
       }
     }
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = [];
+    const httpHeaderAccepts: string[] = [];
     const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     if (httpHeaderAcceptSelected) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
@@ -85,9 +90,10 @@ export class DocumentRetrievalService {
       headers,
       params,
       reportProgress,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       observe,
       responseType: 'text',
-      withCredentials: this.configuration.withCredentials
+      withCredentials: this.configuration.withCredentials,
     });
   }
 
@@ -102,6 +108,7 @@ export class DocumentRetrievalService {
     // Set query parameters
     let params = new HttpParams({ encoder: new CustomHttpUrlEncodingCodec() });
     if (serialNumber) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       params = params.set('plateSerialNumber', <any>serialNumber);
     }
 
@@ -110,18 +117,19 @@ export class DocumentRetrievalService {
     // authentication (OAuth2) required
     if (this.configuration.accessToken) {
       const accessToken = typeof this.configuration.accessToken === 'function' ? this.configuration.accessToken() : this.configuration.accessToken;
-      headers = headers.set('Authorization', 'Bearer ' + accessToken);
+      headers = headers.set('Authorization', `Bearer ${accessToken}`);
     }
 
     // api keys
     if (this.configuration.apiKeys) {
+      // eslint-disable-next-line guard-for-in,no-restricted-syntax
       for (const key in this.configuration.apiKeys) {
         headers = headers.set(key, this.configuration.apiKeys[key]);
       }
     }
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = [];
+    const httpHeaderAccepts: string[] = [];
     const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     if (httpHeaderAcceptSelected) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
@@ -138,9 +146,10 @@ export class DocumentRetrievalService {
       headers,
       params,
       reportProgress,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       observe,
       responseType: 'text',
-      withCredentials: this.configuration.withCredentials
+      withCredentials: this.configuration.withCredentials,
     });
   }
 
@@ -149,10 +158,11 @@ export class DocumentRetrievalService {
 
     if (this.configuration.accessToken) {
       const accessToken = typeof this.configuration.accessToken === 'function' ? this.configuration.accessToken() : this.configuration.accessToken;
-      headers = headers.set('Authorization', 'Bearer ' + accessToken);
+      headers = headers.set('Authorization', `Bearer ${accessToken}`);
     }
 
     if (this.configuration.apiKeys) {
+      // eslint-disable-next-line guard-for-in,no-restricted-syntax
       for (const key in this.configuration.apiKeys) {
         headers = headers.set(key, this.configuration.apiKeys[key]);
       }
@@ -175,8 +185,8 @@ export class DocumentRetrievalService {
         params,
         reportProgress: true,
         responseType: 'text',
-        withCredentials: this.configuration.withCredentials
-      }
+        withCredentials: this.configuration.withCredentials,
+      },
     );
   }
 }
