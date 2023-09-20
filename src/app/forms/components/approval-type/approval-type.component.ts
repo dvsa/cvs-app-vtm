@@ -103,7 +103,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   valueWriteBack(value: string | null): void {
-    // patterns
     const patterns: Record<string, RegExp> = {
       NTA: /(\d+)/,
       ECTA: /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
