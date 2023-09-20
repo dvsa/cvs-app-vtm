@@ -11,5 +11,6 @@
 import { TestType } from './testType';
 import { TestTypeCategory } from './testTypeCategory';
 
-export interface TestTypesTaxonomy extends Array<TestType | TestTypeCategory> { 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TestTypesTaxonomy extends Array<TestType | TestTypeCategory> {
 }
