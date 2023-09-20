@@ -4,6 +4,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { techRecord } from '@store/technical-records';
 
 type Segments = {
   approvalTypeNumber1: Observable<string | undefined>;
@@ -47,7 +48,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     }[];
   };
   protected formSubmitted? = false;
-
   public approvalTypeNumber1?: string;
   public approvalTypeNumber2?: string;
   public approvalTypeNumber3?: string;
@@ -62,6 +62,101 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.globalErrorService.errors$.subscribe((globalErrors: any) => {
       if (globalErrors.length) {
         this.formSubmitted = true;
+      }
+    });
+  }
+
+  ngOnChanges(): void {
+    this.valueWriteBack(this.value);
+    if (!this.formSubmitted && this.approvalTypeChange) {
+      this.clearInput();
+    }
+  }
+
+  ngOnInit(): void {
+    this.subscriptions.push(this.subscribeAndPropagateChanges());
+  }
+
+  override ngAfterContentInit(): void {
+    super.ngAfterContentInit();
+    this.valueWriteBack(this.value);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s && s.unsubscribe());
+  }
+
+  onTechRecord_approvalTypeNumber1_Change(event: any) {
+    this.approvalTypeNumber1_.next(event);
+  }
+
+  onTechRecord_approvalTypeNumber2_Change(event: any) {
+    this.approvalTypeNumber2_.next(event);
+  }
+
+  onTechRecord_approvalTypeNumber3_Change(event: any) {
+    this.approvalTypeNumber3_.next(event);
+  }
+
+  onTechRecord_approvalTypeNumber4_Change(event: any) {
+    this.approvalTypeNumber4_.next(event);
+  }
+
+  valueWriteBack(value: string | null): void {
+    const patterns: Record<string, RegExp> = {
+      NTA: /(\d+)/,
+      ECTA: /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
+      IVA: /(\d+)/,
+      NSSTA: /e(\d+)\*NKS(\d+)/,
+      ECSSTA: /e(\d+)\*KS(\d+)\/(\d+)\*(\d+)/,
+      'GB WVTA': /(\d+)\/(\d+)\*(\d+)/,
+      'UKNI WVTA': /X11(\d+)\/(\d+)\*(\d+)/,
+      'EU WVTA Pre 23': /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
+      'EU WVTA 23 on': /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
+      QNIG: /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
+      'Prov.GB WVTA': /(\d+)\/(\d+)\*(\d+)/,
+      'Small series': /X11NKS(\d+)/,
+      'IVA - VCA': /n11NIV(\d+)\/(\d+)\*(\d+)/,
+      'IVA - DVSA/NI': /(\d+)/
+    };
+
+    if (value && this.approvalType && patterns[this.approvalType]) {
+      const pattern = patterns[this.approvalType];
+      const matches = value.match(pattern);
+
+      if (matches) {
+        const [, techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4] =
+          matches;
+        this.approvalTypeNumber1 = techRecord_approvalTypeNumber1;
+        this.approvalTypeNumber1_.next(techRecord_approvalTypeNumber1);
+        this.approvalTypeNumber2 = techRecord_approvalTypeNumber2;
+        this.approvalTypeNumber2_.next(techRecord_approvalTypeNumber2);
+        this.approvalTypeNumber3 = techRecord_approvalTypeNumber3;
+        this.approvalTypeNumber3_.next(techRecord_approvalTypeNumber3);
+        this.approvalTypeNumber4 = techRecord_approvalTypeNumber4;
+        this.approvalTypeNumber4_.next(techRecord_approvalTypeNumber4);
+      }
+    }
+  }
+
+  /**
+   * Subscribes to all date segments and propagates value as `string`.
+   * @returns Subscription
+   */
+  subscribeAndPropagateChanges() {
+    const approvalNumberFields: Segments = {
+      approvalTypeNumber1: this.approvalTypeNumber1$,
+      approvalTypeNumber2: this.approvalTypeNumber2$,
+      approvalTypeNumber3: this.approvalTypeNumber3$,
+      approvalTypeNumber4: this.approvalTypeNumber4$
+    };
+    return combineLatest(approvalNumberFields).subscribe({
+      next: ({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) => {
+        if (!approvalTypeNumber1 && !approvalTypeNumber2 && !approvalTypeNumber3 && !approvalTypeNumber4) {
+          this.onChange(null);
+          return;
+        }
+        this.onChange(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
       }
     });
   }
@@ -149,72 +244,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       default:
         break;
     }
-  }
-
-  ngOnChanges(): void {
-    if (!this.formSubmitted && this.approvalTypeChange) {
-      this.clearInput();
-    }
-  }
-
-  ngOnInit(): void {
-    this.subscriptions.push(this.subscribeAndPropagateChanges());
-  }
-
-  override ngAfterContentInit(): void {
-    super.ngAfterContentInit();
-    this.valueWriteBack(this.value);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s && s.unsubscribe());
-  }
-
-  onTechRecord_approvalTypeNumber1_Change(event: any) {
-    this.approvalTypeNumber1_.next(event);
-  }
-
-  onTechRecord_approvalTypeNumber2_Change(event: any) {
-    this.approvalTypeNumber2_.next(event);
-  }
-
-  onTechRecord_approvalTypeNumber3_Change(event: any) {
-    this.approvalTypeNumber3_.next(event);
-  }
-
-  onTechRecord_approvalTypeNumber4_Change(event: any) {
-    this.approvalTypeNumber4_.next(event);
-  }
-
-  valueWriteBack(value: string | null): void {
-    if (value) {
-      this.approvalTypeNumber1_.next(this.approvalTypeNumber1);
-      this.approvalTypeNumber2_.next(this.approvalTypeNumber2);
-      this.approvalTypeNumber3_.next(this.approvalTypeNumber3);
-      this.approvalTypeNumber4_.next(this.approvalTypeNumber4);
-    }
-  }
-
-  /**
-   * Subscribes to all date segments and propagates value as `string`.
-   * @returns Subscription
-   */
-  subscribeAndPropagateChanges() {
-    const dateFields: Segments = {
-      approvalTypeNumber1: this.approvalTypeNumber1$,
-      approvalTypeNumber2: this.approvalTypeNumber2$,
-      approvalTypeNumber3: this.approvalTypeNumber3$,
-      approvalTypeNumber4: this.approvalTypeNumber4$
-    };
-    return combineLatest(dateFields).subscribe({
-      next: ({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) => {
-        if (!approvalTypeNumber1 && !approvalTypeNumber2 && !approvalTypeNumber3 && !approvalTypeNumber4) {
-          this.onChange(null);
-          return;
-        }
-        this.onChange(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
-      }
-    });
   }
 
   clearInput() {
@@ -307,6 +336,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
         return 'Unknown approval type';
     }
   }
+
   getId(name: string) {
     const id = name + '-day';
     if (this.control) {
