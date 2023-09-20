@@ -10,6 +10,6 @@
  * Do not edit the class manually.
  */
 
-export interface DeleteItem { 
-    success?: boolean;
+export interface DeleteItem {
+  success?: boolean;
 }

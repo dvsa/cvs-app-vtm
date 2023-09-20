@@ -12,6 +12,6 @@
 import { ReferenceDataApiResponseWithoutPagination } from './referenceDataApiResponseWithoutPagination';
 import { ReferenceDataItem } from './referenceDataItem';
 
-export interface ReferenceDataApiResponseWithPagination extends ReferenceDataApiResponseWithoutPagination { 
-    paginationToken: string;
+export interface ReferenceDataApiResponseWithPagination extends ReferenceDataApiResponseWithoutPagination {
+  paginationToken: string;
 }

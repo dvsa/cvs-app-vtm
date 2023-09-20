@@ -10,5 +10,6 @@
  * Do not edit the class manually.
  */
 
-export interface EmptyObject { 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface EmptyObject {
 }
