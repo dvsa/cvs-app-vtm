@@ -60,14 +60,17 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.approvalTypeNumber3$ = this.approvalTypeNumber3_.asObservable();
     this.approvalTypeNumber4$ = this.approvalTypeNumber4_.asObservable();
     this.globalErrorService.errors$.subscribe((globalErrors: any) => {
+      console.log(globalErrors);
       if (globalErrors.length) {
         this.formSubmitted = true;
+        console.log(this.formSubmitted);
       }
     });
   }
 
   ngOnChanges(): void {
     this.valueWriteBack(this.value);
+    console.log(this.formSubmitted);
     if (!this.formSubmitted && this.approvalTypeChange) {
       this.clearInput();
     }
@@ -103,39 +106,67 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   valueWriteBack(value: string | null): void {
+    if (!value || !this.approvalType) {
+      return;
+    }
+
     const patterns: Record<string, RegExp> = {
-      NTA: /(\d+)/,
-      ECTA: /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
-      IVA: /(\d+)/,
-      NSSTA: /e(\d+)\*NKS(\d+)/,
-      ECSSTA: /e(\d+)\*KS(\d+)\/(\d+)\*(\d+)/,
-      'GB WVTA': /(\d+)\/(\d+)\*(\d+)/,
-      'UKNI WVTA': /X11(\d+)\/(\d+)\*(\d+)/,
-      'EU WVTA Pre 23': /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
-      'EU WVTA 23 on': /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
-      QNIG: /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
-      'Prov.GB WVTA': /(\d+)\/(\d+)\*(\d+)/,
-      'Small series': /X11NKS(\d+)/,
-      'IVA - VCA': /n11NIV(\d+)\/(\d+)\*(\d+)/,
-      'IVA - DVSA/NI': /(\d+)/
+      NTA: /^(\w+)$/i,
+      ECTA: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+      IVA: /^(\w+)$/i,
+      NSSTA: /^e(\w{2})\*NKS\*(\w{6})$/i,
+      ECSSTA: /^e(\w{2})\*KS(\w{2})\/(\w{4})\*(\w{6})$/i,
+      'GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{7})$/i,
+      'UKNI WVTA': /^(\w+)11\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+      'EU WVTA Pre 23': /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+      'EU WVTA 23 on': /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+      QNIG: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+      'Prov.GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+      'Small series': /^(\w+)11\*NKS(\w+\*)?(\w{6})$/i,
+      'IVA - VCA': /^n11\*NIV(\w{2})\/(\w{4})\*(\w{6})$/i,
+      'IVA - DVSA/NI': /^(\w+)$/i
     };
 
-    if (value && this.approvalType && patterns[this.approvalType]) {
-      const pattern = patterns[this.approvalType];
-      const matches = value.match(pattern);
+    switch (this.approvalType) {
+      case 'NTA':
+      case 'IVA':
+      case 'IVA - DVSA/NI':
+        this.extractValues(value, patterns[this.approvalType]);
+        break;
 
-      if (matches) {
-        const [, techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4] =
-          matches;
-        this.approvalTypeNumber1 = techRecord_approvalTypeNumber1;
-        this.approvalTypeNumber1_.next(techRecord_approvalTypeNumber1);
-        this.approvalTypeNumber2 = techRecord_approvalTypeNumber2;
-        this.approvalTypeNumber2_.next(techRecord_approvalTypeNumber2);
-        this.approvalTypeNumber3 = techRecord_approvalTypeNumber3;
-        this.approvalTypeNumber3_.next(techRecord_approvalTypeNumber3);
-        this.approvalTypeNumber4 = techRecord_approvalTypeNumber4;
-        this.approvalTypeNumber4_.next(techRecord_approvalTypeNumber4);
-      }
+      case 'ECTA':
+      case 'NSSTA':
+      case 'ECSSTA':
+      case 'GB WVTA':
+      case 'UKNI WVTA':
+      case 'EU WVTA Pre 23':
+      case 'EU WVTA 23 on':
+      case 'QNIG':
+      case 'Prov.GB WVTA':
+      case 'Small series':
+      case 'IVA - VCA':
+        this.extractValues(value, patterns[this.approvalType]);
+        break;
+
+      default:
+        console.log('Unknown approval type');
+    }
+  }
+
+  private extractValues(value: string, pattern: RegExp) {
+    const matches = value.match(pattern)?.filter(x => x != value);
+
+    if (matches) {
+      const [techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4] =
+        matches;
+      this.approvalTypeNumber1 = techRecord_approvalTypeNumber1;
+      this.approvalTypeNumber1_.next(techRecord_approvalTypeNumber1);
+      this.approvalTypeNumber2 = techRecord_approvalTypeNumber2;
+      this.approvalTypeNumber2_.next(techRecord_approvalTypeNumber2);
+      this.approvalTypeNumber3 = techRecord_approvalTypeNumber3;
+      this.approvalTypeNumber3_.next(techRecord_approvalTypeNumber3);
+      this.approvalTypeNumber4 = techRecord_approvalTypeNumber4;
+      this.approvalTypeNumber4_.next(techRecord_approvalTypeNumber4);
     }
   }
 
@@ -162,6 +193,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   validate() {
+    console.log('validating');
     switch (this.approvalType) {
       //1
       case 'NTA':
@@ -180,7 +212,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
           };
         }
         break;
-
       //4
       case 'GB WVTA':
       case 'EU WVTA Pre 23':
@@ -189,12 +220,18 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'QNIG':
       case 'ECTA':
       case 'ECSSTA':
+        console.log('in case');
+        console.log(this.approvalTypeNumber1);
+        console.log(this.approvalTypeNumber2);
+        console.log(this.approvalTypeNumber3);
+        console.log(this.approvalTypeNumber4);
         if (
           !this.approvalTypeNumber1 ||
           !this.approvalTypeNumber2 ||
           !this.approvalTypeNumber3 ||
           (!this.approvalTypeNumber4 && this.approvalType != null)
         ) {
+          console.log('adding errors');
           this.errors = {
             error: true,
             errors: [
@@ -205,6 +242,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
               }
             ]
           };
+          console.log(this.errors);
         }
         break;
 
@@ -296,8 +334,8 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
           : null;
 
       case 'UKNI WVTA':
-        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3
-          ? `X11*${techRecord_approvalTypeNumber1}/${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
+          ? `${techRecord_approvalTypeNumber1}11*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
           : null;
 
       case 'EU WVTA Pre 23':
@@ -321,8 +359,8 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
           : null;
 
       case 'Small series':
-        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2
-          ? `X11*NKS*${techRecord_approvalTypeNumber1}${techRecord_approvalTypeNumber2}`
+        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3
+          ? `${techRecord_approvalTypeNumber1}11*NKS${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`
           : null;
 
       case 'IVA - VCA':
