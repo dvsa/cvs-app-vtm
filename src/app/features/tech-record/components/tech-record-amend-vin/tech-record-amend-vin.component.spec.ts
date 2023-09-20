@@ -32,7 +32,7 @@ const mockDynamicFormService = {
   createForm: jest.fn()
 };
 
-describe('TechRecordChangeVrmComponent', () => {
+describe('TechRecordChangeVinComponent', () => {
   let actions$ = new ReplaySubject<Action>();
   let component: AmendVinComponent;
   let errorService: GlobalErrorService;

@@ -59,11 +59,18 @@ export class TechnicalRecordHttpService {
     return this.http.patch<TechRecordType<'get'>>(url, techRecord, { responseType: 'json' });
   }
 
-  amendVrm$(newVrm: string, cherishedTransfer: boolean, systemNumber: string, createdTimestamp: string): Observable<TechRecordType<'get'>> {
+  amendVrm$(
+    newVrm: string,
+    cherishedTransfer: boolean,
+    systemNumber: string,
+    createdTimestamp: string,
+    thirdMark?: string
+  ): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`;
     const body = {
       newVrm,
-      isCherishedTransfer: cherishedTransfer
+      isCherishedTransfer: cherishedTransfer,
+      thirdMark: thirdMark ?? undefined
     };
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
@@ -116,10 +123,15 @@ export class TechnicalRecordHttpService {
     return this.http.post(url, body, { responseType: 'text' });
   }
 
-  unarchiveTechnicalRecord$(systemNumber: string, createdTimestamp: string, reasonForUnarchiving: string, status: string): Observable<TechRecordType<'get'>> {
+  unarchiveTechnicalRecord$(
+    systemNumber: string,
+    createdTimestamp: string,
+    reasonForUnarchiving: string,
+    status: string
+  ): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/unarchive/${systemNumber}/${createdTimestamp}`;
 
-    const body = { reasonForUnarchiving, status  };
+    const body = { reasonForUnarchiving, status };
 
     return this.http.post<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
