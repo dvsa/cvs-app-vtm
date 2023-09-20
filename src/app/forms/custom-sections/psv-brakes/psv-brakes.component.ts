@@ -142,21 +142,4 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   round(n: number): number {
     return Math.round(n);
   }
-
-  calculateGrossLadenWeight(): number {
-    let kgAllowedPerPerson: number;
-
-    if (this.vehicleTechRecord?.techRecord_manufactureYear ?? 0 >= 1988) {
-      kgAllowedPerPerson = 65;
-    } else if (this.vehicleTechRecord?.techRecord_manufactureYear ?? 0 <= 1987) {
-      kgAllowedPerPerson = 63.5;
-    } else {
-      throw new Error('Invalid year of manufacture');
-    }
-
-    return (
-      ((this.vehicleTechRecord?.techRecord_seatsUpperDeck ?? this.vehicleTechRecord?.techRecord_seatsLowerDeck ?? 0) + 1) * kgAllowedPerPerson +
-      (this.vehicleTechRecord?.techRecord_grossKerbWeight ?? 0)
-    );
-  }
 }
