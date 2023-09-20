@@ -58,8 +58,7 @@ export const MotorcycleTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       value: 2,
-      validators: [{ name: ValidatorNames.Max, args: 99 }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
       name: 'techRecord_vehicleClass_description',
@@ -93,7 +92,8 @@ export const MotorcycleTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_euVehicleCategory',
