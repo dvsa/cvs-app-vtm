@@ -10,5 +10,6 @@
  */
 import { Vrm } from './vrm';
 
-export interface Vrms extends Array<Vrm> { 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Vrms extends Array<Vrm> {
 }

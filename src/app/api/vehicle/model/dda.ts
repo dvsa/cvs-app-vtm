@@ -12,53 +12,53 @@
 /**
  * Disability Discrimination Act
  */
-export interface Dda { 
-    /**
+export interface Dda {
+  /**
      * Used only for PSV
      */
-    certificateIssued?: boolean;
-    /**
+  certificateIssued?: boolean;
+  /**
      * Used only for PSV
      */
-    wheelchairCapacity?: number;
-    /**
+  wheelchairCapacity?: number;
+  /**
      * Used only for PSV
      */
-    wheelchairFittings?: string;
-    /**
+  wheelchairFittings?: string;
+  /**
      * Used only for PSV
      */
-    wheelchairLiftPresent?: boolean;
-    /**
+  wheelchairLiftPresent?: boolean;
+  /**
      * Used only for PSV
      */
-    wheelchairLiftInformation?: string;
-    /**
+  wheelchairLiftInformation?: string;
+  /**
      * Used only for PSV
      */
-    wheelchairRampPresent?: boolean;
-    /**
+  wheelchairRampPresent?: boolean;
+  /**
      * Used only for PSV
      */
-    wheelchairRampInformation?: string;
-    /**
+  wheelchairRampInformation?: string;
+  /**
      * Used only for PSV
      */
-    minEmergencyExits?: number;
-    /**
+  minEmergencyExits?: number;
+  /**
      * Used only for PSV
      */
-    outswing?: string;
-    /**
+  outswing?: string;
+  /**
      * Used only for PSV
      */
-    ddaSchedules?: string;
-    /**
+  ddaSchedules?: string;
+  /**
      * Used only for PSV
      */
-    seatbeltsFitted?: number;
-    /**
+  seatbeltsFitted?: number;
+  /**
      * Used only for PSV
      */
-    ddaNotes?: string;
+  ddaNotes?: string;
 }

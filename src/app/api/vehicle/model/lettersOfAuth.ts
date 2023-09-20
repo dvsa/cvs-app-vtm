@@ -12,24 +12,25 @@
 /**
  * Letters of authorisation
  */
-export interface LettersOfAuth { 
-    /**
+export interface LettersOfAuth {
+  /**
      * Used only for TRL
      */
-    letterType?: LettersOfAuth.LetterTypeEnum;
-    /**
+  letterType?: LettersOfAuth.LetterTypeEnum;
+  /**
      * Used only for TRL
      */
-    letterDateRequested?: string;
-    /**
+  letterDateRequested?: string;
+  /**
      * Used only for TRL
      */
-    letterContents?: string;
+  letterContents?: string;
 }
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace LettersOfAuth {
-    export type LetterTypeEnum = 'Trailer authorization' | 'Trailer rejection';
-    export const LetterTypeEnum = {
-        Authorization: 'Trailer authorization' as LetterTypeEnum,
-        Rejection: 'Trailer rejection' as LetterTypeEnum
-    };
+  export type LetterTypeEnum = 'Trailer authorization' | 'Trailer rejection';
+  export const LetterTypeEnum = {
+    Authorization: 'Trailer authorization' as LetterTypeEnum,
+    Rejection: 'Trailer rejection' as LetterTypeEnum,
+  };
 }

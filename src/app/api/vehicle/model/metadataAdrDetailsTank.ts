@@ -10,6 +10,6 @@
  */
 import { MetadataAdrDetailsTankTankStatement } from './metadataAdrDetailsTankTankStatement';
 
-export interface MetadataAdrDetailsTank { 
-    tankStatement?: MetadataAdrDetailsTankTankStatement;
+export interface MetadataAdrDetailsTank {
+  tankStatement?: MetadataAdrDetailsTankTankStatement;
 }

@@ -13,21 +13,21 @@ import { TechRecords } from './techRecords';
 /**
  * the Tech objects as they
  */
-export interface CompleteTechRecordDB { 
-    /**
+export interface CompleteTechRecordDB {
+  /**
      * It defines the composed primary key, in combination with \"vin\".
      */
-    systemNumber?: string;
-    partialVin?: string;
-    primaryVrm?: string;
-    secondaryVrms?: Array<string>;
-    /**
+  systemNumber?: string;
+  partialVin?: string;
+  primaryVrm?: string;
+  secondaryVrms?: Array<string>;
+  /**
      * Used for all vehicle types - PSV, HGV, TRL, car, lgv, motorcycle
      */
-    vin?: string;
-    /**
+  vin?: string;
+  /**
      * Used only for TRL
      */
-    trailerId?: string;
-    techRecord?: TechRecords;
+  trailerId?: string;
+  techRecord?: TechRecords;
 }

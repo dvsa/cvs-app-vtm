@@ -12,25 +12,25 @@
 /**
  * Authorization into service
  */
-export interface AuthIntoService { 
-    /**
+export interface AuthIntoService {
+  /**
      * Used only for TRL
      */
-    cocIssueDate?: string;
-    /**
+  cocIssueDate?: string;
+  /**
      * Used only for TRL
      */
-    dateReceived?: string;
-    /**
+  dateReceived?: string;
+  /**
      * Used only for TRL
      */
-    datePending?: string;
-    /**
+  datePending?: string;
+  /**
      * Used only for TRL
      */
-    dateAuthorised?: string;
-    /**
+  dateAuthorised?: string;
+  /**
      * Used only for TRL
      */
-    dateRejected?: string;
+  dateRejected?: string;
 }

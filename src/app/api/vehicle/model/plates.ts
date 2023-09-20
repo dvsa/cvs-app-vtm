@@ -10,5 +10,6 @@
  */
 import { PlatesInner } from './platesInner';
 
-export interface Plates extends Array<PlatesInner> { 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Plates extends Array<PlatesInner> {
 }

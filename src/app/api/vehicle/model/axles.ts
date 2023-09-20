@@ -10,5 +10,6 @@
  */
 import { Weights } from './weights';
 
-export interface Axles extends Array<Weights> { 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Axles extends Array<Weights> {
 }

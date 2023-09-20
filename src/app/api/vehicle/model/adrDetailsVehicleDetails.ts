@@ -9,13 +9,13 @@
  * Do not edit the class manually.
  */
 
-export interface AdrDetailsVehicleDetails { 
-    /**
+export interface AdrDetailsVehicleDetails {
+  /**
      * Mandatory. Users must select ONE of these. Users cannot select less/more
      */
-    type?: string;
-    /**
+  type?: string;
+  /**
      * Date (YYYY-MM-DD)
      */
-    approvalDate?: string;
+  approvalDate?: string;
 }

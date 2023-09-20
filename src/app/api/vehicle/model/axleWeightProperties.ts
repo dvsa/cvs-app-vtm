@@ -9,25 +9,25 @@
  * Do not edit the class manually.
  */
 
-export interface AxleWeightProperties { 
-    /**
+export interface AxleWeightProperties {
+  /**
      * Used only for PSV
      */
-    kerbWeight?: number;
-    /**
+  kerbWeight?: number;
+  /**
      * Used only for PSV
      */
-    ladenWeight?: number;
-    /**
+  ladenWeight?: number;
+  /**
      * Used for all vehicle types - PSV, HGV and TRL
      */
-    gbWeight?: number;
-    /**
+  gbWeight?: number;
+  /**
      * Used only for HGV and TRL
      */
-    eecWeight?: number;
-    /**
+  eecWeight?: number;
+  /**
      * Used for all vehicle types - PSV, HGV and TRL
      */
-    designWeight?: number;
+  designWeight?: number;
 }

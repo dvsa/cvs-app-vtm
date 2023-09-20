@@ -10,5 +10,6 @@
  */
 import { TechRecord } from './techRecord';
 
-export interface TechRecords extends Array<TechRecord> { 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TechRecords extends Array<TechRecord> {
 }

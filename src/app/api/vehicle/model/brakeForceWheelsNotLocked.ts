@@ -9,17 +9,17 @@
  * Do not edit the class manually.
  */
 
-export interface BrakeForceWheelsNotLocked { 
-    /**
+export interface BrakeForceWheelsNotLocked {
+  /**
      * Used only for PSV
      */
-    serviceBrakeForceA?: number;
-    /**
+  serviceBrakeForceA?: number;
+  /**
      * Used only for PSV
      */
-    secondaryBrakeForceA?: number;
-    /**
+  secondaryBrakeForceA?: number;
+  /**
      * Used only for PSV
      */
-    parkingBrakeForceA?: number;
+  parkingBrakeForceA?: number;
 }

@@ -9,36 +9,36 @@
  * Do not edit the class manually.
  */
 
-export interface PlatesInner { 
-    /**
+export interface PlatesInner {
+  /**
      * Used for all vehicle types
      */
-    plateSerialNumber?: string;
-    /**
+  plateSerialNumber?: string;
+  /**
      * Used for all vehicle types
      */
-    plateIssueDate?: string;
-    /**
+  plateIssueDate?: string;
+  /**
      * Used for all vehicle types
      */
-    plateReasonForIssue?: PlatesInner.PlateReasonForIssueEnum;
-    /**
+  plateReasonForIssue?: PlatesInner.PlateReasonForIssueEnum;
+  /**
      * Used for all vehicle types
      */
-    plateIssuer?: string;
-    /**
+  plateIssuer?: string;
+  /**
      * Used for all vehicle types
      */
-    toEmailAddress?: string;
+  toEmailAddress?: string;
 }
 export namespace PlatesInner {
-    export type PlateReasonForIssueEnum = 'Free replacement' | 'Replacement' | 'Destroyed' | 'Provisional' | 'Original' | 'Manual';
-    export const PlateReasonForIssueEnum = {
-        FreeReplacement: 'Free replacement' as PlateReasonForIssueEnum,
-        Replacement: 'Replacement' as PlateReasonForIssueEnum,
-        Destroyed: 'Destroyed' as PlateReasonForIssueEnum,
-        Provisional: 'Provisional' as PlateReasonForIssueEnum,
-        Original: 'Original' as PlateReasonForIssueEnum,
-        Manual: 'Manual' as PlateReasonForIssueEnum
-    };
+  export type PlateReasonForIssueEnum = 'Free replacement' | 'Replacement' | 'Destroyed' | 'Provisional' | 'Original' | 'Manual';
+  export const PlateReasonForIssueEnum = {
+    FreeReplacement: 'Free replacement' as PlateReasonForIssueEnum,
+    Replacement: 'Replacement' as PlateReasonForIssueEnum,
+    Destroyed: 'Destroyed' as PlateReasonForIssueEnum,
+    Provisional: 'Provisional' as PlateReasonForIssueEnum,
+    Original: 'Original' as PlateReasonForIssueEnum,
+    Manual: 'Manual' as PlateReasonForIssueEnum,
+  };
 }

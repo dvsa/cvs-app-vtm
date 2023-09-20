@@ -9,10 +9,10 @@
  * Do not edit the class manually.
  */
 
-export interface AdrDetailsApplicantDetails { 
-    name?: string;
-    street?: string;
-    town?: string;
-    city?: string;
-    postcode?: string;
+export interface AdrDetailsApplicantDetails {
+  name?: string;
+  street?: string;
+  town?: string;
+  city?: string;
+  postcode?: string;
 }
