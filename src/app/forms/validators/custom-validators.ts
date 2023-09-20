@@ -1,9 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { CustomAsyncValidators } from './custom-async-validators';
 
 export class CustomValidators {
   static hideIfEmpty = (sibling: string): ValidatorFn => {
@@ -175,7 +173,7 @@ export class CustomValidators {
   };
 
   static validateVinCharacters() {
-    return this.customPattern(['^(?!.*[OIQ]).*$', 'should not contain O, I and Q']);
+    return this.customPattern(['^(?!.*[OIQ]).*$', 'should not contain O, I or Q']);
   }
   static alphanumeric(): ValidatorFn {
     return this.customPattern(['^[a-zA-Z0-9]*$', 'must be alphanumeric']);
