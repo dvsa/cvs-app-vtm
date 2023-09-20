@@ -154,22 +154,20 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   ngOnChanges(): void {
-    this.valueWriteBack(this.value, this.approvalType!);
+    this.valueWriteBack(this.value);
     if (!this.formSubmitted && this.approvalTypeChange) {
-      console.log('clearing input');
       this.clearInput();
     }
   }
 
   ngOnInit(): void {
-    console.log('propergating...');
     this.subscriptions.push(this.subscribeAndPropagateChanges());
   }
 
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
     this.originalApprovalTypeNumber = this.value;
-    this.valueWriteBack(this.value, this.approvalType!);
+    this.valueWriteBack(this.value);
   }
 
   ngOnDestroy(): void {
@@ -192,10 +190,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.approvalTypeNumber4_.next(event);
   }
 
-  valueWriteBack(value: string | null, approvalType: string): void {
-    console.log(value);
-    console.log(this.approvalType);
-
+  valueWriteBack(value: string | null): void {
     // patterns
     const patterns: Record<string, RegExp> = {
       NTA: /(\d+)/,
@@ -221,7 +216,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       if (matches) {
         const [, techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4] =
           matches;
-
         this.approvalTypeNumber1 = techRecord_approvalTypeNumber1;
         this.approvalTypeNumber1_.next(techRecord_approvalTypeNumber1);
         this.approvalTypeNumber2 = techRecord_approvalTypeNumber2;
