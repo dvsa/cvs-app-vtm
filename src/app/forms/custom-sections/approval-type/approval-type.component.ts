@@ -35,6 +35,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
       this.techRecord.techRecord_vehicleType === 'psv' ? PsvTypeApprovalTemplate : HgvAndTrlTypeApprovalTemplate,
       this.techRecord
     ) as CustomFormGroup;
+    console.log(this.techRecord);
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
     Object.keys(this.form.controls).forEach(key => {
       this.formControls[key] = this.form.get(key) as FormControl;
@@ -49,14 +50,23 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
       techRecord.currentValue.techRecord_coifDate = techRecord.currentValue.techRecord_coifDate
         ? techRecord.currentValue.techRecord_coifDate.split('T')[0]
         : '';
+
+      console.log(this.chosenApprovalType);
+      console.log(this.techRecord.techRecord_approvalType);
+      console.log(this.techRecord);
+      console.log(techRecord.currentValue.techRecord_approvalTypeNumber);
+      console.log(techRecord.previousValue.techRecord_approvalTypeNumber);
+      console.log(this.techRecord.techRecord_approvalTypeNumber);
       if (
         techRecord.currentValue.techRecord_approvalType != techRecord.previousValue.techRecord_approvalType &&
         techRecord.previousValue.techRecord_approvalType != null
       ) {
+        console.log('apparoval type change true');
         this.approvalTypeChange = true;
       }
       if (techRecord.currentValue.techRecord_approvalType == techRecord.previousValue.techRecord_approvalType) {
         {
+          console.log('approval type change fasel');
           this.approvalTypeChange = false;
         }
       }

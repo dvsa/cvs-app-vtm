@@ -4,6 +4,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { techRecord } from '@store/technical-records';
 
 type Segments = {
   approvalTypeNumber1: Observable<string | undefined>;
@@ -52,6 +53,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   public approvalTypeNumber2?: string;
   public approvalTypeNumber3?: string;
   public approvalTypeNumber4?: string;
+  public originalApprovalTypeNumber?: string;
 
   constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef, public globalErrorService: GlobalErrorService) {
     super(injector, changeDetectorRef);
@@ -152,18 +154,22 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   ngOnChanges(): void {
+    this.valueWriteBack(this.value, this.approvalType!);
     if (!this.formSubmitted && this.approvalTypeChange) {
+      console.log('clearing input');
       this.clearInput();
     }
   }
 
   ngOnInit(): void {
+    console.log('propergating...');
     this.subscriptions.push(this.subscribeAndPropagateChanges());
   }
 
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
-    this.valueWriteBack(this.value);
+    this.originalApprovalTypeNumber = this.value;
+    this.valueWriteBack(this.value, this.approvalType!);
   }
 
   ngOnDestroy(): void {
@@ -186,12 +192,45 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.approvalTypeNumber4_.next(event);
   }
 
-  valueWriteBack(value: string | null): void {
-    if (value) {
-      this.approvalTypeNumber1_.next(this.approvalTypeNumber1);
-      this.approvalTypeNumber2_.next(this.approvalTypeNumber2);
-      this.approvalTypeNumber3_.next(this.approvalTypeNumber3);
-      this.approvalTypeNumber4_.next(this.approvalTypeNumber4);
+  valueWriteBack(value: string | null, approvalType: string): void {
+    console.log(value);
+    console.log(this.approvalType);
+
+    // patterns
+    const patterns: Record<string, RegExp> = {
+      NTA: /(\d+)/,
+      ECTA: /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
+      IVA: /(\d+)/,
+      NSSTA: /e(\d+)\*NKS(\d+)/,
+      ECSSTA: /e(\d+)\*KS(\d+)\/(\d+)\*(\d+)/,
+      'GB WVTA': /(\d+)\/(\d+)\*(\d+)/,
+      'UKNI WVTA': /X11(\d+)\/(\d+)\*(\d+)/,
+      'EU WVTA Pre 23': /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
+      'EU WVTA 23 on': /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
+      QNIG: /e(\d+)\*(\d+)\/(\d+)\*(\d+)/,
+      'Prov.GB WVTA': /(\d+)\/(\d+)\*(\d+)/,
+      'Small series': /X11NKS(\d+)/,
+      'IVA - VCA': /n11NIV(\d+)\/(\d+)\*(\d+)/,
+      'IVA - DVSA/NI': /(\d+)/
+    };
+
+    if (value && this.approvalType && patterns[this.approvalType]) {
+      const pattern = patterns[this.approvalType];
+      const matches = value.match(pattern);
+
+      if (matches) {
+        const [, techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4] =
+          matches;
+
+        this.approvalTypeNumber1 = techRecord_approvalTypeNumber1;
+        this.approvalTypeNumber1_.next(techRecord_approvalTypeNumber1);
+        this.approvalTypeNumber2 = techRecord_approvalTypeNumber2;
+        this.approvalTypeNumber2_.next(techRecord_approvalTypeNumber2);
+        this.approvalTypeNumber3 = techRecord_approvalTypeNumber3;
+        this.approvalTypeNumber3_.next(techRecord_approvalTypeNumber3);
+        this.approvalTypeNumber4 = techRecord_approvalTypeNumber4;
+        this.approvalTypeNumber4_.next(techRecord_approvalTypeNumber4);
+      }
     }
   }
 
@@ -208,10 +247,21 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     };
     return combineLatest(dateFields).subscribe({
       next: ({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) => {
+        console.log(approvalTypeNumber1);
+        console.log(approvalTypeNumber2);
+        console.log(approvalTypeNumber3);
+        console.log(approvalTypeNumber1);
         if (!approvalTypeNumber1 && !approvalTypeNumber2 && !approvalTypeNumber3 && !approvalTypeNumber4) {
           this.onChange(null);
+          console.log('returning null');
           return;
         }
+
+        // let dan = this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4);
+        // console.log(dan);
+        // this.approvalTypeValid = this.isApprovalTypeChangeValid(dan, this.approvalType!);
+        // console.log(`is valid?: ${this.approvalTypeValid}`);
+
         this.onChange(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
       }
     });
@@ -222,6 +272,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.approvalTypeNumber2 = '';
     this.approvalTypeNumber3 = '';
     this.approvalTypeNumber4 = '';
+    console.log('clearing input');
     this.onChange(null);
   }
 
@@ -307,6 +358,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
         return 'Unknown approval type';
     }
   }
+
   getId(name: string) {
     const id = name + '-day';
     if (this.control) {
