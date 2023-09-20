@@ -22,11 +22,13 @@ import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-
 import { SharedTechRecordsModule } from './shared-tech-record.module';
 import { TechRecordsRoutingModule } from './tech-record-routing.module';
 import { TechRecordComponent } from './tech-record.component';
+import { AmendVrmReasonComponent } from './components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component';
 
 @NgModule({
   declarations: [
     AmendVinComponent,
     AmendVrmComponent,
+    AmendVrmReasonComponent,
     ChangeVehicleTypeComponent,
     EditTechRecordButtonComponent,
     TechRecordAmendReasonComponent,

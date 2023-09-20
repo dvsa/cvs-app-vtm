@@ -141,6 +141,47 @@ export class TechnicalRecordService {
     };
   }
 
+  validateVrmDoesNotExist(previousVrm: string): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return of(control).pipe(
+        filter((control: AbstractControl) => !!control.value),
+        take(1),
+        switchMap(control => {
+          return this.checkVrmNotActive(control, previousVrm);
+        })
+      );
+    };
+  }
+
+  validateVrmForCherishedTransfer(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return of(control).pipe(
+        filter((control: AbstractControl) => !!control.value),
+        take(1),
+        switchMap(control => {
+          const thirdMark = control.root.get('thirdMark')?.value;
+          const previousVrm = control.root.get('previousVrm')?.value;
+          if (thirdMark) {
+            return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, control.value).pipe(
+              map(results => {
+                if (results.some(result => result.techRecord_statusCode === StatusCodes.CURRENT)) {
+                  return null;
+                }
+                return { validateVrm: { message: 'This VRM does not exist on a current record' } };
+              }),
+              catchError((err: HttpErrorResponse) => {
+                return (
+                  (err.status == 404 && of({ validateVrm: { message: 'This VRM does not exist on a current record' } })) || throwError(() => err)
+                );
+              })
+            );
+          }
+          return this.checkVrmNotActive(control, previousVrm);
+        })
+      );
+    };
+  }
+
   clearEditingTechRecord() {
     this.store.dispatch(updateEditingTechRecordCancel());
   }
@@ -181,5 +222,32 @@ export class TechnicalRecordService {
 
   clearSectionTemplateStates() {
     this.store.dispatch(clearAllSectionStates());
+  }
+
+  checkVrmNotActive(control: AbstractControl, previousVrm: string) {
+    return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, control.value).pipe(
+      map(results => {
+        const currentRecord = results.filter(result => result.techRecord_statusCode === StatusCodes.CURRENT);
+        const provisionalRecord = results.filter(result => result.techRecord_statusCode === StatusCodes.PROVISIONAL);
+
+        if (control.value === previousVrm) {
+          return { validateVrm: { message: 'You must provide a new VRM' } };
+        }
+        if (currentRecord.length > 0) {
+          return {
+            validateVrm: {
+              message: `A current technical record already exists for ${control.value} with the VIN number ${currentRecord[0].vin}. Please fill in the third mark field`
+            }
+          };
+        }
+        if (provisionalRecord.length > 0) {
+          return { validateVrm: { message: `This VRM already exists on a provisional record with the VIN: ${provisionalRecord[0].vin}` } };
+        }
+        return null;
+      }),
+      catchError((err: HttpErrorResponse) => {
+        return (err.status == 404 && of(null)) || throwError(() => err);
+      })
+    );
   }
 }
