@@ -153,13 +153,8 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     };
     return combineLatest(approvalNumberFields).subscribe({
       next: ({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) => {
-        console.log(approvalTypeNumber1);
-        console.log(approvalTypeNumber2);
-        console.log(approvalTypeNumber3);
-        console.log(approvalTypeNumber1);
         if (!approvalTypeNumber1 && !approvalTypeNumber2 && !approvalTypeNumber3 && !approvalTypeNumber4) {
           this.onChange(null);
-          console.log('returning null');
           return;
         }
         this.onChange(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
@@ -257,7 +252,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.approvalTypeNumber2 = '';
     this.approvalTypeNumber3 = '';
     this.approvalTypeNumber4 = '';
-    console.log('clearing input');
     this.onChange(null);
   }
 
