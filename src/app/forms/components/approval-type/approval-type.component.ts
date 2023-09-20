@@ -60,17 +60,14 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.approvalTypeNumber3$ = this.approvalTypeNumber3_.asObservable();
     this.approvalTypeNumber4$ = this.approvalTypeNumber4_.asObservable();
     this.globalErrorService.errors$.subscribe((globalErrors: any) => {
-      console.log(globalErrors);
       if (globalErrors.length) {
         this.formSubmitted = true;
-        console.log(this.formSubmitted);
       }
     });
   }
 
   ngOnChanges(): void {
     this.valueWriteBack(this.value);
-    console.log(this.formSubmitted);
     if (!this.formSubmitted && this.approvalTypeChange) {
       this.clearInput();
     }
@@ -193,7 +190,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   validate() {
-    console.log('validating');
     switch (this.approvalType) {
       //1
       case 'NTA':
@@ -220,18 +216,12 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'QNIG':
       case 'ECTA':
       case 'ECSSTA':
-        console.log('in case');
-        console.log(this.approvalTypeNumber1);
-        console.log(this.approvalTypeNumber2);
-        console.log(this.approvalTypeNumber3);
-        console.log(this.approvalTypeNumber4);
         if (
           !this.approvalTypeNumber1 ||
           !this.approvalTypeNumber2 ||
           !this.approvalTypeNumber3 ||
           (!this.approvalTypeNumber4 && this.approvalType != null)
         ) {
-          console.log('adding errors');
           this.errors = {
             error: true,
             errors: [
@@ -242,7 +232,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
               }
             ]
           };
-          console.log(this.errors);
         }
         break;
 
