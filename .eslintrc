@@ -19,7 +19,8 @@
       "rules": {
         "@typescript-eslint/lines-between-class-members": "off",
         "no-return-assign": "off",
-        "consistent-return": "off"
+        "consistent-return": "off",
+        "no-param-reassign": "off"
       }
     },
     {
