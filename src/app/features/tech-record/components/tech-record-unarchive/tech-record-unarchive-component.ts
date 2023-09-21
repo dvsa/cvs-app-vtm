@@ -9,9 +9,10 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { selectTechRecordHistory, unarchiveTechRecord, unarchiveTechRecordSuccess } from '@store/technical-records';
+import { unarchiveTechRecord, unarchiveTechRecordSuccess } from '@store/technical-records';
 import { Subject, map, takeUntil } from 'rxjs';
-import { getBySystemNumber } from '@store/technical-records';
+import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
+import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 
 @Component({
   selector: 'app-tech-record-unarchive',
@@ -49,7 +50,8 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
       this.techRecord = record as TechRecordType<'get'>;
-      this.store.dispatch(getBySystemNumber({ systemNumber: this.techRecord?.systemNumber as string }));
+      const { primaryVrm } = record as { primaryVrm?: string };
+      this.store.dispatch(fetchSearchResult({ searchBy: SEARCH_TYPES.VRM, term: primaryVrm as string }));
     });
 
     this.actions$.pipe(ofType(unarchiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
@@ -58,13 +60,20 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
       this.technicalRecordService.clearEditingTechRecord();
     });
 
-    this.techRecordHistory$.pipe(map(records => records?.some((techRecordHistory) => {
-      return techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED &&
-        this.techRecord?.techRecord_vehicleType !== 'trl' &&
-        techRecordHistory.primaryVrm === this.techRecord?.primaryVrm;
-      })),
-      takeUntil(this.destroy$))
-      .subscribe(value => this.hasNonArchivedRecords = value);
+    this.technicalRecordService.searchResults$
+      .pipe(
+        map(records =>
+          records?.some(techRecord => {
+            return (
+              techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED &&
+              this.techRecord?.techRecord_vehicleType !== 'trl' &&
+              techRecord.primaryVrm === this.techRecord?.primaryVrm
+            );
+          })
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(value => (this.hasNonArchivedRecords = value));
   }
 
   ngOnDestroy(): void {
@@ -72,27 +81,21 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     this.destroy$.complete;
   }
 
-  get techRecordHistory$() {
-    return this.store.select(selectTechRecordHistory);
-  }
-
   navigateBack(relativePath: string = '..'): void {
     this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
-  handleSubmit(form: { reason: string, newRecordStatus: string }): void {
+  handleSubmit(form: { reason: string; newRecordStatus: string }): void {
     if (!this.techRecord) {
       return;
     }
 
-    if(this.hasNonArchivedRecords){
+    if (this.hasNonArchivedRecords) {
       this.errorService.setErrors([{ error: 'Cannot unarchive a record with Provisional or Current records' }]);
       return;
     }
 
-    this.form.valid
-      ? this.errorService.clearErrors()
-      : this.validateControls();
+    this.form.valid ? this.errorService.clearErrors() : this.validateControls();
 
     if (!this.form.valid || !form.reason || !form.newRecordStatus) {
       return;
@@ -113,11 +116,11 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     const newRecordStatus = this.form.controls['newRecordStatus'];
 
     let errors = [];
-    if(!reasonControl.valid){
+    if (!reasonControl.valid) {
       errors.push({ error: `Reason for unarchival is required`, anchorLink: 'reason' });
     }
 
-    if(!newRecordStatus.valid){
+    if (!newRecordStatus.valid) {
       errors.push({ error: 'New Record Status is required', anchorLink: 'newRecordStatus' });
     }
 
