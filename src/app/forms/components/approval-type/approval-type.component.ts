@@ -128,7 +128,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'NTA':
       case 'IVA':
       case 'IVA - DVSA/NI':
-        this.extractValues(value, patterns[this.approvalType]);
+        this.extractValuesNtaIva(value, patterns[this.approvalType]);
         break;
 
       case 'ECTA':
@@ -152,7 +152,14 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
   private extractValues(value: string, pattern: RegExp) {
     const matches = value.match(pattern)?.filter(x => x != value);
+    this.setTypeApprovalNumbers(matches ?? []);
+  }
+  private extractValuesNtaIva(value: string, pattern: RegExp) {
+    const matches = value.match(pattern);
+    this.setTypeApprovalNumbers(matches ?? []);
+  }
 
+  private setTypeApprovalNumbers(matches: string[]) {
     if (matches) {
       const [techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4] =
         matches;
