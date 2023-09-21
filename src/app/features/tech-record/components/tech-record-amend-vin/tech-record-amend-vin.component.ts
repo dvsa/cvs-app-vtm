@@ -14,7 +14,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
-import { Subject, takeUntil, withLatestFrom } from 'rxjs';
+import { Subject, take, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vin',
@@ -106,7 +106,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
       this.technicalRecordService.updateEditingTechRecord({ ...record, techRecord_reasonForCreation: 'Vin changed' });
       this.routerService
         .getRouteNestedParam$('systemNumber')
-        .pipe(takeUntil(this.destroy$), withLatestFrom(this.routerService.getRouteNestedParam$('createdTimestamp')))
+        .pipe(take(1), takeUntil(this.destroy$), withLatestFrom(this.routerService.getRouteNestedParam$('createdTimestamp')))
         .subscribe(([systemNumber, createdTimestamp]) => {
           if (systemNumber && createdTimestamp) {
             this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
