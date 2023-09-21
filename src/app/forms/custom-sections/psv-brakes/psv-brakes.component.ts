@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import { ReferenceDataState, selectBrakeByCode } from '@store/reference-data';
 import { updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, Subject, debounceTime, of, switchMap, takeUntil, withLatestFrom } from 'rxjs';
+import { debounceTime, Observable, of, Subject, switchMap, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-psv-brakes',
