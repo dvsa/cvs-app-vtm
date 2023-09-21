@@ -5,7 +5,7 @@ import { PlatesInner } from '@api/vehicle';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
@@ -38,14 +38,11 @@ export class GeneratePlateComponent implements OnInit {
     this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => {
       this.navigateBack();
     });
-    this.store
-      .select(getCanGeneratePlate)
-      .pipe(take(1))
-      .subscribe(canGeneratePlate => {
-        if (!canGeneratePlate) {
-          this.navigateBack();
-        }
-      });
+    this.store.pipe(select(getCanGeneratePlate), take(1)).subscribe(canGeneratePlate => {
+      if (!canGeneratePlate) {
+        this.navigateBack();
+      }
+    });
     this.emailAddress$ = this.technicalRecordService.techRecord$.pipe(
       tap(record => {
         if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') this.navigateBack();
