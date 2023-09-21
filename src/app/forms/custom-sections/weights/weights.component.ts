@@ -128,6 +128,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     const kgAllowedPerPerson = techRecord_manufactureYear >= 1988 ? 65 : 63.5;
 
     const totalPassengers = techRecord_seatsUpperDeck + techRecord_seatsLowerDeck + 1; // Add 1 for the driv
-    return (totalPassengers + 1) * kgAllowedPerPerson + techRecord_grossKerbWeight;
+    return totalPassengers * kgAllowedPerPerson + techRecord_grossKerbWeight;
   }
 }
