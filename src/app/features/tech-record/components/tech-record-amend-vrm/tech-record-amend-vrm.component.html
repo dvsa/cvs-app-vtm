@@ -20,19 +20,62 @@
     </div>
   </dl>
 
-  <form [formGroup]="form">
-    <app-text-input #newVrm appToUppercase appNoSpace appTrimWhitespace formControlName="newVrm" [width]="width"></app-text-input>
+  <ng-container *ngIf="!isCherishedTransfer">
+    <form [formGroup]="correctingAnErrorForm">
+      <app-text-input
+        #newVrm
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+        name="new-vrm"
+        formControlName="newVrm"
+        [width]="width"
+        label="New VRM"
+      ></app-text-input>
+    </form>
+  </ng-container>
 
-    <app-radio-group formControlName="isCherishedTransfer" [options]="reasons"></app-radio-group>
+  <ng-container *ngIf="isCherishedTransfer">
+    <form [formGroup]="cherishedTransferForm">
+      <app-text-input
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+        formControlName="previousVrm"
+        name="previous-vrm"
+        [disabled]="true"
+        [width]="width"
+        label="Previous VRM"
+      ></app-text-input>
 
-    <div *ngIf="newVrm.value.toUpperCase() !== techRecord.primaryVrm && newVrm.value.length">
-      <p class="govuk-heading-l">Are you sure you want to change this VRM?</p>
-      <p class="govuk-body">Amending this VRM will also amend the VRM for all other tech records present.</p>
-    </div>
+      <app-text-input
+        #currentVrm
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+        formControlName="currentVrm"
+        name="current-vrm"
+        [width]="width"
+        label="Current VRM"
+        (focusout)="handleFormChange()"
+      ></app-text-input>
 
-    <app-button-group>
-      <app-button id="submit-vrm" (clicked)="handleSubmit()">Save</app-button>
-      <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
-    </app-button-group>
-  </form>
+      <app-text-input
+        #thirdMark
+        appToUppercase
+        appNoSpace
+        appTrimWhitespace
+        formControlName="thirdMark"
+        name="third-mark"
+        [width]="width"
+        label="Third mark"
+        (focusout)="handleFormChange()"
+      ></app-text-input>
+    </form>
+  </ng-container>
+
+  <app-button-group>
+    <app-button id="submit-vrm" (clicked)="handleSubmit()">Save</app-button>
+    <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+  </app-button-group>
 </div>

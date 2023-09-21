@@ -1,5 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
+import { TagType } from '@shared/components/tag/tag.component';
 
 export const PsvBodyTemplate: FormNode = {
   name: 'bodySection',
@@ -13,7 +14,8 @@ export const PsvBodyTemplate: FormNode = {
       width: FormNodeWidth.S,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
     },
     {
       name: 'techRecord_modelLiteral',
@@ -79,7 +81,7 @@ export const PsvBodyTemplate: FormNode = {
       label: 'Conversion ref no',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
+      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
     },
     {
       name: 'techRecord_modelLiteral',

@@ -10,6 +10,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { selectedTestResultState, updateTestResultSuccess } from '@store/test-records';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-confirm-cancellation',
@@ -29,7 +30,9 @@ export class ConfirmCancellationComponent implements OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store,
-    private testRecordsService: TestRecordsService
+    private testRecordsService: TestRecordsService,
+    private globalErrorService: GlobalErrorService,
+    private location: Location
   ) {
     this.actions$
       .pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$))
@@ -40,6 +43,11 @@ export class ConfirmCancellationComponent implements OnDestroy {
     this.errorService.clearErrors();
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  navigateBack() {
+    this.globalErrorService.clearErrors();
+    this.location.back();
   }
 
   get testResult$(): Observable<TestResultModel | undefined> {

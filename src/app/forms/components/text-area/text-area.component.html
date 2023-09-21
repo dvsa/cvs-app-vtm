@@ -1,5 +1,8 @@
 <div class="govuk-form-group">
-  <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
+  <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">
+    {{ label }}
+    <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+  </label>
 
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
 
