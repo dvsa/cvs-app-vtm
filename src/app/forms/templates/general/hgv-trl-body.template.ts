@@ -75,7 +75,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
+      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
     }
   ]
 };

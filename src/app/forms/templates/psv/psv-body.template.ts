@@ -81,7 +81,7 @@ export const PsvBodyTemplate: FormNode = {
       label: 'Conversion ref no',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
+      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
     },
     {
       name: 'techRecord_modelLiteral',
