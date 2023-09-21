@@ -26,7 +26,7 @@ export const updateTechRecordFailure = createOutcomeAction('updateTechRecords', 
 
 export const amendVrm = createAction(
   `${prefix} amendVrm`,
-  props<{ newVrm: string; cherishedTransfer: boolean; systemNumber: string; createdTimestamp: string }>()
+  props<{ newVrm: string; cherishedTransfer: boolean; systemNumber: string; createdTimestamp: string; thirdMark?: string }>()
 );
 export const amendVrmSuccess = createOutcomeAction('amendVrm', true);
 export const amendVrmFailure = createOutcomeAction('amendVrm', false);
@@ -68,7 +68,7 @@ export const updateBody = createAction(`${prefix} updatebody`, props<{ psvMake: 
 
 export const unarchiveTechRecord = createAction(
   `${prefix} unarchiveTechRecord`,
-  props<{ systemNumber: string; createdTimestamp: string; reasonForUnarchiving: string, status: string }>()
+  props<{ systemNumber: string; createdTimestamp: string; reasonForUnarchiving: string; status: string }>()
 );
 export const unarchiveTechRecordSuccess = createOutcomeAction('unarchiveTechRecord', true);
 export const unarchiveTechRecordFailure = createOutcomeAction('unarchiveTechRecord', false);
