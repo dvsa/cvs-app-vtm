@@ -23,6 +23,7 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       label: 'Approval type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,

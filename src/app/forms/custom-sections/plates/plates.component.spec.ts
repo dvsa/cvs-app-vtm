@@ -184,6 +184,7 @@ describe('PlatesComponent', () => {
         techRecord_trainDesignWeight: 1,
         techRecord_trainEecWeight: 1,
         techRecord_trainGbWeight: 1,
+        techRecord_tyreUseCode: 'a',
         techRecord_vehicleType: 'hgv',
         techRecord_variantNumber: '1',
         vin: 'HGVTEST01',

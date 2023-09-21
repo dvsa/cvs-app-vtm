@@ -6,7 +6,6 @@ export const tyresTemplateHgv: FormNode = {
   name: 'tyreSection',
   type: FormNodeTypes.GROUP,
   label: 'Tyres',
-  customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
   children: [
     {
       name: 'techRecord_tyreUseCode',
@@ -18,7 +17,8 @@ export const tyresTemplateHgv: FormNode = {
       validators: [
         { name: ValidatorNames.MaxLength, args: 2 },
         { name: ValidatorNames.Min, args: 0 }
-      ]
+      ],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_axles',

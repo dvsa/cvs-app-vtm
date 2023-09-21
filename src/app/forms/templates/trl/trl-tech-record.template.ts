@@ -3,8 +3,8 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FrameDescriptions } from '@models/vehicle-tech-record.model';
-import { TagTypeLabels, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { TagType } from '@shared/components/tag/tag.component';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
 
 export const TrlTechRecordTemplate: FormNode = {
   name: 'techRecordSummary',
@@ -144,7 +144,8 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
-      class: 'flex--half'
+      class: 'flex--half',
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_vehicleConfiguration',

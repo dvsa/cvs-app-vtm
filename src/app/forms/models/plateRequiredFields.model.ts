@@ -6,6 +6,7 @@ export const hgvRequiredFields: string[] = [
   'techRecord_manufactureYear',
   'techRecord_speedLimiterMrk',
   'techRecord_approvalType',
+  'techRecord_approvalTypeNumber',
   'techRecord_variantNumber',
   'techRecord_make',
   'techRecord_model',
@@ -22,6 +23,7 @@ export const hgvRequiredFields: string[] = [
   'techRecord_frontVehicleTo5thWheelCouplingMax',
   'techRecord_dimensions_length',
   'techRecord_dimensions_width',
+  'techRecord_tyreUseCode',
   'techRecord_axles'
 ];
 
@@ -31,8 +33,7 @@ export const axleRequiredFields: string[] = [
   'weights_designWeight',
   'tyres_tyreSize',
   'tyres_plyRating',
-  'tyres_fitmentCode',
-  'tyres_tyreCode'
+  'tyres_fitmentCode'
 ];
 
 export const trlRequiredFields: string[] = [
@@ -43,6 +44,7 @@ export const trlRequiredFields: string[] = [
   'techRecord_manufactureYear',
   'techRecord_maxLoadOnCoupling',
   'techRecord_approvalType',
+  'techRecord_approvalTypeNumber',
   'techRecord_variantNumber',
   'techRecord_make',
   'techRecord_model',
@@ -54,5 +56,6 @@ export const trlRequiredFields: string[] = [
   'techRecord_couplingCenterToRearTrlMin',
   'techRecord_dimensions_length',
   'techRecord_dimensions_width',
+  'techRecord_tyreUseCode',
   'techRecord_axles'
 ];
