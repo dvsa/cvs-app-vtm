@@ -9,9 +9,10 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { selectTechRecordHistory, unarchiveTechRecord, unarchiveTechRecordSuccess } from '@store/technical-records';
+import { unarchiveTechRecord, unarchiveTechRecordSuccess } from '@store/technical-records';
 import { Subject, map, takeUntil } from 'rxjs';
-import { getBySystemNumber } from '@store/technical-records';
+import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
+import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 
 @Component({
   selector: 'app-tech-record-unarchive',
@@ -49,7 +50,8 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
       this.techRecord = record as TechRecordType<'get'>;
-      this.store.dispatch(getBySystemNumber({ systemNumber: this.techRecord?.systemNumber as string }));
+      const { primaryVrm } = (record as { primaryVrm?: string });
+      this.store.dispatch(fetchSearchResult({ searchBy: SEARCH_TYPES.VRM, term: primaryVrm as string }));
     });
 
     this.actions$.pipe(ofType(unarchiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
@@ -58,14 +60,14 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
       this.technicalRecordService.clearEditingTechRecord();
     });
 
-    this.techRecordHistory$
+    this.technicalRecordService.searchResults$
       .pipe(
         map(records =>
-          records?.some(techRecordHistory => {
+          records?.some(techRecord => {
             return (
-              techRecordHistory.techRecord_statusCode !== StatusCodes.ARCHIVED &&
+              techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED &&
               this.techRecord?.techRecord_vehicleType !== 'trl' &&
-              techRecordHistory.primaryVrm === this.techRecord?.primaryVrm
+              techRecord.primaryVrm === this.techRecord?.primaryVrm
             );
           })
         ),
@@ -77,10 +79,6 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next;
     this.destroy$.complete;
-  }
-
-  get techRecordHistory$() {
-    return this.store.select(selectTechRecordHistory);
   }
 
   navigateBack(relativePath: string = '..'): void {
