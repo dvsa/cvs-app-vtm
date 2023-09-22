@@ -68,7 +68,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
   ngOnChanges(): void {
     this.valueWriteBack(this.value);
-    if (!this.formSubmitted && this.approvalTypeChange) {
+    if (this.approvalTypeChange) {
       this.clearInput();
     }
   }
