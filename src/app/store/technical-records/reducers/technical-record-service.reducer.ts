@@ -42,6 +42,9 @@ import {
   promoteTechRecordSuccess,
   removeAxle,
   removeSectionState,
+  unarchiveTechRecord,
+  unarchiveTechRecordFailure,
+  unarchiveTechRecordSuccess,
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
@@ -91,6 +94,10 @@ export const vehicleTechRecordReducer = createReducer(
   on(archiveTechRecord, defaultArgs),
   on(archiveTechRecordSuccess, successArgs),
   on(archiveTechRecordFailure, updateFailureArgs),
+
+  on(unarchiveTechRecord, defaultArgs),
+  on(unarchiveTechRecordSuccess, successArgs),
+  on(unarchiveTechRecordFailure, updateFailureArgs),
 
   on(promoteTechRecord, defaultArgs),
   on(promoteTechRecordSuccess, successArgs),
