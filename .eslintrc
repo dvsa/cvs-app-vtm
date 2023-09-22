@@ -1,6 +1,13 @@
 {
   "root": true,
   "ignorePatterns": ["projects/**/*"],
+  "plugins": ["@typescript-eslint"],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "parser": "@typescript-eslint/parser",
   "overrides": [
     {
       "files": ["*.ts"],
@@ -8,25 +15,56 @@
         "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
-      "extends": ["plugin:@angular-eslint/recommended", "prettier"],
-      "plugins": ["prettier"],
+      "extends": ["plugin:import/errors", "plugin:import/warnings", "plugin:import/typescript", "@dvsa/eslint-config-ts"],
       "rules": {
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "type": "attribute",
-            "prefix": "app",
-            "style": "camelCase"
-          }
-        ],
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": "app",
-            "style": "kebab-case"
-          }
-        ]
+        "import/no-named-default": "off",
+        "no-param-reassign": "off",
+        "@typescript-eslint/lines-between-class-members": "off",
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/dot-notation": "off",
+        "implicit-arrow-linebreak": "off",
+        "no-unused-expressions": "warn",
+        "class-methods-use-this": "off",
+        "consistent-return": "off",
+        "arrow-body-style": "off",
+        "padded-blocks": "off",
+        "array-callback-return": "off",
+        "no-console": "warn",
+        "no-confusing-arrow": "off",
+        "import/prefer-default-export": "off",
+        "quotes": ["error", "single"],
+        "max-len": ["error", { "code": 150 }],
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off"
+      }
+    },
+    {
+      "files": ["*.spec.ts"],
+      "parserOptions": {
+        "project": ["tsconfig.json"],
+        "createDefaultProgram": true
+      },
+      "extends": ["plugin:import/errors", "plugin:import/warnings", "plugin:import/typescript", "@dvsa/eslint-config-ts"],
+      "rules": {
+        "import/no-named-default": "off",
+        "no-param-reassign": "off",
+        "@typescript-eslint/lines-between-class-members": "off",
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/dot-notation": "off",
+        "implicit-arrow-linebreak": "off",
+        "no-unused-expressions": "warn",
+        "class-methods-use-this": "off",
+        "consistent-return": "off",
+        "arrow-body-style": "off",
+        "padded-blocks": "off",
+        "array-callback-return": "off",
+        "no-console": "warn",
+        "no-confusing-arrow": "off",
+        "import/prefer-default-export": "off",
+        "quotes": ["error", "single"],
+        "max-len": ["error", { "code": 150 }],
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off"
       }
     },
     {
