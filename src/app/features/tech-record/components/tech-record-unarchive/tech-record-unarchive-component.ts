@@ -71,11 +71,6 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // if (this.hasNonArchivedRecords) {
-    //   this.errorService.setErrors([{ error: 'Cannot unarchive a record with Provisional or Current records' }]);
-    //   return;
-    // }
-
     this.form.valid ? this.errorService.clearErrors() : this.validateControls();
 
     if (!this.form.valid || !form.reason || !form.newRecordStatus) {
