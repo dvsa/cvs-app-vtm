@@ -1,3 +1,21 @@
 a {
   cursor: pointer;
 }
+
+.govuk-back-link:before {
+  border: none;
+  display: none;
+}
+
+@media (min-width: 40.0625em) {
+  .govuk-back-link {
+    font-size: 1.3rem;
+    line-height: 1.25;
+    padding-left: 0em;
+    color: #003078;
+  }
+
+  .govuk-back-link:hover {
+    font-weight: bold;
+  }
+}
