@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
@@ -19,7 +21,7 @@ describe('MultipleSearchResultsComponent', () => {
   let component: MultipleSearchResultsComponent;
   let fixture: ComponentFixture<MultipleSearchResultsComponent>;
   let store: MockStore<State>;
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
   let techRecordHttpService: TechnicalRecordHttpService;
 
   beforeEach(async () => {
@@ -32,11 +34,11 @@ describe('MultipleSearchResultsComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of(['TechRecord.View'])
-          }
+            roles$: of(['TechRecord.View']),
+          },
         },
-        TechnicalRecordHttpService
-      ]
+        TechnicalRecordHttpService,
+      ],
     }).compileComponents();
   });
 

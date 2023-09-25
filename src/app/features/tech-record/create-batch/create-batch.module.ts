@@ -23,7 +23,7 @@ import { SelectVehicleTypeComponent } from './components/select-vehicle-type/sel
     DynamicFormsModule,
     RouterModule,
     SharedModule,
-    CreateTechRecordsModule
-  ]
+    CreateTechRecordsModule,
+  ],
 })
 export class CreateBatchModule {}

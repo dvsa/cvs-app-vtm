@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
   selector: 'app-vehicle-header',
   templateUrl: './vehicle-header.component.html',
   styleUrls: ['./vehicle-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VehicleHeaderComponent {
   @Input() isEditing = false;
@@ -28,7 +28,7 @@ export class VehicleHeaderComponent {
   constructor(private testTypesService: TestTypesService, private techRecordService: TechnicalRecordService, private store: Store) {}
 
   get test(): TestType | undefined {
-    return this.testResult?.testTypes?.find(t => this.testNumber === t.testNumber);
+    return this.testResult?.testTypes?.find((t) => this.testNumber === t.testNumber);
   }
 
   get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
@@ -36,7 +36,7 @@ export class VehicleHeaderComponent {
   }
 
   combinedOdometerReading(reading: string | undefined, unit: string | undefined) {
-    return `${reading ?? ''} ${(unit && ('kilometres' === unit ? 'km' : 'mi')) ?? ''}`;
+    return `${reading ?? ''} ${(unit && (unit === 'kilometres' ? 'km' : 'mi')) ?? ''}`;
   }
 
   get techRecord$(): Observable<V3TechRecordModel | undefined> {
@@ -80,18 +80,18 @@ export class VehicleHeaderComponent {
       case VehicleTypes.TRL:
         return (techRecord as TechRecordType<typeof vehicleType>).techRecord_vehicleConfiguration ?? '';
       case VehicleTypes.PSV:
-        return (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyMake &&
-          (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel
+        return (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyMake
+          && (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel
           ? `${(techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyMake}-${
-              (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel
-            }`
+            (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel
+          }`
           : '';
       case VehicleTypes.HGV:
-        return (techRecord as TechRecordType<typeof vehicleType>).techRecord_make &&
-          (techRecord as TechRecordType<typeof vehicleType>).techRecord_model
+        return (techRecord as TechRecordType<typeof vehicleType>).techRecord_make
+          && (techRecord as TechRecordType<typeof vehicleType>).techRecord_model
           ? `${(techRecord as TechRecordType<typeof vehicleType>).techRecord_make}-${
-              (techRecord as TechRecordType<typeof vehicleType>).techRecord_model
-            }`
+            (techRecord as TechRecordType<typeof vehicleType>).techRecord_model
+          }`
           : '';
       case VehicleTypes.MOTORCYCLE:
       case VehicleTypes.LGV:

@@ -8,6 +8,6 @@ import { TechRecordSummaryComponent } from './components/tech-record-summary/tec
 @NgModule({
   declarations: [TechRecordSummaryComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, DynamicFormsModule, SharedModule],
-  exports: [TechRecordSummaryComponent]
+  exports: [TechRecordSummaryComponent],
 })
 export class SharedTechRecordsModule {}

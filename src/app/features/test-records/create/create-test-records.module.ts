@@ -11,6 +11,6 @@ import { TestRouterOutletComponent } from './views/test-router-outlet/test-route
 
 @NgModule({
   declarations: [CreateTestTypeComponent, CreateTestRecordComponent, TestRouterOutletComponent],
-  imports: [CommonModule, CreateTestRecordsRoutingModule, DynamicFormsModule, SharedModule, FormsModule, ReactiveFormsModule, TestRecordsModule]
+  imports: [CommonModule, CreateTestRecordsRoutingModule, DynamicFormsModule, SharedModule, FormsModule, ReactiveFormsModule, TestRecordsModule],
 })
 export class CreateTestRecordsModule {}

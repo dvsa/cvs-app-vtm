@@ -3,7 +3,9 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes,
+} from '@forms/services/dynamic-form.types';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -16,13 +18,13 @@ import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-h
 
 @Component({
   selector: 'app-tech-record-unarchive',
-  templateUrl: './tech-record-unarchive.component.html'
+  templateUrl: './tech-record-unarchive.component.html',
 })
 export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   techRecord: TechRecordType<'get'> | undefined;
   statusCodes: Array<FormNodeOption<string>> = [
     { label: 'Provisional', value: StatusCodes.PROVISIONAL },
-    { label: 'Current', value: StatusCodes.CURRENT }
+    { label: 'Current', value: StatusCodes.CURRENT },
   ];
   hasNonArchivedRecords: boolean | undefined;
 
@@ -36,19 +38,19 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<State>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
   ) {
     this.form = new CustomFormGroup(
       { name: 'unarchivalForm', type: FormNodeTypes.GROUP },
       {
         newRecordStatus: new CustomFormControl({ name: 'newRecordStatus', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]),
-        reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required])
-      }
+        reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]),
+      },
     );
   }
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
+    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
       this.techRecord = record as TechRecordType<'get'>;
       const { primaryVrm } = (record as { primaryVrm?: string });
       this.store.dispatch(fetchSearchResult({ searchBy: SEARCH_TYPES.VRM, term: primaryVrm as string }));
@@ -62,18 +64,17 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 
     this.technicalRecordService.searchResults$
       .pipe(
-        map(records =>
-          records?.some(techRecord => {
+        map((records) =>
+          records?.some((techRecord) => {
             return (
-              techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED &&
-              this.techRecord?.techRecord_vehicleType !== 'trl' &&
-              techRecord.primaryVrm === this.techRecord?.primaryVrm
+              techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED
+              && this.techRecord?.techRecord_vehicleType !== 'trl'
+              && techRecord.primaryVrm === this.techRecord?.primaryVrm
             );
-          })
-        ),
-        takeUntil(this.destroy$)
+          })),
+        takeUntil(this.destroy$),
       )
-      .subscribe(value => (this.hasNonArchivedRecords = value));
+      .subscribe((value) => (this.hasNonArchivedRecords = value));
   }
 
   ngOnDestroy(): void {
@@ -81,7 +82,7 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     this.destroy$.complete;
   }
 
-  navigateBack(relativePath: string = '..'): void {
+  navigateBack(relativePath = '..'): void {
     this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
@@ -106,8 +107,8 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
         systemNumber: this.techRecord.systemNumber,
         createdTimestamp: this.techRecord.createdTimestamp,
         reasonForUnarchiving: this.form.value.reason,
-        status: this.form.value.newRecordStatus
-      })
+        status: this.form.value.newRecordStatus,
+      }),
     );
   }
 
@@ -115,9 +116,9 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     const reasonControl = this.form.controls['reason'];
     const newRecordStatus = this.form.controls['newRecordStatus'];
 
-    let errors = [];
+    const errors = [];
     if (!reasonControl.valid) {
-      errors.push({ error: `Reason for unarchival is required`, anchorLink: 'reason' });
+      errors.push({ error: 'Reason for unarchival is required', anchorLink: 'reason' });
     }
 
     if (!newRecordStatus.valid) {

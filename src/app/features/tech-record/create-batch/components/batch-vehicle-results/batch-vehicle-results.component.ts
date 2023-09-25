@@ -3,11 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { Subject, filter, race, take, withLatestFrom } from 'rxjs';
+import {
+  Subject, filter, race, take, withLatestFrom,
+} from 'rxjs';
 
 @Component({
   selector: 'app-batch-vehicle-results',
-  templateUrl: './batch-vehicle-results.component.html'
+  templateUrl: './batch-vehicle-results.component.html',
 })
 export class BatchVehicleResultsComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
@@ -16,18 +18,18 @@ export class BatchVehicleResultsComponent implements OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private router: Router,
     private route: ActivatedRoute,
-    private batchTechRecordService: BatchTechnicalRecordService
+    private batchTechRecordService: BatchTechnicalRecordService,
   ) {
-    this.batchTechRecordService.batchCount$.pipe(take(1)).subscribe(count => {
+    this.batchTechRecordService.batchCount$.pipe(take(1)).subscribe((count) => {
       if (!count) this.router.navigate(['../..'], { relativeTo: this.route });
     });
 
     race(
       this.batchTechRecordService.batchCount$.pipe(
         withLatestFrom(this.batchTechRecordService.batchCreatedCount$, this.batchTechRecordService.batchUpdatedCount$),
-        filter(([total, created, updated]) => total === created + updated)
+        filter(([total, created, updated]) => total === created + updated),
       ),
-      this.destroy$
+      this.destroy$,
     )
       .pipe(take(1))
       .subscribe(() => {

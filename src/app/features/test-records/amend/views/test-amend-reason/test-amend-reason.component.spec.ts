@@ -14,7 +14,7 @@ describe('TestAmendReasonComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TestAmendReasonComponent],
-      imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule]
+      imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule],
     }).compileComponents();
 
     router = TestBed.inject(Router);
@@ -33,7 +33,7 @@ describe('TestAmendReasonComponent', () => {
 
   it.each([
     ['incorrect-test-type', 1],
-    ['amend-test-details', 2]
+    ['amend-test-details', 2],
   ])('should navigate to %s on submit when reason is %n', (path, reason) => {
     const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(Promise.resolve(true));
     component.form.setValue({ reason });

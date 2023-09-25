@@ -1,27 +1,34 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component, OnInit, QueryList, ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormGroup, FormNodeEditTypes, FormNodeTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { deleteReferenceDataItem, fetchReferenceDataByKey, ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
+import {
+  deleteReferenceDataItem, fetchReferenceDataByKey, ReferenceDataState, selectReferenceDataByResourceKey,
+} from '@store/reference-data';
 import { Observable, take } from 'rxjs';
+
 @Component({
   selector: 'app-reference-data-delete',
-  templateUrl: './reference-data-delete.component.html'
+  templateUrl: './reference-data-delete.component.html',
 })
 export class ReferenceDataDeleteComponent implements OnInit {
   type!: ReferenceDataResourceType;
   key!: string;
   reasonForDeletion: any;
-  isFormDirty: boolean = false;
-  isFormInvalid: boolean = true;
+  isFormDirty = false;
+  isFormInvalid = true;
 
   reasonTemplate = {
     name: 'reason-for-deletion',
@@ -35,11 +42,11 @@ export class ReferenceDataDeleteComponent implements OnInit {
         editType: FormNodeEditTypes.TEXTAREA,
         validators: [
           {
-            name: ValidatorNames.Required
-          }
-        ]
-      }
-    ]
+            name: ValidatorNames.Required,
+          },
+        ],
+      },
+    ],
   };
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
@@ -49,17 +56,17 @@ export class ReferenceDataDeleteComponent implements OnInit {
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<ReferenceDataState>
+    private store: Store<ReferenceDataState>,
   ) {}
 
   ngOnInit(): void {
-    this.route.parent?.params.pipe(take(1)).subscribe(params => {
+    this.route.parent?.params.pipe(take(1)).subscribe((params) => {
       this.type = params['type'];
 
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
     });
 
-    this.route.params.pipe(take(1)).subscribe(params => {
+    this.route.params.pipe(take(1)).subscribe((params) => {
       this.key = decodeURIComponent(params['key']);
 
       if (this.type && this.key) {
@@ -89,19 +96,19 @@ export class ReferenceDataDeleteComponent implements OnInit {
   }
 
   checkForms(): void {
-    const forms = this.sections.map(section => section.form) as Array<CustomFormGroup>;
+    const forms = this.sections.map((section) => section.form) as Array<CustomFormGroup>;
 
-    this.isFormDirty = forms.some(form => form.dirty);
+    this.isFormDirty = forms.some((form) => form.dirty);
 
     this.setErrors(forms);
 
-    this.isFormInvalid = forms.some(form => form.invalid);
+    this.isFormInvalid = forms.some((form) => form.invalid);
   }
 
   setErrors(forms: Array<CustomFormGroup>): void {
     const errors: GlobalError[] = [];
 
-    forms.forEach(form => DynamicFormService.validate(form, errors));
+    forms.forEach((form) => DynamicFormService.validate(form, errors));
 
     errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
   }
@@ -120,8 +127,8 @@ export class ReferenceDataDeleteComponent implements OnInit {
       deleteReferenceDataItem({
         resourceType: this.type,
         resourceKey: this.key,
-        reason: this.reasonForDeletion.reason
-      })
+        reason: this.reasonForDeletion.reason,
+      }),
     );
     this.navigateBack();
   }

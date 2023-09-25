@@ -22,7 +22,7 @@ describe('CreateNewVehicleRecordComponent', () => {
   let router: Router;
   let store: MockStore;
   let techRecordService: TechnicalRecordService;
-  let expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+  const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,8 +31,8 @@ describe('CreateNewVehicleRecordComponent', () => {
       providers: [
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
-        { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } }
-      ]
+        { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
+      ],
     }).compileComponents();
   });
 
@@ -73,7 +73,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
     it('should call setErrors with an empty array', () => {
       jest.spyOn(DynamicFormService, 'validate').mockImplementation(() => {
-        return;
+
       });
       const setErrorsSpy = jest.spyOn(errorService, 'setErrors').mockImplementation();
       const valid = component.isFormValid;
@@ -103,7 +103,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
       component.navigateBack();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
   });
 
@@ -121,7 +121,7 @@ describe('CreateNewVehicleRecordComponent', () => {
       const generateTechREcordSpy = jest.spyOn(techRecordService, 'generateEditingVehicleTechnicalRecordFromVehicleType');
       component.handleSubmit();
 
-      expect(isFormValid).toReturn();
+      expect(isFormValid).toHaveReturned();
       expect(updateEditingSpy).toHaveBeenCalledTimes(0);
       expect(generateTechREcordSpy).toHaveBeenCalledTimes(0);
       expect(navigateSpy).toHaveBeenCalledTimes(0);
@@ -146,7 +146,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
       await component.isVinUnique();
 
-      expect(isUniqueSpy).toBeCalledWith('', SEARCH_TYPES.VIN);
+      expect(isUniqueSpy).toHaveBeenCalledWith('', SEARCH_TYPES.VIN);
     });
 
     it('should return true when the VIN is unique', async () => {
@@ -173,7 +173,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
       const result = await component.isVrmUnique();
 
-      expect(addErrorSpy).toBeCalledWith({ error: 'Vrm not unique', anchorLink: 'input-vrm-or-trailer-id' });
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Vrm not unique', anchorLink: 'input-vrm-or-trailer-id' });
       expect(result).toBeFalsy();
     });
   });
@@ -195,7 +195,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
       const result = await component.isTrailerIdUnique();
 
-      expect(addErrorSpy).toBeCalledWith({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });
       expect(result).toBeFalsy();
     });
   });

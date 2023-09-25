@@ -17,7 +17,7 @@ describe('TestTypeSelectWrapperComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TestTypeSelectWrapperComponent, TestTypeSelectComponent],
       imports: [RouterTestingModule],
-      providers: [{ provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } }]
+      providers: [{ provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } }],
     }).compileComponents();
   });
 
@@ -39,7 +39,7 @@ describe('TestTypeSelectWrapperComponent', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['..', 'amend-test-details'], {
       queryParams: { testType: '1' },
       queryParamsHandling: 'merge',
-      relativeTo: route
+      relativeTo: route,
     });
   });
 });

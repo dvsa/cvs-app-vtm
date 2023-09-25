@@ -21,8 +21,8 @@ import { ReferenceDataSelectTypeComponent } from './reference-data-select-type/r
     ReferenceDataCreateComponent,
     ReferenceDataAmendComponent,
     ReferenceDataDeleteComponent,
-    ReferenceDataAmendHistoryComponent
+    ReferenceDataAmendHistoryComponent,
   ],
-  imports: [CommonModule, DynamicFormsModule, RouterModule, ReactiveFormsModule, ReferenceDataRoutingModule, SharedModule]
+  imports: [CommonModule, DynamicFormsModule, RouterModule, ReactiveFormsModule, ReferenceDataRoutingModule, SharedModule],
 })
 export class ReferenceDataModule {}
