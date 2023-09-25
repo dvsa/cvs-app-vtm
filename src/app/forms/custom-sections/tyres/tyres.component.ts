@@ -109,6 +109,10 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     return this.form.get(['techRecord_axles']) as CustomFormArray;
   }
 
+  get requiredPlates(): boolean {
+    return this.vehicleTechRecord.techRecord_vehicleType !== VehicleTypes.PSV && this.isEditing === true;
+  }
+
   getAxleTyres(i: number): CustomFormGroup {
     return this.axles.get([i]) as CustomFormGroup;
   }

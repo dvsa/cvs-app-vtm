@@ -23,6 +23,8 @@ import {
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
+  canGeneratePlate,
+  cannotGeneratePlate,
   clearAllSectionStates,
   createVehicleRecord,
   createVehicleRecordFailure,
@@ -62,13 +64,15 @@ export interface TechnicalRecordServiceState {
   techRecordHistory?: TechRecordSearchSchema[];
   batchVehicles: BatchRecords;
   sectionState?: (string | number)[];
+  canGeneratePlate: boolean;
 }
 
 export const initialState: TechnicalRecordServiceState = {
   vehicleTechRecord: undefined,
   batchVehicles: initialBatchState,
   loading: false,
-  sectionState: []
+  sectionState: [],
+  canGeneratePlate: false
 };
 
 export const getTechRecordState = createFeatureSelector<TechnicalRecordServiceState>(STORE_FEATURE_TECHNICAL_RECORDS_KEY);
@@ -103,6 +107,8 @@ export const vehicleTechRecordReducer = createReducer(
   on(generatePlate, defaultArgs),
   on(generatePlateSuccess, state => ({ ...state, editingTechRecord: undefined, loading: false })),
   on(generatePlateFailure, failureArgs),
+  on(canGeneratePlate, state => ({ ...state, canGeneratePlate: true })),
+  on(cannotGeneratePlate, state => ({ ...state, canGeneratePlate: false })),
 
   on(generateLetter, defaultArgs),
   on(generateLetterSuccess, state => ({ ...state, editingTechRecord: undefined })),

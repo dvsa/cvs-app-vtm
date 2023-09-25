@@ -1,9 +1,14 @@
 <form [formGroup]="form">
   <table class="govuk-table">
-    <caption class="govuk-table__caption govuk-table__caption--m">
-      Axle weights (kg)
-    </caption>
-
+    <ng-container [ngSwitch]="requiredPlates">
+      <caption *ngSwitchCase="false" class="govuk-table__caption govuk-table__caption--m">
+        Axle weights (kg)
+      </caption>
+      <caption *ngSwitchCase="true" class="govuk-table__caption govuk-table__caption--m">
+        Axle weights (kg)
+        <app-tag type="purple">plates</app-tag>
+      </caption>
+    </ng-container>
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
         <th scope="col" class="govuk-table__header"></th>
