@@ -1,12 +1,9 @@
 import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest, filter } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { techRecord } from '@store/technical-records';
-import { logDOM } from '@storybook/testing-library';
-import { string } from 'yargs';
 
 const patterns: Record<string, RegExp> = {
   NTA: /^(\w+)$/i,
@@ -40,13 +37,6 @@ const patternsPartial: Record<string, RegExp> = {
   'Small series': /^(\w)(\w{0,2})(\w{0,6})$/,
   'IVA - VCA': /^(\w{0,2})(\w{0,4})(\w{0,6})$/,
   'IVA - DVSA/NI': /^(\w+)$/
-};
-
-type Segments = {
-  approvalTypeNumber1: Observable<string | undefined>;
-  approvalTypeNumber2: Observable<string | undefined>;
-  approvalTypeNumber3: Observable<string | undefined>;
-  approvalTypeNumber4?: Observable<string | undefined>;
 };
 
 @Component({
@@ -91,10 +81,10 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
   constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef, public globalErrorService: GlobalErrorService) {
     super(injector, changeDetectorRef);
-    this.approvalTypeNumber1$ = this.approvalTypeNumber1_.asObservable();
-    this.approvalTypeNumber2$ = this.approvalTypeNumber2_.asObservable();
-    this.approvalTypeNumber3$ = this.approvalTypeNumber3_.asObservable();
-    this.approvalTypeNumber4$ = this.approvalTypeNumber4_.asObservable();
+    this.approvalTypeNumber1$ = this.approvalTypeNumber1_.asObservable().pipe(filter(value => value !== undefined));
+    this.approvalTypeNumber2$ = this.approvalTypeNumber1_.asObservable().pipe(filter(value => value !== undefined));
+    this.approvalTypeNumber3$ = this.approvalTypeNumber1_.asObservable().pipe(filter(value => value !== undefined));
+    this.approvalTypeNumber4$ = this.approvalTypeNumber1_.asObservable().pipe(filter(value => value !== undefined));
     this.globalErrorService.errors$.subscribe((globalErrors: any) => {
       if (globalErrors.length) {
         this.formSubmitted = true;
@@ -188,13 +178,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   private extractValuesNtaIva(value: string, pattern: RegExp) {
-    const matches = value.match(pattern)?.map(x => {
-      if (x.length > 25) {
-        return x.substring(0, 25);
-      } else {
-        return x;
-      }
-    });
+    const matches = value.match(pattern)?.map(x => (x.length > 25 ? x.substring(0, 25) : x));
     this.setTypeApprovalNumbers(matches ?? []);
   }
 
@@ -218,43 +202,46 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
    * @returns Subscription
    */
   subscribeAndPropagateChanges() {
-    const approvalNumberFields: Segments = {
+    return combineLatest({
       approvalTypeNumber1: this.approvalTypeNumber1$,
       approvalTypeNumber2: this.approvalTypeNumber2$,
       approvalTypeNumber3: this.approvalTypeNumber3$,
       approvalTypeNumber4: this.approvalTypeNumber4$
-    };
-    return combineLatest(approvalNumberFields).subscribe({
-      next: ({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) => {
-        if (!approvalTypeNumber1 && !approvalTypeNumber2 && !approvalTypeNumber3 && !approvalTypeNumber4) {
-          this.onChange(null);
-          return;
-        }
+    }).subscribe(({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) => {
+      if (!approvalTypeNumber1 && !approvalTypeNumber2 && !approvalTypeNumber3 && !approvalTypeNumber4) {
+        this.onChange(null);
+      } else {
         this.onChange(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
       }
     });
   }
 
   validate() {
+    const setErrors = () => {
+      this.errors = {
+        error: true,
+        errors: [
+          {
+            error: true,
+            reason: 'Approval type number is required with Approval type',
+            index: 0
+          }
+        ]
+      };
+    };
+
+    const oneRequired = () => !this.approvalTypeNumber1 && this.approvalType;
+    const twoRequired = () => !this.approvalTypeNumber1 || !this.approvalTypeNumber2;
+    const threeRequired = () => twoRequired() || !this.approvalTypeNumber3;
+    const fourRequired = () => threeRequired() || !this.approvalTypeNumber4;
+
     switch (this.approvalType) {
-      //1
       case 'NTA':
       case 'IVA':
       case 'IVA - DVSA/NI':
-        if (!this.approvalTypeNumber1 && this.approvalType != null) {
-          this.errors = {
-            error: true,
-            errors: [
-              {
-                error: true,
-                reason: 'Approval type number is required with Approval type',
-                index: 0
-              }
-            ]
-          };
-        }
+        if (oneRequired()) setErrors();
         break;
-      //4
+
       case 'GB WVTA':
       case 'EU WVTA Pre 23':
       case 'EU WVTA 23 on':
@@ -262,58 +249,19 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'QNIG':
       case 'ECTA':
       case 'ECSSTA':
-        if (
-          !this.approvalTypeNumber1 ||
-          !this.approvalTypeNumber2 ||
-          !this.approvalTypeNumber3 ||
-          (!this.approvalTypeNumber4 && this.approvalType != null)
-        ) {
-          this.errors = {
-            error: true,
-            errors: [
-              {
-                error: true,
-                reason: 'Approval type number is required with Approval type',
-                index: 0
-              }
-            ]
-          };
-        }
+        if (fourRequired()) setErrors();
         break;
 
-      //3
       case 'UKNI WVTA':
       case 'IVA - VCA':
-        if (!this.approvalTypeNumber1 || !this.approvalTypeNumber2 || (!this.approvalTypeNumber3 && this.approvalType != null)) {
-          this.errors = {
-            error: true,
-            errors: [
-              {
-                error: true,
-                reason: 'Approval type number is required with Approval type',
-                index: 0
-              }
-            ]
-          };
-        }
+        if (threeRequired()) setErrors();
         break;
 
-      //2
       case 'Small series':
       case 'NSSTA':
-        if (!this.approvalTypeNumber1 || (!this.approvalTypeNumber2 && this.approvalType != null)) {
-          this.errors = {
-            error: true,
-            errors: [
-              {
-                error: true,
-                reason: 'Approval type number is required with Approval type',
-                index: 0
-              }
-            ]
-          };
-        }
+        if (twoRequired()) setErrors();
         break;
+
       default:
         break;
     }
