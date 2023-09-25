@@ -20,7 +20,7 @@ import { CreateTechRecordsRoutingModule } from './create-tech-records-routing.mo
     RouterModule,
     SharedModule,
     TechRecordsModule,
-    SharedTechRecordsModule
-  ]
+    SharedTechRecordsModule,
+  ],
 })
 export class CreateTechRecordsModule {}

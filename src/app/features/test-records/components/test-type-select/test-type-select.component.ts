@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-test-type-select',
   templateUrl: './test-type-select.component.html',
-  styleUrls: ['./test-type-select.component.scss']
+  styleUrls: ['./test-type-select.component.scss'],
 })
 export class TestTypeSelectComponent {
   @Output() testTypeSelected = new EventEmitter<TestType>();
@@ -38,6 +38,6 @@ export class TestTypeSelectComponent {
   }
 
   isSelected(id: string) {
-    return this.categories.map(t => t.id).includes(id);
+    return this.categories.map((t) => t.id).includes(id);
   }
 }

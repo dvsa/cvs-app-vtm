@@ -27,8 +27,8 @@ describe('SelectVehicleTypeComponent', () => {
       providers: [
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
-        { provide: ActivatedRoute, useValue: { params: of([{ vehicleType: 'trl' }]) } }
-      ]
+        { provide: ActivatedRoute, useValue: { params: of([{ vehicleType: 'trl' }]) } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SelectVehicleTypeComponent);
@@ -65,7 +65,7 @@ describe('SelectVehicleTypeComponent', () => {
 
       component.cancel();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
   });
 

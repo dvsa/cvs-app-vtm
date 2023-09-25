@@ -1,6 +1,8 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -19,8 +21,10 @@ import { updateEditingTechRecordCancel } from '@store/technical-records';
 import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
 
-let mockTechRecordService = {
-  techRecord$: of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel)
+const mockTechRecordService = {
+  techRecord$: of({
+    systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT,
+  } as V3TechRecordModel),
 };
 
 let component: EditTechRecordButtonComponent;
@@ -35,7 +39,7 @@ const updateMockTechnicalRecord = (techRecord_statusCode: StatusCodes) =>
 
 const mockRouterService = {
   getRouteNestedParam$: () => '1',
-  getRouteDataProperty$: () => false
+  getRouteDataProperty$: () => false,
 };
 
 describe('EditTechRecordButtonComponent', () => {
@@ -52,9 +56,9 @@ describe('EditTechRecordButtonComponent', () => {
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
         { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService }
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
       ],
-      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule]
+      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
     }).compileComponents();
   });
 
@@ -82,25 +86,31 @@ describe('EditTechRecordButtonComponent', () => {
         systemNumber: 'foo',
         createdTimestamp: 'bar',
         vin: 'testVin',
-        techRecord_statusCode: StatusCodes.CURRENT
+        techRecord_statusCode: StatusCodes.CURRENT,
       } as unknown as V3TechRecordModel);
     });
     it.each([
       [
         'should be viewable',
         true,
-        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL } as V3TechRecordModel
+        {
+          systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL,
+        } as V3TechRecordModel,
       ],
       [
         'should be viewable',
         true,
-        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel
+        {
+          systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT,
+        } as V3TechRecordModel,
       ],
       [
         'should not be viewable',
         false,
-        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED } as V3TechRecordModel
-      ]
+        {
+          systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED,
+        } as V3TechRecordModel,
+      ],
     ])('edit button %s for %s record', (isViewable: string, expected: boolean, record: V3TechRecordModel) => {
       mockTechRecordService.techRecord$ = of(record);
       fixture.detectChanges();
@@ -117,7 +127,7 @@ describe('EditTechRecordButtonComponent', () => {
         systemNumber: 'foo',
         createdTimestamp: 'bar',
         vin: 'testVin',
-        techRecord_statusCode: StatusCodes.PROVISIONAL
+        techRecord_statusCode: StatusCodes.PROVISIONAL,
       } as V3TechRecordModel);
       jest.spyOn(router, 'navigate');
       jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
@@ -132,7 +142,7 @@ describe('EditTechRecordButtonComponent', () => {
         systemNumber: 'foo',
         createdTimestamp: 'bar',
         vin: 'testVin',
-        techRecord_statusCode: StatusCodes.CURRENT
+        techRecord_statusCode: StatusCodes.CURRENT,
       } as V3TechRecordModel);
       jest.spyOn(router, 'navigate');
 

@@ -10,6 +10,6 @@ import { VehicleHeaderComponent } from './components/vehicle-header/vehicle-head
 @NgModule({
   declarations: [BaseTestRecordComponent, TestTypeSelectComponent, VehicleHeaderComponent],
   imports: [CommonModule, SharedModule, DynamicFormsModule, RouterModule],
-  exports: [BaseTestRecordComponent, TestTypeSelectComponent, VehicleHeaderComponent]
+  exports: [BaseTestRecordComponent, TestTypeSelectComponent, VehicleHeaderComponent],
 })
 export class TestRecordsModule {}

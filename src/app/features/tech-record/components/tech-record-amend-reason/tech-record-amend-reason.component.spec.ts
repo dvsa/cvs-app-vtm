@@ -18,7 +18,7 @@ describe('TechRecordAmendReasonComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordAmendReasonComponent],
       imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule, StoreModule.forRoot({})],
-      providers: [GlobalErrorService]
+      providers: [GlobalErrorService],
     }).compileComponents();
 
     route = TestBed.inject(ActivatedRoute);

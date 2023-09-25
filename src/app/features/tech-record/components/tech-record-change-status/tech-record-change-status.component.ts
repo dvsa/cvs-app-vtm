@@ -8,12 +8,14 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { archiveTechRecord, archiveTechRecordSuccess, promoteTechRecord, promoteTechRecordSuccess } from '@store/technical-records';
+import {
+  archiveTechRecord, archiveTechRecordSuccess, promoteTechRecord, promoteTechRecordSuccess,
+} from '@store/technical-records';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-status',
-  templateUrl: './tech-record-change-status.component.html'
+  templateUrl: './tech-record-change-status.component.html',
 })
 export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   techRecord: TechRecordType<'get'> | undefined;
@@ -31,17 +33,17 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<State>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
   ) {
     this.form = new CustomFormGroup(
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
-      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
+      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) },
     );
     this.isProvisional = this.router.url.includes('provisional');
   }
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
+    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
       this.techRecord = record as TechRecordType<'get'>;
     });
 
@@ -51,7 +53,7 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
       this.technicalRecordService.clearEditingTechRecord();
     });
 
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => (this.isPromotion = params.get('to') === 'current'));
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => (this.isPromotion = params.get('to') === 'current'));
   }
 
   ngOnDestroy(): void {
@@ -67,7 +69,7 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
     return this.isPromotion ? 'Promote' : 'Archive';
   }
 
-  navigateBack(relativePath: string = '..'): void {
+  navigateBack(relativePath = '..'): void {
     this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
@@ -79,8 +81,8 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
     this.form.valid
       ? this.errorService.clearErrors()
       : this.errorService.setErrors([
-          { error: `Reason for ${this.isPromotion ? 'promotion' : 'archiving'} is required`, anchorLink: 'reasonForAmend' }
-        ]);
+        { error: `Reason for ${this.isPromotion ? 'promotion' : 'archiving'} is required`, anchorLink: 'reasonForAmend' },
+      ]);
 
     if (!this.form.valid || !form.reason) {
       return;
@@ -91,16 +93,16 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
         promoteTechRecord({
           systemNumber: this.techRecord.systemNumber,
           createdTimestamp: this.techRecord.createdTimestamp,
-          reasonForPromoting: this.form.value.reason
-        })
+          reasonForPromoting: this.form.value.reason,
+        }),
       );
     } else {
       this.store.dispatch(
         archiveTechRecord({
           systemNumber: this.techRecord.systemNumber,
           createdTimestamp: this.techRecord.createdTimestamp,
-          reasonForArchiving: this.form.value.reason
-        })
+          reasonForArchiving: this.form.value.reason,
+        }),
       );
     }
   }

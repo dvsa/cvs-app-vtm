@@ -27,10 +27,10 @@ describe('CreateTestTypeComponent', () => {
       providers: [
         provideMockStore({ initialState: initialAppState }),
         {
-          provide: TechnicalRecordService
+          provide: TechnicalRecordService,
         },
-        { provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } }
-      ]
+        { provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } },
+      ],
     }).compileComponents();
   });
 
@@ -57,18 +57,20 @@ describe('CreateTestTypeComponent', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['..', 'test-details'], {
       queryParams: { testType: '1' },
       queryParamsHandling: 'merge',
-      relativeTo: route
+      relativeTo: route,
     });
   });
 
   describe('AfterContentInit', () => {
     const testCases = [
       {
-        record: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_recordCompleteness: 'foo' } as V3TechRecordModel,
+        record: {
+          systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_recordCompleteness: 'foo',
+        } as V3TechRecordModel,
         message:
-          'Incomplete vehicle record.\n\n' +
-          'This vehicle does not have enough data to be tested. ' +
-          'Call Technical Support to correct this record and use SAR to test this vehicle.'
+          'Incomplete vehicle record.\n\n'
+          + 'This vehicle does not have enough data to be tested. '
+          + 'Call Technical Support to correct this record and use SAR to test this vehicle.',
       },
       {
         record: {
@@ -76,10 +78,10 @@ describe('CreateTestTypeComponent', () => {
           createdTimestamp: 'bar',
           vin: 'testVin',
           techRecord_hiddenInVta: true,
-          techRecord_recordCompleteness: 'complete'
+          techRecord_recordCompleteness: 'complete',
         } as V3TechRecordModel,
-        message: 'Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.'
-      }
+        message: 'Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.',
+      },
     ];
 
     it.each(testCases)('should get the vehicle record and alert with the appropriate message', ({ record, message }) => {

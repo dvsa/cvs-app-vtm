@@ -1,4 +1,6 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren,
+} from '@angular/core';
 import { DefectsComponent } from '@forms/custom-sections/defects/defects.component';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
@@ -21,7 +23,7 @@ import { selectTechRecord } from '@store/technical-records';
 @Component({
   selector: 'app-base-test-record[testResult]',
   templateUrl: './base-test-record.component.html',
-  styleUrls: ['./base-test-record.component.scss']
+  styleUrls: ['./base-test-record.component.scss'],
 })
 export class BaseTestRecordComponent implements AfterViewInit {
   @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
@@ -29,7 +31,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
   @ViewChild(CustomDefectsComponent) customDefects?: CustomDefectsComponent;
 
   @Input() testResult!: TestResultModel;
-  @Input() isEditing: boolean = false;
+  @Input() isEditing = false;
   @Input() expandSections = false;
   @Input() isReview = false;
 
@@ -41,7 +43,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
     private techRecordService: TechnicalRecordService,
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
-    private store: Store
+    private store: Store,
   ) {
     this.techRecord$ = this.store.select(selectTechRecord);
   }
@@ -52,7 +54,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
   handleFormChange(event: any) {
     let latestTest: any;
-    this.sections?.forEach(section => {
+    this.sections?.forEach((section) => {
       const { form } = section;
       latestTest = merge(latestTest, form.getCleanValue(form));
     });
@@ -88,6 +90,6 @@ export class BaseTestRecordComponent implements AfterViewInit {
   }
 
   get testNumber$(): Observable<string | undefined> {
-    return this.routerService.routeNestedParams$.pipe(map(params => params['testNumber']));
+    return this.routerService.routeNestedParams$.pipe(map((params) => params['testNumber']));
   }
 }

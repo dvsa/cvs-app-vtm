@@ -6,7 +6,9 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { TechRecordType as TechRecordTypeByVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeTypes, SearchParams } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormGroup, FormNode, FormNodeTypes, SearchParams,
+} from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -22,14 +24,14 @@ import { Observable, mergeMap, take } from 'rxjs';
 @Component({
   selector: 'app-tyres-search',
   templateUrl: './tech-record-search-tyres.component.html',
-  styleUrls: ['./tech-record-search-tyres.component.scss']
+  styleUrls: ['./tech-record-search-tyres.component.scss'],
 })
 export class TechRecordSearchTyresComponent implements OnInit {
   options?: MultiOptions = [
     { label: 'Tyre code', value: 'code' },
     { label: 'Ply rating', value: 'plyrating' },
     { label: 'Single load index', value: 'singleload' },
-    { label: 'Double load index', value: 'doubleload' }
+    { label: 'Double load index', value: 'doubleload' },
   ];
 
   constructor(
@@ -41,7 +43,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     private router: Router,
     private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>,
-    private actions$: Actions
+    private actions$: Actions,
   ) {}
 
   public form!: CustomFormGroup;
@@ -51,7 +53,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
   private params: SearchParams = {};
   private pageStart?: number;
   private pageEnd?: number;
-  public itemsPerPage: number = 10;
+  public itemsPerPage = 10;
 
   public template: FormNode = {
     name: 'criteria',
@@ -61,33 +63,33 @@ export class TechRecordSearchTyresComponent implements OnInit {
         name: 'filter',
         label: 'Search filter',
         value: '',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
       },
       {
         name: 'term',
         value: '',
-        type: FormNodeTypes.CONTROL
-      }
-    ]
+        type: FormNodeTypes.CONTROL,
+      },
+    ],
   };
 
   ngOnInit() {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
-    this.route.params.pipe(take(1)).subscribe(p => (this.params = p));
+    this.route.params.pipe(take(1)).subscribe((p) => (this.params = p));
     this.technicalRecordService.techRecord$
       .pipe(take(1))
-      .subscribe(data => (this.viewableTechRecord = data as TechRecordType<'hgv'> | TechRecordType<'psv'> | TechRecordType<'trl'>));
+      .subscribe((data) => (this.viewableTechRecord = data as TechRecordType<'hgv'> | TechRecordType<'psv'> | TechRecordType<'trl'>));
     this.referenceDataService
       .getTyreSearchReturn$()
       .pipe(take(1))
-      .subscribe(data => {
+      .subscribe((data) => {
         this.searchResults = data;
       });
     this.referenceDataService
       .getTyreSearchCriteria$()
       .pipe(take(1))
-      .subscribe(v => {
+      .subscribe((v) => {
         this.form.controls['filter'].patchValue(v.filter);
         this.form.controls['term'].patchValue(v.term);
       });
@@ -95,7 +97,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     if (!this.viewableTechRecord) {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
-    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(data => (this.vehicleTechRecord = data));
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((data) => (this.vehicleTechRecord = data));
   }
 
   get roles() {
@@ -135,9 +137,9 @@ export class TechRecordSearchTyresComponent implements OnInit {
       .pipe(
         ofType(fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess),
         mergeMap(() => this.store.select(selectSearchReturn(ReferenceDataResourceType.Tyres))),
-        take(1)
+        take(1),
       )
-      .subscribe(data => {
+      .subscribe((data) => {
         this.router.navigate(['.'], { relativeTo: this.route, queryParams: { 'search-results-page': 1 } });
         this.searchResults = data as ReferenceDataTyre[];
       });
@@ -157,10 +159,9 @@ export class TechRecordSearchTyresComponent implements OnInit {
       this.viewableTechRecord.techRecord_axles[axleIndex].tyres_tyreSize = tyre.tyreSize;
       this.viewableTechRecord.techRecord_axles[axleIndex].tyres_plyRating = tyre.plyRating;
       if (this.viewableTechRecord.techRecord_axles[axleIndex].tyres_fitmentCode) {
-        this.viewableTechRecord.techRecord_axles[axleIndex].tyres_dataTrAxles =
-          this.viewableTechRecord.techRecord_axles[axleIndex].tyres_fitmentCode === 'single'
-            ? parseInt(tyre.loadIndexSingleLoad ?? '0')
-            : parseInt(tyre.loadIndexTwinLoad ?? '0');
+        this.viewableTechRecord.techRecord_axles[axleIndex].tyres_dataTrAxles = this.viewableTechRecord.techRecord_axles[axleIndex].tyres_fitmentCode === 'single'
+          ? parseInt(tyre.loadIndexSingleLoad ?? '0')
+          : parseInt(tyre.loadIndexTwinLoad ?? '0');
       }
       this.technicalRecordService.updateEditingTechRecord(this.viewableTechRecord as TechRecordTypeByVerb<'put'>);
       this.router.navigate(['../..'], { relativeTo: this.route });
@@ -173,7 +174,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
     this.cdr.detectChanges();
   }
   getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
-    return errors.find(error => error.anchorLink === name);
+    return errors.find((error) => error.anchorLink === name);
   }
   trackByFn(i: number, r: ReferenceDataTyre) {
     return r.resourceKey;

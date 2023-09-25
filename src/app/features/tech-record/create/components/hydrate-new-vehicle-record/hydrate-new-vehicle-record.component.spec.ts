@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -18,7 +20,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
   let component: HydrateNewVehicleRecordComponent;
   let fixture: ComponentFixture<HydrateNewVehicleRecordComponent>;
   let techRecordService: TechnicalRecordService;
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
   let errorService: GlobalErrorService;
   let route: ActivatedRoute;
   let router: Router;
@@ -28,7 +30,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [HydrateNewVehicleRecordComponent],
       providers: [provideMockActions(() => actions$), provideMockStore({ initialState: initialAppState })],
-      imports: [HttpClientTestingModule, RouterTestingModule]
+      imports: [HttpClientTestingModule, RouterTestingModule],
     }).compileComponents();
   });
 
@@ -74,7 +76,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
       component.navigate();
 
-      expect(navigateSpy).toBeCalledWith(['batch-results'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['batch-results'], { relativeTo: route });
     });
   });
 
@@ -98,8 +100,8 @@ describe('HydrateNewVehicleRecordComponent', () => {
 
       actions$.next(
         createVehicleRecordSuccess({
-          vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>
-        })
+          vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>,
+        }),
       );
       tick();
 

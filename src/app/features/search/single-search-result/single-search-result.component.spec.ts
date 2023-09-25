@@ -17,7 +17,7 @@ describe('SingleSearchResultComponent', () => {
   let fixture: ComponentFixture<SingleSearchResultComponent>;
   let router: Router;
   let store: MockStore<State>;
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -29,10 +29,10 @@ describe('SingleSearchResultComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of(['TechRecord.View'])
-          }
-        }
-      ]
+            roles$: of(['TechRecord.View']),
+          },
+        },
+      ],
     }).compileComponents();
   });
 
@@ -47,7 +47,7 @@ describe('SingleSearchResultComponent', () => {
       vin: '76890',
       techRecord_vehicleType: 'psv',
       techRecord_statusCode: 'current',
-      techRecord_manufactureYear: 1998
+      techRecord_manufactureYear: 1998,
     };
   });
 

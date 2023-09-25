@@ -14,7 +14,7 @@ describe('TestRecordSummaryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestRecordSummaryComponent],
-      imports: [RouterTestingModule, SharedModule]
+      imports: [RouterTestingModule, SharedModule],
     }).compileComponents();
   });
 
@@ -53,27 +53,25 @@ describe('TestRecordSummaryComponent', () => {
   it('should concatinate multiple test types', () => {
     const testTypeNames = component.getTestTypeName(
       createMock<TestResultModel>({
-        testTypes: createMockList<TestType>(2, itr =>
+        testTypes: createMockList<TestType>(2, (itr) =>
           createMock<TestType>({
-            testTypeName: 'name'
-          })
-        )
-      })
+            testTypeName: 'name',
+          })),
+      }),
     );
-    expect(testTypeNames).toEqual('name,name');
+    expect(testTypeNames).toBe('name,name');
   });
 
   it('should concatinate multiple test results', () => {
     const testTypeResults = component.getTestTypeResults(
       createMock<TestResultModel>({
-        testTypes: createMockList<TestType>(2, itr =>
+        testTypes: createMockList<TestType>(2, (itr) =>
           createMock<TestType>({
-            testResult: resultOfTestEnum.pass
-          })
-        )
-      })
+            testResult: resultOfTestEnum.pass,
+          })),
+      }),
     );
-    expect(testTypeResults).toEqual('pass,pass');
+    expect(testTypeResults).toBe('pass,pass');
   });
 
   it('should retrieve all testTypes and creates sorted TestField[]', () => {
@@ -85,15 +83,15 @@ describe('TestRecordSummaryComponent', () => {
             testTypeStartTimestamp: new Date('12/12/2022').toISOString(),
             testNumber: '1',
             testResult: resultOfTestEnum.pass,
-            testTypeName: 'annual'
+            testTypeName: 'annual',
           },
           {
             testTypeStartTimestamp: new Date('12/12/2023').toISOString(),
             testNumber: '2',
             testResult: resultOfTestEnum.pass,
-            testTypeName: 'annual'
-          }
-        ]
+            testTypeName: 'annual',
+          },
+        ],
       },
       {
         testResultId: '1',
@@ -102,10 +100,10 @@ describe('TestRecordSummaryComponent', () => {
             testTypeStartTimestamp: new Date('12/12/2021').toISOString(),
             testNumber: '1',
             testResult: resultOfTestEnum.pass,
-            testTypeName: 'annual'
-          }
-        ]
-      }
+            testTypeName: 'annual',
+          },
+        ],
+      },
     ] as TestResultModel[];
     component.testResults = mockRecords;
     const testFieldResults = component.sortedTestTypeFields;

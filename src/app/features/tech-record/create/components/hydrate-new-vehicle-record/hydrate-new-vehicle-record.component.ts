@@ -1,4 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component, OnDestroy, OnInit, ViewChild,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -11,16 +13,18 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { createVehicleRecord, createVehicleRecordSuccess, selectTechRecord } from '@store/technical-records';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, Subject, map, take, takeUntil, withLatestFrom } from 'rxjs';
+import {
+  Observable, Subject, map, take, takeUntil, withLatestFrom,
+} from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
   selector: 'app-hydrate-new-vehicle-record',
-  templateUrl: './hydrate-new-vehicle-record.component.html'
+  templateUrl: './hydrate-new-vehicle-record.component.html',
 })
 export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
-  isInvalid: boolean = false;
+  isInvalid = false;
   batchForm?: FormGroup;
 
   private destroy$ = new Subject<void>();
@@ -32,20 +36,19 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
-    private batchTechRecordService: BatchTechnicalRecordService
+    private batchTechRecordService: BatchTechnicalRecordService,
   ) {}
 
   ngOnInit(): void {
     this.actions$
       .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
       .subscribe(({ vehicleTechRecord }) =>
-        this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`])
-      );
+        this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]));
 
     this.store
       .select(selectTechRecord)
       .pipe(take(1))
-      .subscribe(vehicle => {
+      .subscribe((vehicle) => {
         if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
       });
   }
@@ -94,20 +97,19 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
         map(([record, batch]) =>
           (record ? [record as BatchRecord] : []).concat(
             batch.map(
-              v =>
+              (v) =>
                 ({
                   ...(record! as BatchRecord),
                   vin: v.vin,
                   vrms: v.vehicleType !== VehicleTypes.TRL && v.trailerIdOrVrm ? [{ vrm: v.trailerIdOrVrm, isPrimary: true }] : null,
-                  trailerId: v.vehicleType === VehicleTypes.TRL && v.trailerIdOrVrm ? v.trailerIdOrVrm : null
-                } as VehicleTechRecordModel)
-            )
-          )
-        ),
-        withLatestFrom(this.isBatch$)
+                  trailerId: v.vehicleType === VehicleTypes.TRL && v.trailerIdOrVrm ? v.trailerIdOrVrm : null,
+                } as VehicleTechRecordModel),
+            ),
+          )),
+        withLatestFrom(this.isBatch$),
       )
       .subscribe(([vehicleList, isBatch]) => {
-        vehicleList.forEach(vehicle => this.store.dispatch(createVehicleRecord({ vehicle: vehicle as TechRecordType<'put'> })));
+        vehicleList.forEach((vehicle) => this.store.dispatch(createVehicleRecord({ vehicle: vehicle as TechRecordType<'put'> })));
         this.technicalRecordService.clearSectionTemplateStates();
         if (isBatch) this.navigate();
       });
