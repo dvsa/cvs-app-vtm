@@ -22,7 +22,7 @@ import { RoleRequiredDirective } from './app-role-required.directive';
     <div id="errorBox" *appRoleRequired="ThisIsNotFromTheRolesEnum">
       <h1>This is an error case</h1>
     </div>
-  `
+  `,
 })
 class TestComponent {
   public get Roles() {
@@ -31,13 +31,13 @@ class TestComponent {
 }
 
 describe('RoleRequiredDirective', () => {
-  let userRoles: string[] = ['TechRecord.View'];
+  const userRoles: string[] = ['TechRecord.View'];
   let fixture: ComponentFixture<TestComponent>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       declarations: [RoleRequiredDirective, TestComponent],
-      providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(userRoles) } }]
+      providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(userRoles) } }],
     }).createComponent(TestComponent);
 
     fixture.detectChanges(); // initial binding
@@ -45,31 +45,31 @@ describe('RoleRequiredDirective', () => {
 
   it('should display the element', () => {
     const seenBox = fixture.debugElement.queryAll(By.css('#displayBox'));
-    expect(seenBox.length).toEqual(1);
+    expect(seenBox).toHaveLength(1);
   });
 
   it('should hide the element', () => {
     const hiddenBox = fixture.debugElement.queryAll(By.css('#hiddenBox'));
-    expect(hiddenBox.length).toEqual(0);
+    expect(hiddenBox).toHaveLength(0);
   });
 
   it('should hide the element if the role needed is invalid (i.e. not from the Roles enum)', () => {
     const errorBox = fixture.debugElement.queryAll(By.css('#errorBox'));
-    expect(errorBox.length).toEqual(0);
+    expect(errorBox).toHaveLength(0);
   });
 });
 
 describe('RoleRequiredDirective with multiple optional roles', () => {
-  it.each([[['TestResult.View']], [['TechRecord.Amend']]])('should show the element when either role is present', user => {
+  it.each([[['TestResult.View']], [['TechRecord.Amend']]])('should show the element when either role is present', (user) => {
     const fixture: ComponentFixture<TestComponent> = TestBed.configureTestingModule({
       declarations: [RoleRequiredDirective, TestComponent],
-      providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(user) } }]
+      providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(user) } }],
     }).createComponent(TestComponent);
 
     fixture.detectChanges(); // initial binding
 
     const seenBox = fixture.debugElement.queryAll(By.css('#displayEitherRoleBox'));
-    expect(seenBox.length).toEqual(1);
+    expect(seenBox).toHaveLength(1);
   });
 });
 
@@ -77,12 +77,12 @@ describe('RoleRequiredDirective without roles', () => {
   it('should hide the element when no roles are available', () => {
     const fixture: ComponentFixture<TestComponent> = TestBed.configureTestingModule({
       declarations: [RoleRequiredDirective, TestComponent],
-      providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(null) } }]
+      providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(null) } }],
     }).createComponent(TestComponent);
 
     fixture.detectChanges(); // initial binding
 
     const seenBox = fixture.debugElement.queryAll(By.css('#errorBox'));
-    expect(seenBox.length).toEqual(0);
+    expect(seenBox).toHaveLength(0);
   });
 });
