@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Meta, Story } from '@storybook/angular';
 
 import { FooterComponent } from './footer.component';
