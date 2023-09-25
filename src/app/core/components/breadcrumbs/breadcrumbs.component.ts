@@ -5,7 +5,7 @@ import { distinctUntilChanged, map } from 'rxjs';
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
-  styleUrls: ['./breadcrumbs.component.scss']
+  styleUrls: ['./breadcrumbs.component.scss'],
 })
 export class BreadcrumbsComponent {
   constructor(private routerService: RouterService) {}
@@ -13,7 +13,7 @@ export class BreadcrumbsComponent {
   get breadcrumbs$() {
     return this.routerService.router$.pipe(
       distinctUntilChanged(),
-      map(router => {
+      map((router) => {
         let currentRoute = router?.state?.root;
         const breadcrumbs: Array<{ label: string; path: string }> = [];
 
@@ -21,17 +21,17 @@ export class BreadcrumbsComponent {
           const { routeConfig, data, url } = currentRoute.firstChild;
 
           // eslint-disable-next-line no-prototype-builtins
-          if (data.hasOwnProperty('title') && routeConfig?.path && !breadcrumbs.some(b => b.label === data['title'])) {
+          if (data.hasOwnProperty('title') && routeConfig?.path && !breadcrumbs.some((b) => b.label === data['title'])) {
             breadcrumbs.push({
               label: data['title'],
-              path: [...breadcrumbs.slice(-1).map(b => b.path), ...url.map(urlValue => urlValue.path)].join('/')
+              path: [...breadcrumbs.slice(-1).map((b) => b.path), ...url.map((urlValue) => urlValue.path)].join('/'),
             });
           }
 
           currentRoute = currentRoute.firstChild;
         }
         return breadcrumbs;
-      })
+      }),
     );
   }
 
