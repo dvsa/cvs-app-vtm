@@ -3,7 +3,9 @@
   <div *ngSwitchCase="'NTA'">
     <app-field-error-message *ngIf="formSubmitted" [error]="error" [name]="name"></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">
-      <label class="govuk-label govuk-label--m"> Approval type number </label>
+      <label class="govuk-label govuk-label--m">
+        Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+      >
       <input
         [id]="getId(name)"
         maxlength="25"
@@ -21,7 +23,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -76,7 +80,9 @@
   <div *ngSwitchCase="'IVA'">
     <app-field-error-message *ngIf="formSubmitted" [error]="error" [name]="name"></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">
-      <label class="govuk-label govuk-label--m"> Approval type number </label>
+      <label class="govuk-label govuk-label--m">
+        Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+      >
       <input
         [id]="getId(name)"
         maxlength="25"
@@ -94,7 +100,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -129,7 +137,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -186,7 +196,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <input
               [id]="getId(name)"
@@ -242,7 +254,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <input
               [id]="getId(name)"
@@ -298,7 +312,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -355,7 +371,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -411,7 +429,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -468,7 +488,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <input
               [id]="getId(name)"
@@ -523,7 +545,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <input
               [id]="getId(name)"
@@ -568,7 +592,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">n11*NIV</span>
             <input
@@ -612,7 +638,9 @@
   <div *ngSwitchCase="'IVA - DVSA/NI'">
     <app-field-error-message *ngIf="formSubmitted" [error]="error" [name]="name"></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">
-      <label class="govuk-label govuk-label--m"> Approval type number </label>
+      <label class="govuk-label govuk-label--m">
+        Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+      >
       <input
         [id]="getId(name)"
         maxlength="25"

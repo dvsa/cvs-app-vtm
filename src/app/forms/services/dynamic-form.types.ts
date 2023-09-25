@@ -34,7 +34,8 @@ export enum FormNodeViewTypes {
 }
 
 export enum TagTypeLabels {
-  REQUIRED = 'Required'
+  REQUIRED = 'Required',
+  PLATES = 'Plates'
 }
 
 export enum FormNodeTypes {
