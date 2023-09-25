@@ -24,8 +24,6 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     { label: 'Provisional', value: StatusCodes.PROVISIONAL },
     { label: 'Current', value: StatusCodes.CURRENT }
   ];
-  // hasNonArchivedRecords: boolean | undefined;
-
   form: CustomFormGroup;
 
   destroy$ = new Subject<void>();
@@ -50,9 +48,6 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
       this.techRecord = record as TechRecordType<'get'>;
-      const { primaryVrm } = (record as { primaryVrm?: string });
-      // this.store.dispatch(fetchSearchResult({ searchBy: SEARCH_TYPES.VRM, term: primaryVrm as string }));
-      // this.store.dispatch(fetchSearchResult({ searchBy: SEARCH_TYPES.SYSTEM_NUMBER, term: this.techRecord.systemNumber as string }));
     });
 
     this.actions$.pipe(ofType(unarchiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
@@ -60,21 +55,6 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 
       this.technicalRecordService.clearEditingTechRecord();
     });
-
-    // this.technicalRecordService.searchResults$
-    //   .pipe(
-    //     map(records =>
-    //       records?.some(techRecord => {
-    //         return (
-    //           techRecord.techRecord_statusCode !== StatusCodes.ARCHIVED &&
-    //           this.techRecord?.techRecord_vehicleType !== 'trl' &&
-    //           techRecord.primaryVrm === this.techRecord?.primaryVrm
-    //         );
-    //       })
-    //     ),
-    //     takeUntil(this.destroy$)
-    //   )
-    //   .subscribe(value => (this.hasNonArchivedRecords = value));
   }
 
   ngOnDestroy(): void {
