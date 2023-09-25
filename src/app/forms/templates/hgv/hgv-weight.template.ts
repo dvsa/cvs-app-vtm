@@ -1,5 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, TagTypeLabels } from '../../services/dynamic-form.types';
+import { TagType } from '@shared/components/tag/tag.component';
 
 const requiredValidation = [
   { name: ValidatorNames.Numeric, args: 99999 },
@@ -30,7 +31,8 @@ export const HgvWeight: FormNode = {
       customValidatorErrorName: 'Gross GB Weight',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: requiredValidation
+      validators: requiredValidation,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_grossEecWeight',
@@ -39,7 +41,8 @@ export const HgvWeight: FormNode = {
       value: null,
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
-      validators: optionalValidation
+      validators: optionalValidation,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_grossDesignWeight',
@@ -47,7 +50,8 @@ export const HgvWeight: FormNode = {
       customValidatorErrorName: 'Gross Design Weight',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: requiredValidation
+      validators: requiredValidation,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'grossTrainSection',
@@ -61,7 +65,8 @@ export const HgvWeight: FormNode = {
       customValidatorErrorName: 'Train GB Weight',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: requiredValidation
+      validators: requiredValidation,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_trainEecWeight',
@@ -70,7 +75,8 @@ export const HgvWeight: FormNode = {
       value: null,
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
-      validators: optionalValidation
+      validators: optionalValidation,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_trainDesignWeight',
@@ -78,7 +84,8 @@ export const HgvWeight: FormNode = {
       customValidatorErrorName: 'Train Design Weight',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: optionalValidation
+      validators: optionalValidation,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'maxTrainSection',
@@ -92,7 +99,8 @@ export const HgvWeight: FormNode = {
       customValidatorErrorName: 'Max Train GB Weight',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: requiredValidation
+      validators: requiredValidation,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_maxTrainEecWeight',
@@ -101,7 +109,8 @@ export const HgvWeight: FormNode = {
       value: null,
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
-      validators: optionalValidation
+      validators: optionalValidation,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_maxTrainDesignWeight',
@@ -109,13 +118,15 @@ export const HgvWeight: FormNode = {
       customValidatorErrorName: 'Max Train Design Weight',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: optionalValidation
+      validators: optionalValidation,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'axleSection',
       label: 'Axle weights',
       value: '',
-      type: FormNodeTypes.SECTION
+      type: FormNodeTypes.SECTION,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_axles',

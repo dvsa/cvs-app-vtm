@@ -1,5 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, TagTypeLabels } from '../../services/dynamic-form.types';
+import { TagType } from '@shared/components/tag/tag.component';
 
 export const TrlDimensionsTemplate: FormNode = {
   name: 'dimensionsSection',
@@ -11,14 +12,16 @@ export const TrlDimensionsTemplate: FormNode = {
       label: 'Length (mm)',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_dimensions_width',
       label: 'Width (mm)',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_dimensions_axleSpacing',
@@ -81,14 +84,16 @@ export const TrlDimensionsTemplate: FormNode = {
       label: 'Minimum',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_couplingCenterToRearTrlMax',
       label: 'Maximum',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+      validators: [{ name: ValidatorNames.Max, args: 99999 }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     }
   ]
 };

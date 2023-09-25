@@ -44,7 +44,8 @@ export const HgvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       validators: [],
-      isoDate: false
+      isoDate: false,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_manufactureYear',
@@ -56,7 +57,8 @@ export const HgvTechRecord: FormNode = {
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 }
-      ]
+      ],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_noOfAxles',
@@ -79,7 +81,8 @@ export const HgvTechRecord: FormNode = {
         { value: false, label: 'Not exempt' }
       ],
       validators: [],
-      class: 'flex--half'
+      class: 'flex--half',
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_tachoExemptMrk',
