@@ -1,4 +1,6 @@
-import { Directive, OnInit, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  Directive, OnInit, Input, TemplateRef, ViewContainerRef,
+} from '@angular/core';
 import { UserService } from '@services/user-service/user-service';
 import { take } from 'rxjs';
 import { Roles } from '@models/roles.enum';
@@ -11,12 +13,12 @@ export class RoleRequiredDirective implements OnInit {
 
   @Input()
   set appRoleRequired(roles: Roles | Roles[]) {
-    this.userRolesRequired = Array.isArray(roles) ? [...new Set(roles.flatMap(role => role.split(',')))] : roles?.split(',');
+    this.userRolesRequired = Array.isArray(roles) ? [...new Set(roles.flatMap((role) => role.split(',')))] : roles?.split(',');
   }
 
   ngOnInit() {
-    this.userService.roles$.pipe(take(1)).subscribe(storedRoles => {
-      const hasAccess = this.userRolesRequired?.some(role => storedRoles?.includes(role));
+    this.userService.roles$.pipe(take(1)).subscribe((storedRoles) => {
+      const hasAccess = this.userRolesRequired?.some((role) => storedRoles?.includes(role));
 
       if (hasAccess) {
         this.viewContainer.createEmbeddedView(this.templateRef);
