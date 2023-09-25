@@ -8,7 +8,7 @@ describe('PhaseBannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PhaseBannerComponent]
+      declarations: [PhaseBannerComponent],
     }).compileComponents();
   });
 
