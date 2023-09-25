@@ -44,7 +44,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         RouterModule.forRoot([]),
         RouterTestingModule,
         SharedModule,
-        StoreModule.forRoot({})
+        StoreModule.forRoot({}),
       ],
       declarations: [
         EditTechRecordButtonComponent,
@@ -53,7 +53,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         TechRecordTitleComponent,
         TechRecordSummaryStubComponent,
         TestRecordSummaryComponent,
-        VehicleTechnicalRecordComponent
+        VehicleTechnicalRecordComponent,
       ],
       providers: [
         MultiOptionsService,
@@ -62,14 +62,16 @@ describe('VehicleTechnicalRecordComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of(['TestResult.View', 'TestResult.CreateContingency'])
-          }
+            roles$: of(['TestResult.View', 'TestResult.CreateContingency']),
+          },
         },
         {
           provide: TechnicalRecordService,
           useValue: {
             get techRecord$() {
-              return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT });
+              return of({
+                systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT,
+              });
             },
             updateEditingTechRecord: () => {},
             get editableTechRecord$() {
@@ -80,10 +82,10 @@ describe('VehicleTechnicalRecordComponent', () => {
             },
             getVehicleTypeWithSmallTrl: (techRecord: TechRecordModel) => {
               return techRecord.vehicleType;
-            }
-          }
-        }
-      ]
+            },
+          },
+        },
+      ],
     }).compileComponents();
   });
 

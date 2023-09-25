@@ -19,7 +19,7 @@ describe('DataTypeListComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ReferenceDataDeletedListComponent],
       imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, { provide: UserService, useValue: {} }]
+      providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, { provide: UserService, useValue: {} }],
     }).compileComponents();
   });
 

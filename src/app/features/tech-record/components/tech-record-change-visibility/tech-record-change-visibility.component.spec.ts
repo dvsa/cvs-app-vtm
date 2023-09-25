@@ -35,10 +35,10 @@ describe('TechRecordHoldComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of([Roles.TechRecordArchive])
-          }
-        }
-      ]
+            roles$: of([Roles.TechRecordArchive]),
+          },
+        },
+      ],
     }).compileComponents();
 
     route = TestBed.inject(ActivatedRoute);

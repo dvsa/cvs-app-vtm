@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -16,28 +18,30 @@ import { initialAppState, State } from '@store/index';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
-import { AmendVrmReasonComponent } from './tech-record-amend-vrm-reason.component';
 import { TechRecordGETCar, TechRecordGETPSV, TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { AmendVrmReasonComponent } from './tech-record-amend-vrm-reason.component';
 
 const mockTechRecordService = {
   techRecord$: of({}),
   get viewableTechRecord$() {
-    return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM' });
+    return of({
+      systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM',
+    });
   },
   updateEditingTechRecord: jest.fn(),
-  isUnique: jest.fn()
+  isUnique: jest.fn(),
 };
 
 const mockDynamicFormService = {
-  createForm: jest.fn()
+  createForm: jest.fn(),
 };
 
 describe('TechRecordChangeVrmComponent', () => {
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
   let component: AmendVrmReasonComponent;
   let errorService: GlobalErrorService;
-  let expectedVehicle = {} as V3TechRecordModel;
+  const expectedVehicle = {} as V3TechRecordModel;
   let fixture: ComponentFixture<AmendVrmReasonComponent>;
   let route: ActivatedRoute;
   let router: Router;
@@ -53,9 +57,9 @@ describe('TechRecordChangeVrmComponent', () => {
         provideMockStore<State>({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]), snapshot: new ActivatedRouteSnapshot() } },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
-        TechnicalRecordService
+        TechnicalRecordService,
       ],
-      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule]
+      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
     }).compileComponents();
   });
 

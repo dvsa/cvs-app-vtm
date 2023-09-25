@@ -3,12 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { ReferenceDataSelectTypeComponent } from './reference-data-select-type.component';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { ReferenceDataSelectTypeComponent } from './reference-data-select-type.component';
 
 describe('ReferenceDataComponent', () => {
   let component: ReferenceDataSelectTypeComponent;
@@ -21,7 +21,7 @@ describe('ReferenceDataComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ReferenceDataSelectTypeComponent],
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, { provide: UserService, useValue: {} }]
+      providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, { provide: UserService, useValue: {} }],
     }).compileComponents();
   });
 
@@ -46,7 +46,7 @@ describe('ReferenceDataComponent', () => {
 
       component.cancel();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
   });
 
@@ -59,7 +59,7 @@ describe('ReferenceDataComponent', () => {
 
       component.navigateTo(ReferenceDataResourceType.CountryOfRegistration);
 
-      expect(navigateSpy).toBeCalledWith(['COUNTRY_OF_REGISTRATION'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['COUNTRY_OF_REGISTRATION'], { relativeTo: route });
     });
   });
 

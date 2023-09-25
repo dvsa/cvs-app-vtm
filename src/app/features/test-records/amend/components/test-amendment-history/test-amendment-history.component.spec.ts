@@ -1,5 +1,7 @@
 import { formatDate } from '@angular/common';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
@@ -21,7 +23,7 @@ describe('TestAmendmentHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TestAmendmentHistoryComponent, DefaultNullOrEmpty],
       imports: [RouterTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 
@@ -79,11 +81,10 @@ describe('TestAmendmentHistoryComponent', () => {
           createdAt: '2020-01-01T00:00:00.000Z',
           reasonForCreation: 'reasonForCreation',
           createdByName: 'Tester Man',
-          testHistory: createMockList<TestResultModel>(1, i =>
+          testHistory: createMockList<TestResultModel>(1, (i) =>
             createMock<TestResultModel>({
-              createdAt: new Date(`2020-01-0${i + 1}`).toISOString()
-            })
-          )
+              createdAt: new Date(`2020-01-0${i + 1}`).toISOString(),
+            })),
         });
         fixture.detectChanges();
 
@@ -113,14 +114,14 @@ describe('TestAmendmentHistoryComponent', () => {
 
     it('should have links to view amended records', fakeAsync(() => {
       component.testRecord = mockTestResult();
-      store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord!.testHistory!);
+      store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord.testHistory!);
       tick();
       fixture.detectChanges();
 
       const links = fixture.debugElement.queryAll(By.css('a'));
 
-      links.forEach(e => expect(e.nativeElement.innerHTML).toBe('View'));
-      expect(links.length).toBe(component.testRecord?.testHistory?.length);
+      links.forEach((e) => expect(e.nativeElement.innerHTML).toBe('View'));
+      expect(links).toHaveLength(component.testRecord?.testHistory?.length);
     }));
   });
 });

@@ -1,20 +1,26 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControlStatus, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl, FormArray, FormBuilder, FormControlStatus, FormGroup, Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { Observable, Subject, combineLatest, filter, firstValueFrom, take } from 'rxjs';
+import {
+  Observable, Subject, combineLatest, filter, firstValueFrom, take,
+} from 'rxjs';
 
 @Component({
   selector: 'app-batch-vehicle-details',
   templateUrl: './batch-vehicle-details.component.html',
-  styleUrls: ['./batch-vehicle-details.component.scss']
+  styleUrls: ['./batch-vehicle-details.component.scss'],
 })
 export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
   form: FormGroup;
@@ -29,20 +35,20 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private technicalRecordService: TechnicalRecordService,
-    private batchTechRecordService: BatchTechnicalRecordService
+    private batchTechRecordService: BatchTechnicalRecordService,
   ) {
     this.form = this.fb.group({
       vehicles: this.fb.array([]),
       applicationId: new CustomFormControl({ name: 'applicationId', label: 'Application ID', type: FormNodeTypes.CONTROL }, null, [
-        Validators.required
-      ])
+        Validators.required,
+      ]),
     });
 
-    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe(vehicle => {
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((vehicle) => {
       if (!vehicle) return this.back();
     });
 
-    this.batchTechRecordService.vehicleType$.pipe(take(1)).subscribe(vehicleType => (this.vehicleType = vehicleType));
+    this.batchTechRecordService.vehicleType$.pipe(take(1)).subscribe((vehicleType) => (this.vehicleType = vehicleType));
   }
   ngOnInit(): void {
     this.addVehicles(this.maxNumberOfVehicles);
@@ -82,11 +88,11 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
         { name: 'vin', type: FormNodeTypes.CONTROL },
         null,
         [CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21)],
-        this.batchTechRecordService.validateForBatch()
+        this.batchTechRecordService.validateForBatch(),
       ),
       trailerIdOrVrm: new CustomFormControl({ name: 'trailerIdOrVrm', type: FormNodeTypes.CONTROL }, '', [
         CustomValidators.validateVRMTrailerIdLength('vehicleType'),
-        CustomValidators.alphanumeric()
+        CustomValidators.alphanumeric(),
       ]),
       vehicleType: new CustomFormControl(
         {
@@ -94,12 +100,12 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
           label: 'Vehicle type',
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.HIDDEN,
-          editType: FormNodeEditTypes.HIDDEN
+          editType: FormNodeEditTypes.HIDDEN,
         },
-        this.vehicleType
+        this.vehicleType,
       ),
       createdTimestamp: [''],
-      systemNumber: ['']
+      systemNumber: [''],
     });
   }
 
@@ -138,11 +144,11 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
   }
 
   private cleanEmptyValues(input: { vin: string; trailerIdOrVrm?: string }[]): { vin: string; trailerIdOrVrm?: string }[] {
-    return input.filter(formInput => !!formInput.vin);
+    return input.filter((formInput) => !!formInput.vin);
   }
 
   public checkDuplicateVins(input: { vin: string }[]) {
-    const vinArray = input.map(item => item.vin);
+    const vinArray = input.map((item) => item.vin);
     const duplicates: { vin: string; anchor: number }[] = [];
     vinArray.forEach((item, index) => {
       if (!!item && vinArray.indexOf(item) !== index) {
@@ -171,7 +177,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
     }
     const duplicates = this.checkDuplicateVins(this.vehicles.value);
     if (duplicates.length > 0) {
-      duplicates.forEach(element => {
+      duplicates.forEach((element) => {
         this.globalErrorService.addError({ error: `Remove duplicate VIN - ${element.vin}`, anchorLink: `input-vin${element.anchor.toString()}` });
       });
       return false;
@@ -180,6 +186,6 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
   }
 
   get formStatus(): Observable<FormControlStatus> {
-    return this.form.statusChanges.pipe(filter(status => status !== 'PENDING'));
+    return this.form.statusChanges.pipe(filter((status) => status !== 'PENDING'));
   }
 }

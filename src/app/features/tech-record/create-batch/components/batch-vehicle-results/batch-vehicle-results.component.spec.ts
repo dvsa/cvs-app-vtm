@@ -4,8 +4,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { initialAppState, State } from '@store/.';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { BatchVehicleResultsComponent } from './batch-vehicle-results.component';
 import { SharedModule } from '@shared/shared.module';
+import { BatchVehicleResultsComponent } from './batch-vehicle-results.component';
 
 describe('BatchVehicleResultsComponent', () => {
   let component: BatchVehicleResultsComponent;
@@ -16,7 +16,7 @@ describe('BatchVehicleResultsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
       declarations: [BatchVehicleResultsComponent],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 

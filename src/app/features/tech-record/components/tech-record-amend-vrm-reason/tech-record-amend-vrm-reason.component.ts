@@ -4,7 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { NotTrailer, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -15,7 +17,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-amend-vrm-reason',
   templateUrl: './tech-record-amend-vrm-reason.component.html',
-  styleUrls: ['./tech-record-amend-vrm-reason.component.scss']
+  styleUrls: ['./tech-record-amend-vrm-reason.component.scss'],
 })
 export class AmendVrmReasonComponent implements OnDestroy, OnInit {
   techRecord?: NotTrailer;
@@ -25,8 +27,8 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
     isCherishedTransfer: new CustomFormControl(
       { name: 'is-cherished-transfer', label: 'Reason for change', type: FormNodeTypes.CONTROL },
       undefined,
-      [Validators.required]
-    )
+      [Validators.required],
+    ),
   });
 
   private destroy$ = new Subject<void>();
@@ -37,17 +39,17 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
   ) {}
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe(record => {
+    this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe((record) => {
       if (record?.techRecord_statusCode === 'archived' || !record) {
         return this.navigateBack();
       }
       this.techRecord = record as NotTrailer;
       this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
-      return;
+
     });
   }
 
@@ -59,7 +61,7 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
   get reasons(): Array<FormNodeOption<string>> {
     return [
       { label: 'Cherished transfer', value: 'cherished-transfer', hint: 'Current VRM will be archived' },
-      { label: 'Correcting an error', value: 'correcting-error', hint: 'Current VRM will not be archived' }
+      { label: 'Correcting an error', value: 'correcting-error', hint: 'Current VRM will not be archived' },
     ];
   }
 

@@ -14,7 +14,7 @@ import { BatchVehicleDetailsComponent } from './batch-vehicle-details.component'
 const mockGlobalErrorService = {
   addError: jest.fn(),
   clearErrors: jest.fn(),
-  setErrors: jest.fn()
+  setErrors: jest.fn(),
 };
 describe('BatchVehicleDetailsComponent', () => {
   let component: BatchVehicleDetailsComponent;
@@ -27,7 +27,7 @@ describe('BatchVehicleDetailsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [BatchVehicleDetailsComponent],
       imports: [DynamicFormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
-      providers: [FormBuilder, { provide: GlobalErrorService, useValue: mockGlobalErrorService }, provideMockStore({ initialState: initialAppState })]
+      providers: [FormBuilder, { provide: GlobalErrorService, useValue: mockGlobalErrorService }, provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 
@@ -52,7 +52,7 @@ describe('BatchVehicleDetailsComponent', () => {
 
       await component.isFormValid();
       component.vehicleForm.updateValueAndValidity();
-      expect(mockGlobalErrorService.addError).toBeCalledWith({ error: 'At least 1 vehicle must be created or updated in a batch' });
+      expect(mockGlobalErrorService.addError).toHaveBeenCalledWith({ error: 'At least 1 vehicle must be created or updated in a batch' });
     });
   });
 
@@ -61,7 +61,7 @@ describe('BatchVehicleDetailsComponent', () => {
       const arr = [{ vin: '123' }, { vin: '123' }, { vin: '123' }, { vin: '' }, { vin: '' }];
       expect(component.checkDuplicateVins(arr)).toStrictEqual([
         { vin: '123', anchor: 1 },
-        { vin: '123', anchor: 2 }
+        { vin: '123', anchor: 2 },
       ]);
     });
   });

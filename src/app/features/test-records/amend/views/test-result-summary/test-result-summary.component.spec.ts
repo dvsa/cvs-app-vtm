@@ -24,7 +24,7 @@ describe('TestResultSummaryComponent', () => {
     TestBed.configureTestingModule({
       declarations: [TestResultSummaryComponent, VehicleHeaderComponent, NumberPlateComponent, TagComponent],
       imports: [RouterTestingModule, HttpClientTestingModule, TestResultsApiModule],
-      providers: [provideMockStore({ initialState: initialAppState }), TestRecordsService, TechnicalRecordService, RouterService]
+      providers: [provideMockStore({ initialState: initialAppState }), TestRecordsService, TechnicalRecordService, RouterService],
     }).compileComponents();
   }));
 

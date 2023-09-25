@@ -25,8 +25,8 @@ import { TestTypeSelectWrapperComponent } from './views/test-type-select-wrapper
     TestRecordComponent,
     TestResultSummaryComponent,
     TestRouterOutletComponent,
-    TestTypeSelectWrapperComponent
+    TestTypeSelectWrapperComponent,
   ],
-  imports: [AmendTestRecordsRoutingModule, CommonModule, DynamicFormsModule, FormsModule, ReactiveFormsModule, SharedModule, TestRecordsModule]
+  imports: [AmendTestRecordsRoutingModule, CommonModule, DynamicFormsModule, FormsModule, ReactiveFormsModule, SharedModule, TestRecordsModule],
 })
 export class AmendTestRecordsModule {}

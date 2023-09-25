@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, flush, TestBed, tick,
+} from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
@@ -27,17 +29,17 @@ import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
 import { sectionTemplates, testResultInEdit, toEditOrNotToEdit } from '@store/test-records';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
-import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
-import { CreateTestRecordComponent } from './create-test-record.component';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
+import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
+import { CreateTestRecordComponent } from './create-test-record.component';
 
 describe('CreateTestRecordComponent', () => {
   let component: CreateTestRecordComponent;
   let fixture: ComponentFixture<CreateTestRecordComponent>;
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
   let router: Router;
   let testRecordsService: TestRecordsService;
   let store: MockStore<State>;
@@ -46,11 +48,11 @@ describe('CreateTestRecordComponent', () => {
   const mockTechnicalRecordService = {
     get viewableTechRecord$() {
       return { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
-    }
+    },
   };
   const MockUserService = {
     getUserName$: jest.fn().mockReturnValue(new Observable()),
-    roles$: of([Roles.TestResultAmend, Roles.TestResultView])
+    roles$: of([Roles.TestResultAmend, Roles.TestResultView]),
   };
 
   beforeEach(async () => {
@@ -65,7 +67,7 @@ describe('CreateTestRecordComponent', () => {
         IconComponent,
         NumberPlateComponent,
         VehicleHeaderComponent,
-        RoleRequiredDirective
+        RoleRequiredDirective,
       ],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
       providers: [
@@ -79,8 +81,8 @@ describe('CreateTestRecordComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         provideMockActions(() => actions$),
         { provide: TechnicalRecordService, useValue: mockTechnicalRecordService },
-        DynamicFormService
-      ]
+        DynamicFormService,
+      ],
     }).compileComponents();
   });
 
@@ -178,7 +180,7 @@ describe('CreateTestRecordComponent', () => {
 
       component.handleAbandonAction('yes');
 
-      expect(handleSaveSpy).toBeCalledTimes(1);
+      expect(handleSaveSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should set testMode to be edit', () => {
@@ -192,7 +194,7 @@ describe('CreateTestRecordComponent', () => {
 
   it('should combine forms', async () => {
     component['baseTestRecordComponent'] = {
-      sections: { forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) }
+      sections: { forEach: jest.fn().mockReturnValue([{ foo: 'foo' }]) },
     } as unknown as BaseTestRecordComponent;
 
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => Promise.resolve(true));

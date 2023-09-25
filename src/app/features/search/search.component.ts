@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-search',
-  templateUrl: './search.component.html'
+  templateUrl: './search.component.html',
 })
 export class SearchComponent {
   missingTermErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
@@ -33,11 +33,11 @@ export class SearchComponent {
   }
 
   getInlineErrorMessage(name: string): Observable<boolean> {
-    return this.globalErrorService.errors$.pipe(map(errors => errors.some(error => error.anchorLink === name)));
+    return this.globalErrorService.errors$.pipe(map((errors) => errors.some((error) => error.anchorLink === name)));
   }
 
   getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
-    return errors.find(error => error.anchorLink === name);
+    return errors.find((error) => error.anchorLink === name);
   }
 
   public get roles() {

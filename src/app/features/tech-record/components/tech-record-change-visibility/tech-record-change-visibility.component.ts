@@ -12,12 +12,14 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { State } from '@store/index';
 import { techRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
-import { Subject, skipWhile, take, takeUntil, withLatestFrom } from 'rxjs';
+import {
+  Subject, skipWhile, take, takeUntil, withLatestFrom,
+} from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-change-visibility',
   templateUrl: './tech-record-change-visibility.component.html',
-  styleUrls: ['./tech-record-change-visibility.component.scss']
+  styleUrls: ['./tech-record-change-visibility.component.scss'],
 })
 export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
   techRecord?: V3TechRecordModel;
@@ -32,11 +34,11 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<State>,
     private technicalRecordService: TechnicalRecordService,
-    private routerService: RouterService
+    private routerService: RouterService,
   ) {
     this.form = new CustomFormGroup(
       { name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
-      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
+      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) },
     );
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
       this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
@@ -55,7 +57,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     this.store
       .select(techRecord)
       .pipe(take(1))
-      .subscribe(record => {
+      .subscribe((record) => {
         this.techRecord = record;
       });
   }
@@ -73,11 +75,11 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     this.form.valid
       ? this.errorService.clearErrors()
       : this.errorService.setErrors([
-          {
-            error: `Reason for ${this.techRecord?.techRecord_hiddenInVta ? 'showing' : 'hiding'} is required`,
-            anchorLink: 'reasonForChangingVisibility'
-          }
-        ]);
+        {
+          error: `Reason for ${this.techRecord?.techRecord_hiddenInVta ? 'showing' : 'hiding'} is required`,
+          anchorLink: 'reasonForChangingVisibility',
+        },
+      ]);
 
     if (!this.form.valid || !form.reason) {
       return;
@@ -86,7 +88,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     const updatedTechRecord: TechRecordType<'put'> = {
       ...cloneDeep(this.techRecord as TechRecordType<'put'>),
       techRecord_reasonForCreation: form.reason,
-      techRecord_hiddenInVta: !this.techRecord?.techRecord_hiddenInVta
+      techRecord_hiddenInVta: !this.techRecord?.techRecord_hiddenInVta,
     };
 
     this.technicalRecordService.updateEditingTechRecord(updatedTechRecord);
@@ -94,9 +96,9 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     this.technicalRecordService.techRecord$
       .pipe(
         takeUntil(this.destroy$),
-        skipWhile(techRecord => techRecord?.techRecord_reasonForCreation === form.reason),
+        skipWhile((techRecord) => techRecord?.techRecord_reasonForCreation === form.reason),
         withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp')),
-        take(1)
+        take(1),
       )
       .subscribe(([_, systemNumber, createdTimestamp]) => {
         if (systemNumber && createdTimestamp) {

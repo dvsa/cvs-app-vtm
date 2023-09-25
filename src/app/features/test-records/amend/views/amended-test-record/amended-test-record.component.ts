@@ -7,7 +7,7 @@ import { firstValueFrom, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-amended-test-record',
-  templateUrl: './amended-test-record.component.html'
+  templateUrl: './amended-test-record.component.html',
 })
 export class AmendedTestRecordComponent implements OnInit {
   testResult$: Observable<TestResultModel | undefined> = of(undefined);

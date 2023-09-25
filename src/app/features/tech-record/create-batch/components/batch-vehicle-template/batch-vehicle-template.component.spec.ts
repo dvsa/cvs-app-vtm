@@ -1,6 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -23,7 +25,7 @@ const mockTechRecordService = (<unknown>{
   editableVehicleTechRecord$: of({ techRecord: [] }),
   updateEditingTechRecord: jest.fn(),
   createVehicleRecord: jest.fn(),
-  clearSectionTemplateStates: jest.fn()
+  clearSectionTemplateStates: jest.fn(),
 }) as TechnicalRecordService;
 
 const mockBatchTechRecordService = (<unknown>{
@@ -36,7 +38,7 @@ const mockBatchTechRecordService = (<unknown>{
   vehicleType$: of(VehicleTypes.TRL),
   get vehicleStatus$() {
     return of('current');
-  }
+  },
 }) as BatchTechnicalRecordService;
 
 @Component({})
@@ -58,15 +60,15 @@ describe('BatchVehicleTemplateComponent', () => {
       imports: [
         RouterTestingModule.withRoutes([{ path: 'batch-results', component: BatchVehicleResultsComponent }]),
         HttpClientTestingModule,
-        FixNavigationTriggeredOutsideAngularZoneNgModule
+        FixNavigationTriggeredOutsideAngularZoneNgModule,
       ],
       declarations: [BatchVehicleTemplateComponent, TechRecordSummaryStubComponent],
       providers: [
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
         { provide: TechnicalRecordService, useValue: mockTechRecordService },
-        { provide: BatchTechnicalRecordService, useValue: mockBatchTechRecordService }
-      ]
+        { provide: BatchTechnicalRecordService, useValue: mockBatchTechRecordService },
+      ],
     }).compileComponents();
   });
 
@@ -129,8 +131,12 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       batchOfVehicles = [
-        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1', createdTimestamp: 'foobar' },
-        { vin: 'EXAMPLEVIN000002', trailerIdOrVrm: '1000002', systemNumber: '2', createdTimestamp: '2022' }
+        {
+          vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1', createdTimestamp: 'foobar',
+        },
+        {
+          vin: 'EXAMPLEVIN000002', trailerIdOrVrm: '1000002', systemNumber: '2', createdTimestamp: '2022',
+        },
       ];
       jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
 
@@ -146,16 +152,16 @@ describe('BatchVehicleTemplateComponent', () => {
         1,
         updateTechRecord({
           systemNumber: '1',
-          createdTimestamp: 'foobar'
-        })
+          createdTimestamp: 'foobar',
+        }),
       );
 
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         2,
         updateTechRecord({
           systemNumber: '2',
-          createdTimestamp: '2022'
-        })
+          createdTimestamp: '2022',
+        }),
       );
     }));
 
@@ -163,11 +169,15 @@ describe('BatchVehicleTemplateComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       batchOfVehicles = [
-        { vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1', createdTimestamp: '2022' },
+        {
+          vin: 'EXAMPLEVIN000001', trailerIdOrVrm: '1000001', systemNumber: '1', createdTimestamp: '2022',
+        },
         { vin: 'EXAMPLEVIN000002' },
-        { vin: 'EXAMPLEVIN000003', trailerIdOrVrm: '1000002', systemNumber: '3', createdTimestamp: '2023' },
+        {
+          vin: 'EXAMPLEVIN000003', trailerIdOrVrm: '1000002', systemNumber: '3', createdTimestamp: '2023',
+        },
         { vin: 'EXAMPLEVIN000004' },
-        { vin: 'EXAMPLEVIN000005' }
+        { vin: 'EXAMPLEVIN000005' },
       ];
 
       jest.spyOn(mockBatchTechRecordService, 'batchVehicles$', 'get').mockReturnValue(of(batchOfVehicles));
@@ -182,16 +192,16 @@ describe('BatchVehicleTemplateComponent', () => {
         1,
         updateTechRecord({
           systemNumber: '1',
-          createdTimestamp: '2022'
-        })
+          createdTimestamp: '2022',
+        }),
       );
       expect(dispatchSpy).toHaveBeenNthCalledWith(2, createVehicleRecord({ vehicle: expect.anything() }));
       expect(dispatchSpy).toHaveBeenNthCalledWith(
         3,
         updateTechRecord({
           systemNumber: '3',
-          createdTimestamp: '2023'
-        })
+          createdTimestamp: '2023',
+        }),
       );
       expect(dispatchSpy).toHaveBeenNthCalledWith(4, createVehicleRecord({ vehicle: expect.anything() }));
       expect(dispatchSpy).toHaveBeenNthCalledWith(5, createVehicleRecord({ vehicle: expect.anything() }));

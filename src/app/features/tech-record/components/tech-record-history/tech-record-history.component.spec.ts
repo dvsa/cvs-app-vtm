@@ -19,7 +19,7 @@ describe('TechRecordHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordHistoryComponent],
       imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
-      providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })]
+      providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 

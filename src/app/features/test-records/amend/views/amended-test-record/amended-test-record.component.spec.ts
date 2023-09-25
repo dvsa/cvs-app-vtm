@@ -32,10 +32,10 @@ describe('AmendedTestRecordComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of([Roles.TestResultView])
-          }
-        }
-      ]
+            roles$: of([Roles.TestResultView]),
+          },
+        },
+      ],
     }).compileComponents();
   });
 
