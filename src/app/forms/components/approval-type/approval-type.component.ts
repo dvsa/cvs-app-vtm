@@ -5,6 +5,42 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { techRecord } from '@store/technical-records';
+import { logDOM } from '@storybook/testing-library';
+import { string } from 'yargs';
+
+const patterns: Record<string, RegExp> = {
+  NTA: /^(\w+)$/i,
+  'IVA - DVSA/NI': /^(\w+)$/i,
+  IVA: /^(\w+)$/i,
+  ECTA: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+  NSSTA: /^e(\w{2})\*NKS\*(\w{6})$/i,
+  ECSSTA: /^e(\w{2})\*KS(\w{2})\/(\w{4})\*(\w{6})$/i,
+  'GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{7})$/i,
+  'UKNI WVTA': /^(\w+)11\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+  'EU WVTA Pre 23': /^e(\w{2})\*(\w{4})\/(\wt{4})\*(\w{6})$/i,
+  'EU WVTA 23 on': /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+  QNIG: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+  'Prov.GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+  'Small series': /^(\w+)11\*NKS(\w+\*)?(\w{6})$/i,
+  'IVA - VCA': /^n11\*NIV(\w{2})\/(\w{4})\*(\w{6})$/i
+};
+
+const patternsPartial: Record<string, RegExp> = {
+  NTA: /^(\w+)$/,
+  ECTA: /^(\w{0,2})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  IVA: /^(\w+)$/,
+  NSSTA: /^(\w{0,2})(\w{0,6})$/,
+  ECSSTA: /^(\w{0,2})(\w{0,2})(\w{0,4})(\w{0,6})$/,
+  'GB WVTA': /^(\w{0,3})(\w{0,4})(\w{0,4})(\w{0,7})$/,
+  'UKNI WVTA': /^(\w{0,1})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  'EU WVTA Pre 23': /^(\w{0,2})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  'EU WVTA 23 on': /^(\w{0,2})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  QNIG: /^(\w{0,2})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  'Prov.GB WVTA': /^(\w{0,3})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  'Small series': /^(\w)(\w{0,2})(\w{0,6})$/,
+  'IVA - VCA': /^(\w{0,2})(\w{0,4})(\w{0,6})$/,
+  'IVA - DVSA/NI': /^(\w+)$/
+};
 
 type Segments = {
   approvalTypeNumber1: Observable<string | undefined>;
@@ -107,30 +143,12 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       return;
     }
 
-    const patterns: Record<string, RegExp> = {
-      NTA: /^(\w+)$/i,
-      ECTA: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      IVA: /^(\w+)$/i,
-      NSSTA: /^e(\w{2})\*NKS\*(\w{6})$/i,
-      ECSSTA: /^e(\w{2})\*KS(\w{2})\/(\w{4})\*(\w{6})$/i,
-      'GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{7})$/i,
-      'UKNI WVTA': /^(\w+)11\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      'EU WVTA Pre 23': /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      'EU WVTA 23 on': /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      QNIG: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      'Prov.GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      'Small series': /^(\w+)11\*NKS(\w+\*)?(\w{6})$/i,
-      'IVA - VCA': /^n11\*NIV(\w{2})\/(\w{4})\*(\w{6})$/i,
-      'IVA - DVSA/NI': /^(\w+)$/i
-    };
-
     switch (this.approvalType) {
       case 'NTA':
       case 'IVA':
       case 'IVA - DVSA/NI':
         this.extractValuesNtaIva(value, patterns[this.approvalType]);
         break;
-
       case 'ECTA':
       case 'NSSTA':
       case 'ECSSTA':
@@ -142,20 +160,41 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'Prov.GB WVTA':
       case 'Small series':
       case 'IVA - VCA':
-        this.extractValues(value, patterns[this.approvalType]);
+        this.extractValues(value);
         break;
-
       default:
         console.log('Unknown approval type');
     }
   }
+  private extractValues(value: string) {
+    if (!value || !this.approvalType) {
+      return;
+    }
+    value = value.replace(/[^a-zA-Z0-9]/g, '');
+    let matches: string[] = [];
+    const regexPattern = patternsPartial[this.approvalType] || /^$/;
+    const matchResult = value.length > 16 ? value.substring(0, 16).match(/(\w{1,2})(\w{1,4})(\w{1,4})(\w{1,6})/i) : value.match(regexPattern);
+    if (matchResult) {
+      const [, ...capturedGroups] = matchResult;
+      matches.push(...capturedGroups);
+    }
+    if (!matches?.length && !(this.approvalType in patternsPartial)) {
+      console.error('Unknown approvalType:', this.approvalType);
+      return;
+    }
 
-  private extractValues(value: string, pattern: RegExp) {
-    const matches = value.match(pattern)?.filter(x => x != value);
-    this.setTypeApprovalNumbers(matches ?? []);
+    // Filter out null values and set the approval numbers
+    this.setTypeApprovalNumbers(matches.filter(x => x !== null));
   }
+
   private extractValuesNtaIva(value: string, pattern: RegExp) {
-    const matches = value.match(pattern);
+    const matches = value.match(pattern)?.map(x => {
+      if (x.length > 25) {
+        return x.substring(0, 25);
+      } else {
+        return x;
+      }
+    });
     this.setTypeApprovalNumbers(matches ?? []);
   }
 
