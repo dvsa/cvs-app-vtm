@@ -189,7 +189,7 @@ describe('PlatesComponent', () => {
         techRecord_variantNumber: '1',
         vin: 'HGVTEST01',
         techRecord_axles: []
-      } as HgvOrTrl;
+      } as unknown as HgvOrTrl;
 
       component.techRecord.techRecord_axles = [
         {
