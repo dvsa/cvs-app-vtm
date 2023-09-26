@@ -61,10 +61,10 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   private approvalTypeNumber3_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
   private approvalTypeNumber4_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
 
-  protected approvalTypeNumber1$: Observable<string | undefined>;
-  protected approvalTypeNumber2$: Observable<string | undefined>;
-  protected approvalTypeNumber3$: Observable<string | undefined>;
-  protected approvalTypeNumber4$: Observable<string | undefined>;
+  private approvalTypeNumber1$: Observable<string | undefined>;
+  private approvalTypeNumber2$: Observable<string | undefined>;
+  private approvalTypeNumber3$: Observable<string | undefined>;
+  private approvalTypeNumber4$: Observable<string | undefined>;
 
   private subscriptions: Array<Subscription | undefined> = [];
   public errors?: {
