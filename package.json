@@ -44,7 +44,7 @@
     "@angular/router": "^15.2.8",
     "@azure/msal-browser": "^2.38.1",
     "@azure/msal-angular": "^2.5.10",
-    "@dvsa/cvs-type-definitions": "^3.0.43",
+    "@dvsa/cvs-type-definitions": "^3.0.45",
     "@ngrx/effects": "^15.4.0",
     "@ngrx/entity": "^15.4.0",
     "@ngrx/router-store": "^15.4.0",

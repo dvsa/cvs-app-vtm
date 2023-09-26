@@ -6,21 +6,24 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
-import { Plates, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { PlatesComponent } from './plates.component';
-import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { HgvOrTrl } from '@models/vehicle-tech-record.model';
+import { canGeneratePlate } from '@store/technical-records';
 
 describe('PlatesComponent', () => {
   let component: PlatesComponent;
   let fixture: ComponentFixture<PlatesComponent>;
   let route: ActivatedRoute;
   let router: Router;
+  let errorService: GlobalErrorService;
+  let store: MockStore;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -43,7 +46,8 @@ describe('PlatesComponent', () => {
         {
           provide: APP_BASE_HREF,
           useValue: '/'
-        }
+        },
+        GlobalErrorService
       ]
     }).compileComponents();
   });
@@ -53,7 +57,9 @@ describe('PlatesComponent', () => {
     component = fixture.componentInstance;
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
-    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'trl'>;
+    errorService = TestBed.inject(GlobalErrorService);
+    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as HgvOrTrl;
+    store = TestBed.inject(MockStore);
     fixture.detectChanges();
   });
 
@@ -77,7 +83,6 @@ describe('PlatesComponent', () => {
       expect(plateFetched!.plateSerialNumber).toEqual('123456');
     });
 
-    //TODO: Remove the anys
     it('should fetch the latest plate if more than 1 exists', () => {
       component.techRecord = {
         techRecord_plates: [
@@ -143,6 +148,86 @@ describe('PlatesComponent', () => {
       } as TechRecordType<'trl'>;
 
       expect(component.hasPlates).toBeTruthy();
+    });
+  });
+
+  describe('validateTechRecordPlates', () => {
+    beforeEach(() => {
+      component.techRecord = {
+        primaryVrm: '123456',
+        techRecord_approvalType: 'NTA',
+        techRecord_approvalTypeNumber: '1',
+        techRecord_bodyType_code: 'b',
+        techRecord_bodyType_description: 'box',
+        techRecord_brakes_dtpNumber: '12345',
+        techRecord_dimensions_length: 1,
+        techRecord_dimensions_width: 1,
+        techRecord_frontVehicleTo5thWheelCouplingMax: 1,
+        techRecord_frontVehicleTo5thWheelCouplingMin: 1,
+        techRecord_functionCode: 'R',
+        techRecord_grossDesignWeight: 1,
+        techRecord_grossEecWeight: 1,
+        techRecord_grossGbWeight: 1,
+        techRecord_make: 'AEC',
+        techRecord_manufactureYear: 2020,
+        techRecord_maxTrainDesignWeight: 1,
+        techRecord_maxTrainEecWeight: 11,
+        techRecord_maxTrainGbWeight: 1,
+        techRecord_model: '123',
+        techRecord_noOfAxles: 1,
+        techRecord_ntaNumber: '1',
+        techRecord_reasonForCreation: 'Test',
+        techRecord_recordCompleteness: 'skeleton',
+        techRecord_regnDate: '2020-10-10',
+        techRecord_speedLimiterMrk: true,
+        techRecord_statusCode: 'current',
+        techRecord_trainDesignWeight: 1,
+        techRecord_trainEecWeight: 1,
+        techRecord_trainGbWeight: 1,
+        techRecord_tyreUseCode: 'a',
+        techRecord_vehicleType: 'hgv',
+        techRecord_variantNumber: '1',
+        vin: 'HGVTEST01',
+        techRecord_axles: []
+      } as unknown as HgvOrTrl;
+
+      component.techRecord.techRecord_axles = [
+        {
+          parkingBrakeMrk: true,
+          axleNumber: 1,
+          brakes_brakeActuator: 1,
+          brakes_leverLength: 1,
+          brakes_springBrakeParking: true,
+          weights_gbWeight: 1,
+          weights_designWeight: 2,
+          weights_ladenWeight: 3,
+          weights_kerbWeight: 4,
+          weights_eecWeight: 5,
+          tyres_tyreCode: 1,
+          tyres_tyreSize: '2',
+          tyres_plyRating: '3',
+          tyres_fitmentCode: 'single',
+          tyres_dataTrAxles: 1,
+          tyres_speedCategorySymbol: 'a7'
+        }
+      ];
+    });
+    it('should show an error if tech record is not valid for plates', () => {
+      component.techRecord.vin = '';
+      const plateFieldsErrorMessage = 'All fields marked plate are mandatory to generate a plate.';
+      const errorSpy = jest.spyOn(errorService, 'addError');
+      component.validateTechRecordPlates();
+      expect(errorSpy).toBeCalledWith({ error: plateFieldsErrorMessage });
+    });
+    it('should dispatch the canGeneratePlate action if the record is valid', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      component.validateTechRecordPlates();
+      expect(dispatchSpy).toBeCalledWith(canGeneratePlate());
+    });
+    it('should call router.navigate on a valid record', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      component.validateTechRecordPlates();
+      expect(navigateSpy).toBeCalledWith(['generate-plate'], { relativeTo: expect.anything() });
     });
   });
 });

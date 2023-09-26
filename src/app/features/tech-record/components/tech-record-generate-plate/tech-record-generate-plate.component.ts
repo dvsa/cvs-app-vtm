@@ -5,11 +5,11 @@ import { PlatesInner } from '@api/vehicle';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
-import { generatePlate, generatePlateSuccess } from '@store/technical-records';
+import { cannotGeneratePlate, generatePlate, generatePlateSuccess, getCanGeneratePlate } from '@store/technical-records';
 import { Observable, map, take, tap } from 'rxjs';
 
 @Component({
@@ -37,6 +37,11 @@ export class GeneratePlateComponent implements OnInit {
   ngOnInit(): void {
     this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => {
       this.navigateBack();
+    });
+    this.store.pipe(select(getCanGeneratePlate), take(1)).subscribe(canGeneratePlate => {
+      if (!canGeneratePlate) {
+        this.navigateBack();
+      }
     });
     this.emailAddress$ = this.technicalRecordService.techRecord$.pipe(
       tap(record => {
@@ -76,7 +81,7 @@ export class GeneratePlateComponent implements OnInit {
     if (!this.form.value.reason) {
       return this.globalErrorService.addError({ error: 'Reason for generating plate is required', anchorLink: 'reason' });
     }
-
     this.store.dispatch(generatePlate({ reason: this.form.value.reason }));
+    this.store.dispatch(cannotGeneratePlate());
   }
 }
