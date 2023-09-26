@@ -27,6 +27,7 @@ export class CreateTestTypeComponent implements AfterContentInit {
       if (techRecord?.techRecord_hiddenInVta) {
         alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
 
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         this.router.navigate(['../../..'], { relativeTo: this.route });
       } else if (
         (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness !== 'complete'
@@ -38,6 +39,7 @@ export class CreateTestTypeComponent implements AfterContentInit {
             + 'Call Technical Support to correct this record and use SAR to test this vehicle.',
         );
 
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         this.router.navigate(['../../..'], { relativeTo: this.route });
       }
     });
@@ -46,6 +48,7 @@ export class CreateTestTypeComponent implements AfterContentInit {
   handleSelectedTestType(testType: TestType) {
     this.store.dispatch(contingencyTestTypeSelected({ testType: testType.id }));
     this.store.dispatch(clearAllSectionStates());
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..', 'test-details'], {
       queryParams: { testType: testType.id },
       queryParamsHandling: 'merge',
