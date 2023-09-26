@@ -28,6 +28,7 @@ export class SearchComponent {
     } else if (!Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES)) {
       this.globalErrorService.addError({ error: this.missingTypeErrorMessage, anchorLink: 'search-type' });
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate(['/search/results'], { queryParams: { [type]: term } });
     }
   }
