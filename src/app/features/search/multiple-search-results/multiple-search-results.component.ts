@@ -28,6 +28,7 @@ export class MultipleSearchResultsComponent implements OnDestroy {
     this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe((params) => {
       if (Object.keys(params).length === 1) {
         const type = Object.keys(params)[0] as SEARCH_TYPES;
+        // eslint-disable-next-line security/detect-object-injection
         const searchTerm = params[type] as string;
 
         if (searchTerm && Object.values(SEARCH_TYPES).includes(type)) {

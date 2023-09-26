@@ -21,8 +21,8 @@ export class SingleSearchResultComponent implements OnInit {
       vin: this.searchResult.vin,
       vrm: this.searchResult.primaryVrm,
       trailerId: this.searchResult.trailerId,
-      make: this.searchResult.techRecord_vehicleType == 'psv' ? this.searchResult.techRecord_chassisMake : this.searchResult.techRecord_make,
-      model: this.searchResult.techRecord_vehicleType == 'psv' ? this.searchResult.techRecord_chassisModel : this.searchResult.techRecord_model,
+      make: this.searchResult.techRecord_vehicleType === 'psv' ? this.searchResult.techRecord_chassisMake : this.searchResult.techRecord_make,
+      model: this.searchResult.techRecord_vehicleType === 'psv' ? this.searchResult.techRecord_chassisModel : this.searchResult.techRecord_model,
       manufactureYear: this.searchResult.techRecord_manufactureYear,
       vehicleType: this.searchResult.techRecord_vehicleType.toUpperCase(),
     };
