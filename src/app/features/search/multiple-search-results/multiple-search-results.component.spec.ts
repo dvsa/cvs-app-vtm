@@ -22,7 +22,6 @@ describe('MultipleSearchResultsComponent', () => {
   let fixture: ComponentFixture<MultipleSearchResultsComponent>;
   let store: MockStore<State>;
   const actions$ = new ReplaySubject<Action>();
-  let techRecordHttpService: TechnicalRecordHttpService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,7 +44,6 @@ describe('MultipleSearchResultsComponent', () => {
   describe('default tests', () => {
     beforeEach(() => {
       store = TestBed.inject(MockStore);
-      techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
       store.overrideSelector(selectQueryParams, { vin: '123456' });
 
       fixture = TestBed.createComponent(MultipleSearchResultsComponent);
