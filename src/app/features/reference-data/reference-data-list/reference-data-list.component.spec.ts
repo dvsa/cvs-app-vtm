@@ -5,18 +5,16 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { createSelector } from '@ngrx/store';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { State, initialAppState } from '@store/.';
-import { of } from 'rxjs';
+import { initialAppState } from '@store/.';
 import * as refSelectors from '../../../store/reference-data/selectors/reference-data.selectors';
 import { ReferenceDataListComponent } from './reference-data-list.component';
 
 describe('DataTypeListComponent', () => {
   let component: ReferenceDataListComponent;
   let fixture: ComponentFixture<ReferenceDataListComponent>;
-  let store: MockStore<State>;
   let router: Router;
   let errorService: GlobalErrorService;
   let route: ActivatedRoute;
@@ -39,7 +37,6 @@ describe('DataTypeListComponent', () => {
     component = fixture.componentInstance;
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
-    store = TestBed.inject(MockStore);
     errorService = TestBed.inject(GlobalErrorService);
     fixture.detectChanges();
   });
@@ -137,6 +134,7 @@ describe('DataTypeListComponent', () => {
       jest.spyOn(refSelectors, 'selectRefDataBySearchTerm').mockReturnValue(
         createSelector(
           (v) => v,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           () => [{ resourceKey: 'foo', resourceType: 'bar' }] as unknown as any,
         ),
       );

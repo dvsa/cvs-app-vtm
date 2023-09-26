@@ -59,6 +59,7 @@ export class ReferenceDataCreateComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -75,7 +76,7 @@ export class ReferenceDataCreateComponent implements OnInit {
 
     Object.keys(this.newRefData)
       .filter((newRefDataKey) => newRefDataKey !== 'resourceKey')
-      .forEach((dataKey) => (referenceData[dataKey] = this.newRefData[dataKey]));
+      .forEach((dataKey) => { referenceData[dataKey] = this.newRefData[dataKey]; });
 
     this.globalErrorService.errors$
       .pipe(
@@ -83,14 +84,14 @@ export class ReferenceDataCreateComponent implements OnInit {
         filter((errors) => !errors.length),
         switchMap(() => this.referenceDataService.fetchReferenceDataByKey(this.type, this.newRefData.resourceKey)),
         take(1),
-        catchError((error) => (error.status == 200 ? of(true) : throwError(() => new Error('Error')))),
+        catchError((error) => (error.status === 200 ? of(true) : throwError(() => new Error('Error')))),
       )
       .subscribe({
         next: (res) => {
           if (res) return this.globalErrorService.addError({ error: 'Resource Key already exists', anchorLink: 'newReferenceData' });
         },
         error: (e) => {
-          if (e.status == 404) {
+          if (e.status === 404) {
             of(true);
           } else {
             this.store.dispatch(
