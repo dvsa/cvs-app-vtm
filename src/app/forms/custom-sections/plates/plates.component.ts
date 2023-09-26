@@ -141,6 +141,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private cannotGeneratePlate(plateRequiredFields: string[]): boolean {
+
     const isOneFieldEmpty = plateRequiredFields.some(field => {
       const value = this.techRecord[field as keyof HgvOrTrl];
       return value === undefined || value === null || value === '';
@@ -151,6 +152,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
         return value === undefined || value === null || value === '';
       })
     );
+
 
     return isOneFieldEmpty || !this.techRecord.techRecord_axles?.length || !!areAxlesInvalid;
   }
