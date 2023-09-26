@@ -186,7 +186,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   private setTypeApprovalNumbers(matches: string[]) {
-    console.log('setting approval numbers');
     if (matches) {
       console.log('matches');
       const [techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4] =
