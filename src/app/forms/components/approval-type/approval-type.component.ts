@@ -1,7 +1,7 @@
 import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { BehaviorSubject, Observable, Subscription, combineLatest, filter } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
@@ -60,10 +60,12 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   private approvalTypeNumber2_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
   private approvalTypeNumber3_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
   private approvalTypeNumber4_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+
   private approvalTypeNumber1$: Observable<string | undefined>;
   private approvalTypeNumber2$: Observable<string | undefined>;
   private approvalTypeNumber3$: Observable<string | undefined>;
   private approvalTypeNumber4$: Observable<string | undefined>;
+
   private subscriptions: Array<Subscription | undefined> = [];
   public errors?: {
     error: boolean;
@@ -81,10 +83,10 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
   constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef, public globalErrorService: GlobalErrorService) {
     super(injector, changeDetectorRef);
-    this.approvalTypeNumber1$ = this.approvalTypeNumber1_.asObservable().pipe(filter(value => value !== undefined));
-    this.approvalTypeNumber2$ = this.approvalTypeNumber1_.asObservable().pipe(filter(value => value !== undefined));
-    this.approvalTypeNumber3$ = this.approvalTypeNumber1_.asObservable().pipe(filter(value => value !== undefined));
-    this.approvalTypeNumber4$ = this.approvalTypeNumber1_.asObservable().pipe(filter(value => value !== undefined));
+    this.approvalTypeNumber1$ = this.approvalTypeNumber1_.asObservable();
+    this.approvalTypeNumber2$ = this.approvalTypeNumber2_.asObservable();
+    this.approvalTypeNumber3$ = this.approvalTypeNumber3_.asObservable();
+    this.approvalTypeNumber4$ = this.approvalTypeNumber4_.asObservable();
     this.globalErrorService.errors$.subscribe((globalErrors: any) => {
       if (globalErrors.length) {
         this.formSubmitted = true;
@@ -132,7 +134,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     if (!value || !this.approvalType) {
       return;
     }
-
     switch (this.approvalType) {
       case 'NTA':
       case 'IVA':
@@ -156,11 +157,14 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
         console.log('Unknown approval type');
     }
   }
+
   private extractValues(value: string) {
     if (!value || !this.approvalType) {
       return;
     }
-    value = value.replace(/[^a-zA-Z0-9]/g, '');
+    const pattern: RegExp = /e|(\*NKS\*)|\*KS|\*11|[*/]/g;
+
+    value = value.replace(pattern, '');
     let matches: string[] = [];
     const regexPattern = patternsPartial[this.approvalType] || /^$/;
     const matchResult = value.length > 16 ? value.substring(0, 16).match(/(\w{1,2})(\w{1,4})(\w{1,4})(\w{1,6})/i) : value.match(regexPattern);
@@ -173,8 +177,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       return;
     }
 
-    // Filter out null values and set the approval numbers
-    this.setTypeApprovalNumbers(matches.filter(x => x !== null));
+    this.setTypeApprovalNumbers(matches.filter(x => x !== null || x != ''));
   }
 
   private extractValuesNtaIva(value: string, pattern: RegExp) {
@@ -183,7 +186,9 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   private setTypeApprovalNumbers(matches: string[]) {
+    console.log('setting approval numbers');
     if (matches) {
+      console.log('matches');
       const [techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4] =
         matches;
       this.approvalTypeNumber1 = techRecord_approvalTypeNumber1;
@@ -231,7 +236,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     };
 
     const oneRequired = () => !this.approvalTypeNumber1 && this.approvalType;
-    const twoRequired = () => !this.approvalTypeNumber1 || !this.approvalTypeNumber2;
+    const twoRequired = () => oneRequired() || !this.approvalTypeNumber2;
     const threeRequired = () => twoRequired() || !this.approvalTypeNumber3;
     const fourRequired = () => threeRequired() || !this.approvalTypeNumber4;
 
@@ -239,7 +244,10 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'NTA':
       case 'IVA':
       case 'IVA - DVSA/NI':
-        if (oneRequired()) setErrors();
+        if (oneRequired()) {
+          console.log('setting errors 1');
+          setErrors();
+        }
         break;
 
       case 'GB WVTA':
@@ -249,20 +257,30 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'QNIG':
       case 'ECTA':
       case 'ECSSTA':
-        if (fourRequired()) setErrors();
-        break;
-
       case 'UKNI WVTA':
-      case 'IVA - VCA':
-        if (threeRequired()) setErrors();
+        if (fourRequired()) {
+          console.log('setting errors 4');
+          setErrors();
+        }
         break;
 
+      case 'IVA - VCA':
       case 'Small series':
+        if (threeRequired()) {
+          console.log(' setting errors 3');
+          setErrors();
+        }
+        break;
+
       case 'NSSTA':
-        if (twoRequired()) setErrors();
+        if (twoRequired()) {
+          console.log('setting errors 2');
+          setErrors();
+        }
         break;
 
       default:
+        console.log('default');
         break;
     }
   }
@@ -272,6 +290,13 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.approvalTypeNumber2 = '';
     this.approvalTypeNumber3 = '';
     this.approvalTypeNumber4 = '';
+
+    // update the observables
+    this.approvalTypeNumber1_.next(this.approvalTypeNumber1);
+    this.approvalTypeNumber2_.next(this.approvalTypeNumber2);
+    this.approvalTypeNumber3_.next(this.approvalTypeNumber3);
+    this.approvalTypeNumber4_.next(this.approvalTypeNumber4);
+
     this.onChange(null);
   }
 
