@@ -32,17 +32,18 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
             value: [
               'NTA',
               'ECTA',
+              'ECSSTA',
               'IVA',
               'NSSTA',
               'GB WVTA',
               'UKNI WVTA',
               'EU WVTA Pre 23',
-              'EU WVTA 23',
+              'EU WVTA 23 on',
               'QNIG',
               'Prov.GB WVTA',
               'Small series',
-              'IVA – VCA',
-              'IVA – DVSA/NI'
+              'IVA - VCA',
+              'IVA - DVSA/NI'
             ]
           }
         }
