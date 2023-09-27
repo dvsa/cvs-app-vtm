@@ -27,7 +27,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   public isError: boolean = false;
   public errorMessage?: string;
   private ladenWeightOverride: boolean = false;
-  private autoCalculationInProgress: boolean = false;
 
   constructor(public dynamicFormsService: DynamicFormService, private store: Store<TechnicalRecordServiceState>) {}
 
@@ -35,7 +34,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     this.form = this.dynamicFormsService.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
 
     const grossLadenWeightChanges = this.form.get('techRecord_grossLadenWeight')?.valueChanges.subscribe(value => {
-      console.log('setting override value to true');
       this.ladenWeightOverride = true;
     });
     if (grossLadenWeightChanges) {
@@ -61,7 +59,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
           techRecord_grossKerbWeight !== undefined;
 
         if (shouldRecalculate) {
-          console.log('setting override to false');
           this.ladenWeightOverride = false;
         }
 
@@ -70,15 +67,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         if (this.isPsv && !this.ladenWeightOverride && shouldRecalculate) {
-          console.log('on init auto calculating');
-          this.autoCalculationInProgress = true;
-
           const calculatedWeight = this.calculateGrossLadenWeight();
           event.techRecord_grossLadenWeight = calculatedWeight;
-
           this.form.get('techRecord_grossLadenWeight')?.setValue(calculatedWeight, { emitEvent: false });
-
-          this.autoCalculationInProgress = false; // Reset it immediately after
         }
         this.formChange.emit(event);
 
@@ -102,7 +93,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
       ].some(field => currentValue[field] !== previousValue[field]);
 
       if (fieldsChanged) {
-        console.log('auto calculating');
         const newGrossLadenWeight = this.calculateGrossLadenWeight();
 
         this.form.patchValue(
