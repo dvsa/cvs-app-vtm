@@ -33,7 +33,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.form = this.dynamicFormsService.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
 
-    const grossLadenWeightChanges = this.form.get('techRecord_grossLadenWeight')?.valueChanges.subscribe(value => {
+    const grossLadenWeightChanges = this.form.get('techRecord_grossLadenWeight')?.valueChanges.subscribe(() => {
       this.ladenWeightOverride = true;
     });
     if (grossLadenWeightChanges) {
@@ -135,7 +135,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get requiredPlates(): boolean {
-    return this.vehicleTechRecord.techRecord_vehicleType !== VehicleTypes.PSV && this.isEditing === true;
+    return this.vehicleTechRecord.techRecord_vehicleType !== VehicleTypes.PSV && this.isEditing;
   }
 
   get types(): typeof FormNodeEditTypes {
@@ -180,7 +180,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     const techRecord_grossKerbWeight = psvRecord?.techRecord_grossKerbWeight ?? 0;
     const kgAllowedPerPerson = techRecord_manufactureYear >= 1988 ? 65 : 63.5;
 
-    const totalPassengers = techRecord_seatsUpperDeck + techRecord_seatsLowerDeck + 1;
+    const totalPassengers = techRecord_seatsUpperDeck + techRecord_seatsLowerDeck + 1; // Add 1 for the driver
     return totalPassengers * kgAllowedPerPerson + techRecord_grossKerbWeight;
   }
 }
