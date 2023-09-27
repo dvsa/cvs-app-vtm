@@ -28,3 +28,13 @@ protractor.conf.js
 /src/app/store/*
 /src/mocks/*
 /src/environments/*
+/mock-api
+/cypress
+/.vscode
+/.storybook
+/.husky
+/.github
+setenv.ts
+setup-jest.ts
+cypress.config.ts
+jest-global-mocks.ts
