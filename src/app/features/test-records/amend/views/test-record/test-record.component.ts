@@ -52,6 +52,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
     this.actions$
       .pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$))
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       .subscribe(() => this.router.navigate(['../..'], { relativeTo: this.route.parent }));
 
     combineLatest([this.testResult$, this.routerService.getQueryParam$('testType'), this.testRecordsService.sectionTemplates$])
@@ -145,6 +146,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   }
 
   handleConfirmCancel() {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['../..'], { relativeTo: this.route.parent });
   }
 

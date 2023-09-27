@@ -26,7 +26,7 @@ export class TestTypeSelectComponent {
   handleCategory(category: TestType | TestTypeCategory, i: number) {
     this.categories.length = i;
 
-    if (category.hasOwnProperty('nextTestTypesOrCategories')) {
+    if (Object.prototype.hasOwnProperty.call(category, 'nextTestTypesOrCategories')) {
       this.categories.push(category as TestTypeCategory);
     } else {
       this.testTypeSelected.emit(category);
@@ -34,7 +34,7 @@ export class TestTypeSelectComponent {
   }
 
   hasNext(category: TestType | TestTypeCategory) {
-    return category.hasOwnProperty('nextTestTypesOrCategories');
+    return Object.prototype.hasOwnProperty.call(category, 'nextTestTypesOrCategories');
   }
 
   isSelected(id: string) {

@@ -38,6 +38,7 @@ export class ConfirmCancellationComponent implements OnDestroy {
   ) {
     this.actions$
       .pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$))
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       .subscribe(() => this.router.navigate(['../../../../..'], { relativeTo: this.route }));
   }
 

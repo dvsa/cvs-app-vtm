@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestType } from '@api/test-types';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
-import { State, initialAppState } from '@store/.';
+import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { TestTypeSelectComponent } from '../../../components/test-type-select/test-type-select.component';
 import { CreateTestTypeComponent } from './create-test-type.component';
@@ -17,7 +17,6 @@ describe('CreateTestTypeComponent', () => {
   let fixture: ComponentFixture<CreateTestTypeComponent>;
   let router: Router;
   let route: ActivatedRoute;
-  let store: MockStore<State>;
   let techRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
@@ -40,7 +39,6 @@ describe('CreateTestTypeComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
-    store = TestBed.inject(MockStore);
 
     jest.spyOn(window, 'alert').mockImplementation();
 

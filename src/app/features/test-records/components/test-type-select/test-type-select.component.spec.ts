@@ -11,7 +11,6 @@ import { TestTypeSelectComponent } from './test-type-select.component';
 describe('TestTypeSelectComponent', () => {
   let component: TestTypeSelectComponent;
   let fixture: ComponentFixture<TestTypeSelectComponent>;
-  let testTypesService: TestTypesService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -50,7 +49,7 @@ describe('TestTypeSelectComponent', () => {
     expect(component.isSelected('4')).toBeFalsy();
   });
 
-  describe(TestTypeSelectComponent.prototype.handleCategory.name, () => {
+  describe('TestTypeSelectComponent.prototype.handleCategory.name', () => {
     it('should emit selected testType through testTypeSelected', (done) => {
       component.testTypeSelected.subscribe((val) => {
         expect(val.id).toBe('1');

@@ -7,7 +7,7 @@ import { FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -40,7 +40,6 @@ export class BaseTestRecordComponent implements AfterViewInit {
   techRecord$: Observable<V3TechRecordModel | undefined>;
   constructor(
     private defectsStore: Store<DefectsState>,
-    private techRecordService: TechnicalRecordService,
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
     private store: Store,

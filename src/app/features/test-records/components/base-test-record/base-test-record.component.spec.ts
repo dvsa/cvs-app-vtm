@@ -55,7 +55,7 @@ describe('BaseTestRecordComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe(BaseTestRecordComponent.prototype.handleFormChange.name, () => {
+  describe('BaseTestRecordComponent.prototype.handleFormChange.name', () => {
     it('should emit the new test result', (done) => {
       const event = { vin: 'ABC001' } as TestResultModel;
       const expectedValue = { vin: 'ABC001' };

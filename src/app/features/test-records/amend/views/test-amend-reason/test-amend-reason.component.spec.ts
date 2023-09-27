@@ -11,15 +11,15 @@ describe('TestAmendReasonComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [TestAmendReasonComponent],
       imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule],
     }).compileComponents();
 
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestAmendReasonComponent);

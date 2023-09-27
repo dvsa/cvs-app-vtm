@@ -113,9 +113,9 @@ describe('TestRecordComponent', () => {
 
       fixture.detectChanges();
 
-      jest.spyOn(component, 'handleSave');
+      const saveSpy = jest.spyOn(component, 'handleSave');
       el.query(By.css('button#save-test-result')).nativeElement.click();
-      expect(component.handleSave).toHaveBeenCalledTimes(1);
+      expect(saveSpy).toHaveBeenCalledTimes(1);
     }));
 
     it('should run handleReview when review button is clicked', waitForAsync(() => {
@@ -125,13 +125,13 @@ describe('TestRecordComponent', () => {
 
       fixture.detectChanges();
 
-      jest.spyOn(component, 'handleReview');
+      const reviewSpy = jest.spyOn(component, 'handleReview');
       el.query(By.css('button#review-test-result')).nativeElement.click();
-      expect(component.handleReview).toHaveBeenCalledTimes(1);
+      expect(reviewSpy).toHaveBeenCalledTimes(1);
     }));
   });
 
-  describe(TestRecordComponent.prototype.handleSave.name, () => {
+  describe('TestRecordComponent.prototype.handleSave.name', () => {
     beforeEach(() => {
       store.setState({
         ...initialAppState,
@@ -144,30 +144,29 @@ describe('TestRecordComponent', () => {
       });
     });
 
-    it('should return without calling updateTestResultState if forms are clean', fakeAsync(() => {
+    it('should return without calling updateTestResultState if forms are clean', fakeAsync(async () => {
       store.overrideSelector(isTestTypeKeySame('testTypeId'), true);
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
-      component.handleSave();
-      tick();
+      await component.handleSave();
       expect(updateTestResultStateSpy).not.toHaveBeenCalled();
     }));
 
-    it('should return without calling updateTestResultState if any forms are invalid', fakeAsync(() => {
+    it('should return without calling updateTestResultState if any forms are invalid', fakeAsync(async () => {
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
       component.isAnyFormDirty = jest.fn().mockReturnValue(true);
       component.isAnyFormInvalid = jest.fn().mockReturnValue(true);
-      component.handleSave();
-      tick();
+      await component.handleSave();
       expect(updateTestResultStateSpy).not.toHaveBeenCalled();
     }));
 
     it('should call updateTestResult with value of all forms merged into one', async () => {
       fixture.detectChanges();
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => Promise.resolve(true));
       const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
       store.overrideSelector(isTestTypeKeySame('testTypeId'), false);
       store.overrideSelector(testResultInEdit, testRecord);
-      store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1']!));
+      store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1'] ?? ''));
 
       component.isAnyFormDirty = jest.fn().mockReturnValue(true);
       component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
@@ -206,10 +205,10 @@ describe('TestRecordComponent', () => {
   it('should set testMode to be view when has errors is false', async () => {
     expect(component.testMode).toEqual(TestModeEnum.Edit);
 
-    jest.spyOn(component, 'hasErrors').mockReturnValue(Promise.resolve(false));
+    const errorsSpy = jest.spyOn(component, 'hasErrors').mockReturnValue(Promise.resolve(false));
     await component.handleReview();
 
-    expect(component.hasErrors).toHaveBeenCalledTimes(1);
+    expect(errorsSpy).toHaveBeenCalledTimes(1);
 
     expect(component.testMode).toEqual(TestModeEnum.View);
   });
@@ -217,10 +216,10 @@ describe('TestRecordComponent', () => {
   it('should not set testMode to be view when has errors is true', async () => {
     expect(component.testMode).toEqual(TestModeEnum.Edit);
 
-    jest.spyOn(component, 'hasErrors').mockReturnValue(Promise.resolve(true));
+    const errorsSpy = jest.spyOn(component, 'hasErrors').mockReturnValue(Promise.resolve(true));
     await component.handleReview();
 
-    expect(component.hasErrors).toHaveBeenCalledTimes(1);
+    expect(errorsSpy).toHaveBeenCalledTimes(1);
 
     expect(component.testMode).toEqual(TestModeEnum.Edit);
   });

@@ -75,6 +75,7 @@ export class VehicleHeaderComponent {
     return testCode ? `(${testCode})` : '';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   getVehicleDescription(techRecord: V3TechRecordModel, vehicleType: VehicleTypes | undefined) {
     switch (vehicleType) {
       case VehicleTypes.TRL:
@@ -82,15 +83,15 @@ export class VehicleHeaderComponent {
       case VehicleTypes.PSV:
         return (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyMake
           && (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel
-          ? `${(techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyMake}-${
-            (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel
+          ? `${(techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyMake ?? ''}-${
+            (techRecord as TechRecordType<typeof vehicleType>).techRecord_bodyModel ?? ''
           }`
           : '';
       case VehicleTypes.HGV:
         return (techRecord as TechRecordType<typeof vehicleType>).techRecord_make
           && (techRecord as TechRecordType<typeof vehicleType>).techRecord_model
-          ? `${(techRecord as TechRecordType<typeof vehicleType>).techRecord_make}-${
-            (techRecord as TechRecordType<typeof vehicleType>).techRecord_model
+          ? `${(techRecord as TechRecordType<typeof vehicleType>).techRecord_make ?? ''}-${
+            (techRecord as TechRecordType<typeof vehicleType>).techRecord_model ?? ''
           }`
           : '';
       case VehicleTypes.MOTORCYCLE:

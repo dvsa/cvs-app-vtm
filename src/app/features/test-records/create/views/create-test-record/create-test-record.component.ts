@@ -85,6 +85,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   backToTechRecord(): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['../../..'], { relativeTo: this.route.parent });
   }
 
@@ -162,10 +163,10 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     this.testMode = TestModeEnum.Abandon;
   }
 
-  handleAbandonAction(event: string) {
+  async handleAbandonAction(event: string) {
     switch (event) {
       case 'yes':
-        this.handleSave();
+        await this.handleSave();
         break;
       case 'no':
         this.abandonDialog?.dynamicFormGroup?.form.reset();

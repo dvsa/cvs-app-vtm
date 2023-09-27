@@ -1,17 +1,14 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestTypesService } from '@api/test-types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
-import {
-  TechRecordModel, VehicleTypes, VehicleConfigurations, V3TechRecordModel,
-} from '@models/vehicle-tech-record.model';
+import { VehicleTypes, VehicleConfigurations, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { of } from 'rxjs';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { VehicleHeaderComponent } from './vehicle-header.component';
 
 const mockTechnicalRecordService = {
@@ -24,8 +21,8 @@ describe('VehicleHeaderComponent', () => {
   let component: VehicleHeaderComponent;
   let fixture: ComponentFixture<VehicleHeaderComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [VehicleHeaderComponent],
       imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
       providers: [
@@ -35,7 +32,7 @@ describe('VehicleHeaderComponent', () => {
         { provide: TechnicalRecordService, useValue: mockTechnicalRecordService },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VehicleHeaderComponent);

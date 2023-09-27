@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { formatDate } from '@angular/common';
 import {
   ComponentFixture, fakeAsync, TestBed, tick,
@@ -87,12 +89,11 @@ describe('TestAmendmentHistoryComponent', () => {
             })),
         });
         fixture.detectChanges();
-
-        const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
-        expect(rows[0]).toBeTruthy();
       });
 
       it('should have first row be the current record', () => {
+        const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
+        expect(rows[0]).toBeTruthy();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
         expect(cells[0].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.reasonForCreation!));
         expect(cells[1].nativeElement.innerHTML).toBe(component.testRecord?.createdByName);
@@ -121,7 +122,7 @@ describe('TestAmendmentHistoryComponent', () => {
       const links = fixture.debugElement.queryAll(By.css('a'));
 
       links.forEach((e) => expect(e.nativeElement.innerHTML).toBe('View'));
-      expect(links).toHaveLength(component.testRecord?.testHistory?.length);
+      expect(links).toHaveLength(component.testRecord?.testHistory!.length);
     }));
   });
 });
