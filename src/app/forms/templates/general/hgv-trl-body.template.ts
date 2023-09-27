@@ -16,7 +16,8 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 6 }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_make',
@@ -25,7 +26,8 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 50 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 50 }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_model',
@@ -34,7 +36,8 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_bodyType_description',
@@ -66,7 +69,8 @@ export const HgvAndTrlBodyTemplate: FormNode = {
         { value: 'r', label: 'R' },
         { value: 'a', label: 'A' }
       ],
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
     },
     {
       name: 'techRecord_conversionRefNo',
@@ -75,7 +79,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
+      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
     }
   ]
 };

@@ -3,7 +3,9 @@
   <div *ngSwitchCase="'NTA'">
     <app-field-error-message *ngIf="formSubmitted" [error]="error" [name]="name"></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">
-      <label class="govuk-label govuk-label--m"> Approval type number </label>
+      <label class="govuk-label govuk-label--m">
+        Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+      >
       <input
         [id]="getId(name)"
         maxlength="25"
@@ -21,7 +23,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -38,8 +42,8 @@
             <span class="separator approvalTypeFormatting">*</span>
             <input
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ecta'"
-              [characterLimit]="5"
-              [maxlength]="5"
+              [characterLimit]="4"
+              [maxlength]="4"
               class="govuk-input govuk-date-input__input govuk-input--width-4 separator"
               name="techRecord_approvalTypeNumber2"
               id="techRecord_approvalTypeNumber2-ecta"
@@ -50,8 +54,8 @@
             <input
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ecta'"
               id="techRecord_approvalTypeNumber3-ecta"
-              [maxlength]="5"
-              [characterLimit]="5"
+              [maxlength]="4"
+              [characterLimit]="4"
               class="govuk-input govuk-date-input__input govuk-input--width-4 separator"
               name="techRecord_approvalTypeNumber3"
               [(ngModel)]="approvalTypeNumber3"
@@ -60,7 +64,7 @@
             <span class="separator approvalTypeFormatting">*</span>
             <input
               id="techRecord_approvalTypeNumber4-ecta"
-              [maxlength]="5"
+              [maxlength]="6"
               class="govuk-input govuk-date-input__input govuk-input--width-4 separator"
               name="techRecord_approvalTypeNumber4"
               [(ngModel)]="approvalTypeNumber4"
@@ -76,7 +80,9 @@
   <div *ngSwitchCase="'IVA'">
     <app-field-error-message *ngIf="formSubmitted" [error]="error" [name]="name"></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">
-      <label class="govuk-label govuk-label--m"> Approval type number </label>
+      <label class="govuk-label govuk-label--m">
+        Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+      >
       <input
         [id]="getId(name)"
         maxlength="25"
@@ -94,7 +100,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -129,7 +137,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -160,7 +170,7 @@
               [characterLimit]="4"
               [maxlength]="4"
               id="techRecord_approvalTypeNumber3-ecssta"
-              class="govuk-input govuk-date-input__input govuk-input--width-4"
+              class="govuk-input govuk-date-input__input govuk-input--width-4 separator"
               name="techRecord_approvalTypeNumber3"
               [(ngModel)]="approvalTypeNumber3"
               (ngModelChange)="onTechRecord_approvalTypeNumber3_Change($event); validate()"
@@ -170,9 +180,9 @@
               [maxlength]="6"
               id="techRecord_approvalTypeNumber4-ecssta"
               class="govuk-input govuk-date-input__input govuk-input--width-4"
-              name="techRecord_approvalTypeNumber3"
+              name="techRecord_approvalTypeNumber4"
               [(ngModel)]="approvalTypeNumber4"
-              (ngModelChange)="onTechRecord_approvalTypeNumber3_Change($event); validate()"
+              (ngModelChange)="onTechRecord_approvalTypeNumber4_Change($event); validate()"
             />
           </div>
         </div>
@@ -186,7 +196,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <input
               [id]="getId(name)"
@@ -204,7 +216,7 @@
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-gbwvta'"
               [characterLimit]="4"
               [maxlength]="4"
-              id="'techRecord_approvalTypeNumber2-gbwvta"
+              id="techRecord_approvalTypeNumber2-gbwvta"
               class="govuk-input govuk-date-input__input govuk-input--width-4"
               name="techRecord_approvalTypeNumber2"
               [(ngModel)]="approvalTypeNumber2"
@@ -215,7 +227,7 @@
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-gbwvta'"
               [characterLimit]="4"
               [maxlength]="4"
-              id="'techRecord_approvalTypeNumber3-gbwvta"
+              id="techRecord_approvalTypeNumber3-gbwvta"
               class="govuk-input govuk-date-input__input govuk-input--width-4"
               name="techRecord_approvalTypeNumber3"
               [(ngModel)]="approvalTypeNumber3"
@@ -224,7 +236,7 @@
             <span class="separator approvalTypeFormatting">*</span>
             <input
               [maxlength]="7"
-              id="'techRecord_approvalTypeNumber4-gbwvta"
+              id="techRecord_approvalTypeNumber4-gbwvta"
               class="govuk-input govuk-date-input__input govuk-input--width-5"
               name="techRecord_approvalTypeNumber4"
               [(ngModel)]="approvalTypeNumber4"
@@ -242,39 +254,51 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
-            <span class="separator approvalTypeFormatting">X11 *</span>
             <input
               [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ukniwvta'"
-              [characterLimit]="4"
-              [maxlength]="4"
-              id="'techRecord_approvalTypeNumber1-ukniwvta"
+              [characterLimit]="1"
+              [maxlength]="1"
+              id="techRecord_approvalTypeNumber1-ukniwvta"
               class="govuk-input govuk-date-input__input govuk-input--width-4"
               name="techRecord_approvalTypeNumber1"
               [(ngModel)]="approvalTypeNumber1"
               (ngModelChange)="onTechRecord_approvalTypeNumber1_Change($event); validate()"
             />
-            <span class="separator approvalTypeFormatting">/</span>
+            <span class="separator approvalTypeFormatting">11*</span>
             <input
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-ukniwvta'"
               [characterLimit]="4"
               [maxlength]="4"
-              id="'techRecord_approvalTypeNumber2-ukniwvta"
+              id="techRecord_approvalTypeNumber2-ukniwvta"
               class="govuk-input govuk-date-input__input govuk-input--width-4"
               name="techRecord_approvalTypeNumber2"
               [(ngModel)]="approvalTypeNumber2"
               (ngModelChange)="onTechRecord_approvalTypeNumber2_Change($event); validate()"
             />
-            <span class="separator approvalTypeFormatting">*</span>
+            <span class="separator approvalTypeFormatting">/</span>
             <input
-              [maxlength]="6"
-              id="'techRecord_approvalTypeNumber3-ukniwvta'"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-ukniwvta'"
+              [characterLimit]="4"
+              [maxlength]="4"
+              id="techRecord_approvalTypeNumber3-ukniwvta"
               class="govuk-input govuk-date-input__input govuk-input--width-4"
               name="techRecord_approvalTypeNumber3"
               [(ngModel)]="approvalTypeNumber3"
               (ngModelChange)="onTechRecord_approvalTypeNumber3_Change($event); validate()"
+            />
+            <span class="separator approvalTypeFormatting">*</span>
+            <input
+              [maxlength]="6"
+              id="techRecord_approvalTypeNumber4-ukniwvta"
+              class="govuk-input govuk-date-input__input govuk-input--width-4"
+              name="techRecord_approvalTypeNumber4"
+              [(ngModel)]="approvalTypeNumber4"
+              (ngModelChange)="onTechRecord_approvalTypeNumber4_Change($event); validate()"
             />
           </div>
         </div>
@@ -288,7 +312,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -345,7 +371,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -401,7 +429,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
@@ -458,7 +488,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <input
               [id]="getId(name)"
@@ -513,7 +545,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <input
               [id]="getId(name)"
@@ -526,7 +560,7 @@
               [(ngModel)]="approvalTypeNumber1"
               (ngModelChange)="onTechRecord_approvalTypeNumber1_Change($event); validate()"
             />
-            <span class="separator approvalTypeFormatting">11*NKS*</span>
+            <span class="separator approvalTypeFormatting">11*NKS</span>
             <input
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-smallseries'"
               [characterLimit]="2"
@@ -535,7 +569,7 @@
               class="govuk-input govuk-date-input__input govuk-input--width-2"
               name="techRecord_approvalTypeNumber2"
               [(ngModel)]="approvalTypeNumber2"
-              (ngModelChange)="onTechRecord_approvalTypeNumber1_Change($event); validate()"
+              (ngModelChange)="onTechRecord_approvalTypeNumber2_Change($event); validate()"
             />
             <span class="separator approvalTypeFormatting">*</span>
             <input
@@ -544,7 +578,7 @@
               class="govuk-input govuk-date-input__input govuk-input--width-4"
               name="techRecord_approvalTypeNumber3"
               [(ngModel)]="approvalTypeNumber3"
-              (ngModelChange)="onTechRecord_approvalTypeNumber1_Change($event); validate()"
+              (ngModelChange)="onTechRecord_approvalTypeNumber3_Change($event); validate()"
             />
           </div>
         </div>
@@ -558,7 +592,9 @@
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--m"> Approval type number </label>
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+          >
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">n11*NIV</span>
             <input
@@ -590,7 +626,7 @@
               class="govuk-input govuk-date-input__input govuk-input--width-4"
               name="techRecord_approvalTypeNumber3"
               [(ngModel)]="approvalTypeNumber3"
-              (ngModelChange)="onTechRecord_approvalTypeNumber2_Change($event); validate()"
+              (ngModelChange)="onTechRecord_approvalTypeNumber3_Change($event); validate()"
             />
           </div>
         </div>
@@ -602,7 +638,9 @@
   <div *ngSwitchCase="'IVA - DVSA/NI'">
     <app-field-error-message *ngIf="formSubmitted" [error]="error" [name]="name"></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">
-      <label class="govuk-label govuk-label--m"> Approval type number </label>
+      <label class="govuk-label govuk-label--m">
+        Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
+      >
       <input
         [id]="getId(name)"
         maxlength="25"
