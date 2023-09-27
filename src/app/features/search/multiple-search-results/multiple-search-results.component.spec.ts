@@ -42,7 +42,7 @@ describe('MultipleSearchResultsComponent', () => {
     }).compileComponents();
   });
 
-  describe('default tests when searchResults not null', () => {
+  describe('default tests', () => {
     beforeEach(() => {
       store = TestBed.inject(MockStore);
       techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
@@ -58,7 +58,12 @@ describe('MultipleSearchResultsComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should navigate back', fakeAsync(() => {
+    it('should return not found error and create link when searchResults is null', async () => {
+      const button = fixture.debugElement.query(By.css('.govuk-link'));
+      expect(button).toBeTruthy();
+    });
+
+    it('should navigate back when searchResults not null', fakeAsync(() => {
       const navigateBackSpy = jest.spyOn(component, 'navigateBack');
       const newData: TechRecordSearchSchema[] = [
         {
@@ -81,24 +86,6 @@ describe('MultipleSearchResultsComponent', () => {
 
       expect(navigateBackSpy).toHaveBeenCalled();
     }));
-  });
-
-  describe('when searchResults is null', () => {
-    beforeEach(() => {
-      store = TestBed.inject(MockStore);
-      techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
-      store.overrideSelector(selectQueryParams, { vin: '123456' });
-
-      fixture = TestBed.createComponent(MultipleSearchResultsComponent);
-      component = fixture.componentInstance;
-
-      fixture.detectChanges();
-    });
-
-    it('should return not found error and create link', async () => {
-      const button = fixture.debugElement.query(By.css('.govuk-link'));
-      expect(button).toBeTruthy();
-    });
   });
 
   describe('searching', () => {
