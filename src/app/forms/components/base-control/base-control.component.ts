@@ -56,7 +56,6 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
         return firstError(errors[errorList[0]], this.label);
       }
     }
-
     return '';
   }
 

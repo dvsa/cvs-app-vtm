@@ -1,16 +1,42 @@
 import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest, filter } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { techRecord } from '@store/technical-records';
 
-type Segments = {
-  approvalTypeNumber1: Observable<string | undefined>;
-  approvalTypeNumber2: Observable<string | undefined>;
-  approvalTypeNumber3: Observable<string | undefined>;
-  approvalTypeNumber4?: Observable<string | undefined>;
+const patterns: Record<string, RegExp> = {
+  NTA: /^(\w+)$/i,
+  'IVA - DVSA/NI': /^(\w+)$/i,
+  IVA: /^(\w+)$/i,
+  ECTA: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+  NSSTA: /^e(\w{2})\*NKS\*(\w{6})$/i,
+  ECSSTA: /^e(\w{2})\*KS(\w{2})\/(\w{4})\*(\w{6})$/i,
+  'GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{7})$/i,
+  'UKNI WVTA': /^(\w+)11\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+  'EU WVTA Pre 23': /^e(\w{2})\*(\w{4})\/(\wt{4})\*(\w{6})$/i,
+  'EU WVTA 23 on': /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+  QNIG: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+  'Prov.GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
+  'Small series': /^(\w+)11\*NKS(\w+\*)?(\w{6})$/i,
+  'IVA - VCA': /^n11\*NIV(\w{2})\/(\w{4})\*(\w{6})$/i
+};
+
+const patternsPartial: Record<string, RegExp> = {
+  NTA: /^(\w+)$/,
+  ECTA: /^(\w{0,2})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  IVA: /^(\w+)$/,
+  NSSTA: /^(\w{0,2})(\w{0,6})$/,
+  ECSSTA: /^(\w{0,2})(\w{0,2})(\w{0,4})(\w{0,6})$/,
+  'GB WVTA': /^(\w{0,3})(\w{0,4})(\w{0,4})(\w{0,7})$/,
+  'UKNI WVTA': /^(\w{0,1})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  'EU WVTA Pre 23': /^(\w{0,2})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  'EU WVTA 23 on': /^(\w{0,2})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  QNIG: /^(\w{0,2})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  'Prov.GB WVTA': /^(\w{0,3})(\w{0,4})(\w{0,4})(\w{0,6})$/,
+  'Small series': /^(\w)(\w{0,2})(\w{0,6})$/,
+  'IVA - VCA': /^(\w{0,2})(\w{0,4})(\w{0,6})$/,
+  'IVA - DVSA/NI': /^(\w+)$/
 };
 
 @Component({
@@ -34,10 +60,12 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   private approvalTypeNumber2_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
   private approvalTypeNumber3_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
   private approvalTypeNumber4_: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+
   private approvalTypeNumber1$: Observable<string | undefined>;
   private approvalTypeNumber2$: Observable<string | undefined>;
   private approvalTypeNumber3$: Observable<string | undefined>;
   private approvalTypeNumber4$: Observable<string | undefined>;
+
   private subscriptions: Array<Subscription | undefined> = [];
   public errors?: {
     error: boolean;
@@ -106,31 +134,12 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     if (!value || !this.approvalType) {
       return;
     }
-
-    const patterns: Record<string, RegExp> = {
-      NTA: /^(\w+)$/i,
-      ECTA: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      IVA: /^(\w+)$/i,
-      NSSTA: /^e(\w{2})\*NKS\*(\w{6})$/i,
-      ECSSTA: /^e(\w{2})\*KS(\w{2})\/(\w{4})\*(\w{6})$/i,
-      'GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{7})$/i,
-      'UKNI WVTA': /^(\w+)11\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      'EU WVTA Pre 23': /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      'EU WVTA 23 on': /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      QNIG: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      'Prov.GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
-      'Small series': /^(\w+)11\*NKS(\w+\*)?(\w{6})$/i,
-      'IVA - VCA': /^n11\*NIV(\w{2})\/(\w{4})\*(\w{6})$/i,
-      'IVA - DVSA/NI': /^(\w+)$/i
-    };
-
     switch (this.approvalType) {
       case 'NTA':
       case 'IVA':
       case 'IVA - DVSA/NI':
         this.extractValuesNtaIva(value, patterns[this.approvalType]);
         break;
-
       case 'ECTA':
       case 'NSSTA':
       case 'ECSSTA':
@@ -142,20 +151,50 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'Prov.GB WVTA':
       case 'Small series':
       case 'IVA - VCA':
-        this.extractValues(value, patterns[this.approvalType]);
+        this.extractValues(value);
         break;
-
       default:
         console.log('Unknown approval type');
     }
   }
 
-  private extractValues(value: string, pattern: RegExp) {
-    const matches = value.match(pattern)?.filter(x => x != value);
-    this.setTypeApprovalNumbers(matches ?? []);
+  private extractValues(value: string) {
+    if (!value || !this.approvalType) {
+      return;
+    }
+
+    let matches: string[] = [];
+
+    const primaryPattern = patterns[this.approvalType];
+    const matchResult = value.match(primaryPattern);
+
+    if (!matchResult) {
+      const pattern: RegExp = /e|(\*NKS\*)|(\*NKS)|(n11\*NIV)|\*KS|\*11|[*/]/g;
+      value = value.replace(pattern, '');
+
+      const partialPattern = patternsPartial[this.approvalType] || /^$/;
+      const partialMatchResult =
+        value.length > 16 ? value.substring(0, 16).match(/(\w{1,2})(\w{1,4})(\w{1,4})(\w{1,6})/i) : value.match(partialPattern);
+
+      if (partialMatchResult) {
+        const [, ...capturedGroups] = partialMatchResult;
+        matches.push(...capturedGroups);
+      }
+    } else {
+      const [, ...capturedGroups] = matchResult;
+      matches.push(...capturedGroups);
+    }
+
+    if (!matches?.length) {
+      console.error('Unknown approvalType:', this.approvalType);
+      return;
+    }
+
+    this.setTypeApprovalNumbers(matches.filter(x => x !== null && x !== ''));
   }
+
   private extractValuesNtaIva(value: string, pattern: RegExp) {
-    const matches = value.match(pattern);
+    const matches = value.match(pattern)?.map(x => (x.length > 25 ? x.substring(0, 25) : x));
     this.setTypeApprovalNumbers(matches ?? []);
   }
 
@@ -179,43 +218,58 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
    * @returns Subscription
    */
   subscribeAndPropagateChanges() {
-    const approvalNumberFields: Segments = {
+    return combineLatest({
       approvalTypeNumber1: this.approvalTypeNumber1$,
       approvalTypeNumber2: this.approvalTypeNumber2$,
       approvalTypeNumber3: this.approvalTypeNumber3$,
       approvalTypeNumber4: this.approvalTypeNumber4$
-    };
-    return combineLatest(approvalNumberFields).subscribe({
-      next: ({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) => {
+    })
+      .pipe(
+        filter(
+          ({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) =>
+            approvalTypeNumber1 !== undefined &&
+            approvalTypeNumber2 !== undefined &&
+            approvalTypeNumber3 !== undefined &&
+            approvalTypeNumber4 !== undefined
+        )
+      )
+      .subscribe(({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) => {
         if (!approvalTypeNumber1 && !approvalTypeNumber2 && !approvalTypeNumber3 && !approvalTypeNumber4) {
           this.onChange(null);
-          return;
+        } else {
+          this.onChange(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
         }
-        this.onChange(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
-      }
-    });
+      });
   }
 
   validate() {
+    const setErrors = () => {
+      this.errors = {
+        error: true,
+        errors: [
+          {
+            error: true,
+            reason: 'Approval type number is required with Approval type',
+            index: 0
+          }
+        ]
+      };
+    };
+
+    const oneRequired = () => !this.approvalTypeNumber1 && this.approvalType;
+    const twoRequired = () => oneRequired() || !this.approvalTypeNumber2;
+    const threeRequired = () => twoRequired() || !this.approvalTypeNumber3;
+    const fourRequired = () => threeRequired() || !this.approvalTypeNumber4;
+
     switch (this.approvalType) {
-      //1
       case 'NTA':
       case 'IVA':
       case 'IVA - DVSA/NI':
-        if (!this.approvalTypeNumber1 && this.approvalType != null) {
-          this.errors = {
-            error: true,
-            errors: [
-              {
-                error: true,
-                reason: 'Approval type number is required with Approval type',
-                index: 0
-              }
-            ]
-          };
+        if (oneRequired()) {
+          setErrors();
         }
         break;
-      //4
+
       case 'GB WVTA':
       case 'EU WVTA Pre 23':
       case 'EU WVTA 23 on':
@@ -223,59 +277,27 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'QNIG':
       case 'ECTA':
       case 'ECSSTA':
-        if (
-          !this.approvalTypeNumber1 ||
-          !this.approvalTypeNumber2 ||
-          !this.approvalTypeNumber3 ||
-          (!this.approvalTypeNumber4 && this.approvalType != null)
-        ) {
-          this.errors = {
-            error: true,
-            errors: [
-              {
-                error: true,
-                reason: 'Approval type number is required with Approval type',
-                index: 0
-              }
-            ]
-          };
-        }
-        break;
-
-      //3
       case 'UKNI WVTA':
-      case 'IVA - VCA':
-        if (!this.approvalTypeNumber1 || !this.approvalTypeNumber2 || (!this.approvalTypeNumber3 && this.approvalType != null)) {
-          this.errors = {
-            error: true,
-            errors: [
-              {
-                error: true,
-                reason: 'Approval type number is required with Approval type',
-                index: 0
-              }
-            ]
-          };
+        if (fourRequired()) {
+          setErrors();
         }
         break;
 
-      //2
+      case 'IVA - VCA':
       case 'Small series':
-      case 'NSSTA':
-        if (!this.approvalTypeNumber1 || (!this.approvalTypeNumber2 && this.approvalType != null)) {
-          this.errors = {
-            error: true,
-            errors: [
-              {
-                error: true,
-                reason: 'Approval type number is required with Approval type',
-                index: 0
-              }
-            ]
-          };
+        if (threeRequired()) {
+          setErrors();
         }
         break;
+
+      case 'NSSTA':
+        if (twoRequired()) {
+          setErrors();
+        }
+        break;
+
       default:
+        console.log('default');
         break;
     }
   }
@@ -285,6 +307,12 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     this.approvalTypeNumber2 = '';
     this.approvalTypeNumber3 = '';
     this.approvalTypeNumber4 = '';
+
+    this.approvalTypeNumber1_.next(this.approvalTypeNumber1);
+    this.approvalTypeNumber2_.next(this.approvalTypeNumber2);
+    this.approvalTypeNumber3_.next(this.approvalTypeNumber3);
+    this.approvalTypeNumber4_.next(this.approvalTypeNumber4);
+
     this.onChange(null);
   }
 
