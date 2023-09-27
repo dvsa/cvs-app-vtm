@@ -121,7 +121,7 @@ describe('TestAmendmentHistoryComponent', () => {
       const links = fixture.debugElement.queryAll(By.css('a'));
 
       links.forEach((e) => expect(e.nativeElement.innerHTML).toBe('View'));
-      expect(links).toHaveLength(component.testRecord?.testHistory?.length);
+      expect(links).toHaveLength(component.testRecord?.testHistory!.length);
     }));
   });
 });
