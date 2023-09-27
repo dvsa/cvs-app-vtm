@@ -13,7 +13,10 @@ import { TechnicalRecordHttpService } from '@services/technical-record-http/tech
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/.';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
-import { firstValueFrom, of, ReplaySubject } from 'rxjs';
+import {
+  firstValueFrom, of, ReplaySubject, BehaviorSubject,
+} from 'rxjs';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { SingleSearchResultComponent } from '../single-search-result/single-search-result.component';
 import { MultipleSearchResultsComponent } from './multiple-search-results.component';
 
@@ -33,7 +36,7 @@ describe('MultipleSearchResultsComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of(['TechRecord.View']),
+            roles$: of(['TechRecord.View', 'TechRecord.Create']),
           },
         },
         TechnicalRecordHttpService,
@@ -56,8 +59,25 @@ describe('MultipleSearchResultsComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should navigate back', fakeAsync(() => {
+    it('should show create link when searchResults is null', () => {
+      const button = fixture.debugElement.query(By.css('.govuk-link'));
+      expect(button).toBeTruthy();
+    });
+
+    it('should navigate back when searchResults not null', fakeAsync(() => {
       const navigateBackSpy = jest.spyOn(component, 'navigateBack');
+      const newData: TechRecordSearchSchema[] = [
+        {
+          vin: '1B7GG36N12S678410',
+          techRecord_statusCode: 'provisional',
+          techRecord_vehicleType: 'psv',
+          createdTimestamp: '2023-09-27T12:00:00Z',
+          systemNumber: '12345',
+          techRecord_manufactureYear: 2013,
+        },
+      ];
+      component.searchResults$ = new BehaviorSubject<TechRecordSearchSchema[] | undefined>(newData);
+      fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('.govuk-back-link'));
       expect(button).toBeTruthy();
