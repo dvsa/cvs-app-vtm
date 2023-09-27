@@ -131,7 +131,7 @@ describe('TechRecordSummaryComponent', () => {
       expect(component.vehicleType).toEqual(VehicleTypes.HGV);
     });
 
-    it('should show TRL record found', async () => {
+    it('should show TRL record found', () => {
       component.isEditing = false;
       jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
         of({

@@ -84,7 +84,7 @@ describe('TechRecordSearchTyresComponent', () => {
   });
   it('should return errors', () => {
     const expectedError: GlobalError = { error: 'Error message', anchorLink: 'expected' };
-    const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink!);
+    const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink ?? '');
     expect(expectedResult).toBe(expectedError);
   });
 

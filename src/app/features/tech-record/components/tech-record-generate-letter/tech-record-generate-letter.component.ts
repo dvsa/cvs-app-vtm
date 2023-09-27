@@ -55,7 +55,7 @@ export class GenerateLetterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => (this.techRecord = techRecord));
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => { this.techRecord = techRecord; });
     this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 
@@ -72,6 +72,7 @@ export class GenerateLetterComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -84,7 +85,7 @@ export class GenerateLetterComponent implements OnInit {
       return this.globalErrorService.addError({ error: 'Could not retrieve current technical record' });
     }
 
-    const paragraphId = this.form.value.letterType == 'trailer acceptance'
+    const paragraphId = this.form.value.letterType === 'trailer acceptance'
       ? this.paragraphMap.get((this.techRecord as TechRecordType<'trl'>)!.techRecord_approvalType as approvalType)
       : 4;
 

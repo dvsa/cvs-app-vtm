@@ -41,6 +41,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) },
     );
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
     });
   }
@@ -68,6 +69,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -96,7 +98,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     this.technicalRecordService.techRecord$
       .pipe(
         takeUntil(this.destroy$),
-        skipWhile((techRecord) => techRecord?.techRecord_reasonForCreation === form.reason),
+        skipWhile((technicalRecord) => technicalRecord?.techRecord_reasonForCreation === form.reason),
         withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp')),
         take(1),
       )

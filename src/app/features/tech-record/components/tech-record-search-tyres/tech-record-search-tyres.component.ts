@@ -76,10 +76,10 @@ export class TechRecordSearchTyresComponent implements OnInit {
   ngOnInit() {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
-    this.route.params.pipe(take(1)).subscribe((p) => (this.params = p));
+    this.route.params.pipe(take(1)).subscribe((p) => { (this.params = p); });
     this.technicalRecordService.techRecord$
       .pipe(take(1))
-      .subscribe((data) => (this.viewableTechRecord = data as TechRecordType<'hgv'> | TechRecordType<'psv'> | TechRecordType<'trl'>));
+      .subscribe((data) => { this.viewableTechRecord = data as TechRecordType<'hgv'> | TechRecordType<'psv'> | TechRecordType<'trl'>; });
     this.referenceDataService
       .getTyreSearchReturn$()
       .pipe(take(1))
@@ -95,9 +95,10 @@ export class TechRecordSearchTyresComponent implements OnInit {
       });
     this.referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
     if (!this.viewableTechRecord) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
-    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((data) => (this.vehicleTechRecord = data));
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((data) => { this.vehicleTechRecord = data; });
   }
 
   get roles() {
@@ -140,6 +141,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
         take(1),
       )
       .subscribe((data) => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         this.router.navigate(['.'], { relativeTo: this.route, queryParams: { 'search-results-page': 1 } });
         this.searchResults = data as ReferenceDataTyre[];
       });
@@ -150,20 +152,22 @@ export class TechRecordSearchTyresComponent implements OnInit {
     if (this.viewableTechRecord && !this.viewableTechRecord.techRecord_axles) {
       this.viewableTechRecord.techRecord_axles = [];
     }
-    if (this.viewableTechRecord?.techRecord_axles && !this.viewableTechRecord?.techRecord_axles?.[axleIndex]) {
-      this.viewableTechRecord.techRecord_axles[axleIndex] = {};
+    if (this.viewableTechRecord?.techRecord_axles && !this.viewableTechRecord?.techRecord_axles?.[`${axleIndex}`]) {
+      this.viewableTechRecord.techRecord_axles[`${axleIndex}`] = {};
     }
 
     if (this.viewableTechRecord?.techRecord_axles) {
-      this.viewableTechRecord.techRecord_axles[axleIndex].tyres_tyreCode = Number(tyre.code);
-      this.viewableTechRecord.techRecord_axles[axleIndex].tyres_tyreSize = tyre.tyreSize;
-      this.viewableTechRecord.techRecord_axles[axleIndex].tyres_plyRating = tyre.plyRating;
-      if (this.viewableTechRecord.techRecord_axles[axleIndex].tyres_fitmentCode) {
-        this.viewableTechRecord.techRecord_axles[axleIndex].tyres_dataTrAxles = this.viewableTechRecord.techRecord_axles[axleIndex].tyres_fitmentCode === 'single'
-          ? parseInt(tyre.loadIndexSingleLoad ?? '0')
-          : parseInt(tyre.loadIndexTwinLoad ?? '0');
+      this.viewableTechRecord.techRecord_axles[`${axleIndex}`].tyres_tyreCode = Number(tyre.code);
+      this.viewableTechRecord.techRecord_axles[`${axleIndex}`].tyres_tyreSize = tyre.tyreSize;
+      this.viewableTechRecord.techRecord_axles[`${axleIndex}`].tyres_plyRating = tyre.plyRating;
+      if (this.viewableTechRecord.techRecord_axles[`${axleIndex}`].tyres_fitmentCode) {
+        // eslint-disable-next-line max-len
+        this.viewableTechRecord.techRecord_axles[`${axleIndex}`].tyres_dataTrAxles = this.viewableTechRecord.techRecord_axles[`${axleIndex}`].tyres_fitmentCode === 'single'
+          ? parseInt(tyre.loadIndexSingleLoad ?? '0', 10)
+          : parseInt(tyre.loadIndexTwinLoad ?? '0', 10);
       }
       this.technicalRecordService.updateEditingTechRecord(this.viewableTechRecord as TechRecordTypeByVerb<'put'>);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
   }
@@ -181,6 +185,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
   }
   cancel() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['../..'], { relativeTo: this.route });
   }
 }

@@ -124,7 +124,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get vehicleTemplates(): Array<FormNode> {
-    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => (this.isEditing = editing));
+    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => { (this.isEditing = editing); });
     if (!this.vehicleType) {
       return [];
     }
