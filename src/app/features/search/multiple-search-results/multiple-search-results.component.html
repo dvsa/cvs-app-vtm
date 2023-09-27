@@ -1,4 +1,4 @@
-<ng-container *ngIf="(searchResults$ | async)?.length && Roles.TechRecordCreate; else noResults">
+<ng-container *ngIf="(searchResults$ | async)?.length; else noResults">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
       <a class="govuk-back-link" id="multiple-search-results-back-link" (click)="navigateBack()">Back</a>
