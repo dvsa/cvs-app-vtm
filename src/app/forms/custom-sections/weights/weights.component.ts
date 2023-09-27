@@ -27,6 +27,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   public isError: boolean = false;
   public errorMessage?: string;
   private ladenWeightOverride: boolean = false;
+  private autoCalculationInProgress: boolean = false;
 
   constructor(public dynamicFormsService: DynamicFormService, private store: Store<TechnicalRecordServiceState>) {}
 
@@ -34,6 +35,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     this.form = this.dynamicFormsService.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
 
     const grossLadenWeightChanges = this.form.get('techRecord_grossLadenWeight')?.valueChanges.subscribe(value => {
+      console.log('setting override value to true');
       this.ladenWeightOverride = true;
     });
     if (grossLadenWeightChanges) {
@@ -42,6 +44,8 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
     this._formSubscription.add(
       this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event: any) => {
+        if (this.ladenWeightOverride) return;
+
         const {
           techRecord_seatsUpperDeck,
           techRecord_seatsLowerDeck,
@@ -57,6 +61,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
           techRecord_grossKerbWeight !== undefined;
 
         if (shouldRecalculate) {
+          console.log('setting override to false');
           this.ladenWeightOverride = false;
         }
 
@@ -64,13 +69,17 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
           event.techRecord_axles = (event.techRecord_axles as Axle[]).filter(axle => !!axle?.axleNumber);
         }
 
-        if ((this.isPsv && !this.ladenWeightOverride) || shouldRecalculate) {
+        if (this.isPsv && !this.ladenWeightOverride && shouldRecalculate) {
+          console.log('on init auto calculating');
+          this.autoCalculationInProgress = true;
+
           const calculatedWeight = this.calculateGrossLadenWeight();
           event.techRecord_grossLadenWeight = calculatedWeight;
 
           this.form.get('techRecord_grossLadenWeight')?.setValue(calculatedWeight, { emitEvent: false });
-        }
 
+          this.autoCalculationInProgress = false; // Reset it immediately after
+        }
         this.formChange.emit(event);
 
         if (techRecord_grossLadenWeight || techRecord_grossKerbWeight) {
@@ -82,7 +91,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { vehicleTechRecord } = changes;
-    if (this.form && vehicleTechRecord) {
+    if (this.form && vehicleTechRecord && !this.ladenWeightOverride) {
       const { currentValue, previousValue } = vehicleTechRecord;
 
       const fieldsChanged = [
@@ -93,6 +102,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
       ].some(field => currentValue[field] !== previousValue[field]);
 
       if (fieldsChanged) {
+        console.log('auto calculating');
         const newGrossLadenWeight = this.calculateGrossLadenWeight();
 
         this.form.patchValue(
