@@ -33,7 +33,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.form = this.dynamicFormsService.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
 
-    // This subscription checks for manual changes to grossLadenWeight
     const grossLadenWeightChanges = this.form.get('techRecord_grossLadenWeight')?.valueChanges.subscribe(value => {
       this.ladenWeightOverride = true;
     });
@@ -43,20 +42,13 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
     this._formSubscription.add(
       this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event: any) => {
-        // Extract the relevant fields from the event
         const {
           techRecord_seatsUpperDeck,
           techRecord_seatsLowerDeck,
           techRecord_manufactureYear,
           techRecord_grossKerbWeight,
-          techRecord_grossLadenWeight // Added this for later dispatch
+          techRecord_grossLadenWeight
         } = event || {};
-
-        console.log(techRecord_seatsUpperDeck);
-        console.log(techRecord_seatsLowerDeck);
-        console.log(techRecord_manufactureYear);
-        console.log(techRecord_grossKerbWeight);
-        console.log(techRecord_grossLadenWeight);
 
         const shouldRecalculate =
           techRecord_seatsUpperDeck !== undefined ||
@@ -65,7 +57,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
           techRecord_grossKerbWeight !== undefined;
 
         if (shouldRecalculate) {
-          this.ladenWeightOverride = false; // Reset the override flag
+          this.ladenWeightOverride = false;
         }
 
         if (event?.techRecord_axles) {
@@ -73,17 +65,14 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         if ((this.isPsv && !this.ladenWeightOverride) || shouldRecalculate) {
-          console.log('Recalculating grossLadenWeight');
           const calculatedWeight = this.calculateGrossLadenWeight();
           event.techRecord_grossLadenWeight = calculatedWeight;
 
-          // Update the form control value for grossLadenWeight so that the UI updates.
           this.form.get('techRecord_grossLadenWeight')?.setValue(calculatedWeight, { emitEvent: false });
         }
 
         this.formChange.emit(event);
 
-        // The following dispatch now includes both techRecord_grossLadenWeight and techRecord_grossKerbWeight
         if (techRecord_grossLadenWeight || techRecord_grossKerbWeight) {
           this.store.dispatch(updateBrakeForces({ grossLadenWeight: techRecord_grossLadenWeight, grossKerbWeight: techRecord_grossKerbWeight }));
         }
@@ -96,7 +85,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     if (this.form && vehicleTechRecord) {
       const { currentValue, previousValue } = vehicleTechRecord;
 
-      // Check if any of the fields have changed
       const fieldsChanged = [
         'techRecord_seatsUpperDeck',
         'techRecord_seatsLowerDeck',
@@ -105,10 +93,8 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
       ].some(field => currentValue[field] !== previousValue[field]);
 
       if (fieldsChanged) {
-        // Recalculate grossLadenWeight
         const newGrossLadenWeight = this.calculateGrossLadenWeight();
 
-        // Update form value without emitting event to avoid infinite loop
         this.form.patchValue(
           {
             techRecord_grossLadenWeight: newGrossLadenWeight
@@ -188,15 +174,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     const techRecord_seatsLowerDeck = psvRecord?.techRecord_seatsLowerDeck ?? 0;
     const techRecord_manufactureYear = psvRecord?.techRecord_manufactureYear ?? 0;
     const techRecord_grossKerbWeight = psvRecord?.techRecord_grossKerbWeight ?? 0;
-
-    console.log(techRecord_seatsUpperDeck);
-    console.log(techRecord_seatsLowerDeck);
-    console.log(techRecord_manufactureYear);
-    console.log(techRecord_grossKerbWeight);
-
     const kgAllowedPerPerson = techRecord_manufactureYear >= 1988 ? 65 : 63.5;
 
-    const totalPassengers = techRecord_seatsUpperDeck + techRecord_seatsLowerDeck + 1; // Add 1 for the driv
+    const totalPassengers = techRecord_seatsUpperDeck + techRecord_seatsLowerDeck + 1;
     return totalPassengers * kgAllowedPerPerson + techRecord_grossKerbWeight;
   }
 }
