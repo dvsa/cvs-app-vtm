@@ -48,7 +48,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
       if (!vehicle) return this.back();
     });
 
-    this.batchTechRecordService.vehicleType$.pipe(take(1)).subscribe((vehicleType) => (this.vehicleType = vehicleType));
+    this.batchTechRecordService.vehicleType$.pipe(take(1)).subscribe((vehicleType) => { (this.vehicleType = vehicleType); });
   }
   ngOnInit(): void {
     this.addVehicles(this.maxNumberOfVehicles);
@@ -130,6 +130,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
   }
 
   back(): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -171,7 +172,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
       this.globalErrorService.setErrors(errors);
     }
 
-    if (this.cleanEmptyValues(this.vehicles.value).length == 0) {
+    if (this.cleanEmptyValues(this.vehicles.value).length === 0) {
       this.globalErrorService.addError({ error: 'At least 1 vehicle must be created or updated in a batch' });
       return false;
     }

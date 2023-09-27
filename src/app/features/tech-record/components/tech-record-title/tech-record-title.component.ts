@@ -73,6 +73,7 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   navigateTo(path: string, queryParams?: Params): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate([path], { relativeTo: this.route, queryParams });
   }
 }

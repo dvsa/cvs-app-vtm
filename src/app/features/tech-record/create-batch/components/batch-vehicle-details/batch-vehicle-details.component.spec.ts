@@ -1,13 +1,12 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/.';
+import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { BatchVehicleDetailsComponent } from './batch-vehicle-details.component';
 
@@ -19,25 +18,20 @@ const mockGlobalErrorService = {
 describe('BatchVehicleDetailsComponent', () => {
   let component: BatchVehicleDetailsComponent;
   let fixture: ComponentFixture<BatchVehicleDetailsComponent>;
-  let router: Router;
-  let store: MockStore<State>;
-  let errorService: GlobalErrorService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BatchVehicleDetailsComponent],
       imports: [DynamicFormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
-      providers: [FormBuilder, { provide: GlobalErrorService, useValue: mockGlobalErrorService }, provideMockStore({ initialState: initialAppState })],
+      providers: [FormBuilder, { provide: GlobalErrorService, useValue: mockGlobalErrorService },
+        provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    store = TestBed.inject(MockStore);
-    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(BatchVehicleDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    errorService = TestBed.inject(GlobalErrorService);
   });
 
   it('should create', () => {

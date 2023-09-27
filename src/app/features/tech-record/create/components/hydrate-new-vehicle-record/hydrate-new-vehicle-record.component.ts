@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import {
   Component, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
@@ -42,6 +43,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.actions$
       .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       .subscribe(({ vehicleTechRecord }) =>
         this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]));
 

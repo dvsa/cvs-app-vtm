@@ -20,7 +20,6 @@ describe('CreateNewVehicleRecordComponent', () => {
   let errorService: GlobalErrorService;
   let route: ActivatedRoute;
   let router: Router;
-  let store: MockStore;
   let techRecordService: TechnicalRecordService;
   const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
 
@@ -41,7 +40,6 @@ describe('CreateNewVehicleRecordComponent', () => {
     errorService = TestBed.inject(GlobalErrorService);
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
-    store = TestBed.inject(MockStore);
     techRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -108,18 +106,18 @@ describe('CreateNewVehicleRecordComponent', () => {
   });
 
   describe('handleSubmit', () => {
-    it('should do nothing if the form is not valid', () => {
+    it('should do nothing if the form is not valid', async () => {
       const formUniqueSpy = jest.spyOn(component, 'isFormValueUnique').mockImplementation();
-      component.handleSubmit();
+      await component.handleSubmit();
       expect(formUniqueSpy).toHaveBeenCalledTimes(0);
     });
 
-    it('should do nothing if the form value not unique', () => {
+    it('should do nothing if the form value not unique', async () => {
       const isFormValid = jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
       const updateEditingSpy = jest.spyOn(techRecordService, 'updateEditingTechRecord');
       const navigateSpy = jest.spyOn(router, 'navigate');
       const generateTechREcordSpy = jest.spyOn(techRecordService, 'generateEditingVehicleTechnicalRecordFromVehicleType');
-      component.handleSubmit();
+      await component.handleSubmit();
 
       expect(isFormValid).toHaveReturned();
       expect(updateEditingSpy).toHaveBeenCalledTimes(0);

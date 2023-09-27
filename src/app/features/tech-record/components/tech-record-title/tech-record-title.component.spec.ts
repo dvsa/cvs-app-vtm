@@ -91,12 +91,12 @@ describe('TechRecordTitleComponent', () => {
   });
   describe('trailer ID', () => {
     it('shows a trailer ID instead of VRM when vehicle type is a trailer', () => {
-      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL)!;
-      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecord));
+      const mockRecordTrailer = mockVehicleTechnicalRecord(VehicleTypes.TRL);
+      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecordTrailer));
 
-      component.vehicle = mockRecord;
+      component.vehicle = mockRecordTrailer;
 
-      store.overrideSelector(selectTechRecord, mockRecord as any);
+      store.overrideSelector(selectTechRecord, mockRecordTrailer as any);
       fixture.detectChanges();
 
       const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
@@ -106,11 +106,11 @@ describe('TechRecordTitleComponent', () => {
     const smallTrailerEuVehicleCategories = [EuVehicleCategories.O1, EuVehicleCategories.O2];
 
     it.each(smallTrailerEuVehicleCategories)('does not show secondary VRMs for small trailer', (euVehicleCategory) => {
-      const mockRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL)!;
-      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecord));
-      mockRecord.techRecord_euVehicleCategory = euVehicleCategory;
-      component.vehicle = mockRecord;
-      store.overrideSelector(selectTechRecord, mockRecord as any);
+      const mockRecordTrailer = mockVehicleTechnicalRecord(VehicleTypes.TRL);
+      jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecordTrailer));
+      mockRecordTrailer.techRecord_euVehicleCategory = euVehicleCategory;
+      component.vehicle = mockRecordTrailer;
+      store.overrideSelector(selectTechRecord, mockRecordTrailer as any);
       fixture.detectChanges();
 
       const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));

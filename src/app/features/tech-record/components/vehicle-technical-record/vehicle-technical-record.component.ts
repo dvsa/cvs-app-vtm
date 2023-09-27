@@ -46,7 +46,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   isDirty = false;
   isInvalid = false;
 
-  destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
   hasTestResultAmend: boolean | undefined = false;
 
   constructor(
@@ -67,11 +67,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.editingReason = this.activatedRoute.snapshot.data['reason'];
   }
   ngOnDestroy(): void {
-    this.destroy$.next;
+    this.destroy$.next();
     this.destroy$.complete();
   }
   ngOnInit(): void {
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
       ]);
@@ -140,12 +141,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     );
   }
 
-  createTest(techRecord?: V3TechRecordModel): void {
+  async createTest(techRecord?: V3TechRecordModel): Promise<void> {
     if (
       (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'complete'
       || (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'testable'
     ) {
-      this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
+      await this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
       this.globalErrorService.setErrors([
         {
@@ -183,6 +184,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
     return this.hasTestResultAmend
       ? 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.'
-      : 'This vehicle does not have enough information to be tested. Call the Contact Centre to complete this record so tests can be recorded against it.';
+      : 'This vehicle does not have enough information to be tested.'
+      + ' Call the Contact Centre to complete this record so tests can be recorded against it.';
   }
 }

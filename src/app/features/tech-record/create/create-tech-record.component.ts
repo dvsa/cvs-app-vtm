@@ -17,7 +17,6 @@ import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-h
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { firstValueFrom } from 'rxjs';
-import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 
 @Component({
   selector: 'app-create',
@@ -109,6 +108,7 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   toggleVrmInput(checked: any) {
+    // eslint-disable-next-line prefer-destructuring
     const vrmTrm = this.form.controls['vrmTrm'];
 
     if (checked.value) {
@@ -124,6 +124,7 @@ export class CreateTechRecordComponent implements OnChanges {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -146,6 +147,7 @@ export class CreateTechRecordComponent implements OnChanges {
     this.technicalRecordService.updateEditingTechRecord(this.techRecord as TechRecordType<'put'>);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.techRecord.techRecord_vehicleType as VehicleTypes);
     this.technicalRecordService.clearSectionTemplateStates();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
   }
 

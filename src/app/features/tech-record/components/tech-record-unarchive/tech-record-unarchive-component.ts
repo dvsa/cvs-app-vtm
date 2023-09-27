@@ -53,6 +53,7 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     });
 
     this.actions$.pipe(ofType(unarchiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
 
       this.technicalRecordService.clearEditingTechRecord();
@@ -60,11 +61,12 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next;
-    this.destroy$.complete;
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   navigateBack(relativePath = '..'): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
@@ -91,14 +93,14 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
 
   private validateControls() {
     const reasonControl = this.form.controls['reason'];
-    const newRecordStatus = this.form.controls['newRecordStatus'];
+    const newRecordStatusControl = this.form.controls['newRecordStatus'];
 
     const errors = [];
     if (!reasonControl.valid) {
       errors.push({ error: 'Reason for unarchival is required', anchorLink: 'reason' });
     }
 
-    if (!newRecordStatus.valid) {
+    if (!newRecordStatusControl.valid) {
       errors.push({ error: 'New Record Status is required', anchorLink: 'newRecordStatus' });
     }
 

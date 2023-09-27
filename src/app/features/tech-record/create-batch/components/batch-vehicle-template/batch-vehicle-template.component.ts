@@ -45,6 +45,7 @@ export class BatchVehicleTemplateComponent {
       .select(selectTechRecord)
       .pipe(take(1))
       .subscribe((vehicle) => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
       });
 
@@ -132,10 +133,9 @@ export class BatchVehicleTemplateComponent {
             }
           });
           this.technicalRecordService.clearSectionTemplateStates();
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
           this.router.navigate(['batch-results'], { relativeTo: this.route });
         });
-    } else {
-
     }
   }
 }

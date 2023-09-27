@@ -10,7 +10,6 @@ import { BatchVehicleResultsComponent } from './batch-vehicle-results.component'
 describe('BatchVehicleResultsComponent', () => {
   let component: BatchVehicleResultsComponent;
   let fixture: ComponentFixture<BatchVehicleResultsComponent>;
-  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -21,7 +20,6 @@ describe('BatchVehicleResultsComponent', () => {
   });
 
   beforeEach(() => {
-    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(BatchVehicleResultsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

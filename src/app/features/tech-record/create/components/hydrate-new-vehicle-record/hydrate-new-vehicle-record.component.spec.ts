@@ -19,7 +19,6 @@ import { HydrateNewVehicleRecordComponent } from './hydrate-new-vehicle-record.c
 describe('HydrateNewVehicleRecordComponent', () => {
   let component: HydrateNewVehicleRecordComponent;
   let fixture: ComponentFixture<HydrateNewVehicleRecordComponent>;
-  let techRecordService: TechnicalRecordService;
   const actions$ = new ReplaySubject<Action>();
   let errorService: GlobalErrorService;
   let route: ActivatedRoute;
@@ -40,7 +39,6 @@ describe('HydrateNewVehicleRecordComponent', () => {
     errorService = TestBed.inject(GlobalErrorService);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
-    techRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

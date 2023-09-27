@@ -51,9 +51,6 @@ describe('BatchVehicleTemplateComponent', () => {
   let fixture: ComponentFixture<BatchVehicleTemplateComponent>;
   let store: MockStore<State>;
   let router: Router;
-  let errorService: GlobalErrorService;
-  let technicalRecordService: TechnicalRecordService;
-  let batchTechRecordService: BatchTechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -75,10 +72,7 @@ describe('BatchVehicleTemplateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BatchVehicleTemplateComponent);
     store = TestBed.inject(MockStore);
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
-    errorService = TestBed.inject(GlobalErrorService);
     router = TestBed.inject(Router);
-    batchTechRecordService = TestBed.inject(BatchTechnicalRecordService);
     component = fixture.componentInstance;
   });
 

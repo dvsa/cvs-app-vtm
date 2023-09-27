@@ -14,7 +14,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/index';
+import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
@@ -26,9 +26,6 @@ import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.comp
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
   let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;
-  let store: MockStore<State>;
-  let techRecord: V3TechRecordModel;
-
   @Component({})
   class TechRecordSummaryStubComponent {
     checkForms() {}
@@ -90,7 +87,6 @@ describe('VehicleTechnicalRecordComponent', () => {
   });
 
   beforeEach(() => {
-    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(VehicleTechnicalRecordComponent);
     component = fixture.componentInstance;
     component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;

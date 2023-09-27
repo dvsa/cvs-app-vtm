@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { Roles } from '@models/roles.enum';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { TechRecordComponent } from './tech-record.component';
 
 describe('TechRecordComponent', () => {
@@ -44,7 +44,7 @@ describe('TechRecordComponent', () => {
   it('should return error', () => {
     const expectedError: GlobalError = { error: 'some error', anchorLink: 'expected' };
 
-    const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink!);
+    const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink ?? '');
 
     expect(expectedResult).toBe(expectedError);
   });

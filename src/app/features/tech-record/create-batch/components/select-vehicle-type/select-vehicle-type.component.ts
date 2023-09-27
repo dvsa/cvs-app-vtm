@@ -66,6 +66,7 @@ export class SelectVehicleTypeComponent {
 
   cancel() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -88,6 +89,7 @@ export class SelectVehicleTypeComponent {
 
     this.trs.generateEditingVehicleTechnicalRecordFromVehicleType(type);
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate([type], { relativeTo: this.route });
   }
 }
