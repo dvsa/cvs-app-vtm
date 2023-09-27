@@ -58,7 +58,7 @@ describe('MultipleSearchResultsComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should return not found error and create link when searchResults is null', async () => {
+    it('should show create link when searchResults is null', async () => {
       const button = fixture.debugElement.query(By.css('.govuk-link'));
       expect(button).toBeTruthy();
     });
