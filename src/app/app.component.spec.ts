@@ -12,7 +12,7 @@ import { initialAppState, State } from './store';
 
 describe('AppComponent', () => {
   const MockUserService = {
-    getUserName$: jest.fn().mockReturnValue(new Observable())
+    getUserName$: jest.fn().mockReturnValue(new Observable()),
   };
 
   beforeEach(async () => {
@@ -22,8 +22,8 @@ describe('AppComponent', () => {
       providers: [
         provideMockStore<State>({ initialState: initialAppState }),
         { provide: LoadingService, useValue: { showSpinner$: of(false) } },
-        { provide: UserService, useValue: MockUserService }
-      ]
+        { provide: UserService, useValue: MockUserService },
+      ],
     }).compileComponents();
   });
 

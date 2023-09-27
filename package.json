@@ -17,7 +17,7 @@
     "watch": "ng build --watch",
     "sonar-scanner": "npm run test && sonar-scanner",
     "security-checks": "git secrets --scan",
-    "lint": "eslint -f json -o report.json --ext .ts .",
+    "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --ext .ts . --fix",
     "format": "npx prettier '!src/app/api/**/*.{js,ts}' 'src/**/*.{js,jsx,ts,tsx,html,css,scss}' --write",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
