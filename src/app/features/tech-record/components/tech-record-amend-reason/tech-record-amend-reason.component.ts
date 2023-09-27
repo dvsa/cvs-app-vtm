@@ -16,7 +16,11 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 export class TechRecordAmendReasonComponent {
   reasons: Array<FormNodeOption<string>> = [
     { label: 'Correcting an error', value: ReasonForEditing.CORRECTING_AN_ERROR, hint: 'Amend the current technical record' },
-    { label: 'Notifiable alteration needed', value: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, hint: 'Create a new provisional technical record' },
+    {
+      label: 'Notifiable alteration needed',
+      value: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED,
+      hint: 'Create a new provisional technical record',
+    },
   ];
 
   form: CustomFormGroup;
@@ -42,6 +46,7 @@ export class TechRecordAmendReasonComponent {
     this.form.valid ? this.errorService.clearErrors() : this.errorService.setErrors(errors);
 
     if (this.form.valid && reason) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([`../${reason}`], { relativeTo: this.route });
     }
   }

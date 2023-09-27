@@ -112,12 +112,13 @@ describe('CreateNewVehicleRecordComponent', () => {
       expect(formUniqueSpy).toHaveBeenCalledTimes(0);
     });
 
-    it('should do nothing if the form value not unique', async () => {
+    it('should do nothing if the form value not unique', () => {
       const isFormValid = jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
       const updateEditingSpy = jest.spyOn(techRecordService, 'updateEditingTechRecord');
       const navigateSpy = jest.spyOn(router, 'navigate');
       const generateTechREcordSpy = jest.spyOn(techRecordService, 'generateEditingVehicleTechnicalRecordFromVehicleType');
-      await component.handleSubmit();
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      component.handleSubmit();
 
       expect(isFormValid).toHaveReturned();
       expect(updateEditingSpy).toHaveBeenCalledTimes(0);

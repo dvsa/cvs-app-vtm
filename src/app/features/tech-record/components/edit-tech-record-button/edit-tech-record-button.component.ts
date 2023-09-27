@@ -43,7 +43,8 @@ export class EditTechRecordButtonComponent implements OnDestroy {
 
   get isArchived$(): Observable<boolean> {
     return this.technicalRecordService.techRecord$.pipe(
-      map((techRecord) => !(techRecord?.techRecord_statusCode === StatusCodes.CURRENT || techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL)),
+      map((techRecord) => !(techRecord?.techRecord_statusCode === StatusCodes.CURRENT
+         || techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL)),
     );
   }
 
@@ -55,6 +56,7 @@ export class EditTechRecordButtonComponent implements OnDestroy {
         distinctUntilChanged(),
       )
       .subscribe((statusCode) => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         statusCode !== StatusCodes.PROVISIONAL
           ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
           : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route });
@@ -68,11 +70,13 @@ export class EditTechRecordButtonComponent implements OnDestroy {
   }
 
   cancel() {
+    // eslint-disable-next-line no-restricted-globals
     if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
       this.toggleEditMode();
       this.errorService.clearErrors();
       this.store.dispatch(updateEditingTechRecordCancel());
       this.store.dispatch(clearAllSectionStates());
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate(['../'], { relativeTo: this.route });
     }
   }

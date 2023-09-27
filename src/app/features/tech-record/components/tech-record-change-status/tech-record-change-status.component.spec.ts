@@ -21,8 +21,6 @@ describe('TechRecordChangeStatusComponent', () => {
   let actions$: ReplaySubject<Action>;
   let component: TechRecordChangeStatusComponent;
   let fixture: ComponentFixture<TechRecordChangeStatusComponent>;
-  let route: ActivatedRoute;
-  let router: Router;
 
   beforeEach(async () => {
     actions$ = new ReplaySubject<Action>();
@@ -43,8 +41,6 @@ describe('TechRecordChangeStatusComponent', () => {
       ],
     }).compileComponents();
 
-    route = TestBed.inject(ActivatedRoute);
-    router = TestBed.inject(Router);
   });
 
   beforeEach(() => {

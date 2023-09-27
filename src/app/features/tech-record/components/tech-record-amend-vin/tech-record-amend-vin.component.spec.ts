@@ -43,7 +43,6 @@ describe('TechRecordChangeVinComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let store: MockStore;
-  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -66,7 +65,6 @@ describe('TechRecordChangeVinComponent', () => {
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
     component.form.controls['vin'].clearAsyncValidators();
     component.form.controls['vin'].setAsyncValidators(mockTechRecordService.validateVinForUpdate.bind(this));

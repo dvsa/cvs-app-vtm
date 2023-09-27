@@ -1,5 +1,5 @@
 import {
-  ComponentFixture, fakeAsync, TestBed, tick,
+  ComponentFixture, fakeAsync, TestBed,
 } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
@@ -45,7 +45,6 @@ describe('TechRecordChangeVrmComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let store: MockStore<State>;
-  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -67,7 +66,6 @@ describe('TechRecordChangeVrmComponent', () => {
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
     component.cherishedTransferForm.controls['currentVrm'].clearAsyncValidators();
     component.cherishedTransferForm.controls['currentVrm'].setAsyncValidators(mockTechRecordService.validateVrmForCherishedTransfer.bind(this));

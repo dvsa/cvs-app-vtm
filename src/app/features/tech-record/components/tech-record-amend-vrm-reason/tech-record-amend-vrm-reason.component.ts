@@ -8,7 +8,6 @@ import {
   CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 import { NotTrailer, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
@@ -38,7 +37,6 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
   ) {}
 
@@ -75,6 +73,7 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -83,6 +82,7 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate([this.form.controls['isCherishedTransfer'].value], { relativeTo: this.route });
   }
 

@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  ComponentFixture, fakeAsync, TestBed, tick,
+  ComponentFixture, TestBed,
 } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
@@ -8,30 +8,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { NotTrailer, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/index';
-import { selectRouteData } from '@store/router/selectors/router.selectors';
-import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
-import { TechRecordGETCar, TechRecordGETPSV, TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { AmendVrmReasonComponent } from './tech-record-amend-vrm-reason.component';
-
-const mockTechRecordService = {
-  techRecord$: of({}),
-  get viewableTechRecord$() {
-    return of({
-      systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM',
-    });
-  },
-  updateEditingTechRecord: jest.fn(),
-  isUnique: jest.fn(),
-};
 
 const mockDynamicFormService = {
   createForm: jest.fn(),
@@ -41,12 +25,8 @@ describe('TechRecordChangeVrmComponent', () => {
   const actions$ = new ReplaySubject<Action>();
   let component: AmendVrmReasonComponent;
   let errorService: GlobalErrorService;
-  const expectedVehicle = {} as V3TechRecordModel;
   let fixture: ComponentFixture<AmendVrmReasonComponent>;
-  let route: ActivatedRoute;
   let router: Router;
-  let store: MockStore<State>;
-  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -66,10 +46,7 @@ describe('TechRecordChangeVrmComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AmendVrmReasonComponent);
     errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
-    store = TestBed.inject(MockStore);
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
   });
 

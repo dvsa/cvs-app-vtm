@@ -18,7 +18,7 @@ describe('TechRecordComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
       declarations: [TechRecordComponent],
-      providers: [provideMockStore({ initialState: initialAppState })],,
+      providers: [provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 

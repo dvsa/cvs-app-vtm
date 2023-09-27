@@ -147,8 +147,7 @@ export class CreateTechRecordComponent implements OnChanges {
     this.technicalRecordService.updateEditingTechRecord(this.techRecord as TechRecordType<'put'>);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.techRecord.techRecord_vehicleType as VehicleTypes);
     this.technicalRecordService.clearSectionTemplateStates();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
+    await this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
   }
 
   async isFormValueUnique() {
