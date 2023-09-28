@@ -14,7 +14,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/index';
+import { initialAppState } from '@store/index';
 import { of } from 'rxjs';
 import { EditTechRecordButtonComponent } from '../edit-tech-record-button/edit-tech-record-button.component';
 import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
@@ -26,9 +26,6 @@ import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.comp
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
   let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;
-  let store: MockStore<State>;
-  let techRecord: V3TechRecordModel;
-
   @Component({})
   class TechRecordSummaryStubComponent {
     checkForms() {}
@@ -44,7 +41,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         RouterModule.forRoot([]),
         RouterTestingModule,
         SharedModule,
-        StoreModule.forRoot({})
+        StoreModule.forRoot({}),
       ],
       declarations: [
         EditTechRecordButtonComponent,
@@ -53,7 +50,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         TechRecordTitleComponent,
         TechRecordSummaryStubComponent,
         TestRecordSummaryComponent,
-        VehicleTechnicalRecordComponent
+        VehicleTechnicalRecordComponent,
       ],
       providers: [
         MultiOptionsService,
@@ -62,14 +59,16 @@ describe('VehicleTechnicalRecordComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of(['TestResult.View', 'TestResult.CreateContingency'])
-          }
+            roles$: of(['TestResult.View', 'TestResult.CreateContingency']),
+          },
         },
         {
           provide: TechnicalRecordService,
           useValue: {
             get techRecord$() {
-              return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT });
+              return of({
+                systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT,
+              });
             },
             updateEditingTechRecord: () => {},
             get editableTechRecord$() {
@@ -80,15 +79,14 @@ describe('VehicleTechnicalRecordComponent', () => {
             },
             getVehicleTypeWithSmallTrl: (techRecord: TechRecordModel) => {
               return techRecord.vehicleType;
-            }
-          }
-        }
-      ]
+            },
+          },
+        },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(VehicleTechnicalRecordComponent);
     component = fixture.componentInstance;
     component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;

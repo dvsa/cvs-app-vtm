@@ -4,11 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { initialAppState, State } from '@store/.';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { ReferenceDataDeleteComponent } from './reference-data-delete.component';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataDeleteComponent } from './reference-data-delete.component';
 
 describe('ReferenceDataAddComponent', () => {
   let component: ReferenceDataDeleteComponent;
@@ -26,8 +26,8 @@ describe('ReferenceDataAddComponent', () => {
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
-        { provide: UserService, useValue: {} }
-      ]
+        { provide: UserService, useValue: {} },
+      ],
     }).compileComponents();
   });
 
@@ -60,7 +60,7 @@ describe('ReferenceDataAddComponent', () => {
 
       component.navigateBack();
 
-      expect(navigateSpy).toBeCalledWith(['../..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['../..'], { relativeTo: route });
     });
   });
   describe('handleFormChange', () => {
@@ -81,7 +81,7 @@ describe('ReferenceDataAddComponent', () => {
         reason: 'test reason',
         resourceKey: 'testkey',
         resourceType: 'COUNTRY_OF_REGISTRATION',
-        type: '[API/reference-data] deleteReferenceDataItem'
+        type: '[API/reference-data] deleteReferenceDataItem',
       });
     });
     it('will dispatches if there is a reason and type defined', () => {
@@ -97,7 +97,7 @@ describe('ReferenceDataAddComponent', () => {
         reason: 'test reason',
         resourceKey: 'testkey',
         resourceType: 'COUNTRY_OF_REGISTRATION',
-        type: '[API/reference-data] deleteReferenceDataItem'
+        type: '[API/reference-data] deleteReferenceDataItem',
       });
     });
   });

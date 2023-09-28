@@ -1,39 +1,38 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestTypesService } from '@api/test-types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
-import { VehicleHeaderComponent } from './vehicle-header.component';
-import { TechRecordModel, VehicleTypes, VehicleConfigurations, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { VehicleTypes, VehicleConfigurations, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { of } from 'rxjs';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { VehicleHeaderComponent } from './vehicle-header.component';
 
 const mockTechnicalRecordService = {
   get techRecord$() {
     return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' });
-  }
+  },
 };
 
 describe('VehicleHeaderComponent', () => {
   let component: VehicleHeaderComponent;
   let fixture: ComponentFixture<VehicleHeaderComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [VehicleHeaderComponent],
       imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
       providers: [
         TestTypesService,
         provideMockStore({ initialState: initialAppState }),
         ResultOfTestService,
-        { provide: TechnicalRecordService, useValue: mockTechnicalRecordService }
-      ]
+        { provide: TechnicalRecordService, useValue: mockTechnicalRecordService },
+      ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VehicleHeaderComponent);
@@ -46,15 +45,15 @@ describe('VehicleHeaderComponent', () => {
   });
 
   it('should combine the odometer reading', () => {
-    expect(component.combinedOdometerReading('1234', 'kilometres')).toEqual('1234 km');
+    expect(component.combinedOdometerReading('1234', 'kilometres')).toBe('1234 km');
   });
 
   it('should display the unit if the reading is undefined', () => {
-    expect(component.combinedOdometerReading(undefined, 'kilometres')).toEqual(' km');
+    expect(component.combinedOdometerReading(undefined, 'kilometres')).toBe(' km');
   });
 
   it('should display the reading if the unit is undefined', () => {
-    expect(component.combinedOdometerReading('1234', undefined)).toEqual('1234 ');
+    expect(component.combinedOdometerReading('1234', undefined)).toBe('1234 ');
   });
 
   it('should display the correct data based on vehicle type', () => {
@@ -65,12 +64,12 @@ describe('VehicleHeaderComponent', () => {
       techRecord_chassisMake: 'testChassis',
       techRecord_chassisModel: 'testChassisModel',
       techRecord_make: 'testHGV',
-      techRecord_model: 'testHGVModel'
+      techRecord_model: 'testHGVModel',
     } as unknown as V3TechRecordModel;
 
-    expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toEqual('rigid');
-    expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toEqual('testBody-testBodyModel');
-    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toEqual('testHGV-testHGVModel');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toBe('rigid');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toBe('testBody-testBodyModel');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toBe('testHGV-testHGVModel');
   });
 
   it('should display an empty string if all required data cannot be retrieved', () => {
@@ -80,7 +79,7 @@ describe('VehicleHeaderComponent', () => {
       techRecord_chassisMake: '',
       techRecord_chassisModel: 'testChassisModel',
       techRecord_make: '',
-      techRecord_model: 'testHGVModel'
+      techRecord_model: 'testHGVModel',
     } as unknown as V3TechRecordModel;
 
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toBeFalsy();
@@ -93,8 +92,8 @@ describe('VehicleHeaderComponent', () => {
       techRecord_bodyMake: 'testBodyMake',
       techRecord_bodyModel: 'testBodyModel',
       techRecord_chassisMake: 'testChassisMake',
-      techRecord_chassisModel: 'testChassisModel'
+      techRecord_chassisModel: 'testChassisModel',
     } as unknown as V3TechRecordModel;
-    expect(component.getVehicleDescription(mockRecord, undefined)).toEqual('Unknown Vehicle Type');
+    expect(component.getVehicleDescription(mockRecord, undefined)).toBe('Unknown Vehicle Type');
   });
 });

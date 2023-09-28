@@ -9,7 +9,7 @@ describe('AmendTestComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AmendTestComponent],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     }).compileComponents();
   });
 

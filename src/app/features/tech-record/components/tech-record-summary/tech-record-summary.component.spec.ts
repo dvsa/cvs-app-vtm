@@ -37,17 +37,17 @@ describe('TechRecordSummaryComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of([Roles.TechRecordAmend])
-          }
+            roles$: of([Roles.TechRecordAmend]),
+          },
         },
-        TechnicalRecordService
-      ]
+        TechnicalRecordService,
+      ],
     })
       .overrideComponent(LettersComponent, {
         set: {
           selector: 'app-letters',
-          template: `<p>Mock Letters Component</p>`
-        }
+          template: '<p>Mock Letters Component</p>',
+        },
       })
       .compileComponents();
   });
@@ -77,7 +77,9 @@ describe('TechRecordSummaryComponent', () => {
       jest
         .spyOn(techRecordService, 'techRecord$', 'get')
         .mockReturnValue(
-          of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.PSV } as V3TechRecordModel)
+          of({
+            systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.PSV,
+          } as V3TechRecordModel),
         );
       fixture.detectChanges();
       checkHeadingAndForm();
@@ -89,12 +91,14 @@ describe('TechRecordSummaryComponent', () => {
       jest
         .spyOn(techRecordService, 'techRecord$', 'get')
         .mockReturnValue(
-          of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.PSV } as V3TechRecordModel)
+          of({
+            systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.PSV,
+          } as V3TechRecordModel),
         );
       fixture.detectChanges();
 
       checkHeadingAndForm();
-      expect((component.techRecordCalculated as TechRecordTypeByVehicle<'psv'>).techRecord_dimensions_height).toBe(undefined);
+      expect((component.techRecordCalculated as TechRecordTypeByVehicle<'psv'>).techRecord_dimensions_height).toBeUndefined();
     });
 
     it('should show HGV record found', () => {
@@ -102,7 +106,9 @@ describe('TechRecordSummaryComponent', () => {
       jest
         .spyOn(techRecordService, 'techRecord$', 'get')
         .mockReturnValue(
-          of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.HGV } as V3TechRecordModel)
+          of({
+            systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.HGV,
+          } as V3TechRecordModel),
         );
       fixture.detectChanges();
 
@@ -115,7 +121,9 @@ describe('TechRecordSummaryComponent', () => {
       jest
         .spyOn(techRecordService, 'techRecord$', 'get')
         .mockReturnValue(
-          of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.HGV } as V3TechRecordModel)
+          of({
+            systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.HGV,
+          } as V3TechRecordModel),
         );
       fixture.detectChanges();
 
@@ -123,7 +131,7 @@ describe('TechRecordSummaryComponent', () => {
       expect(component.vehicleType).toEqual(VehicleTypes.HGV);
     });
 
-    it('should show TRL record found', async () => {
+    it('should show TRL record found', () => {
       component.isEditing = false;
       jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(
         of({
@@ -131,8 +139,8 @@ describe('TechRecordSummaryComponent', () => {
           createdTimestamp: 'bar',
           vin: 'testVin',
           techRecord_vehicleType: VehicleTypes.TRL,
-          techRecord_euVehicleCategory: 'o2'
-        } as V3TechRecordModel)
+          techRecord_euVehicleCategory: 'o2',
+        } as V3TechRecordModel),
       );
       fixture.detectChanges();
 
@@ -145,7 +153,9 @@ describe('TechRecordSummaryComponent', () => {
       jest
         .spyOn(techRecordService, 'techRecord$', 'get')
         .mockReturnValue(
-          of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.TRL } as V3TechRecordModel)
+          of({
+            systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_vehicleType: VehicleTypes.TRL,
+          } as V3TechRecordModel),
         );
       fixture.detectChanges();
 
@@ -162,7 +172,7 @@ describe('TechRecordSummaryComponent', () => {
         systemNumber: 'foo',
         createdTimestamp: 'bar',
         vin: 'testVin',
-        techRecord_vehicleType: VehicleTypes.LGV
+        techRecord_vehicleType: VehicleTypes.LGV,
       } as unknown as TechRecordType<'put'>;
       component.techRecordCalculated = mockTechRecord;
       jest.spyOn(store, 'select').mockReturnValue(of(mockTechRecord));

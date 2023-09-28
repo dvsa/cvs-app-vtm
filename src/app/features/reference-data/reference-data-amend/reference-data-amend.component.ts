@@ -1,4 +1,6 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component, OnInit, QueryList, ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -14,13 +16,13 @@ import { first, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend',
-  templateUrl: './reference-data-amend.component.html'
+  templateUrl: './reference-data-amend.component.html',
 })
 export class ReferenceDataAmendComponent implements OnInit {
   type!: ReferenceDataResourceType;
   key!: string;
-  isFormDirty: boolean = false;
-  isFormInvalid: boolean = true;
+  isFormDirty = false;
+  isFormInvalid = true;
   amendedData: any;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
@@ -31,17 +33,17 @@ export class ReferenceDataAmendComponent implements OnInit {
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<ReferenceDataState>
+    private store: Store<ReferenceDataState>,
   ) {}
 
   ngOnInit(): void {
-    this.route.parent?.params.pipe(first()).subscribe(params => {
+    this.route.parent?.params.pipe(first()).subscribe((params) => {
       this.type = params['type'];
       // load the reference data admin type
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
     });
 
-    this.route.params.pipe(first()).subscribe(params => {
+    this.route.params.pipe(first()).subscribe((params) => {
       this.key = decodeURIComponent(params['key']);
 
       if (this.type && this.key) {
@@ -65,6 +67,7 @@ export class ReferenceDataAmendComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -73,19 +76,19 @@ export class ReferenceDataAmendComponent implements OnInit {
   }
 
   checkForms(): void {
-    const forms = this.sections.map(section => section.form) as Array<CustomFormGroup>;
+    const forms = this.sections.map((section) => section.form) as Array<CustomFormGroup>;
 
-    this.isFormDirty = forms.some(form => form.dirty);
+    this.isFormDirty = forms.some((form) => form.dirty);
 
     this.setErrors(forms);
 
-    this.isFormInvalid = forms.some(form => form.invalid);
+    this.isFormInvalid = forms.some((form) => form.invalid);
   }
 
   setErrors(forms: Array<CustomFormGroup>): void {
     const errors: GlobalError[] = [];
 
-    forms.forEach(form => DynamicFormService.validate(form, errors));
+    forms.forEach((form) => DynamicFormService.validate(form, errors));
 
     errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
   }
@@ -99,11 +102,11 @@ export class ReferenceDataAmendComponent implements OnInit {
       amendReferenceDataItem({
         resourceType: this.type,
         resourceKey: encodeURIComponent(String(this.key)),
-        payload: this.amendedData
-      })
+        payload: this.amendedData,
+      }),
     );
 
-    this.sections.forEach(form => {
+    this.sections.forEach((form) => {
       form.ngOnDestroy();
     });
 

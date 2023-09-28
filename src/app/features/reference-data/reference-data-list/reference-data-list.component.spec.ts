@@ -5,18 +5,16 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { createSelector } from '@ngrx/store';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { State, initialAppState } from '@store/.';
+import { initialAppState } from '@store/.';
 import * as refSelectors from '../../../store/reference-data/selectors/reference-data.selectors';
 import { ReferenceDataListComponent } from './reference-data-list.component';
-import { of } from 'rxjs';
 
 describe('DataTypeListComponent', () => {
   let component: ReferenceDataListComponent;
   let fixture: ComponentFixture<ReferenceDataListComponent>;
-  let store: MockStore<State>;
   let router: Router;
   let errorService: GlobalErrorService;
   let route: ActivatedRoute;
@@ -29,8 +27,8 @@ describe('DataTypeListComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
         GlobalErrorService,
-        { provide: UserService, useValue: {} }
-      ]
+        { provide: UserService, useValue: {} },
+      ],
     }).compileComponents();
   });
 
@@ -39,7 +37,6 @@ describe('DataTypeListComponent', () => {
     component = fixture.componentInstance;
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
-    store = TestBed.inject(MockStore);
     errorService = TestBed.inject(GlobalErrorService);
     fixture.detectChanges();
   });
@@ -53,7 +50,7 @@ describe('DataTypeListComponent', () => {
 
       component.amend({ resourceKey: 'foo', resourceType: ReferenceDataResourceType.CountryOfRegistration });
 
-      expect(navigateSpy).toBeCalledWith(['foo'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['foo'], { relativeTo: route });
     });
   });
   describe('delete', () => {
@@ -62,7 +59,7 @@ describe('DataTypeListComponent', () => {
 
       component.delete({ resourceKey: 'foo', resourceType: ReferenceDataResourceType.CountryOfRegistration });
 
-      expect(navigateSpy).toBeCalledWith(['foo/delete'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['foo/delete'], { relativeTo: route });
     });
   });
   describe('addNew', () => {
@@ -71,7 +68,7 @@ describe('DataTypeListComponent', () => {
 
       component.addNew();
 
-      expect(navigateSpy).toBeCalledWith(['create'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['create'], { relativeTo: route });
     });
   });
   describe('navigateToDeletedItems', () => {
@@ -80,7 +77,7 @@ describe('DataTypeListComponent', () => {
 
       component.navigateToDeletedItems();
 
-      expect(navigateSpy).toBeCalledWith(['deleted-items'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['deleted-items'], { relativeTo: route });
     });
   });
   describe('handlePaginationChange', () => {
@@ -97,7 +94,7 @@ describe('DataTypeListComponent', () => {
       expect(component.form.controls['term'].value).toBe('foo');
 
       component.clear();
-      expect(component.form.controls['term'].value).toBe(null);
+      expect(component.form.controls['term'].value).toBeNull();
     });
     it('should navigate to page 1 of pagination', () => {
       const navigateSpy = jest.spyOn(router, 'navigate');
@@ -105,30 +102,30 @@ describe('DataTypeListComponent', () => {
       component.searchReturned = true;
       component.clear();
 
-      expect(navigateSpy).toBeCalledWith(['../TYRES'], { relativeTo: route, queryParams: { 'reference-data-items-page': 1 } });
+      expect(navigateSpy).toHaveBeenCalledWith(['../TYRES'], { relativeTo: route, queryParams: { 'reference-data-items-page': 1 } });
     });
   });
 
   describe('search', () => {
-    it('it should call add error if there is no search term', () => {
+    it('should call add error if there is no search term', () => {
       const errorSpy = jest.spyOn(errorService, 'addError');
       component.search('', 'tyreCode');
 
-      expect(errorSpy).toBeCalled();
+      expect(errorSpy).toHaveBeenCalled();
     });
-    it('it should call add error if there is no filter', () => {
+    it('should call add error if there is no filter', () => {
       const errorSpy = jest.spyOn(errorService, 'addError');
       component.search('term', '');
 
-      expect(errorSpy).toBeCalled();
+      expect(errorSpy).toHaveBeenCalled();
     });
-    it('it should call add error if there are no items returned', () => {
+    it('should call add error if there are no items returned', () => {
       const errorSpy = jest.spyOn(errorService, 'addError');
       component.type = ReferenceDataResourceType.Tyres;
 
       component.search('term', 'brakeCode');
 
-      expect(errorSpy).toBeCalled();
+      expect(errorSpy).toHaveBeenCalled();
     });
     it('should navigate to page 1 of pagination', () => {
       const navigateSpy = jest.spyOn(router, 'navigate');
@@ -136,13 +133,14 @@ describe('DataTypeListComponent', () => {
       component.searchReturned = true;
       jest.spyOn(refSelectors, 'selectRefDataBySearchTerm').mockReturnValue(
         createSelector(
-          v => v,
-          () => [{ resourceKey: 'foo', resourceType: 'bar' }] as unknown as any
-        )
+          (v) => v,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+          () => [{ resourceKey: 'foo', resourceType: 'bar' }] as unknown as any,
+        ),
       );
       component.search('foo', 'bar');
 
-      expect(navigateSpy).toBeCalledWith(['../TYRES'], { relativeTo: route, queryParams: { 'reference-data-items-page': 1 } });
+      expect(navigateSpy).toHaveBeenCalledWith(['../TYRES'], { relativeTo: route, queryParams: { 'reference-data-items-page': 1 } });
     });
   });
 });
