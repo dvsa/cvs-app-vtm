@@ -63,9 +63,9 @@ const routes: Routes = [
         data: { title: 'Test record', roles: Roles.TestResultView },
         canActivate: [MsalGuard, RoleGuard],
         resolve: { techRecord: TechRecordViewResolver },
-        loadChildren: () => import('../test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
+        loadChildren: () => import('../test-records/amend/amend-test-records.module').then((m) => m.AmendTestRecordsModule),
       },
-    ]
+    ],
   },
   {
     path: 'historic/unarchive-record',
