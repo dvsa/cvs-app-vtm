@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
@@ -11,18 +13,18 @@ import { TechnicalRecordHttpService } from '@services/technical-record-http/tech
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/.';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
-import { firstValueFrom, of, ReplaySubject } from 'rxjs';
+import {
+  firstValueFrom, of, ReplaySubject, BehaviorSubject,
+} from 'rxjs';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { SingleSearchResultComponent } from '../single-search-result/single-search-result.component';
 import { MultipleSearchResultsComponent } from './multiple-search-results.component';
-import { BehaviorSubject } from 'rxjs';
-import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 
 describe('MultipleSearchResultsComponent', () => {
   let component: MultipleSearchResultsComponent;
   let fixture: ComponentFixture<MultipleSearchResultsComponent>;
   let store: MockStore<State>;
-  let actions$ = new ReplaySubject<Action>();
-  let techRecordHttpService: TechnicalRecordHttpService;
+  const actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -34,18 +36,17 @@ describe('MultipleSearchResultsComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of(['TechRecord.View', 'TechRecord.Create'])
-          }
+            roles$: of(['TechRecord.View', 'TechRecord.Create']),
+          },
         },
-        TechnicalRecordHttpService
-      ]
+        TechnicalRecordHttpService,
+      ],
     }).compileComponents();
   });
 
   describe('default tests', () => {
     beforeEach(() => {
       store = TestBed.inject(MockStore);
-      techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
       store.overrideSelector(selectQueryParams, { vin: '123456' });
 
       fixture = TestBed.createComponent(MultipleSearchResultsComponent);
@@ -58,7 +59,7 @@ describe('MultipleSearchResultsComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should show create link when searchResults is null', async () => {
+    it('should show create link when searchResults is null', () => {
       const button = fixture.debugElement.query(By.css('.govuk-link'));
       expect(button).toBeTruthy();
     });
@@ -72,8 +73,8 @@ describe('MultipleSearchResultsComponent', () => {
           techRecord_vehicleType: 'psv',
           createdTimestamp: '2023-09-27T12:00:00Z',
           systemNumber: '12345',
-          techRecord_manufactureYear: 2013
-        }
+          techRecord_manufactureYear: 2013,
+        },
       ];
       component.searchResults$ = new BehaviorSubject<TechRecordSearchSchema[] | undefined>(newData);
       fixture.detectChanges();

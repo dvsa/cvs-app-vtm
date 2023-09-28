@@ -24,7 +24,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: TestResultSummaryComponent
+        component: TestResultSummaryComponent,
       },
       {
         path: 'amend-test',
@@ -34,7 +34,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            component: TestAmendReasonComponent
+            component: TestAmendReasonComponent,
           },
           {
             path: 'incorrect-test-type',
@@ -45,9 +45,9 @@ const routes: Routes = [
             children: [
               {
                 path: '',
-                component: TestTypeSelectWrapperComponent
-              }
-            ]
+                component: TestTypeSelectWrapperComponent,
+              },
+            ],
           },
           {
             path: 'amend-test-details',
@@ -59,13 +59,13 @@ const routes: Routes = [
             children: [
               {
                 path: '',
-                component: TestRecordComponent
+                component: TestRecordComponent,
               },
               {
                 path: 'defect/:defectIndex',
                 component: DefectComponent,
                 data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
-                canActivate: [RoleGuard]
+                canActivate: [RoleGuard],
               },
               {
                 path: 'selectDefect',
@@ -75,45 +75,45 @@ const routes: Routes = [
                 children: [
                   {
                     path: '',
-                    component: DefectSelectComponent
+                    component: DefectSelectComponent,
                   },
                   {
                     path: ':ref',
                     component: DefectComponent,
                     data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
-                    canActivate: [RoleGuard]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+                    canActivate: [RoleGuard],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
       {
         path: 'amended/:createdAt',
         component: AmendedTestRecordComponent,
         data: { title: 'Amended test result', roles: Roles.TestResultView },
-        canActivate: [RoleGuard]
+        canActivate: [RoleGuard],
       },
       {
         path: 'cancel-test',
         component: ConfirmCancellationComponent,
         data: { title: 'Cancel test result', roles: Roles.TestResultAmend },
-        canActivate: [RoleGuard]
+        canActivate: [RoleGuard],
       },
       {
         path: 'defect/:defectIndex',
         component: DefectComponent,
         data: { title: 'Defect', roles: Roles.TestResultView, isEditing: false },
         resolve: { load: TestResultResolver },
-        canActivate: [RoleGuard]
-      }
-    ]
-  }
+        canActivate: [RoleGuard],
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AmendTestRecordsRoutingModule {}

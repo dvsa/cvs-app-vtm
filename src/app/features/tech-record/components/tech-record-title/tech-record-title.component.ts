@@ -14,12 +14,12 @@ import { Observable, take } from 'rxjs';
 @Component({
   selector: 'app-tech-record-title[vehicle]',
   templateUrl: './tech-record-title.component.html',
-  styleUrls: ['./tech-record-title.component.scss']
+  styleUrls: ['./tech-record-title.component.scss'],
 })
 export class TechRecordTitleComponent implements OnInit {
   @Input() vehicle?: V3TechRecordModel | any;
   @Input() actions: TechRecordActions = TechRecordActions.NONE;
-  @Input() hideActions: boolean = false;
+  @Input() hideActions = false;
   @Input() customTitle = '';
 
   currentTechRecord$?: Observable<TechRecordType<'get'> | undefined>;
@@ -33,7 +33,7 @@ export class TechRecordTitleComponent implements OnInit {
 
     this.currentTechRecord$ = this.store.select(selectTechRecord) as Observable<TechRecordType<'get'> | undefined>;
 
-    this.currentTechRecord$.pipe(take(1)).subscribe(data => {
+    this.currentTechRecord$.pipe(take(1)).subscribe((data) => {
       if (data) {
         this.vehicleMakeAndModel = this.technicalRecordService.getMakeAndModel(data);
       }
@@ -73,6 +73,7 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   navigateTo(path: string, queryParams?: Params): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate([path], { relativeTo: this.route, queryParams });
   }
 }

@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TechRecordComponent } from './tech-record.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { Roles } from '@models/roles.enum';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
+import { TechRecordComponent } from './tech-record.component';
 
 describe('TechRecordComponent', () => {
   let component: TechRecordComponent;
@@ -18,7 +18,7 @@ describe('TechRecordComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
       declarations: [TechRecordComponent],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 
@@ -36,7 +36,7 @@ describe('TechRecordComponent', () => {
   });
 
   it('should return roles', () => {
-    const roles = component.roles;
+    const { roles } = component;
 
     expect(roles).toBe(Roles);
   });
@@ -44,7 +44,7 @@ describe('TechRecordComponent', () => {
   it('should return error', () => {
     const expectedError: GlobalError = { error: 'some error', anchorLink: 'expected' };
 
-    const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink!);
+    const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink ?? '');
 
     expect(expectedResult).toBe(expectedError);
   });
@@ -52,7 +52,7 @@ describe('TechRecordComponent', () => {
   it('reuse strategy should be set to false', () => {
     const snapshot = {} as ActivatedRouteSnapshot;
 
-    const expectedResult = (component['router'] as Router).routeReuseStrategy.shouldReuseRoute(snapshot, snapshot);
+    const expectedResult = (component['router']).routeReuseStrategy.shouldReuseRoute(snapshot, snapshot);
 
     expect(expectedResult).toBeFalsy();
   });

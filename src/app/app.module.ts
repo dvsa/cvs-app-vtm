@@ -12,32 +12,34 @@ import {
   MsalService,
   MSAL_GUARD_CONFIG,
   MSAL_INSTANCE,
-  MSAL_INTERCEPTOR_CONFIG
+  MSAL_INTERCEPTOR_CONFIG,
 } from '@azure/msal-angular';
-import { BrowserCacheLocation, InteractionType, IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
-import { environment } from '../environments/environment';
+import {
+  BrowserCacheLocation, InteractionType, IPublicClientApplication, PublicClientApplication,
+} from '@azure/msal-browser';
 import { ApiModule as TestResultsApiModule, Configuration as TestResultsApiConfiguration } from '@api/test-results';
+import { ApiModule as TestTypesApiModule, Configuration as TestTypesApiConfiguration } from '@api/test-types';
+import { ApiModule as ReferenceDataApiModule, Configuration as ReferenceDataConfiguration } from '@api/reference-data';
+import { DocumentRetrievalApiModule, Configuration as DocumentRetrievalConfiguration } from '@api/document-retrieval';
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { InterceptorModule } from './interceptors/interceptor.module';
 import { UserService } from './services/user-service/user-service';
 import { AppStoreModule } from './store/app-store.module';
-import { ApiModule as TestTypesApiModule, Configuration as TestTypesApiConfiguration } from '@api/test-types';
-import { ApiModule as ReferenceDataApiModule, Configuration as ReferenceDataConfiguration } from '@api/reference-data';
-import { DocumentRetrievalApiModule, Configuration as DocumentRetrievalConfiguration } from '@api/document-retrieval';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
       clientId: environment.VTM_CLIENT_ID,
       authority: environment.VTM_AUTHORITY_ID,
-      redirectUri: environment.VTM_REDIRECT_URI
+      redirectUri: environment.VTM_REDIRECT_URI,
     },
     cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
-      storeAuthStateInCookie: true
-    }
+      storeAuthStateInCookie: true,
+    },
   });
 }
 
@@ -47,7 +49,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 
   return {
     interactionType: InteractionType.Redirect,
-    protectedResourceMap
+    protectedResourceMap,
   };
 }
 
@@ -55,9 +57,9 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
     interactionType: InteractionType.Redirect,
     authRequest: {
-      scopes: [`${environment.VTM_API_CLIENT_ID}/user_impersonation`, 'email']
+      scopes: [`${environment.VTM_API_CLIENT_ID}/user_impersonation`, 'email'],
     },
-    loginFailedRoute: ''
+    loginFailedRoute: '',
   };
 }
 
@@ -79,39 +81,39 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         new DocumentRetrievalConfiguration({
           basePath: environment.VTM_API_URI,
           apiKeys: {
-            ['X-Api-Key']: environment.DOCUMENT_RETRIEVAL_API_KEY
-          }
-        })
-    )
+            'X-Api-Key': environment.DOCUMENT_RETRIEVAL_API_KEY,
+          },
+        }),
+    ),
   ],
   providers: [
     {
       provide: LOCALE_ID,
-      useValue: 'en'
+      useValue: 'en',
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory
+      useFactory: MSALInstanceFactory,
     },
     {
       provide: MSAL_GUARD_CONFIG,
-      useFactory: MSALGuardConfigFactory
+      useFactory: MSALGuardConfigFactory,
     },
     {
       provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory
+      useFactory: MSALInterceptorConfigFactory,
     },
     MsalService,
     MsalGuard,
     MsalBroadcastService,
-    UserService
+    UserService,
   ],
   exports: [],
-  bootstrap: [AppComponent, MsalRedirectComponent]
+  bootstrap: [AppComponent, MsalRedirectComponent],
 })
 export class AppModule {}

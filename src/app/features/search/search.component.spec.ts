@@ -26,7 +26,7 @@ describe('SearchComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SearchComponent],
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [GlobalErrorService, TechnicalRecordService, provideMockStore({ initialState: initialAppState })]
+      providers: [GlobalErrorService, TechnicalRecordService, provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 
@@ -101,10 +101,10 @@ describe('SearchComponent', () => {
     });
 
     describe('helper methods', () => {
-      it('should get inline error message', done => {
+      it('should get inline error message', (done) => {
         const addErrorSpy = jest.spyOn(globalErrorService, 'errors$', 'get').mockImplementation(() => of(expectedErrors));
 
-        component.getInlineErrorMessage(expectedError.anchorLink!).subscribe(response => {
+        component.getInlineErrorMessage(expectedError.anchorLink ?? '').subscribe((response) => {
           expect(response).toBeTruthy();
           done();
         }); // subscribe to activate the map inside 'getInlineErrorMessage()'
@@ -113,13 +113,13 @@ describe('SearchComponent', () => {
       });
 
       it('should get error by name', () => {
-        const error = component.getErrorByName(expectedErrors, expectedError.anchorLink!);
+        const error = component.getErrorByName(expectedErrors, expectedError.anchorLink ?? '');
 
         expect(error).toEqual(expectedError);
       });
 
       it('should return roles', () => {
-        const roles = component.roles;
+        const { roles } = component;
 
         expect(roles).toBe(Roles);
       });

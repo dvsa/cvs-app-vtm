@@ -6,7 +6,9 @@ import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-defini
 import { MultiOptions } from '@forms/models/options.model';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
-import { EuVehicleCategories, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  EuVehicleCategories, StatusCodes, V3TechRecordModel, VehicleTypes,
+} from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { changeVehicleType } from '@store/technical-records';
@@ -16,7 +18,7 @@ import { take } from 'rxjs';
 @Component({
   selector: 'app-change-vehicle-type',
   templateUrl: './tech-record-change-type.component.html',
-  styleUrls: ['./tech-record-change-type.component.scss']
+  styleUrls: ['./tech-record-change-type.component.scss'],
 })
 export class ChangeVehicleTypeComponent implements OnInit {
   techRecord?: V3TechRecordModel;
@@ -26,8 +28,8 @@ export class ChangeVehicleTypeComponent implements OnInit {
     selectVehicleType: new CustomFormControl(
       { name: 'change-vehicle-type-select', label: 'Select a new vehicle type', type: FormNodeTypes.CONTROL },
       '',
-      [Validators.required]
-    )
+      [Validators.required],
+    ),
   });
 
   constructor(
@@ -35,14 +37,14 @@ export class ChangeVehicleTypeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
   ) {}
 
   ngOnInit(): void {
     this.globalErrorService.clearErrors();
     this.technicalRecordService.techRecord$
       .pipe(take(1))
-      .subscribe(techRecord => (!techRecord ? this.navigateBack() : (this.techRecord = techRecord)));
+      .subscribe((techRecord) => { !techRecord ? this.navigateBack() : (this.techRecord = techRecord); });
 
     if (this.techRecord) {
       this.makeAndModel = this.technicalRecordService.getMakeAndModel(this.techRecord);
@@ -54,7 +56,7 @@ export class ChangeVehicleTypeComponent implements OnInit {
   }
 
   get vehicleTypeOptions(): MultiOptions {
-    return getOptionsFromEnumAcronym(VehicleTypes).filter(type => type.value !== this.techRecord?.techRecord_vehicleType);
+    return getOptionsFromEnumAcronym(VehicleTypes).filter((type) => type.value !== this.techRecord?.techRecord_vehicleType);
   }
 
   get currentVrm() {
@@ -63,6 +65,7 @@ export class ChangeVehicleTypeComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -72,13 +75,13 @@ export class ChangeVehicleTypeComponent implements OnInit {
     }
 
     if (
-      selectedVehicleType === VehicleTypes.TRL &&
-      ((this.techRecord as TechRecordTypeByVehicle<'trl'>)?.techRecord_euVehicleCategory === EuVehicleCategories.O1 ||
-        (this.techRecord as TechRecordTypeByVehicle<'trl'>)?.techRecord_euVehicleCategory === EuVehicleCategories.O2)
+      selectedVehicleType === VehicleTypes.TRL
+      && ((this.techRecord as TechRecordTypeByVehicle<'trl'>)?.techRecord_euVehicleCategory === EuVehicleCategories.O1
+        || (this.techRecord as TechRecordTypeByVehicle<'trl'>)?.techRecord_euVehicleCategory === EuVehicleCategories.O2)
     ) {
       return this.globalErrorService.addError({
-        error: "You cannot change vehicle type to TRL when EU vehicle category is set to 'O1' or 'O2'",
-        anchorLink: 'selectedVehicleType'
+        error: 'You cannot change vehicle type to TRL when EU vehicle category is set to \'O1\' or \'O2\'',
+        anchorLink: 'selectedVehicleType',
       });
     }
 
@@ -90,6 +93,7 @@ export class ChangeVehicleTypeComponent implements OnInit {
 
     const routeSuffix = this.techRecord?.techRecord_statusCode !== StatusCodes.PROVISIONAL ? 'amend-reason' : 'notifiable-alteration-needed';
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate([`../${routeSuffix}`], { relativeTo: this.route });
   }
 }

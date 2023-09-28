@@ -4,7 +4,6 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
 import { LettersComponent } from '@forms/custom-sections/letters/letters.component';
@@ -45,7 +44,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   techRecordCalculated?: V3TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
-  isEditing: boolean = false;
+  isEditing = false;
 
   private destroy$ = new Subject<void>();
 
@@ -117,7 +116,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get vehicleTemplates(): Array<FormNode> {
-    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe(editing => (this.isEditing = editing));
+    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe(editing => {
+      this.isEditing = editing;
+    });
     if (!this.vehicleType) {
       return [];
     }
@@ -151,7 +152,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       case VehicleTypes.HGV:
         return commonCustomSections;
       case VehicleTypes.TRL:
-        return [...commonCustomSections, this.trlBrakes!.form, this.letters!.form];
+        return [...commonCustomSections, this.trlBrakes!.form, this.letters.form];
       default:
         return [];
     }

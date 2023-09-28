@@ -8,28 +8,29 @@ import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { NotTrailer, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  NotTrailer, StatusCodes, V3TechRecordModel, VehicleTypes,
+} from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { firstValueFrom } from 'rxjs';
-import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 
 @Component({
   selector: 'app-create',
-  templateUrl: './create-tech-record.component.html'
+  templateUrl: './create-tech-record.component.html',
 })
 export class CreateTechRecordComponent implements OnChanges {
   techRecord: Partial<V3TechRecordModel> = {};
 
-  isDuplicateVinAllowed: boolean = false;
-  isVinUniqueCheckComplete: boolean = false;
+  isDuplicateVinAllowed = false;
+  isVinUniqueCheckComplete = false;
 
-  vinUnique: boolean = false;
-  vrmUnique: boolean = false;
-  trlUnique: boolean = false;
+  vinUnique = false;
+  vrmUnique = false;
+  trlUnique = false;
 
   form = new CustomFormGroup(
     { name: 'main-form', type: FormNodeTypes.GROUP },
@@ -39,24 +40,24 @@ export class CreateTechRecordComponent implements OnChanges {
         CustomValidators.validateVinCharacters(),
         Validators.minLength(3),
         Validators.maxLength(21),
-        Validators.required
+        Validators.required,
       ]),
       vrmTrm: new CustomFormControl({ name: 'input-vrm-or-trailer-id', label: 'VRM/TRM', type: FormNodeTypes.CONTROL }, '', [
         CustomValidators.alphanumeric(),
         CustomValidators.notZNumber,
         CustomValidators.validateVRMTrailerIdLength('vehicleType'),
-        Validators.required
+        Validators.required,
       ]),
       vehicleStatus: new CustomFormControl(
         { name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL },
         StatusCodes.PROVISIONAL,
-        [Validators.required]
+        [Validators.required],
       ),
       vehicleType: new CustomFormControl({ name: 'change-vehicle-type-select', label: 'Vehicle type', type: FormNodeTypes.CONTROL }, '', [
-        Validators.required
+        Validators.required,
       ]),
-      generateID: new CustomFormControl({ name: 'generate-c-or-z-num', type: FormNodeTypes.CONTROL }, null)
-    }
+      generateID: new CustomFormControl({ name: 'generate-c-or-z-num', type: FormNodeTypes.CONTROL }, null),
+    },
   );
 
   public vehicleTypeOptions: MultiOptions = [
@@ -66,7 +67,7 @@ export class CreateTechRecordComponent implements OnChanges {
     { label: 'Trailer (TRL)', value: VehicleTypes.TRL },
     { label: 'Small Trailer (Small TRL)', value: VehicleTypes.SMALL_TRL },
     { label: 'Car', value: VehicleTypes.CAR },
-    { label: 'Motorcycle', value: VehicleTypes.MOTORCYCLE }
+    { label: 'Motorcycle', value: VehicleTypes.MOTORCYCLE },
   ];
 
   constructor(
@@ -75,7 +76,7 @@ export class CreateTechRecordComponent implements OnChanges {
     private batchTechRecordService: BatchTechnicalRecordService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store
+    private store: Store,
   ) {
     this.batchTechRecordService.clearBatch();
     this.technicalRecordService.clearSectionTemplateStates();
@@ -98,7 +99,7 @@ export class CreateTechRecordComponent implements OnChanges {
   get vehicleStatusOptions(): MultiOptions {
     return [
       { label: 'Provisional', value: StatusCodes.PROVISIONAL },
-      { label: 'Current', value: StatusCodes.CURRENT }
+      { label: 'Current', value: StatusCodes.CURRENT },
     ];
   }
 
@@ -107,6 +108,7 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   toggleVrmInput(checked: any) {
+    // eslint-disable-next-line prefer-destructuring
     const vrmTrm = this.form.controls['vrmTrm'];
 
     if (checked.value) {
@@ -122,6 +124,7 @@ export class CreateTechRecordComponent implements OnChanges {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -144,7 +147,7 @@ export class CreateTechRecordComponent implements OnChanges {
     this.technicalRecordService.updateEditingTechRecord(this.techRecord as TechRecordType<'put'>);
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.techRecord.techRecord_vehicleType as VehicleTypes);
     this.technicalRecordService.clearSectionTemplateStates();
-    this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
+    await this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
   }
 
   async isFormValueUnique() {
@@ -164,10 +167,10 @@ export class CreateTechRecordComponent implements OnChanges {
     if (isTrailer) {
       this.trlUnique = await this.isTrailerIdUnique();
       return (this.vinUnique || this.isDuplicateVinAllowed) && this.trlUnique;
-    } else {
-      this.vrmUnique = await this.isVrmUnique();
-      return (this.vinUnique || this.isDuplicateVinAllowed) && this.vrmUnique;
     }
+    this.vrmUnique = await this.isVrmUnique();
+    return (this.vinUnique || this.isDuplicateVinAllowed) && this.vrmUnique;
+
   }
 
   async isVinUnique(): Promise<boolean> {
@@ -180,7 +183,7 @@ export class CreateTechRecordComponent implements OnChanges {
   async isVrmUnique() {
     (this.techRecord as NotTrailer).primaryVrm = this.form.value.vrmTrm;
     const isVrmUnique = await firstValueFrom(
-      this.technicalRecordService.isUnique((this.techRecord as NotTrailer).primaryVrm?.replace(/\s+/g, '') ?? '', SEARCH_TYPES.VRM)
+      this.technicalRecordService.isUnique((this.techRecord as NotTrailer).primaryVrm?.replace(/\s+/g, '') ?? '', SEARCH_TYPES.VRM),
     );
     if (!isVrmUnique) {
       this.globalErrorService.addError({ error: 'Vrm not unique', anchorLink: 'input-vrm-or-trailer-id' });

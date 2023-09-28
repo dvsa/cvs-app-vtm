@@ -22,7 +22,7 @@ const routes: Routes = [
         path: '',
         component: ReferenceDataSelectTypeComponent,
         data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
-        canActivate: [MsalGuard, RoleGuard]
+        canActivate: [MsalGuard, RoleGuard],
       },
       {
         path: ':type',
@@ -34,39 +34,39 @@ const routes: Routes = [
             path: '',
             component: ReferenceDataListComponent,
             data: { title: 'Search Reference Data', roles: Roles.ReferenceDataView },
-            canActivate: [MsalGuard, RoleGuard]
+            canActivate: [MsalGuard, RoleGuard],
           },
           {
             path: 'create',
             component: ReferenceDataCreateComponent,
             data: { title: 'Add Reference Data', roles: Roles.ReferenceDataAmend },
-            canActivate: [MsalGuard, RoleGuard]
+            canActivate: [MsalGuard, RoleGuard],
           },
           {
             path: 'deleted-items',
             component: ReferenceDataDeletedListComponent,
             data: { title: 'View deleted Reference Data', roles: Roles.ReferenceDataView },
-            canActivate: [MsalGuard, RoleGuard]
+            canActivate: [MsalGuard, RoleGuard],
           },
           {
             path: ':key',
             component: ReferenceDataAmendComponent,
             data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataAmend },
-            canActivate: [MsalGuard, RoleGuard]
+            canActivate: [MsalGuard, RoleGuard],
           },
           {
             path: ':key/delete',
             component: ReferenceDataDeleteComponent,
             data: { title: 'Delete Reference Data', roles: Roles.ReferenceDataAmend },
-            canActivate: [MsalGuard, RoleGuard]
-          }
-        ]
-      }
-    ]
-  }
+            canActivate: [MsalGuard, RoleGuard],
+          },
+        ],
+      },
+    ],
+  },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class ReferenceDataRoutingModule {}
