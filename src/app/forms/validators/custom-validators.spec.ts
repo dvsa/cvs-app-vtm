@@ -140,7 +140,7 @@ describe('enable/disable validators', () => {
       expect(CustomValidators.disableIfEquals('foo', 'foo')(form.controls['sibling'])).toBeNull();
     });
 
-    it('should set disabled to true if content of sibling is equal to one of the values passed in the array', () => {
+    it('should set disabled to true if content of sibling is equal to the value passed', () => {
       const value = 'bar';
       form.controls['sibling'].patchValue(value);
       CustomValidators.disableIfEquals('foo', 'bar')(form.controls['sibling']);
@@ -329,9 +329,12 @@ describe('customPattern', () => {
     const validation = customPattern(new FormControl(input));
     expect(validation).toEqual(expected);
     if (validation) {
+      // eslint-disable-next-line prefer-destructuring
       const message = validation['customPattern']['message'];
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(message).toEqual(msg);
     } else {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(validation).toBeNull();
     }
   });

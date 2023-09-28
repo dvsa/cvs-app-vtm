@@ -1,4 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+// eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -262,7 +263,7 @@ export class CustomValidators {
   static notZNumber = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) return null;
 
-    const isZNumber = new RegExp('^[0-9]{7}[zZ]$').test(control.value);
+    const isZNumber = /^[0-9]{7}[zZ]$/.test(control.value);
 
     return !isZNumber ? null : { notZNumber: true };
   };
@@ -285,7 +286,7 @@ export class CustomValidators {
             classControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
             break;
           }
-          case totalPassengers > 22: {
+          default: {
             sizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
             classControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
           }

@@ -1,5 +1,6 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Condition, operatorEnum } from '@forms/models/condition.model';
+// eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -34,19 +35,22 @@ export class CustomAsyncValidators {
           if (
             control.value === 'pass'
             && hasCustomDefects
-            && (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
+            && (!limitToResult || Array.isArray(limitToResult)
+              ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
           ) {
             return { invalidTestResult: { message: 'Cannot pass test when defects are present' } };
           } if (
             control.value === 'fail'
             && !hasCustomDefects
-            && (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
+            && (!limitToResult || Array.isArray(limitToResult)
+              ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
           ) {
             return { invalidTestResult: { message: 'Cannot fail test when no defects are present' } };
           } if (
             control.value === 'prs'
             && !hasCustomDefects
-            && (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
+            && (!limitToResult || Array.isArray(limitToResult)
+              ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
           ) {
             return { invalidTestResult: { message: 'Cannot mark test as PRS when no defects are present' } };
           }

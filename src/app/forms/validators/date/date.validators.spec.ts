@@ -1,6 +1,7 @@
 import { FormControl } from '@angular/forms';
 import { DateValidators } from './date.validators';
 
+// eslint-disable-next-line jest/valid-title
 describe(DateValidators.validDate.name, () => {
   it.each([
     [

@@ -491,7 +491,8 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
     });
   });
 
-  it('should be required when result is "pass" and "bar is "x" and validator specifies requiredIfNotResultAndSiblingEquals "fail" when sibling "bar" is "x"', async () => {
+  it('should be required when result is "pass" and "bar is "x" and '
+    + 'validator specifies requiredIfNotResultAndSiblingEquals "fail" when sibling "bar" is "x"', async () => {
     form.controls['foo'].patchValue('');
     form.controls['bar'].patchValue('x');
 
@@ -511,7 +512,8 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
     expect(result).toEqual({ requiredIfNotResultAndSiblingEquals: true });
   });
 
-  it('should pass validation when result is "fail" and "bar is "x" and validator specifies requiredIfNotResultAndSiblingEquals "fail" when sibling "bar" is "x"', async () => {
+  it('should pass validation when result is "fail" and "bar is "x" and '
+    + 'validator specifies requiredIfNotResultAndSiblingEquals "fail" when sibling "bar" is "x"', async () => {
     form.controls['foo'].patchValue('');
     form.controls['bar'].patchValue('x');
 
@@ -531,7 +533,8 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
     expect(result).toBeNull();
   });
 
-  it('should pass validation when result is "pass" and "bar is "y" and validator specifies requiredIfNotResultAndSiblingEquals "fail" when sibling "bar" is "x"', async () => {
+  it('should pass validation when result is "pass" and "bar is "y" and '
+    + 'validator specifies requiredIfNotResultAndSiblingEquals "fail" when sibling "bar" is "x"', async () => {
     form.controls['foo'].patchValue('');
     form.controls['bar'].patchValue('y');
 
@@ -551,7 +554,8 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
     expect(result).toBeNull();
   });
 
-  it('should be required when result is "pass" and "bar is "x" and validator specifies requiredIfNotResultAndSiblingEquals "fail"/"abandoned" when sibling "bar" is "x"', async () => {
+  it('should be required when result is "pass" and "bar is "x" and '
+    + 'validator specifies requiredIfNotResultAndSiblingEquals "fail"/"abandoned" when sibling "bar" is "x"', async () => {
     form.controls['foo'].patchValue('');
     form.controls['bar'].patchValue('x');
 
@@ -589,7 +593,9 @@ describe('hide if equals with condition', () => {
     });
   });
 
-  it('"bar" should be hidden when "foo" is "x" and testTypeId is "1" and validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the "testTypeId" field has a value in "1,2,3,4"', async () => {
+  it('"bar" should be hidden when "foo" is "x" and testTypeId is "1" and '
+    + 'validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the '
+    + '"testTypeId" field has a value in "1,2,3,4"', async () => {
     form.controls['foo'].patchValue('x');
 
     const testResult = { testTypes: [{ testTypeId: '1' }] } as TestResultModel;
@@ -607,7 +613,9 @@ describe('hide if equals with condition', () => {
     expect((form.controls['bar'] as CustomFormControl).meta.hide).toBe(true);
   });
 
-  it('"bar" should not be hidden when "foo" is "x" and testTypeId is "1" and validator specifies hideIfEqualsWithCondition for current field equals "y" with the condition that the "testTypeId" field has a value in "1,2,3,4"', async () => {
+  it('"bar" should not be hidden when "foo" is "x" and testTypeId is "1" and '
+    + 'validator specifies hideIfEqualsWithCondition for current field equals "y" with '
+    + 'the condition that the "testTypeId" field has a value in "1,2,3,4"', async () => {
     form.controls['foo'].patchValue('x');
 
     const testResult = { testTypes: [{ testTypeId: '1' }] } as TestResultModel;
@@ -625,7 +633,9 @@ describe('hide if equals with condition', () => {
     expect((form.controls['bar'] as CustomFormControl).meta.hide).toBe(false);
   });
 
-  it('"bar" should not be hidden when "foo" is "x" and testTypeId is "5" and validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the "testTypeId" field has a value in "1,2,3,4"', async () => {
+  it('"bar" should not be hidden when "foo" is "x" and testTypeId is "5" and '
+    + 'validator specifies hideIfEqualsWithCondition for current field equals "x" with '
+    + 'the condition that the "testTypeId" field has a value in "1,2,3,4"', async () => {
     form.controls['foo'].patchValue('x');
 
     const testResult = { testTypes: [{ testTypeId: '5' }] } as TestResultModel;
@@ -643,7 +653,9 @@ describe('hide if equals with condition', () => {
     expect((form.controls['bar'] as CustomFormControl).meta.hide).toBe(false);
   });
 
-  it('"bar" should be hidden when "foo" is "x" and testTypeId is "1" and "odometerReading" is 100 and validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the "testTypeId" field has a value in "1,2,3,4" and "odometerReading" is 100', async () => {
+  it('"bar" should be hidden when "foo" is "x" and testTypeId is "1" and "odometerReading" is 100 and '
+    + 'validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the '
+    + '"testTypeId" field has a value in "1,2,3,4" and "odometerReading" is 100', async () => {
     form.controls['foo'].patchValue('x');
 
     const testResult = { odometerReading: 100, testTypes: [{ testTypeId: '1' }] } as TestResultModel;
@@ -660,7 +672,9 @@ describe('hide if equals with condition', () => {
     expect((form.controls['bar'] as CustomFormControl).meta.hide).toBe(true);
   });
 
-  it('"bar" should not be hidden when "foo" is "x" and testTypeId is "1" and "odometerReading" is 101 and validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the "testTypeId" field has a value in "1,2,3,4" and "odometerReading" is 100', async () => {
+  it('"bar" should not be hidden when "foo" is "x" and testTypeId is "1" and "odometerReading" is 101 and '
+    + 'validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the "testTypeId" '
+    + 'field has a value in "1,2,3,4" and "odometerReading" is 100', async () => {
     form.controls['foo'].patchValue('x');
 
     const testResult = { odometerReading: 101, testTypes: [{ testTypeId: '1' }] } as TestResultModel;
