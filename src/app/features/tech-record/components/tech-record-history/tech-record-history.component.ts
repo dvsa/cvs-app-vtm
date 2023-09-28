@@ -59,7 +59,7 @@ export class TechRecordHistoryComponent implements OnInit {
       case StatusCodes.PROVISIONAL:
         return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/provisional`;
       case StatusCodes.ARCHIVED:
-        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/historic/`;
+        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/`;
       default:
         return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}`;
     }
