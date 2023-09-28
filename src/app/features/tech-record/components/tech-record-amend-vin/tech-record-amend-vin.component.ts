@@ -42,25 +42,20 @@ export class AmendVinComponent implements OnDestroy, OnInit {
           type: FormNodeTypes.CONTROL
         },
         '',
-        [
-          CustomValidators.alphanumeric(),
-          Validators.minLength(3),
-          Validators.maxLength(21),
-          Validators.required,
-          CustomValidators.validateVinCharacters()
-        ],
+        [CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21), Validators.required],
         [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)]
       )
     });
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
     });
   }
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(record => (!record ? this.navigateBack() : (this.techRecord = record)));
+    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
+      !record ? this.navigateBack() : (this.techRecord = record);
+    });
   }
 
   ngOnDestroy(): void {
@@ -101,6 +96,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
