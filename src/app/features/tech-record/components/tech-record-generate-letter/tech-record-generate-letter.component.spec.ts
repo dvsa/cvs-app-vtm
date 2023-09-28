@@ -17,23 +17,23 @@ import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
-import { GenerateLetterComponent } from './tech-record-generate-letter.component';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { GenerateLetterComponent } from './tech-record-generate-letter.component';
 
 const mockTechRecordService = {
   get techRecord$() {
     return of(mockVehicleTechnicalRecord('trl'));
   },
   updateEditingTechRecord: jest.fn(),
-  isUnique: jest.fn()
+  isUnique: jest.fn(),
 };
 
 const mockDynamicFormService = {
-  createForm: jest.fn()
+  createForm: jest.fn(),
 };
 
 describe('TechRecordGenerateLetterComponent', () => {
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
   let component: GenerateLetterComponent;
   let errorService: GlobalErrorService;
   let expectedVehicle = {} as TechRecordType<'trl'>;
@@ -56,11 +56,11 @@ describe('TechRecordGenerateLetterComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of(['TechRecord.Amend'])
-          }
-        }
+            roles$: of(['TechRecord.Amend']),
+          },
+        },
       ],
-      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, FixNavigationTriggeredOutsideAngularZoneNgModule]
+      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, FixNavigationTriggeredOutsideAngularZoneNgModule],
     }).compileComponents();
   });
 
@@ -94,7 +94,7 @@ describe('TechRecordGenerateLetterComponent', () => {
 
       component.navigateBack();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
 
     it('should navigate back on generateLetterSuccess', () => {

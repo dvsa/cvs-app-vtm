@@ -10,7 +10,7 @@ import { take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record',
-  templateUrl: './tech-record.component.html'
+  templateUrl: './tech-record.component.html',
 })
 export class TechRecordComponent implements OnInit {
   systemNumber?: string;
@@ -21,13 +21,13 @@ export class TechRecordComponent implements OnInit {
     private router: Router,
     public errorService: GlobalErrorService,
     private store: Store<TechnicalRecordServiceState>,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {
-    this.route.params.pipe(take(1)).subscribe(params => {
+    this.route.params.pipe(take(1)).subscribe((params) => {
       this.systemNumber = params['systemNumber'];
       this.createdTimestamp = params['createdTimestamp'];
     });
@@ -42,6 +42,6 @@ export class TechRecordComponent implements OnInit {
   }
 
   getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
-    return errors.find(error => error.anchorLink === name);
+    return errors.find((error) => error.anchorLink === name);
   }
 }

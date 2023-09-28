@@ -1,5 +1,8 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import {
+  ChangeDetectorRef, Component, OnDestroy, OnInit,
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
@@ -8,16 +11,18 @@ import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { selectAllReferenceDataByResourceType, selectRefDataBySearchTerm, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable, Subject, catchError, filter, map, of, switchMap, take } from 'rxjs';
+import {
+  Observable, Subject, catchError, filter, map, of, switchMap, take,
+} from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-list',
   templateUrl: './reference-data-list.component.html',
-  styleUrls: ['./reference-data-list.component.scss']
+  styleUrls: ['./reference-data-list.component.scss'],
 })
 export class ReferenceDataListComponent implements OnInit, OnDestroy {
   type!: ReferenceDataResourceType;
-  disabled: boolean = true;
+  disabled = true;
   pageStart?: number;
   pageEnd?: number;
   currentPage?: number;
@@ -25,7 +30,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   public form!: CustomFormGroup;
-  public searchReturned: boolean = false;
+  public searchReturned = false;
 
   public searchTemplate: FormNode = {
     name: 'criteria',
@@ -35,14 +40,14 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
         name: 'filter',
         label: 'Search filter',
         value: '',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
       },
       {
         name: 'term',
         value: '',
-        type: FormNodeTypes.CONTROL
-      }
-    ]
+        type: FormNodeTypes.CONTROL,
+      },
+    ],
   };
 
   constructor(
@@ -52,12 +57,12 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     private store: Store,
     private cdr: ChangeDetectorRef,
     private globalErrorService: GlobalErrorService,
-    public dfs: DynamicFormService
+    public dfs: DynamicFormService,
   ) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.searchTemplate) as CustomFormGroup;
-    this.route.params.pipe(take(1)).subscribe(params => {
+    this.route.params.pipe(take(1)).subscribe((params) => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceData(this.type);
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
@@ -66,28 +71,26 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.globalErrorService.errors$
       .pipe(
         take(1),
-        filter(errors => !errors.length),
+        filter((errors) => !errors.length),
         switchMap(() =>
-          this.referenceDataService.fetchReferenceDataAudit((this.type + '#AUDIT') as ReferenceDataResourceType).pipe(
-            map(array =>
-              array.data.map(item => {
+          this.referenceDataService.fetchReferenceDataAudit((`${this.type}#AUDIT`) as ReferenceDataResourceType).pipe(
+            map((array) =>
+              array.data.map((item) => {
                 if (item.reason !== undefined) {
                   this.disabled = false;
                 }
-              })
-            )
-          )
-        ),
-        catchError(error => {
-          if (error.status == 404) {
+              })),
+          )),
+        catchError((error) => {
+          if (error.status === 404) {
             this.disabled = true;
             return of(true);
           }
           return of(false);
-        })
+        }),
       )
       .subscribe({
-        next: res => of(!!res)
+        next: (res) => of(!!res),
       });
     this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
   }
@@ -129,17 +132,17 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   }
 
   get paginatedItems$(): Observable<any[]> {
-    return this.data!.pipe(map(items => items?.slice(this.pageStart, this.pageEnd) ?? []));
+    return this.data!.pipe(map((items) => items?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
   get numberOfRecords$(): Observable<number> {
-    return this.data!.pipe(map(items => items?.length ?? 0));
+    return this.data!.pipe(map((items) => items?.length ?? 0));
   }
 
-  search(term: string, filter: string) {
+  search(term: string, filterterm: string) {
     this.globalErrorService.clearErrors();
     const trimmedTerm = term?.trim();
-    if (!trimmedTerm || !filter) {
+    if (!trimmedTerm || !filterterm) {
       const error = !trimmedTerm
         ? { error: 'You must provide a search term', anchorLink: 'refSearch' }
         : { error: 'You must select a valid search filter', anchorLink: 'filter' };
@@ -147,7 +150,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filter)), take(1)).subscribe(items => {
+    this.store.pipe(select(selectRefDataBySearchTerm(trimmedTerm, this.type, filterterm)), take(1)).subscribe((items) => {
       if (!items?.length) {
         this.globalErrorService.addError({ error: 'Your search returned no results', anchorLink: 'refSearch' });
         this.data = of([]);
@@ -155,7 +158,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
         this.data = of(items);
         this.router.navigate([`../${this.type}`], {
           relativeTo: this.route,
-          queryParams: { 'reference-data-items-page': 1 }
+          queryParams: { 'reference-data-items-page': 1 },
         });
       }
       this.searchReturned = true;
@@ -169,7 +172,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
       this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
       this.router.navigate([`../${this.type}`], {
         relativeTo: this.route,
-        queryParams: { 'reference-data-items-page': 1 }
+        queryParams: { 'reference-data-items-page': 1 },
       });
       this.searchReturned = false;
     }

@@ -27,8 +27,8 @@ describe('SelectVehicleTypeComponent', () => {
       providers: [
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
-        { provide: ActivatedRoute, useValue: { params: of([{ vehicleType: 'trl' }]) } }
-      ]
+        { provide: ActivatedRoute, useValue: { params: of([{ vehicleType: 'trl' }]) } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SelectVehicleTypeComponent);
@@ -65,7 +65,7 @@ describe('SelectVehicleTypeComponent', () => {
 
       component.cancel();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
   });
 
@@ -77,7 +77,7 @@ describe('SelectVehicleTypeComponent', () => {
       expect(navigateSpy).toHaveBeenCalledTimes(0);
     });
 
-    it('should navigate to batch records when successful', async () => {
+    it('should navigate to batch records when successful', () => {
       jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
       const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       component.handleSubmit(VehicleTypes.HGV);

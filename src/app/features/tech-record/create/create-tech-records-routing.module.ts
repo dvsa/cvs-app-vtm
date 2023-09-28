@@ -12,24 +12,26 @@ const routes: Routes = [
     path: '',
     component: CreateTechRecordComponent,
     data: { roles: Roles.TechRecordCreate },
-    canActivate: [MsalGuard, RoleGuard]
+    canActivate: [MsalGuard, RoleGuard],
   },
   {
     path: 'new-record-details',
     component: HydrateNewVehicleRecordComponent,
-    data: { title: 'New record details', roles: Roles.TechRecordCreate, isCustomLayout: true, isEditing: true },
-    canActivate: [MsalGuard, RoleGuard]
+    data: {
+      title: 'New record details', roles: Roles.TechRecordCreate, isCustomLayout: true, isEditing: true,
+    },
+    canActivate: [MsalGuard, RoleGuard],
   },
   {
     path: 'new-record-details/tyre-search/:axleNumber',
     component: TechRecordSearchTyresComponent,
     data: { title: 'Tyre search', roles: Roles.TechRecordCreate, isEditing: true },
-    canActivate: [MsalGuard, RoleGuard]
-  }
+    canActivate: [MsalGuard, RoleGuard],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class CreateTechRecordsRoutingModule {}

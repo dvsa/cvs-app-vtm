@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input,
+} from '@angular/core';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Roles } from '@models/roles.enum';
@@ -16,7 +18,7 @@ interface TestField {
 @Component({
   selector: 'app-test-record-summary',
   templateUrl: './test-record-summary.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestRecordSummaryComponent {
   @Input() isEditing = false;
@@ -43,16 +45,15 @@ export class TestRecordSummaryComponent {
     const byDate = (a: TestField, b: TestField) => new Date(b.testTypeStartTimestamp).getTime() - new Date(a.testTypeStartTimestamp).getTime();
 
     return this.testResults
-      .flatMap(record =>
-        record.testTypes.map(testType => ({
+      .flatMap((record) =>
+        record.testTypes.map((testType) => ({
           testTypeStartTimestamp: testType.testTypeStartTimestamp,
           testTypeName: testType.testTypeName,
           testNumber: testType.testNumber,
           testResult: testType.testResult,
           testResultId: record.testResultId,
-          testResultStatus: record.testStatus
-        }))
-      )
+          testResultStatus: record.testStatus,
+        })))
       .sort(byDate);
   }
 
@@ -61,11 +62,11 @@ export class TestRecordSummaryComponent {
   }
 
   getTestTypeName(testResult: TestResultModel): string {
-    return testResult.testTypes.map(t => t.testTypeName).join(',');
+    return testResult.testTypes.map((t) => t.testTypeName).join(',');
   }
 
   getTestTypeResults(testResult: TestResultModel): string {
-    return testResult.testTypes.map(t => t.testResult).join(',');
+    return testResult.testTypes.map((t) => t.testResult).join(',');
   }
 
   trackByFn(i: number, t: TestField): string {

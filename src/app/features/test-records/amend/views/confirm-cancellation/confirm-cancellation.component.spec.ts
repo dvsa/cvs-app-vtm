@@ -27,10 +27,10 @@ describe('ConfirmCancellationComponent', () => {
         {
           provide: TestRecordsService,
           useValue: {
-            cancelTest: () => {}
-          }
-        }
-      ]
+            cancelTest: () => {},
+          },
+        },
+      ],
     }).compileComponents();
   });
 
