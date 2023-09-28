@@ -50,23 +50,22 @@ const routes: Routes = [
   {
     path: 'historic',
     component: TechRecordComponent,
-    children :[
+    children: [
       {
         path: '',
         component: TechRecordComponent,
         data: { title: 'Historic tech record', isCustomLayout: true },
         canActivate: [MsalGuard, CancelEditTechGuard],
-        resolve: { load: TechRecordViewResolver }
-    },
-    {
-      path: 'test-records/test-result/:testResultId/:testNumber',
-      data: { title: 'Test record', roles: Roles.TestResultView },
-      canActivate: [MsalGuard, RoleGuard],
-      resolve: { techRecord: TechRecordViewResolver },
-      loadChildren: () => import('../test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
-    },
-  ]
-
+        resolve: { load: TechRecordViewResolver },
+      },
+      {
+        path: 'test-records/test-result/:testResultId/:testNumber',
+        data: { title: 'Test record', roles: Roles.TestResultView },
+        canActivate: [MsalGuard, RoleGuard],
+        resolve: { techRecord: TechRecordViewResolver },
+        loadChildren: () => import('../test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
+      },
+    ]
   },
   {
     path: 'historic/unarchive-record',
@@ -262,4 +261,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TechRecordsRoutingModule {}
+export class TechRecordsRoutingModule { }
