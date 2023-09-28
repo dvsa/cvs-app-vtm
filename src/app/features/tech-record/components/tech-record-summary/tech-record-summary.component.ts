@@ -24,7 +24,9 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, debounceTime, map, take, takeUntil } from 'rxjs';
+import {
+  Observable, Subject, debounceTime, map, take, takeUntil,
+} from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -55,6 +57,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
   isEditing = false;
+  scrollPosition: [number, number];
 
   private destroy$ = new Subject<void>();
 
@@ -67,8 +70,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private viewportScroller: ViewportScroller,
     private store: Store,
-    private loading: LoadingService
-  ) {}
+    private loading: LoadingService,
+  ) { }
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$
@@ -117,9 +120,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         }
       });
     }
-    this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe(loading => {
+
+    this.store.select(selectScrollPosition).pipe(take(1), takeUntil(this.destroy$)).subscribe((position) => {
+      this.scrollPosition = position;
+    });
+
+    this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe((loading) => {
       if (!loading) {
-        this.viewportScroller.scrollToPosition(this.position);
+        this.viewportScroller.scrollToPosition(this.scrollPosition);
       }
     });
   }
@@ -127,15 +135,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  get position(): [number, number] {
-    let pos: [number, number] = [0, 0];
-    this.store
-      .select(selectScrollPosition)
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(position => (pos = position ?? [0, 0]));
-    return pos as [number, number];
   }
 
   get vehicleType() {

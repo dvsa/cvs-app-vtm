@@ -9,8 +9,9 @@ import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { clearAllSectionStates, clearScrollPosition, updateEditingTechRecordCancel } from '@store/technical-records';
-import { Observable, Subject, distinctUntilChanged, map, takeUntil } from 'rxjs';
-
+import {
+  Observable, Subject, distinctUntilChanged, map, takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'app-edit-tech-record-button',
