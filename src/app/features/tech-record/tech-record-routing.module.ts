@@ -47,20 +47,7 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver },
   },
-  {
-    path: 'historic',
-    component: TechRecordComponent,
-    data: { title: 'Historic tech record', isCustomLayout: true },
-    canActivate: [MsalGuard, CancelEditTechGuard],
-    resolve: { load: TechRecordViewResolver },
-  },
-  {
-    path: 'historic/unarchive-record',
-    component: TechRecordUnarchiveComponent,
-    data: { title: 'Unarchive Record', roles: Roles.TechRecordUnarchive },
-    canActivate: [MsalGuard, RoleGuard],
-    resolve: { load: TechRecordViewResolver },
-  },
+
   {
     path: 'change-vin',
     component: AmendVinComponent,
