@@ -20,11 +20,12 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, map, take, takeUntil } from 'rxjs';
+import { Observable, Subject, debounceTime, map, take, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { selectScrollPosition } from '@store/technical-records';
+import { LoadingService } from '@services/loading/loading.service';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -61,7 +62,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private routerService: RouterService,
     private activatedRoute: ActivatedRoute,
     private viewportScroller: ViewportScroller,
-    private store: Store
+    private store: Store,
+    private loading: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -111,11 +113,25 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         }
       });
     }
+    this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe(loading => {
+      if (!loading) {
+        this.viewportScroller.scrollToPosition(this.position);
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get position(): [number, number] {
+    let pos: [number, number] = [0, 0];
+    this.store
+      .select(selectScrollPosition)
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe(position => (pos = position ?? [0, 0]));
+    return pos as [number, number];
   }
 
   get vehicleType() {
