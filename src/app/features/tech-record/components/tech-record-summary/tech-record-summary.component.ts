@@ -22,6 +22,9 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, map, take, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { selectScrollPosition } from '@store/technical-records';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -56,7 +59,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private referenceDataService: ReferenceDataService,
     private technicalRecordService: TechnicalRecordService,
     private routerService: RouterService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private viewportScroller: ViewportScroller,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
