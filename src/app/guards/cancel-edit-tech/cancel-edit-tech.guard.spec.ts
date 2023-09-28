@@ -3,7 +3,7 @@ import { RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { CancelEditTechGuard } from '../cancel-edit-tech/cancel-edit-tech.guard';
+import { CancelEditTechGuard } from './cancel-edit-tech.guard';
 
 describe('CancelEditTechGuard', () => {
   let guard: CancelEditTechGuard;
@@ -14,8 +14,8 @@ describe('CancelEditTechGuard', () => {
       providers: [
         CancelEditTechGuard,
         provideMockStore({}),
-        { provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) }
-      ]
+        { provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
+      ],
     });
     guard = TestBed.inject(CancelEditTechGuard);
   });
