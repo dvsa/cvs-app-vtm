@@ -1,8 +1,12 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input, OnInit } from '@angular/core';
+import {
+  AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input, OnInit,
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MultiOption } from '@forms/models/options.model';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { firstValueFrom, Observable, skipWhile, take } from 'rxjs';
+import {
+  firstValueFrom, Observable, skipWhile, take,
+} from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
@@ -14,13 +18,13 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: SuggestiveInputComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class SuggestiveInputComponent extends BaseControlComponent implements AfterContentInit, OnInit {
   @Input() options$!: Observable<MultiOption[]>;
-  @Input() defaultValue: string = '';
+  @Input() defaultValue = '';
 
   _value = '';
 
@@ -31,8 +35,8 @@ export class SuggestiveInputComponent extends BaseControlComponent implements Af
   ngOnInit(): void {
     this.options$
       .pipe(
-        skipWhile(options => !options.length),
-        take(1)
+        skipWhile((options) => !options.length),
+        take(1),
       )
       .subscribe(async () => {
         this._value = (await this.findOption(this.value, 'value'))?.label ?? '';
@@ -45,7 +49,7 @@ export class SuggestiveInputComponent extends BaseControlComponent implements Af
   }
 
   get style(): string {
-    return 'govuk-input' + (this.width ? ' govuk-input--width-' + this.width : '');
+    return `govuk-input${this.width ? ` govuk-input--width-${this.width}` : ''}`;
   }
 
   async handleChangeForOption(value: string) {
@@ -65,7 +69,7 @@ export class SuggestiveInputComponent extends BaseControlComponent implements Af
    * @returns `MultiOption | undefined`
    */
   async findOption(val: string, key = 'label'): Promise<MultiOption | undefined> {
-    return firstValueFrom(this.options$).then(options => options.find(option => option[key as keyof MultiOption] === val));
+    return firstValueFrom(this.options$).then((options) => options.find((option) => option[key as keyof MultiOption] === val));
   }
 
   addValidators() {

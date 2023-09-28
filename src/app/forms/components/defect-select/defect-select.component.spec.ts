@@ -28,21 +28,21 @@ describe('DefectSelectComponent', () => {
             deficiencyText: 'hey yo',
             forVehicleType: [VehicleTypes.PSV],
             ref: 'some ref',
-            stdForProhibition: false
-          }
+            stdForProhibition: false,
+          },
         ],
         forVehicleType: [VehicleTypes.PSV],
         itemDescription: 'yolo',
-        itemNumber: 2
-      }
-    ]
+        itemNumber: 2,
+      },
+    ],
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [DefectSelectComponent],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 
@@ -60,7 +60,7 @@ describe('DefectSelectComponent', () => {
     enum Types {
       Defect,
       Item,
-      Deficiency
+      Deficiency,
     }
     expect(component.types).toStrictEqual(Types);
   });
@@ -84,7 +84,7 @@ describe('DefectSelectComponent', () => {
     it('should correctly detect an item without deficiencies', () => {
       const itemWithNoDeficiencies: Item = {
         ...defect.items[0],
-        deficiencies: []
+        deficiencies: [],
       };
 
       expect(component.hasDeficiencies(itemWithNoDeficiencies)).toBeFalsy();

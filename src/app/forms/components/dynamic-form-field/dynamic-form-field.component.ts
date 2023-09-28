@@ -8,7 +8,7 @@ import { Observable, of, map } from 'rxjs';
 @Component({
   selector: 'app-dynamic-form-field',
   templateUrl: './dynamic-form-field.component.html',
-  providers: [MultiOptionsService]
+  providers: [MultiOptionsService],
 })
 export class DynamicFormFieldComponent implements AfterContentInit {
   @Input() control?: KeyValue<string, CustomFormControl>;
@@ -25,7 +25,7 @@ export class DynamicFormFieldComponent implements AfterContentInit {
     const meta = this.control?.value.meta;
 
     return meta?.referenceData
-      ? this.optionsService.getOptions(meta.referenceData).pipe(map(l => (l ? l : [])))
+      ? this.optionsService.getOptions(meta.referenceData).pipe(map((l) => (l || [])))
       : of((meta?.options as FormNodeOption<string | number | boolean>[]) ?? []);
   }
 

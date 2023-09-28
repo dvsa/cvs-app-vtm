@@ -1,16 +1,22 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
-import { Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes,
+} from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { addAxle, removeAxle } from '@store/technical-records';
@@ -21,7 +27,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-tyres',
   templateUrl: './tyres.component.html',
-  styleUrls: ['./tyres.component.scss']
+  styleUrls: ['./tyres.component.scss'],
 })
 export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   @Input() vehicleTechRecord!: TechRecordType<'psv'> | TechRecordType<'trl'> | TechRecordType<'hgv'>;
@@ -29,7 +35,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() formChange = new EventEmitter();
 
-  public isError: boolean = false;
+  public isError = false;
   public errorMessage?: string;
   public form!: CustomFormGroup;
   private editingReason?: ReasonForEditing;
@@ -40,7 +46,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<TechnicalRecordServiceState>
+    private store: Store<TechnicalRecordServiceState>,
   ) {
     this.editingReason = this.route.snapshot.data['reason'];
   }
@@ -49,7 +55,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     this.form = this.dynamicFormsService.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.subscribe((event: any) => {
       if (event?.axles) {
-        event.axles = (event.axles as Axle[]).filter(axle => !!axle?.axleNumber);
+        event.axles = (event.axles as Axle[]).filter((axle) => !!axle?.axleNumber);
       }
 
       this.formChange.emit(event);
@@ -77,7 +83,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       case VehicleTypes.TRL:
         return tyresTemplateTrl;
       default:
-        return;
+
     }
   }
 
@@ -126,13 +132,13 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
       if (!previousAxles) return false;
 
-      for (let [index, axle] of currentAxles.entries()) {
+      for (const [index, axle] of currentAxles.entries()) {
         if (
-          axle?.tyres_fitmentCode !== undefined &&
-          previousAxles[index] &&
-          previousAxles[index].tyres_fitmentCode !== undefined &&
-          axle.tyres_fitmentCode !== previousAxles[index].tyres_fitmentCode &&
-          axle.tyres_tyreCode === previousAxles[index].tyres_tyreCode
+          axle?.tyres_fitmentCode !== undefined
+          && previousAxles[index]
+          && previousAxles[index].tyres_fitmentCode !== undefined
+          && axle.tyres_fitmentCode !== previousAxles[index].tyres_fitmentCode
+          && axle.tyres_tyreCode === previousAxles[index].tyres_tyreCode
         ) {
           this.getTyresRefData('tyres_tyreCode', axle.axleNumber);
           return true;
@@ -149,28 +155,29 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       this.referenceDataService
         .fetchReferenceDataByKey(ReferenceDataResourceType.Tyres, String(this.vehicleTechRecord.techRecord_axles![axleNumber - 1]?.tyres_tyreCode))
         .subscribe({
-          next: data => {
+          next: (data) => {
             const refTyre = data as ReferenceDataTyre;
-            const indexLoad =
-              this.vehicleTechRecord.techRecord_axles![axleNumber - 1]?.tyres_fitmentCode === FitmentCode.SINGLE
-                ? Number(refTyre.loadIndexSingleLoad)
-                : Number(refTyre.loadIndexTwinLoad);
+            const indexLoad = this.vehicleTechRecord.techRecord_axles![axleNumber - 1]?.tyres_fitmentCode === FitmentCode.SINGLE
+              ? Number(refTyre.loadIndexSingleLoad)
+              : Number(refTyre.loadIndexTwinLoad);
             const newTyre = new Tyre({
               tyreCode: this.vehicleTechRecord.techRecord_axles![axleNumber - 1]?.tyres_tyreCode,
               tyreSize: refTyre.tyreSize,
               plyRating: refTyre.plyRating,
-              dataTrAxles: indexLoad
+              dataTrAxles: indexLoad,
             });
 
             this.addTyreToTechRecord(newTyre, axleNumber);
           },
-          error: _e => {
-            this.errorMessage = 'Cannot find data of this tyre on axle ' + axleNumber;
+          error: (_e) => {
+            this.errorMessage = `Cannot find data of this tyre on axle ${axleNumber}`;
             this.isError = true;
-            const newTyre = new Tyre({ tyreCode: null, tyreSize: null, plyRating: null, dataTrAxles: null });
+            const newTyre = new Tyre({
+              tyreCode: null, tyreSize: null, plyRating: null, dataTrAxles: null,
+            });
 
             this.addTyreToTechRecord(newTyre, axleNumber);
-          }
+          },
         });
     }
   }
@@ -199,7 +206,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   addAxle(): void {
-    if (!this.vehicleTechRecord.techRecord_axles || this.vehicleTechRecord.techRecord_axles!.length < 10) {
+    if (!this.vehicleTechRecord.techRecord_axles || this.vehicleTechRecord.techRecord_axles.length < 10) {
       this.isError = false;
       this.store.dispatch(addAxle());
     } else {

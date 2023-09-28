@@ -1,6 +1,6 @@
 export enum operatorEnum {
   Equals = 'equals',
-  NotEquals = 'not equals'
+  NotEquals = 'not equals',
 }
 
 export interface Condition {

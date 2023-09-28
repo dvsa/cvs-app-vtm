@@ -1,4 +1,6 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, Injector, Input } from '@angular/core';
+import {
+  AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, Injector, Input,
+} from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PrefixDirective } from '@forms/directives/prefix.directive';
 import { SuffixDirective } from '@forms/directives/suffix.directive';
@@ -8,9 +10,9 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
 
 @Component({
   selector: 'app-base-control',
-  template: ``,
+  template: '',
   styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit {
   @ContentChild(PrefixDirective) prefix?: PrefixDirective;

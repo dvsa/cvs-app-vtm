@@ -13,18 +13,18 @@ import { SelectComponent } from './select.component';
   template: `<form [formGroup]="form">
     <app-select name="foo" label="Foo" [options]="options" formControlName="foo"></app-select>
   </form> `,
-  styles: []
+  styles: [],
 })
 class HostComponent {
   @ViewChild(SelectComponent) select?: SelectComponent;
 
   form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null)
+    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
   });
   options: FormNodeOption<string | number | boolean>[] = [
     { label: 'Value 1', value: '1' },
     { label: 'Value 2', value: '2' },
-    { label: 'Value 3', value: '3' }
+    { label: 'Value 3', value: '3' },
   ];
 }
 
@@ -36,7 +36,7 @@ describe('SelectComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BaseControlComponent, FieldErrorMessageComponent, HostComponent, SelectComponent],
-      imports: [FormsModule, ReactiveFormsModule]
+      imports: [FormsModule, ReactiveFormsModule],
     }).compileComponents();
   });
 
@@ -58,7 +58,7 @@ describe('SelectComponent', () => {
       select.selectedIndex = 1;
       select.dispatchEvent(new Event('change'));
 
-      expect(foo?.value).toEqual('1');
+      expect(foo?.value).toBe('1');
       expect(foo?.value).not.toBeNull();
     });
 
@@ -67,7 +67,7 @@ describe('SelectComponent', () => {
       fixture.detectChanges();
       const select = fixture.debugElement.query(By.css('select'));
       expect(select).toBeTruthy();
-      expect(select.nativeElement.value).toEqual('2: 2');
+      expect(select.nativeElement.value).toBe('2: 2');
     });
   });
 });

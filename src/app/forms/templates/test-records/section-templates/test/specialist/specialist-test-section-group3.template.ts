@@ -1,6 +1,8 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 
 export const SpecialistTestSectionGroup3: FormNode = {
   name: 'testSection',
@@ -13,7 +15,7 @@ export const SpecialistTestSectionGroup3: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testStartTimestamp',
@@ -22,7 +24,7 @@ export const SpecialistTestSectionGroup3: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testTypes',
@@ -40,7 +42,7 @@ export const SpecialistTestSectionGroup3: FormNode = {
               disabled: true,
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.XS,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testResult',
@@ -51,7 +53,7 @@ export const SpecialistTestSectionGroup3: FormNode = {
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' },
                 { value: 'prs', label: 'PRS' },
-                { value: 'abandoned', label: 'Abandoned' }
+                { value: 'abandoned', label: 'Abandoned' },
               ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnCustomDefects },
@@ -60,18 +62,18 @@ export const SpecialistTestSectionGroup3: FormNode = {
                   args: {
                     sibling: 'certificateNumber',
                     value: 'fail',
-                    conditions: { field: 'testTypeId', operator: 'equals', value: ['150', '151', '181', '182'] }
-                  }
-                }
+                    conditions: { field: 'testTypeId', operator: 'equals', value: ['150', '151', '181', '182'] },
+                  },
+                },
               ],
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'testTypeName',
               label: 'Description',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'certificateNumber',
@@ -82,11 +84,11 @@ export const SpecialistTestSectionGroup3: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               width: FormNodeWidth.L,
               required: true,
-              value: null
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              value: null,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

@@ -11,9 +11,9 @@ type OptionsType = string | number | boolean;
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: CheckboxGroupComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class CheckboxGroupComponent extends BaseControlComponent {
   @Input() options: FormNodeOption<OptionsType>[] = [];

@@ -1,11 +1,17 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, OnDestroy, OnInit,
+} from '@angular/core';
 import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { select, Store } from '@ngrx/store';
-import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
+import {
+  createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect,
+} from '@store/test-records';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
-import { filter, Subject, takeUntil, take, withLatestFrom } from 'rxjs';
+import {
+  filter, Subject, takeUntil, take, withLatestFrom,
+} from 'rxjs';
 import { Defect } from '@models/defects/defect.model';
 import { AdditionalInfoSection } from '@models/defects/additional-information.model';
 import { KeyValue } from '@angular/common';
@@ -27,7 +33,7 @@ import { State } from '@store/index';
   templateUrl: './defect.component.html',
   styleUrls: ['./defect.component.scss'],
   providers: [DefaultNullOrEmpty],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DefectComponent implements OnInit, OnDestroy {
   form!: CustomFormGroup;
@@ -45,7 +51,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 
   booleanOptions: FormNodeOption<string | number | boolean>[] = [
     { value: true, label: 'Yes' },
-    { value: false, label: 'No' }
+    { value: false, label: 'No' },
   ];
 
   constructor(
@@ -54,7 +60,7 @@ export class DefectComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<State>,
     private resultService: ResultOfTestService,
-    private errorService: GlobalErrorService
+    private errorService: GlobalErrorService,
   ) {
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'];
   }
@@ -68,7 +74,7 @@ export class DefectComponent implements OnInit, OnDestroy {
       .pipe(
         withLatestFrom(defectIndex, defectRef),
         takeUntil(this.onDestroy$),
-        filter(([testResult]) => !!testResult)
+        filter(([testResult]) => !!testResult),
       )
       .subscribe(([testResult, defectIndex, defectRef]) => {
         !testResult && this.navigateBack();
@@ -91,14 +97,14 @@ export class DefectComponent implements OnInit, OnDestroy {
 
     !this.defect && this.navigateBack();
 
-    this.vehicleType &&
-      this.store
+    this.vehicleType
+      && this.store
         .select(selectByImNumber(this.defect?.imNumber || NaN, this.vehicleType))
         .pipe(
           takeUntil(this.onDestroy$),
-          filter(d => !!d)
+          filter((d) => !!d),
         )
-        .subscribe(defectsTaxonomy => {
+        .subscribe((defectsTaxonomy) => {
           this.initializeInfoDictionary(defectsTaxonomy);
         });
   }
@@ -169,7 +175,7 @@ export class DefectComponent implements OnInit, OnDestroy {
     if (info) {
       type LocationKey = keyof typeof info.location;
 
-      Object.keys(info.location).forEach(key => {
+      Object.keys(info.location).forEach((key) => {
         const options = info?.location[key as LocationKey];
         if (options) {
           this.infoDictionary[key] = this.mapOptions(options);
@@ -186,11 +192,11 @@ export class DefectComponent implements OnInit, OnDestroy {
       itemDescription: item.itemDescription,
       itemNumber: item.itemNumber,
 
-      //initializing if defect is advisory
+      // initializing if defect is advisory
       deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum.Advisory,
       deficiencyRef: `${defect.imNumber}.${item.itemNumber}`,
       prohibitionIssued: false,
-      stdForProhibition: false
+      stdForProhibition: false,
     };
 
     if (deficiency) {
@@ -209,8 +215,10 @@ export class DefectComponent implements OnInit, OnDestroy {
     this.defect = testResultDefect;
   }
 
-  categoryColor(category: string = 'major'): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
-    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{ major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[
+  categoryColor(category = 'major'): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
+    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{
+      major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue',
+    })[
       category
     ];
   }
@@ -218,7 +226,7 @@ export class DefectComponent implements OnInit, OnDestroy {
   trackByFn = (_index: number, keyValuePair: KeyValue<string, Array<any>>): string => keyValuePair.key;
 
   mapOptions = (options: Array<any>): Array<FormNodeOption<any>> =>
-    options.map(option => ({ value: option, label: this.pascalCase(String(option)) }));
+    options.map((option) => ({ value: option, label: this.pascalCase(String(option)) }));
 
   pascalCase = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
 }

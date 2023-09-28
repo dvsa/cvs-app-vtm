@@ -13,15 +13,15 @@ import { SuggestiveInputComponent } from './suggestive-input.component';
   template: `<form [formGroup]="form">
     <app-suggestive-input name="foo" formControlName="foo" [options$]="options$"></app-suggestive-input>
   </form> `,
-  styles: []
+  styles: [],
 })
 class HostComponent {
   form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, '')
+    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, ''),
   });
   options$: Observable<MultiOption[]> = of([
     { label: 'Banana', value: 'banana' },
-    { label: 'Apple', value: 'apple' }
+    { label: 'Apple', value: 'apple' },
   ]);
 }
 
@@ -33,7 +33,7 @@ describe('SuggestiveInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HostComponent, SuggestiveInputComponent, FieldErrorMessageComponent],
-      imports: [FormsModule, ReactiveFormsModule]
+      imports: [FormsModule, ReactiveFormsModule],
     }).compileComponents();
   });
 

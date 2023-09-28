@@ -25,8 +25,8 @@ describe('BodyComponent', () => {
         MultiOptionsService,
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
-        { provide: UserService, useValue: {} }
-      ]
+        { provide: UserService, useValue: {} },
+      ],
     }).compileComponents();
   });
 
@@ -41,7 +41,7 @@ describe('BodyComponent', () => {
       techRecord_brakes_dtpNumber: '000000',
       techRecord_bodyModel: 'model',
       techRecord_bodyType_description: 'type',
-      techRecord_chassisMake: 'chassisType'
+      techRecord_chassisMake: 'chassisType',
     } as unknown as TechRecordType<'psv'>;
     fixture.detectChanges();
   });
@@ -52,7 +52,7 @@ describe('BodyComponent', () => {
   describe('The DTpNumber value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
       expect((component.techRecord as TechRecordType<'psv'>).techRecord_brakes_dtpNumber).toStrictEqual(
-        component.form.value.techRecord_brakes_dtpNumber
+        component.form.value.techRecord_brakes_dtpNumber,
       );
     });
   });
@@ -64,14 +64,14 @@ describe('BodyComponent', () => {
   describe('The bodyType value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
       expect((component.techRecord as TechRecordType<'psv'>).techRecord_bodyType_description).toStrictEqual(
-        component.form.controls['techRecord_bodyType_description']?.value
+        component.form.controls['techRecord_bodyType_description']?.value,
       );
     });
   });
   describe('The chassisMake value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
       expect((component.techRecord as TechRecordType<'psv'>).techRecord_chassisMake).toStrictEqual(
-        component.form.controls['techRecord_chassisMake']?.value
+        component.form.controls['techRecord_chassisMake']?.value,
       );
     });
   });

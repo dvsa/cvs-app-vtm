@@ -4,7 +4,9 @@ import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FrameDescriptions } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
+} from '../../services/dynamic-form.types';
 
 export const TrlTechRecordTemplate: FormNode = {
   name: 'techRecordSummary',
@@ -19,7 +21,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_statusCode',
@@ -27,7 +29,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_regnDate',
@@ -38,7 +40,7 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.DATE,
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
 
-      isoDate: false
+      isoDate: false,
     },
     {
       name: 'techRecord_manufactureYear',
@@ -49,9 +51,9 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
-        { name: ValidatorNames.Min, args: 1000 }
+        { name: ValidatorNames.Min, args: 1000 },
       ],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_firstUseDate',
@@ -61,7 +63,7 @@ export const TrlTechRecordTemplate: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
 
-      isoDate: false
+      isoDate: false,
     },
     {
       name: 'techRecord_noOfAxles',
@@ -70,7 +72,7 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       disabled: true,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_roadFriendly',
@@ -80,9 +82,9 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
+        { value: false, label: 'No' },
       ],
-      class: 'flex--half'
+      class: 'flex--half',
     },
     {
       name: 'techRecord_suspensionType',
@@ -97,9 +99,9 @@ export const TrlTechRecordTemplate: FormNode = {
         { value: 'R', label: 'Rubber' },
         { value: 'A', label: 'Air' },
         { value: 'H', label: 'Hydraulic' },
-        { value: 'O', label: 'Other' }
+        { value: 'O', label: 'Other' },
       ],
-      class: 'flex--half'
+      class: 'flex--half',
     },
     {
       name: 'techRecord_vehicleClass_description',
@@ -120,10 +122,10 @@ export const TrlTechRecordTemplate: FormNode = {
         { label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
         { label: 'MOT class 4', value: 'MOT class 4' },
         { label: 'MOT class 7', value: 'MOT class 7' },
-        { label: 'MOT class 5', value: 'MOT class 5' }
+        { label: 'MOT class 5', value: 'MOT class 5' },
       ],
       validators: [{ name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_couplingType',
@@ -134,7 +136,7 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: CouplingTypeOptions,
       validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
-      class: 'flex--half'
+      class: 'flex--half',
     },
     {
       name: 'techRecord_maxLoadOnCoupling',
@@ -145,7 +147,7 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
       class: 'flex--half',
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_vehicleConfiguration',
@@ -154,7 +156,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_frameDescription',
@@ -163,7 +165,7 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(FrameDescriptions)
+      options: getOptionsFromEnum(FrameDescriptions),
     },
     {
       name: 'techRecord_departmentalVehicleMarker',
@@ -173,8 +175,8 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
-      ]
+        { value: false, label: 'No' },
+      ],
     },
     {
       name: 'techRecord_euVehicleCategory',
@@ -183,9 +185,9 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(EuVehicleCategories).filter(
-        option => option.value !== EuVehicleCategories.O1 && option.value !== EuVehicleCategories.O2
+        (option) => option.value !== EuVehicleCategories.O1 && option.value !== EuVehicleCategories.O2,
       ),
-      width: FormNodeWidth.S
+      width: FormNodeWidth.S,
     },
     {
       name: 'techRecord_alterationMarker',
@@ -196,8 +198,8 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
-      ]
-    }
-  ]
+        { value: false, label: 'No' },
+      ],
+    },
+  ],
 };

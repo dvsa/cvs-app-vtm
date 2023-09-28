@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnDestroy, OnInit, Output,
+} from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
@@ -8,7 +10,7 @@ import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-defects[defects][template]',
-  templateUrl: './defects.component.html'
+  templateUrl: './defects.component.html',
 })
 export class DefectsComponent implements OnInit, OnDestroy {
   @Input() isEditing = false;
@@ -26,7 +28,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
+    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
       this.formChange.emit(event);
     });
   }
@@ -47,14 +49,16 @@ export class DefectsComponent implements OnInit, OnDestroy {
   }
 
   get testDefects(): TestResultDefect[] {
-    return this.defectsForm.controls.map(control => {
+    return this.defectsForm.controls.map((control) => {
       const formGroup = control as CustomFormGroup;
       return formGroup.getCleanValue(formGroup) as TestResultDefect;
     });
   }
 
   categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
-    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{ major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[
+    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{
+      major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue',
+    })[
       category
     ];
   }

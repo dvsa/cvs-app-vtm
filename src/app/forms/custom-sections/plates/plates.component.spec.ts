@@ -12,10 +12,10 @@ import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { of } from 'rxjs';
-import { PlatesComponent } from './plates.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { HgvOrTrl } from '@models/vehicle-tech-record.model';
 import { canGeneratePlate } from '@store/technical-records';
+import { PlatesComponent } from './plates.component';
 
 describe('PlatesComponent', () => {
   let component: PlatesComponent;
@@ -34,21 +34,21 @@ describe('PlatesComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of([Roles.TechRecordAmend])
-          }
+            roles$: of([Roles.TechRecordAmend]),
+          },
         },
         {
           provide: ActivatedRoute,
           useValue: {
-            useValue: { params: of([{ id: 1 }]) }
-          }
+            useValue: { params: of([{ id: 1 }]) },
+          },
         },
         {
           provide: APP_BASE_HREF,
-          useValue: '/'
+          useValue: '/',
         },
-        GlobalErrorService
-      ]
+        GlobalErrorService,
+      ],
     }).compileComponents();
   });
 
@@ -74,13 +74,13 @@ describe('PlatesComponent', () => {
           plateIssueDate: new Date().toISOString(),
           plateSerialNumber: '123456',
           plateIssuer: 'issuer',
-          plateReasonForIssue: 'Replacement'
-        }
+          plateReasonForIssue: 'Replacement',
+        },
       ];
       const plateFetched = component.mostRecentPlate;
 
       expect(plateFetched).toBeDefined();
-      expect(plateFetched!.plateSerialNumber).toEqual('123456');
+      expect(plateFetched.plateSerialNumber).toBe('123456');
     });
 
     it('should fetch the latest plate if more than 1 exists', () => {
@@ -90,27 +90,27 @@ describe('PlatesComponent', () => {
             plateIssueDate: new Date(new Date().getTime()).toISOString(),
             plateSerialNumber: '123456',
             plateIssuer: 'issuer',
-            plateReasonForIssue: 'Replacement'
+            plateReasonForIssue: 'Replacement',
           },
           {
             plateIssueDate: new Date(new Date().getTime() + 5).toISOString(),
             plateSerialNumber: '234567',
             plateIssuer: 'issuer',
-            plateReasonForIssue: 'Replacement'
+            plateReasonForIssue: 'Replacement',
           },
           {
             plateIssueDate: new Date(new Date().getTime() - 5).toISOString(),
             plateSerialNumber: '345678',
             plateIssuer: 'issuer',
-            plateReasonForIssue: 'Replacement'
-          }
-        ]
+            plateReasonForIssue: 'Replacement',
+          },
+        ],
       } as TechRecordType<'trl'>;
 
       const plateFetched = component.mostRecentPlate;
 
       expect(plateFetched).toBeDefined();
-      expect(plateFetched!.plateSerialNumber).toEqual('234567');
+      expect(plateFetched.plateSerialNumber).toBe('234567');
     });
 
     it('should return null if plates are empty', () => {
@@ -142,9 +142,9 @@ describe('PlatesComponent', () => {
             plateIssueDate: new Date().toISOString(),
             plateSerialNumber: '123456',
             plateIssuer: 'issuer',
-            plateReasonForIssue: 'Replacement'
-          }
-        ]
+            plateReasonForIssue: 'Replacement',
+          },
+        ],
       } as TechRecordType<'trl'>;
 
       expect(component.hasPlates).toBeTruthy();
@@ -188,7 +188,7 @@ describe('PlatesComponent', () => {
         techRecord_vehicleType: 'hgv',
         techRecord_variantNumber: '1',
         vin: 'HGVTEST01',
-        techRecord_axles: []
+        techRecord_axles: [],
       } as unknown as HgvOrTrl;
 
       component.techRecord.techRecord_axles = [
@@ -208,8 +208,8 @@ describe('PlatesComponent', () => {
           tyres_plyRating: '3',
           tyres_fitmentCode: 'single',
           tyres_dataTrAxles: 1,
-          tyres_speedCategorySymbol: 'a7'
-        }
+          tyres_speedCategorySymbol: 'a7',
+        },
       ];
     });
     it('should show an error if tech record is not valid for plates', () => {
@@ -217,17 +217,17 @@ describe('PlatesComponent', () => {
       const plateFieldsErrorMessage = 'All fields marked plate are mandatory to generate a plate.';
       const errorSpy = jest.spyOn(errorService, 'addError');
       component.validateTechRecordPlates();
-      expect(errorSpy).toBeCalledWith({ error: plateFieldsErrorMessage });
+      expect(errorSpy).toHaveBeenCalledWith({ error: plateFieldsErrorMessage });
     });
     it('should dispatch the canGeneratePlate action if the record is valid', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       component.validateTechRecordPlates();
-      expect(dispatchSpy).toBeCalledWith(canGeneratePlate());
+      expect(dispatchSpy).toHaveBeenCalledWith(canGeneratePlate());
     });
     it('should call router.navigate on a valid record', () => {
       const navigateSpy = jest.spyOn(router, 'navigate');
       component.validateTechRecordPlates();
-      expect(navigateSpy).toBeCalledWith(['generate-plate'], { relativeTo: expect.anything() });
+      expect(navigateSpy).toHaveBeenCalledWith(['generate-plate'], { relativeTo: expect.anything() });
     });
   });
 });

@@ -1,5 +1,7 @@
 import { ViewportScroller } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
@@ -19,7 +21,7 @@ import { Subscription, debounceTime } from 'rxjs';
 @Component({
   selector: 'app-plates[techRecord]',
   templateUrl: './plates.component.html',
-  styleUrls: ['./plates.component.scss']
+  styleUrls: ['./plates.component.scss'],
 })
 export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   @Input() techRecord!: HgvOrTrl;
@@ -40,12 +42,12 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     private router: Router,
     private route: ActivatedRoute,
     private store: Store<TechnicalRecordServiceState>,
-    private viewportScroller: ViewportScroller
+    private viewportScroller: ViewportScroller,
   ) {}
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(PlatesTemplate, this.techRecord) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
+    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => this.formChange.emit(event));
   }
 
   ngOnChanges(): void {
@@ -70,8 +72,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
   get sortedPlates(): HGVPlates[] | TRLPlates[] | undefined {
     return cloneDeep(this.techRecord.techRecord_plates)?.sort((a: any, b: any) =>
-      a.plateIssueDate && b.plateIssueDate ? new Date(b.plateIssueDate).getTime() - new Date(a.plateIssueDate).getTime() : 0
-    );
+      a.plateIssueDate && b.plateIssueDate ? new Date(b.plateIssueDate).getTime() - new Date(a.plateIssueDate).getTime() : 0);
   }
 
   get plates() {
@@ -81,8 +82,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   get mostRecentPlate(): any | undefined {
     return cloneDeep(this.techRecord.techRecord_plates)
       ?.sort((a: any, b: any) =>
-        a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0
-      )
+        a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0)
       ?.pop();
   }
 
@@ -107,9 +107,9 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   get fileName(): string {
     if (this.mostRecentPlate) {
       return `plate_${this.mostRecentPlate.plateSerialNumber}`;
-    } else {
-      throw new Error('Could not find plate.');
     }
+    throw new Error('Could not find plate.');
+
   }
 
   get eligibleForPlates(): boolean {
@@ -141,16 +141,15 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private cannotGeneratePlate(plateRequiredFields: string[]): boolean {
-    const isOneFieldEmpty = plateRequiredFields.some(field => {
+    const isOneFieldEmpty = plateRequiredFields.some((field) => {
       const value = this.techRecord[field as keyof HgvOrTrl];
       return value === undefined || value === null || value === '';
     });
-    const areAxlesInvalid = this.techRecord.techRecord_axles?.some(axle =>
-      axleRequiredFields.some(field => {
+    const areAxlesInvalid = this.techRecord.techRecord_axles?.some((axle) =>
+      axleRequiredFields.some((field) => {
         const value = (axle as any)[field];
         return value === undefined || value === null || value === '';
-      })
-    );
+      }));
 
     return isOneFieldEmpty || !this.techRecord.techRecord_axles?.length || !!areAxlesInvalid;
   }

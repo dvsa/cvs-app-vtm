@@ -1,11 +1,13 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import {
+  Directive, ElementRef, HostListener, Input,
+} from '@angular/core';
 
 @Directive({
-  selector: '[appFocusNextApprovalType]'
+  selector: '[appFocusNextApprovalType]',
 })
 export class ApprovalTypeFocusNextDirective {
-  @Input('appFocusNextApprovalType') nextInputId: string = '';
-  @Input() characterLimit: number = 0;
+  @Input('appFocusNextApprovalType') nextInputId = '';
+  @Input() characterLimit = 0;
 
   constructor(private el: ElementRef) {}
 

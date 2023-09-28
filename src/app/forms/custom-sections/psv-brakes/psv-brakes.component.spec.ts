@@ -24,8 +24,8 @@ describe('PsvBrakesComponent', () => {
         MultiOptionsService,
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
-        { provide: UserService, useValue: {} }
-      ]
+        { provide: UserService, useValue: {} },
+      ],
     }).compileComponents();
   });
 
@@ -50,7 +50,7 @@ describe('PsvBrakesComponent', () => {
         weights_gbWeight: 3,
         // TODO: V3 2 eecweights in type package, which is this?
         // weights_eecWeight: 4,
-        weights_designWeight: 5
+        weights_designWeight: 5,
       },
       {
         axleNumber: 2,
@@ -67,7 +67,7 @@ describe('PsvBrakesComponent', () => {
         weights_ladenWeight: 2,
         weights_gbWeight: 3,
         // weights_eecWeight: 4,
-        weights_designWeight: 5
+        weights_designWeight: 5,
       },
       {
         axleNumber: 3,
@@ -84,8 +84,8 @@ describe('PsvBrakesComponent', () => {
         weights_ladenWeight: 2,
         weights_gbWeight: 3,
         // weights_eecWeight: 4,
-        weights_designWeight: 5
-      }
+        weights_designWeight: 5,
+      },
     ];
 
     fixture.detectChanges();
@@ -107,7 +107,7 @@ describe('PsvBrakesComponent', () => {
   describe('The brakeCodeOriginal value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
       expect(component.vehicleTechRecord?.techRecord_brakes_brakeCodeOriginal).toStrictEqual(
-        component.form.controls['techRecord_brakes_brakeCodeOriginal']?.value
+        component.form.controls['techRecord_brakes_brakeCodeOriginal']?.value,
       );
     });
   });
@@ -115,7 +115,7 @@ describe('PsvBrakesComponent', () => {
   describe('The axle value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
       expect(component.vehicleTechRecord?.techRecord_axles![0]).toEqual(
-        expect.objectContaining(component.form.controls['techRecord_axles']?.value[0])
+        expect.objectContaining(component.form.controls['techRecord_axles']?.value[0]),
       );
     });
   });

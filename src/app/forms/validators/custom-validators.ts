@@ -84,8 +84,7 @@ export class CustomValidators {
     };
   };
 
-  static requiredIfEquals =
-    (sibling: string, values: any[]): ValidatorFn =>
+  static requiredIfEquals = (sibling: string, values: any[]): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
 
@@ -144,13 +143,13 @@ export class CustomValidators {
         if (isTrailerValueSelected) {
           if (control.value.length < 7) {
             return { validateVRMTrailerIdLength: { message: 'Trailer ID must be greater than or equal to 7 characters' } };
-          } else if (control.value.length > 8) {
+          } if (control.value.length > 8) {
             return { validateVRMTrailerIdLength: { message: 'Trailer ID must be less than or equal to 8 characters' } };
           }
         } else {
           if (control.value.length < 1) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be greater than or equal to 1 character' } };
-          } else if (control.value.length > 9) {
+          } if (control.value.length > 9) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be less than or equal to 9 characters' } };
           }
         }
@@ -197,7 +196,7 @@ export class CustomValidators {
   }
 
   static invalidOption: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    return '[INVALID_OPTION]' === control.value ? { invalidOption: true } : null;
+    return control.value === '[INVALID_OPTION]' ? { invalidOption: true } : null;
   };
 
   static pastDate: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -237,7 +236,7 @@ export class CustomValidators {
         maxDate.setMonth(maxDate.getMonth() + months);
 
         if (new Date(control.value) > maxDate) {
-          return { dateNotExceed: { sibling: (siblingControl as CustomFormControl).meta.label, months: months } };
+          return { dateNotExceed: { sibling: (siblingControl as CustomFormControl).meta.label, months } };
         }
       }
 

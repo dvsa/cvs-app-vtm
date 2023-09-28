@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators,
+} from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { Condition } from '@forms/models/condition.model';
@@ -10,12 +12,14 @@ import { CustomValidators } from '@forms/validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
-import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
+import {
+  CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes,
+} from './dynamic-form.types';
 
 type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DynamicFormService {
   constructor(private store: Store<State>) {}
@@ -53,7 +57,7 @@ export class DynamicFormService {
     [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued,
     [ValidatorNames.MustEqualSibling]: (args: { sibling: string }) => CustomValidators.mustEqualSibling(args.sibling),
     [ValidatorNames.HandlePsvPassengersChange]: (args: { passengersOne: string; passengersTwo: string }) =>
-      CustomValidators.handlePsvPassengersChange(args.passengersOne, args.passengersTwo)
+      CustomValidators.handlePsvPassengersChange(args.passengersOne, args.passengersTwo),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
@@ -67,7 +71,7 @@ export class DynamicFormService {
       CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
-    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store)
+    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
@@ -75,15 +79,15 @@ export class DynamicFormService {
       return new CustomFormGroup(formNode, {});
     }
 
-    const form: CustomFormGroup | CustomFormArray =
-      formNode.type === FormNodeTypes.ARRAY ? new CustomFormArray(formNode, [], this.store) : new CustomFormGroup(formNode, {});
+    const form: CustomFormGroup | CustomFormArray = formNode.type === FormNodeTypes.ARRAY ? new CustomFormArray(formNode, [], this.store) : new CustomFormGroup(formNode, {});
     data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
 
-    formNode.children?.forEach(child => {
-      const { name, type, value, validators, asyncValidators, disabled } = child;
+    formNode.children?.forEach((child) => {
+      const {
+        name, type, value, validators, asyncValidators, disabled,
+      } = child;
 
-      const control =
-        FormNodeTypes.CONTROL === type ? new CustomFormControl({ ...child }, { value, disabled: !!disabled }) : this.createForm(child, data[name]);
+      const control = FormNodeTypes.CONTROL === type ? new CustomFormControl({ ...child }, { value, disabled: !!disabled }) : this.createForm(child, data[name]);
 
       if (validators?.length) {
         this.addValidators(control, validators);
@@ -96,7 +100,7 @@ export class DynamicFormService {
       if (form instanceof FormGroup) {
         form.addControl(name, control);
       } else if (form instanceof FormArray) {
-        this.createControls(child, data).forEach(element => form.push(element));
+        this.createControls(child, data).forEach((element) => form.push(element));
       }
     });
 
@@ -113,19 +117,18 @@ export class DynamicFormService {
     // make sure the template has the correct name to the node.
     return Array.isArray(data)
       ? data.map(() =>
-          FormNodeTypes.CONTROL !== child.type
-            ? this.createForm(child, data[Number(child.name)])
-            : new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })
-        )
+        FormNodeTypes.CONTROL !== child.type
+          ? this.createForm(child, data[Number(child.name)])
+          : new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled }))
       : [new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })];
   }
 
   addValidators(control: CustomFormFields, validators: Array<{ name: ValidatorNames; args?: any }> = []) {
-    validators.forEach(v => control.addValidators(this.validatorMap[v.name](v.args)));
+    validators.forEach((v) => control.addValidators(this.validatorMap[v.name](v.args)));
   }
 
   addAsyncValidators(control: CustomFormFields, validators: Array<{ name: AsyncValidatorNames; args?: any }> = []) {
-    validators.forEach(v => control.addAsyncValidators(this.asyncValidatorMap[v.name](v.args)));
+    validators.forEach((v) => control.addAsyncValidators(this.asyncValidatorMap[v.name](v.args)));
   }
 
   static validate(form: CustomFormGroup | CustomFormArray | FormGroup | FormArray, errors: GlobalError[], updateValidity = true) {
@@ -146,10 +149,10 @@ export class DynamicFormService {
     const meta = (control as CustomFormControl).meta as FormNode | undefined;
     if (errors) {
       const errorList = Object.keys(errors);
-      errorList.forEach(error => {
+      errorList.forEach((error) => {
         validationErrorList.push({
           error: ErrorMessageMap[error](errors[error], meta?.customValidatorErrorName ?? meta?.label),
-          anchorLink: meta?.customId ?? meta?.name
+          anchorLink: meta?.customId ?? meta?.name,
         } as GlobalError);
       });
     }

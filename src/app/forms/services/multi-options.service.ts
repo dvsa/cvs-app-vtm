@@ -14,7 +14,7 @@ export class MultiOptionsService {
   constructor(
     private referenceDataService: ReferenceDataService,
     private store: Store<TestStationsState>,
-    private testStationsService: TestStationsService
+    private testStationsService: TestStationsService,
   ) {}
 
   getOptions(referenceData: ReferenceDataResourceType | SpecialRefData): Observable<MultiOptions | undefined> {
@@ -24,7 +24,7 @@ export class MultiOptionsService {
       case SpecialRefData.ReasonsForAbandoning:
         return this.store.pipe(
           select(testResultInEdit),
-          switchMap(testResult => this.referenceDataService.getReasonsForAbandoning(testResult?.vehicleType))
+          switchMap((testResult) => this.referenceDataService.getReasonsForAbandoning(testResult?.vehicleType)),
         );
       default:
         return this.referenceDataService.getReferenceDataOptions(referenceData);
@@ -48,5 +48,5 @@ export class MultiOptionsService {
 
 export enum SpecialRefData {
   TEST_STATION_P_NUMBER = 'testStationPNumber',
-  ReasonsForAbandoning = 'REASONS_FOR_ABANDONING'
+  ReasonsForAbandoning = 'REASONS_FOR_ABANDONING',
 }

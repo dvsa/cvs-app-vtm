@@ -26,7 +26,7 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.Min]: (err: { min: number }, label?: string) => `${label || DEFAULT_LABEL} must be greater than or equal to ${err.min}`,
   [ValidatorNames.MinLength]: (err: { requiredLength: number }, label?: string) =>
     `${label || DEFAULT_LABEL} must be greater than or equal to ${err.requiredLength} characters`,
-  [ValidatorNames.NotZNumber]: () => "The VRM/Trailer ID cannot be in a format that is 7 digits followed by the character 'Z'",
+  [ValidatorNames.NotZNumber]: () => 'The VRM/Trailer ID cannot be in a format that is 7 digits followed by the character \'Z\'',
   [ValidatorNames.PastDate]: (err: boolean, label?: string) => `${label || 'This date'} must be in the past`,
   [ValidatorNames.Pattern]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} must match a pattern`,
   [ValidatorNames.Required]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
@@ -39,5 +39,5 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [AsyncValidatorNames.RequiredIfNotAbandoned]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotResult]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
-  [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`
+  [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
 };

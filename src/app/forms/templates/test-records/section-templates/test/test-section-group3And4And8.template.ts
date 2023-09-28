@@ -1,6 +1,8 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const TestSectionGroup3And4And8: FormNode = {
@@ -15,7 +17,7 @@ export const TestSectionGroup3And4And8: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.DATE,
     },
     {
       name: 'testStartTimestamp',
@@ -24,7 +26,7 @@ export const TestSectionGroup3And4And8: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.DATE,
     },
     {
       name: 'testTypes',
@@ -41,7 +43,7 @@ export const TestSectionGroup3And4And8: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.XS
+              width: FormNodeWidth.XS,
             },
             {
               name: 'testResult',
@@ -51,28 +53,28 @@ export const TestSectionGroup3And4And8: FormNode = {
               options: [
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' },
-                { value: 'abandoned', label: 'Abandoned' }
+                { value: 'abandoned', label: 'Abandoned' },
               ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'testTypeName',
               label: 'Description',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'testNumber',
               label: 'Test Number',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'reasonForAbandoning',
@@ -84,10 +86,10 @@ export const TestSectionGroup3And4And8: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['abandoned'] }
-                }
+                  args: { sibling: 'testResult', value: ['abandoned'] },
+                },
               ],
-              referenceData: SpecialRefData.ReasonsForAbandoning
+              referenceData: SpecialRefData.ReasonsForAbandoning,
             },
             {
               name: 'additionalCommentsForAbandon',
@@ -99,10 +101,10 @@ export const TestSectionGroup3And4And8: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['abandoned'] }
+                  args: { sibling: 'testResult', value: ['abandoned'] },
                 },
-                { name: ValidatorNames.MaxLength, args: 500 }
-              ]
+                { name: ValidatorNames.MaxLength, args: 500 },
+              ],
             },
             {
               name: 'testTypeStartTimestamp',
@@ -110,7 +112,7 @@ export const TestSectionGroup3And4And8: FormNode = {
               value: '',
               disabled: true,
               label: 'Start time',
-              viewType: FormNodeViewTypes.TIME
+              viewType: FormNodeViewTypes.TIME,
             },
             {
               name: 'testTypeEndTimestamp',
@@ -118,7 +120,7 @@ export const TestSectionGroup3And4And8: FormNode = {
               value: '',
               disabled: true,
               label: 'End time',
-              viewType: FormNodeViewTypes.TIME
+              viewType: FormNodeViewTypes.TIME,
             },
             {
               name: 'prohibitionIssued',
@@ -128,13 +130,13 @@ export const TestSectionGroup3And4And8: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
+                { value: false, label: 'No' },
               ],
-              validators: [{ name: ValidatorNames.Required }]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              validators: [{ name: ValidatorNames.Required }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

@@ -13,7 +13,7 @@ import { FocusNextDirective } from './focus-next.directive';
       <input appFocusNext [displayTime]="displayTime" type="number" id="test-hour" />
       <input appFocusNext [displayTime]="displayTime" type="number" id="test-minute" />
     </div>
-  `
+  `,
 })
 class TestComponent {
   displayTime = false;
@@ -26,7 +26,7 @@ describe('FocusNextDirective', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, FocusNextDirective]
+      declarations: [TestComponent, FocusNextDirective],
     }).compileComponents();
   }));
 

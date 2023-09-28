@@ -1,7 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+} from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes,
+} from '@forms/services/dynamic-form.types';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
@@ -14,7 +18,7 @@ import { debounceTime, Subscription } from 'rxjs';
 @Component({
   selector: 'app-weights[vehicleTechRecord]',
   templateUrl: './weights.component.html',
-  styleUrls: ['./weights.component.scss']
+  styleUrls: ['./weights.component.scss'],
 })
 export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   @Input() vehicleTechRecord!: TechRecordType<'psv'> | TechRecordType<'trl'> | TechRecordType<'hgv'>;
@@ -24,9 +28,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   public form!: CustomFormGroup;
   private _formSubscription = new Subscription();
-  public isError: boolean = false;
+  public isError = false;
   public errorMessage?: string;
-  private ladenWeightOverride: boolean = false;
+  private ladenWeightOverride = false;
 
   constructor(public dynamicFormsService: DynamicFormService, private store: Store<TechnicalRecordServiceState>) {}
 
@@ -49,21 +53,20 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
           techRecord_seatsLowerDeck,
           techRecord_manufactureYear,
           techRecord_grossKerbWeight,
-          techRecord_grossLadenWeight
+          techRecord_grossLadenWeight,
         } = event || {};
 
-        const shouldRecalculate =
-          techRecord_seatsUpperDeck !== undefined ||
-          techRecord_seatsLowerDeck !== undefined ||
-          techRecord_manufactureYear !== undefined ||
-          techRecord_grossKerbWeight !== undefined;
+        const shouldRecalculate = techRecord_seatsUpperDeck !== undefined
+          || techRecord_seatsLowerDeck !== undefined
+          || techRecord_manufactureYear !== undefined
+          || techRecord_grossKerbWeight !== undefined;
 
         if (shouldRecalculate) {
           this.ladenWeightOverride = false;
         }
 
         if (event?.techRecord_axles) {
-          event.techRecord_axles = (event.techRecord_axles as Axle[]).filter(axle => !!axle?.axleNumber);
+          event.techRecord_axles = (event.techRecord_axles as Axle[]).filter((axle) => !!axle?.axleNumber);
         }
 
         if (this.isPsv && !this.ladenWeightOverride && shouldRecalculate) {
@@ -76,7 +79,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         if (techRecord_grossLadenWeight || techRecord_grossKerbWeight) {
           this.store.dispatch(updateBrakeForces({ grossLadenWeight: techRecord_grossLadenWeight, grossKerbWeight: techRecord_grossKerbWeight }));
         }
-      })
+      }),
     );
   }
 
@@ -89,17 +92,17 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         'techRecord_seatsUpperDeck',
         'techRecord_seatsLowerDeck',
         'techRecord_manufactureYear',
-        'techRecord_grossKerbWeight'
-      ].some(field => currentValue[field] !== previousValue[field]);
+        'techRecord_grossKerbWeight',
+      ].some((field) => currentValue[field] !== previousValue[field]);
 
       if (fieldsChanged) {
         const newGrossLadenWeight = this.calculateGrossLadenWeight();
 
         this.form.patchValue(
           {
-            techRecord_grossLadenWeight: newGrossLadenWeight
+            techRecord_grossLadenWeight: newGrossLadenWeight,
           },
-          { emitEvent: false }
+          { emitEvent: false },
         );
       }
     }
@@ -151,7 +154,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   addAxle(): void {
-    if (!this.vehicleTechRecord.techRecord_axles || this.vehicleTechRecord.techRecord_axles!.length < 10) {
+    if (!this.vehicleTechRecord.techRecord_axles || this.vehicleTechRecord.techRecord_axles.length < 10) {
       this.isError = false;
       this.store.dispatch(addAxle());
     } else {

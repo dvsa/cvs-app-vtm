@@ -1,9 +1,13 @@
-import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit,
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { BehaviorSubject, Observable, Subscription, combineLatest, filter } from 'rxjs';
-import { BaseControlComponent } from '../base-control/base-control.component';
+import {
+  BehaviorSubject, Observable, Subscription, combineLatest, filter,
+} from 'rxjs';
 import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { BaseControlComponent } from '../base-control/base-control.component';
 
 const patterns: Record<string, RegExp> = {
   NTA: /^(\w+)$/i,
@@ -19,7 +23,7 @@ const patterns: Record<string, RegExp> = {
   QNIG: /^e(\w{2})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
   'Prov.GB WVTA': /^(\w{3})\*(\w{4})\/(\w{4})\*(\w{6})$/i,
   'Small series': /^(\w+)11\*NKS(\w+\*)?(\w{6})$/i,
-  'IVA - VCA': /^n11\*NIV(\w{2})\/(\w{4})\*(\w{6})$/i
+  'IVA - VCA': /^n11\*NIV(\w{2})\/(\w{4})\*(\w{6})$/i,
 };
 
 const patternsPartial: Record<string, RegExp> = {
@@ -36,7 +40,7 @@ const patternsPartial: Record<string, RegExp> = {
   'Prov.GB WVTA': /^(\w{0,3})(\w{0,4})(\w{0,4})(\w{0,6})$/,
   'Small series': /^(\w)(\w{0,2})(\w{0,6})$/,
   'IVA - VCA': /^(\w{0,2})(\w{0,4})(\w{0,6})$/,
-  'IVA - DVSA/NI': /^(\w+)$/
+  'IVA - DVSA/NI': /^(\w+)$/,
 };
 
 @Component({
@@ -47,9 +51,9 @@ const patternsPartial: Record<string, RegExp> = {
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: ApprovalTypeInputComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class ApprovalTypeInputComponent extends BaseControlComponent implements OnChanges, OnInit, OnDestroy, AfterContentInit {
   @Input() isEditing = false;
@@ -111,7 +115,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s && s.unsubscribe());
+    this.subscriptions.forEach((s) => s && s.unsubscribe());
   }
 
   onTechRecord_approvalTypeNumber1_Change(event: any) {
@@ -163,18 +167,17 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       return;
     }
 
-    let matches: string[] = [];
+    const matches: string[] = [];
 
     const primaryPattern = patterns[this.approvalType];
     const matchResult = value.match(primaryPattern);
 
     if (!matchResult) {
-      const pattern: RegExp = /e|(\*NKS\*)|(\*NKS)|(n11\*NIV)|\*KS|\*11|[*/]/g;
+      const pattern = /e|(\*NKS\*)|(\*NKS)|(n11\*NIV)|\*KS|\*11|[*/]/g;
       value = value.replace(pattern, '');
 
       const partialPattern = patternsPartial[this.approvalType] || /^$/;
-      const partialMatchResult =
-        value.length > 16 ? value.substring(0, 16).match(/(\w{1,2})(\w{1,4})(\w{1,4})(\w{1,6})/i) : value.match(partialPattern);
+      const partialMatchResult = value.length > 16 ? value.substring(0, 16).match(/(\w{1,2})(\w{1,4})(\w{1,4})(\w{1,6})/i) : value.match(partialPattern);
 
       if (partialMatchResult) {
         const [, ...capturedGroups] = partialMatchResult;
@@ -190,18 +193,17 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       return;
     }
 
-    this.setTypeApprovalNumbers(matches.filter(x => x !== null && x !== ''));
+    this.setTypeApprovalNumbers(matches.filter((x) => x !== null && x !== ''));
   }
 
   private extractValuesNtaIva(value: string, pattern: RegExp) {
-    const matches = value.match(pattern)?.map(x => (x.length > 25 ? x.substring(0, 25) : x));
+    const matches = value.match(pattern)?.map((x) => (x.length > 25 ? x.substring(0, 25) : x));
     this.setTypeApprovalNumbers(matches ?? []);
   }
 
   private setTypeApprovalNumbers(matches: string[]) {
     if (matches) {
-      const [techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4] =
-        matches;
+      const [techRecord_approvalTypeNumber1, techRecord_approvalTypeNumber2, techRecord_approvalTypeNumber3, techRecord_approvalTypeNumber4] = matches;
       this.approvalTypeNumber1 = techRecord_approvalTypeNumber1;
       this.approvalTypeNumber1_.next(techRecord_approvalTypeNumber1);
       this.approvalTypeNumber2 = techRecord_approvalTypeNumber2;
@@ -222,18 +224,22 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       approvalTypeNumber1: this.approvalTypeNumber1$,
       approvalTypeNumber2: this.approvalTypeNumber2$,
       approvalTypeNumber3: this.approvalTypeNumber3$,
-      approvalTypeNumber4: this.approvalTypeNumber4$
+      approvalTypeNumber4: this.approvalTypeNumber4$,
     })
       .pipe(
         filter(
-          ({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) =>
-            approvalTypeNumber1 !== undefined &&
-            approvalTypeNumber2 !== undefined &&
-            approvalTypeNumber3 !== undefined &&
-            approvalTypeNumber4 !== undefined
-        )
+          ({
+            approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4,
+          }) =>
+            approvalTypeNumber1 !== undefined
+            && approvalTypeNumber2 !== undefined
+            && approvalTypeNumber3 !== undefined
+            && approvalTypeNumber4 !== undefined,
+        ),
       )
-      .subscribe(({ approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4 }) => {
+      .subscribe(({
+        approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4,
+      }) => {
         if (!approvalTypeNumber1 && !approvalTypeNumber2 && !approvalTypeNumber3 && !approvalTypeNumber4) {
           this.onChange(null);
         } else {
@@ -250,9 +256,9 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
           {
             error: true,
             reason: 'Approval type number is required with Approval type',
-            index: 0
-          }
-        ]
+            index: 0,
+          },
+        ],
       };
     };
 
@@ -328,11 +334,11 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     techRecord_approvalTypeNumber1: any,
     techRecord_approvalTypeNumber2: any,
     techRecord_approvalTypeNumber3: any,
-    techRecord_approvalTypeNumber4: any
+    techRecord_approvalTypeNumber4: any,
   ) {
     switch (this.approvalType) {
       case 'NTA':
-        return techRecord_approvalTypeNumber1 ? techRecord_approvalTypeNumber1 : null;
+        return techRecord_approvalTypeNumber1 || null;
 
       case 'ECTA':
         return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
@@ -340,7 +346,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
           : null;
 
       case 'IVA':
-        return techRecord_approvalTypeNumber1 ? techRecord_approvalTypeNumber1 : null;
+        return techRecord_approvalTypeNumber1 || null;
 
       case 'NSSTA':
         return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2
@@ -393,14 +399,14 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
           : null;
 
       case 'IVA - DVSA/NI':
-        return techRecord_approvalTypeNumber1 ? techRecord_approvalTypeNumber1 : null;
+        return techRecord_approvalTypeNumber1 || null;
       default:
         return 'Unknown approval type';
     }
   }
 
   getId(name: string) {
-    const id = name + '-day';
+    const id = `${name}-day`;
     if (this.control) {
       this.control.meta.customId = id;
     }

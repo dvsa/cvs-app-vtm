@@ -1,7 +1,9 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import {
+  Directive, ElementRef, HostListener, Input,
+} from '@angular/core';
 
 @Directive({
-  selector: '[appFocusNext]'
+  selector: '[appFocusNext]',
 })
 export class FocusNextDirective {
   @Input() displayTime = false;
@@ -11,7 +13,7 @@ export class FocusNextDirective {
   @HostListener('input', ['$event'])
   onInput() {
     const {
-      nativeElement: { id, value }
+      nativeElement: { id, value },
     } = this.el;
     const segments = id.split('-');
     const next = this.getNextElement(segments.splice(-1)[0], value);
@@ -22,7 +24,7 @@ export class FocusNextDirective {
   }
 
   private getNextElement(currentSegment: string, value: string): string | undefined {
-    let nextEl = undefined;
+    let nextEl;
 
     if (value.length === 2) {
       switch (currentSegment) {

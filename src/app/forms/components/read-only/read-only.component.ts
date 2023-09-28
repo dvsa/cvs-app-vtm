@@ -9,9 +9,9 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: ReadOnlyComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class ReadOnlyComponent extends BaseControlComponent {
   @Input() readOnlySuffix?: string;

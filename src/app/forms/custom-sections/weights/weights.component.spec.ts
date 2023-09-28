@@ -6,10 +6,10 @@ import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
-import { NumberInputComponent } from '../../components/number-input/number-input.component';
-import { WeightsComponent } from './weights.component';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { NumberInputComponent } from '../../components/number-input/number-input.component';
+import { WeightsComponent } from './weights.component';
 
 describe('WeightsComponent', () => {
   let component: WeightsComponent;
@@ -19,7 +19,7 @@ describe('WeightsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DynamicFormsModule, StoreModule.forRoot({}), HttpClientTestingModule, RouterTestingModule],
       declarations: [NumberInputComponent, WeightsComponent],
-      providers: [provideMockStore<State>({ initialState: initialAppState })]
+      providers: [provideMockStore<State>({ initialState: initialAppState })],
     }).compileComponents();
   });
 

@@ -1,5 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild,
+} from '@angular/core';
+import {
+  CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
@@ -14,7 +18,7 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-approval-type[techRecord]',
   templateUrl: './approval-type.component.html',
-  styleUrls: ['./approval-type.component.scss']
+  styleUrls: ['./approval-type.component.scss'],
 })
 export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() techRecord!: TechRecordType<'trl'> | TechRecordType<'psv'> | TechRecordType<'hgv'>;
@@ -25,7 +29,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   public form!: CustomFormGroup;
   private destroy$ = new Subject<void>();
   protected chosenApprovalType: string | undefined;
-  protected approvalTypeChange: boolean = false;
+  protected approvalTypeChange = false;
   formControls: { [key: string]: FormControl } = {};
 
   constructor(private dfs: DynamicFormService) {}
@@ -33,10 +37,10 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.form = this.dfs.createForm(
       this.techRecord.techRecord_vehicleType === 'psv' ? PsvTypeApprovalTemplate : HgvAndTrlTypeApprovalTemplate,
-      this.techRecord
+      this.techRecord,
     ) as CustomFormGroup;
-    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
-    Object.keys(this.form.controls).forEach(key => {
+    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((e) => this.formChange.emit(e));
+    Object.keys(this.form.controls).forEach((key) => {
       this.formControls[key] = this.form.get(key) as FormControl;
     });
   }
@@ -50,8 +54,8 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
         ? techRecord.currentValue.techRecord_coifDate.split('T')[0]
         : '';
       if (
-        techRecord.currentValue.techRecord_approvalType != techRecord.previousValue.techRecord_approvalType &&
-        techRecord.previousValue.techRecord_approvalType != null
+        techRecord.currentValue.techRecord_approvalType != techRecord.previousValue.techRecord_approvalType
+        && techRecord.previousValue.techRecord_approvalType != null
       ) {
         this.approvalTypeChange = true;
       }

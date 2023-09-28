@@ -11,9 +11,9 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: ViewListItemComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class ViewListItemComponent extends BaseControlComponent {
   get formNodeViewTypes(): typeof FormNodeViewTypes {

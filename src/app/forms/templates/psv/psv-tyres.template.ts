@@ -12,7 +12,7 @@ export const PsvTyresTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 99 }, { name: ValidatorNames.Min, args: 0 }]
+      validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 99 }, { name: ValidatorNames.Min, args: 0 }],
     },
     {
       name: 'techRecord_axles',
@@ -28,7 +28,7 @@ export const PsvTyresTemplate: FormNode = {
             {
               name: 'axleNumber',
               label: 'Axle Number',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
 
             {
@@ -37,7 +37,7 @@ export const PsvTyresTemplate: FormNode = {
               value: null,
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.NUMBER,
-              validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Min, args: 0 }]
+              validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Min, args: 0 }],
             },
             {
               name: 'tyres_tyreSize',
@@ -47,8 +47,8 @@ export const PsvTyresTemplate: FormNode = {
               disabled: true,
               validators: [
                 { name: ValidatorNames.MaxLength, args: 12 },
-                { name: ValidatorNames.Min, args: 0 }
-              ]
+                { name: ValidatorNames.Min, args: 0 },
+              ],
             },
             {
               name: 'tyres_plyRating',
@@ -58,22 +58,22 @@ export const PsvTyresTemplate: FormNode = {
               disabled: true,
               validators: [
                 { name: ValidatorNames.MaxLength, args: 2 },
-                { name: ValidatorNames.Min, args: 0 }
-              ]
+                { name: ValidatorNames.Min, args: 0 },
+              ],
             },
             {
               name: 'tyres_speedCategorySymbol',
               label: 'Speed category symbol',
               value: null,
               type: FormNodeTypes.CONTROL,
-              validators: []
+              validators: [],
             },
             {
               name: 'tyres_fitmentCode',
               label: 'Fitment code',
               value: null,
               type: FormNodeTypes.CONTROL,
-              validators: []
+              validators: [],
             },
             {
               name: 'tyres_dataTrAxles',
@@ -82,11 +82,11 @@ export const PsvTyresTemplate: FormNode = {
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.NUMBER,
               disabled: true,
-              validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 999 }, { name: ValidatorNames.Min, args: 0 }]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 999 }, { name: ValidatorNames.Min, args: 0 }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

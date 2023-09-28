@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl, FormGroup, FormsModule, ReactiveFormsModule,
+} from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { TrimWhitespaceDirective } from './app-trim-whitespace.directive';
 
 @Component({
   template: ` <form [formGroup]="form"><input id="bar" appTrimWhitespace formControlName="foo" /></form>
-    <input id="baz" appTrimWhitespace />`
+    <input id="baz" appTrimWhitespace />`,
 })
 class TestComponent {
   form = new FormGroup({
-    foo: new FormControl()
+    foo: new FormControl(),
   });
 }
 
@@ -23,7 +25,7 @@ describe('TrimWhitespaceDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
-      declarations: [TrimWhitespaceDirective, TestComponent]
+      declarations: [TrimWhitespaceDirective, TestComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestComponent);

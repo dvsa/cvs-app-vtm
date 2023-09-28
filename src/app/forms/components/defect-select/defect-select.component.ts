@@ -13,7 +13,7 @@ import { takeUntil, filter, Subject } from 'rxjs';
 @Component({
   selector: 'app-defect-select',
   templateUrl: './defect-select.component.html',
-  styleUrls: ['./defect-select.component.scss']
+  styleUrls: ['./defect-select.component.scss'],
 })
 export class DefectSelectComponent implements OnInit, OnDestroy {
   defects: Defect[] = [];
@@ -29,7 +29,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
     private testResultsStore: Store<TestResultsState>,
     private defectsStore: Store<DefectsState>,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -37,11 +37,11 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
       .select(toEditOrNotToEdit)
       .pipe(
         takeUntil(this.onDestroy$),
-        filter(testResult => !!testResult)
+        filter((testResult) => !!testResult),
       )
-      .subscribe(testResult => (this.vehicleType = testResult!.vehicleType));
+      .subscribe((testResult) => (this.vehicleType = testResult!.vehicleType));
 
-    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe(defectsTaxonomy => (this.defects = defectsTaxonomy));
+    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe((defectsTaxonomy) => (this.defects = defectsTaxonomy));
   }
 
   ngOnDestroy(): void {
@@ -62,7 +62,9 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
   }
 
   categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
-    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{ major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[
+    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{
+      major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue',
+    })[
       category
     ];
   }
@@ -89,7 +91,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         }
         this.router.navigate([advisoryRoute], {
           relativeTo: this.route,
-          queryParamsHandling: 'merge'
+          queryParamsHandling: 'merge',
         });
         break;
     }
@@ -99,5 +101,5 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 enum Types {
   Defect,
   Item,
-  Deficiency
+  Deficiency,
 }

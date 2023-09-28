@@ -10,13 +10,13 @@ export const TrlBrakesTemplate: FormNode = {
       name: 'techRecord_brakes_loadSensingValve',
       label: 'Load sensing valve',
       value: null,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
     },
     {
       name: 'techRecord_brakes_antilockBrakingSystem',
       label: 'Antilock braking system',
       value: null,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
     },
     {
       name: 'techRecord_axles',
@@ -31,35 +31,35 @@ export const TrlBrakesTemplate: FormNode = {
             {
               name: 'axleNumber',
               label: 'Axle number',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               value: false,
               name: 'parkingBrakeMrk',
               label: 'Parking Brake Mark',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
 
             {
               name: 'brakes_brakeActuator',
               label: 'Brake actuator',
               type: FormNodeTypes.CONTROL,
-              validators: [{ name: ValidatorNames.Max, args: 999 }]
+              validators: [{ name: ValidatorNames.Max, args: 999 }],
             },
             {
               name: 'brakes_leverLength',
               label: 'Lever length',
               type: FormNodeTypes.CONTROL,
-              validators: [{ name: ValidatorNames.Max, args: 999 }]
+              validators: [{ name: ValidatorNames.Max, args: 999 }],
             },
             {
               name: 'brakes_springBrakeParking',
               label: 'Spring brake parking',
-              type: FormNodeTypes.CONTROL
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              type: FormNodeTypes.CONTROL,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

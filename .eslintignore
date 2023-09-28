@@ -17,7 +17,6 @@ tslint*
 jest.config.js
 protractor.conf.js
 /src/app/api/*
-/src/app/forms/*
 /src/app/guards/*
 /src/app/interceptors/*
 /src/app/models/*

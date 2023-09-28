@@ -12,7 +12,7 @@ describe('ErrorMessageMap', () => {
     ['Name must match a pattern', ValidatorNames.Pattern, [true, 'Name']],
     ['This field must match pattern xxx', ValidatorNames.CustomPattern, [{ message: 'must match pattern xxx' }, '']],
     ['Name must match pattern xxx', ValidatorNames.CustomPattern, [{ message: 'must match pattern xxx' }, 'Name']],
-    [`'Date' is not valid`, 'invalidDate', [{ error: true, reason: `'Date' is not valid` }]],
+    ['\'Date\' is not valid', 'invalidDate', [{ error: true, reason: '\'Date\' is not valid' }]],
     ['Name must be less than or equal to 14 characters', ValidatorNames.MaxLength, [{ requiredLength: 14 }, 'Name']],
     ['This field must be less than or equal to 14 characters', ValidatorNames.MaxLength, [{ requiredLength: 14 }, '']],
     ['Name must be greater than or equal to 14 characters', ValidatorNames.MinLength, [{ requiredLength: 14 }, 'Name']],
@@ -41,7 +41,7 @@ describe('ErrorMessageMap', () => {
     ['This field is required', AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, [{ sibling: 'foo' }, '']],
     ['Name is required', AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, [{ sibling: 'foo' }, 'Name']],
     ['This date must be less than 10 months after the previous date', ValidatorNames.DateNotExceed, [{ months: '10' }, '']],
-    ['Name must be less than 15 months after foo', ValidatorNames.DateNotExceed, [{ sibling: 'foo', months: '15' }, 'Name']]
+    ['Name must be less than 15 months after foo', ValidatorNames.DateNotExceed, [{ sibling: 'foo', months: '15' }, 'Name']],
   ])('should return "%s" for %s with %o', (expected, key, props) => {
     props ? expect(ErrorMessageMap[key](...props)).toBe(expected) : expect(ErrorMessageMap[key]()).toBe(expected);
   });

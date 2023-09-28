@@ -10,23 +10,23 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: RadioGroupComponent,
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  styleUrls: ['./radio-group.component.scss']
+  styleUrls: ['./radio-group.component.scss'],
 })
 export class RadioGroupComponent extends BaseControlComponent {
   @Input() options: FormNodeOption<string | number | boolean | null>[] = [];
-  @Input() inline: boolean = false;
+  @Input() inline = false;
 
   getLabel(value: any): string | undefined {
-    return this.options.find(option => option.value === value)?.label;
+    return this.options.find((option) => option.value === value)?.label;
   }
 
   trackByFn = (index: number): number => index;
 
   getId(value: any, name: string) {
-    const id = name + '-' + value + '-radio';
+    const id = `${name}-${value}-radio`;
     if (this.control) {
       this.control.meta.customId = id;
     }
