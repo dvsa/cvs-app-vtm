@@ -1,4 +1,6 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren,
+} from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -19,15 +21,15 @@ import { Subject, take, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-change-amend-vrm',
   templateUrl: './tech-record-amend-vrm.component.html',
-  styleUrls: ['./tech-record-amend-vrm.component.scss']
+  styleUrls: ['./tech-record-amend-vrm.component.scss'],
 })
 export class AmendVrmComponent implements OnDestroy, OnInit {
   techRecord?: NotTrailer;
   makeAndModel?: string;
-  isCherishedTransfer: boolean = false;
+  isCherishedTransfer = false;
   systemNumber?: string;
   createdTimestamp?: string;
-  formValidity: boolean = false;
+  formValidity = false;
   width: FormNodeWidth = FormNodeWidth.L;
 
   cherishedTransferForm = new FormGroup({
@@ -35,38 +37,38 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
       {
         name: 'current-Vrm',
         label: 'Current VRM',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
       },
       '',
       [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      this.technicalRecordService.validateVrmForCherishedTransfer()
+      this.technicalRecordService.validateVrmForCherishedTransfer(),
     ),
     previousVrm: new CustomFormControl({
       name: 'previous-Vrm',
       label: 'Previous VRM',
       type: FormNodeTypes.CONTROL,
-      disabled: true
+      disabled: true,
     }),
     thirdMark: new CustomFormControl(
       {
         name: 'third-Mark',
         label: 'Third Mark',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
       },
       undefined,
-      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)]
-    )
+      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
+    ),
   });
   correctingAnErrorForm = new FormGroup({
     newVrm: new CustomFormControl(
       {
         name: 'new-Vrm',
         label: 'New VRM',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
       },
       '',
-      [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)]
-    )
+      [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
+    ),
   });
 
   @Output() isFormDirty = new EventEmitter<boolean>();
@@ -83,16 +85,16 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
   ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.systemNumber = params['systemNumber'];
       this.createdTimestamp = params['createdTimestamp'];
-      this.isCherishedTransfer = params['reason'] === 'cherished-transfer' ? true : false;
+      this.isCherishedTransfer = params['reason'] === 'cherished-transfer';
     });
-    this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe(record => {
+    this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe((record) => {
       if (record?.techRecord_statusCode === 'archived' || !record) {
         return this.navigateBack();
       }
@@ -101,16 +103,17 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     });
 
     this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
     });
 
     this.cherishedTransferForm.controls['previousVrm'].setValue(this.techRecord?.primaryVrm ?? '');
     this.cherishedTransferForm.controls['previousVrm'].disable();
     this.cherishedTransferForm.controls['thirdMark'].setAsyncValidators(
-      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? '')
+      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? ''),
     );
     this.correctingAnErrorForm.controls['newVrm'].setAsyncValidators(
-      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? '')
+      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? ''),
     );
   }
 
@@ -125,13 +128,14 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   handleFormChange() {
     if (this.isCherishedTransfer) {
       this.cherishedTransferForm.get('currentVrm')?.updateValueAndValidity();
-      return;
+
     }
   }
 
@@ -145,9 +149,9 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
         newVrm: this.isCherishedTransfer ? this.cherishedTransferForm.value.currentVrm : this.correctingAnErrorForm.value.newVrm,
         cherishedTransfer: this.isCherishedTransfer,
         thirdMark: this.isCherishedTransfer ? this.cherishedTransferForm.value.thirdMark : undefined,
-        systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber!,
-        createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp!
-      })
+        systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber,
+        createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp,
+      }),
     );
   }
 

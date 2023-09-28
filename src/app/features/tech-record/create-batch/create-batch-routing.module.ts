@@ -21,7 +21,7 @@ const routes: Routes = [
         path: '',
         component: SelectVehicleTypeComponent,
         data: { roles: Roles.TechRecordCreate },
-        canActivate: [MsalGuard, RoleGuard]
+        canActivate: [MsalGuard, RoleGuard],
       },
       {
         path: ':vehicleType',
@@ -31,32 +31,34 @@ const routes: Routes = [
           {
             path: '',
             component: BatchVehicleTemplateComponent,
-            data: { title: 'Batch Record', roles: Roles.TechRecordCreate, isCustomLayout: true, isEditing: true }
+            data: {
+              title: 'Batch Record', roles: Roles.TechRecordCreate, isCustomLayout: true, isEditing: true,
+            },
           },
           {
             path: 'details',
             component: BatchVehicleDetailsComponent,
-            data: { title: 'Add batch of vehicles', roles: Roles.TechRecordCreate, isEditing: true }
+            data: { title: 'Add batch of vehicles', roles: Roles.TechRecordCreate, isEditing: true },
           },
           {
             path: 'batch-results',
             data: { title: 'Batch summary' },
-            component: BatchVehicleResultsComponent
+            component: BatchVehicleResultsComponent,
           },
           {
             path: 'tyre-search/:axleNumber',
             component: TechRecordSearchTyresComponent,
             data: { title: 'Tyre search', roles: Roles.TechRecordCreate, isEditing: true },
-            canActivate: [MsalGuard, RoleGuard]
-          }
-        ]
-      }
-    ]
-  }
+            canActivate: [MsalGuard, RoleGuard],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class CreateBatchRoutingModule {}

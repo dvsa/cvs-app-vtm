@@ -23,15 +23,15 @@ const mockTechRecordService = {
     return of({});
   },
   getMakeAndModel: jest.fn(),
-  clearReasonForCreation: jest.fn()
+  clearReasonForCreation: jest.fn(),
 };
 
 const mockDynamicFormService = {
-  createForm: jest.fn()
+  createForm: jest.fn(),
 };
 
 describe('TechRecordChangeTypeComponent', () => {
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
   let component: ChangeVehicleTypeComponent;
   let errorService: GlobalErrorService;
   let expectedTechRecord = {} as V3TechRecordModel;
@@ -49,9 +49,9 @@ describe('TechRecordChangeTypeComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService }
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
       ],
-      imports: [DynamicFormsModule, RouterTestingModule, SharedModule, FixNavigationTriggeredOutsideAngularZoneNgModule]
+      imports: [DynamicFormsModule, RouterTestingModule, SharedModule, FixNavigationTriggeredOutsideAngularZoneNgModule],
     }).compileComponents();
   });
 
@@ -68,7 +68,7 @@ describe('TechRecordChangeTypeComponent', () => {
       vin: 'testVin',
       techRecord_vehicleType: VehicleTypes.PSV,
       techRecord_chassisMake: 'test-make',
-      techRecord_chassisModel: 'test-model'
+      techRecord_chassisModel: 'test-model',
     } as V3TechRecordModel;
   });
 
@@ -78,8 +78,8 @@ describe('TechRecordChangeTypeComponent', () => {
 
   describe('makeAndModel', () => {
     it('should should return the make and model', () => {
-      const expectedMakeModel: string = `${(expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisMake} - ${
-        (expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisModel
+      const expectedMakeModel = `${(expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisMake!} - ${
+        (expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisModel!
       }`;
 
       jest.spyOn(mockTechRecordService, 'getMakeAndModel').mockReturnValueOnce(expectedMakeModel);
@@ -94,14 +94,14 @@ describe('TechRecordChangeTypeComponent', () => {
       delete component.techRecord;
       component.ngOnInit();
 
-      expect(component.makeAndModel).toBe(undefined);
+      expect(component.makeAndModel).toBeUndefined();
     });
   });
 
   describe('vehicleTypeOptions', () => {
     it('should return all types except for the current one', () => {
       component.techRecord = expectedTechRecord;
-      const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter(type => type.value !== VehicleTypes.PSV);
+      const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter((type) => type.value !== VehicleTypes.PSV);
       expect(component.vehicleTypeOptions).toStrictEqual(expectedOptions);
     });
   });
@@ -122,7 +122,7 @@ describe('TechRecordChangeTypeComponent', () => {
 
       component.navigateBack();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
   });
 
@@ -161,7 +161,7 @@ describe('TechRecordChangeTypeComponent', () => {
 
       component.handleSubmit(VehicleTypes.PSV);
 
-      expect(navigateSpy).toHaveBeenCalledWith([`../amend-reason`], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['../amend-reason'], { relativeTo: route });
     });
   });
 });

@@ -9,7 +9,7 @@ import { map, Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-deleted-list',
-  templateUrl: './reference-data-deleted-list.component.html'
+  templateUrl: './reference-data-deleted-list.component.html',
 })
 export class ReferenceDataDeletedListComponent implements OnInit {
   type!: ReferenceDataResourceType;
@@ -21,14 +21,14 @@ export class ReferenceDataDeletedListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.route.parent?.params.pipe(take(1)).subscribe(params => {
+    this.route.parent?.params.pipe(take(1)).subscribe((params) => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-      this.store.dispatch(fetchReferenceDataAudit({ resourceType: (this.type + '#AUDIT') as ReferenceDataResourceType }));
+      this.store.dispatch(fetchReferenceDataAudit({ resourceType: (`${this.type}#AUDIT`) as ReferenceDataResourceType }));
     });
   }
 
@@ -37,7 +37,7 @@ export class ReferenceDataDeletedListComponent implements OnInit {
   }
 
   get data$(): Observable<ReferenceDataModelBase[] | undefined> {
-    return this.store.pipe(select(selectSearchReturn((this.type + '#AUDIT') as ReferenceDataResourceType)));
+    return this.store.pipe(select(selectSearchReturn((`${this.type}#AUDIT`) as ReferenceDataResourceType)));
   }
 
   get roles(): typeof Roles {
@@ -51,10 +51,10 @@ export class ReferenceDataDeletedListComponent implements OnInit {
   }
 
   get paginatedItems$(): Observable<any[]> {
-    return this.data$.pipe(map(items => items?.slice(this.pageStart, this.pageEnd) ?? []));
+    return this.data$.pipe(map((items) => items?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
   get numberOfRecords$(): Observable<number> {
-    return this.data$.pipe(map(items => items?.length ?? 0));
+    return this.data$.pipe(map((items) => items?.length ?? 0));
   }
 }

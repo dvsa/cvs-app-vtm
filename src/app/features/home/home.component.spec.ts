@@ -12,7 +12,7 @@ import { HomeComponent } from './home.component';
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,10 +24,10 @@ describe('HomeComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of(['TechRecord.View'])
-          }
-        }
-      ]
+            roles$: of(['TechRecord.View']),
+          },
+        },
+      ],
     }).compileComponents();
   });
 

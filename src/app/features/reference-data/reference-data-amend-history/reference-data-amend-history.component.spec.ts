@@ -18,7 +18,7 @@ describe('ReferenceDataAmendHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ReferenceDataAmendHistoryComponent],
       imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, { provide: UserService, useValue: {} }]
+      providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, { provide: UserService, useValue: {} }],
     }).compileComponents();
   });
 
