@@ -21,6 +21,7 @@ import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { addAxle, removeAxle } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { cloneDeep } from 'lodash';
 import { Subscription } from 'rxjs';
 
@@ -39,7 +40,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   public errorMessage?: string;
   public form!: CustomFormGroup;
   private editingReason?: ReasonForEditing;
-  private _formSubscription = new Subscription();
+  private formSubscription = new Subscription();
 
   constructor(
     private dynamicFormsService: DynamicFormService,
@@ -53,7 +54,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.form = this.dynamicFormsService.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.subscribe((event: any) => {
+    this.formSubscription = this.form.cleanValueChanges.subscribe((event: any) => {
       if (event?.axles) {
         event.axles = (event.axles as Axle[]).filter((axle) => !!axle?.axleNumber);
       }
@@ -71,7 +72,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this._formSubscription.unsubscribe();
+    this.formSubscription.unsubscribe();
   }
 
   get template(): FormNode | undefined {
@@ -83,7 +84,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       case VehicleTypes.TRL:
         return tyresTemplateTrl;
       default:
-
+        return undefined;
     }
   }
 
@@ -132,6 +133,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
       if (!previousAxles) return false;
 
+      // eslint-disable-next-line no-restricted-syntax
       for (const [index, axle] of currentAxles.entries()) {
         if (
           axle?.tyres_fitmentCode !== undefined

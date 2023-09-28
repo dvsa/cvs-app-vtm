@@ -1,6 +1,7 @@
-/// // Copied from the backend-lambda https://github.com/dvsa/cvs-svc-test-results/blob/3c1ffe344282b5ce918c151a56144b51cbd1c929/src/assets/Enums.ts#L219
+// Copied from the backend-lambda https://github.com/dvsa/cvs-svc-test-results/blob/3c1ffe344282b5ce918c151a56144b51cbd1c929/src/assets/Enums.ts#L219
 
-// CVSB-10300 - the following constants are based on the grouping of the test-types in the excel "Use_for_dynamic_functionality - CVSB-10298 only" sheet
+// CVSB-10300 - the following constants are based on the grouping of the test-types in the excel
+// "Use_for_dynamic_functionality - CVSB-10298 only" sheet
 
 // tests for PSV - Annual test, Class 6A seatbelt installation check(annual test, first test), Paid/Part paid annual test retest
 // Paid/Part paid prohibition clearance(full inspection, retest with certificate), Prohibition clearance(retest with/without class 6A seatbelt)

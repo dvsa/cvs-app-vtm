@@ -27,7 +27,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   @Output() formChange = new EventEmitter();
 
   public form!: CustomFormGroup;
-  private _formSubscription = new Subscription();
+  private formSubscription = new Subscription();
   public isError = false;
   public errorMessage?: string;
   private ladenWeightOverride = false;
@@ -41,10 +41,10 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
       this.ladenWeightOverride = true;
     });
     if (grossLadenWeightChanges) {
-      this._formSubscription.add(grossLadenWeightChanges);
+      this.formSubscription.add(grossLadenWeightChanges);
     }
 
-    this._formSubscription.add(
+    this.formSubscription.add(
       this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event: any) => {
         if (this.ladenWeightOverride) return;
 
@@ -109,7 +109,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this._formSubscription.unsubscribe();
+    this.formSubscription.unsubscribe();
   }
 
   get template(): FormNode {

@@ -34,9 +34,13 @@ export const TestAbandonmentReasonsPsvData = [
   },
   {
     value:
-      'The driver and/or presenter of the vehicle declined either to remain in the vehicle or in its vicinity throughout the examination or to drive it or to operate controls or doors or to remove or refit panels after being requested to do so',
+      'The driver and/or presenter of the vehicle declined either to remain in the vehicle '
+      + 'or in its vicinity throughout the examination or to drive it or to operate controls '
+      + 'or doors or to remove or refit panels after being requested to do so',
     label:
-      'The driver and/or presenter of the vehicle declined either to remain in the vehicle or in its vicinity throughout the examination or to drive it or to operate controls or doors or to remove or refit panels after being requested to do so',
+      'The driver and/or presenter of the vehicle declined either to remain in the vehicle '
+      + 'or in its vicinity throughout the examination or to drive it or to operate controls '
+      + 'or doors or to remove or refit panels after being requested to do so',
   },
   {
     value: 'The vehicle exhaust outlet has been modified in such a way as to prevent a metered smoke check being conducted',
@@ -44,8 +48,10 @@ export const TestAbandonmentReasonsPsvData = [
   },
   {
     value:
-      'A proper examination cannot be readily carried out as any door, engine cover, hatch or other access device designed to be opened is locked or otherwise cannot be opened',
+      'A proper examination cannot be readily carried out as any door, engine cover, hatch '
+      + 'or other access device designed to be opened is locked or otherwise cannot be opened',
     label:
-      'A proper examination cannot be readily carried out as any door, engine cover, hatch or other access device designed to be opened is locked or otherwise cannot be opened',
+      'A proper examination cannot be readily carried out as any door, engine cover, hatch '
+      + 'or other access device designed to be opened is locked or otherwise cannot be opened',
   },
 ];

@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { ChangeDetectorRef } from '@angular/core';
 import {
   AbstractControl,
@@ -13,12 +14,14 @@ import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
+// eslint-disable-next-line import/no-cycle
 import { State } from '@store/.';
 import { map, Observable } from 'rxjs';
 import { Params } from '@angular/router';
 import { TagType } from '@shared/components/tag/tag.component';
 import { Dictionary } from '@ngrx/entity';
 import { SpecialRefData } from './multi-options.service';
+// eslint-disable-next-line import/no-cycle
 import { DynamicFormService } from './dynamic-form.service';
 
 export enum FormNodeViewTypes {
@@ -255,31 +258,31 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
 
 // TODO: clean this
 const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any> | Array<[]> => {
-  const cleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
+  const localCleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
   Object.keys(form.controls).forEach((key) => {
     const control = (form.controls as any)[key];
     if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
-      cleanValue[key] = objectOrNull(control.getCleanValue(control));
+      localCleanValue[key] = objectOrNull(control.getCleanValue(control));
     } else if (control instanceof CustomFormArray) {
-      cleanValue[key] = control.getCleanValue(control);
+      localCleanValue[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl && control.meta.type === FormNodeTypes.CONTROL) {
       if (control.meta.required && control.meta.hide) {
-        pushOrAssignAt(control.meta.value || null, cleanValue, key);
+        pushOrAssignAt(control.meta.value || null, localCleanValue, key);
       } else if (!control.meta.hide) {
-        pushOrAssignAt(control.value, cleanValue, key);
+        pushOrAssignAt(control.value, localCleanValue, key);
       }
     }
   });
 
-  return cleanValue;
+  return localCleanValue;
 };
 
 function objectOrNull(obj: Object) {
   return Object.values(obj).some((value) => undefined !== value) ? obj : null;
 }
 
-function pushOrAssignAt(value: any, cleanValue: Array<[]> | Record<string, any>, key: string) {
-  if (Array.isArray(cleanValue)) {
-    cleanValue.push(value);
-  } else cleanValue[key] = value;
+function pushOrAssignAt(value: any, localCleanValue: Array<[]> | Record<string, any>, key: string) {
+  if (Array.isArray(localCleanValue)) {
+    localCleanValue.push(value);
+  } else localCleanValue[key] = value;
 }

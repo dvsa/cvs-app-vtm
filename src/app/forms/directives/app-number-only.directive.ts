@@ -27,7 +27,7 @@ export class NumberOnlyDirective {
     ) {
       return;
     }
-    if (e.key === ' ' || isNaN(Number(e.key))) {
+    if (e.key === ' ' || Number.isNaN(Number(e.key))) {
       e.preventDefault();
     }
   }

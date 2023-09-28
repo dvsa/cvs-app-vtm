@@ -7,6 +7,7 @@ import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { Condition } from '@forms/models/condition.model';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
+// eslint-disable-next-line import/no-cycle
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
@@ -79,7 +80,8 @@ export class DynamicFormService {
       return new CustomFormGroup(formNode, {});
     }
 
-    const form: CustomFormGroup | CustomFormArray = formNode.type === FormNodeTypes.ARRAY ? new CustomFormArray(formNode, [], this.store) : new CustomFormGroup(formNode, {});
+    const form: CustomFormGroup | CustomFormArray = formNode.type === FormNodeTypes.ARRAY
+      ? new CustomFormArray(formNode, [], this.store) : new CustomFormGroup(formNode, {});
     data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
 
     formNode.children?.forEach((child) => {
@@ -87,7 +89,8 @@ export class DynamicFormService {
         name, type, value, validators, asyncValidators, disabled,
       } = child;
 
-      const control = FormNodeTypes.CONTROL === type ? new CustomFormControl({ ...child }, { value, disabled: !!disabled }) : this.createForm(child, data[name]);
+      const control = FormNodeTypes.CONTROL === type
+        ? new CustomFormControl({ ...child }, { value, disabled: !!disabled }) : this.createForm(child, data[name]);
 
       if (validators?.length) {
         this.addValidators(control, validators);

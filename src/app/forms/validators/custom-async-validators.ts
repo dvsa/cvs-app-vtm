@@ -189,6 +189,7 @@ export class CustomAsyncValidators {
   private static checkCondition(testResult: TestResultModel, condition: Condition) {
     const { field, operator, value } = condition;
 
+    // eslint-disable-next-line no-prototype-builtins
     const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
       ? (testResult.testTypes[0] as any)[field]
       : (testResult as any)[field as keyof TestResultModel];

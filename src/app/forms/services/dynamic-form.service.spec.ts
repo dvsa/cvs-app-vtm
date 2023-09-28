@@ -37,9 +37,6 @@ describe('DynamicFormService', () => {
 
       expect(service.createForm(node)).toMatchObject({});
     });
-  });
-
-  describe('createForm', () => {
     it('should return a FormGroup containing a single control', () => {
       const node: FormNode = {
         name: 'group',

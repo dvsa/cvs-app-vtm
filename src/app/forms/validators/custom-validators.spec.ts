@@ -568,7 +568,7 @@ describe('handlePsvPassengersChange', () => {
       techRecord_standingCapacity: new CustomFormControl({ name: 'techRecord_standingCapacity', type: FormNodeTypes.CONTROL }, undefined),
     });
   });
-  it('should calculate vehicle size and class based on passenger numbers', () => {
+  it('should calculate small vehicle size and class based on passenger numbers', () => {
     const upper = form.get('techRecord_seatsUpperDeck');
     const lower = form.get('techRecord_seatsLowerDeck');
     const standing = form.get('techRecord_standingCapacity');
@@ -585,7 +585,7 @@ describe('handlePsvPassengersChange', () => {
     expect(vehicleSize).toBe(VehicleSizes.SMALL);
     expect(vehicleClass).toBe(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
   });
-  it('should calculate vehicle size and class based on passenger numbers', () => {
+  it('should calculate large vehicle size and class based on passenger numbers', () => {
     const upper = form.get('techRecord_seatsUpperDeck');
     const lower = form.get('techRecord_seatsLowerDeck');
     const standing = form.get('techRecord_standingCapacity');
