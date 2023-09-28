@@ -184,7 +184,7 @@ export class CustomValidators {
   }
 
   static email(): ValidatorFn {
-    return this.customPattern(['^[-\\w.\\+]+@[-\\w]+\\.[A-Za-z]{2,}$', 'Enter an email address in the correct format, like name@example.com']);
+    return this.customPattern(['^[\\w\\-\\.\\+]+@([\\w-]+\\.)+[\\w-]{2,}$', 'Enter an email address in the correct format, like name@example.com']);
   }
 
   static customPattern([regEx, message]: string[]): ValidatorFn {
