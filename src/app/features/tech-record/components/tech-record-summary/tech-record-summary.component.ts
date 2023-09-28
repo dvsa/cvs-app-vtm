@@ -57,7 +57,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
   isEditing = false;
-  scrollPosition: [number, number];
+  scrollPosition: [number, number] = [0, 0];
 
   private destroy$ = new Subject<void>();
 
