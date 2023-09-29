@@ -26,6 +26,7 @@ import {
   canGeneratePlate,
   cannotGeneratePlate,
   clearAllSectionStates,
+  clearScrollPosition,
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
@@ -51,6 +52,7 @@ import {
   updateBrakeForces,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
+  updateScrollPosition,
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess
@@ -68,6 +70,7 @@ export interface TechnicalRecordServiceState {
   batchVehicles: BatchRecords;
   sectionState?: (string | number)[];
   canGeneratePlate: boolean;
+  scrollPosition: [number, number];
 }
 
 export const initialState: TechnicalRecordServiceState = {
@@ -75,7 +78,8 @@ export const initialState: TechnicalRecordServiceState = {
   batchVehicles: initialBatchState,
   loading: false,
   sectionState: [],
-  canGeneratePlate: false
+  canGeneratePlate: false,
+  scrollPosition: [0, 0]
 };
 
 export const getTechRecordState = createFeatureSelector<TechnicalRecordServiceState>(STORE_FEATURE_TECHNICAL_RECORDS_KEY);
@@ -150,7 +154,10 @@ export const vehicleTechRecordReducer = createReducer(
     })
   ),
 
-  on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecord: action.vehicleTechRecord }))
+  on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecord: action.vehicleTechRecord })),
+
+  on(updateScrollPosition, (state, action) => ({ ...state, scrollPosition: action.position })),
+  on(clearScrollPosition, state => ({ ...state, scrollPosition: [0, 0] as [number, number] }))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {

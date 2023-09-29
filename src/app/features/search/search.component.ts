@@ -5,7 +5,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { map, Observable } from 'rxjs';
 import { Roles } from '@models/roles.enum';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
-import { clearAllSectionStates } from '@store/technical-records';
+import { clearAllSectionStates, clearScrollPosition } from '@store/technical-records';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -21,6 +21,7 @@ export class SearchComponent {
   navigateSearch(term: string, type: string): void {
     this.globalErrorService.clearErrors();
     this.store.dispatch(clearAllSectionStates());
+    this.store.dispatch(clearScrollPosition());
     term = term.trim();
 
     if (!term) {

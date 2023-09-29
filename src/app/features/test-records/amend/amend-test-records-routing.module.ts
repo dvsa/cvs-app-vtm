@@ -76,6 +76,7 @@ const routes: Routes = [
                   {
                     path: '',
                     component: DefectSelectComponent,
+                    canActivate: [RoleGuard],
                   },
                   {
                     path: ':ref',

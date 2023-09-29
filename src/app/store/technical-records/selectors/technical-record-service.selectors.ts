@@ -31,3 +31,5 @@ export const selectTechRecord = createSelector(
 );
 
 export const selectSectionState = createSelector(getTechRecordState, state => state.sectionState);
+
+export const selectScrollPosition = createSelector(getTechRecordState, state => state.scrollPosition);
