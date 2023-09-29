@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -15,12 +16,15 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
+import { LoadingService } from '@services/loading/loading.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, map, take, takeUntil } from 'rxjs';
+import { Observable, Subject, debounceTime, map, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -45,6 +49,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
   isEditing = false;
+  scrollPosition: [number, number] = [0, 0];
 
   private destroy$ = new Subject<void>();
 
@@ -54,7 +59,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private referenceDataService: ReferenceDataService,
     private technicalRecordService: TechnicalRecordService,
     private routerService: RouterService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private viewportScroller: ViewportScroller,
+    private store: Store,
+    private loading: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -104,6 +112,19 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         }
       });
     }
+
+    this.store
+      .select(selectScrollPosition)
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe(position => {
+        this.scrollPosition = position;
+      });
+
+    this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe(loading => {
+      if (!loading) {
+        this.viewportScroller.scrollToPosition(this.scrollPosition);
+      }
+    });
   }
 
   ngOnDestroy(): void {

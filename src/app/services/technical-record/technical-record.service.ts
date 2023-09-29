@@ -21,6 +21,7 @@ import {
 import {
   clearAllSectionStates,
   createVehicle,
+  selectScrollPosition,
   selectSectionState,
   selectTechRecord,
   techRecord,

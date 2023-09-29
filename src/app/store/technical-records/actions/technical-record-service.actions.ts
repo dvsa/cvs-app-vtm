@@ -78,6 +78,9 @@ export const addSectionState = createAction(`${prefix} addSectionState`, props<{
 export const removeSectionState = createAction(`${prefix} removeSectionState`, props<{ section: string | number }>());
 export const clearAllSectionStates = createAction(`${prefix} clearAllSectionState`);
 
+export const updateScrollPosition = createAction(`${prefix} updateScrollPosition`, props<{ position: [number, number] }>());
+export const clearScrollPosition = createAction(`${prefix} clearScrollPosition`);
+
 function createOutcomeAction<T extends boolean>(
   title: string,
   isSuccess: T

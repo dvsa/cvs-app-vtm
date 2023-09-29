@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
@@ -13,7 +14,7 @@ import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-
 import { Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { addAxle, removeAxle } from '@store/technical-records';
+import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { Subscription } from 'rxjs';
@@ -40,7 +41,8 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<TechnicalRecordServiceState>
+    private store: Store<TechnicalRecordServiceState>,
+    private viewportScroller: ViewportScroller
   ) {
     this.editingReason = this.route.snapshot.data['reason'];
   }
@@ -173,6 +175,8 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   getTyreSearchPage(axleNumber: number) {
     const route = this.editingReason ? `../${this.editingReason}/tyre-search/${axleNumber}` : `./tyre-search/${axleNumber}`;
+
+    this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
 
     this.router.navigate([route], { relativeTo: this.route, state: this.vehicleTechRecord });
   }
