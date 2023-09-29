@@ -31,12 +31,14 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   constructor(public dynamicFormsService: DynamicFormService, private store: Store<TechnicalRecordServiceState>) {}
 
   ngOnInit(): void {
+    console.log('ng init');
     this.initializeForm();
     this.subscribeToFieldsForGrossLadenWeightRecalculation();
     this.subscribeToFormChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('handling vehicle tech record change');
     this.handleVehicleTechRecordChange(changes);
   }
 
@@ -108,7 +110,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private handleVehicleTechRecordChange(changes: SimpleChanges): void {
-    console.log(changes);
+    console.log(changes['vehicleTechRecord'].currentValue.techRecord_grossLadenWeight);
+    console.log(changes['vehicleTechRecord'].previousValue.techRecord_grossLadenWeight);
+
     if (changes['vehicleTechRecord'] && !this.ladenWeightOverride && this.form) {
       const { currentValue, previousValue } = changes['vehicleTechRecord'];
       const fieldsChanged = [
@@ -134,13 +138,17 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   private subscribeToFormChanges(): void {
     this._formSubscription.add(
-      this.form.cleanValueChanges.subscribe((event: any) => {
+      this.form.valueChanges.subscribe((event: any) => {
         console.log(event);
         if (this.ladenWeightOverride) {
           // If overridden, update the store and return.
           if (event?.techRecord_grossLadenWeight) {
-            this.form.get('techRecord_grossLadenWeight')?.setValue(event?.techRecord_grossLadenWeight, { emitEvent: false });
-            this.store.dispatch(updateBrakeForces({ grossLadenWeight: event.techRecord_grossLadenWeight }));
+            console.log(event?.techRecord_grossLadenWeight);
+            (this.vehicleTechRecord as TechRecordType<'psv'>).techRecord_grossLadenWeight = event.techRecord_grossLadenWeight;
+            this.form.patchValue({ techRecord_grossLadenWeight: event?.techRecord_grossLadenWeight }, { emitEvent: false });
+            this.formChange.emit(event);
+            console.log('setting dispath store....');
+            updateBrakeForces({ grossLadenWeight: event.techRecord_grossLadenWeight, grossKerbWeight: event.techRecord_grossKerbWeight });
           }
           return;
         }
