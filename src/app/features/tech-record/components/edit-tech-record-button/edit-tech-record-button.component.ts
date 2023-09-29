@@ -8,7 +8,7 @@ import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { clearAllSectionStates, updateEditingTechRecordCancel } from '@store/technical-records';
+import { clearAllSectionStates, clearScrollPosition, updateEditingTechRecordCancel } from '@store/technical-records';
 import {
   Observable, Subject, distinctUntilChanged, map, takeUntil,
 } from 'rxjs';
@@ -76,6 +76,8 @@ export class EditTechRecordButtonComponent implements OnDestroy {
       this.errorService.clearErrors();
       this.store.dispatch(updateEditingTechRecordCancel());
       this.store.dispatch(clearAllSectionStates());
+      this.store.dispatch(clearScrollPosition());
+
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate(['../'], { relativeTo: this.route });
     }

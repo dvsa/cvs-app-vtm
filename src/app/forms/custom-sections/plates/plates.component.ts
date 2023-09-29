@@ -11,7 +11,7 @@ import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
 import { HgvOrTrl, StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { canGeneratePlate } from '@store/technical-records';
+import { canGeneratePlate, updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime } from 'rxjs';
@@ -137,6 +137,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     this.store.dispatch(canGeneratePlate());
+    this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
     this.router.navigate(['generate-plate'], { relativeTo: this.route });
   }
 

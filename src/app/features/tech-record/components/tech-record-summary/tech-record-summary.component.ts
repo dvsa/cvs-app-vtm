@@ -25,9 +25,13 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
 import {
-  Observable, Subject, map, take, takeUntil,
+  Observable, Subject, debounceTime, map, take, takeUntil,
 } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { selectScrollPosition } from '@store/technical-records';
+import { LoadingService } from '@services/loading/loading.service';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -53,6 +57,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
   isEditing = false;
+  scrollPosition: [number, number] = [0, 0];
 
   private destroy$ = new Subject<void>();
 
@@ -63,7 +68,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private routerService: RouterService,
     private activatedRoute: ActivatedRoute,
-  ) {}
+    private viewportScroller: ViewportScroller,
+    private store: Store,
+    private loading: LoadingService,
+  ) { }
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$
@@ -112,6 +120,16 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         }
       });
     }
+
+    this.store.select(selectScrollPosition).pipe(take(1), takeUntil(this.destroy$)).subscribe((position) => {
+      this.scrollPosition = position;
+    });
+
+    this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe((loading) => {
+      if (!loading) {
+        this.viewportScroller.scrollToPosition(this.scrollPosition);
+      }
+    });
   }
 
   ngOnDestroy(): void {
