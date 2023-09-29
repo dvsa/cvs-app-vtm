@@ -42,13 +42,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
           type: FormNodeTypes.CONTROL
         },
         '',
-        [
-          CustomValidators.alphanumeric(),
-          Validators.minLength(3),
-          Validators.maxLength(21),
-          Validators.required,
-          CustomValidators.validateVinCharacters
-        ],
+        [CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21), Validators.required],
         [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)]
       )
     });
