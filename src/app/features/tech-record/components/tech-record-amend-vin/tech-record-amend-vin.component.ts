@@ -32,7 +32,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
     private router: Router,
     private technicalRecordService: TechnicalRecordService,
     private routerService: RouterService,
-    private store: Store<State>
+    private store: Store<State>,
   ) {
     this.form = new FormGroup({
       vin: new CustomFormControl(
@@ -47,7 +47,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
           Validators.minLength(3),
           Validators.maxLength(21),
           Validators.required,
-          CustomValidators.validateVinCharacters()
+          CustomValidators.validateVinCharacters(),
         ],
         [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)]
       )
