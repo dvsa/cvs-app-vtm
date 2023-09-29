@@ -14,11 +14,13 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
-import { Subject, take, takeUntil, withLatestFrom } from 'rxjs';
+import {
+  Subject, take, takeUntil, withLatestFrom,
+} from 'rxjs';
 
 @Component({
   selector: 'app-change-amend-vin',
-  templateUrl: './tech-record-amend-vin.component.html'
+  templateUrl: './tech-record-amend-vin.component.html',
 })
 export class AmendVinComponent implements OnDestroy, OnInit {
   techRecord?: V3TechRecordModel;
@@ -39,7 +41,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
         {
           name: 'input-vin',
           label: 'Vin',
-          type: FormNodeTypes.CONTROL
+          type: FormNodeTypes.CONTROL,
         },
         '',
         [
@@ -49,19 +51,26 @@ export class AmendVinComponent implements OnDestroy, OnInit {
           Validators.required,
           CustomValidators.validateVinCharacters(),
         ],
-        [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)]
-      )
+        [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)],
+      ),
     });
-    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(async ({vehicleTechRecord}) => {
+      await this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
     });
   }
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(record => (!record ? this.navigateBack() : (this.techRecord = record)));
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(async record => {
+          if (!record) {
+            await this.navigateBack();
+          } else {
+            this.techRecord = record;
+          }
+        });
   }
+
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -99,9 +108,9 @@ export class AmendVinComponent implements OnDestroy, OnInit {
     return this.form.valid;
   }
 
-  navigateBack() {
+  async navigateBack() {
     this.globalErrorService.clearErrors();
-    this.router.navigate(['..'], { relativeTo: this.route });
+    await this.router.navigate(['..'], {relativeTo: this.route});
   }
 
   handleSubmit(): void {
