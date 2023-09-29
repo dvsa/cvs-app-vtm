@@ -25,14 +25,13 @@ const routes: Routes = [
       {
         path: 'type',
         component: CreateTestTypeComponent,
-        data: { title: 'Create contingency test' },
         resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, contingencyTest: ContingencyTestResolver },
       },
       {
         path: 'test-details',
         component: TestRouterOutletComponent,
         resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver, testStations: TestStationsResolver },
-        data: { title: 'Test details', roles: Roles.TestResultCreateContingency },
+        data: { title: 'Test details', roles: Roles.TestResultCreateContingency, breadcrumbPreserveQueryParams: true },
         canActivate: [RoleGuard],
         children: [
           {
@@ -48,11 +47,11 @@ const routes: Routes = [
           {
             path: 'selectDefect',
             component: TestRouterOutletComponent,
+            data: { title: 'Select Defect', roles: Roles.TestResultCreateContingency },
             children: [
               {
                 path: '',
                 component: DefectSelectComponent,
-                data: { title: 'Select Defect', roles: Roles.TestResultCreateContingency },
                 canActivate: [RoleGuard],
               },
               {
