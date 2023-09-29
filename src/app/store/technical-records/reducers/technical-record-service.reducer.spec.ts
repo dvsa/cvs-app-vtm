@@ -12,6 +12,7 @@ import {
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
   clearAllSectionStates,
+  clearScrollPosition,
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
@@ -24,6 +25,7 @@ import {
   updateBrakeForces,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
+  updateScrollPosition,
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess
@@ -464,6 +466,21 @@ describe('Vehicle Technical Record Reducer', () => {
         expect(updatedTechRecord?.techRecord_noOfAxles).toBe(2);
         expect(updatedTechRecord?.techRecord_axles?.length).toBe(2);
         expect(updatedTechRecord?.techRecord_axles?.pop()?.axleNumber).toBe(2);
+      });
+    });
+    describe('updateScrollPosition', () => {
+      it('should update the scroll position state', () => {
+        const newState = vehicleTechRecordReducer(initialState, updateScrollPosition({ position: [1, 2] }));
+
+        expect(newState.scrollPosition).toEqual([1, 2]);
+      });
+    });
+    describe('clearScrollPosition', () => {
+      it('should reset the scroll position', () => {
+        initialState.scrollPosition = [2, 2];
+        const newState = vehicleTechRecordReducer(initialState, clearScrollPosition());
+
+        expect(newState.scrollPosition).toEqual([0, 0]);
       });
     });
   });
