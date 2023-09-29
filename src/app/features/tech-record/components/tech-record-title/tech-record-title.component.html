@@ -119,13 +119,16 @@
             >
           </div>
         </dd>
-        <dd *appRoleRequired="roles.TechRecordUnarchive" class="govuk-summary-list__actions">
-          <div class="govuk-summary-list__actions--flex">
-            <app-button *ngIf="queryableActions.includes('unarchive')" design="link" id="unarchive-link" (clicked)="navigateTo('unarchive-record')">
-              Unarchive
-            </app-button>
-          </div>
-        </dd>
+        <ng-container *ngIf="queryableActions.includes('unarchive')">
+          <dd *appRoleRequired="roles.TechRecordUnarchive" class="govuk-summary-list__actions">
+            <div class="govuk-summary-list__actions--flex">
+              <app-button  design="link" id="unarchive-link" (clicked)="navigateTo('unarchive-record')">
+                Unarchive
+              </app-button>
+            </div>
+          </dd>
+        </ng-container> 
+
       </ng-container>
     </div>
 
