@@ -15,7 +15,7 @@ export class BreadcrumbsComponent {
       distinctUntilChanged(),
       map((router) => {
         let currentRoute = router?.state?.root;
-        const breadcrumbs: Array<{ label: string; path: string }> = [];
+        const breadcrumbs: Array<{ label: string; path: string; preserveQueryParams: boolean }> = [];
 
         while (currentRoute?.firstChild) {
           const { routeConfig, data, url } = currentRoute.firstChild;
@@ -25,6 +25,7 @@ export class BreadcrumbsComponent {
             breadcrumbs.push({
               label: data['title'],
               path: [...breadcrumbs.slice(-1).map((b) => b.path), ...url.map((urlValue) => urlValue.path)].join('/'),
+              preserveQueryParams: !!data['breadcrumbPreserveQueryParams'],
             });
           }
 
