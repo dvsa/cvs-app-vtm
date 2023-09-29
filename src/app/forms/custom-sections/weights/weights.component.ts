@@ -120,7 +120,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
       ].some(field => {
         console.log(currentValue[field]);
         console.log(previousValue[field]);
-        return currentValue[field] !== previousValue[field]; // Add the return statement here
+        return currentValue[field] !== previousValue[field];
       });
       console.log(`files changed ${fieldsChanged}`);
 
@@ -227,11 +227,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     const techRecord_standingCapacity = psvRecord?.techRecord_standingCapacity ?? 0;
     const kgAllowedPerPerson = techRecord_manufactureYear >= 1988 ? 65 : 63.5;
 
-    console.log(`seats upper: ${techRecord_seatsUpperDeck}`);
-    console.log(`seats lower: ${techRecord_seatsLowerDeck}`);
-    console.log(`manufacture year: ${techRecord_manufactureYear}`);
-    console.log(`gross kerb weight: ${techRecord_grossKerbWeight}`);
-    console.log(`standing capacity: ${techRecord_standingCapacity}`);
     const totalPassengers = techRecord_seatsUpperDeck + techRecord_seatsLowerDeck + techRecord_standingCapacity + 1; // Add 1 for the driver
     return totalPassengers * kgAllowedPerPerson + techRecord_grossKerbWeight;
   }
