@@ -33,7 +33,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     private router: Router,
     private route: ActivatedRoute,
     private store: Store,
-    ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
@@ -61,12 +61,12 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   get letter(): LettersOfAuth | undefined {
     return this.techRecord?.techRecord_letterOfAuth_letterType
       ? {
-          letterType: this.techRecord?.techRecord_letterOfAuth_letterType!,
-          paragraphId: this.techRecord?.techRecord_letterOfAuth_paragraphId!,
-          letterIssuer: this.techRecord?.techRecord_letterOfAuth_letterIssuer!,
-          letterDateRequested: this.techRecord?.techRecord_letterOfAuth_letterDateRequested!,
-          letterContents: ''
-        }
+        letterType: this.techRecord?.techRecord_letterOfAuth_letterType!,
+        paragraphId: this.techRecord?.techRecord_letterOfAuth_paragraphId!,
+        letterIssuer: this.techRecord?.techRecord_letterOfAuth_letterIssuer!,
+        letterDateRequested: this.techRecord?.techRecord_letterOfAuth_letterDateRequested!,
+        letterContents: ''
+      }
       : undefined;
   }
 
@@ -119,8 +119,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     return `letter_${(this.techRecord as TechRecordTypeVehicleVerb<'trl', 'get'>).systemNumber}_${this.techRecord.vin}`;
   }
 
-  generateLetter(){
+  generateLetter() {
     this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
-    this.router.navigate(['generate-letter'], {relativeTo: this.route})
+    this.router.navigate(['generate-letter'], { relativeTo: this.route })
   }
 }
