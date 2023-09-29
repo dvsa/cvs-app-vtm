@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TestTypesTaxonomy } from '@api/test-types';
+import { TestTypeCategoryNextTestTypesOrCategoriesInner } from '@api/test-types';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
@@ -31,7 +31,7 @@ export class VehicleHeaderComponent {
     return this.testResult?.testTypes?.find((t) => this.testNumber === t.testNumber);
   }
 
-  get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
+  get selectAllTestTypes$(): Observable<TestTypeCategoryNextTestTypesOrCategoriesInner[]> {
     return this.testTypesService.selectAllTestTypes$;
   }
 

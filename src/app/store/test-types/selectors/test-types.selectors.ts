@@ -1,6 +1,5 @@
 import { TestType } from '@api/test-types';
-import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
-import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
+import { TestTypeCategory, TestTypeCategoryNextTestTypesOrCategoriesInner } from '@api/test-types/model/models';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { StatusCodes, VehicleSubclass } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
@@ -31,7 +30,7 @@ export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, t
 });
 
 export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, testTypes => {
-  const sortTestTypes = (testTypes: TestTypesTaxonomy): TestTypesTaxonomy => {
+  const sortTestTypes = (testTypes: TestTypeCategoryNextTestTypesOrCategoriesInner[]): TestTypeCategoryNextTestTypesOrCategoriesInner[] => {
     return testTypes
       .sort((a, b) => {
         if (!b.hasOwnProperty('sortId')) {
@@ -60,7 +59,7 @@ export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, test
 
 export const selectTestType = (id: string | undefined) =>
   createSelector(selectTestTypesByVehicleType, (testTypes): TestType | undefined => {
-    function findUsingId(id: string | undefined, testTypes: TestTypesTaxonomy | undefined): TestType | undefined {
+    function findUsingId(id: string | undefined, testTypes: TestTypeCategoryNextTestTypesOrCategoriesInner[] | undefined): TestType | undefined {
       if (!testTypes) {
         return undefined;
       }
@@ -85,7 +84,7 @@ export const selectTestType = (id: string | undefined) =>
 
 export const getTypeOfTest = (id: string | undefined) => createSelector(selectTestType(id), testTypes => testTypes?.typeOfTest);
 
-function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultModel): TestTypesTaxonomy {
+function filterTestTypes(testTypes: TestTypeCategoryNextTestTypesOrCategoriesInner[], testResult: TestResultModel): TestTypeCategoryNextTestTypesOrCategoriesInner[] {
   const {
     vehicleType,
     statusCode,
@@ -100,7 +99,7 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
 
   return (
     testTypes
-      .filter(testTypes => !vehicleType || !testTypes.forVehicleType || testTypes.forVehicleType.includes(vehicleType))
+      .filter(testTypes => !vehicleType || !testTypes.forVehicleType || testTypes.forVehicleType.includes(vehicleType as TestTypeCategory.ForVehicleTypeEnum))
       .filter(testTypes => !statusCode || statusCode !== StatusCodes.PROVISIONAL || testTypes.forProvisionalStatus)
       .filter(testTypes => !statusCode || !testTypes.forProvisionalStatusOnly || statusCode === StatusCodes.PROVISIONAL)
       .filter(testTypes => !euVehicleCategory || !testTypes.forEuVehicleCategory || testTypes.forEuVehicleCategory.includes(euVehicleCategory))

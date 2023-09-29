@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { TestType, TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
+import { TestType, TestTypeCategory, TestTypeCategoryNextTestTypesOrCategoriesInner } from '@api/test-types';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { Observable } from 'rxjs';
 
@@ -15,7 +15,7 @@ export class TestTypeSelectComponent {
 
   constructor(private testTypesService: TestTypesService) {}
 
-  get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
+  get selectAllTestTypes$(): Observable<TestTypeCategoryNextTestTypesOrCategoriesInner[]> {
     return this.testTypesService.selectAllTestTypes$;
   }
 

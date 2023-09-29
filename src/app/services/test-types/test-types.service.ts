@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { BASE_PATH, Configuration, TestTypesService as TestTypesApiService, TestTypesTaxonomy } from '@api/test-types';
+import { BASE_PATH, Configuration, TestTypeCategoryNextTestTypesOrCategoriesInner, TestTypesService as TestTypesApiService } from '@api/test-types';
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { testTypeIdChanged } from '@store/test-records';
@@ -21,7 +21,7 @@ export class TestTypesService extends TestTypesApiService {
     super(httpClient, basePath, configuration);
   }
 
-  get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
+  get selectAllTestTypes$(): Observable<TestTypeCategoryNextTestTypesOrCategoriesInner[]> {
     return this.store.select(selectTestTypesByVehicleType);
   }
 
