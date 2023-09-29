@@ -2,7 +2,6 @@ import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
@@ -21,8 +20,6 @@ describe('TechRecordHoldComponent', () => {
   let actions$: ReplaySubject<Action>;
   let component: TechRecordChangeVisibilityComponent;
   let fixture: ComponentFixture<TechRecordChangeVisibilityComponent>;
-  let route: ActivatedRoute;
-  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -35,14 +32,12 @@ describe('TechRecordHoldComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of([Roles.TechRecordArchive])
-          }
-        }
-      ]
+            roles$: of([Roles.TechRecordArchive]),
+          },
+        },
+      ],
     }).compileComponents();
 
-    route = TestBed.inject(ActivatedRoute);
-    router = TestBed.inject(Router);
   });
 
   beforeEach(() => {

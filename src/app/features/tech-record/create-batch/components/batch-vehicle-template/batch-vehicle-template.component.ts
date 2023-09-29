@@ -7,26 +7,30 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { BatchUpdateVehicleModel, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  BatchUpdateVehicleModel, StatusCodes, V3TechRecordModel, VehicleTypes,
+} from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { createVehicleRecord, selectTechRecord, updateTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, map, take, withLatestFrom } from 'rxjs';
+import {
+  Observable, map, take, withLatestFrom,
+} from 'rxjs';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
   selector: 'app-batch-vehicle-template',
-  templateUrl: './batch-vehicle-template.component.html'
+  templateUrl: './batch-vehicle-template.component.html',
 })
 export class BatchVehicleTemplateComponent {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
-  isInvalid: boolean = false;
+  isInvalid = false;
   form: CustomFormGroup;
   public vehicleStatusOptions: MultiOptions = [
     { label: 'Provisional', value: StatusCodes.PROVISIONAL },
-    { label: 'Current', value: StatusCodes.CURRENT }
+    { label: 'Current', value: StatusCodes.CURRENT },
   ];
 
   constructor(
@@ -35,12 +39,13 @@ export class BatchVehicleTemplateComponent {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
     private batchTechRecordService: BatchTechnicalRecordService,
-    private globalErrorService: GlobalErrorService
+    private globalErrorService: GlobalErrorService,
   ) {
     this.store
       .select(selectTechRecord)
       .pipe(take(1))
-      .subscribe(vehicle => {
+      .subscribe((vehicle) => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
       });
 
@@ -48,12 +53,12 @@ export class BatchVehicleTemplateComponent {
       { name: 'form-group', type: FormNodeTypes.GROUP },
       {
         vehicleStatus: new CustomFormControl({ name: 'change-vehicle-status-select', label: 'Vehicle status', type: FormNodeTypes.CONTROL }, '', [
-          Validators.required
-        ])
-      }
+          Validators.required,
+        ]),
+      },
     );
 
-    this.batchTechRecordService.vehicleStatus$.pipe(take(1)).subscribe(vehicleStatus => {
+    this.batchTechRecordService.vehicleStatus$.pipe(take(1)).subscribe((vehicleStatus) => {
       if (this.form) {
         this.form.patchValue({ vehicleStatus });
       }
@@ -114,13 +119,12 @@ export class BatchVehicleTemplateComponent {
                   trailerId: v.vehicleType === VehicleTypes.TRL ? v.trailerIdOrVrm : undefined,
                   primaryVrm: v.vehicleType !== VehicleTypes.TRL ? v.trailerIdOrVrm : undefined,
                   systemNumber: v.systemNumber,
-                  createdTimestamp: v.createdTimestamp
-                } as BatchUpdateVehicleModel)
-            )
-          )
+                  createdTimestamp: v.createdTimestamp,
+                } as BatchUpdateVehicleModel),
+            )),
         )
-        .subscribe(vehicleList => {
-          vehicleList.forEach(vehicle => {
+        .subscribe((vehicleList) => {
+          vehicleList.forEach((vehicle) => {
             if (!vehicle.systemNumber) {
               this.store.dispatch(createVehicleRecord({ vehicle: vehicle as unknown as TechRecordType<'put'> }));
             } else {
@@ -129,10 +133,9 @@ export class BatchVehicleTemplateComponent {
             }
           });
           this.technicalRecordService.clearSectionTemplateStates();
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
           this.router.navigate(['batch-results'], { relativeTo: this.route });
         });
-    } else {
-      return;
     }
   }
 }

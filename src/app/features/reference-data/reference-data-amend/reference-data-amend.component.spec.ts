@@ -12,7 +12,7 @@ import { ReferenceDataAmendComponent } from './reference-data-amend.component';
 const mockRefDataService = {
   loadReferenceData: jest.fn(),
   loadReferenceDataByKey: jest.fn(),
-  fetchReferenceDataByKey: jest.fn()
+  fetchReferenceDataByKey: jest.fn(),
 };
 
 describe('ReferenceDataAmendComponent', () => {
@@ -32,8 +32,8 @@ describe('ReferenceDataAmendComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
         { provide: UserService, useValue: {} },
-        { provide: ReferenceDataService, useValue: mockRefDataService }
-      ]
+        { provide: ReferenceDataService, useValue: mockRefDataService },
+      ],
     }).compileComponents();
   });
 
@@ -67,7 +67,7 @@ describe('ReferenceDataAmendComponent', () => {
 
       component.navigateBack();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
   });
 

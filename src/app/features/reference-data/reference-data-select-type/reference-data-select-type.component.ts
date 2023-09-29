@@ -4,7 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes,
+} from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
@@ -14,14 +16,14 @@ import { Observable, map, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-select-type',
-  templateUrl: './reference-data-select-type.component.html'
+  templateUrl: './reference-data-select-type.component.html',
 })
 export class ReferenceDataSelectTypeComponent {
   form: CustomFormGroup = new CustomFormGroup(
     { name: 'form-group', type: FormNodeTypes.GROUP },
     {
-      referenceType: new CustomFormControl({ name: 'referenceType', type: FormNodeTypes.CONTROL }, undefined, [Validators.required])
-    }
+      referenceType: new CustomFormControl({ name: 'referenceType', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]),
+    },
   );
 
   constructor(
@@ -29,7 +31,7 @@ export class ReferenceDataSelectTypeComponent {
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<ReferenceDataState>
+    private store: Store<ReferenceDataState>,
   ) {
     this.referenceDataService.loadReferenceData(ReferenceDataResourceType.ReferenceDataAdminType);
   }
@@ -39,11 +41,11 @@ export class ReferenceDataSelectTypeComponent {
       select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReferenceDataAdminType)),
       take(1),
       map(
-        types =>
+        (types) =>
           types
             ?.sort((a: any, b: any) => (a.label ?? a.resourceType).localeCompare(b.label ?? b.resourceType))
-            .map(type => ({ label: (type as any).label ?? type.resourceKey, value: type.resourceKey.toString() })) ?? []
-      )
+            .map((type) => ({ label: (type as any).label ?? type.resourceKey, value: type.resourceKey.toString() })) ?? [],
+      ),
     );
   }
 
@@ -59,10 +61,12 @@ export class ReferenceDataSelectTypeComponent {
   }
 
   cancel(): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   navigateTo(type: string): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     if (this.isFormValid) this.router.navigate([type], { relativeTo: this.route });
   }
 }

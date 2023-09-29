@@ -8,18 +8,18 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'prefix',
-    component: SearchComponent
+    component: SearchComponent,
   },
   {
     path: 'results',
     component: MultipleSearchResultsComponent,
     canActivate: [NoQueryParamsGuard],
-    data: { title: 'Search Results' }
-  }
+    data: { title: 'Search Results' },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class SearchRoutingModule {}

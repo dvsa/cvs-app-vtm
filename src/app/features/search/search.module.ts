@@ -10,6 +10,6 @@ import { MultipleSearchResultsComponent } from './multiple-search-results/multip
 
 @NgModule({
   declarations: [SearchComponent, SingleSearchResultComponent, MultipleSearchResultsComponent],
-  imports: [CommonModule, DynamicFormsModule, RouterModule, SearchRoutingModule, SharedModule]
+  imports: [CommonModule, DynamicFormsModule, RouterModule, SearchRoutingModule, SharedModule],
 })
 export class SearchModule {}

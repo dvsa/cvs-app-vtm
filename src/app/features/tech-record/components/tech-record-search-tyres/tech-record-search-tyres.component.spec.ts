@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, TestBed, fakeAsync, tick,
+} from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -16,19 +18,19 @@ import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/index';
 import { of, ReplaySubject } from 'rxjs';
-import { TechRecordSearchTyresComponent } from './tech-record-search-tyres.component';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { fetchReferenceDataByKeySearchSuccess } from '@store/reference-data';
+import { TechRecordSearchTyresComponent } from './tech-record-search-tyres.component';
 
 const mockGlobalErrorService = {
   addError: jest.fn(),
-  clearErrors: jest.fn()
+  clearErrors: jest.fn(),
 };
 const mockTechRecordService = {
   get techRecord$() {
     return of({});
-  }
+  },
 };
 const mockReferenceDataService = {
   addSearchInformation: jest.fn(),
@@ -36,16 +38,16 @@ const mockReferenceDataService = {
   getTyreSearchCriteria$: jest.fn(),
   loadReferenceDataByKeySearch: jest.fn(),
   loadTyreReferenceDataByKeySearch: jest.fn(),
-  loadReferenceData: jest.fn()
+  loadReferenceData: jest.fn(),
 };
 const mockDynamicFormService = {
-  createForm: jest.fn()
+  createForm: jest.fn(),
 };
 
 describe('TechRecordSearchTyresComponent', () => {
   let component: TechRecordSearchTyresComponent;
   let fixture: ComponentFixture<TechRecordSearchTyresComponent>;
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
   let router: Router;
   let route: ActivatedRoute;
   let store: MockStore<State>;
@@ -60,8 +62,8 @@ describe('TechRecordSearchTyresComponent', () => {
         { provide: ReferenceDataService, useValue: mockReferenceDataService },
         { provide: TechnicalRecordService, useValue: mockTechRecordService },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
-        { provide: GlobalErrorService, useValue: mockGlobalErrorService }
-      ]
+        { provide: GlobalErrorService, useValue: mockGlobalErrorService },
+      ],
     }).compileComponents();
   });
 
@@ -77,12 +79,12 @@ describe('TechRecordSearchTyresComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should return roles', () => {
-    const roles = component.roles;
+    const { roles } = component;
     expect(roles).toBe(Roles);
   });
   it('should return errors', () => {
     const expectedError: GlobalError = { error: 'Error message', anchorLink: 'expected' };
-    const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink!);
+    const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink ?? '');
     expect(expectedResult).toBe(expectedError);
   });
 
@@ -94,36 +96,36 @@ describe('TechRecordSearchTyresComponent', () => {
     it('should call add error in global error service when term is empty', () => {
       const filter = 'code';
       component.handleSearch('', filter);
-      expect(mockGlobalErrorService.addError).toBeCalled();
+      expect(mockGlobalErrorService.addError).toHaveBeenCalled();
     });
     it('should call add error in global error service when filter is empty', () => {
       const term = '103';
       component.handleSearch(term, '');
-      expect(mockGlobalErrorService.addError).toBeCalled();
+      expect(mockGlobalErrorService.addError).toHaveBeenCalled();
     });
     it('should call correct endpoint if filter === code', () => {
       const filter = 'code';
       const term = '103';
       component.handleSearch(filter, term);
-      expect(mockReferenceDataService.loadReferenceDataByKeySearch).toBeCalledWith(ReferenceDataResourceType.Tyres, term);
+      expect(mockReferenceDataService.loadReferenceDataByKeySearch).toHaveBeenCalledWith(ReferenceDataResourceType.Tyres, term);
     });
     it('should call correct endpoint if filter === plyrating', () => {
       const filter = 'plyrating';
       const term = '103';
       component.handleSearch(filter, term);
-      expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith(filter, term);
+      expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toHaveBeenCalledWith(filter, term);
     });
     it('should call correct endpoint if filter === singleload', () => {
       const filter = 'singleload';
       const term = '103';
       component.handleSearch(filter, term);
-      expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith(filter, term);
+      expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toHaveBeenCalledWith(filter, term);
     });
     it('should call correct endpoint if filter === doubleload', () => {
       const filter = 'doubleload';
       const term = '103';
       component.handleSearch(filter, term);
-      expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith(filter, term);
+      expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toHaveBeenCalledWith(filter, term);
     });
     it('should navigate and populate the search results on success action', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate');
@@ -132,7 +134,7 @@ describe('TechRecordSearchTyresComponent', () => {
       jest.spyOn(store, 'select').mockReturnValue(of(mockTyreSearchReturn));
       component.handleSearch('foo', 'bar');
 
-      expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith('foo', 'bar');
+      expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toHaveBeenCalledWith('foo', 'bar');
       actions$.next(fetchReferenceDataByKeySearchSuccess);
 
       tick();
@@ -144,7 +146,7 @@ describe('TechRecordSearchTyresComponent', () => {
     const testCases = [
       { filter: '', term: 'foo' },
       { filter: 'foo', term: '' },
-      { filter: '', term: '' }
+      { filter: '', term: '' },
     ];
 
     it.each(testCases)('should return early if the search information has not been provided', ({ filter, term }) => {
@@ -168,7 +170,7 @@ describe('TechRecordSearchTyresComponent', () => {
         loadIndexTwinLoad: '0',
         plyRating: '18',
         resourceType: ReferenceDataResourceType.Tyres,
-        resourceKey: '103'
+        resourceKey: '103',
       };
       component.handleAddTyreToRecord(tyre);
       expect(mockTechRecordService.techRecord$).toBeTruthy();
@@ -183,17 +185,17 @@ describe('TechRecordSearchTyresComponent', () => {
         loadIndexTwinLoad: '0',
         plyRating: '18',
         resourceType: ReferenceDataResourceType.Tyres,
-        resourceKey: '103'
+        resourceKey: '103',
       };
       component.handleAddTyreToRecord(tyre);
-      expect(mockGlobalErrorService.clearErrors).toBeCalled();
+      expect(mockGlobalErrorService.clearErrors).toHaveBeenCalled();
     });
   });
 
   describe('The cancel function', () => {
     it('should clear global errors', () => {
       component.cancel();
-      expect(mockGlobalErrorService.clearErrors).toBeCalled();
+      expect(mockGlobalErrorService.clearErrors).toHaveBeenCalled();
     });
   });
 
@@ -201,10 +203,10 @@ describe('TechRecordSearchTyresComponent', () => {
     it('should get the currentVrm', () => {
       const mockVehicleRecord = {
         primaryVrm: 'bar',
-        secondaryVrms: ['foo']
+        secondaryVrms: ['foo'],
       } as V3TechRecordModel;
       component.vehicleTechRecord = mockVehicleRecord;
-      expect(component.currentVrm).toEqual('bar');
+      expect(component.currentVrm).toBe('bar');
     });
     it('should get the paginated fields', () => {
       component.searchResults = ['foo', 'bar', 'foobar'] as any;
@@ -218,7 +220,7 @@ describe('TechRecordSearchTyresComponent', () => {
 
   describe('trackByFn', () => {
     it('should return the resourceKey', () => {
-      expect(component.trackByFn(12, { resourceKey: 'foo' } as any)).toEqual('foo');
+      expect(component.trackByFn(12, { resourceKey: 'foo' } as any)).toBe('foo');
     });
   });
 
@@ -227,12 +229,12 @@ describe('TechRecordSearchTyresComponent', () => {
       const mockForm = {
         controls: {
           filter: {
-            patchValue: jest.fn()
+            patchValue: jest.fn(),
           },
           term: {
-            patchValue: jest.fn()
-          }
-        }
+            patchValue: jest.fn(),
+          },
+        },
       };
       const mockTyreSearchReturn = ['foobar'];
       const mockSearchCriteria = { filter: 'foo', term: 'bar' };
