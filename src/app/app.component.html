@@ -11,6 +11,7 @@
   <main class="govuk-main-wrapper {{ (isStandardLayout | async) ? '' : 'full-width' }}">
     <app-breadcrumbs></app-breadcrumbs>
     <app-global-error></app-global-error>
+    <app-global-warning></app-global-warning>
     <app-spinner [loading]="loading | async"></app-spinner>
     <router-outlet></router-outlet>
   </main>

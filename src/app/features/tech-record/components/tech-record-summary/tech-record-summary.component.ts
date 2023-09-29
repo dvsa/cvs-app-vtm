@@ -22,6 +22,8 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { cloneDeep, mergeWith } from 'lodash';
 import { Observable, Subject, map, take, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
+import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -53,6 +55,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   constructor(
     private axlesService: AxlesService,
     private errorService: GlobalErrorService,
+    private warningService: GlobalWarningService,
     private referenceDataService: ReferenceDataService,
     private technicalRecordService: TechnicalRecordService,
     private routerService: RouterService,
@@ -103,6 +106,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
             ...(techRecord as TechRecordType<'put'>),
             techRecord_statusCode: StatusCodes.PROVISIONAL
           });
+
+          if(techRecord?.vin?.match('([IOQ])a*')) {
+            const warnings: GlobalWarning[] = [];
+            warnings.push({ warning: 'VIN should not contain I, O or Q', anchorLink: 'vin' })
+            this.warningService.setWarnings(warnings);
+          } else {
+            this.warningService.clearWarnings();
+          }
         }
       });
     }
