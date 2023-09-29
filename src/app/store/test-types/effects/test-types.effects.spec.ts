@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { TestTypesTaxonomy } from '@api/test-types';
+import { TestTypeCategoryNextTestTypesOrCategoriesInner } from '@api/test-types';
 import { ApiModule as TestTypesApiModule } from '@api/test-types/api.module';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -52,13 +52,13 @@ describe('TestResultsEffects', () => {
   describe('fetchTestTypeTaxonomy$', () => {
     it('should return fetchTestTypesSuccess action on successfull API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const testTypes = {} as TestTypesTaxonomy;
+        const testTypes = {} as TestTypeCategoryNextTestTypesOrCategoriesInner[];
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: fetchTestTypes });
 
         // mock service call
-        (testTypesService.getTestTypes as () => Observable<TestTypesTaxonomy>) = jest.fn((): Observable<TestTypesTaxonomy> => {
+        (testTypesService.getTestTypes as () => Observable<TestTypeCategoryNextTestTypesOrCategoriesInner[]>) = jest.fn((): Observable<TestTypeCategoryNextTestTypesOrCategoriesInner[]> => {
           return cold('--a|', { a: testTypes });
         });
 

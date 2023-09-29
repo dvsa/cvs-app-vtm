@@ -1,4 +1,4 @@
-import { TestTypesTaxonomy } from '@api/test-types';
+import { TestTypeCategoryNextTestTypesOrCategoriesInner } from '@api/test-types';
 import { TestTypeNamePipe } from './test-type-name.pipe';
 
 const testTypes = [
@@ -25,7 +25,7 @@ const testTypes = [
       }
     ]
   }
-] as TestTypesTaxonomy;
+] as TestTypeCategoryNextTestTypesOrCategoriesInner[];
 
 describe('TestTypeNamePipe', () => {
   it('create an instance', () => {
