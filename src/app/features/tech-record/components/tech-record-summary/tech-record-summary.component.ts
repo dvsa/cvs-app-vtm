@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren,
+} from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -14,20 +16,28 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes,
+} from '@models/vehicle-tech-record.model';
 import { AxlesService } from '@services/axles/axles.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, map, take, takeUntil } from 'rxjs';
+import {
+  Observable, Subject, debounceTime, map, take, takeUntil,
+} from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { selectScrollPosition } from '@store/technical-records';
+import { LoadingService } from '@services/loading/loading.service';
 
 @Component({
   selector: 'app-tech-record-summary',
   templateUrl: './tech-record-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./tech-record-summary.component.scss']
+  styleUrls: ['./tech-record-summary.component.scss'],
 })
 export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
@@ -46,7 +56,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   techRecordCalculated?: V3TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   middleIndex = 0;
-  isEditing: boolean = false;
+  isEditing = false;
+  scrollPosition: [number, number] = [0, 0];
 
   private destroy$ = new Subject<void>();
 
@@ -56,36 +67,39 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private referenceDataService: ReferenceDataService,
     private technicalRecordService: TechnicalRecordService,
     private routerService: RouterService,
-    private activatedRoute: ActivatedRoute
-  ) {}
+    private activatedRoute: ActivatedRoute,
+    private viewportScroller: ViewportScroller,
+    private store: Store,
+    private loading: LoadingService,
+  ) { }
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$
       .pipe(
-        map(record => {
+        map((record) => {
           if (!record) {
             return;
           }
           const techRecord = cloneDeep(record);
 
           if (
-            techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
-            (techRecord.techRecord_vehicleType === VehicleTypes.TRL &&
-              techRecord.techRecord_euVehicleCategory !== 'o1' &&
-              techRecord.techRecord_euVehicleCategory !== 'o2')
+            techRecord.techRecord_vehicleType === VehicleTypes.HGV
+            || (techRecord.techRecord_vehicleType === VehicleTypes.TRL
+              && techRecord.techRecord_euVehicleCategory !== 'o1'
+              && techRecord.techRecord_euVehicleCategory !== 'o2')
           ) {
             const [axles, axleSpacing] = this.axlesService.normaliseAxles(
               techRecord.techRecord_axles ?? [],
-              techRecord.techRecord_dimensions_axleSpacing
+              techRecord.techRecord_dimensions_axleSpacing,
             );
             techRecord.techRecord_dimensions_axleSpacing = axleSpacing;
             techRecord.techRecord_axles = axles;
           }
           return techRecord;
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
-      .subscribe(techRecord => {
+      .subscribe((techRecord) => {
         if (techRecord) {
           this.techRecordCalculated = techRecord;
         }
@@ -97,15 +111,25 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
     const editingReason = this.activatedRoute.snapshot.data['reason'];
     if (this.isEditing && editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-      this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe(techRecord => {
+      this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
         if (techRecord) {
           this.technicalRecordService.updateEditingTechRecord({
             ...(techRecord as TechRecordType<'put'>),
-            techRecord_statusCode: StatusCodes.PROVISIONAL
+            techRecord_statusCode: StatusCodes.PROVISIONAL,
           });
         }
       });
     }
+
+    this.store.select(selectScrollPosition).pipe(take(1), takeUntil(this.destroy$)).subscribe((position) => {
+      this.scrollPosition = position;
+    });
+
+    this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe((loading) => {
+      if (!loading) {
+        this.viewportScroller.scrollToPosition(this.scrollPosition);
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -118,12 +142,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get vehicleTemplates(): Array<FormNode> {
-    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe(editing => (this.isEditing = editing));
+    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => { (this.isEditing = editing); });
     if (!this.vehicleType) {
       return [];
     }
     return (
-      vehicleTemplateMap.get(this.vehicleType)?.filter(template => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
+      vehicleTemplateMap.get(this.vehicleType)?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
     );
   }
 
@@ -132,11 +156,11 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   isSectionExpanded$(sectionName: string | number) {
-    return this.sectionTemplatesState$?.pipe(map(sections => sections?.includes(sectionName)));
+    return this.sectionTemplatesState$?.pipe(map((sections) => sections?.includes(sectionName)));
   }
 
   get isEditing$(): Observable<boolean> {
-    return this.routerService.getRouteDataProperty$('isEditing').pipe(map(isEditing => !!isEditing));
+    return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
   }
 
   get hint(): string {
@@ -152,14 +176,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       case VehicleTypes.HGV:
         return commonCustomSections;
       case VehicleTypes.TRL:
-        return [...commonCustomSections, this.trlBrakes!.form, this.letters!.form];
+        return [...commonCustomSections, this.trlBrakes!.form, this.letters.form];
       default:
         return [];
     }
   }
 
   handleFormState(event: any): void {
-    const isPrimitiveArray = (a: any, b: any) => (Array.isArray(a) && !a.some(i => typeof i === 'object') ? b : undefined);
+    const isPrimitiveArray = (a: any, b: any) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
 
     this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
 
@@ -167,19 +191,19 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   checkForms(): void {
-    const forms = this.sections?.map(section => section.form).concat(this.customSectionForms);
+    const forms = this.sections?.map((section) => section.form).concat(this.customSectionForms);
 
-    this.isFormDirty.emit(forms.some(form => form.dirty));
+    this.isFormDirty.emit(forms.some((form) => form.dirty));
 
     this.setErrors(forms);
 
-    this.isFormInvalid.emit(forms.some(form => form.invalid));
+    this.isFormInvalid.emit(forms.some((form) => form.invalid));
   }
 
   setErrors(forms: Array<CustomFormGroup | CustomFormArray>): void {
     const errors: GlobalError[] = [];
 
-    forms.forEach(form => DynamicFormService.validate(form, errors));
+    forms.forEach((form) => DynamicFormService.validate(form, errors));
 
     errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
   }

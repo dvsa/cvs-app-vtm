@@ -43,9 +43,9 @@ import { AmendVrmReasonComponent } from './components/tech-record-amend-vrm-reas
     TechRecordTitleComponent,
     TechRouterOutletComponent,
     TestRecordSummaryComponent,
-    VehicleTechnicalRecordComponent
+    VehicleTechnicalRecordComponent,
   ],
   imports: [CommonModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, TechRecordsRoutingModule, SharedTechRecordsModule],
-  exports: [EditTechRecordButtonComponent, TechRecordTitleComponent]
+  exports: [EditTechRecordButtonComponent, TechRecordTitleComponent],
 })
 export class TechRecordsModule {}

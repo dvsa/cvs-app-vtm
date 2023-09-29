@@ -1,6 +1,8 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -19,8 +21,10 @@ import { updateEditingTechRecordCancel } from '@store/technical-records';
 import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
 
-let mockTechRecordService = {
-  techRecord$: of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel)
+const mockTechRecordService = {
+  techRecord$: of({
+    systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT,
+  } as V3TechRecordModel),
 };
 
 let component: EditTechRecordButtonComponent;
@@ -35,7 +39,7 @@ const updateMockTechnicalRecord = (techRecord_statusCode: StatusCodes) =>
 
 const mockRouterService = {
   getRouteNestedParam$: () => '1',
-  getRouteDataProperty$: () => false
+  getRouteDataProperty$: () => false,
 };
 
 describe('EditTechRecordButtonComponent', () => {
@@ -52,9 +56,9 @@ describe('EditTechRecordButtonComponent', () => {
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
         { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService }
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
       ],
-      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule]
+      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
     }).compileComponents();
   });
 
@@ -82,31 +86,38 @@ describe('EditTechRecordButtonComponent', () => {
         systemNumber: 'foo',
         createdTimestamp: 'bar',
         vin: 'testVin',
-        techRecord_statusCode: StatusCodes.CURRENT
+        techRecord_statusCode: StatusCodes.CURRENT,
       } as unknown as V3TechRecordModel);
     });
     it.each([
       [
         'should be viewable',
         true,
-        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL } as V3TechRecordModel
+        {
+          systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL,
+        } as V3TechRecordModel,
       ],
       [
         'should be viewable',
         true,
-        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel
+        {
+          systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT,
+        } as V3TechRecordModel,
       ],
       [
         'should not be viewable',
         false,
-        { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED } as V3TechRecordModel
-      ]
+        {
+          systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED,
+        } as V3TechRecordModel,
+      ],
     ])('edit button %s for %s record', (isViewable: string, expected: boolean, record: V3TechRecordModel) => {
       mockTechRecordService.techRecord$ = of(record);
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('#edit'));
 
+      // eslint-disable-next-line jest/no-conditional-expect
       expected ? expect(button).toBeTruthy() : expect(button).toBeFalsy();
     });
   });
@@ -117,29 +128,29 @@ describe('EditTechRecordButtonComponent', () => {
         systemNumber: 'foo',
         createdTimestamp: 'bar',
         vin: 'testVin',
-        techRecord_statusCode: StatusCodes.PROVISIONAL
+        techRecord_statusCode: StatusCodes.PROVISIONAL,
       } as V3TechRecordModel);
-      jest.spyOn(router, 'navigate');
+      const navigateSpy = jest.spyOn(router, 'navigate');
       jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
 
-      expect(router.navigate).toHaveBeenCalledWith(['notifiable-alteration-needed'], { relativeTo: expect.anything() });
+      expect(navigateSpy).toHaveBeenCalledWith(['notifiable-alteration-needed'], { relativeTo: expect.anything() });
     });
     it('component should navigate away for notifiable alterations', () => {
       mockTechRecordService.techRecord$ = of({
         systemNumber: 'foo',
         createdTimestamp: 'bar',
         vin: 'testVin',
-        techRecord_statusCode: StatusCodes.CURRENT
+        techRecord_statusCode: StatusCodes.CURRENT,
       } as V3TechRecordModel);
-      jest.spyOn(router, 'navigate');
+      const navigateSpy = jest.spyOn(router, 'navigate');
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('button#edit')).nativeElement.click();
 
-      expect(router.navigate).toHaveBeenCalledWith(['amend-reason'], { relativeTo: expect.anything() });
+      expect(navigateSpy).toHaveBeenCalledWith(['amend-reason'], { relativeTo: expect.anything() });
     });
   });
 
@@ -149,13 +160,13 @@ describe('EditTechRecordButtonComponent', () => {
     });
     describe('and the user submits their changes', () => {
       it('component should emit event', fakeAsync(() => {
-        jest.spyOn(component.submitChange, 'emit');
+        const sumbitChangeSpy = jest.spyOn(component.submitChange, 'emit');
 
         fixture.detectChanges();
         fixture.debugElement.query(By.css('button#submit')).nativeElement.click();
         discardPeriodicTasks();
 
-        expect(component.submitChange.emit).toHaveBeenCalledTimes(1);
+        expect(sumbitChangeSpy).toHaveBeenCalledTimes(1);
       }));
     });
   });
@@ -167,13 +178,13 @@ describe('EditTechRecordButtonComponent', () => {
     });
     describe('and the user submits their changes', () => {
       it('component should emit event', fakeAsync(() => {
-        jest.spyOn(component.submitChange, 'emit');
+        const sumbitChangeSpy = jest.spyOn(component.submitChange, 'emit');
 
         fixture.detectChanges();
         fixture.debugElement.query(By.css('button#submit')).nativeElement.click();
         discardPeriodicTasks();
 
-        expect(component.submitChange.emit).toHaveBeenCalledTimes(1);
+        expect(sumbitChangeSpy).toHaveBeenCalledTimes(1);
       }));
     });
 
@@ -182,9 +193,6 @@ describe('EditTechRecordButtonComponent', () => {
         beforeEach(() => {
           component.isDirty = true;
           jest.resetAllMocks();
-          jest.spyOn(component, 'cancel');
-          jest.spyOn(component, 'toggleEditMode');
-          jest.spyOn(router, 'navigate');
         });
 
         it('should prompt user if they wish to cancel', () => {
@@ -202,21 +210,24 @@ describe('EditTechRecordButtonComponent', () => {
           it('should keep user in edit view', fakeAsync(() => {
             component.isEditing = true;
             jest.spyOn(window, 'confirm').mockImplementation(() => false);
-            jest.spyOn(store, 'dispatch');
+            const dispatchSpy = jest.spyOn(store, 'dispatch');
+            const cancelSpy = jest.spyOn(component, 'cancel');
+            const toggleEditModeSpy = jest.spyOn(component, 'toggleEditMode');
+            const navigateSpy = jest.spyOn(router, 'navigate');
 
             fixture.detectChanges();
             fixture.debugElement.query(By.css('button#cancel')).nativeElement.click();
 
             discardPeriodicTasks();
 
-            expect(component.cancel).toHaveBeenCalled();
-            expect(component.toggleEditMode).not.toHaveBeenCalled();
+            expect(cancelSpy).toHaveBeenCalled();
+            expect(toggleEditModeSpy).not.toHaveBeenCalled();
             expect(component.isEditingChange).toBeTruthy();
             expect(window.confirm).toHaveBeenCalledTimes(1);
             expect(window.confirm).toHaveBeenCalledWith('Your changes will not be saved. Are you sure?');
-            expect(router.navigate).not.toHaveBeenCalled();
-            expect(store.dispatch).not.toHaveBeenCalled();
-            expect(router.navigate).not.toHaveBeenCalled();
+            expect(navigateSpy).not.toHaveBeenCalled();
+            expect(dispatchSpy).not.toHaveBeenCalled();
+            expect(navigateSpy).not.toHaveBeenCalled();
           }));
         });
 
@@ -224,21 +235,24 @@ describe('EditTechRecordButtonComponent', () => {
           it('should return user back to non-edit view', fakeAsync(() => {
             component.isEditing = true;
             jest.spyOn(window, 'confirm').mockImplementation(() => true);
-            jest.spyOn(store, 'dispatch');
+            const dispatchSpy = jest.spyOn(store, 'dispatch');
+            const cancelSpy = jest.spyOn(component, 'cancel');
+            const toggleEditModeSpy = jest.spyOn(component, 'toggleEditMode');
+            const navigateSpy = jest.spyOn(router, 'navigate');
 
             fixture.detectChanges();
             fixture.debugElement.query(By.css('button#cancel')).nativeElement.click();
 
             discardPeriodicTasks();
 
-            expect(router.navigate).toHaveBeenCalled();
-            expect(component.cancel).toHaveBeenCalled();
-            expect(component.toggleEditMode).toHaveBeenCalled();
+            expect(navigateSpy).toHaveBeenCalled();
+            expect(cancelSpy).toHaveBeenCalled();
+            expect(toggleEditModeSpy).toHaveBeenCalled();
             expect(component.isEditing).toBeFalsy();
             expect(window.confirm).toHaveBeenCalledTimes(1);
             expect(window.confirm).toHaveBeenCalledWith('Your changes will not be saved. Are you sure?');
-            expect(store.dispatch).toHaveBeenNthCalledWith(1, clearError());
-            expect(store.dispatch).toHaveBeenNthCalledWith(2, updateEditingTechRecordCancel());
+            expect(dispatchSpy).toHaveBeenNthCalledWith(1, clearError());
+            expect(dispatchSpy).toHaveBeenNthCalledWith(2, updateEditingTechRecordCancel());
           }));
         });
       });
@@ -261,9 +275,9 @@ describe('EditTechRecordButtonComponent', () => {
         it('should return user to non-edit view', fakeAsync(() => {
           component.isEditing = true;
           jest.spyOn(window, 'confirm');
-          jest.spyOn(component, 'cancel');
-          jest.spyOn(component, 'toggleEditMode');
-          jest.spyOn(store, 'dispatch');
+          const cancelSpy = jest.spyOn(component, 'cancel');
+          const toggleSpy = jest.spyOn(component, 'toggleEditMode');
+          const dispatchSpy = jest.spyOn(store, 'dispatch');
 
           fixture.detectChanges();
 
@@ -271,11 +285,11 @@ describe('EditTechRecordButtonComponent', () => {
 
           discardPeriodicTasks();
 
-          expect(component.cancel).toHaveBeenCalled();
-          expect(component.toggleEditMode).toHaveBeenCalled();
+          expect(cancelSpy).toHaveBeenCalled();
+          expect(toggleSpy).toHaveBeenCalled();
           expect(component.isEditing).toBeFalsy();
-          expect(store.dispatch).toHaveBeenNthCalledWith(1, clearError());
-          expect(store.dispatch).toHaveBeenNthCalledWith(2, updateEditingTechRecordCancel());
+          expect(dispatchSpy).toHaveBeenNthCalledWith(1, clearError());
+          expect(dispatchSpy).toHaveBeenNthCalledWith(2, updateEditingTechRecordCancel());
         }));
       });
     });

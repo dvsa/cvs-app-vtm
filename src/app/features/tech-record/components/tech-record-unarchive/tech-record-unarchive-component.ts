@@ -3,7 +3,9 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes,
+} from '@forms/services/dynamic-form.types';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -16,13 +18,13 @@ import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-h
 
 @Component({
   selector: 'app-tech-record-unarchive',
-  templateUrl: './tech-record-unarchive.component.html'
+  templateUrl: './tech-record-unarchive.component.html',
 })
 export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   techRecord: TechRecordType<'get'> | undefined;
   statusCodes: Array<FormNodeOption<string>> = [
     { label: 'Provisional', value: StatusCodes.PROVISIONAL },
-    { label: 'Current', value: StatusCodes.CURRENT }
+    { label: 'Current', value: StatusCodes.CURRENT },
   ];
   form: CustomFormGroup;
 
@@ -34,23 +36,24 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<State>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
   ) {
     this.form = new CustomFormGroup(
       { name: 'unarchivalForm', type: FormNodeTypes.GROUP },
       {
         newRecordStatus: new CustomFormControl({ name: 'newRecordStatus', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]),
-        reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required])
-      }
+        reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]),
+      },
     );
   }
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe(record => {
+    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
       this.techRecord = record as TechRecordType<'get'>;
     });
 
     this.actions$.pipe(ofType(unarchiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
 
       this.technicalRecordService.clearEditingTechRecord();
@@ -58,11 +61,12 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next;
-    this.destroy$.complete;
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  navigateBack(relativePath: string = '..'): void {
+  navigateBack(relativePath = '..'): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
@@ -82,21 +86,21 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
         systemNumber: this.techRecord.systemNumber,
         createdTimestamp: this.techRecord.createdTimestamp,
         reasonForUnarchiving: this.form.value.reason,
-        status: this.form.value.newRecordStatus
-      })
+        status: this.form.value.newRecordStatus,
+      }),
     );
   }
 
   private validateControls() {
     const reasonControl = this.form.controls['reason'];
-    const newRecordStatus = this.form.controls['newRecordStatus'];
+    const newRecordStatusControl = this.form.controls['newRecordStatus'];
 
-    let errors = [];
+    const errors = [];
     if (!reasonControl.valid) {
-      errors.push({ error: `Reason for unarchival is required`, anchorLink: 'reason' });
+      errors.push({ error: 'Reason for unarchival is required', anchorLink: 'reason' });
     }
 
-    if (!newRecordStatus.valid) {
+    if (!newRecordStatusControl.valid) {
       errors.push({ error: 'New Record Status is required', anchorLink: 'newRecordStatus' });
     }
 

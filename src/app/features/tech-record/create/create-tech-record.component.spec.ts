@@ -20,9 +20,8 @@ describe('CreateNewVehicleRecordComponent', () => {
   let errorService: GlobalErrorService;
   let route: ActivatedRoute;
   let router: Router;
-  let store: MockStore;
   let techRecordService: TechnicalRecordService;
-  let expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
+  const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,8 +30,8 @@ describe('CreateNewVehicleRecordComponent', () => {
       providers: [
         GlobalErrorService,
         provideMockStore({ initialState: initialAppState }),
-        { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } }
-      ]
+        { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
+      ],
     }).compileComponents();
   });
 
@@ -41,7 +40,6 @@ describe('CreateNewVehicleRecordComponent', () => {
     errorService = TestBed.inject(GlobalErrorService);
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
-    store = TestBed.inject(MockStore);
     techRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -73,7 +71,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
     it('should call setErrors with an empty array', () => {
       jest.spyOn(DynamicFormService, 'validate').mockImplementation(() => {
-        return;
+
       });
       const setErrorsSpy = jest.spyOn(errorService, 'setErrors').mockImplementation();
       const valid = component.isFormValid;
@@ -103,14 +101,14 @@ describe('CreateNewVehicleRecordComponent', () => {
 
       component.navigateBack();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
   });
 
   describe('handleSubmit', () => {
-    it('should do nothing if the form is not valid', () => {
+    it('should do nothing if the form is not valid', async () => {
       const formUniqueSpy = jest.spyOn(component, 'isFormValueUnique').mockImplementation();
-      component.handleSubmit();
+      await component.handleSubmit();
       expect(formUniqueSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -119,9 +117,10 @@ describe('CreateNewVehicleRecordComponent', () => {
       const updateEditingSpy = jest.spyOn(techRecordService, 'updateEditingTechRecord');
       const navigateSpy = jest.spyOn(router, 'navigate');
       const generateTechREcordSpy = jest.spyOn(techRecordService, 'generateEditingVehicleTechnicalRecordFromVehicleType');
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       component.handleSubmit();
 
-      expect(isFormValid).toReturn();
+      expect(isFormValid).toHaveReturned();
       expect(updateEditingSpy).toHaveBeenCalledTimes(0);
       expect(generateTechREcordSpy).toHaveBeenCalledTimes(0);
       expect(navigateSpy).toHaveBeenCalledTimes(0);
@@ -146,7 +145,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
       await component.isVinUnique();
 
-      expect(isUniqueSpy).toBeCalledWith('', SEARCH_TYPES.VIN);
+      expect(isUniqueSpy).toHaveBeenCalledWith('', SEARCH_TYPES.VIN);
     });
 
     it('should return true when the VIN is unique', async () => {
@@ -173,7 +172,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
       const result = await component.isVrmUnique();
 
-      expect(addErrorSpy).toBeCalledWith({ error: 'Vrm not unique', anchorLink: 'input-vrm-or-trailer-id' });
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Vrm not unique', anchorLink: 'input-vrm-or-trailer-id' });
       expect(result).toBeFalsy();
     });
   });
@@ -195,7 +194,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 
       const result = await component.isTrailerIdUnique();
 
-      expect(addErrorSpy).toBeCalledWith({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });
+      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });
       expect(result).toBeFalsy();
     });
   });

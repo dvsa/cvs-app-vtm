@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit,
+} from '@angular/core';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
@@ -10,7 +12,7 @@ import { Observable, map } from 'rxjs';
   selector: 'app-tech-record-history',
   templateUrl: './tech-record-history.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./tech-record-history.component.scss']
+  styleUrls: ['./tech-record-history.component.scss'],
 })
 export class TechRecordHistoryComponent implements OnInit {
   @Input() currentTechRecord?: V3TechRecordModel;
@@ -31,11 +33,11 @@ export class TechRecordHistoryComponent implements OnInit {
   }
 
   get techRecordHistoryPage$(): Observable<TechRecordSearchSchema[]> {
-    return this.techRecordHistory$?.pipe(map(records => records?.slice(this.pageStart, this.pageEnd) ?? []));
+    return this.techRecordHistory$?.pipe(map((records) => records?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
   get numberOfRecords$(): Observable<number> {
-    return this.techRecordHistory$?.pipe(map(records => records?.length ?? 0));
+    return this.techRecordHistory$?.pipe(map((records) => records?.length ?? 0));
   }
 
   convertToUnix(date: Date): number {
@@ -56,8 +58,6 @@ export class TechRecordHistoryComponent implements OnInit {
     switch (searchResult.techRecord_statusCode) {
       case StatusCodes.PROVISIONAL:
         return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/provisional`;
-      case StatusCodes.ARCHIVED:
-        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/historic/`;
       default:
         return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}`;
     }

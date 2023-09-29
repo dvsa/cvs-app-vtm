@@ -20,57 +20,56 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'type'
+        redirectTo: 'type',
       },
       {
         path: 'type',
         component: CreateTestTypeComponent,
-        data: { title: 'Create contingency test' },
-        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, contingencyTest: ContingencyTestResolver }
+        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, contingencyTest: ContingencyTestResolver },
       },
       {
         path: 'test-details',
         component: TestRouterOutletComponent,
         resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver, testStations: TestStationsResolver },
-        data: { title: 'Test details', roles: Roles.TestResultCreateContingency },
+        data: { title: 'Test details', roles: Roles.TestResultCreateContingency, breadcrumbPreserveQueryParams: true },
         canActivate: [RoleGuard],
         children: [
           {
             path: '',
-            component: CreateTestRecordComponent
+            component: CreateTestRecordComponent,
           },
           {
             path: 'defect/:defectIndex',
             component: DefectComponent,
             data: { title: 'Defect', roles: Roles.TestResultCreateContingency, isEditing: true },
-            canActivate: [RoleGuard]
+            canActivate: [RoleGuard],
           },
           {
             path: 'selectDefect',
             component: TestRouterOutletComponent,
+            data: { title: 'Select Defect', roles: Roles.TestResultCreateContingency },
             children: [
               {
                 path: '',
                 component: DefectSelectComponent,
-                data: { title: 'Select Defect', roles: Roles.TestResultCreateContingency },
-                canActivate: [RoleGuard]
+                canActivate: [RoleGuard],
               },
               {
                 path: ':ref',
                 component: DefectComponent,
                 data: { title: 'Defect', roles: Roles.TestResultCreateContingency, isEditing: true },
-                canActivate: [RoleGuard]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+                canActivate: [RoleGuard],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class CreateTestRecordsRoutingModule {}

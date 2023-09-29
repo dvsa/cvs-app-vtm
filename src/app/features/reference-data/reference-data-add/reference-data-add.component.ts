@@ -1,4 +1,6 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component, OnInit, QueryList, ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -10,18 +12,20 @@ import { Roles } from '@models/roles.enum';
 import { select, Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { createReferenceDataItem, ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { catchError, filter, Observable, of, switchMap, take, throwError } from 'rxjs';
+import {
+  catchError, filter, Observable, of, switchMap, take, throwError,
+} from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-add',
-  templateUrl: './reference-data-add.component.html'
+  templateUrl: './reference-data-add.component.html',
 })
 export class ReferenceDataCreateComponent implements OnInit {
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
   newRefData: any;
   data: any = {};
-  isFormDirty: boolean = false;
-  isFormInvalid: boolean = true;
+  isFormDirty = false;
+  isFormInvalid = true;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
@@ -31,11 +35,11 @@ export class ReferenceDataCreateComponent implements OnInit {
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<ReferenceDataState>
+    private store: Store<ReferenceDataState>,
   ) {}
 
   ngOnInit(): void {
-    this.route.parent?.params.pipe(take(1)).subscribe(params => {
+    this.route.parent?.params.pipe(take(1)).subscribe((params) => {
       this.type = params['type'];
       this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
     });
@@ -55,6 +59,7 @@ export class ReferenceDataCreateComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -70,52 +75,52 @@ export class ReferenceDataCreateComponent implements OnInit {
     const referenceData: any = {};
 
     Object.keys(this.newRefData)
-      .filter(newRefDataKey => newRefDataKey !== 'resourceKey')
-      .forEach(dataKey => (referenceData[dataKey] = this.newRefData[dataKey]));
+      .filter((newRefDataKey) => newRefDataKey !== 'resourceKey')
+      .forEach((dataKey) => { referenceData[dataKey] = this.newRefData[dataKey]; });
 
     this.globalErrorService.errors$
       .pipe(
         take(1),
-        filter(errors => !errors.length),
+        filter((errors) => !errors.length),
         switchMap(() => this.referenceDataService.fetchReferenceDataByKey(this.type, this.newRefData.resourceKey)),
         take(1),
-        catchError(error => (error.status == 200 ? of(true) : throwError(() => new Error('Error'))))
+        catchError((error) => (error.status === 200 ? of(true) : throwError(() => new Error('Error')))),
       )
       .subscribe({
-        next: res => {
+        next: (res) => {
           if (res) return this.globalErrorService.addError({ error: 'Resource Key already exists', anchorLink: 'newReferenceData' });
         },
-        error: e => {
-          if (e.status == 404) {
+        error: (e) => {
+          if (e.status === 404) {
             of(true);
           } else {
             this.store.dispatch(
               createReferenceDataItem({
                 resourceType: this.type,
                 resourceKey: encodeURIComponent(String(this.newRefData.resourceKey)),
-                payload: referenceData
-              })
+                payload: referenceData,
+              }),
             );
             this.navigateBack();
           }
-        }
+        },
       });
   }
 
   checkForms(): void {
-    const forms = this.sections.map(section => section.form) as Array<CustomFormGroup>;
+    const forms = this.sections.map((section) => section.form) as Array<CustomFormGroup>;
 
-    this.isFormDirty = forms.some(form => form.dirty);
+    this.isFormDirty = forms.some((form) => form.dirty);
 
     this.setErrors(forms);
 
-    this.isFormInvalid = forms.some(form => form.invalid);
+    this.isFormInvalid = forms.some((form) => form.invalid);
   }
 
   setErrors(forms: Array<CustomFormGroup>): void {
     const errors: GlobalError[] = [];
 
-    forms.forEach(form => DynamicFormService.validate(form, errors));
+    forms.forEach((form) => DynamicFormService.validate(form, errors));
 
     errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
   }

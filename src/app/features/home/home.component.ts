@@ -3,7 +3,7 @@ import { Roles } from '@models/roles.enum';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
 })
 export class HomeComponent {
   public get Roles() {

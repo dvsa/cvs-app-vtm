@@ -1,4 +1,6 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -25,15 +27,15 @@ const mockTechRecordService = {
   updateEditingTechRecord: jest.fn(),
   isUnique: jest.fn(),
   getVehicleTypeWithSmallTrl: jest.fn(),
-  validateVinForUpdate: jest.fn().mockReturnValue(of(null))
+  validateVinForUpdate: jest.fn().mockReturnValue(of(null)),
 };
 
 const mockDynamicFormService = {
-  createForm: jest.fn()
+  createForm: jest.fn(),
 };
 
 describe('TechRecordChangeVinComponent', () => {
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
   let component: AmendVinComponent;
   let errorService: GlobalErrorService;
   let expectedTechRecord = {} as V3TechRecordModel;
@@ -41,7 +43,6 @@ describe('TechRecordChangeVinComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let store: MockStore;
-  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -52,9 +53,9 @@ describe('TechRecordChangeVinComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]), snapshot: new ActivatedRouteSnapshot() } },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService }
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
       ],
-      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule]
+      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule],
     }).compileComponents();
   });
 
@@ -64,7 +65,6 @@ describe('TechRecordChangeVinComponent', () => {
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
     component.form.controls['vin'].clearAsyncValidators();
     component.form.controls['vin'].setAsyncValidators(mockTechRecordService.validateVinForUpdate.bind(this));
@@ -109,7 +109,7 @@ describe('TechRecordChangeVinComponent', () => {
 
       component.navigateBack();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
 
     it('should navigate away updateTechRecordSuccess', fakeAsync(() => {
@@ -117,7 +117,7 @@ describe('TechRecordChangeVinComponent', () => {
       jest.spyOn(router, 'navigate').mockImplementation();
 
       actions$.next(
-        updateTechRecordSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'> })
+        updateTechRecordSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'> }),
       );
       tick();
 

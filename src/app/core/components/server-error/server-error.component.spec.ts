@@ -7,7 +7,7 @@ describe('ServerErrorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ServerErrorComponent]
+      declarations: [ServerErrorComponent],
     }).compileComponents();
   });
 

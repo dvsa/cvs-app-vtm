@@ -5,7 +5,9 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes,
+} from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { StatusCodes, TrailerFormType, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -16,7 +18,7 @@ import { take } from 'rxjs';
 
 @Component({
   selector: 'app-select-vehicle-type',
-  templateUrl: './select-vehicle-type.component.html'
+  templateUrl: './select-vehicle-type.component.html',
 })
 export class SelectVehicleTypeComponent {
   form: CustomFormGroup = new CustomFormGroup(
@@ -24,20 +26,20 @@ export class SelectVehicleTypeComponent {
     {
       vehicleType: new CustomFormControl({ name: 'vehicle-type', label: 'Vehicle type', type: FormNodeTypes.CONTROL }, '', [Validators.required]),
       tes1Tes2: new CustomFormControl({ name: 'tes1-tes2', label: 'Trailer form type', type: FormNodeTypes.CONTROL }, '', [
-        CustomValidators.requiredIfEquals('vehicleType', [VehicleTypes.TRL])
-      ])
-    }
+        CustomValidators.requiredIfEquals('vehicleType', [VehicleTypes.TRL]),
+      ]),
+    },
   );
 
   public vehicleTypeOptions: Array<FormNodeOption<string>> = [
     { label: 'Heavy goods vehicle (HGV)', value: VehicleTypes.HGV },
     { label: 'Public service vehicle (PSV)', value: VehicleTypes.PSV },
-    { label: 'Trailer (TRL)', value: VehicleTypes.TRL }
+    { label: 'Trailer (TRL)', value: VehicleTypes.TRL },
   ];
 
   public tes1Tes2Options: Array<FormNodeOption<string>> = [
     { label: 'TES 1', value: TrailerFormType.TES1 },
-    { label: 'TES 2', value: TrailerFormType.TES2 }
+    { label: 'TES 2', value: TrailerFormType.TES2 },
   ];
 
   constructor(
@@ -46,7 +48,7 @@ export class SelectVehicleTypeComponent {
     private trs: TechnicalRecordService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store
+    private store: Store,
   ) {
     this.batchTechRecordService.clearBatch();
     this.trs.clearSectionTemplateStates();
@@ -64,6 +66,7 @@ export class SelectVehicleTypeComponent {
 
   cancel() {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -82,10 +85,11 @@ export class SelectVehicleTypeComponent {
     this.store
       .select(selectTechRecord)
       .pipe(take(1))
-      .subscribe(vehicle => !vehicle && this.trs.updateEditingTechRecord({ ...vehicle!, techRecord_vehicleType: type } as TechRecordType<'put'>));
+      .subscribe((vehicle) => !vehicle && this.trs.updateEditingTechRecord({ ...vehicle!, techRecord_vehicleType: type } as TechRecordType<'put'>));
 
     this.trs.generateEditingVehicleTechnicalRecordFromVehicleType(type);
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate([type], { relativeTo: this.route });
   }
 }

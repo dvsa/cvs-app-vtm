@@ -9,17 +9,19 @@ import { select, Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { selectedTestResultState, updateTestResultSuccess } from '@store/test-records';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import {
+  map, Observable, Subject, takeUntil,
+} from 'rxjs';
 import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-confirm-cancellation',
-  templateUrl: './confirm-cancellation.component.html'
+  templateUrl: './confirm-cancellation.component.html',
 })
 export class ConfirmCancellationComponent implements OnDestroy {
   form = new CustomFormGroup(
     { name: 'cancellation-reason', type: FormNodeTypes.GROUP },
-    { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
+    { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) },
   );
 
   private destroy$ = new Subject<void>();
@@ -32,10 +34,11 @@ export class ConfirmCancellationComponent implements OnDestroy {
     private store: Store,
     private testRecordsService: TestRecordsService,
     private globalErrorService: GlobalErrorService,
-    private location: Location
+    private location: Location,
   ) {
     this.actions$
       .pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$))
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       .subscribe(() => this.router.navigate(['../../../../..'], { relativeTo: this.route }));
   }
 
@@ -57,7 +60,7 @@ export class ConfirmCancellationComponent implements OnDestroy {
   get testNumber$(): Observable<string | undefined> {
     return this.store.pipe(
       select(selectRouteNestedParams),
-      map(params => params['testNumber'])
+      map((params) => params['testNumber']),
     );
   }
 

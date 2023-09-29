@@ -5,12 +5,12 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { map, Observable } from 'rxjs';
 import { Roles } from '@models/roles.enum';
 import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
-import { clearAllSectionStates } from '@store/technical-records';
+import { clearAllSectionStates, clearScrollPosition } from '@store/technical-records';
 import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-search',
-  templateUrl: './search.component.html'
+  templateUrl: './search.component.html',
 })
 export class SearchComponent {
   missingTermErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
@@ -21,6 +21,7 @@ export class SearchComponent {
   navigateSearch(term: string, type: string): void {
     this.globalErrorService.clearErrors();
     this.store.dispatch(clearAllSectionStates());
+    this.store.dispatch(clearScrollPosition());
     term = term.trim();
 
     if (!term) {
@@ -28,16 +29,17 @@ export class SearchComponent {
     } else if (!Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES)) {
       this.globalErrorService.addError({ error: this.missingTypeErrorMessage, anchorLink: 'search-type' });
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate(['/search/results'], { queryParams: { [type]: term } });
     }
   }
 
   getInlineErrorMessage(name: string): Observable<boolean> {
-    return this.globalErrorService.errors$.pipe(map(errors => errors.some(error => error.anchorLink === name)));
+    return this.globalErrorService.errors$.pipe(map((errors) => errors.some((error) => error.anchorLink === name)));
   }
 
   getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
-    return errors.find(error => error.anchorLink === name);
+    return errors.find((error) => error.anchorLink === name);
   }
 
   public get roles() {

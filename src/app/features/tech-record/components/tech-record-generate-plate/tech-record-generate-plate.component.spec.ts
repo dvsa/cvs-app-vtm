@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -19,11 +21,11 @@ import { of, ReplaySubject } from 'rxjs';
 import { GeneratePlateComponent } from './tech-record-generate-plate.component';
 
 const mockDynamicFormService = {
-  createForm: jest.fn()
+  createForm: jest.fn(),
 };
 
 describe('TechRecordGeneratePlateComponent', () => {
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
   let component: GeneratePlateComponent;
   let errorService: GlobalErrorService;
   let fixture: ComponentFixture<GeneratePlateComponent>;
@@ -45,11 +47,11 @@ describe('TechRecordGeneratePlateComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of(['TechRecord.Amend'])
-          }
-        }
+            roles$: of(['TechRecord.Amend']),
+          },
+        },
       ],
-      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule]
+      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
     }).compileComponents();
   });
 
@@ -88,7 +90,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 
       component.navigateBack();
 
-      expect(navigateSpy).toBeCalledWith(['..'], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
 
     it('should navigate back on generatePlateSuccess', fakeAsync(() => {
@@ -127,7 +129,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 
       component.handleSubmit();
 
-      expect(dispatchSpy).toBeCalledWith(generatePlate({ reason: 'Provisional' }));
+      expect(dispatchSpy).toHaveBeenCalledWith(generatePlate({ reason: 'Provisional' }));
     });
   });
 });
