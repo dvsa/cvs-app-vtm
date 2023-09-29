@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { RouterReducerState } from '@ngrx/router-store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { State, initialAppState } from '@store/.';
@@ -32,14 +33,17 @@ describe('BreadcrumbsComponent', () => {
   });
 
   it.each([
-    [[], { state: { root: { firstChild: { data: { title: 'Path1' }, url: [{ path: 'path1' }] } } } }],
+    [[], { state: { root: { firstChild: { data: { title: 'Path1' }, url: [{ path: 'path1' }] } } } } as unknown as RouterReducerState],
 
     [[{ label: 'Path1', path: '', preserveQueryParams: false }],
-      { state: { root: { firstChild: { data: { title: 'Path1' }, routeConfig: { path: 'path1' }, url: [] } } } }],
+      { state: { root: { firstChild: { data: { title: 'Path1' }, routeConfig: { path: 'path1' }, url: [] } } } } as unknown as RouterReducerState],
 
     [
       [{ label: 'Path1', path: 'path1', preserveQueryParams: false }],
-      { state: { root: { firstChild: { data: { title: 'Path1' }, routeConfig: { path: 'path1' }, url: [{ path: 'path1' }] } } } },
+      {
+        state:
+        { root: { firstChild: { data: { title: 'Path1' }, routeConfig: { path: 'path1' }, url: [{ path: 'path1' }] } } },
+      } as unknown as RouterReducerState,
     ],
 
     [
@@ -58,7 +62,7 @@ describe('BreadcrumbsComponent', () => {
             },
           },
         },
-      },
+      } as unknown as RouterReducerState,
     ],
     [
       [
@@ -66,6 +70,7 @@ describe('BreadcrumbsComponent', () => {
         { label: 'Path2', path: 'path1/path2', preserveQueryParams: true },
       ],
       {
+        navigationId: 'foo',
         state: {
           root: {
             firstChild: {
@@ -76,10 +81,13 @@ describe('BreadcrumbsComponent', () => {
             },
           },
         },
-      },
+      } as unknown as RouterReducerState,
     ],
-  ])('should return %o when router state is %o', async (expected: { label: string; path: string }[], routeState: any) => {
-    store.overrideSelector(routerState, routeState);
-    expect(await firstValueFrom(component.breadcrumbs$)).toEqual(expected);
-  });
+  ])(
+    'should return %o when router state is %o',
+    async (expected: { label: string; path: string, preserveQueryParams: boolean }[], routeState: RouterReducerState) => {
+      store.overrideSelector(routerState, routeState);
+      expect(await firstValueFrom(component.breadcrumbs$)).toEqual(expected);
+    },
+  );
 });
