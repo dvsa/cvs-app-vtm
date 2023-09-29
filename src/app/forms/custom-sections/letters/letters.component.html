@@ -30,7 +30,7 @@
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <app-button id="generate-letters-link" type="link" routerLink="generate-letter" *appRoleRequired="roles.TechRecordAmend"
+        <app-button id="generate-letters-link" (clicked)="generateLetter()" *appRoleRequired="roles.TechRecordAmend"
           >Generate and send letter</app-button
         >
       </div>
