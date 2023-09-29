@@ -47,7 +47,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
           Validators.minLength(3),
           Validators.maxLength(21),
           Validators.required,
-          CustomValidators.validateVinCharacters
+          CustomValidators.validateVinCharacters()
         ],
         [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)]
       )
