@@ -13,8 +13,8 @@ describe('NoEditGuard', () => {
       providers: [
         CancelEditTestGuard,
         provideMockStore({}),
-        { provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) }
-      ]
+        { provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
+      ],
     });
 
     guard = TestBed.inject(CancelEditTestGuard);
