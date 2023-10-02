@@ -10,12 +10,18 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/.';
 import { initialContingencyTest } from '@store/test-records';
-import { Observable, ReplaySubject, firstValueFrom, of, throwError } from 'rxjs';
+import {
+  Observable,
+  ReplaySubject,
+  firstValueFrom,
+  of,
+  throwError,
+} from 'rxjs';
 import { ContingencyTestResolver } from './contingency-test.resolver';
 
 describe('ContingencyTestResolver', () => {
   let resolver: ContingencyTestResolver;
-  let actions$ = new ReplaySubject<Action>();
+  const actions$ = new ReplaySubject<Action>();
   let store: MockStore<State>;
   let techRecordService: TechnicalRecordService;
 
@@ -23,7 +29,7 @@ describe('ContingencyTestResolver', () => {
     getUserName$: jest.fn().mockReturnValue(new Observable()),
     get user$() {
       return of('foo');
-    }
+    },
   };
 
   beforeEach(() => {
@@ -33,8 +39,8 @@ describe('ContingencyTestResolver', () => {
         provideMockStore({ initialState: initialAppState }),
         provideMockActions(() => actions$),
         TechnicalRecordService,
-        { provide: UserService, useValue: MockUserService }
-      ]
+        { provide: UserService, useValue: MockUserService },
+      ],
     });
     resolver = TestBed.inject(ContingencyTestResolver);
     store = TestBed.inject(MockStore);

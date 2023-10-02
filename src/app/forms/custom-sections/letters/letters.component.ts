@@ -1,6 +1,6 @@
-import {
-  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
-} from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVehicleVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -8,6 +8,8 @@ import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form
 import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
 import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
+import { updateScrollPosition } from '@store/technical-records';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -25,7 +27,13 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   private _formSubscription = new Subscription();
 
-  constructor(private dynamicFormService: DynamicFormService) {}
+  constructor(
+    private dynamicFormService: DynamicFormService,
+    private viewportScroller: ViewportScroller,
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: Store,
+  ) { }
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
@@ -53,11 +61,11 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   get letter(): LettersOfAuth | undefined {
     return this.techRecord?.techRecord_letterOfAuth_letterType
       ? {
-        letterType: this.techRecord?.techRecord_letterOfAuth_letterType,
+        letterType: this.techRecord?.techRecord_letterOfAuth_letterType!,
         paragraphId: this.techRecord?.techRecord_letterOfAuth_paragraphId!,
         letterIssuer: this.techRecord?.techRecord_letterOfAuth_letterIssuer!,
         letterDateRequested: this.techRecord?.techRecord_letterOfAuth_letterDateRequested!,
-        letterContents: '',
+        letterContents: ''
       }
       : undefined;
   }
@@ -109,5 +117,10 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
       return '';
     }
     return `letter_${(this.techRecord as TechRecordTypeVehicleVerb<'trl', 'get'>).systemNumber}_${this.techRecord.vin}`;
+  }
+
+  generateLetter() {
+    this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
+    this.router.navigate(['generate-letter'], { relativeTo: this.route })
   }
 }

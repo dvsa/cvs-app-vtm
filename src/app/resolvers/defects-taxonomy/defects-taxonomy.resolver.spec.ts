@@ -16,7 +16,7 @@ describe('DefectsTaxonomyResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideMockStore({ initialState: initialAppState }), provideMockActions(() => actions$)]
+      providers: [provideMockStore({ initialState: initialAppState }), provideMockActions(() => actions$)],
     });
     resolver = TestBed.inject(DefectsTaxonomyResolver);
     store = TestBed.inject(MockStore);
@@ -33,24 +33,24 @@ describe('DefectsTaxonomyResolver', () => {
   });
 
   describe('fetch test types', () => {
-    it(`should resolve to true when all actions are success type`, () => {
+    it('should resolve to true when all actions are success type', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a', { a: fetchDefectsSuccess });
         expectObservable(resolver.resolve()).toBe('-(b|)', {
-          b: true
+          b: true,
         });
       });
 
       expect(dispatchSpy).toHaveBeenCalledWith(fetchDefects());
     });
 
-    it(`should resolve to false when one or more actions are of failure type`, () => {
+    it('should resolve to false when one or more actions are of failure type', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a', { a: fetchDefectsFailed });
         expectObservable(resolver.resolve()).toBe('-(b|)', {
-          b: false
+          b: false,
         });
       });
 

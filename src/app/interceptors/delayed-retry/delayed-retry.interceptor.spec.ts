@@ -1,8 +1,9 @@
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
-import { DelayedRetryInterceptor } from './delayed-retry.interceptor';
-import { HTTP_RETRY_CONFIG } from './delayed-retry.module';
+import {
+  fakeAsync, flush, TestBed, tick,
+} from '@angular/core/testing';
+import { DelayedRetryInterceptor, HTTP_RETRY_CONFIG } from './delayed-retry.interceptor';
 
 describe('DelayedRetryInterceptor', () => {
   let httpTestingController: HttpTestingController;
@@ -19,9 +20,9 @@ describe('DelayedRetryInterceptor', () => {
         {
           provide: HTTP_INTERCEPTORS,
           useClass: DelayedRetryInterceptor,
-          multi: true
-        }
-      ]
+          multi: true,
+        },
+      ],
     });
   });
 
@@ -48,28 +49,28 @@ describe('DelayedRetryInterceptor', () => {
 
     it('should throw error "Request timed out. Check connectivity and try again." after final retry', fakeAsync(() => {
       client.get(DUMMY_ENDPOINT).subscribe({
-        error: e => {
+        error: (e) => {
           expect(e).toEqual(new Error('Request timed out. Check connectivity and try again.'));
-        }
+        },
       });
       const retryCount = 3;
-      for (var i = 0, c = retryCount; i < c; i++) {
+      for (let i = 0, c = retryCount; i < c; i++) {
         tick(500);
-        let req = httpTestingController.expectOne(DUMMY_ENDPOINT);
+        const req = httpTestingController.expectOne(DUMMY_ENDPOINT);
         req.flush('Deliberate 504 error', { status: 504, statusText: 'Gateway Timeout' });
       }
       flush();
     }));
 
-    it('should cascade errors not in the retry list', done => {
+    it('should cascade errors not in the retry list', (done) => {
       client.get(DUMMY_ENDPOINT).subscribe({
-        error: e => {
+        error: (e) => {
           const { error, status, statusText } = e;
-          expect(error).toEqual('Deliberate 401 error');
-          expect(status).toEqual(401);
-          expect(statusText).toEqual('401 Unauthorized');
+          expect(error).toBe('Deliberate 401 error');
+          expect(status).toBe(401);
+          expect(statusText).toBe('401 Unauthorized');
           done();
-        }
+        },
       });
       const req = httpTestingController.expectOne(DUMMY_ENDPOINT);
       req.flush('Deliberate 401 error', { status: 401, statusText: '401 Unauthorized' });
@@ -90,15 +91,15 @@ describe('DelayedRetryInterceptor', () => {
 
     it('should stagger retry requests', fakeAsync(() => {
       client.get(DUMMY_ENDPOINT).subscribe({
-        error: e => {
+        error: (e) => {
           expect(e).toEqual(new Error('Request timed out. Check connectivity and try again.'));
-        }
+        },
       });
 
       const retryCount = 3;
-      for (var i = 0; i < retryCount; i++) {
+      for (let i = 0; i < retryCount; i++) {
         tick(500 * (i + 1));
-        let req = httpTestingController.expectOne(DUMMY_ENDPOINT);
+        const req = httpTestingController.expectOne(DUMMY_ENDPOINT);
         req.flush('Deliberate 504 error', { status: 504, statusText: 'Gateway Timeout' });
       }
       flush();
