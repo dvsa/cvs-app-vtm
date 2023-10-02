@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { formatDate } from '@angular/common';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
@@ -21,7 +25,7 @@ describe('TestAmendmentHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TestAmendmentHistoryComponent, DefaultNullOrEmpty],
       imports: [RouterTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 
@@ -79,19 +83,17 @@ describe('TestAmendmentHistoryComponent', () => {
           createdAt: '2020-01-01T00:00:00.000Z',
           reasonForCreation: 'reasonForCreation',
           createdByName: 'Tester Man',
-          testHistory: createMockList<TestResultModel>(1, i =>
+          testHistory: createMockList<TestResultModel>(1, (i) =>
             createMock<TestResultModel>({
-              createdAt: new Date(`2020-01-0${i + 1}`).toISOString()
-            })
-          )
+              createdAt: new Date(`2020-01-0${i + 1}`).toISOString(),
+            })),
         });
         fixture.detectChanges();
-
-        const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
-        expect(rows[0]).toBeTruthy();
       });
 
       it('should have first row be the current record', () => {
+        const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
+        expect(rows[0]).toBeTruthy();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
         expect(cells[0].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.reasonForCreation!));
         expect(cells[1].nativeElement.innerHTML).toBe(component.testRecord?.createdByName);
@@ -113,14 +115,14 @@ describe('TestAmendmentHistoryComponent', () => {
 
     it('should have links to view amended records', fakeAsync(() => {
       component.testRecord = mockTestResult();
-      store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord!.testHistory!);
+      store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord.testHistory!);
       tick();
       fixture.detectChanges();
 
       const links = fixture.debugElement.queryAll(By.css('a'));
 
-      links.forEach(e => expect(e.nativeElement.innerHTML).toBe('View'));
-      expect(links.length).toBe(component.testRecord?.testHistory?.length);
+      links.forEach((e) => expect(e.nativeElement.innerHTML).toBe('View'));
+      expect(links).toHaveLength(component.testRecord?.testHistory!.length);
     }));
   });
 });

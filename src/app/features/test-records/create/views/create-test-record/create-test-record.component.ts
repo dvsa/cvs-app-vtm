@@ -1,4 +1,6 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -17,12 +19,14 @@ import { State } from '@store/index';
 import { createTestResultSuccess } from '@store/test-records';
 import { getTypeOfTest } from '@store/test-types/selectors/test-types.selectors';
 import cloneDeep from 'lodash.clonedeep';
-import { BehaviorSubject, filter, firstValueFrom, map, Observable, of, Subject, take, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject, filter, firstValueFrom, map, Observable, of, Subject, take, takeUntil, tap,
+} from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
   selector: 'app-create-test-record',
-  templateUrl: './create-test-record.component.html'
+  templateUrl: './create-test-record.component.html',
 })
 export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
@@ -44,29 +48,29 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     private testRecordsService: TestRecordsService,
     private cdr: ChangeDetectorRef,
     private resultOfTestService: ResultOfTestService,
-    private store: Store<State>
+    private store: Store<State>,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {
-    this.testResult$ = this.testRecordsService.editingTestResult$.pipe(tap(editingTestResult => !editingTestResult && this.backToTechRecord()));
+    this.testResult$ = this.testRecordsService.editingTestResult$.pipe(tap((editingTestResult) => !editingTestResult && this.backToTechRecord()));
 
     this.routerService
       .getQueryParam$('testType')
       .pipe(
         take(1),
-        tap(testType => !testType && this.backToTechRecord()),
-        filter(tt => !!tt)
+        tap((testType) => !testType && this.backToTechRecord()),
+        filter((tt) => !!tt),
       )
-      .subscribe(testTypeId => {
+      .subscribe((testTypeId) => {
         this.testRecordsService.contingencyTestTypeSelected(testTypeId!);
         this.testTypeId = testTypeId;
       });
 
     this.watchForCreateSuccess();
 
-    this.testRecordsService.canCreate$.pipe(take(1)).subscribe(val => this.canCreate$.next(val));
+    this.testRecordsService.canCreate$.pipe(take(1)).subscribe((val) => this.canCreate$.next(val));
   }
 
   ngOnDestroy(): void {
@@ -81,6 +85,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   backToTechRecord(): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['../../..'], { relativeTo: this.route.parent });
   }
 
@@ -126,7 +131,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     const forms = [];
 
     if (this.baseTestRecordComponent?.sections) {
-      this.baseTestRecordComponent.sections.forEach(section => forms.push(section.form));
+      this.baseTestRecordComponent.sections.forEach((section) => forms.push(section.form));
     }
 
     if (this.baseTestRecordComponent?.defects) {
@@ -137,7 +142,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
       forms.push(this.abandonDialog.dynamicFormGroup.form);
     }
 
-    forms.forEach(form => {
+    forms.forEach((form) => {
       DynamicFormService.validate(form, errors);
     });
 
@@ -145,7 +150,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
       this.errorService.setErrors(errors);
     }
 
-    return forms.some(form => form.invalid);
+    return forms.some((form) => form.invalid);
   }
 
   abandon() {
@@ -158,10 +163,10 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     this.testMode = TestModeEnum.Abandon;
   }
 
-  handleAbandonAction(event: string) {
+  async handleAbandonAction(event: string) {
     switch (event) {
       case 'yes':
-        this.handleSave();
+        await this.handleSave();
         break;
       case 'no':
         this.abandonDialog?.dynamicFormGroup?.form.reset();
@@ -176,7 +181,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
   get isDeskBased() {
     return this.store.pipe(
       select(getTypeOfTest(this.testTypeId)),
-      map(typeOfTest => typeOfTest === TypeOfTest.DESK_BASED)
+      map((typeOfTest) => typeOfTest === TypeOfTest.DESK_BASED),
     );
   }
 

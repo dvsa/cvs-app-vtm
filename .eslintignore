@@ -1,0 +1,36 @@
+# Add files here to ignore them in eslint
+/dist
+/coverage
+/reports
+**/.idea
+**/.ng_pkg_build
+**/.vscode
+dist
+node_modules
+# package.json
+package-lock.json
+angular-cli.json
+angular.json
+nx.json
+tsconfig*
+tslint*
+jest.config.js
+protractor.conf.js
+/src/app/api/*
+/src/app/forms/*
+/src/app/models/*
+/src/app/services/*
+/src/app/shared/*
+/src/app/store/*
+/src/mocks/*
+/src/environments/*
+/mock-api
+/cypress
+/.vscode
+/.storybook
+/.husky
+/.github
+setenv.ts
+setup-jest.ts
+cypress.config.ts
+jest-global-mocks.ts

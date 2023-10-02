@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-test-type-select',
   templateUrl: './test-type-select.component.html',
-  styleUrls: ['./test-type-select.component.scss']
+  styleUrls: ['./test-type-select.component.scss'],
 })
 export class TestTypeSelectComponent {
   @Output() testTypeSelected = new EventEmitter<TestType>();
@@ -26,7 +26,7 @@ export class TestTypeSelectComponent {
   handleCategory(category: TestType | TestTypeCategory, i: number) {
     this.categories.length = i;
 
-    if (category.hasOwnProperty('nextTestTypesOrCategories')) {
+    if (Object.prototype.hasOwnProperty.call(category, 'nextTestTypesOrCategories')) {
       this.categories.push(category as TestTypeCategory);
     } else {
       this.testTypeSelected.emit(category);
@@ -34,10 +34,10 @@ export class TestTypeSelectComponent {
   }
 
   hasNext(category: TestType | TestTypeCategory) {
-    return category.hasOwnProperty('nextTestTypesOrCategories');
+    return Object.prototype.hasOwnProperty.call(category, 'nextTestTypesOrCategories');
   }
 
   isSelected(id: string) {
-    return this.categories.map(t => t.id).includes(id);
+    return this.categories.map((t) => t.id).includes(id);
   }
 }

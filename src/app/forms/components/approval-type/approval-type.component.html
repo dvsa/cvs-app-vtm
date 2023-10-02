@@ -7,7 +7,6 @@
         Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
       >
       <input
-        [id]="getId(name)"
         maxlength="25"
         class="govuk-input govuk-input--width-20"
         name="techRecord_approvalTypeNumber1"
@@ -29,7 +28,6 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ecta'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -84,7 +82,6 @@
         Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
       >
       <input
-        [id]="getId(name)"
         maxlength="25"
         class="govuk-input govuk-date-input__input govuk-input--width-20"
         name="techRecord_approvalTypeNumber1"
@@ -106,7 +103,6 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-nssta'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -143,7 +139,6 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ecssta'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -170,7 +165,7 @@
               [characterLimit]="4"
               [maxlength]="4"
               id="techRecord_approvalTypeNumber3-ecssta"
-              class="govuk-input govuk-date-input__input govuk-input--width-4"
+              class="govuk-input govuk-date-input__input govuk-input--width-4 separator"
               name="techRecord_approvalTypeNumber3"
               [(ngModel)]="approvalTypeNumber3"
               (ngModelChange)="onTechRecord_approvalTypeNumber3_Change($event); validate()"
@@ -180,7 +175,7 @@
               [maxlength]="6"
               id="techRecord_approvalTypeNumber4-ecssta"
               class="govuk-input govuk-date-input__input govuk-input--width-4"
-              name="techRecord_approvalTypeNumber3"
+              name="techRecord_approvalTypeNumber4"
               [(ngModel)]="approvalTypeNumber4"
               (ngModelChange)="onTechRecord_approvalTypeNumber4_Change($event); validate()"
             />
@@ -201,7 +196,6 @@
           >
           <div class="ecta-template separator">
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-gbwvta'"
               [characterLimit]="3"
               [maxlength]="3"
@@ -259,7 +253,6 @@
           >
           <div class="ecta-template separator">
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ukniwvta'"
               [characterLimit]="1"
               [maxlength]="1"
@@ -318,7 +311,6 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-euwvtapre'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -377,7 +369,6 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-euwvta'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -435,7 +426,6 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">e</span>
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-qnig'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -493,7 +483,6 @@
           >
           <div class="ecta-template separator">
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-provgbwvta'"
               [characterLimit]="3"
               [maxlength]="3"
@@ -550,7 +539,6 @@
           >
           <div class="ecta-template separator">
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-smallseries'"
               [characterLimit]="1"
               [maxlength]="1"
@@ -598,7 +586,6 @@
           <div class="ecta-template separator">
             <span class="separator approvalTypeFormatting">n11*NIV</span>
             <input
-              [id]="getId(name)"
               [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-ivavca'"
               [characterLimit]="2"
               [maxlength]="2"
@@ -642,7 +629,6 @@
         Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag></label
       >
       <input
-        [id]="getId(name)"
         maxlength="25"
         class="govuk-input govuk-date-input__input govuk-input--width-20"
         name="techRecord_approvalTypeNumber1"

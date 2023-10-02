@@ -5,7 +5,7 @@ import { distinctUntilChanged, map } from 'rxjs';
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
-  styleUrls: ['./breadcrumbs.component.scss']
+  styleUrls: ['./breadcrumbs.component.scss'],
 })
 export class BreadcrumbsComponent {
   constructor(private routerService: RouterService) {}
@@ -13,24 +13,26 @@ export class BreadcrumbsComponent {
   get breadcrumbs$() {
     return this.routerService.router$.pipe(
       distinctUntilChanged(),
-      map(router => {
+      map((router) => {
         let currentRoute = router?.state?.root;
-        let breadcrumbs: Array<{ label: string; path: string }> = [];
+        const breadcrumbs: Array<{ label: string; path: string; preserveQueryParams: boolean }> = [];
 
         while (currentRoute?.firstChild) {
           const { routeConfig, data, url } = currentRoute.firstChild;
 
-          if (data.hasOwnProperty('title') && routeConfig?.path && !breadcrumbs.some(b => b.label === data['title'])) {
+          // eslint-disable-next-line no-prototype-builtins
+          if (data.hasOwnProperty('title') && routeConfig?.path && !breadcrumbs.some((b) => b.label === data['title'])) {
             breadcrumbs.push({
               label: data['title'],
-              path: [...breadcrumbs.slice(-1).map(b => b.path), ...url.map(url => url.path)].join('/')
+              path: [...breadcrumbs.slice(-1).map((b) => b.path), ...url.map((urlValue) => urlValue.path)].join('/'),
+              preserveQueryParams: !!data['breadcrumbPreserveQueryParams'],
             });
           }
 
           currentRoute = currentRoute.firstChild;
         }
         return breadcrumbs;
-      })
+      }),
     );
   }
 

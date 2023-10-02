@@ -12,7 +12,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-multiple-search-results',
   templateUrl: './multiple-search-results.component.html',
-  styleUrls: ['multiple-search-results.component.scss']
+  styleUrls: ['multiple-search-results.component.scss'],
 })
 export class MultipleSearchResultsComponent implements OnDestroy {
   searchResults$: Observable<TechRecordSearchSchema[] | undefined>;
@@ -23,11 +23,12 @@ export class MultipleSearchResultsComponent implements OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private technicalRecordHttpService: TechnicalRecordHttpService,
     private store: Store,
-    private location: Location
+    private location: Location,
   ) {
-    this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe(params => {
+    this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe((params) => {
       if (Object.keys(params).length === 1) {
         const type = Object.keys(params)[0] as SEARCH_TYPES;
+        // eslint-disable-next-line security/detect-object-injection
         const searchTerm = params[type] as string;
 
         if (searchTerm && Object.values(SEARCH_TYPES).includes(type)) {
