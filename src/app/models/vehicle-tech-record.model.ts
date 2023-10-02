@@ -31,8 +31,6 @@ export interface PostNewVehicleModel extends Omit<VehicleTechRecordModel, 'vrms'
   secondaryVrms?: string[];
 }
 
-export interface PutVehicleTechRecordModel extends PostNewVehicleModel {}
-
 export interface Vrm {
   vrm: string;
   isPrimary: boolean;
@@ -40,13 +38,13 @@ export interface Vrm {
 
 export enum ReasonForEditing {
   CORRECTING_AN_ERROR = 'correcting-an-error',
-  NOTIFIABLE_ALTERATION_NEEDED = 'notifiable-alteration-needed'
+  NOTIFIABLE_ALTERATION_NEEDED = 'notifiable-alteration-needed',
 }
 
 export enum StatusCodes {
   ARCHIVED = 'archived',
   CURRENT = 'current',
-  PROVISIONAL = 'provisional'
+  PROVISIONAL = 'provisional',
 }
 
 export enum VehicleTypes {
@@ -56,12 +54,12 @@ export enum VehicleTypes {
   LGV = 'lgv',
   CAR = 'car',
   SMALL_TRL = 'small trl',
-  MOTORCYCLE = 'motorcycle'
+  MOTORCYCLE = 'motorcycle',
 }
 
 export enum TrailerFormType {
   TES1 = 'tes1',
-  TES2 = 'tes2'
+  TES2 = 'tes2',
 }
 
 export enum FuelTypes {
@@ -73,7 +71,7 @@ export enum FuelTypes {
   CNG = 'CNG',
   FUELCELL = 'Fuel cell',
   LNG = 'LNG',
-  OTHER = 'Other'
+  OTHER = 'Other',
 }
 
 export enum VehicleClassDescriptions {
@@ -87,7 +85,7 @@ export enum VehicleClassDescriptions {
   HGV = 'heavy goods vehicle',
   MOT_CLASS_4 = 'MOT class 4',
   MOT_CLASS_5 = 'MOT class 5',
-  MOT_CLASS_7 = 'MOT class 7'
+  MOT_CLASS_7 = 'MOT class 7',
 }
 
 export enum VehicleConfigurations {
@@ -102,7 +100,7 @@ export enum VehicleConfigurations {
   FOUR_IN_LINE = 'four-in-line',
   DOLLY = 'dolly',
   FULL_DRAWBAR = 'full drawbar',
-  LONG_SEMI_TRAILER = 'long semi-trailer'
+  LONG_SEMI_TRAILER = 'long semi-trailer',
 }
 
 export enum FrameDescriptions {
@@ -114,7 +112,7 @@ export enum FrameDescriptions {
   OTHER = 'Other',
   INTEGRAL = 'integral',
   BOX_SECTION = 'Box section',
-  U_SECTION = 'U section'
+  U_SECTION = 'U section',
 }
 
 export enum EuVehicleCategories {
@@ -135,12 +133,12 @@ export enum EuVehicleCategories {
   L4E = 'l4e',
   L5E = 'l5e',
   L6E = 'l6e',
-  L7E = 'l7e'
+  L7E = 'l7e',
 }
 
 export enum VehicleSizes {
   SMALL = 'small',
-  LARGE = 'large'
+  LARGE = 'large',
 }
 
 export enum VehicleSubclass {
@@ -154,7 +152,7 @@ export enum VehicleSubclass {
   E = 'e',
   M = 'm',
   R = 'r',
-  W = 'w'
+  W = 'w',
 }
 
 export interface LettersOfAuth {
@@ -179,7 +177,7 @@ export enum approvalType {
   PROV_GB_WVTA = 'Prov.GB WVTA',
   SMALL_SERIES = 'Small series',
   IVA_VCA = 'IVA - VCA',
-  IVA_DVSA_NI = 'IVA - DVSA/NI'
+  IVA_DVSA_NI = 'IVA - DVSA/NI',
 }
 
 export enum LettersIntoAuthApprovalType {
@@ -191,7 +189,7 @@ export enum LettersIntoAuthApprovalType {
   PROV_GB_WVTA = 'Prov.GB WVTA',
   SMALL_SERIES = 'Small series',
   IVA_VCA = 'IVA - VCA',
-  IVA_DVSA_NI = 'IVA - DVSA/NI'
+  IVA_DVSA_NI = 'IVA - DVSA/NI',
 }
 
 export enum ParagraphId {
@@ -199,7 +197,7 @@ export enum ParagraphId {
   PARAGRAPH_4 = 4,
   PARAGRAPH_5 = 5,
   PARAGRAPH_6 = 6,
-  PARAGRAPH_7 = 7
+  PARAGRAPH_7 = 7,
 }
 
 export enum SpeedCategorySymbol {
@@ -217,7 +215,7 @@ export enum SpeedCategorySymbol {
   M = 'm',
   N = 'n',
   P = 'p',
-  Q = 'q'
+  Q = 'q',
 }
 
 export interface Axle {
@@ -230,7 +228,7 @@ export interface Axle {
 
 export enum FitmentCode {
   SINGLE = 'single',
-  DOUBLE = 'double'
+  DOUBLE = 'double',
 }
 
 export interface Tyres {
@@ -362,7 +360,7 @@ export interface TechRecordModel {
   trainEecWeight?: number;
   trainGbWeight?: number;
 
-  //Max Train Weights
+  // Max Train Weights
   maxTrainGbWeight?: number;
   maxTrainDesignWeight?: number;
   maxTrainEecWeight?: number;
@@ -432,7 +430,7 @@ export enum PlateReasonForIssue {
   DESTROYED = 'Destroyed',
   PROVISIONAL = 'Provisional',
   ORIGINAL = 'Original',
-  MANUAL = 'Manual'
+  MANUAL = 'Manual',
 }
 
 export interface ApplicantDetails {
@@ -460,10 +458,10 @@ export interface AxleSpacing {
 
 export interface Brakes {
   dtpNumber?: string;
-  loadSensingValve?: string; //TODO: Check from here if these types are correct
+  loadSensingValve?: string; // TODO: Check from here if these types are correct
   antilockBrakingSystem?: string;
   axleNumber?: string;
-  axleBrakeProperties?: AxleBrakeProperties; //Check to here and including object
+  axleBrakeProperties?: AxleBrakeProperties; // Check to here and including object
   brakeCode?: string;
   brakeCodeOriginal?: string;
   dataTrBrakeOne?: string;
@@ -492,7 +490,7 @@ export enum Retarders {
   FRICTION = 'friction',
   HYDRAULIC = 'hydraulic',
   OTHER = 'other',
-  NONE = 'none'
+  NONE = 'none',
 }
 
 export interface AxleBrakeProperties {
@@ -562,5 +560,5 @@ export enum MicrofilmDocumentType {
   PRV = 'PRV - HGV Plating Cert paid',
   COF = 'COF Cert',
   PRT = 'PRT - Tr Plating Cert paid',
-  Tempo = 'Tempo 100 Permit'
+  Tempo = 'Tempo 100 Permit',
 }

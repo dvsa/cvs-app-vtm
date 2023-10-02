@@ -115,8 +115,8 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
           !vehicleClass ||
           !testTypes.forVehicleClass ||
           (!vehicleClass.code && !vehicleClass.description) ||
-          (vehicleClass.code && testTypes.forVehicleClass.includes(vehicleClass.code)) ||
-          (vehicleClass.description && testTypes.forVehicleClass.includes(vehicleClass.description))
+          (vehicleClass.code && testTypes.forVehicleClass.includes(vehicleClass.code as unknown as string)) ||
+          (vehicleClass.description && testTypes.forVehicleClass.includes(vehicleClass.description as unknown as string))
       )
       .filter(
         testTypes =>

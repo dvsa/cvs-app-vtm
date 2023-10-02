@@ -10,5 +10,5 @@ export enum VehicleConfiguration {
   FOUR_IN_LINE = 'four-in-line',
   DOLLY = 'dolly',
   FULL_DRAWBAR = 'full drawbar',
-  LONG_SEMI_TRAILER = 'long semi-trailer'
+  LONG_SEMI_TRAILER = 'long semi-trailer',
 }

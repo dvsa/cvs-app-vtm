@@ -1,9 +1,9 @@
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
@@ -154,8 +154,8 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
 
     const failOrPrs = testType.defects.some(
       defect =>
-        defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Major ||
-        defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Dangerous
+        defect.deficiencyCategory === DeficiencyCategoryEnum.Major ||
+        defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous
     );
     if (!failOrPrs) {
       testType.testResult = resultOfTestEnum.pass;
@@ -164,10 +164,10 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
 
     testType.testResult = testType.defects.every(
       defect =>
-        defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Advisory ||
-        defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Minor ||
-        (defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Dangerous && defect.prs) ||
-        (defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Major && defect.prs)
+        defect.deficiencyCategory === DeficiencyCategoryEnum.Advisory ||
+        defect.deficiencyCategory === DeficiencyCategoryEnum.Minor ||
+        (defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous && defect.prs) ||
+        (defect.deficiencyCategory === DeficiencyCategoryEnum.Major && defect.prs)
     )
       ? resultOfTestEnum.prs
       : resultOfTestEnum.fail;
