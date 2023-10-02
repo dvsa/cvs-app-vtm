@@ -32,13 +32,9 @@ export const globalWarningReducer = createReducer(
   on(GlobalWarningActions.setWarnings, (state, { warnings }) => ({
     ...state,
     warnings: [...warnings]
-  }))
+  })),
 );
 
 function successMethod(state: GlobalWarningState) {
-  return { ...state, errors: [] };
+  return { ...state, warnings: [] };
 }
-
-// function failureMethod(state: GlobalWarningState, warningMessage: { warning: any; anchorLink?: any }) {
-//   return { ...state, warnings: [...state.warnings, { error: warningMessage.warning, anchorLink: warningMessage.anchorLink }] };
-// }

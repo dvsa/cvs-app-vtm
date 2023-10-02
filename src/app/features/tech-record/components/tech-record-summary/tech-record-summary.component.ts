@@ -116,6 +116,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
           }
         }
       });
+    } else if (!this.isEditing) {
+      this.warningService.clearWarnings();
     }
   }
 
