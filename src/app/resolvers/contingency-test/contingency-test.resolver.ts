@@ -13,23 +13,32 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectTechRecord } from '@store/technical-records';
 import { initialContingencyTest } from '@store/test-records';
-import { catchError, map, Observable, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  map,
+  Observable,
+  of,
+  switchMap,
+  take,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContingencyTestResolver implements Resolve<boolean> {
   constructor(
     private store: Store<State>,
     private action$: Actions,
     private techRecordService: TechnicalRecordService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   resolve(): Observable<boolean> {
     return this.techRecordService.techRecord$.pipe(
-      switchMap(techRecord => {
+      switchMap((techRecord) => {
         const { vin, systemNumber } = techRecord as TechRecordType<'get'>;
         const vrm = techRecord?.techRecord_vehicleType !== 'trl' ? techRecord?.primaryVrm : undefined;
         const trailerId = techRecord?.techRecord_vehicleType === 'trl' ? techRecord.trailerId : undefined;
@@ -49,15 +58,15 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               vehicleSize: viewableTechRecord?.techRecord_vehicleType === 'psv' ? viewableTechRecord?.techRecord_vehicleSize : undefined,
               vehicleConfiguration: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_vehicleConfiguration ?? null,
               vehicleClass:
-                (viewableTechRecord?.techRecord_vehicleType === 'psv' ||
-                  viewableTechRecord?.techRecord_vehicleType === 'trl' ||
-                  viewableTechRecord?.techRecord_vehicleType === 'hgv' ||
-                  viewableTechRecord?.techRecord_vehicleType === 'motorcycle') &&
-                'techRecord_vehicleClass_code' in viewableTechRecord
+                (viewableTechRecord?.techRecord_vehicleType === 'psv'
+                || viewableTechRecord?.techRecord_vehicleType === 'trl'
+                || viewableTechRecord?.techRecord_vehicleType === 'hgv'
+                || viewableTechRecord?.techRecord_vehicleType === 'motorcycle')
+                && 'techRecord_vehicleClass_code' in viewableTechRecord
                   ? {
-                      code: viewableTechRecord?.techRecord_vehicleClass_code,
-                      description: viewableTechRecord?.techRecord_vehicleClass_description
-                    }
+                    code: viewableTechRecord?.techRecord_vehicleClass_code,
+                    description: viewableTechRecord?.techRecord_vehicleClass_description,
+                  }
                   : null,
               vehicleSubclass:
                 viewableTechRecord && 'techRecord_vehicleSubclass' in viewableTechRecord ? viewableTechRecord.techRecord_vehicleSubclass : null,
@@ -69,8 +78,8 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               testStatus: 'submitted',
               regnDate: viewableTechRecord?.techRecord_regnDate,
               numberOfSeats:
-                ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsLowerDeck ?? 0) +
-                ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsUpperDeck ?? 0),
+                ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsLowerDeck ?? 0)
+              + ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsUpperDeck ?? 0),
               reasonForCancellation: '',
               createdAt: now.toISOString(),
               lastUpdatedAt: now.toISOString(),
@@ -85,23 +94,23 @@ export class ContingencyTestResolver implements Resolve<boolean> {
                 {
                   testResult: 'pass',
                   prohibitionIssued: null,
-                  additionalCommentsForAbandon: null
-                } as TestType
-              ]
+                  additionalCommentsForAbandon: null,
+                } as TestType,
+              ],
             } as Partial<TestResultModel>;
-          })
+          }),
         );
       }),
-      tap(testResult => {
+      tap((testResult) => {
         this.store.dispatch(initialContingencyTest({ testResult }));
       }),
       take(1),
       map(() => {
         return true;
       }),
-      catchError(err => {
+      catchError(() => {
         return of(false);
-      })
+      }),
     );
   }
 }

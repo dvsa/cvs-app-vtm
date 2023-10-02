@@ -6,10 +6,15 @@ import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { getTechRecordV3, getTechRecordV3Success, getTechRecordV3Failure } from '@store/technical-records';
 import { fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
-import { count, map, Observable, take } from 'rxjs';
+import {
+  count,
+  map,
+  Observable,
+  take,
+} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TechRecordViewResolver implements Resolve<boolean> {
   constructor(private store: Store<State>, private action$: Actions) {}
@@ -22,8 +27,8 @@ export class TechRecordViewResolver implements Resolve<boolean> {
     return this.action$.pipe(
       ofType(getTechRecordV3Success, fetchTestResultsBySystemNumberSuccess, getTechRecordV3Failure, fetchTestResultsBySystemNumberFailed),
       take(2),
-      count(action => action.type === getTechRecordV3Success.type || action.type === fetchTestResultsBySystemNumberSuccess.type),
-      map(count => (count === 2 ? true : false))
+      count((action) => action.type === getTechRecordV3Success.type || action.type === fetchTestResultsBySystemNumberSuccess.type),
+      map((total) => (total === 2)),
     );
   }
 }

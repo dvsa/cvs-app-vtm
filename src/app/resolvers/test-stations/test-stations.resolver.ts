@@ -7,7 +7,7 @@ import { fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess } 
 import { map, Observable, take } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TestStationsResolver implements Resolve<boolean> {
   constructor(private store: Store<State>, private action$: Actions) {}
@@ -18,7 +18,7 @@ export class TestStationsResolver implements Resolve<boolean> {
     return this.action$.pipe(
       ofType(fetchTestStationsSuccess, fetchTestStationsFailed),
       take(1),
-      map(action => action.type === fetchTestStationsSuccess.type)
+      map((action) => action.type === fetchTestStationsSuccess.type),
     );
   }
 }
