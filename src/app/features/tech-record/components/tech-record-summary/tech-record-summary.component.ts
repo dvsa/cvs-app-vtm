@@ -123,10 +123,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
           if(techRecord?.vin?.match('([IOQ])a*')) {
             const warnings: GlobalWarning[] = [];
-            warnings.push({ warning: 'VIN should not contain I, O or Q', anchorLink: 'vin' })
+            warnings.push({ warning: 'VIN should not contain I, O or Q', anchorLink: 'vin' });
             this.warningService.setWarnings(warnings);
-          } else {
-            this.warningService.clearWarnings();
           }
         }
       });
