@@ -1,5 +1,7 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVehicleVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
@@ -61,11 +63,11 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   get letter(): LettersOfAuth | undefined {
     return this.techRecord?.techRecord_letterOfAuth_letterType
       ? {
-        letterType: this.techRecord?.techRecord_letterOfAuth_letterType!,
+        letterType: this.techRecord?.techRecord_letterOfAuth_letterType,
         paragraphId: this.techRecord?.techRecord_letterOfAuth_paragraphId!,
         letterIssuer: this.techRecord?.techRecord_letterOfAuth_letterIssuer!,
         letterDateRequested: this.techRecord?.techRecord_letterOfAuth_letterDateRequested!,
-        letterContents: ''
+        letterContents: '',
       }
       : undefined;
   }
@@ -121,6 +123,6 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   generateLetter() {
     this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
-    this.router.navigate(['generate-letter'], { relativeTo: this.route })
+    this.router.navigate(['generate-letter'], { relativeTo: this.route });
   }
 }

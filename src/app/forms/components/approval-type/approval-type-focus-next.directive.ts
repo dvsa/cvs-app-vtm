@@ -14,7 +14,7 @@ export class ApprovalTypeFocusNextDirective {
   @HostListener('input', ['$event'])
   onInput() {
     const { value } = this.el.nativeElement;
-    if (value.length == this.characterLimit) {
+    if (value.length === this.characterLimit) {
       const nextInput = document.getElementById(this.nextInputId);
       if (nextInput) {
         nextInput.focus();

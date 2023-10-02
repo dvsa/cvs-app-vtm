@@ -24,11 +24,11 @@ describe('FocusNextDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
   let de: DebugElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [TestComponent, FocusNextDirective],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestComponent);

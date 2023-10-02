@@ -1,5 +1,7 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -47,7 +49,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private viewportScroller: ViewportScroller
+    private viewportScroller: ViewportScroller,
   ) {
     this.editingReason = this.route.snapshot.data['reason'];
   }

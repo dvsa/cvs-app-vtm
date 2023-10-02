@@ -19,7 +19,7 @@ export class FocusNextDirective {
     const next = this.getNextElement(segments.splice(-1)[0], value);
 
     if (next) {
-      document.getElementById(segments.join('-') + next)?.focus();
+      document.getElementById(`${segments.join('-')}${next}`)?.focus();
     }
   }
 

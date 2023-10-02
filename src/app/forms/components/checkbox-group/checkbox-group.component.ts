@@ -24,14 +24,14 @@ export class CheckboxGroupComponent extends BaseControlComponent {
   }
 
   handleChange(event: boolean, option: FormNodeOption<OptionsType>): void {
-    event ? this.add(option) : this.remove(option);
+    return event ? this.add(option) : this.remove(option);
   }
 
   private add(option: FormNodeOption<OptionsType>) {
     if (!this.value) {
       this.value = this.delimited ? option.value : [option.value];
     } else {
-      this.value = this.value.concat(this.delimited ? this.delimited.separator + option.value : option.value);
+      this.value = this.value.concat(this.delimited ? `${this.delimited.separator}${option.value}` : option.value);
     }
 
     this.onChange(this.value);

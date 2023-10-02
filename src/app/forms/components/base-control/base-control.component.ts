@@ -33,7 +33,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   public errorMessage?: string;
   public control?: CustomControl;
 
-  private value_: any;
+  private control_value: any;
 
   constructor(private injector: Injector, protected cdr: ChangeDetectorRef) {
     this.name = '';
@@ -43,7 +43,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
     if (ngControl) {
       this.control = ngControl.control as CustomControl;
-      this.control.meta && (this.control.meta.changeDetection = this.cdr);
+      if (this.control.meta) this.control.meta.changeDetection = this.cdr;
     } else {
       throw new Error(`No control binding for ${this.name}`);
     }
@@ -62,11 +62,11 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   }
 
   get value() {
-    return this.value_;
+    return this.control_value;
   }
 
   set value(value) {
-    this.value_ = value;
+    this.control_value = value;
   }
 
   get disabled() {
