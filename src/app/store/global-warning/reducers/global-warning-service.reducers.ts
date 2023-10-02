@@ -2,9 +2,6 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 import * as GlobalWarningActions from '../actions/global-warning.actions';
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
-import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
-import * as TechnicalRecordServiceActions from '../../technical-records/actions/technical-record-service.actions';
-
 
 export const STORE_FEATURE_GLOBAL_WARNING_KEY = 'globalWarning';
 
@@ -24,8 +21,6 @@ export const globalWarningReducer = createReducer(
   initialGlobalWarningState,
   on(
     GlobalWarningActions.clearWarning,
-    TechnicalRecordServiceActions.updateTechRecord,
-    fetchSearchResult,
     routerNavigatedAction, successMethod
   ),
 
