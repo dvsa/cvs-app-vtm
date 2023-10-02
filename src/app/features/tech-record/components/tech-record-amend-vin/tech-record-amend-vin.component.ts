@@ -54,23 +54,17 @@ export class AmendVinComponent implements OnDestroy, OnInit {
         [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)],
       ),
     });
-    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(async ({vehicleTechRecord}) => {
-      await this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
     });
   }
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(async record => {
-          if (!record) {
-            await this.navigateBack();
-          } else {
-            this.techRecord = record;
-          }
-        });
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((record) => { !record ? this.navigateBack() : (this.techRecord = record); });
   }
-
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -108,9 +102,10 @@ export class AmendVinComponent implements OnDestroy, OnInit {
     return this.form.valid;
   }
 
-  async navigateBack() {
+  navigateBack() {
     this.globalErrorService.clearErrors();
-    await this.router.navigate(['..'], {relativeTo: this.route});
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(): void {
