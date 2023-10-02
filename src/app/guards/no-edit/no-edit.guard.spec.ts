@@ -20,8 +20,8 @@ describe('NoEditGuard', () => {
       providers: [
         NoEditGuard,
         provideMockStore({}),
-        { provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) }
-      ]
+        { provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
+      ],
     });
 
     guard = TestBed.inject(NoEditGuard);
@@ -36,20 +36,20 @@ describe('NoEditGuard', () => {
   });
 
   describe('canActivate', () => {
-    it('should return true when not in edit mode', done => {
-      guard.canActivate(route.snapshot, mockRouterStateSnapshot).subscribe(result => {
+    it('should return true when not in edit mode', (done) => {
+      guard.canActivate(route.snapshot, mockRouterStateSnapshot).subscribe((result) => {
         expect(result).toBeTruthy();
         done();
       });
     });
 
-    it('should reject navigation and return UrlTree without edit query param', done => {
+    it('should reject navigation and return UrlTree without edit query param', (done) => {
       mockRouteEditable.setResult(true);
       store.refreshState();
 
       mockRouterStateSnapshot.url = '/test-result/1/amended/1?edit=true&sanityCheck=bar';
 
-      guard.canActivate(route.snapshot, mockRouterStateSnapshot).subscribe(tree => {
+      guard.canActivate(route.snapshot, mockRouterStateSnapshot).subscribe((tree) => {
         expect(tree instanceof UrlTree).toBeTruthy();
         expect((tree as UrlTree).queryParams['edit']).toBeUndefined();
         expect((tree as UrlTree).queryParams['sanityCheck']).toBe('bar');
