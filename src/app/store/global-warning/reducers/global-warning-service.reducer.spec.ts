@@ -1,8 +1,6 @@
 import { routerNavigatedAction, RouterNavigatedPayload, SerializedRouterStateSnapshot } from '@ngrx/router-store';
-import { globalWarningReducer, GlobalWarningState, initialGlobalWarningState } from '@store/global-warning/reducers/global-warning-service.reducers';
-import { fetchTestResults, fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed } from '@store/test-records';
+import { globalWarningReducer, initialGlobalWarningState } from '@store/global-warning/reducers/global-warning-service.reducers';
 import { setWarnings, clearWarning } from '../actions/global-warning.actions';
-import { fetchSearchResultFailed } from '@store/tech-record-search/actions/tech-record-search.actions';
 
 describe('Global Warning Reducer', () => {
   describe('unknown action', () => {
