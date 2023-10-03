@@ -23,12 +23,12 @@ describe('ResultOfTestService', () => {
   it('should dispatch the action to update the result of the test', () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     service.updateResultOfTest();
-    expect(dispatchSpy).toBeCalledTimes(1);
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should get the result from the selector', done => {
+  it('should get the result from the selector', (done) => {
     store.overrideSelector(resultOfTestSelector, resultOfTestEnum.pass);
-    service.resultOfTest.subscribe(result => {
+    service.resultOfTest.subscribe((result) => {
       expect(result).toBe(resultOfTestEnum.pass);
       done();
     });

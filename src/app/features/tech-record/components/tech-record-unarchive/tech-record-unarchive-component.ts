@@ -14,7 +14,7 @@ import { State } from '@store/index';
 import { unarchiveTechRecord, unarchiveTechRecordSuccess } from '@store/technical-records';
 import { Subject, map, takeUntil } from 'rxjs';
 import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
-import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 
 @Component({
   selector: 'app-tech-record-unarchive',

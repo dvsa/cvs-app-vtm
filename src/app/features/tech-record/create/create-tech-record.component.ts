@@ -13,7 +13,7 @@ import {
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
-import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { firstValueFrom } from 'rxjs';
