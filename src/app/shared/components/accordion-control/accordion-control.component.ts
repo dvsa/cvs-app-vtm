@@ -25,7 +25,6 @@ export class AccordionControlComponent {
       this.toggleAccordions();
     }
     this.expandAccordions();
-    // this.isExpanded ? this.toggleAccordions() : this.expandAccordions();
   }
 
   @Input() isExpanded = false;
