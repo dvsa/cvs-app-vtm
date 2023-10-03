@@ -12,7 +12,7 @@ export class GlobalWarningComponent {
   goto(warning: GlobalWarning) {
     if (warning.anchorLink) {
       const el = document.getElementById(warning.anchorLink);
-      el && el.focus({ preventScroll: false });
+      el?.focus({ preventScroll: false });
     }
   }
 }
