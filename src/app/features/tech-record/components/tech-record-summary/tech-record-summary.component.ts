@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Ou
 import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
+import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
@@ -23,8 +25,6 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectScrollPosition } from '@store/technical-records';
-import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, debounceTime, map, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -56,6 +56,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   constructor(
     private axlesService: AxlesService,
     private errorService: GlobalErrorService,
+    private warningService: GlobalWarningService,
     private referenceDataService: ReferenceDataService,
     private technicalRecordService: TechnicalRecordService,
     private routerService: RouterService,
@@ -109,8 +110,16 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
             ...(techRecord as TechRecordType<'put'>),
             techRecord_statusCode: StatusCodes.PROVISIONAL
           });
+
+          if (techRecord?.vin?.match('([IOQ])a*')) {
+            const warnings: GlobalWarning[] = [];
+            warnings.push({ warning: 'VIN should not contain I, O or Q', anchorLink: 'vin' });
+            this.warningService.setWarnings(warnings);
+          }
         }
       });
+    } else if (!this.isEditing) {
+      this.warningService.clearWarnings();
     }
 
     this.store

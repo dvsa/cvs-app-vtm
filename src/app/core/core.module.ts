@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { GlobalErrorComponent } from './components/global-error/global-error.component';
+import { GlobalWarningComponent } from './components/global-warning/global-warning.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -15,6 +16,7 @@ import { PhaseBannerComponent } from './components/phase-banner/phase-banner.com
     FooterComponent,
     HeaderComponent,
     GlobalErrorComponent,
+    GlobalWarningComponent,
     SpinnerComponent,
     BreadcrumbsComponent,
     PageNotFoundComponent,
@@ -22,6 +24,14 @@ import { PhaseBannerComponent } from './components/phase-banner/phase-banner.com
     PhaseBannerComponent,
   ],
   imports: [CommonModule, RouterModule],
-  exports: [FooterComponent, HeaderComponent, GlobalErrorComponent, SpinnerComponent, BreadcrumbsComponent, PhaseBannerComponent],
+  exports: [
+    FooterComponent,
+    HeaderComponent,
+    GlobalErrorComponent,
+    GlobalWarningComponent,
+    SpinnerComponent,
+    BreadcrumbsComponent,
+    PhaseBannerComponent,
+  ],
 })
 export class CoreModule {}
