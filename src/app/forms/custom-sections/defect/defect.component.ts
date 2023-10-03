@@ -1,26 +1,26 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/services/dynamic-form.types';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { select, Store } from '@ngrx/store';
-import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
-import { TestResultDefects } from '@models/test-results/test-result-defects.model';
-import { filter, Subject, takeUntil, take, withLatestFrom } from 'rxjs';
-import { Defect } from '@models/defects/defect.model';
-import { AdditionalInfoSection } from '@models/defects/additional-information.model';
 import { KeyValue } from '@angular/common';
-import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectByDeficiencyRef, selectByImNumber } from '@store/defects';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { DefectsTpl } from '@forms/templates/general/defect.template';
-import { selectRouteParam } from '@store/router/selectors/router.selectors';
-import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
-import { Deficiency } from '@models/defects/deficiency.model';
-import { Item } from '@models/defects/item.model';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/services/dynamic-form.types';
+import { DefectsTpl } from '@forms/templates/general/defect.template';
+import { AdditionalInfoSection } from '@models/defects/additional-information.model';
+import { Defect } from '@models/defects/defect.model';
+import { Deficiency } from '@models/defects/deficiency.model';
+import { Item } from '@models/defects/item.model';
+import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { TestResultDefects } from '@models/test-results/test-result-defects.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Store, select } from '@ngrx/store';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
+import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { selectByDeficiencyRef, selectByImNumber } from '@store/defects';
 import { State } from '@store/index';
+import { selectRouteParam } from '@store/router/selectors/router.selectors';
+import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
+import { Subject, filter, take, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-defect',
@@ -187,7 +187,7 @@ export class DefectComponent implements OnInit, OnDestroy {
       itemNumber: item.itemNumber,
 
       //initializing if defect is advisory
-      deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum.Advisory,
+      deficiencyCategory: DeficiencyCategoryEnum.Advisory,
       deficiencyRef: `${defect.imNumber}.${item.itemNumber}`,
       prohibitionIssued: false,
       stdForProhibition: false

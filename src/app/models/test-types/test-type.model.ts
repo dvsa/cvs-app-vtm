@@ -49,5 +49,5 @@ export enum resultOfTestEnum {
   fail = 'fail',
   prs = 'prs',
   pass = 'pass',
-  abandoned = 'abandoned'
+  abandoned = 'abandoned',
 }

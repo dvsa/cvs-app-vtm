@@ -20,5 +20,5 @@ export interface TestStation {
 export enum TestStationStatuses {
   active = 'active',
   inactive = 'inactive',
-  pending = 'pending'
+  pending = 'pending',
 }
