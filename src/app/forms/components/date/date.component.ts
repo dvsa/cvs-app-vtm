@@ -78,7 +78,13 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
       seconds: this.originalDate ? new Date(this.originalDate).getSeconds() : '00'
     };
     this.addValidators();
+    console.log('ng after content init');
     this.valueWriteBack(this.value);
+    console.log(this.day);
+    console.log(this.month);
+    console.log(this.year);
+    console.log(this.hour);
+    console.log(this.minute);
   }
 
   ngOnDestroy(): void {
@@ -106,6 +112,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   valueWriteBack(value: string | null): void {
+    console.log(value);
     if (value && typeof value === 'string') {
       const date = new Date(value);
       this.day = date.getDate();

@@ -52,6 +52,7 @@
   >
   </app-switchable-input>
 
+
   <app-switchable-input
     [form]="form"
     [type]="editTypes.DATE"
@@ -59,8 +60,18 @@
     label="COIF Certifier date"
     [isEditing]="isEditing"
     [width]="widths.XL"
+    [readOnlyDate]="true"
   >
   </app-switchable-input>
+<!--<ng-template #view>-->
+<!--  <div-->
+<!--          app-view-list-item-->
+<!--          class="govuk-summary-list__row"-->
+<!--          name="techRecord_coifDate"-->
+<!--          label="COIF Certifier date"-->
+<!--          [viewType]="formNodeViewTypes.DATE"-->
+<!--  ></div>-->
+<!--</ng-template>-->
 
   <app-switchable-input
     [form]="form"
