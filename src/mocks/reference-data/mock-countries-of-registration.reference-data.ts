@@ -1,6 +1,6 @@
-import { CountryOfRegistration, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 
-export const mockCountriesOfRegistration: CountryOfRegistration[] = [
+export const mockCountriesOfRegistration: ReferenceDataModelBase[] = [
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'gb',

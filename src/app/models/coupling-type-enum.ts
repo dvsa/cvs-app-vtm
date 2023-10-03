@@ -6,7 +6,7 @@ export enum CouplingTypeCodeEnum {
   O = 'O',
   A = 'A',
   D = 'D',
-  S = 'S'
+  S = 'S',
 }
 
 export const CouplingTypeOptions: MultiOptions = [
@@ -15,5 +15,5 @@ export const CouplingTypeOptions: MultiOptions = [
   { label: 'Other', value: CouplingTypeCodeEnum.O },
   { label: 'Automatic', value: CouplingTypeCodeEnum.A },
   { label: 'Dolly', value: CouplingTypeCodeEnum.D },
-  { label: 'Semi', value: CouplingTypeCodeEnum.S }
+  { label: 'Semi', value: CouplingTypeCodeEnum.S },
 ];
