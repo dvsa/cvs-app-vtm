@@ -37,7 +37,6 @@ describe('AccordionControlComponent', () => {
   });
 
   it('should open and close child accordions', () => {
-    // fixture.whenRenderingDone().then(() => {
     expect(component.accordions?.length).toBe(1);
     expect(component.accordions?.get(0)?.isExpanded).toBeFalsy();
     component.toggle();
@@ -45,5 +44,4 @@ describe('AccordionControlComponent', () => {
     component.toggle();
     expect(component.accordions?.get(0)?.isExpanded).toBeFalsy();
   });
-  // });
 });
