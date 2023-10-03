@@ -4,12 +4,16 @@ import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataResourc
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
-import { fetchReferenceData, fetchReferenceDataByKeySearch, selectReferenceDataByResourceKey, selectSearchReturn } from '@store/reference-data';
+import {
+  fetchReferenceData, fetchReferenceDataByKeySearch, selectReferenceDataByResourceKey, selectSearchReturn,
+} from '@store/reference-data';
 import { getSingleVehicleType } from '@store/technical-records';
-import { Observable, Subject, combineLatest, map, of, take } from 'rxjs';
+import {
+  Observable, Subject, combineLatest, map, of, take,
+} from 'rxjs';
 
 @Pipe({
-  name: 'refDataDecode$'
+  name: 'refDataDecode$',
 })
 export class RefDataDecodePipe implements PipeTransform, OnDestroy {
   constructor(private store: Store<State>) {}
@@ -24,7 +28,7 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
   transform(
     value: string | number | undefined,
     resourceType: string | undefined,
-    decodeKey: string | number = 'description'
+    decodeKey: string | number = 'description',
   ): Observable<string | number | undefined> {
     if (!resourceType || !value) {
       return of(value);
@@ -34,7 +38,7 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
       this.store
         .select(getSingleVehicleType)
         .pipe(take(1))
-        .subscribe(vehicleType => {
+        .subscribe((vehicleType) => {
           switch (vehicleType) {
             case VehicleTypes.HGV:
               resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
@@ -54,19 +58,19 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
 
     this.store.dispatch(fetchReferenceData({ resourceType: resourceType as ReferenceDataResourceType }));
     this.store.dispatch(
-      fetchReferenceDataByKeySearch({ resourceType: (resourceType + '#AUDIT') as ReferenceDataResourceType, resourceKey: value + '#' })
+      fetchReferenceDataByKeySearch({ resourceType: (`${resourceType}#AUDIT`) as ReferenceDataResourceType, resourceKey: `${value}#` }),
     );
 
     return combineLatest([
       this.store.select(selectReferenceDataByResourceKey(resourceType as ReferenceDataResourceType, value)),
-      this.store.select(selectSearchReturn((resourceType + '#AUDIT') as ReferenceDataResourceTypeAudit))
+      this.store.select(selectSearchReturn((`${resourceType}#AUDIT`) as ReferenceDataResourceTypeAudit)),
     ]).pipe(
       map(([refDataItem, refDataItemAudit]) => {
         if (!refDataItem) {
           return refDataItemAudit?.[0].description ?? value;
         }
         return refDataItem[decodeKey as keyof ReferenceDataModelBase] ?? value;
-      })
+      }),
     );
   }
 }

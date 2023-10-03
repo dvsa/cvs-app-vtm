@@ -9,7 +9,7 @@ import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.mod
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
-import { TagType } from '@shared/components/tag/tag.component';
+import { TagType, TagTypes } from '@shared/components/tag/tag.component';
 import { techRecord } from '@store/technical-records';
 import { Observable } from 'rxjs';
 
@@ -55,7 +55,7 @@ export class VehicleHeaderComponent {
     return this.testResult?.testStatus === TestResultStatus.CANCELLED ? TestResultStatus.CANCELLED : this.testResult?.testTypes[0].testResult;
   }
 
-  get tagType(): TagType {
+  get tagType(): TagTypes {
     switch (this.resultOfTest) {
       case resultOfTestEnum.pass:
         return TagType.GREEN;

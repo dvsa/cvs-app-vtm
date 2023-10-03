@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   selector: 'app-test-certificate[testNumber][vin]',
   templateUrl: './test-certificate.component.html',
   styleUrls: ['./test-certificate.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestCertificateComponent {
   @Input() testNumber!: string;
@@ -14,7 +14,7 @@ export class TestCertificateComponent {
   get documentParams(): Map<string, string> {
     return new Map([
       ['testNumber', this.testNumber],
-      ['vinNumber', this.vin]
+      ['vinNumber', this.vin],
     ]);
   }
 

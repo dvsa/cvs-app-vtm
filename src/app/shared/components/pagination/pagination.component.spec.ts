@@ -1,5 +1,7 @@
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick, waitForAsync,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -8,16 +10,16 @@ import { PaginationComponent } from './pagination.component';
 
 @Component({
   selector: 'app-host',
-  template: `<app-pagination [tableName]="tableName" [numberOfItems]="numberOfItems"></app-pagination>`
+  template: '<app-pagination [tableName]="tableName" [numberOfItems]="numberOfItems"></app-pagination>',
 })
 class HostComponent {
   tableName = 'test-pagination';
-  itemsPerPage: number = 5;
-  numberOfItems: number = 0;
+  itemsPerPage = 5;
+  numberOfItems = 0;
 
   pageQuery$: Observable<number>;
   constructor(private route: ActivatedRoute) {
-    this.pageQuery$ = route.queryParams.pipe(map(params => Number.parseInt(params[`${this.tableName}-page`] ?? '1', 10)));
+    this.pageQuery$ = route.queryParams.pipe(map((params) => Number.parseInt(params[`${this.tableName}-page`] ?? '1', 10)));
   }
 }
 
@@ -31,7 +33,7 @@ describe('PaginationComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [HostComponent, PaginationComponent],
-      imports: [RouterTestingModule.withRoutes([{ path: '', component: PaginationComponent }])]
+      imports: [RouterTestingModule.withRoutes([{ path: '', component: PaginationComponent }])],
     }).compileComponents();
   }));
 
@@ -52,12 +54,12 @@ describe('PaginationComponent', () => {
 
   it.each([
     [10, 5],
-    [5, 10]
-  ])('should return an array length of %d when items per page is %d', (arrayLenth: number, itemsPerPage: number) => {
+    [5, 10],
+  ])('should return an array length of %d when items per page is %d', (arrayLength: number, itemsPerPage: number) => {
     hostComponent.numberOfItems = 50;
     component.itemsPerPage = itemsPerPage;
     fixture.detectChanges();
-    expect(component.pages.length).toBe(arrayLenth);
+    expect(component.pages).toHaveLength(arrayLength);
   });
 
   it.each([
@@ -65,7 +67,7 @@ describe('PaginationComponent', () => {
     [[2, 3, 4, 5, 6], 4, 50, 5],
     [[6, 7, 8, 9, 10], 10, 50, 5],
     [[4, 5, 6, 7, 8], 6, 100, 10],
-    [[1, 2, 3, 4], 1, 17, 5]
+    [[1, 2, 3, 4], 1, 17, 5],
   ])(
     'should show pages %s on page %d when number of items is %d and items per page is %d',
     fakeAsync((visiblePages: Array<number>, currentPage: number, numberOfItems: number, itemsPerPage: number) => {
@@ -80,17 +82,25 @@ describe('PaginationComponent', () => {
       });
 
       expect(component.visiblePages).toEqual(visiblePages);
-    })
+    }),
   );
 
   it.each([
-    { currentPage: 1, itemsPerPage: 5, start: 0, end: 5 },
-    { currentPage: 2, itemsPerPage: 5, start: 5, end: 10 },
-    { currentPage: 3, itemsPerPage: 15, start: 30, end: 45 }
+    {
+      currentPage: 1, itemsPerPage: 5, start: 0, end: 5,
+    },
+    {
+      currentPage: 2, itemsPerPage: 5, start: 5, end: 10,
+    },
+    {
+      currentPage: 3, itemsPerPage: 15, start: 30, end: 45,
+    },
   ])(
     'should emit %p',
-    ({ currentPage, itemsPerPage, start, end }: { currentPage: number; itemsPerPage: number; start: number; end: number }, done: any) => {
-      component.paginationOptions.subscribe(opts => {
+    ({
+      currentPage, itemsPerPage, start, end,
+    }: { currentPage: number; itemsPerPage: number; start: number; end: number }, done: any) => {
+      component.paginationOptions.subscribe((opts) => {
         expect(opts.currentPage).toBe(currentPage);
         expect(opts.start).toBe(start);
         expect(opts.end).toBe(end);
@@ -99,7 +109,7 @@ describe('PaginationComponent', () => {
 
       component.itemsPerPage = itemsPerPage;
       component.currentPageSubject.next(currentPage);
-    }
+    },
   );
 
   describe('nextPage', () => {

@@ -6,7 +6,7 @@ export class DefaultNullOrEmpty implements PipeTransform {
     return value[0].toUpperCase() + value.substring(1);
   }
 
-  transform(value: any): any {
+  transform(value: any) {
     if (typeof value === 'string') {
       if (value.toLowerCase() === 'true') {
         return 'Yes';
