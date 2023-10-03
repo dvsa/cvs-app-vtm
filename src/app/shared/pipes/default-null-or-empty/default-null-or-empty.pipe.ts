@@ -10,15 +10,13 @@ export class DefaultNullOrEmpty implements PipeTransform {
     if (typeof value === 'string') {
       if (value.toLowerCase() === 'true') {
         return 'Yes';
-      } else if (value.toLowerCase() === 'false') {
+      } if (value.toLowerCase() === 'false') {
         return 'No';
-      } else {
-        return value.trim().length > 0 ? this.titleCaseFirstWord(value) : '-';
       }
-    } else if (typeof value === 'boolean') {
+      return value.trim().length > 0 ? this.titleCaseFirstWord(value) : '-';
+    } if (typeof value === 'boolean') {
       return value ? 'Yes' : 'No';
-    } else {
-      return value == null ? '-' : value;
     }
+    return value == null ? '-' : value;
   }
 }

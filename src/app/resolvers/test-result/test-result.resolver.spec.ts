@@ -19,7 +19,7 @@ describe('TestResultResolver', () => {
   let resolver: TestResultResolver;
   let actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
-  const mockSnapshot: any = jest.fn;
+  const mockSnapshot = jest.fn;
   let store: MockStore<State>;
 
   beforeEach(() => {

@@ -15,8 +15,8 @@ describe('PreventDoubleClickDirective', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(waitForAsync(async () => {
+    await TestBed.configureTestingModule({
       declarations: [HostComponent, PreventDoubleClickDirective],
     }).compileComponents();
   }));

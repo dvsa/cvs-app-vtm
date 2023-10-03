@@ -25,10 +25,11 @@ describe('AccordionControlComponent', () => {
     }).compileComponents();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.debugElement.query(By.directive(AccordionControlComponent)).componentInstance;
     fixture.detectChanges();
+    await fixture.whenRenderingDone();
   });
 
   it('should create', () => {
@@ -36,13 +37,13 @@ describe('AccordionControlComponent', () => {
   });
 
   it('should open and close child accordions', () => {
-    fixture.whenRenderingDone().then(() => {
-      expect(component.accordions?.length).toBe(1);
-      expect(component.accordions?.get(0)!.isExpanded).toBeFalsy();
-      component.toggle();
-      expect(component.accordions?.get(0)!.isExpanded).toBeTruthy();
-      component.toggle();
-      expect(component.accordions?.get(0)!.isExpanded).toBeFalsy();
-    })
+    // fixture.whenRenderingDone().then(() => {
+    expect(component.accordions?.length).toBe(1);
+    expect(component.accordions?.get(0)?.isExpanded).toBeFalsy();
+    component.toggle();
+    expect(component.accordions?.get(0)?.isExpanded).toBeTruthy();
+    component.toggle();
+    expect(component.accordions?.get(0)?.isExpanded).toBeFalsy();
   });
+  // });
 });

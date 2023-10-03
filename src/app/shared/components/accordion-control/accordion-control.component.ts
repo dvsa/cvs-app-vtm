@@ -18,8 +18,14 @@ export class AccordionControlComponent {
     value: QueryList<AccordionComponent> | undefined,
   ) {
     this.accordionsList = value;
-    if (this.accordionsList?.length === this.sectionState?.length) this.isExpanded = true;
-    this.isExpanded ? this.toggleAccordions() : this.expandAccordions();
+    if (this.accordionsList?.length === this.sectionState?.length) {
+      this.isExpanded = true;
+    }
+    if (this.isExpanded) {
+      this.toggleAccordions();
+    }
+    this.expandAccordions();
+    // this.isExpanded ? this.toggleAccordions() : this.expandAccordions();
   }
 
   @Input() isExpanded = false;

@@ -30,8 +30,8 @@ describe('PaginationComponent', () => {
   let el: DebugElement;
   let router: Router;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(waitForAsync(async () => {
+    await TestBed.configureTestingModule({
       declarations: [HostComponent, PaginationComponent],
       imports: [RouterTestingModule.withRoutes([{ path: '', component: PaginationComponent }])],
     }).compileComponents();
@@ -76,10 +76,12 @@ describe('PaginationComponent', () => {
 
       fixture.ngZone?.run(() => {
         router.initialNavigation();
-        router.navigate([], { queryParams: component.pageQuery(currentPage) });
+        router.navigate([], { queryParams: component.pageQuery(currentPage) }).catch((error) => error);
         tick();
         fixture.detectChanges();
       });
+
+      tick();
 
       expect(component.visiblePages).toEqual(visiblePages);
     }),
@@ -99,7 +101,7 @@ describe('PaginationComponent', () => {
     'should emit %p',
     ({
       currentPage, itemsPerPage, start, end,
-    }: { currentPage: number; itemsPerPage: number; start: number; end: number }, done: any) => {
+    }: { currentPage: number; itemsPerPage: number; start: number; end: number }, done) => {
       component.paginationOptions.subscribe((opts) => {
         expect(opts.currentPage).toBe(currentPage);
         expect(opts.start).toBe(start);
@@ -136,7 +138,7 @@ describe('PaginationComponent', () => {
 
       fixture.ngZone?.run(() => {
         router.initialNavigation();
-        router.navigate([], { queryParams: component.pageQuery(10) });
+        router.navigate([], { queryParams: component.pageQuery(10) }).catch((error) => error);
         tick();
         fixture.detectChanges();
       });
@@ -154,7 +156,7 @@ describe('PaginationComponent', () => {
 
       fixture.ngZone?.run(() => {
         router.initialNavigation();
-        router.navigate([], { queryParams: component.pageQuery(4) });
+        router.navigate([], { queryParams: component.pageQuery(4) }).catch((error) => error);
         tick();
         fixture.detectChanges();
       });
