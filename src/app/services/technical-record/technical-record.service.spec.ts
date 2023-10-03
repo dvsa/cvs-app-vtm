@@ -148,8 +148,9 @@ describe('TechnicalRecordService', () => {
 
   describe('business logic methods', () => {
     describe('updateEditingTechRecord', () => {
-      // eslint-disable-next-line max-len
-      it('should patch the missing information for the technical record and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
+      it(`should patch the missing information for the technical 
+      record and dispatch the action to update the editing vehicle 
+      record with the full vehicle record`, () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         const mockVehicleRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;
 
@@ -158,8 +159,9 @@ describe('TechnicalRecordService', () => {
         expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ vehicleTechRecord: mockVehicleRecord }));
       });
 
-      // eslint-disable-next-line max-len
-      it('should patch from the selected record if the editing is not defined and dispatch the action to update the editing vehicle record with the full vehicle record', () => {
+      it(`should patch from the selected record if the editing is
+      not defined and dispatch the action to update the editing 
+      vehicle record with the full vehicle record`, () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         const mockVehicleRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;
 
