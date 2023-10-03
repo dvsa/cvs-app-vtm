@@ -12,7 +12,7 @@ export enum ReferenceDataResourceType {
   TrlMake = 'TRL_MAKE',
   Tyres = 'TYRES',
   User = 'USER',
-  TyreLoadIndex = 'TYRE_LOAD_INDEX'
+  TyreLoadIndex = 'TYRE_LOAD_INDEX',
 }
 
 type AuditTypes = `${keyof Record<ReferenceDataResourceType, string>}#AUDIT`;
@@ -34,8 +34,6 @@ export interface ReferenceDataModelBase {
   reason?: string;
 }
 
-export interface HgvMake extends ReferenceDataModelBase {}
-
 export interface PsvMake extends ReferenceDataModelBase {
   dtpNumber: string;
   psvChassisMake: string;
@@ -44,13 +42,9 @@ export interface PsvMake extends ReferenceDataModelBase {
   psvBodyType: string;
 }
 
-export interface Trlmake extends ReferenceDataModelBase {}
-
 export interface BodyModel extends ReferenceDataModelBase {
   bodyMake: string;
 }
-
-export interface CountryOfRegistration extends ReferenceDataModelBase {}
 
 export interface Brake extends ReferenceDataModelBase {
   service: string;

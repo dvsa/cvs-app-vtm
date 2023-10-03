@@ -5,7 +5,7 @@ export enum FuelType {
   GasLpg = 'gas-lpg',
   FuelCell = 'fuel cell',
   Petrol = 'petrol',
-  FullElectric = 'full electric'
+  FullElectric = 'full electric',
 }
 
 export enum EmissionStandard {
@@ -17,19 +17,19 @@ export enum EmissionStandard {
   Euro6 = 'Euro 6',
   EuroV = 'Euro V',
   EuroVI = 'Euro VI',
-  FullElectric = 'Full Electric'
+  FullElectric = 'Full Electric',
 }
 
 export enum ModTypeCode {
   p = 'p',
   m = 'm',
-  g = 'g'
+  g = 'g',
 }
 
 export enum ModeTypeDescription {
   ParticulateTrap = 'particulate trap',
   Engine = 'modification or change of engine',
-  GasEngine = 'gas engine'
+  GasEngine = 'gas engine',
 }
 
 export interface ModType {

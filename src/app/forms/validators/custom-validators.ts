@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
-import { VehicleClass } from '@models/vehicle-class.model';
+import { DescriptionEnum } from '@models/vehicle-class.model';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomValidators {
@@ -286,12 +286,12 @@ export class CustomValidators {
         switch (true) {
           case totalPassengers <= 22: {
             sizeControl?.setValue(VehicleSizes.SMALL, { emitEvent: false });
-            classControl?.setValue(VehicleClass.DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
+            classControl?.setValue(DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
             break;
           }
           case totalPassengers > 22: {
             sizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
-            classControl?.setValue(VehicleClass.DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
+            classControl?.setValue(DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
           }
         }
         control.markAsPristine();
