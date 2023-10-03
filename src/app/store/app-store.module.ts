@@ -15,6 +15,7 @@ import { TestRecordsStateModule } from './test-records/test-records.module';
 import { TestStationsStateModule } from './test-stations/test-stations-state.module';
 import { TestTypesStateModule } from './test-types/test-types.module';
 import { UserStateModule } from './user/user-state.module';
+import { GlobalWarningStateModule } from './global-warning/global-warning-state.module';
 
 @NgModule({
   declarations: [],
@@ -31,6 +32,7 @@ import { UserStateModule } from './user/user-state.module';
       : [],
     DefectsStateModule,
     GlobalErrorStateModule,
+    GlobalWarningStateModule,
     ReferenceDataStateModule,
     RouterStateModule,
     SpinnerStateModule,
