@@ -97,6 +97,9 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
     return this.techRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
 
+  get formNodeViewTypes(): typeof FormNodeViewTypes {
+    return FormNodeViewTypes;
+  }
   protected readonly TechRecord = TechRecord;
   protected readonly getOptionsFromEnum = getOptionsFromEnum;
   protected readonly approvalType = approvalType;

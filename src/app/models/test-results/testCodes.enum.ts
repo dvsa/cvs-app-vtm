@@ -54,5 +54,5 @@ export enum TestCodes {
   NFS = 'nfs',
   LCP = 'lcp',
   LBP = 'lbp',
-  LNP = 'lnp'
+  LNP = 'lnp',
 }

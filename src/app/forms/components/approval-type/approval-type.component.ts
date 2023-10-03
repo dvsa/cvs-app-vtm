@@ -222,6 +222,10 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     const patternPartial = patternsPartialMatch[this.approvalType] || /^$/;
 
     let matches = getMatchedValues(value, pattern);
+    if (matches) {
+      this.setTypeApprovalNumbers(matches.filter((x) => x));
+    }
+
     if (!matches.length) {
       const limit = characterLimit[this.approvalType];
       const limitedValue = value.length > limit ? value.substring(0, limit) : value;
