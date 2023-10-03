@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild,
 } from '@angular/core';
 import {
-  CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth,
+  CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
@@ -54,15 +54,13 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
         ? techRecord.currentValue.techRecord_coifDate.split('T')[0]
         : '';
       if (
-        techRecord.currentValue.techRecord_approvalType != techRecord.previousValue.techRecord_approvalType
-        && techRecord.previousValue.techRecord_approvalType != null
+        techRecord.currentValue.techRecord_approvalType !== techRecord.previousValue.techRecord_approvalType
+        && techRecord.previousValue.techRecord_approvalType !== null
       ) {
         this.approvalTypeChange = true;
       }
-      if (techRecord.currentValue.techRecord_approvalType == techRecord.previousValue.techRecord_approvalType) {
-        {
-          this.approvalTypeChange = false;
-        }
+      if (techRecord.currentValue.techRecord_approvalType === techRecord.previousValue.techRecord_approvalType) {
+        this.approvalTypeChange = false;
       }
     }
   }

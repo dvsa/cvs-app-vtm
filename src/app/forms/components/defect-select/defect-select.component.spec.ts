@@ -58,9 +58,9 @@ describe('DefectSelectComponent', () => {
 
   it('should return all types', () => {
     enum Types {
-      Defect,
-      Item,
-      Deficiency,
+      'Defect',
+      'Item',
+      'Deficiency',
     }
     expect(component.types).toStrictEqual(Types);
   });

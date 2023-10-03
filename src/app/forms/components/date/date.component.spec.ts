@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable jest/no-conditional-expect */
 import { Component, ViewChild } from '@angular/core';
 import {
   ComponentFixture, TestBed, fakeAsync, tick,

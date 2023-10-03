@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
@@ -159,7 +160,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   padded(n: number | string | undefined, l = 2) {
-    return n != null && !isNaN(+n) ? String(n).padStart(l, '0') || '' : '';
+    return n != null && !Number.isNaN(+n) ? String(n).padStart(l, '0') || '' : '';
   }
 
   /**

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
 } from '@angular/core';
@@ -45,7 +46,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.formSubscription.unsubscribe();
+    this._formSubscription.unsubscribe();
   }
 
   get template(): FormNode {
@@ -91,10 +92,10 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
       'techRecord_seatsLowerDeck',
       'techRecord_manufactureYear',
       'techRecord_grossKerbWeight',
-      'techRecord_standingCapacity'
+      'techRecord_standingCapacity',
     ];
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       this.form.get(field)?.valueChanges.subscribe(() => {
         if (!this.ladenWeightOverride && this.form.value.techRecord_manufactureYear) {
           const newGrossLadenWeight = this.calculateGrossLadenWeight();
@@ -115,8 +116,8 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         'techRecord_seatsLowerDeck',
         'techRecord_manufactureYear',
         'techRecord_grossKerbWeight',
-        'techRecord_standingCapacity'
-      ].some(field => currentValue[field] !== previousValue[field]);
+        'techRecord_standingCapacity',
+      ].some((field) => currentValue[`${field}`] !== previousValue[`${field}`]);
 
       if (fieldsChanged && currentValue.techRecord_manufactureYear) {
         this.form.patchValue({ techRecord_grossLadenWeight: this.calculateGrossLadenWeight() }, { emitEvent: false });
@@ -135,7 +136,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
           return;
         }
         this.handleFormChanges(event);
-      })
+      }),
     );
   }
 
@@ -148,14 +149,14 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     this.formChange.emit(event);
     if (event?.techRecord_grossLadenWeight || event?.techRecord_grossKerbWeight) {
       this.store.dispatch(
-        updateBrakeForces({ grossLadenWeight: event.techRecord_grossLadenWeight, grossKerbWeight: event.techRecord_grossKerbWeight })
+        updateBrakeForces({ grossLadenWeight: event.techRecord_grossLadenWeight, grossKerbWeight: event.techRecord_grossKerbWeight }),
       );
     }
   }
 
   private determineRecalculationNeeded(event: any): boolean {
     return ['techRecord_seatsUpperDeck', 'techRecord_seatsLowerDeck', 'techRecord_manufactureYear', 'techRecord_grossKerbWeight'].some(
-      field => event[field] !== undefined
+      (field) => event[`${field}`] !== undefined,
     );
   }
 
@@ -166,7 +167,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         ?.valueChanges.pipe(debounceTime(400))
         .subscribe(() => {
           this.ladenWeightOverride = !this.isProgrammaticChange;
-        })
+        }),
     );
   }
   calculateGrossLadenWeight(): number {

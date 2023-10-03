@@ -38,6 +38,7 @@ export class CheckboxGroupComponent extends BaseControlComponent {
   }
 
   private remove(option: FormNodeOption<OptionsType>) {
+    // eslint-disable-next-line security/detect-non-literal-regexp
     const separator = this.delimited && this.delimited?.regex ? new RegExp(this.delimited?.regex) : this.delimited?.separator;
 
     let newValue = separator ? this.value?.split(separator) : [...this.value];

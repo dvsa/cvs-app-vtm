@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-case-declarations */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Defect } from '@models/defects/defect.model';
@@ -39,9 +41,9 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         takeUntil(this.onDestroy$),
         filter((testResult) => !!testResult),
       )
-      .subscribe((testResult) => (this.vehicleType = testResult!.vehicleType));
+      .subscribe((testResult) => { this.vehicleType = testResult!.vehicleType; });
 
-    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe((defectsTaxonomy) => (this.defects = defectsTaxonomy));
+    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe((defectsTaxonomy) => { this.defects = defectsTaxonomy; });
   }
 
   ngOnDestroy(): void {
@@ -65,7 +67,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
     return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{
       major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue',
     })[
-      category
+      `${category}`
     ];
   }
 
@@ -82,6 +84,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         break;
       case Types.Deficiency:
         this.selectedDeficiency = selected as Deficiency;
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         this.router.navigate([this.selectedDeficiency.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
         break;
       default:
@@ -89,6 +92,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         if (this.selectedDefect?.imNumber === 71 && this.selectedItem?.itemNumber === 1) {
           advisoryRoute += this.selectedItem.itemDescription === 'All Roller Brake Test Machines:' ? '.0' : '.1';
         }
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         this.router.navigate([advisoryRoute], {
           relativeTo: this.route,
           queryParamsHandling: 'merge',

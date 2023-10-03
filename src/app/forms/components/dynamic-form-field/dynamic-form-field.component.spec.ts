@@ -79,6 +79,7 @@ describe('DynamicFormFieldComponent', () => {
   it('should fetch the reference data on init', () => {
     service.loadReferenceData = jest.fn();
     component.ngAfterContentInit();
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(service.loadReferenceData).toHaveBeenCalled();
   });
 });
