@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
@@ -239,10 +238,11 @@ export class TechnicalRecordService {
           return { validateVrm: { message: 'You must provide a new VRM' } };
         }
         if (currentRecord.length > 0) {
+          const value = control.value as string;
           return {
             validateVrm: {
               message: `A current technical record already exists for 
-              ${control.value} with the VIN number ${currentRecord[0].vin}. 
+              ${value} with the VIN number ${currentRecord[0].vin}. 
               Please fill in the third mark field`,
             },
           };
