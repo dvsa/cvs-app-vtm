@@ -111,12 +111,14 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         'techRecord_seatsUpperDeck',
         'techRecord_seatsLowerDeck',
         'techRecord_manufactureYear',
-        'techRecord_grossKerbWeight'
+        'techRecord_grossKerbWeight',
+        'techRecord_standingCapacity'
       ].some(field => currentValue[field] !== previousValue[field]);
 
-      if (fieldsChanged && this.vehicleTechRecord.techRecord_vehicleType === 'psv') {
-        const newGrossLadenWeight = this.calculateGrossLadenWeight();
-        this.vehicleTechRecord.techRecord_grossLadenWeight = newGrossLadenWeight;
+      if (fieldsChanged && currentValue.techRecord_manufactureYear) { 
+        if (this.vehicleTechRecord.techRecord_vehicleType === 'psv') {
+          this.vehicleTechRecord.techRecord_grossLadenWeight = this.calculateGrossLadenWeight();
+        }
       }
 
       this.form.patchValue(this.vehicleTechRecord, { emitEvent: false });
