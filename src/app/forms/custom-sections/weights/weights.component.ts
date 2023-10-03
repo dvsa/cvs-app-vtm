@@ -115,10 +115,8 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         'techRecord_standingCapacity'
       ].some(field => currentValue[field] !== previousValue[field]);
 
-      if (fieldsChanged && currentValue.techRecord_manufactureYear) { 
-        if (this.vehicleTechRecord.techRecord_vehicleType === 'psv') {
-          this.vehicleTechRecord.techRecord_grossLadenWeight = this.calculateGrossLadenWeight();
-        }
+      if (fieldsChanged && currentValue.techRecord_manufactureYear && this.vehicleTechRecord.techRecord_vehicleType === 'psv') { 
+        this.vehicleTechRecord.techRecord_grossLadenWeight = this.calculateGrossLadenWeight();
       }
 
       this.form.patchValue(this.vehicleTechRecord, { emitEvent: false });
