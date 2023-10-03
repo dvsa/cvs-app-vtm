@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { setWarnings, clearWarning } from '@store/global-warning/actions/global-warning.actions';
-import { GlobalWarning } from '../global-warning/global-warning.interface';
-import { GlobalWarningService } from '../global-warning/global-warning.service';
+import { GlobalWarning } from './global-warning.interface';
+import { GlobalWarningService } from './global-warning.service';
 
 describe('GlobalWarningService', () => {
   let service: GlobalWarningService;
@@ -23,7 +23,7 @@ describe('GlobalWarningService', () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     service.setWarnings([expectedWarning]);
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
-    expect(dispatchSpy).toHaveBeenCalledWith(setWarnings({warnings: [expectedWarning]}));
+    expect(dispatchSpy).toHaveBeenCalledWith(setWarnings({ warnings: [expectedWarning] }));
   });
 
   it('should dispatch action clearError', () => {

@@ -121,7 +121,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
             techRecord_statusCode: StatusCodes.PROVISIONAL,
           });
 
-          if(techRecord?.vin?.match('([IOQ])a*')) {
+          if (techRecord?.vin?.match('([IOQ])a*')) {
             const warnings: GlobalWarning[] = [];
             warnings.push({ warning: 'VIN should not contain I, O or Q', anchorLink: 'vin' });
             this.warningService.setWarnings(warnings);

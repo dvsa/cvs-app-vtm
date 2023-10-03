@@ -24,6 +24,14 @@ import { PhaseBannerComponent } from './components/phase-banner/phase-banner.com
     PhaseBannerComponent,
   ],
   imports: [CommonModule, RouterModule],
-  exports: [FooterComponent, HeaderComponent, GlobalErrorComponent, GlobalWarningComponent, SpinnerComponent, BreadcrumbsComponent, PhaseBannerComponent],
+  exports: [
+    FooterComponent,
+    HeaderComponent,
+    GlobalErrorComponent,
+    GlobalWarningComponent,
+    SpinnerComponent,
+    BreadcrumbsComponent,
+    PhaseBannerComponent,
+  ],
 })
 export class CoreModule {}
