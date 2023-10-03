@@ -33,14 +33,15 @@ describe('DynamicFormGroupComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DynamicFormGroupComponent);
     component = fixture.componentInstance;
-    // Don't detect changes on the first load as it will prevent change detection from working in the test function due to change detection being OnPush
+    // Don't detect changes on the first load as it will prevent change detection
+    // from working in the test function due to change detection being OnPush
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe(DynamicFormGroupComponent.prototype.trackByFn.name, () => {
+  describe('DynamicFormGroupComponent.prototype.trackByFn.name', () => {
     it.each([
       [3, [3, 'some value']],
       ['foo', [3, { key: 'foo' }]],

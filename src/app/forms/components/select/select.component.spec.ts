@@ -31,7 +31,6 @@ class HostComponent {
 describe('SelectComponent', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
-  let selectComponent: SelectComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -43,7 +42,6 @@ describe('SelectComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.componentInstance;
-    selectComponent = fixture.debugElement.query(By.directive(SelectComponent)).nativeElement;
     fixture.detectChanges();
   });
 

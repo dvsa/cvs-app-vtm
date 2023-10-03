@@ -53,7 +53,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   trackByFn(index: number, item: any) {
-    return item.hasOwnProperty('key') ? item.key : index;
+    return Object.prototype.hasOwnProperty.call(item, 'key') ? item.key : index;
   }
 
   get formNodeTypes(): typeof FormNodeTypes {

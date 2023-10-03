@@ -7,8 +7,8 @@ import {
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/.';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { DateComponent } from './date.component';
@@ -31,8 +31,6 @@ class HostComponent {
 describe('DateComponent', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
-  let errorService: GlobalErrorService;
-  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,8 +43,6 @@ describe('DateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.componentInstance;
-    store = TestBed.inject(MockStore);
-    errorService = TestBed.inject(GlobalErrorService);
   });
 
   it('should create', () => {

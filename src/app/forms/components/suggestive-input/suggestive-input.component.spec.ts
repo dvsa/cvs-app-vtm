@@ -57,7 +57,7 @@ describe('SuggestiveInputComponent', () => {
     });
   });
 
-  describe(SuggestiveInputComponent.prototype.handleChangeForOption.name, () => {
+  describe('SuggestiveInputComponent.prototype.handleChangeForOption.name', () => {
     it('should find matching option and patch value', async () => {
       await suggestiveInput.handleChangeForOption('Banana');
       expect(component.form.get('foo')?.value).toBe('banana');

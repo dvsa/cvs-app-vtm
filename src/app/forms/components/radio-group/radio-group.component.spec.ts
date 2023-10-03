@@ -31,7 +31,6 @@ class HostComponent {
 describe('RadioGroupComponent', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
-  let radioGroupComponent: RadioGroupComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -44,7 +43,6 @@ describe('RadioGroupComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.componentInstance;
-    radioGroupComponent = fixture.debugElement.query(By.directive(RadioGroupComponent)).nativeElement;
     fixture.detectChanges();
   });
 
