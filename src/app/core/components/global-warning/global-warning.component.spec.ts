@@ -14,7 +14,6 @@ import { GlobalWarningService } from './global-warning.service';
 class MockComponent {}
 
 describe('GlobalWarningComponent', () => {
-  let hostComponent: MockComponent;
   let component: GlobalWarningComponent;
   let fixture: ComponentFixture<MockComponent>;
 
@@ -28,7 +27,6 @@ describe('GlobalWarningComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MockComponent);
-    hostComponent = fixture.componentInstance;
     component = fixture.debugElement.query(By.directive(GlobalWarningComponent)).componentInstance;
     fixture.detectChanges();
   });
