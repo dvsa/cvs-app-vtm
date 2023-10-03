@@ -1,6 +1,7 @@
 /**
  * Test Results Microservice
- * This is the API spec for capturing test results. These test result will be stored in the AWS DynamoDB database. Authorization details will be updated once we have confirmed the security scheme we are using.
+ * This is the API spec for capturing test results. These test result will be stored in the AWS DynamoDB database.
+ * Authorization details will be updated once we have confirmed the security scheme we are using.
  *
  * OpenAPI spec version: 1.0.0
  *

@@ -1,4 +1,4 @@
 export enum OdometerReadingUnits {
   KILOMETRES = 'kilometres',
-  MILES = 'miles'
+  MILES = 'miles',
 }

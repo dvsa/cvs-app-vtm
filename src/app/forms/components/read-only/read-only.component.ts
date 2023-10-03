@@ -15,4 +15,5 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class ReadOnlyComponent extends BaseControlComponent {
   @Input() readOnlySuffix?: string;
+  @Input() date?: boolean = false;
 }

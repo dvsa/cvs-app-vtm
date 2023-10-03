@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
@@ -93,6 +93,9 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
     return this.techRecord.techRecord_vehicleType === VehicleTypes.PSV;
   }
 
+  get formNodeViewTypes(): typeof FormNodeViewTypes {
+    return FormNodeViewTypes;
+  }
   protected readonly TechRecord = TechRecord;
   protected readonly getOptionsFromEnum = getOptionsFromEnum;
   protected readonly approvalType = approvalType;
