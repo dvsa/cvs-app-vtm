@@ -17,7 +17,6 @@ tslint*
 jest.config.js
 protractor.conf.js
 /src/app/api/*
-/src/app/models/*
 /src/app/shared/*
 /src/app/store/*
 /src/mocks/*

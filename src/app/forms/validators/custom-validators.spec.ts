@@ -3,6 +3,7 @@ import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/servic
 import { DescriptionEnum } from '@models/vehicle-class.model';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
+
 interface CustomPatternMessage {
   customPattern: {
     message: string;
