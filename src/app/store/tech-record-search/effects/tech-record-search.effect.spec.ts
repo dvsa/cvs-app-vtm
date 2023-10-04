@@ -5,7 +5,8 @@ import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import { initialAppState } from '@store/index';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';

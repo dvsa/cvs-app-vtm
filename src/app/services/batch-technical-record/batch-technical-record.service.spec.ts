@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
@@ -25,8 +26,8 @@ describe('TechnicalRecordService', () => {
         BatchTechnicalRecordService,
         provideMockStore({ initialState: initialAppState }),
         TechnicalRecordHttpService,
-        TechnicalRecordService
-      ]
+        TechnicalRecordService,
+      ],
     });
     httpClient = TestBed.inject(HttpTestingController);
     service = TestBed.inject(BatchTechnicalRecordService);
@@ -52,37 +53,37 @@ describe('TechnicalRecordService', () => {
         systemNumber: new FormControl({ name: 'systemNumber', value: '' }, null),
         oldVehicleStatus: new FormControl({ name: 'oldVehicleStatus', value: '' }, null),
         vehicleType: new FormControl({ name: 'vehicleType', value: '' }, null),
-        createdTimestamp: new FormControl({ name: 'createdTimestamp', value: '' }, null)
+        createdTimestamp: new FormControl({ name: 'createdTimestamp', value: '' }, null),
       });
     });
 
-    it('return null if vin and trailer id are not provided', done => {
+    it('return null if vin and trailer id are not provided', (done) => {
       expect.assertions(1);
       testGroup.get('vin')!.setValue(null);
       testGroup.get('trailerIdOrVrm')!.setValue(null);
       const serviceCall = service.validateForBatch()(testGroup.get('vin')!);
-      (serviceCall as Observable<ValidationErrors | null>).subscribe(errors => {
-        expect(errors).toEqual(null);
+      (serviceCall as Observable<ValidationErrors | null>).subscribe((errors) => {
+        expect(errors).toBeNull();
         done();
       });
     });
 
-    it('return null if the required controls do not exist', done => {
+    it('return null if the required controls do not exist', (done) => {
       expect.assertions(1);
       testGroup = new FormGroup({ vin: new FormControl({ name: 'vin' }) });
       const serviceCall = service.validateForBatch()(testGroup.get('vin')!);
-      (serviceCall as Observable<ValidationErrors | null>).subscribe(errors => {
-        expect(errors).toEqual(null);
+      (serviceCall as Observable<ValidationErrors | null>).subscribe((errors) => {
+        expect(errors).toBeNull();
         done();
       });
     });
 
-    it('throws an error if trailer id is provided but vin is not', done => {
+    it('throws an error if trailer id is provided but vin is not', (done) => {
       expect.assertions(1);
       testGroup.get('trailerIdOrVrm')!.setValue('test');
 
       const serviceCall = service.validateForBatch()(testGroup.get('vin')!);
-      (serviceCall as Observable<ValidationErrors | null>).subscribe(errors => {
+      (serviceCall as Observable<ValidationErrors | null>).subscribe((errors) => {
         expect(errors).toEqual({ validateForBatch: { message: 'VIN is required' } });
         done();
       });
@@ -107,7 +108,7 @@ describe('TechnicalRecordService', () => {
         vinControl.setValue('TESTVIN');
         jest.spyOn(technicalRecordService, 'isUnique').mockReturnValueOnce(of(false));
         await firstValueFrom(service.validateForBatch()(testGroup.get('vin')!) as Observable<ValidationErrors | null>);
-        expect(vinControl.meta.warning).toEqual('This VIN already exists, if you continue it will be associated with two vehicles');
+        expect(vinControl.meta.warning).toBe('This VIN already exists, if you continue it will be associated with two vehicles');
       });
     });
 
@@ -121,7 +122,7 @@ describe('TechnicalRecordService', () => {
           trailerId: 'TESTTRAILERID',
           systemNumber: 'TESTSYSTEMNUMBER',
           techRecord_statusCode: StatusCodes.PROVISIONAL,
-          createdTimestamp: '1234'
+          createdTimestamp: '1234',
         } as TechRecordSearchSchema;
 
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
@@ -141,7 +142,7 @@ describe('TechnicalRecordService', () => {
           trailerId: 'TESTTRAILERID',
           systemNumber: 'TESTSYSTEMNUMBER',
           techRecord_statusCode: StatusCodes.CURRENT,
-          techRecord_vehicleType: VehicleTypes.TRL
+          techRecord_vehicleType: VehicleTypes.TRL,
         } as TechRecordSearchSchema;
 
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
@@ -161,7 +162,7 @@ describe('TechnicalRecordService', () => {
           systemNumber: 'TESTSYSTEMNUMBER',
           techRecord_statusCode: StatusCodes.CURRENT,
           techRecord_vehicleType: VehicleTypes.PSV,
-          createdTimestamp: '1234'
+          createdTimestamp: '1234',
         } as TechRecordSearchSchema;
 
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult]));
@@ -178,7 +179,7 @@ describe('TechnicalRecordService', () => {
         const mockSearchResult = {
           vin: 'TESTVIN',
           trailerId: 'TESTTRAILERID',
-          techRecord_statusCode: StatusCodes.PROVISIONAL
+          techRecord_statusCode: StatusCodes.PROVISIONAL,
         } as TechRecordSearchSchema;
 
         jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([mockSearchResult, { ...mockSearchResult, systemNumber: 'foobar' }]));
@@ -190,8 +191,14 @@ describe('TechnicalRecordService', () => {
 
     it('throws an error if no vehicle exists with those values', async () => {
       expect.assertions(1);
-      testGroup.get('vin')!.setValue('TESTVIN');
-      testGroup.get('trailerIdOrVrm')!.setValue('TESTTRAILERID');
+
+      const vinControl = testGroup.get('vin');
+      const trailerIdOrVrmControl = testGroup.get('trailerIdOrVrm');
+
+      if (vinControl && trailerIdOrVrmControl) {
+        vinControl.setValue('TESTVIN');
+        trailerIdOrVrmControl.setValue('TESTTRAILERID');
+      }
 
       jest.spyOn(technicalRecordHttpService, 'search$').mockReturnValue(of([]));
 
