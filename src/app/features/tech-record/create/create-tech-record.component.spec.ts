@@ -7,7 +7,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';

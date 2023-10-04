@@ -9,55 +9,58 @@ import {
   TechRecordModel,
   V3TechRecordModel,
   VehicleTechRecordModel,
-  VehicleTypes
+  VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
-import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import {
   selectTechRecordSearchResults,
-  selectTechRecordSearchResultsBySystemNumber
+  selectTechRecordSearchResultsBySystemNumber,
 } from '@store/tech-record-search/selector/tech-record-search.selector';
 import {
   clearAllSectionStates,
   createVehicle,
-  selectScrollPosition,
   selectSectionState,
   selectTechRecord,
   techRecord,
   updateEditingTechRecord,
-  updateEditingTechRecordCancel
+  updateEditingTechRecordCancel,
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { Observable, catchError, combineLatest, debounceTime, filter, map, of, switchMap, take, tap, throwError } from 'rxjs';
+import {
+  Observable, catchError, combineLatest, debounceTime, filter, map, of, switchMap, take, tap, throwError,
+} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
   constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService, private routerService: RouterService) {}
 
-  getVehicleTypeWithSmallTrl(techRecord: V3TechRecordModel): VehicleTypes {
-    return techRecord.techRecord_vehicleType === VehicleTypes.TRL &&
-      (techRecord.techRecord_euVehicleCategory === EuVehicleCategories.O1 || techRecord.techRecord_euVehicleCategory === EuVehicleCategories.O2)
+  getVehicleTypeWithSmallTrl(technicalRecord: V3TechRecordModel): VehicleTypes {
+    return technicalRecord.techRecord_vehicleType === VehicleTypes.TRL
+    && (technicalRecord.techRecord_euVehicleCategory === EuVehicleCategories.O1
+        || technicalRecord.techRecord_euVehicleCategory === EuVehicleCategories.O2)
       ? (VehicleTypes.SMALL_TRL as VehicleTypes)
-      : (techRecord.techRecord_vehicleType as VehicleTypes);
+      : (technicalRecord.techRecord_vehicleType as VehicleTypes);
   }
 
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {
     return this.techRecordHttpService.search$(searchType, valueToCheck).pipe(
-      map(searchResults => {
-        if (searchResults.every(result => result.techRecord_statusCode === StatusCodes.ARCHIVED)) {
+      map((searchResults) => {
+        if (searchResults.every((result) => result.techRecord_statusCode === StatusCodes.ARCHIVED)) {
           return true;
         }
 
         if (searchType === SEARCH_TYPES.VRM) {
-          return !searchResults.some(result => result.primaryVrm === valueToCheck);
+          return !searchResults.some((result) => result.primaryVrm === valueToCheck);
         }
 
         return false;
       }),
       catchError((error: HttpErrorResponse) => {
-        return (error.status == 404 && of(true)) || throwError(() => error);
-      })
+        return (error.status === 404 && of(true)) || throwError(() => error);
+      }),
     );
   }
 
@@ -65,22 +68,22 @@ export class TechnicalRecordService {
     return combineLatest([
       this.store.pipe(select(selectTechRecord)),
       this.store.pipe(select(techRecord)),
-      this.routerService.getRouteDataProperty$('isEditing')
+      this.routerService.getRouteDataProperty$('isEditing'),
     ]).pipe(
-      tap(([techRecord, nonEditingTechRecord, isEditing]) => {
-        if (isEditing && !techRecord && nonEditingTechRecord) {
+      tap(([technicalRecord, nonEditingTechRecord, isEditing]) => {
+        if (isEditing && !technicalRecord && nonEditingTechRecord) {
           this.updateEditingTechRecord(nonEditingTechRecord as TechRecordType<'put'>);
         }
       }),
-      map(([techRecord, nonEditingTechRecord, isEditing]) => (isEditing && !techRecord ? nonEditingTechRecord : techRecord))
+      map(([technicalRecord, nonEditingTechRecord, isEditing]) => (isEditing && !technicalRecord ? nonEditingTechRecord : technicalRecord)),
     );
   }
 
   updateEditingTechRecord(record: TechRecordType<'put'>): void {
     if (
-      record.techRecord_vehicleType === 'psv' ||
-      record.techRecord_vehicleType === 'hgv' ||
-      (record.techRecord_vehicleType === 'trl' && record.techRecord_euVehicleCategory !== 'o1' && record.techRecord_euVehicleCategory !== 'o2')
+      record.techRecord_vehicleType === 'psv'
+      || record.techRecord_vehicleType === 'hgv'
+      || (record.techRecord_vehicleType === 'trl' && record.techRecord_euVehicleCategory !== 'o1' && record.techRecord_euVehicleCategory !== 'o2')
     ) {
       record.techRecord_noOfAxles = record.techRecord_axles && record.techRecord_axles.length > 0 ? record.techRecord_axles?.length : null;
     }
@@ -94,9 +97,9 @@ export class TechnicalRecordService {
    */
   static filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
     return (
-      record.techRecord.find(record => record.statusCode === StatusCodes.CURRENT) ??
-      record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL) ??
-      record.techRecord.find(record => record.statusCode === StatusCodes.ARCHIVED)
+      record.techRecord.find((foundRecord) => foundRecord.statusCode === StatusCodes.CURRENT)
+      ?? record.techRecord.find((foundRecord) => foundRecord.statusCode === StatusCodes.PROVISIONAL)
+      ?? record.techRecord.find((foundRecord) => foundRecord.statusCode === StatusCodes.ARCHIVED)
     );
   }
 
@@ -107,10 +110,10 @@ export class TechnicalRecordService {
   clearReasonForCreation(): void {
     this.techRecord$
       .pipe(
-        map(data => cloneDeep(data)),
-        take(1)
+        map((data) => cloneDeep(data)),
+        take(1),
       )
-      .subscribe(data => {
+      .subscribe((data) => {
         if (data) {
           data.techRecord_reasonForCreation = '';
           this.updateEditingTechRecord(data as TechRecordType<'put'>);
@@ -124,20 +127,19 @@ export class TechnicalRecordService {
         filter((value: string) => !!value),
         debounceTime(1000),
         take(1),
-        switchMap(value => {
+        switchMap((value) => {
           return this.isUnique(value, SEARCH_TYPES.VIN).pipe(
-            map(result => {
+            map((result) => {
               if (control.value === originalVin) {
                 return { validateVin: { message: 'You must provide a new VIN' } };
-              } else {
-                return result
-                  ? null
-                  : { validateVin: { message: 'This VIN already exists, if you continue it will be associated with two vehicles' } };
               }
+              return result
+                ? null
+                : { validateVin: { message: 'This VIN already exists, if you continue it will be associated with two vehicles' } };
             }),
-            catchError(() => of(null))
+            catchError(() => of(null)),
           );
-        })
+        }),
       );
     };
   }
@@ -145,11 +147,11 @@ export class TechnicalRecordService {
   validateVrmDoesNotExist(previousVrm: string): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return of(control).pipe(
-        filter((control: AbstractControl) => !!control.value),
+        filter((errorControl: AbstractControl) => !!errorControl.value),
         take(1),
-        switchMap(control => {
-          return this.checkVrmNotActive(control, previousVrm);
-        })
+        switchMap((vrmControl) => {
+          return this.checkVrmNotActive(vrmControl, previousVrm);
+        }),
       );
     };
   }
@@ -157,28 +159,28 @@ export class TechnicalRecordService {
   validateVrmForCherishedTransfer(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return of(control).pipe(
-        filter((control: AbstractControl) => !!control.value),
+        filter((errorControl: AbstractControl) => !!errorControl.value),
         take(1),
-        switchMap(control => {
-          const thirdMark = control.root.get('thirdMark')?.value;
-          const previousVrm = control.root.get('previousVrm')?.value;
+        switchMap((vrmControl) => {
+          const thirdMark = vrmControl.root.get('thirdMark')?.value;
+          const previousVrm = vrmControl.root.get('previousVrm')?.value;
           if (thirdMark) {
-            return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, control.value).pipe(
-              map(results => {
-                if (results.some(result => result.techRecord_statusCode === StatusCodes.CURRENT)) {
+            return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, vrmControl.value).pipe(
+              map((results) => {
+                if (results.some((result) => result.techRecord_statusCode === StatusCodes.CURRENT)) {
                   return null;
                 }
                 return { validateVrm: { message: 'This VRM does not exist on a current record' } };
               }),
               catchError((err: HttpErrorResponse) => {
                 return (
-                  (err.status == 404 && of({ validateVrm: { message: 'This VRM does not exist on a current record' } })) || throwError(() => err)
+                  (err.status === 404 && of({ validateVrm: { message: 'This VRM does not exist on a current record' } })) || throwError(() => err)
                 );
-              })
+              }),
             );
           }
           return this.checkVrmNotActive(control, previousVrm);
-        })
+        }),
       );
     };
   }
@@ -195,24 +197,25 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectTechRecordSearchResultsBySystemNumber));
   }
   get techRecordStatus$(): Observable<StatusCodes | undefined> {
-    return this.techRecord$.pipe(map(techRecord => techRecord?.techRecord_statusCode as StatusCodes | undefined));
+    return this.techRecord$.pipe(map((technicalRecord) => technicalRecord?.techRecord_statusCode as StatusCodes | undefined));
   }
 
   get sectionStates$(): Observable<(string | number)[] | undefined> {
     return this.store.pipe(select(selectSectionState));
   }
 
-  getMakeAndModel(techRecord: V3TechRecordModel): string {
+  getMakeAndModel(technicalRecord: V3TechRecordModel): string {
     if (
-      techRecord.techRecord_vehicleType === 'car' ||
-      techRecord.techRecord_vehicleType === 'motorcycle' ||
-      techRecord.techRecord_vehicleType === 'lgv'
+      technicalRecord.techRecord_vehicleType === 'car'
+      || technicalRecord.techRecord_vehicleType === 'motorcycle'
+      || technicalRecord.techRecord_vehicleType === 'lgv'
     ) {
       return '';
     }
 
-    const make = (techRecord?.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisMake : techRecord.techRecord_make) ?? '';
-    const model = (techRecord.techRecord_vehicleType === 'psv' ? techRecord.techRecord_chassisModel : techRecord.techRecord_model) ?? '';
+    const make = (technicalRecord?.techRecord_vehicleType === 'psv' ? technicalRecord.techRecord_chassisMake : technicalRecord.techRecord_make) ?? '';
+    const model = (technicalRecord.techRecord_vehicleType === 'psv'
+      ? technicalRecord.techRecord_chassisModel : technicalRecord.techRecord_model) ?? '';
 
     if (!make || !model) {
       return make || model;
@@ -227,18 +230,21 @@ export class TechnicalRecordService {
 
   checkVrmNotActive(control: AbstractControl, previousVrm: string) {
     return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, control.value).pipe(
-      map(results => {
-        const currentRecord = results.filter(result => result.techRecord_statusCode === StatusCodes.CURRENT);
-        const provisionalRecord = results.filter(result => result.techRecord_statusCode === StatusCodes.PROVISIONAL);
+      map((results) => {
+        const currentRecord = results.filter((result) => result.techRecord_statusCode === StatusCodes.CURRENT);
+        const provisionalRecord = results.filter((result) => result.techRecord_statusCode === StatusCodes.PROVISIONAL);
 
         if (control.value === previousVrm) {
           return { validateVrm: { message: 'You must provide a new VRM' } };
         }
         if (currentRecord.length > 0) {
+          const value = control.value as string;
           return {
             validateVrm: {
-              message: `A current technical record already exists for ${control.value} with the VIN number ${currentRecord[0].vin}. Please fill in the third mark field`
-            }
+              message: `A current technical record already exists for 
+              ${value} with the VIN number ${currentRecord[0].vin}. 
+              Please fill in the third mark field`,
+            },
           };
         }
         if (provisionalRecord.length > 0) {
@@ -247,8 +253,8 @@ export class TechnicalRecordService {
         return null;
       }),
       catchError((err: HttpErrorResponse) => {
-        return (err.status == 404 && of(null)) || throwError(() => err);
-      })
+        return (err.status === 404 && of(null)) || throwError(() => err);
+      }),
     );
   }
 }

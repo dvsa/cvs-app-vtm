@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CompleteTestResults, DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
+import {
+  CompleteTestResults, DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService,
+} from '@api/test-results';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
@@ -28,20 +30,20 @@ import {
   toEditOrNotToEdit,
   updateEditingTestResult,
   updateTestResult,
-  updateTestResultFailed
+  updateTestResultFailed,
 } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { Observable, take, throwError } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TestRecordsService {
   constructor(
     private store: Store<TestResultsState>,
     private updateTestResultsService: UpdateTestResultsService,
     private getTestResultService: GetTestResultsService,
-    private createTestResultsService: CreateTestResultsService
+    private createTestResultsService: CreateTestResultsService,
   ) {}
 
   fetchTestResultbySystemNumber(
@@ -52,15 +54,17 @@ export class TestRecordsService {
       toDateTime?: Date;
       testResultId?: string;
       version?: string;
-    } = {}
+    } = {},
   ): Observable<Array<TestResultModel>> {
     if (!systemNumber) {
       return throwError(() => new Error('systemNumber is required'));
     }
 
-    const { status, fromDateTime, toDateTime, testResultId, version } = queryparams;
+    const {
+      status, fromDateTime, toDateTime, testResultId, version,
+    } = queryparams;
     return this.getTestResultService.testResultsSystemNumberGet(systemNumber, status, fromDateTime, toDateTime, testResultId, version) as Observable<
-      Array<TestResultModel>
+    Array<TestResultModel>
     >;
   }
 
@@ -104,7 +108,7 @@ export class TestRecordsService {
     user: { name: string; id?: string; userEmail?: string },
     body: TestResultModel,
     observe?: 'body',
-    reportProgress?: boolean
+    reportProgress?: boolean,
   ): Observable<TestResultModel> {
     const { name, id, userEmail } = user;
     const tr = cloneDeep(body);
@@ -113,7 +117,7 @@ export class TestRecordsService {
       { msUserDetails: { msOid: id, msUser: name, msEmailAddress: userEmail }, testResult: tr as any } as CompleteTestResults,
       systemNumber,
       observe,
-      reportProgress
+      reportProgress,
     ) as Observable<TestResultModel>;
   }
 
@@ -130,6 +134,7 @@ export class TestRecordsService {
   }
 
   static getTestTypeGroup(testTypeId: string): string | undefined {
+    // eslint-disable-next-line no-restricted-syntax
     for (const groupName in TEST_TYPES) {
       if (TEST_TYPES[groupName as keyof typeof TEST_TYPES].includes(testTypeId)) {
         return groupName;
@@ -167,27 +172,27 @@ export class TestRecordsService {
   }
 
   private canHandleTestType(templateMap: Record<VehicleTypes, Record<string, Record<string, FormNode>>>) {
-    return function <T>(source: Observable<T>): Observable<boolean> {
+    return function handleTestType <T>(source: Observable<T>): Observable<boolean> {
       const handle = (testResult: TestResultModel | undefined): boolean => {
         if (!testResult) {
           return false;
         }
 
-        const vehicleType = testResult.vehicleType;
+        const { vehicleType } = testResult;
         const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
-        const vehicleTpl = vehicleType && templateMap[vehicleType];
+        const vehicleTpl = vehicleType && templateMap[`${vehicleType}`];
 
-        return !!testTypeGroup && !!vehicleTpl && vehicleTpl.hasOwnProperty(testTypeGroup);
+        return !!testTypeGroup && !!vehicleTpl && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup);
       };
 
-      return new Observable(subscriber => {
+      return new Observable((subscriber) => {
         source.subscribe({
-          next: val => {
+          next: (val) => {
             subscriber.next(handle(val as unknown as TestResultModel));
           },
-          error: e => subscriber.error(e),
-          complete: () => subscriber.complete()
+          error: (e) => subscriber.error(e),
+          complete: () => subscriber.complete(),
         });
       });
     };
@@ -198,7 +203,7 @@ export class TestRecordsService {
   }
 
   cancelTest(reason: string): void {
-    this.store.pipe(select(testResultInEdit), take(1)).subscribe(testResult => {
+    this.store.pipe(select(testResultInEdit), take(1)).subscribe((testResult) => {
       if (!testResult) {
         return this.store.dispatch(updateTestResultFailed({ errors: [{ error: 'No selected test result.' }] }));
       }
