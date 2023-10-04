@@ -74,7 +74,7 @@ export class TechnicalRecordHttpService {
   ): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/updateVin/${systemNumber}/${createdTimestamp}`;
     const body = {
-      newVin
+      newVin,
     };
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }

@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import {amendVin, amendVinSuccess} from '@store/technical-records';
+import { amendVin, amendVinSuccess } from '@store/technical-records';
 import {
   Subject, take, takeUntil, withLatestFrom,
 } from 'rxjs';
@@ -125,7 +125,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
   private subscribeToTechRecordUpdates(): void {
     this.technicalRecordService.techRecord$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(record => {
+      .subscribe((record) => {
         record?.techRecord_statusCode === 'archived' || !record
           ? this.navigateBack()
           : this.techRecord = record;
@@ -137,12 +137,12 @@ export class AmendVinComponent implements OnDestroy, OnInit {
   }
 
   private updateTechRecord(): void {
-    const record = { ...this.techRecord! } as TechRecordType<'put'>;
+    const record = { ...this.techRecord } as TechRecordType<'put'>;
     record.vin = this.form.value.vin;
 
     this.technicalRecordService.updateEditingTechRecord({
       ...record,
-      techRecord_reasonForCreation: 'Vin changed'
+      techRecord_reasonForCreation: 'Vin changed',
     });
 
     this.routerService
@@ -150,7 +150,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
       .pipe(take(1), takeUntil(this.destroy$), withLatestFrom(this.routerService.getRouteNestedParam$('createdTimestamp')))
       .subscribe(([systemNumber, createdTimestamp]) => {
         if (systemNumber && createdTimestamp) {
-          let newVin = this.form.value.vin;
+          const newVin = this.form.value.vin;
           this.store.dispatch(amendVin({ newVin, systemNumber, createdTimestamp }));
         }
       });
