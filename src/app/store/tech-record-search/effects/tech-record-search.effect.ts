@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { SEARCH_TYPES, TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { fetchSearchResult, fetchSearchResultFailed, fetchSearchResultSuccess } from '../actions/tech-record-search.actions';
 

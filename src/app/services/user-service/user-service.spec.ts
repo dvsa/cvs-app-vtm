@@ -18,10 +18,10 @@ describe('User-Service', () => {
   let mockBroadcast: MsalBroadcastService;
   let mockMsal: MsalService;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AppModule, RouterTestingModule],
-      providers: [Store, MsalService, MsalBroadcastService]
+      providers: [Store, MsalService, MsalBroadcastService],
     });
 
     mockStore = TestBed.inject(Store);
@@ -36,36 +36,38 @@ describe('User-Service', () => {
   });
 
   describe('User getters', () => {
-    const user = { name: 'name', userEmail: 'name@mail.com', oid: '123', accessToken: '12345' };
+    const user = {
+      name: 'name', userEmail: 'name@mail.com', oid: '123', accessToken: '12345',
+    };
 
     beforeEach(() => {
       (jwtDecode as jest.Mock).mockImplementationOnce(() => ({ roles: ['12345'] }));
       service.logIn(user);
     });
 
-    it('should get the userEmail', done => {
-      service.userEmail$.pipe(take(1)).subscribe(data => {
+    it('should get the userEmail', (done) => {
+      service.userEmail$.pipe(take(1)).subscribe((data) => {
         expect(data).toEqual(user.userEmail);
         done();
       });
     });
 
-    it('should get the name', done => {
-      service.name$.pipe(take(1)).subscribe(data => {
+    it('should get the name', (done) => {
+      service.name$.pipe(take(1)).subscribe((data) => {
         expect(data).toEqual(user.name);
         done();
       });
     });
 
-    it('should get the id', done => {
-      service.id$.pipe(take(1)).subscribe(data => {
+    it('should get the id', (done) => {
+      service.id$.pipe(take(1)).subscribe((data) => {
         expect(data).toEqual(user.oid);
         done();
       });
     });
 
-    it('should get the roles', done => {
-      service.roles$.pipe(take(1)).subscribe(data => {
+    it('should get the roles', (done) => {
+      service.roles$.pipe(take(1)).subscribe((data) => {
         expect(data).toEqual([user.accessToken]);
         done();
       });

@@ -2,7 +2,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { ReferenceDataApiResponse } from '@api/reference-data';
 import { MultiOptions } from '@forms/models/options.model';
-import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User } from '@models/reference-data.model';
+import {
+  ReferenceDataModelBase,
+  ReferenceDataResourceType,
+  ReferenceDataTyre,
+  User,
+} from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
@@ -17,7 +22,7 @@ import {
   referencePsvMakeLoadingState,
   removeTyreSearch,
   selectTyreSearchCriteria,
-  STORE_FEATURE_REFERENCE_DATA_KEY
+  STORE_FEATURE_REFERENCE_DATA_KEY,
 } from '@store/reference-data';
 import { testCases } from '@store/reference-data/reference-data.test-cases';
 import { firstValueFrom, of, take } from 'rxjs';
@@ -34,8 +39,8 @@ describe('ReferenceDataService', () => {
       providers: [
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
-        { provide: UserService, useValue: { id$: of('id'), name$: of('Jack') } }
-      ]
+        { provide: UserService, useValue: { id$: of('id'), name$: of('Jack') } },
+      ],
     });
 
     service = TestBed.inject(ReferenceDataService);
@@ -55,9 +60,9 @@ describe('ReferenceDataService', () => {
 
   describe('API', () => {
     describe('resourceTypes', () => {
-      it.each(testCases)('should return all data for a given resourceType', value => {
+      it.each(testCases)('should return all data for a given resourceType', (value) => {
         const apiResponse: ReferenceDataApiResponse = { data: value.payload };
-        service.fetchReferenceData(value.resourceType).subscribe(response => {
+        service.fetchReferenceData(value.resourceType).subscribe((response) => {
           expect(response).toEqual(apiResponse);
         });
 
@@ -66,12 +71,12 @@ describe('ReferenceDataService', () => {
       });
     });
 
-    it('should thrown an error if resource type is not given', done => {
+    it('should thrown an error if resource type is not given', (done) => {
       service.fetchReferenceData(undefined as any).subscribe({
-        error: e => {
+        error: (e) => {
           expect(e.message).toBe('Reference data resourceType is required');
           done();
-        }
+        },
       });
     });
   });
@@ -90,12 +95,12 @@ describe('ReferenceDataService', () => {
             dateTimeStamp: 'time',
             userId: '1234',
             loadIndexTwinLoad: '101',
-            plyRating: '18'
-          }
-        ]
+            plyRating: '18',
+          },
+        ],
       };
       const apiResponse: ReferenceDataApiResponse = { data: value.payload };
-      service.fetchReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, '101').subscribe(data => {
+      service.fetchReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, '101').subscribe((data) => {
         expect(data).toEqual(apiResponse);
       });
 
@@ -118,12 +123,12 @@ describe('ReferenceDataService', () => {
             dateTimeStamp: 'time',
             userId: '1234',
             loadIndexTwinLoad: '101',
-            plyRating: '18'
-          }
-        ]
+            plyRating: '18',
+          },
+        ],
       };
       const apiResponse: ReferenceDataApiResponse = { data: value.payload };
-      service.fetchTyreReferenceDataByKeySearch('plyrating', '10').subscribe(data => {
+      service.fetchTyreReferenceDataByKeySearch('plyrating', '10').subscribe((data) => {
         expect(data).toEqual(apiResponse);
       });
 
@@ -133,12 +138,12 @@ describe('ReferenceDataService', () => {
   });
 
   describe('resourceKeys', () => {
-    it.each(testCases)('should return one result for a given resourceType and resourceKey', value => {
+    it.each(testCases)('should return one result for a given resourceType and resourceKey', (value) => {
       const getOneFromResourceSpy = jest.spyOn(service, 'referenceResourceTypeResourceKeyGet');
       const { resourceType, resourceKey, payload } = value;
-      const expectedResult: ReferenceDataApiResponse = { data: [payload.find(p => p.resourceKey === resourceKey)!] };
+      const expectedResult: ReferenceDataApiResponse = { data: [payload.find((p) => p.resourceKey === resourceKey)!] };
 
-      service.fetchReferenceDataByKey(resourceType, resourceKey).subscribe(response => {
+      service.fetchReferenceDataByKey(resourceType, resourceKey).subscribe((response) => {
         expect(response).toEqual(expectedResult);
         expect(getOneFromResourceSpy).toHaveBeenCalled();
       });
@@ -153,12 +158,12 @@ describe('ReferenceDataService', () => {
       const resourceKey = 'testKey';
       const item = { description: 'test Item' };
       const apiResponse = { resourceType, resourceKey, ...item };
-      service.createReferenceDataItem(resourceType, resourceKey, item).subscribe(data => {
+      service.createReferenceDataItem(resourceType, resourceKey, item).subscribe((data) => {
         expect(data).toEqual(item);
       });
 
       const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
-      expect(req.request.method).toEqual('POST');
+      expect(req.request.method).toBe('POST');
 
       req.flush(apiResponse);
     });
@@ -170,12 +175,12 @@ describe('ReferenceDataService', () => {
       const resourceKey = 'testKey';
       const item = { description: 'test Item' };
       const apiResponse = { resourceType, resourceKey, ...item };
-      service.amendReferenceDataItem(resourceType, resourceKey, item).subscribe(data => {
+      service.amendReferenceDataItem(resourceType, resourceKey, item).subscribe((data) => {
         expect(data).toEqual(apiResponse);
       });
 
       const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
-      expect(req.request.method).toEqual('PUT');
+      expect(req.request.method).toBe('PUT');
 
       req.flush(apiResponse);
     });
@@ -186,11 +191,11 @@ describe('ReferenceDataService', () => {
       const resourceType = ReferenceDataResourceType.CountryOfRegistration;
       const resourceKey = 'testKey';
       const apiResponse = { success: 'true' };
-      service.deleteReferenceDataItem(resourceType, resourceKey, { createdId: 'test' }).subscribe(data => {
+      service.deleteReferenceDataItem(resourceType, resourceKey, { createdId: 'test' }).subscribe((data) => {
         expect(data).toEqual(apiResponse);
       });
       const req = controller.expectOne(`https://url/api/v1/reference/${resourceType}/${resourceKey}`);
-      expect(req.request.method).toEqual('DELETE');
+      expect(req.request.method).toBe('DELETE');
 
       req.flush(apiResponse);
     });
@@ -208,117 +213,117 @@ describe('ReferenceDataService', () => {
               gb: {
                 resourceType: ReferenceDataResourceType.CountryOfRegistration,
                 resourceKey: 'gb',
-                description: 'Great Britain and Northern Ireland - GB'
+                description: 'Great Britain and Northern Ireland - GB',
               },
               gba: {
                 resourceType: ReferenceDataResourceType.CountryOfRegistration,
                 resourceKey: 'gba',
-                description: 'Alderney - GBA'
-              }
-            }
+                description: 'Alderney - GBA',
+              },
+            },
           },
           [ReferenceDataResourceType.ReasonsForAbandoningPsv]: {
             ids: ['foobar'],
             entities: {
               foobar: {
                 resourceType: ReferenceDataResourceType.ReasonsForAbandoningPsv,
-                resourceKey: 'foobar'
-              }
-            }
-          }
-        }
+                resourceKey: 'foobar',
+              },
+            },
+          },
+        },
       });
     });
 
-    it('should get all of the reference data', done => {
-      service.getAll$(ReferenceDataResourceType.CountryOfRegistration).subscribe(response => {
+    it('should get all of the reference data', (done) => {
+      service.getAll$(ReferenceDataResourceType.CountryOfRegistration).subscribe((response) => {
         expect(response).toEqual([
           {
             resourceType: ReferenceDataResourceType.CountryOfRegistration,
             resourceKey: 'gb',
-            description: 'Great Britain and Northern Ireland - GB'
+            description: 'Great Britain and Northern Ireland - GB',
           },
           {
             resourceType: ReferenceDataResourceType.CountryOfRegistration,
             resourceKey: 'gba',
-            description: 'Alderney - GBA'
-          }
+            description: 'Alderney - GBA',
+          },
         ]);
         done();
       });
     });
 
     it('should get a specific reference data record', (done: any) => {
-      service.getByKey$(ReferenceDataResourceType.CountryOfRegistration, 'gba').subscribe(response => {
+      service.getByKey$(ReferenceDataResourceType.CountryOfRegistration, 'gba').subscribe((response) => {
         expect(response).toEqual({
           resourceType: ReferenceDataResourceType.CountryOfRegistration,
           resourceKey: 'gba',
-          description: 'Alderney - GBA'
+          description: 'Alderney - GBA',
         });
         done();
       });
     });
 
-    it('should get the tyre search results', done => {
+    it('should get the tyre search results', (done) => {
       const mockReferenceDataTyre = [{ code: 'foo' }] as ReferenceDataTyre[];
       jest.spyOn(service, 'getTyreSearchReturn$').mockReturnValue(of(mockReferenceDataTyre));
       service
         .getTyreSearchReturn$()
         .pipe(take(1))
-        .subscribe(referenceData => {
+        .subscribe((referenceData) => {
           expect(referenceData).toEqual(mockReferenceDataTyre);
           done();
         });
     });
-    it('should get the tyre search criteria', done => {
+    it('should get the tyre search criteria', (done) => {
       const mockState = { loading: false } as ReferenceDataEntityStateSearch;
       store.overrideSelector(selectTyreSearchCriteria, mockState);
       service
         .getTyreSearchCriteria$()
         .pipe(take(1))
-        .subscribe(referenceData => {
+        .subscribe((referenceData) => {
           expect(referenceData).toEqual(mockState);
           done();
         });
     });
-    it('should get the psv make reference data loading', done => {
+    it('should get the psv make reference data loading', (done) => {
       store.overrideSelector(referencePsvMakeLoadingState, false);
       service
         .getReferencePsvMakeDataLoading$()
         .pipe(take(1))
-        .subscribe(loadingFlag => {
+        .subscribe((loadingFlag) => {
           expect(loadingFlag).toBe(false);
           done();
         });
     });
 
-    it('should get the data from state and format the response', done => {
+    it('should get the data from state and format the response', (done) => {
       service
         .getReferenceDataOptions(ReferenceDataResourceType.CountryOfRegistration)
         .pipe(take(1))
-        .subscribe(data => {
+        .subscribe((data) => {
           expect(data).toEqual([
             { label: 'Great Britain and Northern Ireland - GB', value: 'gb' },
-            { label: 'Alderney - GBA', value: 'gba' }
+            { label: 'Alderney - GBA', value: 'gba' },
           ]);
           done();
         });
     });
-    it('should get the data from state and format the response', done => {
+    it('should get the psv data from state and format the response', (done) => {
       service
         .getReasonsForAbandoning(VehicleTypes.PSV)
         .pipe(take(1))
-        .subscribe(data => {
+        .subscribe((data) => {
           expect(data).toEqual([{ label: 'foobar', value: 'foobar' }]);
           done();
         });
     });
 
-    it('should return if vehicle Type if undefined', done => {
+    it('should return if vehicle Type if undefined', (done) => {
       service
         .getReasonsForAbandoning(undefined)
         .pipe(take(1))
-        .subscribe(data => {
+        .subscribe((data) => {
           expect(data).toEqual([]);
           done();
         });
@@ -333,30 +338,30 @@ describe('ReferenceDataService', () => {
             {
               resourceType: ReferenceDataResourceType.Brakes,
               resourceKey: 'banana',
-              description: 'yellow'
-            }
+              description: 'yellow',
+            },
           ] as ReferenceDataModelBase[],
-          output: [{ label: 'yellow', value: 'banana' }] as MultiOptions
+          output: [{ label: 'yellow', value: 'banana' }] as MultiOptions,
         },
         {
           refData: [
             {
               resourceType: ReferenceDataResourceType.User,
               resourceKey: 'mike@mail.com',
-              name: 'Mike'
-            }
+              name: 'Mike',
+            },
           ] as Array<ReferenceDataModelBase & Partial<User>>,
-          output: [{ label: 'Mike', value: 'mike@mail.com' }]
+          output: [{ label: 'Mike', value: 'mike@mail.com' }],
         },
         {
           refData: [
             {
               resourceType: ReferenceDataResourceType.User,
-              resourceKey: 'mike@mail.com'
-            }
+              resourceKey: 'mike@mail.com',
+            },
           ] as Array<ReferenceDataModelBase & Partial<User>>,
-          output: [{ label: 'mike@mail.com', value: 'mike@mail.com' }]
-        }
+          output: [{ label: 'mike@mail.com', value: 'mike@mail.com' }],
+        },
       ])('should return MultiOption Array with description as label', async ({ refData, output }) => {
         const options = await firstValueFrom(of(refData).pipe(take(1), service['mapReferenceDataOptions']));
         expect(options).toEqual(output);
@@ -370,7 +375,7 @@ describe('ReferenceDataService', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         service.loadReferenceDataByKeySearch(ReferenceDataResourceType.CountryOfRegistration, 'foo');
         expect(dispatchSpy).toHaveBeenCalledWith(
-          fetchReferenceDataByKeySearch({ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'foo' })
+          fetchReferenceDataByKeySearch({ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'foo' }),
         );
       });
     });

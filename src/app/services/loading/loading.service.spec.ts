@@ -15,11 +15,11 @@ describe('Spinner-Service', () => {
   let service: LoadingService;
   let mockStore: MockStore<State>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [SpinnerComponent],
       imports: [RouterTestingModule],
-      providers: [LoadingService, provideMockStore({ initialState: initialAppState })]
+      providers: [LoadingService, provideMockStore({ initialState: initialAppState })],
     });
 
     service = TestBed.inject(LoadingService);

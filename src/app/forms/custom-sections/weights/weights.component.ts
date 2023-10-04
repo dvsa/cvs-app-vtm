@@ -108,8 +108,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private handleVehicleTechRecordChange(changes: SimpleChanges): void {
-    if (changes['vehicleTechRecord'] && !this.ladenWeightOverride && this.form) {
-      const { currentValue, previousValue } = changes['vehicleTechRecord'];
+    const { vehicleTechRecord } = changes;
+    if (this.form && vehicleTechRecord && !this.ladenWeightOverride) {
+      const { currentValue, previousValue } = vehicleTechRecord;
 
       const fieldsChanged = [
         'techRecord_seatsUpperDeck',
@@ -119,9 +120,11 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         'techRecord_standingCapacity',
       ].some((field) => currentValue[`${field}`] !== previousValue[`${field}`]);
 
-      if (fieldsChanged && currentValue.techRecord_manufactureYear) {
-        this.form.patchValue({ techRecord_grossLadenWeight: this.calculateGrossLadenWeight() }, { emitEvent: false });
+      if (fieldsChanged && currentValue.techRecord_manufactureYear && this.vehicleTechRecord.techRecord_vehicleType === 'psv') { 
+        this.vehicleTechRecord.techRecord_grossLadenWeight = this.calculateGrossLadenWeight();
       }
+
+      this.form.patchValue(this.vehicleTechRecord, { emitEvent: false });
     }
   }
 
