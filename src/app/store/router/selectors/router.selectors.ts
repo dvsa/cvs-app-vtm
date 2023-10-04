@@ -13,25 +13,25 @@ export const {
   selectRouteParams, // select the current route params
   selectRouteParam, // factory function to select a route param
   selectRouteData, // select the current route data
-  selectUrl // select the current url
+  selectUrl, // select the current url
 } = getSelectors();
 
-export const routerState = createSelector(selectRouter, state => state);
-export const currentRouteState = createSelector(selectCurrentRoute, state => state);
+export const routerState = createSelector(selectRouter, (state) => state);
+export const currentRouteState = createSelector(selectCurrentRoute, (state) => state);
 
-export const selectRouteDataProperty = (property: string) => createSelector(selectRouteData, data => data?.[property]);
+export const selectRouteDataProperty = (property: string) => createSelector(selectRouteData, (data) => data?.[`${property}`]);
 
-export const selectRouteNestedParams = createSelector(selectRouter, router => {
+export const selectRouteNestedParams = createSelector(selectRouter, (router) => {
   let currentRoute = router?.state?.root;
   let params: Params = {};
   while (currentRoute?.firstChild) {
     currentRoute = currentRoute.firstChild;
     params = {
       ...params,
-      ...currentRoute.params
+      ...currentRoute.params,
     };
   }
   return params;
 });
 
-export const routeEditable = createSelector(selectQueryParam('edit'), edit => edit === 'true');
+export const routeEditable = createSelector(selectQueryParam('edit'), (edit) => edit === 'true');

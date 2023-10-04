@@ -17,7 +17,7 @@ import {
   updateTechRecordSuccess,
   unarchiveTechRecord,
   unarchiveTechRecordFailure,
-  unarchiveTechRecordSuccess
+  unarchiveTechRecordSuccess,
 } from './technical-record-service.actions';
 
 const SUCCESS = ' Success';
@@ -55,6 +55,6 @@ describe('Technical record actions', () => {
   });
 });
 
-function getMessage(title: string, suffix: string = '') {
+function getMessage(title: string, suffix = '') {
   return `[Technical Record Service] ${title}${suffix}`;
 }

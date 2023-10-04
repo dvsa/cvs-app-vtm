@@ -20,7 +20,6 @@ protractor.conf.js
 /src/app/forms/*
 /src/app/services/*
 /src/app/shared/*
-/src/app/store/*
 /src/mocks/*
 /src/environments/*
 /mock-api

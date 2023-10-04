@@ -5,7 +5,7 @@ import {
   fetchTestStations,
   fetchTestStationsFailed,
   fetchTestStationsSuccess,
-  fetchTestStationSuccess
+  fetchTestStationSuccess,
 } from '../actions/test-stations.actions';
 import { initialTestStationsState, testStationsReducer, TestStationsState } from './test-stations.reducer';
 
@@ -15,7 +15,7 @@ describe('Test Stations Reducer', () => {
   describe('unknown action', () => {
     it('should return the default state', () => {
       const action = {
-        type: 'Unknown'
+        type: 'Unknown',
       };
       const state = testStationsReducer(initialTestStationsState, action);
 
@@ -38,7 +38,7 @@ describe('Test Stations Reducer', () => {
         const newState: TestStationsState = {
           ...initialTestStationsState,
           ids: ['someId'],
-          entities: { someId: expectedTestStations[0] }
+          entities: { someId: expectedTestStations[0] },
         };
         const action = fetchTestStationsSuccess({ payload: [...expectedTestStations] });
         const state = testStationsReducer(initialTestStationsState, action);
@@ -75,7 +75,7 @@ describe('Test Stations Reducer', () => {
         const newState: TestStationsState = {
           ...initialTestStationsState,
           ids: ['someId'],
-          entities: { ['someId']: expectedTestStations[0] }
+          entities: { someId: expectedTestStations[0] },
         };
         const action = fetchTestStationSuccess({ id: 'TestStationId0001', payload: expectedTestStations[0] });
         const state = testStationsReducer(initialTestStationsState, action);

@@ -10,8 +10,8 @@ export const fetchDefect = createAction(getTitle(), props<{ id: number }>());
 export const fetchDefectSuccess = createAction(getTitle(false, 'Success'), props<{ id: number; payload: Defect }>());
 export const fetchDefectFailed = createAction(getTitle(false, 'Failed'), props<GlobalError>());
 
-function getTitle(isPlural: boolean = false, suffix: string = ''): string {
+function getTitle(isPlural = false, suffix = ''): string {
   const plural = isPlural ? 's' : ' by ID';
-  suffix = suffix ? ' ' + suffix : suffix;
-  return '[API/defects] Fetch Defect' + plural + suffix;
+  suffix = suffix ? ` ${suffix}` : suffix;
+  return `[API/defects] Fetch Defect${plural}${suffix}`;
 }

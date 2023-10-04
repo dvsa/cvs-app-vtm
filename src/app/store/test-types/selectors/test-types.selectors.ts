@@ -7,21 +7,23 @@ import { createSelector } from '@ngrx/store';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
 
-const { selectIds, selectEntities, selectAll, selectTotal } = testTypesAdapter.getSelectors();
+const {
+  selectIds, selectEntities, selectAll, selectTotal,
+} = testTypesAdapter.getSelectors();
 
 // select the array of ids
-export const selectTestTypesIds = createSelector(testTypesFeatureState, state => selectIds(state));
+export const selectTestTypesIds = createSelector(testTypesFeatureState, (state) => selectIds(state));
 
 // select the dictionary of test types entities
-export const selectTestTypesEntities = createSelector(testTypesFeatureState, state => selectEntities(state));
+export const selectTestTypesEntities = createSelector(testTypesFeatureState, (state) => selectEntities(state));
 
 // select the array of tests result
-export const selectAllTestTypes = createSelector(testTypesFeatureState, state => selectAll(state));
+export const selectAllTestTypes = createSelector(testTypesFeatureState, (state) => selectAll(state));
 
 // select the total test types count
-export const selectTestTypesTotal = createSelector(testTypesFeatureState, state => selectTotal(state));
+export const selectTestTypesTotal = createSelector(testTypesFeatureState, (state) => selectTotal(state));
 
-export const selectTestTypesLoadingState = createSelector(testTypesFeatureState, state => state.loading);
+export const selectTestTypesLoadingState = createSelector(testTypesFeatureState, (state) => state.loading);
 
 export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, toEditOrNotToEdit, (testTypes, testResult) => {
   if (testResult) {
@@ -30,24 +32,25 @@ export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, t
   return [];
 });
 
-export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, testTypes => {
-  const sortTestTypes = (testTypes: TestTypesTaxonomy): TestTypesTaxonomy => {
-    return testTypes
+export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, (testTypes) => {
+  const sortTestTypes = (testTypesList: TestTypesTaxonomy): TestTypesTaxonomy => {
+    return testTypesList
       .sort((a, b) => {
-        if (!b.hasOwnProperty('sortId')) {
+        if (!Object.prototype.hasOwnProperty.call(b, 'sortId')) {
           return 1;
         }
 
-        if (!a.hasOwnProperty('sortId')) {
+        if (!Object.prototype.hasOwnProperty.call(a, 'sortId')) {
           return -1;
         }
 
-        return parseInt((a as TestTypeCategory).sortId || '0') - parseInt((b as TestTypeCategory).sortId || '0');
+        return parseInt((a as TestTypeCategory).sortId || '0', 10) - parseInt((b as TestTypeCategory).sortId || '0', 10);
       })
-      .map(testType => {
+      .map((testType) => {
         const newTestType = { ...testType } as TestTypeCategory;
 
-        if (newTestType.hasOwnProperty('nextTestTypesOrCategories')) {
+        if (Object.prototype.hasOwnProperty.call(newTestType, 'nextTestTypesOrCategories')) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           newTestType.nextTestTypesOrCategories = sortTestTypes(newTestType.nextTestTypesOrCategories!);
         }
 
@@ -60,17 +63,18 @@ export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, test
 
 export const selectTestType = (id: string | undefined) =>
   createSelector(selectTestTypesByVehicleType, (testTypes): TestType | undefined => {
-    function findUsingId(id: string | undefined, testTypes: TestTypesTaxonomy | undefined): TestType | undefined {
-      if (!testTypes) {
+    function findUsingId(idToSearch: string | undefined, testTypesList: TestTypesTaxonomy | undefined): TestType | undefined {
+      if (!testTypesList) {
         return undefined;
       }
 
-      for (const testType of testTypes) {
-        if (testType.id === id) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const testType of testTypesList) {
+        if (testType.id === idToSearch) {
           return testType;
         }
 
-        const found = findUsingId(id, (testType as TestTypeCategory).nextTestTypesOrCategories);
+        const found = findUsingId(idToSearch, (testType as TestTypeCategory).nextTestTypesOrCategories);
 
         if (found) {
           return found;
@@ -83,7 +87,7 @@ export const selectTestType = (id: string | undefined) =>
     return findUsingId(id, testTypes);
   });
 
-export const getTypeOfTest = (id: string | undefined) => createSelector(selectTestType(id), testTypes => testTypes?.typeOfTest);
+export const getTypeOfTest = (id: string | undefined) => createSelector(selectTestType(id), (testTypes) => testTypes?.typeOfTest);
 
 function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultModel): TestTypesTaxonomy {
   const {
@@ -95,40 +99,42 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
     noOfAxles,
     vehicleClass,
     vehicleSubclass,
-    numberOfWheelsDriven
+    numberOfWheelsDriven,
   } = testResult;
 
   return (
     testTypes
-      .filter(testTypes => !vehicleType || !testTypes.forVehicleType || testTypes.forVehicleType.includes(vehicleType))
-      .filter(testTypes => !statusCode || statusCode !== StatusCodes.PROVISIONAL || testTypes.forProvisionalStatus)
-      .filter(testTypes => !statusCode || !testTypes.forProvisionalStatusOnly || statusCode === StatusCodes.PROVISIONAL)
-      .filter(testTypes => !euVehicleCategory || !testTypes.forEuVehicleCategory || testTypes.forEuVehicleCategory.includes(euVehicleCategory))
-      .filter(testTypes => !vehicleSize || !testTypes.forVehicleSize || testTypes.forVehicleSize.includes(vehicleSize))
+      .filter((testType) => !vehicleType || !testType.forVehicleType || testType.forVehicleType.includes(vehicleType))
+      .filter((testType) => !vehicleType || !testType.forVehicleType || testType.forVehicleType.includes(vehicleType))
+      .filter((testType) => !statusCode || statusCode !== StatusCodes.PROVISIONAL || testType.forProvisionalStatus)
+      .filter((testType) => !statusCode || !testType.forProvisionalStatusOnly || statusCode === StatusCodes.PROVISIONAL)
+      .filter((testType) => !euVehicleCategory || !testType.forEuVehicleCategory || testType.forEuVehicleCategory.includes(euVehicleCategory))
+      .filter((testType) => !vehicleSize || !testType.forVehicleSize || testType.forVehicleSize.includes(vehicleSize))
       .filter(
-        testTypes => !vehicleConfiguration || !testTypes.forVehicleConfiguration || testTypes.forVehicleConfiguration.includes(vehicleConfiguration)
+        (testType) => !vehicleConfiguration || !testType.forVehicleConfiguration || testType.forVehicleConfiguration.includes(vehicleConfiguration),
       )
-      .filter(testTypes => !noOfAxles || !testTypes.forVehicleAxles || testTypes.forVehicleAxles.includes(noOfAxles))
+      .filter((testType) => !noOfAxles || !testType.forVehicleAxles || testType.forVehicleAxles.includes(noOfAxles))
       // if code AND description are null, or if either code OR description are in forVehicleClass, include in filter
       .filter(
-        testTypes =>
-          !vehicleClass ||
-          !testTypes.forVehicleClass ||
-          (!vehicleClass.code && !vehicleClass.description) ||
-          (vehicleClass.code && testTypes.forVehicleClass.includes(vehicleClass.code as unknown as string)) ||
-          (vehicleClass.description && testTypes.forVehicleClass.includes(vehicleClass.description as unknown as string))
+        (testType) =>
+          !vehicleClass
+          || !testType.forVehicleClass
+          || (!vehicleClass.code && !vehicleClass.description)
+          || (vehicleClass.code && testType.forVehicleClass.includes(vehicleClass.code as unknown as string))
+          || (vehicleClass.description && testType.forVehicleClass.includes(vehicleClass.description as unknown as string)),
       )
       .filter(
-        testTypes =>
-          !vehicleSubclass ||
-          !testTypes.forVehicleSubclass ||
-          testTypes.forVehicleSubclass.some(forVehicleSubclass => vehicleSubclass.includes(forVehicleSubclass as VehicleSubclass))
+        (testType) =>
+          !vehicleSubclass
+          || !testType.forVehicleSubclass
+          || testType.forVehicleSubclass.some((forVehicleSubclass) => vehicleSubclass.includes(forVehicleSubclass as VehicleSubclass)),
       )
-      .filter(testTypes => !numberOfWheelsDriven || !testTypes.forVehicleWheels || testTypes.forVehicleWheels.includes(numberOfWheelsDriven))
-      .map(testType => {
+      .filter((testType) => !numberOfWheelsDriven || !testType.forVehicleWheels || testType.forVehicleWheels.includes(numberOfWheelsDriven))
+      .map((testType) => {
         const newTestType = { ...testType } as TestTypeCategory;
 
-        if (newTestType.hasOwnProperty('nextTestTypesOrCategories')) {
+        if (Object.prototype.hasOwnProperty.call(newTestType, 'nextTestTypesOrCategories')) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           newTestType.nextTestTypesOrCategories = filterTestTypes(newTestType.nextTestTypesOrCategories!, testResult);
         }
 

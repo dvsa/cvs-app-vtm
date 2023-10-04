@@ -1,7 +1,10 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
+import {
+  createFeatureSelector, createReducer, createSelector, on,
+} from '@ngrx/store';
 import { fetchSearchResult, fetchSearchResultFailed } from '@store/tech-record-search/actions/tech-record-search.actions';
+// eslint-disable-next-line import/no-cycle
 import * as TestResultActions from '@store/test-records';
 import * as ReferenceDataActions from '../../reference-data/actions/reference-data.actions';
 import * as TechnicalRecordServiceActions from '../../technical-records/actions/technical-record-service.actions';
@@ -15,12 +18,12 @@ export interface GlobalErrorState {
 }
 
 export const initialGlobalErrorState: GlobalErrorState = {
-  errors: []
+  errors: [],
 };
 
 export const getGlobalErrorState = createFeatureSelector<GlobalErrorState>(STORE_FEATURE_GLOBAL_ERROR_KEY);
 
-export const globalErrorState = createSelector(getGlobalErrorState, state => state.errors);
+export const globalErrorState = createSelector(getGlobalErrorState, (state) => state.errors);
 
 export const globalErrorReducer = createReducer(
   initialGlobalErrorState,
@@ -34,7 +37,7 @@ export const globalErrorReducer = createReducer(
     ReferenceDataActions.fetchReferenceDataByKey,
     fetchSearchResult,
     routerNavigatedAction,
-    successMethod
+    successMethod,
   ),
 
   on(
@@ -50,20 +53,21 @@ export const globalErrorReducer = createReducer(
     ReferenceDataActions.fetchReferenceDataFailed,
     ReferenceDataActions.fetchReferenceDataByKeyFailed,
     fetchSearchResultFailed,
-    failureMethod
+    failureMethod,
   ),
   on(GlobalErrorActions.setErrors, TestResultActions.updateTestResultFailed, TestResultActions.createTestResultFailed, (state, { errors }) => ({
     ...state,
-    errors: [...errors]
+    errors: [...errors],
   })),
   on(GlobalErrorActions.patchErrors, (state, { errors }) => ({ ...state, errors: [...state.errors, ...errors] })),
-  on(createVehicleRecordFailure, (state, action) => ({ errors: [...state.errors, { error: action.error }] }))
+  on(createVehicleRecordFailure, (state, action) => ({ errors: [...state.errors, { error: action.error }] })),
 );
 
 function successMethod(state: GlobalErrorState) {
   return { ...state, errors: [] };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function failureMethod(state: GlobalErrorState, errorMessage: { error: any; anchorLink?: any }) {
   return { ...state, errors: [...state.errors, { error: errorMessage.error, anchorLink: errorMessage.anchorLink }] };
 }

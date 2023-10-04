@@ -1,4 +1,5 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+// eslint-disable-next-line import/no-cycle
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -13,7 +14,7 @@ export const fetchTestResultsFailed = createAction('[API/test-results] Fetch All
 export const fetchTestResultsBySystemNumber = createAction('[API/test-results] Fetch All By systemNumber', props<{ systemNumber: string }>());
 export const fetchTestResultsBySystemNumberSuccess = createAction(
   '[API/test-results] Fetch All By systemNumber Success',
-  props<{ payload: Array<TestResultModel> }>()
+  props<{ payload: Array<TestResultModel> }>(),
 );
 export const fetchTestResultsBySystemNumberFailed = createAction('[API/test-results] Fetch All By systemNumber Failed', props<GlobalError>());
 
@@ -44,7 +45,7 @@ export const testTypeIdChanged = createAction('[test-results] test type id chang
 
 export const templateSectionsChanged = createAction(
   '[test-results] Template sections changed',
-  props<{ sectionTemplates: FormNode[]; sectionsValue: TestResultModel | undefined }>()
+  props<{ sectionTemplates: FormNode[]; sectionsValue: TestResultModel | undefined }>(),
 );
 
 export const createDefect = createAction('[test-results] create defect', props<{ defect: TestResultDefect }>());
