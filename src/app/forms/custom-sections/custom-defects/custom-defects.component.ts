@@ -39,7 +39,7 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
   }
 
   getCustomDefectForm(i: number) {
-    return this.customDefectsForm?.controls[i] as CustomFormGroup;
+    return this.customDefectsForm?.controls[`${i}`] as CustomFormGroup;
   }
 
   trackByFn(index: number): number {

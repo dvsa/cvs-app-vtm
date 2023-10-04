@@ -76,8 +76,7 @@ export class AbandonDialogComponent extends BaseDialogComponent implements OnIni
   }
 
   handleFormChange(event: any) {
-    let latestTest: any;
-    latestTest = merge(latestTest, this.testResult, event);
-    latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
+    const latestTest = merge(this.testResult, event);
+    if (latestTest && Object.keys(latestTest).length > 0) this.newTestResult.emit(latestTest as TestResultModel);
   }
 }

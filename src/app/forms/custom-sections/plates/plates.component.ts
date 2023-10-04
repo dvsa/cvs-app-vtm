@@ -33,7 +33,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   pageStart?: number;
   pageEnd?: number;
 
-  private _formSubscription = new Subscription();
+  private formSubscription = new Subscription();
 
   constructor(
     private dynamicFormService: DynamicFormService,
@@ -47,7 +47,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(PlatesTemplate, this.techRecord) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => this.formChange.emit(event));
+    this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => this.formChange.emit(event));
   }
 
   ngOnChanges(): void {
@@ -55,7 +55,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this._formSubscription.unsubscribe();
+    this.formSubscription.unsubscribe();
   }
 
   get roles(): typeof Roles {
@@ -138,6 +138,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     }
     this.store.dispatch(canGeneratePlate());
     this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['generate-plate'], { relativeTo: this.route });
   }
 
@@ -148,7 +149,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     });
     const areAxlesInvalid = this.techRecord.techRecord_axles?.some((axle) =>
       axleRequiredFields.some((field) => {
-        const value = (axle as any)[field];
+        const value = (axle as any)[`${field}`];
         return value === undefined || value === null || value === '';
       }));
 

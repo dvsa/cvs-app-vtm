@@ -32,8 +32,8 @@ describe('TyresComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TyresComponent);
     component = fixture.componentInstance;
-    (component.vehicleTechRecord = mockVehicleTechnicalRecord('psv')),
-    (component.vehicleTechRecord.techRecord_axles = [
+    component.vehicleTechRecord = mockVehicleTechnicalRecord('psv');
+    component.vehicleTechRecord.techRecord_axles = [
       {
         axleNumber: 1,
         tyres_tyreSize: '295/80-22.5',
@@ -85,7 +85,7 @@ describe('TyresComponent', () => {
         // weights_eecWeight: 4,
         weights_designWeight: 5,
       },
-    ]);
+    ];
 
     fixture.detectChanges();
     spy = jest.spyOn(component, 'addTyreToTechRecord');

@@ -20,7 +20,6 @@ import { PlatesComponent } from './plates.component';
 describe('PlatesComponent', () => {
   let component: PlatesComponent;
   let fixture: ComponentFixture<PlatesComponent>;
-  let route: ActivatedRoute;
   let router: Router;
   let errorService: GlobalErrorService;
   let store: MockStore;
@@ -55,7 +54,6 @@ describe('PlatesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PlatesComponent);
     component = fixture.componentInstance;
-    route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     errorService = TestBed.inject(GlobalErrorService);
     component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as HgvOrTrl;

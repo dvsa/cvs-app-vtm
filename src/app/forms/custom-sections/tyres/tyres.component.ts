@@ -3,7 +3,6 @@ import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -139,10 +138,10 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       for (const [index, axle] of currentAxles.entries()) {
         if (
           axle?.tyres_fitmentCode !== undefined
-          && previousAxles[index]
-          && previousAxles[index].tyres_fitmentCode !== undefined
-          && axle.tyres_fitmentCode !== previousAxles[index].tyres_fitmentCode
-          && axle.tyres_tyreCode === previousAxles[index].tyres_tyreCode
+          && previousAxles[`${index}`]
+          && previousAxles[`${index}`].tyres_fitmentCode !== undefined
+          && axle.tyres_fitmentCode !== previousAxles[`${index}`].tyres_fitmentCode
+          && axle.tyres_tyreCode === previousAxles[`${index}`].tyres_tyreCode
         ) {
           this.getTyresRefData('tyres_tyreCode', axle.axleNumber);
           return true;
@@ -191,6 +190,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
     this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate([route], { relativeTo: this.route, state: this.vehicleTechRecord });
   }
 
@@ -201,7 +201,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     if (axleIndex === undefined || axleIndex === -1) {
       return;
     }
-    const axle = this.vehicleTechRecord.techRecord_axles?.[axleIndex];
+    const axle = this.vehicleTechRecord.techRecord_axles?.[`${axleIndex}`];
     if (axle) {
       axle.tyres_tyreCode = tyre.tyreCode;
       axle.tyres_tyreSize = tyre.tyreSize;

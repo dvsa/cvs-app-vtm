@@ -21,27 +21,27 @@ export class DefectsComponent implements OnInit, OnDestroy {
   @Output() formChange = new EventEmitter();
 
   public form!: CustomFormGroup;
-  private _formSubscription = new Subscription();
-  private _defectsForm?: CustomFormArray;
+  private formSubscription = new Subscription();
+  private defectsFormArray?: CustomFormArray;
 
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
+    this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
       this.formChange.emit(event);
     });
   }
 
   ngOnDestroy(): void {
-    this._formSubscription.unsubscribe();
+    this.formSubscription.unsubscribe();
   }
 
   get defectsForm(): CustomFormArray {
-    if (!this._defectsForm) {
-      this._defectsForm = this.form?.get(['testTypes', '0', 'defects']) as CustomFormArray;
+    if (!this.defectsFormArray) {
+      this.defectsFormArray = this.form?.get(['testTypes', '0', 'defects']) as CustomFormArray;
     }
-    return this._defectsForm;
+    return this.defectsFormArray;
   }
 
   get defectCount(): number {

@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild,
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
 } from '@angular/core';
 import {
   CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeViewTypes, FormNodeWidth,
@@ -41,7 +41,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
     ) as CustomFormGroup;
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((e) => this.formChange.emit(e));
     Object.keys(this.form.controls).forEach((key) => {
-      this.formControls[key] = this.form.get(key) as FormControl;
+      this.formControls[`${key}`] = this.form.get(key) as FormControl;
     });
   }
 

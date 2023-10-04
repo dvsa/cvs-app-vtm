@@ -1,5 +1,7 @@
 import { KeyValue } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, OnDestroy, OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -19,8 +21,12 @@ import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-
 import { selectByDeficiencyRef, selectByImNumber } from '@store/defects';
 import { State } from '@store/index';
 import { selectRouteParam } from '@store/router/selectors/router.selectors';
-import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
-import { Subject, filter, take, takeUntil, withLatestFrom } from 'rxjs';
+import {
+  createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect,
+} from '@store/test-records';
+import {
+  Subject, filter, take, takeUntil, withLatestFrom,
+} from 'rxjs';
 
 @Component({
   selector: 'app-defect',
@@ -36,7 +42,7 @@ export class DefectComponent implements OnInit, OnDestroy {
   includeNotes = false;
   private vehicleType?: VehicleTypes;
 
-  private _defectsForm?: CustomFormArray;
+  private defectsForm?: CustomFormArray;
   private defects?: TestResultDefects;
   defect?: TestResultDefect;
 
@@ -70,18 +76,18 @@ export class DefectComponent implements OnInit, OnDestroy {
         takeUntil(this.onDestroy$),
         filter(([testResult]) => !!testResult),
       )
-      .subscribe(([testResult, defectIndex, defectRef]) => {
-        !testResult && this.navigateBack();
+      .subscribe(([testResult, defectIndexValue, defectRefValue]) => {
+        if (!testResult) this.navigateBack();
         this.defects = testResult?.testTypes[0].defects;
         this.vehicleType = testResult?.vehicleType;
-        this._defectsForm = (this.dfs.createForm(DefectsTpl, testResult) as CustomFormGroup).get(['testTypes', '0', 'defects']) as CustomFormArray;
-        if (defectIndex) {
-          this.index = Number(defectIndex);
-          this.form = this._defectsForm.controls[this.index] as CustomFormGroup;
+        this.defectsForm = (this.dfs.createForm(DefectsTpl, testResult) as CustomFormGroup).get(['testTypes', '0', 'defects']) as CustomFormArray;
+        if (defectIndexValue) {
+          this.index = Number(defectIndexValue);
+          this.form = this.defectsForm.controls[this.index] as CustomFormGroup;
           this.defect = this.defects![this.index];
-        } else if (defectRef && this.vehicleType) {
+        } else if (defectRefValue && this.vehicleType) {
           this.store
-            .select(selectByDeficiencyRef(defectRef, this.vehicleType))
+            .select(selectByDeficiencyRef(defectRefValue, this.vehicleType))
             .pipe(take(1))
             .subscribe(([defect, item, deficiency]) => {
               this.initializeDefect(defect as Defect, item as Item, deficiency as Deficiency);
@@ -89,10 +95,10 @@ export class DefectComponent implements OnInit, OnDestroy {
         }
       });
 
-    !this.defect && this.navigateBack();
+    if (!this.defect) this.navigateBack();
 
-    this.vehicleType
-      && this.store
+    if (this.vehicleType) {
+      this.store
         .select(selectByImNumber(this.defect?.imNumber || NaN, this.vehicleType))
         .pipe(
           takeUntil(this.onDestroy$),
@@ -101,6 +107,7 @@ export class DefectComponent implements OnInit, OnDestroy {
         .subscribe((defectsTaxonomy) => {
           this.initializeInfoDictionary(defectsTaxonomy);
         });
+    }
   }
 
   ngOnDestroy(): void {
@@ -148,6 +155,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 
   navigateBack() {
     this.resultService.updateResultOfTest();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['../..'], { relativeTo: this.activatedRoute, queryParamsHandling: 'preserve' });
   }
 
@@ -155,8 +163,8 @@ export class DefectComponent implements OnInit, OnDestroy {
     if (!this.defect) {
       return;
     }
-    this.defect = { ...this.defect, [field]: !this.defect[field] } as TestResultDefect;
-    this._defectsForm?.controls[this.index ?? this._defectsForm.length - 1].get(field)?.patchValue(this.defect[field]);
+    this.defect = { ...this.defect, [field]: !this.defect[`${field}`] } as TestResultDefect;
+    this.defectsForm?.controls[this.index ?? this.defectsForm.length - 1].get(field)?.patchValue(this.defect[`${field}`]);
   }
 
   initializeInfoDictionary(defect: Defect | undefined) {
@@ -172,7 +180,7 @@ export class DefectComponent implements OnInit, OnDestroy {
       Object.keys(info.location).forEach((key) => {
         const options = info?.location[key as LocationKey];
         if (options) {
-          this.infoDictionary[key] = this.mapOptions(options);
+          this.infoDictionary[`${key}`] = this.mapOptions(options);
         }
       });
     }
@@ -204,8 +212,8 @@ export class DefectComponent implements OnInit, OnDestroy {
       testResultDefect.itemDescription = item.itemDescription.slice(0, -1);
     }
 
-    this._defectsForm!.addControl(testResultDefect);
-    this.form = this._defectsForm!.controls[this._defectsForm!.length - 1] as CustomFormGroup;
+    this.defectsForm!.addControl(testResultDefect);
+    this.form = this.defectsForm!.controls[this.defectsForm!.length - 1] as CustomFormGroup;
     this.defect = testResultDefect;
   }
 
@@ -213,7 +221,7 @@ export class DefectComponent implements OnInit, OnDestroy {
     return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{
       major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue',
     })[
-      category
+      `${category}`
     ];
   }
 
