@@ -1,7 +1,7 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { createAction, props } from '@ngrx/store';
-import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 
 export const fetchSearchResult = createAction(getTitle(), props<{ searchBy?: SEARCH_TYPES; term: string }>());
 export const fetchSearchResultSuccess = createAction(getTitle('Success'), props<{ payload: TechRecordSearchSchema[] }>());
