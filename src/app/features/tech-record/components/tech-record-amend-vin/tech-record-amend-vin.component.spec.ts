@@ -16,7 +16,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import {amendVin, amendVinSuccess, updateTechRecord, updateTechRecordSuccess} from '@store/technical-records';
+import { amendVin, amendVinSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVinComponent } from './tech-record-amend-vin.component';
 
@@ -90,7 +90,7 @@ describe('TechRecordChangeVinComponent', () => {
 
       component.handleSubmit();
 
-      expect(dispatchSpy).toHaveBeenCalledWith(amendVin({ newVin, systemNumber, createdTimestamp  }));
+      expect(dispatchSpy).toHaveBeenCalledWith(amendVin({ newVin, systemNumber, createdTimestamp }));
     });
   });
 
