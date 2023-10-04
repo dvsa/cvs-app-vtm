@@ -20,9 +20,15 @@ export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`,
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
 export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord', false);
 
-export const updateTechRecord = createAction(`${prefix} updateTechRecords`, props<{ systemNumber: string; createdTimestamp: string }>());
+export const updateTechRecord = createAction(`${prefix} updateTechRecords`,
+  props<{ systemNumber: string; createdTimestamp: string }>());
 export const updateTechRecordSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordFailure = createOutcomeAction('updateTechRecords', false);
+
+export const amendVin = createAction(`${prefix} amendVin`,
+  props<{ newVin: string; systemNumber: string; createdTimestamp: string }>());
+export const amendVinSuccess = createOutcomeAction('amendVin', true);
+export const amendVinFailure = createOutcomeAction('amendVin', false);
 
 export const amendVrm = createAction(
   `${prefix} amendVrm`,

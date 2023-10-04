@@ -67,6 +67,18 @@ export class TechnicalRecordHttpService {
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
+  amendVin$(
+    newVin: string,
+    systemNumber: string,
+    createdTimestamp: string,
+  ): Observable<TechRecordType<'get'>> {
+    const url = `${environment.VTM_API_URI}/v3/technical-records/updateVin/${systemNumber}/${createdTimestamp}`;
+    const body = {
+      newVin
+    };
+    return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
+  }
+
   archiveTechnicalRecord$(systemNumber: string, createdTimestamp: string, reasonForArchiving: string): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/archive/${systemNumber}/${createdTimestamp}`;
 
