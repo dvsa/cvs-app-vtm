@@ -11,7 +11,7 @@ describe('DefectsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -30,30 +30,30 @@ describe('DefectsService', () => {
   describe('fetchDefects', () => {
     it('should get an array of matching results', () => {
       const expectedResult = [{ imDescription: 'Some Description' } as Defect];
-      service.fetchDefects().subscribe(response => expect(response).toEqual(expectedResult));
+      service.fetchDefects().subscribe((response) => expect(response).toEqual(expectedResult));
 
       // Check for correct requests: should have made one request to search from expected URL
       const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects`);
-      expect(req.request.method).toEqual('GET');
+      expect(req.request.method).toBe('GET');
 
       // Provide each request with a mock response
       req.flush(expectedResult);
     });
 
-    it('should handle errors', done => {
+    it('should handle errors', (done) => {
       service.fetchDefects().subscribe({
         next: () => {},
-        error: e => {
-          expect(e.error).toEqual('Deliberate 500 error');
-          expect(e.status).toEqual(500);
-          expect(e.statusText).toEqual('Server Error');
+        error: (e) => {
+          expect(e.error).toBe('Deliberate 500 error');
+          expect(e.status).toBe(500);
+          expect(e.statusText).toBe('Server Error');
           done();
-        }
+        },
       });
 
       // Check for correct requests: should have made one request to search from expected URL
       const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects`);
-      expect(req.request.method).toEqual('GET');
+      expect(req.request.method).toBe('GET');
 
       // Respond with mock error
       req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
@@ -64,31 +64,31 @@ describe('DefectsService', () => {
     it('should get a matching result', () => {
       const expectedId = 1;
       const expectedResult = { imDescription: 'Some Description' } as Defect;
-      service.fetchDefect(expectedId).subscribe(response => expect(response).toEqual(expectedResult));
+      service.fetchDefect(expectedId).subscribe((response) => expect(response).toEqual(expectedResult));
 
       // Check for correct requests: should have made one request to search from expected URL
       const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects/${expectedId}`);
-      expect(req.request.method).toEqual('GET');
+      expect(req.request.method).toBe('GET');
 
       // Provide each request with a mock response
       req.flush(expectedResult);
     });
 
-    it('should handle errors', done => {
+    it('should handle errors', (done) => {
       const expectedId = 1;
       service.fetchDefect(expectedId).subscribe({
         next: () => {},
-        error: e => {
-          expect(e.error).toEqual('Deliberate 500 error');
-          expect(e.status).toEqual(500);
-          expect(e.statusText).toEqual('Server Error');
+        error: (e) => {
+          expect(e.error).toBe('Deliberate 500 error');
+          expect(e.status).toBe(500);
+          expect(e.statusText).toBe('Server Error');
           done();
-        }
+        },
       });
 
       // Check for correct requests: should have made one request to search from expected URL
       const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects/${expectedId}`);
-      expect(req.request.method).toEqual('GET');
+      expect(req.request.method).toBe('GET');
 
       // Respond with mock error
       req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });

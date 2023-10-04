@@ -10,39 +10,45 @@ import * as UserServiceState from '../../store/user/user-service.reducer';
 
 @Injectable({ providedIn: 'root' })
 export class UserService implements OnDestroy {
-  private readonly _destroying$ = new Subject<void>();
+  private readonly destroying$ = new Subject<void>();
 
   constructor(private store: Store, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {
     this.msalBroadcastService.msalSubject$
       .pipe(
         filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
-        takeUntil(this._destroying$)
+        takeUntil(this.destroying$),
       )
       .subscribe((result: any) => {
         const {
           payload: {
             account: {
               name,
-              idTokenClaims: { oid, preferred_username, email }
+              idTokenClaims: { oid, preferred_username, email },
             },
-            accessToken
-          }
+            accessToken,
+          },
         } = result;
         const userEmail = email || preferred_username;
-        this.logIn({ name, userEmail, oid, accessToken });
+        this.logIn({
+          name, userEmail, oid, accessToken,
+        });
       });
   }
 
   ngOnDestroy(): void {
-    this._destroying$.next();
-    this._destroying$.complete();
+    this.destroying$.next();
+    this.destroying$.complete();
   }
 
-  logIn({ name, userEmail, oid, accessToken }: { name: string; userEmail: string; oid: string; accessToken: string }): void {
+  logIn({
+    name, userEmail, oid, accessToken,
+  }: { name: string; userEmail: string; oid: string; accessToken: string }): void {
     window.localStorage.setItem('accessToken', accessToken);
     const decodedJWT = jwt_decode(accessToken);
-    const roles: string[] = (decodedJWT as any).roles;
-    this.store.dispatch(UserServiceActions.Login({ name, userEmail, oid, roles }));
+    const { roles } = decodedJWT as any;
+    this.store.dispatch(UserServiceActions.Login({
+      name, userEmail, oid, roles,
+    }));
   }
 
   get name$(): Observable<string> {

@@ -4,7 +4,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { map, Observable } from 'rxjs';
 import { Roles } from '@models/roles.enum';
-import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import { clearAllSectionStates, clearScrollPosition } from '@store/technical-records';
 import { Store } from '@ngrx/store';
 

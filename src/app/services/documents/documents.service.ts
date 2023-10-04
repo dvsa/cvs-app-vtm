@@ -17,7 +17,7 @@ export class DocumentsService {
       window
         .atob(data)
         .split('')
-        .map(char => char.charCodeAt(0))
+        .map((char) => char.charCodeAt(0)),
     );
 
     return new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });

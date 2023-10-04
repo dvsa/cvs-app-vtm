@@ -18,7 +18,6 @@ jest.config.js
 protractor.conf.js
 /src/app/api/*
 /src/app/forms/*
-/src/app/services/*
 /src/app/store/*
 /src/mocks/*
 /src/environments/*
