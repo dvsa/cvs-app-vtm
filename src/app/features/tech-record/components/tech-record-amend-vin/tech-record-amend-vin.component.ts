@@ -86,6 +86,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   navigateBack(): void {
     this.globalErrorService.clearErrors();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -118,6 +119,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   private handleAmendVinSuccess(): void {
     this.actions$.pipe(ofType(amendVinSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
     });
   }
