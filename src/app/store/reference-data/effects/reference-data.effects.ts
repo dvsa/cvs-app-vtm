@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DeleteItem, ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
+import { ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -8,7 +8,9 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { testResultInEdit } from '@store/test-records';
-import { catchError, map, mergeMap, of, switchMap, take } from 'rxjs';
+import {
+  catchError, map, mergeMap, of, switchMap, take,
+} from 'rxjs';
 import {
   amendReferenceDataItem,
   amendReferenceDataItemFailure,
@@ -34,7 +36,7 @@ import {
   fetchReferenceDataSuccess,
   fetchTyreReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearchFailed,
-  fetchTyreReferenceDataByKeySearchSuccess
+  fetchTyreReferenceDataByKeySearchSuccess,
 } from '../actions/reference-data.actions';
 import { handleNotFound, sortReferenceData } from './operators';
 
@@ -44,7 +46,7 @@ export class ReferenceDataEffects {
     private actions$: Actions,
     private userService: UserService,
     private referenceDataService: ReferenceDataService,
-    private store: Store<State>
+    private store: Store<State>,
   ) {}
 
   fetchReferenceDataByType$ = createEffect(() =>
@@ -54,20 +56,18 @@ export class ReferenceDataEffects {
         this.referenceDataService.fetchReferenceData(resourceType, paginationToken).pipe(
           handleNotFound(resourceType),
           sortReferenceData(resourceType),
-          switchMap(data => {
+          switchMap((data) => {
             if (isPaginated(data)) {
               return of(
                 fetchReferenceDataSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[], paginated: true }),
-                fetchReferenceData({ resourceType, paginationToken: data.paginationToken })
+                fetchReferenceData({ resourceType, paginationToken: data.paginationToken }),
               );
             }
             return of(fetchReferenceDataSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[], paginated: false }));
           }),
-          catchError(e => of(fetchReferenceDataFailed({ error: e.message, resourceType })))
-        )
-      )
-    )
-  );
+          catchError((e) => of(fetchReferenceDataFailed({ error: e.message, resourceType }))),
+        )),
+    ));
 
   fetchReferenceDataByAuditType$ = createEffect(() =>
     this.actions$.pipe(
@@ -76,20 +76,18 @@ export class ReferenceDataEffects {
         this.referenceDataService.fetchReferenceDataAudit(resourceType, paginationToken).pipe(
           handleNotFound(resourceType),
           sortReferenceData(resourceType),
-          switchMap(data => {
+          switchMap((data) => {
             if (isPaginated(data)) {
               return of(
                 fetchReferenceDataAuditSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[], paginated: true }),
-                fetchReferenceDataAudit({ resourceType, paginationToken: data.paginationToken })
+                fetchReferenceDataAudit({ resourceType, paginationToken: data.paginationToken }),
               );
             }
             return of(fetchReferenceDataAuditSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[], paginated: false }));
           }),
-          catchError(e => of(fetchReferenceDataAuditFailed({ error: e.message, resourceType })))
-        )
-      )
-    )
-  );
+          catchError((e) => of(fetchReferenceDataAuditFailed({ error: e.message, resourceType }))),
+        )),
+    ));
 
   fetchReferenceDataByKey$ = createEffect(() =>
     this.actions$.pipe(
@@ -97,47 +95,40 @@ export class ReferenceDataEffects {
       mergeMap(({ resourceType, resourceKey }) =>
         this.referenceDataService.fetchReferenceDataByKey(resourceType, resourceKey).pipe(
           handleNotFound(resourceType, resourceKey),
-          map(data => fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: data as ReferenceDataModelBase })),
-          catchError(e => of(fetchReferenceDataByKeyFailed({ error: e.message, resourceType })))
-        )
-      )
-    )
-  );
+          map((data) => fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: data as ReferenceDataModelBase })),
+          catchError((e) => of(fetchReferenceDataByKeyFailed({ error: e.message, resourceType }))),
+        )),
+    ));
 
   fetchReferenceDataByKeySearch$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchReferenceDataByKeySearch),
       mergeMap(({ resourceType, resourceKey }) =>
         this.referenceDataService.fetchReferenceDataByKeySearch(resourceType, resourceKey).pipe(
-          map(data => fetchReferenceDataByKeySearchSuccess({ resourceType, resourceKey, payload: data.data as ReferenceDataModelBase[] })),
-          catchError(e => of(fetchReferenceDataByKeySearchFailed({ error: e.message, resourceType })))
-        )
-      )
-    )
-  );
+          map((data) => fetchReferenceDataByKeySearchSuccess({ resourceType, resourceKey, payload: data.data as ReferenceDataModelBase[] })),
+          catchError((e) => of(fetchReferenceDataByKeySearchFailed({ error: e.message, resourceType }))),
+        )),
+    ));
 
   fetchTyreReferenceDataByKeySearch$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchTyreReferenceDataByKeySearch),
       mergeMap(({ searchFilter, searchTerm }) =>
         this.referenceDataService.fetchTyreReferenceDataByKeySearch(searchFilter, searchTerm).pipe(
-          map(data =>
+          map((data) =>
             fetchTyreReferenceDataByKeySearchSuccess({
               resourceType: ReferenceDataResourceType.Tyres,
-              payload: data.data as ReferenceDataModelBase[]
-            })
-          ),
-          catchError(e => of(fetchTyreReferenceDataByKeySearchFailed({ error: e.message, resourceType: ReferenceDataResourceType.Tyres })))
-        )
-      )
-    )
-  );
+              payload: data.data as ReferenceDataModelBase[],
+            })),
+          catchError((e) => of(fetchTyreReferenceDataByKeySearchFailed({ error: e.message, resourceType: ReferenceDataResourceType.Tyres }))),
+        )),
+    ));
 
   fetchReasonsForAbandoning = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchReasonsForAbandoning),
       mergeMap(() => this.store.pipe(select(testResultInEdit), take(1))),
-      map(testResult => {
+      map((testResult) => {
         switch (testResult?.vehicleType) {
           case VehicleTypes.PSV:
             return fetchReferenceData({ resourceType: ReferenceDataResourceType.ReasonsForAbandoningPsv });
@@ -148,9 +139,8 @@ export class ReferenceDataEffects {
           default:
             throw new Error('Unexpected vehicle type');
         }
-      })
-    )
-  );
+      }),
+    ));
 
   createReferenceDataItem$ = createEffect(() =>
     this.actions$.pipe(
@@ -158,12 +148,11 @@ export class ReferenceDataEffects {
       switchMap(({ resourceType, resourceKey, payload }) => {
         payload = { ...payload };
         return this.referenceDataService.createReferenceDataItem(resourceType, resourceKey, payload).pipe(
-          map(result => createReferenceDataItemSuccess({ result: result as ReferenceDataModelBase })),
-          catchError(error => of(createReferenceDataItemFailure({ error: error.message })))
+          map((result) => createReferenceDataItemSuccess({ result: result as ReferenceDataModelBase })),
+          catchError((error) => of(createReferenceDataItemFailure({ error: error.message }))),
         );
-      })
-    )
-  );
+      }),
+    ));
 
   // The amend effect will work when the referenceData.service.ts is amended on line 395 from <EmptyObject> to <any>
 
@@ -173,12 +162,11 @@ export class ReferenceDataEffects {
       switchMap(({ resourceType, resourceKey, payload }) => {
         payload = { ...payload };
         return this.referenceDataService.amendReferenceDataItem(resourceType, resourceKey, payload).pipe(
-          map(result => amendReferenceDataItemSuccess({ result: result as ReferenceDataModelBase })),
-          catchError(error => of(amendReferenceDataItemFailure({ error: error.message })))
+          map((result) => amendReferenceDataItemSuccess({ result: result as ReferenceDataModelBase })),
+          catchError((error) => of(amendReferenceDataItemFailure({ error: error.message }))),
         );
-      })
-    )
-  );
+      }),
+    ));
 
   deleteReferenceDataItem$ = createEffect(() =>
     this.actions$.pipe(
@@ -186,14 +174,13 @@ export class ReferenceDataEffects {
       switchMap(({ resourceType, resourceKey, reason }) => {
         const payload = { reason };
         return this.referenceDataService.deleteReferenceDataItem(resourceType, resourceKey, payload).pipe(
-          map((result: DeleteItem) => deleteReferenceDataItemSuccess({ resourceType, resourceKey })),
-          catchError(error => of(deleteReferenceDataItemFailure({ error: error.message })))
+          map(() => deleteReferenceDataItemSuccess({ resourceType, resourceKey })),
+          catchError((error) => of(deleteReferenceDataItemFailure({ error: error.message }))),
         );
-      })
-    )
-  );
+      }),
+    ));
 }
 
 function isPaginated(referenceDataApiResponse: ReferenceDataApiResponse): referenceDataApiResponse is ReferenceDataApiResponseWithPagination {
-  return referenceDataApiResponse.hasOwnProperty('paginationToken');
+  return Object.prototype.hasOwnProperty.call(referenceDataApiResponse, 'paginationToken');
 }

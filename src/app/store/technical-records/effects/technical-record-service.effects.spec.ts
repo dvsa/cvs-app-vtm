@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
@@ -26,7 +27,7 @@ import {
   unarchiveTechRecordSuccess,
   updateTechRecord,
   updateTechRecordFailure,
-  updateTechRecordSuccess
+  updateTechRecordSuccess,
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord } from '../selectors/technical-record-service.selectors';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
@@ -47,8 +48,8 @@ describe('TechnicalRecordServiceEffects', () => {
         TechnicalRecordServiceEffects,
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
-        { provide: UserService, useValue: { name$: of('name'), id$: of('iod') } }
-      ]
+        { provide: UserService, useValue: { name$: of('name'), id$: of('iod') } },
+      ],
     });
 
     effects = TestBed.inject(TechnicalRecordServiceEffects);
@@ -65,12 +66,12 @@ describe('TechnicalRecordServiceEffects', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const mockVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
         const expectedVehicle = {
-          ...mockVehicle
+          ...mockVehicle,
         } as TechRecordType<'get'>;
 
         // mock action to trigger effect
         actions$ = hot('-a--', {
-          a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'> })
+          a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'> }),
         });
 
         // mock service call
@@ -78,7 +79,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.createVehicleRecord$).toBe('---b', {
-          b: createVehicleRecordSuccess({ vehicleTechRecord: expectedVehicle })
+          b: createVehicleRecordSuccess({ vehicleTechRecord: expectedVehicle }),
         });
       });
     });
@@ -87,7 +88,7 @@ describe('TechnicalRecordServiceEffects', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
         actions$ = hot('-a--', {
-          a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'> })
+          a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'> }),
         });
 
         // mock service call
@@ -96,7 +97,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(techRecordHttpService, 'createVehicleRecord$').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.createVehicleRecord$).toBe('---b', {
-          b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN testVin' })
+          b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN testVin' }),
         });
       });
     });
@@ -119,7 +120,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.updateTechRecord$).toBe('---b', {
-          b: updateTechRecordSuccess({ vehicleTechRecord: technicalRecord })
+          b: updateTechRecordSuccess({ vehicleTechRecord: technicalRecord }),
         });
       });
     });
@@ -135,8 +136,8 @@ describe('TechnicalRecordServiceEffects', () => {
 
         expectObservable(effects.updateTechRecord$).toBe('---b', {
           b: updateTechRecordFailure({
-            error: 'Unable to update technical record null'
-          })
+            error: 'Unable to update technical record null',
+          }),
         });
       });
     });
@@ -155,14 +156,14 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.archiveTechRecord$).toBe('---b', {
-          b: archiveTechRecordSuccess({ vehicleTechRecord: technicalRecord })
+          b: archiveTechRecordSuccess({ vehicleTechRecord: technicalRecord }),
         });
       });
     });
 
     it.each([
       [500, 'Internal server error'],
-      [400, 'You are not allowed to update an archived tech-record']
+      [400, 'You are not allowed to update an archived tech-record'],
     ])('should return an error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
@@ -174,8 +175,8 @@ describe('TechnicalRecordServiceEffects', () => {
 
         expectObservable(effects.archiveTechRecord$).toBe('---b', {
           b: archiveTechRecordFailure({
-            error: 'Unable to archive technical record null'
-          })
+            error: 'Unable to archive technical record null',
+          }),
         });
       });
     });
@@ -194,7 +195,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
-          b: unarchiveTechRecordSuccess({ vehicleTechRecord: technicalRecord })
+          b: unarchiveTechRecordSuccess({ vehicleTechRecord: technicalRecord }),
         });
       });
     });
@@ -210,8 +211,8 @@ describe('TechnicalRecordServiceEffects', () => {
 
         expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
           b: unarchiveTechRecordFailure({
-            error: 'Unable to unarchive technical record null'
-          })
+            error: 'Unable to unarchive technical record null',
+          }),
         });
       });
     });
@@ -227,8 +228,8 @@ describe('TechnicalRecordServiceEffects', () => {
 
         expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
           b: unarchiveTechRecordFailure({
-            error: 'Unable to unarchive technical record null'
-          })
+            error: 'Unable to unarchive technical record null',
+          }),
         });
       });
     });
@@ -251,17 +252,17 @@ describe('TechnicalRecordServiceEffects', () => {
           primaryVrm: 'bar',
           systemNumber: 'foobar',
           createdTimestamp: 'barfoo',
-          techRecord_vehicleType: 'lgv'
+          techRecord_vehicleType: 'lgv',
         } as unknown as TechRecordType<'put'>);
         // mock action to trigger effect
         actions$ = hot('-a--', {
           a: changeVehicleType({
-            techRecord_vehicleType: VehicleTypes.CAR
-          })
+            techRecord_vehicleType: VehicleTypes.CAR,
+          }),
         });
 
         expectObservable(effects.generateTechRecordBasedOnSectionTemplates$).toBe('-b', {
-          b: expectedTechRecord
+          b: expectedTechRecord,
         });
       });
 
@@ -297,6 +298,6 @@ function getEmptyTechRecord(): V3TechRecordModel {
     techRecord_statusCode: '',
     techRecord_vehicleConfiguration: 'other',
     techRecord_vehicleSubclass: undefined,
-    techRecord_vehicleType: 'car'
+    techRecord_vehicleType: 'car',
   } as unknown as V3TechRecordModel;
 }

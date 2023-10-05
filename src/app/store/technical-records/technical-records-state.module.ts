@@ -10,7 +10,7 @@ import { STORE_FEATURE_TECHNICAL_RECORDS_KEY, vehicleTechRecordReducer } from '.
   imports: [
     CommonModule,
     StoreModule.forFeature(STORE_FEATURE_TECHNICAL_RECORDS_KEY, vehicleTechRecordReducer),
-    EffectsModule.forFeature([TechnicalRecordServiceEffects])
-  ]
+    EffectsModule.forFeature([TechnicalRecordServiceEffects]),
+  ],
 })
 export class TechnicalRecordsStateModule {}

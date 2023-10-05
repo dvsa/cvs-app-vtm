@@ -7,7 +7,7 @@ import {
   fetchTestStations,
   fetchTestStationsFailed,
   fetchTestStationsSuccess,
-  fetchTestStationSuccess
+  fetchTestStationSuccess,
 } from '../actions/test-stations.actions';
 
 export interface TestStationsState extends EntityState<TestStation> {
@@ -20,7 +20,7 @@ export const STORE_FEATURE_TEST_STATIONS_KEY = 'testStations';
 export const testStationsFeatureState = createFeatureSelector<TestStationsState>(STORE_FEATURE_TEST_STATIONS_KEY);
 
 export const testStationsAdapter: EntityAdapter<TestStation> = createEntityAdapter<TestStation>({
-  selectId: testStation => testStation.testStationId
+  selectId: (testStation) => testStation.testStationId,
 });
 
 export const initialTestStationsState = testStationsAdapter.getInitialState({ loading: false, error: '' });
@@ -28,11 +28,11 @@ export const initialTestStationsState = testStationsAdapter.getInitialState({ lo
 export const testStationsReducer = createReducer(
   initialTestStationsState,
 
-  on(fetchTestStations, state => ({ ...state, loading: true })),
+  on(fetchTestStations, (state) => ({ ...state, loading: true })),
   on(fetchTestStationsSuccess, (state, action) => ({ ...testStationsAdapter.setAll(action.payload, state), loading: false })),
-  on(fetchTestStationsFailed, state => ({ ...testStationsAdapter.setAll([], state), loading: false })),
+  on(fetchTestStationsFailed, (state) => ({ ...testStationsAdapter.setAll([], state), loading: false })),
 
-  on(fetchTestStation, state => ({ ...state, loading: true })),
+  on(fetchTestStation, (state) => ({ ...state, loading: true })),
   on(fetchTestStationSuccess, (state, action) => ({ ...testStationsAdapter.upsertOne(action.payload, state), loading: false })),
-  on(fetchTestStationFailed, state => ({ ...testStationsAdapter.setAll([], state), loading: false }))
+  on(fetchTestStationFailed, (state) => ({ ...testStationsAdapter.setAll([], state), loading: false })),
 );

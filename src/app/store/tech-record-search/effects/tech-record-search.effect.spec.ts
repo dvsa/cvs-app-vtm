@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
@@ -22,8 +23,8 @@ describe('DefectsEffects', () => {
   const testCases = [
     {
       id: expectedResult.systemNumber,
-      payload: [expectedResult]
-    }
+      payload: [expectedResult],
+    },
   ];
 
   beforeEach(() => {
@@ -34,9 +35,9 @@ describe('DefectsEffects', () => {
         provideMockActions(() => actions$),
         TechnicalRecordHttpService,
         provideMockStore({
-          initialState: initialAppState
-        })
-      ]
+          initialState: initialAppState,
+        }),
+      ],
     });
 
     effects = TestBed.inject(TechSearchResultsEffects);
@@ -50,7 +51,7 @@ describe('DefectsEffects', () => {
   });
 
   describe('fetchSearchResults$', () => {
-    it.each(testCases)('should return fetchSearchResultsSuccess action on successfull API call', value => {
+    it.each(testCases)('should return fetchSearchResultsSuccess action on successfull API call', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { payload } = value;
 
@@ -62,7 +63,7 @@ describe('DefectsEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.fetchSearchResults$).toBe('---b', {
-          b: fetchSearchResultSuccess({ payload })
+          b: fetchSearchResultSuccess({ payload }),
         });
       });
     });
@@ -76,7 +77,7 @@ describe('DefectsEffects', () => {
         jest.spyOn(service, 'search$').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchSearchResults$).toBe('---b', {
-          b: fetchSearchResultFailed({ error: 'There was a problem getting the Tech Record by vin', anchorLink: 'search-term' })
+          b: fetchSearchResultFailed({ error: 'There was a problem getting the Tech Record by vin', anchorLink: 'search-term' }),
         });
       });
     });

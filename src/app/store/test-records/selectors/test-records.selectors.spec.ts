@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Params } from '@angular/router';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -16,17 +17,17 @@ import {
   selectTestResultIds,
   selectTestResultsEntities,
   selectTestResultsTotal,
-  testResultLoadingState
+  testResultLoadingState,
 } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
   describe('adapter selectors', () => {
     it('should return correct state', () => {
-      const state = { ...initialTestResultsState, ids: ['1'], entities: { ['1']: { preparerId: '2' } } } as unknown as TestResultsState;
+      const state = { ...initialTestResultsState, ids: ['1'], entities: { 1: { preparerId: '2' } } } as unknown as TestResultsState;
       expect(selectTestResultIds.projector(state)).toEqual(['1']);
-      expect(selectTestResultsEntities.projector(state)).toEqual({ ['1']: { preparerId: '2' } });
+      expect(selectTestResultsEntities.projector(state)).toEqual({ 1: { preparerId: '2' } });
       expect(selectAllTestResults.projector(state)).toEqual([{ preparerId: '2' }]);
-      expect(selectTestResultsTotal.projector(state)).toEqual(1);
+      expect(selectTestResultsTotal.projector(state)).toBe(1);
     });
   });
 
@@ -38,9 +39,9 @@ describe('Test Results Selectors', () => {
         entities: {
           testResult1: createMock<TestResultModel>({
             testResultId: 'testResult1',
-            testTypes: [createMock<TestType>({ testNumber: '1' })]
-          })
-        }
+            testTypes: [createMock<TestType>({ testNumber: '1' })],
+          }),
+        },
       };
 
       const selectedState = selectedTestResultState.projector(state.entities, { testResultId: 'testResult1', testNumber: '1' } as Params);
@@ -106,17 +107,19 @@ describe('Test Results Selectors', () => {
     it('should sort the test history', () => {
       // Adding entries with null created at at the end if they exist
       const sortedTestHistory = selectedTestSortedAmendmentHistory.projector(mock);
-      let previous = new Date(sortedTestHistory![0].createdAt!).getTime();
-      let notfound: TestResultModel[] = [];
-      sortedTestHistory?.forEach(test => {
+      let previous = new Date(sortedTestHistory[0].createdAt!).getTime();
+      const notfound: TestResultModel[] = [];
+      sortedTestHistory?.forEach((test) => {
         if (test.createdAt) {
-          expect(new Date(test.createdAt!).getTime()).toBeLessThanOrEqual(previous);
-          previous = new Date(test.createdAt!).getTime();
+          // eslint-disable-next-line jest/no-conditional-expect
+          expect(new Date(test.createdAt).getTime()).toBeLessThanOrEqual(previous);
+          previous = new Date(test.createdAt).getTime();
         } else {
           notfound.push(test);
         }
       });
       if (notfound.length > 0) {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(sortedTestHistory?.slice(-notfound.length)).toEqual(notfound);
       }
     });
@@ -124,18 +127,17 @@ describe('Test Results Selectors', () => {
 
   describe('selectedAmendedTestResultState', () => {
     const testResult = createMock<TestResultModel>({
-      testHistory: createMockList<TestResultModel>(2, i =>
+      testHistory: createMockList<TestResultModel>(2, (i) =>
         createMock<TestResultModel>({
           createdAt: `2020-01-01T00:0${i}:00.000Z`,
-          testTypes: createMockList<TestType>(1, j => createMock<TestType>({ testTypeId: `${i}${j}`, testNumber: 'ABC00' }))
-        })
-      )
+          testTypes: createMockList<TestType>(1, (j) => createMock<TestType>({ testTypeId: `${i}${j}`, testNumber: 'ABC00' })),
+        })),
     });
 
     it('should return amended record that matches "createdAt" route param value', () => {
       const selectedState = selectedAmendedTestResultState.projector(testResult, { testNumber: 'ABC00', createdAt: '2020-01-01T00:00:00.000Z' });
-      expect(selectedState).not.toBeUndefined();
-      expect(testResult.testHistory![1].testTypes.length).toEqual(1);
+      expect(selectedState).toBeDefined();
+      expect(testResult.testHistory![1].testTypes).toHaveLength(1);
     });
 
     it('should return return undefined when "createdAt" route param value does not match any amended records', () => {
@@ -157,15 +159,13 @@ describe('Test Results Selectors', () => {
 
   describe('selectAmendedDefectData', () => {
     const amendedTestResultState = createMock<TestResultModel>({
-      testTypes: createMockList<TestType>(1, i =>
+      testTypes: createMockList<TestType>(1, () =>
         createMock<TestType>({
-          defects: createMockList<TestResultDefect>(1, i =>
+          defects: createMockList<TestResultDefect>(1, (i) =>
             createMock<TestResultDefect>({
-              imNumber: i
-            })
-          )
-        })
-      )
+              imNumber: i,
+            })),
+        })),
     });
 
     it('should return defect array from first testType in testResult', () => {
@@ -189,17 +189,17 @@ describe('Test Results Selectors', () => {
         testTypes: [
           {
             testNumber: 'foo',
-            testTypeId: '1'
-          }
-        ]
+            testTypeId: '1',
+          },
+        ],
       } as TestResultModel;
       const oldTestResult = {
         testTypes: [
           {
             testNumber: 'foo',
-            testTypeId: '2'
-          }
-        ]
+            testTypeId: '2',
+          },
+        ],
       } as TestResultModel;
       const state = isTestTypeKeySame('testTypeId').projector(amendTestResult, oldTestResult);
       expect(state).toBe(false);
@@ -210,17 +210,17 @@ describe('Test Results Selectors', () => {
         testTypes: [
           {
             testNumber: 'foo',
-            testTypeId: '1'
-          }
-        ]
+            testTypeId: '1',
+          },
+        ],
       } as TestResultModel;
       const oldTestResult = {
         testTypes: [
           {
             testNumber: 'foo',
-            testTypeId: '1'
-          }
-        ]
+            testTypeId: '1',
+          },
+        ],
       } as TestResultModel;
       const state = isTestTypeKeySame('testTypeId').projector(amendTestResult, oldTestResult);
       expect(state).toBe(true);

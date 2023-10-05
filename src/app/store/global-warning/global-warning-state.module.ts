@@ -5,6 +5,6 @@ import { globalWarningReducer, STORE_FEATURE_GLOBAL_WARNING_KEY } from '@store/g
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_GLOBAL_WARNING_KEY, globalWarningReducer)]
+  imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_GLOBAL_WARNING_KEY, globalWarningReducer)],
 })
 export class GlobalWarningStateModule {}
