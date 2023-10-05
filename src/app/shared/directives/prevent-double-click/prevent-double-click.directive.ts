@@ -1,15 +1,17 @@
-import { Directive, EventEmitter, HostListener, Input, OnDestroy, Output } from '@angular/core';
+import {
+  Directive, EventEmitter, HostListener, Input, OnDestroy, Output,
+} from '@angular/core';
 import { Subject, Subscription, throttleTime } from 'rxjs';
 
 @Directive({
-  selector: '[appPreventDoubleClick]'
+  selector: '[appPreventDoubleClick]',
 })
 export class PreventDoubleClickDirective implements OnDestroy {
   @Input()
-  throttleTime = 1000;
+    throttleTime = 1000;
 
   @Output()
-  clicked = new EventEmitter<PointerEvent>();
+    clicked = new EventEmitter<PointerEvent>();
 
   private clicks = new Subject<PointerEvent>();
   private subscription: Subscription;

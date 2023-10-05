@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-base-dialog',
-  template: ''
+  template: '',
 })
 export class BaseDialogComponent {
   @Output() action = new EventEmitter<string>();

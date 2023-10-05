@@ -5,7 +5,7 @@ import { PreventDoubleClickDirective } from './prevent-double-click.directive';
 
 @Component({
   selector: 'app-host',
-  template: `<button appPreventDoubleClick (clicked)="clicked.emit()"></button>`
+  template: '<button appPreventDoubleClick (clicked)="clicked.emit()"></button>',
 })
 class HostComponent {
   clicked = new EventEmitter();
@@ -15,9 +15,9 @@ describe('PreventDoubleClickDirective', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [HostComponent, PreventDoubleClickDirective]
+  beforeEach(waitForAsync(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [HostComponent, PreventDoubleClickDirective],
     }).compileComponents();
   }));
 
@@ -43,8 +43,8 @@ describe('PreventDoubleClickDirective', () => {
 
     button.click();
 
-    await new Promise<void>(resolve => {
-      let wait = setTimeout(() => {
+    await new Promise<void>((resolve) => {
+      const wait = setTimeout(() => {
         clearTimeout(wait);
         button.click();
         resolve();

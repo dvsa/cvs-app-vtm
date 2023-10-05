@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { initialAppState, State } from '@store/.';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { AccordionComponent } from './accordion.component';
+import { State, initialAppState } from '@store/.';
 import { addSectionState, removeSectionState } from '@store/technical-records';
+import { AccordionComponent } from './accordion.component';
 
 @Component({
   selector: 'app-host',
-  template: `<app-accordion id="test" title="Test"> <div id="content">Details</div> </app-accordion>`
+  template: '<app-accordion id="test" title="Test"> <div id="content">Details</div> </app-accordion>',
 })
 class HostComponent {}
 
@@ -19,7 +19,7 @@ describe('AccordionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AccordionComponent, HostComponent],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
     store = TestBed.inject(MockStore);
   });

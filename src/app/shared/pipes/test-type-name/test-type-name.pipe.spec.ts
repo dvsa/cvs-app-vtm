@@ -4,11 +4,11 @@ import { TestTypeNamePipe } from './test-type-name.pipe';
 const testTypes = [
   {
     id: '1',
-    suggestedTestTypeDisplayName: 'Test Type Display Name 1'
+    suggestedTestTypeDisplayName: 'Test Type Display Name 1',
   },
   {
     id: '2',
-    testTypeName: 'Test Type Name 2'
+    testTypeName: 'Test Type Name 2',
   },
   {
     id: '3',
@@ -19,12 +19,12 @@ const testTypes = [
         nextTestTypesOrCategories: [
           {
             id: '5',
-            name: 'Test Name 5'
-          }
-        ]
-      }
-    ]
-  }
+            name: 'Test Name 5',
+          },
+        ],
+      },
+    ],
+  },
 ] as TestTypesTaxonomy;
 
 describe('TestTypeNamePipe', () => {
@@ -38,7 +38,7 @@ describe('TestTypeNamePipe', () => {
     ['Test Name 4', '4'],
     ['-', '3'],
     ['Test Type Name 2', '2'],
-    ['Test Type Display Name 1', '1']
+    ['Test Type Display Name 1', '1'],
   ])('should %s for id: %s', (expected: string, id: string) => {
     const pipe = new TestTypeNamePipe();
     expect(pipe.transform(id, testTypes)).toBe(expected);
