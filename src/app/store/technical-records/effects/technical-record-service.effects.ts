@@ -44,7 +44,7 @@ import {
   updateTechRecordSuccess,
   unarchiveTechRecord,
   unarchiveTechRecordFailure,
-  unarchiveTechRecordSuccess
+  unarchiveTechRecordSuccess, amendVin, amendVinSuccess
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord, selectTechRecord } from '../selectors/technical-record-service.selectors';
 
@@ -139,6 +139,18 @@ export class TechnicalRecordServiceEffects {
       switchMap(({ newVrm, cherishedTransfer, systemNumber, createdTimestamp, thirdMark }) => {
         return this.techRecordHttpService.amendVrm$(newVrm, cherishedTransfer, systemNumber, createdTimestamp, thirdMark).pipe(
           map(vehicleTechRecord => amendVrmSuccess({ vehicleTechRecord })),
+          catchError(error => of(amendVrmFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
+        );
+      })
+    )
+  );
+
+  amendVin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(amendVin),
+      switchMap(({ newVin, systemNumber, createdTimestamp }) => {
+        return this.techRecordHttpService.amendVin$(newVin, systemNumber, createdTimestamp).pipe(
+          map(vehicleTechRecord => amendVinSuccess({ vehicleTechRecord })),
           catchError(error => of(amendVrmFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
         );
       })
