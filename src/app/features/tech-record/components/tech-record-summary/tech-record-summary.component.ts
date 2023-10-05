@@ -116,7 +116,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     if (this.isEditing) {
       this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
         if (techRecord) {
-          if(editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+          if (editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
             this.technicalRecordService.updateEditingTechRecord({
               ...(techRecord as TechRecordType<'put'>),
               techRecord_statusCode: StatusCodes.PROVISIONAL,
