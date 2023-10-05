@@ -10,12 +10,12 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: TextAreaComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class TextAreaComponent extends BaseControlComponent {
   get maxLength(): number | undefined {
-    return this.control?.meta.validators?.find(v => v.name === ValidatorNames.MaxLength)?.args;
+    return this.control?.meta.validators?.find((v) => v.name === ValidatorNames.MaxLength)?.args;
   }
 }

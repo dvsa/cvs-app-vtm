@@ -13,7 +13,7 @@ export const ApplicantDetails: FormNode = {
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 150 }],
-      customId: 'applicantName'
+      customId: 'applicantName',
     },
     {
       name: 'techRecord_applicantDetails_address1',
@@ -22,7 +22,7 @@ export const ApplicantDetails: FormNode = {
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'applicantAddress1'
+      customId: 'applicantAddress1',
     },
     {
       name: 'techRecord_applicantDetails_address2',
@@ -31,7 +31,7 @@ export const ApplicantDetails: FormNode = {
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'applicantAddress2'
+      customId: 'applicantAddress2',
     },
     {
       name: 'techRecord_applicantDetails_postTown',
@@ -40,7 +40,7 @@ export const ApplicantDetails: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'applicantPostTown'
+      customId: 'applicantPostTown',
     },
     {
       name: 'techRecord_applicantDetails_address3',
@@ -49,7 +49,7 @@ export const ApplicantDetails: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'applicantCounty'
+      customId: 'applicantCounty',
     },
     {
       name: 'techRecord_applicantDetails_postCode',
@@ -58,7 +58,7 @@ export const ApplicantDetails: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 12 }],
-      customId: 'applicantPostCode'
+      customId: 'applicantPostCode',
     },
     {
       name: 'techRecord_applicantDetails_telephoneNumber',
@@ -67,7 +67,7 @@ export const ApplicantDetails: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
-      customId: 'applicantTelephoneNumber'
+      customId: 'applicantTelephoneNumber',
     },
     {
       name: 'techRecord_applicantDetails_emailAddress',
@@ -76,7 +76,7 @@ export const ApplicantDetails: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 255 }, { name: ValidatorNames.Email }],
-      customId: 'applicantEmailAddress'
-    }
-  ]
+      customId: 'applicantEmailAddress',
+    },
+  ],
 };

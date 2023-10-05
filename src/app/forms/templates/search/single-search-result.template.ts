@@ -11,25 +11,25 @@ export function createSingleSearchResult(systemNumber: string, createdTimestamp:
     subHeadingLink: {
       label: 'Select technical record',
       url: `/tech-records/${systemNumber}/${createdTimestamp}`,
-      queryParams
+      queryParams,
     },
     children: [
       {
         name: 'vin',
         label: 'Vehicle identification number (VIN)',
         type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.STRING
+        viewType: FormNodeViewTypes.STRING,
       },
       {
         name: 'vrm',
         label: 'Vehicle registration mark (VRM)',
         type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.VRM
+        viewType: FormNodeViewTypes.VRM,
       },
       {
         name: 'trailerId',
         label: 'Trailer ID',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
       },
       {
         name: 'vehicleType',
@@ -38,27 +38,27 @@ export function createSingleSearchResult(systemNumber: string, createdTimestamp:
         viewType: FormNodeViewTypes.STRING,
         validators: [
           { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'trailerId', value: 'TRL' } },
-          { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'vrm', value: ['HGV', 'PSV'] } }
-        ]
+          { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'vrm', value: ['HGV', 'PSV'] } },
+        ],
       },
       {
         name: 'manufactureYear',
         label: 'Year of manufacture',
         type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.STRING
+        viewType: FormNodeViewTypes.STRING,
       },
       {
         name: 'make',
         label: 'Make',
         type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.STRING
+        viewType: FormNodeViewTypes.STRING,
       },
       {
         name: 'model',
         label: 'Model',
         type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.STRING
-      }
-    ]
+        viewType: FormNodeViewTypes.STRING,
+      },
+    ],
   };
 }

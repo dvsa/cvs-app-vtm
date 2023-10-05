@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes,
+} from '@forms/services/dynamic-form.types';
 
 export const reasonForCreationSection: FormNode = {
   name: 'reasonForCreationSection',
@@ -12,9 +14,9 @@ export const reasonForCreationSection: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.TEXTAREA,
-      validators: [{ name: ValidatorNames.MaxLength, args: 500 }, { name: ValidatorNames.Required }]
-    }
-  ]
+      validators: [{ name: ValidatorNames.MaxLength, args: 500 }, { name: ValidatorNames.Required }],
+    },
+  ],
 };
 
 export const reasonForCreationHiddenSection: FormNode = {
@@ -27,7 +29,7 @@ export const reasonForCreationHiddenSection: FormNode = {
       label: 'Reason for creation',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
-    }
-  ]
+      editType: FormNodeEditTypes.HIDDEN,
+    },
+  ],
 };

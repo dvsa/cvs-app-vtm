@@ -16,7 +16,7 @@ import {
 } from '../actions/batch-create.actions';
 import {
   addAxle,
-  addSectionState,
+  addSectionState, amendVin, amendVinFailure, amendVinSuccess,
   amendVrm,
   amendVrmFailure,
   amendVrmSuccess,
@@ -114,6 +114,10 @@ export const vehicleTechRecordReducer = createReducer(
   on(amendVrm, defaultArgs),
   on(amendVrmSuccess, successArgs),
   on(amendVrmFailure, updateFailureArgs),
+
+  on(amendVin, defaultArgs),
+  on(amendVinSuccess, successArgs),
+  on(amendVinFailure, updateFailureArgs),
 
   on(generatePlate, defaultArgs),
   on(generatePlateSuccess, state => ({ ...state, editingTechRecord: undefined, loading: false })),

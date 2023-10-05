@@ -1,6 +1,8 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const SpecialistTestSectionGroup5: FormNode = {
@@ -14,7 +16,7 @@ export const SpecialistTestSectionGroup5: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testStartTimestamp',
@@ -23,7 +25,7 @@ export const SpecialistTestSectionGroup5: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testTypes',
@@ -41,7 +43,7 @@ export const SpecialistTestSectionGroup5: FormNode = {
               disabled: true,
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.XS,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testResult',
@@ -52,14 +54,14 @@ export const SpecialistTestSectionGroup5: FormNode = {
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' },
                 { value: 'prs', label: 'PRS' },
-                { value: 'abandoned', label: 'Abandoned' }
+                { value: 'abandoned', label: 'Abandoned' },
               ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'reasonForAbandoning',
@@ -71,10 +73,10 @@ export const SpecialistTestSectionGroup5: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['abandoned'] }
-                }
+                  args: { sibling: 'testResult', value: ['abandoned'] },
+                },
               ],
-              referenceData: ReferenceDataResourceType.SpecialistReasonsForAbandoning
+              referenceData: ReferenceDataResourceType.SpecialistReasonsForAbandoning,
             },
             {
               name: 'additionalCommentsForAbandon',
@@ -86,17 +88,17 @@ export const SpecialistTestSectionGroup5: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['abandoned'] }
+                  args: { sibling: 'testResult', value: ['abandoned'] },
                 },
-                { name: ValidatorNames.MaxLength, args: 500 }
-              ]
+                { name: ValidatorNames.MaxLength, args: 500 },
+              ],
             },
             {
               name: 'testTypeName',
               label: 'Description',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'testNumber',
@@ -104,7 +106,7 @@ export const SpecialistTestSectionGroup5: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testTypeStartTimestamp',
@@ -116,8 +118,8 @@ export const SpecialistTestSectionGroup5: FormNode = {
               validators: [
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
-              ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' },
+              ],
             },
             {
               name: 'testTypeEndTimestamp',
@@ -130,8 +132,8 @@ export const SpecialistTestSectionGroup5: FormNode = {
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
-              ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' },
+              ],
             },
             {
               name: 'prohibitionIssued',
@@ -141,13 +143,13 @@ export const SpecialistTestSectionGroup5: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
+                { value: false, label: 'No' },
               ],
-              validators: [{ name: ValidatorNames.Required }]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              validators: [{ name: ValidatorNames.Required }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

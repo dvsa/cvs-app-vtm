@@ -4,16 +4,15 @@ import { FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: '[app-view-list-item]',
   templateUrl: './view-list-item.component.html',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: ViewListItemComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class ViewListItemComponent extends BaseControlComponent {
   get formNodeViewTypes(): typeof FormNodeViewTypes {

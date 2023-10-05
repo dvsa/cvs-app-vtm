@@ -9,11 +9,11 @@ import { CheckboxComponent } from './checkbox.component';
   template: `<form [formGroup]="form">
     <app-checkbox name="foo" formControlName="foo"></app-checkbox>
   </form> `,
-  styles: []
+  styles: [],
 })
 class HostComponent {
   form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, '')
+    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, ''),
   });
 }
 
@@ -23,7 +23,7 @@ describe('CheckboxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CheckboxComponent]
+      declarations: [CheckboxComponent],
     }).compileComponents();
   });
 

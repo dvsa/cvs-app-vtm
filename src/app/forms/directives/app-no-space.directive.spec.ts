@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl, FormGroup, FormsModule, ReactiveFormsModule,
+} from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoSpaceDirective } from './app-no-space.directive';
 
 @Component({
   template: ` <form [formGroup]="form"><input id="bar" appNoSpace formControlName="foo" /></form>
-    <input id="baz" appNoSpace />`
+    <input id="baz" appNoSpace />`,
 })
 class TestComponent {
   form = new FormGroup({
-    foo: new FormControl()
+    foo: new FormControl(),
   });
 }
 
@@ -23,7 +25,7 @@ describe('NoSpaceDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
-      declarations: [NoSpaceDirective, TestComponent]
+      declarations: [NoSpaceDirective, TestComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestComponent);

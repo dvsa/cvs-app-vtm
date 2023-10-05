@@ -9,11 +9,11 @@ import { TextAreaComponent } from './text-area.component';
   template: `<form [formGroup]="form">
     <app-text-area name="foo" formControlName="foo"></app-text-area>
   </form> `,
-  styles: []
+  styles: [],
 })
 class HostComponent {
   form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, '')
+    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, ''),
   });
 }
 
@@ -23,7 +23,7 @@ describe('TextAreaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TextAreaComponent]
+      declarations: [TextAreaComponent],
     }).compileComponents();
   });
 

@@ -3,8 +3,10 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
 import { TagType } from '@shared/components/tag/tag.component';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
+} from '../../services/dynamic-form.types';
 
 export const HgvTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -19,7 +21,7 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_statusCode',
@@ -27,14 +29,14 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_numberOfWheelsDriven',
       value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'techRecord_regnDate',
@@ -45,7 +47,7 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.DATE,
       validators: [],
       isoDate: false,
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_manufactureYear',
@@ -56,9 +58,9 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
-        { name: ValidatorNames.Min, args: 1000 }
+        { name: ValidatorNames.Min, args: 1000 },
       ],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_noOfAxles',
@@ -68,7 +70,7 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       validators: [],
       disabled: true,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_speedLimiterMrk',
@@ -78,11 +80,11 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Exempt' },
-        { value: false, label: 'Not exempt' }
+        { value: false, label: 'Not exempt' },
       ],
       validators: [],
       class: 'flex--half',
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_tachoExemptMrk',
@@ -92,17 +94,17 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Exempt' },
-        { value: false, label: 'Not exempt' }
+        { value: false, label: 'Not exempt' },
       ],
       validators: [],
-      class: 'flex--half'
+      class: 'flex--half',
     },
     {
       name: 'techRecord_euroStandard',
       label: 'Euro standard',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(EmissionStandard)
+      options: getOptionsFromEnum(EmissionStandard),
     },
     {
       name: 'techRecord_roadFriendly',
@@ -112,8 +114,8 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
-      ]
+        { value: false, label: 'No' },
+      ],
     },
     {
       name: 'techRecord_fuelPropulsionSystem',
@@ -122,7 +124,7 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(FuelTypes),
-      validators: []
+      validators: [],
     },
     {
       name: 'techRecord_drawbarCouplingFitted',
@@ -132,8 +134,8 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
-      ]
+        { value: false, label: 'No' },
+      ],
     },
     {
       name: 'techRecord_vehicleClass_description',
@@ -153,10 +155,10 @@ export const HgvTechRecord: FormNode = {
         { label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
         { label: 'MOT class 4', value: 'MOT class 4' },
         { label: 'MOT class 7', value: 'MOT class 7' },
-        { label: 'MOT class 5', value: 'MOT class 5' }
+        { label: 'MOT class 5', value: 'MOT class 5' },
       ],
       validators: [{ name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_vehicleConfiguration',
@@ -166,7 +168,7 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
       validators: [],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_offRoad',
@@ -176,8 +178,8 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
-      ]
+        { value: false, label: 'No' },
+      ],
     },
     {
       name: 'techRecord_euVehicleCategory',
@@ -187,7 +189,7 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
       options: getOptionsFromEnum(EuVehicleCategories),
-      validators: []
+      validators: [],
     },
     {
       name: 'techRecord_emissionsLimit',
@@ -196,7 +198,7 @@ export const HgvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 99 }]
+      validators: [{ name: ValidatorNames.Max, args: 99 }],
     },
     {
       name: 'techRecord_departmentalVehicleMarker',
@@ -206,8 +208,8 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
-      ]
+        { value: false, label: 'No' },
+      ],
     },
     {
       name: 'techRecord_alterationMarker',
@@ -218,8 +220,8 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
-      ]
-    }
-  ]
+        { value: false, label: 'No' },
+      ],
+    },
+  ],
 };

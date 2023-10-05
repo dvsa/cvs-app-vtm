@@ -1,19 +1,20 @@
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State } from '@store/.';
-import { initialAppState } from '@store/.';
-import { DefectSelectComponent } from '../../components/defect-select/defect-select.component';
-import { DefectComponent } from '../defect/defect.component';
-import { DefectsComponent } from './defects.component';
+import { State, initialAppState } from '@store/.';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DefectsComponent } from './defects.component';
+import { DefectSelectComponent } from '../../components/defect-select/defect-select.component';
+import { DefectComponent } from '../defect/defect.component';
 
 describe('DefectsComponent', () => {
   let component: DefectsComponent;
@@ -25,7 +26,7 @@ describe('DefectsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, HttpClientTestingModule],
       declarations: [DefectComponent, DefectSelectComponent, DefectsComponent, ButtonComponent, TruncatePipe, TagComponent],
-      providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })]
+      providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 

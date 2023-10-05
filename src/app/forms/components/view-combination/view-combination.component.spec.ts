@@ -16,20 +16,20 @@ describe('ViewCombinationComponent', () => {
     options: {
       leftComponentName: 'aName',
       rightComponentName: 'aName2',
-      separator: ' '
+      separator: ' ',
     },
-    children: []
+    children: [],
   };
 
   const formGroup = new FormGroup({
     aName: new CustomFormControl({ name: 'aName', type: FormNodeTypes.CONTROL, children: [] }, ''),
-    aName2: new CustomFormControl({ name: 'aName2', type: FormNodeTypes.CONTROL, children: [] }, '')
+    aName2: new CustomFormControl({ name: 'aName2', type: FormNodeTypes.CONTROL, children: [] }, ''),
   });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ViewCombinationComponent],
-      imports: [SharedModule]
+      imports: [SharedModule],
     }).compileComponents();
   });
 
@@ -46,15 +46,15 @@ describe('ViewCombinationComponent', () => {
   });
 
   it('should find the left and right components to make up the combination', () => {
-    expect(component.leftComponent?.meta.name).toEqual('aName');
-    expect(component.rightComponent?.meta.name).toEqual('aName2');
+    expect(component.leftComponent?.meta.name).toBe('aName');
+    expect(component.rightComponent?.meta.name).toBe('aName2');
   });
 
   it('should render correct values', () => {
     const ddText: HTMLSpanElement = fixture.debugElement.query(By.css('span')).nativeElement;
-    expect(ddText.innerHTML).toEqual('- -');
+    expect(ddText.innerHTML).toBe('- -');
     formGroup.patchValue({ aName: 'Hello', aName2: 'World' });
     fixture.detectChanges();
-    expect(ddText.innerHTML).toEqual('Hello World');
+    expect(ddText.innerHTML).toBe('Hello World');
   });
 });

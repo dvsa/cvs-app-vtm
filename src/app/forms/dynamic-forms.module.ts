@@ -4,6 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
+import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
+import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
+import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
@@ -43,9 +46,6 @@ import { PlatesComponent } from './custom-sections/plates/plates.component';
 import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { NoSpaceDirective } from './directives/app-no-space.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
-import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
-import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
-import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
 
 @NgModule({
   declarations: [
@@ -92,7 +92,7 @@ import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/
     CheckboxComponent,
     ApprovalTypeComponent,
     ApprovalTypeInputComponent,
-    ApprovalTypeFocusNextDirective
+    ApprovalTypeFocusNextDirective,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -135,7 +135,7 @@ import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/
     TrimWhitespaceDirective,
     ApprovalTypeComponent,
     ApprovalTypeInputComponent,
-    ApprovalTypeFocusNextDirective
-  ]
+    ApprovalTypeFocusNextDirective,
+  ],
 })
 export class DynamicFormsModule {}

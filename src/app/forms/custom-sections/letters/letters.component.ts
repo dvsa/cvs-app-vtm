@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { ViewportScroller } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVehicleVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
@@ -15,7 +18,7 @@ import { Subscription, debounceTime } from 'rxjs';
 @Component({
   selector: 'app-letters[techRecord]',
   templateUrl: './letters.component.html',
-  styleUrls: ['./letters.component.scss']
+  styleUrls: ['./letters.component.scss'],
 })
 export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   @Input() techRecord?: TechRecordType<'trl'>;
@@ -25,7 +28,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   form!: CustomFormGroup;
 
-  private _formSubscription = new Subscription();
+  private formSubscription = new Subscription();
 
   constructor(
     private dynamicFormService: DynamicFormService,
@@ -37,7 +40,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
+    this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => this.formChange.emit(event));
   }
 
   ngOnChanges(): void {
@@ -47,7 +50,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this._formSubscription.unsubscribe();
+    this.formSubscription.unsubscribe();
   }
 
   get roles(): typeof Roles {
@@ -61,11 +64,11 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   get letter(): LettersOfAuth | undefined {
     return this.techRecord?.techRecord_letterOfAuth_letterType
       ? {
-        letterType: this.techRecord?.techRecord_letterOfAuth_letterType!,
+        letterType: this.techRecord?.techRecord_letterOfAuth_letterType,
         paragraphId: this.techRecord?.techRecord_letterOfAuth_paragraphId!,
         letterIssuer: this.techRecord?.techRecord_letterOfAuth_letterIssuer!,
         letterDateRequested: this.techRecord?.techRecord_letterOfAuth_letterDateRequested!,
-        letterContents: ''
+        letterContents: '',
       }
       : undefined;
   }
@@ -94,8 +97,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   get correctApprovalType(): boolean {
     return (
-      !!this.techRecord?.techRecord_approvalType &&
-      (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.techRecord.techRecord_approvalType.valueOf())
+      !!this.techRecord?.techRecord_approvalType
+      && (Object.values(LettersIntoAuthApprovalType) as string[]).includes(this.techRecord.techRecord_approvalType.valueOf())
     );
   }
 
@@ -105,7 +108,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     }
     return new Map([
       ['systemNumber', (this.techRecord as TechRecordTypeVehicleVerb<'trl', 'get'>)?.systemNumber],
-      ['vinNumber', this.techRecord?.vin]
+      ['vinNumber', this.techRecord?.vin],
     ]);
   }
 
@@ -121,6 +124,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   generateLetter() {
     this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
-    this.router.navigate(['generate-letter'], { relativeTo: this.route })
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['generate-letter'], { relativeTo: this.route });
   }
 }

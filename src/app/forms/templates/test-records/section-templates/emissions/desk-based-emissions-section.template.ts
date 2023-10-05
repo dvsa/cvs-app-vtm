@@ -3,6 +3,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+
 export const DeskBasedEmissionsSection: FormNode = {
   name: 'deskBasedEmissionsSection',
   label: 'Emissions',
@@ -24,7 +25,7 @@ export const DeskBasedEmissionsSection: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: getOptionsFromEnum(EmissionStandard),
               required: true,
-              value: null
+              value: null,
             },
             {
               name: 'smokeTestKLimitApplied',
@@ -32,7 +33,7 @@ export const DeskBasedEmissionsSection: FormNode = {
               type: FormNodeTypes.CONTROL,
               validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
               required: true,
-              value: null
+              value: null,
             },
             {
               name: 'fuelType',
@@ -46,10 +47,10 @@ export const DeskBasedEmissionsSection: FormNode = {
                 { value: 'gas-lpg', label: 'Gas-LPG' },
                 { value: 'fuel cell', label: 'Fuel cell' },
                 { value: 'petrol', label: 'Petrol' },
-                { value: 'full electric', label: 'Full electric' }
+                { value: 'full electric', label: 'Full electric' },
               ],
               required: true,
-              value: null
+              value: null,
             },
             {
               name: 'modType',
@@ -64,13 +65,13 @@ export const DeskBasedEmissionsSection: FormNode = {
                   options: [
                     { value: 'p', label: 'P' },
                     { value: 'm', label: 'M' },
-                    { value: 'g', label: 'G' }
+                    { value: 'g', label: 'G' },
                   ],
                   validators: [
                     { name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'modificationTypeUsed', value: 'p' } },
                     { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapFitted', value: 'p' } },
-                    { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapSerialNumber', value: 'p' } }
-                  ]
+                    { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapSerialNumber', value: 'p' } },
+                  ],
                 },
                 {
                   name: 'description',
@@ -80,10 +81,10 @@ export const DeskBasedEmissionsSection: FormNode = {
                   options: [
                     { value: 'particulate trap', label: 'Particulate trap' },
                     { value: 'modification or change of engine', label: 'Modification or change of engine' },
-                    { value: 'gas engine', label: 'Gas engine' }
-                  ]
-                }
-              ]
+                    { value: 'gas engine', label: 'Gas engine' },
+                  ],
+                },
+              ],
             },
             {
               name: 'modificationTypeUsed',
@@ -93,15 +94,15 @@ export const DeskBasedEmissionsSection: FormNode = {
               asyncValidators: [
                 {
                   name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals,
-                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'm' }
+                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'm' },
                 },
                 {
                   name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals,
-                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'g' }
-                }
+                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'g' },
+                },
               ],
               required: true,
-              value: null
+              value: null,
             },
             {
               name: 'particulateTrapFitted',
@@ -111,11 +112,11 @@ export const DeskBasedEmissionsSection: FormNode = {
               asyncValidators: [
                 {
                   name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals,
-                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'p' }
-                }
+                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'p' },
+                },
               ],
               required: true,
-              value: null
+              value: null,
             },
             {
               name: 'particulateTrapSerialNumber',
@@ -125,15 +126,15 @@ export const DeskBasedEmissionsSection: FormNode = {
               asyncValidators: [
                 {
                   name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals,
-                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'p' }
-                }
+                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'p' },
+                },
               ],
               required: true,
-              value: null
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              value: null,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

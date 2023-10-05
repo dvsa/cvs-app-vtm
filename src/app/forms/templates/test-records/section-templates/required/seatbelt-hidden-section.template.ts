@@ -1,4 +1,6 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes,
+} from '@forms/services/dynamic-form.types';
 
 export const SeatbeltHiddenSection: FormNode = {
   name: 'requiredSection',
@@ -18,25 +20,25 @@ export const SeatbeltHiddenSection: FormNode = {
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              value: null
+              value: null,
             },
             {
               name: 'numberOfSeatbeltsFitted',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              value: null
+              value: null,
             },
             {
               name: 'lastSeatbeltInstallationCheckDate',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              value: null,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

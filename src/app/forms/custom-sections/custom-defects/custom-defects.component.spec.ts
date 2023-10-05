@@ -19,7 +19,7 @@ describe('CustomDefectsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule],
       declarations: [CustomDefectsComponent, CustomDefectComponent],
-      providers: [DynamicFormService, provideMockStore({})]
+      providers: [DynamicFormService, provideMockStore({})],
     }).compileComponents();
   });
 
@@ -64,35 +64,35 @@ describe('CustomDefectsComponent', () => {
                         {
                           name: 'referenceNumber',
                           label: 'Reference Number',
-                          type: 'control'
+                          type: 'control',
                         },
                         {
                           name: 'defectName',
                           label: 'Defect Name',
-                          type: 'control'
+                          type: 'control',
                         },
                         {
                           name: 'defectNotes',
                           label: 'Defect Notes',
-                          type: 'control'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                          type: 'control',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const data = {
       testTypes: [
         {
-          customDefects: []
-        }
-      ]
+          customDefects: [],
+        },
+      ],
     };
 
     it('should add new custom defect', inject([DynamicFormService], (dfs: DynamicFormService) => {

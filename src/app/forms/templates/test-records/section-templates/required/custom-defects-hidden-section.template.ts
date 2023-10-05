@@ -1,4 +1,6 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes,
+} from '@forms/services/dynamic-form.types';
 
 export const CustomDefectsHiddenSection: FormNode = {
   name: 'requiredSection',
@@ -17,11 +19,11 @@ export const CustomDefectsHiddenSection: FormNode = {
               name: 'customDefects',
               type: FormNodeTypes.ARRAY,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              editType: FormNodeEditTypes.HIDDEN,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

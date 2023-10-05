@@ -1,14 +1,18 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject, takeUntil, debounceTime } from 'rxjs';
 import { DynamicFormService } from '../../services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import {
+  CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes,
+} from '../../services/dynamic-form.types';
 
 @Component({
   selector: 'app-dynamic-form-group',
   templateUrl: './dynamic-form-group.component.html',
   styleUrls: ['./dynamic-form-group.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
   @Input() data: any = {};
@@ -33,7 +37,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
+    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((e) => this.formChange.emit(e));
   }
 
   ngOnDestroy(): void {
@@ -44,12 +48,12 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
   entriesOf(obj: FormGroup): { key: string; value: any }[] {
     return Object.entries(obj).map(([key, value]) => ({
       key,
-      value
+      value,
     }));
   }
 
   trackByFn(index: number, item: any) {
-    return item.hasOwnProperty('key') ? item.key : index;
+    return Object.prototype.hasOwnProperty.call(item, 'key') ? item.key : index;
   }
 
   get formNodeTypes(): typeof FormNodeTypes {

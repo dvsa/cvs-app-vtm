@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 @Component({
   selector: 'app-field-error-message',
   templateUrl: './field-error-message.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FieldErrorMessageComponent {
-  @Input() name: string = '';
+  @Input() name = '';
   @Input() error?: string | null;
 }

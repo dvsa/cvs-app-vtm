@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 
 export const DeskBasedTestSectionGroup4Psv: FormNode = {
   name: 'testSection',
@@ -11,20 +13,20 @@ export const DeskBasedTestSectionGroup4Psv: FormNode = {
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'createdAt',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'testTypes',
@@ -41,21 +43,21 @@ export const DeskBasedTestSectionGroup4Psv: FormNode = {
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
               type: FormNodeTypes.CONTROL,
-              value: 'pass'
+              value: 'pass',
             },
             {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null
+              value: null,
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null
+              value: null,
             },
             {
               name: 'certificateNumber',
@@ -65,7 +67,7 @@ export const DeskBasedTestSectionGroup4Psv: FormNode = {
               editType: FormNodeEditTypes.HIDDEN,
               width: FormNodeWidth.L,
               validators: [{ name: ValidatorNames.Alphanumeric }],
-              value: null
+              value: null,
             },
             {
               name: 'secondaryCertificateNumber',
@@ -74,7 +76,7 @@ export const DeskBasedTestSectionGroup4Psv: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               width: FormNodeWidth.L,
               validators: [{ name: ValidatorNames.Alphanumeric }],
-              value: null
+              value: null,
             },
             {
               name: 'testTypeStartTimestamp',
@@ -82,7 +84,7 @@ export const DeskBasedTestSectionGroup4Psv: FormNode = {
               value: null,
               label: 'Test start date and time',
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testTypeEndTimestamp',
@@ -90,7 +92,7 @@ export const DeskBasedTestSectionGroup4Psv: FormNode = {
               value: null,
               label: 'Test end date and time',
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testExpiryDate',
@@ -98,7 +100,7 @@ export const DeskBasedTestSectionGroup4Psv: FormNode = {
               value: null,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              editType: FormNodeEditTypes.DATE,
             },
             {
               name: 'prohibitionIssued',
@@ -106,13 +108,13 @@ export const DeskBasedTestSectionGroup4Psv: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: null,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              editType: FormNodeEditTypes.HIDDEN,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
@@ -125,14 +127,14 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testTypes',
@@ -149,7 +151,7 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.XS
+              width: FormNodeWidth.XS,
             },
             {
               name: 'testResult',
@@ -159,8 +161,8 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' }
-              ]
+                { value: 'fail', label: 'Fail' },
+              ],
             },
             {
               name: 'certificateNumber',
@@ -169,7 +171,7 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               width: FormNodeWidth.L,
               validators: [{ name: ValidatorNames.Alphanumeric }],
-              value: null
+              value: null,
             },
             {
               name: 'secondaryCertificateNumber',
@@ -178,7 +180,7 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               width: FormNodeWidth.L,
               validators: [{ name: ValidatorNames.Alphanumeric }],
-              value: null
+              value: null,
             },
             {
               name: 'testTypeStartTimestamp',
@@ -186,7 +188,7 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
               value: null,
               label: 'Test start date and time',
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testTypeEndTimestamp',
@@ -194,7 +196,7 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
               value: null,
               label: 'Test end date and time',
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testExpiryDate',
@@ -203,7 +205,7 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.HideIfEmpty, args: 'testAnniversaryDate' }]
+              validators: [{ name: ValidatorNames.HideIfEmpty, args: 'testAnniversaryDate' }],
             },
             {
               name: 'testAnniversaryDate',
@@ -214,12 +216,12 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
               editType: FormNodeEditTypes.DATE,
               validators: [
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

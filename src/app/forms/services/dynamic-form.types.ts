@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { ChangeDetectorRef } from '@angular/core';
 import {
   AbstractControl,
@@ -7,18 +8,22 @@ import {
   FormControl,
   FormControlOptions,
   FormGroup,
-  ValidatorFn
+  ValidatorFn,
 } from '@angular/forms';
 import { Params } from '@angular/router';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
-import { TagTypes } from '@shared/components/tag/tag.component';
+// eslint-disable-next-line import/no-cycle
 import { State } from '@store/.';
-import { Observable, map } from 'rxjs';
-import { DynamicFormService } from './dynamic-form.service';
+import { map, Observable } from 'rxjs';
+import { Params } from '@angular/router';
+import { TagType } from '@shared/components/tag/tag.component';
+import { Dictionary } from '@ngrx/entity';
 import { SpecialRefData } from './multi-options.service';
+// eslint-disable-next-line import/no-cycle
+import { DynamicFormService } from './dynamic-form.service';
 
 export enum FormNodeViewTypes {
   DATE = 'date',
@@ -29,12 +34,12 @@ export enum FormNodeViewTypes {
   SUBHEADING = 'subHeading',
   TIME = 'time',
   VEHICLETYPE = 'vehicleType',
-  VRM = 'vrm'
+  VRM = 'vrm',
 }
 
 export enum TagTypeLabels {
   REQUIRED = 'Required',
-  PLATES = 'Plates'
+  PLATES = 'Plates',
 }
 
 export enum FormNodeTypes {
@@ -45,7 +50,7 @@ export enum FormNodeTypes {
   GROUP = 'group',
   ROOT = 'root',
   SECTION = 'section',
-  TITLE = 'title'
+  TITLE = 'title',
 }
 
 export enum FormNodeEditTypes {
@@ -62,7 +67,7 @@ export enum FormNodeEditTypes {
   SELECT = 'select',
   TEXT = 'text',
   TEXTAREA = 'textarea',
-  APPROVAL_TYPE = 'approvalType'
+  APPROVAL_TYPE = 'approvalType',
 }
 
 export enum FormNodeWidth {
@@ -73,7 +78,7 @@ export enum FormNodeWidth {
   M = 5,
   S = 4,
   XS = 3,
-  XXS = 2
+  XXS = 2,
 }
 
 export interface FormNodeOption<T> {
@@ -155,7 +160,7 @@ export class CustomFormControl extends FormControl implements CustomControl {
     meta: FormNode,
     formState?: any,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null,
-    asyncValidator?: AsyncValidatorOptions
+    asyncValidator?: AsyncValidatorOptions,
   ) {
     super(formState, validatorOrOpts, asyncValidator);
     this.meta = meta;
@@ -187,7 +192,7 @@ export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm 
       [key: string]: AbstractControl;
     },
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorOptions
+    asyncValidator?: AsyncValidatorOptions,
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
@@ -213,7 +218,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     controls: AbstractControl[],
     store: Store<State>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorOptions
+    asyncValidator?: AsyncValidatorOptions,
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
@@ -237,7 +242,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     options?: {
       onlySelf?: boolean;
       emitEvent?: boolean;
-    }
+    },
   ): void {
     if (value) {
       if (value.length !== this.controls.length && this.meta.children && this.meta.children[0].type === 'group') {
@@ -252,33 +257,33 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   }
 }
 
-//TODO: clean this
+// TODO: clean this
 const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any> | Array<[]> => {
-  const cleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
-  Object.keys(form.controls).forEach(key => {
+  const localCleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
+  Object.keys(form.controls).forEach((key) => {
     const control = (form.controls as any)[key];
     if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
-      cleanValue[key] = objectOrNull(control.getCleanValue(control));
+      localCleanValue[key] = objectOrNull(control.getCleanValue(control));
     } else if (control instanceof CustomFormArray) {
-      cleanValue[key] = control.getCleanValue(control);
+      localCleanValue[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl && control.meta.type === FormNodeTypes.CONTROL) {
       if (control.meta.required && control.meta.hide) {
-        pushOrAssignAt(control.meta.value || null, cleanValue, key);
+        pushOrAssignAt(control.meta.value || null, localCleanValue, key);
       } else if (!control.meta.hide) {
-        pushOrAssignAt(control.value, cleanValue, key);
+        pushOrAssignAt(control.value, localCleanValue, key);
       }
     }
   });
 
-  return cleanValue;
+  return localCleanValue;
 };
 
 function objectOrNull(obj: Object) {
-  return Object.values(obj).some(value => undefined !== value) ? obj : null;
+  return Object.values(obj).some((value) => undefined !== value) ? obj : null;
 }
 
-function pushOrAssignAt(value: any, cleanValue: Array<[]> | Record<string, any>, key: string) {
-  if (Array.isArray(cleanValue)) {
-    cleanValue.push(value);
-  } else cleanValue[key] = value;
+function pushOrAssignAt(value: any, localCleanValue: Array<[]> | Record<string, any>, key: string) {
+  if (Array.isArray(localCleanValue)) {
+    localCleanValue.push(value);
+  } else localCleanValue[key] = value;
 }

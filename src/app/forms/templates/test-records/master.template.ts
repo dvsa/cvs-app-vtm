@@ -41,12 +41,16 @@ import { VehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/de
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
-import { DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvGroup1And2And4And5 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
+import {
+  DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvGroup1And2And4And5,
+} from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
 import { DeskBasedVehicleSectionGroup4LGV } from './section-templates/vehicle/desk-based-vehicle-section-group4-lgv.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
 import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/desk-based-vehicle-section-group5-lgv.template';
 import { AmendDeskBasedRequiredHiddenSectionGroup4 } from './section-templates/required/desk-based-required-section-group4-amend.template';
-import { AmendDeskBasedRequiredHiddenSectionGroup4Motorcyle } from './section-templates/required/desk-based-required-hidden-group4-motorcycle-amend.template';
+import {
+  AmendDeskBasedRequiredHiddenSectionGroup4Motorcyle,
+} from './section-templates/required/desk-based-required-hidden-group4-motorcycle-amend.template';
 import { AmendDeskBasedTestSectionLgvGroup5 } from './section-templates/test/desk-based/desk-based-test-section-group5-LGV';
 import { AmendDeskBasedTestSectionGroup4LgvCarMotorcycle } from './section-templates/test/desk-based/desk-based-test-section-group4-lgv-template';
 
@@ -67,7 +71,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
-      required: RequiredSection
+      required: RequiredSection,
     },
     testTypesGroup1: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -78,7 +82,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSection
+      required: RequiredSection,
     },
     testTypesGroup2: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -89,7 +93,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSection
+      required: RequiredSection,
     },
     testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -98,7 +102,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSection
+      required: RequiredSection,
     },
     testTypesGroup15And16: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -108,7 +112,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSection
+      required: RequiredSection,
     },
     testTypesSpecialistGroup1: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -117,7 +121,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSpecialistSection
+      required: RequiredSpecialistSection,
     },
     testTypesSpecialistGroup2: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -127,7 +131,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSpecialistSection
+      required: RequiredSpecialistSection,
     },
     testTypesSpecialistGroup3: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -136,7 +140,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSpecialistSection
+      required: RequiredSpecialistSection,
     },
     testTypesSpecialistGroup4: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -146,7 +150,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSpecialistSection
+      required: RequiredSpecialistSection,
     },
     testTypesSpecialistGroup5: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -155,7 +159,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSpecialistSection
+      required: RequiredSpecialistSection,
     },
     testTypesDeskBasedGroup2: {
       required: DeskBasedRequiredSectionPsv,
@@ -166,7 +170,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup3: {
       required: DeskBasedRequiredSectionPsv,
@@ -176,7 +180,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup4: {
       required: RequiredSection,
@@ -186,7 +190,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup1: {
       required: RequiredSection,
@@ -196,8 +200,8 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
-    }
+      reasonForCreation: reasonForCreationSection,
+    },
   },
   hgv: {
     default: {
@@ -208,7 +212,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -217,7 +221,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup5And13: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -226,7 +230,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup6And11: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -236,7 +240,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup7: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -245,7 +249,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup9And10: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -255,7 +259,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup12And14: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -265,7 +269,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup15And16: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -275,7 +279,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSection
+      required: RequiredSection,
     },
     testTypesSpecialistGroup1: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -284,7 +288,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: SpecialistRequiredSectionHGVTRL
+      required: SpecialistRequiredSectionHGVTRL,
     },
     testTypesSpecialistGroup5: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
@@ -293,7 +297,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
       required: SpecialistRequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      customDefects: CustomDefectsSection,
     },
     testTypesDeskBasedGroup1: {
       required: RequiredSection,
@@ -303,7 +307,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup2: {
       required: DeskBasedRequiredSectionHgvTrl,
@@ -313,7 +317,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup3: {
       required: DeskBasedRequiredSectionHgvTrl,
@@ -323,7 +327,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup4: {
       required: RequiredSection,
@@ -333,7 +337,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup5: {
       required: RequiredSection,
@@ -343,8 +347,8 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
-    }
+      reasonForCreation: reasonForCreationSection,
+    },
   },
   trl: {
     default: {
@@ -354,7 +358,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultTrl,
@@ -363,7 +367,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup5And13: {
       vehicle: VehicleSectionDefaultTrl,
@@ -372,7 +376,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup6And11: {
       vehicle: VehicleSectionDefaultTrl,
@@ -382,7 +386,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup7: {
       vehicle: VehicleSectionDefaultTrl,
@@ -391,7 +395,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup9And10: {
       vehicle: VehicleSectionDefaultTrl,
@@ -401,7 +405,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesGroup12And14: {
       vehicle: VehicleSectionDefaultTrl,
@@ -411,7 +415,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
     },
     testTypesSpecialistGroup1: {
       vehicle: VehicleSectionDefaultTrl,
@@ -420,7 +424,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: SpecialistRequiredSectionHGVTRL
+      required: SpecialistRequiredSectionHGVTRL,
     },
     testTypesSpecialistGroup5: {
       vehicle: VehicleSectionDefaultTrl,
@@ -429,7 +433,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
       required: SpecialistRequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      customDefects: CustomDefectsSection,
     },
     testTypesDeskBasedGroup1: {
       required: RequiredSection,
@@ -439,7 +443,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup2: {
       required: DeskBasedRequiredSectionHgvTrl,
@@ -449,7 +453,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup3: {
       required: DeskBasedRequiredSectionHgvTrl,
@@ -458,7 +462,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       visit: VisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup4: {
       required: RequiredSection,
@@ -468,8 +472,8 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
-    }
+      reasonForCreation: reasonForCreationSection,
+    },
   },
   lgv: {
     default: {
@@ -479,7 +483,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: defectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
       required: SpecialistRequiredSectionLgvCarSmallTrl,
@@ -488,7 +492,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup5: {
       required: SpecialistRequiredSectionLgvCarSmallTrl,
@@ -497,7 +501,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup4: {
       required: AmendDeskBasedRequiredHiddenSectionGroup4,
@@ -505,7 +509,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       test: AmendDeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup5: {
       required: DeskBasedRequiredHiddenSectionGroup5Lgv,
@@ -513,8 +517,8 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       test: AmendDeskBasedTestSectionLgvGroup5,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
-    }
+      reasonForCreation: reasonForCreationSection,
+    },
   },
   car: {
     default: {
@@ -524,7 +528,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: defectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
       required: SpecialistRequiredSectionLgvCarSmallTrl,
@@ -533,7 +537,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup5: {
       required: SpecialistRequiredSectionLgvCarSmallTrl,
@@ -542,7 +546,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup4: {
       required: AmendDeskBasedRequiredHiddenSectionGroup4,
@@ -550,8 +554,8 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       test: AmendDeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
-    }
+      reasonForCreation: reasonForCreationSection,
+    },
   },
   'small trl': {
     default: {
@@ -561,8 +565,8 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: defectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
-    }
+      reasonForCreation: reasonForCreationSection,
+    },
   },
   motorcycle: {
     default: {
@@ -572,7 +576,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       defects: defectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
       required: RequiredSpecialistSectionMotorcycle,
@@ -581,7 +585,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       customDefects: CustomDefectsSection,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup4: {
       required: AmendDeskBasedRequiredHiddenSectionGroup4Motorcyle,
@@ -589,7 +593,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       test: AmendDeskBasedTestSectionGroup4LgvCarMotorcycle,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
-    }
-  }
+      reasonForCreation: reasonForCreationSection,
+    },
+  },
 };
