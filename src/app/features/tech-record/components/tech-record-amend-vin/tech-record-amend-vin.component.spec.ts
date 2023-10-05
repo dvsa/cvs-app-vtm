@@ -16,7 +16,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
+import { amendVin, amendVinSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
 import { AmendVinComponent } from './tech-record-amend-vin.component';
 
@@ -76,12 +76,13 @@ describe('TechRecordChangeVinComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      expectedTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;
+      expectedTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', newVin: 'testVin' } as unknown as TechRecordType<'put'>;
       component.techRecord = expectedTechRecord;
     });
-    it('should dispatch the updateTechRecord action with the new vin', () => {
+    it('should dispatch the amendVin action with the new vin', () => {
       const createdTimestamp = '2022';
       const systemNumber = '123456';
+      const newVin = 'myNewVin';
       store.overrideSelector(selectRouteNestedParams, { createdTimestamp, systemNumber });
       const dispatchSpy = jest.spyOn(store, 'dispatch');
 
@@ -89,7 +90,7 @@ describe('TechRecordChangeVinComponent', () => {
 
       component.handleSubmit();
 
-      expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecord({ systemNumber, createdTimestamp }));
+      expect(dispatchSpy).toHaveBeenCalledWith(amendVin({ newVin, systemNumber, createdTimestamp }));
     });
   });
 
@@ -112,12 +113,12 @@ describe('TechRecordChangeVinComponent', () => {
       expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
     });
 
-    it('should navigate away updateTechRecordSuccess', fakeAsync(() => {
+    it('should navigate away amendVinSuccess', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate');
       jest.spyOn(router, 'navigate').mockImplementation();
 
       actions$.next(
-        updateTechRecordSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'> }),
+        amendVinSuccess({ vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'> }),
       );
       tick();
 
