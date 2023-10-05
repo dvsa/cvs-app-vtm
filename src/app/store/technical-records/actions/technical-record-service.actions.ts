@@ -22,6 +22,7 @@ export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`,
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
 export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord', false);
 
+
 export const updateTechRecord = createAction(
   `${prefix} updateTechRecords`,
   props<{ systemNumber: string; createdTimestamp: string }>(),
