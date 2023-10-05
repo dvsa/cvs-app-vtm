@@ -4,7 +4,7 @@ import {
   fetchTestStations,
   fetchTestStationsFailed,
   fetchTestStationsSuccess,
-  fetchTestStationSuccess
+  fetchTestStationSuccess,
 } from './test-stations.actions';
 
 describe('Test Stations Actions', () => {

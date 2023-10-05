@@ -7,7 +7,7 @@ export const fetchSearchResult = createAction(getTitle(), props<{ searchBy?: SEA
 export const fetchSearchResultSuccess = createAction(getTitle('Success'), props<{ payload: TechRecordSearchSchema[] }>());
 export const fetchSearchResultFailed = createAction(getTitle('Failed'), props<GlobalError>());
 
-function getTitle(suffix: string = ''): string {
-  suffix = suffix ? ' ' + suffix : suffix;
-  return '[API/tech-records search] Search Results ' + suffix;
+function getTitle(suffix = ''): string {
+  suffix = suffix ? ` ${suffix}` : suffix;
+  return `[API/tech-records search] Search Results ${suffix}`;
 }

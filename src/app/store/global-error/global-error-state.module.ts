@@ -5,6 +5,6 @@ import { globalErrorReducer, STORE_FEATURE_GLOBAL_ERROR_KEY } from '@store/globa
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_GLOBAL_ERROR_KEY, globalErrorReducer)]
+  imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_GLOBAL_ERROR_KEY, globalErrorReducer)],
 })
 export class GlobalErrorStateModule {}

@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Defect } from '@models/defects/defect.model';
@@ -14,7 +15,7 @@ import {
   fetchDefects,
   fetchDefectsFailed,
   fetchDefectsSuccess,
-  fetchDefectSuccess
+  fetchDefectSuccess,
 } from '../actions/defects.actions';
 import { DefectsEffects } from './defects.effects';
 
@@ -28,8 +29,8 @@ describe('DefectsEffects', () => {
   const testCases = [
     {
       id: expectedResult.imNumber,
-      payload: [expectedResult]
-    }
+      payload: [expectedResult],
+    },
   ];
 
   beforeEach(() => {
@@ -40,9 +41,9 @@ describe('DefectsEffects', () => {
         provideMockActions(() => actions$),
         DefectsService,
         provideMockStore({
-          initialState: initialAppState
-        })
-      ]
+          initialState: initialAppState,
+        }),
+      ],
     });
 
     effects = TestBed.inject(DefectsEffects);
@@ -56,7 +57,7 @@ describe('DefectsEffects', () => {
   });
 
   describe('fetchDefects$', () => {
-    it.each(testCases)('should return fetchDefectsSuccess action on successfull API call', value => {
+    it.each(testCases)('should return fetchDefectsSuccess action on successfull API call', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { payload } = value;
 
@@ -68,7 +69,7 @@ describe('DefectsEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.fetchDefects$).toBe('---b', {
-          b: fetchDefectsSuccess({ payload })
+          b: fetchDefectsSuccess({ payload }),
         });
       });
     });
@@ -87,10 +88,11 @@ describe('DefectsEffects', () => {
   });
 
   describe('fetchDefect$', () => {
-    it.each(testCases)('should return fetchDefectSuccess action on successfull API call', value => {
+    it.each(testCases)('should return fetchDefectSuccess action on successfull API call', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { id, payload } = value;
-        const entity = payload.find(d => d.imNumber === id)!;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const entity = payload.find((d) => d.imNumber === id)!;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: fetchDefect({ id }) });
@@ -100,12 +102,12 @@ describe('DefectsEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.fetchDefect$).toBe('---b', {
-          b: fetchDefectSuccess({ id, payload: entity })
+          b: fetchDefectSuccess({ id, payload: entity }),
         });
       });
     });
 
-    it.each(testCases)('should return fetchDefectFailed action on API error', value => {
+    it.each(testCases)('should return fetchDefectFailed action on API error', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { id } = value;
         actions$ = hot('-a--', { a: fetchDefect({ id }) });

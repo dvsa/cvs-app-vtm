@@ -6,6 +6,6 @@ import { STORE_FEATURE_ROUTER_STORE_KEY } from './selectors/router.selectors';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_ROUTER_STORE_KEY, routerReducer), StoreRouterConnectingModule.forRoot()]
+  imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_ROUTER_STORE_KEY, routerReducer), StoreRouterConnectingModule.forRoot()],
 })
 export class RouterStateModule {}

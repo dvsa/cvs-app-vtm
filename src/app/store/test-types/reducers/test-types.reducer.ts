@@ -15,9 +15,9 @@ export const initialTestTypeState = testTypesAdapter.getInitialState({ loading: 
 
 export const testTypesReducer = createReducer(
   initialTestTypeState,
-  on(fetchTestTypes, state => ({ ...state, loading: true })),
+  on(fetchTestTypes, (state) => ({ ...state, loading: true })),
   on(fetchTestTypesSuccess, (state, action) => ({ ...testTypesAdapter.setAll(action.payload, state), loading: false })),
-  on(fetchTestTypesFailed, state => ({ ...state, loading: false }))
+  on(fetchTestTypesFailed, (state) => ({ ...state, loading: false })),
 );
 
 export const testTypesFeatureState = createFeatureSelector<TestTypeState>(STORE_FEATURE_TEST_TYPES_KEY);

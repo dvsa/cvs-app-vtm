@@ -7,7 +7,7 @@ import {
   fetchDefects,
   fetchDefectsFailed,
   fetchDefectsSuccess,
-  fetchDefectSuccess
+  fetchDefectSuccess,
 } from '../actions/defects.actions';
 
 export interface DefectsState extends EntityState<Defect> {
@@ -20,7 +20,7 @@ export const STORE_FEATURE_DEFECTS_KEY = 'Defects';
 export const defectsFeatureState = createFeatureSelector<DefectsState>(STORE_FEATURE_DEFECTS_KEY);
 
 export const defectsAdapter: EntityAdapter<Defect> = createEntityAdapter<Defect>({
-  selectId: defect => `${defect.imNumber}: ${defect.imDescription}`
+  selectId: (defect) => `${defect.imNumber}: ${defect.imDescription}`,
 });
 
 export const initialDefectsState = defectsAdapter.getInitialState({ loading: false, error: '' });
@@ -28,11 +28,11 @@ export const initialDefectsState = defectsAdapter.getInitialState({ loading: fal
 export const defectsReducer = createReducer(
   initialDefectsState,
 
-  on(fetchDefects, state => ({ ...state, loading: true })),
+  on(fetchDefects, (state) => ({ ...state, loading: true })),
   on(fetchDefectsSuccess, (state, action) => ({ ...defectsAdapter.setAll(action.payload, state), loading: false })),
-  on(fetchDefectsFailed, state => ({ ...defectsAdapter.setAll([], state), loading: false })),
+  on(fetchDefectsFailed, (state) => ({ ...defectsAdapter.setAll([], state), loading: false })),
 
-  on(fetchDefect, state => ({ ...state, loading: true })),
+  on(fetchDefect, (state) => ({ ...state, loading: true })),
   on(fetchDefectSuccess, (state, action) => ({ ...defectsAdapter.upsertOne(action.payload, state), loading: false })),
-  on(fetchDefectFailed, state => ({ ...defectsAdapter.setAll([], state), loading: false }))
+  on(fetchDefectFailed, (state) => ({ ...defectsAdapter.setAll([], state), loading: false })),
 );
