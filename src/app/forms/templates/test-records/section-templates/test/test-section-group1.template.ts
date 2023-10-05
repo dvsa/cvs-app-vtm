@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const TestSectionGroup1: FormNode = {
@@ -13,7 +15,7 @@ export const TestSectionGroup1: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.DATE,
     },
     {
       name: 'testStartTimestamp',
@@ -22,7 +24,7 @@ export const TestSectionGroup1: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.DATE,
     },
     {
       name: 'testTypes',
@@ -39,7 +41,7 @@ export const TestSectionGroup1: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.XS
+              width: FormNodeWidth.XS,
             },
             {
               name: 'testResult',
@@ -48,9 +50,9 @@ export const TestSectionGroup1: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
               ],
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'reasonForAbandoning',
@@ -62,10 +64,10 @@ export const TestSectionGroup1: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['abandoned'] }
-                }
+                  args: { sibling: 'testResult', value: ['abandoned'] },
+                },
               ],
-              referenceData: SpecialRefData.ReasonsForAbandoning
+              referenceData: SpecialRefData.ReasonsForAbandoning,
             },
             {
               name: 'additionalCommentsForAbandon',
@@ -77,17 +79,17 @@ export const TestSectionGroup1: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['abandoned'] }
+                  args: { sibling: 'testResult', value: ['abandoned'] },
                 },
-                { name: ValidatorNames.MaxLength, args: 500 }
-              ]
+                { name: ValidatorNames.MaxLength, args: 500 },
+              ],
             },
             {
               name: 'testTypeName',
               label: 'Description',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'certificateNumber',
@@ -96,14 +98,14 @@ export const TestSectionGroup1: FormNode = {
               disabled: true,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testNumber',
               label: 'Test Number',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'testExpiryDate',
@@ -115,10 +117,10 @@ export const TestSectionGroup1: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] }
+                  args: { sibling: 'testResult', value: ['pass'] },
                 },
-                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }
-              ]
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+              ],
             },
             {
               name: 'testAnniversaryDate',
@@ -130,11 +132,11 @@ export const TestSectionGroup1: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] }
+                  args: { sibling: 'testResult', value: ['pass'] },
                 },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
-              ]
+                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } },
+              ],
             },
             {
               name: 'testTypeStartTimestamp',
@@ -142,7 +144,7 @@ export const TestSectionGroup1: FormNode = {
               value: '',
               disabled: true,
               label: 'Start time',
-              viewType: FormNodeViewTypes.TIME
+              viewType: FormNodeViewTypes.TIME,
             },
             {
               name: 'testTypeEndTimestamp',
@@ -150,11 +152,11 @@ export const TestSectionGroup1: FormNode = {
               value: '',
               disabled: true,
               label: 'End time',
-              viewType: FormNodeViewTypes.TIME
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              viewType: FormNodeViewTypes.TIME,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

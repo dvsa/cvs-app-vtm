@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 
 export const DeskBasedTestSectionGroup1Psv: FormNode = {
   name: 'testSection',
@@ -11,20 +13,20 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'createdAt',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'testTypes',
@@ -41,21 +43,21 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
               type: FormNodeTypes.CONTROL,
-              value: 'pass'
+              value: 'pass',
             },
             {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null
+              value: null,
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null
+              value: null,
             },
             {
               name: 'certificateNumber',
@@ -66,11 +68,11 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
                 { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] }
-                }
+                  args: { sibling: 'testResult', value: ['pass'] },
+                },
               ],
               required: true,
-              value: null
+              value: null,
             },
 
             {
@@ -79,7 +81,7 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
               value: null,
               label: 'Test start date',
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testTypeEndTimestamp',
@@ -87,7 +89,7 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
               value: null,
               label: 'Test end date',
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testExpiryDate',
@@ -95,7 +97,7 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
               value: null,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              editType: FormNodeEditTypes.DATE,
             },
             {
               name: 'prohibitionIssued',
@@ -103,13 +105,13 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: null,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              editType: FormNodeEditTypes.HIDDEN,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 export const AmendDeskBasedTestSectionGroup1Psv: FormNode = {
@@ -122,14 +124,14 @@ export const AmendDeskBasedTestSectionGroup1Psv: FormNode = {
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testTypes',
@@ -146,7 +148,7 @@ export const AmendDeskBasedTestSectionGroup1Psv: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.XS
+              width: FormNodeWidth.XS,
             },
             {
               name: 'testResult',
@@ -156,8 +158,8 @@ export const AmendDeskBasedTestSectionGroup1Psv: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' }
-              ]
+                { value: 'fail', label: 'Fail' },
+              ],
             },
             {
               name: 'certificateNumber',
@@ -168,11 +170,11 @@ export const AmendDeskBasedTestSectionGroup1Psv: FormNode = {
                 { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] }
-                }
+                  args: { sibling: 'testResult', value: ['pass'] },
+                },
               ],
               required: true,
-              value: null
+              value: null,
             },
             {
               name: 'testTypeStartTimestamp',
@@ -180,7 +182,7 @@ export const AmendDeskBasedTestSectionGroup1Psv: FormNode = {
               value: null,
               label: 'Test start date',
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testTypeEndTimestamp',
@@ -188,7 +190,7 @@ export const AmendDeskBasedTestSectionGroup1Psv: FormNode = {
               value: null,
               label: 'Test end date',
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testExpiryDate',
@@ -197,7 +199,7 @@ export const AmendDeskBasedTestSectionGroup1Psv: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.HideIfEmpty, args: 'testAnniversaryDate' }]
+              validators: [{ name: ValidatorNames.HideIfEmpty, args: 'testAnniversaryDate' }],
             },
             {
               name: 'testAnniversaryDate',
@@ -208,12 +210,12 @@ export const AmendDeskBasedTestSectionGroup1Psv: FormNode = {
               editType: FormNodeEditTypes.DATE,
               validators: [
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

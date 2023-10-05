@@ -30,9 +30,9 @@ describe('SwitchableInputComponent', () => {
         SuffixDirective,
         SwitchableInputComponent,
         TextAreaComponent,
-        TextInputComponent
+        TextInputComponent,
       ],
-      imports: [FormsModule, ReactiveFormsModule]
+      imports: [FormsModule, ReactiveFormsModule],
     }).compileComponents();
   });
 

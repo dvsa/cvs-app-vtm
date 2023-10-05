@@ -10,29 +10,29 @@ export const LettersTemplate: FormNode = {
       name: 'techRecord_letterOfAuth_letterIssuer',
       label: 'Letter issuer',
       type: FormNodeTypes.CONTROL,
-      options: LETTER_TYPES
+      options: LETTER_TYPES,
     },
     {
       name: 'techRecord_letterOfAuth_letterType',
       label: 'Type of letter',
       type: FormNodeTypes.CONTROL,
-      options: LETTER_TYPES
+      options: LETTER_TYPES,
     },
     {
       name: 'techRecord_letterOfAuth_letterDateRequested',
       label: 'Date requested',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
     },
     {
       name: 'techRecord_letterOfAuth_paragraphId',
       label: 'Paragraph ID',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
     },
     {
       name: 'techRecord_letterOfAuth_letterContents',
       label: 'Content',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
-    }
-  ]
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+  ],
 };

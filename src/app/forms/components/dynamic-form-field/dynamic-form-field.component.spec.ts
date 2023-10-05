@@ -8,8 +8,8 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { TestStationsService } from '@services/test-stations/test-stations.service';
 import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
-import { DynamicFormFieldComponent } from './dynamic-form-field.component';
 import { UserService } from '@services/user-service/user-service';
+import { DynamicFormFieldComponent } from './dynamic-form-field.component';
 
 describe('DynamicFormFieldComponent', () => {
   let component: DynamicFormFieldComponent;
@@ -24,8 +24,8 @@ describe('DynamicFormFieldComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
         TestStationsService,
-        { provide: UserService, useValue: {} }
-      ]
+        { provide: UserService, useValue: {} },
+      ],
     }).compileComponents();
     service = TestBed.inject(ReferenceDataService);
   });
@@ -39,8 +39,8 @@ describe('DynamicFormFieldComponent', () => {
       value: new CustomFormControl({
         name: 'test',
         type: FormNodeTypes.CONTROL,
-        referenceData: ReferenceDataResourceType.CountryOfRegistration
-      })
+        referenceData: ReferenceDataResourceType.CountryOfRegistration,
+      }),
     };
   });
 
@@ -53,23 +53,23 @@ describe('DynamicFormFieldComponent', () => {
     expect(options).toBeTruthy();
   });
 
-  it('should return the metadata options', done => {
+  it('should return the metadata options', (done) => {
     component.control = {
       key: 'birthday',
-      value: new CustomFormControl({ name: 'test', type: FormNodeTypes.CONTROL, options: [{ value: '1', label: 'test' }] })
+      value: new CustomFormControl({ name: 'test', type: FormNodeTypes.CONTROL, options: [{ value: '1', label: 'test' }] }),
     };
     component.form = new FormGroup({});
-    component.options$.subscribe(value => {
+    component.options$.subscribe((value) => {
       expect(value).toBeTruthy();
       expect(value).toEqual([{ value: '1', label: 'test' }]);
       done();
     });
   });
 
-  it('should return the reference data options', done => {
+  it('should return the reference data options', (done) => {
     service.getAll$ = jest.fn().mockReturnValue(of([{ resourceKey: '1', description: 'test' }]));
     component.form = new FormGroup({});
-    component.options$.subscribe(value => {
+    component.options$.subscribe((value) => {
       expect(value).toBeTruthy();
       expect(value).toEqual([{ value: '1', label: 'test' }]);
       done();
@@ -79,6 +79,7 @@ describe('DynamicFormFieldComponent', () => {
   it('should fetch the reference data on init', () => {
     service.loadReferenceData = jest.fn();
     component.ngAfterContentInit();
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(service.loadReferenceData).toHaveBeenCalled();
   });
 });

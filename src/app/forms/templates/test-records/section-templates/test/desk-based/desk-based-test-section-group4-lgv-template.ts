@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 
 export const DeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
   name: 'testSection',
@@ -11,14 +13,14 @@ export const DeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testTypes',
@@ -37,8 +39,8 @@ export const DeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' }
-              ]
+                { value: 'fail', label: 'Fail' },
+              ],
             },
             {
               name: 'certificateNumber',
@@ -47,7 +49,7 @@ export const DeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               width: FormNodeWidth.L,
               validators: [{ name: ValidatorNames.Alphanumeric }, { name: ValidatorNames.Required }],
-              value: null
+              value: null,
             },
             {
               name: 'testTypeStartTimestamp',
@@ -59,8 +61,8 @@ export const DeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               validators: [
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
-              ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' },
+              ],
             },
             {
               name: 'testTypeEndTimestamp',
@@ -73,14 +75,14 @@ export const DeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
@@ -94,7 +96,7 @@ export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
       type: FormNodeTypes.CONTROL,
       value: '',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testEndTimestamp',
@@ -102,13 +104,13 @@ export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
       label: 'Test end date',
       value: '',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'createdAt',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'testTypes',
@@ -124,7 +126,7 @@ export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.XS
+              width: FormNodeWidth.XS,
             },
             {
               name: 'testNumber',
@@ -132,7 +134,7 @@ export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.L
+              width: FormNodeWidth.L,
             },
             {
               name: 'testResult',
@@ -142,8 +144,8 @@ export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' }
-              ]
+                { value: 'fail', label: 'Fail' },
+              ],
             },
             {
               name: 'certificateNumber',
@@ -152,7 +154,7 @@ export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               value: '',
               validators: [{ name: ValidatorNames.Alphanumeric }, { name: ValidatorNames.Required }],
               width: FormNodeWidth.L,
-              required: true
+              required: true,
             },
             {
               name: 'testTypeStartTimestamp',
@@ -164,8 +166,8 @@ export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               validators: [
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
-              ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' },
+              ],
             },
             {
               name: 'testTypeEndTimestamp',
@@ -178,12 +180,12 @@ export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
@@ -15,7 +17,9 @@ import { SharedModule } from '@shared/shared.module';
 import { defects, selectByImNumber } from '@store/defects';
 import { initialAppState, State } from '@store/index';
 import { selectRouteParams } from '@store/router/selectors/router.selectors';
-import { createDefect, removeDefect, toEditOrNotToEdit, updateDefect } from '@store/test-records';
+import {
+  createDefect, removeDefect, toEditOrNotToEdit, updateDefect,
+} from '@store/test-records';
 import { DefectComponent } from './defect.component';
 
 describe('DefectComponent', () => {
@@ -31,40 +35,40 @@ describe('DefectComponent', () => {
     deficiencyText: 'missing.',
     forVehicleType: [VehicleTypes.PSV],
     ref: '1.1.a',
-    stdForProhibition: false
+    stdForProhibition: false,
   };
 
   const item: Item = {
     deficiencies: [deficiency],
     forVehicleType: [VehicleTypes.PSV],
     itemDescription: 'A registration plate:',
-    itemNumber: 1
+    itemNumber: 1,
   };
 
   const defect: Defect = {
     additionalInfo: {
       [VehicleTypes.PSV]: {
         location: {
-          longitudinal: ['front', 'rear']
+          longitudinal: ['front', 'rear'],
         },
-        notes: true
-      }
+        notes: true,
+      },
     },
     forVehicleType: [VehicleTypes.PSV],
     imDescription: 'Registration Plate',
     imNumber: 1,
-    items: [item]
+    items: [item],
   };
 
   const fakeActivatedRoute = {
-    snapshot: { data: { key: 'value' } }
+    snapshot: { data: { key: 'value' } },
   } as any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [],
       imports: [SharedModule, DynamicFormsModule, RouterTestingModule, HttpClientTestingModule],
-      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }, provideMockStore({ initialState: initialAppState })]
+      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }, provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
 
     router = TestBed.inject(Router);
@@ -91,21 +95,21 @@ describe('DefectComponent', () => {
       store.overrideSelector(selectRouteParams, { defectIndex: '0' });
       store.overrideSelector(toEditOrNotToEdit, {
         vehicleType: VehicleTypes.PSV,
-        testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }]
+        testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
       } as TestResultModel);
       store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), { imNumber: 1 } as Defect);
       tick();
       fixture.detectChanges();
 
       component.initializeInfoDictionary(defect);
-      expect(component.includeNotes).toEqual(true);
+      expect(component.includeNotes).toBe(true);
     }));
 
     it('should initialize info dictionary to the longitude', fakeAsync(() => {
       store.overrideSelector(selectRouteParams, { defectIndex: '0' });
       store.overrideSelector(toEditOrNotToEdit, {
         vehicleType: VehicleTypes.PSV,
-        testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }]
+        testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
       } as TestResultModel);
       store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), { imNumber: 1 } as Defect);
       tick();
@@ -116,13 +120,13 @@ describe('DefectComponent', () => {
         longitudinal: [
           {
             label: 'Front',
-            value: 'front'
+            value: 'front',
           },
           {
             label: 'Rear',
-            value: 'rear'
-          }
-        ]
+            value: 'rear',
+          },
+        ],
       });
     }));
   });
@@ -132,7 +136,7 @@ describe('DefectComponent', () => {
       store.overrideSelector(selectRouteParams, { defectIndex: '0' });
       store.overrideSelector(toEditOrNotToEdit, {
         vehicleType: VehicleTypes.PSV,
-        testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }]
+        testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
       } as TestResultModel);
       store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), { imNumber: 1 } as Defect);
       tick();
@@ -145,7 +149,7 @@ describe('DefectComponent', () => {
       store.overrideSelector(selectRouteParams, { ref: '1.1.a' });
       store.overrideSelector(toEditOrNotToEdit, {
         vehicleType: VehicleTypes.PSV,
-        testTypes: [{ defects: [{ imNumber: 1, imDescription: 'desc', deficiencyCategory: deficiencyCategory.Major }] }]
+        testTypes: [{ defects: [{ imNumber: 1, imDescription: 'desc', deficiencyCategory: deficiencyCategory.Major }] }],
       } as TestResultModel);
       store.overrideSelector(defects, [defect]);
       tick();
@@ -158,38 +162,38 @@ describe('DefectComponent', () => {
   describe('should get isDangerous', () => {
     it('should return true when defect is dangerous', () => {
       component.defect = { deficiencyCategory: deficiencyCategory.Dangerous };
-      expect(component.isDangerous).toEqual(true);
+      expect(component.isDangerous).toBe(true);
     });
     it('should return false when defect is advisory', () => {
       component.defect = { deficiencyCategory: deficiencyCategory.Advisory };
-      expect(component.isDangerous).toEqual(false);
+      expect(component.isDangerous).toBe(false);
     });
     it('should return false when defect is major', () => {
       component.defect = { deficiencyCategory: deficiencyCategory.Major };
-      expect(component.isDangerous).toEqual(false);
+      expect(component.isDangerous).toBe(false);
     });
     it('should return false when defect is minor', () => {
       component.defect = { deficiencyCategory: deficiencyCategory.Minor };
-      expect(component.isDangerous).toEqual(false);
+      expect(component.isDangerous).toBe(false);
     });
   });
 
   describe('should get isAdvisory', () => {
     it('should return true when defect is advisory', () => {
       component.defect = { deficiencyCategory: deficiencyCategory.Advisory };
-      expect(component.isAdvisory).toEqual(true);
+      expect(component.isAdvisory).toBe(true);
     });
     it('should return false when defect is dangerous', () => {
       component.defect = { deficiencyCategory: deficiencyCategory.Dangerous };
-      expect(component.isAdvisory).toEqual(false);
+      expect(component.isAdvisory).toBe(false);
     });
     it('should return false when defect is major', () => {
       component.defect = { deficiencyCategory: deficiencyCategory.Major };
-      expect(component.isAdvisory).toEqual(false);
+      expect(component.isAdvisory).toBe(false);
     });
     it('should return false when defect is minor', () => {
       component.defect = { deficiencyCategory: deficiencyCategory.Minor };
-      expect(component.isAdvisory).toEqual(false);
+      expect(component.isAdvisory).toBe(false);
     });
   });
 
@@ -198,7 +202,7 @@ describe('DefectComponent', () => {
       store.overrideSelector(selectRouteParams, { ref: '1.1.a' });
       store.overrideSelector(toEditOrNotToEdit, {
         vehicleType: VehicleTypes.PSV,
-        testTypes: [{ defects: [{ imNumber: 1, imDescription: 'desc', deficiencyCategory: deficiencyCategory.Major }] }]
+        testTypes: [{ defects: [{ imNumber: 1, imDescription: 'desc', deficiencyCategory: deficiencyCategory.Major }] }],
       } as TestResultModel);
       store.overrideSelector(defects, [defect]);
       tick();
@@ -214,7 +218,7 @@ describe('DefectComponent', () => {
       store.overrideSelector(selectRouteParams, { defectIndex: '0' });
       store.overrideSelector(toEditOrNotToEdit, {
         vehicleType: VehicleTypes.PSV,
-        testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }]
+        testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
       } as TestResultModel);
       store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), { imNumber: 1 } as Defect);
       tick();
@@ -224,7 +228,7 @@ describe('DefectComponent', () => {
       component.handleSubmit();
 
       expect(dispatchSpy).toHaveBeenCalledWith(
-        updateDefect({ defect: component.form.getCleanValue(component.form) as TestResultDefect, index: component.index })
+        updateDefect({ defect: component.form.getCleanValue(component.form) as TestResultDefect, index: component.index }),
       );
     }));
 
@@ -232,7 +236,7 @@ describe('DefectComponent', () => {
       store.overrideSelector(selectRouteParams, { defectIndex: '0' });
       store.overrideSelector(toEditOrNotToEdit, {
         vehicleType: VehicleTypes.PSV,
-        testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }]
+        testTypes: [{ defects: [{ imNumber: 1, deficiencyCategory: deficiencyCategory.Major }] }],
       } as TestResultModel);
       store.overrideSelector(selectByImNumber(1, VehicleTypes.PSV), { imNumber: 1 } as Defect);
       tick();

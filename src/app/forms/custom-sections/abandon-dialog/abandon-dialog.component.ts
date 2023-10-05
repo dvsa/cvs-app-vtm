@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnInit, Output, ViewChild,
+} from '@angular/core';
 import { TEST_TYPES_GROUP5_13 } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
@@ -32,7 +34,7 @@ const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialR
               delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' }, // the space is important here
               required: true,
               referenceData: ReasonsForAbandoning,
-              validators: [{ name: ValidatorNames.Required }]
+              validators: [{ name: ValidatorNames.Required }],
             },
             {
               name: 'additionalCommentsForAbandon',
@@ -40,18 +42,18 @@ const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialR
               required: true,
               label: 'Additional notes as to why this test was abandoned',
               editType: FormNodeEditTypes.TEXTAREA,
-              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 500 }]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 500 }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 });
 
 @Component({
   selector: 'app-abandon-dialog',
-  templateUrl: './abandon-dialog.component.html'
+  templateUrl: './abandon-dialog.component.html',
 })
 export class AbandonDialogComponent extends BaseDialogComponent implements OnInit {
   @ViewChild(DynamicFormGroupComponent) dynamicFormGroup?: DynamicFormGroupComponent;
@@ -67,15 +69,14 @@ export class AbandonDialogComponent extends BaseDialogComponent implements OnIni
 
     if (TEST_TYPES_GROUP5_13.includes(testTypeId)) {
       return ABANDON_FORM(ReferenceDataResourceType.TirReasonsForAbandoning);
-    } else if (TestRecordsService.getTestTypeGroup(testTypeId)?.includes('Specialist')) {
+    } if (TestRecordsService.getTestTypeGroup(testTypeId)?.includes('Specialist')) {
       return ABANDON_FORM(ReferenceDataResourceType.SpecialistReasonsForAbandoning);
     }
     return ABANDON_FORM(SpecialRefData.ReasonsForAbandoning);
   }
 
   handleFormChange(event: any) {
-    let latestTest: any;
-    latestTest = merge(latestTest, this.testResult, event);
-    latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
+    const latestTest = merge(this.testResult, event);
+    if (latestTest && Object.keys(latestTest).length > 0) this.newTestResult.emit(latestTest as TestResultModel);
   }
 }

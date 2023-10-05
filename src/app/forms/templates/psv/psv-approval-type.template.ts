@@ -1,7 +1,9 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { approvalType } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '../../services/dynamic-form.types';
 
 export const PsvTypeApprovalTemplate: FormNode = {
   name: 'approvalSection',
@@ -14,7 +16,7 @@ export const PsvTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(approvalType),
-      validators: []
+      validators: [],
     },
     {
       name: 'techRecord_approvalTypeNumber',
@@ -39,32 +41,32 @@ export const PsvTypeApprovalTemplate: FormNode = {
               'Prov.GB WVTA',
               'Small series',
               'IVA – VCA',
-              'IVA – DVSA/NI'
-            ]
-          }
-        }
-      ]
+              'IVA – DVSA/NI',
+            ],
+          },
+        },
+      ],
     },
     {
       name: 'techRecord_ntaNumber',
       label: 'National type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 40 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 40 }],
     },
     {
       name: 'techRecord_coifSerialNumber',
       label: 'COIF Serial number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.M,
-      validators: [{ name: ValidatorNames.MaxLength, args: 8 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 8 }],
     },
     {
       name: 'techRecord_coifCertifierName',
       label: 'COIF Certifier name',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 20 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 20 }],
     },
     {
       name: 'techRecord_coifDate',
@@ -74,21 +76,21 @@ export const PsvTypeApprovalTemplate: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       validators: [],
-      isoDate: false
+      isoDate: false,
     },
     {
       name: 'techRecord_variantNumber',
       label: 'Variant number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
     },
     {
       name: 'techRecord_variantVersionNumber',
       label: 'Variant version number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 35 }]
-    }
-  ]
+      validators: [{ name: ValidatorNames.MaxLength, args: 35 }],
+    },
+  ],
 };

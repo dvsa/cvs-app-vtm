@@ -1,5 +1,6 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Condition, operatorEnum } from '@forms/models/condition.model';
+// eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -10,7 +11,9 @@ import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
-import { Observable, catchError, map, of, take, tap } from 'rxjs';
+import {
+  Observable, catchError, map, of, take, tap,
+} from 'rxjs';
 
 export class CustomAsyncValidators {
   static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -26,31 +29,34 @@ export class CustomAsyncValidators {
       store.pipe(
         take(1),
         select(testResultInEdit),
-        map(testResult => {
-          const hasCustomDefects = testResult?.testTypes?.some(testType => testType?.customDefects && testType.customDefects.length > 0);
+        map((testResult) => {
+          const hasCustomDefects = testResult?.testTypes?.some((testType) => testType?.customDefects && testType.customDefects.length > 0);
 
           if (
-            control.value === 'pass' &&
-            hasCustomDefects &&
-            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
+            control.value === 'pass'
+            && hasCustomDefects
+            && (!limitToResult || Array.isArray(limitToResult)
+              ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
           ) {
             return { invalidTestResult: { message: 'Cannot pass test when defects are present' } };
-          } else if (
-            control.value === 'fail' &&
-            !hasCustomDefects &&
-            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
+          } if (
+            control.value === 'fail'
+            && !hasCustomDefects
+            && (!limitToResult || Array.isArray(limitToResult)
+              ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
           ) {
             return { invalidTestResult: { message: 'Cannot fail test when no defects are present' } };
-          } else if (
-            control.value === 'prs' &&
-            !hasCustomDefects &&
-            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
+          } if (
+            control.value === 'prs'
+            && !hasCustomDefects
+            && (!limitToResult || Array.isArray(limitToResult)
+              ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
           ) {
             return { invalidTestResult: { message: 'Cannot mark test as PRS when no defects are present' } };
-          } else {
-            return null;
           }
-        })
+          return null;
+
+        }),
       );
   }
 
@@ -59,7 +65,7 @@ export class CustomAsyncValidators {
       return store.pipe(
         select(getTestStationFromProperty((control as CustomFormControl).meta.name as keyof TestStation, control.value)),
         take(1),
-        tap(stations => {
+        tap((stations) => {
           const testStationName = control.parent?.get('testStationName');
           const testStationType = control.parent?.get('testStationType');
           if (stations) {
@@ -68,7 +74,7 @@ export class CustomAsyncValidators {
           }
         }),
         map(() => null),
-        catchError(() => of(null))
+        catchError(() => of(null)),
       );
     };
   }
@@ -78,7 +84,7 @@ export class CustomAsyncValidators {
       return store.pipe(
         select(selectUserByResourceKey(control.value)),
         take(1),
-        tap(user => {
+        tap((user) => {
           const testerName = control.parent?.get('testerName');
           const testerEmail = control.parent?.get('testerEmailAddress');
           if (user && testerName && testerEmail) {
@@ -87,7 +93,7 @@ export class CustomAsyncValidators {
           }
         }),
         map(() => null),
-        catchError(() => of(null))
+        catchError(() => of(null)),
       );
     };
   }
@@ -97,17 +103,17 @@ export class CustomAsyncValidators {
       store.pipe(
         take(1),
         select(testResultInEdit),
-        map(testResult => {
+        map((testResult) => {
           const currentResult = testResult?.testTypes[0].testResult;
           if (
-            (Array.isArray(result) ? currentResult && !result.includes(currentResult) : currentResult !== result) &&
-            (control.value == null || control.value === '')
+            (Array.isArray(result) ? currentResult && !result.includes(currentResult) : currentResult !== result)
+            && (control.value == null || control.value === '')
           ) {
             if (Array.isArray(result)) return { requiredIfNotResult: true };
-            else return { [`requiredIfNot${result}`]: true };
+            return { [`requiredIfNot${result}`]: true };
           }
           return null;
-        })
+        }),
       );
   }
 
@@ -123,13 +129,13 @@ export class CustomAsyncValidators {
     store: Store<State>,
     result: resultOfTestEnum | resultOfTestEnum[],
     sibling: string,
-    value: any
+    value: any,
   ): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
         take(1),
         select(testResultInEdit),
-        map(testResult => {
+        map((testResult) => {
           if (control?.parent) {
             const siblingControl = control.parent.get(sibling) as CustomFormControl;
             const siblingValue = siblingControl.value;
@@ -138,16 +144,16 @@ export class CustomAsyncValidators {
             const currentResult = testResult?.testTypes[0].testResult;
 
             if (
-              (Array.isArray(result) ? currentResult && !result.includes(currentResult) : currentResult !== result) &&
-              newValue &&
-              (control.value === null || control.value === undefined || control.value === '')
+              (Array.isArray(result) ? currentResult && !result.includes(currentResult) : currentResult !== result)
+              && newValue
+              && (control.value === null || control.value === undefined || control.value === '')
             ) {
               return { requiredIfNotResultAndSiblingEquals: true };
             }
           }
 
           return null;
-        })
+        }),
       );
   }
 
@@ -156,7 +162,7 @@ export class CustomAsyncValidators {
       store.pipe(
         take(1),
         select(testResultInEdit),
-        map(testResult => {
+        map((testResult) => {
           if (!testResult || !control?.parent) {
             return null;
           }
@@ -168,7 +174,7 @@ export class CustomAsyncValidators {
           siblingControl.meta.hide = conditionsPassed && (Array.isArray(value) ? value.includes(control.value) : control.value === value);
 
           return null;
-        })
+        }),
       );
   }
 
@@ -177,12 +183,13 @@ export class CustomAsyncValidators {
       return CustomAsyncValidators.checkCondition(testResult, conditions);
     }
 
-    return conditions.every(condition => CustomAsyncValidators.checkCondition(testResult, condition));
+    return conditions.every((condition) => CustomAsyncValidators.checkCondition(testResult, condition));
   }
 
   private static checkCondition(testResult: TestResultModel, condition: Condition) {
     const { field, operator, value } = condition;
 
+    // eslint-disable-next-line no-prototype-builtins
     const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
       ? (testResult.testTypes[0] as any)[field]
       : (testResult as any)[field as keyof TestResultModel];

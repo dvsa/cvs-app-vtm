@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl, FormGroup, FormsModule, ReactiveFormsModule,
+} from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ToUppercaseDirective } from './app-to-uppercase.directive';
 
 @Component({
-  template: ` <form [formGroup]="form"><input appToUppercase formControlName="foo" /></form>`
+  template: ' <form [formGroup]="form"><input appToUppercase formControlName="foo" /></form>',
 })
 class TestComponent {
   form = new FormGroup({
-    foo: new FormControl()
+    foo: new FormControl(),
   });
 }
 
@@ -21,7 +23,7 @@ describe('ToUppercaseDirective', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
-      declarations: [ToUppercaseDirective, TestComponent]
+      declarations: [ToUppercaseDirective, TestComponent],
     }).createComponent(TestComponent);
     fixture.detectChanges();
 

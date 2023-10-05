@@ -28,20 +28,20 @@ describe('LettersComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of([Roles.TechRecordAmend])
-          }
+            roles$: of([Roles.TechRecordAmend]),
+          },
         },
         {
           provide: ActivatedRoute,
           useValue: {
-            useValue: { params: of([{ id: 1 }]) }
-          }
+            useValue: { params: of([{ id: 1 }]) },
+          },
         },
         {
           provide: APP_BASE_HREF,
-          useValue: '/'
-        }
-      ]
+          useValue: '/',
+        },
+      ],
     }).compileComponents();
   });
 
@@ -52,7 +52,7 @@ describe('LettersComponent', () => {
       systemNumber: 'foo',
       createdTimestamp: 'bar',
       vin: 'testVin',
-      techRecord_statusCode: 'current'
+      techRecord_statusCode: 'current',
     } as TechRecordType<'trl'>;
     fixture.detectChanges();
   });
@@ -78,14 +78,14 @@ describe('LettersComponent', () => {
       (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_paragraphId = 3;
       (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterIssuer = 'issuer';
       expect(component.letter).toBeTruthy();
-      expect(component.letter!.paragraphId).toEqual(3);
-      expect(component.letter!.letterIssuer).toEqual('issuer');
+      expect(component.letter!.paragraphId).toBe(3);
+      expect(component.letter!.letterIssuer).toBe('issuer');
     });
 
     it('should return undefined if it does not exist', () => {
       (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterType = undefined;
 
-      expect(component.letter).toBe(undefined);
+      expect(component.letter).toBeUndefined();
     });
   });
 });

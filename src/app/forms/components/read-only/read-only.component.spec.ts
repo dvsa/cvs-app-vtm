@@ -11,11 +11,11 @@ import { ReadOnlyComponent } from './read-only.component';
   template: `<form [formGroup]="form">
     <app-read-only name="foo" label="Foo" formControlName="foo"></app-read-only>
   </form> `,
-  styles: []
+  styles: [],
 })
 class HostComponent {
   form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, '')
+    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, ''),
   });
 }
 
@@ -26,7 +26,7 @@ describe('ReadOnlyComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BaseControlComponent, HostComponent, ReadOnlyComponent],
-      imports: [FormsModule, ReactiveFormsModule, SharedModule]
+      imports: [FormsModule, ReactiveFormsModule, SharedModule],
     }).compileComponents();
   });
 
