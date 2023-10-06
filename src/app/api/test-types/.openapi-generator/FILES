@@ -1,0 +1,17 @@
+.gitignore
+.openapi-generator-ignore
+README.md
+api.module.ts
+api/api.ts
+api/testTypes.service.ts
+configuration.ts
+encoder.ts
+git_push.sh
+index.ts
+model/models.ts
+model/testType.ts
+model/testTypeCategory.ts
+model/testTypeCategoryNextTestTypesOrCategoriesInner.ts
+model/testTypeInfo.ts
+param.ts
+variables.ts
