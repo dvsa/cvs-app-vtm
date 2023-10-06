@@ -278,6 +278,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
         if (!approvalTypeNumber1 && !approvalTypeNumber2 && !approvalTypeNumber3 && !approvalTypeNumber4) {
           this.onChange(null);
         } else {
+          console.log(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
           this.onChange(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
         }
       },
@@ -386,6 +387,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
       case 'ECSSTA':
         return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
+          // eslint-disable-next-line max-len
           ? `e${techRecord_approvalTypeNumber1}*KS${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
           : null;
 
@@ -396,6 +398,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
       case 'UKNI WVTA':
         return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
+          // eslint-disable-next-line max-len
           ? `${techRecord_approvalTypeNumber1}11*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
           : null;
 
