@@ -1,4 +1,6 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes,
+} from '@forms/services/dynamic-form.types';
 
 export const SpecialistRequiredSectionLgvCarSmallTrl: FormNode = {
   name: 'requiredSection',
@@ -8,55 +10,55 @@ export const SpecialistRequiredSectionLgvCarSmallTrl: FormNode = {
       name: 'testResultId',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'vehicleType',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'contingencyTestNumber',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'typeOfTest',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'source',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'testStatus',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'systemNumber',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'testerStaffId',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'vehicleClass',
@@ -70,16 +72,16 @@ export const SpecialistRequiredSectionLgvCarSmallTrl: FormNode = {
           customId: 'vehicleClassCode',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.HIDDEN,
-          viewType: FormNodeViewTypes.HIDDEN
+          viewType: FormNodeViewTypes.HIDDEN,
         },
         {
           name: 'description',
           customId: 'vehicleClassDescription',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.HIDDEN,
-          viewType: FormNodeViewTypes.HIDDEN
-        }
-      ]
+          viewType: FormNodeViewTypes.HIDDEN,
+        },
+      ],
     },
     {
       name: 'vehicleSubclass',
@@ -89,89 +91,89 @@ export const SpecialistRequiredSectionLgvCarSmallTrl: FormNode = {
       children: [
         {
           name: '0',
-          type: FormNodeTypes.CONTROL
-        }
-      ]
+          type: FormNodeTypes.CONTROL,
+        },
+      ],
     },
     {
       name: 'vehicleType',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'noOfAxles',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'numberOfWheelsDriven',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'regnDate',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'firstUseDate',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'createdByName',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'createdById',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'lastUpdatedAt',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'lastUpdatedByName',
 
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'lastUpdatedById',
 
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'shouldEmailCertificate',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'vehicleConfiguration',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'reasonForCancellation',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'testTypes',
@@ -187,48 +189,48 @@ export const SpecialistRequiredSectionLgvCarSmallTrl: FormNode = {
               label: 'Test Type ID',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
             },
             {
               name: 'name',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
             },
             {
               name: 'createdAt',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
             },
             {
               name: 'lastUpdatedAt',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
             },
             {
               name: 'certificateLink',
 
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
             },
             {
               name: 'testTypeClassification',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
             },
             {
               name: 'deletionFlag',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              viewType: FormNodeViewTypes.HIDDEN,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

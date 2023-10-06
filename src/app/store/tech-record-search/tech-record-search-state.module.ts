@@ -10,7 +10,7 @@ import { TechSearchResultsEffects } from './effects/tech-record-search.effect';
   imports: [
     CommonModule,
     StoreModule.forFeature(STORE_FEATURE_SEARCH_TECH_RESULTS_KEY, techSearchResultReducer),
-    EffectsModule.forFeature([TechSearchResultsEffects])
-  ]
+    EffectsModule.forFeature([TechSearchResultsEffects]),
+  ],
 })
 export class TechRecordSearchStateModule {}

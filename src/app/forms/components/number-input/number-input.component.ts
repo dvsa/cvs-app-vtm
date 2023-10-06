@@ -10,13 +10,13 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: NumberInputComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class NumberInputComponent extends BaseControlComponent implements AfterContentInit {
   get style(): string {
-    return 'govuk-input ' + (this.width ? 'govuk-input--width-' + this.width : '');
+    return `govuk-input ${this.width ? `govuk-input--width-${this.width}` : ''}`;
   }
 
   override ngAfterContentInit(): void {

@@ -1,6 +1,8 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 
 export const SeatbeltSection: FormNode = {
   name: 'seatbeltSection',
@@ -24,9 +26,9 @@ export const SeatbeltSection: FormNode = {
               value: null,
               options: [
                 { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
+                { value: false, label: 'No' },
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }]
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }],
             },
             {
               name: 'numberOfSeatbeltsFitted',
@@ -36,9 +38,9 @@ export const SeatbeltSection: FormNode = {
               value: null,
               validators: [
                 { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: [true] } },
-                { name: ValidatorNames.Max, args: 99 }
+                { name: ValidatorNames.Max, args: 99 },
               ],
-              width: FormNodeWidth.M
+              width: FormNodeWidth.M,
             },
             {
               name: 'lastSeatbeltInstallationCheckDate',
@@ -49,12 +51,12 @@ export const SeatbeltSection: FormNode = {
               value: null,
               validators: [
                 { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: [true] } },
-                { name: ValidatorNames.PastDate }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                { name: ValidatorNames.PastDate },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

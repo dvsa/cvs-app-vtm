@@ -28,10 +28,14 @@ import { ContingencyTestSectionGroup7 } from './section-templates/test/contingen
 import { ContingencyTestSectionGroup9And10 } from './section-templates/test/contingency/contingency-test-section-group9And10.template';
 import { ContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency/contingency-test-section-specialist-group1.template';
 import { ContingencyTestSectionSpecialistGroup2 } from './section-templates/test/contingency/contingency-test-section-specialist-group2.template';
-import { ContingencyTestSectionSpecialistGroup3And4 } from './section-templates/test/contingency/contingency-test-section-specialist-group3And4.template';
+import {
+  ContingencyTestSectionSpecialistGroup3And4,
+} from './section-templates/test/contingency/contingency-test-section-specialist-group3And4.template';
 import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency/contingency-test-section-specialist-group5.template';
 import { DeskBasedTestSectionGroup1Psv } from './section-templates/test/desk-based/desk-based-test-section-group1-PSV.template';
-import { DeskBasedTestSectionGroup1And4HgvTrl as DeskBasedTestSectionGroup1And4And5HgvTrl } from './section-templates/test/desk-based/desk-based-test-section-group1And4-HGV-TRL.template';
+import {
+  DeskBasedTestSectionGroup1And4HgvTrl as DeskBasedTestSectionGroup1And4And5HgvTrl,
+} from './section-templates/test/desk-based/desk-based-test-section-group1And4-HGV-TRL.template';
 import { DeskBasedTestSectionGroup2And5 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
 import { DeskBasedTestSectionGroup3 } from './section-templates/test/desk-based/desk-based-test-section-group3.template';
 import { DeskBasedTestSectionGroup4LgvCarMotorcycle } from './section-templates/test/desk-based/desk-based-test-section-group4-lgv-template';
@@ -43,7 +47,9 @@ import { ContingencyVehicleSectionDefaultPsvHgvLight } from './section-templates
 import { ContingencyVehicleSectionDefaultTrl } from './section-templates/vehicle/contingency-default-trl-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
-import { DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvGroup1And2And4And5 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
+import {
+  DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvGroup1And2And4And5,
+} from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
 import { DeskBasedVehicleSectionGroup4LGV } from './section-templates/vehicle/desk-based-vehicle-section-group4-lgv.template';
 import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/desk-based-vehicle-section-group5-lgv.template';
 import { VehicleSectionGroup3 } from './section-templates/vehicle/group-3-light-vehicle-section.template';
@@ -59,7 +65,7 @@ const groups1and2Template: Record<string, FormNode> = {
   notes: NotesSection,
   defects: DefectsTpl,
   customDefects: CustomDefectsHiddenSection,
-  reasonForCreation: reasonForCreationSection
+  reasonForCreation: reasonForCreationSection,
 };
 
 export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TYPES | 'default', Record<string, FormNode>>>> = {
@@ -73,7 +79,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsSection,
-      required: CreateRequiredSection
+      required: CreateRequiredSection,
     },
     testTypesGroup1: groups1and2Template,
     testTypesGroup2: groups1and2Template,
@@ -86,7 +92,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSection
+      required: CreateRequiredSection,
     },
     testTypesGroup15And16: {
       required: CreateRequiredSection,
@@ -97,7 +103,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
@@ -108,7 +114,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSection
+      required: CreateRequiredSection,
     },
     testTypesSpecialistGroup2: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
@@ -119,7 +125,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSection
+      required: CreateRequiredSection,
     },
     testTypesSpecialistGroup3: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
@@ -130,7 +136,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSection
+      required: CreateRequiredSection,
     },
     testTypesSpecialistGroup4: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
@@ -141,7 +147,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSection
+      required: CreateRequiredSection,
     },
     testTypesSpecialistGroup5: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
@@ -152,7 +158,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSection
+      required: CreateRequiredSection,
     },
     testTypesDeskBasedGroup1: {
       required: CreateRequiredSection,
@@ -163,7 +169,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
+      reasonForCreation: reasonForCreationHiddenSection,
     },
     testTypesDeskBasedGroup2: {
       vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
@@ -175,7 +181,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
+      reasonForCreation: reasonForCreationHiddenSection,
     },
     testTypesDeskBasedGroup3: {
       required: CreateRequiredSection,
@@ -186,7 +192,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
+      reasonForCreation: reasonForCreationHiddenSection,
     },
     testTypesDeskBasedGroup4: {
       required: CreateRequiredSection,
@@ -197,8 +203,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
-    }
+      reasonForCreation: reasonForCreationHiddenSection,
+    },
   },
   hgv: {
     default: {
@@ -208,7 +214,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsSection,
-      required: CreateRequiredSectionHgvTrl
+      required: CreateRequiredSectionHgvTrl,
     },
     testTypesGroup3And4And8: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
@@ -218,7 +224,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSectionHgvTrl
+      required: CreateRequiredSectionHgvTrl,
     },
     testTypesGroup5And13: {
       required: CreateRequiredSectionHgvTrl,
@@ -228,7 +234,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesGroup6And11: {
       required: CreateRequiredSectionHgvTrl,
@@ -238,7 +244,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesGroup7: {
       required: CreateRequiredSectionHgvTrl,
@@ -248,7 +254,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesGroup9And10: {
       required: CreateRequiredSectionHgvTrl,
@@ -258,7 +264,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesGroup12And14: {
       required: CreateRequiredSectionHgvTrl,
@@ -268,7 +274,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
@@ -278,7 +284,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       defects: defectsHiddenSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSectionHgvTrl
+      required: CreateRequiredSectionHgvTrl,
     },
     testTypesSpecialistGroup5: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
@@ -288,7 +294,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       defects: defectsHiddenSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSectionHgvTrl
+      required: CreateRequiredSectionHgvTrl,
     },
     testTypesGroup15And16: {
       required: CreateRequiredSectionHgvTrl,
@@ -298,7 +304,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup1: {
       required: CreateRequiredSectionHgvTrl,
@@ -308,7 +314,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
+      reasonForCreation: reasonForCreationHiddenSection,
     },
     testTypesDeskBasedGroup2: {
       required: CreateRequiredSectionHgvTrl,
@@ -319,7 +325,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
+      reasonForCreation: reasonForCreationHiddenSection,
     },
     testTypesDeskBasedGroup3: {
       required: CreateRequiredSectionHgvTrl,
@@ -329,7 +335,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
+      reasonForCreation: reasonForCreationHiddenSection,
     },
     testTypesDeskBasedGroup4: {
       required: CreateRequiredSectionHgvTrl,
@@ -339,7 +345,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
+      reasonForCreation: reasonForCreationHiddenSection,
     },
     testTypesDeskBasedGroup5: {
       required: CreateRequiredSectionHgvTrl,
@@ -349,8 +355,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
-    }
+      reasonForCreation: reasonForCreationHiddenSection,
+    },
   },
   trl: {
     default: {
@@ -360,7 +366,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsSection,
-      required: CreateRequiredSectionHgvTrl
+      required: CreateRequiredSectionHgvTrl,
     },
     testTypesGroup3And4And8: {
       vehicle: ContingencyVehicleSectionDefaultTrl,
@@ -370,7 +376,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSectionHgvTrl
+      required: CreateRequiredSectionHgvTrl,
     },
     testTypesGroup5And13: {
       required: CreateRequiredSectionHgvTrl,
@@ -380,7 +386,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesGroup6And11: {
       required: CreateRequiredSectionHgvTrl,
@@ -390,7 +396,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesGroup7: {
       required: CreateRequiredSectionHgvTrl,
@@ -400,7 +406,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesGroup9And10: {
       required: CreateRequiredSectionHgvTrl,
@@ -410,7 +416,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesGroup12And14: {
       required: CreateRequiredSectionHgvTrl,
@@ -420,7 +426,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
       vehicle: ContingencyVehicleSectionDefaultTrl,
@@ -430,7 +436,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       defects: defectsHiddenSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSectionHgvTrl
+      required: CreateRequiredSectionHgvTrl,
     },
     testTypesSpecialistGroup5: {
       vehicle: ContingencyVehicleSectionDefaultTrl,
@@ -440,7 +446,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       defects: defectsHiddenSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: CreateRequiredSectionHgvTrl
+      required: CreateRequiredSectionHgvTrl,
     },
     testTypesDeskBasedGroup1: {
       required: CreateRequiredSectionHgvTrl,
@@ -450,7 +456,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
+      reasonForCreation: reasonForCreationHiddenSection,
     },
     testTypesDeskBasedGroup2: {
       required: CreateRequiredSectionHgvTrl,
@@ -461,7 +467,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
+      reasonForCreation: reasonForCreationHiddenSection,
     },
     testTypesDeskBasedGroup3: {
       required: CreateRequiredSectionHgvTrl,
@@ -471,7 +477,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
+      reasonForCreation: reasonForCreationHiddenSection,
     },
     testTypesDeskBasedGroup4: {
       required: CreateRequiredSectionHgvTrl,
@@ -481,8 +487,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationHiddenSection
-    }
+      reasonForCreation: reasonForCreationHiddenSection,
+    },
   },
   lgv: {
     default: {
@@ -492,7 +498,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       defects: defectsHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
       required: CreateRequiredSectionLgvCar,
@@ -501,7 +507,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup4: {
       required: DeskBasedRequiredHiddenSectionGroup4And5Lgv,
@@ -510,7 +516,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup5: {
       required: CreateRequiredSectionLgvCar,
@@ -519,7 +525,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup5: {
       required: DeskBasedRequiredHiddenSectionGroup4And5Lgv,
@@ -529,8 +535,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
-    }
+      reasonForCreation: reasonForCreationSection,
+    },
   },
   car: {
     default: {
@@ -540,7 +546,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       defects: defectsHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
       required: CreateRequiredSectionLgvCar,
@@ -549,7 +555,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup4: {
       required: DeskBasedRequiredHiddenSectionGroup4And5Lgv,
@@ -558,7 +564,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup5: {
       required: CreateRequiredSectionLgvCar,
@@ -567,8 +573,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
-    }
+      reasonForCreation: reasonForCreationSection,
+    },
   },
   'small trl': {
     default: {
@@ -578,7 +584,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       defects: defectsHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup3: {
       required: SpecialistRequiredSectionLgvCarSmallTrl,
@@ -587,8 +593,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsHiddenSection,
       visit: VisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
-    }
+      reasonForCreation: reasonForCreationSection,
+    },
   },
   motorcycle: {
     default: {
@@ -598,7 +604,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       defects: defectsHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
       required: CreateRequiredSectionMotorcycle,
@@ -607,7 +613,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: reasonForCreationSection,
     },
     testTypesDeskBasedGroup4: {
       required: DeskBasedRequiredHiddenSectionGroup4Motorcyle,
@@ -616,7 +622,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
-    }
-  }
+      reasonForCreation: reasonForCreationSection,
+    },
+  },
 };

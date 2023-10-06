@@ -1,6 +1,8 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
@@ -17,7 +19,7 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'vrm',
@@ -26,7 +28,7 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'countryOfRegistration',
@@ -37,7 +39,7 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
       type: FormNodeTypes.CONTROL,
       asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }],
-      width: FormNodeWidth.XL
+      width: FormNodeWidth.XL,
     },
     {
       name: 'euVehicleCategory',
@@ -47,7 +49,7 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
       options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
     },
     {
       name: 'odometerReading',
@@ -58,7 +60,7 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      width: FormNodeWidth.L
+      width: FormNodeWidth.L,
     },
     {
       name: 'odometerReadingUnits',
@@ -66,12 +68,12 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
       value: null,
       options: [
         { value: 'kilometres', label: 'Kilometres' },
-        { value: 'miles', label: 'Miles' }
+        { value: 'miles', label: 'Miles' },
       ],
       type: FormNodeTypes.CONTROL,
       asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }],
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.RADIO
+      editType: FormNodeEditTypes.RADIO,
     },
     {
       name: 'preparerName',
@@ -80,7 +82,7 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      disabled: true
+      disabled: true,
     },
     {
       name: 'preparerId',
@@ -89,7 +91,7 @@ export const ContingencyVehicleSectionDefaultPsvHgvLight: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      disabled: true
-    }
-  ]
+      disabled: true,
+    },
+  ],
 };

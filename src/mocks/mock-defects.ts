@@ -1,7 +1,7 @@
-import { TestResultDefect } from '../app/models/test-results/test-result-defect.model';
+import { DefectAdditionalInformation } from '@api/test-results';
 import { DefectAdditionalInformationLocation } from '@models/test-results/defectAdditionalInformationLocation';
 import { createMock, createMockList } from 'ts-auto-mock';
-import { DefectAdditionalInformation } from '@api/test-results';
+import { DeficiencyCategoryEnum, TestResultDefect } from '../app/models/test-results/test-result-defect.model';
 
 export const mockDefectList = (numberOfDefects = 1) =>
   createMockList<TestResultDefect>(numberOfDefects, i => {
@@ -11,7 +11,7 @@ export const mockDefectList = (numberOfDefects = 1) =>
 export const mockDefect = (i = 0) =>
   createMock<TestResultDefect>({
     deficiencyRef: `DeficiencyRef${i}`,
-    deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum.Dangerous,
+    deficiencyCategory: DeficiencyCategoryEnum.Dangerous,
     deficiencyId: 'deficiency ID',
     deficiencySubId: 'deficiency sub ID',
     deficiencyText: 'deficiency text',

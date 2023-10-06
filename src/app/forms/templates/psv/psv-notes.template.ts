@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes,
+} from '../../services/dynamic-form.types';
 
 export const PsvNotes: FormNode = {
   name: 'notesSection',
@@ -12,7 +14,7 @@ export const PsvNotes: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXTAREA,
-      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }],
     },
     {
       name: 'techRecord_dispensations',
@@ -20,7 +22,7 @@ export const PsvNotes: FormNode = {
       label: 'Dispensations',
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXTAREA,
-      validators: [{ name: ValidatorNames.MaxLength, args: 160 }]
-    }
-  ]
+      validators: [{ name: ValidatorNames.MaxLength, args: 160 }],
+    },
+  ],
 };

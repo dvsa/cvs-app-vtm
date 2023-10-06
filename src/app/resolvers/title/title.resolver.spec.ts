@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
@@ -10,18 +9,16 @@ describe('TitleResolver', () => {
   let resolver: TitleResolver;
   let titleService: Title;
   let store: MockStore<State>;
-  let route: ActivatedRoute;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [TitleResolver, Title, provideMockStore({ initialState: initialAppState })]
+      providers: [TitleResolver, Title, provideMockStore({ initialState: initialAppState })],
     });
 
     resolver = TestBed.inject(TitleResolver);
     titleService = TestBed.inject(Title);
     store = TestBed.inject(MockStore);
-    route = TestBed.inject(ActivatedRoute);
   });
 
   it('should be created', () => {
@@ -36,28 +33,28 @@ describe('TitleResolver', () => {
         state: {
           root: {
             params: {
-              systemNumber: 'SYS0001'
+              systemNumber: 'SYS0001',
             },
             data: {
-              title: 'Test Results'
+              title: 'Test Results',
             },
             url: [
               {
                 path: 'SYS0001',
-                parameters: {}
-              }
+                parameters: {},
+              },
             ],
             outlet: 'primary',
             routeConfig: {
-              path: ':systemNumber'
+              path: ':systemNumber',
             },
             queryParams: {},
             fragment: null,
-            children: []
-          }
+            children: [],
+          },
         },
-        navigationId: 1
-      }
+        navigationId: 1,
+      },
     });
     const resolved = resolver.resolve();
     expect(resolved).toBeTruthy();

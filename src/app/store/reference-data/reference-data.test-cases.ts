@@ -5,6 +5,6 @@ export const testCases = [
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: mockCountriesOfRegistration[0].resourceKey,
-    payload: mockCountriesOfRegistration
-  }
+    payload: mockCountriesOfRegistration,
+  },
 ];

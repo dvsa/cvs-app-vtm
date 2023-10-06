@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
@@ -15,7 +17,7 @@ export const DeskBasedVehicleSectionGroup4LGV: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'vrm',
@@ -23,7 +25,7 @@ export const DeskBasedVehicleSectionGroup4LGV: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'countryOfRegistration',
@@ -33,7 +35,7 @@ export const DeskBasedVehicleSectionGroup4LGV: FormNode = {
       width: FormNodeWidth.XL,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
     },
     {
       name: 'euVehicleCategory',
@@ -42,7 +44,7 @@ export const DeskBasedVehicleSectionGroup4LGV: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories)
+      options: getOptionsFromEnum(EuVehicleCategories),
     },
     {
       name: 'odometerReading',
@@ -52,7 +54,7 @@ export const DeskBasedVehicleSectionGroup4LGV: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      width: FormNodeWidth.L
+      width: FormNodeWidth.L,
     },
     {
       name: 'odometerReadingUnits',
@@ -60,11 +62,11 @@ export const DeskBasedVehicleSectionGroup4LGV: FormNode = {
       value: null,
       options: [
         { value: 'kilometres', label: 'Kilometres' },
-        { value: 'miles', label: 'Miles' }
+        { value: 'miles', label: 'Miles' },
       ],
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.RADIO
+      editType: FormNodeEditTypes.RADIO,
     },
     {
       name: 'preparerName',
@@ -72,7 +74,7 @@ export const DeskBasedVehicleSectionGroup4LGV: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'preparerId',
@@ -80,7 +82,7 @@ export const DeskBasedVehicleSectionGroup4LGV: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
-    }
-  ]
+      editType: FormNodeEditTypes.HIDDEN,
+    },
+  ],
 };

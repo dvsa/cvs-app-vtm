@@ -7,7 +7,7 @@ import {
   fetchTestResultsSuccess,
   fetchSelectedTestResult,
   fetchSelectedTestResultSuccess,
-  fetchSelectedTestResultFailed
+  fetchSelectedTestResultFailed,
 } from './test-records.actions';
 
 describe('Test Result Actions', () => {

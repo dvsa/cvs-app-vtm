@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TestType, TestTypeCategory } from '@api/test-types';
 
 @Pipe({
-  name: 'testTypeName'
+  name: 'testTypeName',
 })
 export class TestTypeNamePipe implements PipeTransform {
   findTestTypeNameById(id: string, testTypes: Array<TestType | TestTypeCategory>): TestType | undefined {
@@ -11,8 +11,8 @@ export class TestTypeNamePipe implements PipeTransform {
         result = testType;
         return true;
       }
-
-      return testType.hasOwnProperty('nextTestTypesOrCategories') && (testType as TestTypeCategory).nextTestTypesOrCategories!!.some(idMatch);
+      return Object.prototype.hasOwnProperty.call(testType, 'nextTestTypesOrCategories')
+      && (testType as TestTypeCategory).nextTestTypesOrCategories?.some(idMatch);
     }
 
     let result;

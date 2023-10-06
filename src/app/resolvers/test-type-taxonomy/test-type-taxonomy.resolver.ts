@@ -7,7 +7,7 @@ import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '@st
 import { map, Observable, take } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TestTypeTaxonomyResolver implements Resolve<boolean> {
   constructor(private store: Store<State>, private action$: Actions) {}
@@ -18,7 +18,7 @@ export class TestTypeTaxonomyResolver implements Resolve<boolean> {
     return this.action$.pipe(
       ofType(fetchTestTypesSuccess, fetchTestTypesFailed),
       take(1),
-      map(action => action.type === fetchTestTypesSuccess.type)
+      map((action) => action.type === fetchTestTypesSuccess.type),
     );
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,7 +22,7 @@ describe('AbandonDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AbandonDialogComponent],
       imports: [DynamicFormsModule, SharedModule, RouterTestingModule, HttpClientTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState }), DynamicFormService]
+      providers: [provideMockStore({ initialState: initialAppState }), DynamicFormService],
     }).compileComponents();
   });
 

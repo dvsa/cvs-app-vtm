@@ -11,7 +11,7 @@ import { referenceDataLoadingState } from '@store/reference-data';
 import { selectTechRecordSearchLoadingState } from '@store/tech-record-search/selector/tech-record-search.selector';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoadingService {
   globalLoadingState$: Observable<boolean> = this.store.pipe(select(getSpinner));
@@ -34,8 +34,8 @@ export class LoadingService {
       this.testStationsLoadingState$,
       this.defectsLoadingState$,
       this.referenceDataLoadingState$,
-      this.techRecordSearchLoadingState$
-    ]).pipe(map(states => states.some(b => b)));
+      this.techRecordSearchLoadingState$,
+    ]).pipe(map((states) => states.some((b) => b)));
   }
 
   get showSpinner$(): Observable<boolean> {

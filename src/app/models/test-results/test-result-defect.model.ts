@@ -9,19 +9,17 @@ export interface TestResultDefect {
   deficiencyRef?: string;
   deficiencyId?: string;
   deficiencySubId?: string;
-  deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum;
+  deficiencyCategory: DeficiencyCategoryStringEnum;
   deficiencyText?: string;
   stdForProhibition?: boolean;
   prs?: boolean;
   prohibitionIssued?: boolean;
 }
 
-export namespace TestResultDefect {
-  export type DeficiencyCategoryEnum = 'advisory' | 'dangerous' | 'major' | 'minor';
-  export const DeficiencyCategoryEnum = {
-    Advisory: 'advisory' as DeficiencyCategoryEnum,
-    Dangerous: 'dangerous' as DeficiencyCategoryEnum,
-    Major: 'major' as DeficiencyCategoryEnum,
-    Minor: 'minor' as DeficiencyCategoryEnum
-  };
-}
+export type DeficiencyCategoryStringEnum = 'advisory' | 'dangerous' | 'major' | 'minor';
+export const DeficiencyCategoryEnum = {
+  Advisory: 'advisory' as DeficiencyCategoryStringEnum,
+  Dangerous: 'dangerous' as DeficiencyCategoryStringEnum,
+  Major: 'major' as DeficiencyCategoryStringEnum,
+  Minor: 'minor' as DeficiencyCategoryStringEnum,
+};

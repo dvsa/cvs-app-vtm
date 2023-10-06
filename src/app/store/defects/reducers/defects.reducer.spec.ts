@@ -5,7 +5,7 @@ import {
   fetchDefects,
   fetchDefectsFailed,
   fetchDefectsSuccess,
-  fetchDefectSuccess
+  fetchDefectSuccess,
 } from '../actions/defects.actions';
 import { defectsReducer, DefectsState, initialDefectsState } from './defects.reducer';
 
@@ -15,7 +15,7 @@ describe('Defects Reducer', () => {
   describe('unknown action', () => {
     it('should return the default state', () => {
       const action = {
-        type: 'Unknown'
+        type: 'Unknown',
       };
       const state = defectsReducer(initialDefectsState, action);
 
@@ -38,7 +38,7 @@ describe('Defects Reducer', () => {
         const newState: DefectsState = {
           ...initialDefectsState,
           ids: ['1: some description'],
-          entities: { '1: some description': expectedDefects[0] }
+          entities: { '1: some description': expectedDefects[0] },
         };
         const action = fetchDefectsSuccess({ payload: [...expectedDefects] });
         const state = defectsReducer(initialDefectsState, action);
@@ -75,7 +75,7 @@ describe('Defects Reducer', () => {
         const newState: DefectsState = {
           ...initialDefectsState,
           ids: ['1: some description'],
-          entities: { '1: some description': expectedDefects[0] }
+          entities: { '1: some description': expectedDefects[0] },
         };
         const action = fetchDefectSuccess({ id: 1, payload: expectedDefects[0] });
         const state = defectsReducer(initialDefectsState, action);

@@ -1,28 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { InjectionToken, ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
-import { DelayedRetryInterceptor } from './delayed-retry.interceptor';
-
-export const HTTP_RETRY_CONFIG = new InjectionToken<HttpRetryConfig>('HttpRetryConfig');
-
-export interface HttpRetryConfig {
-  /**
-   * The maximum number of times to retry.
-   */
-  count?: number;
-  /**
-   * The number of milliseconds to delay before retrying.
-   */
-  delay?: number;
-  /**
-   * Array of http status codes to retry. If undefined, all requests are retried.
-   */
-  httpStatusRetry?: Array<number>;
-  /**
-   * If true, each retry delay will be multiplied by the current retry count.
-   */
-  backoff?: boolean;
-}
+import {
+  ModuleWithProviders, NgModule, Optional, SkipSelf,
+} from '@angular/core';
+import { DelayedRetryInterceptor, HttpRetryConfig, HTTP_RETRY_CONFIG } from './delayed-retry.interceptor';
 
 @NgModule({
   declarations: [],
@@ -31,9 +12,9 @@ export interface HttpRetryConfig {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: DelayedRetryInterceptor,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class DelayedRetryModule {
   constructor(@Optional() @SkipSelf() parentModule?: DelayedRetryModule) {
@@ -45,7 +26,7 @@ export class DelayedRetryModule {
   static forRoot(config?: HttpRetryConfig): ModuleWithProviders<DelayedRetryModule> {
     return {
       ngModule: DelayedRetryModule,
-      providers: [{ provide: HTTP_RETRY_CONFIG, useValue: config }]
+      providers: [{ provide: HTTP_RETRY_CONFIG, useValue: config }],
     };
   }
 }

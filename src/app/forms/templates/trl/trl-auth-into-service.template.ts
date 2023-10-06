@@ -1,4 +1,6 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes,
+} from '../../services/dynamic-form.types';
 
 export const TrlAuthIntoServiceTemplate: FormNode = {
   name: 'authorizationIntoServiceSection',
@@ -11,7 +13,7 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      isoDate: false
+      isoDate: false,
     },
     {
       name: 'techRecord_authIntoService_dateReceived',
@@ -19,7 +21,7 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      isoDate: false
+      isoDate: false,
     },
     {
       name: 'techRecord_authIntoService_datePending',
@@ -27,7 +29,7 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      isoDate: false
+      isoDate: false,
     },
     {
       name: 'techRecord_authIntoService_dateAuthorised',
@@ -35,7 +37,7 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      isoDate: false
+      isoDate: false,
     },
     {
       name: 'techRecord_authIntoService_dateRejected',
@@ -43,7 +45,7 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      isoDate: false
-    }
-  ]
+      isoDate: false,
+    },
+  ],
 };

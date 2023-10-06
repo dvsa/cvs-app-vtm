@@ -1,16 +1,18 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, inject, TestBed, tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TestStationsService } from '@services/test-stations/test-stations.service';
 import { initialAppState } from '@store/.';
+import { UserService } from '@services/user-service/user-service';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
-import { UserService } from '@services/user-service/user-service';
 
 describe('DynamicFormGroupComponent', () => {
   let component: DynamicFormGroupComponent;
@@ -23,25 +25,26 @@ describe('DynamicFormGroupComponent', () => {
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
         TestStationsService,
-        { provide: UserService, useValue: {} }
-      ]
+        { provide: UserService, useValue: {} },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DynamicFormGroupComponent);
     component = fixture.componentInstance;
-    // Don't detect changes on the first load as it will prevent change detection from working in the test function due to change detection being OnPush
+    // Don't detect changes on the first load as it will prevent change detection
+    // from working in the test function due to change detection being OnPush
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe(DynamicFormGroupComponent.prototype.trackByFn.name, () => {
+  describe('DynamicFormGroupComponent.prototype.trackByFn.name', () => {
     it.each([
       [3, [3, 'some value']],
-      ['foo', [3, { key: 'foo' }]]
+      ['foo', [3, { key: 'foo' }]],
     ])('should return %s when given %o', (expected, props) => {
       const [index, item] = props;
       expect(component.trackByFn(index as number, item)).toBe(expected);
@@ -53,8 +56,8 @@ describe('DynamicFormGroupComponent', () => {
       { a: 'b', c: 1 },
       [
         { key: 'a', value: 'b' },
-        { key: 'c', value: 1 }
-      ]
+        { key: 'c', value: 1 },
+      ],
     ],
     [
       {
@@ -62,8 +65,10 @@ describe('DynamicFormGroupComponent', () => {
         label: 'test-label',
         type: 'test-type',
         children: [
-          { name: 'test-c-name', label: 'test-c-label', value: 'test-c-value', children: [], type: 'test-c-control', viewType: 'test-c-viewType' }
-        ]
+          {
+            name: 'test-c-name', label: 'test-c-label', value: 'test-c-value', children: [], type: 'test-c-control', viewType: 'test-c-viewType',
+          },
+        ],
       },
       [
         { key: 'name', value: 'test-name' },
@@ -72,18 +77,20 @@ describe('DynamicFormGroupComponent', () => {
         {
           key: 'children',
           value: [
-            { name: 'test-c-name', label: 'test-c-label', value: 'test-c-value', children: [], type: 'test-c-control', viewType: 'test-c-viewType' }
-          ]
-        }
-      ]
-    ]
+            {
+              name: 'test-c-name', label: 'test-c-label', value: 'test-c-value', children: [], type: 'test-c-control', viewType: 'test-c-viewType',
+            },
+          ],
+        },
+      ],
+    ],
   ])('entriesOf: should split the keys out into values', (input: any, expected: any) => {
     expect(component.entriesOf(input)).toStrictEqual(expected);
   });
 
   describe('formNodeTypes', () => {
     it('should return FormNodeTypes enum', () => {
-      Object.entries(FormNodeTypes).forEach(entry => {
+      Object.entries(FormNodeTypes).forEach((entry) => {
         expect(FormNodeTypes).toEqual(component.formNodeTypes);
         expect(component.formNodeTypes[entry[0] as keyof typeof FormNodeTypes]).toBe(entry[1]);
       });
@@ -92,7 +99,7 @@ describe('DynamicFormGroupComponent', () => {
 
   describe('formNodeViewTypes', () => {
     it('should return FormNodeViewTypes enum', () => {
-      Object.entries(FormNodeViewTypes).forEach(entry => {
+      Object.entries(FormNodeViewTypes).forEach((entry) => {
         expect(FormNodeViewTypes).toEqual(component.formNodeViewTypes);
         expect(component.formNodeViewTypes[entry[0] as keyof typeof FormNodeViewTypes]).toBe(entry[1]);
       });
@@ -104,23 +111,27 @@ describe('DynamicFormGroupComponent', () => {
       name: 'myForm',
       type: FormNodeTypes.GROUP,
       children: [
-        { name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string' },
+        {
+          name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string',
+        },
         {
           name: 'levelOneGroup',
           type: FormNodeTypes.GROUP,
           children: [
-            { name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string' },
+            {
+              name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string',
+            },
             {
               name: 'levelTwoArray',
               type: FormNodeTypes.ARRAY,
               children: [
                 { name: 'levelTwoArrayControlOne', type: FormNodeTypes.CONTROL, value: '1' },
-                { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' }
-              ]
-            }
-          ]
-        }
-      ]
+                { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const data = {
@@ -130,10 +141,10 @@ describe('DynamicFormGroupComponent', () => {
         levelTwoArray: [
           {
             levelTwoArrayControlOne: 'some string',
-            levelTwoArrayControlTwo: 'some string'
-          }
-        ]
-      }
+            levelTwoArrayControlTwo: 'some string',
+          },
+        ],
+      },
     };
 
     it('should generate the correct number of detail summary elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -144,8 +155,8 @@ describe('DynamicFormGroupComponent', () => {
       const dtList = fixture.debugElement.queryAll(By.css('dt'));
       const ddList = fixture.debugElement.queryAll(By.css('dd'));
 
-      expect(dtList.length).toBe(4);
-      expect(ddList.length).toBe(4);
+      expect(dtList).toHaveLength(4);
+      expect(ddList).toHaveLength(4);
     }));
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -156,7 +167,7 @@ describe('DynamicFormGroupComponent', () => {
 
       const inputList = fixture.debugElement.queryAll(By.css('input'));
 
-      expect(inputList.length).toBe(4);
+      expect(inputList).toHaveLength(4);
     }));
   });
 
@@ -165,12 +176,16 @@ describe('DynamicFormGroupComponent', () => {
       name: 'myForm',
       type: FormNodeTypes.GROUP,
       children: [
-        { name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string' },
+        {
+          name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string',
+        },
         {
           name: 'levelOneGroup',
           type: FormNodeTypes.GROUP,
           children: [
-            { name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string' },
+            {
+              name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string',
+            },
             {
               name: 'levelTwoArray',
               type: FormNodeTypes.ARRAY,
@@ -184,16 +199,16 @@ describe('DynamicFormGroupComponent', () => {
                       type: FormNodeTypes.GROUP,
                       children: [
                         { name: 'levelThreeArrayControlOne', type: FormNodeTypes.CONTROL, value: '1' },
-                        { name: 'levelThreeArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                        { name: 'levelThreeArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const data = {
@@ -203,14 +218,14 @@ describe('DynamicFormGroupComponent', () => {
         levelTwoArray: [
           [
             { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
-            { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }
+            { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
           ],
           [
             { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
-            { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }
-          ]
-        ]
-      }
+            { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
+          ],
+        ],
+      },
     };
 
     it('should generate the correct number of detail summary elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -221,8 +236,8 @@ describe('DynamicFormGroupComponent', () => {
       const dtList = fixture.debugElement.queryAll(By.css('dt'));
       const ddList = fixture.debugElement.queryAll(By.css('dd'));
 
-      expect(dtList.length).toBe(10);
-      expect(ddList.length).toBe(10);
+      expect(dtList).toHaveLength(10);
+      expect(ddList).toHaveLength(10);
     }));
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -233,7 +248,7 @@ describe('DynamicFormGroupComponent', () => {
 
       const inputList = fixture.debugElement.queryAll(By.css('input'));
 
-      expect(inputList.length).toBe(10);
+      expect(inputList).toHaveLength(10);
     }));
 
     it('should generate the correct number of input elements if I reduce the data', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -243,9 +258,9 @@ describe('DynamicFormGroupComponent', () => {
           levelTwoControl: 'some string',
           levelTwoArray: [
             [{ levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }],
-            [{ levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }]
-          ]
-        }
+            [{ levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }],
+          ],
+        },
       };
       component.edit = true;
       component.form = dfs.createForm(template, newData);
@@ -254,7 +269,7 @@ describe('DynamicFormGroupComponent', () => {
 
       const inputList = fixture.debugElement.queryAll(By.css('input'));
 
-      expect(inputList.length).toBe(6);
+      expect(inputList).toHaveLength(6);
     }));
 
     it('should generate the correct number of input elements if I increase the data', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -266,15 +281,15 @@ describe('DynamicFormGroupComponent', () => {
             [
               { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
               { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
-              { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }
+              { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
             ],
             [
               { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
               { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
-              { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }
-            ]
-          ]
-        }
+              { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
+            ],
+          ],
+        },
       };
       component.edit = true;
       component.form = dfs.createForm(template, newData);
@@ -283,7 +298,7 @@ describe('DynamicFormGroupComponent', () => {
 
       const inputList = fixture.debugElement.queryAll(By.css('input'));
 
-      expect(inputList.length).toBe(14);
+      expect(inputList).toHaveLength(14);
     }));
   });
 
@@ -292,12 +307,16 @@ describe('DynamicFormGroupComponent', () => {
       name: 'myForm',
       type: FormNodeTypes.GROUP,
       children: [
-        { name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string' },
+        {
+          name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string',
+        },
         {
           name: 'levelOneGroup',
           type: FormNodeTypes.GROUP,
           children: [
-            { name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string' },
+            {
+              name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string',
+            },
             {
               name: 'levelTwoArray',
               type: FormNodeTypes.ARRAY,
@@ -307,14 +326,14 @@ describe('DynamicFormGroupComponent', () => {
                   type: FormNodeTypes.GROUP,
                   children: [
                     { name: 'levelTwoArrayControlOne', type: FormNodeTypes.CONTROL, value: '1' },
-                    { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                    { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const data = {
@@ -324,14 +343,14 @@ describe('DynamicFormGroupComponent', () => {
         levelTwoArray: [
           {
             levelTwoArrayControlOne: 'some string',
-            levelTwoArrayControlTwo: 'some string'
+            levelTwoArrayControlTwo: 'some string',
           },
           {
             levelTwoArrayControlOne: 'some string',
-            levelTwoArrayControlTwo: 'some string'
-          }
-        ]
-      }
+            levelTwoArrayControlTwo: 'some string',
+          },
+        ],
+      },
     };
 
     it('should generate the correct number of detail summary elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -342,8 +361,8 @@ describe('DynamicFormGroupComponent', () => {
       const dtList = fixture.debugElement.queryAll(By.css('dt'));
       const ddList = fixture.debugElement.queryAll(By.css('dd'));
 
-      expect(dtList.length).toBe(6);
-      expect(ddList.length).toBe(6);
+      expect(dtList).toHaveLength(6);
+      expect(ddList).toHaveLength(6);
     }));
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -354,7 +373,7 @@ describe('DynamicFormGroupComponent', () => {
 
       const inputList = fixture.debugElement.queryAll(By.css('input'));
 
-      expect(inputList.length).toBe(6);
+      expect(inputList).toHaveLength(6);
     }));
 
     it('should generate the correct number of input elements if I reduce the data', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -365,10 +384,10 @@ describe('DynamicFormGroupComponent', () => {
           levelTwoArray: [
             {
               levelTwoArrayControlOne: 'some string',
-              levelTwoArrayControlTwo: 'some string'
-            }
-          ]
-        }
+              levelTwoArrayControlTwo: 'some string',
+            },
+          ],
+        },
       };
       component.edit = true;
       component.form = dfs.createForm(template, newData);
@@ -377,7 +396,7 @@ describe('DynamicFormGroupComponent', () => {
 
       const inputList = fixture.debugElement.queryAll(By.css('input'));
 
-      expect(inputList.length).toBe(4);
+      expect(inputList).toHaveLength(4);
     }));
 
     it('should generate the correct number of input elements if I increase the data', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -388,18 +407,18 @@ describe('DynamicFormGroupComponent', () => {
           levelTwoArray: [
             {
               levelTwoArrayControlOne: 'some string',
-              levelTwoArrayControlTwo: 'some string'
+              levelTwoArrayControlTwo: 'some string',
             },
             {
               levelTwoArrayControlOne: 'some string',
-              levelTwoArrayControlTwo: 'some string'
+              levelTwoArrayControlTwo: 'some string',
             },
             {
               levelTwoArrayControlOne: 'some string',
-              levelTwoArrayControlTwo: 'some string'
-            }
-          ]
-        }
+              levelTwoArrayControlTwo: 'some string',
+            },
+          ],
+        },
       };
       component.edit = true;
       component.form = dfs.createForm(template, newData);
@@ -408,7 +427,7 @@ describe('DynamicFormGroupComponent', () => {
 
       const inputList = fixture.debugElement.queryAll(By.css('input'));
 
-      expect(inputList.length).toBe(8);
+      expect(inputList).toHaveLength(8);
     }));
   });
 
@@ -416,11 +435,13 @@ describe('DynamicFormGroupComponent', () => {
     const template = <FormNode>{
       name: 'myForm',
       type: FormNodeTypes.GROUP,
-      children: [{ name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string' }]
+      children: [{
+        name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string',
+      }],
     };
 
     const data = {
-      levelOneControl: 'some string'
+      levelOneControl: 'some string',
     };
     it('should output an event when the value of the control changes', fakeAsync(
       inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -435,7 +456,7 @@ describe('DynamicFormGroupComponent', () => {
         tick(500);
         expect(emitter).toHaveBeenCalledWith({ ...data, levelOneControl: 'foo' });
         expect(emitter).toHaveBeenCalledTimes(1);
-      })
+      }),
     ));
   });
 });

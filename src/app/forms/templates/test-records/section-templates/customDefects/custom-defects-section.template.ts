@@ -28,27 +28,27 @@ export const CustomDefectsSection: FormNode = {
                       label: 'Reference Number',
                       type: FormNodeTypes.CONTROL,
                       validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 10 }],
-                      width: FormNodeWidth.XL
+                      width: FormNodeWidth.XL,
                     },
                     {
                       name: 'defectName',
                       label: 'Defect Name',
                       type: FormNodeTypes.CONTROL,
-                      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 200 }]
+                      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 200 }],
                     },
                     {
                       name: 'defectNotes',
                       label: 'Defect Notes',
                       type: FormNodeTypes.CONTROL,
-                      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 200 }]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 200 }],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 
 export const DeskBasedTestSectionLgvGroup5: FormNode = {
   name: 'testSection',
@@ -12,7 +14,7 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      validators: [{ name: ValidatorNames.PastDate }]
+      validators: [{ name: ValidatorNames.PastDate }],
     },
     {
       name: 'testEndTimestamp',
@@ -20,7 +22,7 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      validators: [{ name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }]
+      validators: [{ name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }],
     },
     {
       name: 'testTypes',
@@ -38,9 +40,9 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' }
+                { value: 'fail', label: 'Fail' },
               ],
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'certificateNumber',
@@ -51,7 +53,7 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               required: true,
               value: null,
-              width: FormNodeWidth.L
+              width: FormNodeWidth.L,
             },
             {
               name: 'testTypeStartTimestamp',
@@ -63,8 +65,8 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
               validators: [
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
-              ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' },
+              ],
             },
             {
               name: 'testTypeEndTimestamp',
@@ -77,8 +79,8 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
-              ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' },
+              ],
             },
             {
               name: 'testExpiryDate',
@@ -87,7 +89,7 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }]
+              validators: [{ name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }],
             },
             {
               name: 'prohibitionIssued',
@@ -95,7 +97,7 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
               label: 'Prohibition issued',
               value: null,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
             },
             {
               name: 'reasonForAbandoning',
@@ -103,7 +105,7 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
               label: 'Reason for abandoning',
               value: null,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
             },
             {
               name: 'additionalCommentsForAbandon',
@@ -111,13 +113,13 @@ export const DeskBasedTestSectionLgvGroup5: FormNode = {
               value: null,
               label: 'Additional details for abandoning',
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              viewType: FormNodeViewTypes.HIDDEN,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
@@ -129,19 +131,19 @@ export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
       name: 'testStartTimestamp',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'createdAt',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'testTypes',
@@ -158,7 +160,7 @@ export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.XS
+              width: FormNodeWidth.XS,
             },
             {
               name: 'testResult',
@@ -168,8 +170,8 @@ export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' }
-              ]
+                { value: 'fail', label: 'Fail' },
+              ],
             },
             {
               name: 'certificateNumber',
@@ -178,7 +180,7 @@ export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               width: FormNodeWidth.L,
               validators: [{ name: ValidatorNames.Alphanumeric }],
-              value: null
+              value: null,
             },
             {
               name: 'testNumber',
@@ -186,7 +188,7 @@ export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
               disabled: true,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testTypeStartTimestamp',
@@ -198,8 +200,8 @@ export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
               validators: [
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
-              ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' },
+              ],
             },
             {
               name: 'testTypeEndTimestamp',
@@ -212,8 +214,8 @@ export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
-              ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' },
+              ],
             },
             {
               name: 'testExpiryDate',
@@ -222,11 +224,11 @@ export const AmendDeskBasedTestSectionLgvGroup5: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              validators: [{ name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

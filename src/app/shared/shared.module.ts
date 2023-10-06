@@ -50,7 +50,7 @@ import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicl
     RouterOutletComponent,
     TyreAxleLoadPipe,
     GetControlLabelPipe,
-    FormatVehicleTypePipe
+    FormatVehicleTypePipe,
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -75,8 +75,8 @@ import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicl
     RouterOutletComponent,
     TyreAxleLoadPipe,
     GetControlLabelPipe,
-    FormatVehicleTypePipe
+    FormatVehicleTypePipe,
   ],
-  providers: [DocumentRetrievalService]
+  providers: [DocumentRetrievalService],
 })
 export class SharedModule {}

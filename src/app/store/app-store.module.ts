@@ -15,6 +15,7 @@ import { TestRecordsStateModule } from './test-records/test-records.module';
 import { TestStationsStateModule } from './test-stations/test-stations-state.module';
 import { TestTypesStateModule } from './test-types/test-types.module';
 import { UserStateModule } from './user/user-state.module';
+import { GlobalWarningStateModule } from './global-warning/global-warning-state.module';
 
 @NgModule({
   declarations: [],
@@ -24,13 +25,14 @@ import { UserStateModule } from './user/user-state.module';
     EffectsModule.forRoot([]),
     environment.EnableDevTools
       ? StoreDevtoolsModule.instrument({
-          name: 'VTM Web Dev Tools',
-          maxAge: 25, // Retains last 25 states
-          logOnly: environment.production // Log-only mode in production
-        })
+        name: 'VTM Web Dev Tools',
+        maxAge: 25, // Retains last 25 states
+        logOnly: environment.production, // Log-only mode in production
+      })
       : [],
     DefectsStateModule,
     GlobalErrorStateModule,
+    GlobalWarningStateModule,
     ReferenceDataStateModule,
     RouterStateModule,
     SpinnerStateModule,
@@ -39,7 +41,7 @@ import { UserStateModule } from './user/user-state.module';
     TestStationsStateModule,
     TestTypesStateModule,
     UserStateModule,
-    TechRecordSearchStateModule
-  ]
+    TechRecordSearchStateModule,
+  ],
 })
 export class AppStoreModule {}

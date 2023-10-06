@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 
 export const TestSection: FormNode = {
   name: 'testSection',
@@ -13,7 +15,7 @@ export const TestSection: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.DATE,
     },
     {
       name: 'testStartTimestamp',
@@ -22,7 +24,7 @@ export const TestSection: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.DATE,
     },
     {
       name: 'testTypes',
@@ -39,7 +41,7 @@ export const TestSection: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.L
+              width: FormNodeWidth.L,
             },
             {
               name: 'testResult',
@@ -47,14 +49,14 @@ export const TestSection: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.XL
+              width: FormNodeWidth.XL,
             },
             {
               name: 'testResult',
               label: 'Result',
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'reasonForAbandoning',
@@ -62,7 +64,7 @@ export const TestSection: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
               value: null,
-              required: true
+              required: true,
             },
             {
               name: 'additionalCommentsForAbandon',
@@ -70,7 +72,7 @@ export const TestSection: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
               value: null,
-              required: true
+              required: true,
             },
             {
               name: 'certificateNumber',
@@ -79,7 +81,7 @@ export const TestSection: FormNode = {
               disabled: true,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testNumber',
@@ -87,7 +89,7 @@ export const TestSection: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.XL
+              width: FormNodeWidth.XL,
             },
             {
               name: 'testExpiryDate',
@@ -99,10 +101,10 @@ export const TestSection: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] }
+                  args: { sibling: 'testResult', value: ['pass'] },
                 },
-                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }
-              ]
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+              ],
             },
             {
               name: 'testAnniversaryDate',
@@ -114,11 +116,11 @@ export const TestSection: FormNode = {
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] }
+                  args: { sibling: 'testResult', value: ['pass'] },
                 },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
-              ]
+                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } },
+              ],
             },
             {
               name: 'testTypeStartTimestamp',
@@ -126,7 +128,7 @@ export const TestSection: FormNode = {
               value: '',
               disabled: true,
               label: 'Start time',
-              viewType: FormNodeViewTypes.TIME
+              viewType: FormNodeViewTypes.TIME,
             },
             {
               name: 'testTypeEndTimestamp',
@@ -134,7 +136,7 @@ export const TestSection: FormNode = {
               value: '',
               disabled: true,
               label: 'End time',
-              viewType: FormNodeViewTypes.TIME
+              viewType: FormNodeViewTypes.TIME,
             },
             {
               name: 'prohibitionIssued',
@@ -143,13 +145,13 @@ export const TestSection: FormNode = {
               label: 'Prohibition issued',
               options: [
                 { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
+                { value: false, label: 'No' },
               ],
-              disabled: true
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              disabled: true,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

@@ -19,7 +19,7 @@ describe('FormatVehicleTypePipe', () => {
     });
 
     it('should return undefined if value is undefined', () => {
-      expect(pipe.transform(undefined)).toBe(undefined);
+      expect(pipe.transform(undefined)).toBeUndefined();
     });
   });
 });

@@ -3,7 +3,9 @@ import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
+import {
+  ActionCreator, ActionCreatorProps, createAction, props,
+} from '@ngrx/store';
 import { TypedAction } from '@ngrx/store/src/models';
 
 const prefix = '[Technical Record Service]';
@@ -20,27 +22,37 @@ export const createVehicleRecord = createAction(`${prefix} createVehicleRecord`,
 export const createVehicleRecordSuccess = createOutcomeAction('createVehicleRecord', true);
 export const createVehicleRecordFailure = createOutcomeAction('createVehicleRecord', false);
 
-export const updateTechRecord = createAction(`${prefix} updateTechRecords`, props<{ systemNumber: string; createdTimestamp: string }>());
+export const updateTechRecord = createAction(
+  `${prefix} updateTechRecords`,
+  props<{ systemNumber: string; createdTimestamp: string }>(),
+);
 export const updateTechRecordSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordFailure = createOutcomeAction('updateTechRecords', false);
 
+export const amendVin = createAction(
+  `${prefix} amendVin`,
+  props<{ newVin: string; systemNumber: string; createdTimestamp: string }>(),
+);
+export const amendVinSuccess = createOutcomeAction('amendVin', true);
+export const amendVinFailure = createOutcomeAction('amendVin', false);
+
 export const amendVrm = createAction(
   `${prefix} amendVrm`,
-  props<{ newVrm: string; cherishedTransfer: boolean; systemNumber: string; createdTimestamp: string; thirdMark?: string }>()
+  props<{ newVrm: string; cherishedTransfer: boolean; systemNumber: string; createdTimestamp: string; thirdMark?: string }>(),
 );
 export const amendVrmSuccess = createOutcomeAction('amendVrm', true);
 export const amendVrmFailure = createOutcomeAction('amendVrm', false);
 
 export const archiveTechRecord = createAction(
   `${prefix} archiveTechRecord`,
-  props<{ systemNumber: string; createdTimestamp: string; reasonForArchiving: string }>()
+  props<{ systemNumber: string; createdTimestamp: string; reasonForArchiving: string }>(),
 );
 export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
 export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord', false);
 
 export const promoteTechRecord = createAction(
   `${prefix} promoteTechRecord`,
-  props<{ systemNumber: string; createdTimestamp: string; reasonForPromoting: string }>()
+  props<{ systemNumber: string; createdTimestamp: string; reasonForPromoting: string }>(),
 );
 export const promoteTechRecordSuccess = createOutcomeAction('promoteTechRecord', true);
 export const promoteTechRecordFailure = createOutcomeAction('promoteTechRecord', false);
@@ -68,7 +80,7 @@ export const updateBody = createAction(`${prefix} updatebody`, props<{ psvMake: 
 
 export const unarchiveTechRecord = createAction(
   `${prefix} unarchiveTechRecord`,
-  props<{ systemNumber: string; createdTimestamp: string; reasonForUnarchiving: string; status: string }>()
+  props<{ systemNumber: string; createdTimestamp: string; reasonForUnarchiving: string; status: string }>(),
 );
 export const unarchiveTechRecordSuccess = createOutcomeAction('unarchiveTechRecord', true);
 export const unarchiveTechRecordFailure = createOutcomeAction('unarchiveTechRecord', false);
@@ -85,16 +97,17 @@ export const clearScrollPosition = createAction(`${prefix} clearScrollPosition`)
 
 function createOutcomeAction<T extends boolean>(
   title: string,
-  isSuccess: T
+  isSuccess: T,
 ): ActionCreator<
   string,
   T extends false
     ? (props: GlobalError) => GlobalError & TypedAction<string>
     : (props: { vehicleTechRecord: TechRecordType<'get'> }) => { vehicleTechRecord: TechRecordType<'get'> } & TypedAction<string>
-> {
+  > {
   const suffix = isSuccess ? 'Success' : 'Failure';
   const type = `${prefix} ${title} ${suffix}`;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const actionCreator: ActionCreatorProps<any> = isSuccess ? props<{ vehicleTechRecord: TechRecordType<'get'>[] }>() : props<GlobalError>();
 
   return createAction(type, actionCreator);

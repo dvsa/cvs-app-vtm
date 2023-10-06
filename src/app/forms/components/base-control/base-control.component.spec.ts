@@ -16,12 +16,12 @@ describe('BaseControlComponent', () => {
         useClass: class extends NgControl {
           control = new CustomFormControl(controlMetaData, '', [Validators.required]);
           viewToModelUpdate() {}
-        }
+        },
       };
 
       await TestBed.configureTestingModule({
         declarations: [BaseControlComponent],
-        imports: [FormsModule]
+        imports: [FormsModule],
       })
         .overrideComponent(BaseControlComponent, { add: { providers: [NG_CONTROL_PROVIDER] } })
         .compileComponents();
@@ -39,12 +39,12 @@ describe('BaseControlComponent', () => {
 
     it('should register a change', () => {
       component.registerOnChange('FUNCTION');
-      expect(component.onChange).toEqual('FUNCTION');
+      expect(component.onChange).toBe('FUNCTION');
     });
 
     it('should register it has been touched', () => {
       component.registerOnTouched('FUNCTION');
-      expect(component.onTouched).toEqual('FUNCTION');
+      expect(component.onTouched).toBe('FUNCTION');
     });
 
     it('should call onChange successfully', () => {
@@ -87,12 +87,12 @@ describe('BaseControlComponent', () => {
     describe('interacting with the value', () => {
       it('writeValue should set the value', () => {
         component.writeValue('anything');
-        expect(component.value).toEqual('anything');
+        expect(component.value).toBe('anything');
       });
 
       it('set should set the value', () => {
         component.value = 'anything';
-        expect(component.value).toEqual('anything');
+        expect(component.value).toBe('anything');
       });
     });
 
@@ -126,7 +126,7 @@ describe('BaseControlComponent', () => {
 
     it('shoud throw no control binding error', () => {
       expect(component).toBeTruthy();
-      expect(() => fixture.detectChanges()).toThrowError(Error);
+      expect(() => fixture.detectChanges()).toThrow(Error);
     });
 
     it('should return undefined for metadata', () => {

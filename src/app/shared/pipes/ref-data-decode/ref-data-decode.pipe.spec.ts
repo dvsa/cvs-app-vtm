@@ -12,7 +12,7 @@ describe('RefDataDecodePipe', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BrowserModule],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })],
     });
 
     store = TestBed.inject(MockStore);
@@ -27,33 +27,33 @@ describe('RefDataDecodePipe', () => {
             gb: {
               resourceType: ReferenceDataResourceType.CountryOfRegistration,
               resourceKey: 'gb',
-              description: 'Great Britain'
-            }
+              description: 'Great Britain',
+            },
           },
-          loading: false
+          loading: false,
         },
-        [(ReferenceDataResourceType.CountryOfRegistration + '#AUDIT') as ReferenceDataResourceType]: {
+        [(`${ReferenceDataResourceType.CountryOfRegistration}#AUDIT`) as ReferenceDataResourceType]: {
           searchReturn: [
             {
-              resourceType: (ReferenceDataResourceType.CountryOfRegistration + '#AUDIT') as ReferenceDataResourceType,
+              resourceType: (`${ReferenceDataResourceType.CountryOfRegistration}#AUDIT`) as ReferenceDataResourceType,
               resourceKey: 'a',
-              description: 'Austria'
-            }
+              description: 'Austria',
+            },
           ],
-          loading: false
+          loading: false,
         },
         [ReferenceDataResourceType.Tyres]: {
           ids: ['101'],
           entities: {
-            '101': {
+            101: {
               resourceType: ReferenceDataResourceType.Tyres,
               resourceKey: '101',
-              tyreSize: '235/75-17.5'
-            } as ReferenceDataTyre
+              tyreSize: '235/75-17.5',
+            } as ReferenceDataTyre,
           },
-          loading: false
-        }
-      }
+          loading: false,
+        },
+      },
     });
   });
 
@@ -62,73 +62,73 @@ describe('RefDataDecodePipe', () => {
     store.refreshState();
   });
 
-  it('should return description', done => {
+  it('should return description', (done) => {
     const pipe = new RefDataDecodePipe(store);
 
-    pipe.transform('gb', ReferenceDataResourceType.CountryOfRegistration).subscribe(val => {
+    pipe.transform('gb', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
       expect(val).toBe('Great Britain');
       done();
     });
   });
 
-  it('should return description of deleted item', done => {
+  it('should return description of deleted item', (done) => {
     const pipe = new RefDataDecodePipe(store);
 
-    pipe.transform('a', ReferenceDataResourceType.CountryOfRegistration).subscribe(val => {
+    pipe.transform('a', ReferenceDataResourceType.CountryOfRegistration).subscribe((val) => {
       expect(val).toBe('Austria');
       done();
     });
   });
 
-  it('should return tyreSize', done => {
+  it('should return tyreSize', (done) => {
     const pipe = new RefDataDecodePipe(store);
 
-    pipe.transform('101', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe(val => {
+    pipe.transform('101', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
       expect(val).toBe('235/75-17.5');
       done();
     });
   });
 
-  it('should return untransformed value when description is undefined', done => {
+  it('should return untransformed value when description is undefined', (done) => {
     const pipe = new RefDataDecodePipe(store);
 
-    pipe.transform('101', ReferenceDataResourceType.Tyres).subscribe(val => {
+    pipe.transform('101', ReferenceDataResourceType.Tyres).subscribe((val) => {
       expect(val).toBe('101');
       done();
     });
   });
 
-  it('should return untransformed value when value is not a known resourceKey', done => {
+  it('should return untransformed value when value is not a known resourceKey', (done) => {
     const pipe = new RefDataDecodePipe(store);
 
-    pipe.transform('foo', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe(val => {
+    pipe.transform('foo', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
       expect(val).toBe('foo');
       done();
     });
   });
 
-  it('should return untransformed value when value is falsy', done => {
+  it('should return untransformed value when value is falsy', (done) => {
     const pipe = new RefDataDecodePipe(store);
 
-    pipe.transform('', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe(val => {
+    pipe.transform('', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe((val) => {
       expect(val).toBe('');
       done();
     });
   });
 
-  it('should return untransformed value when resourceType is falsy', done => {
+  it('should return untransformed value when resourceType is falsy', (done) => {
     const pipe = new RefDataDecodePipe(store);
 
-    pipe.transform('101', '', 'tyreSize').subscribe(val => {
+    pipe.transform('101', '', 'tyreSize').subscribe((val) => {
       expect(val).toBe('101');
       done();
     });
   });
 
-  it('should return untransformed value when data not in state', done => {
+  it('should return untransformed value when data not in state', (done) => {
     const pipe = new RefDataDecodePipe(store);
 
-    pipe.transform('bar', 'baz').subscribe(val => {
+    pipe.transform('bar', 'baz').subscribe((val) => {
       expect(val).toBe('bar');
       done();
     });

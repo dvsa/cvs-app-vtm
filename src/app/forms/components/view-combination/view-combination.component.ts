@@ -3,16 +3,15 @@ import { FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomFormControl, FormNode, FormNodeCombinationOptions } from '../../services/dynamic-form.types';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: '[app-view-combination]',
   templateUrl: './view-combination.component.html',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: ViewCombinationComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class ViewCombinationComponent implements OnInit {
   @Input() formNode: FormNode;
@@ -20,7 +19,7 @@ export class ViewCombinationComponent implements OnInit {
 
   leftComponent?: CustomFormControl;
   rightComponent?: CustomFormControl;
-  separator: string = ' ';
+  separator = ' ';
   label?: string;
 
   constructor() {
@@ -29,7 +28,7 @@ export class ViewCombinationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const options = <FormNodeCombinationOptions>this.formNode.options;
+    const options = <FormNodeCombinationOptions> this.formNode.options;
     this.leftComponent = this.findComponentByName(options.leftComponentName, this.formGroup);
     this.rightComponent = this.findComponentByName(options.rightComponentName, this.formGroup);
     this.separator = options.separator;

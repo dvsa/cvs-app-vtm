@@ -1,7 +1,5 @@
 // The types and codes need to be lowercase for the API.
 
-import { VehicleTypes } from './vehicle-tech-record.model';
-
 export enum BodyTypeDescription {
   ARTIC = 'artic',
   ARTICULATED = 'articulated',
@@ -23,7 +21,7 @@ export enum BodyTypeDescription {
   SKELETAL = 'skeletal',
   SKIP_LOADER = 'skip loader',
   TIPPER = 'tipper',
-  TRACTOR = 'tractor'
+  TRACTOR = 'tractor',
 }
 
 export enum BodyTypeCode {
@@ -44,7 +42,7 @@ export enum BodyTypeCode {
   T = 't',
   U = 'u',
   X = 'x',
-  Y = 'y'
+  Y = 'y',
 }
 
 const commonBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
@@ -60,7 +58,7 @@ const commonBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   [BodyTypeCode.S, BodyTypeDescription.SKIP_LOADER],
   [BodyTypeCode.T, BodyTypeDescription.TIPPER],
   [BodyTypeCode.X, BodyTypeDescription.OTHER],
-  [BodyTypeCode.Y, BodyTypeDescription.CAR_TRANSPORTER]
+  [BodyTypeCode.Y, BodyTypeDescription.CAR_TRANSPORTER],
 ]);
 
 const psvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
@@ -68,7 +66,7 @@ const psvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   [BodyTypeCode.D, BodyTypeDescription.DOUBLE_DECKER],
   [BodyTypeCode.M, BodyTypeDescription.MINI_BUS],
   [BodyTypeCode.S, BodyTypeDescription.SINGLE_DECKER],
-  [BodyTypeCode.O, BodyTypeDescription.OTHER]
+  [BodyTypeCode.O, BodyTypeDescription.OTHER],
 ]);
 
 const hgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
@@ -76,22 +74,22 @@ const hgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   [BodyTypeCode.A, BodyTypeDescription.TRACTOR],
   [BodyTypeCode.M, BodyTypeDescription.CONCRETE_MIXER],
   [BodyTypeCode.R, BodyTypeDescription.REFUSE],
-  [BodyTypeCode.U, BodyTypeDescription.ARTIC]
+  [BodyTypeCode.U, BodyTypeDescription.ARTIC],
 ]);
 
 const trlBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   ...commonBodyTypeCodeMap.entries(),
-  [BodyTypeCode.L, BodyTypeDescription.LOW_LOADER]
+  [BodyTypeCode.L, BodyTypeDescription.LOW_LOADER],
 ]);
 
-export const vehicleBodyTypeCodeMap = new Map<VehicleTypes, Map<BodyTypeCode, BodyTypeDescription>>([
-  [VehicleTypes.PSV, psvBodyTypeCodeMap],
-  [VehicleTypes.HGV, hgvBodyTypeCodeMap],
-  [VehicleTypes.TRL, trlBodyTypeCodeMap]
+export const vehicleBodyTypeCodeMap = new Map<string, Map<BodyTypeCode, BodyTypeDescription>>([
+  ['psv', psvBodyTypeCodeMap],
+  ['hgv', hgvBodyTypeCodeMap],
+  ['trl', trlBodyTypeCodeMap],
 ]);
 
-export const vehicleBodyTypeDescriptionMap = new Map<VehicleTypes, Map<BodyTypeDescription, BodyTypeCode>>([
-  [VehicleTypes.PSV, new Map([...psvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
-  [VehicleTypes.HGV, new Map([...hgvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
-  [VehicleTypes.TRL, new Map([...trlBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))]
+export const vehicleBodyTypeDescriptionMap = new Map<string, Map<BodyTypeDescription, BodyTypeCode>>([
+  ['psv', new Map([...psvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
+  ['hgv', new Map([...hgvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
+  ['trl', new Map([...trlBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
 ]);

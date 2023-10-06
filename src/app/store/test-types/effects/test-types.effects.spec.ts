@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -29,14 +30,14 @@ describe('TestResultsEffects', () => {
         provideMockActions(() => actions$),
         TestTypesService,
         provideMockStore({
-          initialState: initialAppState
+          initialState: initialAppState,
         }),
         RouterService,
         {
           provide: UserService,
-          useValue: { roles$: of(['TestResult.CreateDeskBased']) }
-        }
-      ]
+          useValue: { roles$: of(['TestResult.CreateDeskBased']) },
+        },
+      ],
     });
 
     effects = TestBed.inject(TestTypeEffects);
@@ -64,28 +65,28 @@ describe('TestResultsEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.fetchTestTypeTaxonomy$).toBe('---b', {
-          b: fetchTestTypesSuccess({ payload: testTypes })
+          b: fetchTestTypesSuccess({ payload: testTypes }),
         });
       });
     });
 
-    it('should return fetchTestTypesFailed action on successfull API call', () => {
+    it('should return fetchTestTypesFailed action on successful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a--', { a: fetchTestTypes });
 
         const expectedError = new HttpErrorResponse({
           status: 500,
-          statusText: 'Internal server error'
+          statusText: 'Internal server error',
         });
 
         // mock service call
-        (testTypesService.getTestTypes as () => Observable<any>) = jest.fn((): Observable<HttpErrorResponse> => {
+        (testTypesService.getTestTypes as () => Observable<unknown>) = jest.fn((): Observable<HttpErrorResponse> => {
           return cold('--#|', {}, expectedError);
         });
 
         // expect effect to return success action
         expectObservable(effects.fetchTestTypeTaxonomy$).toBe('---b', {
-          b: fetchTestTypesFailed({ error: expectedError.message })
+          b: fetchTestTypesFailed({ error: expectedError.message }),
         });
       });
     });

@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
+import { amendVin, amendVinSuccess } from '@store/technical-records';
 import {
   Subject, take, takeUntil, withLatestFrom,
 } from 'rxjs';
@@ -24,7 +24,7 @@ import {
 })
 export class AmendVinComponent implements OnDestroy, OnInit {
   techRecord?: V3TechRecordModel;
-  form: FormGroup;
+  form!: FormGroup;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -36,28 +36,12 @@ export class AmendVinComponent implements OnDestroy, OnInit {
     private routerService: RouterService,
     private store: Store<State>,
   ) {
-    this.form = new FormGroup({
-      vin: new CustomFormControl(
-        {
-          name: 'input-vin',
-          label: 'Vin',
-          type: FormNodeTypes.CONTROL,
-        },
-        '',
-        [CustomValidators.alphanumeric(), Validators.minLength(3), Validators.maxLength(21), Validators.required],
-        [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)],
-      ),
-    });
-    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
-    });
+    this.initForm();
+    this.handleAmendVinSuccess();
   }
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((record) => { !record ? this.navigateBack() : (this.techRecord = record); });
+    this.subscribeToTechRecordUpdates();
   }
 
   ngOnDestroy(): void {
@@ -70,22 +54,26 @@ export class AmendVinComponent implements OnDestroy, OnInit {
   }
 
   get vehicleType(): VehicleTypes | undefined {
-    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
+    return this.techRecord
+      ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord)
+      : undefined;
   }
 
   get makeAndModel(): string | undefined {
-    return this.techRecord ? this.technicalRecordService.getMakeAndModel(this.techRecord) : undefined;
+    return this.techRecord
+      ? this.technicalRecordService.getMakeAndModel(this.techRecord)
+      : undefined;
   }
 
   get currentVrm(): string | undefined {
-    return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
+    return this.techRecord?.techRecord_vehicleType !== 'trl'
+      ? this.techRecord?.primaryVrm ?? ''
+      : undefined;
   }
 
   isFormValid(): boolean {
     const errors: GlobalError[] = [];
-
     DynamicFormService.validate(this.form, errors);
-
     this.globalErrorService.setErrors(errors);
 
     if (this.form.value.vin === this.techRecord?.vin) {
@@ -96,26 +84,77 @@ export class AmendVinComponent implements OnDestroy, OnInit {
     return this.form.valid;
   }
 
-  navigateBack() {
+  navigateBack(): void {
     this.globalErrorService.clearErrors();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(): void {
-    const record = { ...this.techRecord! } as TechRecordType<'put'>;
+    if (this.shouldUpdateTechRecord()) {
+      this.updateTechRecord();
+    }
+  }
+
+  private initForm(): void {
+    this.form = new FormGroup({
+      vin: new CustomFormControl(
+        {
+          name: 'input-vin',
+          label: 'Vin',
+          type: FormNodeTypes.CONTROL,
+        },
+        '',
+        [
+          CustomValidators.alphanumeric(),
+          Validators.minLength(3),
+          Validators.maxLength(21),
+          Validators.required,
+          CustomValidators.validateVinCharacters(),
+        ],
+        [this.technicalRecordService.validateVinForUpdate(this.techRecord?.vin)],
+      ),
+    });
+  }
+
+  private handleAmendVinSuccess(): void {
+    this.actions$.pipe(ofType(amendVinSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+    });
+  }
+
+  private subscribeToTechRecordUpdates(): void {
+    this.technicalRecordService.techRecord$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((record) => {
+        record?.techRecord_statusCode === 'archived' || !record
+          ? this.navigateBack()
+          : this.techRecord = record;
+      });
+  }
+
+  private shouldUpdateTechRecord(): boolean {
+    return this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null);
+  }
+
+  private updateTechRecord(): void {
+    const record = { ...this.techRecord } as TechRecordType<'put'>;
     record.vin = this.form.value.vin;
 
-    if (this.isFormValid() || (this.form.status === 'PENDING' && this.form.errors === null)) {
-      this.technicalRecordService.updateEditingTechRecord({ ...record, techRecord_reasonForCreation: 'Vin changed' });
-      this.routerService
-        .getRouteNestedParam$('systemNumber')
-        .pipe(take(1), takeUntil(this.destroy$), withLatestFrom(this.routerService.getRouteNestedParam$('createdTimestamp')))
-        .subscribe(([systemNumber, createdTimestamp]) => {
-          if (systemNumber && createdTimestamp) {
-            this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
-          }
-        });
-    }
+    this.technicalRecordService.updateEditingTechRecord({
+      ...record,
+      techRecord_reasonForCreation: 'Vin changed',
+    });
+
+    this.routerService
+      .getRouteNestedParam$('systemNumber')
+      .pipe(take(1), takeUntil(this.destroy$), withLatestFrom(this.routerService.getRouteNestedParam$('createdTimestamp')))
+      .subscribe(([systemNumber, createdTimestamp]) => {
+        if (systemNumber && createdTimestamp) {
+          const newVin = this.form.value.vin;
+          this.store.dispatch(amendVin({ newVin, systemNumber, createdTimestamp }));
+        }
+      });
   }
 }

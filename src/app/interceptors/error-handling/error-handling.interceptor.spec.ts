@@ -8,7 +8,7 @@ import { ErrorInterceptor } from './error-handling.interceptor';
 
 @Component({
   selector: 'app-dummy-component',
-  template: ''
+  template: '',
 })
 class DummyComponent {}
 
@@ -25,22 +25,22 @@ describe('ErrorInterceptor', () => {
         RouterTestingModule.withRoutes([
           {
             path: '',
-            component: DummyComponent
+            component: DummyComponent,
           },
           {
             path: 'error',
-            component: DummyComponent
-          }
-        ])
+            component: DummyComponent,
+          },
+        ]),
       ],
       providers: [
         ErrorInterceptor,
         {
           provide: HTTP_INTERCEPTORS,
           useClass: ErrorInterceptor,
-          multi: true
-        }
-      ]
+          multi: true,
+        },
+      ],
     });
   });
 
@@ -59,10 +59,10 @@ describe('ErrorInterceptor', () => {
 
   it('should navigate to error page on a 500', fakeAsync(() => {
     http.get('http://www.google.com').subscribe({
-      next: response => {},
-      error: e => {
+      next: () => {},
+      error: (e) => {
         expect(e.status).toBe(500);
-      }
+      },
     });
 
     const req = httpController.expectOne('http://www.google.com');
@@ -75,10 +75,10 @@ describe('ErrorInterceptor', () => {
 
   it('should not navigate to error page on a success', fakeAsync(() => {
     http.get('http://www.google.com').subscribe({
-      next: response => {
+      next: (response) => {
         expect(response).toBe('string');
       },
-      error: e => {}
+      error: () => {},
     });
 
     const req = httpController.expectOne('http://www.google.com');
