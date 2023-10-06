@@ -345,10 +345,10 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   clearInput() {
-    this.approvalTypeNumber1 = '';
-    this.approvalTypeNumber2 = '';
-    this.approvalTypeNumber3 = '';
-    this.approvalTypeNumber4 = '';
+    this.approvalTypeNumber1 = undefined;
+    this.approvalTypeNumber2 = undefined;
+    this.approvalTypeNumber3 = undefined;
+    this.approvalTypeNumber4 = undefined;
 
     this.approvalTypeNumber_1.next(this.approvalTypeNumber1);
     this.approvalTypeNumber_2.next(this.approvalTypeNumber2);
@@ -367,6 +367,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     techRecord_approvalTypeNumber3: any,
     techRecord_approvalTypeNumber4: any,
   ) {
+    console.log('processing approval type number');
     switch (this.approvalType) {
       case 'NTA':
         return techRecord_approvalTypeNumber1 || null;
@@ -436,5 +437,13 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       default:
         return 'Unknown approval type';
     }
+  }
+
+  getId(name: string) {
+    const id = `${name}-approvalTypeNumber1-${this.approvalType}`;
+    if (this.control) {
+      this.control.meta.customId = id;
+    }
+    return id;
   }
 }
