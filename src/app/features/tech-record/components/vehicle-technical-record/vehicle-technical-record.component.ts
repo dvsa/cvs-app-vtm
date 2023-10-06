@@ -123,12 +123,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     }
   }
 
-  showCreateTestButton(vehicleType: VehicleTypes | string): boolean {
-    return (
-      !this.isArchived &&
-      !this.isEditing &&
-      (this.isCurrent || vehicleType === VehicleTypes.TRL || vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.PSV)
-    );
+  showCreateTestButton(): boolean {
+    return !this.isArchived && !this.isEditing;
   }
 
   createTest(techRecord?: V3TechRecordModel): void {
