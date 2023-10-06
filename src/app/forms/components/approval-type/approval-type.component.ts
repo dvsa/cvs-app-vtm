@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import {
   BehaviorSubject, Observable, Subscription, combineLatest,
 } from 'rxjs';
-import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 const patterns: Record<string, RegExp> = {
@@ -361,11 +361,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   get widths(): typeof FormNodeWidth {
     return FormNodeWidth;
   }
-
-  get editTypes(): typeof FormNodeEditTypes {
-    return FormNodeEditTypes;
-  }
-
   processApprovalTypeNumber(
     techRecord_approvalTypeNumber1: any,
     techRecord_approvalTypeNumber2: any,
@@ -391,8 +386,8 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
       case 'ECSSTA':
         return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
-          ? `e${techRecord_approvalTypeNumber1}*KS
-          ${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
+          // eslint-disable-next-line max-len
+          ? `e${techRecord_approvalTypeNumber1}*KS${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
           : null;
 
       case 'GB WVTA':
@@ -402,8 +397,8 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
       case 'UKNI WVTA':
         return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3 && techRecord_approvalTypeNumber4
-          ? `${techRecord_approvalTypeNumber1}
-          11*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
+          // eslint-disable-next-line max-len
+          ? `${techRecord_approvalTypeNumber1}11*${techRecord_approvalTypeNumber2}/${techRecord_approvalTypeNumber3}*${techRecord_approvalTypeNumber4}`
           : null;
 
       case 'EU WVTA Pre 23':
