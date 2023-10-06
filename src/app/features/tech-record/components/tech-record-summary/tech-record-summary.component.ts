@@ -113,13 +113,15 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     this.isEditing && this.technicalRecordService.clearReasonForCreation();
 
     const editingReason = this.activatedRoute.snapshot.data['reason'];
-    if (this.isEditing && editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+    if (this.isEditing) {
       this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
         if (techRecord) {
-          this.technicalRecordService.updateEditingTechRecord({
-            ...(techRecord as TechRecordType<'put'>),
-            techRecord_statusCode: StatusCodes.PROVISIONAL,
-          });
+          if (editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+            this.technicalRecordService.updateEditingTechRecord({
+              ...(techRecord as TechRecordType<'put'>),
+              techRecord_statusCode: StatusCodes.PROVISIONAL,
+            });
+          }
 
           if (techRecord?.vin?.match('([IOQ])a*')) {
             const warnings: GlobalWarning[] = [];
