@@ -4,9 +4,7 @@ import { CouplingTypeOptions } from '@models/coupling-type-enum';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FrameDescriptions } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
-} from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
 
 export const TrlTechRecordTemplate: FormNode = {
   name: 'techRecordSummary',
@@ -38,7 +36,6 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
 
       isoDate: false,
     },
@@ -51,9 +48,8 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
-        { name: ValidatorNames.Min, args: 1000 },
-      ],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
+        { name: ValidatorNames.Min, args: 1000 }
+      ]
     },
     {
       name: 'techRecord_firstUseDate',
@@ -146,8 +142,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
-      class: 'flex--half',
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
+      class: 'flex--half'
     },
     {
       name: 'techRecord_vehicleConfiguration',

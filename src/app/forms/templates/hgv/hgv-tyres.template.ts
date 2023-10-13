@@ -1,8 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels,
-} from '@forms/services/dynamic-form.types';
-import { TagType } from '@shared/components/tag/tag.component';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const tyresTemplateHgv: FormNode = {
   name: 'tyreSection',
@@ -18,9 +15,8 @@ export const tyresTemplateHgv: FormNode = {
       width: FormNodeWidth.XS,
       validators: [
         { name: ValidatorNames.MaxLength, args: 2 },
-        { name: ValidatorNames.Min, args: 0 },
-      ],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
+        { name: ValidatorNames.Min, args: 0 }
+      ]
     },
     {
       name: 'techRecord_axles',

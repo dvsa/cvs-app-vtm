@@ -18,8 +18,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 6 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 6 }]
     },
     {
       name: 'techRecord_make',
@@ -28,8 +27,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 50 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 50 }]
     },
     {
       name: 'techRecord_model',
@@ -38,8 +36,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
     },
     {
       name: 'techRecord_bodyType_description',
@@ -71,8 +68,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
         { value: 'r', label: 'R' },
         { value: 'a', label: 'A' },
       ],
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }]
     },
     {
       name: 'techRecord_conversionRefNo',

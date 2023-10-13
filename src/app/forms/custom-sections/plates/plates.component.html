@@ -41,7 +41,7 @@
   <ng-container *ngIf="eligibleForPlates">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <app-button id="generate-plate-link" *appRoleRequired="roles.TechRecordAmend" (clicked)="validateTechRecordPlates()"
+        <app-button id="generate-plate-link" type="link" routerLink="generate-plate" *appRoleRequired="roles.TechRecordAmend"
           >Generate and send plate</app-button
         >
       </div>

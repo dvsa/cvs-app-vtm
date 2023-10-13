@@ -14,7 +14,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { addAxle, removeAxle, updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { debounceTime, Subscription } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-weights[vehicleTechRecord]',
@@ -70,9 +70,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
   get isTrl(): boolean {
     return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.TRL;
-  }
-  get requiredPlates(): boolean {
-    return !this.isPsv && this.isEditing;
   }
   get types(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
