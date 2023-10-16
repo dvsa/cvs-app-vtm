@@ -51,7 +51,7 @@ import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
     RouterOutletComponent,
     TyreAxleLoadPipe,
     GetControlLabelPipe,
-    FormatVehicleTypePipe
+    FormatVehicleTypePipe,
   ],
   imports: [CommonModule, RouterModule, LetModule],
   exports: [
@@ -77,8 +77,8 @@ import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
     TyreAxleLoadPipe,
     GetControlLabelPipe,
     FormatVehicleTypePipe,
-    LetModule
+    LetModule,
   ],
-  providers: [DocumentRetrievalService]
+  providers: [DocumentRetrievalService],
 })
 export class SharedModule {}

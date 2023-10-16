@@ -8,9 +8,9 @@ describe('TechRecordSummaryChangesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TechRecordSummaryChangesComponent ]
+      declarations: [TechRecordSummaryChangesComponent],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(TechRecordSummaryChangesComponent);
     component = fixture.componentInstance;
