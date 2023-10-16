@@ -1,7 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import {
-  Component, Input, OnDestroy, OnInit, ViewChild,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
@@ -9,28 +7,22 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import {
-  ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes,
-} from '@models/vehicle-tech-record.model';
+import { ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-import {
-  clearAllSectionStates, clearScrollPosition, editingTechRecord, updateTechRecord, updateTechRecordSuccess,
-} from '@store/technical-records';
+import { clearScrollPosition, updateTechRecordSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import {
-  Observable, Subject, take, takeUntil, withLatestFrom,
-} from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 
 @Component({
   selector: 'app-vehicle-technical-record',
   templateUrl: './vehicle-technical-record.component.html',
-  styleUrls: ['./vehicle-technical-record.component.scss'],
+  styleUrls: ['./vehicle-technical-record.component.scss']
 })
 export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
@@ -60,7 +52,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private actions$: Actions,
     private viewportScroller: ViewportScroller,
-    private routerService: RouterService,
+    private routerService: RouterService
   ) {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
@@ -71,17 +63,17 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   ngOnInit(): void {
-    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
+    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(vehicleTechRecord => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([
-        `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
+        `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`
       ]);
     });
     this.isArchived = this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
     this.isCurrent = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT;
 
-    this.userService.roles$.pipe(take(1)).subscribe((storedRoles) => {
-      this.hasTestResultAmend = storedRoles?.some((role) => {
+    this.userService.roles$.pipe(take(1)).subscribe(storedRoles => {
+      this.hasTestResultAmend = storedRoles?.some(role => {
         return Roles.TestResultAmend.split(',').includes(role);
       });
     });
@@ -134,48 +126,33 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   }
 
   showCreateTestButton(): boolean {
-    return (
-      !this.isArchived
-      && !this.isEditing
-    );
+    return !this.isArchived && !this.isEditing;
   }
 
   async createTest(techRecord?: V3TechRecordModel): Promise<void> {
     this.store.dispatch(clearScrollPosition());
     if (
-      (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'complete'
-      || (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'testable'
+      (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'complete' ||
+      (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness === 'testable'
     ) {
       await this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
       this.globalErrorService.setErrors([
         {
           error: this.getCreateTestErrorMessage(techRecord?.techRecord_hiddenInVta ?? false),
-          anchorLink: 'create-test',
-        },
+          anchorLink: 'create-test'
+        }
       ]);
 
       this.viewportScroller.scrollToPosition([0, 0]);
     }
   }
 
-  handleSubmit(): void {
+  async handleSubmit(): Promise<void> {
     this.summary.checkForms();
-    if (!this.isInvalid) {
-      this.store
-        .select(editingTechRecord)
-        .pipe(
-          take(1),
-          withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp')),
-        )
-        .subscribe(([record, systemNumber, createdTimestamp]) => {
-          if (record && systemNumber && createdTimestamp) {
-            this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
-            this.store.dispatch(clearAllSectionStates());
-            this.store.dispatch(clearScrollPosition());
-          }
-        });
-    }
+    if (this.isInvalid) return;
+
+    await this.router.navigate(['change-summary'], { relativeTo: this.route });
   }
 
   private getCreateTestErrorMessage(hiddenInVta: boolean | undefined): string {
@@ -185,7 +162,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
     return this.hasTestResultAmend
       ? 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.'
-      : 'This vehicle does not have enough information to be tested.'
-      + ' Call the Contact Centre to complete this record so tests can be recorded against it.';
+      : 'This vehicle does not have enough information to be tested.' +
+          ' Call the Contact Centre to complete this record so tests can be recorded against it.';
   }
 }
