@@ -1,13 +1,13 @@
 import {
   AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit,
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import {NG_VALUE_ACCESSOR} from '@angular/forms';
+import {GlobalErrorService} from '@core/components/global-error/global-error.service';
 import {
   BehaviorSubject, Observable, Subscription, combineLatest,
 } from 'rxjs';
-import { FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { BaseControlComponent } from '../base-control/base-control.component';
+import {FormNodeWidth} from '@forms/services/dynamic-form.types';
+import {BaseControlComponent} from '../base-control/base-control.component';
 
 const patterns: Record<string, RegExp> = {
   NTA: /^(.+)$/i, // 25
@@ -22,7 +22,7 @@ const patterns: Record<string, RegExp> = {
   'EU WVTA 23 on': /^e(.{2})\*(.{4})\/(.{4})\*(.{6})$/i, // 20
   QNIG: /^e(.{2})\*(.{4})\/(.{4})\*(.{6})$/i, // 20
   'Prov.GB WVTA': /^(.{3})\*(.{4})\/(.{4})\*(.{6})$/i, // 20
-  'Small series': /^(.)11\*NKS(.{2})\*(.{6})$/i, // 16
+  'Small series': /^(.+)$/i, // 25
   'IVA - VCA': /^n11\*NIV(.{2})\/(.{4})\*(.{6})$/i, // 19
 };
 
@@ -39,7 +39,7 @@ const patternsPartialMatch: Record<string, RegExp> = {
   'EU WVTA 23 on': /^e(.{0,2})\*(.{0,4})\/(.{0,4})\*(.{0,6})$/i,
   QNIG: /^e(.{0,2})\*(.{0,4})\/(.{0,4})\*(.{0,6})$/i,
   'Prov.GB WVTA': /^(.{0,3})\*(.{0,4})\/(.{0,4})\*(.{0,6})$/i,
-  'Small series': /^(.?)11\*NKS(.{0,2})\*(.{0,6})$/i,
+  'Small series': /^(.+)$/i, // 25
   'IVA - VCA': /^n11\*NIV(.{0,2})\/(.{0,4})\*(.{0,6})$/i,
 };
 
@@ -56,7 +56,7 @@ const patternsGenericPartialMatch: Record<string, RegExp> = {
   'EU WVTA 23 on': /^(.{0,2})(.{0,4})(.{0,4})(.{0,6})$/i,
   QNIG: /^(.{0,2})(.{0,4})(.{0,4})(.{0,6})$/i,
   'Prov.GB WVTA': /^(.{0,3})(.{0,4})(.{0,4})(.{0,6})$/i,
-  'Small series': /^(.?)(.{0,2})(.{0,6})$/i,
+  'Small series': /^(.+)$/i, // 25
   'IVA - VCA': /^(.{0,2})(.{0,4})(.{0,6})$/i,
 };
 
@@ -73,7 +73,7 @@ const characterLimit: Record<string, number> = {
   'EU WVTA 23 on': 20,
   QNIG: 20,
   'Prov.GB WVTA': 20,
-  'Small series': 16,
+  'Small series': 25,
   'IVA - VCA': 19,
 };
 const characterLimitGeneric: Record<string, number> = {
@@ -89,7 +89,7 @@ const characterLimitGeneric: Record<string, number> = {
   'EU WVTA 23 on': 16,
   QNIG: 16,
   'Prov.GB WVTA': 17,
-  'Small series': 9,
+  'Small series': 25,
   'IVA - VCA': 12,
 };
 
@@ -185,8 +185,10 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   }
 
   valueWriteBack(value: string | null): void {
-    if (!value || !this.approvalType) return;
-    const NTA_IVA_Types = ['NTA', 'IVA', 'IVA - DVSA/NI'];
+    if (!value || !this.approvalType) {
+      return;
+    }
+    const NTA_IVA_Types = ['NTA', 'IVA', 'IVA - DVSA/NI', 'Small series'];
     const OtherTypes = [
       'ECTA',
       'NSSTA',
@@ -197,7 +199,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       'EU WVTA 23 on',
       'QNIG',
       'Prov.GB WVTA',
-      'Small series',
       'IVA - VCA',
     ];
 
@@ -251,6 +252,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     const matches = value.match(pattern)?.map((x) => (x.length > 25 ? x.substring(0, 25) : x));
     this.setTypeApprovalNumbers(matches || []);
   }
+
   private setTypeApprovalNumbers(matches: string[]) {
     if (matches) {
       const [techRecord_approvalTypeNumber1,
@@ -307,6 +309,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'NTA':
       case 'IVA':
       case 'IVA - DVSA/NI':
+      case 'Small series':
         if (oneRequired()) {
           setErrors();
         }
@@ -326,7 +329,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
         break;
 
       case 'IVA - VCA':
-      case 'Small series':
         if (threeRequired()) {
           setErrors();
         }
@@ -361,13 +363,13 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
   get widths(): typeof FormNodeWidth {
     return FormNodeWidth;
   }
+
   processApprovalTypeNumber(
     techRecord_approvalTypeNumber1: any,
     techRecord_approvalTypeNumber2: any,
     techRecord_approvalTypeNumber3: any,
     techRecord_approvalTypeNumber4: any,
   ) {
-    console.log('processing approval type number');
     switch (this.approvalType) {
       case 'NTA':
         return techRecord_approvalTypeNumber1 || null;
@@ -423,9 +425,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
           : null;
 
       case 'Small series':
-        return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3
-          ? `${techRecord_approvalTypeNumber1}11*NKS${techRecord_approvalTypeNumber2}*${techRecord_approvalTypeNumber3}`
-          : null;
+        return techRecord_approvalTypeNumber1 || null;
 
       case 'IVA - VCA':
         return techRecord_approvalTypeNumber1 && techRecord_approvalTypeNumber2 && techRecord_approvalTypeNumber3
