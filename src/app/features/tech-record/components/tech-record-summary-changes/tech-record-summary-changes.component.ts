@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TechRecordGETHGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { FormNode, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { VehicleSummary } from '@forms/templates/tech-records/vehicle-summary.template';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
@@ -6,7 +7,14 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { editingTechRecord, selectTechRecordChanges, techRecord } from '@store/technical-records';
+import {
+  editingTechRecord,
+  selectTechRecordAdditions,
+  selectTechRecordChanges,
+  selectTechRecordDeletions,
+  selectTechRecordModifications,
+  techRecord,
+} from '@store/technical-records';
 import { filter, map, switchMap } from 'rxjs';
 
 @Component({
@@ -20,6 +28,49 @@ export class TechRecordSummaryChangesComponent {
   techRecord$ = this.store.select(techRecord).pipe(filter(Boolean));
   techRecordEdited$ = this.store.select(editingTechRecord);
   techRecordChanges$ = this.store.select(selectTechRecordChanges);
+
+  // Retrieve the additions, modifications, and deletions seperately, so they can be properly demarcated by the UI
+  techRecordAdditions$ = this.store.select(selectTechRecordAdditions);
+  techRecordModifications$ = this.store.select(selectTechRecordModifications);
+  techRecordDeletions$ = this.store.select(selectTechRecordDeletions);
+
+  // For HGV, TRL, and PSV, we produce an array of added axles, by converting the changes object into an array
+  addedAxles$ = this.techRecordEdited$.pipe(
+    filter(Boolean),
+    switchMap((record) =>
+      this.techRecordAdditions$.pipe(
+        map((additions) =>
+          record.techRecord_vehicleType === 'hgv' || record.techRecord_vehicleType === 'trl' || record.techRecord_vehicleType === 'psv'
+            ? Object.values((additions as Partial<TechRecordGETHGV | TechRecordGETTRL | TechRecordGETPSV>).techRecord_axles ?? {})
+            : []),
+      )),
+  );
+
+  // For HGV, TRL, and PSV, we produce an array of modified axles, by converting the changes object into an array
+  modifiedAxles$ = this.techRecordEdited$.pipe(
+    filter(Boolean),
+    switchMap((record) =>
+      this.techRecordModifications$.pipe(
+        map((modifications) =>
+          record.techRecord_vehicleType === 'hgv' || record.techRecord_vehicleType === 'trl' || record.techRecord_vehicleType === 'psv'
+            ? Object.entries((modifications as Partial<TechRecordGETHGV | TechRecordGETTRL | TechRecordGETPSV>).techRecord_axles ?? {})
+            // set the key to be the axle number, as this is absent from the changes object
+              .map(([key, value]) => ({ ...value, axleNumber: +key + 1 }))
+            : []),
+      )),
+  );
+
+  // For HGV, TRL, and PSV, we produce an array of deleted axles, by converting the changes object into an array
+  deletedAxles$ = this.techRecordEdited$.pipe(
+    filter(Boolean),
+    switchMap((record) =>
+      this.techRecordDeletions$.pipe(
+        map((deletions) =>
+          record.techRecord_vehicleType === 'hgv' || record.techRecord_vehicleType === 'trl' || record.techRecord_vehicleType === 'psv'
+            ? Object.values((deletions as Partial<TechRecordGETHGV | TechRecordGETTRL | TechRecordGETPSV>).techRecord_axles ?? {})
+            : []),
+      )),
+  );
 
   // Find the keys of the changes to the tech record which aren't populated by the server
   techRecordChangesKeys$ = this.techRecordChanges$.pipe(
@@ -56,6 +107,35 @@ export class TechRecordSummaryChangesComponent {
 
   get vehicleSummary(): FormNode {
     return VehicleSummary;
+  }
+
+  get axleTemplate() {
+    const control = {
+      columns: [
+        {
+          name: 'name',
+          heading: '',
+          order: 1,
+        },
+        {
+          name: 'weights_gbWeight',
+          heading: 'GB Weight',
+          order: 2,
+        },
+        {
+          name: 'weights_eecWeight',
+          heading: 'EEC Weight',
+          order: 3,
+        },
+        {
+          name: 'weights_designWeight',
+          heading: 'Design Weight',
+          order: 4,
+        },
+      ],
+    };
+
+    return control;
   }
 
   isNotEmpty(value: unknown): boolean {
