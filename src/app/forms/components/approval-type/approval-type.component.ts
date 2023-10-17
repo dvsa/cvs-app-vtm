@@ -1,13 +1,13 @@
 import {
   AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit,
 } from '@angular/core';
-import {NG_VALUE_ACCESSOR} from '@angular/forms';
-import {GlobalErrorService} from '@core/components/global-error/global-error.service';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import {
   BehaviorSubject, Observable, Subscription, combineLatest,
 } from 'rxjs';
-import {FormNodeWidth} from '@forms/services/dynamic-form.types';
-import {BaseControlComponent} from '../base-control/base-control.component';
+import { FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { BaseControlComponent } from '../base-control/base-control.component';
 
 const patterns: Record<string, RegExp> = {
   NTA: /^(.+)$/i, // 25
