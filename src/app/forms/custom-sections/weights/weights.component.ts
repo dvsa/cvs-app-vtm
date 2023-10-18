@@ -1,8 +1,12 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+} from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes,
+} from '@forms/services/dynamic-form.types';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
