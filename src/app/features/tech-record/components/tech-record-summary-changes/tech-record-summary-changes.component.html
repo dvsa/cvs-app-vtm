@@ -4,11 +4,11 @@
     techRecordEdited: techRecordEdited$,
     techRecordChanges: techRecordChanges$,
     vehicleTemplates: vehicleTemplates$,
+    techRecordAdditions: techRecordAdditions$,
+    techRecordModifications: techRecordModifications$,
     customVehicleTemplate: customVehicleTemplate$,
     sectionState: technicalRecordService.sectionStates$,
-    addedAxles: addedAxles$,
-    modifiedAxles: modifiedAxles$,
-    deletedAxles: deletedAxles$
+    deletedAxles: deletedAxles$,
   } as vm"
 >
   <app-banner>
@@ -63,47 +63,22 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'weightsSection'">
-        <table class="govuk-table" *ngIf="['trl', 'hgv', 'psv'].includes(vm.techRecord.techRecord_vehicleType)">
-          <caption class="govuk-table__caption govuk-table__caption--m">
-            Axles
-          </caption>
-          <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-              <th scope="col" class="govuk-table__header">No.</th>
-              <th *ngFor="let column of axleTemplate.columns" scope="col" class="govuk-table__header">{{ column.heading }}</th>
-              <th scope="col" class="govuk-table__header">Change</th>
-            </tr>
-          </thead>
-          <tbody class="govuk-table__body">
-            <ng-container *ngIf="vm.addedAxles.length">
-              <tr class="govuk-table__row" *ngFor="let axle of vm.addedAxles">
-                <td class="govuk-table__cell">Axle {{ axle.axleNumber }}</td>
-                <td *ngFor="let column of axleTemplate.columns" class="govuk-table__cell">{{ axle[column.name] }}</td>
-                <td class="govuk-table__cell">
-                  <app-tag type="green">Added</app-tag>
-                </td>
-              </tr>
-            </ng-container>
-            <ng-container *ngIf="vm.modifiedAxles.length">
-              <tr class="govuk-table__row" *ngFor="let axle of vm.modifiedAxles">
-                <td class="govuk-table__cell">Axle {{ axle.axleNumber }}</td>
-                <td *ngFor="let column of axleTemplate.columns" class="govuk-table__cell">{{ axle[column.name] }}</td>
-                <td class="govuk-table__cell">
-                  <app-tag type="yellow">Modified</app-tag>
-                </td>
-              </tr>
-            </ng-container>
-            <ng-container *ngIf="vm.deletedAxles.length">
-              <tr class="govuk-table__row" *ngFor="let axle of vm.deletedAxles">
-                <td class="govuk-table__cell">Axle {{ axle.axleNumber }}</td>
-                <td *ngFor="let column of axleTemplate.columns" class="govuk-table__cell">{{ axle[column.name] }}</td>
-                <td class="govuk-table__cell">
-                  <app-tag type="red">Deleted</app-tag>
-                </td>
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
+        <ng-container
+          *ngIf="
+            vm.techRecordEdited?.techRecord_vehicleType === 'trl' ||
+            vm.techRecordEdited?.techRecord_vehicleType === 'hgv' ||
+            vm.techRecordEdited?.techRecord_vehicleType === 'psv'
+          "
+        >
+          <ng-container *ngIf="vm.deletedAxles.length > 0; else noDeleted">
+            <app-weights [vehicleTechRecord]="$any(vm.techRecordEdited)"></app-weights>
+          </ng-container>
+          <ng-template #noDeleted>
+            <app-modified-weights
+              [vehicleType]="$any(vm.techRecordEdited.techRecord_vehicleType)"
+              [changes]="$any(vm.techRecordChanges)"
+            ></app-modified-weights> </ng-template
+        ></ng-container>
       </ng-container>
 
       <ng-container *ngSwitchCase="'lettersSection'">

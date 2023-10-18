@@ -26,39 +26,13 @@ import { filter, map, switchMap } from 'rxjs';
 export class TechRecordSummaryChangesComponent {
   // Retrieve the current and modified tech records from state, as well as an object representing their differences
   techRecord$ = this.store.select(techRecord).pipe(filter(Boolean));
-  techRecordEdited$ = this.store.select(editingTechRecord);
+  techRecordEdited$ = this.store.select(editingTechRecord).pipe(filter(Boolean));
   techRecordChanges$ = this.store.select(selectTechRecordChanges);
 
   // Retrieve the additions, modifications, and deletions seperately, so they can be properly demarcated by the UI
   techRecordAdditions$ = this.store.select(selectTechRecordAdditions);
   techRecordModifications$ = this.store.select(selectTechRecordModifications);
   techRecordDeletions$ = this.store.select(selectTechRecordDeletions);
-
-  // For HGV, TRL, and PSV, we produce an array of added axles, by converting the changes object into an array
-  addedAxles$ = this.techRecordEdited$.pipe(
-    filter(Boolean),
-    switchMap((record) =>
-      this.techRecordAdditions$.pipe(
-        map((additions) =>
-          record.techRecord_vehicleType === 'hgv' || record.techRecord_vehicleType === 'trl' || record.techRecord_vehicleType === 'psv'
-            ? Object.values((additions as Partial<TechRecordGETHGV | TechRecordGETTRL | TechRecordGETPSV>).techRecord_axles ?? {})
-            : []),
-      )),
-  );
-
-  // For HGV, TRL, and PSV, we produce an array of modified axles, by converting the changes object into an array
-  modifiedAxles$ = this.techRecordEdited$.pipe(
-    filter(Boolean),
-    switchMap((record) =>
-      this.techRecordModifications$.pipe(
-        map((modifications) =>
-          record.techRecord_vehicleType === 'hgv' || record.techRecord_vehicleType === 'trl' || record.techRecord_vehicleType === 'psv'
-            ? Object.entries((modifications as Partial<TechRecordGETHGV | TechRecordGETTRL | TechRecordGETPSV>).techRecord_axles ?? {})
-            // set the key to be the axle number, as this is absent from the changes object
-              .map(([key, value]) => ({ ...value, axleNumber: +key + 1 }))
-            : []),
-      )),
-  );
 
   // For HGV, TRL, and PSV, we produce an array of deleted axles, by converting the changes object into an array
   deletedAxles$ = this.techRecordEdited$.pipe(
@@ -107,35 +81,6 @@ export class TechRecordSummaryChangesComponent {
 
   get vehicleSummary(): FormNode {
     return VehicleSummary;
-  }
-
-  get axleTemplate() {
-    const control = {
-      columns: [
-        {
-          name: 'name',
-          heading: '',
-          order: 1,
-        },
-        {
-          name: 'weights_gbWeight',
-          heading: 'GB Weight',
-          order: 2,
-        },
-        {
-          name: 'weights_eecWeight',
-          heading: 'EEC Weight',
-          order: 3,
-        },
-        {
-          name: 'weights_designWeight',
-          heading: 'Design Weight',
-          order: 4,
-        },
-      ],
-    };
-
-    return control;
   }
 
   isNotEmpty(value: unknown): boolean {
