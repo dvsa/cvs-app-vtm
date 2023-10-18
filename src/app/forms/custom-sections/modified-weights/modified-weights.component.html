@@ -18,7 +18,7 @@
           {{ $any(axle)[column.name] }}
         </td>
       </tr>
-      <!-- Gross (for HGV, TRL), note: these properties are the same for both, so a check for hgv is sufficient -->
+      <!-- Gross (for HGV) -->
       <ng-container *ngIf="hgvAndTrlGrossAxisChanged && hgvChanges">
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
@@ -27,6 +27,17 @@
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_grossGbWeight }}</td>
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_grossEecWeight }}</td>
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_grossDesignWeight }}</td>
+        </tr>
+      </ng-container>
+      <!-- Gross (for TRL) -->
+      <ng-container *ngIf="hgvAndTrlGrossAxisChanged && trlChanges">
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">
+            <b>Gross</b>
+          </td>
+          <td class="govuk-table__cell">{{ trlChanges.techRecord_grossGbWeight }}</td>
+          <td class="govuk-table__cell">{{ trlChanges.techRecord_grossEecWeight }}</td>
+          <td class="govuk-table__cell">{{ trlChanges.techRecord_grossDesignWeight }}</td>
         </tr>
       </ng-container>
       <!-- Gross (for PSV)-->
@@ -77,7 +88,4 @@
       </ng-container>
     </tbody>
   </table>
-
-  {{ vehicleType }}
-  {{ hgvChanges | json }}
 </ng-container>
