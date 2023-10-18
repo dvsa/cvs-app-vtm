@@ -1,29 +1,15 @@
-<ng-container
-  *ngrxLet="{
-    techRecord: techRecord$,
-    techRecordEdited: techRecordEdited$,
-    techRecordChanges: techRecordChanges$,
-    vehicleTemplates: vehicleTemplates$,
-    techRecordAdditions: techRecordAdditions$,
-    techRecordModifications: techRecordModifications$,
-    customVehicleTemplate: customVehicleTemplate$,
-    sectionState: technicalRecordService.sectionStates$,
-    deletedAxles: deletedAxles$,
-  } as vm"
->
+<ng-container *ngIf="techRecordEdited">
   <app-banner>
     <ng-container title>Important</ng-container>
     <ng-container content>Check your changes before submitting the technical record</ng-container>
   </app-banner>
 
-  <ng-container *ngIf="vm.techRecordEdited">
-    <app-icon [icon]="vm.techRecordEdited.techRecord_vehicleType || ''"></app-icon>
-    <app-dynamic-form-group [data]="vm.techRecordEdited" [template]="vehicleSummary"></app-dynamic-form-group>
-  </ng-container>
+  <app-icon [icon]="techRecordEdited.techRecord_vehicleType || ''"></app-icon>
+  <app-dynamic-form-group [data]="techRecordEdited" [template]="vehicleSummary"></app-dynamic-form-group>
 
-  <app-accordion-control [class]="'padding'" [sectionState]="vm.sectionState">
-    <ng-container *ngFor="let section of vm.customVehicleTemplate; let i = index">
-      <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="!!vm.sectionState?.includes(section.name)">
+  <app-accordion-control [class]="'padding'" [sectionState]="sectionState">
+    <ng-container *ngFor="let section of customVehicleTemplate; let i = index">
+      <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="true">
         <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
       </app-accordion>
     </ng-container>
@@ -31,65 +17,70 @@
 
   <ng-template #accordion let-sectionName="sectionName" let-section="section">
     <ng-container [ngSwitch]="sectionName">
-      <app-body *ngSwitchCase="'bodySection'" [techRecord]="$any(vm.techRecordEdited)"></app-body>
+      <app-body *ngSwitchCase="'bodySection'" [techRecord]="techRecordEdited"></app-body>
 
       <ng-container *ngSwitchCase="'dimensionsSection'">
         <app-dimensions
-          *ngIf="['trl', 'hgv', 'psv'].includes(vm.techRecord.techRecord_vehicleType)"
-          [techRecord]="$any(vm.techRecordEdited)"
+          *ngIf="
+            techRecordEdited?.techRecord_vehicleType === 'trl' ||
+            techRecordEdited?.techRecord_vehicleType === 'hgv' ||
+            techRecordEdited?.techRecord_vehicleType === 'psv'
+          "
+          [techRecord]="$any(techRecordEdited)"
         ></app-dimensions>
       </ng-container>
 
       <ng-container *ngSwitchCase="'approvalSection'">
         <app-approval-type
-          *ngIf="['trl', 'hgv', 'psv'].includes(vm.techRecord.techRecord_vehicleType)"
-          [techRecord]="$any(vm.techRecordEdited)"
+          *ngIf="
+            techRecordEdited?.techRecord_vehicleType === 'trl' ||
+            techRecordEdited?.techRecord_vehicleType === 'hgv' ||
+            techRecordEdited?.techRecord_vehicleType === 'psv'
+          "
+          [techRecord]="$any(techRecordEdited)"
         ></app-approval-type>
       </ng-container>
 
       <ng-container *ngSwitchCase="'psvBrakesSection'">
-        <app-psv-brakes *ngIf="vm.techRecord.techRecord_vehicleType === 'psv'" [vehicleTechRecord]="$any(vm.techRecordEdited)"></app-psv-brakes>
+        <app-psv-brakes *ngIf="techRecordEdited?.techRecord_vehicleType === 'psv'" [vehicleTechRecord]="$any(techRecordEdited)"></app-psv-brakes>
       </ng-container>
 
       <ng-container *ngSwitchCase="'trlBrakesSection'">
-        <app-trl-brakes *ngIf="vm.techRecord.techRecord_vehicleType === 'trl'" [vehicleTechRecord]="$any(vm.techRecordEdited)"></app-trl-brakes>
+        <app-trl-brakes *ngIf="techRecordEdited?.techRecord_vehicleType === 'trl'" [vehicleTechRecord]="$any(techRecordEdited)"></app-trl-brakes>
       </ng-container>
 
       <ng-container *ngSwitchCase="'tyreSection'">
         <app-tyres
-          *ngIf="['trl', 'hgv', 'psv'].includes(vm.techRecord.techRecord_vehicleType)"
-          [vehicleTechRecord]="$any(vm.techRecordEdited)"
+          *ngIf="
+            techRecordEdited?.techRecord_vehicleType === 'trl' ||
+            techRecordEdited?.techRecord_vehicleType === 'hgv' ||
+            techRecordEdited?.techRecord_vehicleType === 'psv'
+          "
+          [vehicleTechRecord]="$any(techRecordEdited)"
         ></app-tyres>
       </ng-container>
 
       <ng-container *ngSwitchCase="'weightsSection'">
         <ng-container
           *ngIf="
-            vm.techRecordEdited?.techRecord_vehicleType === 'trl' ||
-            vm.techRecordEdited?.techRecord_vehicleType === 'hgv' ||
-            vm.techRecordEdited?.techRecord_vehicleType === 'psv'
+            techRecordEdited?.techRecord_vehicleType === 'trl' ||
+            techRecordEdited?.techRecord_vehicleType === 'hgv' ||
+            techRecordEdited?.techRecord_vehicleType === 'psv'
           "
         >
-          <ng-container *ngIf="vm.deletedAxles.length > 0; else noDeleted">
-            <app-weights [vehicleTechRecord]="$any(vm.techRecordEdited)"></app-weights>
+          <ng-container *ngIf="deletedAxles.length > 0; else noDeleted">
+            <app-weights [vehicleTechRecord]="$any(techRecordEdited)"></app-weights>
           </ng-container>
           <ng-template #noDeleted>
             <app-modified-weights
-              [vehicleType]="$any(vm.techRecordEdited.techRecord_vehicleType)"
-              [changes]="$any(vm.techRecordChanges)"
-            ></app-modified-weights> </ng-template
-        ></ng-container>
+              [vehicleType]="$any(techRecordEdited.techRecord_vehicleType)"
+              [changes]="$any(techRecordChanges)"
+            ></app-modified-weights>
+          </ng-template>
+        </ng-container>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'lettersSection'">
-        <app-letters *ngIf="vm.techRecord.techRecord_vehicleType === 'trl'" [techRecord]="$any(vm.techRecordEdited)"></app-letters>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'platesSection'">
-        <app-plates *ngIf="['trl', 'hgv'].includes(vm.techRecord.techRecord_vehicleType)" [techRecord]="$any(vm.techRecordEdited)"></app-plates>
-      </ng-container>
-
-      <app-dynamic-form-group *ngSwitchDefault [data]="vm.techRecordChanges" [template]="section"></app-dynamic-form-group>
+      <app-dynamic-form-group *ngSwitchDefault [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
     </ng-container>
   </ng-template>
 </ng-container>

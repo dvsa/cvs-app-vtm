@@ -7,7 +7,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 @Component({
   selector: 'app-modified-weights',
   templateUrl: './modified-weights.component.html',
-  styleUrls: ['./modified-weights.component.scss'],
+  styleUrls: ['./modified-weights.component.scss']
 })
 export class ModifiedWeightsComponent implements OnInit {
   @Input() vehicleType!: VehicleTypes;
@@ -44,10 +44,10 @@ export class ModifiedWeightsComponent implements OnInit {
   getAxleTemplate(): FormNode[] | undefined {
     return vehicleTemplateMap
       .get(this.vehicleType)
-      ?.find((template) => template.name === 'weightsSection')
-      ?.children?.find((child) => child.name === 'techRecord_axles')
+      ?.find(template => template.name === 'weightsSection')
+      ?.children?.find(child => child.name === 'techRecord_axles')
       ?.children?.at(0)
-      ?.children?.filter((child) => child.name !== 'axleNumber');
+      ?.children?.filter(child => child.name !== 'axleNumber');
   }
 
   getPsvGrossAxisChanged(): boolean {
@@ -56,7 +56,7 @@ export class ModifiedWeightsComponent implements OnInit {
       changes.techRecord_grossKerbWeight,
       changes.techRecord_grossDesignWeight,
       changes.techRecord_grossLadenWeight,
-      changes.techRecord_grossGbWeight,
+      changes.techRecord_grossGbWeight
     ].some(Boolean);
   }
 

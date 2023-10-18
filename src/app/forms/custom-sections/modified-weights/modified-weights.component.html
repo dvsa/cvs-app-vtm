@@ -18,7 +18,7 @@
           {{ $any(axle)[column.name] }}
         </td>
       </tr>
-      <!-- Gross (for HGV) -->
+
       <ng-container *ngIf="hgvAndTrlGrossAxisChanged && hgvChanges">
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
@@ -29,7 +29,7 @@
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_grossDesignWeight }}</td>
         </tr>
       </ng-container>
-      <!-- Gross (for TRL) -->
+
       <ng-container *ngIf="hgvAndTrlGrossAxisChanged && trlChanges">
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
@@ -40,7 +40,7 @@
           <td class="govuk-table__cell">{{ trlChanges.techRecord_grossDesignWeight }}</td>
         </tr>
       </ng-container>
-      <!-- Gross (for PSV)-->
+
       <ng-container *ngIf="psvGrossAxisChanged && psvChanges">
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
@@ -52,7 +52,7 @@
           <td class="govuk-table__cell">{{ psvChanges.techRecord_grossDesignWeight }}</td>
         </tr>
       </ng-container>
-      <!-- Train (for HGV)-->
+
       <ng-container *ngIf="hgvTrainAxisChanged && hgvChanges">
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
@@ -63,7 +63,7 @@
           <td class="govuk-table__cell">{{ hgvChanges.techRecord_trainDesignWeight }}</td>
         </tr>
       </ng-container>
-      <!-- Train (for PSV)-->
+
       <ng-container *ngIf="psvTrainAxisChanged && psvChanges">
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
@@ -75,7 +75,7 @@
           <td class="govuk-table__cell">{{ psvChanges.techRecord_trainDesignWeight }}</td>
         </tr>
       </ng-container>
-      <!-- Max train (for HGV)-->
+
       <ng-container *ngIf="maxTrainAxisChanged && hgvChanges">
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
