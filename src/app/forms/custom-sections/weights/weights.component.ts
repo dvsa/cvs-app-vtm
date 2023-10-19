@@ -14,7 +14,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { addAxle, removeAxle, updateBrakeForces } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { debounceTime, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-weights[vehicleTechRecord]',
@@ -30,8 +30,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   private _formSubscription = new Subscription();
   public isError = false;
   public errorMessage?: string;
-  private ladenWeightOverride = false;
-  private isProgrammaticChange = false;
 
   constructor(public dynamicFormsService: DynamicFormService, private store: Store<TechnicalRecordServiceState>) {}
 
@@ -83,7 +81,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   private initializeForm(): void {
     this.form = this.dynamicFormsService.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
-    this.subscribeToGrossLadenWeightChanges();
   }
 
   private subscribeToFieldsForGrossLadenWeightRecalculation(): void {
@@ -97,11 +94,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
     fields.forEach((field) => {
       this.form.get(field)?.valueChanges.subscribe(() => {
-        if (!this.ladenWeightOverride && this.form.value.techRecord_manufactureYear) {
+        if (this.form.value.techRecord_manufactureYear) {
           const newGrossLadenWeight = this.calculateGrossLadenWeight();
-          this.isProgrammaticChange = true;
           this.form.patchValue({ techRecord_grossLadenWeight: newGrossLadenWeight }, { emitEvent: false });
-          this.isProgrammaticChange = false;
         }
       });
     });
@@ -109,7 +104,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   private handleVehicleTechRecordChange(changes: SimpleChanges): void {
     const { vehicleTechRecord } = changes;
-    if (this.form && vehicleTechRecord && !this.ladenWeightOverride) {
+    if (this.form && vehicleTechRecord) {
       const { currentValue, previousValue } = vehicleTechRecord;
 
       const fieldsChanged = [
@@ -131,7 +126,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   private subscribeToFormChanges(): void {
     this._formSubscription.add(
       this.form.valueChanges.subscribe((event: any) => {
-        if (this.ladenWeightOverride && event?.techRecord_grossLadenWeight) {
+        if (event?.techRecord_grossLadenWeight) {
           (this.vehicleTechRecord as TechRecordType<'psv'>).techRecord_grossLadenWeight = event.techRecord_grossLadenWeight;
           this.form.patchValue({ techRecord_grossLadenWeight: event.techRecord_grossLadenWeight }, { emitEvent: false });
           this.formChange.emit(event);
@@ -144,7 +139,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private handleFormChanges(event: any): void {
-    if (this.isPsv && !this.ladenWeightOverride && this.determineRecalculationNeeded(event) && this.form.value.techRecord_manufactureYear) {
+    if (this.isPsv && this.determineRecalculationNeeded(event) && this.form.value.techRecord_manufactureYear) {
       event.techRecord_grossLadenWeight = this.calculateGrossLadenWeight();
       this.form.get('techRecord_grossLadenWeight')?.setValue(event.techRecord_grossLadenWeight, { emitEvent: false });
     }
@@ -163,16 +158,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
-  private subscribeToGrossLadenWeightChanges(): void {
-    this._formSubscription.add(
-      this.form
-        .get('techRecord_grossLadenWeight')
-        ?.valueChanges.pipe(debounceTime(400))
-        .subscribe(() => {
-          this.ladenWeightOverride = !this.isProgrammaticChange;
-        }),
-    );
-  }
   calculateGrossLadenWeight(): number {
     const psvRecord = this.vehicleTechRecord as TechRecordType<'psv'>;
     const techRecord_seatsUpperDeck = psvRecord?.techRecord_seatsUpperDeck ?? 0;
@@ -183,7 +168,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     const kgAllowedPerPerson = techRecord_manufactureYear >= 1988 ? 65 : 63.5;
 
     const totalPassengers = techRecord_seatsUpperDeck + techRecord_seatsLowerDeck + techRecord_standingCapacity + 1; // Add 1 for the driver
-    return totalPassengers * kgAllowedPerPerson + techRecord_grossKerbWeight;
+    return Math.ceil(totalPassengers * kgAllowedPerPerson + techRecord_grossKerbWeight);
   }
 
   getAxleForm(i: number): CustomFormGroup {

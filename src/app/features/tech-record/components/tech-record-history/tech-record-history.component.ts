@@ -55,12 +55,7 @@ export class TechRecordHistoryComponent implements OnInit {
   }
 
   summaryLinkUrl(searchResult: TechRecordSearchSchema) {
-    switch (searchResult.techRecord_statusCode) {
-      case StatusCodes.PROVISIONAL:
-        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/provisional`;
-      default:
-        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}`;
-    }
+    return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}`;
   }
 
   get currentTimeStamp() {

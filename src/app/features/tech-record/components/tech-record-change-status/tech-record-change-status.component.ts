@@ -23,7 +23,6 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   form: CustomFormGroup;
 
   isPromotion = false;
-  isProvisional = false;
 
   destroy$ = new Subject<void>();
 
@@ -39,7 +38,6 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) },
     );
-    this.isProvisional = this.router.url.includes('provisional');
   }
 
   ngOnInit(): void {
