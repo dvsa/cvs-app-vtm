@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechRecordGETHGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import {
   EuVehicleCategories,
   StatusCodes,
@@ -14,7 +16,6 @@ import {
 import { Store, select } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
-import { SEARCH_TYPES } from '@models/search-types-enum';
 import {
   selectTechRecordSearchResults,
   selectTechRecordSearchResultsBySystemNumber,
@@ -39,7 +40,7 @@ export class TechnicalRecordService {
 
   getVehicleTypeWithSmallTrl(technicalRecord: V3TechRecordModel): VehicleTypes {
     return technicalRecord.techRecord_vehicleType === VehicleTypes.TRL
-    && (technicalRecord.techRecord_euVehicleCategory === EuVehicleCategories.O1
+      && (technicalRecord.techRecord_euVehicleCategory === EuVehicleCategories.O1
         || technicalRecord.techRecord_euVehicleCategory === EuVehicleCategories.O2)
       ? (VehicleTypes.SMALL_TRL as VehicleTypes)
       : (technicalRecord.techRecord_vehicleType as VehicleTypes);
@@ -133,9 +134,7 @@ export class TechnicalRecordService {
               if (control.value === originalVin) {
                 return { validateVin: { message: 'You must provide a new VIN' } };
               }
-              return result
-                ? null
-                : { validateVin: { message: 'This VIN already exists, if you continue it will be associated with two vehicles' } };
+              return result ? null : { validateVin: { message: 'This VIN already exists, if you continue it will be associated with two vehicles' } };
             }),
             catchError(() => of(null)),
           );
@@ -213,9 +212,13 @@ export class TechnicalRecordService {
       return '';
     }
 
-    const make = (technicalRecord?.techRecord_vehicleType === 'psv' ? technicalRecord.techRecord_chassisMake : technicalRecord.techRecord_make) ?? '';
+    const make = (technicalRecord?.techRecord_vehicleType === 'psv'
+      ? technicalRecord.techRecord_chassisMake
+      : technicalRecord.techRecord_make) ?? '';
+
     const model = (technicalRecord.techRecord_vehicleType === 'psv'
-      ? technicalRecord.techRecord_chassisModel : technicalRecord.techRecord_model) ?? '';
+      ? technicalRecord.techRecord_chassisModel
+      : technicalRecord.techRecord_model) ?? '';
 
     if (!make || !model) {
       return make || model;
@@ -256,5 +259,49 @@ export class TechnicalRecordService {
         return (err.status === 404 && of(null)) || throwError(() => err);
       }),
     );
+  }
+
+  hasPsvGrossAxisChanged(changes: Partial<TechRecordGETPSV>): boolean {
+    return [
+      changes.techRecord_grossKerbWeight,
+      changes.techRecord_grossDesignWeight,
+      changes.techRecord_grossLadenWeight,
+      changes.techRecord_grossGbWeight,
+    ].some(Boolean);
+  }
+
+  hasHgvGrossAxisChanged(changes: Partial<TechRecordGETHGV>): boolean {
+    return [changes.techRecord_grossEecWeight, changes.techRecord_grossDesignWeight, changes.techRecord_grossGbWeight].some(Boolean);
+  }
+
+  hasTrlGrossAxisChanged(changes: Partial<TechRecordGETTRL>): boolean {
+    return [changes.techRecord_grossEecWeight, changes.techRecord_grossDesignWeight, changes.techRecord_grossGbWeight].some(Boolean);
+  }
+
+  hasHgvTrainAxisChanged(changes: Partial<TechRecordGETHGV>): boolean {
+    return [changes.techRecord_trainDesignWeight, changes.techRecord_trainGbWeight, changes.techRecord_trainEecWeight].some(Boolean);
+  }
+
+  hasPsvTrainAxisChanged(changes: Partial<TechRecordGETPSV>): boolean {
+    return [changes.techRecord_trainDesignWeight, changes.techRecord_maxTrainGbWeight].some(Boolean);
+  }
+
+  hasMaxTrainAxisChanged(changes: Partial<TechRecordGETHGV>): boolean {
+    return [
+      changes.techRecord_maxTrainDesignWeight,
+      changes.techRecord_maxTrainEecWeight,
+      changes.techRecord_maxTrainGbWeight,
+    ].some(Boolean);
+  }
+
+  hasAxisChanged(vehicleType: VehicleTypes, changes: Partial<TechRecordType<'get'>>) {
+    if (vehicleType === 'psv' && this.hasPsvGrossAxisChanged(changes as Partial<TechRecordGETPSV>)) return true;
+    if (vehicleType === 'hgv' && this.hasHgvTrainAxisChanged(changes as Partial<TechRecordGETHGV>)) return true;
+    if (vehicleType === 'psv' && this.hasPsvTrainAxisChanged(changes as Partial<TechRecordGETPSV>)) return true;
+    if (vehicleType === 'hgv' && this.hasMaxTrainAxisChanged(changes as Partial<TechRecordGETHGV>)) return true;
+    if (vehicleType === 'hgv' && this.hasHgvGrossAxisChanged(changes as Partial<TechRecordGETHGV>)) return true;
+    if (vehicleType === 'trl' && this.hasTrlGrossAxisChanged(changes as Partial<TechRecordGETTRL>)) return true;
+
+    return false;
   }
 }

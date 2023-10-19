@@ -3,11 +3,12 @@ import { TechRecordGETHGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
   selector: 'app-modified-weights',
   templateUrl: './modified-weights.component.html',
-  styleUrls: ['./modified-weights.component.scss']
+  styleUrls: ['./modified-weights.component.scss'],
 })
 export class ModifiedWeightsComponent implements OnInit {
   @Input() vehicleType!: VehicleTypes;
@@ -15,10 +16,13 @@ export class ModifiedWeightsComponent implements OnInit {
 
   axleTemplate: FormNode[] | undefined;
   psvGrossAxisChanged = false;
-  hgvAndTrlGrossAxisChanged = false;
+  hgvGrossAxisChanged = false;
+  trlGrossAxisChanged = false;
   hgvTrainAxisChanged = false;
   psvTrainAxisChanged = false;
   maxTrainAxisChanged = false;
+
+  constructor(private readonly technicalRecordService: TechnicalRecordService) {}
 
   get psvChanges(): Partial<TechRecordGETPSV> | undefined {
     return this.vehicleType === VehicleTypes.PSV ? (this.changes as Partial<TechRecordGETPSV>) : undefined;
@@ -32,51 +36,26 @@ export class ModifiedWeightsComponent implements OnInit {
     return this.vehicleType === VehicleTypes.TRL ? (this.changes as Partial<TechRecordGETTRL>) : undefined;
   }
 
+  get hgvAndTrlGrossAxisChanged() {
+    return this.hgvGrossAxisChanged || this.trlGrossAxisChanged;
+  }
+
   ngOnInit(): void {
     this.axleTemplate = this.getAxleTemplate();
-    this.psvGrossAxisChanged = this.getPsvGrossAxisChanged();
-    this.hgvAndTrlGrossAxisChanged = this.getHgvAndTrlGrossAxisChanged();
-    this.hgvTrainAxisChanged = this.getHgvTrainAxisChanged();
-    this.psvTrainAxisChanged = this.getPsvTrainAxisChanged();
-    this.maxTrainAxisChanged = this.getMaxTrainAxisChanged();
+    this.psvGrossAxisChanged = this.technicalRecordService.hasPsvGrossAxisChanged(this.changes as Partial<TechRecordGETPSV>);
+    this.hgvGrossAxisChanged = this.technicalRecordService.hasHgvGrossAxisChanged(this.changes as Partial<TechRecordGETHGV>);
+    this.trlGrossAxisChanged = this.technicalRecordService.hasTrlGrossAxisChanged(this.changes as Partial<TechRecordGETTRL>);
+    this.hgvTrainAxisChanged = this.technicalRecordService.hasHgvTrainAxisChanged(this.changes as Partial<TechRecordGETHGV>);
+    this.psvTrainAxisChanged = this.technicalRecordService.hasPsvTrainAxisChanged(this.changes as Partial<TechRecordGETPSV>);
+    this.maxTrainAxisChanged = this.technicalRecordService.hasMaxTrainAxisChanged(this.changes as Partial<TechRecordGETHGV>);
   }
 
   getAxleTemplate(): FormNode[] | undefined {
     return vehicleTemplateMap
       .get(this.vehicleType)
-      ?.find(template => template.name === 'weightsSection')
-      ?.children?.find(child => child.name === 'techRecord_axles')
+      ?.find((template) => template.name === 'weightsSection')
+      ?.children?.find((child) => child.name === 'techRecord_axles')
       ?.children?.at(0)
-      ?.children?.filter(child => child.name !== 'axleNumber');
-  }
-
-  getPsvGrossAxisChanged(): boolean {
-    const changes = this.changes as TechRecordGETPSV;
-    return [
-      changes.techRecord_grossKerbWeight,
-      changes.techRecord_grossDesignWeight,
-      changes.techRecord_grossLadenWeight,
-      changes.techRecord_grossGbWeight
-    ].some(Boolean);
-  }
-
-  getHgvAndTrlGrossAxisChanged(): boolean {
-    const changes = this.changes as TechRecordGETHGV | TechRecordGETTRL;
-    return [changes.techRecord_grossEecWeight, changes.techRecord_grossDesignWeight, changes.techRecord_grossGbWeight].some(Boolean);
-  }
-
-  getHgvTrainAxisChanged(): boolean {
-    const changes = this.changes as TechRecordGETHGV;
-    return [changes.techRecord_trainDesignWeight, changes.techRecord_trainGbWeight, changes.techRecord_trainEecWeight].some(Boolean);
-  }
-
-  getPsvTrainAxisChanged(): boolean {
-    const changes = this.changes as TechRecordGETPSV;
-    return [changes.techRecord_trainDesignWeight, changes.techRecord_maxTrainGbWeight].some(Boolean);
-  }
-
-  getMaxTrainAxisChanged(): boolean {
-    const changes = this.changes as TechRecordGETHGV;
-    return [changes.techRecord_maxTrainDesignWeight, changes.techRecord_maxTrainEecWeight, changes.techRecord_maxTrainGbWeight].some(Boolean);
+      ?.children?.filter((child) => child.name !== 'axleNumber');
   }
 }
