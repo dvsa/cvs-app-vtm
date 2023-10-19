@@ -30,6 +30,7 @@ import {
 export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   @Input() techRecord!: V3TechRecordModel;
   @Input() isEditing = false;
+  @Input() disableLoadOptions = false;
 
   @Output() formChange = new EventEmitter();
 
@@ -111,11 +112,11 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   get bodyMakes$(): Observable<MultiOptions | undefined> {
     if (this.techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
       return this.optionsService.getOptions(ReferenceDataResourceType.HgvMake);
-    } if (this.techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+    }
+    if (this.techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
       return this.optionsService.getOptions(ReferenceDataResourceType.PsvMake);
     }
     return this.optionsService.getOptions(ReferenceDataResourceType.TrlMake);
-
   }
 
   get dtpNumbers$(): Observable<MultiOptions> {
@@ -132,6 +133,8 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   loadOptions(): void {
+    if (this.disableLoadOptions) return;
+
     if (this.techRecord.techRecord_vehicleType === VehicleTypes.HGV) {
       this.optionsService.loadOptions(ReferenceDataResourceType.HgvMake);
     } else if (this.techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
