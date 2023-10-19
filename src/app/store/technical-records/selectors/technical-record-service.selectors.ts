@@ -42,20 +42,6 @@ export const selectSectionState = createSelector(getTechRecordState, (state) => 
 
 export const selectScrollPosition = createSelector(getTechRecordState, (state) => state.scrollPosition);
 
-export const selectTechRecordAdditions = createSelector(techRecord, editingTechRecord, (current, amended) => {
-  if (current == null) return {};
-  if (amended == null) return {};
-
-  return detailedDiff(current, amended).added as Partial<TechRecordType<'get'>>;
-});
-
-export const selectTechRecordModifications = createSelector(techRecord, editingTechRecord, (current, amended) => {
-  if (current == null) return {};
-  if (amended == null) return {};
-
-  return detailedDiff(current, amended).updated as Partial<TechRecordType<'get'>>;
-});
-
 export const selectTechRecordDeletions = createSelector(techRecord, editingTechRecord, (current, amended) => {
   if (current == null) return {};
   if (amended == null) return {};

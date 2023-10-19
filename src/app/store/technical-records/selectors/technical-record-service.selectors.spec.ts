@@ -9,6 +9,8 @@ import {
   selectTechRecordHistory,
   techRecord,
   technicalRecordsLoadingState,
+  selectTechRecordDeletions,
+  selectTechRecordChanges
 } from './technical-record-service.selectors';
 
 describe('Tech Record Selectors', () => {
@@ -77,7 +79,7 @@ describe('Tech Record Selectors', () => {
         },
       },
     ];
-    beforeEach(() => {});
+    beforeEach(() => { });
     it.each(routes)('should return the $statusExpected record', ({
       statusExpected, techRecord_createdAt, isEditing, vehicle,
     }) => {
@@ -126,4 +128,49 @@ describe('Tech Record Selectors', () => {
       expect(selectedState?.length).toBe(2);
     });
   });
+
+  describe('selectTechRecordDeletions', () => {
+    it('should return an object with only the deleted fields from the editing tech record', () => {
+
+      const vehicleTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
+      const editedTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar' } as unknown as TechRecordType<'put'>;
+
+      const selectedDeletions = selectTechRecordDeletions.projector(vehicleTechRecord, editedTechRecord);
+      expect(selectedDeletions).toEqual({ vin: 'testVin' });
+    });
+    it('should deeply nested deletions', () => {
+
+      const vehicleTechRecord = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_axles: [{ axleNumber: 1 }, { axleNumber: 2 }],
+      } as unknown as TechRecordType<'get'>;
+      const editedTechRecord = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        techRecord_axles: [{ axleNumber: 1 }],
+      } as unknown as TechRecordType<'put'>;
+
+      const selectedDeletions = selectTechRecordDeletions.projector(vehicleTechRecord, editedTechRecord);
+      expect(selectedDeletions).toEqual({ vin: 'testVin', techRecord_axles: { 1: { axleNumber: 2 } } });
+    });
+  });
+
+  describe('selectTechRecordChanges', () => {
+    it('should detect any changes on the flat tech record', () => {
+      const vehicleTechRecord = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_axles: [{ axleNumber: 1 }, { axleNumber: 2 }],
+      } as unknown as TechRecordType<'get'>;
+      const editedTechRecord = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        techRecord_axles: [{ axleNumber: 1 }],
+      } as unknown as TechRecordType<'put'>;
+      const selectedChanges = selectTechRecordChanges.projector(vechicleTechRecord, editedTechRecord)
+    })
+  })
 });
