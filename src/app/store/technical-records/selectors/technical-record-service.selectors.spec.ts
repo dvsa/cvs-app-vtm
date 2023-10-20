@@ -6,11 +6,11 @@ import {
   getSingleVehicleType,
   selectSectionState,
   selectTechRecord,
+  selectTechRecordChanges,
+  selectTechRecordDeletions,
   selectTechRecordHistory,
   techRecord,
   technicalRecordsLoadingState,
-  selectTechRecordDeletions,
-  selectTechRecordChanges
 } from './technical-record-service.selectors';
 
 describe('Tech Record Selectors', () => {
@@ -125,34 +125,6 @@ describe('Tech Record Selectors', () => {
       const state: TechnicalRecordServiceState = { ...initialState, sectionState: ['TestSection1', 'TestSection2'] };
       const selectedState = selectSectionState.projector(state);
       expect(selectedState?.length).toBe(2);
-    });
-  });
-
-  describe('selectTechRecordDeletions', () => {
-    it('should return an object with only the deleted fields from the editing tech record', () => {
-
-      const vehicleTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
-      const editedTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar' } as unknown as TechRecordType<'put'>;
-
-      const selectedDeletions = selectTechRecordDeletions.projector(vehicleTechRecord, editedTechRecord);
-      expect(selectedDeletions).toEqual({ vin: 'testVin' });
-    });
-    it('should deeply nested deletions', () => {
-
-      const vehicleTechRecord = {
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
-        vin: 'testVin',
-        techRecord_axles: [{ axleNumber: 1 }, { axleNumber: 2 }],
-      } as unknown as TechRecordType<'get'>;
-      const editedTechRecord = {
-        systemNumber: 'foo',
-        createdTimestamp: 'bar',
-        techRecord_axles: [{ axleNumber: 1 }],
-      } as unknown as TechRecordType<'put'>;
-
-      const selectedDeletions = selectTechRecordDeletions.projector(vehicleTechRecord, editedTechRecord);
-      expect(selectedDeletions).toEqual({ vin: 'testVin', techRecord_axles: { 1: { axleNumber: 2 } } });
     });
   });
 

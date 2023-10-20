@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DocumentRetrievalService } from '@api/document-retrieval';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
-import { LetModule } from '@ngrx/component';
 import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
 import { BannerComponent } from './components/banner/banner.component';
@@ -53,7 +52,7 @@ import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
     GetControlLabelPipe,
     FormatVehicleTypePipe,
   ],
-  imports: [CommonModule, RouterModule, LetModule],
+  imports: [CommonModule, RouterModule],
   exports: [
     DefaultNullOrEmpty,
     ButtonGroupComponent,
@@ -77,7 +76,7 @@ import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
     TyreAxleLoadPipe,
     GetControlLabelPipe,
     FormatVehicleTypePipe,
-    LetModule,
+
   ],
   providers: [DocumentRetrievalService],
 })

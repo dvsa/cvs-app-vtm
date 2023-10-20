@@ -17,11 +17,11 @@ import {
   techRecord, updateTechRecord,
 } from '@store/technical-records';
 import { RouterService } from '@services/router/router.service';
-import { TechRecordSummaryChangesComponent } from './tech-record-summary-changes.component';
 import { EuVehicleCategories, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
 import { FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { TechRecordSummaryChangesComponent } from './tech-record-summary-changes.component';
 
 let actions$: ReplaySubject<Action>;
 let store: MockStore;
