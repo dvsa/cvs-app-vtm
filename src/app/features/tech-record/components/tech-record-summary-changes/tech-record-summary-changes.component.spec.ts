@@ -10,14 +10,12 @@ import { initialAppState } from '@store/index';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import {
-  clearAllSectionStates, clearScrollPosition,
   editingTechRecord,
-  selectTechRecordChanges,
-  selectTechRecordDeletions,
-  techRecord, updateTechRecord,
+  selectTechRecordChanges, selectTechRecordDeletions,
+  techRecord,
 } from '@store/technical-records';
 import { RouterService } from '@services/router/router.service';
-import { EuVehicleCategories, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
 import { FormNodeViewTypes } from '@forms/services/dynamic-form.types';
@@ -60,36 +58,42 @@ describe('TechRecordSummaryChangesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ngOnInit', () => {
-    describe('actions$', () => {
-      it('should handle state management', () => {
-        jest.spyOn(component.actions$, 'pipe');
-        component.ngOnInit();
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        expect(component.actions$.pipe).toHaveBeenCalled();
-      });
+  describe('navigateUponSuccess', () => {
+    it('should handle state management', () => {
+      jest.spyOn(component.actions$, 'pipe');
+      component.navigateUponSuccess();
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      expect(component.actions$.pipe).toHaveBeenCalled();
     });
-    describe('store', () => {
-      beforeEach(() => {
-        jest.spyOn(store, 'select');
-        component.ngOnInit();
-      });
-      it('should grab techRecord from the store', () => {
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        expect(store.select).toHaveBeenCalledWith(techRecord);
-      });
-      it('should grab editingTechRecord from the store', () => {
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        expect(store.select).toHaveBeenCalledWith(editingTechRecord);
-      });
-      it('should grab selectTechRecordChanges from the store', () => {
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        expect(store.select).toHaveBeenCalledWith(selectTechRecordChanges);
-      });
-      it('should grab selectTechRecordDeletions from the store', () => {
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        expect(store.select).toHaveBeenCalledWith(selectTechRecordDeletions);
-      });
+  });
+
+  describe('ngOnInit', () => {
+    it('should call navigateOnSuccess and initSubscriptions', () => {
+      jest.spyOn(component, 'navigateUponSuccess');
+      jest.spyOn(component, 'initSubscriptions');
+    });
+  });
+
+  describe('initSubscriptions', () => {
+    beforeEach(() => {
+      jest.spyOn(store, 'select');
+      component.ngOnInit();
+    });
+    it('should grab techRecord from the store', () => {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      expect(store.select).toHaveBeenCalledWith(techRecord);
+    });
+    it('should grab editingTechRecord from the store', () => {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      expect(store.select).toHaveBeenCalledWith(editingTechRecord);
+    });
+    it('should grab selectTechRecordChanges from the store', () => {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      expect(store.select).toHaveBeenCalledWith(selectTechRecordChanges);
+    });
+    it('should grab selectTechRecordDeletions from the store', () => {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      expect(store.select).toHaveBeenCalledWith(selectTechRecordDeletions);
     });
   });
 
@@ -129,10 +133,10 @@ describe('TechRecordSummaryChangesComponent', () => {
   });
 
   describe('cancel', () => {
-    it('should call globalErrorService.clearErrors and then navigate', async () => {
+    it('should call globalErrorService.clearErrors and then navigate', () => {
       jest.spyOn(component.globalErrorService, 'clearErrors');
       jest.spyOn(component.router, 'navigate');
-      await component.cancel();
+      component.cancel();
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(component.globalErrorService.clearErrors).toHaveBeenCalled();
       // eslint-disable-next-line @typescript-eslint/unbound-method

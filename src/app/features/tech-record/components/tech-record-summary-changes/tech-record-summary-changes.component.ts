@@ -60,13 +60,20 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.navigateUponSuccess();
+    this.initSubscriptions();
+  }
+
+  navigateUponSuccess(): void {
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
       ]);
     });
+  }
 
+  initSubscriptions(): void {
     this.store$
       .select(techRecord)
       .pipe(take(1), takeUntil(this.destroy$))
@@ -135,8 +142,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     combineLatest([this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp')])
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(([systemNumber, createdTimestamp]) => {
-        console.log(systemNumber);
-        console.log(createdTimestamp);
         if (systemNumber && createdTimestamp) {
           this.store$.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
           this.store$.dispatch(clearAllSectionStates());
@@ -145,9 +150,10 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       });
   }
 
-  async cancel() {
+  cancel() {
     this.globalErrorService.clearErrors();
-    await this.router.navigate(['..'], { relativeTo: this.route });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   getTechRecordChangesKeys(): string[] {
@@ -203,5 +209,14 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 
   toVisibleFormNode(node: FormNode): FormNode {
     return { ...node, viewType: node.viewType === FormNodeViewTypes.HIDDEN ? FormNodeViewTypes.STRING : node.viewType };
+  }
+
+  checkVehicleType(vehicleType: string): boolean {
+    if (vehicleType === 'hgv'
+      || vehicleType === 'psv'
+      || vehicleType === 'trl') {
+      return true;
+    }
+    return false;
   }
 }
