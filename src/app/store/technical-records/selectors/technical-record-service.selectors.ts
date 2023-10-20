@@ -51,8 +51,7 @@ export const selectTechRecordDeletions = createSelector(techRecord, editingTechR
 });
 
 export const selectTechRecordChanges = createSelector(techRecord, editingTechRecord, (current, amended) => {
-  if (current == null) return {};
-  if (amended == null) return {};
+  if (current == null || amended == null) return {};
 
   const changes = detailedDiff(current, amended);
 

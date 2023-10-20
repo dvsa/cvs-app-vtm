@@ -38,7 +38,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+  destroy$ = new Subject<void>();
 
   techRecord?: TechRecordType<'get'>;
   techRecordEdited?: TechRecordType<'put'>;
@@ -50,13 +50,13 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   sectionsWhitelist: string[] = [];
 
   constructor(
-    private readonly store: Store<State>,
-    private readonly technicalRecordService: TechnicalRecordService,
-    private readonly router: Router,
-    private readonly globalErrorService: GlobalErrorService,
-    private readonly route: ActivatedRoute,
-    private readonly routerService: RouterService,
-    private readonly actions$: Actions,
+    public store$: Store<State>,
+    public technicalRecordService: TechnicalRecordService,
+    public router: Router,
+    public globalErrorService: GlobalErrorService,
+    public route: ActivatedRoute,
+    public routerService: RouterService,
+    public actions$: Actions,
   ) {}
 
   ngOnInit(): void {
@@ -67,21 +67,21 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       ]);
     });
 
-    this.store
+    this.store$
       .select(techRecord)
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe((data) => {
         this.techRecord = data;
       });
 
-    this.store
+    this.store$
       .select(editingTechRecord)
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe((data) => {
         this.techRecordEdited = data;
       });
 
-    this.store
+    this.store$
       .select(selectTechRecordChanges)
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe((changes) => {
@@ -90,7 +90,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
         this.sectionsWhitelist = this.getSectionsWhitelist();
       });
 
-    this.store
+    this.store$
       .select(selectTechRecordDeletions)
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe((deletions) => {
@@ -135,10 +135,12 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     combineLatest([this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp')])
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(([systemNumber, createdTimestamp]) => {
+        console.log(systemNumber);
+        console.log(createdTimestamp);
         if (systemNumber && createdTimestamp) {
-          this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
-          this.store.dispatch(clearAllSectionStates());
-          this.store.dispatch(clearScrollPosition());
+          this.store$.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
+          this.store$.dispatch(clearAllSectionStates());
+          this.store$.dispatch(clearScrollPosition());
         }
       });
   }
@@ -149,9 +151,10 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   }
 
   getTechRecordChangesKeys(): string[] {
-    return Object.entries(this.techRecordChanges ?? {})
-      .filter(([_, value]) => this.isNotEmpty(value))
-      .map(([key]) => key);
+    const entries = Object.entries(this.techRecordChanges ?? {});
+    const filter = entries.filter(([_, value]) => this.isNotEmpty(value));
+    const map = filter.map(([key]) => key);
+    return map;
   }
 
   getSectionsWhitelist() {
@@ -191,7 +194,11 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   }
 
   isNotEmpty(value: unknown): boolean {
-    return value != null && value !== '' && Object.values(value).length > 0;
+    let finalVal = value != null && value !== '';
+    if (typeof value === 'object') {
+      finalVal = Object.values(value as object).length > 0;
+    }
+    return finalVal;
   }
 
   toVisibleFormNode(node: FormNode): FormNode {
