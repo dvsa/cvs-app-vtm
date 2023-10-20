@@ -61,35 +61,35 @@ describe('TechRecordSummaryChangesComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should handle state management', () => {
-      jest.spyOn(component.actions$, 'pipe');
-      component.ngOnInit();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.actions$.pipe).toHaveBeenCalled();
+    describe('actions$', () => {
+      it('should handle state management', () => {
+        jest.spyOn(component.actions$, 'pipe');
+        component.ngOnInit();
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        expect(component.actions$.pipe).toHaveBeenCalled();
+      });
     });
-    it('should grab techRecord from the store', () => {
-      jest.spyOn(store, 'select');
-      component.ngOnInit();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.select).toHaveBeenCalledWith(techRecord);
-    });
-    it('should grab editingTechRecord from the store', () => {
-      jest.spyOn(store, 'select');
-      component.ngOnInit();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.select).toHaveBeenCalledWith(editingTechRecord);
-    });
-    it('should grab selectTechRecordChanges from the store', () => {
-      jest.spyOn(store, 'select');
-      component.ngOnInit();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.select).toHaveBeenCalledWith(selectTechRecordChanges);
-    });
-    it('should grab selectTechRecordDeletions from the store', () => {
-      jest.spyOn(store, 'select');
-      component.ngOnInit();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.select).toHaveBeenCalledWith(selectTechRecordDeletions);
+    describe('store', () => {
+      beforeEach(() => {
+        jest.spyOn(store, 'select');
+        component.ngOnInit();
+      });
+      it('should grab techRecord from the store', () => {
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        expect(store.select).toHaveBeenCalledWith(techRecord);
+      });
+      it('should grab editingTechRecord from the store', () => {
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        expect(store.select).toHaveBeenCalledWith(editingTechRecord);
+      });
+      it('should grab selectTechRecordChanges from the store', () => {
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        expect(store.select).toHaveBeenCalledWith(selectTechRecordChanges);
+      });
+      it('should grab selectTechRecordDeletions from the store', () => {
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        expect(store.select).toHaveBeenCalledWith(selectTechRecordDeletions);
+      });
     });
   });
 

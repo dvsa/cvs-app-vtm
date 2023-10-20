@@ -79,7 +79,6 @@ describe('Tech Record Selectors', () => {
         },
       },
     ];
-    beforeEach(() => { });
     it.each(routes)('should return the $statusExpected record', ({
       statusExpected, techRecord_createdAt, isEditing, vehicle,
     }) => {
