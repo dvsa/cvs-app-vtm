@@ -24,16 +24,28 @@ export class ModifiedWeightsComponent implements OnInit {
 
   constructor(private readonly technicalRecordService: TechnicalRecordService) {}
 
+  get isPSV(): boolean {
+    return this.vehicleType === VehicleTypes.PSV;
+  }
+
+  get isHGV(): boolean {
+    return this.vehicleType === VehicleTypes.HGV;
+  }
+
+  get isTRL(): boolean {
+    return this.vehicleType === VehicleTypes.TRL;
+  }
+
   get psvChanges(): Partial<TechRecordGETPSV> | undefined {
-    return this.vehicleType === VehicleTypes.PSV ? (this.changes as Partial<TechRecordGETPSV>) : undefined;
+    return this.isPSV ? (this.changes as Partial<TechRecordGETPSV>) : undefined;
   }
 
   get hgvChanges(): Partial<TechRecordGETHGV> | undefined {
-    return this.vehicleType === VehicleTypes.HGV ? (this.changes as Partial<TechRecordGETHGV>) : undefined;
+    return this.isHGV ? (this.changes as Partial<TechRecordGETHGV>) : undefined;
   }
 
   get trlChanges(): Partial<TechRecordGETTRL> | undefined {
-    return this.vehicleType === VehicleTypes.TRL ? (this.changes as Partial<TechRecordGETTRL>) : undefined;
+    return this.isTRL ? (this.changes as Partial<TechRecordGETTRL>) : undefined;
   }
 
   get hgvAndTrlGrossAxisChanged() {
@@ -42,12 +54,12 @@ export class ModifiedWeightsComponent implements OnInit {
 
   ngOnInit(): void {
     this.axleTemplate = this.getAxleTemplate();
-    this.psvGrossAxisChanged = this.technicalRecordService.hasPsvGrossAxisChanged(this.changes as Partial<TechRecordGETPSV>);
-    this.hgvGrossAxisChanged = this.technicalRecordService.hasHgvGrossAxisChanged(this.changes as Partial<TechRecordGETHGV>);
-    this.trlGrossAxisChanged = this.technicalRecordService.hasTrlGrossAxisChanged(this.changes as Partial<TechRecordGETTRL>);
-    this.hgvTrainAxisChanged = this.technicalRecordService.hasHgvTrainAxisChanged(this.changes as Partial<TechRecordGETHGV>);
-    this.psvTrainAxisChanged = this.technicalRecordService.hasPsvTrainAxisChanged(this.changes as Partial<TechRecordGETPSV>);
-    this.maxTrainAxisChanged = this.technicalRecordService.hasMaxTrainAxisChanged(this.changes as Partial<TechRecordGETHGV>);
+    this.psvGrossAxisChanged = this.isPSV && this.technicalRecordService.hasPsvGrossAxisChanged(this.changes as Partial<TechRecordGETPSV>);
+    this.hgvGrossAxisChanged = this.isHGV && this.technicalRecordService.hasHgvGrossAxisChanged(this.changes as Partial<TechRecordGETHGV>);
+    this.trlGrossAxisChanged = this.isTRL && this.technicalRecordService.hasTrlGrossAxisChanged(this.changes as Partial<TechRecordGETTRL>);
+    this.hgvTrainAxisChanged = this.isHGV && this.technicalRecordService.hasHgvTrainAxisChanged(this.changes as Partial<TechRecordGETHGV>);
+    this.psvTrainAxisChanged = this.isPSV && this.technicalRecordService.hasPsvTrainAxisChanged(this.changes as Partial<TechRecordGETPSV>);
+    this.maxTrainAxisChanged = this.isHGV && this.technicalRecordService.hasMaxTrainAxisChanged(this.changes as Partial<TechRecordGETHGV>);
   }
 
   getAxleTemplate(): FormNode[] | undefined {
