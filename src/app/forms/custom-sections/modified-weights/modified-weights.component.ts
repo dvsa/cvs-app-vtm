@@ -53,6 +53,8 @@ export class ModifiedWeightsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this);
+    console.log(this.changes);
     this.axleTemplate = this.getAxleTemplate();
     this.psvGrossAxleChanged = this.isPSV && this.technicalRecordService.hasPsvGrossAxleChanged(this.changes as Partial<TechRecordGETPSV>);
     this.hgvGrossAxleChanged = this.isHGV && this.technicalRecordService.hasHgvGrossAxleChanged(this.changes as Partial<TechRecordGETHGV>);

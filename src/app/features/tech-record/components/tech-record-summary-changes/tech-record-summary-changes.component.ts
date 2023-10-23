@@ -62,6 +62,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.navigateUponSuccess();
     this.initSubscriptions();
+
   }
 
   navigateUponSuccess(): void {
@@ -78,6 +79,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       .select(techRecord)
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe((data) => {
+        if (!data) this.cancel();
         this.techRecord = data;
       });
 
@@ -123,16 +125,16 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   }
 
   get deletedAxles(): HGVAxles[] | TRLAxles[] | PSVAxles[] {
-    if (this.techRecordEdited?.techRecord_vehicleType === 'hgv') {
-      return Object.values((this.techRecordChanges as Partial<TechRecordGETHGV>).techRecord_axles ?? {}) as [HGVAxles, ...HGVAxles[]];
+    if (this.techRecordEdited?.techRecord_vehicleType === 'hgv' && this.techRecordDeletions) {
+      return Object.values((this.techRecordDeletions as Partial<TechRecordGETHGV>).techRecord_axles ?? {}) as [HGVAxles, ...HGVAxles[]];
     }
 
-    if (this.techRecordEdited?.techRecord_vehicleType === 'trl') {
-      return Object.values((this.techRecordChanges as Partial<TechRecordGETTRL>).techRecord_axles ?? {}) as [TRLAxles, ...TRLAxles[]];
+    if (this.techRecordEdited?.techRecord_vehicleType === 'trl' && this.techRecordDeletions) {
+      return Object.values((this.techRecordDeletions as Partial<TechRecordGETTRL>).techRecord_axles ?? {}) as [TRLAxles, ...TRLAxles[]];
     }
 
-    if (this.techRecordEdited?.techRecord_vehicleType === 'psv') {
-      return Object.values((this.techRecordChanges as Partial<TechRecordGETPSV>).techRecord_axles ?? {}) as [PSVAxles, ...PSVAxles[]];
+    if (this.techRecordEdited?.techRecord_vehicleType === 'psv' && this.techRecordDeletions) {
+      return Object.values((this.techRecordDeletions as Partial<TechRecordGETPSV>).techRecord_axles ?? {}) as [PSVAxles, ...PSVAxles[]];
     }
 
     return [] as HGVAxles[] | TRLAxles[] | PSVAxles[];
@@ -200,11 +202,9 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   }
 
   isNotEmpty(value: unknown): boolean {
-    let finalVal = value != null && value !== '';
-    if (typeof value === 'object') {
-      finalVal = Object.values(value as object).length > 0;
-    }
-    return finalVal;
+    if (value == null || value === '') return false;
+    if (typeof value === 'object') return Object.values(value).length > 0;
+    return true;
   }
 
   toVisibleFormNode(node: FormNode): FormNode {
