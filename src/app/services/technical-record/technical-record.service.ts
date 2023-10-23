@@ -36,7 +36,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService, private routerService: RouterService) {}
+  constructor(private store: Store, private techRecordHttpService: TechnicalRecordHttpService, private routerService: RouterService) { }
 
   getVehicleTypeWithSmallTrl(technicalRecord: V3TechRecordModel): VehicleTypes {
     return technicalRecord.techRecord_vehicleType === VehicleTypes.TRL
@@ -244,8 +244,8 @@ export class TechnicalRecordService {
           const value = control.value as string;
           return {
             validateVrm: {
-              message: `A current technical record already exists for 
-              ${value} with the VIN number ${currentRecord[0].vin}. 
+              message: `A current technical record already exists for
+              ${value} with the VIN number ${currentRecord[0].vin}.
               Please fill in the third mark field`,
             },
           };
@@ -295,11 +295,15 @@ export class TechnicalRecordService {
   }
 
   haveAxlesChanged(vehicleType: VehicleTypes, changes: Partial<TechRecordType<'get'>>) {
-    if (vehicleType === 'psv' && this.hasPsvGrossAxleChanged(changes as Partial<TechRecordGETPSV>)) return true;
-    if (vehicleType === 'hgv' && this.hasHgvTrainAxleChanged(changes as Partial<TechRecordGETHGV>)) return true;
-    if (vehicleType === 'psv' && this.hasPsvTrainAxleChanged(changes as Partial<TechRecordGETPSV>)) return true;
-    if (vehicleType === 'hgv' && this.hasMaxTrainAxleChanged(changes as Partial<TechRecordGETHGV>)) return true;
-    if (vehicleType === 'hgv' && this.hasHgvGrossAxleChanged(changes as Partial<TechRecordGETHGV>)) return true;
+    if (vehicleType === 'psv' &&
+      (this.hasPsvGrossAxleChanged(changes as Partial<TechRecordGETPSV>)
+        || this.hasPsvTrainAxleChanged(changes as Partial<TechRecordGETPSV>))) return true;
+
+    if (vehicleType === 'hgv' &&
+      (this.hasHgvTrainAxleChanged(changes as Partial<TechRecordGETHGV>)
+        || this.hasMaxTrainAxleChanged(changes as Partial<TechRecordGETHGV>)
+        || this.hasHgvGrossAxleChanged(changes as Partial<TechRecordGETHGV>))) return true;
+
     if (vehicleType === 'trl' && this.hasTrlGrossAxleChanged(changes as Partial<TechRecordGETTRL>)) return true;
 
     return false;

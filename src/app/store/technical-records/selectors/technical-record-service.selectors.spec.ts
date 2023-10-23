@@ -137,7 +137,7 @@ describe('Tech Record Selectors', () => {
       const selectedDeletions = selectTechRecordDeletions.projector(vehicleTechRecord, editedTechRecord);
       expect(selectedDeletions).toEqual({ vin: 'testVin' });
     });
-    it('should deeply nested deletions', () => {
+    it('should detect deeply nested deletions', () => {
 
       const vehicleTechRecord = {
         systemNumber: 'foo',
