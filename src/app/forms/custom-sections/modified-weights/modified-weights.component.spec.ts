@@ -30,7 +30,7 @@ describe('ModifiedWeightsComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Vehicle type: PSV, Axle changed: Gross. Should determine that only the PSV gross axis have changed', () => {
+    it('Vehicle type: PSV, Axle changed: Gross. Should determine that only the PSV gross axle have changed', () => {
       component.vehicleType = VehicleTypes.PSV;
       component.changes = {
         techRecord_grossKerbWeight: 1,
@@ -41,15 +41,15 @@ describe('ModifiedWeightsComponent', () => {
       fixture.detectChanges();
       component.ngOnInit();
 
-      expect(component.psvGrossAxisChanged).toBe(true);
-      expect(component.hgvGrossAxisChanged).toBe(false);
-      expect(component.trlGrossAxisChanged).toBe(false);
-      expect(component.hgvTrainAxisChanged).toBe(false);
-      expect(component.psvTrainAxisChanged).toBe(false);
-      expect(component.maxTrainAxisChanged).toBe(false);
+      expect(component.psvGrossAxleChanged).toBe(true);
+      expect(component.hgvGrossAxleChanged).toBe(false);
+      expect(component.trlGrossAxleChanged).toBe(false);
+      expect(component.hgvTrainAxleChanged).toBe(false);
+      expect(component.psvTrainAxleChanged).toBe(false);
+      expect(component.maxTrainAxleChanged).toBe(false);
     });
 
-    it('Vehicle type: HGV, Axle changed: Gross. Should determine that only the PSV gross axis have changed', () => {
+    it('Vehicle type: HGV, Axle changed: Gross. Should determine that only the PSV gross axle have changed', () => {
       component.vehicleType = VehicleTypes.HGV;
       component.changes = {
         techRecord_grossGbWeight: 1,
@@ -60,15 +60,15 @@ describe('ModifiedWeightsComponent', () => {
       fixture.detectChanges();
       component.ngOnInit();
 
-      expect(component.psvGrossAxisChanged).toBe(false);
-      expect(component.hgvGrossAxisChanged).toBe(true);
-      expect(component.trlGrossAxisChanged).toBe(false);
-      expect(component.hgvTrainAxisChanged).toBe(false);
-      expect(component.psvTrainAxisChanged).toBe(false);
-      expect(component.maxTrainAxisChanged).toBe(false);
+      expect(component.psvGrossAxleChanged).toBe(false);
+      expect(component.hgvGrossAxleChanged).toBe(true);
+      expect(component.trlGrossAxleChanged).toBe(false);
+      expect(component.hgvTrainAxleChanged).toBe(false);
+      expect(component.psvTrainAxleChanged).toBe(false);
+      expect(component.maxTrainAxleChanged).toBe(false);
     });
 
-    it('Vehicle type: TRL, Axle changed: Gross. Should determine that only the HGV gross axis have changed', () => {
+    it('Vehicle type: TRL, Axle changed: Gross. Should determine that only the HGV gross axle have changed', () => {
       component.vehicleType = VehicleTypes.TRL;
       component.changes = {
         techRecord_grossGbWeight: 1,
@@ -78,15 +78,15 @@ describe('ModifiedWeightsComponent', () => {
       fixture.detectChanges();
       component.ngOnInit();
 
-      expect(component.psvGrossAxisChanged).toBe(false);
-      expect(component.hgvGrossAxisChanged).toBe(false);
-      expect(component.trlGrossAxisChanged).toBe(true);
-      expect(component.hgvTrainAxisChanged).toBe(false);
-      expect(component.psvTrainAxisChanged).toBe(false);
-      expect(component.maxTrainAxisChanged).toBe(false);
+      expect(component.psvGrossAxleChanged).toBe(false);
+      expect(component.hgvGrossAxleChanged).toBe(false);
+      expect(component.trlGrossAxleChanged).toBe(true);
+      expect(component.hgvTrainAxleChanged).toBe(false);
+      expect(component.psvTrainAxleChanged).toBe(false);
+      expect(component.maxTrainAxleChanged).toBe(false);
     });
 
-    it('Vehicle type: HGV, Axle changed: Gross. Should determine that only the HGV gross axis have changed', () => {
+    it('Vehicle type: HGV, Axle changed: Gross. Should determine that only the HGV gross axle have changed', () => {
       component.vehicleType = VehicleTypes.HGV;
       component.changes = {
         techRecord_trainGbWeight: 1,
@@ -97,15 +97,15 @@ describe('ModifiedWeightsComponent', () => {
       fixture.detectChanges();
       component.ngOnInit();
 
-      expect(component.psvGrossAxisChanged).toBe(false);
-      expect(component.hgvGrossAxisChanged).toBe(false);
-      expect(component.trlGrossAxisChanged).toBe(false);
-      expect(component.hgvTrainAxisChanged).toBe(true);
-      expect(component.psvTrainAxisChanged).toBe(false);
-      expect(component.maxTrainAxisChanged).toBe(false);
+      expect(component.psvGrossAxleChanged).toBe(false);
+      expect(component.hgvGrossAxleChanged).toBe(false);
+      expect(component.trlGrossAxleChanged).toBe(false);
+      expect(component.hgvTrainAxleChanged).toBe(true);
+      expect(component.psvTrainAxleChanged).toBe(false);
+      expect(component.maxTrainAxleChanged).toBe(false);
     });
 
-    it('Vehicle type: PSV, Axle changed: Train. Should determine that only the PSV train axis have changed', () => {
+    it('Vehicle type: PSV, Axle changed: Train. Should determine that only the PSV train axle have changed', () => {
       component.vehicleType = VehicleTypes.PSV;
       component.changes = {
         techRecord_trainDesignWeight: 1,
@@ -115,15 +115,15 @@ describe('ModifiedWeightsComponent', () => {
       fixture.detectChanges();
       component.ngOnInit();
 
-      expect(component.psvGrossAxisChanged).toBe(false);
-      expect(component.hgvGrossAxisChanged).toBe(false);
-      expect(component.trlGrossAxisChanged).toBe(false);
-      expect(component.hgvTrainAxisChanged).toBe(false);
-      expect(component.psvTrainAxisChanged).toBe(true);
-      expect(component.maxTrainAxisChanged).toBe(false);
+      expect(component.psvGrossAxleChanged).toBe(false);
+      expect(component.hgvGrossAxleChanged).toBe(false);
+      expect(component.trlGrossAxleChanged).toBe(false);
+      expect(component.hgvTrainAxleChanged).toBe(false);
+      expect(component.psvTrainAxleChanged).toBe(true);
+      expect(component.maxTrainAxleChanged).toBe(false);
     });
 
-    it('Vehicle type: HGV, Axle changed: Max Train. Should determine that only the HGV max train axis have changed', () => {
+    it('Vehicle type: HGV, Axle changed: Max Train. Should determine that only the HGV max train axle have changed', () => {
       component.vehicleType = VehicleTypes.HGV;
       component.changes = {
         techRecord_maxTrainGbWeight: 1,
@@ -134,12 +134,12 @@ describe('ModifiedWeightsComponent', () => {
       fixture.detectChanges();
       component.ngOnInit();
 
-      expect(component.psvGrossAxisChanged).toBe(false);
-      expect(component.hgvGrossAxisChanged).toBe(false);
-      expect(component.trlGrossAxisChanged).toBe(false);
-      expect(component.hgvTrainAxisChanged).toBe(false);
-      expect(component.psvTrainAxisChanged).toBe(false);
-      expect(component.maxTrainAxisChanged).toBe(true);
+      expect(component.psvGrossAxleChanged).toBe(false);
+      expect(component.hgvGrossAxleChanged).toBe(false);
+      expect(component.trlGrossAxleChanged).toBe(false);
+      expect(component.hgvTrainAxleChanged).toBe(false);
+      expect(component.psvTrainAxleChanged).toBe(false);
+      expect(component.maxTrainAxleChanged).toBe(true);
     });
   });
 

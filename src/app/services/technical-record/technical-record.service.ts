@@ -261,7 +261,7 @@ export class TechnicalRecordService {
     );
   }
 
-  hasPsvGrossAxisChanged(changes: Partial<TechRecordGETPSV>): boolean {
+  hasPsvGrossAxleChanged(changes: Partial<TechRecordGETPSV>): boolean {
     return [
       changes.techRecord_grossKerbWeight,
       changes.techRecord_grossDesignWeight,
@@ -270,23 +270,23 @@ export class TechnicalRecordService {
     ].some(Boolean);
   }
 
-  hasHgvGrossAxisChanged(changes: Partial<TechRecordGETHGV>): boolean {
+  hasHgvGrossAxleChanged(changes: Partial<TechRecordGETHGV>): boolean {
     return [changes.techRecord_grossEecWeight, changes.techRecord_grossDesignWeight, changes.techRecord_grossGbWeight].some(Boolean);
   }
 
-  hasTrlGrossAxisChanged(changes: Partial<TechRecordGETTRL>): boolean {
+  hasTrlGrossAxleChanged(changes: Partial<TechRecordGETTRL>): boolean {
     return [changes.techRecord_grossEecWeight, changes.techRecord_grossDesignWeight, changes.techRecord_grossGbWeight].some(Boolean);
   }
 
-  hasHgvTrainAxisChanged(changes: Partial<TechRecordGETHGV>): boolean {
+  hasHgvTrainAxleChanged(changes: Partial<TechRecordGETHGV>): boolean {
     return [changes.techRecord_trainDesignWeight, changes.techRecord_trainGbWeight, changes.techRecord_trainEecWeight].some(Boolean);
   }
 
-  hasPsvTrainAxisChanged(changes: Partial<TechRecordGETPSV>): boolean {
+  hasPsvTrainAxleChanged(changes: Partial<TechRecordGETPSV>): boolean {
     return [changes.techRecord_trainDesignWeight, changes.techRecord_maxTrainGbWeight].some(Boolean);
   }
 
-  hasMaxTrainAxisChanged(changes: Partial<TechRecordGETHGV>): boolean {
+  hasMaxTrainAxleChanged(changes: Partial<TechRecordGETHGV>): boolean {
     return [
       changes.techRecord_maxTrainDesignWeight,
       changes.techRecord_maxTrainEecWeight,
@@ -294,13 +294,13 @@ export class TechnicalRecordService {
     ].some(Boolean);
   }
 
-  hasAxisChanged(vehicleType: VehicleTypes, changes: Partial<TechRecordType<'get'>>) {
-    if (vehicleType === 'psv' && this.hasPsvGrossAxisChanged(changes as Partial<TechRecordGETPSV>)) return true;
-    if (vehicleType === 'hgv' && this.hasHgvTrainAxisChanged(changes as Partial<TechRecordGETHGV>)) return true;
-    if (vehicleType === 'psv' && this.hasPsvTrainAxisChanged(changes as Partial<TechRecordGETPSV>)) return true;
-    if (vehicleType === 'hgv' && this.hasMaxTrainAxisChanged(changes as Partial<TechRecordGETHGV>)) return true;
-    if (vehicleType === 'hgv' && this.hasHgvGrossAxisChanged(changes as Partial<TechRecordGETHGV>)) return true;
-    if (vehicleType === 'trl' && this.hasTrlGrossAxisChanged(changes as Partial<TechRecordGETTRL>)) return true;
+  haveAxlesChanged(vehicleType: VehicleTypes, changes: Partial<TechRecordType<'get'>>) {
+    if (vehicleType === 'psv' && this.hasPsvGrossAxleChanged(changes as Partial<TechRecordGETPSV>)) return true;
+    if (vehicleType === 'hgv' && this.hasHgvTrainAxleChanged(changes as Partial<TechRecordGETHGV>)) return true;
+    if (vehicleType === 'psv' && this.hasPsvTrainAxleChanged(changes as Partial<TechRecordGETPSV>)) return true;
+    if (vehicleType === 'hgv' && this.hasMaxTrainAxleChanged(changes as Partial<TechRecordGETHGV>)) return true;
+    if (vehicleType === 'hgv' && this.hasHgvGrossAxleChanged(changes as Partial<TechRecordGETHGV>)) return true;
+    if (vehicleType === 'trl' && this.hasTrlGrossAxleChanged(changes as Partial<TechRecordGETTRL>)) return true;
 
     return false;
   }

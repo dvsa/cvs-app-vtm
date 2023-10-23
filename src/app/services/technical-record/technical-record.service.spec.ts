@@ -218,65 +218,65 @@ describe('TechnicalRecordService', () => {
     });
   });
 
-  describe('hasAxisChanged', () => {
-    it('should return true if a property of the hgv gross axis has changed', () => {
+  describe('haveAxlesChanged', () => {
+    it('should return true if a property of the hgv gross axle has changed', () => {
       const vehicleType = VehicleTypes.HGV;
       const changes = { techRecord_grossDesignWeight: 1, techRecord_grossEecWeight: 2, techRecord_grossGbWeight: 3 } as Partial<TechRecordGETHGV>;
-      const spy = jest.spyOn(service, 'hasHgvGrossAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasHgvGrossAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the hgv gross axis have changed', () => {
+    it('should return false if no properties of the hgv gross axle have changed', () => {
       const vehicleType = VehicleTypes.HGV;
       const changes = {} as Partial<TechRecordGETHGV>;
-      const spy = jest.spyOn(service, 'hasHgvGrossAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasHgvGrossAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
 
-    it('should return true if a property of the psv gross axis has changed', () => {
+    it('should return true if a property of the psv gross axle has changed', () => {
       const vehicleType = VehicleTypes.PSV;
       const changes = {
         techRecord_grossKerbWeight: 1, techRecord_grossLadenWeight: 1, techRecord_grossDesignWeight: 1, techRecord_grossGbWeight: 1,
       } as Partial<TechRecordGETPSV>;
 
-      const spy = jest.spyOn(service, 'hasPsvGrossAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasPsvGrossAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the psv gross axis have changed', () => {
+    it('should return false if no properties of the psv gross axle have changed', () => {
       const vehicleType = VehicleTypes.PSV;
       const changes = {} as Partial<TechRecordGETPSV>;
-      const spy = jest.spyOn(service, 'hasPsvGrossAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasPsvGrossAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
 
-    it('should return true if a property of the trl gross axis has changed', () => {
+    it('should return true if a property of the trl gross axle has changed', () => {
       const vehicleType = VehicleTypes.TRL;
       const changes = { techRecord_grossDesignWeight: 1, techRecord_grossEecWeight: 2, techRecord_grossGbWeight: 3 } as Partial<TechRecordGETTRL>;
-      const spy = jest.spyOn(service, 'hasTrlGrossAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasTrlGrossAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the trl gross axis have changed', () => {
+    it('should return false if no properties of the trl gross axle have changed', () => {
       const vehicleType = VehicleTypes.TRL;
       const changes = {} as Partial<TechRecordGETTRL>;
-      const spy = jest.spyOn(service, 'hasTrlGrossAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasTrlGrossAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
 
-    it('should return true if a property of the max train axis has changed', () => {
+    it('should return true if a property of the max train axle has changed', () => {
       const vehicleType = VehicleTypes.HGV;
       const changes = {
         techRecord_maxTrainDesignWeight: 5,
@@ -284,149 +284,149 @@ describe('TechnicalRecordService', () => {
         techRecord_maxTrainGbWeight: 3,
       } as Partial<TechRecordGETHGV>;
 
-      const spy = jest.spyOn(service, 'hasMaxTrainAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasMaxTrainAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
-    it('should return true if a property of the hgv train axis has changed', () => {
+    it('should return true if a property of the hgv train axle has changed', () => {
       const vehicleType = VehicleTypes.HGV;
       const changes = { techRecord_trainDesignWeight: 1, techRecord_trainEecWeight: 2, techRecord_trainGbWeight: 3 } as Partial<TechRecordGETHGV>;
-      const spy = jest.spyOn(service, 'hasHgvTrainAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasHgvTrainAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the hgv train axis have changed', () => {
+    it('should return false if no properties of the hgv train axle have changed', () => {
       const vehicleType = VehicleTypes.HGV;
       const changes = {} as Partial<TechRecordGETHGV>;
-      const spy = jest.spyOn(service, 'hasHgvTrainAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasHgvTrainAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
 
-    it('should return true if a property of the psv train axis has changed', () => {
+    it('should return true if a property of the psv train axle has changed', () => {
       const vehicleType = VehicleTypes.PSV;
       const changes = { techRecord_trainDesignWeight: 1, techRecord_trainEecWeight: 2, techRecord_trainGbWeight: 3 } as Partial<TechRecordGETPSV>;
-      const spy = jest.spyOn(service, 'hasPsvTrainAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasPsvTrainAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the psv train axis have changed', () => {
+    it('should return false if no properties of the psv train axle have changed', () => {
       const vehicleType = VehicleTypes.PSV;
       const changes = {} as Partial<TechRecordGETPSV>;
-      const spy = jest.spyOn(service, 'hasPsvTrainAxisChanged');
-      const result = service.hasAxisChanged(vehicleType, changes);
+      const spy = jest.spyOn(service, 'hasPsvTrainAxleChanged');
+      const result = service.haveAxlesChanged(vehicleType, changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
   });
 
-  describe('hasPsvTrainAxisChanged', () => {
-    it('should return true if a property of the psv train axis has changed', () => {
+  describe('hasPsvTrainAxleChanged', () => {
+    it('should return true if a property of the psv train axle has changed', () => {
       const changes = { techRecord_trainDesignWeight: 1, techRecord_maxTrainGbWeight: 2 } as Partial<TechRecordGETPSV>;
-      const spy = jest.spyOn(service, 'hasPsvTrainAxisChanged');
-      const result = service.hasPsvTrainAxisChanged(changes);
+      const spy = jest.spyOn(service, 'hasPsvTrainAxleChanged');
+      const result = service.hasPsvTrainAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the psv train axis have changed', () => {
+    it('should return false if no properties of the psv train axle have changed', () => {
       const changes = {} as Partial<TechRecordGETPSV>;
-      const spy = jest.spyOn(service, 'hasPsvTrainAxisChanged');
-      const result = service.hasPsvTrainAxisChanged(changes);
+      const spy = jest.spyOn(service, 'hasPsvTrainAxleChanged');
+      const result = service.hasPsvTrainAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
   });
 
-  describe('hasHgvTrainAxisChanged', () => {
-    it('should return true if a property of the hgv train axis has changed', () => {
+  describe('hasHgvTrainAxleChanged', () => {
+    it('should return true if a property of the hgv train axle has changed', () => {
       const changes = { techRecord_trainDesignWeight: 1, techRecord_maxTrainGbWeight: 2 } as Partial<TechRecordGETHGV>;
-      const spy = jest.spyOn(service, 'hasHgvTrainAxisChanged');
-      const result = service.hasHgvTrainAxisChanged(changes);
+      const spy = jest.spyOn(service, 'hasHgvTrainAxleChanged');
+      const result = service.hasHgvTrainAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the hgv train axis have changed', () => {
+    it('should return false if no properties of the hgv train axle have changed', () => {
       const changes = {} as Partial<TechRecordGETHGV>;
-      const spy = jest.spyOn(service, 'hasHgvTrainAxisChanged');
-      const result = service.hasHgvTrainAxisChanged(changes);
+      const spy = jest.spyOn(service, 'hasHgvTrainAxleChanged');
+      const result = service.hasHgvTrainAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
   });
 
-  describe('hasTrlGrossAxisChanged', () => {
-    it('should return true if a property of the trl gross axis has changed', () => {
+  describe('hasTrlGrossAxleChanged', () => {
+    it('should return true if a property of the trl gross axle has changed', () => {
       const changes = { techRecord_grossDesignWeight: 1, techRecord_grossEecWeight: 2, techRecord_grossGbWeight: 3 } as Partial<TechRecordGETTRL>;
-      const spy = jest.spyOn(service, 'hasTrlGrossAxisChanged');
-      const result = service.hasTrlGrossAxisChanged(changes);
+      const spy = jest.spyOn(service, 'hasTrlGrossAxleChanged');
+      const result = service.hasTrlGrossAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the trl gross axis have changed', () => {
+    it('should return false if no properties of the trl gross axle have changed', () => {
       const changes = {} as Partial<TechRecordGETTRL>;
-      const spy = jest.spyOn(service, 'hasTrlGrossAxisChanged');
-      const result = service.hasTrlGrossAxisChanged(changes);
+      const spy = jest.spyOn(service, 'hasTrlGrossAxleChanged');
+      const result = service.hasTrlGrossAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
   });
 
-  describe('hasHgvGrossAxisChanged', () => {
-    it('should return true if a property of the hgv gross axis has changed', () => {
+  describe('hasHgvGrossAxleChanged', () => {
+    it('should return true if a property of the hgv gross axle has changed', () => {
       const changes = { techRecord_grossDesignWeight: 1, techRecord_grossEecWeight: 2, techRecord_grossGbWeight: 3 } as Partial<TechRecordGETHGV>;
-      const spy = jest.spyOn(service, 'hasHgvGrossAxisChanged');
-      const result = service.hasHgvGrossAxisChanged(changes);
+      const spy = jest.spyOn(service, 'hasHgvGrossAxleChanged');
+      const result = service.hasHgvGrossAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the hgv gross axis have changed', () => {
+    it('should return false if no properties of the hgv gross axle have changed', () => {
       const changes = {} as Partial<TechRecordGETHGV>;
-      const spy = jest.spyOn(service, 'hasHgvGrossAxisChanged');
-      const result = service.hasHgvGrossAxisChanged(changes);
+      const spy = jest.spyOn(service, 'hasHgvGrossAxleChanged');
+      const result = service.hasHgvGrossAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
   });
 
-  describe('hasMaxTrainAxisChanged', () => {
-    it('should return true if a property of the max train axis has changed', () => {
+  describe('hasMaxTrainAxleChanged', () => {
+    it('should return true if a property of the max train axle has changed', () => {
       const changes = { techRecord_trainDesignWeight: 1, techRecord_maxTrainGbWeight: 2 } as Partial<TechRecordGETHGV>;
-      const spy = jest.spyOn(service, 'hasMaxTrainAxisChanged');
-      const result = service.hasMaxTrainAxisChanged(changes); expect(spy).toHaveBeenCalledWith(changes);
+      const spy = jest.spyOn(service, 'hasMaxTrainAxleChanged');
+      const result = service.hasMaxTrainAxleChanged(changes); expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the max train axis have changed', () => {
+    it('should return false if no properties of the max train axle have changed', () => {
       const changes = {} as Partial<TechRecordGETHGV>;
-      const spy = jest.spyOn(service, 'hasMaxTrainAxisChanged');
-      const result = service.hasMaxTrainAxisChanged(changes); expect(spy).toHaveBeenCalledWith(changes);
+      const spy = jest.spyOn(service, 'hasMaxTrainAxleChanged');
+      const result = service.hasMaxTrainAxleChanged(changes); expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
   });
 
-  describe('hasPsvGrossAxisChanged', () => {
-    it('should return true if a property of the psv gross axis has changed', () => {
+  describe('hasPsvGrossAxleChanged', () => {
+    it('should return true if a property of the psv gross axle has changed', () => {
       const changes = { techRecord_grossDesignWeight: 1, techRecord_grossEecWeight: 2, techRecord_grossGbWeight: 3 } as Partial<TechRecordGETPSV>;
-      const spy = jest.spyOn(service, 'hasPsvGrossAxisChanged');
-      const result = service.hasPsvGrossAxisChanged(changes);
+      const spy = jest.spyOn(service, 'hasPsvGrossAxleChanged');
+      const result = service.hasPsvGrossAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(true);
     });
 
-    it('should return false if no properties of the psv gross axis have changed', () => {
+    it('should return false if no properties of the psv gross axle have changed', () => {
       const changes = {} as Partial<TechRecordGETPSV>;
-      const spy = jest.spyOn(service, 'hasPsvGrossAxisChanged');
-      const result = service.hasPsvGrossAxisChanged(changes);
+      const spy = jest.spyOn(service, 'hasPsvGrossAxleChanged');
+      const result = service.hasPsvGrossAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
     });
