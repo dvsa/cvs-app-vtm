@@ -1,24 +1,21 @@
-import {
-  StatusCodes,
-  VehicleTypes,
-  FuelTypes,
-  VehicleConfigurations,
-  EuVehicleCategories,
-  approvalType
-} from '../app/models/vehicle-tech-record.model';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { createMock } from 'ts-auto-mock';
 import { BodyTypeDescription } from '@models/body-type-enum';
-import { HGVAxles, HGVPlates, PlateReasonForIssue, VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+// disable linting error as this util function is only used in tests and should, therefore, be a devDependency
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { createMock } from 'ts-auto-mock';
+import {
+  EuVehicleCategories, FuelTypes, StatusCodes, VehicleConfigurations, approvalType,
+} from '../app/models/vehicle-tech-record.model';
 
 export const createMockHgv = (systemNumber: number): TechRecordType<'hgv'> =>
   createMock<TechRecordType<'hgv'>>({
-    systemNumber: `HGV`,
+    systemNumber: 'HGV',
     vin: `XMGDE03FS0H0${12344 + systemNumber + 1}`,
     primaryVrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
     secondaryVrms: null,
     createdTimestamp: new Date().toISOString(),
-    techRecord_createdAt: new Date().toISOString() as string,
+    techRecord_createdAt: new Date().toISOString(),
     techRecord_createdByName: 'Nathan',
     techRecord_statusCode: StatusCodes.CURRENT,
     techRecord_vehicleType: 'hgv',
@@ -64,7 +61,7 @@ export const createMockHgv = (systemNumber: number): TechRecordType<'hgv'> =>
     techRecord_grossDesignWeight: 3,
     techRecord_trainGbWeight: 3,
     techRecord_trainEecWeight: 3,
-    techRecord_trainDesignWeight: 7
+    techRecord_trainDesignWeight: 7,
   });
 
 // [

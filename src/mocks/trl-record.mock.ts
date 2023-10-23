@@ -1,17 +1,14 @@
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import {
-  StatusCodes,
-  VehicleTypes,
-  VehicleConfigurations,
-  FrameDescriptions,
-  EuVehicleCategories,
-  approvalType
-} from '../app/models/vehicle-tech-record.model';
+// disable linting error as this util function is only used in tests and should, therefore, be a devDependency
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { createMock } from 'ts-auto-mock';
+import {
+  EuVehicleCategories, FrameDescriptions, StatusCodes, VehicleConfigurations, approvalType,
+} from '../app/models/vehicle-tech-record.model';
 
 export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
   createMock<TechRecordType<'trl'>>({
-    systemNumber: `TRL`,
+    systemNumber: 'TRL',
     vin: `XMGDE04FS0H0${12344 + systemNumber + 1}`,
     trailerId: 'TestId',
     techRecord_createdAt: new Date().toISOString(),
@@ -20,7 +17,7 @@ export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
     techRecord_vehicleType: 'trl',
     techRecord_regnDate: '1234',
     techRecord_firstUseDate: '1234',
-    //techRecord_manufactureYear: '2022',
+    // techRecord_manufactureYear: '2022',
     techRecord_noOfAxles: 2,
     techRecord_brakes_dtpNumber: '1234',
     techRecord_brakes_loadSensingValve: true,
@@ -32,7 +29,7 @@ export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
     techRecord_dimensions_width: 10000,
     techRecord_suspensionType: '1',
     techRecord_roadFriendly: true,
-    //techRecord_drawbarCouplingFitted: true,
+    // techRecord_drawbarCouplingFitted: true,
 
     techRecord_vehicleClass_description: 'trailer',
     techRecord_vehicleClass_code: '1',
@@ -48,7 +45,7 @@ export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
     techRecord_ntaNumber: 'nta789',
     techRecord_variantNumber: 'variant123456',
     techRecord_variantVersionNumber: 'variantversion123456',
-    techRecord_plates: undefined
+    techRecord_plates: undefined,
   });
 // Axels array
 // [
