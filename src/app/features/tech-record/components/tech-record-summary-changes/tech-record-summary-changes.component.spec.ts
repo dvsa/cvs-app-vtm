@@ -98,7 +98,7 @@ describe('TechRecordSummaryChangesComponent', () => {
   });
 
   describe('ngOnDestroy', () => {
-    it('should call the correct functions for onDestroy', () => {
+    it('should call the destroy.next and destroy.complete', () => {
       jest.spyOn(component.destroy$, 'next');
       jest.spyOn(component.destroy$, 'complete');
       component.ngOnDestroy();
@@ -110,7 +110,7 @@ describe('TechRecordSummaryChangesComponent', () => {
   });
 
   describe('submit', () => {
-    it('should call the store 3 times', () => {
+    it('should dispatch updateTechRecords, clearAllSectionState and clearScrollPosition', () => {
       jest.spyOn(store, 'dispatch');
       component.submit();
       // eslint-disable-next-line @typescript-eslint/unbound-method
