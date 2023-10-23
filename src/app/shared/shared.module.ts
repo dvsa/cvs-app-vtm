@@ -20,11 +20,11 @@ import { PreventDoubleClickDirective } from './directives/prevent-double-click/p
 import { RetrieveDocumentDirective } from './directives/retrieve-document/retrieve-document.directive';
 import { DefaultNullOrEmpty } from './pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
+import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicle-type.pipe';
+import { GetControlLabelPipe } from './pipes/get-control-label/get-control-label.pipe';
 import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe';
 import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
 import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
-import { GetControlLabelPipe } from './pipes/get-control-label/get-control-label.pipe';
-import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicle-type.pipe';
 
 @NgModule({
   declarations: [
@@ -76,6 +76,7 @@ import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicl
     TyreAxleLoadPipe,
     GetControlLabelPipe,
     FormatVehicleTypePipe,
+
   ],
   providers: [DocumentRetrievalService],
 })

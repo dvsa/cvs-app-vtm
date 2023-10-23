@@ -1,0 +1,97 @@
+<ng-container *ngIf="techRecordEdited && techRecordChanges && vehicleType">
+  <app-banner>
+    <ng-container title>Important</ng-container>
+    <ng-container content>Check your changes before submitting the technical record</ng-container>
+  </app-banner>
+
+  <app-icon [icon]="techRecordEdited.techRecord_vehicleType || ''"></app-icon>
+  <app-dynamic-form-group [data]="techRecordEdited" [template]="vehicleSummary"></app-dynamic-form-group>
+
+  <app-accordion-control [class]="'padding'" [sectionState]="sectionState">
+    <ng-container *ngFor="let section of customVehicleTemplate; let i = index">
+      <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="true">
+        <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
+      </app-accordion>
+    </ng-container>
+  </app-accordion-control>
+
+  <ng-template #accordion let-sectionName="sectionName" let-section="section">
+    <ng-container [ngSwitch]="sectionName">
+      <app-body *ngSwitchCase="'bodySection'" [techRecord]="techRecordEdited" [disableLoadOptions]="true"></app-body>
+
+      <ng-container *ngSwitchCase="'dimensionsSection'">
+        <app-dimensions
+          *ngIf="
+            techRecordEdited.techRecord_vehicleType === 'hgv' ||
+            techRecordEdited.techRecord_vehicleType === 'psv' ||
+            techRecordEdited.techRecord_vehicleType === 'trl'
+          "
+          [techRecord]="techRecordEdited"
+        ></app-dimensions>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'approvalSection'">
+        <ng-container
+          *ngIf="
+            techRecordEdited.techRecord_vehicleType === 'hgv' ||
+            techRecordEdited.techRecord_vehicleType === 'psv' ||
+            techRecordEdited.techRecord_vehicleType === 'trl'
+          "
+        >
+          <app-approval-type [techRecord]="techRecordEdited"></app-approval-type>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'psvBrakesSection'">
+        <app-psv-brakes *ngIf="techRecordEdited.techRecord_vehicleType === 'psv'" [vehicleTechRecord]="techRecordEdited"></app-psv-brakes>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'trlBrakesSection'">
+        <app-trl-brakes *ngIf="techRecordEdited.techRecord_vehicleType === 'trl'" [vehicleTechRecord]="techRecordEdited"></app-trl-brakes>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'tyreSection'">
+        <ng-container
+          *ngIf="
+            techRecordEdited.techRecord_vehicleType === 'hgv' ||
+            techRecordEdited.techRecord_vehicleType === 'psv' ||
+            techRecordEdited.techRecord_vehicleType === 'trl'
+          "
+        >
+          <app-tyres [vehicleTechRecord]="techRecordEdited"></app-tyres>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'weightsSection'">
+        <ng-container
+          *ngIf="
+            techRecordEdited.techRecord_vehicleType === 'hgv' ||
+            techRecordEdited.techRecord_vehicleType === 'psv' ||
+            techRecordEdited.techRecord_vehicleType === 'trl'
+          "
+        >
+          <ng-container *ngIf="deletedAxles.length > 0; else noDeleted">
+            <div class="govuk-warning-text">
+              <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+              <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                You removed an axle.
+              </strong>
+            </div>
+            <app-weights [vehicleTechRecord]="techRecordEdited"></app-weights>
+          </ng-container>
+          <ng-template #noDeleted>
+            <app-modified-weights *ngIf="changesForWeights" [vehicleType]="vehicleType" [changes]="changesForWeights"></app-modified-weights>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+
+      <app-dynamic-form-group *ngSwitchDefault [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
+    </ng-container>
+  </ng-template>
+</ng-container>
+
+<app-button-group>
+  <app-button [id]="'submit'" (clicked)="submit()">Submit</app-button>
+  <app-button [id]="'cancel'" design="link" (clicked)="cancel()">Cancel</app-button>
+</app-button-group>

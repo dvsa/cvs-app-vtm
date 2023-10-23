@@ -176,7 +176,10 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
             this.errorMessage = `Cannot find data of this tyre on axle ${axleNumber}`;
             this.isError = true;
             const newTyre = new Tyre({
-              tyreCode: null, tyreSize: null, plyRating: null, dataTrAxles: null,
+              tyreCode: null,
+              tyreSize: null,
+              plyRating: null,
+              dataTrAxles: null,
             });
 
             this.addTyreToTechRecord(newTyre, axleNumber);
