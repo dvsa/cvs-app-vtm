@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { ResolveFn } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
@@ -11,7 +11,7 @@ import {
 } from '@store/test-records';
 import { map, take } from 'rxjs';
 
-export const testResultResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const testResultResolver: ResolveFn<boolean> = () => {
   const store: Store<State> = inject(Store<State>);
   const action$: Actions = inject(Actions);
   store.dispatch(fetchSelectedTestResult());

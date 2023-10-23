@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { ResolveFn } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
@@ -12,7 +12,7 @@ import {
   take,
 } from 'rxjs';
 
-export const techRecordViewResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const techRecordViewResolver: ResolveFn<boolean> = () => {
   const store: Store<State> = inject(Store<State>);
   const action$: Actions = inject(Actions);
   store.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber, createdTimestamp }) => {

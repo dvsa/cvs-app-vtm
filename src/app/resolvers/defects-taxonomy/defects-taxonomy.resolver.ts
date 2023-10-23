@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { ResolveFn } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -10,7 +10,7 @@ import {
 } from '@store/defects';
 import { map, take } from 'rxjs';
 
-export const defectsTaxonomyResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const defectsTaxonomyResolver: ResolveFn<boolean> = () => {
   const store: Store<DefectsState> = inject(Store<DefectsState>);
   const action$: Actions = inject(Actions);
   store.dispatch(fetchDefects());

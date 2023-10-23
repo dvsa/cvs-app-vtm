@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { ResolveFn } from '@angular/router';
 import { TechRecordType as VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -23,7 +23,7 @@ import {
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
-export const contingencyTestResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const contingencyTestResolver: ResolveFn<boolean> = () => {
   const store: Store<State> = inject(Store<State>);
   const action$: Actions = inject(Actions);
   const techRecordService: TechnicalRecordService = inject(TechnicalRecordService);

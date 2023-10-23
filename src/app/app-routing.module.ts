@@ -7,12 +7,12 @@ import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-
 import { ServerErrorComponent } from '@core/components/server-error/server-error.component';
 import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
-import { TitleResolver } from './resolvers/title/title.resolver';
+import { titleResolver } from './resolvers/title/title.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    resolve: { title: TitleResolver },
+    resolve: { title: titleResolver },
     children: [
       {
         path: '',
