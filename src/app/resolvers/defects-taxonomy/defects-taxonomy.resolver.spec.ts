@@ -6,8 +6,8 @@ import { initialAppState, State } from '@store/.';
 import { fetchDefects, fetchDefectsFailed, fetchDefectsSuccess } from '@store/defects';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { defectsTaxonomyResolver } from './defects-taxonomy.resolver';
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { defectsTaxonomyResolver } from './defects-taxonomy.resolver';
 
 describe('DefectsTaxonomyResolver', () => {
   let resolver: ResolveFn<boolean>;
@@ -20,7 +20,7 @@ describe('DefectsTaxonomyResolver', () => {
       providers: [provideMockStore({ initialState: initialAppState }), provideMockActions(() => actions$)],
     });
     resolver = (...resolverParameters) =>
-    TestBed.runInInjectionContext(() => defectsTaxonomyResolver(...resolverParameters));
+      TestBed.runInInjectionContext(() => defectsTaxonomyResolver(...resolverParameters));
     store = TestBed.inject(MockStore);
   });
 
@@ -38,7 +38,8 @@ describe('DefectsTaxonomyResolver', () => {
     it('should resolve to true when all actions are success type', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const result = TestBed.runInInjectionContext(
-        () => resolver({} as ActivatedRouteSnapshot,{} as RouterStateSnapshot)) as Observable<boolean>;
+        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a', { a: fetchDefectsSuccess });
         expectObservable(result).toBe('-(b|)', {
@@ -52,7 +53,8 @@ describe('DefectsTaxonomyResolver', () => {
     it('should resolve to false when one or more actions are of failure type', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const result = TestBed.runInInjectionContext(
-        () => resolver({} as ActivatedRouteSnapshot,{} as RouterStateSnapshot)) as Observable<boolean>;
+        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a', { a: fetchDefectsFailed });
         expectObservable(result).toBe('-(b|)', {

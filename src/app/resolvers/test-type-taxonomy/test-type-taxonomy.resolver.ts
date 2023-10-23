@@ -6,9 +6,7 @@ import { State } from '@store/.';
 import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '@store/test-types/actions/test-types.actions';
 import { map, take } from 'rxjs';
 
-
-export const testTypeTaxonomyResolver: ResolveFn<boolean> =
-(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const testTypeTaxonomyResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   const store: Store<State> = inject(Store<State>);
   const action$: Actions = inject(Actions);
   store.dispatch(fetchTestTypes());
@@ -18,4 +16,4 @@ export const testTypeTaxonomyResolver: ResolveFn<boolean> =
     take(1),
     map((action) => action.type === fetchTestTypesSuccess.type),
   );
-}
+};

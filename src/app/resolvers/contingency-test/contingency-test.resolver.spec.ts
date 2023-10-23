@@ -17,8 +17,8 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import { contingencyTestResolver } from './contingency-test.resolver';
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { contingencyTestResolver } from './contingency-test.resolver';
 
 describe('ContingencyTestResolver', () => {
   let resolver: ResolveFn<boolean>;
@@ -44,7 +44,7 @@ describe('ContingencyTestResolver', () => {
       ],
     });
     resolver = (...resolverParameters) =>
-    TestBed.runInInjectionContext(() => contingencyTestResolver(...resolverParameters));
+      TestBed.runInInjectionContext(() => contingencyTestResolver(...resolverParameters));
     store = TestBed.inject(MockStore);
     techRecordService = TestBed.inject(TechnicalRecordService);
   });
@@ -57,7 +57,8 @@ describe('ContingencyTestResolver', () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
     const result = TestBed.runInInjectionContext(
-      () => resolver({} as ActivatedRouteSnapshot,{} as RouterStateSnapshot)) as Observable<boolean>;
+      () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    ) as Observable<boolean>;
     const resolveResult = await firstValueFrom(result);
 
     expect(resolveResult).toBe(true);
@@ -69,7 +70,8 @@ describe('ContingencyTestResolver', () => {
     jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
     jest.spyOn(MockUserService, 'user$', 'get').mockImplementationOnce(() => throwError(() => new Error('foo')));
     const result = TestBed.runInInjectionContext(
-      () => resolver({} as ActivatedRouteSnapshot,{} as RouterStateSnapshot)) as Observable<boolean>;
+      () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    ) as Observable<boolean>;
     const resolveResult = await firstValueFrom(result);
     expect(resolveResult).toBe(false);
   });

@@ -6,8 +6,8 @@ import { initialAppState, State } from '@store/.';
 import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '@store/test-types/actions/test-types.actions';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { testTypeTaxonomyResolver } from './test-type-taxonomy.resolver';
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { testTypeTaxonomyResolver } from './test-type-taxonomy.resolver';
 
 describe('TestTypeTaxonomyResolver', () => {
   let resolver: ResolveFn<boolean>;
@@ -20,7 +20,7 @@ describe('TestTypeTaxonomyResolver', () => {
       providers: [provideMockStore({ initialState: initialAppState }), provideMockActions(() => actions$)],
     });
     resolver = (...resolverParameters) =>
-    TestBed.runInInjectionContext(() => testTypeTaxonomyResolver(...resolverParameters));
+      TestBed.runInInjectionContext(() => testTypeTaxonomyResolver(...resolverParameters));
     store = TestBed.inject(MockStore);
   });
 
@@ -38,7 +38,8 @@ describe('TestTypeTaxonomyResolver', () => {
     it('should resolve to true when all actions are success type', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const result = TestBed.runInInjectionContext(
-        () => resolver({} as ActivatedRouteSnapshot,{} as RouterStateSnapshot)) as Observable<boolean>;
+        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a', { a: fetchTestTypesSuccess });
         expectObservable(result).toBe('-(b|)', {
@@ -52,7 +53,8 @@ describe('TestTypeTaxonomyResolver', () => {
     it('should resolve to false when one or more actions are of failure type', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const result = TestBed.runInInjectionContext(
-        () => resolver({} as ActivatedRouteSnapshot,{} as RouterStateSnapshot)) as Observable<boolean>;
+        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a', { a: fetchTestTypesFailed });
         expectObservable(result).toBe('-(b|)', {
