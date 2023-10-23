@@ -62,7 +62,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.navigateUponSuccess();
     this.initSubscriptions();
-
   }
 
   navigateUponSuccess(): void {
