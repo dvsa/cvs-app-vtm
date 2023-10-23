@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -13,10 +13,10 @@ import {
 } from '@store/test-records';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { TestResultResolver } from './test-result.resolver';
+import { testResultResolver } from './test-result.resolver';
 
 describe('TestResultResolver', () => {
-  let resolver: TestResultResolver;
+  let resolver: ResolveFn<boolean>;
   let actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
   const mockSnapshot = jest.fn;
@@ -26,13 +26,13 @@ describe('TestResultResolver', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
-        TestResultResolver,
         provideMockStore({ initialState: initialAppState }),
         provideMockActions(() => actions$),
         { provide: RouterStateSnapshot, useValue: mockSnapshot },
       ],
     });
-    resolver = TestBed.inject(TestResultResolver);
+    resolver = (...resolverParameters) =>
+      TestBed.runInInjectionContext(() => testResultResolver(...resolverParameters));
     store = TestBed.inject(MockStore);
   });
 
@@ -49,10 +49,13 @@ describe('TestResultResolver', () => {
   describe('fetch test result', () => {
     it('should resolve to true when all actions are success type', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const result = TestBed.runInInjectionContext(
+        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
       store.overrideSelector(selectedTestResultState, undefined);
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a', { a: fetchSelectedTestResultSuccess });
-        expectObservable(resolver.resolve()).toBe('-(b|)', {
+        expectObservable(result).toBe('-(b|)', {
           b: true,
         });
       });
@@ -62,10 +65,13 @@ describe('TestResultResolver', () => {
 
     it('should resolve to false when one or more actions are of failure type', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const result = TestBed.runInInjectionContext(
+        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
       store.overrideSelector(selectedTestResultState, undefined);
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a', { a: fetchSelectedTestResultFailed });
-        expectObservable(resolver.resolve()).toBe('-(b|)', {
+        expectObservable(result).toBe('-(b|)', {
           b: false,
         });
       });

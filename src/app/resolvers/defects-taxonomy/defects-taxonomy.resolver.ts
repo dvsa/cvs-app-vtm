@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -8,21 +8,16 @@ import {
   fetchDefectsFailed,
   fetchDefectsSuccess,
 } from '@store/defects';
-import { map, Observable, take } from 'rxjs';
+import { map, take } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class DefectsTaxonomyResolver implements Resolve<boolean> {
-  constructor(private store: Store<DefectsState>, private action$: Actions) {}
+export const defectsTaxonomyResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const store: Store<DefectsState> = inject(Store<DefectsState>);
+  const action$: Actions = inject(Actions);
+  store.dispatch(fetchDefects());
 
-  resolve(): Observable<boolean> {
-    this.store.dispatch(fetchDefects());
-
-    return this.action$.pipe(
-      ofType(fetchDefectsSuccess, fetchDefectsFailed),
-      take(1),
-      map((action) => action.type === fetchDefectsSuccess.type),
-    );
-  }
-}
+  return action$.pipe(
+    ofType(fetchDefectsSuccess, fetchDefectsFailed),
+    take(1),
+    map((action) => action.type === fetchDefectsSuccess.type),
+  );
+};

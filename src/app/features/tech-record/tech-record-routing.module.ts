@@ -5,7 +5,7 @@ import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.g
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
-import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
+import { techRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
 import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
 import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
 import { AmendVrmReasonComponent } from './components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component';
@@ -28,7 +28,7 @@ const routes: Routes = [
     data: { roles: Roles.TechRecordView, isCustomLayout: true },
     canActivateChild: [MsalGuard, RoleGuard],
     canActivate: [CancelEditTechGuard],
-    resolve: { load: TechRecordViewResolver },
+    resolve: { load: techRecordViewResolver },
   },
   {
     path: 'correcting-an-error',
@@ -40,7 +40,7 @@ const routes: Routes = [
       isCustomLayout: true,
     },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver },
+    resolve: { techRecord: techRecordViewResolver },
   },
   {
     path: 'notifiable-alteration-needed',
@@ -52,7 +52,7 @@ const routes: Routes = [
       isCustomLayout: true,
     },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver },
+    resolve: { techRecord: techRecordViewResolver },
   },
 
   {
@@ -78,14 +78,14 @@ const routes: Routes = [
     component: GeneratePlateComponent,
     data: { title: 'Generate plate', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { load: TechRecordViewResolver },
+    resolve: { load: techRecordViewResolver },
   },
   {
     path: 'generate-letter',
     component: GenerateLetterComponent,
     data: { title: 'Generate letter', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { load: TechRecordViewResolver },
+    resolve: { load: techRecordViewResolver },
   },
   {
     path: 'amend-reason',
@@ -98,28 +98,28 @@ const routes: Routes = [
     component: TechRecordChangeStatusComponent,
     data: { title: 'Promote or Archive Tech Record', roles: Roles.TechRecordArchive },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { load: TechRecordViewResolver },
+    resolve: { load: techRecordViewResolver },
   },
   {
     path: 'unarchive-record',
     component: TechRecordUnarchiveComponent,
     data: { title: 'Unarchive Record', roles: Roles.TechRecordUnarchive },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { load: TechRecordViewResolver },
+    resolve: { load: techRecordViewResolver },
   },
   {
     path: 'change-vehicle-type',
     component: ChangeVehicleTypeComponent,
     data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver },
+    resolve: { techRecord: techRecordViewResolver },
   },
   {
     path: 'change-vta-visibility',
     component: TechRecordChangeVisibilityComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver },
+    resolve: { techRecord: techRecordViewResolver },
   },
   {
     path: 'correcting-an-error/tyre-search/:axleNumber',
@@ -131,7 +131,7 @@ const routes: Routes = [
       reason: ReasonForEditing.CORRECTING_AN_ERROR,
     },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver },
+    resolve: { techRecord: techRecordViewResolver },
   },
   {
     path: 'correcting-an-error/change-summary',
@@ -155,20 +155,20 @@ const routes: Routes = [
       reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED,
     },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver },
+    resolve: { techRecord: techRecordViewResolver },
   },
   {
     path: 'test-records/test-result/:testResultId/:testNumber',
     data: { title: 'Test record', roles: Roles.TestResultView },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver },
+    resolve: { techRecord: techRecordViewResolver },
     loadChildren: () => import('../test-records/amend/amend-test-records.module').then((m) => m.AmendTestRecordsModule),
   },
   {
     path: 'test-records/create-test',
     data: { title: 'Create Contingency test', roles: Roles.TestResultCreateContingency },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: TechRecordViewResolver },
+    resolve: { techRecord: techRecordViewResolver },
     loadChildren: () => import('../test-records/create/create-test-records.module').then((m) => m.CreateTestRecordsModule),
   },
 ];

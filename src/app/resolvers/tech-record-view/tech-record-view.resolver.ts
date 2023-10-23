@@ -1,34 +1,29 @@
-import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { getTechRecordV3, getTechRecordV3Success, getTechRecordV3Failure } from '@store/technical-records';
+import { getTechRecordV3, getTechRecordV3Failure, getTechRecordV3Success } from '@store/technical-records';
 import { fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
 import {
   count,
   map,
-  Observable,
   take,
 } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class TechRecordViewResolver implements Resolve<boolean> {
-  constructor(private store: Store<State>, private action$: Actions) {}
-  resolve(): Observable<boolean> {
-    this.store.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber, createdTimestamp }) => {
-      this.store.dispatch(getTechRecordV3({ systemNumber, createdTimestamp }));
-      this.store.dispatch(fetchTestResultsBySystemNumber({ systemNumber }));
-    });
+export const techRecordViewResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const store: Store<State> = inject(Store<State>);
+  const action$: Actions = inject(Actions);
+  store.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber, createdTimestamp }) => {
+    store.dispatch(getTechRecordV3({ systemNumber, createdTimestamp }));
+    store.dispatch(fetchTestResultsBySystemNumber({ systemNumber }));
+  });
 
-    return this.action$.pipe(
-      ofType(getTechRecordV3Success, fetchTestResultsBySystemNumberSuccess, getTechRecordV3Failure, fetchTestResultsBySystemNumberFailed),
-      take(2),
-      count((action) => action.type === getTechRecordV3Success.type || action.type === fetchTestResultsBySystemNumberSuccess.type),
-      map((total) => (total === 2)),
-    );
-  }
-}
+  return action$.pipe(
+    ofType(getTechRecordV3Success, fetchTestResultsBySystemNumberSuccess, getTechRecordV3Failure, fetchTestResultsBySystemNumberFailed),
+    take(2),
+    count((action) => action.type === getTechRecordV3Success.type || action.type === fetchTestResultsBySystemNumberSuccess.type),
+    map((total) => (total === 2)),
+  );
+};

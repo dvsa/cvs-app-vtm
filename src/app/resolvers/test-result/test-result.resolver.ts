@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
@@ -9,24 +9,19 @@ import {
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
 } from '@store/test-records';
-import { map, Observable, take } from 'rxjs';
+import { map, take } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class TestResultResolver implements Resolve<boolean> {
-  constructor(private store: Store<State>, private action$: Actions) {}
+export const testResultResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const store: Store<State> = inject(Store<State>);
+  const action$: Actions = inject(Actions);
+  store.dispatch(fetchSelectedTestResult());
+  store.dispatch(cancelEditingTestResult());
 
-  resolve(): Observable<boolean> {
-    this.store.dispatch(fetchSelectedTestResult());
-    this.store.dispatch(cancelEditingTestResult());
-
-    return this.action$.pipe(
-      ofType(fetchSelectedTestResultSuccess, fetchSelectedTestResultFailed),
-      take(1),
-      map((action) => {
-        return action.type === fetchSelectedTestResultSuccess.type;
-      }),
-    );
-  }
-}
+  return action$.pipe(
+    ofType(fetchSelectedTestResultSuccess, fetchSelectedTestResultFailed),
+    take(1),
+    map((action) => {
+      return action.type === fetchSelectedTestResultSuccess.type;
+    }),
+  );
+};

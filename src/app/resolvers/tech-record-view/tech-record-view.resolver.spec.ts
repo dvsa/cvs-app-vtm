@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -9,10 +9,10 @@ import { getTechRecordV3Failure, getTechRecordV3Success } from '@store/technical
 import { fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { TechRecordViewResolver } from './tech-record-view.resolver';
+import { techRecordViewResolver } from './tech-record-view.resolver';
 
 describe('TechRecordViewResolver', () => {
-  let resolver: TechRecordViewResolver;
+  let resolver: ResolveFn<boolean>;
   let actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
   const mockSnapshot: any = jest.fn;
@@ -21,14 +21,14 @@ describe('TechRecordViewResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        TechRecordViewResolver,
         provideMockStore({ initialState: initialAppState }),
         provideMockActions(() => actions$),
         { provide: RouterStateSnapshot, useValue: mockSnapshot },
       ],
     });
     store = TestBed.inject(MockStore);
-    resolver = TestBed.inject(TechRecordViewResolver);
+    resolver = (...resolverParameters) =>
+  TestBed.runInInjectionContext(() => techRecordViewResolver(...resolverParameters));
   });
 
   beforeEach(() => {
@@ -44,11 +44,13 @@ describe('TechRecordViewResolver', () => {
   describe('fetch tech record result', () => {
     it('should resolved to true when both success actions are triggered', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const result = TestBed.runInInjectionContext(
+        () => resolver({} as ActivatedRouteSnapshot,{} as RouterStateSnapshot)) as Observable<boolean>;
       store.overrideSelector(selectRouteParam('systemNumber'), undefined);
       store.overrideSelector(selectRouteParam('createdTimestamp'), undefined);
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a-b-', { a: getTechRecordV3Success, b: fetchTestResultsBySystemNumberSuccess });
-        expectObservable(resolver.resolve()).toBe('---(c|)', {
+        expectObservable(result).toBe('---(c|)', {
           c: true,
         });
       });
@@ -58,11 +60,13 @@ describe('TechRecordViewResolver', () => {
 
     it('should resolve to false if \'getTechRecordV3Failure\' action if dispatched', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const result = TestBed.runInInjectionContext(
+        () => resolver({} as ActivatedRouteSnapshot,{} as RouterStateSnapshot)) as Observable<boolean>;
       store.overrideSelector(selectRouteParam('systemNumber'), undefined);
       store.overrideSelector(selectRouteParam('createdTimestamp'), undefined);
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a-b-', { a: getTechRecordV3Failure, b: fetchTestResultsBySystemNumberSuccess });
-        expectObservable(resolver.resolve()).toBe('---(c|)', {
+        expectObservable(result).toBe('---(c|)', {
           c: false,
         });
       });
@@ -72,11 +76,13 @@ describe('TechRecordViewResolver', () => {
 
     it('should resolved to false if \'fetchTestResultsBySystemNumberFailed\' action is dipatched', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const result = TestBed.runInInjectionContext(
+        () => resolver({} as ActivatedRouteSnapshot,{} as RouterStateSnapshot)) as Observable<boolean>;
       store.overrideSelector(selectRouteParam('systemNumber'), undefined);
       store.overrideSelector(selectRouteParam('createdTimestamp'), undefined);
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a-b-', { a: getTechRecordV3Success, b: fetchTestResultsBySystemNumberFailed });
-        expectObservable(resolver.resolve()).toBe('---(c|)', {
+        expectObservable(result).toBe('---(c|)', {
           c: false,
         });
       });
@@ -86,11 +92,13 @@ describe('TechRecordViewResolver', () => {
 
     it('should resolved to false if \'fetchTestResultsBySystemNumberFailed\' and \'getTechRecordV3Failure\' action are dipatched', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const result = TestBed.runInInjectionContext(
+        () => resolver({} as ActivatedRouteSnapshot,{} as RouterStateSnapshot)) as Observable<boolean>;
       store.overrideSelector(selectRouteParam('systemNumber'), undefined);
       store.overrideSelector(selectRouteParam('createdTimestamp'), undefined);
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a-b-', { a: getTechRecordV3Failure, b: fetchTestResultsBySystemNumberFailed });
-        expectObservable(resolver.resolve()).toBe('---(c|)', {
+        expectObservable(result).toBe('---(c|)', {
           c: false,
         });
       });
