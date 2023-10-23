@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, OnDestroy, OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
@@ -23,15 +25,17 @@ import {
   selectTechRecordDeletions,
   techRecord,
   updateTechRecord,
-  updateTechRecordSuccess
+  updateTechRecordSuccess,
 } from '@store/technical-records';
-import { Subject, combineLatest, take, takeUntil } from 'rxjs';
+import {
+  Subject, combineLatest, take, takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary-changes',
   templateUrl: './tech-record-summary-changes.component.html',
   styleUrls: ['./tech-record-summary-changes.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
@@ -52,7 +56,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     public globalErrorService: GlobalErrorService,
     public route: ActivatedRoute,
     public routerService: RouterService,
-    public actions$: Actions
+    public actions$: Actions,
   ) {}
 
   ngOnInit(): void {
@@ -61,10 +65,10 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   }
 
   navigateUponSuccess(): void {
-    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(vehicleTechRecord => {
+    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([
-        `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`
+        `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
       ]);
     });
   }
@@ -73,21 +77,21 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     this.store$
       .select(techRecord)
       .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(data => {
+      .subscribe((data) => {
         this.techRecord = data;
       });
 
     this.store$
       .select(editingTechRecord)
       .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(data => {
+      .subscribe((data) => {
         this.techRecordEdited = data;
       });
 
     this.store$
       .select(selectTechRecordChanges)
       .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(changes => {
+      .subscribe((changes) => {
         this.techRecordChanges = changes;
         this.techRecordChangesKeys = this.getTechRecordChangesKeys();
         this.sectionsWhitelist = this.getSectionsWhitelist();
@@ -96,11 +100,11 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     this.store$
       .select(selectTechRecordDeletions)
       .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(deletions => {
+      .subscribe((deletions) => {
         this.techRecordDeletions = deletions;
       });
 
-    this.technicalRecordService.sectionStates$.pipe(take(1), takeUntil(this.destroy$)).subscribe(data => {
+    this.technicalRecordService.sectionStates$.pipe(take(1), takeUntil(this.destroy$)).subscribe((data) => {
       this.sectionState = data;
     });
   }
@@ -181,18 +185,18 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   get vehicleTemplates() {
     return vehicleTemplateMap
       .get(this.techRecordEdited?.techRecord_vehicleType as VehicleTypes)
-      ?.filter(template => template.name !== 'technicalRecordSummary');
+      ?.filter((template) => template.name !== 'technicalRecordSummary');
   }
 
   get customVehicleTemplate() {
     return this.vehicleTemplates
-      ?.map(vehicleTemplate => ({
+      ?.map((vehicleTemplate) => ({
         ...this.toVisibleFormNode(vehicleTemplate),
         children: vehicleTemplate.children
-          ?.filter(child => this.techRecordChangesKeys.includes(child.name))
-          .map(child => this.toVisibleFormNode(child))
+          ?.filter((child) => this.techRecordChangesKeys.includes(child.name))
+          .map((child) => this.toVisibleFormNode(child)),
       }))
-      .filter(section => Boolean(section && section.children && section.children.length > 0) || this.sectionsWhitelist.includes(section.name));
+      .filter((section) => Boolean(section && section.children && section.children.length > 0) || this.sectionsWhitelist.includes(section.name));
   }
 
   isNotEmpty(value: unknown): boolean {
