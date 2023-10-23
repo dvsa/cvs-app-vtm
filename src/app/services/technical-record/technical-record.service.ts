@@ -295,12 +295,12 @@ export class TechnicalRecordService {
   }
 
   haveAxlesChanged(vehicleType: VehicleTypes, changes: Partial<TechRecordType<'get'>>) {
-    if (vehicleType === 'psv' &&
-      (this.hasPsvGrossAxleChanged(changes as Partial<TechRecordGETPSV>)
+    if (vehicleType === 'psv'
+      && (this.hasPsvGrossAxleChanged(changes as Partial<TechRecordGETPSV>)
         || this.hasPsvTrainAxleChanged(changes as Partial<TechRecordGETPSV>))) return true;
 
-    if (vehicleType === 'hgv' &&
-      (this.hasHgvTrainAxleChanged(changes as Partial<TechRecordGETHGV>)
+    if (vehicleType === 'hgv'
+      && (this.hasHgvTrainAxleChanged(changes as Partial<TechRecordGETHGV>)
         || this.hasMaxTrainAxleChanged(changes as Partial<TechRecordGETHGV>)
         || this.hasHgvGrossAxleChanged(changes as Partial<TechRecordGETHGV>))) return true;
 
