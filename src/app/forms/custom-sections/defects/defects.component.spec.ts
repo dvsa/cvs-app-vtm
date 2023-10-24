@@ -1,26 +1,25 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import {
   ComponentFixture, fakeAsync, TestBed, tick,
 } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
-import { TagComponent } from '@shared/components/tag/tag.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DefectsComponent } from './defects.component';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { provideMockStore } from '@ngrx/store/testing';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { TagComponent } from '@shared/components/tag/tag.component';
+import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
+import { initialAppState } from '@store/.';
 import { DefectSelectComponent } from '../../components/defect-select/defect-select.component';
 import { DefectComponent } from '../defect/defect.component';
+import { DefectsComponent } from './defects.component';
 
 describe('DefectsComponent', () => {
   let component: DefectsComponent;
   let fixture: ComponentFixture<DefectsComponent>;
   let el: DebugElement;
-  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,7 +30,6 @@ describe('DefectsComponent', () => {
   });
 
   beforeEach(() => {
-    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(DefectsComponent);
     component = fixture.componentInstance;
     el = fixture.debugElement;
