@@ -6,7 +6,7 @@ import { ReferenceDataService } from '@api/reference-data';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
-import { initialAppState, State } from '@store/.';
+import { State, initialAppState } from '@store/.';
 import { ReferenceDataAmendComponent } from './reference-data-amend.component';
 
 const mockRefDataService = {
@@ -22,7 +22,6 @@ describe('ReferenceDataAmendComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
   let errorService: GlobalErrorService;
-  let referenceDataService: ReferenceDataService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -12,7 +12,9 @@ export class GlobalErrorComponent {
   goto(error: GlobalError) {
     if (error.anchorLink) {
       const el = document.getElementById(error.anchorLink);
-      el && el.focus({ preventScroll: false });
+      if (el) {
+        el.focus({ preventScroll: false });
+      }
     }
   }
 }

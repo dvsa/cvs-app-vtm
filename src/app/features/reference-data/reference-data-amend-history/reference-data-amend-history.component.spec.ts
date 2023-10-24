@@ -1,18 +1,15 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReferenceDataService } from '@api/reference-data';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
-import { State, initialAppState } from '@store/.';
+import { initialAppState } from '@store/.';
 import { ReferenceDataAmendHistoryComponent } from './reference-data-amend-history.component';
 
 describe('ReferenceDataAmendHistoryComponent', () => {
   let component: ReferenceDataAmendHistoryComponent;
   let fixture: ComponentFixture<ReferenceDataAmendHistoryComponent>;
-  let store: MockStore<State>;
-  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -23,10 +20,8 @@ describe('ReferenceDataAmendHistoryComponent', () => {
   });
 
   beforeEach(() => {
-    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(ReferenceDataAmendHistoryComponent);
     component = fixture.componentInstance;
-    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 

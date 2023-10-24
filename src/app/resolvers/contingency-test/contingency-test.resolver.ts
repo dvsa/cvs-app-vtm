@@ -41,27 +41,27 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
             vehicleSize: viewableTechRecord?.techRecord_vehicleType === 'psv' ? viewableTechRecord?.techRecord_vehicleSize : undefined,
             vehicleConfiguration: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_vehicleConfiguration ?? null,
             vehicleClass:
-                (viewableTechRecord?.techRecord_vehicleType === 'psv'
-                  || viewableTechRecord?.techRecord_vehicleType === 'trl'
-                  || viewableTechRecord?.techRecord_vehicleType === 'hgv'
-                  || viewableTechRecord?.techRecord_vehicleType === 'motorcycle')
-                && 'techRecord_vehicleClass_code' in viewableTechRecord
-                  ? {
-                    code: viewableTechRecord?.techRecord_vehicleClass_code,
-                    description: viewableTechRecord?.techRecord_vehicleClass_description,
-                  }
-                  : null,
+              (viewableTechRecord?.techRecord_vehicleType === 'psv'
+                || viewableTechRecord?.techRecord_vehicleType === 'trl'
+                || viewableTechRecord?.techRecord_vehicleType === 'hgv'
+                || viewableTechRecord?.techRecord_vehicleType === 'motorcycle')
+              && 'techRecord_vehicleClass_code' in viewableTechRecord
+                ? {
+                  code: viewableTechRecord?.techRecord_vehicleClass_code,
+                  description: viewableTechRecord?.techRecord_vehicleClass_description,
+                }
+                : null,
             vehicleSubclass:
-                viewableTechRecord && 'techRecord_vehicleSubclass' in viewableTechRecord ? viewableTechRecord.techRecord_vehicleSubclass : null,
+              viewableTechRecord && 'techRecord_vehicleSubclass' in viewableTechRecord ? viewableTechRecord.techRecord_vehicleSubclass : null,
             noOfAxles: viewableTechRecord?.techRecord_noOfAxles ?? 0,
             numberOfWheelsDriven:
-                viewableTechRecord && 'techRecord_numberOfWheelsDriven' in viewableTechRecord
-                  ? viewableTechRecord.techRecord_numberOfWheelsDriven
-                  : null,
+              viewableTechRecord && 'techRecord_numberOfWheelsDriven' in viewableTechRecord
+                ? viewableTechRecord.techRecord_numberOfWheelsDriven
+                : null,
             testStatus: 'submitted',
             regnDate: viewableTechRecord?.techRecord_regnDate,
             numberOfSeats:
-                ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsLowerDeck ?? 0)
+              ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsLowerDeck ?? 0)
               + ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsUpperDeck ?? 0),
             reasonForCancellation: '',
             createdAt: now.toISOString(),
