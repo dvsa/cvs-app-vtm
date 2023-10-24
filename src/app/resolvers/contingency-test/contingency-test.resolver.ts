@@ -5,7 +5,6 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestType } from '@models/test-types/test-type.model';
-import { DescriptionEnum, VehicleClass } from '@models/vehicle-class.model';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -14,14 +13,7 @@ import { State } from '@store/.';
 import { selectTechRecord } from '@store/technical-records';
 import { initialContingencyTest } from '@store/test-records';
 import {
-  catchError,
-  map,
-  Observable,
-  of,
-  switchMap,
-  take,
-  tap,
-  withLatestFrom,
+  Observable, catchError, map, of, switchMap, take, tap, withLatestFrom,
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -59,9 +51,9 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               vehicleConfiguration: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_vehicleConfiguration ?? null,
               vehicleClass:
                 (viewableTechRecord?.techRecord_vehicleType === 'psv'
-                || viewableTechRecord?.techRecord_vehicleType === 'trl'
-                || viewableTechRecord?.techRecord_vehicleType === 'hgv'
-                || viewableTechRecord?.techRecord_vehicleType === 'motorcycle')
+                  || viewableTechRecord?.techRecord_vehicleType === 'trl'
+                  || viewableTechRecord?.techRecord_vehicleType === 'hgv'
+                  || viewableTechRecord?.techRecord_vehicleType === 'motorcycle')
                 && 'techRecord_vehicleClass_code' in viewableTechRecord
                   ? {
                     code: viewableTechRecord?.techRecord_vehicleClass_code,
@@ -79,7 +71,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               regnDate: viewableTechRecord?.techRecord_regnDate,
               numberOfSeats:
                 ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsLowerDeck ?? 0)
-              + ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsUpperDeck ?? 0),
+                + ((viewableTechRecord as VehicleType<'psv'>)?.techRecord_seatsUpperDeck ?? 0),
               reasonForCancellation: '',
               createdAt: now.toISOString(),
               lastUpdatedAt: now.toISOString(),
