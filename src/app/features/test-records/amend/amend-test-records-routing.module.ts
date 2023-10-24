@@ -5,9 +5,9 @@ import { DefectComponent } from '@forms/custom-sections/defect/defect.component'
 import { CancelEditTestGuard } from '@guards/cancel-edit-test/cancel-edit-test.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
-import { DefectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
-import { TestResultResolver } from 'src/app/resolvers/test-result/test-result.resolver';
-import { TestTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
+import { defectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
+import { testResultResolver } from 'src/app/resolvers/test-result/test-result.resolver';
+import { testTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
 import { AmendedTestRecordComponent } from './views/amended-test-record/amended-test-record.component';
 import { ConfirmCancellationComponent } from './views/confirm-cancellation/confirm-cancellation.component';
 import { TestAmendReasonComponent } from './views/test-amend-reason/test-amend-reason.component';
@@ -20,7 +20,7 @@ const routes: Routes = [
   {
     path: '',
     component: TestRouterOutletComponent,
-    resolve: { load: TestResultResolver, testTypeTaxonomy: TestTypeTaxonomyResolver },
+    resolve: { load: testResultResolver, testTypeTaxonomy: testTypeTaxonomyResolver },
     children: [
       {
         path: '',
@@ -40,7 +40,7 @@ const routes: Routes = [
             path: 'incorrect-test-type',
             component: TestRouterOutletComponent,
             data: { title: 'Select a test type', roles: Roles.TestResultAmend },
-            resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver },
+            resolve: { testTypeTaxonomy: testTypeTaxonomyResolver },
             canActivate: [RoleGuard],
             children: [
               {
@@ -53,7 +53,7 @@ const routes: Routes = [
             path: 'amend-test-details',
             component: TestRouterOutletComponent,
             data: { title: 'Test details', roles: Roles.TestResultAmend },
-            resolve: { load: TestResultResolver, testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver },
+            resolve: { load: testResultResolver, testTypeTaxonomy: testTypeTaxonomyResolver, defectTaxonomy: defectsTaxonomyResolver },
             canActivate: [RoleGuard],
             canDeactivate: [CancelEditTestGuard],
             children: [
@@ -106,7 +106,7 @@ const routes: Routes = [
         path: 'defect/:defectIndex',
         component: DefectComponent,
         data: { title: 'Defect', roles: Roles.TestResultView, isEditing: false },
-        resolve: { load: TestResultResolver },
+        resolve: { load: testResultResolver },
         canActivate: [RoleGuard],
       },
     ],
