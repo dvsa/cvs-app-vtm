@@ -144,13 +144,15 @@ export class CustomValidators {
         if (isTrailerValueSelected) {
           if (control.value.length < 7) {
             return { validateVRMTrailerIdLength: { message: 'Trailer ID must be greater than or equal to 7 characters' } };
-          } if (control.value.length > 8) {
+          }
+          if (control.value.length > 8) {
             return { validateVRMTrailerIdLength: { message: 'Trailer ID must be less than or equal to 8 characters' } };
           }
         } else {
           if (control.value.length < 1) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be greater than or equal to 1 character' } };
-          } if (control.value.length > 9) {
+          }
+          if (control.value.length > 9) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be less than or equal to 9 characters' } };
           }
         }
@@ -296,9 +298,4 @@ export class CustomValidators {
       return null;
     };
   };
-}
-
-interface ValidatorArgs<T> {
-  sibling: keyof T;
-  values: T[keyof T] | T[keyof T][];
 }

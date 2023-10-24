@@ -14,7 +14,6 @@ import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { ReplaySubject, of } from 'rxjs';
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
-
 import { TechRecordUnarchiveComponent } from './tech-record-unarchive-component';
 
 describe('TechRecordUnarchiveComponent', () => {

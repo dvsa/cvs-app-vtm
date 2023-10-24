@@ -10,7 +10,7 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
@@ -67,7 +67,10 @@ describe('VehicleTechnicalRecordComponent', () => {
           useValue: {
             get techRecord$() {
               return of({
-                systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT,
+                systemNumber: 'foo',
+                createdTimestamp: 'bar',
+                vin: 'testVin',
+                techRecord_statusCode: StatusCodes.CURRENT,
               });
             },
             updateEditingTechRecord: () => {},

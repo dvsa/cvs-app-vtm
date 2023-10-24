@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { State } from '@store/.';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { State } from '@store/.';
 
 import {
   ActivatedRoute, Navigation, NavigationExtras, Params, Router, RouterStateSnapshot, UrlTree,
