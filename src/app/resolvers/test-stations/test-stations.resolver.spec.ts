@@ -1,15 +1,16 @@
 import { TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/.';
+import { State, initialAppState } from '@store/.';
 import { fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess } from '@store/test-stations';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { TestStationsResolver } from './test-stations.resolver';
+import { testStationsResolver } from './test-stations.resolver';
 
 describe('TestTypeTaxonomyResolver', () => {
-  let resolver: TestStationsResolver;
+  let resolver: ResolveFn<boolean>;
   let actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
   let store: MockStore<State>;
@@ -18,8 +19,9 @@ describe('TestTypeTaxonomyResolver', () => {
     TestBed.configureTestingModule({
       providers: [provideMockStore({ initialState: initialAppState }), provideMockActions(() => actions$)],
     });
-    resolver = TestBed.inject(TestStationsResolver);
     store = TestBed.inject(MockStore);
+    resolver = (...resolverParameters) =>
+      TestBed.runInInjectionContext(() => testStationsResolver(...resolverParameters));
   });
 
   beforeEach(() => {
@@ -35,9 +37,13 @@ describe('TestTypeTaxonomyResolver', () => {
   describe('fetch test stations', () => {
     it('should resolve to true when all actions are success type', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const result = TestBed.runInInjectionContext(
+        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a', { a: fetchTestStationsSuccess });
-        expectObservable(resolver.resolve()).toBe('-(b|)', {
+
+        expectObservable(result).toBe('-(b|)', {
           b: true,
         });
       });
@@ -47,9 +53,12 @@ describe('TestTypeTaxonomyResolver', () => {
 
     it('should resolve to false when one or more actions are of failure type', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const result = TestBed.runInInjectionContext(
+        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
       testScheduler.run(({ hot, expectObservable }) => {
         actions$ = hot('-a', { a: fetchTestStationsFailed });
-        expectObservable(resolver.resolve()).toBe('-(b|)', {
+        expectObservable(result).toBe('-(b|)', {
           b: false,
         });
       });

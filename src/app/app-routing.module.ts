@@ -6,13 +6,13 @@ import { Roles } from '@models/roles.enum';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from '@core/components/server-error/server-error.component';
 import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
-import { TechRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
-import { TitleResolver } from './resolvers/title/title.resolver';
+import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
+import { titleResolver } from './resolvers/title/title.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    resolve: { title: TitleResolver },
+    resolve: { title: titleResolver },
     children: [
       {
         path: '',
@@ -44,7 +44,7 @@ const routes: Routes = [
         path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
         data: { title: 'Test Result', roles: Roles.TestResultView },
         canActivate: [MsalGuard, RoleGuard],
-        resolve: { techRecord: TechRecordViewResolver },
+        resolve: { techRecord: techRecordViewResolver },
         loadChildren: () => import('./features/test-records/amend/amend-test-records.module').then((m) => m.AmendTestRecordsModule),
       },
       {

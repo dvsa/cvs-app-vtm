@@ -17,10 +17,11 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import { ContingencyTestResolver } from './contingency-test.resolver';
+import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { contingencyTestResolver } from './contingency-test.resolver';
 
 describe('ContingencyTestResolver', () => {
-  let resolver: ContingencyTestResolver;
+  let resolver: ResolveFn<boolean>;
   const actions$ = new ReplaySubject<Action>();
   let store: MockStore<State>;
   let techRecordService: TechnicalRecordService;
@@ -42,7 +43,8 @@ describe('ContingencyTestResolver', () => {
         { provide: UserService, useValue: MockUserService },
       ],
     });
-    resolver = TestBed.inject(ContingencyTestResolver);
+    resolver = (...resolverParameters) =>
+      TestBed.runInInjectionContext(() => contingencyTestResolver(...resolverParameters));
     store = TestBed.inject(MockStore);
     techRecordService = TestBed.inject(TechnicalRecordService);
   });
@@ -54,8 +56,10 @@ describe('ContingencyTestResolver', () => {
   it('should return true and dispatch the initial contingency test action', async () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
-
-    const resolveResult = await firstValueFrom(resolver.resolve());
+    const result = TestBed.runInInjectionContext(
+      () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    ) as Observable<boolean>;
+    const resolveResult = await firstValueFrom(result);
 
     expect(resolveResult).toBe(true);
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
@@ -65,7 +69,10 @@ describe('ContingencyTestResolver', () => {
   it('should return false if there is an error', async () => {
     jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
     jest.spyOn(MockUserService, 'user$', 'get').mockImplementationOnce(() => throwError(() => new Error('foo')));
-    const resolveResult = await firstValueFrom(resolver.resolve());
+    const result = TestBed.runInInjectionContext(
+      () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    ) as Observable<boolean>;
+    const resolveResult = await firstValueFrom(result);
     expect(resolveResult).toBe(false);
   });
 });
