@@ -5,7 +5,6 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestType } from '@models/test-types/test-type.model';
-import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
@@ -13,19 +12,12 @@ import { State } from '@store/.';
 import { selectTechRecord } from '@store/technical-records';
 import { initialContingencyTest } from '@store/test-records';
 import {
-  catchError,
-  map,
-  of,
-  switchMap,
-  take,
-  tap,
-  withLatestFrom,
+  catchError, map, of, switchMap, take, tap, withLatestFrom,
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 export const contingencyTestResolver: ResolveFn<boolean> = () => {
   const store: Store<State> = inject(Store<State>);
-  const action$: Actions = inject(Actions);
   const techRecordService: TechnicalRecordService = inject(TechnicalRecordService);
   const userService: UserService = inject(UserService);
   return techRecordService.techRecord$.pipe(
@@ -50,9 +42,9 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
             vehicleConfiguration: (viewableTechRecord as TechRecordType<'get'>)?.techRecord_vehicleConfiguration ?? null,
             vehicleClass:
                 (viewableTechRecord?.techRecord_vehicleType === 'psv'
-                || viewableTechRecord?.techRecord_vehicleType === 'trl'
-                || viewableTechRecord?.techRecord_vehicleType === 'hgv'
-                || viewableTechRecord?.techRecord_vehicleType === 'motorcycle')
+                  || viewableTechRecord?.techRecord_vehicleType === 'trl'
+                  || viewableTechRecord?.techRecord_vehicleType === 'hgv'
+                  || viewableTechRecord?.techRecord_vehicleType === 'motorcycle')
                 && 'techRecord_vehicleClass_code' in viewableTechRecord
                   ? {
                     code: viewableTechRecord?.techRecord_vehicleClass_code,

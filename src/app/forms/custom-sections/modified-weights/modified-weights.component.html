@@ -12,10 +12,10 @@
     </thead>
 
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row" *ngFor="let axle of changes.techRecord_axles">
-        <td class="govuk-table__cell">Axle {{ axle.axleNumber }}</td>
+      <tr class="govuk-table__row" *ngFor="let entry of changes.techRecord_axles | keyvalue">
+        <td class="govuk-table__cell">Axle {{ +entry.key + 1 }}</td>
         <td *ngFor="let column of axleTemplate" class="govuk-table__cell">
-          {{ $any(axle)[column.name] }}
+          {{ $any(entry.value)[column.name] }}
         </td>
       </tr>
 

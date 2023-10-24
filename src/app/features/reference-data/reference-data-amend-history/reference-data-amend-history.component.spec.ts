@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ReferenceDataService } from '@api/reference-data';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
-import { initialAppState, State } from '@store/.';
+import { State, initialAppState } from '@store/.';
 import { ReferenceDataAmendHistoryComponent } from './reference-data-amend-history.component';
 
 describe('ReferenceDataAmendHistoryComponent', () => {
