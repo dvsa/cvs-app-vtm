@@ -8,15 +8,17 @@ import { DefaultService as CreateTestResultsService, GetTestResultsService, Upda
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { ButtonGroupComponent } from '@shared/components/button-group/button-group.component';
@@ -29,8 +31,6 @@ import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
 import { sectionTemplates, testResultInEdit, toEditOrNotToEdit } from '@store/test-records';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 import { CreateTestRecordComponent } from './create-test-record.component';
@@ -138,11 +138,9 @@ describe('CreateTestRecordComponent', () => {
   });
 
   describe('CreateTestRecordComponent.prototype.isAnyFormInvalid.name', () => {
-    let mockTestResultInEditSelector: MemoizedSelector<any, TestResultModel | undefined, DefaultProjectorFn<TestResultModel | undefined>>;
-    let mockToEditOrNotToEditSelector: MemoizedSelector<any, TestResultModel | undefined, DefaultProjectorFn<TestResultModel | undefined>>;
     beforeEach(() => {
-      mockTestResultInEditSelector = store.overrideSelector(testResultInEdit, mockTestResult());
-      mockToEditOrNotToEditSelector = store.overrideSelector(toEditOrNotToEdit, undefined);
+      store.overrideSelector(testResultInEdit, mockTestResult());
+      store.overrideSelector(toEditOrNotToEdit, undefined);
     });
 
     afterEach(() => {

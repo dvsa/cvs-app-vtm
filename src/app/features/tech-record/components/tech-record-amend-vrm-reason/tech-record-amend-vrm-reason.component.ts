@@ -8,9 +8,7 @@ import {
   CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 import { NotTrailer, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
@@ -47,7 +45,6 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
       }
       this.techRecord = record as NotTrailer;
       this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
-
     });
   }
 
