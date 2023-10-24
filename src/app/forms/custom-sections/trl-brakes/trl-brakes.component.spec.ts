@@ -5,7 +5,7 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordTRL, TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { TrlBrakesComponent } from './trl-brakes.component';
 
@@ -99,9 +99,8 @@ describe('BrakesComponent', () => {
 
   describe('The axle value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect(component.vehicleTechRecord.techRecord_axles![0]).toEqual(
-        expect.objectContaining(component.form.controls['techRecord_axles']?.value[0]),
-      );
+      const axles = component.vehicleTechRecord.techRecord_axles as NonNullable<TechRecordTRL['techRecord_axles']>;
+      expect(axles[0]).toEqual(expect.objectContaining(component.form.controls['techRecord_axles']?.value[0]));
     });
   });
 });
