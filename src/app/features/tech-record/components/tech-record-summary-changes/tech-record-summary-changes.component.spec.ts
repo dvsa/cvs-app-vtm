@@ -14,11 +14,9 @@ import { RouterService } from '@services/router/router.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import {
-  editingTechRecord,
-  selectTechRecordChanges, selectTechRecordDeletions,
-  techRecord,
+  editingTechRecord, selectTechRecordChanges, selectTechRecordDeletions, techRecord,
 } from '@store/technical-records';
-import { of, ReplaySubject } from 'rxjs';
+import { ReplaySubject, of } from 'rxjs';
 import { TechRecordSummaryChangesComponent } from './tech-record-summary-changes.component';
 
 let actions$: ReplaySubject<Action>;
@@ -60,17 +58,19 @@ describe('TechRecordSummaryChangesComponent', () => {
 
   describe('navigateUponSuccess', () => {
     it('should handle state management', () => {
-      jest.spyOn(component.actions$, 'pipe');
+      const spy = jest.spyOn(component.actions$, 'pipe');
       component.navigateUponSuccess();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.actions$.pipe).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalled();
     });
   });
 
   describe('ngOnInit', () => {
     it('should call navigateOnSuccess and initSubscriptions', () => {
-      jest.spyOn(component, 'navigateUponSuccess');
-      jest.spyOn(component, 'initSubscriptions');
+      const navigateOnSuccessSpy = jest.spyOn(component, 'navigateUponSuccess');
+      const initSubscriptionsSpy = jest.spyOn(component, 'initSubscriptions');
+      component.ngOnInit();
+      expect(navigateOnSuccessSpy).toHaveBeenCalled();
+      expect(initSubscriptionsSpy).toHaveBeenCalled();
     });
   });
 

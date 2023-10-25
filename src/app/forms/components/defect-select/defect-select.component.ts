@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { DefectsState, filteredDefects } from '@store/defects';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { TestResultsState } from '@store/test-records/reducers/test-records.reducer';
-import { takeUntil, filter, Subject } from 'rxjs';
+import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-defect-select',
@@ -41,9 +41,15 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         takeUntil(this.onDestroy$),
         filter((testResult) => !!testResult),
       )
-      .subscribe((testResult) => { this.vehicleType = testResult!.vehicleType; });
+      .subscribe((testResult) => {
+        if (testResult) {
+          this.vehicleType = testResult.vehicleType;
+        }
+      });
 
-    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe((defectsTaxonomy) => { this.defects = defectsTaxonomy; });
+    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe((defectsTaxonomy) => {
+      this.defects = defectsTaxonomy;
+    });
   }
 
   ngOnDestroy(): void {
@@ -65,10 +71,11 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 
   categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
     return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{
-      major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue',
-    })[
-      `${category}`
-    ];
+      major: 'orange',
+      minor: 'yellow',
+      dangerous: 'red',
+      advisory: 'blue',
+    })[`${category}`];
   }
 
   handleSelect(selected?: Defect | Item | Deficiency, type?: Types): void {

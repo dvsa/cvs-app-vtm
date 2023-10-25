@@ -28,7 +28,6 @@ describe('TechRecordTitleComponent', () => {
   let fixture: ComponentFixture<TechRecordTitleComponent>;
   let store: MockStore<State>;
   let technicalRecordService: TechnicalRecordService;
-  let viewableTechRecordSpy;
   let mockRecord: V3TechRecordModel;
 
   beforeEach(async () => {
@@ -60,7 +59,7 @@ describe('TechRecordTitleComponent', () => {
         secondaryVrms: ['TESTVRM1', 'TESTVRM2', 'TESTVRM3', 'TESTVRM4', 'TESTVRM5'],
         techRecord_vehicleType: VehicleTypes.LGV,
       } as unknown as TechRecordType<'put'>;
-      viewableTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
+      jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
       component.vehicle = mockRecord;
       store.overrideSelector(editingTechRecord, mockRecord);
     });
@@ -96,7 +95,7 @@ describe('TechRecordTitleComponent', () => {
 
       component.vehicle = mockRecordTrailer;
 
-      store.overrideSelector(selectTechRecord, mockRecordTrailer as any);
+      store.overrideSelector(selectTechRecord, mockRecordTrailer);
       fixture.detectChanges();
 
       const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
@@ -110,7 +109,7 @@ describe('TechRecordTitleComponent', () => {
       jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecordTrailer));
       mockRecordTrailer.techRecord_euVehicleCategory = euVehicleCategory;
       component.vehicle = mockRecordTrailer;
-      store.overrideSelector(selectTechRecord, mockRecordTrailer as any);
+      store.overrideSelector(selectTechRecord, mockRecordTrailer);
       fixture.detectChanges();
 
       const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));

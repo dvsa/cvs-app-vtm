@@ -62,7 +62,7 @@ describe('DefectComponent', () => {
 
   const fakeActivatedRoute = {
     snapshot: { data: { key: 'value' } },
-  } as any;
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
