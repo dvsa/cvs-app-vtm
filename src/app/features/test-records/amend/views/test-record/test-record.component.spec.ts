@@ -1,6 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick, waitForAsync,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -18,7 +20,9 @@ import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
 import { routeEditable, selectRouteData, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { initialTestResultsState, isTestTypeKeySame, sectionTemplates, testResultInEdit } from '@store/test-records';
+import {
+  initialTestResultsState, isTestTypeKeySame, sectionTemplates, testResultInEdit,
+} from '@store/test-records';
 import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
