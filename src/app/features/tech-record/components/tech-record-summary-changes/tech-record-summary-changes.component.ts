@@ -28,7 +28,7 @@ import {
   updateTechRecordSuccess,
 } from '@store/technical-records';
 import {
-  Subject, combineLatest, take, takeUntil,
+  Subject, combineLatest, map, take, takeUntil,
 } from 'rxjs';
 
 @Component({
@@ -46,7 +46,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   techRecordDeletions?: Partial<TechRecordType<'get'>>;
   techRecordChangesKeys: string[] = [];
 
-  sectionState?: (string | number)[];
   sectionsWhitelist: string[] = [];
 
   constructor(
@@ -57,7 +56,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public routerService: RouterService,
     public actions$: Actions,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.navigateUponSuccess();
@@ -66,6 +65,8 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 
   navigateUponSuccess(): void {
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
+      this.store$.dispatch(clearAllSectionStates());
+      this.store$.dispatch(clearScrollPosition());
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.router.navigate([
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
@@ -105,9 +106,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
         this.techRecordDeletions = deletions;
       });
 
-    this.technicalRecordService.sectionStates$.pipe(take(1), takeUntil(this.destroy$)).subscribe((data) => {
-      this.sectionState = data;
-    });
   }
 
   ngOnDestroy(): void {
@@ -139,14 +137,20 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     return [] as HGVAxles[] | TRLAxles[] | PSVAxles[];
   }
 
+  get sectionTemplatesState$() {
+    return this.technicalRecordService.sectionStates$;
+  }
+
+  isSectionExpanded$(sectionName: string | number) {
+    return this.sectionTemplatesState$?.pipe(map((sections) => sections?.includes(sectionName)));
+  }
+
   submit() {
     combineLatest([this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp')])
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(([systemNumber, createdTimestamp]) => {
         if (systemNumber && createdTimestamp) {
           this.store$.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
-          this.store$.dispatch(clearAllSectionStates());
-          this.store$.dispatch(clearScrollPosition());
         }
       });
   }
