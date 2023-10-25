@@ -1,28 +1,25 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ReferenceDataApiResponse } from '@api/reference-data';
+import { ReferenceDataApiResponse, ReferenceDataItem } from '@api/reference-data';
 import { MultiOptions } from '@forms/models/options.model';
 import {
-  ReferenceDataModelBase,
-  ReferenceDataResourceType,
-  ReferenceDataTyre,
-  User,
+  ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User,
 } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import {
+  ReferenceDataEntityStateSearch,
+  STORE_FEATURE_REFERENCE_DATA_KEY,
   addSearchInformation,
   fetchReferenceData,
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
   initialReferenceDataState,
-  ReferenceDataEntityStateSearch,
   referencePsvMakeLoadingState,
   removeTyreSearch,
   selectTyreSearchCriteria,
-  STORE_FEATURE_REFERENCE_DATA_KEY,
 } from '@store/reference-data';
 import { testCases } from '@store/reference-data/reference-data.test-cases';
 import { firstValueFrom, of, take } from 'rxjs';
@@ -141,7 +138,9 @@ describe('ReferenceDataService', () => {
     it.each(testCases)('should return one result for a given resourceType and resourceKey', (value) => {
       const getOneFromResourceSpy = jest.spyOn(service, 'referenceResourceTypeResourceKeyGet');
       const { resourceType, resourceKey, payload } = value;
-      const expectedResult: ReferenceDataApiResponse = { data: [payload.find((p) => p.resourceKey === resourceKey)!] };
+      const resource = payload.find((p) => p.resourceKey === resourceKey) as ReferenceDataItem;
+      expect(resource).toBeDefined();
+      const expectedResult: ReferenceDataApiResponse = { data: [resource] };
 
       service.fetchReferenceDataByKey(resourceType, resourceKey).subscribe((response) => {
         expect(response).toEqual(expectedResult);

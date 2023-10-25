@@ -2,8 +2,8 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit,
 } from '@angular/core';
 import { ReferenceDataAdminColumn, ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
-import { select, Store } from '@ngrx/store';
-import { fetchReferenceDataByKeySearch, ReferenceDataState, selectSearchReturn } from '@store/reference-data';
+import { Store, select } from '@ngrx/store';
+import { ReferenceDataState, fetchReferenceDataByKeySearch, selectSearchReturn } from '@store/reference-data';
 import { Observable, map } from 'rxjs';
 
 @Component({
@@ -26,21 +26,21 @@ export class ReferenceDataAmendHistoryComponent implements OnInit {
     // load the audit history
     this.store.dispatch(
       fetchReferenceDataByKeySearch({
-        resourceType: (`${this.type}#AUDIT`) as ReferenceDataResourceType,
+        resourceType: `${this.type}#AUDIT` as ReferenceDataResourceType,
         resourceKey: `${decodeURIComponent(this.key)}#`,
       }),
     );
   }
 
   get history$(): Observable<ReferenceDataModelBase[] | undefined> {
-    return this.store.pipe(select(selectSearchReturn((`${this.type}#AUDIT`) as ReferenceDataResourceType)));
+    return this.store.pipe(select(selectSearchReturn(`${this.type}#AUDIT` as ReferenceDataResourceType)));
   }
 
   get numberOfRecords$(): Observable<number> {
     return this.history$.pipe(map((items) => items?.length ?? 0));
   }
 
-  get paginatedItems$(): Observable<any[]> {
+  get paginatedItems$() {
     return this.history$.pipe(map((items) => items?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
