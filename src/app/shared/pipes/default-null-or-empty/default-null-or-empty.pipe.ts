@@ -6,7 +6,8 @@ export class DefaultNullOrEmpty implements PipeTransform {
     return value[0].toUpperCase() + value.substring(1);
   }
 
-  transform(value: string | number | boolean | null | undefined) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  transform(value: any) {
     if (typeof value === 'string') {
       if (value.toLowerCase() === 'true') {
         return 'Yes';
@@ -19,6 +20,6 @@ export class DefaultNullOrEmpty implements PipeTransform {
     if (typeof value === 'boolean') {
       return value ? 'Yes' : 'No';
     }
-    return value == null ? '-' : JSON.stringify(value);
+    return value == null ? '-' : value;
   }
 }
