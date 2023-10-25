@@ -7,9 +7,9 @@
   <app-icon [icon]="techRecordEdited.techRecord_vehicleType || ''"></app-icon>
   <app-dynamic-form-group [data]="techRecordEdited" [template]="vehicleSummary"></app-dynamic-form-group>
 
-  <app-accordion-control [class]="'padding'" [sectionState]="sectionState">
+  <app-accordion-control [class]="'padding'" [sectionState]="sectionTemplatesState$ | async">
     <ng-container *ngFor="let section of customVehicleTemplate; let i = index">
-      <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="true">
+      <app-accordion [id]="section.name" [title]="section.label" [isExpanded]="isSectionExpanded$(section.name) | async">
         <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
       </app-accordion>
     </ng-container>

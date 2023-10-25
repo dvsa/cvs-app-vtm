@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
@@ -14,11 +15,12 @@ import { RouterService } from '@services/router/router.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import {
+  amendVrmSuccess,
   editingTechRecord,
   selectTechRecordChanges, selectTechRecordDeletions,
   techRecord,
 } from '@store/technical-records';
-import { of, ReplaySubject } from 'rxjs';
+import { ReplaySubject, of } from 'rxjs';
 import { TechRecordSummaryChangesComponent } from './tech-record-summary-changes.component';
 
 let actions$: ReplaySubject<Action>;
@@ -26,6 +28,7 @@ let store: MockStore;
 describe('TechRecordSummaryChangesComponent', () => {
   let component: TechRecordSummaryChangesComponent;
   let fixture: ComponentFixture<TechRecordSummaryChangesComponent>;
+  let router: Router;
 
   beforeEach(async () => {
     actions$ = new ReplaySubject<Action>();
@@ -47,7 +50,7 @@ describe('TechRecordSummaryChangesComponent', () => {
         },
       ],
     }).compileComponents();
-
+    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(TechRecordSummaryChangesComponent);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
@@ -71,6 +74,22 @@ describe('TechRecordSummaryChangesComponent', () => {
     it('should call navigateOnSuccess and initSubscriptions', () => {
       jest.spyOn(component, 'navigateUponSuccess');
       jest.spyOn(component, 'initSubscriptions');
+    });
+    it('should navigate when updateRecordSuccess dispatched', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+      component.ngOnInit();
+
+      actions$.next(amendVrmSuccess({
+        vehicleTechRecord:
+          {
+            createdTimestamp: 'now',
+            vin: 'testVin',
+            systemNumber: 'testNumber',
+          } as TechRecordType<'get'>,
+      }));
+
+      expect(navigateSpy).toHaveBeenCalled();
     });
   });
 
@@ -110,24 +129,16 @@ describe('TechRecordSummaryChangesComponent', () => {
   });
 
   describe('submit', () => {
-    it('should dispatch updateTechRecords, clearAllSectionState and clearScrollPosition', () => {
+    it('should dispatch updateTechRecords', () => {
       jest.spyOn(store, 'dispatch');
       component.submit();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.dispatch).toHaveBeenCalledTimes(3);
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(store.dispatch).toHaveBeenCalledWith({
         systemNumber: '123456',
         createdTimestamp: '123123123',
         type: '[Technical Record Service] updateTechRecords',
-      });
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: '[Technical Record Service] clearAllSectionState',
-      });
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: '[Technical Record Service] clearScrollPosition',
       });
     });
   });
