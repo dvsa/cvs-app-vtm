@@ -12,3 +12,8 @@ export enum VehicleConfiguration {
   FULL_DRAWBAR = 'full drawbar',
   LONG_SEMI_TRAILER = 'long semi-trailer',
 }
+
+export enum HgvPsvTrlVehicleConfiguration {
+  RIGID = 'rigid',
+  ARTICULATED = 'articulated',
+}

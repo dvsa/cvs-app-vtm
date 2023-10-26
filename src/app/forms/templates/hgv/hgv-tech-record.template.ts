@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
-import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
+import { HgvPsvTrlVehicleConfiguration, VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
@@ -166,7 +166,7 @@ export const HgvTechRecord: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(VehicleConfiguration),
+      options: getOptionsFromEnum(HgvPsvTrlVehicleConfiguration),
       validators: [],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },

@@ -298,4 +298,15 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static updateFunctionCode = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const vehicleConfig = control.root.get('techRecord_vehicleConfiguration');
+
+      if (vehicleConfig?.value === 'rigid') control.setValue('R', { emitEvent: false });
+      if (vehicleConfig?.value === 'articulated') control.setValue('A', { emitEvent: false });
+
+      return null;
+    };
+  };
 }
