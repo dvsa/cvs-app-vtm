@@ -64,16 +64,16 @@ describe('DateComponent', () => {
       ['2022-01-T00:00:00.000', 2022, 0o1, NaN, 0o1, 0o1],
       ['2022-02-01T13:45:00.000', 2022, 2, 0o1, 13, 45, true],
       ['-01-01T01:01:00.000', NaN, 0o1, 0o1, 0o1, 0o1, true],
-      [null, null, null, null, null, null, true],
+      [undefined, undefined, undefined, undefined, undefined, undefined, true],
     ])(
       'should be %s for %d, %d, %d, %d, %d',
       (
-        expected: string | null,
-        year: number | null,
-        month: number | null,
-        day: number | null,
-        hour: number | null,
-        minute: number | null,
+        expected: string | undefined,
+        year: number | undefined,
+        month: number | undefined,
+        day: number | undefined,
+        hour: number | undefined,
+        minute: number | undefined,
         displayTime = false,
       ) => {
         component.dateComponent!.originalDate = '2022-01-01T01:06:00.000';
@@ -86,7 +86,7 @@ describe('DateComponent', () => {
         component.dateComponent?.onYearChange(year);
         component.dateComponent?.onHourChange(hour);
         component.dateComponent?.onMinuteChange(minute);
-        if (expected === null) {
+        if (expected === undefined) {
           expect(component.form.get('foo')?.value).toBeNull();
         } else {
           expect((component.form.get('foo')?.value as Date).toString()).toEqual(expected.toString());
@@ -101,16 +101,16 @@ describe('DateComponent', () => {
       ['2022-01-', 2022, 0o1, NaN, 0o1, 0o1],
       ['2022-02-01', 2022, 2, 0o1, 13, 45, true],
       ['-01-01', NaN, 0o1, 0o1, 0o1, 0o1, true],
-      [null, null, null, null, null, null, true],
+      [undefined, undefined, undefined, undefined, undefined, undefined, true],
     ])(
       'should be %s for %d, %d, %d, %d, %d',
       (
-        expected: string | null,
-        year: number | null,
-        month: number | null,
-        day: number | null,
-        hour: number | null,
-        minute: number | null,
+        expected: string | undefined,
+        year: number | undefined,
+        month: number | undefined,
+        day: number | undefined,
+        hour: number | undefined,
+        minute: number | undefined,
         displayTime = false,
       ) => {
         component.dateComponent!.originalDate = '2022-01-01T01:06:00.000';
@@ -124,7 +124,7 @@ describe('DateComponent', () => {
         component.dateComponent?.onYearChange(year);
         component.dateComponent?.onHourChange(hour);
         component.dateComponent?.onMinuteChange(minute);
-        if (expected === null) {
+        if (expected === undefined) {
           expect(component.form.get('foo')?.value).toBeNull();
         } else {
           expect((component.form.get('foo')?.value as Date).toString()).toEqual(expected.toString());

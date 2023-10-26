@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Tyres } from '@models/vehicle-tech-record.model';
@@ -212,10 +213,14 @@ describe('TyresComponent', () => {
 
       component.addTyreToTechRecord(tyre, 1);
 
-      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_tyreSize).toBe(tyre.tyreSize);
-      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_dataTrAxles).toBe(tyre.dataTrAxles);
-      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_plyRating).toBe(tyre.plyRating);
-      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_tyreCode).toBe(tyre.tyreCode);
+      const axles = component.vehicleTechRecord.techRecord_axles as NonNullable<
+      (TechRecordType<'psv'> | TechRecordType<'trl'> | TechRecordType<'hgv'>)['techRecord_axles']
+      >;
+
+      expect(axles[0]?.tyres_tyreSize).toBe(tyre.tyreSize);
+      expect(axles[0]?.tyres_dataTrAxles).toBe(tyre.dataTrAxles);
+      expect(axles[0]?.tyres_plyRating).toBe(tyre.plyRating);
+      expect(axles[0]?.tyres_tyreCode).toBe(tyre.tyreCode);
     });
   });
 });
