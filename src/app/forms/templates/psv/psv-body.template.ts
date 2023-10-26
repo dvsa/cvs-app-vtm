@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels,
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
 } from '../../services/dynamic-form.types';
 
 export const PsvBodyTemplate: FormNode = {
@@ -76,7 +76,7 @@ export const PsvBodyTemplate: FormNode = {
         { value: 'r', label: 'R' },
         { value: 'a', label: 'A' },
       ],
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }, { name: ValidatorNames.UpdateFunctionCode }],
     },
     {
       name: 'techRecord_conversionRefNo',
@@ -93,6 +93,14 @@ export const PsvBodyTemplate: FormNode = {
       editType: FormNodeEditTypes.HIDDEN,
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
       width: FormNodeWidth.L,
+    },
+    {
+      name: 'techRecord_vehicleConfiguration',
+      label: 'Vehicle configuration',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
     },
   ],
 };

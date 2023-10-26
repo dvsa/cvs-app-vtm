@@ -13,7 +13,7 @@ export enum VehicleConfiguration {
   LONG_SEMI_TRAILER = 'long semi-trailer',
 }
 
-export enum HgvPsvTrlVehicleConfiguration {
+export enum HgvPsvVehicleConfiguration {
   RIGID = 'rigid',
   ARTICULATED = 'articulated',
 }
