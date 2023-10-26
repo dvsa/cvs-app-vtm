@@ -121,7 +121,7 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(HgvPsvVehicleConfiguration),
-      validators: [],
+      validators: [{ name: ValidatorNames.UpdateFunctionCode }],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
@@ -271,6 +271,13 @@ export const PsvTechRecord: FormNode = {
         { value: false, label: 'No' },
       ],
       validators: [],
+    },
+    {
+      name: 'techRecord_functionCode',
+      label: 'Function code',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
     },
   ],
 };

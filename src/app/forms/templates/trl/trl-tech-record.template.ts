@@ -156,6 +156,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(TrlVehicleConfiguration),
+      validators: [{name: ValidatorNames.UpdateFunctionCode}],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
@@ -200,6 +201,13 @@ export const TrlTechRecordTemplate: FormNode = {
         { value: true, label: 'Yes' },
         { value: false, label: 'No' },
       ],
+    },
+    {
+      name: 'techRecord_functionCode',
+      label: 'Function code',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
     },
   ],
 };

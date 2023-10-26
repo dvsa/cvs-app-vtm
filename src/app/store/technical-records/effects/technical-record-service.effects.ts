@@ -188,7 +188,9 @@ export class TechnicalRecordServiceEffects {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (techRecord as any).euVehicleCategory = EuVehicleCategories.O1;
           }
-
+          if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV ) {
+            (techRecord as any).techRecord_vehicleConfiguration = null;
+          }
           const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
 
           return of(

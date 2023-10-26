@@ -76,7 +76,7 @@ export const PsvBodyTemplate: FormNode = {
         { value: 'r', label: 'R' },
         { value: 'a', label: 'A' },
       ],
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }, { name: ValidatorNames.UpdateFunctionCode }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
     },
     {
       name: 'techRecord_conversionRefNo',
@@ -93,14 +93,6 @@ export const PsvBodyTemplate: FormNode = {
       editType: FormNodeEditTypes.HIDDEN,
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
       width: FormNodeWidth.L,
-    },
-    {
-      name: 'techRecord_vehicleConfiguration',
-      label: 'Vehicle configuration',
-      value: null,
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN,
     },
   ],
 };

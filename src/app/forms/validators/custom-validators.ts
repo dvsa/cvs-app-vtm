@@ -301,12 +301,13 @@ export class CustomValidators {
 
   static updateFunctionCode = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      const vehicleConfig = control.root.get('techRecord_vehicleConfiguration');
-
-      if (vehicleConfig?.value === 'rigid') control.setValue('R', { emitEvent: false });
-      if (vehicleConfig?.value === 'articulated') control.setValue('A', { emitEvent: false });
-      if (vehicleConfig?.value === 'semi-trailer') control.setValue('A', { emitEvent: false });
-
+      const vehicleFunctionCode = control.root.get('techRecord_functionCode');
+      if (control.dirty) {
+        if (control?.value === 'rigid') vehicleFunctionCode?.setValue('R', { emitEvent: false });
+        if (control?.value === 'articulated') vehicleFunctionCode?.setValue('A', { emitEvent: false });
+        if (control?.value === 'semi-trailer') vehicleFunctionCode?.setValue('A', { emitEvent: false });
+        control.markAsPristine();
+      }
       return null;
     };
   };
