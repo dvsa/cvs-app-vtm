@@ -305,6 +305,7 @@ export class CustomValidators {
 
       if (vehicleConfig?.value === 'rigid') control.setValue('R', { emitEvent: false });
       if (vehicleConfig?.value === 'articulated') control.setValue('A', { emitEvent: false });
+      if (vehicleConfig?.value === 'semi-trailer') control.setValue('A', { emitEvent: false });
 
       return null;
     };
