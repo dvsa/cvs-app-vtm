@@ -1,3 +1,4 @@
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -163,23 +164,6 @@ export interface LettersOfAuth {
   letterContents: string;
 }
 
-export enum approvalType {
-  NTA = 'NTA',
-  ECTA = 'ECTA',
-  IVA = 'IVA',
-  NSSTA = 'NSSTA',
-  ECSSTA = 'ECSSTA',
-  GB_WVTA = 'GB WVTA',
-  UKNI_WVTA = 'UKNI WVTA',
-  EU_WVTA_PRE_23 = 'EU WVTA Pre 23',
-  EU_WVTA_23_ON = 'EU WVTA 23 on',
-  QNIG = 'QNIG',
-  PROV_GB_WVTA = 'Prov.GB WVTA',
-  SMALL_SERIES = 'Small series',
-  IVA_VCA = 'IVA - VCA',
-  IVA_DVSA_NI = 'IVA - DVSA/NI',
-}
-
 export enum LettersIntoAuthApprovalType {
   GB_WVTA = 'GB WVTA',
   UKNI_WVTA = 'UKNI WVTA',
@@ -188,6 +172,8 @@ export enum LettersIntoAuthApprovalType {
   QNIG = 'QNIG',
   PROV_GB_WVTA = 'Prov.GB WVTA',
   SMALL_SERIES = 'Small series',
+  SMALL_SERIES_NKSXX = 'Small series NKSXX',
+  SMALL_SERIES_NKS = 'Small series NKS',
   IVA_VCA = 'IVA - VCA',
   IVA_DVSA_NI = 'IVA - DVSA/NI',
 }
@@ -319,7 +305,7 @@ export interface TechRecordModel {
   numberOfSeatbelts?: string;
   seatbeltInstallationApprovalDate?: string;
   departmentalVehicleMarker?: boolean;
-  approvalType?: approvalType;
+  approvalType?: ApprovalType;
   approvalTypeNumber?: string;
   ntaNumber?: string;
   coifSerialNumber?: string;

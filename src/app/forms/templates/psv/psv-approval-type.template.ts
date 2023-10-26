@@ -1,9 +1,7 @@
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { approvalType } from '@models/vehicle-tech-record.model';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
-} from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const PsvTypeApprovalTemplate: FormNode = {
   name: 'approvalSection',
@@ -15,7 +13,7 @@ export const PsvTypeApprovalTemplate: FormNode = {
       label: 'Approval type',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(approvalType),
+      options: getOptionsFromEnum(ApprovalType),
       validators: [],
     },
     {

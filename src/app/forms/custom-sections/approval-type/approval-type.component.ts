@@ -1,19 +1,15 @@
-import {
-  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
-} from '@angular/core';
-import {
-  CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeViewTypes, FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { TechRecord } from '@api/vehicle';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { approvalType, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TechRecord } from '@api/vehicle';
-
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { FormControl } from '@angular/forms';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-approval-type[techRecord]',
@@ -37,7 +33,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.form = this.dfs.createForm(
       this.techRecord.techRecord_vehicleType === 'psv' ? PsvTypeApprovalTemplate : HgvAndTrlTypeApprovalTemplate,
-      this.techRecord,
+      this.techRecord
     ) as CustomFormGroup;
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((e) => this.formChange.emit(e));
     Object.keys(this.form.controls).forEach((key) => {
@@ -54,8 +50,8 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
         ? techRecord.currentValue.techRecord_coifDate.split('T')[0]
         : '';
       if (
-        techRecord.currentValue.techRecord_approvalType !== techRecord.previousValue.techRecord_approvalType
-        && techRecord.previousValue.techRecord_approvalType !== null
+        techRecord.currentValue.techRecord_approvalType !== techRecord.previousValue.techRecord_approvalType &&
+        techRecord.previousValue.techRecord_approvalType !== null
       ) {
         this.approvalTypeChange = true;
       }
@@ -100,5 +96,5 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   }
   protected readonly TechRecord = TechRecord;
   protected readonly getOptionsFromEnum = getOptionsFromEnum;
-  protected readonly approvalType = approvalType;
+  protected readonly approvalType = ApprovalType;
 }
