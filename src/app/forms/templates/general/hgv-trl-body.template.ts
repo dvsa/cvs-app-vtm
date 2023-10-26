@@ -70,7 +70,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
         { value: 'r', label: 'R' },
         { value: 'a', label: 'A' },
       ],
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }, { name: ValidatorNames.UpdateFunctionCode }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
@@ -81,14 +81,6 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'] }],
-    },
-    {
-      name: 'techRecord_vehicleConfiguration',
-      label: 'Vehicle configuration',
-      value: null,
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN,
     },
   ],
 };
