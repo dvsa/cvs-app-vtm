@@ -6,6 +6,7 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const SmallTrailerTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -100,16 +101,9 @@ export const SmallTrailerTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: [
-        {
-          label: 'O1',
-          value: EuVehicleCategories.O1,
-        },
-        {
-          label: 'O2',
-          value: EuVehicleCategories.O2,
-        },
-      ],
+      options: getOptionsFromEnum(EUVehicleCategory).filter(
+        (option) => option.value === EUVehicleCategory.O1 || option.value === EUVehicleCategory.O2,
+      ),
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
   ],

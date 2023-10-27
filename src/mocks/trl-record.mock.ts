@@ -1,12 +1,14 @@
-import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 // disable linting error as this util function is only used in tests and should, therefore, be a devDependency
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createMock } from 'ts-auto-mock';
 import {
-  FrameDescriptions, StatusCodes, VehicleConfigurations,
-} from '../app/models/vehicle-tech-record.model';
+  StatusCodes,
+  VehicleConfigurations,
+  FrameDescriptions,
+} from '@models/vehicle-tech-record.model';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 
 export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
   createMock<TechRecordType<'trl'>>({
