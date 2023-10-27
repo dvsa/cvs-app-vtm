@@ -1,10 +1,12 @@
 import { DefectAdditionalInformation } from '@api/test-results';
 import { DefectAdditionalInformationLocation } from '@models/test-results/defectAdditionalInformationLocation';
+// disable linting error as this util function is only used in tests and should, therefore, be a devDependency
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { createMock, createMockList } from 'ts-auto-mock';
 import { DeficiencyCategoryEnum, TestResultDefect } from '../app/models/test-results/test-result-defect.model';
 
 export const mockDefectList = (numberOfDefects = 1) =>
-  createMockList<TestResultDefect>(numberOfDefects, i => {
+  createMockList<TestResultDefect>(numberOfDefects, (i) => {
     return mockDefect(i);
   });
 
@@ -22,17 +24,17 @@ export const mockDefect = (i = 0) =>
     prohibitionIssued: false,
     prs: false,
     stdForProhibition: false,
-    additionalInformation: mockDefectAdditionalInformation(i)
+    additionalInformation: mockDefectAdditionalInformation(i),
   });
 
 export const mockDefectAdditionalInformation = (i = 0) =>
   createMock<DefectAdditionalInformation>({
     location: mockDefectLocation(i),
-    notes: 'Defect notes'
+    notes: 'Defect notes',
   });
 
 export const mockDefectLocation = (i = 0) =>
   createMock<DefectAdditionalInformationLocation>({
     seatNumber: i + 1,
-    rowNumber: i + 1
+    rowNumber: i + 1,
   });
