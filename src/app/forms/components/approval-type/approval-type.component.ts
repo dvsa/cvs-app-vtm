@@ -198,8 +198,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       this.extractValuesNtaIva(value, patterns[this.approvalType]);
     } else if (OtherTypes.includes(this.approvalType)) {
       this.extractValues(value);
-    } else {
-      console.log('Unknown approval type');
     }
   }
 

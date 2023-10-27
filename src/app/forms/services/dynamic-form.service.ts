@@ -7,7 +7,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 // eslint-disable-next-line import/no-cycle
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
-import { CustomValidators } from '@forms/validators/custom-validators';
+import { CustomValidators, EnumValidatorOptions } from '@forms/validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
@@ -55,7 +55,8 @@ export class DynamicFormService {
     [ValidatorNames.MustEqualSibling]: (args: { sibling: string }) => CustomValidators.mustEqualSibling(args.sibling),
     [ValidatorNames.HandlePsvPassengersChange]: (args: { passengersOne: string; passengersTwo: string }) =>
       CustomValidators.handlePsvPassengersChange(args.passengersOne, args.passengersTwo),
-    [ValidatorNames.Enum]: (args: { enum: Record<string, string> }) => CustomValidators.enum(args.enum),
+    [ValidatorNames.Enum]: (args: { enum: Record<string, string>; options?: Partial<EnumValidatorOptions> }) =>
+      CustomValidators.enum(args.enum, args.options),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

@@ -1,4 +1,5 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { DescriptionEnum } from '@models/vehicle-class.model';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -169,7 +170,7 @@ describe('parent sibling validators', () => {
     form = new FormGroup({
       parent: new CustomFormGroup(
         { name: 'parent', type: FormNodeTypes.GROUP },
-        { child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }) },
+        { child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }) }
       ),
       sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL, hide: false }),
     });
@@ -202,9 +203,15 @@ describe('Required validators', () => {
   beforeEach(() => {
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
-      sibling: new CustomFormControl({
-        name: 'sibling', label: 'Sibling', type: FormNodeTypes.CONTROL, children: [],
-      }, null),
+      sibling: new CustomFormControl(
+        {
+          name: 'sibling',
+          label: 'Sibling',
+          type: FormNodeTypes.CONTROL,
+          children: [],
+        },
+        null
+      ),
     });
     form.controls['sibling'].patchValue('some value');
   });
@@ -394,9 +401,15 @@ describe('aheadOfDate', () => {
   beforeEach(() => {
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
-      sibling: new CustomFormControl({
-        name: 'sibling', label: 'sibling', type: FormNodeTypes.CONTROL, children: [],
-      }, null),
+      sibling: new CustomFormControl(
+        {
+          name: 'sibling',
+          label: 'sibling',
+          type: FormNodeTypes.CONTROL,
+          children: [],
+        },
+        null
+      ),
     });
   });
 
@@ -424,9 +437,15 @@ describe('dateNotExceed', () => {
   beforeEach(() => {
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
-      sibling: new CustomFormControl({
-        name: 'sibling', label: 'sibling', type: FormNodeTypes.CONTROL, children: [],
-      }, null),
+      sibling: new CustomFormControl(
+        {
+          name: 'sibling',
+          label: 'sibling',
+          type: FormNodeTypes.CONTROL,
+          children: [],
+        },
+        null
+      ),
     });
   });
 
@@ -475,7 +494,7 @@ describe('validate VRM/TrailerId Length', () => {
         {
           child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }),
           sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL }),
-        },
+        }
       ),
     });
   });
@@ -559,7 +578,7 @@ describe('handlePsvPassengersChange', () => {
       techRecord_vehicleSize: new CustomFormControl({ name: 'techRecord_vehicleSize', type: FormNodeTypes.CONTROL }, undefined),
       techRecord_vehicleClass_description: new CustomFormControl(
         { name: 'techRecord_vehicleClass_description', type: FormNodeTypes.CONTROL },
-        undefined,
+        undefined
       ),
       techRecord_seatsLowerDeck: new CustomFormControl({ name: 'techRecord_seatsLowerDeck', type: FormNodeTypes.CONTROL }, undefined),
       techRecord_seatsUpperDeck: new CustomFormControl({ name: 'techRecord_seatsUpperDeck', type: FormNodeTypes.CONTROL }, undefined),
@@ -599,5 +618,57 @@ describe('handlePsvPassengersChange', () => {
 
     expect(vehicleSize).toBe(VehicleSizes.LARGE);
     expect(vehicleClass).toBe(DescriptionEnum.LargePsvIeGreaterThan23Seats);
+  });
+});
+
+describe('enum', () => {
+  it.each([
+    [{ enum: true }, NaN],
+    [{ enum: true }, undefined],
+    [{ enum: true }, null],
+    [{ enum: true }, ''],
+    [{ enum: true }, 'Small series'],
+    [null, 'NTA'],
+    [null, 'ECTA'],
+    [null, 'IVA'],
+    [null, 'NSSTA'],
+    [null, 'ECSSTA'],
+    [null, 'GB WVTA'],
+    [null, 'UKNI WVTA'],
+    [null, 'EU WVTA Pre 23'],
+    [null, 'EU WVTA 23 on'],
+    [null, 'QNIG'],
+    [null, 'Prov.GB WVTA'],
+    [null, 'Small series NKSXX'],
+    [null, 'Small series NKS'],
+    [null, 'IVA - VCA'],
+    [null, 'IVA - DVSA/NI'],
+  ])('should return %p when control value is %s', (expected: object | null, input) => {
+    expect(CustomValidators.enum(ApprovalType, { allowFalsy: false })(new FormControl(input))).toEqual(expected);
+  });
+
+  it.each([
+    [null, NaN],
+    [null, undefined],
+    [null, null],
+    [null, ''],
+    [{ enum: true }, 'Small series'],
+    [null, 'NTA'],
+    [null, 'ECTA'],
+    [null, 'IVA'],
+    [null, 'NSSTA'],
+    [null, 'ECSSTA'],
+    [null, 'GB WVTA'],
+    [null, 'UKNI WVTA'],
+    [null, 'EU WVTA Pre 23'],
+    [null, 'EU WVTA 23 on'],
+    [null, 'QNIG'],
+    [null, 'Prov.GB WVTA'],
+    [null, 'Small series NKSXX'],
+    [null, 'Small series NKS'],
+    [null, 'IVA - VCA'],
+    [null, 'IVA - DVSA/NI'],
+  ])('should return %p when control value is %s', (expected: object | null, input) => {
+    expect(CustomValidators.enum(ApprovalType, { allowFalsy: true })(new FormControl(input))).toEqual(expected);
   });
 });

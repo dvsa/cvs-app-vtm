@@ -300,10 +300,16 @@ export class CustomValidators {
     };
   };
 
-  static enum = (checkEnum: Record<string, string>): ValidatorFn => {
+  static enum = (checkEnum: Record<string, string>, options: Partial<EnumValidatorOptions> = {}): ValidatorFn => {
+    options = { allowFalsy: false, ...options };
+
     return (control: AbstractControl): ValidationErrors | null => {
-      if (!control.value) return null;
+      if (options.allowFalsy && !control.value) return null;
       return Object.values(checkEnum).includes(control.value) ? null : { enum: true };
     };
   };
 }
+
+export type EnumValidatorOptions = {
+  allowFalsy: boolean;
+};

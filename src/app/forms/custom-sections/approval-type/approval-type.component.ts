@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { FormControl } from '@angular/forms';
 import { TechRecord } from '@api/vehicle';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
-import { ApprovalType as HgvOrPsvApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
@@ -30,10 +29,6 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   formControls: { [key: string]: FormControl } = {};
 
   constructor(private dfs: DynamicFormService) {}
-
-  get customApprovalType() {
-    return this.techRecord.techRecord_vehicleType === 'trl' ? { ...ApprovalType } : { ...HgvOrPsvApprovalType, '': null };
-  }
 
   ngOnInit() {
     this.form = this.dfs.createForm(
@@ -101,4 +96,5 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   }
   protected readonly TechRecord = TechRecord;
   protected readonly getOptionsFromEnum = getOptionsFromEnum;
+  protected readonly approvalType = ApprovalType;
 }

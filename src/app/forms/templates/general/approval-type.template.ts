@@ -2,9 +2,7 @@ import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/en
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TagType } from '@shared/components/tag/tag.component';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels,
-} from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
 
 export const HgvAndTrlTypeApprovalTemplate: FormNode = {
   name: 'approvalSection',
@@ -17,7 +15,7 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(ApprovalType),
-      validators: [],
+      validators: [{ name: ValidatorNames.Enum, args: { enum: ApprovalType, options: { allowFalsy: true } } }],
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
