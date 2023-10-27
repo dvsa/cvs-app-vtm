@@ -6,13 +6,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
-import { approvalType } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { of } from 'rxjs';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { LettersComponent } from './letters.component';
 
 describe('LettersComponent', () => {
@@ -62,12 +62,12 @@ describe('LettersComponent', () => {
   });
   describe('eligibleForLetter', () => {
     it('should return true if the approval type is valid', () => {
-      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = approvalType.EU_WVTA_23_ON;
+      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = ApprovalType.EU_WVTA_23_ON;
       expect(component.eligibleForLetter).toBeTruthy();
     });
 
     it('should return false if the approval type is valid', () => {
-      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = approvalType.NTA;
+      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = ApprovalType.NTA;
       expect(component.eligibleForLetter).toBeFalsy();
     });
   });

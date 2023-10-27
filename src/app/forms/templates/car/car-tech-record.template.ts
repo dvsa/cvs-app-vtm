@@ -4,8 +4,9 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
-import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
+import { VehicleSubclass } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const CarTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -86,7 +87,7 @@ export const CarTechRecord: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories),
+      options: getOptionsFromEnum(EUVehicleCategory),
       width: FormNodeWidth.S,
     },
   ],

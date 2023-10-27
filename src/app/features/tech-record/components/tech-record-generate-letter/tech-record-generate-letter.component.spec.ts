@@ -16,7 +16,8 @@ import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
-import { ReplaySubject, of } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { GenerateLetterComponent } from './tech-record-generate-letter.component';
 
 const mockTechRecordService = {
@@ -122,7 +123,7 @@ describe('TechRecordGenerateLetterComponent', () => {
       it('should dispatch with id 3 on acceptance', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.techRecord = expectedVehicle;
-        component.techRecord.techRecord_approvalType = 'UKNI WVTA';
+        component.techRecord.techRecord_approvalType = ApprovalType.UKNI_WVTA;
 
         component.form.get('letterType')?.setValue('trailer acceptance');
         component.handleSubmit();
@@ -133,7 +134,7 @@ describe('TechRecordGenerateLetterComponent', () => {
       it('should dispatch with id 4 on rejection', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.techRecord = expectedVehicle;
-        component.techRecord.techRecord_approvalType = 'GB WVTA';
+        component.techRecord.techRecord_approvalType = ApprovalType.GB_WVTA;
 
         component.form.get('letterType')?.setValue('trailer rejection');
         component.handleSubmit();
@@ -144,7 +145,7 @@ describe('TechRecordGenerateLetterComponent', () => {
       it('should dispatch with id 6 on acceptance', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.techRecord = expectedVehicle;
-        component.techRecord.techRecord_approvalType = 'GB WVTA';
+        component.techRecord.techRecord_approvalType = ApprovalType.GB_WVTA;
 
         component.form.get('letterType')?.setValue('trailer acceptance');
         component.handleSubmit();

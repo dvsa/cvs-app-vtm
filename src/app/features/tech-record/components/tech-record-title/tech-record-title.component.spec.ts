@@ -6,9 +6,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Roles } from '@models/roles.enum';
-import {
-  EuVehicleCategories, NotTrailer, V3TechRecordModel, VehicleTypes,
-} from '@models/vehicle-tech-record.model';
+import { NotTrailer, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
@@ -16,6 +14,7 @@ import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { editingTechRecord, selectTechRecord } from '@store/technical-records';
 import { Observable, of } from 'rxjs';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordTitleComponent } from './tech-record-title.component';
 
 const MockUserService = {
@@ -103,7 +102,7 @@ describe('TechRecordTitleComponent', () => {
       expect(trailerIdField.nativeElement.textContent).toContain('TestId');
     });
 
-    const smallTrailerEuVehicleCategories = [EuVehicleCategories.O1, EuVehicleCategories.O2];
+    const smallTrailerEuVehicleCategories = [EUVehicleCategory.O1, EUVehicleCategory.O2];
 
     it.each(smallTrailerEuVehicleCategories)('does not show secondary VRMs for small trailer', (euVehicleCategory) => {
       const mockRecordTrailer = mockVehicleTechnicalRecord(VehicleTypes.TRL);

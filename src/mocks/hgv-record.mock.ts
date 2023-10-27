@@ -1,12 +1,13 @@
-import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { BodyTypeDescription } from '@models/body-type-enum';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
 // disable linting error as this util function is only used in tests and should, therefore, be a devDependency
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createMock } from 'ts-auto-mock';
 import {
-  EuVehicleCategories, FuelTypes, StatusCodes, VehicleConfigurations, approvalType,
-} from '../app/models/vehicle-tech-record.model';
+  FuelTypes, StatusCodes, VehicleConfigurations,
+} from '@models/vehicle-tech-record.model';
 
 export const createMockHgv = (systemNumber: number): TechRecordType<'hgv'> =>
   createMock<TechRecordType<'hgv'>>({
@@ -29,15 +30,15 @@ export const createMockHgv = (systemNumber: number): TechRecordType<'hgv'> =>
     techRecord_roadFriendly: true,
     techRecord_fuelPropulsionSystem: FuelTypes.HYBRID,
     techRecord_drawbarCouplingFitted: true,
-    techRecord_vehicleClass_description: 'heavy goods vehicle' as VehicleClassDescription,
-    techRecord_vehicleClass_code: '1',
+    techRecord_vehicleClass_description: 'heavy goods vehicle',
+    techRecord_vehicleClass_code: 'v',
     techRecord_vehicleConfiguration: VehicleConfigurations.ARTICULATED,
     techRecord_offRoad: true,
-    techRecord_euVehicleCategory: EuVehicleCategories.M1,
+    techRecord_euVehicleCategory: EUVehicleCategory.N1,
     techRecord_emissionsLimit: 1234,
     techRecord_departmentalVehicleMarker: true,
     techRecord_reasonForCreation: 'Brake Failure',
-    techRecord_approvalType: approvalType.ECSSTA,
+    techRecord_approvalType: ApprovalType.ECTA,
     techRecord_approvalTypeNumber: 'approval123',
     techRecord_axles: undefined,
     techRecord_ntaNumber: 'nta789',

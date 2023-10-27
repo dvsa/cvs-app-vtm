@@ -6,7 +6,6 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { TechRecordGETHGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import {
-  EuVehicleCategories,
   StatusCodes,
   TechRecordModel,
   V3TechRecordModel,
@@ -33,6 +32,7 @@ import { cloneDeep } from 'lodash';
 import {
   Observable, catchError, combineLatest, debounceTime, filter, map, of, switchMap, take, tap, throwError,
 } from 'rxjs';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
@@ -40,8 +40,8 @@ export class TechnicalRecordService {
 
   getVehicleTypeWithSmallTrl(technicalRecord: V3TechRecordModel): VehicleTypes {
     return technicalRecord.techRecord_vehicleType === VehicleTypes.TRL
-      && (technicalRecord.techRecord_euVehicleCategory === EuVehicleCategories.O1
-        || technicalRecord.techRecord_euVehicleCategory === EuVehicleCategories.O2)
+      && (technicalRecord.techRecord_euVehicleCategory === EUVehicleCategory.O1
+        || technicalRecord.techRecord_euVehicleCategory === EUVehicleCategory.O2)
       ? (VehicleTypes.SMALL_TRL as VehicleTypes)
       : (technicalRecord.techRecord_vehicleType as VehicleTypes);
   }

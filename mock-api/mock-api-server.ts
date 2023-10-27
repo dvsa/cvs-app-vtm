@@ -1,7 +1,7 @@
 import * as jsonServer from 'json-server';
-import { VehicleTypes } from '../src/app/models/vehicle-tech-record.model';
-import { mockTestResultList } from '../src/mocks/mock-test-result';
-import { mockVehicleTechnicalRecord } from '../src/mocks/mock-vehicle-technical-record.mock';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { mockTestResultList } from '@mocks/mock-test-result';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 const server = jsonServer.create();
 const router = jsonServer.router('{}');
 const middlewares = jsonServer.defaults();
