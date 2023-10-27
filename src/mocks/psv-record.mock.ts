@@ -1,23 +1,16 @@
-import { ApprovalType } from "@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js";
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { BodyTypeDescription } from '@models/body-type-enum';
-import {
-  EuVehicleCategories,
-  FuelTypes,
-  Retarders,
-  StatusCodes,
-  VehicleConfigurations,
-  VehicleSizes,
-} from '../app/models/vehicle-tech-record.model';
+import { EuVehicleCategories, FuelTypes, Retarders, StatusCodes, VehicleConfigurations, VehicleSizes } from '../app/models/vehicle-tech-record.model';
 
 export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> => ({
-  systemNumber: `PSV`,
+  systemNumber: 'PSV',
   vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
-  primaryVrm: `KP01ABC`,
+  primaryVrm: 'KP01ABC',
   secondaryVrms: undefined,
   createdTimestamp: 'now',
-  techRecord_createdAt: new Date().toISOString() as string,
+  techRecord_createdAt: new Date().toISOString(),
   techRecord_createdByName: 'Nathan',
   techRecord_statusCode: StatusCodes.PROVISIONAL,
   techRecord_vehicleType: 'psv',
@@ -80,9 +73,9 @@ export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> => ({
   techRecord_applicantDetails_telephoneNumber: '0121',
   techRecord_applicantDetails_emailAddress: 'test@email.com',
 
-  //techRecord_microfilmDocumentType: 'AAT - Trailer Annual Test',
-  //techRecord_microfilmRollNumber: 'nb123456',
-  //techRecord_microfilmSerialNumber: 'ser123456',
+  // techRecord_microfilmDocumentType: 'AAT - Trailer Annual Test',
+  // techRecord_microfilmRollNumber: 'nb123456',
+  // techRecord_microfilmSerialNumber: 'ser123456',
   techRecord_remarks: 'Some notes about the vehicle',
   techRecord_dispensations: 'reason given',
   techRecord_reasonForCreation: 'Brake Failure',
@@ -118,10 +111,10 @@ export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> => ({
   techRecord_dda_outswing: 'Anderson',
   techRecord_dda_ddaSchedules: 'dda',
   techRecord_dda_seatbeltsFitted: 51,
-  techRecord_dda_ddaNotes: 'This is a note'
+  techRecord_dda_ddaNotes: 'This is a note',
 });
 
-const axles: Array<any> = [
+const axles = [
   {
     axleNumber: 1,
     tyres_tyreSize: '295/80-22.5',
@@ -137,7 +130,7 @@ const axles: Array<any> = [
     weights_gbWeight: 3,
     // TODO: V3 2 eecweights in type package, which is this?
     // weights_eecWeight: 4,
-    weights_designWeight: 5
+    weights_designWeight: 5,
   },
   {
     axleNumber: 2,
@@ -154,7 +147,7 @@ const axles: Array<any> = [
     weights_ladenWeight: 2,
     weights_gbWeight: 3,
     // weights_eecWeight: 4,
-    weights_designWeight: 5
+    weights_designWeight: 5,
   },
   {
     axleNumber: 3,
@@ -171,8 +164,8 @@ const axles: Array<any> = [
     weights_ladenWeight: 2,
     weights_gbWeight: 3,
     // weights_eecWeight: 4,
-    weights_designWeight: 5
-  }
+    weights_designWeight: 5,
+  },
 ];
 
 // const provisionalTechRecord = {

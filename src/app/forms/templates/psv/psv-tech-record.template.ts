@@ -136,7 +136,7 @@ export const PsvTechRecord: FormNode = {
     },
     {
       name: 'techRecord_emissionsLimit',
-      label: 'Emission limit (plate value)',
+      label: 'Emission limit (m-1) (plate value)',
       value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
