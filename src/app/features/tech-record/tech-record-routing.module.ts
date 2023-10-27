@@ -20,6 +20,7 @@ import { TechRecordSummaryChangesComponent } from './components/tech-record-summ
 import { TechRecordUnarchiveComponent } from './components/tech-record-unarchive/tech-record-unarchive-component';
 import { TechRouterOutletComponent } from './components/tech-router-outlet/tech-router-outlet.component';
 import { TechRecordComponent } from './tech-record.component';
+import { TechRecordReviewResolver } from 'src/app/resolvers/tech-record-review/tech-record-review.resolver';
 
 const routes: Routes = [
   {
@@ -138,12 +139,14 @@ const routes: Routes = [
     component: TechRecordSummaryChangesComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordReviewResolver },
   },
   {
     path: 'notifiable-alteration-needed/change-summary',
     component: TechRecordSummaryChangesComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordReviewResolver },
   },
   {
     path: 'notifiable-alteration-needed/tyre-search/:axleNumber',
