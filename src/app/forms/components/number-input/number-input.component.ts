@@ -30,10 +30,10 @@ export class NumberInputComponent extends BaseControlComponent implements AfterC
   }
 
   shouldDisplayLengthWarning(): boolean {
-    return this.label === 'Length' && Number(this.value) > 12000;
+    return this.label === 'Length' && parseInt(this.value, 10) > 12000;
   }
   shouldDisplayWidthWarning(): boolean {
-    return this.label === 'Width' && Number(this.value) > 2600;
+    return this.label === 'Width' && parseInt(this.value, 10) > 2600;
   }
 
   isCorrectVehicleType(): boolean {
