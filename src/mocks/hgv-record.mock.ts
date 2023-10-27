@@ -1,15 +1,14 @@
-import {
-  StatusCodes,
-  VehicleTypes,
-  FuelTypes,
-  VehicleConfigurations,
-  EuVehicleCategories,
-  approvalType
-} from '../app/models/vehicle-tech-record.model';
+import { ApprovalType } from "@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js";
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { createMock } from 'ts-auto-mock';
 import { BodyTypeDescription } from '@models/body-type-enum';
-import { HGVAxles, HGVPlates, PlateReasonForIssue, VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { createMock } from 'ts-auto-mock';
+import {
+  EuVehicleCategories,
+  FuelTypes,
+  StatusCodes,
+  VehicleConfigurations,
+} from '../app/models/vehicle-tech-record.model';
 
 export const createMockHgv = (systemNumber: number): TechRecordType<'hgv'> =>
   createMock<TechRecordType<'hgv'>>({
@@ -40,7 +39,7 @@ export const createMockHgv = (systemNumber: number): TechRecordType<'hgv'> =>
     techRecord_emissionsLimit: 1234,
     techRecord_departmentalVehicleMarker: true,
     techRecord_reasonForCreation: 'Brake Failure',
-    techRecord_approvalType: approvalType.ECSSTA,
+    techRecord_approvalType: ApprovalType.ECSSTA,
     techRecord_approvalTypeNumber: 'approval123',
     techRecord_axles: undefined,
     techRecord_ntaNumber: 'nta789',

@@ -29,4 +29,5 @@ export enum ValidatorNames {
   NotZNumber = 'notZNumber',
   MustEqualSibling = 'mustEqualSibling',
   HandlePsvPassengersChange = 'HandlePsvPassengersChange',
+  Enum = 'enum',
 }

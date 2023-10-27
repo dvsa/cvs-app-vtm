@@ -85,7 +85,8 @@ export class CustomValidators {
     };
   };
 
-  static requiredIfEquals = (sibling: string, values: any[]): ValidatorFn =>
+  static requiredIfEquals =
+    (sibling: string, values: any[]): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
 
@@ -296,6 +297,13 @@ export class CustomValidators {
         control.markAsPristine();
       }
       return null;
+    };
+  };
+
+  static enum = (checkEnum: Record<string, string>): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+      return Object.values(checkEnum).includes(control.value) ? null : { enum: true };
     };
   };
 }

@@ -14,7 +14,7 @@ export const PsvTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(ApprovalType),
-      validators: [],
+      validators: [{ name: ValidatorNames.Enum, args: { enum: ApprovalType } }],
     },
     {
       name: 'techRecord_approvalTypeNumber',
@@ -39,6 +39,8 @@ export const PsvTypeApprovalTemplate: FormNode = {
               'QNIG',
               'Prov.GB WVTA',
               'Small series',
+              'Small series NKSXX',
+              'Small series NKS',
               'IVA - VCA',
               'IVA - DVSA/NI',
             ],

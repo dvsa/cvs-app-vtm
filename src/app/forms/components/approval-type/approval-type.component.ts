@@ -151,6 +151,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
   ngOnChanges(): void {
     this.valueWriteBack(this.value);
+
     if (this.approvalTypeChange) {
       this.clearInput();
     }
@@ -189,6 +190,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     if (!value || !this.approvalType) {
       return;
     }
+
     const NTA_IVA_Types = ['NTA', 'IVA', 'IVA - DVSA/NI', 'Small series NKSXX', 'Small series NKS'];
     const OtherTypes = ['ECTA', 'NSSTA', 'ECSSTA', 'GB WVTA', 'UKNI WVTA', 'EU WVTA Pre 23', 'EU WVTA 23 on', 'QNIG', 'Prov.GB WVTA', 'IVA - VCA'];
 
@@ -295,8 +297,6 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       case 'NTA':
       case 'IVA':
       case 'IVA - DVSA/NI':
-      case 'Small series NKSXX':
-      case 'Small series NKS':
         if (oneRequired()) {
           setErrors();
         }
@@ -316,19 +316,20 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
         break;
 
       case 'IVA - VCA':
+      case 'Small series NKSXX':
         if (threeRequired()) {
           setErrors();
         }
         break;
 
       case 'NSSTA':
+      case 'Small series NKS':
         if (twoRequired()) {
           setErrors();
         }
         break;
 
       default:
-        console.log('default');
         break;
     }
   }

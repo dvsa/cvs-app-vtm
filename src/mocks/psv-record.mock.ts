@@ -1,3 +1,4 @@
+import { ApprovalType } from "@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js";
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { BodyTypeDescription } from '@models/body-type-enum';
@@ -8,7 +9,6 @@ import {
   StatusCodes,
   VehicleConfigurations,
   VehicleSizes,
-  approvalType
 } from '../app/models/vehicle-tech-record.model';
 
 export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> => ({
@@ -62,7 +62,7 @@ export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> => ({
   techRecord_dimensions_length: 25000,
   techRecord_dimensions_width: 10000,
   techRecord_frontAxleToRearAxle: 5000,
-  techRecord_approvalType: approvalType.ECSSTA,
+  techRecord_approvalType: ApprovalType.ECSSTA,
   techRecord_approvalTypeNumber: 'approval123',
   techRecord_ntaNumber: 'nta789',
   techRecord_coifSerialNumber: 'coifSerial123456',
