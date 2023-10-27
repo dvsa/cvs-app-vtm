@@ -1,0 +1,19 @@
+<!-- <p *ngIf="error" id="{{ label }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p> -->
+<!-- <p>{{ vehicleType }}</p> -->
+<!-- <div >
+  <p>{{ label }}: {{ value }}</p>
+  <span *ngIf="isLengthWarning">
+    <p>This length dimension field value is greater than 12,000mm. Check your input before proceeding</p>
+  </span>
+  <span *ngIf="isWidthWarning">
+    <p>This width dimension field value is greater than 2,600mm. Check your input before proceeding</p>
+  </span>
+</div> -->
+
+<div class="govuk-warning-text" *ngIf="warningMessage">
+  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+  <strong class="govuk-warning-text__text">
+    <span class="govuk-warning-text__assistive">Warning</span>
+    {{ warningMessage }}
+  </strong>
+</div>
