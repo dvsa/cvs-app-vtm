@@ -14,7 +14,9 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { amendVrmSuccess, editingTechRecord, selectTechRecordChanges, selectTechRecordDeletions, techRecord } from '@store/technical-records';
+import {
+  amendVrmSuccess, editingTechRecord, selectTechRecordChanges, selectTechRecordDeletions, techRecord,
+} from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { TechRecordSummaryChangesComponent } from './tech-record-summary-changes.component';
 
@@ -84,7 +86,7 @@ describe('TechRecordSummaryChangesComponent', () => {
             vin: 'testVin',
             systemNumber: 'testNumber',
           } as TechRecordType<'get'>,
-        })
+        }),
       );
 
       expect(navigateSpy).toHaveBeenCalled();
