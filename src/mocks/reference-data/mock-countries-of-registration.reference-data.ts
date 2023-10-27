@@ -4,191 +4,191 @@ export const mockCountriesOfRegistration: ReferenceDataModelBase[] = [
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'gb',
-    description: 'Great Britain and Northern Ireland - GB'
+    description: 'Great Britain and Northern Ireland - GB',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'gba',
-    description: 'Alderney - GBA'
+    description: 'Alderney - GBA',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'gbg',
-    description: 'Guernsey - GBG'
+    description: 'Guernsey - GBG',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'gbj',
-    description: 'Jersey - GBJ'
+    description: 'Jersey - GBJ',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'gbm',
-    description: 'Isle of Man - GBM'
+    description: 'Isle of Man - GBM',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'gbz',
-    description: 'Gibraltar - GBZ'
+    description: 'Gibraltar - GBZ',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'a',
-    description: 'Austria - A'
+    description: 'Austria - A',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'b',
-    description: 'Belgium - B'
+    description: 'Belgium - B',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'bih',
-    description: 'BosniaAndHerzegovina - BIH'
+    description: 'BosniaAndHerzegovina - BIH',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'bg',
-    description: 'Bulgaria - BG'
+    description: 'Bulgaria - BG',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'hr',
-    description: 'Croatia - HR'
+    description: 'Croatia - HR',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'cy',
-    description: 'Cyprus - CY'
+    description: 'Cyprus - CY',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'cz',
-    description: 'CzechRepublic - CZ'
+    description: 'CzechRepublic - CZ',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'dk',
-    description: 'Denmark - DK'
+    description: 'Denmark - DK',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'est',
-    description: 'Estonia - EST'
+    description: 'Estonia - EST',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'fin',
-    description: 'Finland - FIN'
+    description: 'Finland - FIN',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'f',
-    description: 'France - F'
+    description: 'France - F',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'd',
-    description: 'Germany - D'
+    description: 'Germany - D',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'gr',
-    description: 'Greece - GR'
+    description: 'Greece - GR',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'h',
-    description: 'Hungary - H'
+    description: 'Hungary - H',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'irl',
-    description: 'Ireland - IRL'
+    description: 'Ireland - IRL',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'i',
-    description: 'Italy - I'
+    description: 'Italy - I',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'lv',
-    description: 'Latvia - LV'
+    description: 'Latvia - LV',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'lt',
-    description: 'Lithuania - LT'
+    description: 'Lithuania - LT',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'l',
-    description: 'Luxembourg - L'
+    description: 'Luxembourg - L',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'm',
-    description: 'Malta - M'
+    description: 'Malta - M',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'nl',
-    description: 'Netherlands - NL'
+    description: 'Netherlands - NL',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'n',
-    description: 'Norway - N'
+    description: 'Norway - N',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'pl',
-    description: 'Poland - PL'
+    description: 'Poland - PL',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'p',
-    description: 'Portugal - P'
+    description: 'Portugal - P',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'ro',
-    description: 'Romania - RO'
+    description: 'Romania - RO',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'sk',
-    description: 'Slovakia - SK'
+    description: 'Slovakia - SK',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'slo',
-    description: 'Slovenia - SLO'
+    description: 'Slovenia - SLO',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'e',
-    description: 'Spain - E'
+    description: 'Spain - E',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 's',
-    description: 'Sweden - S'
+    description: 'Sweden - S',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'ch',
-    description: 'Switzerland - CH'
+    description: 'Switzerland - CH',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'non-eu',
-    description: 'Non EU'
+    description: 'Non EU',
   },
   {
     resourceType: ReferenceDataResourceType.CountryOfRegistration,
     resourceKey: 'not-known',
-    description: 'Country Not Known'
-  }
+    description: 'Country Not Known',
+  },
 ];
