@@ -302,10 +302,14 @@ export class CustomValidators {
   static updateFunctionCode = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       const vehicleFunctionCode = control.root.get('techRecord_functionCode');
+      const functionCodes: Record<string, string> = {
+        rigid: 'R',
+        articulated: 'A',
+        'semi-trailer': 'A',
+      };
+
       if (control.dirty) {
-        if (control?.value === 'rigid') vehicleFunctionCode?.setValue('R', { emitEvent: false });
-        if (control?.value === 'articulated') vehicleFunctionCode?.setValue('A', { emitEvent: false });
-        if (control?.value === 'semi-trailer') vehicleFunctionCode?.setValue('A', { emitEvent: false });
+        vehicleFunctionCode?.setValue((functionCodes[control?.value]), { emitEvent: false });
         control.markAsPristine();
       }
       return null;
