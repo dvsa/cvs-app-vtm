@@ -2,12 +2,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Roles } from '@models/roles.enum';
 import {
-  EuVehicleCategories, NotTrailer, V3TechRecordModel, VehicleTypes,
+  NotTrailer, V3TechRecordModel, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -103,7 +104,7 @@ describe('TechRecordTitleComponent', () => {
       expect(trailerIdField.nativeElement.textContent).toContain('TestId');
     });
 
-    const smallTrailerEuVehicleCategories = [EuVehicleCategories.O1, EuVehicleCategories.O2];
+    const smallTrailerEuVehicleCategories = [EUVehicleCategory.O1, EUVehicleCategory.O2];
 
     it.each(smallTrailerEuVehicleCategories)('does not show secondary VRMs for small trailer', (euVehicleCategory) => {
       const mockRecordTrailer = mockVehicleTechnicalRecord(VehicleTypes.TRL);

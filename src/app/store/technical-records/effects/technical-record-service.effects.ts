@@ -193,6 +193,12 @@ export class TechnicalRecordServiceEffects {
           if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
             (techRecord as any).techRecord_vehicleConfiguration = null;
           }
+          if (techRecord_vehicleType === VehicleTypes.HGV) {
+            (techRecord as TechRecordGETHGV).techRecord_vehicleClass_description = VehicleClassDescription.HeavyGoodsVehicle;
+          }
+          if (techRecord_vehicleType === VehicleTypes.TRL) {
+            (techRecord as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
+          }
           const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
 
           return of(
