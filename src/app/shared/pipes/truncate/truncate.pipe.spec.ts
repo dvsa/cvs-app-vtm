@@ -5,14 +5,14 @@ describe('truncatePipe pipe tests', () => {
   const pipe = new TruncatePipe();
 
   it('does not truncate string', () => {
-    expect(pipe.transform('too short', [10, '...'])).toBe('too short');
+    expect(pipe.transform('too short', 10, '...')).toBe('too short');
   });
 
   it('transforms "this string is too long" to "this string is too..."', () => {
-    expect(pipe.transform('this string is too long', [11])).toBe('this string...');
+    expect(pipe.transform('this string is too long', 11)).toBe('this string...');
   });
 
   it('transforms "this string is too long" to "this string is too:::"', () => {
-    expect(pipe.transform('this string is too long', [11, ':::'])).toBe('this string:::');
+    expect(pipe.transform('this string is too long', 11, ':::')).toBe('this string:::');
   });
 });

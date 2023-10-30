@@ -55,7 +55,9 @@ export class GenerateLetterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => { this.techRecord = techRecord; });
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => {
+      this.techRecord = techRecord;
+    });
     this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 
@@ -86,7 +88,7 @@ export class GenerateLetterComponent implements OnInit {
     }
 
     const paragraphId = this.form.value.letterType === 'trailer acceptance'
-      ? this.paragraphMap.get((this.techRecord as TechRecordType<'trl'>)!.techRecord_approvalType as approvalType)
+      ? this.paragraphMap.get((this.techRecord as TechRecordType<'trl'>).techRecord_approvalType as approvalType)
       : 4;
 
     this.store.dispatch(generateLetter({ letterType: this.form.value.letterType, paragraphId: paragraphId ?? 4 }));

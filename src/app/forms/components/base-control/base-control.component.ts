@@ -81,12 +81,12 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     switch (event.type) {
       case 'focus':
         this.focused = true;
-        break;
+        return true;
       case 'blur':
         this.focused = false;
-        break;
+        return false;
       default:
-        console.log('unhandled:', event);
+        return null;
     }
   }
 
