@@ -64,7 +64,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       label: 'Function code',
       value: null,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.DROPDOWN,
+      editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
       options: [
         { value: 'r', label: 'R' },
