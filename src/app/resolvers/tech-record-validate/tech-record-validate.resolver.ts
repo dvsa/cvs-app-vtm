@@ -58,17 +58,21 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
 
 const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
   const validatedRecord: TechRecordVehicleType<'psv'> = { ...record };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const checks: any = {
-    techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
-  };
-  Object.keys(checks).forEach((key: string) => {
-    if (record[key as keyof TechRecordVehicleType<'psv'>]) {
 
-      const valid = Object.values(key).includes(checks[`${key}`]);
+  const checks = {
+    techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
+  } as const;
+
+  type Checks = typeof checks;
+  type CheckKey = keyof Checks;
+
+  const keys = Object.keys(checks) as CheckKey[];
+
+  keys.forEach((key) => {
+    if (record[key as keyof TechRecordVehicleType<'psv'>]) {
+      const valid = Object.values(checks).includes(checks[`${key}`]);
       if (!valid) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (validatedRecord as any)[`${key}`] = null;
+        validatedRecord[`${key}`] = null;
       }
     }
   });
@@ -77,16 +81,21 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
 
 const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
   const validatedRecord: TechRecordVehicleType<'trl'> = { ...record };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const checks: any = {
+
+  const checks = {
     techRecord_vehicleConfiguration: TrlVehicleConfiguration,
   };
-  Object.keys(checks).forEach((key: string) => {
+
+  type Checks = typeof checks;
+  type CheckKey = keyof Checks;
+
+  const keys = Object.keys(checks) as CheckKey[];
+
+  keys.forEach((key: CheckKey) => {
     if (record[key as keyof TechRecordVehicleType<'trl'>]) {
-      const valid = Object.values(key).includes(checks[`${key}`]);
+      const valid = Object.values(checks).includes(checks[`${key}`]);
       if (!valid) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (validatedRecord as any)[`${key}`] = null;
+        validatedRecord[`${key}`] = null;
       }
     }
   });
@@ -95,16 +104,21 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
 
 const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
   const validatedRecord: TechRecordVehicleType<'hgv'> = { ...record };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const checks: any = {
+
+  const checks = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
   };
-  Object.keys(checks).forEach((key: string) => {
+
+  type Checks = typeof checks;
+  type CheckKey = keyof Checks;
+
+  const keys = Object.keys(checks) as CheckKey[];
+
+  keys.forEach((key: CheckKey) => {
     if (record[key as keyof TechRecordVehicleType<'hgv'>]) {
-      const valid = Object.values(key).includes(checks[`${key}`]);
+      const valid = Object.values(checks).includes(checks[`${key}`]);
       if (!valid) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (validatedRecord as any)[`${key}`] = null;
+        validatedRecord[`${key}`] = null;
       }
     }
   });
