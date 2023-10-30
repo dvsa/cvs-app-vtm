@@ -23,7 +23,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
   providedIn: 'root',
 })
 export class DynamicFormService {
-  constructor(private store: Store<State>) {}
+  constructor(private store: Store<State>) { }
 
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
@@ -59,6 +59,7 @@ export class DynamicFormService {
     [ValidatorNames.MustEqualSibling]: (args: { sibling: string }) => CustomValidators.mustEqualSibling(args.sibling),
     [ValidatorNames.HandlePsvPassengersChange]: (args: { passengersOne: string; passengersTwo: string }) =>
       CustomValidators.handlePsvPassengersChange(args.passengersOne, args.passengersTwo),
+    [ValidatorNames.UpdateFunctionCode]: () => CustomValidators.updateFunctionCode(),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

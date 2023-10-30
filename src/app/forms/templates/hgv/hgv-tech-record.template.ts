@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
-import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
+import { HgvPsvVehicleConfiguration, VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
@@ -156,8 +156,8 @@ export const HgvTechRecord: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(VehicleConfiguration),
-      validators: [],
+      options: getOptionsFromEnum(HgvPsvVehicleConfiguration),
+      validators: [{ name: ValidatorNames.UpdateFunctionCode }],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
@@ -212,6 +212,13 @@ export const HgvTechRecord: FormNode = {
         { value: true, label: 'Yes' },
         { value: false, label: 'No' },
       ],
+    },
+    {
+      name: 'techRecord_functionCode',
+      label: 'Function code',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
     },
   ],
 };

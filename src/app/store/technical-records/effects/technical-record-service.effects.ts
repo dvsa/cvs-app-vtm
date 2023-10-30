@@ -180,7 +180,7 @@ export class TechnicalRecordServiceEffects {
   generateTechRecordBasedOnSectionTemplates$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(changeVehicleType, createVehicle),
+        ofType(createVehicle),
         withLatestFrom(this.store.pipe(select(editingTechRecord))),
         concatMap(([{ techRecord_vehicleType }, editableTechRecord]) => {
           const techRecord = { ...cloneDeep(editableTechRecord), techRecord_vehicleType };
@@ -189,6 +189,40 @@ export class TechnicalRecordServiceEffects {
             techRecord.techRecord_vehicleType = VehicleTypes.TRL;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (techRecord as any).euVehicleCategory = EuVehicleCategories.O1;
+          }
+          if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
+            (techRecord as any).techRecord_vehicleConfiguration = null;
+          }
+          const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
+
+          return of(
+            techRecordTemplate.reduce((mergedNodes, formNode) => {
+              const form = this.dfs.createForm(formNode, techRecord);
+              return merge(mergedNodes, form.getCleanValue(form));
+            }, {}) as TechRecordType<'put'>,
+          );
+        }),
+        tap((mergedForms) => this.technicalRecordService.updateEditingTechRecord(mergedForms)),
+      ),
+    { dispatch: false },
+  );
+
+  generateTechRecordBasedOnSectionTemplatesAfterVehicleTypeChange$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(changeVehicleType),
+        withLatestFrom(this.store.pipe(select(editingTechRecord))),
+        concatMap(([{ techRecord_vehicleType }, editableTechRecord]) => {
+          const techRecord = { ...cloneDeep(editableTechRecord), techRecord_vehicleType };
+
+          if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
+            techRecord.techRecord_vehicleType = VehicleTypes.TRL;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (techRecord as any).euVehicleCategory = EuVehicleCategories.O1;
+          }
+
+          if (techRecord_vehicleType === VehicleTypes.HGV || techRecord_vehicleType === VehicleTypes.PSV) {
+            (techRecord as any).techRecord_approvalType = null;
           }
 
           if (techRecord_vehicleType === VehicleTypes.HGV) {
