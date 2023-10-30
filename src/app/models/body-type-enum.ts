@@ -71,7 +71,9 @@ const psvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
 
 const hgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   ...commonBodyTypeCodeMap.entries(),
+  [BodyTypeCode.U, BodyTypeDescription.ARTIC],
   [BodyTypeCode.A, BodyTypeDescription.TRACTOR],
+  [BodyTypeCode.L, BodyTypeDescription.LOW_LOADER],
   [BodyTypeCode.M, BodyTypeDescription.CONCRETE_MIXER],
   [BodyTypeCode.R, BodyTypeDescription.REFUSE],
 ]);
@@ -82,8 +84,8 @@ const trlBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
 ]);
 
 const articulatedHgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
-  [BodyTypeCode.U, BodyTypeDescription.ARTIC],
-])
+  [BodyTypeCode.A, BodyTypeDescription.ARTICULATED],
+]);
 
 export const vehicleBodyTypeCodeMap = new Map<string, Map<BodyTypeCode, BodyTypeDescription>>([
   ['psv', psvBodyTypeCodeMap],

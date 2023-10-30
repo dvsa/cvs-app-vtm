@@ -41,7 +41,10 @@ const routes: Routes = [
       isCustomLayout: true,
     },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: techRecordViewResolver },
+    resolve: {
+      techRecord: techRecordViewResolver,
+      load: TechRecordReviewResolver,
+    },
   },
   {
     path: 'notifiable-alteration-needed',
@@ -53,7 +56,10 @@ const routes: Routes = [
       isCustomLayout: true,
     },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: techRecordViewResolver },
+    resolve: {
+      techRecord: techRecordViewResolver,
+      load: TechRecordReviewResolver,
+    },
   },
 
   {
@@ -139,14 +145,12 @@ const routes: Routes = [
     component: TechRecordSummaryChangesComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { load: TechRecordReviewResolver },
   },
   {
     path: 'notifiable-alteration-needed/change-summary',
     component: TechRecordSummaryChangesComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { load: TechRecordReviewResolver },
   },
   {
     path: 'notifiable-alteration-needed/tyre-search/:axleNumber',
@@ -180,4 +184,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TechRecordsRoutingModule {}
+export class TechRecordsRoutingModule { }

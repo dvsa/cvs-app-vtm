@@ -110,7 +110,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
     if (this.techRecord.techRecord_vehicleType === 'hgv' && this.techRecord.techRecord_vehicleConfiguration === 'articulated') {
       vehicleType = `${this.techRecord.techRecord_vehicleConfiguration}Hgv`;
       this.store.dispatch(updateEditingTechRecord({
-        vehicleTechRecord: { ...this.techRecord, techRecord_bodyType_description: 'artic' } as TechRecordType<'put'>,
+        vehicleTechRecord: { ...this.techRecord, techRecord_bodyType_description: 'articulated' } as TechRecordType<'put'>,
       }));
     }
     const optionsMap = vehicleBodyTypeCodeMap.get(vehicleType) ?? [];
