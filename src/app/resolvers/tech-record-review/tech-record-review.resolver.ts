@@ -13,7 +13,7 @@ import {
   map,
   of,
   take,
-  tap
+  tap,
 } from 'rxjs';
 
 export const TechRecordReviewResolver: ResolveFn<boolean> = () => {
