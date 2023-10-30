@@ -107,11 +107,9 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   get bodyTypes(): MultiOptions {
     let vehicleType: string = this.techRecord.techRecord_vehicleType;
 
-    if (this.techRecord.techRecord_vehicleType === 'hgv' && this.techRecord.techRecord_vehicleConfiguration === 'articulated') {
+    if (this.techRecord.techRecord_vehicleType === 'hgv') {
       vehicleType = `${this.techRecord.techRecord_vehicleConfiguration}Hgv`;
-      this.store.dispatch(updateEditingTechRecord({
-        vehicleTechRecord: { ...this.techRecord, techRecord_bodyType_description: 'articulated' } as TechRecordType<'put'>,
-      }));
+      this.updateArticulatedHgvVehicleBodyType();
     }
     const optionsMap = vehicleBodyTypeCodeMap.get(vehicleType) ?? [];
     const values = [...optionsMap.values()];
@@ -151,6 +149,14 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
     } else {
       this.optionsService.loadOptions(ReferenceDataResourceType.TrlMake);
+    }
+  }
+
+  updateArticulatedHgvVehicleBodyType() {
+    if (this.techRecord.techRecord_vehicleType === 'hgv' && this.techRecord.techRecord_vehicleConfiguration === 'articulated') {
+      this.store.dispatch(updateEditingTechRecord({
+        vehicleTechRecord: { ...this.techRecord, techRecord_bodyType_description: 'articulated' } as TechRecordType<'put'>,
+      }));
     }
   }
 }
