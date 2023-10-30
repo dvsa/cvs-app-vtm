@@ -56,7 +56,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public routerService: RouterService,
     public actions$: Actions,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.navigateUponSuccess();
@@ -67,8 +67,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
       this.store$.dispatch(clearAllSectionStates());
       this.store$.dispatch(clearScrollPosition());
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.router.navigate([
+      void this.router.navigate([
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
       ]);
     });
@@ -105,7 +104,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       .subscribe((deletions) => {
         this.techRecordDeletions = deletions;
       });
-
   }
 
   ngOnDestroy(): void {
@@ -157,8 +155,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 
   cancel() {
     this.globalErrorService.clearErrors();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['..'], { relativeTo: this.route });
+    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   getTechRecordChangesKeys(): string[] {

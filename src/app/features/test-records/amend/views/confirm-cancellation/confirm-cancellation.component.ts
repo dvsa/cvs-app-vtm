@@ -1,18 +1,18 @@
+import { Location } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { CustomFormGroup, FormNodeTypes, CustomFormControl } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { selectedTestResultState, updateTestResultSuccess } from '@store/test-records';
 import {
-  map, Observable, Subject, takeUntil,
+  Observable, Subject, map, takeUntil,
 } from 'rxjs';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-confirm-cancellation',
@@ -36,10 +36,9 @@ export class ConfirmCancellationComponent implements OnDestroy {
     private globalErrorService: GlobalErrorService,
     private location: Location,
   ) {
-    this.actions$
-      .pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$))
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      .subscribe(() => this.router.navigate(['../../../../..'], { relativeTo: this.route }));
+    this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
+      void this.router.navigate(['../../../../..'], { relativeTo: this.route });
+    });
   }
 
   ngOnDestroy(): void {

@@ -9,11 +9,11 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { initialAppState, State } from '@store/.';
+import { UserService } from '@services/user-service/user-service';
+import { State, initialAppState } from '@store/.';
 import { testResultInEdit } from '@store/test-records';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { UserService } from '@services/user-service/user-service';
 import {
   amendReferenceDataItem,
   amendReferenceDataItemFailure,
@@ -117,16 +117,17 @@ describe('ReferenceDataEffects', () => {
 
     it('should return fetchReferenceDataFailed action on API error', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        actions$ = hot('-a--', { a: fetchReferenceData({ resourceType: null as any }) });
+        actions$ = hot('-a--', { a: fetchReferenceData({ resourceType: null as unknown as ReferenceDataResourceType }) });
 
         const expectedError = new Error('Reference data resourceType is required');
 
         jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          b: fetchReferenceDataFailed({ error: 'Reference data resourceType is required', resourceType: null as any }),
+          b: fetchReferenceDataFailed({
+            error: 'Reference data resourceType is required',
+            resourceType: null as unknown as ReferenceDataResourceType,
+          }),
         });
       });
     });
@@ -190,16 +191,17 @@ describe('ReferenceDataEffects', () => {
 
     it('should return fetchReferenceDataAuditFailed action on API error', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        actions$ = hot('-a--', { a: fetchReferenceDataAudit({ resourceType: null as any }) });
+        actions$ = hot('-a--', { a: fetchReferenceDataAudit({ resourceType: null as unknown as ReferenceDataResourceType }) });
 
         const expectedError = new Error('Reference data resourceType is required');
 
         jest.spyOn(referenceDataService, 'fetchReferenceDataAudit').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchReferenceDataByAuditType$).toBe('---b', {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          b: fetchReferenceDataAuditFailed({ error: 'Reference data resourceType is required', resourceType: null as any }),
+          b: fetchReferenceDataAuditFailed({
+            error: 'Reference data resourceType is required',
+            resourceType: null as unknown as ReferenceDataResourceType,
+          }),
         });
       });
     });
@@ -224,8 +226,8 @@ describe('ReferenceDataEffects', () => {
     it.each(testCases)('should return fetchReferenceDataByKeySuccess action on successful API call', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { resourceType, resourceKey, payload } = value;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const entity: ReferenceDataItem = payload.find((p) => p.resourceKey === resourceKey)!;
+
+        const entity = payload.find((p) => p.resourceKey === resourceKey) as ReferenceDataItem;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: fetchReferenceDataByKey({ resourceType, resourceKey }) });
@@ -243,8 +245,7 @@ describe('ReferenceDataEffects', () => {
     it.each(testCases)('should return fetchReferenceDataByKeyFailed action on API error', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { resourceType } = value;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        actions$ = hot('-a--', { a: fetchReferenceDataByKey({ resourceType, resourceKey: null as any }) });
+        actions$ = hot('-a--', { a: fetchReferenceDataByKey({ resourceType, resourceKey: null as unknown as string | number }) });
 
         const expectedError = new Error('Reference data resourceKey is required');
 
@@ -306,8 +307,7 @@ describe('ReferenceDataEffects', () => {
     it('should return fetchReferenceDataByKeySearchFailed on successful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const resourceType = ReferenceDataResourceType.Tyres;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        actions$ = hot('-a--', { a: fetchReferenceDataByKeySearch({ resourceType, resourceKey: null as any }) });
+        actions$ = hot('-a--', { a: fetchReferenceDataByKeySearch({ resourceType, resourceKey: null as unknown as string | number }) });
 
         const expectedError = new Error('Reference data resourceKey is required');
 
@@ -355,8 +355,9 @@ describe('ReferenceDataEffects', () => {
     it('should return fetchTyreReferenceDataByKeySearchFailed on unsuccessful API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const resourceType = ReferenceDataResourceType.Tyres;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        actions$ = hot('-a--', { a: fetchTyreReferenceDataByKeySearch({ searchFilter: 'plyRating', searchTerm: null as any }) });
+        actions$ = hot('-a--', {
+          a: fetchTyreReferenceDataByKeySearch({ searchFilter: 'plyRating', searchTerm: null as unknown as string }),
+        });
 
         const expectedError = new Error('Search term is required');
 

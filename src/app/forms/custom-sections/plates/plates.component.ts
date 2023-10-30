@@ -109,7 +109,6 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       return `plate_${this.mostRecentPlate.plateSerialNumber}`;
     }
     throw new Error('Could not find plate.');
-
   }
 
   get eligibleForPlates(): boolean {
@@ -138,8 +137,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     }
     this.store.dispatch(canGeneratePlate());
     this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['generate-plate'], { relativeTo: this.route });
+    void this.router.navigate(['generate-plate'], { relativeTo: this.route });
   }
 
   private cannotGeneratePlate(plateRequiredFields: string[]): boolean {

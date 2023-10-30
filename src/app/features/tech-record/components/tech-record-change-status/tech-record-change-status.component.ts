@@ -46,13 +46,14 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
     });
 
     this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+      void this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
 
       this.technicalRecordService.clearEditingTechRecord();
     });
 
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => { this.isPromotion = params.get('to') === 'current'; });
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      this.isPromotion = params.get('to') === 'current';
+    });
   }
 
   ngOnDestroy(): void {
@@ -69,8 +70,7 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   }
 
   navigateBack(relativePath = '..'): void {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate([relativePath], { relativeTo: this.route });
+    void this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string }): void {

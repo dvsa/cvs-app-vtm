@@ -91,16 +91,15 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         break;
       case Types.Deficiency:
         this.selectedDeficiency = selected as Deficiency;
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        this.router.navigate([this.selectedDeficiency.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
+        void this.router.navigate([this.selectedDeficiency.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
         break;
       default:
         let advisoryRoute = `${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}.advisory`;
         if (this.selectedDefect?.imNumber === 71 && this.selectedItem?.itemNumber === 1) {
           advisoryRoute += this.selectedItem.itemDescription === 'All Roller Brake Test Machines:' ? '.0' : '.1';
         }
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        this.router.navigate([advisoryRoute], {
+
+        void this.router.navigate([advisoryRoute], {
           relativeTo: this.route,
           queryParamsHandling: 'merge',
         });

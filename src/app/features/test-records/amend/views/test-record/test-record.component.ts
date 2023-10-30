@@ -50,10 +50,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     );
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
 
-    this.actions$
-      .pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$))
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      .subscribe(() => this.router.navigate(['../..'], { relativeTo: this.route.parent }));
+    this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
+      void this.router.navigate(['../..'], { relativeTo: this.route.parent });
+    });
 
     combineLatest([this.testResult$, this.routerService.getQueryParam$('testType'), this.testRecordsService.sectionTemplates$])
       .pipe(
@@ -146,8 +145,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   }
 
   handleConfirmCancel() {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['../..'], { relativeTo: this.route.parent });
+    void this.router.navigate(['../..'], { relativeTo: this.route.parent });
   }
 
   get isTestTypeGroupEditable$(): Observable<boolean> {

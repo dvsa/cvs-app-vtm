@@ -120,8 +120,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['../..'], { relativeTo: this.route });
+    void this.router.navigate(['../..'], { relativeTo: this.route });
   }
 
   handleSubmit() {

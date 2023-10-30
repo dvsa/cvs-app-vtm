@@ -70,8 +70,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.router.navigate([
+      void this.router.navigate([
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
       ]);
     });
