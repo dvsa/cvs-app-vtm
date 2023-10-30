@@ -1,9 +1,12 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import {
+  Directive, ElementRef, HostListener, Input,
+} from '@angular/core';
 
 @Directive({
   selector: '[appNumberOnly]',
 })
 export class NumberOnlyDirective {
+  @Input('appNumberOnly') options?: any;
   inputElement: HTMLInputElement;
 
   private navigationKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'Home', 'End', 'ArrowLeft', 'ArrowRight', 'Clear', 'Copy', 'Paste'];
@@ -27,7 +30,12 @@ export class NumberOnlyDirective {
     ) {
       return;
     }
+    if (this.options?.enableDecimals) {
+      alert();
+      return;
+    }
     if (e.key === ' ' || Number.isNaN(Number(e.key))) {
+      alert(1);
       e.preventDefault();
     }
   }

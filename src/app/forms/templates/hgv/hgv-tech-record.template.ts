@@ -197,7 +197,7 @@ export const HgvTechRecord: FormNode = {
       value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
+      editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 99 },
         {
@@ -205,6 +205,7 @@ export const HgvTechRecord: FormNode = {
           args: ['^\\d*(\\.\\d{0,5})?$', 'Max 5 decimal places'],
         },
       ],
+      enableDecimals: true,
     },
     {
       name: 'techRecord_departmentalVehicleMarker',
