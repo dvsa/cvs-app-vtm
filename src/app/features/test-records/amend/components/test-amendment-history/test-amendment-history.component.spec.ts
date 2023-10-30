@@ -95,7 +95,7 @@ describe('TestAmendmentHistoryComponent', () => {
         const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
         expect(rows[0]).toBeTruthy();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-        expect(cells[0].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.reasonForCreation!));
+        expect(cells[0].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.reasonForCreation));
         expect(cells[1].nativeElement.innerHTML).toBe(component.testRecord?.createdByName);
         expect(cells[2].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.createdAt!, 'MMM d, yyyy', 'en'));
         expect(cells[3].nativeElement.innerHTML).toBe('');
@@ -106,7 +106,7 @@ describe('TestAmendmentHistoryComponent', () => {
         tick();
         fixture.detectChanges();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-        expect(cells[4].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.testHistory![0].reasonForCreation!));
+        expect(cells[4].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.testHistory![0].reasonForCreation));
         expect(cells[5].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.testHistory![0].createdByName));
         expect(cells[6].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.testHistory![0].createdAt!, 'MMM d, yyyy', 'en'));
         expect(cells[7].nativeElement.innerHTML).toContain('View');

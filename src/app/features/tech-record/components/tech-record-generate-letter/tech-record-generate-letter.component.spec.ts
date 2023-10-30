@@ -40,7 +40,6 @@ describe('TechRecordGenerateLetterComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let store: MockStore;
-  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -69,7 +68,6 @@ describe('TechRecordGenerateLetterComponent', () => {
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
   });
 

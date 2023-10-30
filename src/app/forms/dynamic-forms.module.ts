@@ -47,6 +47,7 @@ import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
+import { FieldWarningMessageComponent } from './components/field-warning-message/field-warning-message.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     ApprovalTypeInputComponent,
     ApprovalTypeFocusNextDirective,
     ModifiedWeightsComponent,
+    FieldWarningMessageComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

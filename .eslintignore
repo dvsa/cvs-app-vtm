@@ -17,8 +17,6 @@ tslint*
 jest.config.js
 protractor.conf.js
 /src/app/api/*
-/src/mocks/*
-/src/environments/*
 /mock-api
 /cypress
 /.vscode

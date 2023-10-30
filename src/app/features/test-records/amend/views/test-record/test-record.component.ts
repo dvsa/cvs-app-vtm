@@ -16,7 +16,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import {
-  combineLatest, filter, firstValueFrom, map, Observable, of, Subject, switchMap, take, takeUntil,
+  Observable, Subject, combineLatest, filter, firstValueFrom, map, of, switchMap, take, takeUntil,
 } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
@@ -61,9 +61,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
         filter(([testResult]) => !!testResult),
       )
       .subscribe(([testResult, testType, sectionTemplates]) => {
-        if (!sectionTemplates) {
-          testResult!.reasonForCreation = '';
-          this.testRecordsService.editingTestResult(testResult!);
+        if (!sectionTemplates && testResult) {
+          testResult.reasonForCreation = '';
+          this.testRecordsService.editingTestResult(testResult);
         }
         if (testType && testType !== testResult?.testTypes[0].testTypeId) {
           this.testRecordsService.testTypeChange(testType);

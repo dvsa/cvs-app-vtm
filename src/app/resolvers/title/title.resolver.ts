@@ -1,7 +1,7 @@
-import { Injectable, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Resolve, ResolveFn } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { ResolveFn } from '@angular/router';
+import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
 

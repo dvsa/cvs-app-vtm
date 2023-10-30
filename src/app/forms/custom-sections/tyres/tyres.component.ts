@@ -226,8 +226,9 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
+    const axles = this.vehicleTechRecord.techRecord_axles;
 
-    if (this.vehicleTechRecord.techRecord_axles!.length > minLength) {
+    if (axles && axles.length > minLength) {
       this.isError = false;
       this.store.dispatch(removeAxle({ index }));
     } else {
