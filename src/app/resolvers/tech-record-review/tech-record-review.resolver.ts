@@ -16,7 +16,7 @@ import {
   tap,
 } from 'rxjs';
 
-export const TechRecordReviewResolver: ResolveFn<boolean> = () => {
+export const techRecordReviewResolver: ResolveFn<boolean> = () => {
   const store: Store<State> = inject(Store<State>);
 
   return store.select(selectTechRecord).pipe(

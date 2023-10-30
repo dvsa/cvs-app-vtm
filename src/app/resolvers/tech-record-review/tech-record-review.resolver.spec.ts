@@ -7,7 +7,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/.';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { TechRecordReviewResolver } from './tech-record-review.resolver';
+import { techRecordReviewResolver } from './tech-record-review.resolver';
 
 describe('TechRecordViewResolver', () => {
   let resolver: ResolveFn<boolean>;
@@ -26,7 +26,7 @@ describe('TechRecordViewResolver', () => {
     });
     store = TestBed.inject(MockStore);
     resolver = (...resolverParameters) =>
-      TestBed.runInInjectionContext(() => TechRecordReviewResolver(...resolverParameters));
+      TestBed.runInInjectionContext(() => techRecordReviewResolver(...resolverParameters));
   });
 
   beforeEach(() => {
