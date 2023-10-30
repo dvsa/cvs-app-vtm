@@ -109,7 +109,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.techRecord.techRecord_vehicleType === 'hgv') {
       vehicleType = `${this.techRecord.techRecord_vehicleConfiguration}Hgv`;
-      this.updateArticulatedHgvVehicleBodyType();
+      this.updateHgvVehicleBodyType();
     }
     const optionsMap = vehicleBodyTypeCodeMap.get(vehicleType) ?? [];
     const values = [...optionsMap.values()];
@@ -152,7 +152,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  updateArticulatedHgvVehicleBodyType() {
+  updateHgvVehicleBodyType() {
     if (this.techRecord.techRecord_vehicleType === 'hgv' && this.techRecord.techRecord_vehicleConfiguration === 'articulated') {
       this.store.dispatch(updateEditingTechRecord({
         vehicleTechRecord: { ...this.techRecord, techRecord_bodyType_description: 'articulated' } as TechRecordType<'put'>,
