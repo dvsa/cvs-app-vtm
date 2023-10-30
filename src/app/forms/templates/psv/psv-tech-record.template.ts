@@ -140,8 +140,14 @@ export const PsvTechRecord: FormNode = {
       value: null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 99 }],
+      editType: FormNodeEditTypes.TEXT,
+      validators: [
+        { name: ValidatorNames.Max, args: 99 },
+        {
+          name: ValidatorNames.CustomPattern,
+          args: ['^\\d*(\\.\\d{0,5})?$', 'Max 5 decimal places'],
+        },
+      ],
     },
     { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
     {
