@@ -81,6 +81,7 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
 
 const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
   const validatedRecord: TechRecordVehicleType<'trl'> = { ...record };
+  validatedRecord.techRecord_vehicleClass_description = 'trailer';
 
   const checks = {
     techRecord_vehicleConfiguration: TrlVehicleConfiguration,
@@ -104,6 +105,7 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
 
 const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
   const validatedRecord: TechRecordVehicleType<'hgv'> = { ...record };
+  validatedRecord.techRecord_vehicleClass_description = 'heavy goods vehicle';
 
   const checks = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
