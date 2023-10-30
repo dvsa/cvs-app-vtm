@@ -31,11 +31,9 @@ export class NumberOnlyDirective {
       return;
     }
     if (this.options?.enableDecimals) {
-      alert();
       return;
     }
     if (e.key === ' ' || Number.isNaN(Number(e.key))) {
-      alert(1);
       e.preventDefault();
     }
   }
