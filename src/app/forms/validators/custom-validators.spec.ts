@@ -1,6 +1,6 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { DescriptionEnum } from '@models/vehicle-class.model';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
 
@@ -581,7 +581,7 @@ describe('handlePsvPassengersChange', () => {
     const vehicleClass = form.get('techRecord_vehicleClass_description')?.value;
 
     expect(vehicleSize).toBe(VehicleSizes.SMALL);
-    expect(vehicleClass).toBe(DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
+    expect(vehicleClass).toBe(VehicleClassDescription.SmallPsvIeLessThanOrEqualTo22Seats);
   });
   it('should calculate large vehicle size and class based on passenger numbers', () => {
     const upper = form.get('techRecord_seatsUpperDeck');
@@ -598,6 +598,6 @@ describe('handlePsvPassengersChange', () => {
     const vehicleClass = form.get('techRecord_vehicleClass_description')?.value;
 
     expect(vehicleSize).toBe(VehicleSizes.LARGE);
-    expect(vehicleClass).toBe(DescriptionEnum.LargePsvIeGreaterThan23Seats);
+    expect(vehicleClass).toBe(VehicleClassDescription.LargePsvIeGreaterThan23Seats);
   });
 });
