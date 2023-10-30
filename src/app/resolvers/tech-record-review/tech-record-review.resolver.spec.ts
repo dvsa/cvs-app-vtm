@@ -8,9 +8,10 @@ import { State, initialAppState } from '@store/.';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { TechRecordReviewResolver } from './tech-record-review.resolver';
+
 describe('TechRecordViewResolver', () => {
   let resolver: ResolveFn<boolean>;
-  let actions$ = new Observable<Action>();
+  const actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
   const mockSnapshot: any = jest.fn;
   let store: MockStore<State>;
