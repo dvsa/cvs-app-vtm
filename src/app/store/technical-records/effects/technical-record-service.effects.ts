@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechRecordGETHGV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { EuVehicleCategories, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { EuVehicleCategories, VehicleClassDescriptions, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
@@ -187,6 +188,13 @@ export class TechnicalRecordServiceEffects {
             techRecord.techRecord_vehicleType = VehicleTypes.TRL;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (techRecord as any).euVehicleCategory = EuVehicleCategories.O1;
+          }
+
+          if (techRecord_vehicleType === VehicleTypes.HGV) {
+            (techRecord as TechRecordGETHGV).techRecord_vehicleClass_description = VehicleClassDescriptions.HGV;
+          }
+          if (techRecord_vehicleType === VehicleTypes.TRL) {
+            (techRecord as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescriptions.TRAILER;
           }
 
           const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
