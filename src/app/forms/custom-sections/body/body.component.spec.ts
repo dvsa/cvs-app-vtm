@@ -108,5 +108,35 @@ describe('BodyComponent', () => {
         },
       }));
     });
+    it('should not dispatch updateEditingTechRecord if vehicle is hgv and rigid', () => {
+      component.techRecord = {
+        techRecord_vehicleType: 'hgv',
+        techRecord_vehicleConfiguration: 'articulated',
+        techRecord_bodyType_description: '',
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_brakes_dtpNumber: '000000',
+        techRecord_bodyModel: 'model',
+        techRecord_chassisMake: 'chassisType',
+      } as unknown as V3TechRecordModel;
+
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      component.updateArticulatedHgvVehicleBodyType();
+      expect(dispatchSpy).toHaveBeenCalled();
+      expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
+        vehicleTechRecord: {
+          createdTimestamp: 'bar',
+          systemNumber: 'foo',
+          techRecord_bodyModel: 'model',
+          techRecord_bodyType_description: 'articulated',
+          techRecord_brakes_dtpNumber: '000000',
+          techRecord_chassisMake: 'chassisType',
+          techRecord_vehicleConfiguration: 'articulated',
+          techRecord_vehicleType: 'hgv',
+          vin: 'testVin',
+        },
+      }));
+    });
   });
 });
