@@ -261,7 +261,7 @@ describe('TechnicalRecordServiceEffects', () => {
           }),
         });
 
-        expectObservable(effects.generateTechRecordBasedOnSectionTemplates$).toBe('-b', {
+        expectObservable(effects.generateTechRecordBasedOnSectionTemplatesAfterVehicleTypeChange$).toBe('-b', {
           b: expectedTechRecord,
         });
       });
