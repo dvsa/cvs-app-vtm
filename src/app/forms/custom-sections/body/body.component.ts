@@ -1,6 +1,7 @@
 import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
 } from '@angular/core';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import {
@@ -17,7 +18,7 @@ import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State } from '@store/index';
 import { selectReferenceDataByResourceKey } from '@store/reference-data';
-import { updateBody } from '@store/technical-records';
+import { updateBody, updateEditingTechRecord } from '@store/technical-records';
 import {
   Observable, Subject, combineLatest, debounceTime, map, mergeMap, skipWhile, take, takeUntil,
 } from 'rxjs';
@@ -43,7 +44,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
     private optionsService: MultiOptionsService,
     private referenceDataService: ReferenceDataService,
     private store: Store<State>,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.template = this.techRecord.techRecord_vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
@@ -104,9 +105,18 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get bodyTypes(): MultiOptions {
-    const optionsMap = vehicleBodyTypeCodeMap.get(this.techRecord.techRecord_vehicleType as VehicleTypes);
-    const values = [...optionsMap!.values()];
+    let vehicleType: string = this.techRecord.techRecord_vehicleType;
+
+    if (this.techRecord.techRecord_vehicleType === 'hgv' && this.techRecord.techRecord_vehicleConfiguration === 'articulated') {
+      vehicleType = `${this.techRecord.techRecord_vehicleConfiguration}Hgv`;
+      this.store.dispatch(updateEditingTechRecord({
+        vehicleTechRecord: { ...this.techRecord, techRecord_bodyType_description: 'articulated' } as TechRecordType<'put'>,
+      }));
+    }
+    const optionsMap = vehicleBodyTypeCodeMap.get(vehicleType) ?? [];
+    const values = [...optionsMap.values()];
     return getOptionsFromEnum(values.sort());
+
   }
 
   get bodyMakes$(): Observable<MultiOptions | undefined> {

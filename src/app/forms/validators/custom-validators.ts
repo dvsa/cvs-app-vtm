@@ -298,4 +298,21 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static updateFunctionCode = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const vehicleFunctionCode = control.root.get('techRecord_functionCode');
+      const functionCodes: Record<string, string> = {
+        rigid: 'R',
+        articulated: 'A',
+        'semi-trailer': 'A',
+      };
+
+      if (control.dirty) {
+        vehicleFunctionCode?.setValue((functionCodes[control?.value]), { emitEvent: false });
+        control.markAsPristine();
+      }
+      return null;
+    };
+  };
 }

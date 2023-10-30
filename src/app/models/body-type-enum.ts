@@ -71,10 +71,11 @@ const psvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
 
 const hgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   ...commonBodyTypeCodeMap.entries(),
+  [BodyTypeCode.U, BodyTypeDescription.ARTIC],
   [BodyTypeCode.A, BodyTypeDescription.TRACTOR],
+  [BodyTypeCode.L, BodyTypeDescription.LOW_LOADER],
   [BodyTypeCode.M, BodyTypeDescription.CONCRETE_MIXER],
   [BodyTypeCode.R, BodyTypeDescription.REFUSE],
-  [BodyTypeCode.U, BodyTypeDescription.ARTIC],
 ]);
 
 const trlBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
@@ -82,14 +83,20 @@ const trlBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
   [BodyTypeCode.L, BodyTypeDescription.LOW_LOADER],
 ]);
 
+const articulatedHgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
+  [BodyTypeCode.A, BodyTypeDescription.ARTICULATED],
+]);
+
 export const vehicleBodyTypeCodeMap = new Map<string, Map<BodyTypeCode, BodyTypeDescription>>([
   ['psv', psvBodyTypeCodeMap],
   ['hgv', hgvBodyTypeCodeMap],
   ['trl', trlBodyTypeCodeMap],
+  ['articulatedHgv', articulatedHgvBodyTypeCodeMap],
 ]);
 
 export const vehicleBodyTypeDescriptionMap = new Map<string, Map<BodyTypeDescription, BodyTypeCode>>([
   ['psv', new Map([...psvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
   ['hgv', new Map([...hgvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
   ['trl', new Map([...trlBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
+  ['rigidHgv', new Map([...articulatedHgvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
 ]);
