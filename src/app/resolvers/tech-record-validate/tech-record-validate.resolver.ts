@@ -8,12 +8,12 @@ import { HgvPsvVehicleConfiguration, TrlVehicleConfiguration } from '@models/veh
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
+import { isEqual } from 'lodash';
 import {
   catchError,
   map,
   of,
   take,
-  tap,
 } from 'rxjs';
 
 export const techRecordValidateResolver: ResolveFn<boolean> = () => {
@@ -21,7 +21,7 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
 
   return store.select(selectTechRecord).pipe(
     map((record) => {
-      let validatedRecord = { ...record };
+      let validatedRecord = { ...record } as TechRecordType<'put'>;
 
       if (record) {
         switch (true) {
@@ -40,11 +40,9 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
           default: break;
         }
       }
-      return validatedRecord as TechRecordType<'put'>;
-
-    }),
-    tap((vehicleTechRecord) => {
-      store.dispatch(updateEditingTechRecord({ vehicleTechRecord }));
+      if (!isEqual(validatedRecord, record)) {
+        store.dispatch(updateEditingTechRecord({ vehicleTechRecord: validatedRecord }));
+      }
     }),
     take(1),
     map(() => {
@@ -58,21 +56,18 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
 
 const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
   const validatedRecord: TechRecordVehicleType<'psv'> = { ...record };
-
-  const checks = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
   } as const;
 
-  type Checks = typeof checks;
-  type CheckKey = keyof Checks;
-
-  const keys = Object.keys(checks) as CheckKey[];
-
-  keys.forEach((key) => {
+  Object.keys(checks).forEach((key: string) => {
     if (record[key as keyof TechRecordVehicleType<'psv'>]) {
-      const valid = Object.values(checks).includes(checks[`${key}`]);
-      if (!valid) {
-        validatedRecord[`${key}`] = null;
+      const validateValues: boolean = Object.values(checks[`${key}`]).includes(record[key as keyof TechRecordVehicleType<'psv'>]);
+
+      if (!validateValues) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (validatedRecord as any)[key as keyof TechRecordVehicleType<'hgv'>] = null;
       }
     }
   });
@@ -81,21 +76,18 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
 
 const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
   const validatedRecord: TechRecordVehicleType<'trl'> = { ...record };
-
-  const checks = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const checks: any = {
     techRecord_vehicleConfiguration: TrlVehicleConfiguration,
   };
 
-  type Checks = typeof checks;
-  type CheckKey = keyof Checks;
-
-  const keys = Object.keys(checks) as CheckKey[];
-
-  keys.forEach((key: CheckKey) => {
+  Object.keys(checks).forEach((key: string) => {
     if (record[key as keyof TechRecordVehicleType<'trl'>]) {
-      const valid = Object.values(checks).includes(checks[`${key}`]);
-      if (!valid) {
-        validatedRecord[`${key}`] = null;
+      const validateValues: boolean = Object.values(checks[`${key}`]).includes(record[key as keyof TechRecordVehicleType<'trl'>]);
+
+      if (!validateValues) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (validatedRecord as any)[key as keyof TechRecordVehicleType<'hgv'>] = null;
       }
     }
   });
@@ -104,21 +96,18 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
 
 const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
   const validatedRecord: TechRecordVehicleType<'hgv'> = { ...record };
-
-  const checks = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
   };
 
-  type Checks = typeof checks;
-  type CheckKey = keyof Checks;
-
-  const keys = Object.keys(checks) as CheckKey[];
-
-  keys.forEach((key: CheckKey) => {
+  Object.keys(checks).forEach((key: string) => {
     if (record[key as keyof TechRecordVehicleType<'hgv'>]) {
-      const valid = Object.values(checks).includes(checks[`${key}`]);
-      if (!valid) {
-        validatedRecord[`${key}`] = null;
+      const validateValues: boolean = Object.values(checks[`${key}`]).includes(record[key as keyof TechRecordVehicleType<'hgv'>]);
+
+      if (!validateValues) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (validatedRecord as any)[key as keyof TechRecordVehicleType<'hgv'>] = null;
       }
     }
   });

@@ -2,6 +2,7 @@ import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
 } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechRecordType as TechRecordVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import {
@@ -107,11 +108,9 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   get bodyTypes(): MultiOptions {
     let vehicleType: string = this.techRecord.techRecord_vehicleType;
 
-    if (this.techRecord.techRecord_vehicleType === 'hgv' && this.techRecord.techRecord_vehicleConfiguration === 'articulated') {
+    if (this.techRecord.techRecord_vehicleType === 'hgv') {
       vehicleType = `${this.techRecord.techRecord_vehicleConfiguration}Hgv`;
-      this.store.dispatch(updateEditingTechRecord({
-        vehicleTechRecord: { ...this.techRecord, techRecord_bodyType_description: 'articulated' } as TechRecordType<'put'>,
-      }));
+      this.updateHgvVehicleBodyType(this.techRecord);
     }
     const optionsMap = vehicleBodyTypeCodeMap.get(vehicleType) ?? [];
     const values = [...optionsMap.values()];
@@ -151,6 +150,14 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
     } else {
       this.optionsService.loadOptions(ReferenceDataResourceType.TrlMake);
+    }
+  }
+
+  updateHgvVehicleBodyType(record: TechRecordVehicleType<'hgv'>) {
+    if (record.techRecord_vehicleConfiguration === 'articulated') {
+      this.store.dispatch(updateEditingTechRecord({
+        vehicleTechRecord: { ...this.techRecord, techRecord_bodyType_description: 'articulated' } as TechRecordType<'put'>,
+      }));
     }
   }
 }
