@@ -24,6 +24,7 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { cloneDeep } from 'lodash';
 import { Subscription } from 'rxjs';
+import { TyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 
 @Component({
   selector: 'app-tyres',
@@ -236,4 +237,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       this.errorMessage = `Cannot have less than ${minLength} axles`;
     }
   }
+
+  protected readonly getOptionsFromEnum = getOptionsFromEnum;
+  protected readonly tyreUseCode = TyreUseCode;
 }
