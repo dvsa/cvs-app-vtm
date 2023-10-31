@@ -83,10 +83,7 @@ describe('TechRecordViewResolver', () => {
       const resolveResult = await firstValueFrom(result);
 
       expect(resolveResult).toBe(true);
-      expect(dispatchSpy).toHaveBeenCalledTimes(1);
-      expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
-        vehicleTechRecord: { techRecord_vehicleType: 'trl', techRecord_vehicleConfiguration: 'semi-trailer' },
-      }));
+      expect(dispatchSpy).toHaveBeenCalledTimes(0);
     });
   });
 });

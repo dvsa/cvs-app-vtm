@@ -8,12 +8,12 @@ import { HgvPsvVehicleConfiguration, TrlVehicleConfiguration } from '@models/veh
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
+import * as _ from 'lodash';
 import {
   catchError,
   map,
   of,
   take,
-  tap,
 } from 'rxjs';
 
 export const techRecordValidateResolver: ResolveFn<boolean> = () => {
@@ -21,7 +21,7 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
 
   return store.select(selectTechRecord).pipe(
     map((record) => {
-      let validatedRecord = { ...record };
+      let validatedRecord = { ...record } as TechRecordType<'put'>;
 
       if (record) {
         switch (true) {
@@ -40,11 +40,9 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
           default: break;
         }
       }
-      return validatedRecord as TechRecordType<'put'>;
-
-    }),
-    tap((vehicleTechRecord) => {
-      store.dispatch(updateEditingTechRecord({ vehicleTechRecord }));
+      if (!_.isEqual(validatedRecord, record)) {
+        store.dispatch(updateEditingTechRecord({ vehicleTechRecord: validatedRecord }));
+      }
     }),
     take(1),
     map(() => {
