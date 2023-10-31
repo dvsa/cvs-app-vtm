@@ -8,7 +8,7 @@ import { HgvPsvVehicleConfiguration, TrlVehicleConfiguration } from '@models/veh
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
-import * as _ from 'lodash';
+import { isEqual } from 'lodash';
 import {
   catchError,
   map,
@@ -40,7 +40,7 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
           default: break;
         }
       }
-      if (!_.isEqual(validatedRecord, record)) {
+      if (!isEqual(validatedRecord, record)) {
         store.dispatch(updateEditingTechRecord({ vehicleTechRecord: validatedRecord }));
       }
     }),
