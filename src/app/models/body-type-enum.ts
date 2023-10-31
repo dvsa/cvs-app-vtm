@@ -89,7 +89,7 @@ const articulatedHgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>
 
 export const vehicleBodyTypeCodeMap = new Map<string, Map<BodyTypeCode, BodyTypeDescription>>([
   ['psv', psvBodyTypeCodeMap],
-  ['hgv', hgvBodyTypeCodeMap],
+  ['rigidHgv', hgvBodyTypeCodeMap],
   ['trl', trlBodyTypeCodeMap],
   ['articulatedHgv', articulatedHgvBodyTypeCodeMap],
 ]);

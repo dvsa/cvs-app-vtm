@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TechRecordHGV } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -270,6 +271,33 @@ describe('TechnicalRecordServiceEffects', () => {
       expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
       expect(techRecordServiceSpy).toHaveBeenCalledWith(expectedTechRecord);
     }));
+    it('should default to heavy goods vehicle class when vehicle type is changed to hgv', fakeAsync(() => {
+      const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
+      const expectedTechRecord = getEmptyHGVRecord();
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(editingTechRecord, {
+          vin: 'foo',
+          primaryVrm: 'bar',
+          systemNumber: 'foobar',
+          createdTimestamp: 'barfoo',
+          techRecord_vehicleType: 'lgv',
+        } as unknown as TechRecordType<'put'>);
+        // mock action to trigger effect
+        actions$ = hot('-a--', {
+          a: changeVehicleType({
+            techRecord_vehicleType: VehicleTypes.HGV,
+          }),
+        });
+
+        expectObservable(effects.generateTechRecordBasedOnSectionTemplatesAfterVehicleTypeChange$).toBe('-b', {
+          b: expectedTechRecord,
+        });
+      });
+
+      flush();
+      expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
+      expect(techRecordServiceSpy).toHaveBeenCalledWith(expectedTechRecord);
+    }));
   });
 });
 
@@ -299,5 +327,73 @@ function getEmptyTechRecord(): V3TechRecordModel {
     techRecord_vehicleConfiguration: 'other',
     techRecord_vehicleSubclass: undefined,
     techRecord_vehicleType: 'car',
+  } as unknown as V3TechRecordModel;
+}
+function getEmptyHGVRecord(): V3TechRecordModel {
+  return {
+    techRecord_alterationMarker: null,
+    techRecord_applicantDetails_address1: null,
+    techRecord_applicantDetails_address2: null,
+    techRecord_applicantDetails_address3: null,
+    techRecord_applicantDetails_emailAddress: null,
+    techRecord_applicantDetails_name: null,
+    techRecord_applicantDetails_postCode: null,
+    techRecord_applicantDetails_postTown: null,
+    techRecord_applicantDetails_telephoneNumber: null,
+    techRecord_approvalType: null,
+    techRecord_axles: [],
+    techRecord_approvalTypeNumber: undefined,
+    techRecord_bodyType_code: null,
+    techRecord_bodyType_description: null,
+    techRecord_brakes_dtpNumber: null,
+    techRecord_conversionRefNo: null,
+    techRecord_departmentalVehicleMarker: null,
+    techRecord_dimensions_axleSpacing: [],
+    techRecord_dimensions_length: null,
+    techRecord_dimensions_width: null,
+    techRecord_drawbarCouplingFitted: null,
+    techRecord_emissionsLimit: null,
+    techRecord_euVehicleCategory: null,
+    techRecord_euroStandard: undefined,
+    techRecord_frontAxleTo5thWheelMax: null,
+    techRecord_frontAxleTo5thWheelMin: null,
+    techRecord_frontAxleToRearAxle: null,
+    techRecord_frontVehicleTo5thWheelCouplingMax: null,
+    techRecord_frontVehicleTo5thWheelCouplingMin: null,
+    techRecord_fuelPropulsionSystem: null,
+    techRecord_functionCode: null,
+    techRecord_grossDesignWeight: null,
+    techRecord_grossEecWeight: null,
+    techRecord_grossGbWeight: null,
+    techRecord_make: null,
+    techRecord_manufactureYear: null,
+    techRecord_maxTrainDesignWeight: null,
+    techRecord_maxTrainEecWeight: null,
+    techRecord_maxTrainGbWeight: null,
+    techRecord_microfilm_microfilmDocumentType: undefined,
+    techRecord_microfilm_microfilmRollNumber: undefined,
+    techRecord_microfilm_microfilmSerialNumber: undefined,
+    techRecord_model: null,
+    techRecord_noOfAxles: null,
+    techRecord_notes: undefined,
+    techRecord_ntaNumber: undefined,
+    techRecord_numberOfWheelsDriven: null,
+    techRecord_offRoad: null,
+    techRecord_plates: [],
+    techRecord_reasonForCreation: undefined,
+    techRecord_regnDate: null,
+    techRecord_roadFriendly: null,
+    techRecord_speedLimiterMrk: null,
+    techRecord_statusCode: '',
+    techRecord_tachoExemptMrk: null,
+    techRecord_trainDesignWeight: null,
+    techRecord_trainEecWeight: null,
+    techRecord_trainGbWeight: null,
+    techRecord_tyreUseCode: null,
+    techRecord_variantNumber: undefined,
+    techRecord_variantVersionNumber: undefined,
+    techRecord_vehicleClass_description: 'heavy goods vehicle',
+    techRecord_vehicleConfiguration: null,
+    techRecord_vehicleType: 'hgv',
   } as unknown as V3TechRecordModel;
 }

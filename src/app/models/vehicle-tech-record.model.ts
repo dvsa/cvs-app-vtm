@@ -74,20 +74,6 @@ export enum FuelTypes {
   OTHER = 'Other',
 }
 
-export enum VehicleClassDescriptions {
-  MOTORBIKE_OVER_200CC = 'motorbikes over 200cc or with a sidecar',
-  NOT_APPLICABLE = 'not applicable',
-  SMALL_PSV = 'small psv (ie: less than or equal to 22 seats)',
-  MOTORBIKE_UPTO_200CC = 'motorbikes up to 200cc',
-  TRAILER = 'trailer',
-  LARGE_PSV = 'large psv(ie: greater than 23 seats)',
-  THREE_WHEELER = '3 wheelers',
-  HGV = 'heavy goods vehicle',
-  MOT_CLASS_4 = 'MOT class 4',
-  MOT_CLASS_5 = 'MOT class 5',
-  MOT_CLASS_7 = 'MOT class 7',
-}
-
 export enum VehicleConfigurations {
   RIGID = 'rigid',
   ARTICULATED = 'articulated',

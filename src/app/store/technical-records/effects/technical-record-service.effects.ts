@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechRecordGETHGV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { EuVehicleCategories, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -191,6 +193,12 @@ export class TechnicalRecordServiceEffects {
           if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
             (techRecord as any).techRecord_vehicleConfiguration = null;
           }
+          if (techRecord_vehicleType === VehicleTypes.HGV) {
+            (techRecord as TechRecordGETHGV).techRecord_vehicleClass_description = VehicleClassDescription.HeavyGoodsVehicle;
+          }
+          if (techRecord_vehicleType === VehicleTypes.TRL) {
+            (techRecord as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
+          }
           const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
 
           return of(
@@ -221,6 +229,13 @@ export class TechnicalRecordServiceEffects {
 
           if (techRecord_vehicleType === VehicleTypes.HGV || techRecord_vehicleType === VehicleTypes.PSV) {
             (techRecord as any).techRecord_approvalType = null;
+          }
+
+          if (techRecord_vehicleType === VehicleTypes.HGV) {
+            (techRecord as TechRecordGETHGV).techRecord_vehicleClass_description = VehicleClassDescription.HeavyGoodsVehicle;
+          }
+          if (techRecord_vehicleType === VehicleTypes.TRL) {
+            (techRecord as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
           }
 
           const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
