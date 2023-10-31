@@ -60,6 +60,20 @@ describe('TechRecordViewResolver', () => {
         vehicleTechRecord: { techRecord_vehicleType: 'psv', techRecord_vehicleConfiguration: null },
       }));
     });
+    it('should dispatch a tech record with null if psv vehicle class is invalid', async () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      jest.spyOn(store, 'select').mockReturnValue(of({ techRecord_vehicleType: 'psv', techRecord_vehicleClass_description: 'trailer' }));
+      const result = TestBed.runInInjectionContext(
+        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
+      const resolveResult = await firstValueFrom(result);
+
+      expect(resolveResult).toBe(true);
+      expect(dispatchSpy).toHaveBeenCalledTimes(1);
+      expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
+        vehicleTechRecord: { techRecord_vehicleType: 'psv', techRecord_vehicleConfiguration: null },
+      }));
+    });
     it('should dispatch a tech record with null if trl vehicle configuration invalid', async () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       jest.spyOn(store, 'select').mockReturnValue(of({ techRecord_vehicleType: 'trl', techRecord_vehicleConfiguration: 'rigid' }));
