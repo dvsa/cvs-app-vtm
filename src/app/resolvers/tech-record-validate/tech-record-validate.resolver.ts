@@ -2,7 +2,9 @@ import { inject } from '@angular/core';
 import {
   ResolveFn,
 } from '@angular/router';
-import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
+import { VehicleClassDescription as VehicleClassDescriptionPSV }
+  from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType as TechRecordVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { HgvPsvVehicleConfiguration, TrlVehicleConfiguration } from '@models/vehicle-configuration.enum';
@@ -60,7 +62,7 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
-    techRecord_vehicleClass_description: VehicleClassDescription,
+    techRecord_vehicleClass_description: VehicleClassDescriptionPSV,
   } as const;
 
   Object.keys(checks).forEach((key: string) => {
@@ -78,7 +80,7 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
 
 const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
   const validatedRecord: TechRecordVehicleType<'trl'> = { ...record };
-  validatedRecord.techRecord_vehicleClass_description = 'trailer';
+  validatedRecord.techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
     techRecord_vehicleConfiguration: TrlVehicleConfiguration,
@@ -99,7 +101,7 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
 
 const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
   const validatedRecord: TechRecordVehicleType<'hgv'> = { ...record };
-  validatedRecord.techRecord_vehicleClass_description = 'heavy goods vehicle';
+  validatedRecord.techRecord_vehicleClass_description = VehicleClassDescription.HeavyGoodsVehicle;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
