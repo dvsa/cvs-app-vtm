@@ -79,7 +79,7 @@ describe('BodyComponent', () => {
   });
   describe('updateArticulatedHgvVehicleBodyType', () => {
     it('should dispatch updateEditingTechRecord if vehicle is hgv and articulated', () => {
-      component.techRecord = {
+      const mockRecord = {
         techRecord_vehicleType: 'hgv',
         techRecord_vehicleConfiguration: 'articulated',
         techRecord_bodyType_description: '',
@@ -90,9 +90,10 @@ describe('BodyComponent', () => {
         techRecord_bodyModel: 'model',
         techRecord_chassisMake: 'chassisType',
       } as unknown as V3TechRecordModel;
+      component.techRecord = mockRecord;
 
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      component.updateHgvVehicleBodyType();
+      component.updateHgvVehicleBodyType(mockRecord as TechRecordType<'hgv'>);
       expect(dispatchSpy).toHaveBeenCalled();
       expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
         vehicleTechRecord: {
@@ -109,7 +110,7 @@ describe('BodyComponent', () => {
       }));
     });
     it('should not dispatch updateEditingTechRecord if vehicle is hgv and rigid', () => {
-      component.techRecord = {
+      const mockRecord = {
         techRecord_vehicleType: 'hgv',
         techRecord_vehicleConfiguration: 'rigid',
         techRecord_bodyType_description: '',
@@ -121,8 +122,10 @@ describe('BodyComponent', () => {
         techRecord_chassisMake: 'chassisType',
       } as unknown as V3TechRecordModel;
 
+      component.techRecord = mockRecord;
+
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      component.updateHgvVehicleBodyType();
+      component.updateHgvVehicleBodyType(mockRecord as TechRecordType<'hgv'>);
       expect(dispatchSpy).not.toHaveBeenCalled();
     });
   });
