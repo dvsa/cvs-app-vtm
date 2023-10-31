@@ -18,6 +18,8 @@ import {
   of,
   take,
 } from 'rxjs';
+import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
+import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 
 export const techRecordValidateResolver: ResolveFn<boolean> = () => {
   const store: Store<State> = inject(Store<State>);
@@ -84,6 +86,7 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
     techRecord_vehicleConfiguration: TrlVehicleConfiguration,
+    techRecord_tyreUseCode: TrlTyreUseCode,
   };
 
   Object.keys(checks).forEach((key: string) => {
@@ -105,6 +108,7 @@ const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
+    techRecord_tyreUseCode: HgvTyreUseCode,
   };
 
   Object.keys(checks).forEach((key: string) => {
