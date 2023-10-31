@@ -88,7 +88,7 @@ export class GenerateLetterComponent implements OnInit {
     }
 
     const paragraphId = this.form.value.letterType === 'trailer acceptance'
-      ? this.paragraphMap.get((this.techRecord as TechRecordType<'trl'>).techRecord_approvalType as approvalType)
+      ? this.paragraphMap.get((this.techRecord as TechRecordType<'trl'>).techRecord_approvalType as unknown as approvalType)
       : 4;
 
     this.store.dispatch(generateLetter({ letterType: this.form.value.letterType, paragraphId: paragraphId ?? 4 }));

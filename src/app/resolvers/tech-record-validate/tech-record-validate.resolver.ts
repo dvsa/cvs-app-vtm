@@ -15,6 +15,9 @@ import {
   of,
   take,
 } from 'rxjs';
+import { EUVehicleCategory as EUVehicleCategoryPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryHgv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryTrl } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const techRecordValidateResolver: ResolveFn<boolean> = () => {
   const store: Store<State> = inject(Store<State>);
@@ -59,6 +62,7 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
+    techRecord_euVehicleCategory: EUVehicleCategoryPsv,
   } as const;
 
   Object.keys(checks).forEach((key: string) => {
@@ -79,6 +83,7 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
     techRecord_vehicleConfiguration: TrlVehicleConfiguration,
+    techRecord_euVehicleCategory: EUVehicleCategoryTrl,
   };
 
   Object.keys(checks).forEach((key: string) => {
@@ -99,6 +104,7 @@ const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
+    techRecord_euVehicleCategory: EUVehicleCategoryHgv,
   };
 
   Object.keys(checks).forEach((key: string) => {

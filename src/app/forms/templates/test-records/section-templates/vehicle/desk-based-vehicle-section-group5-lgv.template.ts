@@ -3,7 +3,7 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
   name: 'vehicleSection',
@@ -43,7 +43,7 @@ export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
+      options: getOptionsFromEnum(EUVehicleCategory),
     },
     {
       name: 'odometerReading',
