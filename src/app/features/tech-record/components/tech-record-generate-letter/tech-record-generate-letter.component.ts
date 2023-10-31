@@ -57,7 +57,9 @@ export class GenerateLetterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => { this.techRecord = techRecord; });
+    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => {
+      this.techRecord = techRecord;
+    });
     this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
   }
 

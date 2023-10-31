@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import {
   ResolveFn,
 } from '@angular/router';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
 import { TechRecordType as TechRecordVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { HgvPsvVehicleConfiguration, TrlVehicleConfiguration } from '@models/vehicle-configuration.enum';
@@ -58,9 +59,12 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
 
 const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
   const validatedRecord: TechRecordVehicleType<'psv'> = { ...record };
-
+  if (!Object.values(VehicleClassDescription).includes(validatedRecord.techRecord_vehicleClass_description)) {
+    (validatedRecord as any).techRecord_vehicleClass_description = null;
+  }
   const checks = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
+    techRecord_vehicleClass_description: VehicleClassDescription,
   } as const;
 
   type Checks = typeof checks;
@@ -72,7 +76,7 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
     if (record[key as keyof TechRecordVehicleType<'psv'>]) {
       const valid = Object.values(checks).includes(checks[`${key}`]);
       if (!valid) {
-        validatedRecord[`${key}`] = null;
+        (validatedRecord as any)[`${key}`] = null;
       }
     }
   });
