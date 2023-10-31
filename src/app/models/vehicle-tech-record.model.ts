@@ -1,6 +1,7 @@
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
 export interface VehicleTechRecordModel {
@@ -99,27 +100,6 @@ export enum FrameDescriptions {
   INTEGRAL = 'integral',
   BOX_SECTION = 'Box section',
   U_SECTION = 'U section',
-}
-
-export enum EuVehicleCategories {
-  M1 = 'm1',
-  M2 = 'm2',
-  M3 = 'm3',
-  N1 = 'n1',
-  N2 = 'n2',
-  N3 = 'n3',
-  O1 = 'o1',
-  O2 = 'o2',
-  O3 = 'o3',
-  O4 = 'o4',
-  L1E_A = 'l1e-a',
-  L1E = 'l1e',
-  L2E = 'l2e',
-  L3E = 'l3e',
-  L4E = 'l4e',
-  L5E = 'l5e',
-  L6E = 'l6e',
-  L7E = 'l7e',
 }
 
 export enum VehicleSizes {
@@ -296,7 +276,7 @@ export interface TechRecordModel {
   frameDescription?: FrameDescriptions;
   offRoad?: boolean;
   numberOfWheelsDriven?: number;
-  euVehicleCategory?: EuVehicleCategories;
+  euVehicleCategory?: EUVehicleCategory;
   emissionsLimit?: number;
   seatsLowerDeck?: number;
   seatsUpperDeck?: number;

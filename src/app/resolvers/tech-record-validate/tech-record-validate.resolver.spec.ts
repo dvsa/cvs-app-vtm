@@ -34,7 +34,11 @@ describe('TechRecordViewResolver', () => {
   describe('fetch tech record result', () => {
     it('should dispatch a tech record with null if hgv vehicle configuration invalid', async () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      jest.spyOn(store, 'select').mockReturnValue(of({ techRecord_vehicleType: 'hgv', techRecord_vehicleConfiguration: 'semi-trailer' }));
+      jest.spyOn(store, 'select').mockReturnValue(of({
+        techRecord_vehicleType: 'hgv',
+        techRecord_vehicleConfiguration: 'semi-trailer',
+        techRecord_euVehicleCategory: 'o1',
+      }));
       const result = TestBed.runInInjectionContext(
         () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
       ) as Observable<boolean>;
@@ -47,12 +51,17 @@ describe('TechRecordViewResolver', () => {
           techRecord_vehicleType: 'hgv',
           techRecord_vehicleConfiguration: null,
           techRecord_vehicleClass_description: 'heavy goods vehicle',
+          techRecord_euVehicleCategory: null,
         },
       }));
     });
     it('should dispatch a tech record with null if psv vehicle configuration invalid', async () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      jest.spyOn(store, 'select').mockReturnValue(of({ techRecord_vehicleType: 'psv', techRecord_vehicleConfiguration: 'semi-trailer' }));
+      jest.spyOn(store, 'select').mockReturnValue(of({
+        techRecord_vehicleType: 'psv',
+        techRecord_vehicleConfiguration: 'semi-trailer',
+        techRecord_euVehicleCategory: 'o1',
+      }));
       const result = TestBed.runInInjectionContext(
         () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
       ) as Observable<boolean>;
@@ -61,7 +70,11 @@ describe('TechRecordViewResolver', () => {
       expect(resolveResult).toBe(true);
       expect(dispatchSpy).toHaveBeenCalledTimes(1);
       expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
-        vehicleTechRecord: { techRecord_vehicleType: 'psv', techRecord_vehicleConfiguration: null },
+        vehicleTechRecord: {
+          techRecord_vehicleType: 'psv',
+          techRecord_vehicleConfiguration: null,
+          techRecord_euVehicleCategory: null,
+        },
       }));
     });
     it('should dispatch a tech record with null if psv vehicle class is invalid', async () => {
@@ -80,7 +93,10 @@ describe('TechRecordViewResolver', () => {
     });
     it('should dispatch a tech record with null if trl vehicle configuration invalid', async () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      jest.spyOn(store, 'select').mockReturnValue(of({ techRecord_vehicleType: 'trl', techRecord_vehicleConfiguration: 'rigid' }));
+      jest.spyOn(store, 'select').mockReturnValue(of({
+        techRecord_vehicleType: 'trl',
+        techRecord_vehicleConfiguration: 'rigid',
+      }));
       const result = TestBed.runInInjectionContext(
         () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
       ) as Observable<boolean>;
@@ -89,7 +105,11 @@ describe('TechRecordViewResolver', () => {
       expect(resolveResult).toBe(true);
       expect(dispatchSpy).toHaveBeenCalledTimes(1);
       expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
-        vehicleTechRecord: { techRecord_vehicleType: 'trl', techRecord_vehicleConfiguration: null, techRecord_vehicleClass_description: 'trailer' },
+        vehicleTechRecord: {
+          techRecord_vehicleType: 'trl',
+          techRecord_vehicleConfiguration: null,
+          techRecord_vehicleClass_description: 'trailer',
+        },
       }));
     });
     it('should not dispatch a tech record with trl vehicle configuration is valid', async () => {
@@ -98,6 +118,7 @@ describe('TechRecordViewResolver', () => {
         techRecord_vehicleType: 'trl',
         techRecord_vehicleConfiguration: 'semi-trailer',
         techRecord_vehicleClass_description: 'trailer',
+        techRecord_euVehicleCategory: 'o1',
       }));
       const result = TestBed.runInInjectionContext(
         () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
