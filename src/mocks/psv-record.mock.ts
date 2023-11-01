@@ -9,7 +9,7 @@ import {
   FuelTypes,
   Retarders,
   StatusCodes,
-  VehicleSizes
+  VehicleSizes,
 } from '../app/models/vehicle-tech-record.model';
 
 export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> => ({

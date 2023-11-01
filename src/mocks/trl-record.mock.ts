@@ -6,7 +6,7 @@ import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-reco
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
 import {
   FrameDescriptions,
-  StatusCodes
+  StatusCodes,
 } from '@models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
 
