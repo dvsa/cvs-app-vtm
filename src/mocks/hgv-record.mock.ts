@@ -1,12 +1,13 @@
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { BodyTypeDescription } from '@models/body-type-enum';
 // disable linting error as this util function is only used in tests and should, therefore, be a devDependency
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createMock } from 'ts-auto-mock';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
+import { createMock } from 'ts-auto-mock';
 import {
-  FuelTypes, StatusCodes, VehicleConfigurations,
+  FuelTypes, StatusCodes,
 } from '../app/models/vehicle-tech-record.model';
 
 export const createMockHgv = (systemNumber: number): TechRecordType<'hgv'> =>
@@ -32,7 +33,7 @@ export const createMockHgv = (systemNumber: number): TechRecordType<'hgv'> =>
     techRecord_drawbarCouplingFitted: true,
     techRecord_vehicleClass_description: 'heavy goods vehicle',
     techRecord_vehicleClass_code: 'v',
-    techRecord_vehicleConfiguration: VehicleConfigurations.ARTICULATED,
+    techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
     techRecord_offRoad: true,
     techRecord_euVehicleCategory: EUVehicleCategory.N1,
     techRecord_emissionsLimit: 1234,

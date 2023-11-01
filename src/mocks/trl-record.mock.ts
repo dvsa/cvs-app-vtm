@@ -1,14 +1,14 @@
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 // disable linting error as this util function is only used in tests and should, therefore, be a devDependency
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createMock } from 'ts-auto-mock';
-import {
-  StatusCodes,
-  VehicleConfigurations,
-  FrameDescriptions,
-} from '@models/vehicle-tech-record.model';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
+import {
+  FrameDescriptions,
+  StatusCodes
+} from '@models/vehicle-tech-record.model';
+import { createMock } from 'ts-auto-mock';
 
 export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
   createMock<TechRecordType<'trl'>>({
@@ -37,7 +37,7 @@ export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
 
     techRecord_vehicleClass_description: 'trailer',
     techRecord_vehicleClass_code: 't',
-    techRecord_vehicleConfiguration: VehicleConfigurations.ARTICULATED,
+    techRecord_vehicleConfiguration: VehicleConfiguration.SEMI_TRAILER,
     techRecord_couplingType: '1',
     techRecord_maxLoadOnCoupling: 1234,
     techRecord_frameDescription: FrameDescriptions.FRAME_SECTION,
