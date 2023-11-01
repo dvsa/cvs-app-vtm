@@ -20,6 +20,9 @@ import {
 } from 'rxjs';
 import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryHgv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryTrl } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const techRecordValidateResolver: ResolveFn<boolean> = () => {
   const store: Store<State> = inject(Store<State>);
@@ -65,6 +68,7 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
   const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
     techRecord_vehicleClass_description: VehicleClassDescriptionPSV,
+    techRecord_euVehicleCategory: EUVehicleCategoryPsv,
   } as const;
 
   Object.keys(checks).forEach((key: string) => {
@@ -87,6 +91,7 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
   const checks: any = {
     techRecord_vehicleConfiguration: TrlVehicleConfiguration,
     techRecord_tyreUseCode: TrlTyreUseCode,
+    techRecord_euVehicleCategory: EUVehicleCategoryTrl,
   };
 
   Object.keys(checks).forEach((key: string) => {
@@ -109,6 +114,7 @@ const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
   const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
     techRecord_tyreUseCode: HgvTyreUseCode,
+    techRecord_euVehicleCategory: EUVehicleCategoryHgv,
   };
 
   Object.keys(checks).forEach((key: string) => {

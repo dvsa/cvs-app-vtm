@@ -1,12 +1,12 @@
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
-import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
 import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
 // disable linting error as this util function is only used in tests and should, therefore, be a devDependency
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createMock, createMockList } from 'ts-auto-mock';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import * as Emissions from '../app/models/test-types/emissions.enum';
 import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { mockDefectList } from './mock-defects';
@@ -75,7 +75,7 @@ export const mockTestResult = (i = 0, vehicleType: VehicleTypes = VehicleTypes.P
 
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
     countryOfRegistration: 'gb',
-    euVehicleCategory: EuVehicleCategory.M3,
+    euVehicleCategory: EUVehicleCategory.M3,
     odometerReading: 100,
     odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
     reasonForCreation: 'mock test result data',
@@ -117,7 +117,7 @@ export const mockTestResultArchived = (
     createdByName: `Person ${i}`,
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
     countryOfRegistration: 'gb',
-    euVehicleCategory: EuVehicleCategory.M3,
+    euVehicleCategory: EUVehicleCategory.M3,
     odometerReading: 100,
     odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
     reasonForCreation: `reason ${i}`,
