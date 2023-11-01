@@ -9,11 +9,13 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { approvalType, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechRecord } from '@api/vehicle';
 
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { FormControl } from '@angular/forms';
+import { ApprovalType as approvalTypeHgvOrPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js'
+import { ApprovalType as approvalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js'
 
 @Component({
   selector: 'app-approval-type[techRecord]',
@@ -30,11 +32,13 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
   protected chosenApprovalType: string | undefined;
   protected approvalTypeChange = false;
+  protected approvalType: typeof approvalTypeHgvOrPsv | typeof approvalType = approvalType;
   formControls: { [key: string]: FormControl } = {};
 
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit() {
+    this.approvalType = this.techRecord.techRecord_vehicleType === 'psv' || this.techRecord.techRecord_vehicleType === 'hgv' ? approvalTypeHgvOrPsv : approvalType;
     this.form = this.dfs.createForm(
       this.techRecord.techRecord_vehicleType === 'psv' ? PsvTypeApprovalTemplate : HgvAndTrlTypeApprovalTemplate,
       this.techRecord,
@@ -100,5 +104,4 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   }
   protected readonly TechRecord = TechRecord;
   protected readonly getOptionsFromEnum = getOptionsFromEnum;
-  protected readonly approvalType = approvalType;
 }
