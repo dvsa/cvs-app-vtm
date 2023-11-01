@@ -6,7 +6,6 @@ import {
   selector: '[appNumberOnly]',
 })
 export class NumberOnlyDirective {
-  @Input('appNumberOnly') options?: any;
   inputElement: HTMLInputElement;
 
   private navigationKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'Home', 'End', 'ArrowLeft', 'ArrowRight', 'Clear', 'Copy', 'Paste'];
@@ -28,9 +27,6 @@ export class NumberOnlyDirective {
       || (e.key === 'v' && e.metaKey === true)
       || (e.key === 'x' && e.metaKey === true)
     ) {
-      return;
-    }
-    if (this.options?.enableDecimals) {
       return;
     }
     if (e.key === ' ' || Number.isNaN(Number(e.key))) {
