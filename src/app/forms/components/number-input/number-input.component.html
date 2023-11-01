@@ -12,8 +12,8 @@
     <div *ngIf="prefix" class="govuk-input__suffix prefix" aria-hidden="true">
       <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>
     </div>
-
     <input
+      *ngIf="!enableDecimals"
       id="{{ name }}"
       name="{{ name }}"
       type="number"
@@ -23,7 +23,19 @@
       (ngModelChange)="onChange($event)"
       (blur)="onTouched(); handleEvent($event)"
       (focus)="handleEvent($event)"
-      [appNumberOnly]="{ enableDecimals: enableDecimals }"
+      appNumberOnly
+    />
+    <input
+      *ngIf="enableDecimals"
+      id="{{ name }}"
+      name="{{ name }}"
+      type="number"
+      [class]="style"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      (ngModelChange)="onChange($event)"
+      (blur)="onTouched(); handleEvent($event)"
+      (focus)="handleEvent($event)"
     />
 
     <div *ngIf="suffix" class="govuk-input__suffix" aria-hidden="true">
