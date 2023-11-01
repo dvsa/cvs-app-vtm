@@ -5,7 +5,9 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { LETTER_TYPES } from '@forms/templates/general/letter-types';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -51,7 +53,7 @@ export class GenerateLetterComponent implements OnInit {
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
-    public userService: UserService
+    public userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -87,10 +89,9 @@ export class GenerateLetterComponent implements OnInit {
       return this.globalErrorService.addError({ error: 'Could not retrieve current technical record' });
     }
 
-    const paragraphId =
-      this.form.value.letterType === 'trailer acceptance'
-        ? this.paragraphMap.get((this.techRecord as TechRecordType<'trl'>).techRecord_approvalType as ApprovalType)
-        : 4;
+    const paragraphId = this.form.value.letterType === 'trailer acceptance'
+      ? this.paragraphMap.get((this.techRecord as TechRecordType<'trl'>).techRecord_approvalType as ApprovalType)
+      : 4;
 
     this.store.dispatch(generateLetter({ letterType: this.form.value.letterType, paragraphId: paragraphId ?? 4 }));
   }

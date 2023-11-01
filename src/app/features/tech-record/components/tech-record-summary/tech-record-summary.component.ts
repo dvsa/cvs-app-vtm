@@ -1,5 +1,7 @@
 import { ViewportScroller } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -18,7 +20,9 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes,
+} from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { LoadingService } from '@services/loading/loading.service';
@@ -27,7 +31,9 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
-import { Observable, Subject, debounceTime, map, take, takeUntil } from 'rxjs';
+import {
+  Observable, Subject, debounceTime, map, take, takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -67,7 +73,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private viewportScroller: ViewportScroller,
     private store: Store,
-    private loading: LoadingService
+    private loading: LoadingService,
   ) {}
 
   ngOnInit(): void {
@@ -80,21 +86,21 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
           const techRecord = cloneDeep(record);
 
           if (
-            techRecord.techRecord_vehicleType === VehicleTypes.HGV ||
-            (techRecord.techRecord_vehicleType === VehicleTypes.TRL &&
-              techRecord.techRecord_euVehicleCategory !== 'o1' &&
-              techRecord.techRecord_euVehicleCategory !== 'o2')
+            techRecord.techRecord_vehicleType === VehicleTypes.HGV
+            || (techRecord.techRecord_vehicleType === VehicleTypes.TRL
+              && techRecord.techRecord_euVehicleCategory !== 'o1'
+              && techRecord.techRecord_euVehicleCategory !== 'o2')
           ) {
             const [axles, axleSpacing] = this.axlesService.normaliseAxles(
               techRecord.techRecord_axles ?? [],
-              techRecord.techRecord_dimensions_axleSpacing
+              techRecord.techRecord_dimensions_axleSpacing,
             );
             techRecord.techRecord_dimensions_axleSpacing = axleSpacing;
             techRecord.techRecord_axles = axles;
           }
           return techRecord;
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe((techRecord) => {
         if (techRecord) {

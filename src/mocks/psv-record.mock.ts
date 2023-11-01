@@ -4,7 +4,9 @@ import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tec
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { BodyTypeDescription } from '@models/body-type-enum';
-import { FuelTypes, Retarders, StatusCodes, VehicleConfigurations, VehicleSizes } from '../app/models/vehicle-tech-record.model';
+import {
+  FuelTypes, Retarders, StatusCodes, VehicleConfigurations, VehicleSizes,
+} from '../app/models/vehicle-tech-record.model';
 
 export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> => ({
   systemNumber: 'PSV',

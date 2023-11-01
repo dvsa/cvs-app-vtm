@@ -1,8 +1,12 @@
-import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnChanges, OnDestroy, OnInit,
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import {
+  BehaviorSubject, Observable, Subscription, combineLatest,
+} from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 const patterns: Record<string, RegExp> = {
@@ -268,7 +272,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
         } else {
           this.onChange(this.processApprovalTypeNumber(approvalTypeNumber1, approvalTypeNumber2, approvalTypeNumber3, approvalTypeNumber4));
         }
-      }
+      },
     );
   }
 
@@ -354,7 +358,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
     approvalTypeNumber1: string | undefined,
     approvalTypeNumber2: string | undefined,
     approvalTypeNumber3: string | undefined,
-    approvalTypeNumber4: string | undefined
+    approvalTypeNumber4: string | undefined,
   ) {
     switch (this.approvalType) {
       case 'NTA':

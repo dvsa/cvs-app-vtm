@@ -170,7 +170,7 @@ describe('parent sibling validators', () => {
     form = new FormGroup({
       parent: new CustomFormGroup(
         { name: 'parent', type: FormNodeTypes.GROUP },
-        { child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }) }
+        { child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }) },
       ),
       sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL, hide: false }),
     });
@@ -210,7 +210,7 @@ describe('Required validators', () => {
           type: FormNodeTypes.CONTROL,
           children: [],
         },
-        null
+        null,
       ),
     });
     form.controls['sibling'].patchValue('some value');
@@ -408,7 +408,7 @@ describe('aheadOfDate', () => {
           type: FormNodeTypes.CONTROL,
           children: [],
         },
-        null
+        null,
       ),
     });
   });
@@ -444,7 +444,7 @@ describe('dateNotExceed', () => {
           type: FormNodeTypes.CONTROL,
           children: [],
         },
-        null
+        null,
       ),
     });
   });
@@ -494,7 +494,7 @@ describe('validate VRM/TrailerId Length', () => {
         {
           child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }),
           sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL }),
-        }
+        },
       ),
     });
   });
@@ -578,7 +578,7 @@ describe('handlePsvPassengersChange', () => {
       techRecord_vehicleSize: new CustomFormControl({ name: 'techRecord_vehicleSize', type: FormNodeTypes.CONTROL }, undefined),
       techRecord_vehicleClass_description: new CustomFormControl(
         { name: 'techRecord_vehicleClass_description', type: FormNodeTypes.CONTROL },
-        undefined
+        undefined,
       ),
       techRecord_seatsLowerDeck: new CustomFormControl({ name: 'techRecord_seatsLowerDeck', type: FormNodeTypes.CONTROL }, undefined),
       techRecord_seatsUpperDeck: new CustomFormControl({ name: 'techRecord_seatsUpperDeck', type: FormNodeTypes.CONTROL }, undefined),
