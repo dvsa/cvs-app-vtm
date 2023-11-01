@@ -61,14 +61,15 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       if (event?.axles) {
         event.axles = (event.axles as Axle[]).filter((axle) => !!axle?.axleNumber);
       }
-
+      if (event.techRecord_tyreUseCode === ' ') {
+        event = { ...event, techRecord_tyreUseCode: null };
+      }
       this.formChange.emit(event);
     });
   }
 
   ngOnChanges(simpleChanges: SimpleChanges): void {
     const fitmentUpdated = this.checkFitmentCodeHasChanged(simpleChanges);
-
     if (!fitmentUpdated) {
       this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
     }
@@ -242,6 +243,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   protected readonly getOptionsFromEnum = getOptionsFromEnum;
 
   get tyreUseCode() {
-    return this.vehicleTechRecord.techRecord_vehicleType === 'hgv' ? HgvTyreUseCode : TrlTyreUseCode;
+    const useCodeEnum = this.vehicleTechRecord.techRecord_vehicleType === 'hgv' ? HgvTyreUseCode : TrlTyreUseCode;
+    return getOptionsFromEnum({ ' ': ' ', ...useCodeEnum });
   }
 }
