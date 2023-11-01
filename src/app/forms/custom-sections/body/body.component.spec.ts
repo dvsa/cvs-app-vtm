@@ -4,11 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 import { BodyComponent } from './body.component';
@@ -16,6 +16,7 @@ import { BodyComponent } from './body.component';
 describe('BodyComponent', () => {
   let component: BodyComponent;
   let fixture: ComponentFixture<BodyComponent>;
+  let store: MockStore;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -28,6 +29,7 @@ describe('BodyComponent', () => {
         { provide: UserService, useValue: {} },
       ],
     }).compileComponents();
+    store = TestBed.inject(MockStore);
   });
 
   beforeEach(() => {
@@ -73,6 +75,58 @@ describe('BodyComponent', () => {
       expect((component.techRecord as TechRecordType<'psv'>).techRecord_chassisMake).toStrictEqual(
         component.form.controls['techRecord_chassisMake']?.value,
       );
+    });
+  });
+  describe('updateArticulatedHgvVehicleBodyType', () => {
+    it('should dispatch updateEditingTechRecord if vehicle is hgv and articulated', () => {
+      const mockRecord = {
+        techRecord_vehicleType: 'hgv',
+        techRecord_vehicleConfiguration: 'articulated',
+        techRecord_bodyType_description: '',
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_brakes_dtpNumber: '000000',
+        techRecord_bodyModel: 'model',
+        techRecord_chassisMake: 'chassisType',
+      } as unknown as V3TechRecordModel;
+      component.techRecord = mockRecord;
+
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      component.updateHgvVehicleBodyType(mockRecord as TechRecordType<'hgv'>);
+      expect(dispatchSpy).toHaveBeenCalled();
+      expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
+        vehicleTechRecord: {
+          createdTimestamp: 'bar',
+          systemNumber: 'foo',
+          techRecord_bodyModel: 'model',
+          techRecord_bodyType_description: 'articulated',
+          techRecord_brakes_dtpNumber: '000000',
+          techRecord_chassisMake: 'chassisType',
+          techRecord_vehicleConfiguration: 'articulated',
+          techRecord_vehicleType: 'hgv',
+          vin: 'testVin',
+        },
+      }));
+    });
+    it('should not dispatch updateEditingTechRecord if vehicle is hgv and rigid', () => {
+      const mockRecord = {
+        techRecord_vehicleType: 'hgv',
+        techRecord_vehicleConfiguration: 'rigid',
+        techRecord_bodyType_description: '',
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+        techRecord_brakes_dtpNumber: '000000',
+        techRecord_bodyModel: 'model',
+        techRecord_chassisMake: 'chassisType',
+      } as unknown as V3TechRecordModel;
+
+      component.techRecord = mockRecord;
+
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      component.updateHgvVehicleBodyType(mockRecord as TechRecordType<'hgv'>);
+      expect(dispatchSpy).not.toHaveBeenCalled();
     });
   });
 });

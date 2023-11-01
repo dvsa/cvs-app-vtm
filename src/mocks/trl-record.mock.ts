@@ -3,8 +3,12 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createMock } from 'ts-auto-mock';
 import {
-  EuVehicleCategories, FrameDescriptions, StatusCodes, VehicleConfigurations, approvalType,
-} from '../app/models/vehicle-tech-record.model';
+  StatusCodes,
+  VehicleConfigurations,
+  FrameDescriptions,
+} from '@models/vehicle-tech-record.model';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 
 export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
   createMock<TechRecordType<'trl'>>({
@@ -32,15 +36,15 @@ export const createMockTrl = (systemNumber: number): TechRecordType<'trl'> =>
     // techRecord_drawbarCouplingFitted: true,
 
     techRecord_vehicleClass_description: 'trailer',
-    techRecord_vehicleClass_code: '1',
+    techRecord_vehicleClass_code: 't',
     techRecord_vehicleConfiguration: VehicleConfigurations.ARTICULATED,
     techRecord_couplingType: '1',
     techRecord_maxLoadOnCoupling: 1234,
     techRecord_frameDescription: FrameDescriptions.FRAME_SECTION,
-    techRecord_euVehicleCategory: EuVehicleCategories.M1,
+    techRecord_euVehicleCategory: EUVehicleCategory.M1,
     techRecord_departmentalVehicleMarker: true,
     techRecord_reasonForCreation: 'Brake Failure',
-    techRecord_approvalType: approvalType.ECSSTA,
+    techRecord_approvalType: ApprovalType.ECSSTA,
     techRecord_approvalTypeNumber: 'approval123',
     techRecord_ntaNumber: 'nta789',
     techRecord_variantNumber: 'variant123456',
