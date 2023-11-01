@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DocumentRetrievalService } from '@api/document-retrieval';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
+import { FeatureToggleDirective } from '@directives/feature-toggle.directive';
 import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
 import { BannerComponent } from './components/banner/banner.component';
@@ -33,6 +34,8 @@ import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
     ButtonComponent,
     BannerComponent,
     RoleRequiredDirective,
+    FeatureToggleDirective,
+    FeatureToggleDirective,
     TagComponent,
     NumberPlateComponent,
     IconComponent,
@@ -59,6 +62,7 @@ import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
     ButtonComponent,
     BannerComponent,
     RoleRequiredDirective,
+    FeatureToggleDirective,
     TagComponent,
     NumberPlateComponent,
     IconComponent,

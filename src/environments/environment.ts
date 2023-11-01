@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  isDevelop: false,
   RemoveAADFullAccessRole: true,
   EnableDevTools: true,
   VTM_CLIENT_ID: '',
