@@ -2,12 +2,18 @@ import { inject } from '@angular/core';
 import {
   ResolveFn,
 } from '@angular/router';
-import { VehicleClassDescription as VehicleClassDescriptionPSV }
-  from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryTrl } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryHgv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
+import { EUVehicleCategory as EUVehicleCategoryPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
+import { VehicleClassDescription as VehicleClassDescriptionPSV } from
+  '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
+import { VehicleConfiguration as VehicleConfigurationHgvPsv } from
+  '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
+import { VehicleConfiguration as VehicleConfigurationTrl } from
+  '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
 import { TechRecordType as TechRecordVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { HgvPsvVehicleConfiguration, TrlVehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
@@ -20,9 +26,6 @@ import {
 } from 'rxjs';
 import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
-import { EUVehicleCategory as EUVehicleCategoryPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
-import { EUVehicleCategory as EUVehicleCategoryHgv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
-import { EUVehicleCategory as EUVehicleCategoryTrl } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const techRecordValidateResolver: ResolveFn<boolean> = () => {
   const store: Store<State> = inject(Store<State>);
@@ -66,7 +69,7 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
   const validatedRecord: TechRecordVehicleType<'psv'> = { ...record };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
-    techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
+    techRecord_vehicleConfiguration: VehicleConfigurationHgvPsv,
     techRecord_vehicleClass_description: VehicleClassDescriptionPSV,
     techRecord_euVehicleCategory: EUVehicleCategoryPsv,
   } as const;
@@ -89,8 +92,8 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
   validatedRecord.techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
-    techRecord_vehicleConfiguration: TrlVehicleConfiguration,
     techRecord_tyreUseCode: TrlTyreUseCode,
+    techRecord_vehicleConfiguration: VehicleConfigurationTrl,
     techRecord_euVehicleCategory: EUVehicleCategoryTrl,
   };
 
@@ -112,8 +115,8 @@ const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
   validatedRecord.techRecord_vehicleClass_description = VehicleClassDescription.HeavyGoodsVehicle;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
-    techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
     techRecord_tyreUseCode: HgvTyreUseCode,
+    techRecord_vehicleConfiguration: VehicleConfigurationHgvPsv,
     techRecord_euVehicleCategory: EUVehicleCategoryHgv,
   };
 
