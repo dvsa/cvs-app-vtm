@@ -28,6 +28,7 @@ export class SwitchableInputComponent implements OnInit {
   @Input() approvalTypeChange?: boolean | undefined = false;
 
   @Input() readOnlyDate?: boolean;
+  @Input() vehicleType?: string | null;
   delimiter = { regex: '\\. (?<!\\..\\. )', separator: '. ' };
 
   ngOnInit(): void {

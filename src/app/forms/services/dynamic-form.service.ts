@@ -57,6 +57,7 @@ export class DynamicFormService {
       CustomValidators.handlePsvPassengersChange(args.passengersOne, args.passengersTwo),
     [ValidatorNames.Enum]: (args: { enum: Record<string, string>; options?: Partial<EnumValidatorOptions> }) =>
       CustomValidators.enum(args.enum, args.options),
+    [ValidatorNames.UpdateFunctionCode]: () => CustomValidators.updateFunctionCode(),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

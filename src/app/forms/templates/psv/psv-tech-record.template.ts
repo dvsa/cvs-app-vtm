@@ -1,10 +1,11 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
-import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
+import { HgvPsvVehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
-import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
+import { FuelTypes } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
 } from '../../services/dynamic-form.types';
@@ -120,8 +121,8 @@ export const PsvTechRecord: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(VehicleConfiguration),
-      validators: [],
+      options: getOptionsFromEnum(HgvPsvVehicleConfiguration),
+      validators: [{ name: ValidatorNames.UpdateFunctionCode }],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
@@ -131,7 +132,7 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
+      options: getOptionsFromEnum(EUVehicleCategory),
       validators: [],
     },
     {
@@ -203,17 +204,8 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.SELECT,
       options: [
-        { label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
-        { label: 'not applicable', value: 'not applicable' },
         { label: 'small psv (ie: less than or equal to 22 passengers)', value: 'small psv (ie: less than or equal to 22 seats)' },
-        { label: 'motorbikes up to 200cc', value: 'motorbikes up to 200cc' },
-        { label: 'trailer', value: 'trailer' },
         { label: 'large psv(ie: greater than or equal to 23 passengers)', value: 'large psv(ie: greater than 23 seats)' },
-        { label: '3 wheelers', value: '3 wheelers' },
-        { label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
-        { label: 'MOT class 4', value: 'MOT class 4' },
-        { label: 'MOT class 7', value: 'MOT class 7' },
-        { label: 'MOT class 5', value: 'MOT class 5' },
       ],
       class: '.govuk-input--width-10',
       validators: [{ name: ValidatorNames.Required }],
@@ -271,6 +263,13 @@ export const PsvTechRecord: FormNode = {
         { value: false, label: 'No' },
       ],
       validators: [],
+    },
+    {
+      name: 'techRecord_functionCode',
+      label: 'Function code',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
     },
   ],
 };

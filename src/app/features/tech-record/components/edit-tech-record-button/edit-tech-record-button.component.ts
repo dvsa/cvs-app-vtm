@@ -43,8 +43,9 @@ export class EditTechRecordButtonComponent implements OnDestroy {
 
   get isArchived$(): Observable<boolean> {
     return this.technicalRecordService.techRecord$.pipe(
-      map((techRecord) => !(techRecord?.techRecord_statusCode === StatusCodes.CURRENT
-         || techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL)),
+      map(
+        (techRecord) => !(techRecord?.techRecord_statusCode === StatusCodes.CURRENT || techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL),
+      ),
     );
   }
 

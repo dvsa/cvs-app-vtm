@@ -17,7 +17,7 @@
 
     <tbody class="govuk-table__body">
       <tr class="govuk-table__row" *ngFor="let item of paginatedItems$ | async">
-        <td *ngFor="let column of columns" class="govuk-table__cell">{{ item[column.name] }}</td>
+        <td *ngFor="let column of columns" class="govuk-table__cell">{{ $any(item)[column.name] }}</td>
         <td class="govuk-table__cell">{{ item.createdAt | date : 'dd/MM/yyyy HH:mm' }}</td>
         <td class="govuk-table__cell">{{ item.createdName }}</td>
       </tr>

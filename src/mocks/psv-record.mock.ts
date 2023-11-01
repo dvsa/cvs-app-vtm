@@ -1,8 +1,10 @@
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { BodyTypeDescription } from '@models/body-type-enum';
-import { EuVehicleCategories, FuelTypes, Retarders, StatusCodes, VehicleConfigurations, VehicleSizes } from '../app/models/vehicle-tech-record.model';
+import { FuelTypes, Retarders, StatusCodes, VehicleConfigurations, VehicleSizes } from '../app/models/vehicle-tech-record.model';
 
 export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> => ({
   systemNumber: 'PSV',
@@ -38,10 +40,10 @@ export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> => ({
   techRecord_euroStandard: 'Euro 4',
   techRecord_fuelPropulsionSystem: FuelTypes.HYBRID,
 
-  techRecord_vehicleClass_description: 'large psv(ie: greater than 23 seats)',
+  techRecord_vehicleClass_description: VehicleClassDescription.LARGE_PSV,
   techRecord_vehicleClass_code: '1',
   techRecord_vehicleConfiguration: VehicleConfigurations.ARTICULATED,
-  techRecord_euVehicleCategory: EuVehicleCategories.M1,
+  techRecord_euVehicleCategory: EUVehicleCategory.M1,
   techRecord_emissionsLimit: 1234,
   techRecord_seatsLowerDeck: 1234,
   techRecord_seatsUpperDeck: 1234,

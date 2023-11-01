@@ -37,8 +37,8 @@ export class GenerateLetterComponent implements OnInit {
     [ApprovalType.EU_WVTA_23_ON, 7],
     [ApprovalType.QNIG, 3],
     [ApprovalType.PROV_GB_WVTA, 3],
-    [ApprovalType.SMALL_SERIES_NKSXX, 3],
     [ApprovalType.SMALL_SERIES_NKS, 3],
+    [ApprovalType.SMALL_SERIES_NKSXX, 3],
     [ApprovalType.IVA_VCA, 3],
     [ApprovalType.IVA_DVSA_NI, 3],
   ]);
@@ -89,7 +89,7 @@ export class GenerateLetterComponent implements OnInit {
 
     const paragraphId =
       this.form.value.letterType === 'trailer acceptance'
-        ? this.paragraphMap.get((this.techRecord as TechRecordType<'trl'>)!.techRecord_approvalType as ApprovalType)
+        ? this.paragraphMap.get((this.techRecord as TechRecordType<'trl'>).techRecord_approvalType as ApprovalType)
         : 4;
 
     this.store.dispatch(generateLetter({ letterType: this.form.value.letterType, paragraphId: paragraphId ?? 4 }));
