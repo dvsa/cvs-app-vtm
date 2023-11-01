@@ -24,6 +24,8 @@ import {
   of,
   take,
 } from 'rxjs';
+import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
+import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 
 export const techRecordValidateResolver: ResolveFn<boolean> = () => {
   const store: Store<State> = inject(Store<State>);
@@ -90,6 +92,7 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
   validatedRecord.techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
+    techRecord_tyreUseCode: TrlTyreUseCode,
     techRecord_vehicleConfiguration: VehicleConfigurationTrl,
     techRecord_euVehicleCategory: EUVehicleCategoryTrl,
   };
@@ -112,6 +115,7 @@ const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
   validatedRecord.techRecord_vehicleClass_description = VehicleClassDescription.HeavyGoodsVehicle;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
+    techRecord_tyreUseCode: HgvTyreUseCode,
     techRecord_vehicleConfiguration: VehicleConfigurationHgvPsv,
     techRecord_euVehicleCategory: EUVehicleCategoryHgv,
   };
