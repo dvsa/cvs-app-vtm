@@ -1,11 +1,11 @@
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
-import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
 import { TestType } from '@models/test-types/test-type.model';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { StatusCodes, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TestResultStatus } from './test-result-status.enum';
 import { TestCodes } from './testCodes.enum';
 import { TypeOfTest } from './typeOfTest.enum';
@@ -25,7 +25,7 @@ export interface TestResultModel {
 
   trailerId: string;
   countryOfRegistration: string;
-  euVehicleCategory: EuVehicleCategory | null;
+  euVehicleCategory: EUVehicleCategory | null;
   odometerReading: number;
   odometerReadingUnits: OdometerReadingUnits;
   preparerName: string;

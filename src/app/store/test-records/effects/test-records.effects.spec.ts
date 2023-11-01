@@ -10,7 +10,6 @@ import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
-import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
 import { resultOfTestEnum, TestType } from '@models/test-types/test-type.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -25,6 +24,7 @@ import { selectQueryParams, selectRouteNestedParams } from '@store/router/select
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { createMock, createMockList } from 'ts-auto-mock';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
 import { masterTpl } from '../../../forms/templates/test-records/master.template';
 import {
@@ -470,7 +470,7 @@ describe('TestResultsEffects', () => {
               countryOfRegistration: '',
               createdById: undefined,
               createdByName: undefined,
-              euVehicleCategory: EuVehicleCategory.M1,
+              euVehicleCategory: EUVehicleCategory.M1,
               firstUseDate: null,
               lastUpdatedAt: undefined,
               lastUpdatedById: undefined,
