@@ -1,8 +1,9 @@
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
-import { TrlVehicleConfiguration, VehicleConfiguration } from '@models/vehicle-configuration.enum';
-import { EuVehicleCategories, FrameDescriptions } from '@models/vehicle-tech-record.model';
+import { FrameDescriptions } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
@@ -145,7 +146,7 @@ export const TrlTechRecordTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(TrlVehicleConfiguration),
+      options: getOptionsFromEnum(VehicleConfiguration),
       validators: [{ name: ValidatorNames.UpdateFunctionCode }],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
@@ -175,8 +176,8 @@ export const TrlTechRecordTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories).filter(
-        (option) => option.value !== EuVehicleCategories.O1 && option.value !== EuVehicleCategories.O2,
+      options: getOptionsFromEnum(EUVehicleCategory).filter(
+        (option) => option.value !== EUVehicleCategory.O1 && option.value !== EUVehicleCategory.O2,
       ),
       width: FormNodeWidth.S,
     },

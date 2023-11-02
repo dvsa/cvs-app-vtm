@@ -70,8 +70,18 @@ const psvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
 ]);
 
 const hgvBodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
-  ...commonBodyTypeCodeMap.entries(),
-  [BodyTypeCode.U, BodyTypeDescription.ARTIC],
+  [BodyTypeCode.B, BodyTypeDescription.BOX],
+  [BodyTypeCode.C, BodyTypeDescription.REFRIGERATED],
+  [BodyTypeCode.E, BodyTypeDescription.CURTAINSIDER],
+  [BodyTypeCode.F, BodyTypeDescription.FLAT],
+  [BodyTypeCode.I, BodyTypeDescription.LIVESTOCK_CARRIER],
+  [BodyTypeCode.K, BodyTypeDescription.SKELETAL],
+  [BodyTypeCode.O, BodyTypeDescription.OTHER_TANKER],
+  [BodyTypeCode.P, BodyTypeDescription.PETROL_OR_OIL_TANKER],
+  [BodyTypeCode.S, BodyTypeDescription.SKIP_LOADER],
+  [BodyTypeCode.T, BodyTypeDescription.TIPPER],
+  [BodyTypeCode.X, BodyTypeDescription.OTHER],
+  [BodyTypeCode.Y, BodyTypeDescription.CAR_TRANSPORTER],
   [BodyTypeCode.A, BodyTypeDescription.TRACTOR],
   [BodyTypeCode.L, BodyTypeDescription.LOW_LOADER],
   [BodyTypeCode.M, BodyTypeDescription.CONCRETE_MIXER],

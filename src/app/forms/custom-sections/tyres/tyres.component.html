@@ -115,11 +115,12 @@
 
     <app-switchable-input
       [form]="form"
-      [type]="types.TEXT"
+      [type]="types.DROPDOWN"
       name="techRecord_tyreUseCode"
       label="Tyre Use Code"
       [width]="widths.XS"
       [isEditing]="isEditing"
+      [options]="tyreUseCode"
     ></app-switchable-input>
   </ng-container>
 

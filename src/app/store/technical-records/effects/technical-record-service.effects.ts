@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TechRecordGETHGV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { TechRecordGETHGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { EuVehicleCategories, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
@@ -16,6 +16,7 @@ import { cloneDeep, merge } from 'lodash';
 import {
   catchError, concatMap, map, mergeMap, of, switchMap, tap, withLatestFrom,
 } from 'rxjs';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import {
   amendVrm,
   amendVrmFailure,
@@ -188,7 +189,7 @@ export class TechnicalRecordServiceEffects {
           if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
             techRecord.techRecord_vehicleType = VehicleTypes.TRL;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (techRecord as any).euVehicleCategory = EuVehicleCategories.O1;
+            (techRecord as any).euVehicleCategory = EUVehicleCategory.O1;
           }
           if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
             (techRecord as any).techRecord_vehicleConfiguration = null;
@@ -224,11 +225,12 @@ export class TechnicalRecordServiceEffects {
           if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
             techRecord.techRecord_vehicleType = VehicleTypes.TRL;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (techRecord as any).euVehicleCategory = EuVehicleCategories.O1;
+            (techRecord as any).euVehicleCategory = EUVehicleCategory.O1;
           }
 
           if (techRecord_vehicleType === VehicleTypes.HGV || techRecord_vehicleType === VehicleTypes.PSV) {
-            (techRecord as any).techRecord_approvalType = null;
+            (techRecord as TechRecordGETHGV | TechRecordGETPSV).techRecord_approvalType = null;
+            (techRecord as TechRecordGETHGV | TechRecordGETPSV).techRecord_vehicleConfiguration = null;
           }
 
           if (techRecord_vehicleType === VehicleTypes.HGV) {

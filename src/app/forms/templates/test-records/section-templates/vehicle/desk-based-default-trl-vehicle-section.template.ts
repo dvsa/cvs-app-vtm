@@ -4,7 +4,7 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
   name: 'vehicleSection',
@@ -46,7 +46,7 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
+      options: getOptionsFromEnum(EUVehicleCategory),
       validators: [{ name: ValidatorNames.Required }],
     },
     {
