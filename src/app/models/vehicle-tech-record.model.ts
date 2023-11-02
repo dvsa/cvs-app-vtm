@@ -1,8 +1,8 @@
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
 export interface VehicleTechRecordModel {
@@ -137,7 +137,6 @@ export enum LettersIntoAuthApprovalType {
   EU_WVTA_23_ON = 'EU WVTA 23 on',
   QNIG = 'QNIG',
   PROV_GB_WVTA = 'Prov.GB WVTA',
-  SMALL_SERIES = 'Small series',
   SMALL_SERIES_NKSXX = 'Small series NKSXX',
   SMALL_SERIES_NKS = 'Small series NKS',
   IVA_VCA = 'IVA - VCA',

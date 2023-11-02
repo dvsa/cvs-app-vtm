@@ -23,7 +23,7 @@ const patterns: Record<string, RegExp> = {
   QNIG: /^e(.{2})\*(.{4})\/(.{4})\*(.{6})$/i, // 20
   'Prov.GB WVTA': /^(.{3})\*(.{4})\/(.{4})\*(.{6})$/i, // 20
   'Small series NKSXX': /^(.?)11\*NKS(.{0,2})\*(.{0,6})$/i, // 25
-  'Small series NKS': /^(.?)11\*NKS\*(.{0,6})$/i, // 23
+  'Small series NKS': /^(.?)(11\*NKS\*)(.{0,6})$/i, // 23
   'IVA - VCA': /^n11\*NIV(.{2})\/(.{4})\*(.{6})$/i, // 19
 };
 
@@ -195,8 +195,21 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
       return;
     }
 
-    const NTA_IVA_Types = ['NTA', 'IVA', 'IVA - DVSA/NI', 'Small series NKSXX', 'Small series NKS'];
-    const OtherTypes = ['ECTA', 'NSSTA', 'ECSSTA', 'GB WVTA', 'UKNI WVTA', 'EU WVTA Pre 23', 'EU WVTA 23 on', 'QNIG', 'Prov.GB WVTA', 'IVA - VCA'];
+    const NTA_IVA_Types = ['NTA', 'IVA', 'IVA - DVSA/NI'];
+    const OtherTypes = [
+      'ECTA',
+      'NSSTA',
+      'ECSSTA',
+      'GB WVTA',
+      'UKNI WVTA',
+      'EU WVTA Pre 23',
+      'EU WVTA 23 on',
+      'QNIG',
+      'Prov.GB WVTA',
+      'IVA - VCA',
+      'Small series NKSXX',
+      'Small series NKS',
+    ];
 
     if (NTA_IVA_Types.includes(this.approvalType)) {
       this.extractValuesNtaIva(value, patterns[this.approvalType]);

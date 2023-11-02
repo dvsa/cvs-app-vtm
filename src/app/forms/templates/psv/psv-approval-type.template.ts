@@ -40,7 +40,6 @@ export const PsvTypeApprovalTemplate: FormNode = {
               'EU WVTA 23 on',
               'QNIG',
               'Prov.GB WVTA',
-              'Small series',
               'Small series NKSXX',
               'Small series NKS',
               'IVA - VCA',

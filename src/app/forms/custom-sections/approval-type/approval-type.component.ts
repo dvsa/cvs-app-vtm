@@ -48,18 +48,22 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     const { techRecord } = changes;
     if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
-      this.form.patchValue(techRecord.currentValue, { emitEvent: false });
-      this.chosenApprovalType = techRecord.currentValue.techRecord_approvalType ? techRecord.currentValue.techRecord_approvalType : '';
-      techRecord.currentValue.techRecord_coifDate = techRecord.currentValue.techRecord_coifDate
-        ? techRecord.currentValue.techRecord_coifDate.split('T')[0]
+      const { currentValue, previousValue } = techRecord;
+
+      this.form.patchValue(currentValue, { emitEvent: false });
+      this.chosenApprovalType = currentValue.techRecord_approvalType ? currentValue.techRecord_approvalType : '';
+      techRecord.currentValue.techRecord_coifDate = currentValue.techRecord_coifDate
+        ? currentValue.techRecord_coifDate.split('T')[0]
         : '';
-      if (
-        techRecord.currentValue.techRecord_approvalType !== techRecord.previousValue.techRecord_approvalType
-        && techRecord.previousValue.techRecord_approvalType !== null
-      ) {
+
+      // Ignore changes from invalid values to valid values as these are autocorrections...
+      const approvalTypeValid = Object.values(ApprovalType).includes(previousValue.techRecord_approvalType);
+      const approvalTypeChanged = currentValue.techRecord_approvalType !== previousValue.techRecord_approvalType;
+      if (approvalTypeChanged && previousValue.techRecord_approvalType !== null && approvalTypeValid) {
         this.approvalTypeChange = true;
       }
-      if (techRecord.currentValue.techRecord_approvalType === techRecord.previousValue.techRecord_approvalType) {
+
+      if (!approvalTypeChanged) {
         this.approvalTypeChange = false;
       }
     }

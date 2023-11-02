@@ -7,6 +7,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
@@ -83,21 +84,11 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
           if (!record) {
             return;
           }
-          const techRecord = cloneDeep(record);
 
-          if (
-            techRecord.techRecord_vehicleType === VehicleTypes.HGV
-            || (techRecord.techRecord_vehicleType === VehicleTypes.TRL
-              && techRecord.techRecord_euVehicleCategory !== 'o1'
-              && techRecord.techRecord_euVehicleCategory !== 'o2')
-          ) {
-            const [axles, axleSpacing] = this.axlesService.normaliseAxles(
-              techRecord.techRecord_axles ?? [],
-              techRecord.techRecord_dimensions_axleSpacing,
-            );
-            techRecord.techRecord_dimensions_axleSpacing = axleSpacing;
-            techRecord.techRecord_axles = axles;
-          }
+          let techRecord = cloneDeep(record);
+          techRecord = this.normaliseAxles(record);
+          techRecord = this.inferApprovalType(record);
+
           return techRecord;
         }),
         takeUntil(this.destroy$),
@@ -110,10 +101,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
-    this.isEditing && this.technicalRecordService.clearReasonForCreation();
 
     const editingReason = this.activatedRoute.snapshot.data['reason'];
     if (this.isEditing) {
+      this.technicalRecordService.clearReasonForCreation();
       this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
         if (techRecord) {
           if (editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
@@ -224,5 +215,46 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     forms.forEach((form) => DynamicFormService.validate(form, errors));
 
     errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
+  }
+
+  private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {
+    const type = record.techRecord_vehicleType;
+    const category = record.techRecord_euVehicleCategory;
+    if (type === VehicleTypes.HGV || (type === VehicleTypes.TRL && category !== 'o1' && category !== 'o2')) {
+      const [axles, axleSpacing] = this.axlesService.normaliseAxles(
+        record.techRecord_axles ?? [],
+        record.techRecord_dimensions_axleSpacing,
+      );
+
+      record.techRecord_dimensions_axleSpacing = axleSpacing;
+      record.techRecord_axles = axles;
+    }
+
+    return record;
+  }
+
+  private inferApprovalType(record: V3TechRecordModel): V3TechRecordModel {
+    if (!this.isEditing) return record;
+
+    const type = record.techRecord_vehicleType;
+    if (type === VehicleTypes.HGV || type === VehicleTypes.PSV || type === VehicleTypes.TRL) {
+      const approvalType = record.techRecord_approvalType;
+      const approvalNumber = record.techRecord_approvalTypeNumber;
+      if (approvalType?.toString() === 'Small series' && approvalNumber) {
+        // infer new approval type based on format of approval type number
+        const patterns = new Map<ApprovalType, RegExp>([
+          [ApprovalType.SMALL_SERIES_NKSXX, /^(.?)11\*NKS(.{0,2})\*(.{0,6})$/i],
+          [ApprovalType.SMALL_SERIES_NKS, /^(.?)11\*NKS\*(.{0,6})$/i],
+        ]);
+
+        patterns.forEach((value, key) => {
+          if (value.test(approvalNumber)) {
+            record.techRecord_approvalType = key;
+          }
+        });
+      }
+    }
+
+    return record;
   }
 }
