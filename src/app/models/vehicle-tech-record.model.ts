@@ -2,8 +2,8 @@ import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/ge
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
-import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
 export interface VehicleTechRecordModel {
   vrms: Vrm[];
@@ -129,7 +129,6 @@ export interface LettersOfAuth {
   letterDateRequested: string;
   letterContents: string;
 }
-
 
 export enum LettersIntoAuthApprovalType {
   GB_WVTA = 'GB WVTA',
