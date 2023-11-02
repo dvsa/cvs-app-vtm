@@ -29,7 +29,6 @@ import {
   take,
 } from 'rxjs';
 
-
 export const techRecordValidateResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot) => {
   const store: Store<State> = inject(Store<State>);
   const router: Router = inject(Router);
