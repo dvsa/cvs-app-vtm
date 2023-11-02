@@ -98,7 +98,6 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
     techRecord_tyreUseCode: TrlTyreUseCode,
     techRecord_vehicleConfiguration: VehicleConfigurationTrl,
     techRecord_euVehicleCategory: EUVehicleCategoryTrl,
-    techRecord_vehicleConfiguration: TrlVehicleConfiguration,
     techRecord_approvalType: approvalType,
   };
 
