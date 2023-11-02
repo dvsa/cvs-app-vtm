@@ -243,7 +243,6 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   protected readonly getOptionsFromEnum = getOptionsFromEnum;
 
   get tyreUseCode() {
-    const useCodeEnum = this.vehicleTechRecord.techRecord_vehicleType === 'hgv' ? HgvTyreUseCode : TrlTyreUseCode;
-    return getOptionsFromEnum({ ' ': ' ', ...useCodeEnum });
+    return getOptionsFromEnum(this.vehicleTechRecord.techRecord_vehicleType === 'hgv' ? HgvTyreUseCode : TrlTyreUseCode);
   }
 }
