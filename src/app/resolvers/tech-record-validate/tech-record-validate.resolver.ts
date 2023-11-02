@@ -12,6 +12,8 @@ import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
+import { ApprovalType as approvalTypeHgvOrPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js'
+import { ApprovalType as approvalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js'
 import {
   catchError,
   map,
@@ -63,6 +65,7 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
   const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
     techRecord_vehicleClass_description: VehicleClassDescriptionPSV,
+    techRecord_approvalType: approvalTypeHgvOrPsv,
   } as const;
 
   Object.keys(checks).forEach((key: string) => {
@@ -84,6 +87,7 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
     techRecord_vehicleConfiguration: TrlVehicleConfiguration,
+    techRecord_approvalType: approvalType,
   };
 
   Object.keys(checks).forEach((key: string) => {
@@ -105,6 +109,7 @@ const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checks: any = {
     techRecord_vehicleConfiguration: HgvPsvVehicleConfiguration,
+    techRecord_approvalType: approvalTypeHgvOrPsv,
   };
 
   Object.keys(checks).forEach((key: string) => {
