@@ -6,6 +6,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import {
   ActionCreator, ActionCreatorProps, createAction, props,
 } from '@ngrx/store';
+// eslint-disable-next-line import/no-unresolved
 import { TypedAction } from '@ngrx/store/src/models';
 
 const prefix = '[Technical Record Service]';

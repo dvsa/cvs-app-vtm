@@ -22,6 +22,8 @@ import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
+import { ApprovalType as approvalTypeHgvOrPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
+import { ApprovalType as approvalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import {
   map,
   take,
@@ -74,6 +76,7 @@ const handlePsv = (record: TechRecordVehicleType<'psv'>) => {
     techRecord_vehicleConfiguration: VehicleConfigurationHgvPsv,
     techRecord_vehicleClass_description: VehicleClassDescriptionPSV,
     techRecord_euVehicleCategory: EUVehicleCategoryPsv,
+    techRecord_approvalType: approvalTypeHgvOrPsv,
   } as const;
 
   Object.keys(checks).forEach((key: string) => {
@@ -97,6 +100,7 @@ const handleTrl = (record: TechRecordVehicleType<'trl'>) => {
     techRecord_tyreUseCode: TrlTyreUseCode,
     techRecord_vehicleConfiguration: VehicleConfigurationTrl,
     techRecord_euVehicleCategory: EUVehicleCategoryTrl,
+    techRecord_approvalType: approvalType,
   };
 
   Object.keys(checks).forEach((key: string) => {
@@ -120,6 +124,7 @@ const handleHgv = (record: TechRecordVehicleType<'hgv'>) => {
     techRecord_tyreUseCode: HgvTyreUseCode,
     techRecord_vehicleConfiguration: VehicleConfigurationHgvPsv,
     techRecord_euVehicleCategory: EUVehicleCategoryHgv,
+    techRecord_approvalType: approvalTypeHgvOrPsv,
   };
 
   Object.keys(checks).forEach((key: string) => {
