@@ -1,6 +1,4 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { approvalType } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels,
@@ -16,7 +14,6 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       label: 'Approval type',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(approvalType),
       validators: [],
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },

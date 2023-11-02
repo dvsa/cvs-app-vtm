@@ -61,9 +61,6 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       if (event?.axles) {
         event.axles = (event.axles as Axle[]).filter((axle) => !!axle?.axleNumber);
       }
-      if (event.techRecord_tyreUseCode === ' ') {
-        event = { ...event, techRecord_tyreUseCode: null };
-      }
       this.formChange.emit(event);
     });
   }
