@@ -23,9 +23,7 @@ import { State } from '@store/.';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
 import {
-  catchError,
   map,
-  of,
   take,
 } from 'rxjs';
 
@@ -36,7 +34,6 @@ export const techRecordValidateResolver: ResolveFn<boolean> = (route: ActivatedR
   return store.select(selectTechRecord).pipe(
     map((record) => {
       if (!record) {
-        console.log('here');
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.navigate([`./tech-records/${route.params['systemNumber']}/${route.params['createdTimestamp']}`]);
       }
@@ -66,9 +63,6 @@ export const techRecordValidateResolver: ResolveFn<boolean> = (route: ActivatedR
     take(1),
     map(() => {
       return true;
-    }),
-    catchError(() => {
-      return of(false);
     }),
   );
 };
