@@ -1,6 +1,9 @@
 import { inject } from '@angular/core';
 import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
   ResolveFn,
+  Router,
 } from '@angular/router';
 import { EUVehicleCategory as EUVehicleCategoryTrl } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryHgv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
@@ -14,24 +17,26 @@ import { VehicleConfiguration as VehicleConfigurationTrl } from
   '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
 import { TechRecordType as TechRecordVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
 import {
-  catchError,
   map,
   of,
   take,
 } from 'rxjs';
 
-export const techRecordValidateResolver: ResolveFn<boolean> = () => {
+export const techRecordValidateResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot) => {
   const store: Store<State> = inject(Store<State>);
+  const router: Router = inject(Router);
 
   return store.select(selectTechRecord).pipe(
     map((record) => {
       if (!record) {
-        throw new Error('no record');
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.navigate([`./tech-records/${route.params['systemNumber']}/${route.params['createdTimestamp']}`]);
       }
       let validatedRecord = { ...record } as TechRecordType<'put'>;
 
@@ -59,9 +64,6 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
     take(1),
     map(() => {
       return true;
-    }),
-    catchError(() => {
-      return of(false);
     }),
   );
 };

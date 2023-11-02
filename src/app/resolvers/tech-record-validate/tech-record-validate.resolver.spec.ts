@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, ResolveFn, Router, RouterStateSnapshot } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/.';
 import { Observable, firstValueFrom, of } from 'rxjs';
 import { techRecordValidateResolver } from './tech-record-validate.resolver';
+import { inject } from '@angular/core';
 
 describe('TechRecordViewResolver', () => {
   let resolver: ResolveFn<boolean>;
@@ -141,15 +142,6 @@ describe('TechRecordViewResolver', () => {
       expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
         vehicleTechRecord: { techRecord_vehicleType: 'hgv', techRecord_vehicleClass_description: 'heavy goods vehicle' },
       }));
-    });
-    it('should resolve false if there is no record', async () => {
-      jest.spyOn(store, 'select').mockReturnValue(of(undefined));
-      const result = TestBed.runInInjectionContext(
-        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
-      ) as Observable<boolean>;
-      const resolveResult = await firstValueFrom(result);
-
-      expect(resolveResult).toBe(false);
     });
   });
 });
