@@ -61,9 +61,6 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       if (event?.axles) {
         event.axles = (event.axles as Axle[]).filter((axle) => !!axle?.axleNumber);
       }
-      if (event.techRecord_tyreUseCode === ' ') {
-        event = { ...event, techRecord_tyreUseCode: null };
-      }
       this.formChange.emit(event);
     });
   }
@@ -243,7 +240,6 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   protected readonly getOptionsFromEnum = getOptionsFromEnum;
 
   get tyreUseCode() {
-    const useCodeEnum = this.vehicleTechRecord.techRecord_vehicleType === 'hgv' ? HgvTyreUseCode : TrlTyreUseCode;
-    return getOptionsFromEnum({ ' ': ' ', ...useCodeEnum });
+    return getOptionsFromEnum(this.vehicleTechRecord.techRecord_vehicleType === 'hgv' ? HgvTyreUseCode : TrlTyreUseCode);
   }
 }
