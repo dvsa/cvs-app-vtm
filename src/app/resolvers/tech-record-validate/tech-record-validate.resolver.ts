@@ -30,6 +30,9 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
 
   return store.select(selectTechRecord).pipe(
     map((record) => {
+      if (!record) {
+        throw new Error('no record');
+      }
       let validatedRecord = { ...record } as TechRecordType<'put'>;
 
       if (record) {

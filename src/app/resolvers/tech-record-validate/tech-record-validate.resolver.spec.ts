@@ -142,5 +142,14 @@ describe('TechRecordViewResolver', () => {
         vehicleTechRecord: { techRecord_vehicleType: 'hgv', techRecord_vehicleClass_description: 'heavy goods vehicle' },
       }));
     });
+    it('should resolve false if there is no record', async () => {
+      jest.spyOn(store, 'select').mockReturnValue(of(undefined));
+      const result = TestBed.runInInjectionContext(
+        () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
+      const resolveResult = await firstValueFrom(result);
+
+      expect(resolveResult).toBe(false);
+    });
   });
 });
