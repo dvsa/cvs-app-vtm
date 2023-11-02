@@ -1,6 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  ResolveFn,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -13,9 +19,11 @@ describe('TechRecordViewResolver', () => {
   const actions$ = new Observable<Action>();
   const mockSnapshot: any = jest.fn;
   let store: MockStore<State>;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       providers: [
         provideMockStore({ initialState: initialAppState }),
         provideMockActions(() => actions$),
@@ -25,6 +33,7 @@ describe('TechRecordViewResolver', () => {
     resolver = (...resolverParameters) =>
       TestBed.runInInjectionContext(() => techRecordValidateResolver(...resolverParameters));
     store = TestBed.inject(MockStore);
+    router = TestBed.inject(Router);
   });
 
   it('should be created', () => {
@@ -141,6 +150,18 @@ describe('TechRecordViewResolver', () => {
       expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
         vehicleTechRecord: { techRecord_vehicleType: 'hgv', techRecord_vehicleClass_description: 'heavy goods vehicle' },
       }));
+    });
+    it('should navigate if there is no tech record', async () => {
+      jest.spyOn(store, 'select').mockReturnValue(of(undefined));
+      const routerSpy = jest.spyOn(router, 'navigate').mockImplementation();
+      const result = TestBed.runInInjectionContext(
+        () => resolver({
+          params: { systemNumber: '12345', createdTimestamp: 'now' },
+        } as unknown as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+      ) as Observable<boolean>;
+      await firstValueFrom(result);
+      expect(routerSpy).toHaveBeenCalled();
+      expect(routerSpy).toHaveBeenCalledWith(['./tech-records/12345/now']);
     });
   });
 });

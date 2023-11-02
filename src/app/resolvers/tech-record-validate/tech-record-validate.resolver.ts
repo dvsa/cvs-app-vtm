@@ -1,10 +1,14 @@
 import { inject } from '@angular/core';
 import {
+  ActivatedRouteSnapshot,
   ResolveFn,
+  Router,
 } from '@angular/router';
 import { EUVehicleCategory as EUVehicleCategoryTrl } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryHgv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
 import { EUVehicleCategory as EUVehicleCategoryPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
+import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
+import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { VehicleClassDescription as VehicleClassDescriptionPSV } from
   '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
@@ -19,19 +23,20 @@ import { State } from '@store/.';
 import { selectTechRecord, updateEditingTechRecord } from '@store/technical-records';
 import { isEqual } from 'lodash';
 import {
-  catchError,
   map,
-  of,
   take,
 } from 'rxjs';
-import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
-import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 
-export const techRecordValidateResolver: ResolveFn<boolean> = () => {
+export const techRecordValidateResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot) => {
   const store: Store<State> = inject(Store<State>);
+  const router: Router = inject(Router);
 
   return store.select(selectTechRecord).pipe(
     map((record) => {
+      if (!record) {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.navigate([`./tech-records/${route.params['systemNumber']}/${route.params['createdTimestamp']}`]);
+      }
       let validatedRecord = { ...record } as TechRecordType<'put'>;
 
       if (record) {
@@ -58,9 +63,6 @@ export const techRecordValidateResolver: ResolveFn<boolean> = () => {
     take(1),
     map(() => {
       return true;
-    }),
-    catchError(() => {
-      return of(false);
     }),
   );
 };

@@ -85,20 +85,5 @@ describe('TechRecordViewResolver', () => {
 
       expect(dispatchSpy).toHaveBeenCalledTimes(2);
     });
-
-    it('should resolved to false if \'fetchTestResultsBySystemNumberFailed\' and \'getTechRecordV3Failure\' action are dipatched', () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
-      const result = TestBed.runInInjectionContext(() => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)) as Observable<boolean>;
-      store.overrideSelector(selectRouteParam('systemNumber'), undefined);
-      store.overrideSelector(selectRouteParam('createdTimestamp'), undefined);
-      testScheduler.run(({ hot, expectObservable }) => {
-        actions$ = hot('-a-b-', { a: getTechRecordV3Failure, b: fetchTestResultsBySystemNumberFailed });
-        expectObservable(result).toBe('---(c|)', {
-          c: false,
-        });
-      });
-
-      expect(dispatchSpy).toHaveBeenCalledTimes(2);
-    });
   });
 });

@@ -27,3 +27,4 @@ setenv.ts
 setup-jest.ts
 cypress.config.ts
 jest-global-mocks.ts
+environment.deploy.ts
