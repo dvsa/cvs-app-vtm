@@ -38,7 +38,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit() {
-    this.approvalType = this.techRecord.techRecord_vehicleType === 'psv' 
+    this.approvalType = this.techRecord.techRecord_vehicleType === 'psv'
     || this.techRecord.techRecord_vehicleType === 'hgv' ? approvalTypeHgvOrPsv : approvalType;
     this.form = this.dfs.createForm(
       this.techRecord.techRecord_vehicleType === 'psv' ? PsvTypeApprovalTemplate : HgvAndTrlTypeApprovalTemplate,
