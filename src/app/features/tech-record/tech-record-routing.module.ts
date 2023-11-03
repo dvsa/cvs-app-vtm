@@ -5,6 +5,7 @@ import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.g
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
+import { techRecordValidateResolver } from 'src/app/resolvers/tech-record-validate/tech-record-validate.resolver';
 import { techRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
 import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
 import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
@@ -39,7 +40,10 @@ const routes: Routes = [
       isCustomLayout: true,
     },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: techRecordViewResolver },
+    resolve: {
+      techRecord: techRecordViewResolver,
+      load: techRecordValidateResolver,
+    },
   },
   {
     path: 'notifiable-alteration-needed',
@@ -51,7 +55,10 @@ const routes: Routes = [
       isCustomLayout: true,
     },
     canActivate: [MsalGuard, RoleGuard],
-    resolve: { techRecord: techRecordViewResolver },
+    resolve: {
+      techRecord: techRecordViewResolver,
+      load: techRecordValidateResolver,
+    },
   },
 
   {
@@ -176,4 +183,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TechRecordsRoutingModule {}
+export class TechRecordsRoutingModule { }

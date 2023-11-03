@@ -24,6 +24,8 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { cloneDeep } from 'lodash';
 import { Subscription } from 'rxjs';
+import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
+import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 
 @Component({
   selector: 'app-tyres',
@@ -59,14 +61,12 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       if (event?.axles) {
         event.axles = (event.axles as Axle[]).filter((axle) => !!axle?.axleNumber);
       }
-
       this.formChange.emit(event);
     });
   }
 
   ngOnChanges(simpleChanges: SimpleChanges): void {
     const fitmentUpdated = this.checkFitmentCodeHasChanged(simpleChanges);
-
     if (!fitmentUpdated) {
       this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
     }
@@ -234,5 +234,11 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       this.isError = true;
       this.errorMessage = `Cannot have less than ${minLength} axles`;
     }
+  }
+
+  protected readonly getOptionsFromEnum = getOptionsFromEnum;
+
+  get tyreUseCode() {
+    return getOptionsFromEnum(this.vehicleTechRecord.techRecord_vehicleType === 'hgv' ? HgvTyreUseCode : TrlTyreUseCode);
   }
 }

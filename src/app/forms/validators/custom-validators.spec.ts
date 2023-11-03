@@ -1,6 +1,6 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { DescriptionEnum } from '@models/vehicle-class.model';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
 
@@ -599,7 +599,7 @@ describe('handlePsvPassengersChange', () => {
     const vehicleClass = form.get('techRecord_vehicleClass_description')?.value;
 
     expect(vehicleSize).toBe(VehicleSizes.SMALL);
-    expect(vehicleClass).toBe(DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
+    expect(vehicleClass).toBe(VehicleClassDescription.SmallPsvIeLessThanOrEqualTo22Seats);
   });
   it('should calculate large vehicle size and class based on passenger numbers', () => {
     const upper = form.get('techRecord_seatsUpperDeck');
@@ -616,6 +616,62 @@ describe('handlePsvPassengersChange', () => {
     const vehicleClass = form.get('techRecord_vehicleClass_description')?.value;
 
     expect(vehicleSize).toBe(VehicleSizes.LARGE);
-    expect(vehicleClass).toBe(DescriptionEnum.LargePsvIeGreaterThan23Seats);
+    expect(vehicleClass).toBe(VehicleClassDescription.LargePsvIeGreaterThan23Seats);
+  });
+});
+describe('updateFunctionCode', () => {
+  let form: FormGroup;
+  beforeEach(() => {
+    form = new FormGroup({
+      techRecord_vehicleConfiguration: new CustomFormControl({ name: 'techRecord_vehicleConfiguration', type: FormNodeTypes.CONTROL }, undefined),
+      techRecord_functionCode: new CustomFormControl(
+        { name: 'techRecord_functionCode', type: FormNodeTypes.CONTROL },
+        undefined,
+      ),
+    });
+  });
+  it('should set the function code to R if given a rigid vehicle configuration', () => {
+    const functionCode = form.get('techRecord_functionCode');
+    const vehicleConfiguration = form.get('techRecord_vehicleConfiguration');
+
+    vehicleConfiguration?.patchValue('rigid');
+    vehicleConfiguration?.markAsDirty();
+
+    CustomValidators.updateFunctionCode()(vehicleConfiguration as AbstractControl);
+    const value = functionCode?.value;
+    expect(value).toBe('R');
+  });
+  it('should set the function code to A if given a articulated vehicle configuration', () => {
+    const functionCode = form.get('techRecord_functionCode');
+    const vehicleConfiguration = form.get('techRecord_vehicleConfiguration');
+
+    vehicleConfiguration?.patchValue('articulated');
+    vehicleConfiguration?.markAsDirty();
+
+    CustomValidators.updateFunctionCode()(vehicleConfiguration as AbstractControl);
+    const value = functionCode?.value;
+    expect(value).toBe('A');
+  });
+  it('should set the function code to A if given a semi-trailer vehicle configuration', () => {
+    const functionCode = form.get('techRecord_functionCode');
+    const vehicleConfiguration = form.get('techRecord_vehicleConfiguration');
+
+    vehicleConfiguration?.patchValue('semi-trailer');
+    vehicleConfiguration?.markAsDirty();
+
+    CustomValidators.updateFunctionCode()(vehicleConfiguration as AbstractControl);
+    const value = functionCode?.value;
+    expect(value).toBe('A');
+  });
+  it('should not set the function code if vehicle configuration is not in the map', () => {
+    const functionCode = form.get('techRecord_functionCode');
+    const vehicleConfiguration = form.get('techRecord_vehicleConfiguration');
+
+    vehicleConfiguration?.patchValue('invalid');
+    vehicleConfiguration?.markAsDirty();
+
+    CustomValidators.updateFunctionCode()(vehicleConfiguration as AbstractControl);
+    const value = functionCode?.value;
+    expect(value).toBeUndefined();
   });
 });

@@ -202,8 +202,8 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   }
 
   isNotEmpty(value: unknown): boolean {
-    if (value == null || value === '') return false;
-    if (typeof value === 'object') return Object.values(value).length > 0;
+    if (value === '' || value === undefined) return false;
+    if (typeof value === 'object' && value !== null) return Object.values(value).length > 0;
     return true;
   }
 

@@ -1,7 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
-import { DescriptionEnum } from '@models/vehicle-class.model';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomValidators {
@@ -285,14 +285,31 @@ export class CustomValidators {
         switch (true) {
           case totalPassengers <= 22: {
             sizeControl?.setValue(VehicleSizes.SMALL, { emitEvent: false });
-            classControl?.setValue(DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
+            classControl?.setValue(VehicleClassDescription.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
             break;
           }
           default: {
             sizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
-            classControl?.setValue(DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
+            classControl?.setValue(VehicleClassDescription.LargePsvIeGreaterThan23Seats, { emitEvent: false });
           }
         }
+        control.markAsPristine();
+      }
+      return null;
+    };
+  };
+
+  static updateFunctionCode = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const vehicleFunctionCode = control.root.get('techRecord_functionCode');
+      const functionCodes: Record<string, string> = {
+        rigid: 'R',
+        articulated: 'A',
+        'semi-trailer': 'A',
+      };
+
+      if (control.dirty) {
+        vehicleFunctionCode?.setValue((functionCodes[control?.value]), { emitEvent: false });
         control.markAsPristine();
       }
       return null;

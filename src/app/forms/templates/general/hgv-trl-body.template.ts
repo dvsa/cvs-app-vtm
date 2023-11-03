@@ -49,7 +49,6 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(BodyTypeDescription),
       validators: [{ name: ValidatorNames.Required }],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
