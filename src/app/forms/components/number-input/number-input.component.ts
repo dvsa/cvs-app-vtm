@@ -16,6 +16,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class NumberInputComponent extends BaseControlComponent implements AfterContentInit {
   @Input() vehicleType?: string | null;
+  @Input() enableDecimals: boolean | undefined = false;
   get style(): string {
     return `govuk-input ${this.width ? `govuk-input--width-${this.width}` : ''}`;
   }
