@@ -36,7 +36,6 @@ describe('TestRecordComponent', () => {
   let el: DebugElement;
   let store: MockStore<State>;
   let testRecordsService: TestRecordsService;
-  let techRecordService: TechnicalRecordService;
   const actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {
@@ -66,7 +65,6 @@ describe('TestRecordComponent', () => {
     store = TestBed.inject(MockStore);
     store.overrideSelector(routeEditable, false);
     testRecordsService = TestBed.inject(TestRecordsService);
-    techRecordService = TestBed.inject(TechnicalRecordService);
 
     store.resetSelectors();
     store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testNumber: 'foo' } as Params);

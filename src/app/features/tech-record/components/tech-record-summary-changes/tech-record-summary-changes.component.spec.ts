@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
@@ -15,10 +15,7 @@ import { RouterService } from '@services/router/router.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import {
-  amendVrmSuccess,
-  editingTechRecord,
-  selectTechRecordChanges, selectTechRecordDeletions,
-  techRecord,
+  amendVrmSuccess, editingTechRecord, selectTechRecordChanges, selectTechRecordDeletions, techRecord,
 } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { TechRecordSummaryChangesComponent } from './tech-record-summary-changes.component';
@@ -63,31 +60,34 @@ describe('TechRecordSummaryChangesComponent', () => {
 
   describe('navigateUponSuccess', () => {
     it('should handle state management', () => {
-      jest.spyOn(component.actions$, 'pipe');
+      const spy = jest.spyOn(component.actions$, 'pipe');
       component.navigateUponSuccess();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.actions$.pipe).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalled();
     });
   });
 
   describe('ngOnInit', () => {
     it('should call navigateOnSuccess and initSubscriptions', () => {
-      jest.spyOn(component, 'navigateUponSuccess');
-      jest.spyOn(component, 'initSubscriptions');
+      const navigateOnSuccessSpy = jest.spyOn(component, 'navigateUponSuccess');
+      const initSubscriptionsSpy = jest.spyOn(component, 'initSubscriptions');
+      component.ngOnInit();
+      expect(navigateOnSuccessSpy).toHaveBeenCalled();
+      expect(initSubscriptionsSpy).toHaveBeenCalled();
     });
     it('should navigate when updateRecordSuccess dispatched', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
       component.ngOnInit();
 
-      actions$.next(amendVrmSuccess({
-        vehicleTechRecord:
-          {
+      actions$.next(
+        amendVrmSuccess({
+          vehicleTechRecord: {
             createdTimestamp: 'now',
             vin: 'testVin',
             systemNumber: 'testNumber',
           } as TechRecordType<'get'>,
-      }));
+        }),
+      );
 
       expect(navigateSpy).toHaveBeenCalled();
     });

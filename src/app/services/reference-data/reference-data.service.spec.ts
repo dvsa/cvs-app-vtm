@@ -69,7 +69,7 @@ describe('ReferenceDataService', () => {
     });
 
     it('should thrown an error if resource type is not given', (done) => {
-      service.fetchReferenceData(undefined as any).subscribe({
+      service.fetchReferenceData(undefined as unknown as ReferenceDataResourceType).subscribe({
         error: (e) => {
           expect(e.message).toBe('Reference data resourceType is required');
           done();
@@ -252,7 +252,7 @@ describe('ReferenceDataService', () => {
       });
     });
 
-    it('should get a specific reference data record', (done: any) => {
+    it('should get a specific reference data record', (done) => {
       service.getByKey$(ReferenceDataResourceType.CountryOfRegistration, 'gba').subscribe((response) => {
         expect(response).toEqual({
           resourceType: ReferenceDataResourceType.CountryOfRegistration,
