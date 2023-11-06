@@ -1,11 +1,11 @@
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
-import { HgvPsvVehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { FuelTypes } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
 } from '../../services/dynamic-form.types';
@@ -121,7 +121,7 @@ export const PsvTechRecord: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(HgvPsvVehicleConfiguration),
+      options: getOptionsFromEnum(VehicleConfiguration),
       validators: [{ name: ValidatorNames.UpdateFunctionCode }],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
@@ -142,7 +142,14 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.Max, args: 99 }],
+      validators: [
+        { name: ValidatorNames.Max, args: 99 },
+        {
+          name: ValidatorNames.CustomPattern,
+          args: ['^\\d*(\\.\\d{0,5})?$', 'Max 5 decimal places'],
+        },
+      ],
+      enableDecimals: true,
     },
     { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
     {

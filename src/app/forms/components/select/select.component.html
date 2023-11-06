@@ -20,7 +20,7 @@
     (blur)="onTouched(); handleEvent($event)"
     (focus)="handleEvent($event)"
   >
-    <option value="" selected disabled hidden></option>
+    <option [ngValue]="null" selected></option>
     <option *ngFor="let option of options; trackBy: trackBy" [ngValue]="option.value" [selected]="value === option.value">{{ option.label }}</option>
   </select>
 </div>

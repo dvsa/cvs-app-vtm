@@ -282,7 +282,7 @@ describe('numeric', () => {
     [{ customPattern: { message: 'must be a whole number' } }, 'foo123456'],
     [null, '123546789'],
     [null, null],
-  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any) => {
+  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: unknown) => {
     const numberValidator = CustomValidators.numeric();
     expect(numberValidator(new FormControl(input))).toEqual(expected);
   });
@@ -295,7 +295,7 @@ describe('defined', () => {
     [null, null],
     [null, 'hello world!'],
     [null, 1234],
-  ])('should return %o for %r', (expected: null | { [index: string]: boolean }, input: any) => {
+  ])('should return %o for %r', (expected: null | { [index: string]: boolean }, input: unknown) => {
     const definedValidator = CustomValidators.defined();
     const form = new FormControl(input);
     if (typeof input === 'undefined') {
@@ -316,7 +316,7 @@ describe('alphanumeric', () => {
     [{ customPattern: { message: 'must be alphanumeric' } }, 'foo123456^@'],
     [null, '123546789abcdefghijklmnopqrstuvwxyz'],
     [null, null],
-  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any) => {
+  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: unknown) => {
     const numberValidator = CustomValidators.alphanumeric();
     expect(numberValidator(new FormControl(input))).toEqual(expected);
   });
@@ -329,7 +329,7 @@ describe('customPattern', () => {
     [{ customPattern: { message: 'this should not be a number' } }, 123456789, '\\D+', 'this should not be a number'],
     [null, '%^', '^\\W+$', 'this should be a symbol'],
     [null, null, '.*', 'pass on null'],
-  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any, regex: string, msg: string) => {
+  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: unknown, regex: string, msg: string) => {
     const customPattern = CustomValidators.customPattern([regex, msg]);
     const validation = customPattern(new FormControl(input));
     expect(validation).toEqual(expected);
@@ -544,8 +544,8 @@ describe('validate VRM/TrailerId Length', () => {
     const child = form.get(['parent', 'child']);
     child?.patchValue(value);
 
-    const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
-    expect(result.validateVRMTrailerIdLength.message).toBe('VRM must be less than or equal to 9 characters');
+    const result = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result?.['validateVRMTrailerIdLength'].message).toBe('VRM must be less than or equal to 9 characters');
   });
 
   it('should return TrailerId min length error when value length is less than 7 and Trailer is selected', () => {
@@ -555,8 +555,8 @@ describe('validate VRM/TrailerId Length', () => {
     child?.patchValue(value);
     sibling?.patchValue(VehicleTypes.TRL);
 
-    const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
-    expect(result.validateVRMTrailerIdLength.message).toBe('Trailer ID must be greater than or equal to 7 characters');
+    const result = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result?.['validateVRMTrailerIdLength'].message).toBe('Trailer ID must be greater than or equal to 7 characters');
   });
 
   it('should return TrailerId max length error when value length is greater than 8 and Trailer is selected', () => {
@@ -566,8 +566,8 @@ describe('validate VRM/TrailerId Length', () => {
     child?.patchValue(value);
     sibling?.patchValue(VehicleTypes.TRL);
 
-    const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
-    expect(result.validateVRMTrailerIdLength.message).toBe('Trailer ID must be less than or equal to 8 characters');
+    const result = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result?.['validateVRMTrailerIdLength'].message).toBe('Trailer ID must be less than or equal to 8 characters');
   });
 });
 
