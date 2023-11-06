@@ -1,8 +1,8 @@
 import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
 } from '@angular/core';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordType as TechRecordVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import {
@@ -133,7 +133,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
       this.referenceDataService.getReferencePsvMakeDataLoading$(),
     ]).pipe(
-      skipWhile(([_, loading]) => loading),
+      skipWhile(([, loading]) => loading),
       take(1),
       map(([data]) => {
         return data?.map((option) => ({ value: option.resourceKey, label: option.resourceKey })) as MultiOptions;
