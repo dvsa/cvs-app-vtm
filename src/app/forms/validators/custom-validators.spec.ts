@@ -697,7 +697,7 @@ describe('enum', () => {
     [null, 'IVA - VCA'],
     [null, 'IVA - DVSA/NI'],
   ])('should return %p when control value is %s', (expected: object | null, input) => {
-    expect(CustomValidators.enum(ApprovalType, { allowFalsy: false })(new FormControl(input))).toEqual(expected);
+    expect(CustomValidators.isMemberOfEnum(ApprovalType, { allowFalsy: false })(new FormControl(input))).toEqual(expected);
   });
 
   it.each([
@@ -722,6 +722,6 @@ describe('enum', () => {
     [null, 'IVA - VCA'],
     [null, 'IVA - DVSA/NI'],
   ])('should return %p when control value is %s', (expected: object | null, input) => {
-    expect(CustomValidators.enum(ApprovalType, { allowFalsy: true })(new FormControl(input))).toEqual(expected);
+    expect(CustomValidators.isMemberOfEnum(ApprovalType, { allowFalsy: true })(new FormControl(input))).toEqual(expected);
   });
 });

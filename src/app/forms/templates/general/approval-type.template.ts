@@ -17,7 +17,7 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(ApprovalType),
-      validators: [{ name: ValidatorNames.Enum, args: { enum: ApprovalType, options: { allowFalsy: true } } }],
+      validators: [{ name: ValidatorNames.IsMemberOfEnum, args: { enum: ApprovalType, options: { allowFalsy: true } } }],
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {

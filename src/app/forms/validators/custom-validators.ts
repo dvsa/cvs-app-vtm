@@ -299,7 +299,7 @@ export class CustomValidators {
     };
   };
 
-  static enum = (checkEnum: Record<string, string>, options: Partial<EnumValidatorOptions> = {}): ValidatorFn => {
+  static isMemberOfEnum = (checkEnum: Record<string, string>, options: Partial<EnumValidatorOptions> = {}): ValidatorFn => {
     options = { allowFalsy: false, ...options };
 
     return (control: AbstractControl): ValidationErrors | null => {
