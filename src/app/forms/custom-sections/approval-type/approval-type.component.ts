@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TechRecord } from '@api/vehicle';
-import { ApprovalType, ApprovalType as approvalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { ApprovalType as approvalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ApprovalType as approvalTypeHgvOrPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -52,24 +52,13 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     const { techRecord } = changes;
     if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
-      const { currentValue, previousValue } = techRecord;
+      const { currentValue } = techRecord;
 
       this.form.patchValue(currentValue, { emitEvent: false });
       this.chosenApprovalType = currentValue.techRecord_approvalType ? currentValue.techRecord_approvalType : '';
       techRecord.currentValue.techRecord_coifDate = currentValue.techRecord_coifDate
         ? currentValue.techRecord_coifDate.split('T')[0]
         : '';
-
-      // Ignore changes from invalid values to valid values as these are autocorrections...
-      const approvalTypeValid = Object.values(ApprovalType).includes(previousValue.techRecord_approvalType);
-      const approvalTypeChanged = currentValue.techRecord_approvalType !== previousValue.techRecord_approvalType;
-      if (approvalTypeChanged && previousValue.techRecord_approvalType !== null && approvalTypeValid) {
-        this.approvalTypeChange = true;
-      }
-
-      if (!approvalTypeChanged) {
-        this.approvalTypeChange = false;
-      }
     }
   }
 
