@@ -7,7 +7,6 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
-import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
@@ -87,7 +86,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
           let techRecord = cloneDeep(record);
           techRecord = this.normaliseAxles(record);
-          techRecord = this.inferApprovalType(record);
 
           return techRecord;
         }),
@@ -228,31 +226,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
       record.techRecord_dimensions_axleSpacing = axleSpacing;
       record.techRecord_axles = axles;
-    }
-
-    return record;
-  }
-
-  private inferApprovalType(record: V3TechRecordModel): V3TechRecordModel {
-    if (!this.isEditing) return record;
-
-    const type = record.techRecord_vehicleType;
-    if (type === VehicleTypes.HGV || type === VehicleTypes.PSV || type === VehicleTypes.TRL) {
-      const approvalType = record.techRecord_approvalType;
-      const approvalNumber = record.techRecord_approvalTypeNumber;
-      if (approvalType?.toString() === 'Small series' && approvalNumber) {
-        // infer new approval type based on format of approval type number
-        const patterns = new Map<ApprovalType, RegExp>([
-          [ApprovalType.SMALL_SERIES_NKSXX, /^(.?)11\*NKS(.{0,2})\*(.{0,6})$/i],
-          [ApprovalType.SMALL_SERIES_NKS, /^(.?)11\*NKS\*(.{0,6})$/i],
-        ]);
-
-        patterns.forEach((value, key) => {
-          if (value.test(approvalNumber)) {
-            record.techRecord_approvalType = key;
-          }
-        });
-      }
     }
 
     return record;
