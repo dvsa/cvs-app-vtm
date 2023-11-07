@@ -1,7 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
-import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomValidators {
@@ -299,6 +299,15 @@ export class CustomValidators {
     };
   };
 
+  static isMemberOfEnum = (checkEnum: Record<string, string>, options: Partial<EnumValidatorOptions> = {}): ValidatorFn => {
+    options = { allowFalsy: false, ...options };
+
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (options.allowFalsy && !control.value) return null;
+      return Object.values(checkEnum).includes(control.value) ? null : { enum: true };
+    };
+  };
+
   static updateFunctionCode = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       const vehicleFunctionCode = control.root.get('techRecord_functionCode');
@@ -309,10 +318,14 @@ export class CustomValidators {
       };
 
       if (control.dirty) {
-        vehicleFunctionCode?.setValue((functionCodes[control?.value]), { emitEvent: false });
+        vehicleFunctionCode?.setValue(functionCodes[control?.value], { emitEvent: false });
         control.markAsPristine();
       }
       return null;
     };
   };
 }
+
+export type EnumValidatorOptions = {
+  allowFalsy: boolean;
+};

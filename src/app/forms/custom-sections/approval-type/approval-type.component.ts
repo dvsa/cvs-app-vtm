@@ -1,21 +1,20 @@
 import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { TechRecord } from '@api/vehicle';
+import { ApprovalType as approvalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { ApprovalType as approvalTypeHgvOrPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import {
   CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TechRecord } from '@api/vehicle';
-
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { FormControl } from '@angular/forms';
-import { ApprovalType as approvalTypeHgvOrPsv } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
-import { ApprovalType as approvalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-approval-type[techRecord]',
@@ -53,20 +52,13 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     const { techRecord } = changes;
     if (this.form && techRecord?.currentValue && techRecord.currentValue !== techRecord.previousValue) {
-      this.form.patchValue(techRecord.currentValue, { emitEvent: false });
-      this.chosenApprovalType = techRecord.currentValue.techRecord_approvalType ? techRecord.currentValue.techRecord_approvalType : '';
-      techRecord.currentValue.techRecord_coifDate = techRecord.currentValue.techRecord_coifDate
-        ? techRecord.currentValue.techRecord_coifDate.split('T')[0]
+      const { currentValue } = techRecord;
+
+      this.form.patchValue(currentValue, { emitEvent: false });
+      this.chosenApprovalType = currentValue.techRecord_approvalType ? currentValue.techRecord_approvalType : '';
+      techRecord.currentValue.techRecord_coifDate = currentValue.techRecord_coifDate
+        ? currentValue.techRecord_coifDate.split('T')[0]
         : '';
-      if (
-        techRecord.currentValue.techRecord_approvalType !== techRecord.previousValue.techRecord_approvalType
-        && techRecord.previousValue.techRecord_approvalType !== null
-      ) {
-        this.approvalTypeChange = true;
-      }
-      if (techRecord.currentValue.techRecord_approvalType === techRecord.previousValue.techRecord_approvalType) {
-        this.approvalTypeChange = false;
-      }
     }
   }
 
