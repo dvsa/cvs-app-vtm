@@ -14,7 +14,7 @@ import { debounceTime, Subscription } from 'rxjs';
   templateUrl: './adr.component.html',
   styleUrls: ['./adr.component.scss'],
 })
-export class AdrComponent implements OnInit, OnDestroy, OnChanges {
+export class AdrComponent implements OnInit, OnDestroy {
   @Input() techRecord!: V3TechRecordModel;
   @Input() isEditing = false;
   @Input() disableLoadOptions = false;
@@ -38,7 +38,8 @@ export class AdrComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.form?.patchValue(this.techRecord, { emitEvent: false });
+    const { techRecord } = changes;
+    this.form?.patchValue(techRecord.currentValue, { emitEvent: false });
   }
 
   ngOnDestroy(): void {
