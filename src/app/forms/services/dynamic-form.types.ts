@@ -10,11 +10,11 @@ import {
   FormGroup,
   ValidatorFn,
 } from '@angular/forms';
+import { Params } from '@angular/router';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
-import { Params } from '@angular/router';
 import { TagTypes } from '@shared/components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
 import { State } from '@store/.';
@@ -37,7 +37,6 @@ export enum FormNodeViewTypes {
 
 export enum TagTypeLabels {
   REQUIRED = 'Required',
-  PLATES = 'Plates',
 }
 
 export enum FormNodeTypes {

@@ -69,9 +69,13 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   get isTrl(): boolean {
     return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.TRL;
   }
+<<<<<<< HEAD
   get requiredPlates(): boolean {
     return !this.isPsv && this.isEditing;
   }
+=======
+
+>>>>>>> parent of 770f3e86... feat(cb2-7464): plate generation validation (#1171)
   get types(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
   }
