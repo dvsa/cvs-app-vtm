@@ -32,4 +32,8 @@ export class AdrComponent implements OnInit {
   get techRecord$() {
     return this.techRecord;
   }
+
+  handleFormChange(event: any): void {
+    console.log(event);
+  }
 }

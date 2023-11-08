@@ -19,13 +19,14 @@ export const AdrTemplate: FormNode = {
         { value: true, label: 'Yes' },
         { value: false, label: 'No' },
       ],
-      validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'dangerousGoodsSection', value: true } }],
+      validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'adrApplicantDetailsGroup', value: true } }],
     },
     {
-      name: 'dangerousGoodsSection',
+      name: 'adrApplicantDetailsGroup',
       type: FormNodeTypes.GROUP,
-      label: 'Dangerous Goods',
+      label: 'Applicant Details',
       children: [
+        { name: 'applicantDetailsHeading', type: FormNodeTypes.TITLE, label: 'Applicant Details' },
         {
           name: 'techRecord_adrDetails_applicantDetails_name',
           label: 'Name',
