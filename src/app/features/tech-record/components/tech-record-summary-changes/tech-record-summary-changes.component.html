@@ -85,6 +85,9 @@
           </ng-template>
         </ng-container>
       </ng-container>
+      <ng-container *ngSwitchCase="'adrSection'">
+        <app-adr [techRecord]="techRecordEdited"></app-adr>
+      </ng-container>
 
       <app-dynamic-form-group *ngSwitchDefault [data]="techRecordChanges" [template]="section"></app-dynamic-form-group>
     </ng-container>

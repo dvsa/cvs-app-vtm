@@ -155,6 +155,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   }
 
   async handleSubmit(): Promise<void> {
+    console.log(1);
     this.summary.checkForms();
     if (this.isInvalid) return;
 

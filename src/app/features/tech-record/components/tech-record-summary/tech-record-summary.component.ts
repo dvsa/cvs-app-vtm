@@ -34,6 +34,7 @@ import { cloneDeep, mergeWith } from 'lodash';
 import {
   Observable, Subject, debounceTime, map, take, takeUntil,
 } from 'rxjs';
+import { AdrComponent } from '@forms/custom-sections/adr/adr.component';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -51,6 +52,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
   @ViewChild(LettersComponent) letters!: LettersComponent;
   @ViewChild(ApprovalTypeComponent) approvalType!: ApprovalTypeComponent;
+  @ViewChild(AdrComponent) adr!: AdrComponent;
 
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
@@ -186,7 +188,14 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form, this.approvalType?.form];
+    const commonCustomSections = [
+      this.body?.form,
+      this.dimensions?.form,
+      this.tyres?.form,
+      this.weights?.form,
+      this.approvalType?.form,
+      this.adr?.form,
+    ];
 
     switch (this.vehicleType) {
       case VehicleTypes.PSV:
