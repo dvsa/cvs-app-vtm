@@ -9,6 +9,7 @@ import { GlobalWarning } from '@core/components/global-warning/global-warning.in
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { AdrComponent } from '@forms/custom-sections/adr/adr.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
@@ -34,7 +35,6 @@ import { cloneDeep, mergeWith } from 'lodash';
 import {
   Observable, Subject, debounceTime, map, take, takeUntil,
 } from 'rxjs';
-import { AdrComponent } from '@forms/custom-sections/adr/adr.component';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -213,7 +213,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     const isPrimitiveArray = (a: any, b: any) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
 
     this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
-
     this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
   }
 

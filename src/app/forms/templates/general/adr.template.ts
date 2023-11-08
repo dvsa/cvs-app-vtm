@@ -9,7 +9,7 @@ export const AdrTemplate: FormNode = {
   label: 'ADR',
   children: [
     {
-      name: 'dangerous_goods',
+      name: 'dangerousGoods',
       label: 'Able to carry dangerous goods',
       width: FormNodeWidth.XS,
       value: false,
@@ -31,7 +31,7 @@ export const AdrTemplate: FormNode = {
           children: [
             { name: 'applicationDetailsSectionTitle', type: FormNodeTypes.TITLE, label: 'Applicant Details' },
             {
-              name: 'techRecord_adrDetails_applicantDetails_name',
+              name: 'techRecord_applicantDetails_name',
               label: 'Name',
               value: null,
               width: FormNodeWidth.XXL,

@@ -1,20 +1,18 @@
 import {
-  Component, EventEmitter,
-  Input, OnChanges, OnDestroy,
-  OnInit, Output, SimpleChanges,
+  Component, EventEmitter, Input, OnInit, Output,
 } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import { debounceTime, Subscription } from 'rxjs';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-adr',
   templateUrl: './adr.component.html',
   styleUrls: ['./adr.component.scss'],
 })
-export class AdrComponent implements OnInit, OnDestroy {
+export class AdrComponent implements OnInit {
   @Input() techRecord!: V3TechRecordModel;
   @Input() isEditing = false;
   @Input() disableLoadOptions = false;
@@ -22,7 +20,6 @@ export class AdrComponent implements OnInit, OnDestroy {
 
   public template = AdrTemplate;
   public form!: CustomFormGroup;
-  private formSubscription = new Subscription();
 
   constructor(
     private dfs: DynamicFormService,
@@ -30,19 +27,30 @@ export class AdrComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
-    this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => this.formChange.emit(event));
   }
 
   get techRecord$() {
     return this.techRecord;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { techRecord } = changes;
-    this.form?.patchValue(techRecord.currentValue, { emitEvent: false });
+  handleFormChange(event: Record<string, unknown>) {
+    if (event == null) return;
+    const data = _.pickBy(flattenObject(event), (_val, key) => _.startsWith(key, 'techRecord'));
+
+    this.formChange.emit(data);
   }
 
-  ngOnDestroy(): void {
-    this.formSubscription.unsubscribe();
-  }
 }
+
+const flattenObject = (obj: Record<string, unknown>, prefix = '', usePrefix = false) => {
+  return Object.keys(obj).reduce((acc: Record<string, unknown>, k) => {
+    const pre = prefix.length ? `${prefix}.` : '';
+    if (obj[`${k}`] && typeof obj[`${k}`] === 'object') {
+      Object.assign(acc, flattenObject(obj[`${k}`] as Record<string, unknown>, pre + k, usePrefix));
+    } else {
+      acc[usePrefix ? pre + k : k] = obj[`${k}`];
+    }
+
+    return acc;
+  }, {});
+};
