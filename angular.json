@@ -11,6 +11,9 @@
         },
         "@schematics/angular:application": {
           "strict": true
+        },
+        "@schematics/angular:directive": {
+          "flat": false
         }
       },
       "root": "",

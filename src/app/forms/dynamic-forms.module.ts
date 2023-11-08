@@ -49,6 +49,7 @@ import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
 import { FieldWarningMessageComponent } from './components/field-warning-message/field-warning-message.component';
 import { AdrComponent } from './custom-sections/adr/adr.component';
+import { NestingLevelDirective } from './directives/nesting-level/nesting-level.directive';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { AdrComponent } from './custom-sections/adr/adr.component';
     ModifiedWeightsComponent,
     FieldWarningMessageComponent,
     AdrComponent,
+    NestingLevelDirective,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

@@ -92,7 +92,7 @@
 </ng-template>
 
 <ng-template #sectionTemplate let-control="control">
-  <div>
+  <div *ngIf="!(form.meta && form.meta.hide)">
     <h2 class="govuk-heading-m">{{ control.value.meta.label }}</h2>
   </div>
 </ng-template>

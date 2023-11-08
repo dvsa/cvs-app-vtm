@@ -34,6 +34,6 @@ export class AdrComponent implements OnInit {
   }
 
   handleFormChange(event: any): void {
-    console.log(event);
+
   }
 }
