@@ -30,5 +30,4 @@ export enum ValidatorNames {
   MustEqualSibling = 'mustEqualSibling',
   HandlePsvPassengersChange = 'HandlePsvPassengersChange',
   UpdateFunctionCode = 'updateFunctionCode',
-  ToggleHideSiblingsIfFalse = 'toggleHideSibling',
 }

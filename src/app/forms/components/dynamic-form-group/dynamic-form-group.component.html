@@ -86,7 +86,9 @@
 </ng-template>
 
 <ng-template #childNode let-form="form">
-  <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
+  <ng-container *ngIf="!(form.meta && form.meta.hide)">
+    <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
+  </ng-container>
 </ng-template>
 
 <ng-template #sectionTemplate let-control="control">
