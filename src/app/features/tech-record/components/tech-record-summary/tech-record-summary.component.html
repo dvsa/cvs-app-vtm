@@ -116,6 +116,10 @@
         ></app-plates>
       </ng-container>
 
+      <ng-container *ngSwitchCase="'adrSection'">
+        <app-adr [techRecord]="techRecordCalculated" [isEditing]="(isEditing$ | async) ?? false"></app-adr>
+      </ng-container>
+
       <app-dynamic-form-group
         *ngSwitchDefault
         [data]="techRecordCalculated"

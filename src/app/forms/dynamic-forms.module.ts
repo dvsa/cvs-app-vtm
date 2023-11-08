@@ -48,6 +48,7 @@ import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.direct
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
 import { FieldWarningMessageComponent } from './components/field-warning-message/field-warning-message.component';
+import { AdrComponent } from './custom-sections/adr/adr.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { FieldWarningMessageComponent } from './components/field-warning-message
     ApprovalTypeFocusNextDirective,
     ModifiedWeightsComponent,
     FieldWarningMessageComponent,
+    AdrComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -141,6 +143,7 @@ import { FieldWarningMessageComponent } from './components/field-warning-message
     ApprovalTypeInputComponent,
     ApprovalTypeFocusNextDirective,
     ModifiedWeightsComponent,
+    AdrComponent,
   ],
 })
 export class DynamicFormsModule {}

@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 // eslint-disable-next-line import/no-cycle
-import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
@@ -32,6 +32,7 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
+        console.log(value);
 
         siblingControl.meta.hide = Array.isArray(value) ? !value.includes(control.value) : control.value !== value;
       }
@@ -312,6 +313,17 @@ export class CustomValidators {
         vehicleFunctionCode?.setValue((functionCodes[control?.value]), { emitEvent: false });
         control.markAsPristine();
       }
+      return null;
+    };
+  };
+
+  static toggleHideSiblingsIfFalse = (siblings: string[]): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      siblings.forEach((sibling) => {
+        const siblingControl = control.root.get(sibling) as CustomFormControl;
+        siblingControl.meta.hide = !control.value;
+      });
+
       return null;
     };
   };
