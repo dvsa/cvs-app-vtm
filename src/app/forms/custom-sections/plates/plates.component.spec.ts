@@ -3,18 +3,18 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
+import { HgvOrTrl } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
-import { of } from 'rxjs';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { HgvOrTrl } from '@models/vehicle-tech-record.model';
 import { canGeneratePlate } from '@store/technical-records';
+import { of } from 'rxjs';
 import { PlatesComponent } from './plates.component';
 
 describe('PlatesComponent', () => {
@@ -78,7 +78,7 @@ describe('PlatesComponent', () => {
       const plateFetched = component.mostRecentPlate;
 
       expect(plateFetched).toBeDefined();
-      expect(plateFetched.plateSerialNumber).toBe('123456');
+      expect(plateFetched?.plateSerialNumber).toBe('123456');
     });
 
     it('should fetch the latest plate if more than 1 exists', () => {
@@ -108,7 +108,7 @@ describe('PlatesComponent', () => {
       const plateFetched = component.mostRecentPlate;
 
       expect(plateFetched).toBeDefined();
-      expect(plateFetched.plateSerialNumber).toBe('234567');
+      expect(plateFetched?.plateSerialNumber).toBe('234567');
     });
 
     it('should return null if plates are empty', () => {

@@ -22,10 +22,10 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { cloneDeep } from 'lodash';
-import { Subscription } from 'rxjs';
 import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
+import { cloneDeep } from 'lodash';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tyres',
@@ -56,10 +56,10 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    this.form = this.dynamicFormsService.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
-    this.formSubscription = this.form.cleanValueChanges.subscribe((event: any) => {
-      if (event?.axles) {
-        event.axles = (event.axles as Axle[]).filter((axle) => !!axle?.axleNumber);
+    this.form = this.dynamicFormsService.createForm(this.template as FormNode, this.vehicleTechRecord) as CustomFormGroup;
+    this.formSubscription = this.form.cleanValueChanges.subscribe((event) => {
+      if (event && !Array.isArray(event) && event['axles']) {
+        event['axles'] = (event['axles'] as Axle[]).filter((axle) => !!axle?.axleNumber);
       }
       this.formChange.emit(event);
     });
@@ -198,7 +198,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {
     this.vehicleTechRecord = cloneDeep(this.vehicleTechRecord);
-    const axleIndex = this.vehicleTechRecord.techRecord_axles?.findIndex((ax: any) => ax.axleNumber === axleNumber);
+    const axleIndex = this.vehicleTechRecord.techRecord_axles?.findIndex((ax) => ax.axleNumber === axleNumber);
 
     if (axleIndex === undefined || axleIndex === -1) {
       return;

@@ -4,6 +4,7 @@ import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVehicleVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -65,9 +66,9 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     return this.techRecord?.techRecord_letterOfAuth_letterType
       ? {
         letterType: this.techRecord?.techRecord_letterOfAuth_letterType,
-        paragraphId: this.techRecord?.techRecord_letterOfAuth_paragraphId!,
-        letterIssuer: this.techRecord?.techRecord_letterOfAuth_letterIssuer!,
-        letterDateRequested: this.techRecord?.techRecord_letterOfAuth_letterDateRequested!,
+        paragraphId: this.techRecord?.techRecord_letterOfAuth_paragraphId as ParagraphIds,
+        letterIssuer: this.techRecord?.techRecord_letterOfAuth_letterIssuer as string,
+        letterDateRequested: this.techRecord?.techRecord_letterOfAuth_letterDateRequested as string,
         letterContents: '',
       }
       : undefined;
