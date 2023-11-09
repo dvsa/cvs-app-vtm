@@ -169,7 +169,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   }
 
   getSectionsWhitelist() {
-    const whitelist: string[] = [];
+    const whitelist: string[] = ['adrSection'];
     if (this.vehicleType == null) return whitelist;
     if (this.techRecordChanges == null) return whitelist;
     if (this.technicalRecordService.haveAxlesChanged(this.vehicleType, this.techRecordChanges)) {
