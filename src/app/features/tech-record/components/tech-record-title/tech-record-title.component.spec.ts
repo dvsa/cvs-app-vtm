@@ -2,12 +2,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Roles } from '@models/roles.enum';
 import {
-  EuVehicleCategories, NotTrailer, V3TechRecordModel, VehicleTypes,
+  NotTrailer, V3TechRecordModel, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -28,7 +29,6 @@ describe('TechRecordTitleComponent', () => {
   let fixture: ComponentFixture<TechRecordTitleComponent>;
   let store: MockStore<State>;
   let technicalRecordService: TechnicalRecordService;
-  let viewableTechRecordSpy;
   let mockRecord: V3TechRecordModel;
 
   beforeEach(async () => {
@@ -60,7 +60,7 @@ describe('TechRecordTitleComponent', () => {
         secondaryVrms: ['TESTVRM1', 'TESTVRM2', 'TESTVRM3', 'TESTVRM4', 'TESTVRM5'],
         techRecord_vehicleType: VehicleTypes.LGV,
       } as unknown as TechRecordType<'put'>;
-      viewableTechRecordSpy = jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
+      jest.spyOn(store, 'select').mockReturnValue(of(mockRecord));
       component.vehicle = mockRecord;
       store.overrideSelector(editingTechRecord, mockRecord);
     });
@@ -96,21 +96,21 @@ describe('TechRecordTitleComponent', () => {
 
       component.vehicle = mockRecordTrailer;
 
-      store.overrideSelector(selectTechRecord, mockRecordTrailer as any);
+      store.overrideSelector(selectTechRecord, mockRecordTrailer);
       fixture.detectChanges();
 
       const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));
       expect(trailerIdField.nativeElement.textContent).toContain('TestId');
     });
 
-    const smallTrailerEuVehicleCategories = [EuVehicleCategories.O1, EuVehicleCategories.O2];
+    const smallTrailerEuVehicleCategories = [EUVehicleCategory.O1, EUVehicleCategory.O2];
 
     it.each(smallTrailerEuVehicleCategories)('does not show secondary VRMs for small trailer', (euVehicleCategory) => {
       const mockRecordTrailer = mockVehicleTechnicalRecord(VehicleTypes.TRL);
       jest.spyOn(technicalRecordService, 'techRecord$', 'get').mockReturnValue(of(mockRecordTrailer));
       mockRecordTrailer.techRecord_euVehicleCategory = euVehicleCategory;
       component.vehicle = mockRecordTrailer;
-      store.overrideSelector(selectTechRecord, mockRecordTrailer as any);
+      store.overrideSelector(selectTechRecord, mockRecordTrailer);
       fixture.detectChanges();
 
       const trailerIdField = fixture.debugElement.query(By.css('#trailer-id'));

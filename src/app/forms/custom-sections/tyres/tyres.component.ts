@@ -24,6 +24,8 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { cloneDeep } from 'lodash';
 import { Subscription } from 'rxjs';
+import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
+import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 
 @Component({
   selector: 'app-tyres',
@@ -59,14 +61,12 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       if (event?.axles) {
         event.axles = (event.axles as Axle[]).filter((axle) => !!axle?.axleNumber);
       }
-
       this.formChange.emit(event);
     });
   }
 
   ngOnChanges(simpleChanges: SimpleChanges): void {
     const fitmentUpdated = this.checkFitmentCodeHasChanged(simpleChanges);
-
     if (!fitmentUpdated) {
       this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
     }
@@ -172,11 +172,14 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
             this.addTyreToTechRecord(newTyre, axleNumber);
           },
-          error: (_e) => {
+          error: () => {
             this.errorMessage = `Cannot find data of this tyre on axle ${axleNumber}`;
             this.isError = true;
             const newTyre = new Tyre({
-              tyreCode: null, tyreSize: null, plyRating: null, dataTrAxles: null,
+              tyreCode: null,
+              tyreSize: null,
+              plyRating: null,
+              dataTrAxles: null,
             });
 
             this.addTyreToTechRecord(newTyre, axleNumber);
@@ -223,13 +226,20 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
+    const axles = this.vehicleTechRecord.techRecord_axles;
 
-    if (this.vehicleTechRecord.techRecord_axles!.length > minLength) {
+    if (axles && axles.length > minLength) {
       this.isError = false;
       this.store.dispatch(removeAxle({ index }));
     } else {
       this.isError = true;
       this.errorMessage = `Cannot have less than ${minLength} axles`;
     }
+  }
+
+  protected readonly getOptionsFromEnum = getOptionsFromEnum;
+
+  get tyreUseCode() {
+    return getOptionsFromEnum(this.vehicleTechRecord.techRecord_vehicleType === 'hgv' ? HgvTyreUseCode : TrlTyreUseCode);
   }
 }

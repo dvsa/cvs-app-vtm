@@ -1,24 +1,23 @@
 import {
   AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren,
 } from '@angular/core';
-import { DefectsComponent } from '@forms/custom-sections/defects/defects.component';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
+import { DefectsComponent } from '@forms/custom-sections/defects/defects.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
+import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { DefectsState, filteredDefects } from '@store/defects';
-import merge from 'lodash.merge';
-import { map, Observable } from 'rxjs';
-import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { selectTechRecord } from '@store/technical-records';
+import merge from 'lodash.merge';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-base-test-record[testResult]',

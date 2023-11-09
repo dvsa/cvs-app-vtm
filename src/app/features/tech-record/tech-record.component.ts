@@ -3,9 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { Roles } from '@models/roles.enum';
-import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { take } from 'rxjs';
 
 @Component({
@@ -20,7 +18,6 @@ export class TechRecordComponent implements OnInit {
     private techRecordService: TechnicalRecordService,
     private router: Router,
     public errorService: GlobalErrorService,
-    private store: Store<TechnicalRecordServiceState>,
     private route: ActivatedRoute,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

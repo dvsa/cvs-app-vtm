@@ -3,20 +3,22 @@ import { Title } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { TitleResolver } from './title.resolver';
+import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { titleResolver } from './title.resolver';
 
 describe('TitleResolver', () => {
-  let resolver: TitleResolver;
+  let resolver: ResolveFn<boolean>;
   let titleService: Title;
   let store: MockStore<State>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [TitleResolver, Title, provideMockStore({ initialState: initialAppState })],
+      providers: [Title, provideMockStore({ initialState: initialAppState })],
     });
 
-    resolver = TestBed.inject(TitleResolver);
+    resolver = (...resolverParameters) =>
+      TestBed.runInInjectionContext(() => titleResolver(...resolverParameters));
     titleService = TestBed.inject(Title);
     store = TestBed.inject(MockStore);
   });
@@ -27,6 +29,9 @@ describe('TitleResolver', () => {
 
   it('should set title using Title service', () => {
     const titleServiceSpy = jest.spyOn(titleService, 'setTitle');
+    const result = TestBed.runInInjectionContext(
+      () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    ) as Promise<boolean>;
     store.setState({
       ...initialAppState,
       router: {
@@ -56,7 +61,7 @@ describe('TitleResolver', () => {
         navigationId: 1,
       },
     });
-    const resolved = resolver.resolve();
+    const resolved = result;
     expect(resolved).toBeTruthy();
     expect(titleServiceSpy).toHaveBeenCalledWith('Vehicle Testing Management - Test Results');
   });

@@ -10,7 +10,7 @@ import { NoEditGuard } from './no-edit.guard';
 describe('NoEditGuard', () => {
   let guard: NoEditGuard;
   let store: MockStore<State>;
-  let mockRouteEditable: MemoizedSelector<any, boolean, DefaultProjectorFn<boolean>>;
+  let mockRouteEditable: MemoizedSelector<Record<string, unknown>, boolean, DefaultProjectorFn<boolean>>;
   let route: ActivatedRoute;
   let mockRouterStateSnapshot: RouterStateSnapshot;
 

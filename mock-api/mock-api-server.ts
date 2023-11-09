@@ -1,7 +1,7 @@
-import { VehicleTypes } from '../src/app/models/vehicle-tech-record.model';
 import * as jsonServer from 'json-server';
+import { VehicleTypes } from '../src/app/models/vehicle-tech-record.model';
 import { mockTestResultList } from '../src/mocks/mock-test-result';
-import { mockVehicleTechnicalRecordList } from '../src/mocks/mock-vehicle-technical-record.mock';
+import { mockVehicleTechnicalRecord } from '../src/mocks/mock-vehicle-technical-record.mock';
 const server = jsonServer.create();
 const router = jsonServer.router('{}');
 const middlewares = jsonServer.defaults();
@@ -14,7 +14,7 @@ server.get('/vehicles/:systemNumber/*', (req, res) => {
     case 'delayok':
       console.log('Delaying request');
       setTimeout(() => {
-        res.jsonp(mockVehicleTechnicalRecordList());
+        res.jsonp(mockVehicleTechnicalRecord());
       }, 2500);
       break;
     case 'delayservererror':
@@ -38,17 +38,17 @@ server.get('/vehicles/:systemNumber/*', (req, res) => {
       break;
     case 'XMGDE02FS0H012345':
     case 'PSV':
-      res.jsonp(mockVehicleTechnicalRecordList());
+      res.jsonp(mockVehicleTechnicalRecord());
       console.log('PSV technical record');
       break;
     case 'XMGDE03FS0H012345':
     case 'HGV':
-      res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
+      res.jsonp(mockVehicleTechnicalRecord(VehicleTypes.HGV));
       console.log('HGV technical record');
       break;
     case 'XMGDE04FS0H012345':
     case 'TRL':
-      res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.TRL));
+      res.jsonp(mockVehicleTechnicalRecord(VehicleTypes.TRL));
       console.log('TRL technical record');
       break;
     default:

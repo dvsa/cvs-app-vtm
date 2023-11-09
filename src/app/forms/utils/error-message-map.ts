@@ -35,6 +35,7 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.ValidateProhibitionIssued]: () => 'Prohibition notice has not been issued.',
   [ValidatorNames.ValidateVRMTrailerIdLength]: (err: { message: string }) => err.message,
   [ValidatorNames.MustEqualSibling]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} must match ${err.sibling}`,
+  [ValidatorNames.IsMemberOfEnum]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
 
   [AsyncValidatorNames.RequiredIfNotAbandoned]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,

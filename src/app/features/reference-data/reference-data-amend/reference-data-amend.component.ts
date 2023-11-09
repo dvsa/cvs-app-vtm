@@ -9,10 +9,10 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { amendReferenceDataItem, ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { first, Observable } from 'rxjs';
+import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { Observable, first } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-amend',
@@ -90,7 +90,12 @@ export class ReferenceDataAmendComponent implements OnInit {
 
     forms.forEach((form) => DynamicFormService.validate(form, errors));
 
-    errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
+    if (errors.length) {
+      this.globalErrorService.setErrors(errors);
+      return;
+    }
+
+    this.globalErrorService.clearErrors();
   }
 
   handleSubmit() {

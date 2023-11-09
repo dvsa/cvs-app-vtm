@@ -116,15 +116,15 @@ export class DefectComponent implements OnInit, OnDestroy {
   }
 
   get isDangerous(): boolean {
-    return this.defect!.deficiencyCategory === 'dangerous';
+    return this.defect?.deficiencyCategory === 'dangerous';
   }
 
   get isAdvisory(): boolean {
-    return this.defect!.deficiencyCategory === 'advisory';
+    return this.defect?.deficiencyCategory === 'advisory';
   }
 
   get isDangerousAsterisk(): boolean {
-    return this.defect!.stdForProhibition === true;
+    return this.defect?.stdForProhibition === true;
   }
 
   handleSubmit() {
@@ -212,17 +212,18 @@ export class DefectComponent implements OnInit, OnDestroy {
       testResultDefect.itemDescription = item.itemDescription.slice(0, -1);
     }
 
-    this.defectsForm!.addControl(testResultDefect);
-    this.form = this.defectsForm!.controls[this.defectsForm!.length - 1] as CustomFormGroup;
+    this.defectsForm?.addControl(testResultDefect);
+    this.form = this.defectsForm?.controls[this.defectsForm.length - 1] as CustomFormGroup;
     this.defect = testResultDefect;
   }
 
   categoryColor(category = 'major'): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
     return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{
-      major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue',
-    })[
-      `${category}`
-    ];
+      major: 'orange',
+      minor: 'yellow',
+      dangerous: 'red',
+      advisory: 'blue',
+    })[`${category}`];
   }
 
   trackByFn = (_index: number, keyValuePair: KeyValue<string, Array<any>>): string => keyValuePair.key;

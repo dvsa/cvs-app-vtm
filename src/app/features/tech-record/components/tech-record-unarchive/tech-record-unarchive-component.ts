@@ -12,9 +12,7 @@ import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { unarchiveTechRecord, unarchiveTechRecordSuccess } from '@store/technical-records';
-import { Subject, map, takeUntil } from 'rxjs';
-import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
-import { SEARCH_TYPES } from '@models/search-types-enum';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-unarchive',
@@ -75,7 +73,13 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.form.valid ? this.errorService.clearErrors() : this.validateControls();
+    if (this.form.valid) {
+      this.errorService.clearErrors();
+    }
+
+    if (this.form.invalid) {
+      this.validateControls();
+    }
 
     if (!this.form.valid || !form.reason || !form.newRecordStatus) {
       return;

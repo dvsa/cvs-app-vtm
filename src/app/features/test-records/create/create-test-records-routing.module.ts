@@ -4,10 +4,10 @@ import { DefectSelectComponent } from '@forms/components/defect-select/defect-se
 import { DefectComponent } from '@forms/custom-sections/defect/defect.component';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
-import { ContingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
-import { DefectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
-import { TestStationsResolver } from 'src/app/resolvers/test-stations/test-stations.resolver';
-import { TestTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
+import { contingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
+import { defectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
+import { testStationsResolver } from 'src/app/resolvers/test-stations/test-stations.resolver';
+import { testTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
 import { CreateTestRecordComponent } from './views/create-test-record/create-test-record.component';
 import { CreateTestTypeComponent } from './views/create-test-type/create-test-type.component';
 import { TestRouterOutletComponent } from './views/test-router-outlet/test-router-outlet.component';
@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: '',
     component: TestRouterOutletComponent,
-    resolve: { contingencyTest: ContingencyTestResolver },
+    resolve: { contingencyTest: contingencyTestResolver },
     children: [
       {
         path: '',
@@ -25,12 +25,12 @@ const routes: Routes = [
       {
         path: 'type',
         component: CreateTestTypeComponent,
-        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, contingencyTest: ContingencyTestResolver },
+        resolve: { testTypeTaxonomy: testTypeTaxonomyResolver, contingencyTest: contingencyTestResolver },
       },
       {
         path: 'test-details',
         component: TestRouterOutletComponent,
-        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver, testStations: TestStationsResolver },
+        resolve: { TestTypeTaxonomy: testTypeTaxonomyResolver, defectTaxonomy: defectsTaxonomyResolver, testStations: testStationsResolver },
         data: { title: 'Test details', roles: Roles.TestResultCreateContingency, breadcrumbPreserveQueryParams: true },
         canActivate: [RoleGuard],
         children: [
@@ -47,7 +47,7 @@ const routes: Routes = [
           {
             path: 'selectDefect',
             component: TestRouterOutletComponent,
-            data: { title: 'Select Defect', roles: Roles.TestResultCreateContingency },
+            data: { title: 'Select defect', roles: Roles.TestResultCreateContingency },
             children: [
               {
                 path: '',

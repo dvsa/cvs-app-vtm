@@ -1,7 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
-import { DescriptionEnum } from '@models/vehicle-class.model';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomValidators {
@@ -144,13 +144,15 @@ export class CustomValidators {
         if (isTrailerValueSelected) {
           if (control.value.length < 7) {
             return { validateVRMTrailerIdLength: { message: 'Trailer ID must be greater than or equal to 7 characters' } };
-          } if (control.value.length > 8) {
+          }
+          if (control.value.length > 8) {
             return { validateVRMTrailerIdLength: { message: 'Trailer ID must be less than or equal to 8 characters' } };
           }
         } else {
           if (control.value.length < 1) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be greater than or equal to 1 character' } };
-          } if (control.value.length > 9) {
+          }
+          if (control.value.length > 9) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be less than or equal to 9 characters' } };
           }
         }
@@ -283,12 +285,12 @@ export class CustomValidators {
         switch (true) {
           case totalPassengers <= 22: {
             sizeControl?.setValue(VehicleSizes.SMALL, { emitEvent: false });
-            classControl?.setValue(DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
+            classControl?.setValue(VehicleClassDescription.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
             break;
           }
           default: {
             sizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
-            classControl?.setValue(DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
+            classControl?.setValue(VehicleClassDescription.LargePsvIeGreaterThan23Seats, { emitEvent: false });
           }
         }
         control.markAsPristine();
@@ -296,9 +298,34 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static isMemberOfEnum = (checkEnum: Record<string, string>, options: Partial<EnumValidatorOptions> = {}): ValidatorFn => {
+    options = { allowFalsy: false, ...options };
+
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (options.allowFalsy && !control.value) return null;
+      return Object.values(checkEnum).includes(control.value) ? null : { enum: true };
+    };
+  };
+
+  static updateFunctionCode = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const vehicleFunctionCode = control.root.get('techRecord_functionCode');
+      const functionCodes: Record<string, string> = {
+        rigid: 'R',
+        articulated: 'A',
+        'semi-trailer': 'A',
+      };
+
+      if (control.dirty) {
+        vehicleFunctionCode?.setValue(functionCodes[control?.value], { emitEvent: false });
+        control.markAsPristine();
+      }
+      return null;
+    };
+  };
 }
 
-interface ValidatorArgs<T> {
-  sibling: keyof T;
-  values: T[keyof T] | T[keyof T][];
-}
+export type EnumValidatorOptions = {
+  allowFalsy: boolean;
+};

@@ -1,6 +1,6 @@
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { approvalType } from '@models/vehicle-tech-record.model';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '../../services/dynamic-form.types';
@@ -15,8 +15,8 @@ export const PsvTypeApprovalTemplate: FormNode = {
       label: 'Approval type',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(approvalType),
-      validators: [],
+      options: getOptionsFromEnum(ApprovalType),
+      validators: [{ name: ValidatorNames.IsMemberOfEnum, args: { enum: ApprovalType, options: { allowFalsy: true } } }],
     },
     {
       name: 'techRecord_approvalTypeNumber',
@@ -40,7 +40,8 @@ export const PsvTypeApprovalTemplate: FormNode = {
               'EU WVTA 23 on',
               'QNIG',
               'Prov.GB WVTA',
-              'Small series',
+              'Small series NKSXX',
+              'Small series NKS',
               'IVA - VCA',
               'IVA - DVSA/NI',
             ],

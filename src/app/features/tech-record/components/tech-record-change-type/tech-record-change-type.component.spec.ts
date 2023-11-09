@@ -78,9 +78,8 @@ describe('TechRecordChangeTypeComponent', () => {
 
   describe('makeAndModel', () => {
     it('should should return the make and model', () => {
-      const expectedMakeModel = `${(expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisMake!} - ${
-        (expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisModel!
-      }`;
+      const techRecord = expectedTechRecord as TechRecordType<'psv'>;
+      const expectedMakeModel = `${techRecord.techRecord_chassisMake} - ${techRecord.techRecord_chassisModel}`;
 
       jest.spyOn(mockTechRecordService, 'getMakeAndModel').mockReturnValueOnce(expectedMakeModel);
 
