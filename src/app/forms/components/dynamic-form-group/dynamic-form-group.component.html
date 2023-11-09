@@ -109,10 +109,12 @@
 </ng-template>
 
 <ng-template #titleTemplate let-control="control">
-  <div *ngIf="!edit">
-    <span class="govuk-label govuk-summary-list__key">{{ control.value.meta.label }}</span>
-  </div>
-  <div *ngIf="edit">
-    <span class="govuk-label govuk-label--m">{{ control.value.meta.label }}</span>
-  </div>
+  <ng-container *ngIf="!(control.value.meta && control.value.meta.hide)">
+    <div *ngIf="!edit">
+      <span class="govuk-label govuk-summary-list__key">{{ control.value.meta.label }}</span>
+    </div>
+    <div *ngIf="edit">
+      <span class="govuk-label govuk-label--m">{{ control.value.meta.label }}</span>
+    </div>
+  </ng-container>
 </ng-template>

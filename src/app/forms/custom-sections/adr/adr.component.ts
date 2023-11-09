@@ -3,9 +3,8 @@ import {
 } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
-import { AdrTemplate, ReadOnlyADRTemplate } from '@forms/templates/general/adr.template';
+import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import _ from 'lodash';
 
 @Component({
   selector: 'app-adr',
@@ -19,7 +18,6 @@ export class AdrComponent implements OnInit {
   @Output() formChange = new EventEmitter();
 
   public template = AdrTemplate;
-  public readonlyTemplate = ReadOnlyADRTemplate;
   public form!: CustomFormGroup;
 
   constructor(
@@ -32,22 +30,6 @@ export class AdrComponent implements OnInit {
 
   handleFormChange(event: Record<string, unknown>) {
     if (event == null) return;
-    const data = _.pickBy(flattenObject(event), (_val, key) => _.startsWith(key, 'techRecord'));
-
-    this.formChange.emit({ ...event, ...data });
+    this.formChange.emit(event);
   }
-
 }
-
-const flattenObject = (obj: Record<string, unknown>, prefix = '', usePrefix = false) => {
-  return Object.keys(obj).reduce((acc: Record<string, unknown>, k) => {
-    const pre = prefix.length ? `${prefix}.` : '';
-    if (obj[`${k}`] && typeof obj[`${k}`] === 'object') {
-      Object.assign(acc, flattenObject(obj[`${k}`] as Record<string, unknown>, pre + k, usePrefix));
-    } else {
-      acc[usePrefix ? pre + k : k] = obj[`${k}`];
-    }
-
-    return acc;
-  }, {});
-};

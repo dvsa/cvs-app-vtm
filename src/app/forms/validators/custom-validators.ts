@@ -316,21 +316,42 @@ export class CustomValidators {
     };
   };
 
-  static toggleGroup = (groups: string[]): ValidatorFn => {
+  static showGroupsWhenEqualTo = (value: unknown, groups: string[]): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control.dirty) {
-        const parentGroup = control.parent as CustomFormGroup;
-        parentGroup.meta.children?.forEach((child) => {
-          const childControl = parentGroup.get(child.name) as CustomFormControl;
-          const childGroups = childControl?.meta.groups;
-          childGroups?.forEach((group) => {
-            if (groups.includes(group)) {
-              childControl.meta.hide = !childControl.meta.hide;
-            }
-          });
+      if (control.value !== value) return null;
+
+      const parentGroup = control.parent as CustomFormGroup;
+      parentGroup.meta.children?.forEach((child) => {
+        const childControl = parentGroup.get(child.name) as CustomFormControl;
+        const childGroups = childControl?.meta.groups;
+        childGroups?.forEach((group) => {
+          if (groups.includes(group)) {
+            childControl.meta.hide = false;
+          }
         });
-        control.markAsPristine();
-      }
+      });
+      control.markAsPristine();
+
+      return null;
+    };
+  };
+
+  static hideGroupsWhenEqualTo = (value: unknown, groups: string[]): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value !== value) return null;
+
+      const parentGroup = control.parent as CustomFormGroup;
+      parentGroup.meta.children?.forEach((child) => {
+        const childControl = parentGroup.get(child.name) as CustomFormControl;
+        const childGroups = childControl?.meta.groups;
+        childGroups?.forEach((group) => {
+          if (groups.includes(group)) {
+            childControl.meta.hide = true;
+          }
+        });
+      });
+      control.markAsPristine();
+
       return null;
     };
   };
