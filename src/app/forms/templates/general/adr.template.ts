@@ -31,7 +31,7 @@ export const AdrTemplate: FormNode = {
           children: [
             { name: 'applicationDetailsSectionTitle', type: FormNodeTypes.TITLE, label: 'Applicant Details' },
             {
-              name: 'techRecord_applicantDetails_name',
+              name: 'techRecord_adrDetails_applicantDetails_name',
               label: 'Name',
               value: null,
               width: FormNodeWidth.XXL,
@@ -103,7 +103,7 @@ export const ReadOnlyADRTemplate: FormNode = {
     },
     { name: 'applicationDetailsSectionTitle', type: FormNodeTypes.TITLE, label: 'Applicant Details' },
     {
-      name: 'techRecord_applicantDetails_name',
+      name: 'techRecord_adrDetails_applicantDetails_name',
       label: 'Name',
       value: null,
       width: FormNodeWidth.XXL,
