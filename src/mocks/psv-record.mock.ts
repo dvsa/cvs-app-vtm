@@ -6,9 +6,7 @@ import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/ps
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { BodyTypeDescription } from '@models/body-type-enum';
 import {
-  FuelTypes,
-  Retarders,
-  StatusCodes,
+  FuelTypes, Retarders, StatusCodes,
   VehicleSizes,
 } from '../app/models/vehicle-tech-record.model';
 

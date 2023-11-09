@@ -1,12 +1,11 @@
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-// disable linting error as this util function is only used in tests and should, therefore, be a devDependency
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
-import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import {
-  FrameDescriptions,
-  StatusCodes,
+  FrameDescriptions, StatusCodes,
 } from '@models/vehicle-tech-record.model';
+// disable linting error as this util function is only used in tests and should, therefore, be a devDependency
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createMock } from 'ts-auto-mock';
 

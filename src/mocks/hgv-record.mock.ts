@@ -1,8 +1,8 @@
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { BodyTypeDescription } from '@models/body-type-enum';
 // disable linting error as this util function is only used in tests and should, therefore, be a devDependency
-import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalTypeHgvOrPsv.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createMock } from 'ts-auto-mock';
