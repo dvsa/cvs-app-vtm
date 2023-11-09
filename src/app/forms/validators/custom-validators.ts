@@ -330,7 +330,6 @@ export class CustomValidators {
           }
         });
       });
-      control.markAsPristine();
 
       return null;
     };
@@ -350,8 +349,15 @@ export class CustomValidators {
           }
         });
       });
-      control.markAsPristine();
+      return null;
+    };
+  };
 
+  static addWarningIfFalse = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.dirty && !control.value) {
+        (control as CustomFormControl).meta.warning = 'By selecting this field it will delete all previous ADR field inputs';
+      }
       return null;
     };
   };

@@ -22,6 +22,7 @@ export const AdrTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.ShowGroupsWhenEqualTo, args: { value: true, groups: ['dangerous_goods'] } },
         { name: ValidatorNames.HideGroupsWhenEqualTo, args: { value: false, groups: ['dangerous_goods'] } },
+        { name: ValidatorNames.AddWarningIfFalse },
       ],
     },
     {
