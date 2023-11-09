@@ -7,6 +7,7 @@
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 
   <app-field-error-message [error]="error ? error : warning" [name]="name"></app-field-error-message>
+  <app-field-error-message [error]="warning" [name]="name"></app-field-error-message>
 
   <div class="govuk-input__wrapper">
     <div *ngIf="prefix" class="govuk-input__suffix prefix" aria-hidden="true">

@@ -14,6 +14,7 @@
     [hint]="control.value.meta.hint"
     [width]="control.value.meta.width"
     [customId]="control.value.meta.customId"
+    [warning]="control.value.meta.warning"
   ></app-autocomplete>
 
   <app-date
@@ -24,6 +25,7 @@
     [isoDate]="control.value.meta.isoDate ?? true"
     [hint]="control.value.meta.hint"
     [customId]="control.value.meta.customId"
+    [warning]="control.value.meta.warning"
   ></app-date>
 
   <app-date
@@ -34,6 +36,7 @@
     [displayTime]="true"
     [hint]="control.value.meta.hint"
     [customId]="control.value.meta.customId"
+    [warning]="control.value.meta.warning"
   ></app-date>
 
   <app-number-input
@@ -45,6 +48,7 @@
     [width]="control.value.meta.width"
     [customId]="control.value.meta.customId"
     [enableDecimals]="control.value.meta.enableDecimals"
+    [warning]="control.value.meta.warning"
   >
     <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
   </app-number-input>
@@ -69,6 +73,7 @@
     [hint]="control.value.meta.hint"
     [width]="control.value.meta.width"
     [customId]="control.value.meta.customId"
+    [warning]="control.value.meta.warning"
   ></app-select>
 
   <app-text-area
@@ -78,6 +83,7 @@
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
     [customId]="control.value.meta.customId"
+    [warning]="control.value.meta.warning"
   ></app-text-area>
 
   <app-checkbox
@@ -87,6 +93,7 @@
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
     [customId]="control.value.meta.customId"
+    [warning]="control.value.meta.warning"
   ></app-checkbox>
 
   <app-checkbox-group
@@ -98,6 +105,7 @@
     [delimited]="control.value.meta.delimited"
     [hint]="control.value.meta.hint"
     [customId]="control.value.meta.customId"
+    [warning]="control.value.meta.warning"
   ></app-checkbox-group>
 
   <app-text-input
@@ -109,6 +117,7 @@
     [hint]="control.value.meta.hint"
     [width]="control.value.meta.width"
     [customId]="control.value.meta.customId"
+    [warning]="control.value.meta.warning"
   >
     <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
   </app-text-input>
@@ -121,6 +130,7 @@
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
     [customId]="control.value.meta.customId"
+    [warning]="control.value.meta.warning"
   >
     <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template></app-text-input
   >
