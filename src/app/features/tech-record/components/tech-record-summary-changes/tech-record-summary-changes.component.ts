@@ -18,6 +18,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import {
+  clearADRDetailsBeforeUpdate,
   clearAllSectionStates,
   clearScrollPosition,
   editingTechRecord,
@@ -150,6 +151,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(([systemNumber, createdTimestamp]) => {
         if (systemNumber && createdTimestamp) {
+          this.store$.dispatch(clearADRDetailsBeforeUpdate());
           this.store$.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
         }
       });

@@ -1,10 +1,8 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
-import { ValidatorNames } from '@forms/models/validators.enum';
 
 interface CustomPatternMessage {
   customPattern: {

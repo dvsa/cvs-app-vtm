@@ -9,7 +9,7 @@ export const AdrTemplate: FormNode = {
   label: 'ADR',
   children: [
     {
-      name: 'dangerousGoods',
+      name: 'techRecord_adrDetails_dangerousGoods',
       label: 'Able to carry dangerous goods',
       width: FormNodeWidth.XS,
       value: false,
