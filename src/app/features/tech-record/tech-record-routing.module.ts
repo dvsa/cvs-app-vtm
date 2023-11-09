@@ -5,6 +5,7 @@ import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.g
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
+import { techRecordCleanResolver } from 'src/app/resolvers/tech-record-clean/tech-record-clean.resolver';
 import { techRecordValidateResolver } from 'src/app/resolvers/tech-record-validate/tech-record-validate.resolver';
 import { techRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
 import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
@@ -42,6 +43,7 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
     resolve: {
       techRecord: techRecordViewResolver,
+      clean: techRecordCleanResolver,
       load: techRecordValidateResolver,
     },
   },
@@ -57,6 +59,7 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
     resolve: {
       techRecord: techRecordViewResolver,
+      clean: techRecordCleanResolver,
       load: techRecordValidateResolver,
     },
   },

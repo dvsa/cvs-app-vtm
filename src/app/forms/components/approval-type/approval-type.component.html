@@ -531,23 +531,83 @@
     </div>
   </div>
 
-  <!-- Small series Template -->
-  <div *ngSwitchCase="'Small series'">
+  <!-- Small series NKSXX Template -->
+  <div *ngSwitchCase="'Small series NKSXX'">
     <app-field-error-message *ngIf="formSubmitted" [error]="error" [name]="name"></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">
-      <label class="govuk-label govuk-label--m" for="{{ name }}-approvalTypeNumber1">
-        Approval type number
-        <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
-      </label
-      >
-      <input
-        maxlength="25"
-        class="govuk-input govuk-input--width-20"
-        [id]="getId(name)"
-        name="{{ name }}-approvalTypeNumber1-Small series"
-        [(ngModel)]="approvalTypeNumber1"
-        (ngModelChange)="onTechRecord_approvalTypeNumber1_Change($event); validate()"
-      />
+      <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+          </label>
+          <div class="ecta-template separator">
+            <input
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-smallseries-NKSXX'"
+              [characterLimit]="1"
+              [maxlength]="1"
+              [id]="getId(name)"
+              name="{{ name }}-approvalTypeNumber1-Small series NKSXX"
+              class="govuk-input govuk-date-input__input govuk-input--width-2"
+              [(ngModel)]="approvalTypeNumber1"
+              (ngModelChange)="onTechRecord_approvalTypeNumber1_Change($event); validate()"
+            />
+            <span class="separator approvalTypeFormatting">*11*NKS</span>
+            <input
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber3-smallseries-NKSXX'"
+              [characterLimit]="2"
+              [maxlength]="2"
+              id="techRecord_approvalTypeNumber2-smallseries-NKSXX"
+              class="govuk-input govuk-date-input__input govuk-input--width-2"
+              name="techRecord_approvalTypeNumber2"
+              [(ngModel)]="approvalTypeNumber2"
+              (ngModelChange)="onTechRecord_approvalTypeNumber2_Change($event); validate()"
+            />
+            <span class="separator approvalTypeFormatting">*</span>
+            <input
+              [maxlength]="6"
+              id="techRecord_approvalTypeNumber3-smallseries-NKSXX"
+              class="govuk-input govuk-date-input__input govuk-input--width-4"
+              name="techRecord_approvalTypeNumber3"
+              [(ngModel)]="approvalTypeNumber3"
+              (ngModelChange)="onTechRecord_approvalTypeNumber3_Change($event); validate()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'Small series NKS'">
+    <app-field-error-message *ngIf="formSubmitted" [error]="error" [name]="name"></app-field-error-message>
+    <div class="govuk-date-input" id="{{ name }}">
+      <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--m">
+            Approval type number <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+          </label>
+          <div class="ecta-template separator">
+            <input
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber2-smallseries-NKS'"
+              [characterLimit]="1"
+              [maxlength]="1"
+              [id]="getId(name)"
+              name="{{ name }}-approvalTypeNumber1-Small series NKS"
+              class="govuk-input govuk-date-input__input govuk-input--width-2"
+              [(ngModel)]="approvalTypeNumber1"
+              (ngModelChange)="onTechRecord_approvalTypeNumber1_Change($event); validate()"
+            />
+            <span class="separator approvalTypeFormatting">11*NKS*</span>
+            <input
+              [maxlength]="6"
+              id="techRecord_approvalTypeNumber2-smallseries-NKS"
+              class="govuk-input govuk-date-input__input govuk-input--width-4"
+              name="techRecord_approvalTypeNumber2"
+              [(ngModel)]="approvalTypeNumber2"
+              (ngModelChange)="onTechRecord_approvalTypeNumber2_Change($event); validate()"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

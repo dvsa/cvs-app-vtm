@@ -307,6 +307,15 @@ export class CustomValidators {
     };
   };
 
+  static isMemberOfEnum = (checkEnum: Record<string, string>, options: Partial<EnumValidatorOptions> = {}): ValidatorFn => {
+    options = { allowFalsy: false, ...options };
+
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (options.allowFalsy && !control.value) return null;
+      return Object.values(checkEnum).includes(control.value) ? null : { enum: true };
+    };
+  };
+
   static updateFunctionCode = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       const vehicleFunctionCode = control.root.get('techRecord_functionCode');
@@ -317,10 +326,14 @@ export class CustomValidators {
       };
 
       if (control.dirty) {
-        vehicleFunctionCode?.setValue((functionCodes[control?.value]), { emitEvent: false });
+        vehicleFunctionCode?.setValue(functionCodes[control?.value], { emitEvent: false });
         control.markAsPristine();
       }
       return null;
     };
   };
 }
+
+export type EnumValidatorOptions = {
+  allowFalsy: boolean;
+};

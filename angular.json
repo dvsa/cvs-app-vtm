@@ -11,6 +11,10 @@
         },
         "@schematics/angular:application": {
           "strict": true
+        },
+        "@schematics/angular:resolver": {
+          "functional": true,
+          "flat": false
         }
       },
       "root": "",

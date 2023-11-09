@@ -1,4 +1,5 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -624,10 +625,7 @@ describe('updateFunctionCode', () => {
   beforeEach(() => {
     form = new FormGroup({
       techRecord_vehicleConfiguration: new CustomFormControl({ name: 'techRecord_vehicleConfiguration', type: FormNodeTypes.CONTROL }, undefined),
-      techRecord_functionCode: new CustomFormControl(
-        { name: 'techRecord_functionCode', type: FormNodeTypes.CONTROL },
-        undefined,
-      ),
+      techRecord_functionCode: new CustomFormControl({ name: 'techRecord_functionCode', type: FormNodeTypes.CONTROL }, undefined),
     });
   });
   it('should set the function code to R if given a rigid vehicle configuration', () => {
@@ -673,5 +671,57 @@ describe('updateFunctionCode', () => {
     CustomValidators.updateFunctionCode()(vehicleConfiguration as AbstractControl);
     const value = functionCode?.value;
     expect(value).toBeUndefined();
+  });
+});
+
+describe('enum', () => {
+  it.each([
+    [{ enum: true }, NaN],
+    [{ enum: true }, undefined],
+    [{ enum: true }, null],
+    [{ enum: true }, ''],
+    [{ enum: true }, 'Small series'],
+    [null, 'NTA'],
+    [null, 'ECTA'],
+    [null, 'IVA'],
+    [null, 'NSSTA'],
+    [null, 'ECSSTA'],
+    [null, 'GB WVTA'],
+    [null, 'UKNI WVTA'],
+    [null, 'EU WVTA Pre 23'],
+    [null, 'EU WVTA 23 on'],
+    [null, 'QNIG'],
+    [null, 'Prov.GB WVTA'],
+    [null, 'Small series NKSXX'],
+    [null, 'Small series NKS'],
+    [null, 'IVA - VCA'],
+    [null, 'IVA - DVSA/NI'],
+  ])('should return %p when control value is %s', (expected: object | null, input) => {
+    expect(CustomValidators.isMemberOfEnum(ApprovalType, { allowFalsy: false })(new FormControl(input))).toEqual(expected);
+  });
+
+  it.each([
+    [null, NaN],
+    [null, undefined],
+    [null, null],
+    [null, ''],
+    [{ enum: true }, 'Small series'],
+    [null, 'NTA'],
+    [null, 'ECTA'],
+    [null, 'IVA'],
+    [null, 'NSSTA'],
+    [null, 'ECSSTA'],
+    [null, 'GB WVTA'],
+    [null, 'UKNI WVTA'],
+    [null, 'EU WVTA Pre 23'],
+    [null, 'EU WVTA 23 on'],
+    [null, 'QNIG'],
+    [null, 'Prov.GB WVTA'],
+    [null, 'Small series NKSXX'],
+    [null, 'Small series NKS'],
+    [null, 'IVA - VCA'],
+    [null, 'IVA - DVSA/NI'],
+  ])('should return %p when control value is %s', (expected: object | null, input) => {
+    expect(CustomValidators.isMemberOfEnum(ApprovalType, { allowFalsy: true })(new FormControl(input))).toEqual(expected);
   });
 });
