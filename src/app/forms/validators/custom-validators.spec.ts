@@ -1,8 +1,10 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
+import { ValidatorNames } from '@forms/models/validators.enum';
 
 interface CustomPatternMessage {
   customPattern: {
@@ -673,5 +675,265 @@ describe('updateFunctionCode', () => {
     CustomValidators.updateFunctionCode()(vehicleConfiguration as AbstractControl);
     const value = functionCode?.value;
     expect(value).toBeUndefined();
+  });
+});
+
+describe('showGroupsWhenEqualTo', () => {
+  let form: FormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_name',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_street',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_town',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['adr'],
+            },
+          ],
+      },
+      {
+        dangerousGoods: new CustomFormControl(
+          {
+            name: 'dangerousGoods',
+            type: FormNodeTypes.CONTROL,
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_name',
+            type: FormNodeTypes.CONTROL,
+            hide: true,
+            groups: ['adr', 'name'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_street: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_street',
+            type: FormNodeTypes.CONTROL,
+            hide: true,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_town: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_town',
+            type: FormNodeTypes.CONTROL,
+            hide: true,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+      },
+    );
+  });
+  it('should set hide as false on a control if it is in a group included in the array passed and values match true', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.showGroupsWhenEqualTo(true, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(street?.meta.hide).toBe(false);
+    expect(town?.meta.hide).toBe(false);
+  });
+  it('should set hide as false on a control if it is in a group included in the array passed and values match false', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(false);
+
+    CustomValidators.showGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(street?.meta.hide).toBe(false);
+    expect(town?.meta.hide).toBe(false);
+  });
+  it('should not change the hide flag if values dont match', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.showGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(true);
+    expect(street?.meta.hide).toBe(true);
+    expect(town?.meta.hide).toBe(true);
+  });
+  it('should only change hide on groups included in array', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.showGroupsWhenEqualTo(true, ['name'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(street?.meta.hide).toBe(true);
+    expect(town?.meta.hide).toBe(true);
+  });
+});
+
+describe('hideGroupsWhenEqualTo', () => {
+  let form: FormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_name',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_street',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_town',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+              groups: ['adr'],
+            },
+          ],
+      },
+      {
+        dangerousGoods: new CustomFormControl(
+          {
+            name: 'dangerousGoods',
+            type: FormNodeTypes.CONTROL,
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_name',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr', 'name'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_street: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_street',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_town: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_town',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+      },
+    );
+  });
+  it('should set hide as true on a control if it is in a group included in the array passed and values match true', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.hideGroupsWhenEqualTo(true, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(true);
+    expect(street?.meta.hide).toBe(true);
+    expect(town?.meta.hide).toBe(true);
+  });
+  it('should set hide as true on a control if it is in a group included in the array passed and values match false', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(false);
+
+    CustomValidators.hideGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(true);
+    expect(street?.meta.hide).toBe(true);
+    expect(town?.meta.hide).toBe(true);
+  });
+  it('should not change the hide flag if values dont match', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.hideGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(street?.meta.hide).toBe(false);
+    expect(town?.meta.hide).toBe(false);
+  });
+  it('should only change hide on groups included in array', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.hideGroupsWhenEqualTo(true, ['name'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(true);
+    expect(street?.meta.hide).toBe(false);
+    expect(town?.meta.hide).toBe(false);
   });
 });
