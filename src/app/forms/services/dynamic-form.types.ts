@@ -118,6 +118,7 @@ export interface FormNode {
   customTags?: CustomTag[];
   enableDecimals?: boolean;
   nestingLevel?: number;
+  groups?: string[];
 }
 
 export interface CustomTag {

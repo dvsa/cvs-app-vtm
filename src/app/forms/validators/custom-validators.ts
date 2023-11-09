@@ -1,7 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 // eslint-disable-next-line import/no-cycle
-import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomValidators {
@@ -310,6 +310,25 @@ export class CustomValidators {
 
       if (control.dirty) {
         vehicleFunctionCode?.setValue((functionCodes[control?.value]), { emitEvent: false });
+        control.markAsPristine();
+      }
+      return null;
+    };
+  };
+
+  static toggleGroup = (groups: string[]): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.dirty) {
+        const parentGroup = control.parent as CustomFormGroup;
+        parentGroup.meta.children?.forEach((child) => {
+          const childControl = parentGroup.get(child.name) as CustomFormControl;
+          const childGroups = childControl?.meta.groups;
+          childGroups?.forEach((group) => {
+            if (groups.includes(group)) {
+              childControl.meta.hide = !childControl.meta.hide;
+            }
+          });
+        });
         control.markAsPristine();
       }
       return null;

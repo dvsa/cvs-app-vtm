@@ -60,6 +60,7 @@ export class DynamicFormService {
     [ValidatorNames.HandlePsvPassengersChange]: (args: { passengersOne: string; passengersTwo: string }) =>
       CustomValidators.handlePsvPassengersChange(args.passengersOne, args.passengersTwo),
     [ValidatorNames.UpdateFunctionCode]: () => CustomValidators.updateFunctionCode(),
+    [ValidatorNames.ToggleGroup]: (groups: string[]) => CustomValidators.toggleGroup(groups),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
