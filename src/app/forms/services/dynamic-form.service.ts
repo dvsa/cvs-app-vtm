@@ -36,6 +36,7 @@ export class DynamicFormService {
     [ValidatorNames.DisableIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.disableIfEquals(args.sibling, args.value),
     [ValidatorNames.EnableIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.enableIfEquals(args.sibling, args.value),
     [ValidatorNames.FutureDate]: () => CustomValidators.futureDate,
+    [ValidatorNames.PastYear]: () => CustomValidators.pastYear,
     [ValidatorNames.HideIfEmpty]: (args: string) => CustomValidators.hideIfEmpty(args),
     [ValidatorNames.HideIfNotEqual]: (args: { sibling: string; value: any }) => CustomValidators.hideIfNotEqual(args.sibling, args.value),
     [ValidatorNames.HideIfParentSiblingEqual]: (args: { sibling: string; value: any }) =>

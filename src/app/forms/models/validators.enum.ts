@@ -24,6 +24,7 @@ export enum ValidatorNames {
   FutureDate = 'futureDate',
   AheadOfDate = 'aheadOfDate',
   DateNotExceed = 'dateNotExceed',
+  PastYear = 'pastYear',
   CopyValueToRootControl = 'copyValueToRootControl',
   ValidateProhibitionIssued = 'validateProhibitionIssued',
   NotZNumber = 'notZNumber',
