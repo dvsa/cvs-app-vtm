@@ -129,11 +129,17 @@ describe('TechRecordSummaryChangesComponent', () => {
   });
 
   describe('submit', () => {
+    it('should dispatch clearADRDetailsBeforeUpdate', () => {
+      const dispatch = jest.spyOn(store, 'dispatch');
+      component.submit();
+      expect(dispatch).toHaveBeenCalled();
+    });
+
     it('should dispatch updateTechRecords', () => {
       jest.spyOn(store, 'dispatch');
       component.submit();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalled();
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(store.dispatch).toHaveBeenCalledWith({
         systemNumber: '123456',
