@@ -1,11 +1,10 @@
 import {
   Component, EventEmitter, Input, OnInit, Output,
 } from '@angular/core';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 
 @Component({
   selector: 'app-adr',
@@ -13,7 +12,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
   styleUrls: ['./adr.component.scss'],
 })
 export class AdrComponent implements OnInit {
-  @Input() techRecord!: TechRecordType<'hgv'> | TechRecordType<'trl'>;
+  @Input() techRecord!: TechRecordType<'hgv'> | TechRecordType<'trl'> | TechRecordType<'lgv'>;
   @Input() isEditing = false;
   @Input() disableLoadOptions = false;
   @Output() formChange = new EventEmitter();

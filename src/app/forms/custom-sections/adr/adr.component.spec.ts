@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { AdrComponent } from './adr.component';
 
 describe('AdrComponent', () => {
@@ -60,11 +60,13 @@ describe('AdrComponent', () => {
       const spy = jest.spyOn(component, 'checkForDangerousGoodsFlag');
       component.techRecord.techRecord_adrDetails_applicantDetails_name = 'test';
       component.checkForAdrFields();
+      expect(spy).toHaveBeenCalled();
       expect(component.techRecord.techRecord_adrDetails_dangerousGoods).toBe(true);
     });
     it('should leave the dangerousGoods flag as undefined if adr details do not exist', () => {
       const spy = jest.spyOn(component, 'checkForDangerousGoodsFlag');
       component.checkForAdrFields();
+      expect(spy).toHaveBeenCalled();
       expect(component.techRecord.techRecord_adrDetails_dangerousGoods).toBeUndefined();
     });
   });
