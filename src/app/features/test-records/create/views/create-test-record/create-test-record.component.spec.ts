@@ -208,16 +208,16 @@ describe('CreateTestRecordComponent', () => {
     expect(createTestResultSpy).toHaveBeenCalledWith(testRecord);
   });
 
-  it('should set testMode to be view', () => {
+  it('should set testMode to be view', async () => {
     component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
-    component.handleReview();
+    await component.handleReview();
 
     expect(component.testMode).toEqual(TestModeEnum.View);
   });
 
-  it('should set testMode back to edit', () => {
+  it('should set testMode back to edit', async () => {
     component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
-    component.handleReview();
+    await component.handleReview();
     component.handleCancel();
 
     expect(component.testMode).toEqual(TestModeEnum.Edit);
