@@ -11,6 +11,7 @@ import {
   take, map, Subject, takeUntil,
 } from 'rxjs';
 import { GoogleAnalyticsService } from '@services/google-analytics/google-analytics.service';
+import * as Sentry from '@sentry/angular-ivy';
 import { State } from './store';
 
 @Component({
@@ -36,7 +37,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.startSentry();
     initAll();
+    this.throwError();
   }
 
   ngOnDestroy(): void {
@@ -54,5 +57,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
   get loading() {
     return this.loadingService.showSpinner$;
+  }
+
+  startSentry() {
+    Sentry.init({
+      dsn: 'https://3d918c477756e028e3ca92bb285de60b@o444637.ingest.sentry.io/4506179953885184',
+      integrations: [
+        new Sentry.BrowserTracing({
+          routingInstrumentation: Sentry.routingInstrumentation,
+        }),
+        new Sentry.Replay(),
+      ],
+      tracesSampleRate: 1.0,
+      tracePropagationTargets: ['localhost'],
+      replaysSessionSampleRate: 0.1,
+      replaysOnErrorSampleRate: 1.0,
+    });
+  }
+  throwError() {
+    throw new Error('Sentry Test Error');
   }
 }
