@@ -353,10 +353,12 @@ export class CustomValidators {
     };
   };
 
-  static addWarningIfFalse = (): ValidatorFn => {
+  static addWarningIfFalse = (warning: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.dirty && !control.value) {
-        (control as CustomFormControl).meta.warning = 'By selecting this field it will delete all previous ADR field inputs';
+        (control as CustomFormControl).meta.warning = warning;
+      } if (control.value) {
+        delete (control as CustomFormControl).meta.warning;
       }
       return null;
     };

@@ -807,7 +807,7 @@ describe('showGroupsWhenEqualTo', () => {
 });
 
 describe('hideGroupsWhenEqualTo', () => {
-  let form: FormGroup;
+  let form: CustomFormGroup;
   beforeEach(() => {
     form = new CustomFormGroup(
       {
@@ -933,5 +933,71 @@ describe('hideGroupsWhenEqualTo', () => {
     expect(name?.meta.hide).toBe(true);
     expect(street?.meta.hide).toBe(false);
     expect(town?.meta.hide).toBe(false);
+  });
+});
+
+describe('addWarningIfFalse', () => {
+  let form: CustomFormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: true,
+              type: FormNodeTypes.CONTROL,
+            },
+          ],
+      },
+      {
+        dangerousGoods: new CustomFormControl(
+          {
+            name: 'dangerousGoods',
+            type: FormNodeTypes.CONTROL,
+          },
+          undefined,
+        ),
+      },
+    );
+  });
+  it('should display a warning if the value is false', () => {
+    const adr = form.get('dangerousGoods') as CustomFormControl;
+
+    adr?.patchValue(false);
+    adr?.markAsDirty();
+
+    CustomValidators.addWarningIfFalse('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBe('Test warning');
+  });
+  it('should remove the warning if the value true', () => {
+    const adr = form.get('dangerousGoods') as CustomFormControl;
+
+    adr?.patchValue(false);
+    adr?.markAsDirty();
+    CustomValidators.addWarningIfFalse('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBe('Test warning');
+    adr?.patchValue(true);
+
+    CustomValidators.addWarningIfFalse('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBeUndefined();
+  });
+  it('should not have a warning if the control is pristine and value is false', () => {
+    const adr = form.get('dangerousGoods') as CustomFormControl;
+
+    adr?.patchValue(false);
+
+    CustomValidators.addWarningIfFalse('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBeUndefined();
+  });
+  it('should not have a warning if the control is pristine', () => {
+    const adr = form.get('dangerousGoods') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.addWarningIfFalse('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBeUndefined();
   });
 });
