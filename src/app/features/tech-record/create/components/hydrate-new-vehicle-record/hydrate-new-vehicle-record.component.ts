@@ -11,7 +11,12 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { clearADRDetailsBeforeUpdate, createVehicleRecord, createVehicleRecordSuccess, selectTechRecord } from '@store/technical-records';
+import {
+  clearADRDetailsBeforeUpdate,
+  createVehicleRecord,
+  createVehicleRecordSuccess,
+  selectTechRecord,
+} from '@store/technical-records';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import {
@@ -38,7 +43,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
     private batchTechRecordService: BatchTechnicalRecordService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.actions$

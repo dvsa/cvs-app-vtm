@@ -363,6 +363,7 @@ export class CustomValidators {
           'techRecord_adrDetails_applicantDetails_town',
           'techRecord_adrDetails_applicantDetails_street',
         ];
+        // eslint-disable-next-line no-restricted-syntax
         adrDetails.forEach((controlName) => {
           const childControl = control.root.get(controlName);
           if (childControl?.value) {
