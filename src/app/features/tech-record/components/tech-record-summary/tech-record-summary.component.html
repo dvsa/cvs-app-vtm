@@ -117,7 +117,9 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'adrSection'">
-        <app-adr [techRecord]="techRecordCalculated" [isEditing]="(isEditing$ | async) ?? false" (formChange)="handleFormState($event)"></app-adr>
+        <ng-container *ngIf="techRecordCalculated.techRecord_vehicleType === 'hgv' || techRecordCalculated.techRecord_vehicleType === 'trl'">
+          <app-adr [techRecord]="techRecordCalculated" [isEditing]="(isEditing$ | async) ?? false" (formChange)="handleFormState($event)"></app-adr>
+        </ng-container>
       </ng-container>
 
       <app-dynamic-form-group
