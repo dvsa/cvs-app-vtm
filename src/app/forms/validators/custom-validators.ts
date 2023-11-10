@@ -223,7 +223,7 @@ export class CustomValidators {
   static pastYear: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const currentYear = new Date().getFullYear();
     const inputYear = control.value;
-    if (inputYear && inputYear < currentYear) {
+    if (inputYear && inputYear > currentYear) {
       return { pastYear: true };
     }
     return null;

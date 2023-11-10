@@ -407,8 +407,8 @@ describe('pastYear', () => {
 
   it.each([
     [null, null],
-    [{ pastYear: true }, 2020],
-    [null, 2023],
+    [{ pastYear: true }, 2023],
+    [null, 2020],
   ])('should return %p when control value is %s', (expected: object | null, input: number | null) => {
     expect(CustomValidators.pastYear(new FormControl(input))).toEqual(expected);
   });

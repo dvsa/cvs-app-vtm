@@ -246,6 +246,9 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       isoDate: false,
+      validators: [
+        { name: ValidatorNames.PastDate },
+      ],
     },
     {
       name: 'techRecord_departmentalVehicleMarker',
