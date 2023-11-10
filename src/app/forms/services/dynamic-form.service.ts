@@ -9,7 +9,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 // eslint-disable-next-line import/no-cycle
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
-import { CustomValidators } from '@forms/validators/custom-validators';
+import { CustomValidators, EnumValidatorOptions } from '@forms/validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
@@ -23,7 +23,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
   providedIn: 'root',
 })
 export class DynamicFormService {
-  constructor(private store: Store<State>) { }
+  constructor(private store: Store<State>) {}
 
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
@@ -59,6 +59,8 @@ export class DynamicFormService {
     [ValidatorNames.MustEqualSibling]: (args: { sibling: string }) => CustomValidators.mustEqualSibling(args.sibling),
     [ValidatorNames.HandlePsvPassengersChange]: (args: { passengersOne: string; passengersTwo: string }) =>
       CustomValidators.handlePsvPassengersChange(args.passengersOne, args.passengersTwo),
+    [ValidatorNames.IsMemberOfEnum]: (args: { enum: Record<string, string>; options?: Partial<EnumValidatorOptions> }) =>
+      CustomValidators.isMemberOfEnum(args.enum, args.options),
     [ValidatorNames.UpdateFunctionCode]: () => CustomValidators.updateFunctionCode(),
     [ValidatorNames.ShowGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
       CustomValidators.showGroupsWhenEqualTo(args.value, args.groups),
@@ -87,7 +89,9 @@ export class DynamicFormService {
     }
 
     const form: CustomFormGroup | CustomFormArray = formNode.type === FormNodeTypes.ARRAY
-      ? new CustomFormArray(formNode, [], this.store) : new CustomFormGroup(formNode, {});
+      ? new CustomFormArray(formNode, [], this.store)
+      : new CustomFormGroup(formNode, {});
+
     data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
 
     formNode.children?.forEach((child) => {
@@ -96,7 +100,8 @@ export class DynamicFormService {
       } = child;
 
       const control = FormNodeTypes.CONTROL === type
-        ? new CustomFormControl({ ...child }, { value, disabled: !!disabled }) : this.createForm(child, data[name]);
+        ? new CustomFormControl({ ...child }, { value, disabled: !!disabled })
+        : this.createForm(child, data[name]);
 
       if (validators?.length) {
         this.addValidators(control, validators);

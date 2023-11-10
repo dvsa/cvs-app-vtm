@@ -85,21 +85,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
           if (!record) {
             return;
           }
-          const techRecord = cloneDeep(record);
 
-          if (
-            techRecord.techRecord_vehicleType === VehicleTypes.HGV
-            || (techRecord.techRecord_vehicleType === VehicleTypes.TRL
-              && techRecord.techRecord_euVehicleCategory !== 'o1'
-              && techRecord.techRecord_euVehicleCategory !== 'o2')
-          ) {
-            const [axles, axleSpacing] = this.axlesService.normaliseAxles(
-              techRecord.techRecord_axles ?? [],
-              techRecord.techRecord_dimensions_axleSpacing,
-            );
-            techRecord.techRecord_dimensions_axleSpacing = axleSpacing;
-            techRecord.techRecord_axles = axles;
-          }
+          let techRecord = cloneDeep(record);
+          techRecord = this.normaliseAxles(record);
+
           return techRecord;
         }),
         takeUntil(this.destroy$),
@@ -112,10 +101,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
-    this.isEditing && this.technicalRecordService.clearReasonForCreation();
 
     const editingReason = this.activatedRoute.snapshot.data['reason'];
     if (this.isEditing) {
+      this.technicalRecordService.clearReasonForCreation();
       this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
         if (techRecord) {
           if (editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
@@ -232,5 +221,21 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     forms.forEach((form) => DynamicFormService.validate(form, errors));
 
     errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
+  }
+
+  private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {
+    const type = record.techRecord_vehicleType;
+    const category = record.techRecord_euVehicleCategory;
+    if (type === VehicleTypes.HGV || (type === VehicleTypes.TRL && category !== 'o1' && category !== 'o2')) {
+      const [axles, axleSpacing] = this.axlesService.normaliseAxles(
+        record.techRecord_axles ?? [],
+        record.techRecord_dimensions_axleSpacing,
+      );
+
+      record.techRecord_dimensions_axleSpacing = axleSpacing;
+      record.techRecord_axles = axles;
+    }
+
+    return record;
   }
 }

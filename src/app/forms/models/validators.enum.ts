@@ -29,6 +29,7 @@ export enum ValidatorNames {
   NotZNumber = 'notZNumber',
   MustEqualSibling = 'mustEqualSibling',
   HandlePsvPassengersChange = 'HandlePsvPassengersChange',
+  IsMemberOfEnum = 'isMemberOfEnum',
   UpdateFunctionCode = 'updateFunctionCode',
   ShowGroupsWhenEqualTo = 'showGroupsWhenEqualTo',
   HideGroupsWhenEqualTo = 'hideGroupsWhenEqualTo',
