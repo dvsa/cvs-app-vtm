@@ -950,6 +950,11 @@ describe('addWarningIfFalse', () => {
               value: true,
               type: FormNodeTypes.CONTROL,
             },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_name',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+            },
           ],
       },
       {
@@ -960,28 +965,42 @@ describe('addWarningIfFalse', () => {
           },
           undefined,
         ),
+        techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_name',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+          },
+          undefined,
+        ),
       },
     );
   });
-  it('should display a warning if the value is false', () => {
+  it('should display a warning if the value is false and it has adr fields on record', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
 
     adr?.patchValue(false);
     adr?.markAsDirty();
+    name.patchValue('test');
 
-    CustomValidators.addWarningIfFalse('Test warning')(adr as AbstractControl);
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBe('Test warning');
   });
   it('should remove the warning if the value true', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
 
     adr?.patchValue(false);
     adr?.markAsDirty();
-    CustomValidators.addWarningIfFalse('Test warning')(adr as AbstractControl);
+    name.patchValue('test');
+
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBe('Test warning');
+
     adr?.patchValue(true);
 
-    CustomValidators.addWarningIfFalse('Test warning')(adr as AbstractControl);
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBeUndefined();
   });
   it('should not have a warning if the control is pristine and value is false', () => {
@@ -989,15 +1008,24 @@ describe('addWarningIfFalse', () => {
 
     adr?.patchValue(false);
 
-    CustomValidators.addWarningIfFalse('Test warning')(adr as AbstractControl);
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBeUndefined();
   });
-  it('should not have a warning if the control is pristine', () => {
+  it('should not have a warning if the value is false but there is no adr information on the record', () => {
+    const adr = form.get('dangerousGoods') as CustomFormControl;
+
+    adr?.patchValue(false);
+    adr?.markAsDirty();
+
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBeUndefined();
+  });
+  it('should not have a warning if the control is pristine and value is true', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
 
     adr?.patchValue(true);
 
-    CustomValidators.addWarningIfFalse('Test warning')(adr as AbstractControl);
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBeUndefined();
   });
 });

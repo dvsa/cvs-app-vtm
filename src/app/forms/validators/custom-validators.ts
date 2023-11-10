@@ -353,10 +353,22 @@ export class CustomValidators {
     };
   };
 
-  static addWarningIfFalse = (warning: string): ValidatorFn => {
+  static addWarningForAdrField = (warning: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.dirty && !control.value) {
-        (control as CustomFormControl).meta.warning = warning;
+        const adrDetails = [
+          'techRecord_adrDetails_applicantDetails_city',
+          'techRecord_adrDetails_applicantDetails_name',
+          'techRecord_adrDetails_applicantDetails_postcode',
+          'techRecord_adrDetails_applicantDetails_town',
+          'techRecord_adrDetails_applicantDetails_street',
+        ];
+        adrDetails.forEach((controlName) => {
+          const childControl = control.root.get(controlName);
+          if (childControl?.value) {
+            (control as CustomFormControl).meta.warning = warning;
+          }
+        });
       } if (control.value) {
         delete (control as CustomFormControl).meta.warning;
       }

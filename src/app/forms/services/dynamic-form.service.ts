@@ -64,7 +64,7 @@ export class DynamicFormService {
       CustomValidators.showGroupsWhenEqualTo(args.value, args.groups),
     [ValidatorNames.HideGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
       CustomValidators.hideGroupsWhenEqualTo(args.value, args.groups),
-    [ValidatorNames.AddWarningIfFalse]: (warning: string) => CustomValidators.addWarningIfFalse(warning),
+    [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

@@ -32,5 +32,5 @@ export enum ValidatorNames {
   UpdateFunctionCode = 'updateFunctionCode',
   ShowGroupsWhenEqualTo = 'showGroupsWhenEqualTo',
   HideGroupsWhenEqualTo = 'hideGroupsWhenEqualTo',
-  AddWarningIfFalse = 'addWarningIfFalse',
+  AddWarningForAdrField = 'addWarningForAdrField',
 }

@@ -11,7 +11,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { createVehicleRecord, createVehicleRecordSuccess, selectTechRecord } from '@store/technical-records';
+import { clearADRDetailsBeforeUpdate, createVehicleRecord, createVehicleRecordSuccess, selectTechRecord } from '@store/technical-records';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import {
@@ -91,6 +91,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
 
     if (this.isInvalid) return;
 
+    this.store.dispatch(clearADRDetailsBeforeUpdate());
     this.store
       .select(selectTechRecord)
       .pipe(
@@ -111,7 +112,9 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
         withLatestFrom(this.isBatch$),
       )
       .subscribe(([vehicleList, isBatch]) => {
-        vehicleList.forEach((vehicle) => this.store.dispatch(createVehicleRecord({ vehicle: vehicle as TechRecordType<'put'> })));
+        vehicleList.forEach((vehicle) => {
+          this.store.dispatch(createVehicleRecord({ vehicle: vehicle as TechRecordType<'put'> }));
+        });
         this.technicalRecordService.clearSectionTemplateStates();
         if (isBatch) this.navigate();
       });
