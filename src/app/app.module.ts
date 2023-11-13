@@ -141,6 +141,12 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
       deps: [Sentry.TraceService],
       multi: true,
     },
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: false,
+      }),
+    },
     MsalService,
     MsalGuard,
     MsalBroadcastService,

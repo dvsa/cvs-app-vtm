@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.startSentry();
     initAll();
-    this.throwError();
+    // this.throwError();
   }
 
   ngOnDestroy(): void {
@@ -62,16 +62,16 @@ export class AppComponent implements OnInit, OnDestroy {
   startSentry() {
     Sentry.init({
       dsn: 'https://3d918c477756e028e3ca92bb285de60b@o444637.ingest.sentry.io/4506179953885184',
+      replaysSessionSampleRate: 0.1,
+      tracesSampleRate: 0.025,
+      replaysOnErrorSampleRate: 1.0,
+      enableTracing: false,
       integrations: [
         new Sentry.BrowserTracing({
           routingInstrumentation: Sentry.routingInstrumentation,
         }),
         new Sentry.Replay(),
       ],
-      tracesSampleRate: 1.0,
-      tracePropagationTargets: ['localhost'],
-      replaysSessionSampleRate: 0.1,
-      replaysOnErrorSampleRate: 1.0,
     });
   }
   throwError() {
