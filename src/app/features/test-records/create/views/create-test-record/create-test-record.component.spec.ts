@@ -15,6 +15,7 @@ import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -209,6 +210,7 @@ describe('CreateTestRecordComponent', () => {
   });
 
   it('should set testMode to be view', async () => {
+    component.techRecord = {} as V3TechRecordModel;
     component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
     await component.handleReview();
 
