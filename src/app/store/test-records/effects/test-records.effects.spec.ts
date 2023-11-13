@@ -2,7 +2,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -19,7 +18,6 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/.';
@@ -92,8 +90,6 @@ describe('TestResultsEffects', () => {
   let testScheduler: TestScheduler;
   let testResultsService: TestRecordsService;
   let store: MockStore<State>;
-  let techRecordHttpService: TechnicalRecordHttpService;
-  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -133,8 +129,6 @@ describe('TestResultsEffects', () => {
     store = TestBed.inject(MockStore);
     effects = TestBed.inject(TestResultsEffects);
     testResultsService = TestBed.inject(TestRecordsService);
-    techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
-    router = TestBed.inject(Router);
   });
 
   beforeEach(() => {
