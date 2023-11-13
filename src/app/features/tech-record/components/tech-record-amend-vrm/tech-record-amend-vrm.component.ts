@@ -140,6 +140,12 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   }
 
   handleSubmit(): void {
+    let x: string | null = 'null';
+
+    x = null;
+
+    x!.toString();
+
     if (!this.isFormValid()) {
       return;
     }
