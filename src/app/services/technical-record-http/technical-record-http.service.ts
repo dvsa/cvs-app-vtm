@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
-import { SEARCH_TYPES } from '@models/search-types-enum';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -46,6 +46,13 @@ export class TechnicalRecordHttpService {
   }
 
   updateTechRecords$(systemNumber: string, createdTimestamp: string, techRecord: TechRecordType<'put'>): Observable<TechRecordType<'get'>> {
+
+    let x: string | null = 'null';
+
+    x = null;
+
+    x!.toString();
+
     const url = `${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`;
 
     return this.http.patch<TechRecordType<'get'>>(url, techRecord, { responseType: 'json' });
