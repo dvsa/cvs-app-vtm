@@ -12,13 +12,14 @@ import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { State } from '@store/index';
+import { selectTechRecord } from '@store/technical-records';
 import { createTestResultSuccess } from '@store/test-records';
 import { getTypeOfTest } from '@store/test-types/selectors/test-types.selectors';
 import cloneDeep from 'lodash.clonedeep';
@@ -41,6 +42,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
   testMode = TestModeEnum.Edit;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   testTypeId?: string;
+  techRecord: V3TechRecordModel | undefined = undefined;
 
   constructor(
     private actions$: Actions,
@@ -68,13 +70,17 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
         filter((tt) => !!tt),
       )
       .subscribe((testTypeId) => {
-        this.testRecordsService.contingencyTestTypeSelected(testTypeId!);
+        this.testRecordsService.contingencyTestTypeSelected(testTypeId as string);
         this.testTypeId = testTypeId;
       });
 
     this.watchForCreateSuccess();
 
     this.testRecordsService.canCreate$.pipe(take(1)).subscribe((val) => this.canCreate$.next(val));
+
+    this.store.select(selectTechRecord).pipe(take(1)).subscribe((techRecord) => {
+      this.techRecord = techRecord;
+    });
   }
 
   ngOnDestroy(): void {
@@ -108,15 +114,14 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   async handleReview() {
-    if (this.isAnyFormInvalid()) {
-      return;
-    }
+    if (this.isAnyFormInvalid()) return;
+    if (this.techRecord == null) return;
 
     this.errorService.clearErrors();
     this.testMode = TestModeEnum.View;
 
     const testResult = await firstValueFrom(this.testResult$);
-    if (testResult?.statusCode === StatusCodes.PROVISIONAL
+    if (testResult && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL
       && this.testTypeId
       && this.validateUpdateStatus(testResult.testTypes[0].testResult, this.testTypeId)) {
       const warnings: GlobalWarning[] = [];
