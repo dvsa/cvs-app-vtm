@@ -76,7 +76,7 @@ export class ReferenceDataCreateComponent implements OnInit {
     Object.keys(this.newRefData)
       .filter((newRefDataKey) => newRefDataKey !== 'resourceKey')
       .forEach((dataKey) => {
-        referenceData[dataKey] = this.newRefData[dataKey];
+        referenceData[`${dataKey}`] = this.newRefData[`${dataKey}`];
       });
 
     this.globalErrorService.errors$
