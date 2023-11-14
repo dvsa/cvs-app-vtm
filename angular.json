@@ -14,6 +14,9 @@
         },
         "@schematics/angular:directive": {
           "flat": false
+        },
+        "@schematics/angular:resolver": {
+          "functional": true
         }
       },
       "root": "",
