@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { CheckboxGroupComponent } from '@forms/components/checkbox-group/checkbox-group.component';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
@@ -107,7 +108,7 @@ export class CreateTechRecordComponent implements OnChanges {
     return [{ value: true, label: 'Generate a C/T/Z number on submission of the new record' }];
   }
 
-  toggleVrmInput(checked: any) {
+  toggleVrmInput(checked: CheckboxGroupComponent) {
     // eslint-disable-next-line prefer-destructuring
     const vrmTrm = this.form.controls['vrmTrm'];
 
@@ -173,7 +174,7 @@ export class CreateTechRecordComponent implements OnChanges {
 
   async isVinUnique(): Promise<boolean> {
     this.techRecord.vin = this.form.value.vin;
-    const isVinUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.techRecord.vin!, SEARCH_TYPES.VIN));
+    const isVinUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.techRecord.vin as string, SEARCH_TYPES.VIN));
     this.isVinUniqueCheckComplete = true;
     return isVinUnique;
   }
@@ -192,7 +193,9 @@ export class CreateTechRecordComponent implements OnChanges {
   async isTrailerIdUnique() {
     if (this.techRecord.techRecord_vehicleType === 'trl') {
       this.techRecord.trailerId = this.form.value.vrmTrm;
-      const isTrailerIdUnique = await firstValueFrom(this.technicalRecordService.isUnique(this.techRecord.trailerId!, SEARCH_TYPES.TRAILER_ID));
+      const isTrailerIdUnique = await firstValueFrom(
+        this.technicalRecordService.isUnique(this.techRecord.trailerId as string, SEARCH_TYPES.TRAILER_ID),
+      );
       if (!isTrailerIdUnique) {
         this.globalErrorService.addError({ error: 'TrailerId not unique', anchorLink: 'input-vrm-or-trailer-id' });
       }

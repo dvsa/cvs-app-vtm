@@ -10,11 +10,11 @@ import {
   FormGroup,
   ValidatorFn,
 } from '@angular/forms';
+import { Params } from '@angular/router';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
-import { Params } from '@angular/router';
 import { TagTypes } from '@shared/components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
 import { State } from '@store/.';
@@ -230,7 +230,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
   }
 
-  addControl(data?: any): void {
+  addControl(data?: unknown): void {
     if (this.meta?.children) {
       super.push(this.dynamicFormService.createForm(this.meta.children[0], data));
     }
@@ -281,8 +281,10 @@ function objectOrNull(obj: Object) {
   return Object.values(obj).some((value) => undefined !== value) ? obj : null;
 }
 
-function pushOrAssignAt(value: any, localCleanValue: Array<[]> | Record<string, any>, key: string) {
+function pushOrAssignAt(value: any, localCleanValue: Array<[]> | Record<string, unknown>, key: string) {
   if (Array.isArray(localCleanValue)) {
     localCleanValue.push(value);
-  } else localCleanValue[key] = value;
+  } else {
+    localCleanValue[`${key}`] = value;
+  }
 }
