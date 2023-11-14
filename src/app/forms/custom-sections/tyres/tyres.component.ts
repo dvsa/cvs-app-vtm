@@ -193,8 +193,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
     this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
 
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate([route], { relativeTo: this.route, state: this.vehicleTechRecord });
+    void this.router.navigate([route], { relativeTo: this.route, state: this.vehicleTechRecord });
   }
 
   addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {

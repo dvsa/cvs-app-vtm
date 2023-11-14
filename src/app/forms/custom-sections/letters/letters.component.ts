@@ -124,7 +124,6 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   generateLetter() {
     this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['generate-letter'], { relativeTo: this.route });
+    void this.router.navigate(['generate-letter'], { relativeTo: this.route });
   }
 }

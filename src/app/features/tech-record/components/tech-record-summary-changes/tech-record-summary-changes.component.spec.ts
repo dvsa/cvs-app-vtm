@@ -1,6 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -94,48 +93,42 @@ describe('TechRecordSummaryChangesComponent', () => {
   });
 
   describe('initSubscriptions', () => {
+    let spy: any;
+
     beforeEach(() => {
-      jest.spyOn(store, 'select');
+      spy = jest.spyOn(store, 'select');
       component.ngOnInit();
     });
     it('should grab techRecord from the store', () => {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.select).toHaveBeenCalledWith(techRecord);
+      expect(spy).toHaveBeenCalledWith(techRecord);
     });
     it('should grab editingTechRecord from the store', () => {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.select).toHaveBeenCalledWith(editingTechRecord);
+      expect(spy).toHaveBeenCalledWith(editingTechRecord);
     });
     it('should grab selectTechRecordChanges from the store', () => {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.select).toHaveBeenCalledWith(selectTechRecordChanges);
+      expect(spy).toHaveBeenCalledWith(selectTechRecordChanges);
     });
     it('should grab selectTechRecordDeletions from the store', () => {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.select).toHaveBeenCalledWith(selectTechRecordDeletions);
+      expect(spy).toHaveBeenCalledWith(selectTechRecordDeletions);
     });
   });
 
   describe('ngOnDestroy', () => {
     it('should call the destroy.next and destroy.complete', () => {
-      jest.spyOn(component.destroy$, 'next');
-      jest.spyOn(component.destroy$, 'complete');
+      const nextSpy = jest.spyOn(component.destroy$, 'next');
+      const completeSpy = jest.spyOn(component.destroy$, 'complete');
       component.ngOnDestroy();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.destroy$.next).toHaveBeenCalled();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.destroy$.complete).toHaveBeenCalled();
+      expect(nextSpy).toHaveBeenCalled();
+      expect(completeSpy).toHaveBeenCalled();
     });
   });
 
   describe('submit', () => {
     it('should dispatch updateTechRecords', () => {
-      jest.spyOn(store, 'dispatch');
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
       component.submit();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(store.dispatch).toHaveBeenCalledWith({
+      expect(dispatchSpy).toHaveBeenCalledTimes(1);
+      expect(dispatchSpy).toHaveBeenCalledWith({
         systemNumber: '123456',
         createdTimestamp: '123123123',
         type: '[Technical Record Service] updateTechRecords',
@@ -145,13 +138,11 @@ describe('TechRecordSummaryChangesComponent', () => {
 
   describe('cancel', () => {
     it('should call globalErrorService.clearErrors and then navigate', () => {
-      jest.spyOn(component.globalErrorService, 'clearErrors');
-      jest.spyOn(component.router, 'navigate');
+      const clearErrorsSpy = jest.spyOn(component.globalErrorService, 'clearErrors');
+      const navigateSpy = jest.spyOn(component.router, 'navigate');
       component.cancel();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.globalErrorService.clearErrors).toHaveBeenCalled();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.router.navigate).toHaveBeenCalled();
+      expect(clearErrorsSpy).toHaveBeenCalled();
+      expect(navigateSpy).toHaveBeenCalled();
     });
   });
 

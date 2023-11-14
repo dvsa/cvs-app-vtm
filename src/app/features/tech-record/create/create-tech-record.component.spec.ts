@@ -116,8 +116,7 @@ describe('CreateNewVehicleRecordComponent', () => {
       const updateEditingSpy = jest.spyOn(techRecordService, 'updateEditingTechRecord');
       const navigateSpy = jest.spyOn(router, 'navigate');
       const generateTechREcordSpy = jest.spyOn(techRecordService, 'generateEditingVehicleTechnicalRecordFromVehicleType');
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      component.handleSubmit();
+      void component.handleSubmit();
 
       expect(isFormValid).toHaveReturned();
       expect(updateEditingSpy).toHaveBeenCalledTimes(0);

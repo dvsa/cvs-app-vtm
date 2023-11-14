@@ -85,8 +85,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   backToTechRecord(): void {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['../../..'], { relativeTo: this.route.parent });
+    void this.router.navigate(['../../..'], { relativeTo: this.route.parent });
   }
 
   /**
