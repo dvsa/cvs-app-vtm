@@ -189,15 +189,6 @@ describe('TechRecordSummaryChangesComponent', () => {
     });
   });
 
-  describe('isNotEmpty', () => {
-    it('should return true if an object is populated', () => {
-      expect(component.isNotEmpty({ value: true })).toBe(true);
-    });
-    it('should return false if an object is not populated', () => {
-      expect(component.isNotEmpty({})).toBe(false);
-    });
-  });
-
   describe('toVisibleFormNode', () => {
     it('updates the viewType property from hidden to string', () => {
       const children = TechRecordReasonForCreationSection.children!;

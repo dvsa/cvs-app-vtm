@@ -28,6 +28,7 @@ import {
   updateTechRecord,
   updateTechRecordSuccess,
 } from '@store/technical-records';
+import { isEmpty } from 'lodash';
 import {
   Subject, combineLatest, map, take, takeUntil,
 } from 'rxjs';
@@ -165,7 +166,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 
   getTechRecordChangesKeys(): string[] {
     const entries = Object.entries(this.techRecordChanges ?? {});
-    const filter = entries.filter(([_, value]) => this.isNotEmpty(value));
+    const filter = entries.filter(([, value]) => !isEmpty(value));
     const changeMap = filter.map(([key]) => key);
     return changeMap;
   }
@@ -204,12 +205,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
           .map((child) => this.toVisibleFormNode(child)),
       }))
       .filter((section) => Boolean(section && section.children && section.children.length > 0) || this.sectionsWhitelist.includes(section.name));
-  }
-
-  isNotEmpty(value: unknown): boolean {
-    if (value === '' || value === undefined || value === null) return false;
-    if (typeof value === 'object') return Object.values(value).length > 0;
-    return true;
   }
 
   toVisibleFormNode(node: FormNode): FormNode {

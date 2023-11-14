@@ -2,8 +2,7 @@
   *ngIf="form && control && control.value.meta.editType !== formNodeEditTypes.HIDDEN"
   [ngSwitch]="control.value.meta.editType"
   [formGroup]="form"
-  appNestingLevel
-  [nestingLevel]="$any(form).meta.nestingLevel ?? 0"
+  [appNestingLevel]="$any(form).meta.nestingLevel ?? 0"
 >
   <app-autocomplete
     *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE"
