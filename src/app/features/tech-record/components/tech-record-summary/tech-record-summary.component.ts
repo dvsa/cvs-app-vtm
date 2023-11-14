@@ -29,7 +29,9 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes, } from '@models/vehicle-tech-record.model';
+import {
+  ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes,
+} from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { LoadingService } from '@services/loading/loading.service';
@@ -38,7 +40,9 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
-import { debounceTime, map, Observable, Subject, take, takeUntil, } from 'rxjs';
+import {
+  debounceTime, map, Observable, Subject, take, takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary',
