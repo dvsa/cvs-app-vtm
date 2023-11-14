@@ -1,8 +1,10 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const VehicleSectionGroup3: FormNode = {
   name: 'vehicleSection',
@@ -17,7 +19,7 @@ export const VehicleSectionGroup3: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'countryOfRegistration',
@@ -28,7 +30,7 @@ export const VehicleSectionGroup3: FormNode = {
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
     },
     {
       name: 'euVehicleCategory',
@@ -37,8 +39,8 @@ export const VehicleSectionGroup3: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      options: getOptionsFromEnum(EUVehicleCategory),
+      validators: [{ name: ValidatorNames.Required }],
     },
     {
       name: 'odometerReading',
@@ -48,7 +50,7 @@ export const VehicleSectionGroup3: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      width: FormNodeWidth.L
+      width: FormNodeWidth.L,
     },
     {
       name: 'odometerReadingUnits',
@@ -56,11 +58,11 @@ export const VehicleSectionGroup3: FormNode = {
       value: '',
       options: [
         { value: 'kilometres', label: 'Kilometres' },
-        { value: 'miles', label: 'Miles' }
+        { value: 'miles', label: 'Miles' },
       ],
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.RADIO
-    }
-  ]
+      editType: FormNodeEditTypes.RADIO,
+    },
+  ],
 };

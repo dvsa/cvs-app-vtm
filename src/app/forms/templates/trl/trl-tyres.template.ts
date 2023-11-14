@@ -1,6 +1,10 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels,
+} from '@forms/services/dynamic-form.types';
 import { TagType } from '@shared/components/tag/tag.component';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { TyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 
 export const tyresTemplateTrl: FormNode = {
   name: 'tyreSection',
@@ -12,13 +16,10 @@ export const tyresTemplateTrl: FormNode = {
       label: 'Tyre use code',
       value: null,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.NUMBER,
+      editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.XS,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 2 },
-        { name: ValidatorNames.Min, args: 0 }
-      ],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      options: getOptionsFromEnum(TyreUseCode),
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_axles',
@@ -34,7 +35,7 @@ export const tyresTemplateTrl: FormNode = {
             {
               name: 'axleNumber',
               label: 'Axle Number',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
 
             {
@@ -43,7 +44,7 @@ export const tyresTemplateTrl: FormNode = {
               value: null,
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.NUMBER,
-              validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Min, args: 0 }]
+              validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Min, args: 0 }],
             },
             {
               name: 'tyres_tyreSize',
@@ -53,8 +54,8 @@ export const tyresTemplateTrl: FormNode = {
               disabled: true,
               validators: [
                 { name: ValidatorNames.MaxLength, args: 12 },
-                { name: ValidatorNames.Min, args: 0 }
-              ]
+                { name: ValidatorNames.Min, args: 0 },
+              ],
             },
             {
               name: 'tyres_plyRating',
@@ -64,15 +65,15 @@ export const tyresTemplateTrl: FormNode = {
               disabled: true,
               validators: [
                 { name: ValidatorNames.MaxLength, args: 2 },
-                { name: ValidatorNames.Min, args: 0 }
-              ]
+                { name: ValidatorNames.Min, args: 0 },
+              ],
             },
             {
               name: 'tyres_fitmentCode',
               label: 'Fitment code',
               value: null,
               type: FormNodeTypes.CONTROL,
-              validators: []
+              validators: [],
             },
             {
               name: 'tyres_dataTrAxles',
@@ -81,11 +82,11 @@ export const tyresTemplateTrl: FormNode = {
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.NUMBER,
               disabled: true,
-              validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 999 }, { name: ValidatorNames.Min, args: 0 }]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 999 }, { name: ValidatorNames.Min, args: 0 }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

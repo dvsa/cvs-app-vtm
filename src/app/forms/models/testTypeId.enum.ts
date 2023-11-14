@@ -1,6 +1,7 @@
-///// Copied from the backend-lambda https://github.com/dvsa/cvs-svc-test-results/blob/3c1ffe344282b5ce918c151a56144b51cbd1c929/src/assets/Enums.ts#L219
+// Copied from the backend-lambda https://github.com/dvsa/cvs-svc-test-results/blob/3c1ffe344282b5ce918c151a56144b51cbd1c929/src/assets/Enums.ts#L219
 
-// CVSB-10300 - the following constants are based on the grouping of the test-types in the excel "Use_for_dynamic_functionality - CVSB-10298 only" sheet
+// CVSB-10300 - the following constants are based on the grouping of the test-types in the excel
+// "Use_for_dynamic_functionality - CVSB-10298 only" sheet
 
 // tests for PSV - Annual test, Class 6A seatbelt installation check(annual test, first test), Paid/Part paid annual test retest
 // Paid/Part paid prohibition clearance(full inspection, retest with certificate), Prohibition clearance(retest with/without class 6A seatbelt)
@@ -30,7 +31,7 @@ export const TEST_TYPES_GROUP3_4_8: string[] = [
   '87',
   '47',
   '48',
-  '85'
+  '85',
 ];
 
 // 56 and 49 - tests for HGV and TRL - Paid TIR retest, TIR test
@@ -69,7 +70,7 @@ export const TEST_TYPES_GROUP9_10: string[] = [
   '116',
   '119',
   '120',
-  '199'
+  '199',
 ];
 
 // tests for TRL - Paid/Part paid prohibition clearance(retest, full inspection, part inspection, without cert)
@@ -116,7 +117,7 @@ export const TEST_TYPES_GROUP1_SPEC_TEST: string[] = [
   '172',
   '173',
   '181',
-  '182'
+  '182',
 ];
 
 // Test/Retest COIF with annual test, Seatbelt installation check COIF with annual test
@@ -185,7 +186,7 @@ export const SPECIALIST_TEST_TYPE_IDS: string[] = [
   '184',
   '196',
   '197',
-  '185'
+  '185',
 ];
 
 export const TEST_TYPES_GROUP1_DESK_BASED_TEST: string[] = ['417', '418'];
@@ -203,7 +204,7 @@ export const TEST_TYPES_GROUP3_DESK_BASED_TEST: string[] = [
   '445',
   '446',
   '447',
-  '448'
+  '448',
 ];
 export const TEST_TYPES_GROUP4_DESK_BASED_TEST: string[] = ['409', '411', '412', '423', '424', '425', '433', '435', '436', '437', '438'];
 export const TEST_TYPES_GROUP5_DESK_BASED_TEST: string[] = ['439', '441', '442', '449'];
@@ -227,5 +228,5 @@ export const TEST_TYPES = {
   testTypesDeskBasedGroup2: TEST_TYPES_GROUP2_DESK_BASED_TEST,
   testTypesDeskBasedGroup3: TEST_TYPES_GROUP3_DESK_BASED_TEST,
   testTypesDeskBasedGroup4: TEST_TYPES_GROUP4_DESK_BASED_TEST,
-  testTypesDeskBasedGroup5: TEST_TYPES_GROUP5_DESK_BASED_TEST
+  testTypesDeskBasedGroup5: TEST_TYPES_GROUP5_DESK_BASED_TEST,
 };

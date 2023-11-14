@@ -1,9 +1,11 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const ContingencyVehicleSectionDefaultTrl: FormNode = {
   name: 'vehicleSection',
@@ -18,7 +20,7 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'trailerId',
@@ -27,7 +29,7 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'countryOfRegistration',
@@ -38,7 +40,7 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
       type: FormNodeTypes.CONTROL,
-      asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }]
+      asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }],
     },
     {
       name: 'euVehicleCategory',
@@ -47,8 +49,8 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      options: getOptionsFromEnum(EUVehicleCategory),
+      validators: [{ name: ValidatorNames.Required }],
     },
     {
       name: 'preparerName',
@@ -57,7 +59,7 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      disabled: true
+      disabled: true,
     },
     {
       name: 'preparerId',
@@ -66,7 +68,7 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      disabled: true
-    }
-  ]
+      disabled: true,
+    },
+  ],
 };

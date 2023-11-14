@@ -11,14 +11,14 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: SelectComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class SelectComponent extends BaseControlComponent {
   @Input() options!: Array<FormNodeOption<string | number | boolean>>;
 
   get style(): string {
-    return 'govuk-select ' + (this.width ? 'govuk-input--width-' + this.width : '');
+    return `govuk-select ${this.width ? `govuk-input--width-${this.width}` : ''}`;
   }
 }

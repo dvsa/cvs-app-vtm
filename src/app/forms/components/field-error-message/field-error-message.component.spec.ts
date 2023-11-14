@@ -8,7 +8,7 @@ describe('FieldErrorMessageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FieldErrorMessageComponent]
+      declarations: [FieldErrorMessageComponent],
     }).compileComponents();
   });
 

@@ -3,10 +3,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -16,8 +17,7 @@ import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
-import { of, ReplaySubject } from 'rxjs';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { ReplaySubject, of } from 'rxjs';
 import { GenerateLetterComponent } from './tech-record-generate-letter.component';
 
 const mockTechRecordService = {
@@ -41,7 +41,6 @@ describe('TechRecordGenerateLetterComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let store: MockStore;
-  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -70,7 +69,6 @@ describe('TechRecordGenerateLetterComponent', () => {
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
   });
 
@@ -125,7 +123,7 @@ describe('TechRecordGenerateLetterComponent', () => {
       it('should dispatch with id 3 on acceptance', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.techRecord = expectedVehicle;
-        component.techRecord.techRecord_approvalType = 'UKNI WVTA';
+        component.techRecord.techRecord_approvalType = ApprovalType.UKNI_WVTA;
 
         component.form.get('letterType')?.setValue('trailer acceptance');
         component.handleSubmit();
@@ -136,7 +134,7 @@ describe('TechRecordGenerateLetterComponent', () => {
       it('should dispatch with id 4 on rejection', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.techRecord = expectedVehicle;
-        component.techRecord.techRecord_approvalType = 'GB WVTA';
+        component.techRecord.techRecord_approvalType = ApprovalType.GB_WVTA;
 
         component.form.get('letterType')?.setValue('trailer rejection');
         component.handleSubmit();
@@ -147,7 +145,7 @@ describe('TechRecordGenerateLetterComponent', () => {
       it('should dispatch with id 6 on acceptance', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.techRecord = expectedVehicle;
-        component.techRecord.techRecord_approvalType = 'GB WVTA';
+        component.techRecord.techRecord_approvalType = ApprovalType.GB_WVTA;
 
         component.form.get('letterType')?.setValue('trailer acceptance');
         component.handleSubmit();

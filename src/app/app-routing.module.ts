@@ -1,18 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { RoleGuard } from '@guards/role-guard/roles.guard';
-import { Roles } from '@models/roles.enum';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from '@core/components/server-error/server-error.component';
 import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
-import { TechRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
-import { TitleResolver } from './resolvers/title/title.resolver';
+import { FeatureToggleGuard } from '@guards/feature-toggle-guard/feature-toggle.guard';
+import { RoleGuard } from '@guards/role-guard/roles.guard';
+import { Roles } from '@models/roles.enum';
+import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
+import { titleResolver } from './resolvers/title/title.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    resolve: { title: TitleResolver },
+    resolve: { title: titleResolver },
     children: [
       {
         path: '',
@@ -44,7 +45,7 @@ const routes: Routes = [
         path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
         data: { title: 'Test Result', roles: Roles.TestResultView },
         canActivate: [MsalGuard, RoleGuard],
-        resolve: { techRecord: TechRecordViewResolver },
+        resolve: { techRecord: techRecordViewResolver },
         loadChildren: () => import('./features/test-records/amend/amend-test-records.module').then((m) => m.AmendTestRecordsModule),
       },
       {
@@ -58,6 +59,12 @@ const routes: Routes = [
         data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/reference-data/reference-data.module').then((m) => m.ReferenceDataModule),
+      },
+      {
+        path: 'feature-toggle',
+        data: { title: 'Feature Toggle', featureToggleName: 'testToggle' },
+        canActivate: [MsalGuard, FeatureToggleGuard],
+        loadChildren: () => import('./features/feature-toggle/feature-toggle.module').then((m) => m.FeatureToggleModule),
       },
       {
         path: 'error',

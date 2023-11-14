@@ -1,8 +1,10 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
   name: 'vehicleSection',
@@ -15,7 +17,7 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'trailerId',
@@ -25,7 +27,7 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      editType: FormNodeEditTypes.HIDDEN,
     },
     {
       name: 'countryOfRegistration',
@@ -35,7 +37,7 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
       width: FormNodeWidth.XL,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
     },
     {
       name: 'euVehicleCategory',
@@ -44,22 +46,22 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [{ name: ValidatorNames.Required }]
+      options: getOptionsFromEnum(EUVehicleCategory),
+      validators: [{ name: ValidatorNames.Required }],
     },
     {
       name: 'preparerName',
       label: 'Preparer Name',
       value: '',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'preparerId',
       label: 'Preparer ID',
       value: '',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
-    }
-  ]
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+  ],
 };

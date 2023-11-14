@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import {
   CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes,
 } from '@forms/services/dynamic-form.types';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
 
 @Component({
   selector: 'app-tech-amend-reason',
@@ -43,11 +43,15 @@ export class TechRecordAmendReasonComponent {
       },
     ];
 
-    this.form.valid ? this.errorService.clearErrors() : this.errorService.setErrors(errors);
+    if (this.form.valid) {
+      this.errorService.clearErrors();
+      if (reason) {
+        void this.router.navigate([`../${reason}`], { relativeTo: this.route });
+      }
 
-    if (this.form.valid && reason) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.router.navigate([`../${reason}`], { relativeTo: this.route });
+      return;
     }
+
+    this.errorService.setErrors(errors);
   }
 }

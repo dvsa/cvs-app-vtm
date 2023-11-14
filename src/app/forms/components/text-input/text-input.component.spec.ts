@@ -9,11 +9,11 @@ import { TextInputComponent } from './text-input.component';
   template: `<form [formGroup]="form">
     <app-text-input name="foo" formControlName="foo"></app-text-input>
   </form> `,
-  styles: []
+  styles: [],
 })
 class HostComponent {
   form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, '')
+    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, ''),
   });
 }
 
@@ -23,7 +23,7 @@ describe('TextInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TextInputComponent]
+      declarations: [TextInputComponent],
     }).compileComponents();
   });
 

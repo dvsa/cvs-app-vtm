@@ -15,8 +15,9 @@ import {
   addSearchInformation,
   fetchReferenceDataAudit,
   fetchReferenceDataAuditSuccess,
-  fetchReferenceDataAuditFailed
+  fetchReferenceDataAuditFailed,
 } from './reference-data.actions';
+
 describe('Test Result Actions', () => {
   it('should return correct types', () => {
     expect(fetchReferenceData.type).toBe('[API/reference-data] Fetch all of ResourceType');

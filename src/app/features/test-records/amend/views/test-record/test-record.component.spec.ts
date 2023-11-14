@@ -4,14 +4,14 @@ import {
   ComponentFixture, fakeAsync, TestBed, tick, waitForAsync,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -34,12 +34,8 @@ describe('TestRecordComponent', () => {
   let component: TestRecordComponent;
   let fixture: ComponentFixture<TestRecordComponent>;
   let el: DebugElement;
-  let mockRouteEditable: MemoizedSelector<any, boolean, DefaultProjectorFn<boolean>>;
   let store: MockStore<State>;
-  let router: Router;
-  let route: ActivatedRoute;
   let testRecordsService: TestRecordsService;
-  let techRecordService: TechnicalRecordService;
   const actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {
@@ -67,11 +63,8 @@ describe('TestRecordComponent', () => {
     component = fixture.componentInstance;
     el = fixture.debugElement;
     store = TestBed.inject(MockStore);
-    mockRouteEditable = store.overrideSelector(routeEditable, false);
-    router = TestBed.inject(Router);
-    route = TestBed.inject(ActivatedRoute);
+    store.overrideSelector(routeEditable, false);
     testRecordsService = TestBed.inject(TestRecordsService);
-    techRecordService = TestBed.inject(TechnicalRecordService);
 
     store.resetSelectors();
     store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testNumber: 'foo' } as Params);
@@ -98,7 +91,7 @@ describe('TestRecordComponent', () => {
     });
 
     it('should display review button when edit query param is true', waitForAsync(() => {
-      mockRouteEditable = store.overrideSelector(routeEditable, true);
+      store.overrideSelector(routeEditable, true);
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
 
       fixture.detectChanges();
@@ -106,7 +99,7 @@ describe('TestRecordComponent', () => {
     }));
 
     it('should run handleSave when save button is clicked', waitForAsync(() => {
-      mockRouteEditable = store.overrideSelector(routeEditable, true);
+      store.overrideSelector(routeEditable, true);
       component.testMode = TestModeEnum.View;
 
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
@@ -119,7 +112,7 @@ describe('TestRecordComponent', () => {
     }));
 
     it('should run handleReview when review button is clicked', waitForAsync(() => {
-      mockRouteEditable = store.overrideSelector(routeEditable, true);
+      store.overrideSelector(routeEditable, true);
 
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
 

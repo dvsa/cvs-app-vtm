@@ -17,12 +17,6 @@ tslint*
 jest.config.js
 protractor.conf.js
 /src/app/api/*
-/src/app/forms/*
-/src/app/services/*
-/src/app/shared/*
-/src/app/store/*
-/src/mocks/*
-/src/environments/*
 /mock-api
 /cypress
 /.vscode
@@ -33,3 +27,4 @@ setenv.ts
 setup-jest.ts
 cypress.config.ts
 jest-global-mocks.ts
+environment.deploy.ts

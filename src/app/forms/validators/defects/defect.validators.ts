@@ -9,10 +9,10 @@ export class DefectValidators {
       const prohibitionIssued = grandParent.get('prohibitionIssued')?.value as boolean;
       const stdForProhibition = grandParent.get('stdForProhibition')?.value as boolean;
 
-      const imNumber = grandParent.get('imNumber')?.value ? grandParent.get('imNumber')?.value + '.' : '';
-      const itemNumber = grandParent.get('itemNumber')?.value ? grandParent.get('itemNumber')?.value + '.' : '';
-      const deficiencyId = grandParent.get('deficiencyId')?.value ? grandParent.get('deficiencyId')?.value + '.' : '';
-      const deficiencySubId = grandParent.get('deficiencySubId')?.value ?? '';
+      const imNumber: string = grandParent.get('imNumber')?.value ? `${grandParent.get('imNumber')?.value}.` : '';
+      const itemNumber: string = grandParent.get('itemNumber')?.value ? `${grandParent.get('itemNumber')?.value}.` : '';
+      const deficiencyId: string = grandParent.get('deficiencyId')?.value ? `${grandParent.get('deficiencyId')?.value}.` : '';
+      const deficiencySubId: string = grandParent.get('deficiencySubId')?.value ?? '';
 
       const defectType = imNumber + itemNumber + deficiencyId + deficiencySubId;
 
@@ -21,8 +21,8 @@ export class DefectValidators {
       if (optionalDefectNotes.includes(defectType)) return null;
 
       if (
-        !control.value &&
-        (defCategory === deficiencyCategory.Advisory || (defCategory === deficiencyCategory.Dangerous && stdForProhibition && !prohibitionIssued))
+        !control.value
+        && (defCategory === deficiencyCategory.Advisory || (defCategory === deficiencyCategory.Dangerous && stdForProhibition && !prohibitionIssued))
       ) {
         return { validateDefectNotes: true };
       }

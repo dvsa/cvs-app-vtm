@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth,
+} from '../../services/dynamic-form.types';
 
 export const ManufacturerTemplate: FormNode = {
   name: 'manufacturerSection',
@@ -12,7 +14,7 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
       validators: [{ name: ValidatorNames.MaxLength, args: 150 }],
-      customId: 'manufacturerName'
+      customId: 'manufacturerName',
     },
     {
       name: 'techRecord_manufacturerDetails_address1',
@@ -20,7 +22,7 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'manufacturerAddress1'
+      customId: 'manufacturerAddress1',
     },
     {
       name: 'techRecord_manufacturerDetails_address2',
@@ -28,7 +30,7 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'manufacturerAddress2'
+      customId: 'manufacturerAddress2',
     },
     {
       name: 'techRecord_manufacturerDetails_postTown',
@@ -36,7 +38,7 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'manufacturerPostTown'
+      customId: 'manufacturerPostTown',
     },
     {
       name: 'techRecord_manufacturerDetails_address3',
@@ -44,7 +46,7 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'manufacturerCounty'
+      customId: 'manufacturerCounty',
     },
     {
       name: 'techRecord_manufacturerDetails_postCode',
@@ -52,7 +54,7 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
       validators: [{ name: ValidatorNames.MaxLength, args: 12 }],
-      customId: 'manufacturerPostCode'
+      customId: 'manufacturerPostCode',
     },
     {
       name: 'techRecord_manufacturerDetails_telephoneNumber',
@@ -60,7 +62,7 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
-      customId: 'manufacturerTelephoneNumber'
+      customId: 'manufacturerTelephoneNumber',
     },
     {
       name: 'techRecord_manufacturerDetails_emailAddress',
@@ -68,7 +70,7 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 255 }, { name: ValidatorNames.Email }],
-      customId: 'manufacturerEmailAddress'
+      customId: 'manufacturerEmailAddress',
     },
     {
       name: 'techRecord_manufacturerDetails_faxNumber',
@@ -76,14 +78,14 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
-      customId: 'manufacturerFaxNumber'
+      customId: 'manufacturerFaxNumber',
     },
     {
       name: 'techRecord_manufacturerDetails_manufacturerNotes',
       label: 'Manufacturer Notes',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXTAREA,
-      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }]
-    }
-  ]
+      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }],
+    },
+  ],
 };

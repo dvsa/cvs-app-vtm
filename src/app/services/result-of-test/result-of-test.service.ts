@@ -6,7 +6,7 @@ import { resultOfTestSelector, setResultOfTest, updateResultOfTest } from '@stor
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ResultOfTestService {
   constructor(private store: Store<State>) {}
@@ -21,9 +21,9 @@ export class ResultOfTestService {
 
   toggleAbandoned(result: resultOfTestEnum) {
     if (result !== resultOfTestEnum.abandoned) {
-      this.store.dispatch(setResultOfTest({ result: result }));
+      this.store.dispatch(setResultOfTest({ result }));
     } else {
-      this.store.dispatch(setResultOfTest({ result: result }));
+      this.store.dispatch(setResultOfTest({ result }));
       this.updateResultOfTest();
     }
   }

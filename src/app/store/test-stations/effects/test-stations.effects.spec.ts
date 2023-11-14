@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TestStation } from '@models/test-stations/test-station.model';
@@ -14,7 +15,7 @@ import {
   fetchTestStations,
   fetchTestStationsFailed,
   fetchTestStationsSuccess,
-  fetchTestStationSuccess
+  fetchTestStationSuccess,
 } from '../actions/test-stations.actions';
 import { TestStationsEffects } from './test-stations.effects';
 
@@ -28,8 +29,8 @@ describe('TestStationsEffects', () => {
   const testCases = [
     {
       id: expectedResult.testStationId,
-      payload: [expectedResult]
-    }
+      payload: [expectedResult],
+    },
   ];
 
   beforeEach(() => {
@@ -40,9 +41,9 @@ describe('TestStationsEffects', () => {
         provideMockActions(() => actions$),
         TestStationsService,
         provideMockStore({
-          initialState: initialAppState
-        })
-      ]
+          initialState: initialAppState,
+        }),
+      ],
     });
 
     effects = TestBed.inject(TestStationsEffects);
@@ -56,7 +57,7 @@ describe('TestStationsEffects', () => {
   });
 
   describe('fetchTestStations$', () => {
-    it.each(testCases)('should return fetchTestStationsSuccess action on successfull API call', value => {
+    it.each(testCases)('should return fetchTestStationsSuccess action on successfull API call', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { payload } = value;
 
@@ -68,7 +69,7 @@ describe('TestStationsEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.fetchTestStations$).toBe('---b', {
-          b: fetchTestStationsSuccess({ payload })
+          b: fetchTestStationsSuccess({ payload }),
         });
       });
     });
@@ -82,17 +83,18 @@ describe('TestStationsEffects', () => {
         jest.spyOn(service, 'fetchTestStations').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchTestStations$).toBe('---b', {
-          b: fetchTestStationsFailed({ error: 'Reference data resourceType is required' })
+          b: fetchTestStationsFailed({ error: 'Reference data resourceType is required' }),
         });
       });
     });
   });
 
   describe('fetchTestStation$', () => {
-    it.each(testCases)('should return fetchTestStationSuccess action on successfull API call', value => {
+    it.each(testCases)('should return fetchTestStationSuccess action on successfull API call', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { id, payload } = value;
-        const entity = payload.find(p => p.testStationId === id)!;
+
+        const entity = payload.find((p) => p.testStationId === id) as TestStation;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: fetchTestStation({ id }) });
@@ -102,12 +104,12 @@ describe('TestStationsEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.fetchTestStation$).toBe('---b', {
-          b: fetchTestStationSuccess({ id, payload: entity })
+          b: fetchTestStationSuccess({ id, payload: entity }),
         });
       });
     });
 
-    it.each(testCases)('should return fetchTestStationFailed action on API error', value => {
+    it.each(testCases)('should return fetchTestStationFailed action on API error', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { id } = value;
         actions$ = hot('-a--', { a: fetchTestStation({ id }) });

@@ -1,17 +1,21 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReplaySubject, Subject, map, takeUntil } from 'rxjs';
+import {
+  ReplaySubject, Subject, map, takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'app-pagination[tableName]',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent implements OnInit, OnDestroy {
   @Input() tableName!: string;
-  @Input() numberOfItems: number = 0;
-  @Input() itemsPerPage: number = 5;
+  @Input() numberOfItems = 0;
+  @Input() itemsPerPage = 5;
   @Output() paginationOptions = new EventEmitter<{ currentPage: number; itemsPerPage: number; start: number; end: number }>();
 
   currentPage = 1;
@@ -27,23 +31,25 @@ export class PaginationComponent implements OnInit, OnDestroy {
     this.route.queryParams
       .pipe(
         takeUntil(this.destroy$),
-        map(params => Number.parseInt(params[`${this.tableName}-page`] ?? '1', 10))
+        map((params) => Number.parseInt(params[`${this.tableName}-page`] ?? '1', 10)),
       )
       .subscribe({
-        next: page => {
+        next: (page) => {
           this.currentPageSubject.next(page);
           this.cdr.markForCheck();
-        }
+        },
       });
 
     this.currentPageSubject.pipe(takeUntil(this.destroy$)).subscribe({
-      next: page => {
+      next: (page) => {
         const [start, end] = [(page - 1) * this.itemsPerPage, page * this.itemsPerPage];
 
         this.currentPage = page;
-        this.paginationOptions.emit({ currentPage: page, itemsPerPage: this.itemsPerPage, start, end });
+        this.paginationOptions.emit({
+          currentPage: page, itemsPerPage: this.itemsPerPage, start, end,
+        });
         this.cdr.markForCheck();
-      }
+      },
     });
   }
 

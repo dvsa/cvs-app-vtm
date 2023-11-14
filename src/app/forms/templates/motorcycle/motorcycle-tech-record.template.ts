@@ -1,8 +1,10 @@
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationLightVehicle.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
+} from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
-import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
 
 export const MotorcycleTechRecord: FormNode = {
@@ -19,7 +21,7 @@ export const MotorcycleTechRecord: FormNode = {
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
       validators: [],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_statusCode',
@@ -27,7 +29,7 @@ export const MotorcycleTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_regnDate',
@@ -37,7 +39,7 @@ export const MotorcycleTechRecord: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       validators: [],
-      isoDate: false
+      isoDate: false,
     },
     {
       name: 'techRecord_manufactureYear',
@@ -48,8 +50,8 @@ export const MotorcycleTechRecord: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
-        { name: ValidatorNames.Min, args: 1000 }
-      ]
+        { name: ValidatorNames.Min, args: 1000 },
+      ],
     },
     {
       name: 'techRecord_noOfAxles',
@@ -58,7 +60,7 @@ export const MotorcycleTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       value: 2,
-      validators: [{ name: ValidatorNames.Max, args: 99 }]
+      validators: [{ name: ValidatorNames.Max, args: 99 }],
     },
     {
       name: 'techRecord_vehicleClass_description',
@@ -79,11 +81,11 @@ export const MotorcycleTechRecord: FormNode = {
         { label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
         { label: 'MOT class 4', value: 'MOT class 4' },
         { label: 'MOT class 7', value: 'MOT class 7' },
-        { label: 'MOT class 5', value: 'MOT class 5' }
+        { label: 'MOT class 5', value: 'MOT class 5' },
       ],
       class: '.govuk-input--width-10',
       validators: [{ name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_vehicleConfiguration',
@@ -93,7 +95,7 @@ export const MotorcycleTechRecord: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
       validators: [{ name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_euVehicleCategory',
@@ -102,8 +104,8 @@ export const MotorcycleTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.S,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      validators: []
+      options: getOptionsFromEnum(EUVehicleCategory),
+      validators: [],
     },
     {
       name: 'techRecord_numberOfWheelsDriven',
@@ -113,7 +115,7 @@ export const MotorcycleTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 9999 }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
-    }
-  ]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
+    },
+  ],
 };

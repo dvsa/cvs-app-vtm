@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { getBySystemNumber, selectTechRecordHistory } from '@store/technical-records';
 import { Observable, map } from 'rxjs';
@@ -55,12 +55,7 @@ export class TechRecordHistoryComponent implements OnInit {
   }
 
   summaryLinkUrl(searchResult: TechRecordSearchSchema) {
-    switch (searchResult.techRecord_statusCode) {
-      case StatusCodes.PROVISIONAL:
-        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}/provisional`;
-      default:
-        return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}`;
-    }
+    return `/tech-records/${searchResult.systemNumber}/${searchResult.createdTimestamp}`;
   }
 
   get currentTimeStamp() {

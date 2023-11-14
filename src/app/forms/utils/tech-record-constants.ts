@@ -54,8 +54,8 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
       /*  8 */ PsvBodyTemplate,
       /*  9 */ PsvWeightsTemplate,
       /* 10 */ PsvTyresTemplate,
-      /* 11 */ PsvDimensionsTemplate
-    ]
+      /* 11 */ PsvDimensionsTemplate,
+    ],
   ],
   [
     VehicleTypes.HGV,
@@ -70,8 +70,8 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
       /*  8 */ HgvWeight,
       /*  9 */ tyresTemplateHgv,
       /* 10 */ HgvDimensionsTemplate,
-      /* 11 */ PlatesTemplate
-    ]
+      /* 11 */ PlatesTemplate,
+    ],
   ],
   [
     VehicleTypes.TRL,
@@ -91,23 +91,23 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
       /* 13 */ TrlDimensionsTemplate,
       /* 14 */ PlatesTemplate,
       /* 15 */ TrlAuthIntoServiceTemplate,
-      /* 16 */ ManufacturerTemplate
-    ]
+      /* 16 */ ManufacturerTemplate,
+    ],
   ],
   [
     VehicleTypes.SMALL_TRL,
-    [/* 1 */ TechRecordReasonForCreationSection, /* 2 */ SmallTrailerTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
+    [TechRecordReasonForCreationSection, /* 2 */ SmallTrailerTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit],
   ],
   [
     VehicleTypes.LGV,
-    [/* 1 */ TechRecordReasonForCreationSection, /* 2 */ LgvTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
+    [TechRecordReasonForCreationSection, /* 2 */ LgvTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit],
   ],
   [
     VehicleTypes.CAR,
-    [/* 1 */ TechRecordReasonForCreationSection, /* 2 */ CarTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
+    [TechRecordReasonForCreationSection, /* 2 */ CarTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit],
   ],
   [
     VehicleTypes.MOTORCYCLE,
-    [/* 1 */ TechRecordReasonForCreationSection, /* 2 */ MotorcycleTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit]
-  ]
+    [TechRecordReasonForCreationSection, /* 2 */ MotorcycleTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit],
+  ],
 ]);

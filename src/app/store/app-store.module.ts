@@ -25,10 +25,10 @@ import { GlobalWarningStateModule } from './global-warning/global-warning-state.
     EffectsModule.forRoot([]),
     environment.EnableDevTools
       ? StoreDevtoolsModule.instrument({
-          name: 'VTM Web Dev Tools',
-          maxAge: 25, // Retains last 25 states
-          logOnly: environment.production // Log-only mode in production
-        })
+        name: 'VTM Web Dev Tools',
+        maxAge: 25, // Retains last 25 states
+        logOnly: environment.production, // Log-only mode in production
+      })
       : [],
     DefectsStateModule,
     GlobalErrorStateModule,
@@ -41,7 +41,7 @@ import { GlobalWarningStateModule } from './global-warning/global-warning-state.
     TestStationsStateModule,
     TestTypesStateModule,
     UserStateModule,
-    TechRecordSearchStateModule
-  ]
+    TechRecordSearchStateModule,
+  ],
 })
 export class AppStoreModule {}

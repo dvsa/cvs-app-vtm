@@ -4,7 +4,7 @@ import { setSpinnerState } from './spinner.actions';
 describe('unknown action', () => {
   it('should return the default state', () => {
     const action = {
-      type: 'Unknown'
+      type: 'Unknown',
     };
 
     const state = spinnerReducer(initialSpinnerState, action);
@@ -13,7 +13,7 @@ describe('unknown action', () => {
 
   it('should not change the state', () => {
     const action = {
-      type: 'Unknown'
+      type: 'Unknown',
     };
 
     const state = spinnerReducer({ showSpinner: true }, action);

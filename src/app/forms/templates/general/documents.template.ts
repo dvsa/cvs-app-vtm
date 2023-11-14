@@ -1,6 +1,6 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 import { DOCUMENT_TYPES } from '@forms/templates/general/document-types';
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const DocumentsTemplate: FormNode = {
   name: 'documentsSection',
@@ -12,21 +12,21 @@ export const DocumentsTemplate: FormNode = {
       label: 'Microfilm document type',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
-      options: DOCUMENT_TYPES
+      options: DOCUMENT_TYPES,
     },
     {
       name: 'techRecord_microfilm_microfilmRollNumber',
       label: 'Microfilm roll number',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 5 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 5 }],
     },
     {
       name: 'techRecord_microfilm_microfilmSerialNumber',
       label: 'Microfilm serial number',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 4 }]
-    }
-  ]
+      validators: [{ name: ValidatorNames.MaxLength, args: 4 }],
+    },
+  ],
 };

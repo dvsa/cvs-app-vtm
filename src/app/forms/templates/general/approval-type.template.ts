@@ -1,8 +1,10 @@
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { approvalType } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels,
+} from '../../services/dynamic-form.types';
 
 export const HgvAndTrlTypeApprovalTemplate: FormNode = {
   name: 'approvalSection',
@@ -14,9 +16,9 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       label: 'Approval type',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(approvalType),
-      validators: [],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      options: getOptionsFromEnum(ApprovalType),
+      validators: [{ name: ValidatorNames.IsMemberOfEnum, args: { enum: ApprovalType, options: { allowFalsy: true } } }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_approvalTypeNumber',
@@ -41,20 +43,21 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
               'EU WVTA 23 on',
               'QNIG',
               'Prov.GB WVTA',
-              'Small series',
+              'Small series NKSXX',
+              'Small series NKS',
               'IVA - VCA',
-              'IVA - DVSA/NI'
-            ]
-          }
-        }
-      ]
+              'IVA - DVSA/NI',
+            ],
+          },
+        },
+      ],
     },
     {
       name: 'techRecord_ntaNumber',
       label: 'National type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 40 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 40 }],
     },
     {
       name: 'techRecord_variantNumber',
@@ -62,14 +65,14 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_variantVersionNumber',
       label: 'Variant version number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 35 }]
-    }
-  ]
+      validators: [{ name: ValidatorNames.MaxLength, args: 35 }],
+    },
+  ],
 };

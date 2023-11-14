@@ -1,17 +1,18 @@
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
-import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
-import { TestType } from '@models/test-types/test-type.model';
+import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
+// disable linting error as this util function is only used in tests and should, therefore, be a devDependency
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { createMock, createMockList } from 'ts-auto-mock';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import * as Emissions from '../app/models/test-types/emissions.enum';
-import { resultOfTestEnum } from '../app/models/test-types/test-type.model';
 import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { mockDefectList } from './mock-defects';
 
-const mockTestTypeList = (numberOfItems: number = 1) =>
-  createMockList<TestType>(numberOfItems, (i: number) => {
+const mockTestTypeList = (numberOfItems = 1) =>
+  createMockList<TestType>(numberOfItems, (i) => {
     const now = new Date();
     const nextYear = new Date().setFullYear(now.getFullYear());
 
@@ -41,11 +42,11 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       fuelType: Emissions.FuelType.Diesel,
       modType: {
         code: Emissions.ModTypeCode.g,
-        description: Emissions.ModeTypeDescription.Engine
+        description: Emissions.ModeTypeDescription.Engine,
       },
-      modificationTypeUsed: 'modifications number ' + Math.round(Math.random() * 1000).toString(),
-      particulateTrapFitted: 'particulate trap ' + Math.round(Math.random() * 1000).toString(),
-      particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString(),
+      modificationTypeUsed: `modifications number ${Math.round(Math.random() * 1000).toString()}`,
+      particulateTrapFitted: `particulate trap ${Math.round(Math.random() * 1000).toString()}`,
+      particulateTrapSerialNumber: `ABC${Math.round(Math.random() * 1000).toString()}`,
       defects: mockDefectList(),
 
       additionalNotesRecorded: 'notes for the test record will be displayed here...',
@@ -53,13 +54,13 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
         {
           referenceNumber: '90',
           defectName: 'defect',
-          defectNotes: 'bad'
-        }
-      ]
+          defectNotes: 'bad',
+        },
+      ],
     });
   });
 
-export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: string = 'SYS0001') =>
+export const mockTestResult = (i = 0, vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber = 'SYS0001') =>
   createMock<TestResultModel>({
     testResultId: `TestResultId${String(i + 1).padStart(4, '0')}`,
 
@@ -74,7 +75,7 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
 
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
     countryOfRegistration: 'gb',
-    euVehicleCategory: EuVehicleCategory.M3,
+    euVehicleCategory: EUVehicleCategory.M3,
     odometerReading: 100,
     odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
     reasonForCreation: 'mock test result data',
@@ -91,17 +92,16 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
     testVersion: 'Current',
     createdByName: 'Jane Doe',
     testHistory: [
-      ...createMockList<TestResultModel>(5, j =>
-        mockTestResultArchived(j, `TestResultId${String(i + 1).padStart(4, '0')}`, vehicleType, systemNumber)
-      )
-    ]
+      ...createMockList<TestResultModel>(5, (j) =>
+        mockTestResultArchived(j, `TestResultId${String(i + 1).padStart(4, '0')}`, vehicleType, systemNumber)),
+    ],
   });
 
 export const mockTestResultArchived = (
-  i: number = 0,
-  testResultId: string = 'TestResultId0001',
+  i = 0,
+  testResultId = 'TestResultId0001',
   vehicleType: VehicleTypes = VehicleTypes.PSV,
-  systemNumber: string = 'SYS0001'
+  systemNumber = 'SYS0001',
 ) => {
   const date = new Date('2022-01-02');
   const createdAt = date.setDate(date.getDate() - (i + 1));
@@ -117,7 +117,7 @@ export const mockTestResultArchived = (
     createdByName: `Person ${i}`,
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
     countryOfRegistration: 'gb',
-    euVehicleCategory: EuVehicleCategory.M3,
+    euVehicleCategory: EUVehicleCategory.M3,
     odometerReading: 100,
     odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
     reasonForCreation: `reason ${i}`,
@@ -129,17 +129,17 @@ export const mockTestResultArchived = (
     testerName: `tester ${i}`,
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
     testVersion: 'Archived',
-    vehicleType
+    vehicleType,
   });
 };
 
-export const mockTestResultList = (items: number = 1, systemNumber: string = 'PSV') => {
+export const mockTestResultList = (items = 1, systemNumber = 'PSV') => {
   switch (systemNumber.substring(0, 3)) {
     case 'HGV':
-      return createMockList<TestResultModel>(items, i => mockTestResult(i, VehicleTypes.HGV, systemNumber));
+      return createMockList<TestResultModel>(items, (i) => mockTestResult(i, VehicleTypes.HGV, systemNumber));
     case 'TRL':
-      return createMockList<TestResultModel>(items, i => mockTestResult(i, VehicleTypes.TRL, systemNumber));
+      return createMockList<TestResultModel>(items, (i) => mockTestResult(i, VehicleTypes.TRL, systemNumber));
     default:
-      return createMockList<TestResultModel>(items, i => mockTestResult(i));
+      return createMockList<TestResultModel>(items, (i) => mockTestResult(i));
   }
 };

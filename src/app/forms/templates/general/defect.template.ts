@@ -27,58 +27,58 @@ export const DefectsTpl: FormNode = {
                       name: 'deficiencyRef',
                       label: 'Deficiency ref',
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
+                      disabled: true,
                     },
                     {
                       name: 'deficiencyCategory',
                       label: 'Deficiency category',
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
+                      disabled: true,
                     },
                     {
                       name: 'imNumber',
                       label: 'IM number',
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
+                      disabled: true,
                     },
                     {
                       name: 'imDescription',
                       label: 'IM description',
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
+                      disabled: true,
                     },
                     {
                       name: 'itemNumber',
                       label: 'Item No.',
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
+                      disabled: true,
                     },
                     {
                       name: 'itemDescription',
                       label: 'Item description',
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
+                      disabled: true,
                     },
                     {
                       name: 'deficiencyId',
                       label: 'Deficiency ID',
                       value: null,
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
+                      disabled: true,
                     },
                     {
                       name: 'deficiencySubId',
                       label: 'Deficiency sub ID',
                       value: null,
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
+                      disabled: true,
                     },
                     {
                       name: 'deficiencyText',
                       label: 'Deficiency text',
                       value: null,
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
+                      disabled: true,
                     },
                     {
                       name: 'additionalInformation',
@@ -94,54 +94,54 @@ export const DefectsTpl: FormNode = {
                               name: 'vertical',
                               label: 'Vertical',
                               value: null,
-                              type: FormNodeTypes.CONTROL
+                              type: FormNodeTypes.CONTROL,
                             },
                             {
                               name: 'horizontal',
                               label: 'Horizontal',
                               value: null,
-                              type: FormNodeTypes.CONTROL
+                              type: FormNodeTypes.CONTROL,
                             },
                             {
                               name: 'lateral',
                               label: 'Lateral',
                               value: null,
-                              type: FormNodeTypes.CONTROL
+                              type: FormNodeTypes.CONTROL,
                             },
                             {
                               name: 'longitudinal',
                               label: 'Longitudinal',
                               value: null,
-                              type: FormNodeTypes.CONTROL
+                              type: FormNodeTypes.CONTROL,
                             },
                             {
                               name: 'rowNumber',
                               label: 'Row number',
                               value: null,
-                              type: FormNodeTypes.CONTROL
+                              type: FormNodeTypes.CONTROL,
                             },
                             {
                               name: 'seatNumber',
                               label: 'Seat number',
                               value: null,
-                              type: FormNodeTypes.CONTROL
+                              type: FormNodeTypes.CONTROL,
                             },
                             {
                               name: 'axleNumber',
                               label: 'Axle number',
                               value: null,
-                              type: FormNodeTypes.CONTROL
-                            }
-                          ]
+                              type: FormNodeTypes.CONTROL,
+                            },
+                          ],
                         },
                         {
                           name: 'notes',
                           label: 'Notes',
                           value: null,
                           type: FormNodeTypes.CONTROL,
-                          validators: [{ name: ValidatorNames.ValidateDefectNotes }]
-                        }
-                      ]
+                          validators: [{ name: ValidatorNames.ValidateDefectNotes }],
+                        },
+                      ],
                     },
                     {
                       name: 'prs',
@@ -151,8 +151,8 @@ export const DefectsTpl: FormNode = {
                       editType: FormNodeEditTypes.RADIO,
                       options: [
                         { value: true, label: 'Yes' },
-                        { value: false, label: 'No' }
-                      ]
+                        { value: false, label: 'No' },
+                      ],
                     },
                     {
                       name: 'prohibitionIssued',
@@ -162,32 +162,32 @@ export const DefectsTpl: FormNode = {
                       editType: FormNodeEditTypes.RADIO,
                       options: [
                         { value: true, label: 'Yes' },
-                        { value: false, label: 'No' }
+                        { value: false, label: 'No' },
                       ],
                       validators: [
                         {
                           name: ValidatorNames.RequiredIfEquals,
-                          args: { sibling: 'deficiencyCategory', value: ['dangerous'] }
+                          args: { sibling: 'deficiencyCategory', value: ['dangerous'] },
                         },
                         {
-                          name: ValidatorNames.ValidateProhibitionIssued
-                        }
-                      ]
+                          name: ValidatorNames.ValidateProhibitionIssued,
+                        },
+                      ],
                     },
                     {
                       name: 'stdForProhibition',
                       label: 'STD for prohibition',
                       value: null,
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                      disabled: true,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

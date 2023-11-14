@@ -11,19 +11,19 @@ jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => {
   return {
     __esModule: true,
     default: jest.fn(),
-    enhanceSelectElement: () => {}
+    enhanceSelectElement: () => {},
   };
 });
 
 @Component({
   selector: 'app-host-component',
-  template: '<form [formGroup]="form"><app-autocomplete [name]="name" [options$]="options$" formControlName="foo"></app-autocomplete></form>'
+  template: '<form [formGroup]="form"><app-autocomplete [name]="name" [options$]="options$" formControlName="foo"></app-autocomplete></form>',
 })
 class HostComponent {
   name = 'autocomplete';
   options$ = of([
     { label: 'option1', value: 'option1' },
-    { label: 'option2', value: 'option2' }
+    { label: 'option2', value: 'option2' },
   ]);
   form = new FormGroup({ foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, '') });
 }
@@ -36,7 +36,7 @@ describe('AutocompleteComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AutocompleteComponent, HostComponent, FieldErrorMessageComponent],
-      imports: [FormsModule, ReactiveFormsModule]
+      imports: [FormsModule, ReactiveFormsModule],
     }).compileComponents();
   });
 
@@ -53,7 +53,7 @@ describe('AutocompleteComponent', () => {
 
   it.each([
     ['option1', of([{ label: 'option1', value: 'option1' }]), 'option1'],
-    [undefined, of([{ label: 'option1', value: 'option1' }]), 'option3']
+    [undefined, of([{ label: 'option1', value: 'option1' }]), 'option3'],
   ])('should return %s for %o when looking for $s', (expected, options$, label) => {
     autocompleteComponent.options$ = options$;
     expect(autocompleteComponent.findOptionValue(label)).toBe(expected);

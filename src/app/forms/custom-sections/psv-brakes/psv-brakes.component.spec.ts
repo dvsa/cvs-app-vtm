@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordPSV, TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
@@ -24,8 +24,8 @@ describe('PsvBrakesComponent', () => {
         MultiOptionsService,
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
-        { provide: UserService, useValue: {} }
-      ]
+        { provide: UserService, useValue: {} },
+      ],
     }).compileComponents();
   });
 
@@ -50,7 +50,7 @@ describe('PsvBrakesComponent', () => {
         weights_gbWeight: 3,
         // TODO: V3 2 eecweights in type package, which is this?
         // weights_eecWeight: 4,
-        weights_designWeight: 5
+        weights_designWeight: 5,
       },
       {
         axleNumber: 2,
@@ -67,7 +67,7 @@ describe('PsvBrakesComponent', () => {
         weights_ladenWeight: 2,
         weights_gbWeight: 3,
         // weights_eecWeight: 4,
-        weights_designWeight: 5
+        weights_designWeight: 5,
       },
       {
         axleNumber: 3,
@@ -84,8 +84,8 @@ describe('PsvBrakesComponent', () => {
         weights_ladenWeight: 2,
         weights_gbWeight: 3,
         // weights_eecWeight: 4,
-        weights_designWeight: 5
-      }
+        weights_designWeight: 5,
+      },
     ];
 
     fixture.detectChanges();
@@ -107,16 +107,15 @@ describe('PsvBrakesComponent', () => {
   describe('The brakeCodeOriginal value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
       expect(component.vehicleTechRecord?.techRecord_brakes_brakeCodeOriginal).toStrictEqual(
-        component.form.controls['techRecord_brakes_brakeCodeOriginal']?.value
+        component.form.controls['techRecord_brakes_brakeCodeOriginal']?.value,
       );
     });
   });
 
   describe('The axle value on this.form', () => {
     it('should match the corresponding values on vehicleTechRecord', () => {
-      expect(component.vehicleTechRecord?.techRecord_axles![0]).toEqual(
-        expect.objectContaining(component.form.controls['techRecord_axles']?.value[0])
-      );
+      const axles = component.vehicleTechRecord?.techRecord_axles as NonNullable<TechRecordPSV['techRecord_axles']>;
+      expect(axles[0]).toEqual(expect.objectContaining(component.form.controls['techRecord_axles']?.value[0]));
     });
   });
 });

@@ -3,10 +3,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
-import { approvalType } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
@@ -28,20 +28,20 @@ describe('LettersComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of([Roles.TechRecordAmend])
-          }
+            roles$: of([Roles.TechRecordAmend]),
+          },
         },
         {
           provide: ActivatedRoute,
           useValue: {
-            useValue: { params: of([{ id: 1 }]) }
-          }
+            useValue: { params: of([{ id: 1 }]) },
+          },
         },
         {
           provide: APP_BASE_HREF,
-          useValue: '/'
-        }
-      ]
+          useValue: '/',
+        },
+      ],
     }).compileComponents();
   });
 
@@ -52,7 +52,7 @@ describe('LettersComponent', () => {
       systemNumber: 'foo',
       createdTimestamp: 'bar',
       vin: 'testVin',
-      techRecord_statusCode: 'current'
+      techRecord_statusCode: 'current',
     } as TechRecordType<'trl'>;
     fixture.detectChanges();
   });
@@ -62,12 +62,12 @@ describe('LettersComponent', () => {
   });
   describe('eligibleForLetter', () => {
     it('should return true if the approval type is valid', () => {
-      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = approvalType.EU_WVTA_23_ON;
+      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = ApprovalType.EU_WVTA_23_ON;
       expect(component.eligibleForLetter).toBeTruthy();
     });
 
     it('should return false if the approval type is valid', () => {
-      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = approvalType.NTA;
+      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = ApprovalType.NTA;
       expect(component.eligibleForLetter).toBeFalsy();
     });
   });
@@ -78,14 +78,14 @@ describe('LettersComponent', () => {
       (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_paragraphId = 3;
       (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterIssuer = 'issuer';
       expect(component.letter).toBeTruthy();
-      expect(component.letter!.paragraphId).toEqual(3);
-      expect(component.letter!.letterIssuer).toEqual('issuer');
+      expect(component.letter?.paragraphId).toBe(3);
+      expect(component.letter?.letterIssuer).toBe('issuer');
     });
 
     it('should return undefined if it does not exist', () => {
       (component.techRecord as TechRecordType<'trl'>).techRecord_letterOfAuth_letterType = undefined;
 
-      expect(component.letter).toBe(undefined);
+      expect(component.letter).toBeUndefined();
     });
   });
 });

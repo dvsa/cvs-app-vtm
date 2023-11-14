@@ -6,7 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { initialAppState, State } from '@store/.';
+import { State, initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { ReferenceDataCreateComponent } from './reference-data-add.component';
 
@@ -23,7 +23,6 @@ describe('ReferenceDataCreateComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
   let errorService: GlobalErrorService;
-  let referenceDataService: ReferenceDataService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

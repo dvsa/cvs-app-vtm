@@ -103,8 +103,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     });
 
     this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
+      void this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
     });
 
     this.cherishedTransferForm.controls['previousVrm'].setValue(this.techRecord?.primaryVrm ?? '');
@@ -128,14 +127,12 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['../../'], { relativeTo: this.route });
+    void this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   handleFormChange() {
     if (this.isCherishedTransfer) {
       this.cherishedTransferForm.get('currentVrm')?.updateValueAndValidity();
-
     }
   }
 
@@ -160,9 +157,11 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
     const errors: GlobalError[] = [];
 
-    this.isCherishedTransfer
-      ? DynamicFormService.validate(this.cherishedTransferForm, errors, false)
-      : DynamicFormService.validate(this.correctingAnErrorForm, errors, false);
+    if (this.isCherishedTransfer) {
+      DynamicFormService.validate(this.cherishedTransferForm, errors, false);
+    } else {
+      DynamicFormService.validate(this.correctingAnErrorForm, errors, false);
+    }
 
     if (errors?.length > 0) {
       this.globalErrorService.setErrors(errors);

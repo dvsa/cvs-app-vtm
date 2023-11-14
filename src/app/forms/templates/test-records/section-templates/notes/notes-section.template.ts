@@ -21,11 +21,11 @@ export const NotesSection: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               editType: FormNodeEditTypes.TEXTAREA,
-              validators: [{ name: ValidatorNames.MaxLength, args: 500 }]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              validators: [{ name: ValidatorNames.MaxLength, args: 500 }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

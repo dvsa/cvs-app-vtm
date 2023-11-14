@@ -13,17 +13,17 @@ import { CheckboxGroupComponent } from './checkbox-group.component';
   template: `<form [formGroup]="form">
     <app-checkbox-group name="foo" label="Foo" [options]="options" formControlName="foo" [delimited]="delimited"></app-checkbox-group>
   </form> `,
-  styles: []
+  styles: [],
 })
 class HostComponent {
   form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null)
+    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
   });
   delimited?: { regex: string; separator: string };
   options: MultiOptions = [
     { label: 'Value 1', value: '1' },
     { label: 'Value 2', value: '2' },
-    { label: 'Value 3', value: '3' }
+    { label: 'Value 3', value: '3' },
   ];
 }
 
@@ -34,7 +34,7 @@ describe('CheckboxGroupComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HostComponent, CheckboxGroupComponent, BaseControlComponent, FieldErrorMessageComponent],
-      imports: [FormsModule, ReactiveFormsModule]
+      imports: [FormsModule, ReactiveFormsModule],
     }).compileComponents();
   });
 
@@ -48,7 +48,7 @@ describe('CheckboxGroupComponent', () => {
     it('should be propagated from element to the form control', () => {
       const foo = component.form.get('foo');
       const boxes = fixture.debugElement.queryAll(By.css('input[type="checkbox"]'));
-      expect(boxes.length).toBe(3);
+      expect(boxes).toHaveLength(3);
 
       (boxes[1].nativeElement as HTMLInputElement).click();
       (boxes[0].nativeElement as HTMLInputElement).click();
@@ -66,11 +66,11 @@ describe('CheckboxGroupComponent', () => {
 
       const foo = component.form.get('foo');
       const boxes = fixture.debugElement.queryAll(By.css('input[type="checkbox"]'));
-      expect(boxes.length).toBe(3);
+      expect(boxes).toHaveLength(3);
 
       (boxes[1].nativeElement as HTMLInputElement).click();
       (boxes[0].nativeElement as HTMLInputElement).click();
-      expect(foo?.value).toEqual('2. 1');
+      expect(foo?.value).toBe('2. 1');
       (boxes[1].nativeElement as HTMLInputElement).click();
       (boxes[0].nativeElement as HTMLInputElement).click();
       expect(foo?.value).toBeNull();
@@ -82,7 +82,7 @@ describe('CheckboxGroupComponent', () => {
       component.form.patchValue({ foo: ['1', '2'] });
       fixture.detectChanges();
       const checkedBoxes = fixture.debugElement.queryAll(By.css('input[type="checkbox"][checked=true]'));
-      expect(checkedBoxes.length).toBe(2);
+      expect(checkedBoxes).toHaveLength(2);
     });
   });
 });

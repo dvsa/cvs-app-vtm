@@ -6,7 +6,7 @@ describe('Global Warning Reducer', () => {
   describe('unknown action', () => {
     it('should return the default state', () => {
       const action = {
-        type: 'Unknown'
+        type: 'Unknown',
       };
 
       const state = globalWarningReducer(initialGlobalWarningState, action);
@@ -15,9 +15,9 @@ describe('Global Warning Reducer', () => {
   });
 
   describe('Success action', () => {
-    it.each([clearWarning])('should reset the warning state', actionMethod => {
+    it.each([clearWarning])('should reset the warning state', (actionMethod) => {
       const newState = { ...initialGlobalWarningState, warnings: [] };
-      //all props must be supplied here
+      // all props must be supplied here
       const action = actionMethod();
       const state = globalWarningReducer(initialGlobalWarningState, action);
 
@@ -25,9 +25,9 @@ describe('Global Warning Reducer', () => {
       expect(state).not.toBe(newState);
     });
 
-    it.each([routerNavigatedAction])('should reset the warning state', actionMethod => {
+    it.each([routerNavigatedAction])('should reset the warning state', (actionMethod) => {
       const newState = { ...initialGlobalWarningState, warnings: [] };
-      //all props must be supplied here
+      // all props must be supplied here
       const action = actionMethod({ payload: <RouterNavigatedPayload<SerializedRouterStateSnapshot>>{} });
       const state = globalWarningReducer(initialGlobalWarningState, action);
 

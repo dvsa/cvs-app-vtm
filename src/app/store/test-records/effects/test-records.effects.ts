@@ -17,7 +17,9 @@ import { updateResultOfTest } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/selectors/test-types.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
+import {
+  catchError, concatMap, map, mergeMap, of, switchMap, take, withLatestFrom,
+} from 'rxjs';
 import {
   contingencyTestTypeSelected,
   createTestResult,
@@ -34,7 +36,7 @@ import {
   testTypeIdChanged,
   updateTestResult,
   updateTestResultFailed,
-  updateTestResultSuccess
+  updateTestResultSuccess,
 } from '../actions/test-records.actions';
 import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
 
@@ -45,42 +47,39 @@ export class TestResultsEffects {
       ofType(fetchTestResultsBySystemNumber),
       mergeMap(({ systemNumber }) =>
         this.testRecordsService.fetchTestResultbySystemNumber(systemNumber, { fromDateTime: new Date(1970) }).pipe(
-          map(testResults => fetchTestResultsBySystemNumberSuccess({ payload: testResults })),
-          catchError(e => {
+          map((testResults) => fetchTestResultsBySystemNumberSuccess({ payload: testResults })),
+          catchError((e) => {
             switch (e.status) {
               case 404:
                 return of(fetchTestResultsBySystemNumberSuccess({ payload: [] as TestResultModel[] }));
+              default: return of(fetchTestResultsBySystemNumberFailed({ error: e.message }));
             }
-            return of(fetchTestResultsBySystemNumberFailed({ error: e.message }));
-          })
-        )
-      )
-    )
-  );
+          }),
+        )),
+    ));
 
   fetchSelectedTestResult$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchSelectedTestResult),
       mergeMap(() => this.store.pipe(select(selectRouteNestedParams), take(1))),
-      mergeMap(params => {
+      mergeMap((params) => {
         const { systemNumber, testResultId } = params;
         return this.testRecordsService
           .fetchTestResultbySystemNumber(systemNumber, { fromDateTime: new Date(1970), testResultId, version: 'all' })
           .pipe(
-            map(vehicleTestRecords => {
+            map((vehicleTestRecords) => {
               if (vehicleTestRecords && vehicleTestRecords.length === 1) {
                 return fetchSelectedTestResultSuccess({ payload: vehicleTestRecords[0] });
-              } else {
-                return fetchSelectedTestResultFailed({ error: 'Test result not found' });
               }
+              return fetchSelectedTestResultFailed({ error: 'Test result not found' });
+
             }),
-            catchError(e => {
+            catchError((e) => {
               return of(fetchSelectedTestResultFailed({ error: e.message }));
-            })
+            }),
           );
-      })
-    )
-  );
+      }),
+    ));
 
   /**
    * Call POST Test Results API to update test result
@@ -88,32 +87,32 @@ export class TestResultsEffects {
   createTestResult$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createTestResult),
-      switchMap(action => {
+      switchMap((action) => {
         const testResult = action.value;
         return this.testRecordsService.postTestResult(testResult).pipe(
           take(1),
           map(() => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
-          catchError(e => {
+          catchError((e) => {
             const validationsErrors: GlobalError[] = [];
             if (e.status === 400) {
               const {
-                error: { errors }
+                error: { errors },
               } = e;
+              // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-unused-expressions
               Array.isArray(errors)
                 ? errors.forEach((error: string) => {
-                    const field = error.match(/"([^"]+)"/);
-                    validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
-                  })
+                  const field = error.match(/"([^"]+)"/);
+                  validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
+                })
                 : validationsErrors.push({ error: e.error });
             } else if (e.status === 502) {
               validationsErrors.push({ error: 'Internal Server Error, please contact technical support', anchorLink: '' });
             }
             return of(createTestResultFailed({ errors: validationsErrors }));
-          })
+          }),
         );
-      })
-    )
-  );
+      }),
+    ));
 
   /**
    * Call PUT Test Results API to update test result
@@ -121,21 +120,20 @@ export class TestResultsEffects {
   updateTestResult$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTestResult),
-      mergeMap(action =>
+      mergeMap((action) =>
         of(action.value).pipe(
           withLatestFrom(this.userService.name$, this.userService.id$, this.userService.userEmail$, this.store.pipe(select(selectRouteNestedParams))),
-          take(1)
-        )
-      ),
+          take(1),
+        )),
       mergeMap(([testResult, name, id, userEmail, { systemNumber }]) => {
         return this.testRecordsService.saveTestResult(systemNumber, { name, id, userEmail }, testResult).pipe(
           take(1),
-          map(responseBody => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),
-          catchError(e => {
+          map((responseBody) => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),
+          catchError((e) => {
             const validationsErrors: GlobalError[] = [];
             if (e.status === 400) {
               const {
-                error: { errors }
+                error: { errors },
               } = e;
               errors.forEach((error: string) => {
                 const field = error.match(/"([^"]+)"/);
@@ -145,37 +143,37 @@ export class TestResultsEffects {
               validationsErrors.push({ error: 'Internal Server Error, please contact technical support', anchorLink: '' });
             }
             return of(updateTestResultFailed({ errors: validationsErrors }));
-          })
+          }),
         );
-      })
-    )
-  );
+      }),
+    ));
 
   generateSectionTemplatesAndtestResultToUpdate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(editingTestResult, testTypeIdChanged),
-      mergeMap(action =>
-        of(action).pipe(withLatestFrom(this.store.pipe(select(selectedTestResultState)), this.store.pipe(select(selectQueryParam('edit')))), take(1))
-      ),
+      mergeMap((action) =>
+        of(action).pipe(withLatestFrom(
+          this.store.pipe(select(selectedTestResultState)),
+          this.store.pipe(select(selectQueryParam('edit'))),
+        ), take(1))),
       concatMap(([action, selectedTestResult, isEditing]) => {
         const { testTypeId } = action;
 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const { vehicleType } = selectedTestResult!;
-        if (!vehicleType || !masterTpl.hasOwnProperty(vehicleType)) {
+        if (!vehicleType || !Object.prototype.hasOwnProperty.call(masterTpl, vehicleType)) {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
-        const vehicleTpl = masterTpl[vehicleType];
+        const vehicleTpl = masterTpl[`${vehicleType}`];
 
         let tpl;
-        if (testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup)) {
+        if (testTypeGroup && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup)) {
           tpl = vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES];
+        } else if (isEditing === 'true') {
+          tpl = undefined;
         } else {
-          if (isEditing === 'true') {
-            tpl = undefined;
-          } else {
-            tpl = vehicleTpl['default'];
-          }
+          tpl = vehicleTpl['default'];
         }
 
         if (!tpl) {
@@ -183,7 +181,7 @@ export class TestResultsEffects {
         }
 
         const mergedForms = {};
-        Object.values(tpl).forEach(node => {
+        Object.values(tpl).forEach((node) => {
           const form = this.dfs.createForm(node, selectedTestResult);
           merge(mergedForms, form.getCleanValue(form));
         });
@@ -194,43 +192,43 @@ export class TestResultsEffects {
 
         return of(
           templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms as TestResultModel }),
-          updateResultOfTest()
+          updateResultOfTest(),
         );
-      })
-    )
-  );
+      }),
+    ));
 
   generateContingencyTestTemplatesAndtestResultToUpdate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(contingencyTestTypeSelected),
-      mergeMap(action =>
+      mergeMap((action) =>
         of(action).pipe(
           withLatestFrom(
             this.store.select(testResultInEdit),
             this.store.select(selectTestType(action.testType)),
             this.store.select(getTestStationFromProperty('testStationType', TestStationType.HQ)),
-            this.userService.user$
+            this.userService.user$,
           ),
-          take(1)
-        )
-      ),
-      concatMap(([action, editingTestResult, testTypeTaxonomy, testStation, user]) => {
+          take(1),
+        )),
+      concatMap(([action, editedTestResult, testTypeTaxonomy, testStation, user]) => {
         const id = action.testType;
 
-        const vehicleType = editingTestResult?.vehicleType;
-        if (!vehicleType || !contingencyTestTemplates.hasOwnProperty(vehicleType)) {
+        const vehicleType = editedTestResult?.vehicleType;
+        if (!vehicleType || !Object.prototype.hasOwnProperty.call(contingencyTestTemplates, vehicleType)) {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }
 
         const testTypeGroup = TestRecordsService.getTestTypeGroup(id);
-        const vehicleTpl = contingencyTestTemplates[vehicleType];
+        const vehicleTpl = contingencyTestTemplates[`${vehicleType}`];
 
-        const tpl =
-          testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup) ? vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES] : vehicleTpl['default'];
+        const tpl = testTypeGroup && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup)
+          ? vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES]
+          : vehicleTpl['default'];
 
         const mergedForms = {} as TestResultModel;
-        Object.values(tpl!).forEach(node => {
-          const form = this.dfs.createForm(node, editingTestResult);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        Object.values(tpl!).forEach((node) => {
+          const form = this.dfs.createForm(node, editedTestResult);
           merge(mergedForms, form.getCleanValue(form));
         });
 
@@ -254,16 +252,16 @@ export class TestResultsEffects {
           mergedForms.testStationType = TestStationType.ATF;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl!), sectionsValue: mergedForms }));
-      })
-    )
-  );
+      }),
+    ));
 
   constructor(
     private actions$: Actions,
     private testRecordsService: TestRecordsService,
     private store: Store<State>,
     private userService: UserService,
-    private dfs: DynamicFormService
-  ) {}
+    private dfs: DynamicFormService,
+  ) { }
 }

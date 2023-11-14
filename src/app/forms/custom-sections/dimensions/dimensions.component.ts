@@ -1,17 +1,21 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+} from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import {
+  CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-dimensions',
   templateUrl: './dimensions.component.html',
-  styleUrls: ['./dimensions.component.scss']
+  styleUrls: ['./dimensions.component.scss'],
 })
 export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() techRecord!: TechRecordType<'trl'> | TechRecordType<'psv'> | TechRecordType<'hgv'>;
@@ -27,7 +31,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template!, this.techRecord) as CustomFormGroup;
 
-    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
+    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((e) => this.formChange.emit(e));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -52,7 +56,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
       case VehicleTypes.TRL:
         return TrlDimensionsTemplate;
       default:
-        return;
+        return undefined;
     }
   }
 

@@ -6,12 +6,12 @@ import { AxleSpacing } from '@models/vehicle-tech-record.model';
 import cloneDeep from 'lodash.clonedeep';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AxlesService {
   normaliseAxles(
     axles?: HGVAxles[] | PSVAxles[] | TRLAxles[],
-    axleSpacings?: AxleSpacing[]
+    axleSpacings?: AxleSpacing[],
   ): [HGVAxles[] | PSVAxles[] | TRLAxles[] | undefined, AxleSpacing[] | undefined] {
     let newAxles = cloneDeep(axles ?? []);
     let newAxleSpacings = cloneDeep(axleSpacings ?? []);
@@ -22,7 +22,7 @@ export class AxlesService {
       newAxles = this.generateAxlesFromAxleSpacings(newAxleSpacings.length, newAxles);
     }
 
-    newAxles.sort((a, b) => a?.axleNumber! - b?.axleNumber!);
+    newAxles.sort((a, b) => (a.axleNumber ?? 0) - (b.axleNumber ?? 0));
 
     return [newAxles, newAxleSpacings];
   }
@@ -34,7 +34,7 @@ export class AxlesService {
     while (axleNumber < numberOfAxles) {
       axleSpacing.push({
         axles: `${axleNumber}-${axleNumber + 1}`,
-        value: axleSpacingOriginal && axleSpacingOriginal[axleNumber - 1] ? axleSpacingOriginal[axleNumber - 1].value : null
+        value: axleSpacingOriginal && axleSpacingOriginal[axleNumber - 1] ? axleSpacingOriginal[axleNumber - 1].value : null,
       });
       axleNumber++;
     }
@@ -44,7 +44,7 @@ export class AxlesService {
 
   generateAxlesFromAxleSpacings(
     vehicleAxleSpacingsLength: number,
-    previousAxles?: HGVAxles[] | PSVAxles[] | TRLAxles[]
+    previousAxles?: HGVAxles[] | PSVAxles[] | TRLAxles[],
   ): HGVAxles[] | PSVAxles[] | TRLAxles[] {
     const axles = previousAxles ?? [];
 
@@ -57,7 +57,7 @@ export class AxlesService {
 
   generateEmptyAxle(axleNumber: number): any {
     return {
-      axleNumber: axleNumber,
+      axleNumber,
       weights_gbWeight: null,
       weights_eecWeight: null,
       weights_designedWeight: null,
@@ -65,7 +65,7 @@ export class AxlesService {
       tyres_fitmentCode: null,
       tyres_dataTrAxles: null,
       tyres_plyRating: null,
-      tyres_tyreCode: null
+      tyres_tyreCode: null,
     };
   }
 }

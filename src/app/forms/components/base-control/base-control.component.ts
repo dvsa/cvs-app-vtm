@@ -1,4 +1,6 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, Injector, Input } from '@angular/core';
+import {
+  AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, Injector, Input,
+} from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PrefixDirective } from '@forms/directives/prefix.directive';
 import { SuffixDirective } from '@forms/directives/suffix.directive';
@@ -8,9 +10,9 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
 
 @Component({
   selector: 'app-base-control',
-  template: ``,
+  template: '',
   styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit {
   @ContentChild(PrefixDirective) prefix?: PrefixDirective;
@@ -31,7 +33,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   public errorMessage?: string;
   public control?: CustomControl;
 
-  private value_: any;
+  private control_value: any;
 
   constructor(private injector: Injector, protected cdr: ChangeDetectorRef) {
     this.name = '';
@@ -41,7 +43,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
     if (ngControl) {
       this.control = ngControl.control as CustomControl;
-      this.control.meta && (this.control.meta.changeDetection = this.cdr);
+      if (this.control.meta) this.control.meta.changeDetection = this.cdr;
     } else {
       throw new Error(`No control binding for ${this.name}`);
     }
@@ -60,11 +62,11 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   }
 
   get value() {
-    return this.value_;
+    return this.control_value;
   }
 
   set value(value) {
-    this.value_ = value;
+    this.control_value = value;
   }
 
   get disabled() {
@@ -79,24 +81,24 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     switch (event.type) {
       case 'focus':
         this.focused = true;
-        break;
+        return true;
       case 'blur':
         this.focused = false;
-        break;
+        return false;
       default:
-        console.log('unhandled:', event);
+        return null;
     }
   }
 
-  writeValue(obj: any): void {
+  writeValue(obj: unknown): void {
     this.value = obj;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (event: unknown) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 

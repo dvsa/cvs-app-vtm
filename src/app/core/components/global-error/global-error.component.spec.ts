@@ -14,7 +14,6 @@ import { GlobalErrorService } from './global-error.service';
 class MockComponent {}
 
 describe('GlobalErrorComponent', () => {
-  let hostComponent: MockComponent;
   let component: GlobalErrorComponent;
   let fixture: ComponentFixture<MockComponent>;
 
@@ -28,7 +27,6 @@ describe('GlobalErrorComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MockComponent);
-    hostComponent = fixture.componentInstance;
     component = fixture.debugElement.query(By.directive(GlobalErrorComponent)).componentInstance;
     fixture.detectChanges();
   });

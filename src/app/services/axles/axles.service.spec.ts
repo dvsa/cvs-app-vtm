@@ -13,13 +13,10 @@ describe('AxlesService', () => {
     expect(service).toBeTruthy();
   });
 
-  // TODO
   describe('normaliseVehicleTechRecordAxles', () => {
     it('should not change anything if the tech record is correct', () => {
       const generateAxleSpacingSpy = jest.spyOn(service, 'generateAxleSpacing').mockImplementation();
       const generateAxlesFromAxleSpacingsSpy = jest.spyOn(service, 'generateAxlesFromAxleSpacings').mockImplementation();
-
-      const [, newAxleSpacings] = service.normaliseAxles([{}, {}], [{}]);
 
       expect(generateAxleSpacingSpy).not.toHaveBeenCalled();
       expect(generateAxlesFromAxleSpacingsSpy).not.toHaveBeenCalled();
@@ -59,7 +56,7 @@ describe('AxlesService', () => {
       expect(result).toStrictEqual([
         { axles: '1-2', value: null },
         { axles: '2-3', value: null },
-        { axles: '3-4', value: null }
+        { axles: '3-4', value: null },
       ]);
     });
 
@@ -72,7 +69,7 @@ describe('AxlesService', () => {
     it('should generate 3 axle spacings when adding a axle', () => {
       const originalAxleSpacings = [
         { axles: '1-2', value: 100 },
-        { axles: '2-3', value: 200 }
+        { axles: '2-3', value: 200 },
       ];
 
       const result = service.generateAxleSpacing(4, originalAxleSpacings);
@@ -80,7 +77,7 @@ describe('AxlesService', () => {
       expect(result).toStrictEqual([
         { axles: '1-2', value: 100 },
         { axles: '2-3', value: 200 },
-        { axles: '3-4', value: null }
+        { axles: '3-4', value: null },
       ]);
     });
   });
@@ -89,7 +86,7 @@ describe('AxlesService', () => {
     it('should generate 3 axles from no previous data', () => {
       const result = service.generateAxlesFromAxleSpacings(2);
 
-      expect(result.length).toBe(3);
+      expect(result).toHaveLength(3);
       expect(result[0]?.axleNumber).toBe(1);
       expect(result[2]?.axleNumber).toBe(3);
     });
@@ -98,7 +95,7 @@ describe('AxlesService', () => {
       const previousAxles = [{ axleNumber: 1 }];
       const result = service.generateAxlesFromAxleSpacings(2, previousAxles);
 
-      expect(result.length).toBe(3);
+      expect(result).toHaveLength(3);
       expect(result[0]?.axleNumber).toBe(1);
       expect(result[2]?.axleNumber).toBe(3);
     });

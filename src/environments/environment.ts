@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  isDevelop: false,
   RemoveAADFullAccessRole: true,
   EnableDevTools: true,
   VTM_CLIENT_ID: '',
@@ -12,7 +13,7 @@ export const environment = {
   VTM_API_URI: '',
   VTM_API_CLIENT_ID: '',
   DOCUMENT_RETRIEVAL_API_KEY: '',
-  FEEDBACK_URI: ''
+  FEEDBACK_URI: '',
 };
 
 /*

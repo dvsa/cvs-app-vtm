@@ -10,7 +10,7 @@ import { STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer } from './reducers
   imports: [
     CommonModule,
     StoreModule.forFeature(STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer),
-    EffectsModule.forFeature([TestStationsEffects])
-  ]
+    EffectsModule.forFeature([TestStationsEffects]),
+  ],
 })
 export class TestStationsStateModule {}

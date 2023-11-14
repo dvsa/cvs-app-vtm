@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
@@ -26,7 +27,7 @@ import {
   unarchiveTechRecordSuccess,
   updateTechRecord,
   updateTechRecordFailure,
-  updateTechRecordSuccess
+  updateTechRecordSuccess,
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord } from '../selectors/technical-record-service.selectors';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
@@ -47,8 +48,8 @@ describe('TechnicalRecordServiceEffects', () => {
         TechnicalRecordServiceEffects,
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
-        { provide: UserService, useValue: { name$: of('name'), id$: of('iod') } }
-      ]
+        { provide: UserService, useValue: { name$: of('name'), id$: of('iod') } },
+      ],
     });
 
     effects = TestBed.inject(TechnicalRecordServiceEffects);
@@ -65,12 +66,12 @@ describe('TechnicalRecordServiceEffects', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const mockVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
         const expectedVehicle = {
-          ...mockVehicle
+          ...mockVehicle,
         } as TechRecordType<'get'>;
 
         // mock action to trigger effect
         actions$ = hot('-a--', {
-          a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'> })
+          a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'> }),
         });
 
         // mock service call
@@ -78,7 +79,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.createVehicleRecord$).toBe('---b', {
-          b: createVehicleRecordSuccess({ vehicleTechRecord: expectedVehicle })
+          b: createVehicleRecordSuccess({ vehicleTechRecord: expectedVehicle }),
         });
       });
     });
@@ -87,7 +88,7 @@ describe('TechnicalRecordServiceEffects', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
         actions$ = hot('-a--', {
-          a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'> })
+          a: createVehicleRecord({ vehicle: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'> }),
         });
 
         // mock service call
@@ -96,7 +97,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(techRecordHttpService, 'createVehicleRecord$').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.createVehicleRecord$).toBe('---b', {
-          b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN testVin' })
+          b: createVehicleRecordFailure({ error: 'Unable to create vehicle with VIN testVin' }),
         });
       });
     });
@@ -119,7 +120,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.updateTechRecord$).toBe('---b', {
-          b: updateTechRecordSuccess({ vehicleTechRecord: technicalRecord })
+          b: updateTechRecordSuccess({ vehicleTechRecord: technicalRecord }),
         });
       });
     });
@@ -135,8 +136,8 @@ describe('TechnicalRecordServiceEffects', () => {
 
         expectObservable(effects.updateTechRecord$).toBe('---b', {
           b: updateTechRecordFailure({
-            error: 'Unable to update technical record null'
-          })
+            error: 'Unable to update technical record null',
+          }),
         });
       });
     });
@@ -155,14 +156,14 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.archiveTechRecord$).toBe('---b', {
-          b: archiveTechRecordSuccess({ vehicleTechRecord: technicalRecord })
+          b: archiveTechRecordSuccess({ vehicleTechRecord: technicalRecord }),
         });
       });
     });
 
     it.each([
       [500, 'Internal server error'],
-      [400, 'You are not allowed to update an archived tech-record']
+      [400, 'You are not allowed to update an archived tech-record'],
     ])('should return an error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
@@ -174,8 +175,8 @@ describe('TechnicalRecordServiceEffects', () => {
 
         expectObservable(effects.archiveTechRecord$).toBe('---b', {
           b: archiveTechRecordFailure({
-            error: 'Unable to archive technical record null'
-          })
+            error: 'Unable to archive technical record null',
+          }),
         });
       });
     });
@@ -194,7 +195,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
-          b: unarchiveTechRecordSuccess({ vehicleTechRecord: technicalRecord })
+          b: unarchiveTechRecordSuccess({ vehicleTechRecord: technicalRecord }),
         });
       });
     });
@@ -210,8 +211,8 @@ describe('TechnicalRecordServiceEffects', () => {
 
         expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
           b: unarchiveTechRecordFailure({
-            error: 'Unable to unarchive technical record null'
-          })
+            error: 'Unable to unarchive technical record null',
+          }),
         });
       });
     });
@@ -227,8 +228,8 @@ describe('TechnicalRecordServiceEffects', () => {
 
         expectObservable(effects.unarchiveTechRecord$).toBe('---b', {
           b: unarchiveTechRecordFailure({
-            error: 'Unable to unarchive technical record null'
-          })
+            error: 'Unable to unarchive technical record null',
+          }),
         });
       });
     });
@@ -251,17 +252,44 @@ describe('TechnicalRecordServiceEffects', () => {
           primaryVrm: 'bar',
           systemNumber: 'foobar',
           createdTimestamp: 'barfoo',
-          techRecord_vehicleType: 'lgv'
+          techRecord_vehicleType: 'lgv',
         } as unknown as TechRecordType<'put'>);
         // mock action to trigger effect
         actions$ = hot('-a--', {
           a: changeVehicleType({
-            techRecord_vehicleType: VehicleTypes.CAR
-          })
+            techRecord_vehicleType: VehicleTypes.CAR,
+          }),
         });
 
-        expectObservable(effects.generateTechRecordBasedOnSectionTemplates$).toBe('-b', {
-          b: expectedTechRecord
+        expectObservable(effects.generateTechRecordBasedOnSectionTemplatesAfterVehicleTypeChange$).toBe('-b', {
+          b: expectedTechRecord,
+        });
+      });
+
+      flush();
+      expect(techRecordServiceSpy).toHaveBeenCalledTimes(1);
+      expect(techRecordServiceSpy).toHaveBeenCalledWith(expectedTechRecord);
+    }));
+    it('should default to heavy goods vehicle class when vehicle type is changed to hgv', fakeAsync(() => {
+      const techRecordServiceSpy = jest.spyOn(technicalRecordService, 'updateEditingTechRecord');
+      const expectedTechRecord = getEmptyHGVRecord();
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(editingTechRecord, {
+          vin: 'foo',
+          primaryVrm: 'bar',
+          systemNumber: 'foobar',
+          createdTimestamp: 'barfoo',
+          techRecord_vehicleType: 'lgv',
+        } as unknown as TechRecordType<'put'>);
+        // mock action to trigger effect
+        actions$ = hot('-a--', {
+          a: changeVehicleType({
+            techRecord_vehicleType: VehicleTypes.HGV,
+          }),
+        });
+
+        expectObservable(effects.generateTechRecordBasedOnSectionTemplatesAfterVehicleTypeChange$).toBe('-b', {
+          b: expectedTechRecord,
         });
       });
 
@@ -297,6 +325,74 @@ function getEmptyTechRecord(): V3TechRecordModel {
     techRecord_statusCode: '',
     techRecord_vehicleConfiguration: 'other',
     techRecord_vehicleSubclass: undefined,
-    techRecord_vehicleType: 'car'
+    techRecord_vehicleType: 'car',
+  } as unknown as V3TechRecordModel;
+}
+function getEmptyHGVRecord(): V3TechRecordModel {
+  return {
+    techRecord_alterationMarker: null,
+    techRecord_applicantDetails_address1: null,
+    techRecord_applicantDetails_address2: null,
+    techRecord_applicantDetails_address3: null,
+    techRecord_applicantDetails_emailAddress: null,
+    techRecord_applicantDetails_name: null,
+    techRecord_applicantDetails_postCode: null,
+    techRecord_applicantDetails_postTown: null,
+    techRecord_applicantDetails_telephoneNumber: null,
+    techRecord_approvalType: null,
+    techRecord_axles: [],
+    techRecord_approvalTypeNumber: undefined,
+    techRecord_bodyType_code: null,
+    techRecord_bodyType_description: null,
+    techRecord_brakes_dtpNumber: null,
+    techRecord_conversionRefNo: null,
+    techRecord_departmentalVehicleMarker: null,
+    techRecord_dimensions_axleSpacing: [],
+    techRecord_dimensions_length: null,
+    techRecord_dimensions_width: null,
+    techRecord_drawbarCouplingFitted: null,
+    techRecord_emissionsLimit: null,
+    techRecord_euVehicleCategory: null,
+    techRecord_euroStandard: undefined,
+    techRecord_frontAxleTo5thWheelMax: null,
+    techRecord_frontAxleTo5thWheelMin: null,
+    techRecord_frontAxleToRearAxle: null,
+    techRecord_frontVehicleTo5thWheelCouplingMax: null,
+    techRecord_frontVehicleTo5thWheelCouplingMin: null,
+    techRecord_fuelPropulsionSystem: null,
+    techRecord_functionCode: null,
+    techRecord_grossDesignWeight: null,
+    techRecord_grossEecWeight: null,
+    techRecord_grossGbWeight: null,
+    techRecord_make: null,
+    techRecord_manufactureYear: null,
+    techRecord_maxTrainDesignWeight: null,
+    techRecord_maxTrainEecWeight: null,
+    techRecord_maxTrainGbWeight: null,
+    techRecord_microfilm_microfilmDocumentType: undefined,
+    techRecord_microfilm_microfilmRollNumber: undefined,
+    techRecord_microfilm_microfilmSerialNumber: undefined,
+    techRecord_model: null,
+    techRecord_noOfAxles: null,
+    techRecord_notes: undefined,
+    techRecord_ntaNumber: undefined,
+    techRecord_numberOfWheelsDriven: null,
+    techRecord_offRoad: null,
+    techRecord_plates: [],
+    techRecord_reasonForCreation: undefined,
+    techRecord_regnDate: null,
+    techRecord_roadFriendly: null,
+    techRecord_speedLimiterMrk: null,
+    techRecord_statusCode: '',
+    techRecord_tachoExemptMrk: null,
+    techRecord_trainDesignWeight: null,
+    techRecord_trainEecWeight: null,
+    techRecord_trainGbWeight: null,
+    techRecord_tyreUseCode: null,
+    techRecord_variantNumber: undefined,
+    techRecord_variantVersionNumber: undefined,
+    techRecord_vehicleClass_description: 'heavy goods vehicle',
+    techRecord_vehicleConfiguration: null,
+    techRecord_vehicleType: 'hgv',
   } as unknown as V3TechRecordModel;
 }

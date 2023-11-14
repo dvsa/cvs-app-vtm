@@ -16,7 +16,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import {
-  combineLatest, filter, firstValueFrom, map, Observable, of, Subject, switchMap, take, takeUntil,
+  Observable, Subject, combineLatest, filter, firstValueFrom, map, of, switchMap, take, takeUntil,
 } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
@@ -50,10 +50,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     );
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
 
-    this.actions$
-      .pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$))
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      .subscribe(() => this.router.navigate(['../..'], { relativeTo: this.route.parent }));
+    this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
+      void this.router.navigate(['../..'], { relativeTo: this.route.parent });
+    });
 
     combineLatest([this.testResult$, this.routerService.getQueryParam$('testType'), this.testRecordsService.sectionTemplates$])
       .pipe(
@@ -61,9 +60,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
         filter(([testResult]) => !!testResult),
       )
       .subscribe(([testResult, testType, sectionTemplates]) => {
-        if (!sectionTemplates) {
-          testResult!.reasonForCreation = '';
-          this.testRecordsService.editingTestResult(testResult!);
+        if (!sectionTemplates && testResult) {
+          testResult.reasonForCreation = '';
+          this.testRecordsService.editingTestResult(testResult);
         }
         if (testType && testType !== testResult?.testTypes[0].testTypeId) {
           this.testRecordsService.testTypeChange(testType);
@@ -92,8 +91,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     }
 
     const testResult = await firstValueFrom(this.testResult$);
+    const testResultClone = cloneDeep(testResult) as TestResultModel;
 
-    this.testRecordsService.updateTestResult(cloneDeep(testResult));
+    this.testRecordsService.updateTestResult(testResultClone);
   }
 
   async handleReview(): Promise<void> {
@@ -146,8 +146,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   }
 
   handleConfirmCancel() {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['../..'], { relativeTo: this.route.parent });
+    void this.router.navigate(['../..'], { relativeTo: this.route.parent });
   }
 
   get isTestTypeGroupEditable$(): Observable<boolean> {

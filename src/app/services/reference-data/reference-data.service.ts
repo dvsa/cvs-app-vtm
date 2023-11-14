@@ -4,43 +4,47 @@ import {
   BASE_PATH,
   Configuration,
   ReferenceDataApiResponse,
+  ReferenceDataService as ReferenceDataApiService,
   ReferenceDataItemApiResponse,
-  ReferenceDataService as ReferenceDataApiService
 } from '@api/reference-data';
 import { MultiOptions } from '@forms/models/options.model';
-import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User } from '@models/reference-data.model';
+import {
+  ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User,
+} from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { UserService } from '@services/user-service/user-service';
 import {
+  ReferenceDataEntityStateSearch,
+  ReferenceDataState,
   addSearchInformation,
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
-  ReferenceDataEntityStateSearch,
-  ReferenceDataState,
   referencePsvMakeLoadingState,
+  removeReferenceDataByKey,
   removeTyreSearch,
   selectAllReferenceDataByResourceType,
   selectReasonsForAbandoning,
   selectReferenceDataByResourceKey,
-  selectTyreSearchCriteria,
   selectSearchReturn,
-  removeReferenceDataByKey
+  selectTyreSearchCriteria,
 } from '@store/reference-data';
-import { Observable, of, switchMap, throwError, withLatestFrom } from 'rxjs';
+import {
+  Observable, of, switchMap, throwError, withLatestFrom,
+} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReferenceDataService extends ReferenceDataApiService {
   constructor(
-    @Optional() @Inject(BASE_PATH) basePath: string,
+  @Optional() @Inject(BASE_PATH) basePath: string,
     @Optional() configuration: Configuration,
     httpClient: HttpClient,
     private usersService: UserService,
-    private store: Store<ReferenceDataState>
+    private store: Store<ReferenceDataState>,
   ) {
     super(httpClient, basePath, configuration);
   }
@@ -51,9 +55,11 @@ export class ReferenceDataService extends ReferenceDataApiService {
     return this.usersService.id$.pipe(
       withLatestFrom(this.usersService.name$),
       switchMap(([createdId, createdName]) => {
-        const referenceData = { ...data, createdId, createdName, createdAt: new Date() };
+        const referenceData = {
+          ...data, createdId, createdName, createdAt: new Date(),
+        };
         return this.referenceResourceTypeResourceKeyPost(type, key, referenceData, 'body', false);
-      })
+      }),
     );
   }
 
@@ -63,9 +69,11 @@ export class ReferenceDataService extends ReferenceDataApiService {
     return this.usersService.id$.pipe(
       withLatestFrom(this.usersService.name$),
       switchMap(([createdId, createdName]) => {
-        const referenceData = { ...data, createdId, createdName, createdAt: new Date() };
+        const referenceData = {
+          ...data, createdId, createdName, createdAt: new Date(),
+        };
         return this.referenceResourceTypeResourceKeyPut(type, key, referenceData, 'body', false);
-      })
+      }),
     );
   }
 
@@ -73,9 +81,11 @@ export class ReferenceDataService extends ReferenceDataApiService {
     return this.usersService.id$.pipe(
       withLatestFrom(this.usersService.name$),
       switchMap(([createdId, createdName]) => {
-        const deleteObject = { ...payload, createdId, createdName, createdAt: new Date() };
+        const deleteObject = {
+          ...payload, createdId, createdName, createdAt: new Date(),
+        };
         return this.referenceResourceTypeResourceKeyDelete(type, key, deleteObject, 'body', false);
-      })
+      }),
     );
   }
 
@@ -152,28 +162,28 @@ export class ReferenceDataService extends ReferenceDataApiService {
   }
 
   getReferenceDataOptions(resourceType: ReferenceDataResourceType): Observable<MultiOptions | undefined> {
-    return this.getAll$(resourceType).pipe(this.mapReferenceDataOptions);
+    return this.getAll$(resourceType).pipe((source) => this.mapReferenceDataOptions(source));
   }
 
-  private mapReferenceDataOptions = function (
-    source: Observable<Array<ReferenceDataModelBase & Partial<User>> | undefined>
+  private mapReferenceDataOptions(
+    source: Observable<Array<ReferenceDataModelBase & Partial<User>> | undefined>,
   ): Observable<MultiOptions | undefined> {
-    return new Observable(subscriber => {
+    return new Observable((subscriber) => {
       source.subscribe({
-        next: val => {
-          subscriber.next(val?.map(option => ({ value: option.resourceKey, label: option.description ?? option.name ?? `${option.resourceKey}` })));
+        next: (val) => {
+          subscriber.next(val?.map((option) => ({ value: option.resourceKey, label: option.description ?? option.name ?? `${option.resourceKey}` })));
         },
-        error: e => subscriber.error(e),
-        complete: () => subscriber.complete()
+        error: (e) => subscriber.error(e),
+        complete: () => subscriber.complete(),
       });
     });
-  };
+  }
 
   getReasonsForAbandoning(vehicleType: VehicleTypes | undefined): Observable<MultiOptions | undefined> {
     if (!vehicleType) {
       return of([]);
     }
-    return this.store.pipe(select(selectReasonsForAbandoning(vehicleType)), this.mapReferenceDataOptions);
+    return this.store.pipe(select(selectReasonsForAbandoning(vehicleType)), (source) => this.mapReferenceDataOptions(source));
   }
 
   getReferencePsvMakeDataLoading$(): Observable<boolean> {

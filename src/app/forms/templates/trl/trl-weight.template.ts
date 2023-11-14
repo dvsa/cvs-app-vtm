@@ -4,13 +4,13 @@ import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynam
 const requiredValidation = [
   { name: ValidatorNames.Numeric, args: 99999 },
   { name: ValidatorNames.Max, args: 99999 },
-  { name: ValidatorNames.Min, args: 0 }
+  { name: ValidatorNames.Min, args: 0 },
 ];
 
 const optionalValidation = [
   { name: ValidatorNames.Numeric, args: 99999 },
   { name: ValidatorNames.Max, args: 99999 },
-  { name: ValidatorNames.Min, args: 0 }
+  { name: ValidatorNames.Min, args: 0 },
 ];
 
 export const TrlWeight: FormNode = {
@@ -22,7 +22,7 @@ export const TrlWeight: FormNode = {
       name: 'grossSection',
       label: 'Gross vehicle weight',
       value: '',
-      type: FormNodeTypes.SECTION
+      type: FormNodeTypes.SECTION,
     },
     {
       name: 'techRecord_grossGbWeight',
@@ -30,7 +30,7 @@ export const TrlWeight: FormNode = {
       customValidatorErrorName: 'Gross GB Weight',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: requiredValidation
+      validators: requiredValidation,
     },
     {
       name: 'techRecord_grossEecWeight',
@@ -39,7 +39,7 @@ export const TrlWeight: FormNode = {
       value: null,
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
-      validators: optionalValidation
+      validators: optionalValidation,
     },
     {
       name: 'techRecord_grossDesignWeight',
@@ -47,13 +47,13 @@ export const TrlWeight: FormNode = {
       customValidatorErrorName: 'Gross Design Weight',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: requiredValidation
+      validators: requiredValidation,
     },
     {
       name: 'axleSection',
       label: 'Axle weights',
       value: '',
-      type: FormNodeTypes.SECTION
+      type: FormNodeTypes.SECTION,
     },
     {
       name: 'techRecord_axles',
@@ -69,7 +69,7 @@ export const TrlWeight: FormNode = {
             {
               name: 'axleNumber',
               label: 'Axle Number',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
 
             {
@@ -78,7 +78,7 @@ export const TrlWeight: FormNode = {
               customValidatorErrorName: 'Axle GB Weight',
               value: null,
               type: FormNodeTypes.CONTROL,
-              validators: requiredValidation
+              validators: requiredValidation,
             },
             {
               name: 'weights_eecWeight',
@@ -87,7 +87,7 @@ export const TrlWeight: FormNode = {
               value: null,
               editType: FormNodeEditTypes.NUMBER,
               type: FormNodeTypes.CONTROL,
-              validators: optionalValidation
+              validators: optionalValidation,
             },
             {
               name: 'weights_designWeight',
@@ -95,11 +95,11 @@ export const TrlWeight: FormNode = {
               customValidatorErrorName: 'Axle Design Weight',
               value: null,
               type: FormNodeTypes.CONTROL,
-              validators: requiredValidation
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              validators: requiredValidation,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

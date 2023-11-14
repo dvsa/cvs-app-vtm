@@ -9,11 +9,11 @@ import { ViewListItemComponent } from './view-list-item.component';
   template: `<form [formGroup]="form">
     <app-view-list-item name="foo" formControlName="foo"></app-view-list-item>
   </form> `,
-  styles: []
+  styles: [],
 })
 class HostComponent {
   form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, '')
+    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, ''),
   });
 }
 
@@ -23,7 +23,7 @@ describe('ListItemOutputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ViewListItemComponent]
+      declarations: [ViewListItemComponent],
     }).compileComponents();
   });
 

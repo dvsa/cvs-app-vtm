@@ -8,10 +8,10 @@ export interface SpinnerState {
 }
 
 export const initialSpinnerState: SpinnerState = {
-  showSpinner: false
+  showSpinner: false,
 };
 
 export const spinnerReducer = createReducer(
   initialSpinnerState,
-  on(setSpinnerState, (state, { showSpinner }) => ({ ...state, showSpinner }))
+  on(setSpinnerState, (state, { showSpinner }) => ({ ...state, showSpinner })),
 );

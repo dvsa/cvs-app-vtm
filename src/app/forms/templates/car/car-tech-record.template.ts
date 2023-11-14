@@ -1,8 +1,12 @@
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationLightVehicle.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { TagTypeLabels, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+  TagTypeLabels,
+} from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
-import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
+import { VehicleSubclass } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
 
 export const CarTechRecord: FormNode = {
@@ -18,7 +22,7 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_statusCode',
@@ -26,7 +30,7 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_regnDate',
@@ -35,7 +39,7 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      isoDate: false
+      isoDate: false,
     },
     {
       name: 'techRecord_manufactureYear',
@@ -46,8 +50,8 @@ export const CarTechRecord: FormNode = {
       editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
-        { name: ValidatorNames.Min, args: 1000 }
-      ]
+        { name: ValidatorNames.Min, args: 1000 },
+      ],
     },
     {
       name: 'techRecord_noOfAxles',
@@ -57,7 +61,7 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 99 }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_vehicleSubclass',
@@ -66,7 +70,7 @@ export const CarTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOXGROUP,
       options: getOptionsFromEnum(VehicleSubclass),
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_vehicleConfiguration',
@@ -76,7 +80,7 @@ export const CarTechRecord: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
       validators: [{ name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_euVehicleCategory',
@@ -84,8 +88,8 @@ export const CarTechRecord: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories),
-      width: FormNodeWidth.S
-    }
-  ]
+      options: getOptionsFromEnum(EUVehicleCategory),
+      width: FormNodeWidth.S,
+    },
+  ],
 };

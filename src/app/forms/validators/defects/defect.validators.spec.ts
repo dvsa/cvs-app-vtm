@@ -10,16 +10,16 @@ describe('parent sibling validators', () => {
     form = new FormGroup({
       parent: new CustomFormGroup(
         { name: 'parent', type: FormNodeTypes.GROUP },
-        { notes: new CustomFormControl({ name: 'notes', type: FormNodeTypes.CONTROL }) }
+        { notes: new CustomFormControl({ name: 'notes', type: FormNodeTypes.CONTROL }) },
       ),
       prohibitionIssued: new CustomFormControl({ name: 'prohibitionIssued', type: FormNodeTypes.CONTROL }),
       deficiencyCategory: new CustomFormControl({ name: 'deficiencyCategory', type: FormNodeTypes.CONTROL }),
-      stdForProhibition: new CustomFormControl({ name: 'stdForProhibition', type: FormNodeTypes.CONTROL })
+      stdForProhibition: new CustomFormControl({ name: 'stdForProhibition', type: FormNodeTypes.CONTROL }),
     });
   });
 
   it('should return null', () => {
-    expect(DefectValidators.validateDefectNotes(form.controls['foo'] as AbstractControl)).toBeNull();
+    expect(DefectValidators.validateDefectNotes(form.controls['foo'])).toBeNull();
   });
 
   it('should return error if deficiency category is dangerous* and prohibition issued is no and value of control is not defined', () => {
@@ -92,7 +92,7 @@ describe('prohibition issued validator', () => {
     form = new FormGroup({
       prohibitionIssued: new CustomFormControl({ name: 'prohibitionIssued', type: FormNodeTypes.CONTROL }),
       deficiencyCategory: new CustomFormControl({ name: 'deficiencyCategory', type: FormNodeTypes.CONTROL }),
-      stdForProhibition: new CustomFormControl({ name: 'stdForProhibition', type: FormNodeTypes.CONTROL })
+      stdForProhibition: new CustomFormControl({ name: 'stdForProhibition', type: FormNodeTypes.CONTROL }),
     });
   });
 

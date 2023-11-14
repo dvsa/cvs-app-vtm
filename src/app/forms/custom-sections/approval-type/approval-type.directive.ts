@@ -1,11 +1,13 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import {
+  Directive, ElementRef, HostListener, Input,
+} from '@angular/core';
 
 @Directive({
-  selector: '[appFocusOnCharacterLimit]'
+  selector: '[appFocusOnCharacterLimit]',
 })
 export class FocusOnCharacterLimitDirective {
   @Input() nextElement: ElementRef | undefined;
-  @Input() characterLimit: number = 0;
+  @Input() characterLimit = 0;
 
   constructor(private el: ElementRef) {}
 
