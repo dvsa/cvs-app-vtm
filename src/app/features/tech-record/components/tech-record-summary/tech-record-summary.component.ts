@@ -190,7 +190,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   handleFormState(event: any): void {
-    const isPrimitiveArray = (a: any, b: any) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
+    const isPrimitiveArray = (a: unknown, b: unknown) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
 
     this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
 
@@ -212,7 +212,11 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
     forms.forEach((form) => DynamicFormService.validate(form, errors));
 
-    errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
+    if (errors.length) {
+      this.errorService.setErrors(errors);
+    } else {
+      this.errorService.clearErrors();
+    }
   }
 
   private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {

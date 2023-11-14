@@ -7,7 +7,6 @@ import { FeatureToggleService } from './feature-toggle-service';
 
 describe('feature toggle service', () => {
   let service: FeatureToggleService;
-  let httpTestingController: HttpTestingController;
   let httpClient: HttpClient;
 
   beforeEach(() => {
@@ -17,7 +16,7 @@ describe('feature toggle service', () => {
     });
 
     httpClient = TestBed.inject(HttpClient);
-    httpTestingController = TestBed.inject(HttpTestingController);
+    TestBed.inject(HttpTestingController);
     service = TestBed.inject(FeatureToggleService);
   });
 

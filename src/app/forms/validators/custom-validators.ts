@@ -16,7 +16,7 @@ export class CustomValidators {
     };
   };
 
-  static hideIfEquals = (sibling: string, value: any): ValidatorFn => {
+  static hideIfEquals = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
@@ -28,7 +28,7 @@ export class CustomValidators {
     };
   };
 
-  static hideIfNotEqual = (sibling: string, value: any): ValidatorFn => {
+  static hideIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
@@ -40,29 +40,37 @@ export class CustomValidators {
     };
   };
 
-  static enableIfEquals = (sibling: string, value: any): ValidatorFn => {
+  static enableIfEquals = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
         const isEqual = Array.isArray(value) ? value.includes(control.value) : control.value === value;
-        isEqual ? siblingControl.enable() : siblingControl.disable();
+        if (isEqual) {
+          siblingControl.enable();
+        } else {
+          siblingControl.disable();
+        }
       }
       return null;
     };
   };
 
-  static disableIfEquals = (sibling: string, value: any): ValidatorFn => {
+  static disableIfEquals = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
         const isEqual = Array.isArray(value) ? value.includes(control.value) : control.value === value;
-        isEqual ? siblingControl.disable() : siblingControl.enable();
+        if (isEqual) {
+          siblingControl.disable();
+        } else {
+          siblingControl.enable();
+        }
       }
       return null;
     };
   };
 
-  static hideIfParentSiblingNotEqual = (parentSibling: string, value: any): ValidatorFn => {
+  static hideIfParentSiblingNotEqual = (parentSibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent && control.parent.parent) {
         const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
@@ -74,7 +82,7 @@ export class CustomValidators {
     };
   };
 
-  static hideIfParentSiblingEquals = (parentSibling: string, value: any): ValidatorFn => {
+  static hideIfParentSiblingEquals = (parentSibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent && control.parent.parent) {
         const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
@@ -85,7 +93,7 @@ export class CustomValidators {
     };
   };
 
-  static requiredIfEquals = (sibling: string, values: any[]): ValidatorFn =>
+  static requiredIfEquals = (sibling: string, values: unknown[]): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
 
@@ -97,7 +105,7 @@ export class CustomValidators {
       return isSiblingValueIncluded && isControlValueEmpty ? { requiredIfEquals: { sibling: siblingControl.meta.label } } : null;
     };
 
-  static requiredIfNotEqual = (sibling: string, value: any): ValidatorFn => {
+  static requiredIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
