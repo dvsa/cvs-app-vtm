@@ -98,7 +98,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
     this.technicalRecordService.techRecord$
       .pipe(
         takeUntil(this.destroy$),
-        skipWhile((technicalRecord) => technicalRecord?.techRecord_reasonForCreation === form.reason),
+        skipWhile((technicalRecord) => technicalRecord?.techRecord_hiddenInVta !== this.techRecord?.techRecord_hiddenInVta),
         withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp')),
         take(1),
       )
