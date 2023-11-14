@@ -1,6 +1,14 @@
 import { ViewportScroller } from '@angular/common';
 import {
-  ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -21,9 +29,7 @@ import { WeightsComponent } from '@forms/custom-sections/weights/weights.compone
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import {
-  ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes,
-} from '@models/vehicle-tech-record.model';
+import { ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes, } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { LoadingService } from '@services/loading/loading.service';
@@ -32,9 +38,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
-import {
-  Observable, Subject, debounceTime, map, take, takeUntil,
-} from 'rxjs';
+import { debounceTime, map, Observable, Subject, take, takeUntil, } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -183,16 +187,17 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       this.tyres?.form,
       this.weights?.form,
       this.approvalType?.form,
-      this.adr?.form,
     ];
 
     switch (this.vehicleType) {
       case VehicleTypes.PSV:
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
-        return commonCustomSections;
+        return [...commonCustomSections, this.adr.form];
       case VehicleTypes.TRL:
-        return [...commonCustomSections, this.trlBrakes!.form, this.letters.form];
+        return [...commonCustomSections, this.trlBrakes!.form, this.letters.form, this.adr.form];
+      case VehicleTypes.LGV:
+        return [...commonCustomSections, this.adr.form];
       default:
         return [];
     }
