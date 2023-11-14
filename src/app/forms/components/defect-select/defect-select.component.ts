@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-case-declarations */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Defect } from '@models/defects/defect.model';
@@ -8,12 +10,12 @@ import { Store } from '@ngrx/store';
 import { DefectsState, filteredDefects } from '@store/defects';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { TestResultsState } from '@store/test-records/reducers/test-records.reducer';
-import { takeUntil, filter, Subject } from 'rxjs';
+import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-defect-select',
   templateUrl: './defect-select.component.html',
-  styleUrls: ['./defect-select.component.scss']
+  styleUrls: ['./defect-select.component.scss'],
 })
 export class DefectSelectComponent implements OnInit, OnDestroy {
   defects: Defect[] = [];
@@ -29,7 +31,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
     private testResultsStore: Store<TestResultsState>,
     private defectsStore: Store<DefectsState>,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -37,11 +39,17 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
       .select(toEditOrNotToEdit)
       .pipe(
         takeUntil(this.onDestroy$),
-        filter(testResult => !!testResult)
+        filter((testResult) => !!testResult),
       )
-      .subscribe(testResult => (this.vehicleType = testResult!.vehicleType));
+      .subscribe((testResult) => {
+        if (testResult) {
+          this.vehicleType = testResult.vehicleType;
+        }
+      });
 
-    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe(defectsTaxonomy => (this.defects = defectsTaxonomy));
+    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe((defectsTaxonomy) => {
+      this.defects = defectsTaxonomy;
+    });
   }
 
   ngOnDestroy(): void {
@@ -62,9 +70,12 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
   }
 
   categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
-    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{ major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[
-      category
-    ];
+    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{
+      major: 'orange',
+      minor: 'yellow',
+      dangerous: 'red',
+      advisory: 'blue',
+    })[`${category}`];
   }
 
   handleSelect(selected?: Defect | Item | Deficiency, type?: Types): void {
@@ -80,16 +91,17 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         break;
       case Types.Deficiency:
         this.selectedDeficiency = selected as Deficiency;
-        this.router.navigate([this.selectedDeficiency.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
+        void this.router.navigate([this.selectedDeficiency.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
         break;
       default:
         let advisoryRoute = `${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}.advisory`;
         if (this.selectedDefect?.imNumber === 71 && this.selectedItem?.itemNumber === 1) {
           advisoryRoute += this.selectedItem.itemDescription === 'All Roller Brake Test Machines:' ? '.0' : '.1';
         }
-        this.router.navigate([advisoryRoute], {
+
+        void this.router.navigate([advisoryRoute], {
           relativeTo: this.route,
-          queryParamsHandling: 'merge'
+          queryParamsHandling: 'merge',
         });
         break;
     }
@@ -99,5 +111,5 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 enum Types {
   Defect,
   Item,
-  Deficiency
+  Deficiency,
 }

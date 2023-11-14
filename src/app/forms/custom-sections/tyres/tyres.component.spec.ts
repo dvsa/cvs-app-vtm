@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Tyres } from '@models/vehicle-tech-record.model';
@@ -13,7 +14,7 @@ import { of, throwError } from 'rxjs';
 import { TyresComponent } from './tyres.component';
 
 const mockReferenceDataService = {
-  fetchReferenceDataByKey: jest.fn()
+  fetchReferenceDataByKey: jest.fn(),
 };
 
 describe('TyresComponent', () => {
@@ -25,67 +26,67 @@ describe('TyresComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule, DynamicFormsModule, StoreModule.forRoot({})],
       declarations: [TyresComponent],
-      providers: [provideMockStore<State>({ initialState: initialAppState }), { provide: ReferenceDataService, useValue: mockReferenceDataService }]
+      providers: [provideMockStore<State>({ initialState: initialAppState }), { provide: ReferenceDataService, useValue: mockReferenceDataService }],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TyresComponent);
     component = fixture.componentInstance;
-    (component.vehicleTechRecord = mockVehicleTechnicalRecord('psv')),
-      (component.vehicleTechRecord.techRecord_axles = [
-        {
-          axleNumber: 1,
-          tyres_tyreSize: '295/80-22.5',
-          tyres_speedCategorySymbol: 'p',
-          tyres_fitmentCode: 'double',
-          tyres_dataTrAxles: 0,
-          tyres_plyRating: 'A',
-          tyres_tyreCode: 456,
-          parkingBrakeMrk: false,
+    component.vehicleTechRecord = mockVehicleTechnicalRecord('psv');
+    component.vehicleTechRecord.techRecord_axles = [
+      {
+        axleNumber: 1,
+        tyres_tyreSize: '295/80-22.5',
+        tyres_speedCategorySymbol: 'p',
+        tyres_fitmentCode: 'double',
+        tyres_dataTrAxles: 0,
+        tyres_plyRating: 'A',
+        tyres_tyreCode: 456,
+        parkingBrakeMrk: false,
 
-          weights_kerbWeight: 1,
-          weights_ladenWeight: 2,
-          weights_gbWeight: 3,
-          // TODO: V3 2 eecweights in type package, which is this?
-          // weights_eecWeight: 4,
-          weights_designWeight: 5
-        },
-        {
-          axleNumber: 2,
-          parkingBrakeMrk: true,
+        weights_kerbWeight: 1,
+        weights_ladenWeight: 2,
+        weights_gbWeight: 3,
+        // TODO: V3 2 eecweights in type package, which is this?
+        // weights_eecWeight: 4,
+        weights_designWeight: 5,
+      },
+      {
+        axleNumber: 2,
+        parkingBrakeMrk: true,
 
-          tyres_tyreSize: '295/80-22.5',
-          tyres_speedCategorySymbol: 'p',
-          tyres_fitmentCode: 'double',
-          tyres_dataTrAxles: 0,
-          tyres_plyRating: 'A',
-          tyres_tyreCode: 456,
+        tyres_tyreSize: '295/80-22.5',
+        tyres_speedCategorySymbol: 'p',
+        tyres_fitmentCode: 'double',
+        tyres_dataTrAxles: 0,
+        tyres_plyRating: 'A',
+        tyres_tyreCode: 456,
 
-          weights_kerbWeight: 1,
-          weights_ladenWeight: 2,
-          weights_gbWeight: 3,
-          // weights_eecWeight: 4,
-          weights_designWeight: 5
-        },
-        {
-          axleNumber: 3,
-          parkingBrakeMrk: true,
+        weights_kerbWeight: 1,
+        weights_ladenWeight: 2,
+        weights_gbWeight: 3,
+        // weights_eecWeight: 4,
+        weights_designWeight: 5,
+      },
+      {
+        axleNumber: 3,
+        parkingBrakeMrk: true,
 
-          tyres_tyreSize: '295/80-22.5',
-          tyres_speedCategorySymbol: 'p',
-          tyres_fitmentCode: 'double',
-          tyres_dataTrAxles: 0,
-          tyres_plyRating: 'A',
-          tyres_tyreCode: 456,
+        tyres_tyreSize: '295/80-22.5',
+        tyres_speedCategorySymbol: 'p',
+        tyres_fitmentCode: 'double',
+        tyres_dataTrAxles: 0,
+        tyres_plyRating: 'A',
+        tyres_tyreCode: 456,
 
-          weights_kerbWeight: 1,
-          weights_ladenWeight: 2,
-          weights_gbWeight: 3,
-          // weights_eecWeight: 4,
-          weights_designWeight: 5
-        }
-      ]);
+        weights_kerbWeight: 1,
+        weights_ladenWeight: 2,
+        weights_gbWeight: 3,
+        // weights_eecWeight: 4,
+        weights_designWeight: 5,
+      },
+    ];
 
     fixture.detectChanges();
     spy = jest.spyOn(component, 'addTyreToTechRecord');
@@ -94,14 +95,14 @@ describe('TyresComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  //TODO V3 PSV
+  // TODO V3 PSV
   describe('checkFitmentCodeHasChanged', () => {
     it('should return false when there has been no change', () => {
       const currentAxle = [{ tyres_fitmentCode: 'single', tyres_tyreCode: '123' }];
       const previousAxle = [{ tyres_fitmentCode: 'single', tyres_tyreCode: '123' }];
 
       const simpleChanges = {
-        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false }
+        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false },
       };
 
       expect(component.checkFitmentCodeHasChanged(simpleChanges as unknown as SimpleChanges)).toBe(false);
@@ -113,7 +114,7 @@ describe('TyresComponent', () => {
       const previousAxle = [{ tyres_fitmentCode: 'double', tyres_tyreCode: '123' }];
 
       const simpleChanges = {
-        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false }
+        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false },
       };
 
       expect(component.checkFitmentCodeHasChanged(simpleChanges as unknown as SimpleChanges)).toBe(true);
@@ -122,15 +123,15 @@ describe('TyresComponent', () => {
     it('should return false when there has been no change with multiple objects', () => {
       const currentAxle = [
         { tyres_fitmentCode: 'single', tyres_tyreCode: '123' },
-        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' }
+        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' },
       ];
       const previousAxle = [
         { tyres_fitmentCode: 'single', tyres_tyreCode: '123' },
-        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' }
+        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' },
       ];
 
       const simpleChanges = {
-        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false }
+        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false },
       };
 
       expect(component.checkFitmentCodeHasChanged(simpleChanges as unknown as SimpleChanges)).toBe(false);
@@ -140,15 +141,15 @@ describe('TyresComponent', () => {
       jest.spyOn(component, 'getTyresRefData').mockImplementation(() => null);
       const currentAxle = [
         { tyres_fitmentCode: 'single', tyres_tyreCode: '123' },
-        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' }
+        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' },
       ];
       const previousAxle = [
         { tyres_fitmentCode: 'double', tyres_tyreCode: '123' },
-        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' }
+        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' },
       ];
 
       const simpleChanges = {
-        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false }
+        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false },
       };
 
       expect(component.checkFitmentCodeHasChanged(simpleChanges as unknown as SimpleChanges)).toBe(true);
@@ -157,15 +158,15 @@ describe('TyresComponent', () => {
     it('should return false when this is a first change', () => {
       const currentAxle = [
         { tyres_fitmentCode: 'single', tyres_tyreCode: '123' },
-        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' }
+        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' },
       ];
       const previousAxle = [
         { tyres_fitmentCode: 'double', tyres_tyreCode: '123' },
-        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' }
+        { tyres_fitmentCode: 'single', tyres_tyreCode: '123' },
       ];
 
       const simpleChanges = {
-        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: true }
+        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: true },
       };
 
       expect(component.checkFitmentCodeHasChanged(simpleChanges as unknown as SimpleChanges)).toBe(false);
@@ -182,7 +183,7 @@ describe('TyresComponent', () => {
           dateTimeStamp: 'date',
           userId: 'user',
           loadIndexTwinLoad: '126',
-          plyRating: '12'
+          plyRating: '12',
         });
       });
       component.getTyresRefData('tyres_tyreCode', 1);
@@ -207,15 +208,19 @@ describe('TyresComponent', () => {
         tyreSize: '123',
         dataTrAxles: 123,
         plyRating: '12',
-        tyreCode: 101
+        tyreCode: 101,
       };
 
       component.addTyreToTechRecord(tyre, 1);
 
-      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_tyreSize).toBe(tyre.tyreSize);
-      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_dataTrAxles).toBe(tyre.dataTrAxles);
-      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_plyRating).toBe(tyre.plyRating);
-      expect(component.vehicleTechRecord.techRecord_axles![0]?.tyres_tyreCode).toBe(tyre.tyreCode);
+      const axles = component.vehicleTechRecord.techRecord_axles as NonNullable<
+      (TechRecordType<'psv'> | TechRecordType<'trl'> | TechRecordType<'hgv'>)['techRecord_axles']
+      >;
+
+      expect(axles[0]?.tyres_tyreSize).toBe(tyre.tyreSize);
+      expect(axles[0]?.tyres_dataTrAxles).toBe(tyre.dataTrAxles);
+      expect(axles[0]?.tyres_plyRating).toBe(tyre.plyRating);
+      expect(axles[0]?.tyres_tyreCode).toBe(tyre.tyreCode);
     });
   });
 });

@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FocusNextDirective } from './focus-next.directive';
 
@@ -13,7 +13,7 @@ import { FocusNextDirective } from './focus-next.directive';
       <input appFocusNext [displayTime]="displayTime" type="number" id="test-hour" />
       <input appFocusNext [displayTime]="displayTime" type="number" id="test-minute" />
     </div>
-  `
+  `,
 })
 class TestComponent {
   displayTime = false;
@@ -24,11 +24,11 @@ describe('FocusNextDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
   let de: DebugElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [TestComponent, FocusNextDirective]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [TestComponent, FocusNextDirective],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestComponent);

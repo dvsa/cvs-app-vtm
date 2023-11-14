@@ -10,9 +10,9 @@ import { AccordionControlComponent } from './accordion-control.component';
   selector: 'app-host',
   template: `<app-accordion-control>
     <app-accordion id="test" title="Test"> <div id="content">Details</div> </app-accordion>
-  </app-accordion-control>`
+  </app-accordion-control>`,
 })
-class HostComponent {}
+class HostComponent { }
 
 describe('AccordionControlComponent', () => {
   let component: AccordionControlComponent;
@@ -21,14 +21,15 @@ describe('AccordionControlComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AccordionControlComponent, HostComponent, AccordionComponent],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.debugElement.query(By.directive(AccordionControlComponent)).componentInstance;
     fixture.detectChanges();
+    await fixture.whenRenderingDone();
   });
 
   it('should create', () => {
@@ -36,13 +37,11 @@ describe('AccordionControlComponent', () => {
   });
 
   it('should open and close child accordions', () => {
-    fixture.whenRenderingDone().then(() => {
-      expect(component.accordions?.length).toBe(1);
-      expect(component.accordions?.get(0)!.isExpanded).toBeFalsy();
-      component.toggle();
-      expect(component.accordions?.get(0)!.isExpanded).toBeTruthy();
-      component.toggle();
-      expect(component.accordions?.get(0)!.isExpanded).toBeFalsy();
-    });
+    expect(component.accordions?.length).toBe(1);
+    expect(component.accordions?.get(0)?.isExpanded).toBeFalsy();
+    component.toggle();
+    expect(component.accordions?.get(0)?.isExpanded).toBeTruthy();
+    component.toggle();
+    expect(component.accordions?.get(0)?.isExpanded).toBeFalsy();
   });
 });

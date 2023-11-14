@@ -16,7 +16,7 @@ describe('TyreAxleLoadPipe', () => {
 
     it('should multiply the value by the given factor and return the value as a string', () => {
       expect(
-        pipe.transform(undefined, '123', 2, [{ resourceType: ReferenceDataResourceType.TyreLoadIndex, resourceKey: '123', loadIndex: '200' }])
+        pipe.transform(undefined, '123', 2, [{ resourceType: ReferenceDataResourceType.TyreLoadIndex, resourceKey: '123', loadIndex: '200' }]),
       ).toBe((200 * 2).toString());
     });
 

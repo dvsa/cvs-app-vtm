@@ -99,7 +99,6 @@
 
       <tr *ngIf="isEditing">
         <a class="axleButton" role="button" id="tyresAddAxle" (click)="addAxle()">Add Axle</a>
-
         <p *ngIf="isError" class="govuk-error-message">{{ errorMessage }}</p>
       </tr>
 
@@ -116,11 +115,12 @@
 
     <app-switchable-input
       [form]="form"
-      [type]="types.TEXT"
+      [type]="types.DROPDOWN"
       name="techRecord_tyreUseCode"
       label="Tyre Use Code"
       [width]="widths.XS"
       [isEditing]="isEditing"
+      [options]="tyreUseCode"
     ></app-switchable-input>
   </ng-container>
 

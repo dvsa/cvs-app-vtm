@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-switchable-input[form][type][name][isEditing]',
-  templateUrl: './switchable-input.component.html'
+  templateUrl: './switchable-input.component.html',
 })
 export class SwitchableInputComponent implements OnInit {
   @Input() type!: FormNodeEditTypes;
@@ -28,6 +28,7 @@ export class SwitchableInputComponent implements OnInit {
   @Input() approvalTypeChange?: boolean | undefined = false;
 
   @Input() readOnlyDate?: boolean;
+  @Input() vehicleType?: string | null;
   delimiter = { regex: '\\. (?<!\\..\\. )', separator: '. ' };
 
   ngOnInit(): void {
@@ -38,10 +39,10 @@ export class SwitchableInputComponent implements OnInit {
 
   get requiresOptions(): boolean {
     return (
-      this.type === this.types.AUTOCOMPLETE ||
-      this.type === this.types.CHECKBOXGROUP ||
-      this.type === this.types.DROPDOWN ||
-      this.type === this.types.RADIO
+      this.type === this.types.AUTOCOMPLETE
+      || this.type === this.types.CHECKBOXGROUP
+      || this.type === this.types.DROPDOWN
+      || this.type === this.types.RADIO
     );
   }
 

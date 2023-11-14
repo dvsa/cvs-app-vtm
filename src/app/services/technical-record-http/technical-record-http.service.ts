@@ -5,22 +5,14 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
-export enum SEARCH_TYPES {
-  VIN = 'vin',
-  PARTIAL_VIN = 'partialVin',
-  VRM = 'primaryVrm',
-  TRAILER_ID = 'trailerId',
-  SYSTEM_NUMBER = 'systemNumber',
-  ALL = 'all'
-}
-
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordHttpService {
-  constructor(private http: HttpClient, private store: Store) {}
+  constructor(private http: HttpClient, private store: Store) { }
 
   search$(type: SEARCH_TYPES, term: string): Observable<TechRecordSearchSchema[]> {
     const queryStr = `${term}?searchCriteria=${type}`;
@@ -47,7 +39,7 @@ export class TechnicalRecordHttpService {
     const recordCopy: TechRecordType<'put'> = cloneDeep(newVehicleRecord) as TechRecordType<'put'>;
 
     const body = {
-      ...recordCopy
+      ...recordCopy,
     };
 
     return this.http.post<TechRecordType<'get'>>(`${environment.VTM_API_URI}/v3/technical-records`, body);
@@ -64,13 +56,25 @@ export class TechnicalRecordHttpService {
     cherishedTransfer: boolean,
     systemNumber: string,
     createdTimestamp: string,
-    thirdMark?: string
+    thirdMark?: string,
   ): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/updateVrm/${systemNumber}/${createdTimestamp}`;
     const body = {
       newVrm,
       isCherishedTransfer: cherishedTransfer,
-      thirdMark: thirdMark ?? undefined
+      thirdMark: thirdMark ?? undefined,
+    };
+    return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
+  }
+
+  amendVin$(
+    newVin: string,
+    systemNumber: string,
+    createdTimestamp: string,
+  ): Observable<TechRecordType<'get'>> {
+    const url = `${environment.VTM_API_URI}/v3/technical-records/updateVin/${systemNumber}/${createdTimestamp}`;
+    const body = {
+      newVin,
     };
     return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
@@ -97,7 +101,7 @@ export class TechnicalRecordHttpService {
     const body = {
       reasonForCreation: reason,
       vtmUsername: user.name,
-      recipientEmailAddress: (vehicleRecord as TechRecordType<'get'>)?.techRecord_applicantDetails_emailAddress ?? user.email
+      recipientEmailAddress: (vehicleRecord)?.techRecord_applicantDetails_emailAddress ?? user.email,
     };
 
     return this.http.post(url, body, { responseType: 'json' });
@@ -107,17 +111,17 @@ export class TechnicalRecordHttpService {
     vehicleRecord: TechRecordType<'get'>,
     letterType: string,
     paragraphId: number,
-    user: { name?: string; email?: string }
+    user: { name?: string; email?: string },
   ): Observable<string> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/letter/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`;
 
     const body = {
       vtmUsername: user.name,
-      letterType: letterType,
-      paragraphId: paragraphId,
+      letterType,
+      paragraphId,
       recipientEmailAddress: vehicleRecord.techRecord_applicantDetails_emailAddress
-        ? (vehicleRecord as TechRecordType<'get'>).techRecord_applicantDetails_emailAddress
-        : user.email
+        ? (vehicleRecord).techRecord_applicantDetails_emailAddress
+        : user.email,
     };
 
     return this.http.post(url, body, { responseType: 'text' });
@@ -127,7 +131,7 @@ export class TechnicalRecordHttpService {
     systemNumber: string,
     createdTimestamp: string,
     reasonForUnarchiving: string,
-    status: string
+    status: string,
   ): Observable<TechRecordType<'get'>> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/unarchive/${systemNumber}/${createdTimestamp}`;
 

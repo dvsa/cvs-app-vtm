@@ -6,7 +6,7 @@ describe('Test Types Reducer', () => {
   describe('unknown action', () => {
     it('should return the default state', () => {
       const action = {
-        type: 'Unknown'
+        type: 'Unknown',
       };
       const state = testTypesReducer(initialTestTypeState, action);
 
@@ -25,16 +25,16 @@ describe('Test Types Reducer', () => {
     it('should set the test types data on success and set loading to false on success action', () => {
       const testTypes = [
         { id: '1', name: 'foo' },
-        { id: '12', name: 'bar' }
+        { id: '12', name: 'bar' },
       ] as TestTypesTaxonomy;
       const newState: TestTypeState = {
         ...initialTestTypeState,
         entities: {
           1: { id: '1', name: 'foo' } as TestTypeCategory,
-          12: { id: '12', name: 'bar' } as TestTypeCategory
+          12: { id: '12', name: 'bar' } as TestTypeCategory,
         },
         ids: ['1', '12'],
-        loading: false
+        loading: false,
       };
       const action = fetchTestTypesSuccess({ payload: testTypes });
       const state = testTypesReducer({ ...initialTestTypeState, loading: true }, action);

@@ -1,6 +1,8 @@
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { PlateReasonForIssue } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth,
+} from '../../services/dynamic-form.types';
 
 export const PlatesTemplate: FormNode = {
   name: 'platesSection',
@@ -21,7 +23,7 @@ export const PlatesTemplate: FormNode = {
               value: null,
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.L,
-              disabled: true
+              disabled: true,
             },
             {
               name: 'plateIssueDate',
@@ -29,7 +31,7 @@ export const PlatesTemplate: FormNode = {
               value: null,
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.L,
-              disabled: true
+              disabled: true,
             },
             {
               name: 'plateReasonForIssue',
@@ -38,7 +40,7 @@ export const PlatesTemplate: FormNode = {
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.SELECT,
               options: getOptionsFromEnum(PlateReasonForIssue),
-              width: FormNodeWidth.L
+              width: FormNodeWidth.L,
             },
             {
               name: 'plateIssuer',
@@ -46,11 +48,11 @@ export const PlatesTemplate: FormNode = {
               value: null,
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.L,
-              disabled: true
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              disabled: true,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

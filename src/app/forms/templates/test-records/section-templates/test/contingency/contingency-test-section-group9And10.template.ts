@@ -1,5 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 
 export const ContingencyTestSectionGroup9And10: FormNode = {
   name: 'testSection',
@@ -12,7 +14,7 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMERICSTRING,
       validators: [{ name: ValidatorNames.MaxLength, args: 8 }, { name: ValidatorNames.MinLength, args: 6 }, { name: ValidatorNames.Required }],
-      width: FormNodeWidth.L
+      width: FormNodeWidth.L,
     },
     {
       name: 'testStartTimestamp',
@@ -20,7 +22,7 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      validators: [{ name: ValidatorNames.PastDate }]
+      validators: [{ name: ValidatorNames.PastDate }],
     },
     {
       name: 'testEndTimestamp',
@@ -28,7 +30,7 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      validators: [{ name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }]
+      validators: [{ name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }],
     },
     {
       name: 'testTypes',
@@ -45,7 +47,7 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
               value: null,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'reasonForAbandoning',
@@ -53,7 +55,7 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
               value: null,
-              required: true
+              required: true,
             },
             {
               name: 'additionalCommentsForAbandon',
@@ -61,7 +63,7 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
               value: null,
-              required: true
+              required: true,
             },
             {
               name: 'certificateNumber',
@@ -69,7 +71,7 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
               value: '',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testExpiryDate',
@@ -77,7 +79,7 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
               disabled: true,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testTypeStartTimestamp',
@@ -89,8 +91,8 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
               validators: [
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
-              ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' },
+              ],
             },
             {
               name: 'testTypeEndTimestamp',
@@ -103,8 +105,8 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
                 { name: ValidatorNames.Required },
                 { name: ValidatorNames.PastDate },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
-              ]
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' },
+              ],
             },
             {
               name: 'prohibitionIssued',
@@ -112,11 +114,11 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: null,
               editType: FormNodeEditTypes.HIDDEN,
-              required: true
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };

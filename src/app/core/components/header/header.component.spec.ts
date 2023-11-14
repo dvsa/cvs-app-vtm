@@ -37,6 +37,7 @@ describe('HeaderComponent', () => {
   it('Clicking logout fires off event', (done) => {
     component.logOutEvent.subscribe(() => {
       done();
+      expect(done).toHaveBeenCalled();
     });
 
     logOutButton.triggerEventHandler('click', null);

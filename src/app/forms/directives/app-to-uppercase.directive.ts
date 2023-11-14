@@ -1,7 +1,7 @@
 import { Directive, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[appToUppercase]'
+  selector: '[appToUppercase]',
 })
 export class ToUppercaseDirective {
   @HostListener('focusout', ['$event.target'])

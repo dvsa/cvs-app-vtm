@@ -5,7 +5,7 @@ describe('digitGroupSeparator pipe tests', () => {
   const pipe = new DigitGroupSeparatorPipe();
 
   it('returns undefined', () => {
-    expect(pipe.transform(undefined)).toBe(undefined);
+    expect(pipe.transform(undefined)).toBeUndefined();
   });
 
   it('does not separate number', () => {

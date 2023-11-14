@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnDestroy, OnInit, Output,
+} from '@angular/core';
 import { CustomDefects, CustomDefect } from '@api/test-results';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode, CustomFormGroup, CustomFormArray } from '@forms/services/dynamic-form.types';
@@ -7,7 +9,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-custom-defects[template]',
   templateUrl: './custom-defects.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class CustomDefectsComponent implements OnInit, OnDestroy {
   @Input() isEditing = false;
@@ -23,7 +25,7 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
-    this.formSubscription = this.form.cleanValueChanges.subscribe(event => {
+    this.formSubscription = this.form.cleanValueChanges.subscribe((event) => {
       this.formChange.emit(event);
     });
   }
@@ -37,7 +39,7 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
   }
 
   getCustomDefectForm(i: number) {
-    return this.customDefectsForm?.controls[i] as CustomFormGroup;
+    return this.customDefectsForm?.controls[`${i}`] as CustomFormGroup;
   }
 
   trackByFn(index: number): number {
@@ -49,7 +51,7 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
   }
 
   get customDefects(): CustomDefects {
-    return this.customDefectsForm.controls.map(control => (control as CustomFormGroup).getCleanValue(control as CustomFormGroup) as CustomDefect);
+    return this.customDefectsForm.controls.map((control) => (control as CustomFormGroup).getCleanValue(control as CustomFormGroup) as CustomDefect);
   }
 
   handleRemoveDefect(index: number): void {

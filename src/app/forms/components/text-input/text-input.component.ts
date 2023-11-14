@@ -10,14 +10,14 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: TextInputComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class TextInputComponent extends BaseControlComponent {
   @Input() numeric = false;
 
   get style(): string {
-    return 'govuk-input ' + (this.width ? 'govuk-input--width-' + this.width : '');
+    return `govuk-input ${this.width ? `govuk-input--width-${this.width}` : ''}`;
   }
 }

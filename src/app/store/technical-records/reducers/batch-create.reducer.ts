@@ -1,6 +1,8 @@
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { EntityAdapter, EntityState, Update, createEntityAdapter } from '@ngrx/entity';
+import {
+  EntityAdapter, EntityState, Update, createEntityAdapter,
+} from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import {
   clearBatch,
@@ -8,7 +10,7 @@ import {
   setGenerateNumberFlag,
   setVehicleStatus,
   setVehicleType,
-  upsertVehicleBatch
+  upsertVehicleBatch,
 } from '../actions/batch-create.actions';
 import { createVehicleRecordSuccess, updateTechRecordSuccess } from '../actions/technical-record-service.actions';
 
@@ -37,7 +39,7 @@ const selectId = (a: BatchRecord): string => {
 export const batchAdapter: EntityAdapter<BatchRecord> = createEntityAdapter<BatchRecord>({ selectId });
 
 export const initialBatchState: BatchRecords = batchAdapter.getInitialState({
-  generateNumber: false
+  generateNumber: false,
 });
 
 export const vehicleBatchCreateReducer = createReducer(
@@ -49,9 +51,10 @@ export const vehicleBatchCreateReducer = createReducer(
   on(setVehicleType, (state, { vehicleType }) => ({ ...state, vehicleType })),
   on(createVehicleRecordSuccess, (state, action) => batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecord), state)),
   on(updateTechRecordSuccess, (state, action) =>
-    batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecord, true, true), state)
-  ),
-  on(clearBatch, state => batchAdapter.removeAll({ ...state, vehicleStatus: '', applicationId: '', vehicleType: undefined }))
+    batchAdapter.updateOne(vehicleRecordsToBatchRecordMapper(action.vehicleTechRecord, true, true), state)),
+  on(clearBatch, (state) => batchAdapter.removeAll({
+    ...state, vehicleStatus: '', applicationId: '', vehicleType: undefined,
+  })),
 );
 
 function vehicleRecordsToBatchRecordMapper(techRecord: TechRecordType<'get'>, created = true, amendedRecord = false): Update<BatchRecord> {
@@ -65,7 +68,7 @@ function vehicleRecordsToBatchRecordMapper(techRecord: TechRecordType<'get'>, cr
       status: (techRecord.techRecord_statusCode as StatusCodes) ?? undefined,
       created,
       amendedRecord,
-      createdTimestamp: techRecord.createdTimestamp
-    }
+      createdTimestamp: techRecord.createdTimestamp,
+    },
   };
 }

@@ -8,12 +8,12 @@ import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import {
   NotTrailer, StatusCodes, V3TechRecordModel, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
-import { SEARCH_TYPES } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { firstValueFrom } from 'rxjs';
@@ -124,8 +124,7 @@ export class CreateTechRecordComponent implements OnChanges {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['..'], { relativeTo: this.route });
+    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   async handleSubmit() {
@@ -170,7 +169,6 @@ export class CreateTechRecordComponent implements OnChanges {
     }
     this.vrmUnique = await this.isVrmUnique();
     return (this.vinUnique || this.isDuplicateVinAllowed) && this.vrmUnique;
-
   }
 
   async isVinUnique(): Promise<boolean> {

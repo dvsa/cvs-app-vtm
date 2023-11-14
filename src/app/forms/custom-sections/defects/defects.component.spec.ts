@@ -1,36 +1,35 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick,
+} from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State } from '@store/.';
+import { provideMockStore } from '@ngrx/store/testing';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { TagComponent } from '@shared/components/tag/tag.component';
+import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { initialAppState } from '@store/.';
 import { DefectSelectComponent } from '../../components/defect-select/defect-select.component';
 import { DefectComponent } from '../defect/defect.component';
 import { DefectsComponent } from './defects.component';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
-import { TagComponent } from '@shared/components/tag/tag.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DefectsComponent', () => {
   let component: DefectsComponent;
   let fixture: ComponentFixture<DefectsComponent>;
   let el: DebugElement;
-  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, HttpClientTestingModule],
       declarations: [DefectComponent, DefectSelectComponent, DefectsComponent, ButtonComponent, TruncatePipe, TagComponent],
-      providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })]
+      providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(DefectsComponent);
     component = fixture.componentInstance;
     el = fixture.debugElement;

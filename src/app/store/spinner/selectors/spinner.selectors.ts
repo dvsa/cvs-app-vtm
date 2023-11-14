@@ -3,6 +3,6 @@ import { SpinnerState, STORE_FEATURE_SPINNER_KEY } from '../reducers/spinner.red
 
 export const getSpinnerState = createFeatureSelector<SpinnerState>(STORE_FEATURE_SPINNER_KEY);
 
-export const getSpinner = createSelector(getSpinnerState, state => {
+export const getSpinner = createSelector(getSpinnerState, (state) => {
   return state.showSpinner;
 });

@@ -1,5 +1,5 @@
-import { GetControlLabelPipe } from './get-control-label.pipe';
 import { FormNodeOption } from '@forms/services/dynamic-form.types';
+import { GetControlLabelPipe } from './get-control-label.pipe';
 
 describe('GetControlLabelPipe', () => {
   let testOptions: FormNodeOption<string>[];
@@ -7,7 +7,7 @@ describe('GetControlLabelPipe', () => {
   beforeEach(() => {
     testOptions = [
       { label: 'Test', value: 'test' },
-      { label: 'Foo', value: 'bar' }
+      { label: 'Foo', value: 'bar' },
     ];
   });
 

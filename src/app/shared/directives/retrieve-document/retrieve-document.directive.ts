@@ -7,9 +7,9 @@ import { takeWhile } from 'rxjs';
 @Directive({ selector: '[appRetrieveDocument][params][fileName]' })
 export class RetrieveDocumentDirective {
   @Input() params: Map<string, string> = new Map();
-  @Input() fileName: string = '';
+  @Input() fileName = '';
 
-  constructor(private documentRetrievalService: DocumentRetrievalService, private documentsService: DocumentsService) {}
+  constructor(private documentRetrievalService: DocumentRetrievalService, private documentsService: DocumentsService) { }
 
   @HostListener('click', ['$event']) clickEvent(event: PointerEvent) {
     event.preventDefault();
@@ -17,13 +17,15 @@ export class RetrieveDocumentDirective {
 
     this.documentRetrievalService
       .getDocument(this.params)
-      .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
-      .subscribe(response => {
+      .pipe(takeWhile((doc) => doc.type !== HttpEventType.Response, true))
+      .subscribe((response) => {
         switch (response.type) {
           case HttpEventType.DownloadProgress:
             break;
           case HttpEventType.Response:
             this.documentsService.openDocumentFromResponse(this.fileName, response.body);
+            break;
+          default:
             break;
         }
       });

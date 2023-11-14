@@ -4,12 +4,14 @@ import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsState, initialDefectsState } from '../reducers/defects.reducer';
-import { defect, defects, defectsLoadingState, selectByDeficiencyRef, selectByImNumber } from './defects.selectors';
+import {
+  defect, defects, defectsLoadingState, selectByDeficiencyRef, selectByImNumber,
+} from './defects.selectors';
 
 describe('Defects Selectors', () => {
   describe('adapter selectors', () => {
     it('should return correct state', () => {
-      const state = { ...initialDefectsState, ids: [1], entities: { [1]: { preparerId: 2 } } } as unknown as DefectsState;
+      const state = { ...initialDefectsState, ids: [1], entities: { 1: { preparerId: 2 } } } as unknown as DefectsState;
 
       expect(defects.projector(state)).toEqual([{ preparerId: 2 }]);
       expect(defect('1').projector(state)).toEqual({ preparerId: 2 });
@@ -32,55 +34,55 @@ describe('Defects Selectors', () => {
       deficiencyText: 'missing.',
       forVehicleType: [VehicleTypes.PSV],
       ref: '1.1.a',
-      stdForProhibition: false
+      stdForProhibition: false,
     };
 
     const item: Item = {
       deficiencies: [deficiency],
       forVehicleType: [VehicleTypes.PSV],
       itemDescription: 'A registration plate:',
-      itemNumber: 1
+      itemNumber: 1,
     };
 
-    const defect: Defect = {
+    const mockDefect: Defect = {
       additionalInfo: {
         [VehicleTypes.PSV]: {
           location: {
-            longitudinal: ['front', 'rear']
+            longitudinal: ['front', 'rear'],
           },
-          notes: false
-        }
+          notes: false,
+        },
       },
       forVehicleType: [VehicleTypes.PSV],
       imDescription: 'Registration Plate',
       imNumber: 1,
-      items: [item]
+      items: [item],
     };
     const defect2: Defect = {
       additionalInfo: {
         [VehicleTypes.PSV]: {
           location: {
-            longitudinal: ['front', 'rear']
+            longitudinal: ['front', 'rear'],
           },
-          notes: false
-        }
+          notes: false,
+        },
       },
       forVehicleType: [VehicleTypes.PSV],
       imDescription: 'Registration Plate',
       imNumber: 2,
-      items: [item]
+      items: [item],
     };
 
-    const defects: Defect[] = [defect, defect2];
+    const defectList: Defect[] = [mockDefect, defect2];
 
     it('should return filtered defect by IM number', () => {
-      const selectedState = selectByImNumber(2, VehicleTypes.PSV).projector(defects);
+      const selectedState = selectByImNumber(2, VehicleTypes.PSV).projector(defectList);
       expect(selectedState).toEqual(defect2);
     });
 
     it('should return filtered defect by deficiency ref', () => {
-      const selectedState = selectByDeficiencyRef('1.1.a', VehicleTypes.PSV).projector(defects);
-      expect(selectedState).toEqual([defect, item, deficiency]);
+      const selectedState = selectByDeficiencyRef('1.1.a', VehicleTypes.PSV).projector(defectList);
+      expect(selectedState).toEqual([mockDefect, item, deficiency]);
     });
   });
 });

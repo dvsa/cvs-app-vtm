@@ -12,7 +12,7 @@ describe('TestCertificateComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [RetrieveDocumentDirective, TestCertificateComponent],
       imports: [HttpClientTestingModule],
-      providers: [DocumentRetrievalService]
+      providers: [DocumentRetrievalService],
     }).compileComponents();
   });
 

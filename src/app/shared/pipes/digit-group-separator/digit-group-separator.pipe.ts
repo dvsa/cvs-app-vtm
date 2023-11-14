@@ -1,13 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'digitGroupSeparator'
+  name: 'digitGroupSeparator',
 })
 export class DigitGroupSeparatorPipe implements PipeTransform {
   transform(value: number | undefined): string | undefined {
-    if (value != undefined) {
+    if (value) {
       return value.toLocaleString();
     }
-    return value;
+    return undefined;
   }
 }

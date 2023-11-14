@@ -8,7 +8,7 @@ describe('NumberPlateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NumberPlateComponent, DefaultNullOrEmpty]
+      declarations: [NumberPlateComponent, DefaultNullOrEmpty],
     }).compileComponents();
   });
 
@@ -24,12 +24,12 @@ describe('NumberPlateComponent', () => {
 
   it('should format a standard vrm', () => {
     component.vrm = 'AA21AAA';
-    expect(component.vrm).toEqual('AA21 AAA');
+    expect(component.vrm).toBe('AA21 AAA');
   });
 
   it('should not format a short vrm', () => {
     component.vrm = 'A123';
-    expect(component.vrm).toEqual('A123');
+    expect(component.vrm).toBe('A123');
   });
 
   describe('isZNumber', () => {

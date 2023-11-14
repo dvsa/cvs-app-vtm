@@ -11,7 +11,7 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
@@ -20,7 +20,7 @@ import { createTestResultSuccess } from '@store/test-records';
 import { getTypeOfTest } from '@store/test-types/selectors/test-types.selectors';
 import cloneDeep from 'lodash.clonedeep';
 import {
-  BehaviorSubject, filter, firstValueFrom, map, Observable, of, Subject, take, takeUntil, tap,
+  BehaviorSubject, Observable, Subject, filter, firstValueFrom, map, of, take, takeUntil, tap,
 } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
@@ -85,8 +85,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   backToTechRecord(): void {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['../../..'], { relativeTo: this.route.parent });
+    void this.router.navigate(['../../..'], { relativeTo: this.route.parent });
   }
 
   /**
@@ -99,8 +98,9 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     const testResult = await firstValueFrom(this.testResult$);
+    const testResultClone = cloneDeep(testResult) as TestResultModel;
 
-    this.testRecordsService.createTestResult(cloneDeep(testResult));
+    this.testRecordsService.createTestResult(testResultClone);
   }
 
   handleReview() {
@@ -122,7 +122,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
 
-  handleNewTestResult(testResult: any) {
+  handleNewTestResult(testResult: TestResultModel) {
     this.testRecordsService.updateEditingTestResult(testResult);
   }
 

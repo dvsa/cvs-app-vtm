@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DocumentRetrievalService } from '@api/document-retrieval';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
+import { FeatureToggleDirective } from '@directives/feature-toggle.directive';
 import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
 import { BannerComponent } from './components/banner/banner.component';
@@ -20,11 +21,11 @@ import { PreventDoubleClickDirective } from './directives/prevent-double-click/p
 import { RetrieveDocumentDirective } from './directives/retrieve-document/retrieve-document.directive';
 import { DefaultNullOrEmpty } from './pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
+import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicle-type.pipe';
+import { GetControlLabelPipe } from './pipes/get-control-label/get-control-label.pipe';
 import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe';
 import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
 import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
-import { GetControlLabelPipe } from './pipes/get-control-label/get-control-label.pipe';
-import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicle-type.pipe';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,8 @@ import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicl
     ButtonComponent,
     BannerComponent,
     RoleRequiredDirective,
+    FeatureToggleDirective,
+    FeatureToggleDirective,
     TagComponent,
     NumberPlateComponent,
     IconComponent,
@@ -50,7 +53,7 @@ import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicl
     RouterOutletComponent,
     TyreAxleLoadPipe,
     GetControlLabelPipe,
-    FormatVehicleTypePipe
+    FormatVehicleTypePipe,
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -59,6 +62,7 @@ import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicl
     ButtonComponent,
     BannerComponent,
     RoleRequiredDirective,
+    FeatureToggleDirective,
     TagComponent,
     NumberPlateComponent,
     IconComponent,
@@ -75,8 +79,9 @@ import { FormatVehicleTypePipe } from './pipes/format-vehicle-type/format-vehicl
     RouterOutletComponent,
     TyreAxleLoadPipe,
     GetControlLabelPipe,
-    FormatVehicleTypePipe
+    FormatVehicleTypePipe,
+
   ],
-  providers: [DocumentRetrievalService]
+  providers: [DocumentRetrievalService],
 })
 export class SharedModule {}

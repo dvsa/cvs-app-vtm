@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+} from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
@@ -10,7 +12,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-trl-brakes[vehicleTechRecord]',
   templateUrl: './trl-brakes.component.html',
-  styleUrls: ['./trl-brakes.component.scss']
+  styleUrls: ['./trl-brakes.component.scss'],
 })
 export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() vehicleTechRecord!: TechRecordType<'trl'>;
@@ -21,7 +23,7 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
 
   booleanOptions: MultiOptions = [
     { value: true, label: 'Yes' },
-    { value: false, label: 'No' }
+    { value: false, label: 'No' },
   ];
 
   private destroy$ = new Subject<void>();
@@ -33,7 +35,7 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
 
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((event: any) => {
       if (event?.techRecord_axles) {
-        event.techRecord_axles = (event.techRecord_axles as any).filter((axle: any) => !!axle?.axleNumber);
+        event.techRecord_axles = (event.techRecord_axles).filter((axle: any) => !!axle?.axleNumber);
       }
 
       this.formChange.emit(event);
@@ -72,8 +74,8 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   stripName = (s: string): string => {
     const splitString = s.split('_').pop() ?? '';
     return (
-      splitString.charAt(0).toUpperCase() +
-      splitString
+      splitString.charAt(0).toUpperCase()
+      + splitString
         .slice(1)
         .replace(/([A-Z])/g, ' $1')
         .toLowerCase()

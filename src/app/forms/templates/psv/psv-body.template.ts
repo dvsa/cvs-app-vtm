@@ -1,6 +1,8 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
 import { TagType } from '@shared/components/tag/tag.component';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels,
+} from '../../services/dynamic-form.types';
 
 export const PsvBodyTemplate: FormNode = {
   name: 'bodySection',
@@ -15,14 +17,14 @@ export const PsvBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       validators: [{ name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_modelLiteral',
       label: 'Model literal',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
     },
     {
       name: 'techRecord_chassisMake',
@@ -30,7 +32,7 @@ export const PsvBodyTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
-      disabled: true
+      disabled: true,
     },
     {
       name: 'techRecord_chassisModel',
@@ -38,7 +40,7 @@ export const PsvBodyTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 20 }],
-      disabled: true
+      disabled: true,
     },
     {
       name: 'techRecord_bodyMake',
@@ -46,14 +48,14 @@ export const PsvBodyTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 20 }],
-      disabled: true
+      disabled: true,
     },
     {
       name: 'techRecord_bodyModel',
       label: 'Body model',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 20 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 20 }],
     },
     {
       name: 'techRecord_bodyType_description',
@@ -62,7 +64,7 @@ export const PsvBodyTemplate: FormNode = {
       customId: 'bodyType',
       type: FormNodeTypes.CONTROL,
       disabled: true,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
     },
     {
       name: 'techRecord_functionCode',
@@ -72,16 +74,16 @@ export const PsvBodyTemplate: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: [
         { value: 'r', label: 'R' },
-        { value: 'a', label: 'A' }
+        { value: 'a', label: 'A' },
       ],
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
     },
     {
       name: 'techRecord_conversionRefNo',
       label: 'Conversion ref no',
       value: null,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
+      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'] }],
     },
     {
       name: 'techRecord_modelLiteral',
@@ -90,7 +92,7 @@ export const PsvBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
-      width: FormNodeWidth.L
-    }
-  ]
+      width: FormNodeWidth.L,
+    },
+  ],
 };

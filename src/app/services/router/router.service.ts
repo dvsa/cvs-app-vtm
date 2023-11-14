@@ -10,13 +10,13 @@ import {
   selectRouteData,
   selectRouteDataProperty,
   selectRouteNestedParams,
-  selectRouteParam
+  selectRouteParam,
 } from '@store/router/selectors/router.selectors';
 import { Observable, map } from 'rxjs';
 import { Location } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RouterService {
   constructor(private store: Store<State>, private router: Router, private activatedRoute: ActivatedRoute, private location: Location) {}
@@ -42,7 +42,7 @@ export class RouterService {
   }
 
   getRouteNestedParam$(param: string): Observable<string | undefined> {
-    return this.routeNestedParams$.pipe(map(route => route[param]));
+    return this.routeNestedParams$.pipe(map((route) => route[`${param}`]));
   }
 
   get routeEditable$() {
@@ -57,8 +57,8 @@ export class RouterService {
     return this.store.pipe(select(selectRouteDataProperty(property)));
   }
 
-  addQueryParams(queryParams: Params) {
+  async addQueryParams(queryParams: Params) {
     const url = this.router.createUrlTree([], { relativeTo: this.activatedRoute, queryParams, queryParamsHandling: 'merge' }).toString();
-    this.router.navigateByUrl(url);
+    await this.router.navigateByUrl(url);
   }
 }

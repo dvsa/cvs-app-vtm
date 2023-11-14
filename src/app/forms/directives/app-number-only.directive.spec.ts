@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { NumberOnlyDirective } from './app-number-only.directive';
 
 @Component({
-  template: ` <input type="number" appNumberOnly />`
+  template: ' <input type="number" appNumberOnly />',
 })
 class TestComponent {}
 
@@ -14,7 +14,7 @@ describe('NumberOnlyDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [NumberOnlyDirective, TestComponent]
+      declarations: [NumberOnlyDirective, TestComponent],
     }).createComponent(TestComponent);
     fixture.detectChanges();
 

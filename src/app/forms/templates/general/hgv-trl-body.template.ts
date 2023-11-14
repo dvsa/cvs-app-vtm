@@ -1,8 +1,8 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { BodyTypeDescription } from '@models/body-type-enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
 import { TagType } from '@shared/components/tag/tag.component';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
+} from '../../services/dynamic-form.types';
 
 export const HgvAndTrlBodyTemplate: FormNode = {
   name: 'bodySection',
@@ -17,7 +17,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 6 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_make',
@@ -27,7 +27,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 50 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_model',
@@ -37,7 +37,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_bodyType_description',
@@ -47,16 +47,15 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(BodyTypeDescription),
       validators: [{ name: ValidatorNames.Required }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }]
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
     {
       name: 'techRecord_bodyType_code',
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
     },
     {
       name: 'techRecord_functionCode',
@@ -67,10 +66,10 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.S,
       options: [
         { value: 'r', label: 'R' },
-        { value: 'a', label: 'A' }
+        { value: 'a', label: 'A' },
       ],
       validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }]
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_conversionRefNo',
@@ -79,7 +78,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'] }]
-    }
-  ]
+      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'] }],
+    },
+  ],
 };

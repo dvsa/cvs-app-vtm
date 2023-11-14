@@ -12,10 +12,10 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import {
-  deleteReferenceDataItem, fetchReferenceDataByKey, ReferenceDataState, selectReferenceDataByResourceKey,
+  ReferenceDataState, deleteReferenceDataItem, fetchReferenceDataByKey, selectReferenceDataByResourceKey,
 } from '@store/reference-data';
 import { Observable, take } from 'rxjs';
 
@@ -110,13 +110,17 @@ export class ReferenceDataDeleteComponent implements OnInit {
 
     forms.forEach((form) => DynamicFormService.validate(form, errors));
 
-    errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
+    if (errors.length) {
+      this.globalErrorService.setErrors(errors);
+      return;
+    }
+
+    this.globalErrorService.clearErrors();
   }
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['../..'], { relativeTo: this.route });
+    void this.router.navigate(['../..'], { relativeTo: this.route });
   }
 
   handleSubmit() {

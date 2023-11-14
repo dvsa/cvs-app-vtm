@@ -20,8 +20,7 @@ export class BreadcrumbsComponent {
         while (currentRoute?.firstChild) {
           const { routeConfig, data, url } = currentRoute.firstChild;
 
-          // eslint-disable-next-line no-prototype-builtins
-          if (data.hasOwnProperty('title') && routeConfig?.path && !breadcrumbs.some((b) => b.label === data['title'])) {
+          if (data['title'] && routeConfig?.path && !breadcrumbs.some((b) => b.label === data['title'])) {
             breadcrumbs.push({
               label: data['title'],
               path: [...breadcrumbs.slice(-1).map((b) => b.path), ...url.map((urlValue) => urlValue.path)].join('/'),

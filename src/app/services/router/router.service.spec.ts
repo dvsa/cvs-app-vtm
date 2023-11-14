@@ -3,8 +3,8 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { selectQueryParams, selectRouteNestedParams, selectRouteParams } from '@store/router/selectors/router.selectors';
 import { firstValueFrom, of, take } from 'rxjs';
-import { RouterService } from './router.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { RouterService } from './router.service';
 
 describe('RouterService', () => {
   let service: RouterService;
@@ -13,7 +13,7 @@ describe('RouterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [RouterService, provideMockStore({ initialState: initialAppState })]
+      providers: [RouterService, provideMockStore({ initialState: initialAppState })],
     });
     service = TestBed.inject(RouterService);
     store = TestBed.inject(MockStore);
@@ -32,28 +32,28 @@ describe('RouterService', () => {
     });
   });
 
-  describe(RouterService.prototype.getQueryParam$.name, () => {
+  describe('RouterService.prototype.getQueryParam$.name', () => {
     it('should return the query param', async () => {
       // overriding selectQueryParam(param) has no effect here, I think because it might use selectQueryParams internally so we override that instead
       store.overrideSelector(selectQueryParams, { bar: 'foo' });
       store.refreshState();
-      expect(await firstValueFrom(service.getQueryParam$('bar').pipe(take(1)))).toEqual('foo');
+      expect(await firstValueFrom(service.getQueryParam$('bar').pipe(take(1)))).toBe('foo');
     });
   });
 
-  describe(RouterService.prototype.getRouteParam$.name, () => {
+  describe('RouterService.prototype.getRouteParam$.name', () => {
     it('should return an Observable of the given route param', async () => {
       store.overrideSelector(selectRouteParams, { bar: 'baz' });
       store.refreshState();
-      expect(await firstValueFrom(service.getRouteParam$('bar').pipe(take(1)))).toEqual('baz');
+      expect(await firstValueFrom(service.getRouteParam$('bar').pipe(take(1)))).toBe('baz');
     });
   });
 
   describe('get routeNestedParams$', () => {
-    it('should return an Observable route Params', done => {
+    it('should return an Observable route Params', (done) => {
       store.overrideSelector(selectRouteNestedParams, { foo: 'bar' });
       store.refreshState();
-      service.routeNestedParams$.subscribe(value => {
+      service.routeNestedParams$.subscribe((value) => {
         expect(value).toEqual({ foo: 'bar' });
         done();
       });
@@ -61,10 +61,10 @@ describe('RouterService', () => {
   });
 
   describe('getRouteNestedParam', () => {
-    it('should return the correct value', done => {
+    it('should return the correct value', (done) => {
       jest.spyOn(service, 'routeNestedParams$', 'get').mockReturnValue(of({ foo: 'bar' }));
-      service.getRouteNestedParam$('foo').subscribe(value => {
-        expect(value).toEqual('bar');
+      service.getRouteNestedParam$('foo').subscribe((value) => {
+        expect(value).toBe('bar');
         done();
       });
     });

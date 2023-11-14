@@ -23,7 +23,10 @@ import { EditTechRecordButtonComponent } from './edit-tech-record-button.compone
 
 const mockTechRecordService = {
   techRecord$: of({
-    systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT,
+    systemNumber: 'foo',
+    createdTimestamp: 'bar',
+    vin: 'testVin',
+    techRecord_statusCode: StatusCodes.CURRENT,
   } as V3TechRecordModel),
 };
 
@@ -32,7 +35,6 @@ let fixture: ComponentFixture<EditTechRecordButtonComponent>;
 let router: Router;
 let store: MockStore;
 let actions$: ReplaySubject<Action>;
-let technicalRecordService: TechnicalRecordService;
 const mockTechnicalRecordObservable = new BehaviorSubject({ techRecord_statusCode: StatusCodes.CURRENT } as V3TechRecordModel);
 const updateMockTechnicalRecord = (techRecord_statusCode: StatusCodes) =>
   mockTechnicalRecordObservable.next({ techRecord_statusCode } as V3TechRecordModel);
@@ -63,7 +65,6 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   beforeEach(() => {
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
     fixture = TestBed.createComponent(EditTechRecordButtonComponent);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
@@ -94,21 +95,30 @@ describe('EditTechRecordButtonComponent', () => {
         'should be viewable',
         true,
         {
-          systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.PROVISIONAL,
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testVin',
+          techRecord_statusCode: StatusCodes.PROVISIONAL,
         } as V3TechRecordModel,
       ],
       [
         'should be viewable',
         true,
         {
-          systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.CURRENT,
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testVin',
+          techRecord_statusCode: StatusCodes.CURRENT,
         } as V3TechRecordModel,
       ],
       [
         'should not be viewable',
         false,
         {
-          systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', techRecord_statusCode: StatusCodes.ARCHIVED,
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testVin',
+          techRecord_statusCode: StatusCodes.ARCHIVED,
         } as V3TechRecordModel,
       ],
     ])('edit button %s for %s record', (isViewable: string, expected: boolean, record: V3TechRecordModel) => {
@@ -116,9 +126,7 @@ describe('EditTechRecordButtonComponent', () => {
       fixture.detectChanges();
 
       const button = fixture.debugElement.query(By.css('#edit'));
-
-      // eslint-disable-next-line jest/no-conditional-expect
-      expected ? expect(button).toBeTruthy() : expect(button).toBeFalsy();
+      expect(Boolean(button)).toEqual(expected);
     });
   });
 

@@ -22,16 +22,16 @@ import {
   fetchTyreReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearchFailed,
   fetchTyreReferenceDataByKeySearchSuccess,
-  removeTyreSearch
+  removeTyreSearch,
 } from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
-import { initialReferenceDataState, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
+import { ReferenceDataState, initialReferenceDataState, referenceDataReducer } from './reference-data.reducer';
 
 describe('Reference Data Reducer', () => {
   describe('unknown action', () => {
     it('should return the default state', () => {
       const action = {
-        type: 'Unknown'
+        type: 'Unknown',
       };
       const state = referenceDataReducer(initialReferenceDataState, action);
 
@@ -45,8 +45,8 @@ describe('Reference Data Reducer', () => {
         ...initialReferenceDataState,
         [ReferenceDataResourceType.CountryOfRegistration]: {
           ...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
-          loading: true
-        }
+          loading: true,
+        },
       };
       const action = fetchReferenceData({ resourceType: ReferenceDataResourceType.CountryOfRegistration });
       const state = referenceDataReducer(initialReferenceDataState, action);
@@ -57,16 +57,16 @@ describe('Reference Data Reducer', () => {
   });
 
   describe('fetchReferenceDataSuccess', () => {
-    it.each(testCases)('should set all reference data on success', value => {
+    it.each(testCases)('should set all reference data on success', (value) => {
       const { resourceType, payload } = value;
-      const ids = payload.map(v => v.resourceKey);
+      const ids = payload.map((v) => v.resourceKey);
       const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
         (acc, v) => ({ ...acc, [v.resourceKey]: v }),
-        {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
+        {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V },
       );
       const newState: ReferenceDataState = {
         ...initialReferenceDataState,
-        [resourceType]: { ids, entities, loading: false }
+        [resourceType]: { ids, entities, loading: false },
       };
       const action = fetchReferenceDataSuccess({ resourceType, payload: [...payload], paginated: false });
       const state = referenceDataReducer(initialReferenceDataState, action);
@@ -93,8 +93,8 @@ describe('Reference Data Reducer', () => {
         ...initialReferenceDataState,
         [ReferenceDataResourceType.CountryOfRegistration]: {
           ...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
-          loading: true
-        }
+          loading: true,
+        },
       };
       const action = fetchReferenceDataAudit({ resourceType: ReferenceDataResourceType.CountryOfRegistration });
       const state = referenceDataReducer(initialReferenceDataState, action);
@@ -105,11 +105,11 @@ describe('Reference Data Reducer', () => {
   });
 
   describe('fetchReferenceDataAuditSuccess', () => {
-    it.each(testCases)('should set the the resource data item based on the type', value => {
+    it.each(testCases)('should set the the resource data item based on the type', (value) => {
       const { resourceType } = value;
       const newState: ReferenceDataState = {
         ...initialReferenceDataState,
-        [resourceType]: { ...initialReferenceDataState[resourceType], searchReturn: value.payload, loading: false }
+        [resourceType]: { ...initialReferenceDataState[`${resourceType}`], searchReturn: value.payload, loading: false },
       };
 
       const action = fetchReferenceDataAuditSuccess({ resourceType, payload: value.payload, paginated: false });
@@ -125,7 +125,7 @@ describe('Reference Data Reducer', () => {
       const newState = { ...initialReferenceDataState };
       const action = fetchReferenceDataAuditFailed({
         error: 'unit testing error message',
-        resourceType: ReferenceDataResourceType.CountryOfRegistration
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
       });
       const state = referenceDataReducer({ ...initialReferenceDataState }, action);
 
@@ -140,12 +140,12 @@ describe('Reference Data Reducer', () => {
         ...initialReferenceDataState,
         [ReferenceDataResourceType.CountryOfRegistration]: {
           ...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
-          loading: true
-        }
+          loading: true,
+        },
       };
       const action = fetchReferenceDataByKey({
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
-        resourceKey: mockCountriesOfRegistration[0].resourceKey
+        resourceKey: mockCountriesOfRegistration[0].resourceKey,
       });
       const state = referenceDataReducer(initialReferenceDataState, action);
 
@@ -154,14 +154,15 @@ describe('Reference Data Reducer', () => {
     });
 
     describe('fetchReferenceDataByKeySuccess', () => {
-      it.each(testCases)('should set the the resource data item based on the type and key', value => {
+      it.each(testCases)('should set the the resource data item based on the type and key', (value) => {
         const { resourceType, resourceKey, payload } = value;
-        const entity = payload.find(p => p.resourceKey === resourceKey)!;
+
+        const entity = payload.find((p) => p.resourceKey === resourceKey) as ReferenceDataModelBase;
         const ids = [resourceKey];
         const entities: Dictionary<ReferenceDataModelBase> = { [resourceKey]: entity };
         const newState: ReferenceDataState = {
           ...initialReferenceDataState,
-          [resourceType]: { ids, entities, loading: false }
+          [resourceType]: { ids, entities, loading: false },
         };
 
         const action = fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: entity });
@@ -177,14 +178,14 @@ describe('Reference Data Reducer', () => {
         const newState = { ...initialReferenceDataState };
         const action = fetchReferenceDataByKeyFailed({
           error: 'unit testing error message by key',
-          resourceType: ReferenceDataResourceType.CountryOfRegistration
+          resourceType: ReferenceDataResourceType.CountryOfRegistration,
         });
         const inputState = {
           ...initialReferenceDataState,
           [ReferenceDataResourceType.CountryOfRegistration]: {
             ...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
-            loading: true
-          }
+            loading: true,
+          },
         };
         const state = referenceDataReducer(inputState, action);
 
@@ -201,12 +202,12 @@ describe('Reference Data Reducer', () => {
         [ReferenceDataResourceType.Tyres]: {
           ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
           searchReturn: null,
-          loading: true
-        }
+          loading: true,
+        },
       };
       const action = fetchReferenceDataByKeySearch({
         resourceType: ReferenceDataResourceType.Tyres,
-        resourceKey: '101'
+        resourceKey: '101',
       });
       const state = referenceDataReducer(initialReferenceDataState, action);
 
@@ -230,13 +231,13 @@ describe('Reference Data Reducer', () => {
               dateTimeStamp: 'time',
               userId: '1234',
               loadIndexTwinLoad: '101',
-              plyRating: '18'
-            }
-          ]
+              plyRating: '18',
+            },
+          ],
         };
         const newState: ReferenceDataState = {
           ...initialReferenceDataState,
-          [resourceType]: { ...initialReferenceDataState[resourceType], searchReturn: value.payload, loading: false }
+          [resourceType]: { ...initialReferenceDataState[`${resourceType}`], searchReturn: value.payload, loading: false },
         };
 
         const action = fetchReferenceDataByKeySearchSuccess({ resourceType, resourceKey, payload: value.payload });
@@ -256,19 +257,19 @@ describe('Reference Data Reducer', () => {
             searchReturn: null,
             loading: false,
             filter: null,
-            term: null
-          }
+            term: null,
+          },
         };
         const action = fetchReferenceDataByKeySearchFailed({
           error: 'unit testing error message by key',
-          resourceType: ReferenceDataResourceType.Tyres
+          resourceType: ReferenceDataResourceType.Tyres,
         });
         const inputState = {
           ...initialReferenceDataState,
           [ReferenceDataResourceType.Tyres]: {
             ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
-            loading: true
-          }
+            loading: true,
+          },
         };
         const state = referenceDataReducer(inputState, action);
 
@@ -285,12 +286,12 @@ describe('Reference Data Reducer', () => {
         [ReferenceDataResourceType.Tyres]: {
           ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
           searchReturn: null,
-          loading: true
-        }
+          loading: true,
+        },
       };
       const action = fetchTyreReferenceDataByKeySearch({
         searchTerm: 'plyrating',
-        searchFilter: '101'
+        searchFilter: '101',
       });
       const state = referenceDataReducer(initialReferenceDataState, action);
 
@@ -313,13 +314,13 @@ describe('Reference Data Reducer', () => {
               dateTimeStamp: 'time',
               userId: '1234',
               loadIndexTwinLoad: '101',
-              plyRating: '18'
-            }
-          ]
+              plyRating: '18',
+            },
+          ],
         };
         const newState: ReferenceDataState = {
           ...initialReferenceDataState,
-          [resourceType]: { ...initialReferenceDataState[resourceType], searchReturn: value.payload, loading: false }
+          [resourceType]: { ...initialReferenceDataState[`${resourceType}`], searchReturn: value.payload, loading: false },
         };
 
         const action = fetchTyreReferenceDataByKeySearchSuccess({ resourceType, payload: value.payload });
@@ -338,8 +339,8 @@ describe('Reference Data Reducer', () => {
             ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
             loading: false,
             filter: 'code',
-            term: '103'
-          }
+            term: '103',
+          },
         };
 
         const filter = 'code';
@@ -362,7 +363,7 @@ describe('Reference Data Reducer', () => {
           loading: false,
           searchReturn: null,
           filter: null,
-          term: null
+          term: null,
         });
       });
     });
@@ -376,19 +377,19 @@ describe('Reference Data Reducer', () => {
             searchReturn: null,
             loading: false,
             filter: null,
-            term: null
-          }
+            term: null,
+          },
         };
         const action = fetchTyreReferenceDataByKeySearchFailed({
           error: 'unit testing error message by key',
-          resourceType: ReferenceDataResourceType.Tyres
+          resourceType: ReferenceDataResourceType.Tyres,
         });
         const inputState = {
           ...initialReferenceDataState,
           [ReferenceDataResourceType.Tyres]: {
             ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
-            loading: true
-          }
+            loading: true,
+          },
         };
         const state = referenceDataReducer(inputState, action);
 
@@ -402,7 +403,7 @@ describe('Reference Data Reducer', () => {
       const newItem = {
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
         resourceKey: 'test',
-        description: 'test'
+        description: 'test',
       };
       const inputState = cloneDeep(initialReferenceDataState);
 
@@ -410,7 +411,7 @@ describe('Reference Data Reducer', () => {
       inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
       const action = deleteReferenceDataItemSuccess({
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
-        resourceKey: 'test'
+        resourceKey: 'test',
       });
 
       const reducer = referenceDataReducer(inputState, action);
@@ -420,12 +421,12 @@ describe('Reference Data Reducer', () => {
       const newItem = {
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
         resourceKey: 'test',
-        description: 'test'
+        description: 'test',
       };
       const newItem2 = {
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
         resourceKey: 'test2',
-        description: 'test2'
+        description: 'test2',
       };
       const inputState = cloneDeep(initialReferenceDataState);
 
@@ -436,56 +437,7 @@ describe('Reference Data Reducer', () => {
 
       const action = deleteReferenceDataItemSuccess({
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
-        resourceKey: 'test'
-      });
-
-      const reducer = referenceDataReducer(inputState, action);
-
-      expect(reducer).not.toEqual(initialReferenceDataState);
-      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].entities).toEqual({ test2: newItem2 });
-      expect(reducer[ReferenceDataResourceType.CountryOfRegistration].ids).toEqual(['test2']);
-    });
-  });
-  describe('deleteReferenceDataItemSuccess', () => {
-    it('should remove the specified item from the reference data state', () => {
-      const newItem = {
-        resourceType: ReferenceDataResourceType.CountryOfRegistration,
         resourceKey: 'test',
-        description: 'test'
-      };
-      const inputState = cloneDeep(initialReferenceDataState);
-
-      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test'] = newItem;
-      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
-      const action = deleteReferenceDataItemSuccess({
-        resourceType: ReferenceDataResourceType.CountryOfRegistration,
-        resourceKey: 'test'
-      });
-
-      const reducer = referenceDataReducer(inputState, action);
-      expect(reducer).toEqual(initialReferenceDataState);
-    });
-    it('should leave any unspecified items in state', () => {
-      const newItem = {
-        resourceType: ReferenceDataResourceType.CountryOfRegistration,
-        resourceKey: 'test',
-        description: 'test'
-      };
-      const newItem2 = {
-        resourceType: ReferenceDataResourceType.CountryOfRegistration,
-        resourceKey: 'test2',
-        description: 'test2'
-      };
-      const inputState = cloneDeep(initialReferenceDataState);
-
-      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test'] = newItem;
-      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test'];
-      inputState[ReferenceDataResourceType.CountryOfRegistration].entities['test2'] = newItem2;
-      inputState[ReferenceDataResourceType.CountryOfRegistration].ids = ['test2'];
-
-      const action = deleteReferenceDataItemSuccess({
-        resourceType: ReferenceDataResourceType.CountryOfRegistration,
-        resourceKey: 'test'
       });
 
       const reducer = referenceDataReducer(inputState, action);
@@ -500,12 +452,12 @@ describe('Reference Data Reducer', () => {
       const testItem = {
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
         resourceKey: 'test',
-        description: 'test'
+        description: 'test',
       };
       const testItem2 = {
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
         resourceKey: 'test2',
-        description: 'test2'
+        description: 'test2',
       };
       const inputState = cloneDeep(initialReferenceDataState);
       inputState[ReferenceDataResourceType.CountryOfRegistration].entities = { test2: testItem2 };
@@ -522,12 +474,12 @@ describe('Reference Data Reducer', () => {
       const itemToAmend = {
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
         resourceKey: 'test',
-        description: 'test'
+        description: 'test',
       };
       const amendedItem = {
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
         resourceKey: 'test',
-        description: 'this has been amended'
+        description: 'this has been amended',
       };
       const inputState = cloneDeep(initialReferenceDataState);
       inputState[ReferenceDataResourceType.CountryOfRegistration].entities = { test: itemToAmend };

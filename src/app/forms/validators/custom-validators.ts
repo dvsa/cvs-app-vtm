@@ -1,6 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
+// eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
-import { DescriptionEnum } from '@models/vehicle-class.model';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomValidators {
@@ -15,7 +16,7 @@ export class CustomValidators {
     };
   };
 
-  static hideIfEquals = (sibling: string, value: any): ValidatorFn => {
+  static hideIfEquals = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
@@ -27,7 +28,7 @@ export class CustomValidators {
     };
   };
 
-  static hideIfNotEqual = (sibling: string, value: any): ValidatorFn => {
+  static hideIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
@@ -39,29 +40,37 @@ export class CustomValidators {
     };
   };
 
-  static enableIfEquals = (sibling: string, value: any): ValidatorFn => {
+  static enableIfEquals = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
         const isEqual = Array.isArray(value) ? value.includes(control.value) : control.value === value;
-        isEqual ? siblingControl.enable() : siblingControl.disable();
+        if (isEqual) {
+          siblingControl.enable();
+        } else {
+          siblingControl.disable();
+        }
       }
       return null;
     };
   };
 
-  static disableIfEquals = (sibling: string, value: any): ValidatorFn => {
+  static disableIfEquals = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
         const isEqual = Array.isArray(value) ? value.includes(control.value) : control.value === value;
-        isEqual ? siblingControl.disable() : siblingControl.enable();
+        if (isEqual) {
+          siblingControl.disable();
+        } else {
+          siblingControl.enable();
+        }
       }
       return null;
     };
   };
 
-  static hideIfParentSiblingNotEqual = (parentSibling: string, value: any): ValidatorFn => {
+  static hideIfParentSiblingNotEqual = (parentSibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent && control.parent.parent) {
         const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
@@ -73,7 +82,7 @@ export class CustomValidators {
     };
   };
 
-  static hideIfParentSiblingEquals = (parentSibling: string, value: any): ValidatorFn => {
+  static hideIfParentSiblingEquals = (parentSibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent && control.parent.parent) {
         const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
@@ -84,8 +93,7 @@ export class CustomValidators {
     };
   };
 
-  static requiredIfEquals =
-    (sibling: string, values: any[]): ValidatorFn =>
+  static requiredIfEquals = (sibling: string, values: unknown[]): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
 
@@ -97,7 +105,7 @@ export class CustomValidators {
       return isSiblingValueIncluded && isControlValueEmpty ? { requiredIfEquals: { sibling: siblingControl.meta.label } } : null;
     };
 
-  static requiredIfNotEqual = (sibling: string, value: any): ValidatorFn => {
+  static requiredIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
@@ -144,13 +152,15 @@ export class CustomValidators {
         if (isTrailerValueSelected) {
           if (control.value.length < 7) {
             return { validateVRMTrailerIdLength: { message: 'Trailer ID must be greater than or equal to 7 characters' } };
-          } else if (control.value.length > 8) {
+          }
+          if (control.value.length > 8) {
             return { validateVRMTrailerIdLength: { message: 'Trailer ID must be less than or equal to 8 characters' } };
           }
         } else {
           if (control.value.length < 1) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be greater than or equal to 1 character' } };
-          } else if (control.value.length > 9) {
+          }
+          if (control.value.length > 9) {
             return { validateVRMTrailerIdLength: { message: 'VRM must be less than or equal to 9 characters' } };
           }
         }
@@ -197,7 +207,7 @@ export class CustomValidators {
   }
 
   static invalidOption: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    return '[INVALID_OPTION]' === control.value ? { invalidOption: true } : null;
+    return control.value === '[INVALID_OPTION]' ? { invalidOption: true } : null;
   };
 
   static pastDate: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -237,7 +247,7 @@ export class CustomValidators {
         maxDate.setMonth(maxDate.getMonth() + months);
 
         if (new Date(control.value) > maxDate) {
-          return { dateNotExceed: { sibling: (siblingControl as CustomFormControl).meta.label, months: months } };
+          return { dateNotExceed: { sibling: (siblingControl as CustomFormControl).meta.label, months } };
         }
       }
 
@@ -263,7 +273,7 @@ export class CustomValidators {
   static notZNumber = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) return null;
 
-    const isZNumber = new RegExp('^[0-9]{7}[zZ]$').test(control.value);
+    const isZNumber = /^[0-9]{7}[zZ]$/.test(control.value);
 
     return !isZNumber ? null : { notZNumber: true };
   };
@@ -283,12 +293,12 @@ export class CustomValidators {
         switch (true) {
           case totalPassengers <= 22: {
             sizeControl?.setValue(VehicleSizes.SMALL, { emitEvent: false });
-            classControl?.setValue(DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
+            classControl?.setValue(VehicleClassDescription.SmallPsvIeLessThanOrEqualTo22Seats, { emitEvent: false });
             break;
           }
-          case totalPassengers > 22: {
+          default: {
             sizeControl?.setValue(VehicleSizes.LARGE, { emitEvent: false });
-            classControl?.setValue(DescriptionEnum.LargePsvIeGreaterThan23Seats, { emitEvent: false });
+            classControl?.setValue(VehicleClassDescription.LargePsvIeGreaterThan23Seats, { emitEvent: false });
           }
         }
         control.markAsPristine();
@@ -296,9 +306,34 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static isMemberOfEnum = (checkEnum: Record<string, string>, options: Partial<EnumValidatorOptions> = {}): ValidatorFn => {
+    options = { allowFalsy: false, ...options };
+
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (options.allowFalsy && !control.value) return null;
+      return Object.values(checkEnum).includes(control.value) ? null : { enum: true };
+    };
+  };
+
+  static updateFunctionCode = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const vehicleFunctionCode = control.root.get('techRecord_functionCode');
+      const functionCodes: Record<string, string> = {
+        rigid: 'R',
+        articulated: 'A',
+        'semi-trailer': 'A',
+      };
+
+      if (control.dirty) {
+        vehicleFunctionCode?.setValue(functionCodes[control?.value], { emitEvent: false });
+        control.markAsPristine();
+      }
+      return null;
+    };
+  };
 }
 
-interface ValidatorArgs<T> {
-  sibling: keyof T;
-  values: T[keyof T] | T[keyof T][];
-}
+export type EnumValidatorOptions = {
+  allowFalsy: boolean;
+};

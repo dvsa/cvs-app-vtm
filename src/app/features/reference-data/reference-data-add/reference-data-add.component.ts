@@ -9,11 +9,11 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { createReferenceDataItem, ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { ReferenceDataState, createReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
 import {
-  catchError, filter, Observable, of, switchMap, take, throwError,
+  Observable, catchError, filter, of, switchMap, take, throwError,
 } from 'rxjs';
 
 @Component({
@@ -59,8 +59,7 @@ export class ReferenceDataCreateComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['..'], { relativeTo: this.route });
+    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleFormChange(event: any) {
@@ -76,7 +75,9 @@ export class ReferenceDataCreateComponent implements OnInit {
 
     Object.keys(this.newRefData)
       .filter((newRefDataKey) => newRefDataKey !== 'resourceKey')
-      .forEach((dataKey) => { referenceData[dataKey] = this.newRefData[dataKey]; });
+      .forEach((dataKey) => {
+        referenceData[dataKey] = this.newRefData[dataKey];
+      });
 
     this.globalErrorService.errors$
       .pipe(
@@ -122,6 +123,11 @@ export class ReferenceDataCreateComponent implements OnInit {
 
     forms.forEach((form) => DynamicFormService.validate(form, errors));
 
-    errors.length ? this.globalErrorService.setErrors(errors) : this.globalErrorService.clearErrors();
+    if (errors.length) {
+      this.globalErrorService.setErrors(errors);
+      return;
+    }
+
+    this.globalErrorService.clearErrors();
   }
 }

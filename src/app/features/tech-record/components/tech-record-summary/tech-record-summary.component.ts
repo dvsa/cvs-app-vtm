@@ -1,8 +1,12 @@
+import { ViewportScroller } from '@angular/common';
 import {
   ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
+import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
@@ -19,21 +23,17 @@ import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import {
   ReasonForEditing, StatusCodes, V3TechRecordModel, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
+import { LoadingService } from '@services/loading/loading.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import {
   Observable, Subject, debounceTime, map, take, takeUntil,
 } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { ViewportScroller } from '@angular/common';
-import { Store } from '@ngrx/store';
-import { selectScrollPosition } from '@store/technical-records';
-import { LoadingService } from '@services/loading/loading.service';
-import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
-import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -74,7 +74,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private viewportScroller: ViewportScroller,
     private store: Store,
     private loading: LoadingService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$
@@ -83,21 +83,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
           if (!record) {
             return;
           }
-          const techRecord = cloneDeep(record);
 
-          if (
-            techRecord.techRecord_vehicleType === VehicleTypes.HGV
-            || (techRecord.techRecord_vehicleType === VehicleTypes.TRL
-              && techRecord.techRecord_euVehicleCategory !== 'o1'
-              && techRecord.techRecord_euVehicleCategory !== 'o2')
-          ) {
-            const [axles, axleSpacing] = this.axlesService.normaliseAxles(
-              techRecord.techRecord_axles ?? [],
-              techRecord.techRecord_dimensions_axleSpacing,
-            );
-            techRecord.techRecord_dimensions_axleSpacing = axleSpacing;
-            techRecord.techRecord_axles = axles;
-          }
+          let techRecord = cloneDeep(record);
+          techRecord = this.normaliseAxles(record);
+
           return techRecord;
         }),
         takeUntil(this.destroy$),
@@ -110,16 +99,18 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         this.sectionTemplates = this.vehicleTemplates;
         this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
       });
-    this.isEditing && this.technicalRecordService.clearReasonForCreation();
 
     const editingReason = this.activatedRoute.snapshot.data['reason'];
-    if (this.isEditing && editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+    if (this.isEditing) {
+      this.technicalRecordService.clearReasonForCreation();
       this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$), take(1)).subscribe((techRecord) => {
         if (techRecord) {
-          this.technicalRecordService.updateEditingTechRecord({
-            ...(techRecord as TechRecordType<'put'>),
-            techRecord_statusCode: StatusCodes.PROVISIONAL,
-          });
+          if (editingReason === ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+            this.technicalRecordService.updateEditingTechRecord({
+              ...(techRecord as TechRecordType<'put'>),
+              techRecord_statusCode: StatusCodes.PROVISIONAL,
+            });
+          }
 
           if (techRecord?.vin?.match('([IOQ])a*')) {
             const warnings: GlobalWarning[] = [];
@@ -132,9 +123,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       this.warningService.clearWarnings();
     }
 
-    this.store.select(selectScrollPosition).pipe(take(1), takeUntil(this.destroy$)).subscribe((position) => {
-      this.scrollPosition = position;
-    });
+    this.store
+      .select(selectScrollPosition)
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe((position) => {
+        this.scrollPosition = position;
+      });
 
     this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe((loading) => {
       if (!loading) {
@@ -153,7 +147,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get vehicleTemplates(): Array<FormNode> {
-    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => { (this.isEditing = editing); });
+    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
+      this.isEditing = editing;
+    });
     if (!this.vehicleType) {
       return [];
     }
@@ -194,7 +190,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   handleFormState(event: any): void {
-    const isPrimitiveArray = (a: any, b: any) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
+    const isPrimitiveArray = (a: unknown, b: unknown) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
 
     this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
 
@@ -216,6 +212,26 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
     forms.forEach((form) => DynamicFormService.validate(form, errors));
 
-    errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
+    if (errors.length) {
+      this.errorService.setErrors(errors);
+    } else {
+      this.errorService.clearErrors();
+    }
+  }
+
+  private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {
+    const type = record.techRecord_vehicleType;
+    const category = record.techRecord_euVehicleCategory;
+    if (type === VehicleTypes.HGV || (type === VehicleTypes.TRL && category !== 'o1' && category !== 'o2')) {
+      const [axles, axleSpacing] = this.axlesService.normaliseAxles(
+        record.techRecord_axles ?? [],
+        record.techRecord_dimensions_axleSpacing,
+      );
+
+      record.techRecord_dimensions_axleSpacing = axleSpacing;
+      record.techRecord_axles = axles;
+    }
+
+    return record;
   }
 }

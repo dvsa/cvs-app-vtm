@@ -4,25 +4,25 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   selector: 'app-number-plate',
   templateUrl: './number-plate.component.html',
   styleUrls: ['./number-plate.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NumberPlateComponent {
-  private _vrm: string | undefined;
+  private vrmToDisplay: string | undefined;
 
-  @Input() isSecondary: boolean = false;
+  @Input() isSecondary = false;
   @Input() set vrm(value: string | undefined) {
     // formatting: if the number plate is long enough, add a space before the final 3 characters
     if (value && value.length >= 5 && !this.isZNumber(value)) {
-      this._vrm = value.slice(0, value.length - 3) + ' ' + value.slice(value.length - 3);
+      this.vrmToDisplay = `${value.slice(0, value.length - 3)} ${value.slice(value.length - 3)}`;
     } else {
-      this._vrm = value;
+      this.vrmToDisplay = value;
     }
   }
   get vrm(): string | undefined {
-    return this._vrm;
+    return this.vrmToDisplay;
   }
 
   isZNumber(vrm: string): boolean {
-    return new RegExp('^[0-9]{7}[zZ]$').test(vrm);
+    return (/^[0-9]{7}[zZ]$/).test(vrm);
   }
 }

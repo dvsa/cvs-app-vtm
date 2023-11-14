@@ -1,4 +1,6 @@
-import { fetchDefect, fetchDefectFailed, fetchDefects, fetchDefectsFailed, fetchDefectsSuccess, fetchDefectSuccess } from './defects.actions';
+import {
+  fetchDefect, fetchDefectFailed, fetchDefects, fetchDefectsFailed, fetchDefectsSuccess, fetchDefectSuccess,
+} from './defects.actions';
 
 describe('Defects Actions', () => {
   it('should return correct types', () => {

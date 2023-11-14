@@ -6,19 +6,20 @@ export class DefaultNullOrEmpty implements PipeTransform {
     return value[0].toUpperCase() + value.substring(1);
   }
 
-  transform(value: any): any {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  transform(value: any) {
     if (typeof value === 'string') {
       if (value.toLowerCase() === 'true') {
         return 'Yes';
-      } else if (value.toLowerCase() === 'false') {
-        return 'No';
-      } else {
-        return value.trim().length > 0 ? this.titleCaseFirstWord(value) : '-';
       }
-    } else if (typeof value === 'boolean') {
-      return value ? 'Yes' : 'No';
-    } else {
-      return value == null ? '-' : value;
+      if (value.toLowerCase() === 'false') {
+        return 'No';
+      }
+      return value.trim().length > 0 ? this.titleCaseFirstWord(value) : '-';
     }
+    if (typeof value === 'boolean') {
+      return value ? 'Yes' : 'No';
+    }
+    return value == null ? '-' : value;
   }
 }
