@@ -5,7 +5,7 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { enhanceSelectElement } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
-import { lastValueFrom, Observable, takeWhile } from 'rxjs';
+import { Observable, lastValueFrom, takeWhile } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({

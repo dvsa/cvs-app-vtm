@@ -157,9 +157,11 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
     const errors: GlobalError[] = [];
 
-    this.isCherishedTransfer
-      ? DynamicFormService.validate(this.cherishedTransferForm, errors, false)
-      : DynamicFormService.validate(this.correctingAnErrorForm, errors, false);
+    if (this.isCherishedTransfer) {
+      DynamicFormService.validate(this.cherishedTransferForm, errors, false);
+    } else {
+      DynamicFormService.validate(this.correctingAnErrorForm, errors, false);
+    }
 
     if (errors?.length > 0) {
       this.globalErrorService.setErrors(errors);
