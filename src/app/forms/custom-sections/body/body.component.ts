@@ -1,8 +1,8 @@
 import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
 } from '@angular/core';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordType as TechRecordVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import {
@@ -65,7 +65,10 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
         // Set the body type code automatically based selection
         if (event?.techRecord_bodyType_description) {
           // body type codes are specific to the vehicle type
-          const bodyTypes = vehicleBodyTypeDescriptionMap.get(this.techRecord.techRecord_vehicleType as VehicleTypes);
+          const vehicleType = this.techRecord.techRecord_vehicleType === 'hgv'
+            ? `${this.techRecord.techRecord_vehicleConfiguration}Hgv`
+            : this.techRecord.techRecord_vehicleType;
+          const bodyTypes = vehicleBodyTypeDescriptionMap.get(vehicleType as VehicleTypes);
           event.techRecord_bodyType_code = bodyTypes!.get(event?.techRecord_bodyType_description);
         }
 
@@ -156,7 +159,11 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   updateHgvVehicleBodyType(record: TechRecordVehicleType<'hgv'>) {
     if (record.techRecord_vehicleConfiguration === 'articulated') {
       this.store.dispatch(updateEditingTechRecord({
-        vehicleTechRecord: { ...this.techRecord, techRecord_bodyType_description: 'articulated' } as TechRecordType<'put'>,
+        vehicleTechRecord: {
+          ...this.techRecord,
+          techRecord_bodyType_description: 'articulated',
+          techRecord_bodyType_code: 'a',
+        } as TechRecordType<'put'>,
       }));
     }
   }
