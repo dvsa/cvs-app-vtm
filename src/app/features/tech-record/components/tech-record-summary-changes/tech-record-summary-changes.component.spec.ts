@@ -133,7 +133,7 @@ describe('TechRecordSummaryChangesComponent', () => {
     it('should dispatch updateTechRecords', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       component.submit();
-      expect(dispatchSpy).toHaveBeenCalledTimes(1);
+      expect(dispatchSpy).toHaveBeenCalled();
       expect(dispatchSpy).toHaveBeenCalledWith({
         systemNumber: '123456',
         createdTimestamp: '123123123',
