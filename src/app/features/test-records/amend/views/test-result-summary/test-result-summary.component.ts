@@ -27,7 +27,7 @@ export class TestResultSummaryComponent implements OnInit {
         skipWhile((testResult) => !testResult),
         take(1),
       )
-      .subscribe((testResult) => this.testRecordsService.editingTestResult(testResult!));
+      .subscribe((testResult) => this.testRecordsService.editingTestResult(testResult as TestResultModel));
 
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
   }

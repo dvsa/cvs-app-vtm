@@ -1,5 +1,5 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { ErrorMessageMap } from './error-message-map';
 
 describe('ErrorMessageMap', () => {
@@ -43,7 +43,12 @@ describe('ErrorMessageMap', () => {
     ['This date must be less than 10 months after the previous date', ValidatorNames.DateNotExceed, [{ months: '10' }, '']],
     ['Name must be less than 15 months after foo', ValidatorNames.DateNotExceed, [{ sibling: 'foo', months: '15' }, 'Name']],
   ])('should return "%s" for %s with %o', (expected, key, props) => {
-    // eslint-disable-next-line jest/no-conditional-expect
-    props ? expect(ErrorMessageMap[key](...props)).toBe(expected) : expect(ErrorMessageMap[key]()).toBe(expected);
+    if (props) {
+      // eslint-disable-next-line jest/no-conditional-expect
+      expect(ErrorMessageMap[`${key}`](...props)).toBe(expected);
+    } else {
+      // eslint-disable-next-line jest/no-conditional-expect
+      expect(ErrorMessageMap[`${key}`]()).toBe(expected);
+    }
   });
 });

@@ -11,6 +11,7 @@ import { ErrorMessageMap } from '@forms/utils/error-message-map';
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
 import { CustomValidators, EnumValidatorOptions } from '@forms/validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import {
@@ -33,14 +34,14 @@ export class DynamicFormService {
     [ValidatorNames.CustomPattern]: (args: string[]) => CustomValidators.customPattern([...args]),
     [ValidatorNames.DateNotExceed]: (args: { sibling: string; months: number }) => CustomValidators.dateNotExceed(args.sibling, args.months),
     [ValidatorNames.Defined]: () => CustomValidators.defined(),
-    [ValidatorNames.DisableIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.disableIfEquals(args.sibling, args.value),
-    [ValidatorNames.EnableIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.enableIfEquals(args.sibling, args.value),
+    [ValidatorNames.DisableIfEquals]: (args: { sibling: string; value: unknown }) => CustomValidators.disableIfEquals(args.sibling, args.value),
+    [ValidatorNames.EnableIfEquals]: (args: { sibling: string; value: unknown }) => CustomValidators.enableIfEquals(args.sibling, args.value),
     [ValidatorNames.FutureDate]: () => CustomValidators.futureDate,
     [ValidatorNames.HideIfEmpty]: (args: string) => CustomValidators.hideIfEmpty(args),
-    [ValidatorNames.HideIfNotEqual]: (args: { sibling: string; value: any }) => CustomValidators.hideIfNotEqual(args.sibling, args.value),
-    [ValidatorNames.HideIfParentSiblingEqual]: (args: { sibling: string; value: any }) =>
+    [ValidatorNames.HideIfNotEqual]: (args: { sibling: string; value: unknown }) => CustomValidators.hideIfNotEqual(args.sibling, args.value),
+    [ValidatorNames.HideIfParentSiblingEqual]: (args: { sibling: string; value: unknown }) =>
       CustomValidators.hideIfParentSiblingEquals(args.sibling, args.value),
-    [ValidatorNames.HideIfParentSiblingNotEqual]: (args: { sibling: string; value: any }) =>
+    [ValidatorNames.HideIfParentSiblingNotEqual]: (args: { sibling: string; value: unknown }) =>
       CustomValidators.hideIfParentSiblingNotEqual(args.sibling, args.value),
     [ValidatorNames.Max]: (args: number) => Validators.max(args),
     [ValidatorNames.MaxLength]: (args: number) => Validators.maxLength(args),
@@ -51,8 +52,9 @@ export class DynamicFormService {
     [ValidatorNames.PastDate]: () => CustomValidators.pastDate,
     [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),
     [ValidatorNames.Required]: () => Validators.required,
-    [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any[] }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
-    [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
+    [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: unknown[] }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
+    [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: unknown }) =>
+      CustomValidators.requiredIfNotEqual(args.sibling, args.value),
     [ValidatorNames.ValidateVRMTrailerIdLength]: (args: { sibling: string }) => CustomValidators.validateVRMTrailerIdLength(args.sibling),
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
     [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued,
@@ -62,6 +64,11 @@ export class DynamicFormService {
     [ValidatorNames.IsMemberOfEnum]: (args: { enum: Record<string, string>; options?: Partial<EnumValidatorOptions> }) =>
       CustomValidators.isMemberOfEnum(args.enum, args.options),
     [ValidatorNames.UpdateFunctionCode]: () => CustomValidators.updateFunctionCode(),
+    [ValidatorNames.ShowGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
+      CustomValidators.showGroupsWhenEqualTo(args.value, args.groups),
+    [ValidatorNames.HideGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
+      CustomValidators.hideGroupsWhenEqualTo(args.value, args.groups),
+    [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
@@ -70,9 +77,11 @@ export class DynamicFormService {
     [AsyncValidatorNames.PassResultDependantOnCustomDefects]: () => CustomAsyncValidators.passResultDependantOnCustomDefects(this.store),
     [AsyncValidatorNames.RequiredIfNotAbandoned]: () => CustomAsyncValidators.requiredIfNotAbandoned(this.store),
     [AsyncValidatorNames.RequiredIfNotFail]: () => CustomAsyncValidators.requiredIfNotFail(this.store),
-    [AsyncValidatorNames.RequiredIfNotResult]: (args: { testResult: any }) => CustomAsyncValidators.requiredIfNotResult(this.store, args.testResult),
-    [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (args: { testResult: any; sibling: string; value: any }) =>
-      CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
+    [AsyncValidatorNames.RequiredIfNotResult]: (args: { testResult: resultOfTestEnum | resultOfTestEnum[] }) =>
+      CustomAsyncValidators.requiredIfNotResult(this.store, args.testResult),
+    [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (args: {
+      testResult: resultOfTestEnum | resultOfTestEnum[]; sibling: string; value: unknown
+    }) => CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
@@ -96,7 +105,7 @@ export class DynamicFormService {
 
       const control = FormNodeTypes.CONTROL === type
         ? new CustomFormControl({ ...child }, { value, disabled: !!disabled })
-        : this.createForm(child, data[name]);
+        : this.createForm(child, data[`${name}`]);
 
       if (validators?.length) {
         this.addValidators(control, validators);
@@ -120,7 +129,7 @@ export class DynamicFormService {
     return form;
   }
 
-  createControls(child: FormNode, data: any): CustomFormFields[] {
+  createControls(child: FormNode, data: unknown): CustomFormFields[] {
     // Note: There's a quirk here when dealing with arrays where if
     // `data` is an array then `child.name` should be a correct index so
     // make sure the template has the correct name to the node.
@@ -132,11 +141,11 @@ export class DynamicFormService {
       : [new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })];
   }
 
-  addValidators(control: CustomFormFields, validators: Array<{ name: ValidatorNames; args?: any }> = []) {
+  addValidators(control: CustomFormFields, validators: Array<{ name: ValidatorNames; args?: unknown }> = []) {
     validators.forEach((v) => control.addValidators(this.validatorMap[v.name](v.args)));
   }
 
-  addAsyncValidators(control: CustomFormFields, validators: Array<{ name: AsyncValidatorNames; args?: any }> = []) {
+  addAsyncValidators(control: CustomFormFields, validators: Array<{ name: AsyncValidatorNames; args?: unknown }> = []) {
     validators.forEach((v) => control.addAsyncValidators(this.asyncValidatorMap[v.name](v.args)));
   }
 
@@ -146,7 +155,9 @@ export class DynamicFormService {
         this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
       } else {
         value.markAsTouched();
-        updateValidity && value.updateValueAndValidity();
+        if (updateValidity) {
+          value.updateValueAndValidity();
+        }
         (value as CustomFormControl).meta?.changeDetection?.detectChanges();
         this.getControlErrors(value, errors);
       }
@@ -160,7 +171,7 @@ export class DynamicFormService {
       const errorList = Object.keys(errors);
       errorList.forEach((error) => {
         validationErrorList.push({
-          error: ErrorMessageMap[error](errors[error], meta?.customValidatorErrorName ?? meta?.label),
+          error: ErrorMessageMap[`${error}`](errors[`${error}`], meta?.customValidatorErrorName ?? meta?.label),
           anchorLink: meta?.customId ?? meta?.name,
         } as GlobalError);
       });

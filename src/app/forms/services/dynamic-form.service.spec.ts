@@ -222,7 +222,7 @@ describe('DynamicFormService', () => {
   describe('addValidators', () => {
     it('should add validators', () => {
       const control: CustomControl = new CustomFormControl({ name: 'testControl', type: FormNodeTypes.CONTROL, children: [] });
-      const validators: Array<{ name: ValidatorNames; args?: any[] }> = [{ name: ValidatorNames.Required }];
+      const validators = [{ name: ValidatorNames.Required }];
       const expectedValidator: ValidatorFn = Validators.required;
       service.addValidators(control, validators);
       expect(control.hasValidator(expectedValidator)).toBeTruthy();

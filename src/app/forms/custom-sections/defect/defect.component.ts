@@ -155,8 +155,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 
   navigateBack() {
     this.resultService.updateResultOfTest();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['../..'], { relativeTo: this.activatedRoute, queryParamsHandling: 'preserve' });
+    void this.router.navigate(['../..'], { relativeTo: this.activatedRoute, queryParamsHandling: 'preserve' });
   }
 
   toggleDefectField(field: keyof TestResultDefect) {

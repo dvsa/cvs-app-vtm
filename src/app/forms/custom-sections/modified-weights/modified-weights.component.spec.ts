@@ -148,11 +148,10 @@ describe('ModifiedWeightsComponent', () => {
       component.vehicleType = VehicleTypes.HGV;
       fixture.detectChanges();
 
-      jest.spyOn(component, 'getAxleTemplate');
+      const getAxleTemplateSpy = jest.spyOn(component, 'getAxleTemplate');
       const template = component.getAxleTemplate();
 
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.getAxleTemplate).toHaveBeenCalled();
+      expect(getAxleTemplateSpy).toHaveBeenCalled();
       expect(template).toBeDefined();
       expect(template).toBeInstanceOf(Array);
     });
@@ -161,12 +160,11 @@ describe('ModifiedWeightsComponent', () => {
       component.vehicleType = '' as VehicleTypes;
       fixture.detectChanges();
 
-      jest.spyOn(component, 'getAxleTemplate');
+      const getAxleTemplateSpy = jest.spyOn(component, 'getAxleTemplate');
       jest.spyOn(vehicleTemplateMap, 'get').mockReturnValue(undefined);
       const template = component.getAxleTemplate();
 
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.getAxleTemplate).toHaveBeenCalled();
+      expect(getAxleTemplateSpy).toHaveBeenCalled();
       expect(template).toBeUndefined();
     });
   });
