@@ -117,6 +117,7 @@ export const HgvTechRecord: FormNode = {
         { value: true, label: 'Yes' },
         { value: false, label: 'No' },
       ],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_fuelPropulsionSystem',
@@ -159,7 +160,7 @@ export const HgvTechRecord: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
       validators: [{ name: ValidatorNames.UpdateFunctionCode }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }, { colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_offRoad',

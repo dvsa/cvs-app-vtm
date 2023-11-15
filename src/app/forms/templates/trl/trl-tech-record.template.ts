@@ -86,6 +86,7 @@ export const TrlTechRecordTemplate: FormNode = {
         { value: false, label: 'No' },
       ],
       class: 'flex--half',
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_suspensionType',
@@ -148,7 +149,7 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
       validators: [{ name: ValidatorNames.UpdateFunctionCode }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }, { colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_frameDescription',
