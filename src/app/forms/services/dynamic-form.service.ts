@@ -64,6 +64,11 @@ export class DynamicFormService {
     [ValidatorNames.IsMemberOfEnum]: (args: { enum: Record<string, string>; options?: Partial<EnumValidatorOptions> }) =>
       CustomValidators.isMemberOfEnum(args.enum, args.options),
     [ValidatorNames.UpdateFunctionCode]: () => CustomValidators.updateFunctionCode(),
+    [ValidatorNames.ShowGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
+      CustomValidators.showGroupsWhenEqualTo(args.value, args.groups),
+    [ValidatorNames.HideGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
+      CustomValidators.hideGroupsWhenEqualTo(args.value, args.groups),
+    [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
