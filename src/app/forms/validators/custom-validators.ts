@@ -228,6 +228,15 @@ export class CustomValidators {
     return null;
   };
 
+  static pastYear: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const currentYear = new Date().getFullYear();
+    const inputYear = control.value;
+    if (inputYear && inputYear > currentYear) {
+      return { pastYear: true };
+    }
+    return null;
+  };
+
   static aheadOfDate = (sibling: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       const siblingControl = control?.parent?.get(sibling);

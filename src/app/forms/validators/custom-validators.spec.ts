@@ -396,6 +396,24 @@ describe('futureDate', () => {
   });
 });
 
+describe('pastYear', () => {
+  beforeAll(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  it.each([
+    [null, null],
+    [{ pastYear: true }, 2023],
+    [null, 2020],
+  ])('should return %p when control value is %s', (expected: object | null, input: number | null) => {
+    expect(CustomValidators.pastYear(new FormControl(input))).toEqual(expected);
+  });
+});
+
 describe('aheadOfDate', () => {
   let form: FormGroup;
   beforeEach(() => {

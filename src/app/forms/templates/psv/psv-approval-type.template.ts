@@ -77,7 +77,9 @@ export const PsvTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      validators: [],
+      validators: [
+        { name: ValidatorNames.PastDate },
+      ],
       isoDate: false,
     },
     {
