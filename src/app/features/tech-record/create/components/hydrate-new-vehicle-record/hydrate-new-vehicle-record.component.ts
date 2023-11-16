@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import {
   Component, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
@@ -11,7 +10,12 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { createVehicleRecord, createVehicleRecordSuccess, selectTechRecord } from '@store/technical-records';
+import {
+  clearADRDetailsBeforeUpdate,
+  createVehicleRecord,
+  createVehicleRecordSuccess,
+  selectTechRecord,
+} from '@store/technical-records';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import {
@@ -38,20 +42,20 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
     private batchTechRecordService: BatchTechnicalRecordService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.actions$
-      .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      .subscribe(({ vehicleTechRecord }) =>
-        this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]));
+    this.actions$.pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+      void this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+    });
 
     this.store
       .select(selectTechRecord)
       .pipe(take(1))
       .subscribe((vehicle) => {
-        if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
+        if (!vehicle) {
+          void this.router.navigate(['..'], { relativeTo: this.route });
+        }
       });
   }
 
@@ -80,9 +84,9 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
     this.globalErrorService.clearErrors();
 
     if (systemNumber && createdTimestamp) {
-      this.router.navigate([`/tech-records/${systemNumber}/${createdTimestamp}`]);
+      void this.router.navigate([`/tech-records/${systemNumber}/${createdTimestamp}`]);
     } else {
-      this.router.navigate(['batch-results'], { relativeTo: this.route });
+      void this.router.navigate(['batch-results'], { relativeTo: this.route });
     }
   }
 
@@ -91,6 +95,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
 
     if (this.isInvalid) return;
 
+    this.store.dispatch(clearADRDetailsBeforeUpdate());
     this.store
       .select(selectTechRecord)
       .pipe(
@@ -111,7 +116,9 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
         withLatestFrom(this.isBatch$),
       )
       .subscribe(([vehicleList, isBatch]) => {
-        vehicleList.forEach((vehicle) => this.store.dispatch(createVehicleRecord({ vehicle: vehicle as TechRecordType<'put'> })));
+        vehicleList.forEach((vehicle) => {
+          this.store.dispatch(createVehicleRecord({ vehicle: vehicle as TechRecordType<'put'> }));
+        });
         this.technicalRecordService.clearSectionTemplateStates();
         if (isBatch) this.navigate();
       });

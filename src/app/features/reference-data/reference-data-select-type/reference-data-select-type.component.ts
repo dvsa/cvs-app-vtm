@@ -43,8 +43,8 @@ export class ReferenceDataSelectTypeComponent {
       map(
         (types) =>
           types
-            ?.sort((a: any, b: any) => (a.label ?? a.resourceType).localeCompare(b.label ?? b.resourceType))
-            .map((type) => ({ label: (type as any).label ?? type.resourceKey, value: type.resourceKey.toString() })) ?? [],
+            ?.sort((a, b) => (a.label ?? a.resourceType).localeCompare(b.label ?? b.resourceType))
+            .map((type) => ({ label: type.label ?? type.resourceKey.toString(), value: type.resourceKey.toString() })) ?? [],
       ),
     );
   }
@@ -61,12 +61,12 @@ export class ReferenceDataSelectTypeComponent {
   }
 
   cancel(): void {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['..'], { relativeTo: this.route });
+    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   navigateTo(type: string): void {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    if (this.isFormValid) this.router.navigate([type], { relativeTo: this.route });
+    if (this.isFormValid) {
+      void this.router.navigate([type], { relativeTo: this.route });
+    }
   }
 }

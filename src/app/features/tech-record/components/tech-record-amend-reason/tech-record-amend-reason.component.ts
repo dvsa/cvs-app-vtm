@@ -46,8 +46,7 @@ export class TechRecordAmendReasonComponent {
     if (this.form.valid) {
       this.errorService.clearErrors();
       if (reason) {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        this.router.navigate([`../${reason}`], { relativeTo: this.route });
+        void this.router.navigate([`../${reason}`], { relativeTo: this.route });
       }
 
       return;

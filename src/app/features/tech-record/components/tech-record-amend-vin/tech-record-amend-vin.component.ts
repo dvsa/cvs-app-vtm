@@ -54,21 +54,15 @@ export class AmendVinComponent implements OnDestroy, OnInit {
   }
 
   get vehicleType(): VehicleTypes | undefined {
-    return this.techRecord
-      ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord)
-      : undefined;
+    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
   }
 
   get makeAndModel(): string | undefined {
-    return this.techRecord
-      ? this.technicalRecordService.getMakeAndModel(this.techRecord)
-      : undefined;
+    return this.techRecord ? this.technicalRecordService.getMakeAndModel(this.techRecord) : undefined;
   }
 
   get currentVrm(): string | undefined {
-    return this.techRecord?.techRecord_vehicleType !== 'trl'
-      ? this.techRecord?.primaryVrm ?? ''
-      : undefined;
+    return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm ?? '' : undefined;
   }
 
   isFormValid(): boolean {
@@ -86,8 +80,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   navigateBack(): void {
     this.globalErrorService.clearErrors();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['..'], { relativeTo: this.route });
+    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(): void {
@@ -119,19 +112,18 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   private handleAmendVinSuccess(): void {
     this.actions$.pipe(ofType(amendVinSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+      void this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
     });
   }
 
   private subscribeToTechRecordUpdates(): void {
-    this.technicalRecordService.techRecord$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((record) => {
-        record?.techRecord_statusCode === 'archived' || !record
-          ? this.navigateBack()
-          : this.techRecord = record;
-      });
+    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
+      if (record?.techRecord_statusCode === 'archived' || !record) {
+        this.navigateBack();
+      } else {
+        this.techRecord = record;
+      }
+    });
   }
 
   private shouldUpdateTechRecord(): boolean {

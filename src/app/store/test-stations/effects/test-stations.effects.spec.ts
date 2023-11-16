@@ -93,8 +93,8 @@ describe('TestStationsEffects', () => {
     it.each(testCases)('should return fetchTestStationSuccess action on successfull API call', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { id, payload } = value;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const entity = payload.find((p) => p.testStationId === id)!;
+
+        const entity = payload.find((p) => p.testStationId === id) as TestStation;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: fetchTestStation({ id }) });

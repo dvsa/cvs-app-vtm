@@ -51,8 +51,7 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
     });
 
     this.actions$.pipe(ofType(unarchiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+      void this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
 
       this.technicalRecordService.clearEditingTechRecord();
     });
@@ -64,8 +63,7 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   }
 
   navigateBack(relativePath = '..'): void {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate([relativePath], { relativeTo: this.route });
+    void this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string; newRecordStatus: string }): void {
