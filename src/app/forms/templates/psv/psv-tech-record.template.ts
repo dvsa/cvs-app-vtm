@@ -60,6 +60,7 @@ export const PsvTechRecord: FormNode = {
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 },
+        { name: ValidatorNames.PastYear },
       ],
     },
     {
@@ -245,6 +246,9 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       isoDate: false,
+      validators: [
+        { name: ValidatorNames.PastDate },
+      ],
     },
     {
       name: 'techRecord_departmentalVehicleMarker',

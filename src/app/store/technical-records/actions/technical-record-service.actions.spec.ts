@@ -3,6 +3,7 @@ import {
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
   changeVehicleType,
+  clearADRDetailsBeforeUpdate,
   createVehicle,
   createVehicleRecord,
   createVehicleRecordFailure,
@@ -10,14 +11,14 @@ import {
   getBySystemNumber,
   getBySystemNumberFailure,
   getBySystemNumberSuccess,
+  unarchiveTechRecord,
+  unarchiveTechRecordFailure,
+  unarchiveTechRecordSuccess,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess,
-  unarchiveTechRecord,
-  unarchiveTechRecordFailure,
-  unarchiveTechRecordSuccess,
 } from './technical-record-service.actions';
 
 const SUCCESS = ' Success';
@@ -52,6 +53,8 @@ describe('Technical record actions', () => {
     expect(unarchiveTechRecord.type).toBe(getMessage('unarchiveTechRecord'));
     expect(unarchiveTechRecordFailure.type).toBe(getMessage('unarchiveTechRecord', FAILURE));
     expect(unarchiveTechRecordSuccess.type).toBe(getMessage('unarchiveTechRecord', SUCCESS));
+
+    expect(clearADRDetailsBeforeUpdate.type).toBe(getMessage('clearADRDetailsBeforeUpdate'));
   });
 });
 

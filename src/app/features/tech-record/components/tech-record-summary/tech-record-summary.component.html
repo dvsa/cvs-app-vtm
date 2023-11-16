@@ -116,6 +116,18 @@
         ></app-plates>
       </ng-container>
 
+      <ng-container *ngSwitchCase="'adrSection'">
+        <ng-container
+          *ngIf="
+            techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+            techRecordCalculated.techRecord_vehicleType === 'trl' ||
+            techRecordCalculated.techRecord_vehicleType === 'lgv'
+          "
+        >
+          <app-adr [techRecord]="techRecordCalculated" [isEditing]="(isEditing$ | async) ?? false" (formChange)="handleFormState($event)"></app-adr>
+        </ng-container>
+      </ng-container>
+
       <app-dynamic-form-group
         *ngSwitchDefault
         [data]="techRecordCalculated"

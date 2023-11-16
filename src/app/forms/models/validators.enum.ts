@@ -24,6 +24,7 @@ export enum ValidatorNames {
   FutureDate = 'futureDate',
   AheadOfDate = 'aheadOfDate',
   DateNotExceed = 'dateNotExceed',
+  PastYear = 'pastYear',
   CopyValueToRootControl = 'copyValueToRootControl',
   ValidateProhibitionIssued = 'validateProhibitionIssued',
   NotZNumber = 'notZNumber',
@@ -31,4 +32,7 @@ export enum ValidatorNames {
   HandlePsvPassengersChange = 'HandlePsvPassengersChange',
   IsMemberOfEnum = 'isMemberOfEnum',
   UpdateFunctionCode = 'updateFunctionCode',
+  ShowGroupsWhenEqualTo = 'showGroupsWhenEqualTo',
+  HideGroupsWhenEqualTo = 'hideGroupsWhenEqualTo',
+  AddWarningForAdrField = 'addWarningForAdrField',
 }

@@ -1,7 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 // eslint-disable-next-line import/no-cycle
-import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 
 export class CustomValidators {
@@ -228,6 +228,15 @@ export class CustomValidators {
     return null;
   };
 
+  static pastYear: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const currentYear = new Date().getFullYear();
+    const inputYear = control.value;
+    if (inputYear && inputYear > currentYear) {
+      return { pastYear: true };
+    }
+    return null;
+  };
+
   static aheadOfDate = (sibling: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       const siblingControl = control?.parent?.get(sibling);
@@ -328,6 +337,66 @@ export class CustomValidators {
       if (control.dirty) {
         vehicleFunctionCode?.setValue(functionCodes[control?.value], { emitEvent: false });
         control.markAsPristine();
+      }
+      return null;
+    };
+  };
+
+  static showGroupsWhenEqualTo = (value: unknown, groups: string[]): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value !== value) return null;
+
+      const parentGroup = control.parent as CustomFormGroup;
+      parentGroup.meta.children?.forEach((child) => {
+        const childControl = parentGroup.get(child.name) as CustomFormControl;
+        const childGroups = childControl?.meta.groups;
+        childGroups?.forEach((group) => {
+          if (groups.includes(group)) {
+            childControl.meta.hide = false;
+          }
+        });
+      });
+
+      return null;
+    };
+  };
+
+  static hideGroupsWhenEqualTo = (value: unknown, groups: string[]): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value !== value) return null;
+
+      const parentGroup = control.parent as CustomFormGroup;
+      parentGroup.meta.children?.forEach((child) => {
+        const childControl = parentGroup.get(child.name) as CustomFormControl;
+        const childGroups = childControl?.meta.groups;
+        childGroups?.forEach((group) => {
+          if (groups.includes(group)) {
+            childControl.meta.hide = true;
+          }
+        });
+      });
+      return null;
+    };
+  };
+
+  static addWarningForAdrField = (warning: string): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.dirty && !control.value) {
+        const adrDetails = [
+          'techRecord_adrDetails_applicantDetails_city',
+          'techRecord_adrDetails_applicantDetails_name',
+          'techRecord_adrDetails_applicantDetails_postcode',
+          'techRecord_adrDetails_applicantDetails_town',
+          'techRecord_adrDetails_applicantDetails_street',
+        ];
+        adrDetails.forEach((controlName) => {
+          const childControl = control.root.get(controlName);
+          if (childControl?.value) {
+            (control as CustomFormControl).meta.warning = warning;
+          }
+        });
+      } if (control.value) {
+        delete (control as CustomFormControl).meta.warning;
       }
       return null;
     };

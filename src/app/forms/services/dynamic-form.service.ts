@@ -37,6 +37,7 @@ export class DynamicFormService {
     [ValidatorNames.DisableIfEquals]: (args: { sibling: string; value: unknown }) => CustomValidators.disableIfEquals(args.sibling, args.value),
     [ValidatorNames.EnableIfEquals]: (args: { sibling: string; value: unknown }) => CustomValidators.enableIfEquals(args.sibling, args.value),
     [ValidatorNames.FutureDate]: () => CustomValidators.futureDate,
+    [ValidatorNames.PastYear]: () => CustomValidators.pastYear,
     [ValidatorNames.HideIfEmpty]: (args: string) => CustomValidators.hideIfEmpty(args),
     [ValidatorNames.HideIfNotEqual]: (args: { sibling: string; value: unknown }) => CustomValidators.hideIfNotEqual(args.sibling, args.value),
     [ValidatorNames.HideIfParentSiblingEqual]: (args: { sibling: string; value: unknown }) =>
@@ -64,6 +65,11 @@ export class DynamicFormService {
     [ValidatorNames.IsMemberOfEnum]: (args: { enum: Record<string, string>; options?: Partial<EnumValidatorOptions> }) =>
       CustomValidators.isMemberOfEnum(args.enum, args.options),
     [ValidatorNames.UpdateFunctionCode]: () => CustomValidators.updateFunctionCode(),
+    [ValidatorNames.ShowGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
+      CustomValidators.showGroupsWhenEqualTo(args.value, args.groups),
+    [ValidatorNames.HideGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
+      CustomValidators.hideGroupsWhenEqualTo(args.value, args.groups),
+    [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

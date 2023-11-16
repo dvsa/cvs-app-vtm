@@ -18,6 +18,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import {
+  clearADRDetailsBeforeUpdate,
   clearAllSectionStates,
   clearScrollPosition,
   editingTechRecord,
@@ -27,6 +28,7 @@ import {
   updateTechRecord,
   updateTechRecordSuccess,
 } from '@store/technical-records';
+import { isEmpty } from 'lodash';
 import {
   Subject, combineLatest, map, take, takeUntil,
 } from 'rxjs';
@@ -148,6 +150,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(([systemNumber, createdTimestamp]) => {
         if (systemNumber && createdTimestamp) {
+          this.store$.dispatch(clearADRDetailsBeforeUpdate());
           this.store$.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
         }
       });
@@ -160,7 +163,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 
   getTechRecordChangesKeys(): string[] {
     const entries = Object.entries(this.techRecordChanges ?? {});
-    const filter = entries.filter(([, value]) => this.isNotEmpty(value));
+    const filter = entries.filter(([, value]) => isEmpty(value));
     const changeMap = filter.map(([key]) => key);
     return changeMap;
   }
@@ -199,12 +202,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
           .map((child) => this.toVisibleFormNode(child)),
       }))
       .filter((section) => Boolean(section && section.children && section.children.length > 0) || this.sectionsWhitelist.includes(section.name));
-  }
-
-  isNotEmpty(value: unknown): boolean {
-    if (value === '' || value === undefined) return false;
-    if (typeof value === 'object' && value !== null) return Object.values(value).length > 0;
-    return true;
   }
 
   toVisibleFormNode(node: FormNode): FormNode {

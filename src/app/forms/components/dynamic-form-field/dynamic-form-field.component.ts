@@ -3,7 +3,7 @@ import { AfterContentInit, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CustomFormControl, FormNodeEditTypes, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { Observable, of, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 @Component({
   selector: 'app-dynamic-form-field',

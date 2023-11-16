@@ -330,6 +330,7 @@ function getEmptyTechRecord(): V3TechRecordModel {
 }
 function getEmptyHGVRecord(): V3TechRecordModel {
   return {
+    techRecord_adrDetails_dangerousGoods: false,
     techRecord_alterationMarker: null,
     techRecord_applicantDetails_address1: null,
     techRecord_applicantDetails_address2: null,

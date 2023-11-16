@@ -4,9 +4,9 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { HGVAxles, HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
-import { axleRequiredFields, hgvRequiredFields, trlRequiredFields } from '@forms/models/plateRequiredFields.model';
+import { hgvRequiredFields, trlRequiredFields } from '@forms/models/plateRequiredFields.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
@@ -145,12 +145,11 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       const value = this.techRecord[field as keyof HgvOrTrl];
       return value === undefined || value === null || value === '';
     });
-    const areAxlesInvalid = this.techRecord.techRecord_axles?.some((axle) =>
-      axleRequiredFields.some((field) => {
-        const value = axle[field as keyof HGVAxles];
-        return value === undefined || value === null || value === '';
-      }));
 
-    return isOneFieldEmpty || !this.techRecord.techRecord_axles?.length || !!areAxlesInvalid;
+    // Only gbWeight of Axle 1 is required
+    const { techRecord_noOfAxles: noOfAxles, techRecord_axles: axles } = this.techRecord;
+    const areAxlesInvalid = !noOfAxles || noOfAxles < 1 || !axles || axles[0].weights_gbWeight == null;
+
+    return isOneFieldEmpty || areAxlesInvalid;
   }
 }

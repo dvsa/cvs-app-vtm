@@ -124,10 +124,16 @@ describe('TechRecordSummaryChangesComponent', () => {
   });
 
   describe('submit', () => {
+    it('should dispatch clearADRDetailsBeforeUpdate', () => {
+      const dispatch = jest.spyOn(store, 'dispatch');
+      component.submit();
+      expect(dispatch).toHaveBeenCalled();
+    });
+
     it('should dispatch updateTechRecords', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       component.submit();
-      expect(dispatchSpy).toHaveBeenCalledTimes(1);
+      expect(dispatchSpy).toHaveBeenCalled();
       expect(dispatchSpy).toHaveBeenCalledWith({
         systemNumber: '123456',
         createdTimestamp: '123123123',
@@ -171,15 +177,6 @@ describe('TechRecordSummaryChangesComponent', () => {
       component.techRecordChanges = { techRecord_grossEecWeight: 1, techRecord_grossDesignWeight: 1 };
       const value = component.getSectionsWhitelist();
       expect(value).toEqual(['weightsSection']);
-    });
-  });
-
-  describe('isNotEmpty', () => {
-    it('should return true if an object is populated', () => {
-      expect(component.isNotEmpty({ value: true })).toBe(true);
-    });
-    it('should return false if an object is not populated', () => {
-      expect(component.isNotEmpty({})).toBe(false);
     });
   });
 
