@@ -3,12 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RoleRequiredDirective } from '@directives/app-role-required.directive';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { Roles } from '@models/roles.enum';
 import { createSelector } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
+import { of } from 'rxjs';
 import * as refSelectors from '../../../store/reference-data/selectors/reference-data.selectors';
 import { ReferenceDataListComponent } from './reference-data-list.component';
 
@@ -21,13 +24,13 @@ describe('DataTypeListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ReferenceDataListComponent],
+      declarations: [ReferenceDataListComponent, RoleRequiredDirective],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
         provideMockStore({ initialState: initialAppState }),
         ReferenceDataService,
         GlobalErrorService,
-        { provide: UserService, useValue: {} },
+        { provide: UserService, useValue: { roles$: of([Roles.ReferenceDataView]) } },
       ],
     }).compileComponents();
   });
