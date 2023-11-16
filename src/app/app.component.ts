@@ -44,7 +44,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.startSentry();
     initAll();
-    // this.throwError();
   }
 
   ngOnDestroy(): void {

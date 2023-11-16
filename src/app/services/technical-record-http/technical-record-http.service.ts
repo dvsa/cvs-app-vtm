@@ -46,13 +46,6 @@ export class TechnicalRecordHttpService {
   }
 
   updateTechRecords$(systemNumber: string, createdTimestamp: string, techRecord: TechRecordType<'put'>): Observable<TechRecordType<'get'>> {
-
-    let x: string | null = 'null';
-
-    x = null;
-
-    x!.toString();
-
     const url = `${environment.VTM_API_URI}/v3/technical-records/${systemNumber}/${createdTimestamp}`;
 
     return this.http.patch<TechRecordType<'get'>>(url, techRecord, { responseType: 'json' });
