@@ -88,6 +88,7 @@ export interface FormNodeOption<T> {
 type AsyncValidatorOptions = AsyncValidatorFn | AsyncValidatorFn[] | null;
 
 export interface FormNode {
+  [x: string]: any;
   name: string;
   children?: FormNode[];
   type: FormNodeTypes; // maybe updateType?
@@ -117,6 +118,7 @@ export interface FormNode {
   warning?: string;
   customTags?: CustomTag[];
   enableDecimals?: boolean;
+  displayValueMap?: { EuroValueWeSave: string };
 }
 
 export interface CustomTag {

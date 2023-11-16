@@ -106,6 +106,8 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(EmissionStandard),
+      displayValueMap:
+        { EuroValueWeSave: 'EuroValueWeShow' },
     },
     {
       name: 'techRecord_roadFriendly',

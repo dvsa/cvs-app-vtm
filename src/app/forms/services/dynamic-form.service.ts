@@ -114,6 +114,7 @@ export class DynamicFormService {
     });
 
     if (data) {
+      console.log(formNode);
       form.patchValue(data);
     }
 
