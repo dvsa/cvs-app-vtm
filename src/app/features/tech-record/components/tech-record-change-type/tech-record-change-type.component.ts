@@ -62,7 +62,7 @@ export class ChangeVehicleTypeComponent implements OnInit {
   }
 
   get vehicleTypeOptions(): MultiOptions {
-    return getOptionsFromEnumAcronym(VehicleTypes).filter((type) => type.value !== this.techRecord?.techRecord_vehicleType);
+    return getOptionsFromEnumAcronym(VehicleTypes).filter((type) => type.value !== this.vehicleType);
   }
 
   get currentVrm() {
