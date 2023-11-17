@@ -34,6 +34,7 @@ export class AdrComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
     this.checkForAdrFields();
+    console.log(this.template);
   }
 
   checkForAdrFields() {
