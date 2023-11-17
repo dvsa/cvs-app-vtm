@@ -147,8 +147,8 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
       .filter(
         (testType) => !statusCode
         || statusCode !== StatusCodes.PROVISIONAL
-        || (hasCurrentRecordInHistory
-        && !filterFirstTestIds.includes(testType.id)),
+        || !hasCurrentRecordInHistory
+        || !filterFirstTestIds.includes(testType.id),
       )
       .map((testType: TestTypeCategory) => {
         const newTestType = { ...testType } as TestTypeCategory;
