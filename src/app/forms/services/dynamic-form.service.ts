@@ -151,7 +151,6 @@ export class DynamicFormService {
   }
 
   static validate(form: CustomFormGroup | CustomFormArray | FormGroup | FormArray, errors: GlobalError[], updateValidity = true) {
-   console.log(form);
     Object.entries(form.controls).forEach(([, value]) => {
       if (!(value instanceof FormControl || value instanceof CustomFormControl)) {
         this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
