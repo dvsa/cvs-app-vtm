@@ -4,6 +4,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TestType } from '@api/test-types';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { of } from 'rxjs';
+import { vehicleTechRecordReducer } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { StoreModule } from '@ngrx/store';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestTypeSelectComponent } from '../../../components/test-type-select/test-type-select.component';
 import { TestTypeSelectWrapperComponent } from './test-type-select-wrapper.component';
 
@@ -16,7 +19,7 @@ describe('TestTypeSelectWrapperComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestTypeSelectWrapperComponent, TestTypeSelectComponent],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, StoreModule.forRoot({ technicalRecord: vehicleTechRecordReducer })],
       providers: [{ provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } }],
     }).compileComponents();
   });
