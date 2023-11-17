@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { initialAppState, State } from '@store/.';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { State, initialAppState } from '@store/.';
 import { ReferenceDataDeleteComponent } from './reference-data-delete.component';
 
 describe('ReferenceDataAddComponent', () => {
@@ -85,19 +85,21 @@ describe('ReferenceDataAddComponent', () => {
       });
     });
     it('will dispatches if there is a reason and type defined', () => {
-      component.type = ReferenceDataResourceType.CountryOfRegistration;
-      component.key = 'testkey';
-      component.handleFormChange({ reason: 'test reason' });
-      const dispatch = jest.spyOn(store, 'dispatch');
+      fixture.ngZone?.run(() => {
+        component.type = ReferenceDataResourceType.CountryOfRegistration;
+        component.key = 'testkey';
+        component.handleFormChange({ reason: 'test reason' });
+        const dispatch = jest.spyOn(store, 'dispatch');
 
-      component.handleSubmit();
+        component.handleSubmit();
 
-      expect(dispatch).toHaveBeenCalled();
-      expect(dispatch).toHaveBeenCalledWith({
-        reason: 'test reason',
-        resourceKey: 'testkey',
-        resourceType: 'COUNTRY_OF_REGISTRATION',
-        type: '[API/reference-data] deleteReferenceDataItem',
+        expect(dispatch).toHaveBeenCalled();
+        expect(dispatch).toHaveBeenCalledWith({
+          reason: 'test reason',
+          resourceKey: 'testkey',
+          resourceType: 'COUNTRY_OF_REGISTRATION',
+          type: '[API/reference-data] deleteReferenceDataItem',
+        });
       });
     });
   });
