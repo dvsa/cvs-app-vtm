@@ -11,7 +11,7 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', '/archive/', '/dist/'],
   coveragePathIgnorePatterns: ['/src/mocks/', '/src/app/api/'],
   testResultsProcessor: 'jest-sonar-reporter',
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
+  moduleNameMapper: {...pathsToModuleNameMapper(compilerOptions.paths || {}, {
     prefix: '<rootDir>/'
-  })
+  }), "@sentry/angular-ivy": "<rootDir>/node_modules/@sentry/angular-ivy/bundles/sentry-angular-ivy.umd.js"},
 };

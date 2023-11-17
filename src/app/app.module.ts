@@ -1,8 +1,11 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {
-  APP_INITIALIZER, LOCALE_ID, NgModule, ErrorHandler,
+  APP_INITIALIZER,
+  ErrorHandler,
+  LOCALE_ID, NgModule,
 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { DocumentRetrievalApiModule, Configuration as DocumentRetrievalConfiguration } from '@api/document-retrieval';
 import { ApiModule as ReferenceDataApiModule, Configuration as ReferenceDataConfiguration } from '@api/reference-data';
 import { Configuration as TestResultsApiConfiguration, ApiModule as TestResultsApiModule } from '@api/test-results';
@@ -26,9 +29,8 @@ import {
   InteractionType,
   PublicClientApplication,
 } from '@azure/msal-browser';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import * as Sentry from '@sentry/angular-ivy';
-import { Router } from '@angular/router';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
