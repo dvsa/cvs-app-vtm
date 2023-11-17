@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, OnInit, Output,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TestType, TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
@@ -21,11 +21,13 @@ export class TestTypeSelectComponent implements OnInit {
     private testTypesService: TestTypesService,
     private technicalRecordService: TechnicalRecordService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
   ngOnInit(): void {
+
     this.technicalRecordService.techRecordHistory$.subscribe((recordHistory) => {
       if (!recordHistory) {
-        void this.router.navigate(['tech-records/:systemNumber/:createdTimestamp']);
+        void this.router.navigate(['../../'], { relativeTo: this.route.parent });
       }
     });
   }
