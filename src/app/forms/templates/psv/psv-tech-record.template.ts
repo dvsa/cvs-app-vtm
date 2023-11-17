@@ -103,7 +103,9 @@ export const PsvTechRecord: FormNode = {
       label: 'Euro standard',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(EmissionStandard),
+      options: [{ label: '0.10 g/kWh Euro III PM', value: '0.10 g/kWh Euro 3 PM' },
+        ...getOptionsFromEnum(EmissionStandard),
+      ],
     },
     {
       name: 'techRecord_fuelPropulsionSystem',
