@@ -44,7 +44,7 @@
     "@angular/platform-browser-dynamic": "^15.2.8",
     "@angular/router": "^15.2.8",
     "@azure/msal-angular": "^2.5.10",
-    "@azure/msal-browser": "^2.38.1",
+    "@azure/msal-browser": "^2.38.3",
     "@dvsa/cvs-type-definitions": "^3.6.3",
     "@ngrx/effects": "^15.4.0",
     "@ngrx/entity": "^15.4.0",
