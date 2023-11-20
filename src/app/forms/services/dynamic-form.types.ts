@@ -97,12 +97,12 @@ export interface FormNode {
   label?: string;
   hint?: string;
   delimited?: { regex?: string; separator: string };
-  value?: any;
+  value?: unknown;
   path?: string;
   options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
   validators?: FormNodeValidator[];
   customValidatorErrorName?: string;
-  asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
+  asyncValidators?: { name: AsyncValidatorNames; args?: unknown }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
@@ -128,7 +128,7 @@ export interface CustomTag {
 
 export interface FormNodeValidator {
   name: ValidatorNames;
-  args?: any;
+  args?: unknown;
 }
 
 export interface FormNodeCombinationOptions {

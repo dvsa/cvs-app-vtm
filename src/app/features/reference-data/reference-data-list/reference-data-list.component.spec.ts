@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ReferenceDataItem } from '@api/reference-data';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
@@ -148,8 +149,7 @@ describe('DataTypeListComponent', () => {
         jest.spyOn(refSelectors, 'selectRefDataBySearchTerm').mockReturnValue(
           createSelector(
             (v) => v,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            () => [{ resourceKey: 'foo', resourceType: 'bar' }] as unknown as any,
+            () => [{ resourceKey: 'foo', resourceType: 'bar' }] as ReferenceDataItem[] | undefined,
           ),
         );
         component.search('foo', 'bar');
