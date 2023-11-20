@@ -21,6 +21,7 @@ import { TechRecordSearchTyresComponent } from './components/tech-record-search-
 import { TechRecordSummaryChangesComponent } from './components/tech-record-summary-changes/tech-record-summary-changes.component';
 import { TechRecordUnarchiveComponent } from './components/tech-record-unarchive/tech-record-unarchive-component';
 import { TechRecordComponent } from './tech-record.component';
+import { techRecordDataResolver } from '../../resolvers/tech-record-data/tech-record-data.resolver';
 
 const routes: Routes = [
   {
@@ -29,7 +30,10 @@ const routes: Routes = [
     data: { roles: Roles.TechRecordView, isCustomLayout: true },
     canActivateChild: [MsalGuard, RoleGuard],
     canActivate: [CancelEditTechGuard],
-    resolve: { load: techRecordViewResolver },
+    resolve: {
+      load: techRecordViewResolver,
+      // data: techRecordDataResolver,
+    },
   },
   {
     path: 'correcting-an-error',
@@ -45,6 +49,7 @@ const routes: Routes = [
       techRecord: techRecordViewResolver,
       clean: techRecordCleanResolver,
       load: techRecordValidateResolver,
+      // data: techRecordDataResolver,
     },
   },
   {

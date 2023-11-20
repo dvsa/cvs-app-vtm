@@ -25,12 +25,15 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 import { selectAllReferenceDataByResourceType } from '@store/reference-data';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 import {
   ReplaySubject,
   filter,
   takeUntil,
 } from 'rxjs';
+import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 
 @Component({
   selector: 'app-tyres',
@@ -51,6 +54,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   private editingReason?: ReasonForEditing;
 
   tyresReferenceData: ReferenceDataTyre[] = [];
+  invalidAxles: Array<HGVAxles | PSVAxles | TRLAxles> = [];
 
   constructor(
     private dynamicFormsService: DynamicFormService,
@@ -80,6 +84,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(simpleChanges: SimpleChanges): void {
     const fitmentUpdated = this.checkFitmentCodeHasChanged(simpleChanges);
+    this.checkAxleWeights(simpleChanges);
     if (!fitmentUpdated) {
       this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
     }
@@ -139,9 +144,25 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     return this.axles.get([i]) as CustomFormGroup;
   }
 
+  checkAxleWeights(simpleChanges: SimpleChanges) {
+    const { vehicleTechRecord } = simpleChanges;
+    this.invalidAxles = [];
+    if (!vehicleTechRecord.currentValue.techRecord_axles
+      || (vehicleTechRecord.previousValue
+      && !vehicleTechRecord.previousValue.techRecord_axles
+      && (vehicleTechRecord.currentValue.techRecord_axles === vehicleTechRecord.previousValue.techRecord_axles))) {
+      return;
+    }
+    vehicleTechRecord.currentValue.techRecord_axles.forEach((axle: HGVAxles | TRLAxles | PSVAxles) => {
+      if (axle.tyres_dataTrAxles && axle.weights_gbWeight && (axle.tyres_dataTrAxles < axle.weights_gbWeight)) {
+        this.invalidAxles.push(axle);
+      }
+    });
+    console.log(this.invalidAxles);
+  }
+
   checkFitmentCodeHasChanged(simpleChanges: SimpleChanges): boolean {
     const { vehicleTechRecord } = simpleChanges;
-
     if (vehicleTechRecord.firstChange !== undefined && vehicleTechRecord.firstChange === false) {
       const currentAxles = vehicleTechRecord.currentValue.techRecord_axles;
       const previousAxles = vehicleTechRecord.previousValue.techRecord_axles;
@@ -157,6 +178,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
           && axle.tyres_fitmentCode !== previousAxles[`${index}`].tyres_fitmentCode
           && axle.tyres_tyreCode === previousAxles[`${index}`].tyres_tyreCode
         ) {
+
           this.getTyresRefData(axle.axleNumber);
           return true;
         }
