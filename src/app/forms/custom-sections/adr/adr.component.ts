@@ -25,6 +25,12 @@ export class AdrComponent implements OnInit {
     'techRecord_adrDetails_applicantDetails_postcode',
     'techRecord_adrDetails_applicantDetails_town',
     'techRecord_adrDetails_applicantDetails_street',
+    'techRecord_adrDetails_vehicleDetails_type',
+    'techRecord_adrDetails_vehicleDetails_approvalDate',
+    'techRecord_adrDetails_permittedDangerousGoods',
+    'techRecord_adrDetails_compatibilityGroupJ',
+    'techRecord_adrDetails_additionalNotes_number',
+    'techRecord_adrDetails_adrTypeApprovalNo',
   ];
 
   constructor(
@@ -55,6 +61,10 @@ export class AdrComponent implements OnInit {
 
   handleFormChange(event: Record<string, unknown>) {
     if (event == null) return;
-    this.formChange.emit(event);
+    const changes = { ...this.form.value, ...event };
+    // change property from undefined to null, to reset control when toggling visibility (trust me this works...)
+    changes['techRecord_adrDetails_compatibilityGroupJ'] ??= null;
+
+    this.formChange.emit(changes);
   }
 }

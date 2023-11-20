@@ -65,11 +65,21 @@ export class DynamicFormService {
     [ValidatorNames.IsMemberOfEnum]: (args: { enum: Record<string, string>; options?: Partial<EnumValidatorOptions> }) =>
       CustomValidators.isMemberOfEnum(args.enum, args.options),
     [ValidatorNames.UpdateFunctionCode]: () => CustomValidators.updateFunctionCode(),
-    [ValidatorNames.ShowGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
-      CustomValidators.showGroupsWhenEqualTo(args.value, args.groups),
-    [ValidatorNames.HideGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
-      CustomValidators.hideGroupsWhenEqualTo(args.value, args.groups),
+    [ValidatorNames.ShowGroupsWhenEqualTo]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.showGroupsWhenEqualTo(args.values, args.groups),
+    [ValidatorNames.HideGroupsWhenEqualTo]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.hideGroupsWhenEqualTo(args.values, args.groups),
+    [ValidatorNames.ShowGroupsWhenIncludes]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.showGroupsWhenIncludes(args.values, args.groups),
+    [ValidatorNames.HideGroupsWhenIncludes]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.hideGroupsWhenIncludes(args.values, args.groups),
+    [ValidatorNames.ShowGroupsWhenExcludes]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.showGroupsWhenExcludes(args.values, args.groups),
+    [ValidatorNames.HideGroupsWhenExcludes]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.hideGroupsWhenExcludes(args.values, args.groups),
     [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
+    [ValidatorNames.ModifyGroupsWhenExcludes]: (args: { values: unknown[], groups: string[], modifyFunc: (control: CustomFormControl) => void }) =>
+      CustomValidators.modifyGroupsWhenExcludes(args.values, args.groups, args.modifyFunc),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

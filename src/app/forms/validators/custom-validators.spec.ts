@@ -772,7 +772,7 @@ describe('showGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.showGroupsWhenEqualTo(true, ['adr'])(adr as AbstractControl);
+    CustomValidators.showGroupsWhenEqualTo([true], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(street?.meta.hide).toBe(false);
@@ -786,7 +786,7 @@ describe('showGroupsWhenEqualTo', () => {
 
     adr?.patchValue(false);
 
-    CustomValidators.showGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+    CustomValidators.showGroupsWhenEqualTo([false], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(street?.meta.hide).toBe(false);
@@ -800,7 +800,7 @@ describe('showGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.showGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+    CustomValidators.showGroupsWhenEqualTo([false], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(true);
     expect(street?.meta.hide).toBe(true);
@@ -814,7 +814,7 @@ describe('showGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.showGroupsWhenEqualTo(true, ['name'])(adr as AbstractControl);
+    CustomValidators.showGroupsWhenEqualTo([true], ['name'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(street?.meta.hide).toBe(true);
@@ -902,7 +902,7 @@ describe('hideGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.hideGroupsWhenEqualTo(true, ['adr'])(adr as AbstractControl);
+    CustomValidators.hideGroupsWhenEqualTo([true], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(true);
     expect(street?.meta.hide).toBe(true);
@@ -916,7 +916,7 @@ describe('hideGroupsWhenEqualTo', () => {
 
     adr?.patchValue(false);
 
-    CustomValidators.hideGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+    CustomValidators.hideGroupsWhenEqualTo([false], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(true);
     expect(street?.meta.hide).toBe(true);
@@ -930,7 +930,7 @@ describe('hideGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.hideGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+    CustomValidators.hideGroupsWhenEqualTo([false], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(street?.meta.hide).toBe(false);
@@ -944,7 +944,7 @@ describe('hideGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.hideGroupsWhenEqualTo(true, ['name'])(adr as AbstractControl);
+    CustomValidators.hideGroupsWhenEqualTo([true], ['name'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(true);
     expect(street?.meta.hide).toBe(false);
