@@ -80,7 +80,4 @@ export class AppComponent implements OnInit, OnDestroy {
       ],
     });
   }
-  throwError() {
-    throw new Error('Sentry Test Error');
-  }
 }
