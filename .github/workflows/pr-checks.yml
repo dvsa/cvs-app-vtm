@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
-        run: npm run build -- --configuration production
+        run: npm run build --ignore-scripts -- --configuration production
 
   test:
     runs-on: ubuntu-latest
