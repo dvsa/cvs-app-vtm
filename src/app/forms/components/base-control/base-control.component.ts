@@ -27,7 +27,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   @Input() noBottomMargin = false;
   @Input() warning?: string | null = null;
 
-  public onChange = (event: any) => {};
+  public onChange: (event: unknown) => void = () => {};
   public onTouched = () => {};
   public focused = false;
   public errorMessage?: string;
