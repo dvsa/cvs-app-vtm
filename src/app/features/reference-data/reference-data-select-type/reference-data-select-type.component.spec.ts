@@ -28,7 +28,7 @@ describe('ReferenceDataComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, FormsModule],
       providers: [
         provideMockStore({ initialState: initialAppState }),
-        ReferenceDataService, { provide: UserService, useValue: { roles$: of(Object.values(Roles)) } },
+        ReferenceDataService, { provide: UserService, useValue: { roles$: of([Roles.ReferenceDataView]) } },
       ],
     }).compileComponents();
   });
