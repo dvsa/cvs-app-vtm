@@ -60,6 +60,7 @@ export const PsvTechRecord: FormNode = {
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 },
+        { name: ValidatorNames.PastYear },
       ],
     },
     {
@@ -103,7 +104,9 @@ export const PsvTechRecord: FormNode = {
       label: 'Euro standard',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(EmissionStandard),
+      options: [{ label: '0.10 g/kWh Euro III PM', value: '0.10 g/kWh Euro 3 PM' },
+        ...getOptionsFromEnum(EmissionStandard),
+      ],
     },
     {
       name: 'techRecord_fuelPropulsionSystem',
@@ -245,6 +248,9 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       isoDate: false,
+      validators: [
+        { name: ValidatorNames.PastDate },
+      ],
     },
     {
       name: 'techRecord_departmentalVehicleMarker',

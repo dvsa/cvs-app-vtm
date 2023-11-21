@@ -60,6 +60,7 @@ export const HgvTechRecord: FormNode = {
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 },
+        { name: ValidatorNames.PastYear },
       ],
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
@@ -105,7 +106,9 @@ export const HgvTechRecord: FormNode = {
       label: 'Euro standard',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: getOptionsFromEnum(EmissionStandard),
+      options: [{ label: '0.10 g/kWh Euro III PM', value: '0.10 g/kWh Euro 3 PM' },
+        ...getOptionsFromEnum(EmissionStandard),
+      ],
     },
     {
       name: 'techRecord_roadFriendly',

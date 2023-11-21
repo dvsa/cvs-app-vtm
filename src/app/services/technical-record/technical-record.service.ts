@@ -25,6 +25,7 @@ import {
   createVehicle,
   selectSectionState,
   selectTechRecord,
+  selectTechRecordHistory,
   techRecord,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
@@ -63,6 +64,9 @@ export class TechnicalRecordService {
         return (error.status === 404 && of(true)) || throwError(() => error);
       }),
     );
+  }
+  get techRecordHistory$(): Observable<TechRecordSearchSchema[] | undefined> {
+    return this.store.pipe(select(selectTechRecordHistory));
   }
 
   get techRecord$(): Observable<V3TechRecordModel | undefined> {

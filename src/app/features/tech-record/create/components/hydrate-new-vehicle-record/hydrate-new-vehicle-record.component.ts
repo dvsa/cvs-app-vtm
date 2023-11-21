@@ -106,7 +106,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
             batch.map(
               (v) =>
                 ({
-                  ...(record! as BatchRecord),
+                  ...(record as BatchRecord),
                   vin: v.vin,
                   vrms: v.vehicleType !== VehicleTypes.TRL && v.trailerIdOrVrm ? [{ vrm: v.trailerIdOrVrm, isPrimary: true }] : null,
                   trailerId: v.vehicleType === VehicleTypes.TRL && v.trailerIdOrVrm ? v.trailerIdOrVrm : null,

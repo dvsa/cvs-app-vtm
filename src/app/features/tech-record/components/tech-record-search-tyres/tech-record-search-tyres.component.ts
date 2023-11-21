@@ -150,7 +150,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
   }
 
   handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
-    const axleIndex = Number(this.params.axleNumber!) - 1;
+    const axleIndex = Number(this.params.axleNumber) - 1;
     if (this.viewableTechRecord && !this.viewableTechRecord.techRecord_axles) {
       this.viewableTechRecord.techRecord_axles = [];
     }
