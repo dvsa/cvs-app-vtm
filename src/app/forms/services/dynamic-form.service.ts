@@ -78,8 +78,6 @@ export class DynamicFormService {
     [ValidatorNames.HideGroupsWhenExcludes]: (args: { values: unknown[], groups: string[] }) =>
       CustomValidators.hideGroupsWhenExcludes(args.values, args.groups),
     [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
-    [ValidatorNames.ModifyGroupsWhenExcludes]: (args: { values: unknown[], groups: string[], modifyFunc: (control: CustomFormControl) => void }) =>
-      CustomValidators.modifyGroupsWhenExcludes(args.values, args.groups, args.modifyFunc),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

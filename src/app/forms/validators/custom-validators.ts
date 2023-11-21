@@ -381,8 +381,9 @@ export class CustomValidators {
 
   static hideGroupsWhenIncludes = (values: unknown[] | undefined, groups: string[]): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (values && values.some((value) => control.value?.includes(value))) return null;
-      this.setHidePropertyForGroups(control, groups, true);
+      if (values && values.some((value) => control.value?.includes(value))) {
+        this.setHidePropertyForGroups(control, groups, true);
+      }
 
       return null;
     };
@@ -410,19 +411,6 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       if (values && !values.includes(control.value)) return null;
       this.setHidePropertyForGroups(control, groups, true);
-
-      return null;
-    };
-  };
-
-  static modifyGroupsWhenExcludes = (
-    values: unknown[] | undefined,
-    groups: string[],
-    modifyFunc: (control: CustomFormControl) => void,
-  ): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (values && values.some((value) => control.value?.includes(value))) return null;
-      this.modifyControlsByGroup(control, groups, modifyFunc);
 
       return null;
     };
