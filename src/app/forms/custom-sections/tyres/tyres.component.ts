@@ -162,13 +162,18 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     console.log(this.invalidAxles);
   }
   getAxleErrorString() {
-    const errorMessage = 'The Load Index is greater than the Gross GB Weight for ';
-    let axleString = '';
-    this.invalidAxles.forEach((axleNumber) => {
-      axleString += `Axle ${axleNumber}, `;
-    });
-    axleString.replace(', &n', '.');
-    return errorMessage + axleString;
+    let errorMessage = 'The GB Axle weight is greater than the selected tyre weight'
+      + 'GB Axles: Axle ';
+    for (let i = 0; i < this.invalidAxles.length; i++) {
+      if (i === (this.invalidAxles.length - 1) && i > 0) {
+        errorMessage += ` and ${this.invalidAxles[i]}`;
+      } else if (i === 0) {
+        errorMessage += `${this.invalidAxles[i]}`;
+      } else {
+        errorMessage += `, ${this.invalidAxles[i]}`;
+      }
+    }
+    return errorMessage;
   }
 
   checkFitmentCodeHasChanged(simpleChanges: SimpleChanges): boolean {

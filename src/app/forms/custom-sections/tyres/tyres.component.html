@@ -14,7 +14,6 @@
     <br />
   </ng-container>
 
-  <app-field-warning-message *ngIf="invalidAxles.length > 0" [warningMessage]="getAxleErrorString()"></app-field-warning-message>
   <table class="govuk-table">
     <ng-container [ngSwitch]="requiredPlates">
       <caption *ngSwitchCase="false" class="govuk-table__caption govuk-table__caption--m">
@@ -23,6 +22,9 @@
       <caption *ngSwitchCase="true" class="govuk-table__caption govuk-table__caption--m">
         Tyre details <app-tag type="purple">plates</app-tag>
       </caption>
+      <div class="govuk-table__caption govuk-table__caption--m">
+        <app-field-warning-message *ngIf="invalidAxles.length > 0" [warningMessage]="getAxleErrorString()"></app-field-warning-message>
+      </div>
     </ng-container>
 
     <thead class="govuk-table__head">
