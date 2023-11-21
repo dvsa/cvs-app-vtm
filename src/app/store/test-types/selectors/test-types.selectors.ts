@@ -27,13 +27,12 @@ export const selectTestTypesTotal = createSelector(testTypesFeatureState, (state
 
 export const selectTestTypesLoadingState = createSelector(testTypesFeatureState, (state) => state.loading);
 
-// eslint-disable-next-line max-len
 export const selectTestTypesByVehicleType = createSelector(
   selectAllTestTypes,
   toEditOrNotToEdit,
   selectTechRecordHistory,
-  (testTypes, testResult, selectRecordHistory) => {
-    const hasCurrentRecordInHistory = selectRecordHistory ? currentRecordInHistoryCheck(selectRecordHistory) : false;
+  (testTypes, testResult, techRecordHistory) => {
+    const hasCurrentRecordInHistory = techRecordHistory ? currentRecordInHistoryCheck(techRecordHistory) : false;
 
     if (testResult) {
       return filterTestTypes(testTypes, testResult, hasCurrentRecordInHistory);
@@ -148,8 +147,8 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
       .filter(
         (testType) => !statusCode
         || statusCode !== StatusCodes.PROVISIONAL
-        || (hasCurrentRecordInHistory
-        && !filterFirstTestIds.includes(testType.id)),
+        || !hasCurrentRecordInHistory
+        || !filterFirstTestIds.includes(testType.id),
       )
       .map((testType: TestTypeCategory) => {
         const newTestType = { ...testType } as TestTypeCategory;

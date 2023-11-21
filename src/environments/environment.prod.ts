@@ -10,4 +10,5 @@ export const environment = {
   VTM_API_CLIENT_ID: '',
   DOCUMENT_RETRIEVAL_API_KEY: '',
   FEEDBACK_URI: '',
+  SENTRY_DSN: '',
 };

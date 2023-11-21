@@ -77,7 +77,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
     );
   }
 
-  deleteReferenceDataItem(type: ReferenceDataResourceType, key: string, payload: any) {
+  deleteReferenceDataItem(type: ReferenceDataResourceType, key: string, payload: Record<string, unknown>) {
     return this.usersService.id$.pipe(
       withLatestFrom(this.usersService.name$),
       switchMap(([createdId, createdName]) => {
