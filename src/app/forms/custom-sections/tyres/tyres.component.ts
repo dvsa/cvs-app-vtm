@@ -54,11 +54,10 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   private editingReason?: ReasonForEditing;
 
   tyresReferenceData: ReferenceDataTyre[] = [];
-  invalidAxles: Array<HGVAxles | PSVAxles | TRLAxles> = [];
+  invalidAxles: Array<number> = [];
 
   constructor(
     private dynamicFormsService: DynamicFormService,
-    private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
@@ -147,18 +146,29 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   checkAxleWeights(simpleChanges: SimpleChanges) {
     const { vehicleTechRecord } = simpleChanges;
     this.invalidAxles = [];
-    if (!vehicleTechRecord.currentValue.techRecord_axles
+    if (
+      !this.isEditing
+      || !vehicleTechRecord.currentValue.techRecord_axles
       || (vehicleTechRecord.previousValue
       && !vehicleTechRecord.previousValue.techRecord_axles
       && (vehicleTechRecord.currentValue.techRecord_axles === vehicleTechRecord.previousValue.techRecord_axles))) {
       return;
     }
     vehicleTechRecord.currentValue.techRecord_axles.forEach((axle: HGVAxles | TRLAxles | PSVAxles) => {
-      if (axle.tyres_dataTrAxles && axle.weights_gbWeight && (axle.tyres_dataTrAxles < axle.weights_gbWeight)) {
-        this.invalidAxles.push(axle);
+      if (axle.axleNumber && axle.tyres_dataTrAxles && axle.weights_gbWeight && (axle.tyres_dataTrAxles < axle.weights_gbWeight)) {
+        this.invalidAxles.push(axle.axleNumber);
       }
     });
     console.log(this.invalidAxles);
+  }
+  getAxleErrorString() {
+    const errorMessage = 'The Load Index is greater than the Gross GB Weight for ';
+    let axleString = '';
+    this.invalidAxles.forEach((axleNumber) => {
+      axleString += `Axle ${axleNumber}, `;
+    });
+    axleString.replace(', &n', '.');
+    return errorMessage + axleString;
   }
 
   checkFitmentCodeHasChanged(simpleChanges: SimpleChanges): boolean {
