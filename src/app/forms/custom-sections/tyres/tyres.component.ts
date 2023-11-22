@@ -18,22 +18,21 @@ import {
   Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
+import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
+import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { selectAllReferenceDataByResourceType } from '@store/reference-data';
-import { cloneDeep, isEmpty } from 'lodash';
+import { cloneDeep } from 'lodash';
 import {
   ReplaySubject,
   filter,
   takeUntil,
 } from 'rxjs';
-import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
-import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
-import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 
 @Component({
   selector: 'app-tyres',
@@ -159,21 +158,6 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
         this.invalidAxles.push(axle.axleNumber);
       }
     });
-    console.log(this.invalidAxles);
-  }
-  getAxleErrorString() {
-    let errorMessage = 'The GB Axle weight is greater than the selected tyre weight'
-      + 'GB Axles: Axle ';
-    for (let i = 0; i < this.invalidAxles.length; i++) {
-      if (i === (this.invalidAxles.length - 1) && i > 0) {
-        errorMessage += ` and ${this.invalidAxles[i]}`;
-      } else if (i === 0) {
-        errorMessage += `${this.invalidAxles[i]}`;
-      } else {
-        errorMessage += `, ${this.invalidAxles[i]}`;
-      }
-    }
-    return errorMessage;
   }
 
   checkFitmentCodeHasChanged(simpleChanges: SimpleChanges): boolean {
