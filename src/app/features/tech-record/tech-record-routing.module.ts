@@ -21,7 +21,6 @@ import { TechRecordSearchTyresComponent } from './components/tech-record-search-
 import { TechRecordSummaryChangesComponent } from './components/tech-record-summary-changes/tech-record-summary-changes.component';
 import { TechRecordUnarchiveComponent } from './components/tech-record-unarchive/tech-record-unarchive-component';
 import { TechRecordComponent } from './tech-record.component';
-import { techRecordDataResolver } from '../../resolvers/tech-record-data/tech-record-data.resolver';
 
 const routes: Routes = [
   {
@@ -32,7 +31,6 @@ const routes: Routes = [
     canActivate: [CancelEditTechGuard],
     resolve: {
       load: techRecordViewResolver,
-      // data: techRecordDataResolver,
     },
   },
   {
@@ -49,7 +47,6 @@ const routes: Routes = [
       techRecord: techRecordViewResolver,
       clean: techRecordCleanResolver,
       load: techRecordValidateResolver,
-      // data: techRecordDataResolver,
     },
   },
   {
