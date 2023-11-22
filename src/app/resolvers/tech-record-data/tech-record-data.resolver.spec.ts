@@ -4,8 +4,8 @@ import { ResolveFn } from '@angular/router';
 import { techRecordDataResolver } from './tech-record-data.resolver';
 
 describe('techRecordDataResolver', () => {
-  const executeResolver: ResolveFn<boolean> = (...resolverParameters) => 
-      TestBed.runInInjectionContext(() => techRecordDataResolver(...resolverParameters));
+  const executeResolver: ResolveFn<boolean> = (...resolverParameters) =>
+    TestBed.runInInjectionContext(() => techRecordDataResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
