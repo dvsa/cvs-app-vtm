@@ -17,8 +17,9 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
 import { TagTypes } from '@shared/components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
-import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { State } from '@store/.';
+// eslint-disable-next-line import/no-cycle
+import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { map, Observable } from 'rxjs';
 import { SpecialRefData } from './multi-options.service';
 // eslint-disable-next-line import/no-cycle

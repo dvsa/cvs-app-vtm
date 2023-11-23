@@ -1,7 +1,7 @@
-<ng-container *ngIf="control && ngControl">
+<ng-container *ngIf="control">
   <app-select
+    [name]="name"
     [label]="control.meta.label"
-    [name]="ngControl.key"
     [options]="$any(control.meta.options)"
     [hint]="control.meta.hint"
     [width]="control.meta.width"

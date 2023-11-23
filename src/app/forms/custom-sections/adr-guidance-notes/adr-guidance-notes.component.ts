@@ -23,7 +23,6 @@ export class AdrGuidanceNotesComponent extends BaseControlComponent implements O
   destroy$ = new ReplaySubject<boolean>(1);
 
   form?: FormGroup;
-  ngControl?: KeyValue<string, CustomControl>;
   formArray = new FormArray<CustomFormControl>([]);
 
   ngOnInit() {
@@ -44,9 +43,8 @@ export class AdrGuidanceNotesComponent extends BaseControlComponent implements O
       if (ngControl.value) {
         this.name = ngControl.key;
         this.control = ngControl.value;
-        this.ngControl = ngControl;
         this.form = this.injector.get(FORM_INJECTION_TOKEN) as FormGroup;
-        this.formArray.push(new CustomFormControl(ngControl.value.meta));
+        this.formArray.push(new CustomFormControl(this.control.meta));
       }
     }
   }

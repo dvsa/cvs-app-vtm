@@ -8,9 +8,9 @@ describe('AdrGuidanceNotesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdrGuidanceNotesComponent ]
+      declarations: [AdrGuidanceNotesComponent],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AdrGuidanceNotesComponent);
     component = fixture.componentInstance;
