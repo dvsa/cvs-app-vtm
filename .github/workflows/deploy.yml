@@ -1,0 +1,57 @@
+name: Deploy
+
+on:
+  push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.package.json'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Audit
+        run: npm audit --audit-level=critical
+
+      - name: Security checks
+        run: npm run security-checks
+
+      - name: Get app config from AWS Secrets Manager
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
+          aws-region: eu-west-1
+          role-session-name: GHA-VTMDeploy
+        run: echo running on branch ${GITHUB_REF##*/}
+        run: aws secretsmanager get-secret-value --secret-id ${TEMPENV}/vtm/config --query SecretString --region=eu-west-1 --output text > src/environments/environment.deploy.ts
+#        if (ENVIRONMENT=="feature"){
+#        sh "sed  -i\'\' -e \'s/BRANCH/\'${LBRANCH}\'/g\' src/environments/environment.deploy.ts"
+
+#        Need to pull in/set SENTRY_AUTH_TOKEN value?
+      - name: Build
+        run: npm run build -- --configuration='deploy' --output-path='dist/'
+
+      - name: Sonar Scanner
+        run: npm run sonar-scanner
+
+  deploy_app:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy App to S3
+        working-directory: cvs-app-vtm/dist/
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
+          aws-region: eu-west-1
+          role-session-name: GHA-VTMDeploy # Needs 'admin_role' ??
+        run: aws s3 sync . s3://vtm-${LBRANCH}.develop.cvs.dvsacloud.uk
