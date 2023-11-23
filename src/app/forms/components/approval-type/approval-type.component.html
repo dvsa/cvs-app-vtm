@@ -538,14 +538,25 @@
               [(ngModel)]="approvalTypeNumber2"
               (ngModelChange)="onTechRecord_approvalTypeNumber2_Change($event); validate()"
             />
-            <span class="separator approvalTypeFormatting">*</span>
+            <span class="separator approvalTypeFormatting">/</span>
             <input
-              [maxlength]="6"
+              [appFocusNextApprovalType]="'techRecord_approvalTypeNumber4-smallseries-NKSXX'"
+              [characterLimit]="4"
+              [maxlength]="4"
               id="techRecord_approvalTypeNumber3-smallseries-NKSXX"
               class="govuk-input govuk-date-input__input govuk-input--width-4"
               name="techRecord_approvalTypeNumber3"
               [(ngModel)]="approvalTypeNumber3"
               (ngModelChange)="onTechRecord_approvalTypeNumber3_Change($event); validate()"
+            />
+            <span class="separator approvalTypeFormatting">*</span>
+            <input
+              [maxlength]="6"
+              id="techRecord_approvalTypeNumber4-smallseries-NKSXX"
+              class="govuk-input govuk-date-input__input govuk-input--width-4"
+              name="techRecord_approvalTypeNumber4"
+              [(ngModel)]="approvalTypeNumber4"
+              (ngModelChange)="onTechRecord_approvalTypeNumber4_Change($event); validate()"
             />
           </div>
         </div>
