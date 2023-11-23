@@ -32,7 +32,7 @@ export const cleanseApprovalType = (record: TechRecordType<'put'>, route: Activa
     if (approvalType?.toString() === 'Small series' && approvalNumber) {
       // infer new approval type based on format of approval type number
       const patterns = new Map<ApprovalType, RegExp>([
-        [ApprovalType.SMALL_SERIES_NKSXX, /^(.?)11\*NKS(.{0,2})\*(.{0,6})$/i],
+        [ApprovalType.SMALL_SERIES_NKSXX, /^(.?)11\*NKS(.{0,2})\/(.{0,4})\*(.{0,6})$/i],
         [ApprovalType.SMALL_SERIES_NKS, /^(.?)11\*NKS\*(.{0,6})$/i],
       ]);
 
