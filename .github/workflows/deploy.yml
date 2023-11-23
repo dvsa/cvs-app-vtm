@@ -41,6 +41,14 @@ jobs:
       - name: branch name2
         run: echo running on branch ${GITHUB_REF/##*}
 
+
+      - name: branch name3
+        run: echo running on branch ${GITHUB_REF}
+      - name: branch name4
+        run: echo running on branch ${GITHUB_BASE_REF}
+      - name: branch name5
+        run: echo running on branch ${GITHUB_HEAD_REF}
+
       - name: Get app config from AWS Secrets Manager
         run: aws secretsmanager get-secret-value --secret-id ${TEMPENV}/vtm/config --query SecretString --region=eu-west-1 --output text > src/environments/environment.deploy.ts
 #        if (ENVIRONMENT=="feature"){
