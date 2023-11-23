@@ -17,6 +17,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
 import { TagTypes } from '@shared/components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
+import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { State } from '@store/.';
 import { map, Observable } from 'rxjs';
 import { SpecialRefData } from './multi-options.service';
@@ -66,6 +67,7 @@ export enum FormNodeEditTypes {
   TEXT = 'text',
   TEXTAREA = 'textarea',
   APPROVAL_TYPE = 'approvalType',
+  CUSTOM = 'custom',
 }
 
 export enum FormNodeWidth {
@@ -119,6 +121,7 @@ export interface FormNode {
   enableDecimals?: boolean;
   nestingLevel?: number;
   groups?: string[];
+  component?: typeof BaseControlComponent;
 }
 
 export interface CustomTag {

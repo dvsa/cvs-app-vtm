@@ -1,3 +1,4 @@
+import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { AdrAdditionalNotesNumber, AdrBodyType, AdrDangerousGood } from '@models/adr.enum';
@@ -172,13 +173,24 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_additionalNotes_number',
       label: 'Guidance notes',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.CHECKBOXGROUP,
+      editType: FormNodeEditTypes.SELECT,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
+      width: FormNodeWidth.XS,
       options: getOptionsFromEnum(AdrAdditionalNotesNumber),
       validators: [
         { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
       ],
+    },
+    {
+      name: 'custom',
+      label: 'Custom',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CUSTOM,
+      component: AdrGuidanceNotesComponent,
+      groups: ['adr_details', 'dangerous_goods'],
+      hide: true,
+      options: getOptionsFromEnum(AdrAdditionalNotesNumber),
     },
     {
       name: 'techRecord_adrDetails_adrTypeApprovalNo',

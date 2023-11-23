@@ -438,6 +438,10 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static custom = (func: (control: AbstractControl) => ValidationErrors | null): ValidatorFn => {
+    return func;
+  };
 }
 
 export type EnumValidatorOptions = {

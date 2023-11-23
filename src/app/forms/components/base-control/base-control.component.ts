@@ -35,7 +35,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
   private control_value: any;
 
-  constructor(private injector: Injector, protected cdr: ChangeDetectorRef) {
+  constructor(protected injector: Injector, protected cdr: ChangeDetectorRef) {
     this.name = '';
   }
 
