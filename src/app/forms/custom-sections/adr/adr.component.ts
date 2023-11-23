@@ -61,6 +61,7 @@ export class AdrComponent implements OnInit {
 
   handleFormChange(event: Record<string, unknown>) {
     if (event == null) return;
+
     const changes = { ...this.form.value, ...event };
     // change property from undefined to null, to reset control when toggling visibility (trust me this works...)
     changes['techRecord_adrDetails_compatibilityGroupJ'] ??= null;

@@ -1,3 +1,41 @@
-<p class="govuk-body">
-  <a class="govuk-link" role="button" href="javascript:void(0)" (click)="addGuidanceNote()">Add guidance notes</a>
-</p>
+<ng-container *ngIf="control && ngControl">
+  <app-select
+    [label]="control.meta.label"
+    [name]="ngControl.key"
+    [options]="$any(control.meta.options)"
+    [hint]="control.meta.hint"
+    [width]="control.meta.width"
+    [customId]="control.meta.customId"
+    [warning]="control.meta.warning"
+    [formControl]="formArray.controls[0]"
+  ></app-select>
+
+  <!-- Additional guidance notes -->
+  <table class="govuk-table" *ngIf="formArray.controls.length > 1">
+    <tbody class="govuk-table__body">
+      <ng-container *ngFor="let child of formArray.controls; let i = index; let isFirst = first">
+        <tr *ngIf="!isFirst">
+          <td class="govuk-table__cell">
+            <app-select
+              [name]="child.meta.name"
+              [options]="$any(child.meta.options)"
+              [hint]="child.meta.hint"
+              [width]="child.meta.width"
+              [customId]="child.meta.customId"
+              [warning]="child.meta.warning"
+              [noBottomMargin]="true"
+              [formControl]="child"
+            ></app-select>
+          </td>
+          <td class="govuk-table__cell">
+            <a class="govuk-link" role="button" href="javascript:void(0)" (click)="removeGuideNote(i)">Remove</a>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <p class="govuk-body">
+    <a class="govuk-link" role="button" href="javascript:void(0)" (click)="addGuidanceNote()">Add guidance notes</a>
+  </p>
+</ng-container>

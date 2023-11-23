@@ -5,6 +5,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PrefixDirective } from '@forms/directives/prefix.directive';
 import { SuffixDirective } from '@forms/directives/suffix.directive';
 import { ValidatorNames } from '@forms/models/validators.enum';
+// eslint-disable-next-line import/no-cycle
 import { CustomControl, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
 
@@ -43,7 +44,9 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
     if (ngControl) {
       this.control = ngControl.control as CustomControl;
-      if (this.control.meta) this.control.meta.changeDetection = this.cdr;
+      if (this.control && this.control.meta) {
+        this.control.meta.changeDetection = this.cdr;
+      }
     } else {
       throw new Error(`No control binding for ${this.name}`);
     }
