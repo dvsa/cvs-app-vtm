@@ -22,8 +22,8 @@ jobs:
       - name: Audit
         run: npm audit --audit-level=critical
 
-      - name: Security checks
-        run: npm run security-checks
+#      - name: Security checks
+#        run: npm run security-checks # git-secrets not available on GHA?
 
       - name: Get AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
