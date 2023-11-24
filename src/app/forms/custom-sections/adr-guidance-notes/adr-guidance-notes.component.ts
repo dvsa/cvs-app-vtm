@@ -54,7 +54,7 @@ export class AdrGuidanceNotesComponent extends BaseControlComponent implements O
     this.formArray.push(new CustomFormControl(first.meta));
   }
 
-  removeGuideNote(index: number) {
+  removeGuidanceNote(index: number) {
     if (this.formArray.length < 2) return;
     this.formArray.removeAt(index);
   }
