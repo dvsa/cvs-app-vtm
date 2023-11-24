@@ -23,7 +23,7 @@ import {
 export class ReferenceDataCreateComponent implements OnInit {
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
   newRefData: any;
-  data: any = {};
+  data: Record<string, unknown> = {};
   isFormDirty = false;
   isFormInvalid = true;
 
