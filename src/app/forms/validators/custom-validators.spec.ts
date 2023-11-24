@@ -1,9 +1,9 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { AdrDangerousGood } from '@models/adr.enum';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
 
@@ -1150,14 +1150,14 @@ describe('showGroupsWhenIncludes', () => {
               {
                 name: ValidatorNames.ShowGroupsWhenIncludes,
                 args: {
-                  values: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
                   groups: ['compat'],
                 },
               },
               {
                 name: ValidatorNames.HideGroupsWhenExcludes,
                 args: {
-                  values: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
                   groups: ['compat'],
                 },
               },
@@ -1180,10 +1180,10 @@ describe('showGroupsWhenIncludes', () => {
     const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
     const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
 
-    permitted?.patchValue([AdrDangerousGood.EXPLOSIVES_TYPE2]);
+    permitted?.patchValue([ADRDangerousGood.EXPLOSIVES_TYPE_2]);
     permitted?.markAsDirty();
 
-    CustomValidators.showGroupsWhenIncludes([AdrDangerousGood.EXPLOSIVES_TYPE2], ['compat'])(permitted as AbstractControl);
+    CustomValidators.showGroupsWhenIncludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(compat?.meta.hide).toBe(false);
@@ -1268,14 +1268,14 @@ describe('hideGroupsWhenIncludes', () => {
               {
                 name: ValidatorNames.ShowGroupsWhenIncludes,
                 args: {
-                  values: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
                   groups: ['compat'],
                 },
               },
               {
                 name: ValidatorNames.HideGroupsWhenExcludes,
                 args: {
-                  values: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
                   groups: ['compat'],
                 },
               },
@@ -1297,10 +1297,10 @@ describe('hideGroupsWhenIncludes', () => {
     const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
     const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
 
-    permitted?.patchValue([AdrDangerousGood.EXPLOSIVES_TYPE2]);
+    permitted?.patchValue([ADRDangerousGood.EXPLOSIVES_TYPE_2]);
     permitted?.markAsDirty();
 
-    CustomValidators.hideGroupsWhenIncludes([AdrDangerousGood.EXPLOSIVES_TYPE2], ['compat'])(permitted as AbstractControl);
+    CustomValidators.hideGroupsWhenIncludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(compat?.meta.hide).toBe(true);
@@ -1312,10 +1312,10 @@ describe('hideGroupsWhenIncludes', () => {
     const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
     compat.meta.hide = false;
 
-    permitted?.patchValue([AdrDangerousGood.EXPLOSIVES_TYPE2]);
+    permitted?.patchValue([ADRDangerousGood.EXPLOSIVES_TYPE_2]);
     permitted?.markAsDirty();
 
-    CustomValidators.hideGroupsWhenEqualTo([AdrDangerousGood.EXPLOSIVES_TYPE2], ['compat', 'other_random_group'])(permitted as AbstractControl);
+    CustomValidators.hideGroupsWhenEqualTo([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat', 'other_random_group'])(permitted as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(compat?.meta.hide).toBe(false);
@@ -1387,14 +1387,14 @@ describe('showGroupsWhenExcludes', () => {
               {
                 name: ValidatorNames.ShowGroupsWhenIncludes,
                 args: {
-                  values: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
                   groups: ['compat'],
                 },
               },
               {
                 name: ValidatorNames.HideGroupsWhenExcludes,
                 args: {
-                  values: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
                   groups: ['compat'],
                 },
               },
@@ -1416,10 +1416,10 @@ describe('showGroupsWhenExcludes', () => {
     const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
     const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
 
-    permitted?.patchValue([AdrDangerousGood.CARBON_DISULPHIDE]);
+    permitted?.patchValue([ADRDangerousGood.CARBON_DISULPHIDE]);
     permitted?.markAsDirty();
 
-    CustomValidators.showGroupsWhenExcludes([AdrDangerousGood.EXPLOSIVES_TYPE2], ['compat'])(permitted as AbstractControl);
+    CustomValidators.showGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(compat?.meta.hide).toBe(false);
@@ -1430,10 +1430,10 @@ describe('showGroupsWhenExcludes', () => {
     const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
     const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
 
-    permitted?.patchValue([AdrDangerousGood.CARBON_DISULPHIDE]);
+    permitted?.patchValue([ADRDangerousGood.CARBON_DISULPHIDE]);
     permitted?.markAsDirty();
 
-    CustomValidators.showGroupsWhenExcludes([AdrDangerousGood.EXPLOSIVES_TYPE2], ['other_group'])(permitted as AbstractControl);
+    CustomValidators.showGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['other_group'])(permitted as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(compat?.meta.hide).toBe(true);
@@ -1444,10 +1444,10 @@ describe('showGroupsWhenExcludes', () => {
     const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
     const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
 
-    permitted?.patchValue([AdrDangerousGood.EXPLOSIVES_TYPE2]);
+    permitted?.patchValue([ADRDangerousGood.EXPLOSIVES_TYPE_2]);
     permitted?.markAsDirty();
 
-    CustomValidators.showGroupsWhenExcludes([AdrDangerousGood.EXPLOSIVES_TYPE2], ['compat'])(permitted as AbstractControl);
+    CustomValidators.showGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(compat?.meta.hide).toBe(true);
@@ -1504,14 +1504,14 @@ describe('hideGroupsWhenExcludes', () => {
               {
                 name: ValidatorNames.ShowGroupsWhenIncludes,
                 args: {
-                  values: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
                   groups: ['compat'],
                 },
               },
               {
                 name: ValidatorNames.HideGroupsWhenExcludes,
                 args: {
-                  values: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
                   groups: ['compat'],
                 },
               },
@@ -1534,10 +1534,10 @@ describe('hideGroupsWhenExcludes', () => {
     const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
     compat.meta.hide = false;
 
-    permitted?.patchValue([AdrDangerousGood.CARBON_DISULPHIDE]);
+    permitted?.patchValue([ADRDangerousGood.CARBON_DISULPHIDE]);
     permitted?.markAsDirty();
 
-    CustomValidators.hideGroupsWhenExcludes([AdrDangerousGood.EXPLOSIVES_TYPE2], ['compat'])(permitted as AbstractControl);
+    CustomValidators.hideGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(compat?.meta.hide).toBe(true);
@@ -1549,10 +1549,10 @@ describe('hideGroupsWhenExcludes', () => {
     const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
     compat.meta.hide = false;
 
-    permitted?.patchValue([AdrDangerousGood.CARBON_DISULPHIDE]);
+    permitted?.patchValue([ADRDangerousGood.CARBON_DISULPHIDE]);
     permitted?.markAsDirty();
 
-    CustomValidators.hideGroupsWhenExcludes([AdrDangerousGood.EXPLOSIVES_TYPE2], ['other_group'])(permitted as AbstractControl);
+    CustomValidators.hideGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['other_group'])(permitted as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(compat?.meta.hide).toBe(false);
@@ -1564,10 +1564,10 @@ describe('hideGroupsWhenExcludes', () => {
     const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
     compat.meta.hide = false;
 
-    permitted?.patchValue([AdrDangerousGood.EXPLOSIVES_TYPE2]);
+    permitted?.patchValue([ADRDangerousGood.EXPLOSIVES_TYPE_2]);
     permitted?.markAsDirty();
 
-    CustomValidators.hideGroupsWhenExcludes([AdrDangerousGood.EXPLOSIVES_TYPE2], ['compat'])(permitted as AbstractControl);
+    CustomValidators.hideGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(compat?.meta.hide).toBe(false);

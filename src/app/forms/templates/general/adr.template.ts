@@ -1,7 +1,10 @@
+import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
+import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
+import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
+import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { AdrAdditionalNotesNumber, AdrBodyType, AdrDangerousGood } from '@models/adr.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth,
 } from '../../services/dynamic-form.types';
@@ -107,7 +110,7 @@ export const AdrTemplate: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
-      options: getOptionsFromEnum(AdrBodyType),
+      options: getOptionsFromEnum(ADRBodyType),
       validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } }],
     },
     {
@@ -129,19 +132,19 @@ export const AdrTemplate: FormNode = {
       editType: FormNodeEditTypes.CHECKBOXGROUP,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
-      options: getOptionsFromEnum(AdrDangerousGood),
+      options: getOptionsFromEnum(ADRDangerousGood),
       validators: [
         {
           name: ValidatorNames.ShowGroupsWhenIncludes,
           args: {
-            values: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+            values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
             groups: ['compatibility_group_j'],
           },
         },
         {
           name: ValidatorNames.HideGroupsWhenExcludes,
           args: {
-            values: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+            values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
             groups: ['compatibility_group_j'],
           },
         },
@@ -156,15 +159,15 @@ export const AdrTemplate: FormNode = {
       groups: ['compatibility_group_j', 'adr_details'],
       hide: true,
       options: [
-        { value: 'I', label: 'Yes' },
-        { value: 'E', label: 'No' },
+        { value: ADRCompatibilityGroupJ.I, label: 'Yes' },
+        { value: ADRCompatibilityGroupJ.E, label: 'No' },
       ],
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,
           args: {
             sibling: 'techRecord_adrDetails_permittedDangerousGoods',
-            value: [AdrDangerousGood.EXPLOSIVES_TYPE2, AdrDangerousGood.EXPLOSIVES_TYPE3],
+            value: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
           },
         },
       ],
@@ -179,7 +182,7 @@ export const AdrTemplate: FormNode = {
       hide: true,
       width: FormNodeWidth.XS,
       value: [],
-      options: getOptionsFromEnum(AdrAdditionalNotesNumber),
+      options: getOptionsFromEnum(ADRAdditionalNotesNumber),
     },
     {
       name: 'techRecord_adrDetails_adrTypeApprovalNo',
