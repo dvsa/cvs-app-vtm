@@ -5,7 +5,7 @@ import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
@@ -195,7 +195,7 @@ export class CustomAsyncValidators {
 
     // eslint-disable-next-line no-prototype-builtins
     const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
-      ? (testResult.testTypes[0] as any)[field]
+      ? testResult.testTypes[0][field as keyof TestType]
       : (testResult)[field as keyof TestResultModel];
 
     const isTrue = Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value;

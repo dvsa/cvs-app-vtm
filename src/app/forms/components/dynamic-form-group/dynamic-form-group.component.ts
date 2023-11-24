@@ -5,7 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import {
-  CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes,
+  CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes,
 } from '../../services/dynamic-form.types';
 
 @Component({
@@ -45,14 +45,14 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  entriesOf(obj: FormGroup): { key: string; value: any }[] {
+  entriesOf(obj: FormGroup): { key: string; value: CustomFormControl }[] {
     return Object.entries(obj).map(([key, value]) => ({
       key,
       value,
     }));
   }
 
-  trackByFn(index: number, item: any) {
+  trackByFn(index: number, item: { key: string }) {
     return Object.prototype.hasOwnProperty.call(item, 'key') ? item.key : index;
   }
 
