@@ -40,7 +40,7 @@ export class GenerateLetterComponent implements OnInit {
     [ApprovalType.QNIG, 3],
     [ApprovalType.PROV_GB_WVTA, 3],
     [ApprovalType.SMALL_SERIES_NKS, 3],
-    [ApprovalType.SMALL_SERIES_NKSXX, 4],
+    [ApprovalType.SMALL_SERIES_NKSXX, 3],
     [ApprovalType.IVA_VCA, 3],
     [ApprovalType.IVA_DVSA_NI, 3],
   ]);
