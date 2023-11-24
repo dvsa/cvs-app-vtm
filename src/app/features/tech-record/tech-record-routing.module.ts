@@ -29,7 +29,9 @@ const routes: Routes = [
     data: { roles: Roles.TechRecordView, isCustomLayout: true },
     canActivateChild: [MsalGuard, RoleGuard],
     canActivate: [CancelEditTechGuard],
-    resolve: { load: techRecordViewResolver },
+    resolve: {
+      load: techRecordViewResolver,
+    },
   },
   {
     path: 'correcting-an-error',

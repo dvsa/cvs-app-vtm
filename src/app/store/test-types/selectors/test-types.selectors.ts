@@ -114,7 +114,7 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
     vehicleSubclass,
     numberOfWheelsDriven,
   } = testResult;
-  const filterFirstTestIds : string[] = ['41', '95', '82', '83', '119', '120', '65', '66', '67', '103', '104'];
+  const filterFirstTestIds : string[] = ['41', '95', '82', '83', '119', '120', '65', '66', '67', '103', '104', '51'];
   return (
     testTypes
       .filter((testType) => !vehicleType || !testType.forVehicleType || testType.forVehicleType.includes(vehicleType))
