@@ -36,7 +36,7 @@ jobs:
           role-session-name: GHA-VTMDeploy
 
       - name: branch name
-        run: echo running on branch ${GITHUB_REF##*/}, ${GITHUB_REF##*}, ${GITHUB_REF##*/*}, ${GITHUB_REF#*/*}
+        run: echo running on branch ${GITHUB_REF*/#}, ${GITHUB_REF##*/#}, ${GITHUB_REF##*}
 
       - name: Get app config from AWS Secrets Manager
         run: aws secretsmanager get-secret-value --secret-id (feature/develop/preprod/prod) /vtm/config --query SecretString --region=eu-west-1 --output text > src/environments/environment.deploy.ts
