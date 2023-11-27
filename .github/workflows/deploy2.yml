@@ -58,7 +58,8 @@ jobs:
       - name: Update environment config
         if: ${{ inputs.environment == 'feature' }}
         run: |
-          ls
+          ls src/environments/
+          cat src/environments/environment.deploy.ts
           sh "sed  -i\'\' -e \'s/BRANCH/\'${SHORT_BRANCH}\'/g\' src/environments/environment.deploy.ts"
 
 #        Need to pull in/set SENTRY_AUTH_TOKEN value?
