@@ -7,8 +7,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TestStationsService } from '@services/test-stations/test-stations.service';
-import { initialAppState } from '@store/.';
 import { UserService } from '@services/user-service/user-service';
+import { initialAppState } from '@store/.';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
@@ -47,7 +47,7 @@ describe('DynamicFormGroupComponent', () => {
       ['foo', [3, { key: 'foo' }]],
     ])('should return %s when given %o', (expected, props) => {
       const [index, item] = props;
-      expect(component.trackByFn(index as number, item)).toBe(expected);
+      expect(component.trackByFn(index as number, item as { key: string })).toBe(expected);
     });
   });
 
