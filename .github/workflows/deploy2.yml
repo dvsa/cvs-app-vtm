@@ -8,9 +8,6 @@ on:
       branch:
         type: string
         required: true
-      lbranch:
-        type: string
-        required: true
     secrets:
       AWS_MGMT_ROLE:
         required: true
