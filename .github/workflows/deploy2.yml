@@ -8,6 +8,9 @@ on:
       branch:
         type: string
         required: true
+    secrets:
+      AWS_MGMT_ROLE:
+        required: true
 
 permissions:
   id-token: write
