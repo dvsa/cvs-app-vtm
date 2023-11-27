@@ -12,6 +12,10 @@ jobs:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   scanner:
+    
+    permissions:
+      id-token: write
+
     runs-on: X64
     
     steps:
