@@ -61,6 +61,7 @@ export class AdrComponent implements OnInit {
 
   handleFormChange(event: Record<string, unknown>) {
     if (event == null) return;
+    this.form.patchValue(event);
     this.formChange.emit(event);
   }
 }

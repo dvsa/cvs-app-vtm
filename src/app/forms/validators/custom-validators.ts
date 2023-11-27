@@ -99,7 +99,9 @@ export class CustomValidators {
 
       const siblingControl = control.parent.get(sibling) as CustomFormControl;
       const siblingValue = siblingControl.value;
-      const isSiblingValueIncluded = values.includes(siblingValue);
+      const isSiblingValueIncluded = Array.isArray(siblingValue)
+        ? values.some((value) => siblingValue.includes(value))
+        : values.includes(siblingValue);
       const isControlValueEmpty = control.value === null || control.value === undefined || control.value === '';
 
       return isSiblingValueIncluded && isControlValueEmpty ? { requiredIfEquals: { sibling: siblingControl.meta.label } } : null;
