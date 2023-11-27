@@ -49,9 +49,11 @@ jobs:
         run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment }}/vtm/config --query SecretString --region=eu-west-1 --output text > src/environments/environment.deploy.ts
 
       - name: downcase BRANCH
+        env:
+          SHORT_BRANCH: ${{ inputs.branch }}
         run: |
-          echo "short_branch=${inputs.branch##*/}" >>${GITHUB_ENV}
-          echo "short_branch=${inputs.branch,,}" >>${GITHUB_ENV}
+          echo "SHORT_BRANCH=${SHORT_BRANCH##*/}" >>${GITHUB_ENV}
+          echo "SHORT_BRANCH=${SHORT_BRANCH,,}" >>${GITHUB_ENV}
 
       - name: Update environment config
         if: ${{ inputs.environment == 'feature' }}
