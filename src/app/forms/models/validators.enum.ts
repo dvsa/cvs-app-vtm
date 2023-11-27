@@ -39,5 +39,4 @@ export enum ValidatorNames {
   ShowGroupsWhenExcludes = 'showGroupsWhenExcludes',
   HideGroupsWhenExcludes = 'hideGroupsWhenExcludes',
   AddWarningForAdrField = 'addWarningForAdrField',
-  Custom = 'custom',
 }

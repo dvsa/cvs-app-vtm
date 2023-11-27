@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
-  AbstractControl,
-  AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators,
+  AsyncValidatorFn, FormArray, FormControl, FormGroup,
+  ValidatorFn, Validators,
 } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
@@ -79,7 +79,6 @@ export class DynamicFormService {
     [ValidatorNames.HideGroupsWhenExcludes]: (args: { values: unknown[], groups: string[] }) =>
       CustomValidators.hideGroupsWhenExcludes(args.values, args.groups),
     [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
-    [ValidatorNames.Custom]: (func: (control: AbstractControl) => ValidationErrors | null) => CustomValidators.custom(func),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
