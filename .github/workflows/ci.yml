@@ -12,7 +12,7 @@ jobs:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   scanner:
-    
+
     permissions:
       id-token: write
 
@@ -42,10 +42,10 @@ jobs:
       - name: Configure SonraQube Scanner
         run: |
           echo sonar.host.url=${{ env.SONARQUBE_GHA_URL }} >> sonar-project.properties
-          echo sonar.host.token=${{ env.SONARQUBE_GHA_TOKEN }} >> sonar-project.properties
-          echo sonar.host.login=${{ env.SONARQUBE_GHA_TOKEN }} >> sonar-project.properties
-          echo sonar.host.projectName=${{ github.repository }} >> sonar-project.properties
-          echo sonar.host.projectVersion=1.0.${{ github.run_id }} >> sonar-project.properties
+          echo sonar.token=${{ env.SONARQUBE_GHA_TOKEN }} >> sonar-project.properties
+          echo sonar.login=${{ env.SONARQUBE_GHA_TOKEN }} >> sonar-project.properties
+          echo sonar.projectName=${{ github.repository }} >> sonar-project.properties
+          echo sonar.projectVersion=1.0.${{ github.run_id }} >> sonar-project.properties
 
       - name: Run SonarQube scanner
         run: npm run sonar-scanner
