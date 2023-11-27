@@ -48,4 +48,4 @@ jobs:
           echo sonar.projectVersion=1.0.${{ github.run_id }} >> sonar-project.properties
 
       - name: Run SonarQube scanner
-        run: npm run sonar-scanner -- -Dsonar.host.url=${{ env.SONARQUBE_GHA_URL }} -Dsonar.token=${{ env.SONARQUBE_GHA_TOKEN }} -Dsonar.login=${{ env.SONARQUBE_GHA_TOKEN }}
+        run: npm run sonar-scanner 
