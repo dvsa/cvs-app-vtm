@@ -9,7 +9,7 @@ on:
 
 jobs:
   develop-build:
-    uses: ./deploy2.yml
+    uses: ./.github/workflows/deploy2.yml
     with:
       branch: ${{ github.ref_name }}
       environment: 'feature'
