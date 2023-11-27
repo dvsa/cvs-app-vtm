@@ -41,11 +41,8 @@ jobs:
 
       - name: Configure SonraQube Scanner
         run: |
-          echo sonar.host.url=${{ env.SONARQUBE_GHA_URL }} >> sonar-project.properties
-          echo sonar.token=${{ env.SONARQUBE_GHA_TOKEN }} >> sonar-project.properties
-          echo sonar.login=${{ env.SONARQUBE_GHA_TOKEN }} >> sonar-project.properties
           echo sonar.projectName=${{ github.repository }} >> sonar-project.properties
           echo sonar.projectVersion=1.0.${{ github.run_id }} >> sonar-project.properties
 
       - name: Run SonarQube scanner
-        run: npm run sonar-scanner 
+        run: npm run sonar-scanner -- -Dsonar.host.url=${{ env.SONARQUBE_GHA_URL }} -Dsonar.token=${{ env.SONARQUBE_GHA_TOKEN }} -Dsonar.login=${{ env.SONARQUBE_GHA_TOKEN }}
