@@ -10,3 +10,38 @@ jobs:
       args: '--all-projects'
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  scanner:
+    runs-on: X64
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+      
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
+          aws-region: ${{ secrets.DVSA_AWS_REGION }}
+          role-session-name: 'cvs-app-vtm'
+      
+      - uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        with: 
+          secret-ids: sonarqube-gha
+          parse-json-secrets: true
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure SonraQube Scanner
+        run: |
+          echo sonar.host.url=${{ env.SONARQUBE_GHA_URL }} >> sonar-project.properties
+          echo sonar.host.token=${{ env.SONARQUBE_GHA_TOKEN }} >> sonar-project.properties
+          echo sonar.host.login=${{ env.SONARQUBE_GHA_TOKEN }} >> sonar-project.properties
+          echo sonar.host.projectName=${{ github.repository }} >> sonar-project.properties
+          echo sonar.host.projectVersion=1.0.${{ github.run_id }} >> sonar-project.properties
+
+      - name: Run SonarQube scanner
+        run: npm run sonar-scanner
