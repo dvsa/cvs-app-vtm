@@ -1,0 +1,15 @@
+name: Build and Deploy VTM to Feature
+run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'feature/*'
+
+jobs:
+  develop-build:
+    uses: deploy2.yml
+    with:
+      branch: ${{ github.ref_name }}
+      environment: 'feature'

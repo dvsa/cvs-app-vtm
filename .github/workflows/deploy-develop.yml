@@ -1,0 +1,15 @@
+name: Build and Deploy VTM to Develop
+run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'develop'
+
+jobs:
+  develop-build:
+    uses: deploy2.yml
+    with:
+      branch: ${{ github.ref_name }}
+      environment: 'develop'
