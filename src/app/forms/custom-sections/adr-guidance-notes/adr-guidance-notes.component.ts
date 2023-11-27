@@ -1,16 +1,14 @@
-import { KeyValue } from '@angular/common';
 import {
   AfterContentInit,
   Component, OnDestroy, OnInit,
 } from '@angular/core';
 import {
   FormArray,
-  FormGroup, NG_VALUE_ACCESSOR, NgControl,
+  NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
-import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
-import { CustomControl, CustomFormControl } from '@forms/services/dynamic-form.types';
+import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { CustomControlComponentComponent } from '../custom-control-component/custom-control-component.component';
 
 @Component({
   selector: 'app-adr-guidance-notes',
@@ -18,11 +16,9 @@ import { ReplaySubject, takeUntil } from 'rxjs';
   styleUrls: ['./adr-guidance-notes.component.scss'],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: AdrGuidanceNotesComponent, multi: true }],
 })
-export class AdrGuidanceNotesComponent extends BaseControlComponent implements OnInit, AfterContentInit, OnDestroy {
-
+export class AdrGuidanceNotesComponent extends CustomControlComponentComponent implements OnInit, AfterContentInit, OnDestroy {
   destroy$ = new ReplaySubject<boolean>(1);
 
-  form?: FormGroup;
   formArray = new FormArray<CustomFormControl>([]);
 
   ngOnInit() {
@@ -37,16 +33,8 @@ export class AdrGuidanceNotesComponent extends BaseControlComponent implements O
   }
 
   override ngAfterContentInit() {
-    const injectedControl = this.injector.get(NgControl, null);
-    if (injectedControl) {
-      const ngControl = injectedControl.control as unknown as KeyValue<string, CustomControl>;
-      if (ngControl.value) {
-        this.name = ngControl.key;
-        this.control = ngControl.value;
-        this.form = this.injector.get(FORM_INJECTION_TOKEN) as FormGroup;
-        this.formArray.push(new CustomFormControl(this.control.meta));
-      }
-    }
+    super.ngAfterContentInit();
+    if (this.control) this.formArray.push(new CustomFormControl(this.control.meta));
   }
 
   addGuidanceNote() {

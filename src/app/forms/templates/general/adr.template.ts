@@ -3,10 +3,15 @@ import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enu
 import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
+import {
+  AdrTankDetailsSubsequentInspectionsComponent,
+} from '@forms/custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { TC2Types } from '@models/adr.enum';
 import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth,
+  FormNode, FormNodeEditTypes, FormNodeTypes,
+  FormNodeWidth,
 } from '../../services/dynamic-form.types';
 
 export const AdrTemplate: FormNode = {
@@ -195,6 +200,57 @@ export const AdrTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.MaxLength, args: 40 },
       ],
+    },
+    {
+      name: 'tankInspectionsSectionTitle',
+      type: FormNodeTypes.TITLE,
+      label: 'Tank Inspections',
+      groups: ['adr_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'tankInspectionsSectionSubheading',
+      type: FormNodeTypes.TITLE,
+      label: 'Initial',
+      groups: ['adr_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      label: 'TC2: Inspection type',
+      value: TC2Types.INITIAL, // TO-DO: replace with enum
+      hide: true,
+      groups: ['adr_details', 'dangerous_goods'],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
+      label: 'TC2: Certificate Number',
+      type: FormNodeTypes.CONTROL,
+      hide: true,
+      groups: ['adr_details', 'dangerous_goods'],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 70 },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
+      label: 'TC2: Expiry Date',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.DATE,
+      hide: true,
+      groups: ['adr_details', 'dangerous_goods'],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
+      label: 'Subsequent Inspections',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CUSTOM,
+      component: AdrTankDetailsSubsequentInspectionsComponent,
+      hide: true,
+      groups: ['adr_details', 'dangerous_goods'],
     },
   ],
 };

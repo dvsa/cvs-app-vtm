@@ -51,6 +51,8 @@ import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.direct
 import { NestingLevelDirective } from './directives/nesting-level/nesting-level.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
+import { AdrTankDetailsSubsequentInspectionsComponent } from './custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
+import { CustomControlComponentComponent } from './custom-sections/custom-control-component/custom-control-component.component';
 
 @NgModule({
   declarations: [
@@ -103,6 +105,8 @@ import { SuffixDirective } from './directives/suffix.directive';
     AdrComponent,
     NestingLevelDirective,
     AdrGuidanceNotesComponent,
+    AdrTankDetailsSubsequentInspectionsComponent,
+    CustomControlComponentComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
