@@ -13,7 +13,6 @@ jobs:
     with:
       branch: ${{ github.ref_name }}
       environment: 'feature'
-      lbranch: ${{ github.ref_name##*/ }}
 
     secrets:
       AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}

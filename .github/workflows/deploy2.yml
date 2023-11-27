@@ -51,9 +51,14 @@ jobs:
       - name: Get app config from AWS Secrets Manager
         run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment }}/vtm/config --query SecretString --region=eu-west-1 --output text > src/environments/environment.deploy.ts
 
+      - name: downcase BRANCH
+        run: |
+          echo "short_branch=${inputs.branch##*/}" >>${GITHUB_ENV}
+          echo "short_branch=${inputs.branch,,}" >>${GITHUB_ENV}
+
       - name: Update environment config
         if: ${{ inputs.environment == 'feature' }}
-        run: sh "sed  -i\'\' -e \'s/BRANCH/\'${inputs.lbranch,,}\'/g\' src/environments/environment.deploy.ts"
+        run: sh "sed  -i\'\' -e \'s/BRANCH/\'${env.short_branch}\'/g\' src/environments/environment.deploy.ts"
 
 #        Need to pull in/set SENTRY_AUTH_TOKEN value?
 
