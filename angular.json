@@ -11,6 +11,12 @@
         },
         "@schematics/angular:application": {
           "strict": true
+        },
+        "@schematics/angular:directive": {
+          "flat": false
+        },
+        "@schematics/angular:resolver": {
+          "functional": true
         }
       },
       "root": "",
@@ -26,6 +32,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "sourceMap": true,
             "assets": [
               "src/favicon.ico",
               "src/assets",

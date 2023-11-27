@@ -1,16 +1,22 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="govuk.d.ts">
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, NavigationEnd, Event } from '@angular/router';
+import { Event, NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
+import * as Sentry from '@sentry/angular-ivy';
+import { GoogleAnalyticsService } from '@services/google-analytics/google-analytics.service';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
 import { initAll } from 'govuk-frontend/govuk/all';
 import {
-  take, map, Subject, takeUntil,
+  Subject,
+  map,
+  take,
+  takeUntil,
 } from 'rxjs';
-import { GoogleAnalyticsService } from '@services/google-analytics/google-analytics.service';
+import packageInfo from '../../package.json';
+import { environment } from '../environments/environment';
 import { State } from './store';
 
 @Component({
@@ -36,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.startSentry();
     initAll();
   }
 
@@ -54,5 +61,23 @@ export class AppComponent implements OnInit, OnDestroy {
 
   get loading() {
     return this.loadingService.showSpinner$;
+  }
+
+  startSentry() {
+    Sentry.init({
+      dsn: environment.SENTRY_DSN,
+      environment: environment.production ? 'production' : 'development',
+      release: packageInfo.version,
+      replaysSessionSampleRate: 0.1,
+      tracesSampleRate: 0.025,
+      replaysOnErrorSampleRate: 1.0,
+      enableTracing: false,
+      integrations: [
+        new Sentry.BrowserTracing({
+          routingInstrumentation: Sentry.routingInstrumentation,
+        }),
+        new Sentry.Replay(),
+      ],
+    });
   }
 }

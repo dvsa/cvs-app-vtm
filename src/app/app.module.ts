@@ -1,7 +1,19 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LOCALE_ID, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {
+  APP_INITIALIZER,
+  ErrorHandler,
+  LOCALE_ID, NgModule,
+} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { DocumentRetrievalApiModule, Configuration as DocumentRetrievalConfiguration } from '@api/document-retrieval';
+import { ApiModule as ReferenceDataApiModule, Configuration as ReferenceDataConfiguration } from '@api/reference-data';
+import { Configuration as TestResultsApiConfiguration, ApiModule as TestResultsApiModule } from '@api/test-results';
+import { Configuration as TestTypesApiConfiguration, ApiModule as TestTypesApiModule } from '@api/test-types';
+import {
+  MSAL_GUARD_CONFIG,
+  MSAL_INSTANCE,
+  MSAL_INTERCEPTOR_CONFIG,
   MsalBroadcastService,
   MsalGuard,
   MsalGuardConfiguration,
@@ -10,17 +22,15 @@ import {
   MsalModule,
   MsalRedirectComponent,
   MsalService,
-  MSAL_GUARD_CONFIG,
-  MSAL_INSTANCE,
-  MSAL_INTERCEPTOR_CONFIG,
 } from '@azure/msal-angular';
 import {
-  BrowserCacheLocation, InteractionType, IPublicClientApplication, PublicClientApplication,
+  BrowserCacheLocation,
+  IPublicClientApplication,
+  InteractionType,
+  PublicClientApplication,
 } from '@azure/msal-browser';
-import { ApiModule as TestResultsApiModule, Configuration as TestResultsApiConfiguration } from '@api/test-results';
-import { ApiModule as TestTypesApiModule, Configuration as TestTypesApiConfiguration } from '@api/test-types';
-import { ApiModule as ReferenceDataApiModule, Configuration as ReferenceDataConfiguration } from '@api/reference-data';
-import { DocumentRetrievalApiModule, Configuration as DocumentRetrievalConfiguration } from '@api/document-retrieval';
+import * as Sentry from '@sentry/angular-ivy';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -62,6 +72,9 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     loginFailedRoute: '',
   };
 }
+
+const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
+  featureFlagsService.loadConfig();
 
 @NgModule({
   declarations: [AppComponent],
@@ -108,6 +121,34 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
       provide: MSAL_INTERCEPTOR_CONFIG,
       useFactory: MSALInterceptorConfigFactory,
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: featureFactory,
+      deps: [FeatureToggleService],
+      multi: true,
+    },
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: true,
+      }),
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [Sentry.TraceService],
+      multi: true,
+    },
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: false,
+      }),
+    },
     MsalService,
     MsalGuard,
     MsalBroadcastService,
@@ -116,4 +157,5 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   exports: [],
   bootstrap: [AppComponent, MsalRedirectComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

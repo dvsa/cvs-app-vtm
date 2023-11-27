@@ -6,8 +6,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SEARCH_TYPES } from '@models/search-types-enum';
+import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
@@ -21,7 +21,6 @@ describe('CreateNewVehicleRecordComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let techRecordService: TechnicalRecordService;
-  const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -64,17 +63,17 @@ describe('CreateNewVehicleRecordComponent', () => {
   describe('get isFormValid', () => {
     it('should call validate with the vehicleForm and an empty array', () => {
       const validateSpy = jest.spyOn(DynamicFormService, 'validate').mockImplementation();
-      const valid = component.isFormValid;
+      const isValid = component.isFormValid;
+      expect(isValid).toBeDefined();
       expect(validateSpy).toHaveBeenCalledTimes(1);
       expect(validateSpy).toHaveBeenCalledWith(component.form, []);
     });
 
     it('should call setErrors with an empty array', () => {
-      jest.spyOn(DynamicFormService, 'validate').mockImplementation(() => {
-
-      });
+      jest.spyOn(DynamicFormService, 'validate').mockImplementation(() => {});
       const setErrorsSpy = jest.spyOn(errorService, 'setErrors').mockImplementation();
-      const valid = component.isFormValid;
+      const isValid = component.isFormValid;
+      expect(isValid).toBeDefined();
       expect(setErrorsSpy).toHaveBeenCalledTimes(1);
       expect(setErrorsSpy).toHaveBeenCalledWith([]);
     });
@@ -117,8 +116,7 @@ describe('CreateNewVehicleRecordComponent', () => {
       const updateEditingSpy = jest.spyOn(techRecordService, 'updateEditingTechRecord');
       const navigateSpy = jest.spyOn(router, 'navigate');
       const generateTechREcordSpy = jest.spyOn(techRecordService, 'generateEditingVehicleTechnicalRecordFromVehicleType');
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      component.handleSubmit();
+      void component.handleSubmit();
 
       expect(isFormValid).toHaveReturned();
       expect(updateEditingSpy).toHaveBeenCalledTimes(0);

@@ -5,6 +5,8 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { StatusCodes, VehicleSubclass } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { toEditOrNotToEdit } from '@store/test-records';
+import { selectTechRecordHistory } from '@store/technical-records';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
 
 const {
@@ -25,12 +27,19 @@ export const selectTestTypesTotal = createSelector(testTypesFeatureState, (state
 
 export const selectTestTypesLoadingState = createSelector(testTypesFeatureState, (state) => state.loading);
 
-export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, toEditOrNotToEdit, (testTypes, testResult) => {
-  if (testResult) {
-    return filterTestTypes(testTypes, testResult);
-  }
-  return [];
-});
+export const selectTestTypesByVehicleType = createSelector(
+  selectAllTestTypes,
+  toEditOrNotToEdit,
+  selectTechRecordHistory,
+  (testTypes, testResult, techRecordHistory) => {
+    const hasCurrentRecordInHistory = techRecordHistory ? currentRecordInHistoryCheck(techRecordHistory) : false;
+
+    if (testResult) {
+      return filterTestTypes(testTypes, testResult, hasCurrentRecordInHistory);
+    }
+    return [];
+  },
+);
 
 export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, (testTypes) => {
   const sortTestTypes = (testTypesList: TestTypesTaxonomy): TestTypesTaxonomy => {
@@ -89,7 +98,11 @@ export const selectTestType = (id: string | undefined) =>
 
 export const getTypeOfTest = (id: string | undefined) => createSelector(selectTestType(id), (testTypes) => testTypes?.typeOfTest);
 
-function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultModel): TestTypesTaxonomy {
+function currentRecordInHistoryCheck(techRecordHistorys: TechRecordSearchSchema[]): boolean {
+  return techRecordHistorys.some((techRecordHis) => techRecordHis.techRecord_statusCode === 'current');
+}
+
+function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultModel, hasCurrentRecordInHistory: boolean): TestTypesTaxonomy {
   const {
     vehicleType,
     statusCode,
@@ -101,7 +114,7 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
     vehicleSubclass,
     numberOfWheelsDriven,
   } = testResult;
-
+  const filterFirstTestIds : string[] = ['41', '95', '82', '83', '119', '120', '65', '66', '67', '103', '104', '51'];
   return (
     testTypes
       .filter((testType) => !vehicleType || !testType.forVehicleType || testType.forVehicleType.includes(vehicleType))
@@ -130,12 +143,19 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
           || testType.forVehicleSubclass.some((forVehicleSubclass) => vehicleSubclass.includes(forVehicleSubclass as VehicleSubclass)),
       )
       .filter((testType) => !numberOfWheelsDriven || !testType.forVehicleWheels || testType.forVehicleWheels.includes(numberOfWheelsDriven))
-      .map((testType) => {
+      // for some first tests, only show them for provisional record when there are no current records in history
+      .filter(
+        (testType) => !statusCode
+        || statusCode !== StatusCodes.PROVISIONAL
+        || !hasCurrentRecordInHistory
+        || !filterFirstTestIds.includes(testType.id),
+      )
+      .map((testType: TestTypeCategory) => {
         const newTestType = { ...testType } as TestTypeCategory;
 
         if (Object.prototype.hasOwnProperty.call(newTestType, 'nextTestTypesOrCategories')) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          newTestType.nextTestTypesOrCategories = filterTestTypes(newTestType.nextTestTypesOrCategories!, testResult);
+          newTestType.nextTestTypesOrCategories = filterTestTypes(newTestType.nextTestTypesOrCategories!, testResult, hasCurrentRecordInHistory);
         }
 
         return newTestType;

@@ -47,6 +47,9 @@ import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
+import { FieldWarningMessageComponent } from './components/field-warning-message/field-warning-message.component';
+import { AdrComponent } from './custom-sections/adr/adr.component';
+import { NestingLevelDirective } from './directives/nesting-level/nesting-level.directive';
 
 @NgModule({
   declarations: [
@@ -95,6 +98,9 @@ import { SuffixDirective } from './directives/suffix.directive';
     ApprovalTypeInputComponent,
     ApprovalTypeFocusNextDirective,
     ModifiedWeightsComponent,
+    FieldWarningMessageComponent,
+    AdrComponent,
+    NestingLevelDirective,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -139,6 +145,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     ApprovalTypeInputComponent,
     ApprovalTypeFocusNextDirective,
     ModifiedWeightsComponent,
+    AdrComponent,
   ],
 })
 export class DynamicFormsModule {}

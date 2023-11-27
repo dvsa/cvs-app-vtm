@@ -5,6 +5,7 @@
   </label>
 
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
+  <app-field-error-message [error]="warning" [name]="name"></app-field-error-message>
 
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 

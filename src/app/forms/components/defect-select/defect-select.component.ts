@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { DefectsState, filteredDefects } from '@store/defects';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { TestResultsState } from '@store/test-records/reducers/test-records.reducer';
-import { takeUntil, filter, Subject } from 'rxjs';
+import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-defect-select',
@@ -41,9 +41,15 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         takeUntil(this.onDestroy$),
         filter((testResult) => !!testResult),
       )
-      .subscribe((testResult) => { this.vehicleType = testResult!.vehicleType; });
+      .subscribe((testResult) => {
+        if (testResult) {
+          this.vehicleType = testResult.vehicleType;
+        }
+      });
 
-    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe((defectsTaxonomy) => { this.defects = defectsTaxonomy; });
+    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe((defectsTaxonomy) => {
+      this.defects = defectsTaxonomy;
+    });
   }
 
   ngOnDestroy(): void {
@@ -65,10 +71,11 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 
   categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
     return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{
-      major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue',
-    })[
-      `${category}`
-    ];
+      major: 'orange',
+      minor: 'yellow',
+      dangerous: 'red',
+      advisory: 'blue',
+    })[`${category}`];
   }
 
   handleSelect(selected?: Defect | Item | Deficiency, type?: Types): void {
@@ -84,16 +91,15 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         break;
       case Types.Deficiency:
         this.selectedDeficiency = selected as Deficiency;
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        this.router.navigate([this.selectedDeficiency.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
+        void this.router.navigate([this.selectedDeficiency.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
         break;
       default:
         let advisoryRoute = `${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}.advisory`;
         if (this.selectedDefect?.imNumber === 71 && this.selectedItem?.itemNumber === 1) {
           advisoryRoute += this.selectedItem.itemDescription === 'All Roller Brake Test Machines:' ? '.0' : '.1';
         }
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        this.router.navigate([advisoryRoute], {
+
+        void this.router.navigate([advisoryRoute], {
           relativeTo: this.route,
           queryParamsHandling: 'merge',
         });

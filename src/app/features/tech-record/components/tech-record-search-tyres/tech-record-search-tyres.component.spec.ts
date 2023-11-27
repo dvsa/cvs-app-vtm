@@ -8,7 +8,9 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -16,11 +18,9 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { FixNavigationTriggeredOutsideAngularZoneNgModule } from '@shared/custom-module/fixNgZoneError';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/index';
-import { of, ReplaySubject } from 'rxjs';
-import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { State, initialAppState } from '@store/index';
 import { fetchReferenceDataByKeySearchSuccess } from '@store/reference-data';
+import { Observable, ReplaySubject, of } from 'rxjs';
 import { TechRecordSearchTyresComponent } from './tech-record-search-tyres.component';
 
 const mockGlobalErrorService = {
@@ -129,7 +129,7 @@ describe('TechRecordSearchTyresComponent', () => {
     });
     it('should navigate and populate the search results on success action', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate');
-      const mockTyreSearchReturn = ['foo', 'bar'] as any;
+      const mockTyreSearchReturn = ['foo', 'bar'];
 
       jest.spyOn(store, 'select').mockReturnValue(of(mockTyreSearchReturn));
       component.handleSearch('foo', 'bar');
@@ -209,18 +209,18 @@ describe('TechRecordSearchTyresComponent', () => {
       expect(component.currentVrm).toBe('bar');
     });
     it('should get the paginated fields', () => {
-      component.searchResults = ['foo', 'bar', 'foobar'] as any;
+      component.searchResults = ['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[];
       expect(component.paginatedFields).toEqual(['foo', 'bar', 'foobar']);
     });
     it('should get the number of results', () => {
-      component.searchResults = ['foo', 'bar', 'foobar'] as any;
+      component.searchResults = ['foo', 'bar', 'foobar'] as unknown as ReferenceDataTyre[];
       expect(component.numberOfResults).toEqual(component.searchResults?.length);
     });
   });
 
   describe('trackByFn', () => {
     it('should return the resourceKey', () => {
-      expect(component.trackByFn(12, { resourceKey: 'foo' } as any)).toBe('foo');
+      expect(component.trackByFn(12, { resourceKey: 'foo' } as unknown as ReferenceDataTyre)).toBe('foo');
     });
   });
 
@@ -251,7 +251,7 @@ describe('TechRecordSearchTyresComponent', () => {
     });
     it('should navigate if there is no viewable tech record', () => {
       const routerSpy = jest.spyOn(router, 'navigate');
-      jest.spyOn(mockTechRecordService, 'techRecord$', 'get').mockReturnValue(of(undefined) as any);
+      jest.spyOn(mockTechRecordService, 'techRecord$', 'get').mockReturnValue(of(undefined) as unknown as Observable<Record<string, unknown>>);
       component.ngOnInit();
       expect(routerSpy).toHaveBeenCalledWith(['../..'], { relativeTo: route });
     });

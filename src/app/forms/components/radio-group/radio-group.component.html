@@ -10,6 +10,7 @@
     </legend>
 
     <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
+    <app-field-error-message [error]="warning" [name]="name"></app-field-error-message>
 
     <div class="govuk-radios" [ngClass]="{ 'govuk-radios--inline': inline }" data-module="govuk-radios">
       <div *ngFor="let option of options; trackBy: trackByFn" class="govuk-radios__item">

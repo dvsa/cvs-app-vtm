@@ -4,18 +4,22 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { GlobalWarning } from '@core/components/global-warning/global-warning.interface';
+import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { State } from '@store/index';
+import { selectTechRecord } from '@store/technical-records';
 import { createTestResultSuccess } from '@store/test-records';
 import { getTypeOfTest } from '@store/test-types/selectors/test-types.selectors';
 import cloneDeep from 'lodash.clonedeep';
@@ -38,6 +42,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
   testMode = TestModeEnum.Edit;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   testTypeId?: string;
+  techRecord: V3TechRecordModel | undefined = undefined;
 
   constructor(
     private actions$: Actions,
@@ -49,6 +54,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     private cdr: ChangeDetectorRef,
     private resultOfTestService: ResultOfTestService,
     private store: Store<State>,
+    private warningService: GlobalWarningService,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -64,13 +70,17 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
         filter((tt) => !!tt),
       )
       .subscribe((testTypeId) => {
-        this.testRecordsService.contingencyTestTypeSelected(testTypeId!);
+        this.testRecordsService.contingencyTestTypeSelected(testTypeId as string);
         this.testTypeId = testTypeId;
       });
 
     this.watchForCreateSuccess();
 
     this.testRecordsService.canCreate$.pipe(take(1)).subscribe((val) => this.canCreate$.next(val));
+
+    this.store.select(selectTechRecord).pipe(take(1)).subscribe((techRecord) => {
+      this.techRecord = techRecord;
+    });
   }
 
   ngOnDestroy(): void {
@@ -85,8 +95,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   backToTechRecord(): void {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['../../..'], { relativeTo: this.route.parent });
+    void this.router.navigate(['../../..'], { relativeTo: this.route.parent });
   }
 
   /**
@@ -99,21 +108,31 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     const testResult = await firstValueFrom(this.testResult$);
+    const testResultClone = cloneDeep(testResult) as TestResultModel;
 
-    this.testRecordsService.createTestResult(cloneDeep(testResult));
+    this.testRecordsService.createTestResult(testResultClone);
   }
 
-  handleReview() {
-    if (this.isAnyFormInvalid()) {
-      return;
-    }
+  async handleReview() {
+    if (this.isAnyFormInvalid()) return;
+    if (this.techRecord == null) return;
 
     this.errorService.clearErrors();
     this.testMode = TestModeEnum.View;
+
+    const testResult = await firstValueFrom(this.testResult$);
+    if (testResult && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL
+      && this.testTypeId
+      && this.validateUpdateStatus(testResult.testTypes[0].testResult, this.testTypeId)) {
+      const warnings: GlobalWarning[] = [];
+      warnings.push({ warning: 'This test will update the tech record to current, if the page is showing as provisional then refresh the page' });
+      this.warningService.setWarnings(warnings);
+    }
   }
 
   handleCancel() {
     this.testMode = TestModeEnum.Edit;
+    this.warningService.clearWarnings();
   }
 
   watchForCreateSuccess() {
@@ -122,7 +141,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
 
-  handleNewTestResult(testResult: any) {
+  handleNewTestResult(testResult: TestResultModel) {
     this.testRecordsService.updateEditingTestResult(testResult);
   }
 
@@ -187,5 +206,38 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 
   public get TestModeEnum(): typeof TestModeEnum {
     return TestModeEnum;
+  }
+
+  validateUpdateStatus = (
+    testResult: string,
+    testTypeId: string,
+  ): boolean => (
+    (testResult === 'pass' || testResult === 'prs')
+        && (this.isTestTypeFirstTest(testTypeId)
+          || this.isTestTypeNotifiableAlteration(testTypeId)
+          || this.isTestTypeCOIF(testTypeId)
+          || this.isTestTypeIVA(testTypeId))
+  );
+
+  isTestTypeFirstTest(testTypeId: string): boolean {
+    const firstTestIds = ['41', '95', '65', '66', '67', '103', '104', '82', '83', '119', '120'];
+    return firstTestIds.includes(testTypeId);
+  }
+
+  isTestTypeNotifiableAlteration(testTypeId: string): boolean {
+    const notifiableAlterationIds = ['38', '47', '48'];
+    return notifiableAlterationIds.includes(testTypeId);
+  }
+
+  isTestTypeCOIF(testTypeId: string): boolean {
+    const coifIds = ['142', '143', '175', '176'];
+    return coifIds.includes(testTypeId);
+  }
+
+  isTestTypeIVA(testTypeId: string): boolean {
+    const ivaIds = ['133', '134', '138', '139', '140', '165', '169', '167', '170', '135', '172', '173', '439', '449',
+      '136', '187', '126', '186', '193', '192', '195', '162', '191', '128', '188', '189', '125', '161', '158', '159',
+      '154', '190', '129', '196', '194', '197', '185', '420', '438', '163', '153', '184', '130', '183'];
+    return ivaIds.includes(testTypeId);
   }
 }

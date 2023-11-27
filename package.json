@@ -14,6 +14,7 @@
     "start:dev1": "npm run config -- --env=dev1 && ng serve",
     "start:dev2": "npm run config -- --env=dev2 && ng serve",
     "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
+    "postbuild":"npm run sentry:sourcemaps",
     "watch": "ng build --watch",
     "sonar-scanner": "npm run test && sonar-scanner",
     "security-checks": "git secrets --scan",
@@ -31,7 +32,8 @@
     "postinstall": "ngcc",
     "e2e": "npm run config && cypress run",
     "e2e:open": "npm run config && cypress open",
-    "e2e:parallel": "cypress-parallel -s e2e -t 3 -d cypress/e2e"
+    "e2e:parallel": "cypress-parallel -s e2e -t 3 -d cypress/e2e",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org driver-and-vehicle-standards-a --project vehicle-test-management ./dist && sentry-cli sourcemaps upload --org driver-and-vehicle-standards-a --project vehicle-test-management ./dist"
   },
   "private": true,
   "dependencies": {
@@ -45,12 +47,15 @@
     "@angular/router": "^15.2.8",
     "@azure/msal-angular": "^2.5.10",
     "@azure/msal-browser": "^2.38.1",
-    "@dvsa/cvs-type-definitions": "^3.0.49",
+    "@dvsa/cvs-type-definitions": "^3.6.3",
     "@ngrx/effects": "^15.4.0",
     "@ngrx/entity": "^15.4.0",
     "@ngrx/router-store": "^15.4.0",
     "@ngrx/store": "^15.4.0",
     "@ngrx/store-devtools": "^15.4.0",
+    "@sentry/angular-ivy": "^7.79.0",
+    "@sentry/cli": "^2.21.3",
+    "@sentry/types": "^7.80.1",
     "accessible-autocomplete": "^2.0.4",
     "deep-object-diff": "^1.1.9",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -62,9 +67,9 @@
     "ngrx-store-localstorage": "^15.0.0",
     "rxjs": "^7.8.1",
     "tslib": "^2.6.1",
-    "uuid": "^9.0.0",
+    "uuid": "^9.0.1",
     "validate-govuk-date": "^1.0.2",
-    "zone.js": "^0.13.1"
+    "zone.js": "^0.13.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.6",
@@ -115,7 +120,7 @@
     "json-server": "^0.17.3",
     "prettier": "^2.8.7",
     "storybook": "^7.0.6",
-    "ts-auto-mock": "^3.6.4",
+    "ts-auto-mock": "3.6.4",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "ts-patch": "^2.1.0",

@@ -1,6 +1,7 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { DescriptionEnum } from '@models/vehicle-class.model';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
 
@@ -202,9 +203,15 @@ describe('Required validators', () => {
   beforeEach(() => {
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
-      sibling: new CustomFormControl({
-        name: 'sibling', label: 'Sibling', type: FormNodeTypes.CONTROL, children: [],
-      }, null),
+      sibling: new CustomFormControl(
+        {
+          name: 'sibling',
+          label: 'Sibling',
+          type: FormNodeTypes.CONTROL,
+          children: [],
+        },
+        null,
+      ),
     });
     form.controls['sibling'].patchValue('some value');
   });
@@ -275,7 +282,7 @@ describe('numeric', () => {
     [{ customPattern: { message: 'must be a whole number' } }, 'foo123456'],
     [null, '123546789'],
     [null, null],
-  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any) => {
+  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: unknown) => {
     const numberValidator = CustomValidators.numeric();
     expect(numberValidator(new FormControl(input))).toEqual(expected);
   });
@@ -288,7 +295,7 @@ describe('defined', () => {
     [null, null],
     [null, 'hello world!'],
     [null, 1234],
-  ])('should return %o for %r', (expected: null | { [index: string]: boolean }, input: any) => {
+  ])('should return %o for %r', (expected: null | { [index: string]: boolean }, input: unknown) => {
     const definedValidator = CustomValidators.defined();
     const form = new FormControl(input);
     if (typeof input === 'undefined') {
@@ -309,7 +316,7 @@ describe('alphanumeric', () => {
     [{ customPattern: { message: 'must be alphanumeric' } }, 'foo123456^@'],
     [null, '123546789abcdefghijklmnopqrstuvwxyz'],
     [null, null],
-  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any) => {
+  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: unknown) => {
     const numberValidator = CustomValidators.alphanumeric();
     expect(numberValidator(new FormControl(input))).toEqual(expected);
   });
@@ -322,7 +329,7 @@ describe('customPattern', () => {
     [{ customPattern: { message: 'this should not be a number' } }, 123456789, '\\D+', 'this should not be a number'],
     [null, '%^', '^\\W+$', 'this should be a symbol'],
     [null, null, '.*', 'pass on null'],
-  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any, regex: string, msg: string) => {
+  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: unknown, regex: string, msg: string) => {
     const customPattern = CustomValidators.customPattern([regex, msg]);
     const validation = customPattern(new FormControl(input));
     expect(validation).toEqual(expected);
@@ -389,14 +396,38 @@ describe('futureDate', () => {
   });
 });
 
+describe('pastYear', () => {
+  beforeAll(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  it.each([
+    [null, null],
+    [{ pastYear: true }, 2023],
+    [null, 2020],
+  ])('should return %p when control value is %s', (expected: object | null, input: number | null) => {
+    expect(CustomValidators.pastYear(new FormControl(input))).toEqual(expected);
+  });
+});
+
 describe('aheadOfDate', () => {
   let form: FormGroup;
   beforeEach(() => {
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
-      sibling: new CustomFormControl({
-        name: 'sibling', label: 'sibling', type: FormNodeTypes.CONTROL, children: [],
-      }, null),
+      sibling: new CustomFormControl(
+        {
+          name: 'sibling',
+          label: 'sibling',
+          type: FormNodeTypes.CONTROL,
+          children: [],
+        },
+        null,
+      ),
     });
   });
 
@@ -424,9 +455,15 @@ describe('dateNotExceed', () => {
   beforeEach(() => {
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
-      sibling: new CustomFormControl({
-        name: 'sibling', label: 'sibling', type: FormNodeTypes.CONTROL, children: [],
-      }, null),
+      sibling: new CustomFormControl(
+        {
+          name: 'sibling',
+          label: 'sibling',
+          type: FormNodeTypes.CONTROL,
+          children: [],
+        },
+        null,
+      ),
     });
   });
 
@@ -525,8 +562,8 @@ describe('validate VRM/TrailerId Length', () => {
     const child = form.get(['parent', 'child']);
     child?.patchValue(value);
 
-    const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
-    expect(result.validateVRMTrailerIdLength.message).toBe('VRM must be less than or equal to 9 characters');
+    const result = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result?.['validateVRMTrailerIdLength'].message).toBe('VRM must be less than or equal to 9 characters');
   });
 
   it('should return TrailerId min length error when value length is less than 7 and Trailer is selected', () => {
@@ -536,8 +573,8 @@ describe('validate VRM/TrailerId Length', () => {
     child?.patchValue(value);
     sibling?.patchValue(VehicleTypes.TRL);
 
-    const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
-    expect(result.validateVRMTrailerIdLength.message).toBe('Trailer ID must be greater than or equal to 7 characters');
+    const result = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result?.['validateVRMTrailerIdLength'].message).toBe('Trailer ID must be greater than or equal to 7 characters');
   });
 
   it('should return TrailerId max length error when value length is greater than 8 and Trailer is selected', () => {
@@ -547,8 +584,8 @@ describe('validate VRM/TrailerId Length', () => {
     child?.patchValue(value);
     sibling?.patchValue(VehicleTypes.TRL);
 
-    const result: any = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
-    expect(result.validateVRMTrailerIdLength.message).toBe('Trailer ID must be less than or equal to 8 characters');
+    const result = CustomValidators.validateVRMTrailerIdLength('sibling')(child as AbstractControl);
+    expect(result?.['validateVRMTrailerIdLength'].message).toBe('Trailer ID must be less than or equal to 8 characters');
   });
 });
 
@@ -581,7 +618,7 @@ describe('handlePsvPassengersChange', () => {
     const vehicleClass = form.get('techRecord_vehicleClass_description')?.value;
 
     expect(vehicleSize).toBe(VehicleSizes.SMALL);
-    expect(vehicleClass).toBe(DescriptionEnum.SmallPsvIeLessThanOrEqualTo22Seats);
+    expect(vehicleClass).toBe(VehicleClassDescription.SmallPsvIeLessThanOrEqualTo22Seats);
   });
   it('should calculate large vehicle size and class based on passenger numbers', () => {
     const upper = form.get('techRecord_seatsUpperDeck');
@@ -598,6 +635,465 @@ describe('handlePsvPassengersChange', () => {
     const vehicleClass = form.get('techRecord_vehicleClass_description')?.value;
 
     expect(vehicleSize).toBe(VehicleSizes.LARGE);
-    expect(vehicleClass).toBe(DescriptionEnum.LargePsvIeGreaterThan23Seats);
+    expect(vehicleClass).toBe(VehicleClassDescription.LargePsvIeGreaterThan23Seats);
+  });
+});
+describe('updateFunctionCode', () => {
+  let form: FormGroup;
+  beforeEach(() => {
+    form = new FormGroup({
+      techRecord_vehicleConfiguration: new CustomFormControl({ name: 'techRecord_vehicleConfiguration', type: FormNodeTypes.CONTROL }, undefined),
+      techRecord_functionCode: new CustomFormControl({ name: 'techRecord_functionCode', type: FormNodeTypes.CONTROL }, undefined),
+    });
+  });
+  it('should set the function code to R if given a rigid vehicle configuration', () => {
+    const functionCode = form.get('techRecord_functionCode');
+    const vehicleConfiguration = form.get('techRecord_vehicleConfiguration');
+
+    vehicleConfiguration?.patchValue('rigid');
+    vehicleConfiguration?.markAsDirty();
+
+    CustomValidators.updateFunctionCode()(vehicleConfiguration as AbstractControl);
+    const value = functionCode?.value;
+    expect(value).toBe('R');
+  });
+  it('should set the function code to A if given a articulated vehicle configuration', () => {
+    const functionCode = form.get('techRecord_functionCode');
+    const vehicleConfiguration = form.get('techRecord_vehicleConfiguration');
+
+    vehicleConfiguration?.patchValue('articulated');
+    vehicleConfiguration?.markAsDirty();
+
+    CustomValidators.updateFunctionCode()(vehicleConfiguration as AbstractControl);
+    const value = functionCode?.value;
+    expect(value).toBe('A');
+  });
+  it('should set the function code to A if given a semi-trailer vehicle configuration', () => {
+    const functionCode = form.get('techRecord_functionCode');
+    const vehicleConfiguration = form.get('techRecord_vehicleConfiguration');
+
+    vehicleConfiguration?.patchValue('semi-trailer');
+    vehicleConfiguration?.markAsDirty();
+
+    CustomValidators.updateFunctionCode()(vehicleConfiguration as AbstractControl);
+    const value = functionCode?.value;
+    expect(value).toBe('A');
+  });
+  it('should not set the function code if vehicle configuration is not in the map', () => {
+    const functionCode = form.get('techRecord_functionCode');
+    const vehicleConfiguration = form.get('techRecord_vehicleConfiguration');
+
+    vehicleConfiguration?.patchValue('invalid');
+    vehicleConfiguration?.markAsDirty();
+
+    CustomValidators.updateFunctionCode()(vehicleConfiguration as AbstractControl);
+    const value = functionCode?.value;
+    expect(value).toBeUndefined();
+  });
+});
+
+describe('showGroupsWhenEqualTo', () => {
+  let form: FormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_name',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_street',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_town',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['adr'],
+            },
+          ],
+      },
+      {
+        dangerousGoods: new CustomFormControl(
+          {
+            name: 'dangerousGoods',
+            type: FormNodeTypes.CONTROL,
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_name',
+            type: FormNodeTypes.CONTROL,
+            hide: true,
+            groups: ['adr', 'name'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_street: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_street',
+            type: FormNodeTypes.CONTROL,
+            hide: true,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_town: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_town',
+            type: FormNodeTypes.CONTROL,
+            hide: true,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+      },
+    );
+  });
+  it('should set hide as false on a control if it is in a group included in the array passed and values match true', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.showGroupsWhenEqualTo(true, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(street?.meta.hide).toBe(false);
+    expect(town?.meta.hide).toBe(false);
+  });
+  it('should set hide as false on a control if it is in a group included in the array passed and values match false', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(false);
+
+    CustomValidators.showGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(street?.meta.hide).toBe(false);
+    expect(town?.meta.hide).toBe(false);
+  });
+  it('should not change the hide flag if values dont match', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.showGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(true);
+    expect(street?.meta.hide).toBe(true);
+    expect(town?.meta.hide).toBe(true);
+  });
+  it('should only change hide on groups included in array', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.showGroupsWhenEqualTo(true, ['name'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(street?.meta.hide).toBe(true);
+    expect(town?.meta.hide).toBe(true);
+  });
+});
+
+describe('hideGroupsWhenEqualTo', () => {
+  let form: CustomFormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_name',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_street',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_town',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+              groups: ['adr'],
+            },
+          ],
+      },
+      {
+        dangerousGoods: new CustomFormControl(
+          {
+            name: 'dangerousGoods',
+            type: FormNodeTypes.CONTROL,
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_name',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr', 'name'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_street: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_street',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_town: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_town',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+      },
+    );
+  });
+  it('should set hide as true on a control if it is in a group included in the array passed and values match true', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.hideGroupsWhenEqualTo(true, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(true);
+    expect(street?.meta.hide).toBe(true);
+    expect(town?.meta.hide).toBe(true);
+  });
+  it('should set hide as true on a control if it is in a group included in the array passed and values match false', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(false);
+
+    CustomValidators.hideGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(true);
+    expect(street?.meta.hide).toBe(true);
+    expect(town?.meta.hide).toBe(true);
+  });
+  it('should not change the hide flag if values dont match', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.hideGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(street?.meta.hide).toBe(false);
+    expect(town?.meta.hide).toBe(false);
+  });
+  it('should only change hide on groups included in array', () => {
+    const adr = form.get('dangerousGoods');
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const street = form.get('techRecord_adrDetails_applicantDetails_street') as CustomFormControl;
+    const town = form.get('techRecord_adrDetails_applicantDetails_town') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.hideGroupsWhenEqualTo(true, ['name'])(adr as AbstractControl);
+
+    expect(name?.meta.hide).toBe(true);
+    expect(street?.meta.hide).toBe(false);
+    expect(town?.meta.hide).toBe(false);
+  });
+});
+
+describe('addWarningIfFalse', () => {
+  let form: CustomFormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: true,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_name',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+            },
+          ],
+      },
+      {
+        dangerousGoods: new CustomFormControl(
+          {
+            name: 'dangerousGoods',
+            type: FormNodeTypes.CONTROL,
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_name',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+          },
+          undefined,
+        ),
+      },
+    );
+  });
+  it('should display a warning if the value is false and it has adr fields on record', () => {
+    const adr = form.get('dangerousGoods') as CustomFormControl;
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+
+    adr?.patchValue(false);
+    adr?.markAsDirty();
+    name.patchValue('test');
+
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBe('Test warning');
+  });
+  it('should remove the warning if the value true', () => {
+    const adr = form.get('dangerousGoods') as CustomFormControl;
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+
+    adr?.patchValue(false);
+    adr?.markAsDirty();
+    name.patchValue('test');
+
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBe('Test warning');
+
+    adr?.patchValue(true);
+
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBeUndefined();
+  });
+  it('should not have a warning if the control is pristine and value is false', () => {
+    const adr = form.get('dangerousGoods') as CustomFormControl;
+
+    adr?.patchValue(false);
+
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBeUndefined();
+  });
+  it('should not have a warning if the value is false but there is no adr information on the record', () => {
+    const adr = form.get('dangerousGoods') as CustomFormControl;
+
+    adr?.patchValue(false);
+    adr?.markAsDirty();
+
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBeUndefined();
+  });
+  it('should not have a warning if the control is pristine and value is true', () => {
+    const adr = form.get('dangerousGoods') as CustomFormControl;
+
+    adr?.patchValue(true);
+
+    CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
+    expect(adr.meta.warning).toBeUndefined();
+  });
+});
+
+describe('enum', () => {
+  it.each([
+    [{ enum: true }, NaN],
+    [{ enum: true }, undefined],
+    [{ enum: true }, null],
+    [{ enum: true }, ''],
+    [{ enum: true }, 'Small series'],
+    [null, 'NTA'],
+    [null, 'ECTA'],
+    [null, 'IVA'],
+    [null, 'NSSTA'],
+    [null, 'ECSSTA'],
+    [null, 'GB WVTA'],
+    [null, 'UKNI WVTA'],
+    [null, 'EU WVTA Pre 23'],
+    [null, 'EU WVTA 23 on'],
+    [null, 'QNIG'],
+    [null, 'Prov.GB WVTA'],
+    [null, 'Small series NKSXX'],
+    [null, 'Small series NKS'],
+    [null, 'IVA - VCA'],
+    [null, 'IVA - DVSA/NI'],
+  ])('should return %p when control value is %s', (expected: object | null, input) => {
+    expect(CustomValidators.isMemberOfEnum(ApprovalType, { allowFalsy: false })(new FormControl(input))).toEqual(expected);
+  });
+
+  it.each([
+    [null, NaN],
+    [null, undefined],
+    [null, null],
+    [null, ''],
+    [{ enum: true }, 'Small series'],
+    [null, 'NTA'],
+    [null, 'ECTA'],
+    [null, 'IVA'],
+    [null, 'NSSTA'],
+    [null, 'ECSSTA'],
+    [null, 'GB WVTA'],
+    [null, 'UKNI WVTA'],
+    [null, 'EU WVTA Pre 23'],
+    [null, 'EU WVTA 23 on'],
+    [null, 'QNIG'],
+    [null, 'Prov.GB WVTA'],
+    [null, 'Small series NKSXX'],
+    [null, 'Small series NKS'],
+    [null, 'IVA - VCA'],
+    [null, 'IVA - DVSA/NI'],
+  ])('should return %p when control value is %s', (expected: object | null, input) => {
+    expect(CustomValidators.isMemberOfEnum(ApprovalType, { allowFalsy: true })(new FormControl(input))).toEqual(expected);
   });
 });

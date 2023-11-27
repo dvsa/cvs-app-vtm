@@ -59,8 +59,7 @@ export class ReferenceDataCreateComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['..'], { relativeTo: this.route });
+    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleFormChange(event: any) {
@@ -77,7 +76,7 @@ export class ReferenceDataCreateComponent implements OnInit {
     Object.keys(this.newRefData)
       .filter((newRefDataKey) => newRefDataKey !== 'resourceKey')
       .forEach((dataKey) => {
-        referenceData[dataKey] = this.newRefData[dataKey];
+        referenceData[`${dataKey}`] = this.newRefData[`${dataKey}`];
       });
 
     this.globalErrorService.errors$

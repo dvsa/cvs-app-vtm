@@ -63,7 +63,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
     this.year$ = this.year_.asObservable();
     this.hour$ = this.hour_.asObservable();
     this.minute$ = this.minute_.asObservable();
-    this.globalErrorService.errors$.subscribe((globalErrors: any) => {
+    this.globalErrorService.errors$.subscribe((globalErrors) => {
       if (globalErrors.length) {
         this.formSubmitted = true;
       }
@@ -90,23 +90,23 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
     this.subscriptions.forEach((s) => s && s.unsubscribe());
   }
 
-  onDayChange(event: any) {
+  onDayChange(event: number | undefined) {
     this.day_.next(event);
   }
 
-  onMonthChange(event: any) {
+  onMonthChange(event: number | undefined) {
     this.month_.next(event);
   }
 
-  onYearChange(event: any) {
+  onYearChange(event: number | undefined) {
     this.year_.next(event);
   }
 
-  onHourChange(event: any) {
+  onHourChange(event: number | undefined) {
     this.hour_.next(event);
   }
 
-  onMinuteChange(event: any) {
+  onMinuteChange(event: number | undefined) {
     this.minute_.next(event);
   }
 
@@ -133,7 +133,11 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   subscribeAndPropagateChanges() {
     const dateFields: Segments = this.displayTime
       ? {
-        day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$,
+        day: this.day$,
+        month: this.month$,
+        year: this.year$,
+        hour: this.hour$,
+        minute: this.minute$,
       }
       : { day: this.day$, month: this.month$, year: this.year$ };
     return combineLatest(dateFields).subscribe({
@@ -152,7 +156,14 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
     });
   }
 
-  processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
+  processDate(
+    year: number | string | undefined,
+    month: number | string | undefined,
+    day: number | string | undefined,
+    hour: number | string | undefined,
+    minute: number | string | undefined,
+    second: number | string | undefined,
+  ) {
     if (this.isoDate) {
       return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
     }

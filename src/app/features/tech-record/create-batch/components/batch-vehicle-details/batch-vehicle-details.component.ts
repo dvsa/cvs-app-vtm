@@ -48,7 +48,9 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
       if (!vehicle) return this.back();
     });
 
-    this.batchTechRecordService.vehicleType$.pipe(take(1)).subscribe((vehicleType) => { (this.vehicleType = vehicleType); });
+    this.batchTechRecordService.vehicleType$.pipe(take(1)).subscribe((vehicleType) => {
+      this.vehicleType = vehicleType;
+    });
   }
   ngOnInit(): void {
     this.addVehicles(this.maxNumberOfVehicles);
@@ -130,8 +132,7 @@ export class BatchVehicleDetailsComponent implements OnInit, OnDestroy {
   }
 
   back(): void {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['..'], { relativeTo: this.route });
+    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   async handleSubmit(): Promise<void> {

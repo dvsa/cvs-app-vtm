@@ -1,6 +1,4 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { BodyTypeDescription } from '@models/body-type-enum';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
@@ -49,7 +47,6 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(BodyTypeDescription),
       validators: [{ name: ValidatorNames.Required }],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },

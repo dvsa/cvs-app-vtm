@@ -1,12 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordGETHGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import {
-  EuVehicleCategories,
   StatusCodes,
   TechRecordModel,
   V3TechRecordModel,
@@ -25,6 +25,7 @@ import {
   createVehicle,
   selectSectionState,
   selectTechRecord,
+  selectTechRecordHistory,
   techRecord,
   updateEditingTechRecord,
   updateEditingTechRecordCancel,
@@ -40,8 +41,8 @@ export class TechnicalRecordService {
 
   getVehicleTypeWithSmallTrl(technicalRecord: V3TechRecordModel): VehicleTypes {
     return technicalRecord.techRecord_vehicleType === VehicleTypes.TRL
-      && (technicalRecord.techRecord_euVehicleCategory === EuVehicleCategories.O1
-        || technicalRecord.techRecord_euVehicleCategory === EuVehicleCategories.O2)
+      && (technicalRecord.techRecord_euVehicleCategory === EUVehicleCategory.O1
+        || technicalRecord.techRecord_euVehicleCategory === EUVehicleCategory.O2)
       ? (VehicleTypes.SMALL_TRL as VehicleTypes)
       : (technicalRecord.techRecord_vehicleType as VehicleTypes);
   }
@@ -63,6 +64,9 @@ export class TechnicalRecordService {
         return (error.status === 404 && of(true)) || throwError(() => error);
       }),
     );
+  }
+  get techRecordHistory$(): Observable<TechRecordSearchSchema[] | undefined> {
+    return this.store.pipe(select(selectTechRecordHistory));
   }
 
   get techRecord$(): Observable<V3TechRecordModel | undefined> {

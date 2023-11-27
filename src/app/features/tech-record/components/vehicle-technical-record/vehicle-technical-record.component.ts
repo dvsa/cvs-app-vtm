@@ -14,8 +14,6 @@ import {
 } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { RouterService } from '@services/router/router.service';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { clearScrollPosition, updateTechRecordSuccess } from '@store/technical-records';
@@ -55,10 +53,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService,
     private actions$: Actions,
     private viewportScroller: ViewportScroller,
-    private routerService: RouterService,
   ) {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
@@ -70,8 +66,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.router.navigate([
+      void this.router.navigate([
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
       ]);
     });

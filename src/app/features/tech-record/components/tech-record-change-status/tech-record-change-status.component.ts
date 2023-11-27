@@ -46,13 +46,14 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
     });
 
     this.actions$.pipe(ofType(promoteTechRecordSuccess, archiveTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+      void this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
 
       this.technicalRecordService.clearEditingTechRecord();
     });
 
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => { this.isPromotion = params.get('to') === 'current'; });
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      this.isPromotion = params.get('to') === 'current';
+    });
   }
 
   ngOnDestroy(): void {
@@ -69,8 +70,7 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
   }
 
   navigateBack(relativePath = '..'): void {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate([relativePath], { relativeTo: this.route });
+    void this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string }): void {
@@ -78,11 +78,13 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.form.valid
-      ? this.errorService.clearErrors()
-      : this.errorService.setErrors([
+    if (this.form.valid) {
+      this.errorService.clearErrors();
+    } else {
+      this.errorService.setErrors([
         { error: `Reason for ${this.isPromotion ? 'promotion' : 'archiving'} is required`, anchorLink: 'reasonForAmend' },
       ]);
+    }
 
     if (!this.form.valid || !form.reason) {
       return;

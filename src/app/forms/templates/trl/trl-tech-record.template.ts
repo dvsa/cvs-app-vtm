@@ -1,8 +1,9 @@
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationTrl.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { CouplingTypeOptions } from '@models/coupling-type-enum';
-import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
-import { EuVehicleCategories, FrameDescriptions } from '@models/vehicle-tech-record.model';
+import { FrameDescriptions } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
@@ -38,8 +39,9 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
-
+      validators: [
+        { name: ValidatorNames.PastDate },
+      ],
       isoDate: false,
     },
     {
@@ -52,6 +54,7 @@ export const TrlTechRecordTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 },
+        { name: ValidatorNames.PastYear },
       ],
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
@@ -85,6 +88,7 @@ export const TrlTechRecordTemplate: FormNode = {
         { value: false, label: 'No' },
       ],
       class: 'flex--half',
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_suspensionType',
@@ -112,17 +116,7 @@ export const TrlTechRecordTemplate: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.SELECT,
       options: [
-        { label: 'motorbikes over 200cc or with a sidecar', value: 'motorbikes over 200cc or with a sidecar' },
-        { label: 'not applicable', value: 'not applicable' },
-        { label: 'small psv (ie: less than or equal to 22 passengers)', value: 'small psv (ie: less than or equal to 22 seats)' },
-        { label: 'motorbikes up to 200cc', value: 'motorbikes up to 200cc' },
         { label: 'trailer', value: 'trailer' },
-        { label: 'large psv(ie: greater than or equal to 23 passengers)', value: 'large psv(ie: greater than 23 seats)' },
-        { label: '3 wheelers', value: '3 wheelers' },
-        { label: 'heavy goods vehicle', value: 'heavy goods vehicle' },
-        { label: 'MOT class 4', value: 'MOT class 4' },
-        { label: 'MOT class 7', value: 'MOT class 7' },
-        { label: 'MOT class 5', value: 'MOT class 5' },
       ],
       validators: [{ name: ValidatorNames.Required }],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
@@ -156,7 +150,8 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
+      validators: [{ name: ValidatorNames.UpdateFunctionCode }],
+      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }, { colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_frameDescription',
@@ -184,8 +179,8 @@ export const TrlTechRecordTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories).filter(
-        (option) => option.value !== EuVehicleCategories.O1 && option.value !== EuVehicleCategories.O2,
+      options: getOptionsFromEnum(EUVehicleCategory).filter(
+        (option) => option.value !== EUVehicleCategory.O1 && option.value !== EUVehicleCategory.O2,
       ),
       width: FormNodeWidth.S,
     },
@@ -200,6 +195,13 @@ export const TrlTechRecordTemplate: FormNode = {
         { value: true, label: 'Yes' },
         { value: false, label: 'No' },
       ],
+    },
+    {
+      name: 'techRecord_functionCode',
+      label: 'Function code',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
     },
   ],
 };

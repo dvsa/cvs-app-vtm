@@ -30,7 +30,7 @@
         "arrow-body-style": "off",
         "padded-blocks": "off",
         "array-callback-return": "off",
-        "no-console": "warn",
+        "no-console": ["warn", { "allow": ["error"] }],
         "no-confusing-arrow": "off",
         "import/prefer-default-export": "off",
         "quotes": ["error", "single"],
@@ -41,7 +41,8 @@
         "@typescript-eslint/no-unsafe-member-access": "off",
         "@typescript-eslint/no-unsafe-return": "off",
         "@typescript-eslint/ban-types": "off",
-        "@typescript-eslint/restrict-template-expressions": "off"
+        "@typescript-eslint/restrict-template-expressions": "off",
+        "no-void": ["error", { "allowAsStatement": true }]
       }
     },
     {
@@ -65,7 +66,7 @@
         "arrow-body-style": "off",
         "padded-blocks": "off",
         "array-callback-return": "off",
-        "no-console": "warn",
+        "no-console": ["warn", { "allow": ["error"] }],
         "no-confusing-arrow": "off",
         "import/prefer-default-export": "off",
         "quotes": ["error", "single"],

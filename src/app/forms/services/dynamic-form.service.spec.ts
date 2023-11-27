@@ -1,17 +1,17 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import {
   AbstractControl, FormArray, ValidatorFn, Validators,
 } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {
-  CustomFormArray, CustomControl, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes,
-} from './dynamic-form.types';
 import { DynamicFormService } from './dynamic-form.service';
+import {
+  CustomControl, CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes,
+} from './dynamic-form.types';
 
 describe('DynamicFormService', () => {
   let service: DynamicFormService;
@@ -52,13 +52,14 @@ describe('DynamicFormService', () => {
       };
 
       const outputGroup = service.createForm(node);
+      const children = node.children as FormNode[];
 
       expect(
         (
           outputGroup.controls as {
             [key: string]: AbstractControl;
           }
-        )[node.children![0].name],
+        )[children[0].name],
       ).toBeTruthy();
     });
 
@@ -82,14 +83,17 @@ describe('DynamicFormService', () => {
         ],
       };
 
+      const children = node.children as FormNode[];
+      const grandChildren = children[0].children as FormNode[];
+
       const outputGroup = service.createForm(node);
       const subGroup = (
         outputGroup.controls as {
           [key: string]: AbstractControl;
         }
-      )[node.children![0].name] as CustomFormGroup;
+      )[children[0].name] as CustomFormGroup;
 
-      expect(subGroup.controls[node.children![0].children![0].name]).toBeTruthy();
+      expect(subGroup.controls[grandChildren[0].name]).toBeTruthy();
     });
 
     it('should return a formGroup with a nested FormArray', () => {
@@ -218,7 +222,7 @@ describe('DynamicFormService', () => {
   describe('addValidators', () => {
     it('should add validators', () => {
       const control: CustomControl = new CustomFormControl({ name: 'testControl', type: FormNodeTypes.CONTROL, children: [] });
-      const validators: Array<{ name: ValidatorNames; args?: any[] }> = [{ name: ValidatorNames.Required }];
+      const validators = [{ name: ValidatorNames.Required }];
       const expectedValidator: ValidatorFn = Validators.required;
       service.addValidators(control, validators);
       expect(control.hasValidator(expectedValidator)).toBeTruthy();

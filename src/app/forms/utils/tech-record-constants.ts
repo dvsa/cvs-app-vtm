@@ -35,6 +35,7 @@ import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.temp
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { AdrTemplate } from '@forms/templates/general/adr.template';
 
 // The map below initializes the array of sections that the *ngFor in tech summary component's template will iterate over.
 // The order in which each section is introduced in the array will determine its order on the page when rendered.
@@ -71,6 +72,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
       /*  9 */ tyresTemplateHgv,
       /* 10 */ HgvDimensionsTemplate,
       /* 11 */ PlatesTemplate,
+      /* 12 */ AdrTemplate,
     ],
   ],
   [
@@ -92,6 +94,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
       /* 14 */ PlatesTemplate,
       /* 15 */ TrlAuthIntoServiceTemplate,
       /* 16 */ ManufacturerTemplate,
+      /* 17 */ AdrTemplate,
     ],
   ],
   [
@@ -100,7 +103,7 @@ export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
   ],
   [
     VehicleTypes.LGV,
-    [TechRecordReasonForCreationSection, /* 2 */ LgvTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit],
+    [TechRecordReasonForCreationSection, /* 2 */ LgvTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit, /* 6 */ AdrTemplate],
   ],
   [
     VehicleTypes.CAR,

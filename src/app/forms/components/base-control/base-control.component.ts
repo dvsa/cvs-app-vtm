@@ -27,7 +27,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   @Input() noBottomMargin = false;
   @Input() warning?: string | null = null;
 
-  public onChange = (event: any) => {};
+  public onChange: (event: unknown) => void = () => {};
   public onTouched = () => {};
   public focused = false;
   public errorMessage?: string;
@@ -81,24 +81,24 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     switch (event.type) {
       case 'focus':
         this.focused = true;
-        break;
+        return true;
       case 'blur':
         this.focused = false;
-        break;
+        return false;
       default:
-        console.log('unhandled:', event);
+        return null;
     }
   }
 
-  writeValue(obj: any): void {
+  writeValue(obj: unknown): void {
     this.value = obj;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (event: unknown) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 

@@ -1,3 +1,5 @@
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -74,20 +76,6 @@ export enum FuelTypes {
   OTHER = 'Other',
 }
 
-export enum VehicleClassDescriptions {
-  MOTORBIKE_OVER_200CC = 'motorbikes over 200cc or with a sidecar',
-  NOT_APPLICABLE = 'not applicable',
-  SMALL_PSV = 'small psv (ie: less than or equal to 22 seats)',
-  MOTORBIKE_UPTO_200CC = 'motorbikes up to 200cc',
-  TRAILER = 'trailer',
-  LARGE_PSV = 'large psv(ie: greater than 23 seats)',
-  THREE_WHEELER = '3 wheelers',
-  HGV = 'heavy goods vehicle',
-  MOT_CLASS_4 = 'MOT class 4',
-  MOT_CLASS_5 = 'MOT class 5',
-  MOT_CLASS_7 = 'MOT class 7',
-}
-
 export enum VehicleConfigurations {
   RIGID = 'rigid',
   ARTICULATED = 'articulated',
@@ -113,27 +101,6 @@ export enum FrameDescriptions {
   INTEGRAL = 'integral',
   BOX_SECTION = 'Box section',
   U_SECTION = 'U section',
-}
-
-export enum EuVehicleCategories {
-  M1 = 'm1',
-  M2 = 'm2',
-  M3 = 'm3',
-  N1 = 'n1',
-  N2 = 'n2',
-  N3 = 'n3',
-  O1 = 'o1',
-  O2 = 'o2',
-  O3 = 'o3',
-  O4 = 'o4',
-  L1E_A = 'l1e-a',
-  L1E = 'l1e',
-  L2E = 'l2e',
-  L3E = 'l3e',
-  L4E = 'l4e',
-  L5E = 'l5e',
-  L6E = 'l6e',
-  L7E = 'l7e',
 }
 
 export enum VehicleSizes {
@@ -163,23 +130,6 @@ export interface LettersOfAuth {
   letterContents: string;
 }
 
-export enum approvalType {
-  NTA = 'NTA',
-  ECTA = 'ECTA',
-  IVA = 'IVA',
-  NSSTA = 'NSSTA',
-  ECSSTA = 'ECSSTA',
-  GB_WVTA = 'GB WVTA',
-  UKNI_WVTA = 'UKNI WVTA',
-  EU_WVTA_PRE_23 = 'EU WVTA Pre 23',
-  EU_WVTA_23_ON = 'EU WVTA 23 on',
-  QNIG = 'QNIG',
-  PROV_GB_WVTA = 'Prov.GB WVTA',
-  SMALL_SERIES = 'Small series',
-  IVA_VCA = 'IVA - VCA',
-  IVA_DVSA_NI = 'IVA - DVSA/NI',
-}
-
 export enum LettersIntoAuthApprovalType {
   GB_WVTA = 'GB WVTA',
   UKNI_WVTA = 'UKNI WVTA',
@@ -187,7 +137,8 @@ export enum LettersIntoAuthApprovalType {
   EU_WVTA_23_ON = 'EU WVTA 23 on',
   QNIG = 'QNIG',
   PROV_GB_WVTA = 'Prov.GB WVTA',
-  SMALL_SERIES = 'Small series',
+  SMALL_SERIES_NKSXX = 'Small series NKSXX',
+  SMALL_SERIES_NKS = 'Small series NKS',
   IVA_VCA = 'IVA - VCA',
   IVA_DVSA_NI = 'IVA - DVSA/NI',
 }
@@ -310,7 +261,7 @@ export interface TechRecordModel {
   frameDescription?: FrameDescriptions;
   offRoad?: boolean;
   numberOfWheelsDriven?: number;
-  euVehicleCategory?: EuVehicleCategories;
+  euVehicleCategory?: EUVehicleCategory;
   emissionsLimit?: number;
   seatsLowerDeck?: number;
   seatsUpperDeck?: number;
@@ -319,7 +270,7 @@ export interface TechRecordModel {
   numberOfSeatbelts?: string;
   seatbeltInstallationApprovalDate?: string;
   departmentalVehicleMarker?: boolean;
-  approvalType?: approvalType;
+  approvalType?: ApprovalType;
   approvalTypeNumber?: string;
   ntaNumber?: string;
   coifSerialNumber?: string;

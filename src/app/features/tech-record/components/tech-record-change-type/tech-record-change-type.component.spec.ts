@@ -18,12 +18,15 @@ import { changeVehicleType } from '@store/technical-records';
 import { ReplaySubject, of } from 'rxjs';
 import { ChangeVehicleTypeComponent } from './tech-record-change-type.component';
 
+const mockGetVehicleType = jest.fn();
+
 const mockTechRecordService = {
   get techRecord$() {
     return of({});
   },
   getMakeAndModel: jest.fn(),
   clearReasonForCreation: jest.fn(),
+  getVehicleTypeWithSmallTrl: mockGetVehicleType,
 };
 
 const mockDynamicFormService = {
@@ -78,9 +81,8 @@ describe('TechRecordChangeTypeComponent', () => {
 
   describe('makeAndModel', () => {
     it('should should return the make and model', () => {
-      const expectedMakeModel = `${(expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisMake!} - ${
-        (expectedTechRecord as TechRecordType<'psv'>).techRecord_chassisModel!
-      }`;
+      const techRecord = expectedTechRecord as TechRecordType<'psv'>;
+      const expectedMakeModel = `${techRecord.techRecord_chassisMake} - ${techRecord.techRecord_chassisModel}`;
 
       jest.spyOn(mockTechRecordService, 'getMakeAndModel').mockReturnValueOnce(expectedMakeModel);
 
@@ -101,6 +103,7 @@ describe('TechRecordChangeTypeComponent', () => {
   describe('vehicleTypeOptions', () => {
     it('should return all types except for the current one', () => {
       component.techRecord = expectedTechRecord;
+      mockGetVehicleType.mockReturnValue('psv');
       const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter((type) => type.value !== VehicleTypes.PSV);
       expect(component.vehicleTypeOptions).toStrictEqual(expectedOptions);
     });

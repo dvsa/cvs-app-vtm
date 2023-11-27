@@ -1,13 +1,16 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { RoleRequiredDirective } from '@directives/app-role-required.directive';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { Roles } from '@models/roles.enum';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { UserService } from '@services/user-service/user-service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { initialAppState } from '@store/.';
+import { of } from 'rxjs';
 import { ReferenceDataSelectTypeComponent } from './reference-data-select-type.component';
 
 describe('ReferenceDataComponent', () => {
@@ -18,9 +21,12 @@ describe('ReferenceDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ReferenceDataSelectTypeComponent],
+      declarations: [ReferenceDataSelectTypeComponent, RoleRequiredDirective],
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, { provide: UserService, useValue: {} }],
+      providers: [
+        provideMockStore({ initialState: initialAppState }),
+        ReferenceDataService, { provide: UserService, useValue: { roles$: of(Object.values(Roles)) } },
+      ],
     }).compileComponents();
   });
 

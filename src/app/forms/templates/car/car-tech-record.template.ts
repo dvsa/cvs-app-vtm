@@ -1,10 +1,12 @@
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationLightVehicle.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
-  TagTypeLabels, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+  TagTypeLabels,
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
-import { EuVehicleCategories, VehicleSubclass } from '@models/vehicle-tech-record.model';
+import { VehicleSubclass } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
 
 export const CarTechRecord: FormNode = {
@@ -49,6 +51,7 @@ export const CarTechRecord: FormNode = {
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 },
+        { name: ValidatorNames.PastYear },
       ],
     },
     {
@@ -86,7 +89,7 @@ export const CarTechRecord: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(EuVehicleCategories),
+      options: getOptionsFromEnum(EUVehicleCategory),
       width: FormNodeWidth.S,
     },
   ],

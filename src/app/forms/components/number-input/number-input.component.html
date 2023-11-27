@@ -7,13 +7,13 @@
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
-
+  <app-field-warning-message [warningMessage]="getWarningMessage"></app-field-warning-message>
   <div class="govuk-input__wrapper">
     <div *ngIf="prefix" class="govuk-input__suffix prefix" aria-hidden="true">
       <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>
     </div>
-
     <input
+      *ngIf="!enableDecimals"
       id="{{ name }}"
       name="{{ name }}"
       type="number"
@@ -24,6 +24,18 @@
       (blur)="onTouched(); handleEvent($event)"
       (focus)="handleEvent($event)"
       appNumberOnly
+    />
+    <input
+      *ngIf="enableDecimals"
+      id="{{ name }}"
+      name="{{ name }}"
+      type="number"
+      [class]="style"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      (ngModelChange)="onChange($event)"
+      (blur)="onTouched(); handleEvent($event)"
+      (focus)="handleEvent($event)"
     />
 
     <div *ngIf="suffix" class="govuk-input__suffix" aria-hidden="true">

@@ -1,6 +1,6 @@
+import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { approvalType } from '@models/vehicle-tech-record.model';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels,
@@ -16,16 +16,14 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       label: 'Approval type',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(approvalType),
-      validators: [],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
+      options: getOptionsFromEnum(ApprovalType),
+      validators: [{ name: ValidatorNames.IsMemberOfEnum, args: { enum: ApprovalType, options: { allowFalsy: true } } }],
     },
     {
       name: 'techRecord_approvalTypeNumber',
       label: 'Approval type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,
@@ -43,7 +41,8 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
               'EU WVTA 23 on',
               'QNIG',
               'Prov.GB WVTA',
-              'Small series',
+              'Small series NKSXX',
+              'Small series NKS',
               'IVA - VCA',
               'IVA - DVSA/NI',
             ],

@@ -38,12 +38,12 @@ describe('BaseControlComponent', () => {
     });
 
     it('should register a change', () => {
-      component.registerOnChange('FUNCTION');
+      component.registerOnChange('FUNCTION' as unknown as () => void);
       expect(component.onChange).toBe('FUNCTION');
     });
 
     it('should register it has been touched', () => {
-      component.registerOnTouched('FUNCTION');
+      component.registerOnTouched('FUNCTION' as unknown as () => void);
       expect(component.onTouched).toBe('FUNCTION');
     });
 
@@ -78,10 +78,10 @@ describe('BaseControlComponent', () => {
       component.handleEvent(new Event('blur'));
       expect(component.focused).toBeFalsy();
 
-      console.log = jest.fn();
-      const expectedEvent = new Event('submit');
-      component.handleEvent(expectedEvent);
-      expect(console.log).toHaveBeenCalledWith('unhandled:', expectedEvent);
+      const handleEventSpy = jest.spyOn(component, 'handleEvent');
+      const state = component.handleEvent(new Event('submit'));
+      expect(handleEventSpy).toHaveBeenCalled();
+      expect(state).toBeNull();
     });
 
     describe('interacting with the value', () => {

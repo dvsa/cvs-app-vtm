@@ -125,7 +125,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   private subscribeToFormChanges(): void {
     this._formSubscription.add(
-      this.form.valueChanges.subscribe((event: any) => {
+      this.form.valueChanges.subscribe((event) => {
         if (event?.techRecord_grossLadenWeight) {
           (this.vehicleTechRecord as TechRecordType<'psv'>).techRecord_grossLadenWeight = event.techRecord_grossLadenWeight;
           this.form.patchValue({ techRecord_grossLadenWeight: event.techRecord_grossLadenWeight }, { emitEvent: false });
@@ -152,7 +152,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private determineRecalculationNeeded(event: any): boolean {
+  private determineRecalculationNeeded(event: Record<string, unknown>): boolean {
     return ['techRecord_seatsUpperDeck', 'techRecord_seatsLowerDeck', 'techRecord_manufactureYear', 'techRecord_grossKerbWeight'].some(
       (field) => event[`${field}`] !== undefined,
     );
@@ -187,8 +187,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   removeAxle(index: number): void {
     const minLength = this.isTrl ? 1 : 2;
+    const axles = this.vehicleTechRecord.techRecord_axles;
 
-    if (this.vehicleTechRecord.techRecord_axles!.length > minLength) {
+    if (axles && axles.length > minLength) {
       this.isError = false;
       this.store.dispatch(removeAxle({ index }));
     } else {

@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
-import { axleRequiredFields, hgvRequiredFields, trlRequiredFields } from '@forms/models/plateRequiredFields.model';
+import { hgvRequiredFields, trlRequiredFields } from '@forms/models/plateRequiredFields.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
@@ -71,7 +71,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get sortedPlates(): HGVPlates[] | TRLPlates[] | undefined {
-    return cloneDeep(this.techRecord.techRecord_plates)?.sort((a: any, b: any) =>
+    return cloneDeep(this.techRecord.techRecord_plates)?.sort((a, b) =>
       a.plateIssueDate && b.plateIssueDate ? new Date(b.plateIssueDate).getTime() - new Date(a.plateIssueDate).getTime() : 0);
   }
 
@@ -79,9 +79,9 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     return this.sortedPlates?.slice(this.pageStart, this.pageEnd) ?? [];
   }
 
-  get mostRecentPlate(): any | undefined {
+  get mostRecentPlate() {
     return cloneDeep(this.techRecord.techRecord_plates)
-      ?.sort((a: any, b: any) =>
+      ?.sort((a, b) =>
         a.plateIssueDate && b.plateIssueDate ? new Date(a.plateIssueDate).getTime() - new Date(b.plateIssueDate).getTime() : 0)
       ?.pop();
   }
@@ -109,7 +109,6 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       return `plate_${this.mostRecentPlate.plateSerialNumber}`;
     }
     throw new Error('Could not find plate.');
-
   }
 
   get eligibleForPlates(): boolean {
@@ -138,8 +137,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     }
     this.store.dispatch(canGeneratePlate());
     this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['generate-plate'], { relativeTo: this.route });
+    void this.router.navigate(['generate-plate'], { relativeTo: this.route });
   }
 
   private cannotGeneratePlate(plateRequiredFields: string[]): boolean {
@@ -147,12 +145,11 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       const value = this.techRecord[field as keyof HgvOrTrl];
       return value === undefined || value === null || value === '';
     });
-    const areAxlesInvalid = this.techRecord.techRecord_axles?.some((axle) =>
-      axleRequiredFields.some((field) => {
-        const value = (axle as any)[`${field}`];
-        return value === undefined || value === null || value === '';
-      }));
 
-    return isOneFieldEmpty || !this.techRecord.techRecord_axles?.length || !!areAxlesInvalid;
+    // Only gbWeight of Axle 1 is required
+    const { techRecord_noOfAxles: noOfAxles, techRecord_axles: axles } = this.techRecord;
+    const areAxlesInvalid = !noOfAxles || noOfAxles < 1 || !axles || axles[0].weights_gbWeight == null;
+
+    return isOneFieldEmpty || areAxlesInvalid;
   }
 }
