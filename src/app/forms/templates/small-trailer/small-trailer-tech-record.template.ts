@@ -42,7 +42,6 @@ export const SmallTrailerTechRecord: FormNode = {
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 },
-        { name: ValidatorNames.PastYear },
       ],
     },
     {

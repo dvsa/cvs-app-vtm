@@ -1,4 +1,3 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes,
 } from '../../services/dynamic-form.types';
@@ -15,9 +14,6 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       isoDate: false,
-      validators: [
-        { name: ValidatorNames.PastDate },
-      ],
     },
     {
       name: 'techRecord_authIntoService_dateReceived',
@@ -26,9 +22,6 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       isoDate: false,
-      validators: [
-        { name: ValidatorNames.PastDate },
-      ],
     },
     {
       name: 'techRecord_authIntoService_datePending',
@@ -45,9 +38,6 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       isoDate: false,
-      validators: [
-        { name: ValidatorNames.PastDate },
-      ],
     },
     {
       name: 'techRecord_authIntoService_dateRejected',
@@ -56,9 +46,6 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       isoDate: false,
-      validators: [
-        { name: ValidatorNames.PastDate },
-      ],
     },
   ],
 };

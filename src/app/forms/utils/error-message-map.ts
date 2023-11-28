@@ -20,7 +20,6 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
     `${label || 'This date'} must be less than ${err.months || 'X'} months after ${err.sibling || 'the previous date'}`,
   [ValidatorNames.Defined]: (err: boolean, label?: string) => `${label} is required`,
   [ValidatorNames.FutureDate]: (err: boolean, label?: string) => `${label || 'This date'} must be in the future`,
-  [ValidatorNames.PastYear]: (err: boolean, label?: string) => `${label || 'This year'} must be the current or a past year`,
   [ValidatorNames.Max]: (err: { max: number }, label?: string) => `${label || DEFAULT_LABEL} must be less than or equal to ${err.max}`,
   [ValidatorNames.MaxLength]: (err: { requiredLength: number }, label?: string) =>
     `${label || DEFAULT_LABEL} must be less than or equal to ${err.requiredLength} characters`,

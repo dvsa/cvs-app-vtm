@@ -40,9 +40,7 @@ export const TrlTechRecordTemplate: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
-      validators: [
-        { name: ValidatorNames.PastDate },
-      ],
+
       isoDate: false,
     },
     {
@@ -55,7 +53,6 @@ export const TrlTechRecordTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 },
-        { name: ValidatorNames.PastYear },
       ],
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
