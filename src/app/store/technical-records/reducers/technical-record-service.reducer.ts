@@ -25,7 +25,6 @@ import {
   archiveTechRecordSuccess,
   canGeneratePlate,
   cannotGeneratePlate,
-  clearADRDetailsBeforeUpdate,
   clearAllSectionStates,
   clearScrollPosition,
   createVehicleRecord,
@@ -163,8 +162,6 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(updateScrollPosition, (state, action) => ({ ...state, scrollPosition: action.position })),
   on(clearScrollPosition, (state) => ({ ...state, scrollPosition: [0, 0] as [number, number] })),
-
-  on(clearADRDetailsBeforeUpdate, (state) => handleClearADRDetails(state)),
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
@@ -342,65 +339,4 @@ function updateEditingTechRec(state: TechnicalRecordServiceState, action: { vehi
   newState.editingTechRecord = { ...editingTechRecord, ...vehicleTechRecord } as TechRecordType<'put'>;
 
   return newState;
-}
-
-function handleClearADRDetails(state: TechnicalRecordServiceState) {
-  const { editingTechRecord } = state;
-
-  if (editingTechRecord) {
-    const { techRecord_vehicleType: type } = editingTechRecord;
-    if (type === VehicleTypes.HGV || type === VehicleTypes.TRL || type === VehicleTypes.LGV) {
-      if (!editingTechRecord.techRecord_adrDetails_dangerousGoods) {
-        // vehicle doesn't carry dangerous goods so null this information
-        return {
-          ...state,
-          editingTechRecord: {
-            ...editingTechRecord,
-            techRecord_adrDetails_vehicleDetails_type: null,
-            techRecord_adrDetails_vehicleDetails_approvalDate: null,
-            techRecord_adrDetails_permittedDangerousGoods: null,
-            techRecord_adrDetails_compatibilityGroupJ: null,
-            techRecord_adrDetails_additionalExaminerNotes: null,
-            techRecord_adrDetails_applicantDetails_name: null,
-            techRecord_adrDetails_applicantDetails_street: null,
-            techRecord_adrDetails_applicantDetails_town: null,
-            techRecord_adrDetails_applicantDetails_city: null,
-            techRecord_adrDetails_applicantDetails_postcode: null,
-            techRecord_adrDetails_memosApply: null,
-            techRecord_adrDetails_documents: null,
-            techRecord_adrDetails_listStatementApplicable: null,
-            techRecord_adrDetails_batteryListNumber: null,
-            techRecord_adrDetails_brakeDeclarationsSeen: null,
-            techRecord_adrDetails_brakeDeclarationIssuer: null,
-            techRecord_adrDetails_brakeEndurance: null,
-            techRecord_adrDetails_weight: null,
-            techRecord_adrDetails_declarationsSeen: null,
-            techRecord_adrDetails_additionalNotes_guidanceNotes: null,
-            techRecord_adrDetails_additionalNotes_number: null,
-            techRecord_adrDetails_adrTypeApprovalNo: null,
-            techRecord_adrDetails_adrCertificateNotes: null,
-            techRecord_adrDetails_tank_tankDetails_tankManufacturer: null,
-            techRecord_adrDetails_tank_tankDetails_yearOfManufacture: null,
-            techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: null,
-            techRecord_adrDetails_tank_tankDetails_tankTypeAppNo: null,
-            techRecord_adrDetails_tank_tankDetails_tankCode: null,
-            techRecord_adrDetails_tank_tankDetails_specialProvisions: null,
-            techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: null,
-            techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: null,
-            techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: null,
-            techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type: null,
-            techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicNumber: null,
-            techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicExpiryDate: null,
-            techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: null,
-            techRecord_adrDetails_tank_tankDetails_tankStatement_statement: null,
-            techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
-            techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: null,
-            techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
-          },
-        };
-      }
-    }
-  }
-
-  return { ...state };
 }

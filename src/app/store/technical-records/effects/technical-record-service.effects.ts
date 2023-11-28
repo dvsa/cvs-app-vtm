@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordGETHGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
@@ -17,9 +16,8 @@ import { cloneDeep, merge } from 'lodash';
 import {
   catchError, concatMap, map, mergeMap, of, switchMap, tap, withLatestFrom,
 } from 'rxjs';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import {
-  amendVin,
-  amendVinSuccess,
   amendVrm,
   amendVrmFailure,
   amendVrmSuccess,
@@ -46,12 +44,14 @@ import {
   promoteTechRecord,
   promoteTechRecordFailure,
   promoteTechRecordSuccess,
-  unarchiveTechRecord,
-  unarchiveTechRecordFailure,
-  unarchiveTechRecordSuccess,
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess,
+  unarchiveTechRecord,
+  unarchiveTechRecordFailure,
+  unarchiveTechRecordSuccess,
+  amendVin,
+  amendVinSuccess,
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord, selectTechRecord } from '../selectors/technical-record-service.selectors';
 

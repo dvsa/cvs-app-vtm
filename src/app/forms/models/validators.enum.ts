@@ -31,7 +31,4 @@ export enum ValidatorNames {
   HandlePsvPassengersChange = 'HandlePsvPassengersChange',
   IsMemberOfEnum = 'isMemberOfEnum',
   UpdateFunctionCode = 'updateFunctionCode',
-  ShowGroupsWhenEqualTo = 'showGroupsWhenEqualTo',
-  HideGroupsWhenEqualTo = 'hideGroupsWhenEqualTo',
-  AddWarningForAdrField = 'addWarningForAdrField',
 }

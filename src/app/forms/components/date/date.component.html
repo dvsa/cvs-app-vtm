@@ -9,11 +9,6 @@
       [error]="error"
       [name]="name"
     ></app-field-error-message>
-    <app-field-error-message
-      *ngIf="formSubmitted || (dayEl.touched && monthEl.touched && yearEl.touched)"
-      [error]="warning"
-      [name]="name"
-    ></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">

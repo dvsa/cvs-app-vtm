@@ -1,11 +1,6 @@
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import {
-  TechRecordPUTHGV, TechRecordPUTLGV, TechRecordPUTTRL, TechRecordType as TechRecordTypeVehicleVerb,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { createMockHgv } from '@mocks/hgv-record.mock';
-import { createMockLgv } from '@mocks/lgv-record.mock';
-import { createMockTrl } from '@mocks/trl-record.mock';
+import { TechRecordType as TechRecordTypeVehicleVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { BodyTypeCode, BodyTypeDescription } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -16,7 +11,6 @@ import {
   archiveTechRecord,
   archiveTechRecordFailure,
   archiveTechRecordSuccess,
-  clearADRDetailsBeforeUpdate,
   clearAllSectionStates,
   clearScrollPosition,
   createVehicleRecord,
@@ -491,68 +485,5 @@ describe('Vehicle Technical Record Reducer', () => {
         expect(newState.scrollPosition).toEqual([0, 0]);
       });
     });
-  });
-
-  describe('clear the all techRecord properties with an adr suffix', () => {
-    it('should set all ADR fields to null when: vehicleType = HGV and dangerousGoods = false', () => {
-      initialState.editingTechRecord = createMockHgv(1234) as TechRecordPUTHGV;
-      initialState.editingTechRecord.techRecord_adrDetails_dangerousGoods = false;
-      initialState.editingTechRecord.techRecord_adrDetails_applicantDetails_city = 'Test City';
-
-      const newState = vehicleTechRecordReducer(initialState, clearADRDetailsBeforeUpdate());
-      expect(newState.editingTechRecord).toBeDefined();
-      expect((newState.editingTechRecord as TechRecordPUTHGV).techRecord_adrDetails_applicantDetails_city).toBeNull();
-    });
-
-    it('should set all ADR fields to null when: vehicleType = TRL and dangerousGoods = false', () => {
-      initialState.editingTechRecord = createMockTrl(1234) as TechRecordPUTTRL;
-      initialState.editingTechRecord.techRecord_adrDetails_dangerousGoods = false;
-      initialState.editingTechRecord.techRecord_adrDetails_applicantDetails_street = 'Test Street';
-
-      const newState = vehicleTechRecordReducer(initialState, clearADRDetailsBeforeUpdate());
-      expect(newState.editingTechRecord).toBeDefined();
-      expect((newState.editingTechRecord as TechRecordPUTTRL).techRecord_adrDetails_applicantDetails_street).toBeNull();
-    });
-
-    it('should set all ADR fields to null when: vehicleType = LGV and dangerousGoods = false', () => {
-      initialState.editingTechRecord = createMockLgv(1234) as TechRecordPUTLGV;
-      initialState.editingTechRecord.techRecord_adrDetails_dangerousGoods = false;
-      initialState.editingTechRecord.techRecord_adrDetails_adrCertificateNotes = 'Test notes';
-
-      const newState = vehicleTechRecordReducer(initialState, clearADRDetailsBeforeUpdate());
-      expect(newState.editingTechRecord).toBeDefined();
-      expect((newState.editingTechRecord as TechRecordPUTLGV).techRecord_adrDetails_applicantDetails_street).toBeNull();
-    });
-
-    it('should not set all ADR fields to null when: vehicleType = HGV and dangerousGoods = true', () => {
-      initialState.editingTechRecord = createMockHgv(1234) as TechRecordPUTHGV;
-      initialState.editingTechRecord.techRecord_adrDetails_dangerousGoods = true;
-      initialState.editingTechRecord.techRecord_adrDetails_applicantDetails_town = 'Test Town';
-
-      const newState = vehicleTechRecordReducer(initialState, clearADRDetailsBeforeUpdate());
-      expect(newState.editingTechRecord).toBeDefined();
-      expect((newState.editingTechRecord as TechRecordPUTHGV).techRecord_adrDetails_applicantDetails_town).toBe('Test Town');
-    });
-
-    it('should not set all ADR fields to null when: vehicleType = TRL and dangerousGoods = true', () => {
-      initialState.editingTechRecord = createMockTrl(1234) as TechRecordPUTTRL;
-      initialState.editingTechRecord.techRecord_adrDetails_dangerousGoods = true;
-      initialState.editingTechRecord.techRecord_adrDetails_applicantDetails_postcode = 'Test Postcode';
-
-      const newState = vehicleTechRecordReducer(initialState, clearADRDetailsBeforeUpdate());
-      expect(newState.editingTechRecord).toBeDefined();
-      expect((newState.editingTechRecord as TechRecordPUTTRL).techRecord_adrDetails_applicantDetails_postcode).toBe('Test Postcode');
-    });
-
-    it('should not set all ADR fields to null when: vehicleType = LGV and dangerousGoods = true', () => {
-      initialState.editingTechRecord = createMockLgv(1234) as TechRecordPUTLGV;
-      initialState.editingTechRecord.techRecord_adrDetails_dangerousGoods = true;
-      initialState.editingTechRecord.techRecord_adrDetails_adrCertificateNotes = 'Test notes';
-
-      const newState = vehicleTechRecordReducer(initialState, clearADRDetailsBeforeUpdate());
-      expect(newState.editingTechRecord).toBeDefined();
-      expect((newState.editingTechRecord as TechRecordPUTLGV).techRecord_adrDetails_adrCertificateNotes).toBe('Test notes');
-    });
-
   });
 });

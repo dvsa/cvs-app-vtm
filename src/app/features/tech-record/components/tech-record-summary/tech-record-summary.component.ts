@@ -1,14 +1,6 @@
 import { ViewportScroller } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-  QueryList,
-  ViewChild,
-  ViewChildren,
+  ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -17,7 +9,6 @@ import { GlobalWarning } from '@core/components/global-warning/global-warning.in
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { AdrComponent } from '@forms/custom-sections/adr/adr.component';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
@@ -41,7 +32,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import {
-  debounceTime, map, Observable, Subject, take, takeUntil,
+  Observable, Subject, debounceTime, map, take, takeUntil,
 } from 'rxjs';
 
 @Component({
@@ -60,7 +51,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
   @ViewChild(LettersComponent) letters!: LettersComponent;
   @ViewChild(ApprovalTypeComponent) approvalType!: ApprovalTypeComponent;
-  @ViewChild(AdrComponent) adr!: AdrComponent;
 
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
@@ -185,23 +175,15 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const commonCustomSections = [
-      this.body?.form,
-      this.dimensions?.form,
-      this.tyres?.form,
-      this.weights?.form,
-      this.approvalType?.form,
-    ];
+    const commonCustomSections = [this.body?.form, this.dimensions?.form, this.tyres?.form, this.weights?.form, this.approvalType?.form];
 
     switch (this.vehicleType) {
       case VehicleTypes.PSV:
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
-        return [...commonCustomSections, this.adr.form];
+        return commonCustomSections;
       case VehicleTypes.TRL:
-        return [...commonCustomSections, this.trlBrakes!.form, this.letters.form, this.adr.form];
-      case VehicleTypes.LGV:
-        return [...commonCustomSections, this.adr.form];
+        return [...commonCustomSections, this.trlBrakes!.form, this.letters.form];
       default:
         return [];
     }
@@ -211,6 +193,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     const isPrimitiveArray = (a: unknown, b: unknown) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
 
     this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
+
     this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
   }
 

@@ -48,8 +48,6 @@ import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.direct
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
 import { FieldWarningMessageComponent } from './components/field-warning-message/field-warning-message.component';
-import { AdrComponent } from './custom-sections/adr/adr.component';
-import { NestingLevelDirective } from './directives/nesting-level/nesting-level.directive';
 
 @NgModule({
   declarations: [
@@ -99,8 +97,6 @@ import { NestingLevelDirective } from './directives/nesting-level/nesting-level.
     ApprovalTypeFocusNextDirective,
     ModifiedWeightsComponent,
     FieldWarningMessageComponent,
-    AdrComponent,
-    NestingLevelDirective,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -145,7 +141,6 @@ import { NestingLevelDirective } from './directives/nesting-level/nesting-level.
     ApprovalTypeInputComponent,
     ApprovalTypeFocusNextDirective,
     ModifiedWeightsComponent,
-    AdrComponent,
   ],
 })
 export class DynamicFormsModule {}

@@ -96,8 +96,6 @@ export const clearAllSectionStates = createAction(`${prefix} clearAllSectionStat
 export const updateScrollPosition = createAction(`${prefix} updateScrollPosition`, props<{ position: [number, number] }>());
 export const clearScrollPosition = createAction(`${prefix} clearScrollPosition`);
 
-export const clearADRDetailsBeforeUpdate = createAction(`${prefix} clearADRDetailsBeforeUpdate`);
-
 function createOutcomeAction<T extends boolean>(
   title: string,
   isSuccess: T,

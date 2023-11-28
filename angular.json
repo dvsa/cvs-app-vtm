@@ -12,11 +12,9 @@
         "@schematics/angular:application": {
           "strict": true
         },
-        "@schematics/angular:directive": {
-          "flat": false
-        },
         "@schematics/angular:resolver": {
-          "functional": true
+          "functional": true,
+          "flat": false
         }
       },
       "root": "",
