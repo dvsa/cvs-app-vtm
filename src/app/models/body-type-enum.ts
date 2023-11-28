@@ -106,7 +106,7 @@ export const vehicleBodyTypeCodeMap = new Map<string, Map<BodyTypeCode, BodyType
 
 export const vehicleBodyTypeDescriptionMap = new Map<string, Map<BodyTypeDescription, BodyTypeCode>>([
   ['psv', new Map([...psvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
+  ['hgv', new Map([...hgvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
   ['trl', new Map([...trlBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
-  ['rigidHgv', new Map([...hgvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
-  ['articulatedHgv', new Map([...articulatedHgvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
+  ['rigidHgv', new Map([...articulatedHgvBodyTypeCodeMap.entries()].map(([k, v]) => [v, k]))],
 ]);

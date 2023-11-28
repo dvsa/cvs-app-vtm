@@ -105,7 +105,6 @@ describe('BodyComponent', () => {
           techRecord_chassisMake: 'chassisType',
           techRecord_vehicleConfiguration: 'articulated',
           techRecord_vehicleType: 'hgv',
-          techRecord_bodyType_code: 'a',
           vin: 'testVin',
         },
       }));
