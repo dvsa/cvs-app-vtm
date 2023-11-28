@@ -1,7 +1,18 @@
-name: Deploy
-
+name: VTM Build
 on:
-  push
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+      branch:
+        type: string
+        required: true
+    secrets:
+      AWS_MGMT_ROLE:
+        required: true
+      SENTRY_AUTH_TOKEN:
+        required: true
 
 permissions:
   id-token: write
@@ -9,6 +20,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Audit
+      - name: Run audit
         run: npm audit --audit-level=critical
 
 #      - name: Security checks
@@ -35,28 +47,41 @@ jobs:
           aws-region: eu-west-1
           role-session-name: GHA-VTMDeploy
 
-      - name: branch name
-        run: echo running on branch ${GITHUB_REF##*/#}, ${GITHUB_REF##*}, ${GITHUB_REF#refs/heads/}, ${GITHUB_REF#refs/heads/*}, ${GITHUB_REF#refs/*/}, ${GITHUB_REF#refs/#/*/}
-
-      - name: Echo Env Vars through Context
-        run: |
-          echo "$GITHUB_CONTEXT"
-
       - name: Get app config from AWS Secrets Manager
-        run: aws secretsmanager get-secret-value --secret-id (feature/develop/preprod/prod) /vtm/config --query SecretString --region=eu-west-1 --output text > src/environments/environment.deploy.ts
-#        if (ENVIRONMENT=="feature"){
-#        sh "sed  -i\'\' -e \'s/BRANCH/\'${LBRANCH}\'/g\' src/environments/environment.deploy.ts"
+        run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment }}/vtm/config --query SecretString --region=eu-west-1 --output text > src/environments/environment.deploy.ts
 
-#        Need to pull in/set SENTRY_AUTH_TOKEN value?
+      - name: Make branch lowercase
+        env:
+          SHORT_BRANCH: ${{ inputs.branch }}
+        run: |
+          SHORT_BRANCH=${SHORT_BRANCH##*/}
+          echo "SHORT_BRANCH=${SHORT_BRANCH,,}" >>${GITHUB_ENV}
+
+      - name: Update environment config
+        if: ${{ inputs.environment == 'feature' }}
+        run: |
+          sed  -i 's/BRANCH/'${SHORT_BRANCH}'/g' src/environments/environment.deploy.ts
 
       - name: Build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: npm run build -- --configuration='deploy' --output-path='dist/'
 
       - name: Sonar Scanner
-        run: npm run sonar-scanner
+#        run: npm run sonar-scanner # sonar-scanner not installed on ubuntu runner
+        run: npn run test
+
+  deploy_infra:
+    uses: https://github.com/dvsa/cvs-tf-vtm/.github/workflows/deploy_infra.yml
+    with:
+      branch: ${{ github.ref_name }}
+      environment: 'feature'
+    secrets:
+      AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
+      # deploy the Terraform for this branch.....
 
   deploy_app:
-    needs: build
+    needs: [build, deploy_infra]
     runs-on: ubuntu-latest
     steps:
       - name: Get AWS Credentials

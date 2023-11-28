@@ -9,7 +9,10 @@ on:
 
 jobs:
   develop-build:
-    uses: ./.github/workflows/deploy2.yml
+    uses: ./.github/workflows/deploy.yml
     with:
       branch: ${{ github.ref_name }}
       environment: 'develop'
+    secrets:
+      AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
