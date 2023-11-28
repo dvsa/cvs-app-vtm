@@ -188,10 +188,11 @@ export class TechnicalRecordServiceEffects {
 
           if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
             techRecord.techRecord_vehicleType = VehicleTypes.TRL;
-            (techRecord as TechRecordGETTRL).techRecord_euVehicleCategory = EUVehicleCategory.O1;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (techRecord as any).euVehicleCategory = EUVehicleCategory.O1;
           }
           if (techRecord.techRecord_vehicleType === VehicleTypes.HGV || techRecord.techRecord_vehicleType === VehicleTypes.PSV) {
-            (techRecord as TechRecordGETHGV | TechRecordGETPSV).techRecord_vehicleConfiguration = null;
+            (techRecord as any).techRecord_vehicleConfiguration = null;
           }
           if (techRecord_vehicleType === VehicleTypes.HGV) {
             (techRecord as TechRecordGETHGV).techRecord_vehicleClass_description = VehicleClassDescription.HeavyGoodsVehicle;
@@ -223,7 +224,8 @@ export class TechnicalRecordServiceEffects {
 
           if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
             techRecord.techRecord_vehicleType = VehicleTypes.TRL;
-            (techRecord as TechRecordGETTRL).techRecord_euVehicleCategory = EUVehicleCategory.O1;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (techRecord as any).euVehicleCategory = EUVehicleCategory.O1;
           }
 
           if (techRecord_vehicleType === VehicleTypes.HGV || techRecord_vehicleType === VehicleTypes.PSV) {
@@ -236,10 +238,10 @@ export class TechnicalRecordServiceEffects {
           }
           if (techRecord_vehicleType === VehicleTypes.TRL) {
             (techRecord as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
-            (techRecord as any).euVehicleCategory = null;
           }
 
           const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
+
           return of(
             techRecordTemplate.reduce((mergedNodes, formNode) => {
               const form = this.dfs.createForm(formNode, techRecord);
