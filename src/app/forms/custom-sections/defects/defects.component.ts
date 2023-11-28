@@ -6,7 +6,7 @@ import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dyna
 import { Defect } from '@models/defects/defect.model';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { Subscription, debounceTime } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-defects[defects][template]',
@@ -55,15 +55,11 @@ export class DefectsComponent implements OnInit, OnDestroy {
     });
   }
 
-  categoryColor(category: CategoryColorKey): CategoryColor {
-    return categoryColors[`${category}`];
+  categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
+    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{
+      major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue',
+    })[
+      category
+    ];
   }
 }
-
-const categoryColors = {
-  major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue',
-} as const;
-
-type CategoryColors = typeof categoryColors;
-type CategoryColorKey = keyof CategoryColors;
-type CategoryColor = CategoryColors[CategoryColorKey];

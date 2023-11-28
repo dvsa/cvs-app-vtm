@@ -160,7 +160,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 
   getTechRecordChangesKeys(): string[] {
     const entries = Object.entries(this.techRecordChanges ?? {});
-    const filter = entries.filter(([, value]) => this.isNotEmpty(value));
+    const filter = entries.filter(([_, value]) => this.isNotEmpty(value));
     const changeMap = filter.map(([key]) => key);
     return changeMap;
   }

@@ -1,16 +1,13 @@
 import {
-  Directive,
-  Input,
-  OnInit,
-  TemplateRef, ViewContainerRef,
+  Directive, OnInit, Input, TemplateRef, ViewContainerRef,
 } from '@angular/core';
-import { Roles } from '@models/roles.enum';
 import { UserService } from '@services/user-service/user-service';
 import { take } from 'rxjs';
+import { Roles } from '@models/roles.enum';
 
 @Directive({ selector: '[appRoleRequired]' })
 export class RoleRequiredDirective implements OnInit {
-  constructor(private templateRef: TemplateRef<HTMLElement>, private userService: UserService, private viewContainer: ViewContainerRef) {}
+  constructor(private templateRef: TemplateRef<any>, private userService: UserService, private viewContainer: ViewContainerRef) {}
 
   userRolesRequired: string[] | undefined;
 

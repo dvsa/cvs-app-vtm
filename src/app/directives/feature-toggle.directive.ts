@@ -7,11 +7,7 @@ import { FeatureToggleService } from '@services/feature-toggle-service/feature-t
 export class FeatureToggleDirective implements OnInit {
   @Input() featureToggleName!: string;
 
-  constructor(
-    private templateRef: TemplateRef<HTMLElement>,
-    private featureToggleService: FeatureToggleService,
-    private viewContainer: ViewContainerRef,
-  ) {}
+  constructor(private templateRef: TemplateRef<any>, private featureToggleService: FeatureToggleService, private viewContainer: ViewContainerRef) {}
 
   ngOnInit() {
     const isEnabled = this.featureToggleService.isFeatureEnabled(this.featureToggleName);

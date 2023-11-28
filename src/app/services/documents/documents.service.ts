@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class DocumentsService {
-  openDocumentFromResponse(fileName: string, responseBody: unknown): void {
+  openDocumentFromResponse(fileName: string, responseBody: any): void {
     const blob = this.convertToBlob(responseBody);
 
     const link = this.createFileLink(fileName, blob);
@@ -10,7 +10,7 @@ export class DocumentsService {
     this.simulateClick(link);
   }
 
-  convertToBlob(data: unknown): Blob {
+  convertToBlob(data: any): Blob {
     if (typeof data !== 'string') throw new Error('Cannot convert to a blob. Data needs to be of type string');
 
     const byteArray = new Uint8Array(

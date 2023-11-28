@@ -72,7 +72,7 @@ export class EditTechRecordButtonComponent implements OnDestroy {
   }
 
   cancel() {
-    // eslint-disable-next-line no-restricted-globals, no-alert
+    // eslint-disable-next-line no-restricted-globals
     if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
       this.toggleEditMode();
       this.errorService.clearErrors();

@@ -69,12 +69,8 @@ export class CustomAsyncValidators {
           const testStationName = control.parent?.get('testStationName');
           const testStationType = control.parent?.get('testStationType');
           if (stations) {
-            if (testStationName) {
-              testStationName.setValue(stations.testStationName, { emitEvent: true, onlySelf: true });
-            }
-            if (testStationType) {
-              testStationType.setValue(stations.testStationType, { emitEvent: true, onlySelf: true });
-            }
+            testStationName && testStationName.setValue(stations.testStationName, { emitEvent: true, onlySelf: true });
+            testStationType && testStationType.setValue(stations.testStationType, { emitEvent: true, onlySelf: true });
           }
         }),
         map(() => null),
@@ -133,7 +129,7 @@ export class CustomAsyncValidators {
     store: Store<State>,
     result: resultOfTestEnum | resultOfTestEnum[],
     sibling: string,
-    value: unknown,
+    value: any,
   ): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
@@ -196,7 +192,7 @@ export class CustomAsyncValidators {
     // eslint-disable-next-line no-prototype-builtins
     const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
       ? (testResult.testTypes[0] as any)[field]
-      : (testResult)[field as keyof TestResultModel];
+      : (testResult as any)[field as keyof TestResultModel];
 
     const isTrue = Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value;
 
