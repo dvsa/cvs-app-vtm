@@ -28,7 +28,6 @@ import {
   updateTechRecord,
   updateTechRecordSuccess,
 } from '@store/technical-records';
-import { isEmpty } from 'lodash';
 import {
   Subject, combineLatest, map, take, takeUntil,
 } from 'rxjs';
