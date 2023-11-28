@@ -88,6 +88,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       .select(editingTechRecord)
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe((data) => {
+        if (!data) this.cancel();
         this.techRecordEdited = data;
       });
 
@@ -96,6 +97,10 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe((changes) => {
         this.techRecordChanges = changes;
+        if (this.vehicleType === VehicleTypes.PSV || this.vehicleType === VehicleTypes.HGV) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          delete (this.techRecordChanges as any).techRecord_numberOfWheelsDriven;
+        }
         this.techRecordChangesKeys = this.getTechRecordChangesKeys();
         this.sectionsWhitelist = this.getSectionsWhitelist();
       });
@@ -163,7 +168,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 
   getTechRecordChangesKeys(): string[] {
     const entries = Object.entries(this.techRecordChanges ?? {});
-    const filter = entries.filter(([, value]) => isEmpty(value));
+    const filter = entries.filter(([, value]) => this.isNotEmpty(value));
     const changeMap = filter.map(([key]) => key);
     return changeMap;
   }
@@ -206,5 +211,11 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 
   toVisibleFormNode(node: FormNode): FormNode {
     return { ...node, viewType: node.viewType === FormNodeViewTypes.HIDDEN ? FormNodeViewTypes.STRING : node.viewType };
+  }
+
+  isNotEmpty(value: unknown): boolean {
+    if (value === '' || value === undefined) return false;
+    if (typeof value === 'object' && value !== null) return Object.values(value).length > 0;
+    return true;
   }
 }
