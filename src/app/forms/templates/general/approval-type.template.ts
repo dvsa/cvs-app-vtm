@@ -18,12 +18,14 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(ApprovalType),
       validators: [{ name: ValidatorNames.IsMemberOfEnum, args: { enum: ApprovalType, options: { allowFalsy: true } } }],
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_approvalTypeNumber',
       label: 'Approval type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
+      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,
