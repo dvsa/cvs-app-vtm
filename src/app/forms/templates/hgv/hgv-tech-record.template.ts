@@ -106,9 +106,7 @@ export const HgvTechRecord: FormNode = {
       label: 'Euro standard',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      options: [{ label: '0.10 g/kWh Euro III PM', value: '0.10 g/kWh Euro 3 PM' },
-        ...getOptionsFromEnum(EmissionStandard),
-      ],
+      options: getOptionsFromEnum(EmissionStandard),
     },
     {
       name: 'techRecord_roadFriendly',

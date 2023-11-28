@@ -9,6 +9,7 @@ export enum FuelType {
 }
 
 export enum EmissionStandard {
+  Euro3PM = '0.10 g/kWh Euro 3 PM',
   EuroIVPM = '0.03 g/kWh Euro IV PM',
   Euro3 = 'Euro 3',
   Euro4 = 'Euro 4',
