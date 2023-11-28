@@ -111,7 +111,23 @@ export const AdrTemplate: FormNode = {
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
       options: getOptionsFromEnum(ADRBodyType),
-      validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } }],
+      validators: [
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        {
+          name: ValidatorNames.ShowGroupsWhenIncludes,
+          args: {
+            values: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+            groups: ['tank_details'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenExcludes,
+          args: {
+            values: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+            groups: ['tank_details'],
+          },
+        },
+      ],
     },
     {
       name: 'techRecord_adrDetails_vehicleDetails_approvalDate',
@@ -195,6 +211,81 @@ export const AdrTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.MaxLength, args: 40 },
       ],
+    },
+    {
+      name: 'tankDetailsSectionTitle',
+      type: FormNodeTypes.TITLE,
+      label: 'Tank Details',
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tankManufacturer',
+      label: 'Tank Make',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.XXL,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 70 },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+      ],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_yearOfManufacture',
+      label: 'Tank Year of manufacture',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.NUMBER,
+      width: FormNodeWidth.XS,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 },
+        { name: ValidatorNames.PastYear },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+      ],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
+      label: 'Manufacturer serial number',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.L,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 50 },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+      ],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
+      label: 'Tank type approval number',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.L,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 65 },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+      ],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tankCode',
+      label: 'Code',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.L,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 30 },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+      ],
+      hide: true,
     },
   ],
 };
