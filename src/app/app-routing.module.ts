@@ -50,7 +50,7 @@ const routes: Routes = [
       },
       {
         path: 'tech-records/:systemNumber/:createdTimestamp',
-        data: { title: 'Tech Record', roles: Roles.TechRecordView },
+        data: { title: 'Tech Record', roles: Roles.TechRecordView, featureToggleName: 'adrToggle' },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then((m) => m.TechRecordsModule),
       },
