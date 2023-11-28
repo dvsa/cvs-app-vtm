@@ -25,7 +25,7 @@ import {
   removeTyreSearch,
 } from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
-import { ReferenceDataState, initialReferenceDataState, referenceDataReducer } from './reference-data.reducer';
+import { initialReferenceDataState, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
 
 describe('Reference Data Reducer', () => {
   describe('unknown action', () => {
@@ -156,8 +156,8 @@ describe('Reference Data Reducer', () => {
     describe('fetchReferenceDataByKeySuccess', () => {
       it.each(testCases)('should set the the resource data item based on the type and key', (value) => {
         const { resourceType, resourceKey, payload } = value;
-
-        const entity = payload.find((p) => p.resourceKey === resourceKey) as ReferenceDataModelBase;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const entity = payload.find((p) => p.resourceKey === resourceKey)!;
         const ids = [resourceKey];
         const entities: Dictionary<ReferenceDataModelBase> = { [resourceKey]: entity };
         const newState: ReferenceDataState = {

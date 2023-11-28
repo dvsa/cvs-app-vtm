@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { SEARCH_TYPES } from '@models/search-types-enum';
 import { TestBed, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { SEARCH_TYPES } from '@models/search-types-enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
@@ -170,19 +171,19 @@ describe('TechnicalRecordService', () => {
     });
 
     describe('getBySystemNumber', () => {
-      it('should call service.search$', () => {
+      it('should call service.search$', fakeAsync(() => {
         const technicalRecord = mockVehicleTechnicalRecord('hgv') as TechRecordType<'get'>;
-        const spy = jest.spyOn(service, 'search$').mockReturnValue(of());
+        jest.spyOn(service, 'search$').mockReturnValue(of());
         service.getBySystemNumber$(technicalRecord.systemNumber).subscribe();
-        expect(spy).toHaveBeenCalled();
-      });
+        expect(service.search$).toHaveBeenCalled();
+      }));
     });
 
     describe('searchBy', () => {
       it('should call store.dispatch', fakeAsync(() => {
-        const spy = jest.spyOn(store, 'dispatch');
+        jest.spyOn(store, 'dispatch');
         service.searchBy(SEARCH_TYPES.ALL, 'term');
-        expect(spy).toHaveBeenCalledWith(fetchSearchResult({ searchBy: SEARCH_TYPES.ALL, term: 'term' }));
+        expect(store.dispatch).toHaveBeenCalledWith(fetchSearchResult({ searchBy: SEARCH_TYPES.ALL, term: 'term' }));
       }));
     });
 

@@ -61,12 +61,12 @@ export class ReferenceDataSelectTypeComponent {
   }
 
   cancel(): void {
-    void this.router.navigate(['..'], { relativeTo: this.route });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   navigateTo(type: string): void {
-    if (this.isFormValid) {
-      void this.router.navigate([type], { relativeTo: this.route });
-    }
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    if (this.isFormValid) this.router.navigate([type], { relativeTo: this.route });
   }
 }

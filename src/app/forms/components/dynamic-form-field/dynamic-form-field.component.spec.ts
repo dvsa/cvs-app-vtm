@@ -6,9 +6,9 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TestStationsService } from '@services/test-stations/test-stations.service';
-import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
+import { UserService } from '@services/user-service/user-service';
 import { DynamicFormFieldComponent } from './dynamic-form-field.component';
 
 describe('DynamicFormFieldComponent', () => {
@@ -79,7 +79,7 @@ describe('DynamicFormFieldComponent', () => {
   it('should fetch the reference data on init', () => {
     service.loadReferenceData = jest.fn();
     component.ngAfterContentInit();
-    const spy = jest.spyOn(service, 'loadReferenceData');
-    expect(spy).toHaveBeenCalled();
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(service.loadReferenceData).toHaveBeenCalled();
   });
 });

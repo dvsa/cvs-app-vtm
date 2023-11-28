@@ -44,9 +44,9 @@ export class ChangeVehicleTypeComponent implements OnInit {
 
   ngOnInit(): void {
     this.globalErrorService.clearErrors();
-    this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => {
-      !techRecord ? this.navigateBack() : (this.techRecord = techRecord);
-    });
+    this.technicalRecordService.techRecord$
+      .pipe(take(1))
+      .subscribe((techRecord) => { !techRecord ? this.navigateBack() : (this.techRecord = techRecord); });
 
     if (this.techRecord) {
       this.makeAndModel = this.technicalRecordService.getMakeAndModel(this.techRecord);
@@ -67,7 +67,8 @@ export class ChangeVehicleTypeComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(selectedVehicleType: VehicleTypes): void {
@@ -94,6 +95,7 @@ export class ChangeVehicleTypeComponent implements OnInit {
 
     const routeSuffix = this.techRecord?.techRecord_statusCode !== StatusCodes.PROVISIONAL ? 'amend-reason' : 'notifiable-alteration-needed';
 
-    void this.router.navigate([`../${routeSuffix}`], { relativeTo: this.route });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate([`../${routeSuffix}`], { relativeTo: this.route });
   }
 }

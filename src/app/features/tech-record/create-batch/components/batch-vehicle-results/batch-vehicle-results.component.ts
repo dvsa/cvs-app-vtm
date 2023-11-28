@@ -21,9 +21,8 @@ export class BatchVehicleResultsComponent implements OnDestroy {
     private batchTechRecordService: BatchTechnicalRecordService,
   ) {
     this.batchTechRecordService.batchCount$.pipe(take(1)).subscribe((count) => {
-      if (!count) {
-        void this.router.navigate(['../..'], { relativeTo: this.route });
-      }
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      if (!count) this.router.navigate(['../..'], { relativeTo: this.route });
     });
 
     race(

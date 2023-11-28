@@ -33,7 +33,8 @@ export class TestAmendReasonComponent {
     const reason: number = this.form.get('reason')?.value;
 
     if (this.form.valid && reason) {
-      void this.router.navigate([this.routes[`${reason}`]], { relativeTo: this.route });
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      this.router.navigate([this.routes[`${reason}`]], { relativeTo: this.route });
     }
   }
 }

@@ -103,7 +103,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     });
 
     this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      void this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
     });
 
     this.cherishedTransferForm.controls['previousVrm'].setValue(this.techRecord?.primaryVrm ?? '');
@@ -127,12 +128,14 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    void this.router.navigate(['../../'], { relativeTo: this.route });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   handleFormChange() {
     if (this.isCherishedTransfer) {
       this.cherishedTransferForm.get('currentVrm')?.updateValueAndValidity();
+
     }
   }
 

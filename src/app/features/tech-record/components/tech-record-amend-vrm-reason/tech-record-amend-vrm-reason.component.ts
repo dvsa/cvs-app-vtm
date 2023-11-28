@@ -70,7 +70,8 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   submit(): void {
@@ -78,7 +79,8 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
       return;
     }
 
-    void this.router.navigate([this.form.controls['isCherishedTransfer'].value], { relativeTo: this.route });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate([this.form.controls['isCherishedTransfer'].value], { relativeTo: this.route });
   }
 
   get isFormValid(): boolean {

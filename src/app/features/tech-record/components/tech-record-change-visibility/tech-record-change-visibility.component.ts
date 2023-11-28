@@ -41,7 +41,8 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) },
     );
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      void this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
     });
   }
 
@@ -68,7 +69,8 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    void this.router.navigate(['..'], { relativeTo: this.route });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string }): void {

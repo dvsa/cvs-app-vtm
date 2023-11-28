@@ -45,9 +45,8 @@ export class BatchVehicleTemplateComponent {
       .select(selectTechRecord)
       .pipe(take(1))
       .subscribe((vehicle) => {
-        if (!vehicle) {
-          void this.router.navigate(['..'], { relativeTo: this.route });
-        }
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
       });
 
     this.form = new CustomFormGroup(
@@ -121,7 +120,7 @@ export class BatchVehicleTemplateComponent {
                   primaryVrm: v.vehicleType !== VehicleTypes.TRL ? v.trailerIdOrVrm : undefined,
                   systemNumber: v.systemNumber,
                   createdTimestamp: v.createdTimestamp,
-                } as unknown as BatchUpdateVehicleModel),
+                } as BatchUpdateVehicleModel),
             )),
         )
         .subscribe((vehicleList) => {
@@ -134,7 +133,8 @@ export class BatchVehicleTemplateComponent {
             }
           });
           this.technicalRecordService.clearSectionTemplateStates();
-          void this.router.navigate(['batch-results'], { relativeTo: this.route });
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          this.router.navigate(['batch-results'], { relativeTo: this.route });
         });
     }
   }

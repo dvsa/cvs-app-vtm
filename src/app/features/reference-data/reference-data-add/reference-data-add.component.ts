@@ -59,7 +59,8 @@ export class ReferenceDataCreateComponent implements OnInit {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleFormChange(event: any) {

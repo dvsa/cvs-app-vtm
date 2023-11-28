@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import {
   Component, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
@@ -40,17 +41,17 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.actions$.pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      void this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
-    });
+    this.actions$
+      .pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$))
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      .subscribe(({ vehicleTechRecord }) =>
+        this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]));
 
     this.store
       .select(selectTechRecord)
       .pipe(take(1))
       .subscribe((vehicle) => {
-        if (!vehicle) {
-          void this.router.navigate(['..'], { relativeTo: this.route });
-        }
+        if (!vehicle) this.router.navigate(['..'], { relativeTo: this.route });
       });
   }
 
@@ -79,9 +80,9 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
     this.globalErrorService.clearErrors();
 
     if (systemNumber && createdTimestamp) {
-      void this.router.navigate([`/tech-records/${systemNumber}/${createdTimestamp}`]);
+      this.router.navigate([`/tech-records/${systemNumber}/${createdTimestamp}`]);
     } else {
-      void this.router.navigate(['batch-results'], { relativeTo: this.route });
+      this.router.navigate(['batch-results'], { relativeTo: this.route });
     }
   }
 

@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { map, Observable } from 'rxjs';
 import { Roles } from '@models/roles.enum';
 import { SEARCH_TYPES } from '@models/search-types-enum';
-import { Store } from '@ngrx/store';
 import { clearAllSectionStates, clearScrollPosition } from '@store/technical-records';
-import { map, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-search',
@@ -29,7 +29,8 @@ export class SearchComponent {
     } else if (!Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES)) {
       this.globalErrorService.addError({ error: this.missingTypeErrorMessage, anchorLink: 'search-type' });
     } else {
-      void this.router.navigate(['/search/results'], { queryParams: { [type]: term } });
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      this.router.navigate(['/search/results'], { queryParams: { [type]: term } });
     }
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import {
   ChangeDetectorRef, Component, OnDestroy, OnInit,
 } from '@angular/core';
@@ -72,7 +73,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
         take(1),
         filter((errors) => !errors.length),
         switchMap(() =>
-          this.referenceDataService.fetchReferenceDataAudit(`${this.type}#AUDIT` as ReferenceDataResourceType).pipe(
+          this.referenceDataService.fetchReferenceDataAudit((`${this.type}#AUDIT`) as ReferenceDataResourceType).pipe(
             map((array) =>
               array.data.map((item) => {
                 if (item.reason !== undefined) {
@@ -103,25 +104,25 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   }
 
   addNew(): void {
-    void this.router.navigate(['create'], { relativeTo: this.route }).then(() => {
+    this.router.navigate(['create'], { relativeTo: this.route }).then(() => {
       window.location.reload();
     });
   }
 
   navigateToDeletedItems(): void {
-    void this.router.navigate(['deleted-items'], { relativeTo: this.route });
+    this.router.navigate(['deleted-items'], { relativeTo: this.route });
   }
 
   amend(item: ReferenceDataModelBase): void {
     const key = encodeURIComponent(String(item.resourceKey));
-    void this.router.navigate([key], { relativeTo: this.route }).then(() => {
+    this.router.navigate([key], { relativeTo: this.route }).then(() => {
       window.location.reload();
     });
   }
 
   delete(item: ReferenceDataModelBase): void {
     const key = encodeURIComponent(String(item.resourceKey));
-    void this.router.navigate([`${key}/delete`], { relativeTo: this.route });
+    this.router.navigate([`${key}/delete`], { relativeTo: this.route });
   }
 
   handlePaginationChange({ start, end }: { start: number; end: number }) {
@@ -155,7 +156,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
         this.data = of([]);
       } else {
         this.data = of(items);
-        void this.router.navigate([`../${this.type}`], {
+        this.router.navigate([`../${this.type}`], {
           relativeTo: this.route,
           queryParams: { 'reference-data-items-page': 1 },
         });
@@ -169,7 +170,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.globalErrorService.clearErrors();
     if (this.searchReturned) {
       this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
-      void this.router.navigate([`../${this.type}`], {
+      this.router.navigate([`../${this.type}`], {
         relativeTo: this.route,
         queryParams: { 'reference-data-items-page': 1 },
       });
