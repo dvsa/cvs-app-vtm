@@ -201,7 +201,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       case VehicleTypes.TRL:
         return [...commonCustomSections, this.trlBrakes!.form, this.letters.form, this.adr.form];
       case VehicleTypes.LGV:
-        return [this.adr.form];
+        return [...commonCustomSections, this.adr.form];
       default:
         return [];
     }
