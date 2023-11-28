@@ -4,7 +4,6 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
-import { FieldWarningMessageComponent } from '../field-warning-message/field-warning-message.component';
 import { NumberInputComponent } from './number-input.component';
 
 @Component({
@@ -26,7 +25,7 @@ describe('NumberInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HostComponent, NumberInputComponent, BaseControlComponent, FieldErrorMessageComponent, FieldWarningMessageComponent],
+      declarations: [HostComponent, NumberInputComponent, BaseControlComponent, FieldErrorMessageComponent],
       imports: [FormsModule, ReactiveFormsModule],
     }).compileComponents();
   });

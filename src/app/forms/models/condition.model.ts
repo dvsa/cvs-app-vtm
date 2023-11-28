@@ -6,5 +6,5 @@ export enum operatorEnum {
 export interface Condition {
   field: string;
   operator: operatorEnum;
-  value: unknown;
+  value: any;
 }

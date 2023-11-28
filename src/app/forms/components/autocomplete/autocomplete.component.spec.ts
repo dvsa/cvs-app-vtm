@@ -72,7 +72,7 @@ describe('AutocompleteComponent', () => {
     const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
     const control = component.form.get('foo');
 
-    autocompleteComponent.handleChange({ target: { value: 'option2' } } as unknown as Event);
+    autocompleteComponent.handleChange({ target: { value: 'option2' } });
 
     expect(findOptionValueSpy).toHaveBeenCalled();
     expect(control?.value).toBe('option2');
@@ -83,7 +83,7 @@ describe('AutocompleteComponent', () => {
     const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
     const control = component.form.get('foo');
 
-    autocompleteComponent.handleChange({ target: { value: '' } } as unknown as Event);
+    autocompleteComponent.handleChange({ target: { value: '' } });
 
     expect(findOptionValueSpy).toHaveBeenCalled();
     expect(control?.value).toBe('');
@@ -94,7 +94,7 @@ describe('AutocompleteComponent', () => {
     const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
     const control = component.form.get('foo');
 
-    autocompleteComponent.handleChange({ target: { value: 'option3' } } as unknown as Event);
+    autocompleteComponent.handleChange({ target: { value: 'option3' } });
 
     expect(findOptionValueSpy).toHaveBeenCalled();
     expect(control?.value).toBe('[INVALID_OPTION]');

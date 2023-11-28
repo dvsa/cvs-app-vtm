@@ -130,12 +130,12 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  get paginatedItems$() {
-    return (this.data ?? of([])).pipe(map((items) => items?.slice(this.pageStart, this.pageEnd) ?? []));
+  get paginatedItems$(): Observable<any[]> {
+    return this.data!.pipe(map((items) => items?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
-  get numberOfRecords$() {
-    return (this.data ?? of([])).pipe(map((items) => items?.length ?? 0));
+  get numberOfRecords$(): Observable<number> {
+    return this.data!.pipe(map((items) => items?.length ?? 0));
   }
 
   search(term: string, filterterm: string) {
