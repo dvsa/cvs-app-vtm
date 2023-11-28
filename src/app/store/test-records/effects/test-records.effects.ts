@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -8,10 +7,8 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
@@ -21,8 +18,7 @@ import { getTestStationFromProperty } from '@store/test-stations';
 import { selectTestType } from '@store/test-types/selectors/test-types.selectors';
 import merge from 'lodash.merge';
 import {
-  catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take,
-  withLatestFrom,
+  catchError, concatMap, map, mergeMap, of, switchMap, take, withLatestFrom,
 } from 'rxjs';
 import {
   contingencyTestTypeSelected,
@@ -261,22 +257,10 @@ export class TestResultsEffects {
       }),
     ));
 
-  createTestResultSuccess$ = createEffect(() => this.actions$.pipe(
-    ofType(createTestResultSuccess),
-    delay(3000),
-    map((action) => action.payload.changes.systemNumber as string),
-    switchMap((systemNumber) => this.techRecordHttpService.getBySystemNumber$(systemNumber)),
-    map((results) => results.find((result) => result.techRecord_statusCode === StatusCodes.CURRENT)),
-    filter(Boolean),
-    switchMap((techRecord) => this.router.navigate(['tech-records', techRecord.systemNumber, techRecord.createdTimestamp])),
-  ), { dispatch: false });
-
   constructor(
     private actions$: Actions,
     private testRecordsService: TestRecordsService,
-    private techRecordHttpService: TechnicalRecordHttpService,
     private store: Store<State>,
-    private router: Router,
     private userService: UserService,
     private dfs: DynamicFormService,
   ) { }
