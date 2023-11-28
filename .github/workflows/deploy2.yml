@@ -65,6 +65,8 @@ jobs:
 #        Need to pull in/set SENTRY_AUTH_TOKEN value?
 
       - name: Build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: npm run build -- --configuration='deploy' --output-path='dist/'
 
       - name: Sonar Scanner
