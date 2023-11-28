@@ -32,6 +32,7 @@ export const trlRequiredFields: string[] = [
   'trailerId',
   'vin',
   'techRecord_brakes_dtpNumber',
+  'techRecord_regnDate',
   'techRecord_manufactureYear',
   'techRecord_maxLoadOnCoupling',
   'techRecord_approvalType',
