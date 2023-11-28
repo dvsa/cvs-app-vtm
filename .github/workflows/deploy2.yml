@@ -11,6 +11,8 @@ on:
     secrets:
       AWS_MGMT_ROLE:
         required: true
+      SENTRY_AUTH_TOKEN:
+        required: true
 
 permissions:
   id-token: write
