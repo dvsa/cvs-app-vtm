@@ -22,18 +22,6 @@
       <caption *ngSwitchCase="true" class="govuk-table__caption govuk-table__caption--m">
         Tyre details <app-tag type="purple">plates</app-tag>
       </caption>
-      <div class="govuk-table__caption govuk-table__caption--m">
-        <app-field-warning-message *ngIf="invalidAxles.length > 0" [warningMessage]="' '">
-          <p class="m-0">The GB Axle weight is greater than the selected tyre weight </p>
-          <p class="m-0">
-            GB Axles: Axle
-            <ng-container *ngFor="let axle of invalidAxles; let i = index; let isLast = last">
-              <ng-container *ngIf="invalidAxles.length > 1 && isLast"> and</ng-container>
-              {{ i + 1 }}<ng-container *ngIf="invalidAxles.length > 2 && i < (invalidAxles.length - 2)">,</ng-container>
-            </ng-container>
-          </p>
-        </app-field-warning-message>
-      </div>
     </ng-container>
 
     <thead class="govuk-table__head">
@@ -103,7 +91,7 @@
                 [isEditing]="isEditing"
                 [width]="width"
                 [options]="options"
-                (focusout)="getTyresRefData(i + 1)"
+                (focusout)="getTyresRefData(name, i + 1)"
               ></app-switchable-input>
             </td>
           </ng-template>

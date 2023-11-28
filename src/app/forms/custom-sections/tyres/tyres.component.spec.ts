@@ -186,7 +186,7 @@ describe('TyresComponent', () => {
           plyRating: '12',
         });
       });
-      component.getTyresRefData(1);
+      component.getTyresRefData('tyres_tyreCode', 1);
 
       expect(spy).toHaveBeenCalledTimes(1);
     });
@@ -194,7 +194,7 @@ describe('TyresComponent', () => {
     it('should call add tyre to tech record with correct values when failure', () => {
       mockReferenceDataService.fetchReferenceDataByKey.mockReturnValue(throwError(() => 'error'));
 
-      component.getTyresRefData(1);
+      component.getTyresRefData('tyres_tyreCode', 1);
 
       expect(component.isError).toBe(true);
       expect(component.errorMessage).toBe('Cannot find data of this tyre on axle 1');
