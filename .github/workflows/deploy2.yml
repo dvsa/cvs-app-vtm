@@ -61,6 +61,7 @@ jobs:
           ls src/environments/
           cat src/environments/environment.deploy.ts
           sed  -i 's/BRANCH/${SHORT_BRANCH}/g' src/environments/environment.deploy.ts
+          cat src/environments/environment.deploy.ts
 
 #        Need to pull in/set SENTRY_AUTH_TOKEN value?
 
