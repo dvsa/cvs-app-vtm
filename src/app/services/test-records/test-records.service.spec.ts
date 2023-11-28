@@ -1,9 +1,9 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
+import { GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService } from '@api/test-results';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import {
   createTestResult, fetchTestResults, fetchTestResultsBySystemNumber, toEditOrNotToEdit, updateTestResult,
 } from '@store/test-records';
@@ -112,7 +112,7 @@ describe('TestRecordsService', () => {
   describe('TestRecordsService.prototype.updateTestResult.name', () => {
     it('should dispatch updateTestResultState action', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      service.updateTestResult({} as TestResultModel);
+      service.updateTestResult({});
       expect(dispatchSpy).toHaveBeenCalledWith(updateTestResult({ value: {} as TestResultModel }));
     });
   });
@@ -120,7 +120,7 @@ describe('TestRecordsService', () => {
   describe('TestRecordsService.prototype.createTestResult.name', () => {
     it('should dispatch createTestResult action', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      service.createTestResult({} as TestResultModel);
+      service.createTestResult({});
       expect(dispatchSpy).toHaveBeenCalledWith(createTestResult({ value: {} as TestResultModel }));
     });
   });

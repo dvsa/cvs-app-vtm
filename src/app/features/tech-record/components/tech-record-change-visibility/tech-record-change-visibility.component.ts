@@ -72,16 +72,14 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit(form: { reason: string }): void {
-    if (this.form.valid) {
-      this.errorService.clearErrors();
-    } else {
-      this.errorService.setErrors([
+    this.form.valid
+      ? this.errorService.clearErrors()
+      : this.errorService.setErrors([
         {
           error: `Reason for ${this.techRecord?.techRecord_hiddenInVta ? 'showing' : 'hiding'} is required`,
           anchorLink: 'reasonForChangingVisibility',
         },
       ]);
-    }
 
     if (!this.form.valid || !form.reason) {
       return;
@@ -102,7 +100,7 @@ export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
         withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp')),
         take(1),
       )
-      .subscribe(([, systemNumber, createdTimestamp]) => {
+      .subscribe(([_, systemNumber, createdTimestamp]) => {
         if (systemNumber && createdTimestamp) {
           this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
         }

@@ -25,7 +25,6 @@ export class CreateTestTypeComponent implements AfterContentInit {
   ngAfterContentInit(): void {
     this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => {
       if (techRecord?.techRecord_hiddenInVta) {
-        // eslint-disable-next-line no-alert
         alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
 
         void this.router.navigate(['../../..'], { relativeTo: this.route });
@@ -33,7 +32,6 @@ export class CreateTestTypeComponent implements AfterContentInit {
         (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness !== 'complete'
         && (techRecord as TechRecordType<'get'>)?.techRecord_recordCompleteness !== 'testable'
       ) {
-        // eslint-disable-next-line no-alert
         alert(
           'Incomplete vehicle record.\n\n'
             + 'This vehicle does not have enough data to be tested. '

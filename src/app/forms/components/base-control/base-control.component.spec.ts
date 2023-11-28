@@ -38,12 +38,12 @@ describe('BaseControlComponent', () => {
     });
 
     it('should register a change', () => {
-      component.registerOnChange('FUNCTION' as unknown as () => void);
+      component.registerOnChange('FUNCTION');
       expect(component.onChange).toBe('FUNCTION');
     });
 
     it('should register it has been touched', () => {
-      component.registerOnTouched('FUNCTION' as unknown as () => void);
+      component.registerOnTouched('FUNCTION');
       expect(component.onTouched).toBe('FUNCTION');
     });
 

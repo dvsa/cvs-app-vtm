@@ -17,7 +17,7 @@ import { techRecordValidateResolver } from './tech-record-validate.resolver';
 describe('TechRecordViewResolver', () => {
   let resolver: ResolveFn<boolean>;
   const actions$ = new Observable<Action>();
-  const mockSnapshot = jest.fn;
+  const mockSnapshot: any = jest.fn;
   let store: MockStore<State>;
   let router: Router;
 

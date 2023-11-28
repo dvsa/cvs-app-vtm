@@ -4,32 +4,32 @@ import {
   BASE_PATH,
   Configuration,
   ReferenceDataApiResponse,
-  ReferenceDataService as ReferenceDataApiService,
   ReferenceDataItemApiResponse,
+  ReferenceDataService as ReferenceDataApiService,
 } from '@api/reference-data';
 import { MultiOptions } from '@forms/models/options.model';
 import {
   ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User,
 } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { UserService } from '@services/user-service/user-service';
 import {
-  ReferenceDataEntityStateSearch,
-  ReferenceDataState,
   addSearchInformation,
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
+  ReferenceDataEntityStateSearch,
+  ReferenceDataState,
   referencePsvMakeLoadingState,
-  removeReferenceDataByKey,
   removeTyreSearch,
   selectAllReferenceDataByResourceType,
   selectReasonsForAbandoning,
   selectReferenceDataByResourceKey,
-  selectSearchReturn,
   selectTyreSearchCriteria,
+  selectSearchReturn,
+  removeReferenceDataByKey,
 } from '@store/reference-data';
 import {
   Observable, of, switchMap, throwError, withLatestFrom,

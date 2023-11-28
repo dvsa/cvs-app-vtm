@@ -136,7 +136,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
       this.referenceDataService.getReferencePsvMakeDataLoading$(),
     ]).pipe(
-      skipWhile(([, loading]) => loading),
+      skipWhile(([_, loading]) => loading),
       take(1),
       map(([data]) => {
         return data?.map((option) => ({ value: option.resourceKey, label: option.resourceKey })) as MultiOptions;

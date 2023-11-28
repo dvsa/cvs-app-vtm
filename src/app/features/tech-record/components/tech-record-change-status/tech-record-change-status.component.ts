@@ -78,13 +78,11 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.form.valid) {
-      this.errorService.clearErrors();
-    } else {
-      this.errorService.setErrors([
+    this.form.valid
+      ? this.errorService.clearErrors()
+      : this.errorService.setErrors([
         { error: `Reason for ${this.isPromotion ? 'promotion' : 'archiving'} is required`, anchorLink: 'reasonForAmend' },
       ]);
-    }
 
     if (!this.form.valid || !form.reason) {
       return;

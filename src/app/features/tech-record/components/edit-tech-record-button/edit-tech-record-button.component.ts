@@ -57,11 +57,10 @@ export class EditTechRecordButtonComponent implements OnDestroy {
         distinctUntilChanged(),
       )
       .subscribe((statusCode) => {
-        if (statusCode !== StatusCodes.PROVISIONAL) {
-          void this.router.navigate(['amend-reason'], { relativeTo: this.route });
-        } else {
-          void this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route });
-        }
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        statusCode !== StatusCodes.PROVISIONAL
+          ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
+          : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route });
       });
     this.technicalRecordService.clearReasonForCreation();
   }

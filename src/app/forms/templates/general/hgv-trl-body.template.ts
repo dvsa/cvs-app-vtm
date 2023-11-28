@@ -1,4 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { BodyTypeDescription } from '@models/body-type-enum';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,

@@ -98,9 +98,8 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     const testResult = await firstValueFrom(this.testResult$);
-    const testResultClone = cloneDeep(testResult) as TestResultModel;
 
-    this.testRecordsService.createTestResult(testResultClone);
+    this.testRecordsService.createTestResult(cloneDeep(testResult));
   }
 
   handleReview() {
@@ -122,7 +121,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
 
-  handleNewTestResult(testResult: TestResultModel) {
+  handleNewTestResult(testResult: any) {
     this.testRecordsService.updateEditingTestResult(testResult);
   }
 

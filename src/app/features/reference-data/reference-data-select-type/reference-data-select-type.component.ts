@@ -43,8 +43,8 @@ export class ReferenceDataSelectTypeComponent {
       map(
         (types) =>
           types
-            ?.sort((a, b) => (a.label ?? a.resourceType).localeCompare(b.label ?? b.resourceType))
-            .map((type) => ({ label: type.label ?? type.resourceKey.toString(), value: type.resourceKey.toString() })) ?? [],
+            ?.sort((a: any, b: any) => (a.label ?? a.resourceType).localeCompare(b.label ?? b.resourceType))
+            .map((type) => ({ label: (type as any).label ?? type.resourceKey, value: type.resourceKey.toString() })) ?? [],
       ),
     );
   }

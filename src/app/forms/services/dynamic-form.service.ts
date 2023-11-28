@@ -132,11 +132,11 @@ export class DynamicFormService {
       : [new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })];
   }
 
-  addValidators(control: CustomFormFields, validators: Array<{ name: ValidatorNames; args?: unknown }> = []) {
+  addValidators(control: CustomFormFields, validators: Array<{ name: ValidatorNames; args?: any }> = []) {
     validators.forEach((v) => control.addValidators(this.validatorMap[v.name](v.args)));
   }
 
-  addAsyncValidators(control: CustomFormFields, validators: Array<{ name: AsyncValidatorNames; args?: unknown }> = []) {
+  addAsyncValidators(control: CustomFormFields, validators: Array<{ name: AsyncValidatorNames; args?: any }> = []) {
     validators.forEach((v) => control.addAsyncValidators(this.asyncValidatorMap[v.name](v.args)));
   }
 
@@ -146,9 +146,7 @@ export class DynamicFormService {
         this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
       } else {
         value.markAsTouched();
-        if (updateValidity) {
-          value.updateValueAndValidity();
-        }
+        updateValidity && value.updateValueAndValidity();
         (value as CustomFormControl).meta?.changeDetection?.detectChanges();
         this.getControlErrors(value, errors);
       }

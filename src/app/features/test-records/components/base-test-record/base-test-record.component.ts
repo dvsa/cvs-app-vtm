@@ -60,9 +60,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
     const customDefectsValue = this.customDefects?.form.getCleanValue(this.customDefects?.form);
 
     latestTest = merge(latestTest, defectsValue, customDefectsValue, event);
-    if (latestTest && Object.keys(latestTest).length > 0) {
-      this.newTestResult.emit(latestTest as TestResultModel);
-    }
+    latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
   }
 
   getDefects$(type: VehicleTypes): Observable<Defect[]> {

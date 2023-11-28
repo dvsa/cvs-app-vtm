@@ -9,9 +9,8 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import {
-  TestResultsState,
   cancelEditingTestResult,
   contingencyTestTypeSelected,
   createTestResult,
@@ -26,6 +25,7 @@ import {
   selectedAmendedTestResultState,
   selectedTestResultState,
   testResultInEdit,
+  TestResultsState,
   testTypeIdChanged,
   toEditOrNotToEdit,
   updateEditingTestResult,
@@ -114,14 +114,14 @@ export class TestRecordsService {
     const tr = cloneDeep(body);
     delete tr.testHistory;
     return this.updateTestResultsService.testResultsSystemNumberPut(
-      { msUserDetails: { msOid: id, msUser: name, msEmailAddress: userEmail }, testResult: tr } as CompleteTestResults,
+      { msUserDetails: { msOid: id, msUser: name, msEmailAddress: userEmail }, testResult: tr as any } as CompleteTestResults,
       systemNumber,
       observe,
       reportProgress,
     ) as Observable<TestResultModel>;
   }
 
-  updateTestResult(value: TestResultModel): void {
+  updateTestResult(value: any): void {
     this.store.dispatch(updateTestResult({ value }));
   }
 
@@ -129,7 +129,7 @@ export class TestRecordsService {
     return this.createTestResultsService.testResultsPost(body as CompleteTestResults, 'response', false);
   }
 
-  createTestResult(value: TestResultModel): void {
+  createTestResult(value: any): void {
     this.store.dispatch(createTestResult({ value }));
   }
 
@@ -151,7 +151,7 @@ export class TestRecordsService {
     this.store.dispatch(cancelEditingTestResult());
   }
 
-  updateEditingTestResult(testResult: TestResultModel): void {
+  updateEditingTestResult(testResult: any): void {
     this.store.dispatch(updateEditingTestResult({ testResult }));
   }
 

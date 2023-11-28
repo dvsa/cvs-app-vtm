@@ -118,11 +118,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
 
   private subscribeToTechRecordUpdates(): void {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
-      if (record?.techRecord_statusCode === 'archived' || !record) {
-        this.navigateBack();
-      } else {
-        this.techRecord = record;
-      }
+      record?.techRecord_statusCode === 'archived' || !record ? this.navigateBack() : (this.techRecord = record);
     });
   }
 

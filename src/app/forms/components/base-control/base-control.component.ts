@@ -90,15 +90,15 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     }
   }
 
-  writeValue(obj: unknown): void {
+  writeValue(obj: any): void {
     this.value = obj;
   }
 
-  registerOnChange(fn: (event: unknown) => void): void {
+  registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 

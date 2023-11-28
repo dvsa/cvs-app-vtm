@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 import {
   StatusCodes, V3TechRecordModel, VehicleTypes,
@@ -45,11 +45,7 @@ export class ChangeVehicleTypeComponent implements OnInit {
   ngOnInit(): void {
     this.globalErrorService.clearErrors();
     this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => {
-      if (!techRecord) {
-        this.navigateBack();
-      } else {
-        this.techRecord = techRecord;
-      }
+      !techRecord ? this.navigateBack() : (this.techRecord = techRecord);
     });
 
     if (this.techRecord) {

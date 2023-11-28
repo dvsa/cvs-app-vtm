@@ -32,7 +32,6 @@ export interface ReferenceDataModelBase {
   createdName?: string;
   createdId?: string;
   reason?: string;
-  label?: string;
 }
 
 export interface PsvMake extends ReferenceDataModelBase {
