@@ -72,7 +72,8 @@ jobs:
         run: npm run build -- --configuration='deploy' --output-path='dist/'
 
       - name: Sonar Scanner
-        run: npm run sonar-scanner
+#        run: npm run sonar-scanner
+        run: sonar-scanner
 
   deploy_app:
     needs: build
