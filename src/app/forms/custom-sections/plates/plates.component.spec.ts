@@ -7,7 +7,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
-import { HgvOrTrl, VehicleConfigurations } from '@models/vehicle-tech-record.model';
+import { HgvOrTrl } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
@@ -185,8 +185,6 @@ describe('PlatesComponent', () => {
         techRecord_tyreUseCode: 'a',
         techRecord_vehicleType: 'hgv',
         techRecord_variantNumber: '1',
-        techRecord_roadFriendly: true,
-        techRecord_vehicleConfiguration: VehicleConfigurations.RIGID,
         vin: 'HGVTEST01',
         techRecord_axles: [],
       } as unknown as HgvOrTrl;
