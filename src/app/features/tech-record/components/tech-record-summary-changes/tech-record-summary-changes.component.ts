@@ -97,8 +97,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       .subscribe((changes) => {
         this.techRecordChanges = changes;
         if (this.vehicleType === VehicleTypes.PSV || this.vehicleType === VehicleTypes.HGV) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          delete (this.techRecordChanges as any).techRecord_numberOfWheelsDriven;
+          delete (this.techRecordChanges as Partial<TechRecordGETPSV | TechRecordGETHGV>).techRecord_numberOfWheelsDriven;
         }
         this.techRecordChangesKeys = this.getTechRecordChangesKeys();
         this.sectionsWhitelist = this.getSectionsWhitelist();
