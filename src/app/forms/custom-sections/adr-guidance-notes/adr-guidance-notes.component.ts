@@ -44,7 +44,11 @@ export class AdrGuidanceNotesComponent extends BaseControlComponent implements O
         this.name = ngControl.key;
         this.control = ngControl.value;
         this.form = this.injector.get(FORM_INJECTION_TOKEN) as FormGroup;
-        this.formArray.push(new CustomFormControl(this.control.meta));
+        const value = this.form.get(this.name)?.value;
+        const values = Array.isArray(value) && value.length ? value : [null];
+        values.forEach((guidanceNoteType: string) => {
+          this.formArray.push(new CustomFormControl({ ...ngControl.value.meta }, guidanceNoteType));
+        });
       }
     }
   }
