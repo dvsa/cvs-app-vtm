@@ -26,6 +26,7 @@ export const TrlTechRecordTemplate: FormNode = {
     },
     {
       name: 'techRecord_statusCode',
+      label: 'Record status',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
@@ -39,7 +40,6 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
       validators: [
         { name: ValidatorNames.PastDate },
       ],

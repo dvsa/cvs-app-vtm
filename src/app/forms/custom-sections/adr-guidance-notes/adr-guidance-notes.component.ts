@@ -1,12 +1,16 @@
+import { KeyValue } from '@angular/common';
 import {
   AfterContentInit,
   Component, OnDestroy, OnInit,
 } from '@angular/core';
 import {
   FormArray,
+  FormGroup,
   NG_VALUE_ACCESSOR,
+  NgControl,
 } from '@angular/forms';
-import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
+import { CustomControl, CustomFormControl } from '@forms/services/dynamic-form.types';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { CustomControlComponentComponent } from '../custom-control-component/custom-control-component.component';
 
@@ -33,8 +37,20 @@ export class AdrGuidanceNotesComponent extends CustomControlComponentComponent i
   }
 
   override ngAfterContentInit() {
-    super.ngAfterContentInit();
-    if (this.control) this.formArray.push(new CustomFormControl(this.control.meta));
+    const injectedControl = this.injector.get(NgControl, null);
+    if (injectedControl) {
+      const ngControl = injectedControl.control as unknown as KeyValue<string, CustomControl>;
+      if (ngControl.value) {
+        this.name = ngControl.key;
+        this.control = ngControl.value;
+        this.form = this.injector.get(FORM_INJECTION_TOKEN) as FormGroup;
+        const value = this.form.get(this.name)?.value;
+        const values = Array.isArray(value) && value.length ? value : [null];
+        values.forEach((guidanceNoteType: string) => {
+          this.formArray.push(new CustomFormControl({ ...ngControl.value.meta }, guidanceNoteType));
+        });
+      }
+    }
   }
 
   addGuidanceNote() {

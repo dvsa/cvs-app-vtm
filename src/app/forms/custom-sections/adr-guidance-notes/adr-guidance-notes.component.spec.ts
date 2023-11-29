@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
+  FormControl,
+  FormGroup,
   FormsModule, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule,
 } from '@angular/forms';
 import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
@@ -32,7 +34,12 @@ describe('AdrGuidanceNotesComponent', () => {
             control: { key: control.meta.name, value: control },
           },
         },
-        { provide: FORM_INJECTION_TOKEN, useValue: {} },
+        {
+          provide: FORM_INJECTION_TOKEN,
+          useValue: new FormGroup({
+            techRecord_adrDetails_additionalNotes_guidanceNotes: new FormControl(null),
+          }),
+        },
       ],
     })
       .compileComponents();

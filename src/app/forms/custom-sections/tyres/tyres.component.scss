@@ -31,3 +31,11 @@
   order: 0;
   flex-grow: 0;
 }
+
+::ng-deep app-field-warning-message .govuk-warning-text {
+  margin-bottom: 0;
+}
+
+.m-0 {
+  margin: 0;
+}
