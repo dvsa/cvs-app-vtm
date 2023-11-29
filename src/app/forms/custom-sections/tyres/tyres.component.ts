@@ -13,7 +13,7 @@ import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '@forms/utils/enum-map';
-import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
+import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import {
   Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
@@ -31,8 +31,10 @@ import { cloneDeep } from 'lodash';
 import {
   ReplaySubject,
   filter,
-  takeUntil,
+  takeUntil, Observable,
 } from 'rxjs';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
   selector: 'app-tyres',
@@ -51,6 +53,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   public errorMessage?: string;
   public form!: CustomFormGroup;
   private editingReason?: ReasonForEditing;
+  private loadIndexValues: ReferenceDataTyreLoadIndex[] | null = [];
 
   tyresReferenceData: ReferenceDataTyre[] = [];
   invalidAxles: Array<number> = [];
@@ -61,6 +64,8 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private viewportScroller: ViewportScroller,
+    private referenceDataService: ReferenceDataService,
+    private technicalRecordService: TechnicalRecordService,
   ) {
     this.editingReason = this.route.snapshot.data['reason'];
   }
@@ -78,6 +83,11 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       .pipe(takeUntil(this.destroy$), filter(Boolean)).subscribe(((data) => {
         this.tyresReferenceData = data as ReferenceDataTyre[];
       }));
+    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
+
+    this.loadIndex$.subscribe((value): void => {
+      this.loadIndexValues = value;
+    });
   }
 
   ngOnChanges(simpleChanges: SimpleChanges): void {
@@ -142,6 +152,10 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     return this.axles.get([i]) as CustomFormGroup;
   }
 
+  get loadIndex$(): Observable<ReferenceDataTyreLoadIndex[] | null> {
+    return this.referenceDataService.getAll$(ReferenceDataResourceType.TyreLoadIndex) as Observable<ReferenceDataTyreLoadIndex[]>;
+  }
+
   checkAxleWeights(simpleChanges: SimpleChanges) {
     const { vehicleTechRecord } = simpleChanges;
     this.invalidAxles = [];
@@ -154,8 +168,16 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     vehicleTechRecord.currentValue.techRecord_axles.forEach((axle: HGVAxles | TRLAxles | PSVAxles) => {
-      if (axle.axleNumber && axle.tyres_dataTrAxles && axle.weights_gbWeight && (axle.tyres_dataTrAxles < axle.weights_gbWeight)) {
-        this.invalidAxles.push(axle.axleNumber);
+      if (axle.tyres_fitmentCode && axle.tyres_dataTrAxles && axle.weights_gbWeight && axle.axleNumber) {
+        const weightValue = this.technicalRecordService.getAxleFittingWeightValueFromLoadIndex(
+          axle.tyres_dataTrAxles.toString(),
+          axle.tyres_fitmentCode,
+          this.loadIndexValues,
+        );
+        console.log(weightValue);
+        if (weightValue && axle.weights_gbWeight > weightValue) {
+          this.invalidAxles.push(axle.axleNumber);
+        }
       }
     });
   }
