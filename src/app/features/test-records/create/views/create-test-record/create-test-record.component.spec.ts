@@ -15,6 +15,7 @@ import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -208,16 +209,17 @@ describe('CreateTestRecordComponent', () => {
     expect(createTestResultSpy).toHaveBeenCalledWith(testRecord);
   });
 
-  it('should set testMode to be view', () => {
+  it('should set testMode to be view', async () => {
+    component.techRecord = {} as V3TechRecordModel;
     component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
-    component.handleReview();
+    await component.handleReview();
 
     expect(component.testMode).toEqual(TestModeEnum.View);
   });
 
-  it('should set testMode back to edit', () => {
+  it('should set testMode back to edit', async () => {
     component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
-    component.handleReview();
+    await component.handleReview();
     component.handleCancel();
 
     expect(component.testMode).toEqual(TestModeEnum.Edit);

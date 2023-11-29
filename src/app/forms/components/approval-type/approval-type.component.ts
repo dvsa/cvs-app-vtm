@@ -23,7 +23,7 @@ const patterns: Record<string, RegExp> = {
   'EU WVTA 23 on': /^e(.{2})\*(.{4})\/(.{4})\*(.{6})$/i, // 20
   QNIG: /^e(.{2})\*(.{4})\/(.{4})\*(.{6})$/i, // 20
   'Prov.GB WVTA': /^(.{3})\*(.{4})\/(.{4})\*(.{6})$/i, // 20
-  'Small series NKSXX': /^(.?)11\*NKS(.{0,2})\*(.{0,6})$/i, // 25
+  'Small series NKSXX': /^(.?)11\*NKS(.{0,2})\/(.{0,4})\*(.{0,6})$/i, // 25
   'Small series NKS': /^(.?)11\*NKS\*(.{0,6})$/i, // 23
   'IVA - VCA': /^n11\*NIV(.{2})\/(.{4})\*(.{6})$/i, // 19
 };
@@ -41,7 +41,7 @@ const patternsPartialMatch: Record<string, RegExp> = {
   'EU WVTA 23 on': /^e(.{0,2})\*(.{0,4})\/(.{0,4})\*(.{0,6})$/i,
   QNIG: /^e(.{0,2})\*(.{0,4})\/(.{0,4})\*(.{0,6})$/i,
   'Prov.GB WVTA': /^(.{0,3})\*(.{0,4})\/(.{0,4})\*(.{0,6})$/i,
-  'Small series NKSXX': /^(.?)11\*NKS(.{0,2})\*(.{0,6})$/i, // 25
+  'Small series NKSXX': /^(.?)11\*NKS(.{0,2})\/(.{0,4})\*(.{0,6})$/i, // 25
   'Small series NKS': /^(.?)11\*NKS\*(.{0,6})$/i, // 23
   'IVA - VCA': /^n11\*NIV(.{0,2})\/(.{0,4})\*(.{0,6})$/i,
 };
@@ -59,7 +59,7 @@ const patternsGenericPartialMatch: Record<string, RegExp> = {
   'EU WVTA 23 on': /^(.{0,2})(.{0,4})(.{0,4})(.{0,6})$/i,
   QNIG: /^(.{0,2})(.{0,4})(.{0,4})(.{0,6})$/i,
   'Prov.GB WVTA': /^(.{0,3})(.{0,4})(.{0,4})(.{0,6})$/i,
-  'Small series NKSXX': /^(.?)11\*NKS(.{0,2})\*(.{0,6})$/i, // 25
+  'Small series NKSXX': /^(.?)11\*NKS(.{0,2})\/(.{0,4})\*(.{0,6})$/i, // 25
   'Small series NKS': /^(.?)11\*NKS\*(.{0,6})$/i, // 23
   'IVA - VCA': /^(.{0,2})(.{0,4})(.{0,6})$/i,
 };
@@ -333,7 +333,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
       case ApprovalType.IVA_VCA:
       case ApprovalType.SMALL_SERIES_NKSXX:
-        if (threeRequired()) {
+        if (fourRequired()) {
           setErrors();
         }
         break;
@@ -426,7 +426,7 @@ export class ApprovalTypeInputComponent extends BaseControlComponent implements 
 
       case ApprovalType.SMALL_SERIES_NKSXX:
         return approvalTypeNumber1 && approvalTypeNumber2 && approvalTypeNumber3
-          ? `${approvalTypeNumber1}11*NKS${approvalTypeNumber2}*${approvalTypeNumber3}`
+          ? `${approvalTypeNumber1}11*NKS${approvalTypeNumber2}/${approvalTypeNumber3}*${approvalTypeNumber4}`
           : null;
 
       case ApprovalType.SMALL_SERIES_NKS:

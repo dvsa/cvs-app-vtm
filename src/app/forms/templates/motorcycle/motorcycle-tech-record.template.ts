@@ -25,6 +25,7 @@ export const MotorcycleTechRecord: FormNode = {
     },
     {
       name: 'techRecord_statusCode',
+      label: 'Record status',
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,

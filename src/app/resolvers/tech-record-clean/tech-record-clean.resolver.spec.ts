@@ -66,7 +66,7 @@ describe('techRecordCleanResolver', () => {
       jest.spyOn(store, 'select').mockReturnValue(of({
         techRecord_vehicleType: 'hgv',
         techRecord_approvalType: 'Small series' as ApprovalType,
-        techRecord_approvalTypeNumber: '811*NKSXX*666666',
+        techRecord_approvalTypeNumber: '811*NKSXX/1234*666666',
       }));
       const result = executeResolver(activatedRouteSnapshot, {} as RouterStateSnapshot) as Observable<boolean>;
       const resolveResult = await firstValueFrom(result);
@@ -76,7 +76,7 @@ describe('techRecordCleanResolver', () => {
       expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
         vehicleTechRecord: {
           techRecord_approvalType: ApprovalType.SMALL_SERIES_NKSXX,
-          techRecord_approvalTypeNumber: '811*NKSXX*666666',
+          techRecord_approvalTypeNumber: '811*NKSXX/1234*666666',
           techRecord_vehicleType: 'hgv',
         },
       }));
