@@ -197,11 +197,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       case VehicleTypes.PSV:
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
-        return [...commonCustomSections, this.adr.form];
+        return this.adr ? [...commonCustomSections, this.adr.form] : commonCustomSections;
       case VehicleTypes.TRL:
-        return [...commonCustomSections, this.trlBrakes!.form, this.letters.form, this.adr.form];
+        return this.adr ? [...commonCustomSections, this.trlBrakes!.form, this.letters.form, this.adr.form]
+          : [...commonCustomSections, this.trlBrakes!.form, this.letters.form];
       case VehicleTypes.LGV:
-        return [this.adr.form];
+        return this.adr ? [this.adr.form] : [];
       default:
         return [];
     }
