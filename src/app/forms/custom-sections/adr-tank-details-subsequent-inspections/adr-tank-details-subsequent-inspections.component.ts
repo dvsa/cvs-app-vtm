@@ -1,16 +1,27 @@
-import { KeyValue } from '@angular/common';
-import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormGroup, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
-import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
 import {
-  CustomControl,
+  AfterContentInit,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { FormArray, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
   CustomFormControl,
   CustomFormGroup,
   FormNodeTypes,
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC3Types } from '@models/adr.enum';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { RouterService } from '@services/router/router.service';
+import {
+  Observable,
+  ReplaySubject,
+  map,
+  take,
+  takeUntil,
+} from 'rxjs';
 import { CustomControlComponentComponent } from '../custom-control-component/custom-control-component.component';
 
 @Component({
@@ -24,9 +35,18 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
   formArray = new FormArray<CustomFormGroup>([]);
 
+  isEditing?: boolean;
+
+  constructor(injector: Injector, cdr: ChangeDetectorRef, private routerService: RouterService) {
+    super(injector, cdr);
+  }
+
   ngOnInit() {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       this.control?.patchValue(changes, { emitModelToViewChange: true });
+    });
+    this.isEditing$.pipe(take(1)).subscribe((editing) => {
+      this.isEditing = editing;
     });
   }
 
@@ -46,6 +66,10 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
       this.formArray.push(control);
 
     });
+  }
+
+  get isEditing$(): Observable<boolean> {
+    return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
   }
 
   createSubsequentInspection(index: number) {
