@@ -8,9 +8,10 @@ import {
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { TC2Types } from '@models/adr.enum';
+import { TC2Types, TC3Types } from '@models/adr.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes,
+  FormNodeViewTypes,
   FormNodeWidth,
 } from '../../services/dynamic-form.types';
 
@@ -240,17 +241,45 @@ export const AdrTemplate: FormNode = {
       label: 'TC2: Expiry Date',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.DATE,
+      viewType: FormNodeViewTypes.DATE,
       hide: true,
       groups: ['adr_details', 'dangerous_goods'],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
       label: 'Subsequent Inspections',
-      type: FormNodeTypes.CONTROL,
+      type: FormNodeTypes.ARRAY,
       editType: FormNodeEditTypes.CUSTOM,
       component: AdrTankDetailsSubsequentInspectionsComponent,
       hide: true,
       groups: ['adr_details', 'dangerous_goods'],
+      children: [{
+        name: '0',
+        label: 'Subsequent',
+        type: FormNodeTypes.GROUP,
+        children: [
+          {
+            name: 'tc3Type',
+            type: FormNodeTypes.CONTROL,
+            label: 'TC3: Inspection Type',
+            // TO-DO: replace with enum
+            options: getOptionsFromEnum(TC3Types),
+          },
+          {
+            name: 'tc3PeriodicNumber',
+            label: 'TC3: Certificate Number',
+            type: FormNodeTypes.CONTROL,
+          },
+          {
+            name: 'tc3PeriodicExpiryDate',
+            label: 'TC3: Expiry Date',
+            type: FormNodeTypes.CONTROL,
+            editType: FormNodeEditTypes.DATE,
+            viewType: FormNodeViewTypes.DATE,
+          },
+        ],
+      },
+      ],
     },
   ],
 };
