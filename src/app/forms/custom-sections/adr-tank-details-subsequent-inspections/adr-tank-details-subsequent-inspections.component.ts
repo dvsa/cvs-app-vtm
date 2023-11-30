@@ -40,7 +40,7 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
     const value = this.form?.get(this.name)?.value;
     const values = Array.isArray(value) && value.length ? value : [this.createSubsequentInspection(0).value];
 
-    values.forEach((formValue: any, index: number) => {
+    values.forEach((formValue: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }, index: number) => {
       const control = this.createSubsequentInspection(index);
       control.patchValue(formValue);
       this.formArray.push(control);
@@ -94,7 +94,6 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
   addSubsequentInspection() {
     this.formArray.push(this.createSubsequentInspection(this.formArray.length));
-    console.log(this.formArray);
   }
 
   removeSubsequentInspection(index: number) {
