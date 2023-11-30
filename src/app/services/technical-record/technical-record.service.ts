@@ -52,17 +52,16 @@ export class TechnicalRecordService {
 
   getAxleFittingWeightValueFromLoadIndex(
     loadIndexValue: string,
-    fitmentCodeType: FitmentCodeEnum,
+    fitmentCodeType: FitmentCodeEnum | null | undefined,
     loadIndex: ReferenceDataTyreLoadIndex[] | null,
   ): number | undefined {
-    let factor = null;
-    switch (fitmentCodeType) {
-      case 'double':
-        factor = 4;
-        break;
-      default:
-        factor = 2;
+    console.log(loadIndexValue);
+    console.log(fitmentCodeType);
+    let factor = 2;
+    if (fitmentCodeType === 'double') {
+      factor = 4;
     }
+    console.log(factor);
     const axleLoadIndex = loadIndex?.find((resource) => resource.resourceKey === loadIndexValue);
     return axleLoadIndex?.loadIndex ? +axleLoadIndex.loadIndex * factor : undefined;
   }

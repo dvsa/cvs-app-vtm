@@ -85,7 +85,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       }));
     this.referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
 
-    this.loadIndex$.subscribe((value): void => {
+    this.loadIndex$.pipe(takeUntil(this.destroy$)).subscribe((value): void => {
       this.loadIndexValues = value;
     });
   }
@@ -168,7 +168,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     vehicleTechRecord.currentValue.techRecord_axles.forEach((axle: HGVAxles | TRLAxles | PSVAxles) => {
-      if (axle.tyres_fitmentCode && axle.tyres_dataTrAxles && axle.weights_gbWeight && axle.axleNumber) {
+      if (axle.tyres_dataTrAxles && axle.weights_gbWeight && axle.axleNumber) {
         const weightValue = this.technicalRecordService.getAxleFittingWeightValueFromLoadIndex(
           axle.tyres_dataTrAxles.toString(),
           axle.tyres_fitmentCode,
