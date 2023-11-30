@@ -1,6 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { KeyValue } from '@angular/common';
+import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormArray, FormGroup, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
 import {
+  CustomControl,
   CustomFormControl,
   CustomFormGroup,
   FormNodeTypes,
@@ -16,10 +19,10 @@ import { CustomControlComponentComponent } from '../custom-control-component/cus
   styleUrls: ['./adr-tank-details-subsequent-inspections.component.scss'],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsSubsequentInspectionsComponent, multi: true }],
 })
-export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlComponentComponent implements OnInit, OnDestroy {
+export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlComponentComponent implements OnInit, OnDestroy, AfterContentInit {
   destroy$ = new ReplaySubject<boolean>(1);
 
-  formArray = new FormArray<CustomFormGroup>([this.createSubsequentInspection(0)]);
+  formArray = new FormArray<CustomFormGroup>([]);
 
   ngOnInit() {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
@@ -32,6 +35,19 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
     this.destroy$.complete();
   }
 
+  override ngAfterContentInit() {
+    super.ngAfterContentInit();
+    const value = this.form?.get(this.name)?.value;
+    const values = Array.isArray(value) && value.length ? value : [this.createSubsequentInspection(0).value];
+
+    values.forEach((formValue: any, index: number) => {
+      const control = this.createSubsequentInspection(index);
+      control.patchValue(formValue);
+      this.formArray.push(control);
+
+    });
+  }
+
   createSubsequentInspection(index: number) {
     return new CustomFormGroup({
       name: index.toString(),
@@ -40,37 +56,37 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
       customId: `subsequent[${index}]`,
       children: [
         {
-          name: 'techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type',
+          name: 'tc3Type',
           type: FormNodeTypes.CONTROL,
           label: 'TC3: Inspection Type',
           // TO-DO: replace with enum
           options: getOptionsFromEnum(TC3Types),
-          customId: `techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type[${index}]`,
+          customId: `tc3Type[${index}]`,
         },
         {
-          name: 'techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicNumber',
+          name: 'tc3PeriodicNumber',
           label: 'TC3: Certificate Number',
           type: FormNodeTypes.CONTROL,
-          customId: `techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicNumber[${index}]`,
+          customId: `tc3PeriodicNumber[${index}]`,
         },
         {
-          name: 'techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicExpiryDate',
+          name: 'tc3PeriodicExpiryDate',
           label: 'TC3: Expiry Date',
           type: FormNodeTypes.CONTROL,
-          customId: `techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicExpiryDate[${index}]`,
+          customId: `tc3PeriodicExpiryDate[${index}]`,
         },
       ],
     }, {
-      techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type: new CustomFormControl({
-        name: 'techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type',
+      tc3Type: new CustomFormControl({
+        name: 'tc3Type',
         type: FormNodeTypes.CONTROL,
       }),
-      techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicNumber: new CustomFormControl({
-        name: 'techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicNumber',
+      tc3PeriodicNumber: new CustomFormControl({
+        name: 'tc3PeriodicNumber',
         type: FormNodeTypes.CONTROL,
       }),
-      techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicExpiryDate: new CustomFormControl({
-        name: 'techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicExpiryDate',
+      tc3PeriodicExpiryDate: new CustomFormControl({
+        name: 'tc3PeriodicExpiryDate',
         type: FormNodeTypes.CONTROL,
       }),
     });
@@ -78,6 +94,7 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
   addSubsequentInspection() {
     this.formArray.push(this.createSubsequentInspection(this.formArray.length));
+    console.log(this.formArray);
   }
 
   removeSubsequentInspection(index: number) {
