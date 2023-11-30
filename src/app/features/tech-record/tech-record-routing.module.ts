@@ -45,8 +45,8 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
     resolve: {
       techRecord: techRecordViewResolver,
-      clean: techRecordCleanResolver,
       load: techRecordValidateResolver,
+      clean: techRecordCleanResolver,
     },
   },
   {
@@ -61,8 +61,8 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
     resolve: {
       techRecord: techRecordViewResolver,
-      clean: techRecordCleanResolver,
       load: techRecordValidateResolver,
+      clean: techRecordCleanResolver,
     },
   },
 

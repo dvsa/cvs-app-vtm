@@ -99,7 +99,9 @@ export class CustomValidators {
 
       const siblingControl = control.parent.get(sibling) as CustomFormControl;
       const siblingValue = siblingControl.value;
-      const isSiblingValueIncluded = values.includes(siblingValue);
+      const isSiblingValueIncluded = Array.isArray(siblingValue)
+        ? values.some((value) => siblingValue.includes(value))
+        : values.includes(siblingValue);
       const isControlValueEmpty = control.value === null || control.value === undefined || control.value === '';
 
       return isSiblingValueIncluded && isControlValueEmpty ? { requiredIfEquals: { sibling: siblingControl.meta.label } } : null;
@@ -342,39 +344,76 @@ export class CustomValidators {
     };
   };
 
-  static showGroupsWhenEqualTo = (value: unknown, groups: string[]): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (control.value !== value) return null;
-
-      const parentGroup = control.parent as CustomFormGroup;
-      parentGroup.meta.children?.forEach((child) => {
-        const childControl = parentGroup.get(child.name) as CustomFormControl;
-        const childGroups = childControl?.meta.groups;
-        childGroups?.forEach((group) => {
-          if (groups.includes(group)) {
-            childControl.meta.hide = false;
-          }
-        });
+  static modifyControlsByGroup = (control: AbstractControl, groups: string[], modifyFunc: (control: CustomFormControl) => void): void => {
+    const parentGroup = control.parent as CustomFormGroup;
+    parentGroup.meta.children?.forEach((child) => {
+      const childControl = parentGroup.get(child.name) as CustomFormControl;
+      const childGroups = childControl?.meta.groups;
+      childGroups?.forEach((group) => {
+        if (groups.includes(group)) {
+          modifyFunc(childControl);
+        }
       });
+    });
+  };
+
+  static setHidePropertyForGroups = (control: AbstractControl, groups: string[], hide: boolean): void => {
+    this.modifyControlsByGroup(control, groups, (childControl) => {
+      childControl.meta.hide = hide;
+    });
+  };
+
+  static showGroupsWhenEqualTo = (values: unknown[] | undefined, groups: string[]): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (values && !values.includes(control.value)) return null;
+      this.setHidePropertyForGroups(control, groups, false);
 
       return null;
     };
   };
 
-  static hideGroupsWhenEqualTo = (value: unknown, groups: string[]): ValidatorFn => {
+  static showGroupsWhenIncludes = (values: unknown[] | undefined, groups: string[]): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control.value !== value) return null;
+      if (values && !values.some((value) => control.value?.includes(value))) return null;
+      this.setHidePropertyForGroups(control, groups, false);
 
-      const parentGroup = control.parent as CustomFormGroup;
-      parentGroup.meta.children?.forEach((child) => {
-        const childControl = parentGroup.get(child.name) as CustomFormControl;
-        const childGroups = childControl?.meta.groups;
-        childGroups?.forEach((group) => {
-          if (groups.includes(group)) {
-            childControl.meta.hide = true;
-          }
-        });
-      });
+      return null;
+    };
+  };
+
+  static hideGroupsWhenIncludes = (values: unknown[] | undefined, groups: string[]): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (values && values.some((value) => control.value?.includes(value))) {
+        this.setHidePropertyForGroups(control, groups, true);
+      }
+
+      return null;
+    };
+  };
+
+  static showGroupsWhenExcludes = (values: unknown[] | undefined, groups: string[]): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (values && values.some((value) => control.value?.includes(value))) return null;
+      this.setHidePropertyForGroups(control, groups, false);
+
+      return null;
+    };
+  };
+
+  static hideGroupsWhenExcludes = (values: unknown[] | undefined, groups: string[]): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (values && values.some((value) => control.value?.includes(value))) return null;
+      this.setHidePropertyForGroups(control, groups, true);
+
+      return null;
+    };
+  };
+
+  static hideGroupsWhenEqualTo = (values: unknown[] | undefined, groups: string[]): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (values && !values.includes(control.value)) return null;
+      this.setHidePropertyForGroups(control, groups, true);
+
       return null;
     };
   };

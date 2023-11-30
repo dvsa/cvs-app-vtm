@@ -5,6 +5,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
+import { DateValidators } from '@forms/validators/date/date.validators';
 
 @Component({
   selector: 'app-adr',
@@ -25,6 +26,12 @@ export class AdrComponent implements OnInit {
     'techRecord_adrDetails_applicantDetails_postcode',
     'techRecord_adrDetails_applicantDetails_town',
     'techRecord_adrDetails_applicantDetails_street',
+    'techRecord_adrDetails_vehicleDetails_type',
+    'techRecord_adrDetails_vehicleDetails_approvalDate',
+    'techRecord_adrDetails_permittedDangerousGoods',
+    'techRecord_adrDetails_compatibilityGroupJ',
+    'techRecord_adrDetails_additionalNotes_number',
+    'techRecord_adrDetails_adrTypeApprovalNo',
   ];
 
   constructor(
@@ -55,6 +62,16 @@ export class AdrComponent implements OnInit {
 
   handleFormChange(event: Record<string, unknown>) {
     if (event == null) return;
+    this.form.patchValue(event);
+
+    const validator = DateValidators.validDate(false, 'Date processed');
+    const approvedDate = this.form.get('techRecord_adrDetails_vehicleDetails_approvalDate');
+
+    // TODO: fix underlying issue of this not being added correctly by date component
+    if (!approvedDate?.hasValidator(validator)) {
+      approvedDate?.addValidators(validator);
+    }
+
     this.formChange.emit(event);
   }
 }

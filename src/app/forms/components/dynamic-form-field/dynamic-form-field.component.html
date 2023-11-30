@@ -121,6 +121,12 @@
     <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
   </app-text-input>
 
+  <ng-container *ngSwitchCase="formNodeEditTypes.CUSTOM">
+    <ng-container *ngIf="control.value.meta.component">
+      <ng-container [ngComponentOutlet]="control.value.meta.component" [ngComponentOutletInjector]="customFormControlInjector"></ng-container>
+    </ng-container>
+  </ng-container>
+
   <app-text-input
     *ngSwitchDefault
     [label]="control.value.meta.label"
