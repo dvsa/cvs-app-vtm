@@ -10,17 +10,21 @@ import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State, initialAppState } from '@store/index';
-import { of, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { TyresComponent } from './tyres.component';
 
 const mockReferenceDataService = {
   fetchReferenceDataByKey: jest.fn(),
+  loadReferenceData: jest.fn(),
+  getAll$: jest.fn(),
+  loadIndex$: jest.fn(),
 };
 
 describe('TyresComponent', () => {
   let component: TyresComponent;
   let fixture: ComponentFixture<TyresComponent>;
   let spy: jest.SpyInstance<void, [tyre: Tyres, axleNumber: number]>;
+  let referenceDataService: ReferenceDataService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -90,6 +94,8 @@ describe('TyresComponent', () => {
 
     fixture.detectChanges();
     spy = jest.spyOn(component, 'addTyreToTechRecord');
+    referenceDataService = TestBed.inject(ReferenceDataService);
+    jest.spyOn(referenceDataService, 'getAll$').mockReturnValue(of());
   });
 
   it('should create', () => {

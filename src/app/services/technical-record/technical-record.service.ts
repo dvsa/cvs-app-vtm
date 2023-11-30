@@ -55,13 +55,10 @@ export class TechnicalRecordService {
     fitmentCodeType: FitmentCodeEnum | null | undefined,
     loadIndex: ReferenceDataTyreLoadIndex[] | null,
   ): number | undefined {
-    console.log(loadIndexValue);
-    console.log(fitmentCodeType);
-    let factor = 2;
-    if (fitmentCodeType === 'double') {
-      factor = 4;
+    let factor = 4;
+    if (fitmentCodeType === 'single') {
+      factor = 2;
     }
-    console.log(factor);
     const axleLoadIndex = loadIndex?.find((resource) => resource.resourceKey === loadIndexValue);
     return axleLoadIndex?.loadIndex ? +axleLoadIndex.loadIndex * factor : undefined;
   }
