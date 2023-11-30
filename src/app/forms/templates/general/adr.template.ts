@@ -228,7 +228,13 @@ export const AdrTemplate: FormNode = {
       groups: ['tank_details', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 70 },
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
       ],
       hide: true,
     },
@@ -244,7 +250,13 @@ export const AdrTemplate: FormNode = {
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 },
         { name: ValidatorNames.PastYear },
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
       ],
       hide: true,
     },
@@ -257,7 +269,13 @@ export const AdrTemplate: FormNode = {
       groups: ['tank_details', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 50 },
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
       ],
       hide: true,
     },
@@ -270,7 +288,13 @@ export const AdrTemplate: FormNode = {
       groups: ['tank_details', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 65 },
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
       ],
       hide: true,
     },
@@ -283,7 +307,13 @@ export const AdrTemplate: FormNode = {
       groups: ['tank_details', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 30 },
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
       ],
       hide: true,
     },
