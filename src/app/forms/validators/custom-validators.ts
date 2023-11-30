@@ -453,8 +453,35 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static isArray = (options: Partial<IsArrayValidatorOptions> = {}) => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!Array.isArray(control.value)) return { isArray: 'must be a non-empty array' };
+
+      if (options.ofType) {
+        const index = control.value.findIndex((val) => typeof val !== options.ofType);
+        return index === -1
+          ? null
+          : { isArray: { message: `${index + 1} must be of type ${options.ofType}` } };
+      }
+
+      if (options.requiredIndices) {
+        const index = control.value.findIndex((val, i) => options.requiredIndices?.includes(i) && !val);
+        return index === -1
+          ? null
+          : { isArray: { message: `${index + 1} is required` } };
+      }
+
+      return null;
+    };
+  };
 }
 
 export type EnumValidatorOptions = {
   allowFalsy: boolean;
+};
+
+export type IsArrayValidatorOptions = {
+  ofType: string;
+  requiredIndices: number[];
 };

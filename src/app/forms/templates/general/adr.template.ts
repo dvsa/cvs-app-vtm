@@ -199,6 +199,7 @@ export const AdrTemplate: FormNode = {
       width: FormNodeWidth.XS,
       value: [],
       options: getOptionsFromEnum(ADRAdditionalNotesNumber),
+      validators: [{ name: ValidatorNames.IsArray, args: { requiredIndices: [0] } }],
     },
     {
       name: 'techRecord_adrDetails_adrTypeApprovalNo',
