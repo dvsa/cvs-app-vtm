@@ -72,7 +72,7 @@ jobs:
         run: npn run test
 
   deploy_infra:
-    uses: dvsa/cvs-tf-vtm/.github/workflows/deploy_infra.yml
+    uses: https://github.com/dvsa/cvs-tf-vtm/.github/workflows/deploy_infra.yml
     with:
       branch: ${{ github.ref_name }}
       environment: 'feature'
