@@ -32,6 +32,11 @@ export class AdrComponent implements OnInit {
     'techRecord_adrDetails_compatibilityGroupJ',
     'techRecord_adrDetails_additionalNotes_number',
     'techRecord_adrDetails_adrTypeApprovalNo',
+    'techRecord_adrDetails_tank_tankDetails_tankManufacturer',
+    'techRecord_adrDetails_tank_tankDetails_yearOfManufacture',
+    'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
+    'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
+    'techRecord_adrDetails_tank_tankDetails_tankCode',
   ];
 
   constructor(

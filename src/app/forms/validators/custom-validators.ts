@@ -345,6 +345,8 @@ export class CustomValidators {
   };
 
   static modifyControlsByGroup = (control: AbstractControl, groups: string[], modifyFunc: (control: CustomFormControl) => void): void => {
+    if ((control as CustomFormControl).meta.hide) return;
+
     const parentGroup = control.parent as CustomFormGroup;
     parentGroup.meta.children?.forEach((child) => {
       const childControl = parentGroup.get(child.name) as CustomFormControl;
@@ -427,6 +429,17 @@ export class CustomValidators {
           'techRecord_adrDetails_applicantDetails_postcode',
           'techRecord_adrDetails_applicantDetails_town',
           'techRecord_adrDetails_applicantDetails_street',
+          'techRecord_adrDetails_vehicleDetails_type',
+          'techRecord_adrDetails_vehicleDetails_approvalDate',
+          'techRecord_adrDetails_permittedDangerousGoods',
+          'techRecord_adrDetails_compatibilityGroupJ',
+          'techRecord_adrDetails_additionalNotes_number',
+          'techRecord_adrDetails_adrTypeApprovalNo',
+          'techRecord_adrDetails_tank_tankDetails_tankManufacturer',
+          'techRecord_adrDetails_tank_tankDetails_yearOfManufacture',
+          'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
+          'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
+          'techRecord_adrDetails_tank_tankDetails_tankCode',
         ];
         adrDetails.forEach((controlName) => {
           const childControl = control.root.get(controlName);
