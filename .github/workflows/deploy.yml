@@ -94,3 +94,4 @@ jobs:
       - name: Deploy App to S3
         working-directory: cvs-app-vtm/dist/
         run: aws s3 sync . s3://vtm-${LBRANCH}.develop.cvs.dvsacloud.uk
+
