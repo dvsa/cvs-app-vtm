@@ -172,7 +172,7 @@ export const AdrTemplate: FormNode = {
       label: 'Compatibility group J',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      groups: ['compatibility_group_j', 'adr_details'],
+      groups: ['compatibility_group_j', 'adr_details', 'dangerous_goods'],
       hide: true,
       options: [
         { value: ADRCompatibilityGroupJ.I, label: 'Yes' },
