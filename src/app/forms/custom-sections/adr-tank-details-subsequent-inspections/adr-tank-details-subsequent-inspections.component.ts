@@ -11,6 +11,7 @@ import {
   CustomFormControl,
   CustomFormGroup,
   FormNodeTypes,
+  FormNodeViewTypes,
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC3Types } from '@models/adr.enum';
@@ -37,16 +38,9 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
   isEditing?: boolean;
 
-  constructor(injector: Injector, cdr: ChangeDetectorRef, private routerService: RouterService) {
-    super(injector, cdr);
-  }
-
   ngOnInit() {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       this.control?.patchValue(changes, { emitModelToViewChange: true });
-    });
-    this.isEditing$.pipe(take(1)).subscribe((editing) => {
-      this.isEditing = editing;
     });
   }
 
@@ -66,10 +60,6 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
       this.formArray.push(control);
 
     });
-  }
-
-  get isEditing$(): Observable<boolean> {
-    return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
   }
 
   createSubsequentInspection(index: number) {
@@ -97,6 +87,7 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
           name: 'tc3PeriodicExpiryDate',
           label: 'TC3: Expiry Date',
           type: FormNodeTypes.CONTROL,
+          viewType: FormNodeViewTypes.DATE,
           customId: `tc3PeriodicExpiryDate[${index}]`,
         },
       ],

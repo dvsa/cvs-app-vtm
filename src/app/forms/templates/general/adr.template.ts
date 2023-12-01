@@ -11,6 +11,7 @@ import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC2Types } from '@models/adr.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes,
+  FormNodeViewTypes,
   FormNodeWidth,
 } from '../../services/dynamic-form.types';
 
@@ -123,6 +124,7 @@ export const AdrTemplate: FormNode = {
       label: 'Date processed',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.DATE,
+      viewType: FormNodeViewTypes.DATE,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
       validators: [
@@ -240,6 +242,7 @@ export const AdrTemplate: FormNode = {
       label: 'TC2: Expiry Date',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.DATE,
+      viewType: FormNodeViewTypes.DATE,
       hide: true,
       groups: ['adr_details', 'dangerous_goods'],
     },
@@ -248,6 +251,7 @@ export const AdrTemplate: FormNode = {
       label: 'Subsequent Inspections',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
+      viewType: FormNodeViewTypes.ADRINSPECTIONS,
       component: AdrTankDetailsSubsequentInspectionsComponent,
       hide: true,
       groups: ['adr_details', 'dangerous_goods'],
