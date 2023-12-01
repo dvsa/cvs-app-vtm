@@ -21,6 +21,8 @@ import { updateEditingTechRecord } from '@store/technical-records';
 import { of } from 'rxjs';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
 
+global.scrollTo = jest.fn();
+
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
   let fixture: ComponentFixture<TechRecordSummaryComponent>;

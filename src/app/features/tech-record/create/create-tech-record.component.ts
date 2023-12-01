@@ -109,8 +109,7 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   toggleVrmInput(checked: CheckboxGroupComponent) {
-    // eslint-disable-next-line prefer-destructuring
-    const vrmTrm = this.form.controls['vrmTrm'];
+    const { vrmTrm } = this.form.controls;
 
     if (checked.value) {
       vrmTrm.removeValidators(Validators.required);

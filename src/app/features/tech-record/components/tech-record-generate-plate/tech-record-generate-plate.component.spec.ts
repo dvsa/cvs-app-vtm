@@ -94,17 +94,19 @@ describe('TechRecordGeneratePlateComponent', () => {
     });
 
     it('should navigate back on generatePlateSuccess', fakeAsync(() => {
-      component.ngOnInit();
-      component.form.get('reason')?.setValue('Provisional');
+      fixture.ngZone?.run(() => {
+        component.ngOnInit();
+        component.form.get('reason')?.setValue('Provisional');
 
-      const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();
+        const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();
 
-      component.handleSubmit();
+        component.handleSubmit();
 
-      actions$.next(generatePlateSuccess());
-      tick();
+        actions$.next(generatePlateSuccess());
+        tick();
 
-      expect(navigateBackSpy).toHaveBeenCalled();
+        expect(navigateBackSpy).toHaveBeenCalled();
+      });
     }));
   });
 
