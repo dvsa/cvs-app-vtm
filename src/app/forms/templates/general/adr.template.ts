@@ -198,6 +198,7 @@ export const AdrTemplate: FormNode = {
       hide: true,
       width: FormNodeWidth.XS,
       value: [],
+      customValidatorErrorName: 'Guidance notes is required with Able to carry dangerous goods',
       options: getOptionsFromEnum(ADRAdditionalNotesNumber),
       validators: [{ name: ValidatorNames.IsArray, args: { requiredIndices: [0] } }],
     },

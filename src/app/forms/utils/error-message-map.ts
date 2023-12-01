@@ -37,7 +37,7 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.ValidateVRMTrailerIdLength]: (err: { message: string }) => err.message,
   [ValidatorNames.MustEqualSibling]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} must match ${err.sibling}`,
   [ValidatorNames.IsMemberOfEnum]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
-  [ValidatorNames.IsArray]: (err: { message: string }, label?: string) => `${label || DEFAULT_LABEL} ${err.message}`,
+  [ValidatorNames.IsArray]: (err: { message: string }, label?: string) => `${label || DEFAULT_LABEL}`,
 
   [AsyncValidatorNames.RequiredIfNotAbandoned]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
