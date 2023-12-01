@@ -87,7 +87,13 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'adrSection'">
-        <ng-container *ngIf="techRecordEdited.techRecord_vehicleType === 'hgv' || techRecordEdited.techRecord_vehicleType === 'trl'">
+        <ng-container
+          *ngIf="
+            techRecordEdited.techRecord_vehicleType === 'hgv' ||
+            techRecordEdited.techRecord_vehicleType === 'trl' ||
+            techRecordEdited.techRecord_vehicleType === 'lgv'
+          "
+        >
           <app-adr [techRecord]="techRecordEdited"></app-adr>
         </ng-container>
       </ng-container>
