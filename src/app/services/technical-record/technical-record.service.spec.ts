@@ -2,15 +2,22 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TechRecordGETHGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import {
+  TechRecordGETHGV,
+  TechRecordGETPSV,
+  TechRecordGETTRL,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/index';
+import { initialAppState, State } from '@store/index';
 import { updateEditingTechRecord } from '@store/technical-records';
+import { ReferenceDataResourceType, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
+import { AxleTyreProperties } from '@api/vehicle';
 import { environment } from '../../../environments/environment';
 import { TechnicalRecordService } from './technical-record.service';
+import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
 describe('TechnicalRecordService', () => {
   let service: TechnicalRecordService;
@@ -149,8 +156,8 @@ describe('TechnicalRecordService', () => {
 
   describe('business logic methods', () => {
     describe('updateEditingTechRecord', () => {
-      it(`should patch the missing information for the technical 
-      record and dispatch the action to update the editing vehicle 
+      it(`should patch the missing information for the technical
+      record and dispatch the action to update the editing vehicle
       record with the full vehicle record`, () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         const mockVehicleRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;
@@ -161,7 +168,7 @@ describe('TechnicalRecordService', () => {
       });
 
       it(`should patch from the selected record if the editing is
-      not defined and dispatch the action to update the editing 
+      not defined and dispatch the action to update the editing
       vehicle record with the full vehicle record`, () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         const mockVehicleRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;
@@ -429,6 +436,23 @@ describe('TechnicalRecordService', () => {
       const result = service.hasPsvGrossAxleChanged(changes);
       expect(spy).toHaveBeenCalledWith(changes);
       expect(result).toBe(false);
+    });
+  });
+
+  describe('getAxleFittingWeightValueFromLoadIndex', () => {
+    const loadIndex = '100';
+    const loadIndexArray: ReferenceDataTyreLoadIndex[] = [{
+      resourceType: ReferenceDataResourceType.Tyres, resourceKey: loadIndex, loadIndex: '825',
+    }];
+    it('should return double the loadIndex value passed in if fitment code is set to single', () => {
+      const fitmentCodeType = FitmentCodeEnum.Single;
+      const result = service.getAxleFittingWeightValueFromLoadIndex(loadIndex, fitmentCodeType, loadIndexArray);
+      expect(result).toBe(1650);
+    });
+    it('should return quadruple the loadIndex value passed in if fitment code is set to single', () => {
+      const fitmentCodeType = FitmentCodeEnum.Double;
+      const result = service.getAxleFittingWeightValueFromLoadIndex(loadIndex, fitmentCodeType, loadIndexArray);
+      expect(result).toBe(3300);
     });
   });
 });
