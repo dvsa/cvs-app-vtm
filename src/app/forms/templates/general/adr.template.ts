@@ -6,7 +6,7 @@ import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-n
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth,
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '../../services/dynamic-form.types';
 
 export const AdrTemplate: FormNode = {
@@ -134,8 +134,10 @@ export const AdrTemplate: FormNode = {
       label: 'Date processed',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.DATE,
+      viewType: FormNodeViewTypes.DATE,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
+      isoDate: false,
       validators: [
         { name: ValidatorNames.PastDate },
         { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
