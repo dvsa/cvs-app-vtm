@@ -5,6 +5,9 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
+import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
+import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -20,13 +23,9 @@ import {
   Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { selectAllReferenceDataByResourceType } from '@store/reference-data';
 import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
-import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
-import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
-import { selectAllReferenceDataByResourceType } from '@store/reference-data';
 import { cloneDeep } from 'lodash';
 import {
   ReplaySubject,
