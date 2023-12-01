@@ -10,27 +10,34 @@ import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State, initialAppState } from '@store/index';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TyresComponent } from './tyres.component';
 
 const mockReferenceDataService = {
   fetchReferenceDataByKey: jest.fn(),
   loadReferenceData: jest.fn(),
-  getAll$: jest.fn(),
-  loadIndex$: jest.fn(),
+  getAll$: jest.fn().mockReturnValue(of([])),
+};
+
+const mockTechRecordService = {
+  getAxleFittingWeightValueFromLoadIndex: jest.fn(),
 };
 
 describe('TyresComponent', () => {
   let component: TyresComponent;
   let fixture: ComponentFixture<TyresComponent>;
   let spy: jest.SpyInstance<void, [tyre: Tyres, axleNumber: number]>;
-  let referenceDataService: ReferenceDataService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule, DynamicFormsModule, StoreModule.forRoot({})],
       declarations: [TyresComponent],
-      providers: [provideMockStore<State>({ initialState: initialAppState }), { provide: ReferenceDataService, useValue: mockReferenceDataService }],
+      providers: [
+        provideMockStore<State>({ initialState: initialAppState }),
+        { provide: ReferenceDataService, useValue: mockReferenceDataService },
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
+      ],
     }).compileComponents();
   });
 
@@ -94,12 +101,40 @@ describe('TyresComponent', () => {
 
     fixture.detectChanges();
     spy = jest.spyOn(component, 'addTyreToTechRecord');
-    referenceDataService = TestBed.inject(ReferenceDataService);
-    jest.spyOn(referenceDataService, 'getAll$').mockReturnValue(of());
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('checkAxleWeights', () => {
+    it('should return if isEditing is false', () => {
+      const currentAxle = [{
+        weights_gbWeight: 1650, axleNumber: 1, tyres_dataTrAxles: 100, tyres_fitmentCode: 'single', tyres_tyreCode: '123',
+      }];
+      const previousAxle = [{
+        weights_gbWeight: 1650, axleNumber: 1, tyres_dataTrAxles: 100, tyres_fitmentCode: 'single', tyres_tyreCode: '123',
+      }];
+      const simpleChanges: SimpleChanges = {
+        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false },
+      } as unknown as SimpleChanges;
+      component.isEditing = false;
+      component.checkAxleWeights(simpleChanges);
+    });
+    it('should call getAxleFittingWeightValueFromLoadIndex', () => {
+      const currentAxle = [{
+        weights_gbWeight: 1650, axleNumber: 1, tyres_dataTrAxles: 100, tyres_fitmentCode: 'single', tyres_tyreCode: '123',
+      }];
+      const previousAxle = [{
+        weights_gbWeight: 1649, axleNumber: 1, tyres_dataTrAxles: 100, tyres_fitmentCode: 'single', tyres_tyreCode: '123',
+      }];
+      const simpleChanges: SimpleChanges = {
+        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false },
+      } as unknown as SimpleChanges;
+      component.isEditing = true;
+      component.checkAxleWeights(simpleChanges);
+      expect(mockTechRecordService.getAxleFittingWeightValueFromLoadIndex).toHaveBeenCalled();
+    });
   });
   // TODO V3 PSV
   describe('checkFitmentCodeHasChanged', () => {

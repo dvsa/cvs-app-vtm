@@ -174,7 +174,6 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
           axle.tyres_fitmentCode,
           this.loadIndexValues,
         );
-        console.log(weightValue);
         if (weightValue && axle.weights_gbWeight > weightValue) {
           this.invalidAxles.push(axle.axleNumber);
         }
