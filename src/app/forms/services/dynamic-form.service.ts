@@ -10,7 +10,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 // eslint-disable-next-line import/no-cycle
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
-import { CustomValidators, EnumValidatorOptions } from '@forms/validators/custom-validators';
+import { CustomValidators, EnumValidatorOptions, IsArrayValidatorOptions } from '@forms/validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store } from '@ngrx/store';
@@ -79,6 +79,7 @@ export class DynamicFormService {
     [ValidatorNames.HideGroupsWhenExcludes]: (args: { values: unknown[], groups: string[] }) =>
       CustomValidators.hideGroupsWhenExcludes(args.values, args.groups),
     [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
+    [ValidatorNames.IsArray]: (args: Partial<IsArrayValidatorOptions>) => CustomValidators.isArray(args),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
