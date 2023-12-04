@@ -81,7 +81,7 @@ jobs:
 #      # deploy the Terraform for this branch.....
 
 
-  action:
+  deploy_infra:
     name: "🛠️ ${{ inputs.event_type }} | ${{matrix.repo}}/${{ inputs.branch }}"
     runs-on: ubuntu-latest
     steps:
