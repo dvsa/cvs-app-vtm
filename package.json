@@ -26,7 +26,7 @@
     "build-storybook": "npm run docs:json && storybook build",
     "test": "jest --colors --maxWorkers=50% --coverage",
     "test:watch": "jest --watch",
-    "test:ci": "jest -ci --maxWorkers=50% --watchAll=false --reporters=default",
+    "test:ci": "jest --ci --maxWorkers=50% --watchAll=false --reporters=default",
     "mock-api": "npx ts-node ./mock-api/mock-api-server.ts",
     "prepare": "husky install && ts-patch install -s",
     "postinstall": "ngcc",
