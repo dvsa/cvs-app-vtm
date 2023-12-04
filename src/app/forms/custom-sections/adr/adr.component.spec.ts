@@ -1,12 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
 import { AdrComponent } from './adr.component';
+
+const mockTechRecordService = {
+  updateEditingTechRecord: jest.fn(),
+};
 
 describe('AdrComponent', () => {
   let component: AdrComponent;
@@ -15,9 +21,10 @@ describe('AdrComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AdrComponent],
-      imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
+      imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule],
       providers: [
         provideMockStore({ initialState: initialAppState }),
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
       ],
     }).compileComponents();
 
