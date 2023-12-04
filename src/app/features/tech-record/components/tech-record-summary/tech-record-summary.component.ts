@@ -84,7 +84,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private viewportScroller: ViewportScroller,
     private store: Store,
     private loading: LoadingService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$
@@ -211,7 +211,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     const isPrimitiveArray = (a: unknown, b: unknown) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
 
     this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
-
     this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
   }
 
