@@ -7,7 +7,13 @@ import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hg
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TechRecordGETCar, TechRecordGETHGV, TechRecordGETLGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import {
+  TechRecordGETCar,
+  TechRecordGETHGV,
+  TechRecordGETLGV,
+  TechRecordGETPSV,
+  TechRecordGETTRL,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { FormNode, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { VehicleSummary } from '@forms/templates/tech-records/vehicle-summary.template';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
@@ -100,9 +106,9 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
           delete (this.techRecordChanges as Partial<TechRecordGETPSV | TechRecordGETHGV>).techRecord_numberOfWheelsDriven;
         } if (
           (this.vehicleType === VehicleTypes.CAR || this.vehicleType === VehicleTypes.LGV)
-          && (changes as Partial<TechRecordGETCar | TechRecordGETLGV>).techRecord_vehicleSubclass) {
-          (this.techRecordChanges as Partial<TechRecordGETCar | TechRecordGETLGV>)
-            .techRecord_vehicleSubclass = (this.techRecordEdited as Partial<TechRecordGETCar | TechRecordGETLGV>).techRecord_vehicleSubclass;
+          && (changes as TechRecordGETCar | TechRecordGETLGV).techRecord_vehicleSubclass) {
+          (this.techRecordChanges as TechRecordGETCar | TechRecordGETLGV)
+            .techRecord_vehicleSubclass = (this.techRecordEdited as TechRecordGETCar | TechRecordGETLGV).techRecord_vehicleSubclass;
         }
         this.techRecordChangesKeys = this.getTechRecordChangesKeys();
         this.sectionsWhitelist = this.getSectionsWhitelist();

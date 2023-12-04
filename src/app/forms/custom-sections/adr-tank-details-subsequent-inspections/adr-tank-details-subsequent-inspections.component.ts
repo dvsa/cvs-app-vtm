@@ -1,12 +1,11 @@
 import {
   AfterContentInit,
-  ChangeDetectorRef,
   Component,
-  Injector,
   OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormArray, NG_VALUE_ACCESSOR } from '@angular/forms';
+// eslint-disable-next-line import/no-cycle
 import {
   CustomFormControl,
   CustomFormGroup,
@@ -15,12 +14,8 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC3Types } from '@models/adr.enum';
-import { RouterService } from '@services/router/router.service';
 import {
-  Observable,
   ReplaySubject,
-  map,
-  take,
   takeUntil,
 } from 'rxjs';
 import { CustomControlComponentComponent } from '../custom-control-component/custom-control-component.component';
