@@ -209,12 +209,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
   handleFormState(event: any): void {
     const isPrimitiveArray = (a: unknown, b: unknown) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
-    console.log(isPrimitiveArray);
-    const recordToUpdate = { ...this.techRecordCalculated, ...event };
-    console.log(recordToUpdate);
 
-    // this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
-    this.techRecordCalculated = recordToUpdate;
+    this.techRecordCalculated = mergeWith(cloneDeep(this.techRecordCalculated), event, isPrimitiveArray);
+
     this.technicalRecordService.updateEditingTechRecord(this.techRecordCalculated as TechRecordType<'put'>);
   }
 
