@@ -31,8 +31,6 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
   formArray = new FormArray<CustomFormGroup>([]);
 
-  isEditing?: boolean;
-
   ngOnInit() {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       this.control?.patchValue(changes, { emitModelToViewChange: true });
@@ -46,15 +44,16 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
   override ngAfterContentInit() {
     super.ngAfterContentInit();
-    const value = this.form?.get(this.name)?.value;
-    const values = Array.isArray(value) && value.length ? value : [this.createSubsequentInspection(0).value];
+    if (this.form) {
+      const value = this.form?.get(this.name)?.value;
+      const values = Array.isArray(value) && value.length ? value : [this.createSubsequentInspection(0).value];
 
-    values.forEach((formValue: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }, index: number) => {
-      const control = this.createSubsequentInspection(index);
-      control.patchValue(formValue);
-      this.formArray.push(control);
-
-    });
+      values.forEach((formValue: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }, index: number) => {
+        const control = this.createSubsequentInspection(index);
+        control.patchValue(formValue);
+        this.formArray.push(control);
+      });
+    }
   }
 
   createSubsequentInspection(index: number) {
