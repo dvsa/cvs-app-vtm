@@ -334,7 +334,7 @@ export const AdrTemplate: FormNode = {
       name: 'tankInspectionsSectionTitle',
       type: FormNodeTypes.TITLE,
       label: 'Tank Inspections',
-      groups: ['adr_details', 'dangerous_goods'],
+      groups: ['tank_details', 'dangerous_goods'],
       hide: true,
       validators: [
         {
@@ -350,7 +350,7 @@ export const AdrTemplate: FormNode = {
       name: 'tankInspectionsSectionSubheading',
       type: FormNodeTypes.TITLE,
       label: 'Initial',
-      groups: ['adr_details', 'dangerous_goods'],
+      groups: ['tank_details', 'dangerous_goods'],
       hide: true,
       validators: [
         {
@@ -370,7 +370,7 @@ export const AdrTemplate: FormNode = {
       label: 'TC2: Inspection type',
       value: TC2Types.INITIAL, // TO-DO: replace with enum
       hide: true,
-      groups: ['adr_details', 'dangerous_goods'],
+      groups: ['tank_details', 'dangerous_goods'],
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,
@@ -386,7 +386,7 @@ export const AdrTemplate: FormNode = {
       label: 'TC2: Certificate Number',
       type: FormNodeTypes.CONTROL,
       hide: true,
-      groups: ['adr_details', 'dangerous_goods'],
+      groups: ['tank_details', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 70 },
         {
@@ -405,7 +405,7 @@ export const AdrTemplate: FormNode = {
       editType: FormNodeEditTypes.DATE,
       viewType: FormNodeViewTypes.DATE,
       hide: true,
-      groups: ['adr_details', 'dangerous_goods'],
+      groups: ['tank_details', 'dangerous_goods'],
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,
@@ -424,7 +424,7 @@ export const AdrTemplate: FormNode = {
       viewType: FormNodeViewTypes.ADRINSPECTIONS,
       component: AdrTankDetailsSubsequentInspectionsComponent,
       hide: true,
-      groups: ['adr_details', 'dangerous_goods'],
+      groups: ['tank_details', 'dangerous_goods'],
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,
