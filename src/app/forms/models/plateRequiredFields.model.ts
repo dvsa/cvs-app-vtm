@@ -19,10 +19,8 @@ export const hgvRequiredFields: string[] = [
   'techRecord_vehicleConfiguration',
 ];
 
-export const axleRequiredFields: string[] = [
-  'weights_gbWeight',
+export const tyreRequiredFields: string[] = [
   'tyres_tyreSize',
-  'tyres_plyRating',
   'tyres_fitmentCode',
 ];
 

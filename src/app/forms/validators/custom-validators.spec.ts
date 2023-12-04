@@ -1573,3 +1573,91 @@ describe('hideGroupsWhenExcludes', () => {
     expect(compat?.meta.hide).toBe(false);
   });
 });
+
+describe('isArray', () => {
+  let form: CustomFormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'techRecord_adrDetails_additionalNotes_number',
+              type: FormNodeTypes.CONTROL,
+              value: [],
+            },
+          ],
+      },
+      {
+        techRecord_adrDetails_additionalNotes_number: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_additionalNotes_number',
+            type: FormNodeTypes.CONTROL,
+          },
+          undefined,
+        ),
+      },
+    );
+  });
+
+  it('should NOT mark additional notes as INVALID when its value IS an ARRAY', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue([]);
+
+    expect(CustomValidators.isArray()(control)).toBeNull();
+  });
+
+  it('should mark additional notes as INVALID when its values is NOT an ARRAY', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue('not an array');
+
+    expect(CustomValidators.isArray()(control)).toBeTruthy();
+  });
+
+  it('should NOT mark additional notes as INVALID when its value is an ARRAY of type provided in the ofType argument', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue(['1 string', '2 string']);
+    expect(CustomValidators.isArray({ ofType: 'string' })(control)).toBeNull();
+
+    control.patchValue([1, 2, 3]);
+    expect(CustomValidators.isArray({ ofType: 'number' })(control)).toBeNull();
+
+    // apparently null is object type in JS
+    control.patchValue([null, null, null]);
+    expect(CustomValidators.isArray({ ofType: 'object' })(control)).toBeNull();
+
+    control.patchValue([undefined, undefined, undefined]);
+    expect(CustomValidators.isArray({ ofType: 'undefined' })(control)).toBeNull();
+  });
+
+  it('should mark additional notes as INVALID when its value is an ARRAY but not of the type provided in the ofType argument', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue(['1 string', '2 string']);
+    expect(CustomValidators.isArray({ ofType: 'number' })(control)).toBeTruthy();
+
+    control.patchValue([1, 2, 3]);
+    expect(CustomValidators.isArray({ ofType: 'undefined' })(control)).toBeTruthy();
+
+    control.patchValue([null, null, null]);
+    expect(CustomValidators.isArray({ ofType: 'string' })(control)).toBeTruthy();
+
+    control.patchValue([undefined, undefined, undefined]);
+    expect(CustomValidators.isArray({ ofType: 'object' })(control)).toBeTruthy();
+  });
+
+  it('should NOT mark additional notes as INVALID when its value is an ARRAY and ALL of the values at indices in requiredIndices are truthy', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue(['1 string', '2 string']);
+
+    expect(CustomValidators.isArray({ requiredIndices: [1] })(control)).toBeNull();
+  });
+
+  it('should mark additional notes as INVALID when its value is an ARRAY but AT LEAST ONE of its values at requiredIndices is falsy', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue([null, '2 string']);
+
+    expect(CustomValidators.isArray({ requiredIndices: [0] })(control)).toBeTruthy();
+  });
+});
