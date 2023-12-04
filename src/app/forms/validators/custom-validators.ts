@@ -456,6 +456,18 @@ export class CustomValidators {
 
   static isArray = (options: Partial<IsArrayValidatorOptions> = {}) => {
     return (control: AbstractControl): ValidationErrors | null => {
+      // Only perform subsequent logic if this condition is met, e.g. sibling control has value true
+      if (options.whenEquals) {
+        const { sibling, value } = options.whenEquals;
+        const siblingControl = control.parent?.get(sibling);
+        const siblingValue = siblingControl?.value;
+        const isSiblingValueIncluded = Array.isArray(siblingValue)
+          ? value.some((v) => siblingValue.includes(v))
+          : value.includes(siblingValue);
+
+        if (!isSiblingValueIncluded) return null;
+      }
+
       if (!Array.isArray(control.value)) return { isArray: 'must be a non-empty array' };
 
       if (options.ofType) {
@@ -484,4 +496,5 @@ export type EnumValidatorOptions = {
 export type IsArrayValidatorOptions = {
   ofType: string;
   requiredIndices: number[];
+  whenEquals: { sibling: string, value: unknown[] }
 };
