@@ -71,14 +71,39 @@ jobs:
 #        run: npm run sonar-scanner # sonar-scanner not installed on ubuntu runner
         run: npn run test
 
-  deploy_infra:
-    uses: dvsa/cvs-tf-vtm/.github/workflows/deploy_infra.yml@feature/CB2-9116
-    with:
-      branch: ${{ github.ref_name }}
-      environment: 'feature'
-    secrets:
-      AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
-      # deploy the Terraform for this branch.....
+#  deploy_infra:
+#    uses: dvsa/cvs-tf-vtm/.github/workflows/deploy_infra.yml@feature/CB2-9116
+#    with:
+#      branch: ${{ github.ref_name }}
+#      environment: 'feature'
+#    secrets:
+#      AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
+#      # deploy the Terraform for this branch.....
+
+
+  action:
+    name: "🛠️ ${{ inputs.event_type }} | ${{matrix.repo}}/${{ inputs.branch }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
+          aws-region: "eu-west-1"
+          role-session-name: MGMTGHA
+
+      - uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        with:
+          secret-ids: github/cvs-ops
+          parse-json-secrets: true
+
+      - uses: actions/checkout@v3
+#      - run: echo "${{ inputs.branch }} - ${{ inputs.source-branch }} - ${{ inputs.event_type }}"
+      - name: Start Jobs
+        env:
+          ACTION: "tf-apply"
+          BRANCH: ${{ inputs.branch }}
+          ACTIONS_KEY: ${{ env.GITHUB_CVS_OPS_TOKEN }}
+        run: python .github/scripts/dispatcher.py
 
   deploy_app:
     needs: [build, deploy_infra]
