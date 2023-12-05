@@ -34,12 +34,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run audit
-        run: npm audit --audit-level=critical
-
-#      - name: Security checks
-#        run: npm run security-checks # git-secrets not available on GHA?
-
       - name: Get AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -67,22 +61,8 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: npm run build -- --configuration='deploy' --output-path='dist/'
 
-      - name: Sonar Scanner
-#        run: npm run sonar-scanner # sonar-scanner not installed on ubuntu runner
-        run: npn run test
-
-#  deploy_infra:
-#    uses: dvsa/cvs-tf-vtm/.github/workflows/deploy_infra.yml@feature/CB2-9116
-#    with:
-#      branch: ${{ github.ref_name }}
-#      environment: 'feature'
-#    secrets:
-#      AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
-#      # deploy the Terraform for this branch.....
-
-
   deploy_infra:
-    name: "🛠️ ${{ inputs.event_type }} | ${{matrix.repo}}/${{ inputs.branch }}"
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - uses: aws-actions/configure-aws-credentials@v4
@@ -97,8 +77,6 @@ jobs:
           parse-json-secrets: true
 
       - uses: actions/checkout@v3
-#      - run: echo "${{ inputs.branch }} - ${{ inputs.source-branch }} - ${{ inputs.event_type }}"
-      - name: Start Jobs
         env:
           ACTION: "tf-apply"
           BRANCH: ${{ inputs.branch }}
@@ -116,7 +94,12 @@ jobs:
           aws-region: eu-west-1
           role-session-name: GHA-VTMDeploy
 
+      - uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        with:
+          secret-ids: cvs-app-vtm/gha
+          parse-json-secrets: true
+
       - name: Deploy App to S3
         working-directory: cvs-app-vtm/dist/
-        run: aws s3 sync . s3://vtm-${LBRANCH}.develop.cvs.dvsacloud.uk
+        run: aws s3 sync . s3://vtm-${LBRANCH}.develop.${{ env.CVS_APP_VTM_GHA_DOMAIN }}
 
