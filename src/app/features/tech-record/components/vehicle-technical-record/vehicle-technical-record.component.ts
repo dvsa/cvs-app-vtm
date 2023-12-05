@@ -41,6 +41,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   isEditing = false;
   isDirty = false;
   isInvalid = false;
+  submitted = false;
 
   private destroy$ = new Subject<void>();
   hasTestResultAmend: boolean | undefined = false;
@@ -151,6 +152,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
   async handleSubmit(): Promise<void> {
     this.summary.checkForms();
+    this.submitted = true;
+
     if (this.isInvalid) return;
 
     await this.router.navigate(['change-summary'], { relativeTo: this.route });

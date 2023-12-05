@@ -1,11 +1,11 @@
 import {
   Component,
-  Input, OnInit,
+  Input, OnChanges, OnInit,
 } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { DateValidators } from '@forms/validators/date/date.validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -15,9 +15,10 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
   templateUrl: './adr.component.html',
   styleUrls: ['./adr.component.scss'],
 })
-export class AdrComponent implements OnInit {
+export class AdrComponent implements OnInit, OnChanges {
   @Input() techRecord!: TechRecordType<'hgv'> | TechRecordType<'trl'> | TechRecordType<'lgv'>;
   @Input() isEditing = false;
+  @Input() submitted = false;
   @Input() disableLoadOptions = false;
 
   public template = AdrTemplate;
@@ -51,6 +52,11 @@ export class AdrComponent implements OnInit {
     this.checkForAdrFields();
   }
 
+  ngOnChanges() {
+    const control = this.form?.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+    control?.markAsTouched();
+  }
+
   checkForAdrFields() {
     if (this.checkForDangerousGoodsFlag()) {
       return;
@@ -70,8 +76,6 @@ export class AdrComponent implements OnInit {
 
   handleFormChange(event: Record<string, unknown>) {
     if (event == null) return;
-    if (this.techRecord == null) return;
-    this.form.patchValue(event);
 
     const validator = DateValidators.validDate(false, 'Date processed');
     const approvedDate = this.form.get('techRecord_adrDetails_vehicleDetails_approvalDate');

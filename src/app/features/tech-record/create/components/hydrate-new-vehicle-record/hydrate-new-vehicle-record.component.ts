@@ -30,6 +30,7 @@ import { TechRecordSummaryComponent } from '../../../components/tech-record-summ
 export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
   isInvalid = false;
+  submitted = false;
   batchForm?: FormGroup;
 
   private destroy$ = new Subject<void>();
@@ -92,6 +93,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
 
   handleSubmit(): void {
     this.summary?.checkForms();
+    this.submitted = true;
 
     if (this.isInvalid) return;
 

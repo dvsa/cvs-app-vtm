@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -41,7 +42,9 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import {
-  debounceTime, map, Observable, Subject, take, takeUntil,
+  Observable, Subject,
+  debounceTime, map,
+  take, takeUntil,
 } from 'rxjs';
 
 @Component({
@@ -61,6 +64,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChild(LettersComponent) letters!: LettersComponent;
   @ViewChild(ApprovalTypeComponent) approvalType!: ApprovalTypeComponent;
   @ViewChild(AdrComponent) adr!: AdrComponent;
+
+  @Input() submitted = false;
 
   @Output() isFormDirty = new EventEmitter<boolean>();
   @Output() isFormInvalid = new EventEmitter<boolean>();
