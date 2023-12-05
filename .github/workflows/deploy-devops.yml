@@ -13,6 +13,7 @@ jobs:
     with:
       branch: ${{ github.ref_name }}
       environment: 'devops'
+      bucket: '.devops'
     secrets:
       AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
