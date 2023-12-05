@@ -82,6 +82,7 @@ jobs:
         env:
           ACTION: "tf-apply"
           BRANCH: ${{ inputs.branch }}
+          ENVIRONMENT: ${{ inputs.environment }}
           ACTIONS_KEY: ${{ env.GITHUB_CVS_OPS_TOKEN }}
         run: python .github/scripts/dispatcher.py
 

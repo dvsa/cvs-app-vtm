@@ -3,6 +3,7 @@ import os
 import json
 
 branch = os.getenv('BRANCH', '')
+environment = os.getenv('ENVIRONMENT', '')
 action = os.getenv('ACTION', '')
 key = os.getenv('ACTIONS_KEY', '')
 
@@ -10,6 +11,7 @@ data = json.dumps({
     "event_type": action,
     "client_payload": {
         "branch": branch
+        "environment" : environment
     },
 })
 print(data)
