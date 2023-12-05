@@ -62,6 +62,7 @@ jobs:
         run: npm run build -- --configuration='deploy' --output-path='dist/'
 
   deploy_infra:
+    needs: [build]
     name: "Deploy VTM Terraform"
     runs-on: ubuntu-latest
     steps:
