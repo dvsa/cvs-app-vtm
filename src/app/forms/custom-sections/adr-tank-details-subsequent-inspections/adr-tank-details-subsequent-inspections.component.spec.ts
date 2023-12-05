@@ -96,7 +96,7 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
 
   beforeEach(() => {
     component.formArray.patchValue([]);
-  })
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
