@@ -9,7 +9,12 @@ import { FieldErrorMessageComponent } from '@forms/components/field-error-messag
 import { SelectComponent } from '@forms/components/select/select.component';
 import { TextInputComponent } from '@forms/components/text-input/text-input.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl,
+  CustomFormGroup,
+  FormNodeTypes,
+  FormNodeViewTypes,
+} from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { AdrTankDetailsSubsequentInspectionsComponent } from './adr-tank-details-subsequent-inspections.component';
