@@ -1,18 +1,18 @@
-name: Build and Deploy VTM to Feature
+name: Build and Deploy VTM to Devops
 run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
 
 on:
   workflow_dispatch:
-#  push:
-#    branches:
-#      - 'feature/*'
+  push:
+    branches:
+      - 'feature/CB2-9116'
 
 jobs:
   feature-build:
     uses: ./.github/workflows/deploy.yml
     with:
       branch: ${{ github.ref_name }}
-      environment: 'feature'
+      environment: 'devops'
     secrets:
       AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}

@@ -61,33 +61,34 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: npm run build -- --configuration='deploy' --output-path='dist/'
 
-  deploy_infra:
-    needs: [build]
-    name: "Deploy VTM Terraform"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
-          aws-region: "eu-west-1"
-          role-session-name: MGMTGHA
-
-      - uses: aws-actions/aws-secretsmanager-get-secrets@v1
-        with:
-          secret-ids: github/cvs-ops
-          parse-json-secrets: true
-
-      - uses: actions/checkout@v3
-      - name: Start Jobs
-        env:
-          ACTION: "tf-apply"
-          BRANCH: ${{ inputs.branch }}
-          ENVIRONMENT: ${{ inputs.environment }}
-          ACTIONS_KEY: ${{ env.GITHUB_CVS_OPS_TOKEN }}
-        run: python .github/scripts/dispatcher.py
+#  deploy_infra:
+#    needs: [build]
+#    name: "Deploy VTM Terraform"
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: aws-actions/configure-aws-credentials@v4
+#        with:
+#          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
+#          aws-region: "eu-west-1"
+#          role-session-name: MGMTGHA
+#
+#      - uses: aws-actions/aws-secretsmanager-get-secrets@v1
+#        with:
+#          secret-ids: github/cvs-ops
+#          parse-json-secrets: true
+#
+#      - uses: actions/checkout@v3
+#      - name: Start Jobs
+#        env:
+#          ACTION: "tf-apply"
+#          BRANCH: ${{ inputs.branch }}
+#          ENVIRONMENT: ${{ inputs.environment }}
+#          ACTIONS_KEY: ${{ env.GITHUB_CVS_OPS_TOKEN }}
+#        run: python .github/scripts/dispatcher.py
 
   deploy_app:
-    needs: [build, deploy_infra]
+    needs: [build]
+    environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     steps:
       - name: Get AWS Credentials
@@ -104,5 +105,8 @@ jobs:
 
       - name: Deploy App to S3
         working-directory: cvs-app-vtm/dist/
-        run: aws s3 sync . s3://vtm-${LBRANCH}.develop.${{ env.CVS_APP_VTM_GHA_DOMAIN }}
+        run: aws s3 sync . s3://vtm-${{ inputs.environment }}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}
+
+
+
 
