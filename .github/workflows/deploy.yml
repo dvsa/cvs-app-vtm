@@ -62,7 +62,7 @@ jobs:
         run: npm run build -- --configuration='deploy' --output-path='dist/'
 
   deploy_infra:
-    needs: [build]
+    name: "Deploy VTM Terraform"
     runs-on: ubuntu-latest
     steps:
       - uses: aws-actions/configure-aws-credentials@v4
@@ -77,6 +77,7 @@ jobs:
           parse-json-secrets: true
 
       - uses: actions/checkout@v3
+      - name: Start Jobs
         env:
           ACTION: "tf-apply"
           BRANCH: ${{ inputs.branch }}
