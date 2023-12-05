@@ -8,6 +8,9 @@ on:
       branch:
         type: string
         required: true
+      bucket:
+        type: string
+        required: true
     secrets:
       AWS_MGMT_ROLE:
         required: true
@@ -104,5 +107,5 @@ jobs:
 
       - name: Deploy App to S3
         working-directory: cvs-app-vtm/dist/
-        run: aws s3 sync . s3://vtm-${{ inputs.environment }}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}
+        run: aws s3 sync . s3://vtm${{ inputs.bucket }}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}
 
