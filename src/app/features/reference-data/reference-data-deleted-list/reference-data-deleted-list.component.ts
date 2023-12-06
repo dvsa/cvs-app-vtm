@@ -2,10 +2,10 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { fetchReferenceDataAudit, selectReferenceDataByResourceKey, selectSearchReturn } from '@store/reference-data';
-import { map, Observable, take } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 
 @Component({
   selector: 'app-reference-data-deleted-list',
@@ -32,6 +32,7 @@ export class ReferenceDataDeletedListComponent implements OnInit {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get refDataAdminType$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
@@ -50,6 +51,7 @@ export class ReferenceDataDeletedListComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get paginatedItems$(): Observable<any[]> {
     return this.data$.pipe(map((items) => items?.slice(this.pageStart, this.pageEnd) ?? []));
   }

@@ -153,7 +153,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     return this.testRecordsService.isTestTypeGroupEditable$;
   }
 
-  handleNewTestResult(testResult: any) {
+  handleNewTestResult(testResult: TestResultModel) {
     this.testRecordsService.updateEditingTestResult(testResult);
   }
 

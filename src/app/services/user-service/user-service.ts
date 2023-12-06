@@ -18,6 +18,7 @@ export class UserService implements OnDestroy {
         filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
         takeUntil(this.destroying$),
       )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .subscribe((result: any) => {
         const {
           payload: {

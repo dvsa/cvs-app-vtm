@@ -55,6 +55,7 @@ export class AxlesService {
     return axles;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   generateEmptyAxle(axleNumber: number): any {
     return {
       axleNumber,
