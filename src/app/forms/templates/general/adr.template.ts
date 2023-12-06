@@ -435,5 +435,26 @@ export const AdrTemplate: FormNode = {
         },
       ],
     },
+    {
+      name: 'techRecord_adrDetails_memosApply',
+      label: 'Memo 7/9 (3 month extension) applied',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOXGROUP,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      options: [
+        { value: '07/09 3mth leak ext ', label: 'Yes' },
+      ],
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+      ],
+    },
   ],
 };

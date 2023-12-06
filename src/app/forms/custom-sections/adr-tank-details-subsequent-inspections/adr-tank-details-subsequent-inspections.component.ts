@@ -105,7 +105,6 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
   }
 
   removeSubsequentInspection(index: number) {
-    if (this.formArray.length < 2) return;
     this.formArray.removeAt(index);
   }
 }
