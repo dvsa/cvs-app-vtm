@@ -1,9 +1,8 @@
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { TagType } from '@shared/components/tag/tag.component';
 import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels,
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth,
 } from '../../services/dynamic-form.types';
 
 export const HgvAndTrlTypeApprovalTemplate: FormNode = {
@@ -18,14 +17,12 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(ApprovalType),
       validators: [{ name: ValidatorNames.IsMemberOfEnum, args: { enum: ApprovalType, options: { allowFalsy: true } } }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_approvalTypeNumber',
       label: 'Approval type number',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,
@@ -65,7 +62,6 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_variantVersionNumber',

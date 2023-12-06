@@ -1,10 +1,9 @@
+import { TyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels,
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
-import { TagType } from '@shared/components/tag/tag.component';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { TyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 
 export const tyresTemplateTrl: FormNode = {
   name: 'tyreSection',
@@ -19,7 +18,10 @@ export const tyresTemplateTrl: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       width: FormNodeWidth.XS,
       options: getOptionsFromEnum(TyreUseCode),
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 2 },
+        { name: ValidatorNames.Min, args: 0 },
+      ],
     },
     {
       name: 'techRecord_axles',

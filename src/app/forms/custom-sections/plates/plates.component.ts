@@ -1,20 +1,14 @@
-import { ViewportScroller } from '@angular/common';
 import {
   ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
-import { axleRequiredFields, hgvRequiredFields, trlRequiredFields } from '@forms/models/plateRequiredFields.model';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
-import { HgvOrTrl, StatusCodes } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
-import { canGeneratePlate, updateScrollPosition } from '@store/technical-records';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime } from 'rxjs';
 
@@ -24,7 +18,7 @@ import { Subscription, debounceTime } from 'rxjs';
   styleUrls: ['./plates.component.scss'],
 })
 export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() techRecord!: HgvOrTrl;
+  @Input() techRecord!: TechRecordType<'trl'> | TechRecordType<'hgv'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -35,15 +29,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
   private formSubscription = new Subscription();
 
-  constructor(
-    private dynamicFormService: DynamicFormService,
-    private cdr: ChangeDetectorRef,
-    private globalErrorService: GlobalErrorService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private store: Store<TechnicalRecordServiceState>,
-    private viewportScroller: ViewportScroller,
-  ) {}
+  constructor(private dynamicFormService: DynamicFormService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(PlatesTemplate, this.techRecord) as CustomFormGroup;
@@ -125,27 +111,5 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
       return 'Generating plates is only applicable to current technical records.';
     }
     return '';
-  }
-
-  validateTechRecordPlates(): void {
-    this.globalErrorService.clearErrors();
-    const plateValidationTable = this.techRecord.techRecord_vehicleType === 'trl' ? trlRequiredFields : hgvRequiredFields;
-
-    if (this.cannotGeneratePlate(plateValidationTable)) {
-      this.viewportScroller.scrollToPosition([0, 0]);
-      this.globalErrorService.addError({ error: 'All fields marked plate are mandatory to generate a plate.' });
-      return;
-    }
-    this.store.dispatch(canGeneratePlate());
-    this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['generate-plate'], { relativeTo: this.route });
-  }
-
-  private cannotGeneratePlate(plateRequiredFields: string[]): boolean {
-    const isOneFieldEmpty = plateRequiredFields.some((field) => !this.techRecord[field as keyof HgvOrTrl]);
-    const areAxlesInvalid = this.techRecord.techRecord_axles?.some((axle) => axleRequiredFields.some((field) => !(axle as any)[field]));
-
-    return isOneFieldEmpty || !this.techRecord.techRecord_axles?.length || !!areAxlesInvalid;
   }
 }

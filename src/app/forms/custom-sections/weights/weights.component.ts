@@ -69,9 +69,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   get isTrl(): boolean {
     return this.vehicleTechRecord.techRecord_vehicleType === VehicleTypes.TRL;
   }
-  get requiredPlates(): boolean {
-    return !this.isPsv && this.isEditing;
-  }
   get types(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
   }

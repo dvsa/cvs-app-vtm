@@ -21,8 +21,6 @@ export type NotTrailer =
   | TechRecordTypeByVehicle<'lgv'>
   | TechRecordTypeByVehicle<'car'>;
 
-export type HgvOrTrl = TechRecordTypeByVehicle<'hgv'> | TechRecordTypeByVehicle<'trl'>;
-
 export type BatchUpdateVehicleModel = TechRecordType<'put'> & {
   createdTimestamp: string;
   systemNumber?: string;

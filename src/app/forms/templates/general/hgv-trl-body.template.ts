@@ -1,9 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { BodyTypeDescription } from '@models/body-type-enum';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
+      FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
 } from '../../services/dynamic-form.types';
 
 export const HgvAndTrlBodyTemplate: FormNode = {
@@ -19,7 +17,6 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 6 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_make',
@@ -29,7 +26,6 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 50 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_model',
@@ -39,7 +35,6 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_bodyType_description',
@@ -71,7 +66,6 @@ export const HgvAndTrlBodyTemplate: FormNode = {
         { value: 'a', label: 'A' },
       ],
       validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_conversionRefNo',

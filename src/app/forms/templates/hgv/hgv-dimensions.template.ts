@@ -1,8 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { TagType } from '@shared/components/tag/tag.component';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, TagTypeLabels,
-} from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const HgvDimensionsTemplate: FormNode = {
   name: 'dimensionsSection',
@@ -15,7 +12,6 @@ export const HgvDimensionsTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_dimensions_width',
@@ -23,7 +19,6 @@ export const HgvDimensionsTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_dimensions_axleSpacing',
@@ -58,7 +53,6 @@ export const HgvDimensionsTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_frontVehicleTo5thWheelCouplingMax',
@@ -66,7 +60,6 @@ export const HgvDimensionsTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
-      customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
       name: 'techRecord_frontAxleTo5thWheelMin',
