@@ -63,7 +63,15 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: npm run build -- --configuration='deploy' --output-path='dist/'
 
-#  deploy_infra:
+      - uses: actions/upload-artifact@v3
+        with:
+          name: VTM-App-build-output
+          path: dist/
+
+
+
+
+  #  deploy_infra:
 #    needs: [build]
 #    name: "Deploy VTM Terraform"
 #    runs-on: ubuntu-latest
@@ -105,7 +113,13 @@ jobs:
           secret-ids: cvs-app-vtm/gha
           parse-json-secrets: true
 
+      - uses: actions/download-artifact@v3
+        with:
+          name: VTM-App-build-output
+          path: dist/
+
+
       - name: Deploy App to S3
-        working-directory: cvs-app-vtm/dist/
+        working-directory: dist/
         run: aws s3 sync . s3://vtm${{ inputs.bucket }}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}
 
