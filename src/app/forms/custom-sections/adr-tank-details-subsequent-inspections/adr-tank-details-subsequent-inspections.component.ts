@@ -13,7 +13,7 @@ import {
   FormNodeViewTypes,
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { TC3Types } from '@models/adr.enum';
+import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
 import {
   ReplaySubject,
   takeUntil,
@@ -67,7 +67,6 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
           name: 'tc3Type',
           type: FormNodeTypes.CONTROL,
           label: 'TC3: Inspection Type',
-          // TO-DO: replace with enum
           options: getOptionsFromEnum(TC3Types),
           customId: `tc3Type[${index}]`,
         },
