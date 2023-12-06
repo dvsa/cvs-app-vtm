@@ -162,7 +162,7 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
       component.removeSubsequentInspection(1);
       component.removeSubsequentInspection(0);
       expect(methodSpy).toHaveBeenCalledTimes(4);
-      expect(component.formArray).toHaveLength(1); // form array cannot have less than 1 form group
+      expect(component.formArray).toHaveLength(0);
     });
   });
 });
