@@ -202,6 +202,7 @@ export class CustomValidators {
         return null;
       }
 
+      // eslint-disable-next-line security/detect-non-literal-regexp
       const valid = new RegExp(regEx).test(control.value);
 
       return valid ? null : { customPattern: { message } };

@@ -195,6 +195,7 @@ export class CustomAsyncValidators {
 
     // eslint-disable-next-line no-prototype-builtins
     const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
       ? (testResult.testTypes[0] as any)[field]
       : (testResult)[field as keyof TestResultModel];
 

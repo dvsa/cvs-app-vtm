@@ -47,6 +47,7 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   retryHandler(error: any, retryCount: number, config: InternalConfig) {
     const {
       delay, count, httpStatusRetry, backoff,

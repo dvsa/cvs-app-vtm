@@ -25,6 +25,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   pageStart?: number;
   pageEnd?: number;
   currentPage?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: Observable<Array<any> | undefined>;
   private destroy$ = new Subject<void>();
 
@@ -94,6 +95,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get refDataAdminType$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }

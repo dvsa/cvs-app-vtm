@@ -46,6 +46,7 @@ export class DefectComponent implements OnInit, OnDestroy {
   private defects?: TestResultDefects;
   defect?: TestResultDefect;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   infoDictionary: Record<string, Array<FormNodeOption<any>>> = {};
   onDestroy$ = new Subject();
 
@@ -84,6 +85,7 @@ export class DefectComponent implements OnInit, OnDestroy {
         if (defectIndexValue) {
           this.index = Number(defectIndexValue);
           this.form = this.defectsForm.controls[this.index] as CustomFormGroup;
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           this.defect = this.defects![this.index];
         } else if (defectRefValue && this.vehicleType) {
           this.store
@@ -225,9 +227,9 @@ export class DefectComponent implements OnInit, OnDestroy {
     })[`${category}`];
   }
 
-  trackByFn = (_index: number, keyValuePair: KeyValue<string, Array<any>>): string => keyValuePair.key;
+  trackByFn = (_index: number, keyValuePair: KeyValue<string, Array<unknown>>): string => keyValuePair.key;
 
-  mapOptions = (options: Array<any>): Array<FormNodeOption<any>> =>
+  mapOptions = (options: Array<unknown>): Array<FormNodeOption<unknown>> =>
     options.map((option) => ({ value: option, label: this.pascalCase(String(option)) }));
 
   pascalCase = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');

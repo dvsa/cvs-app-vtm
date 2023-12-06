@@ -75,6 +75,7 @@ export class AbandonDialogComponent extends BaseDialogComponent implements OnIni
     return ABANDON_FORM(SpecialRefData.ReasonsForAbandoning);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFormChange(event: any) {
     const latestTest = merge(this.testResult, event);
     if (latestTest && Object.keys(latestTest).length > 0) {
