@@ -20,6 +20,7 @@ import {
   takeUntil,
 } from 'rxjs';
 import { CustomControlComponentComponent } from '../custom-control-component/custom-control-component.component';
+import { ValidatorNames } from '@forms/models/validators.enum';
 
 @Component({
   selector: 'app-adr-tank-details-subsequent-inspections',
@@ -47,7 +48,7 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
     super.ngAfterContentInit();
     if (this.form) {
       const value = this.form?.get(this.name)?.value;
-      const values = Array.isArray(value) && value.length ? value : [this.createSubsequentInspection(0).value];
+      const values = Array.isArray(value) && value.length ? value : [];
 
       values.forEach((formValue: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }, index: number) => {
         const control = this.createSubsequentInspection(index);
@@ -70,12 +71,14 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
           label: 'TC3: Inspection Type',
           options: getOptionsFromEnum(TC3Types),
           customId: `tc3Type[${index}]`,
+          validators: [{ name: ValidatorNames.Required }],
         },
         {
           name: 'tc3PeriodicNumber',
           label: 'TC3: Certificate Number',
           type: FormNodeTypes.CONTROL,
           customId: `tc3PeriodicNumber[${index}]`,
+          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 75 }],
         },
         {
           name: 'tc3PeriodicExpiryDate',
@@ -85,6 +88,7 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
           viewType: FormNodeViewTypes.DATE,
           isoDate: false,
           customId: `tc3PeriodicExpiryDate[${index}]`,
+          validators: [{ name: ValidatorNames.Required }],
         },
       ],
     }, {
