@@ -56,6 +56,10 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public hour?: number;
   public minute?: number;
 
+  dayId = '';
+  monthId = '';
+  yearId = '';
+
   constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef, public globalErrorService: GlobalErrorService) {
     super(injector, changeDetectorRef);
     this.day$ = this.day_.asObservable();
@@ -72,6 +76,9 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 
   ngOnInit(): void {
     this.subscriptions.push(this.subscribeAndPropagateChanges());
+    this.dayId = `${this.customId ?? this.name}-day`;
+    this.monthId = `${this.customId ?? this.name}-month`;
+    this.yearId = `${this.customId ?? this.name}-year`;
   }
 
   override ngAfterContentInit(): void {
