@@ -9,6 +9,7 @@ import { FormArray, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   CustomFormControl,
   CustomFormGroup,
+  FormNodeEditTypes,
   FormNodeTypes,
   FormNodeViewTypes,
 } from '@forms/services/dynamic-form.types';
@@ -80,7 +81,9 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
           name: 'tc3PeriodicExpiryDate',
           label: 'TC3: Expiry Date',
           type: FormNodeTypes.CONTROL,
+          editType: FormNodeEditTypes.DATE,
           viewType: FormNodeViewTypes.DATE,
+          isoDate: false,
           customId: `tc3PeriodicExpiryDate[${index}]`,
         },
       ],

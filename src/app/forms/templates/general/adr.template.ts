@@ -404,6 +404,7 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.DATE,
       viewType: FormNodeViewTypes.DATE,
+      isoDate: false,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
       validators: [
