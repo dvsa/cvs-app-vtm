@@ -363,7 +363,6 @@ export const AdrTemplate: FormNode = {
       ],
     },
     {
-
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
@@ -371,15 +370,6 @@ export const AdrTemplate: FormNode = {
       value: TC2Types.INITIAL, // TO-DO: replace with enum
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-      ],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
@@ -389,13 +379,6 @@ export const AdrTemplate: FormNode = {
       groups: ['tank_details', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 70 },
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
       ],
     },
     {
@@ -407,34 +390,16 @@ export const AdrTemplate: FormNode = {
       isoDate: false,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-      ],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
       label: 'Subsequent Inspections',
-      type: FormNodeTypes.ARRAY,
+      type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
       viewType: FormNodeViewTypes.ADRINSPECTIONS,
       component: AdrTankDetailsSubsequentInspectionsComponent,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-      ],
     },
     {
       name: 'techRecord_adrDetails_memosApply',
@@ -444,17 +409,7 @@ export const AdrTemplate: FormNode = {
       groups: ['tank_details', 'dangerous_goods'],
       hide: true,
       options: [
-        { value: '07/09 3mth leak ext ', label: 'Yes' },
-      ],
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        { value: '07/09 3mth leak  ext ', label: 'Yes' },
       ],
     },
   ],
