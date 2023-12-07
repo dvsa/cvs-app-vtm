@@ -32,6 +32,7 @@ export const ErrorMessageMap: Record<string, Function> = {
   [ValidatorNames.Pattern]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} must match a pattern`,
   [ValidatorNames.Required]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [ValidatorNames.RequiredIfEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
+  [ValidatorNames.RequiredIfNotHidden]: (err:string, label?: string) => `${label || DEFAULT_LABEL}  is required when Brake endurance is selected`,
   [ValidatorNames.ValidateDefectNotes]: () => 'Notes is required',
   [ValidatorNames.ValidateProhibitionIssued]: () => 'Prohibition notice has not been issued.',
   [ValidatorNames.ValidateVRMTrailerIdLength]: (err: { message: string }) => err.message,
