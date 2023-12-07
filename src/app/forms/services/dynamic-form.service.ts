@@ -81,7 +81,7 @@ export class DynamicFormService {
       CustomValidators.hideGroupsWhenExcludes(args.values, args.groups),
     [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
     [ValidatorNames.IsArray]: (args: Partial<IsArrayValidatorOptions>) => CustomValidators.isArray(args),
-    [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
+    [ValidatorNames.RequiredIfNotHidden]: (args: { sibling: string }) => CustomValidators.requiredIfNotHidden(args.sibling),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

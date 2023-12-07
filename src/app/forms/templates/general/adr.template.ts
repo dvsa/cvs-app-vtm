@@ -406,6 +406,9 @@ export const AdrTemplate: FormNode = {
         { name: ValidatorNames.Numeric },
         {
           name: ValidatorNames.RequiredIfNotHidden,
+          args: {
+            sibling: 'techRecord_adrDetails_brakeEndurance',
+          },
         },
       ],
 

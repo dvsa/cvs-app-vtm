@@ -93,12 +93,14 @@ export class CustomValidators {
     };
   };
 
-  static requiredIfNotHidden = (): ValidatorFn =>
+  static requiredIfNotHidden = (sibling: string): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       const customControl = control as CustomFormControl;
+      if (!control?.parent) return null;
+      const siblingControl = control.parent.get(sibling) as CustomFormControl;
       if (customControl.meta.hide === false && !control.value) {
         // If meta.hide is false and control value is empty, return a validation error
-        return { requiredIfNotHidden: customControl.meta.label };
+        return { requiredIfNotHidden: { sibling: siblingControl.meta.label } };
       }
       return null;
     };
