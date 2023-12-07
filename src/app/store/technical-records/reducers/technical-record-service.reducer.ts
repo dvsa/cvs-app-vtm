@@ -414,14 +414,25 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
         ...editingTechRecord,
       };
 
+      // Null compatibility group J when permitted dangerous goods is NOT explosives type 2/3
       const explosivesGroups: string[] = [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3];
       if (!editingTechRecord.techRecord_adrDetails_permittedDangerousGoods?.some((value) => explosivesGroups.includes(value))) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledCompatibilityGroupJ };
       }
 
+      // Null all tank details fields when ADR vehicle type does not include the words 'tank' or 'battery'
       const adrVehicleTypes: string[] = Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank'));
       if (!adrVehicleTypes.includes(editingTechRecord.techRecord_adrDetails_vehicleDetails_type as string)) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankDetails };
+      }
+
+      // Strip all unfilled UN numbers
+      const { techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: unNumbers } = sanitisedEditingTechRecord;
+      if (unNumbers) {
+        sanitisedEditingTechRecord = {
+          ...sanitisedEditingTechRecord,
+          techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: unNumbers.filter(Boolean),
+        };
       }
 
       return { ...state, editingTechRecord: sanitisedEditingTechRecord };

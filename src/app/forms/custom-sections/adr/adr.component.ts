@@ -1,13 +1,13 @@
 import {
   Component,
-  Input, OnInit,
+  Input,
+  OnInit,
 } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
-import { DateValidators } from '@forms/validators/date/date.validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
@@ -71,16 +71,8 @@ export class AdrComponent implements OnInit {
   handleFormChange(event: Record<string, unknown>) {
     if (event == null) return;
     if (this.techRecord == null) return;
+
     this.form.patchValue(event);
-
-    const validator = DateValidators.validDate(false, 'Date processed');
-    const approvedDate = this.form.get('techRecord_adrDetails_vehicleDetails_approvalDate');
-
-    // TODO: fix underlying issue of this not being added correctly by date component
-    if (!approvedDate?.hasValidator(validator)) {
-      approvedDate?.addValidators(validator);
-    }
-
     this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord, ...event } as TechRecordTypeVerb<'put'>);
   }
 }

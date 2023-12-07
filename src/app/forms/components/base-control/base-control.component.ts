@@ -59,7 +59,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
       if (errors) {
         const errorList = Object.keys(errors);
         const firstError = ErrorMessageMap[errorList[0] as ValidatorNames];
-        return firstError(errors[errorList[0]], this.label);
+        return this.control.meta.customErrorMessage ?? firstError(errors[errorList[0]], this.label);
       }
     }
     return '';

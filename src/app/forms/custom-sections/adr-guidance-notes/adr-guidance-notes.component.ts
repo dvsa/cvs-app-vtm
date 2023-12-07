@@ -1,16 +1,14 @@
-import { KeyValue } from '@angular/common';
 import {
   AfterContentInit,
   Component, OnDestroy, OnInit,
 } from '@angular/core';
 import {
   FormArray,
-  FormGroup, NG_VALUE_ACCESSOR, NgControl,
+  NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
-import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
-import { CustomControl, CustomFormControl } from '@forms/services/dynamic-form.types';
+import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { CustomFormControlComponent } from '../custom-form-control/custom-form-control.component';
 
 @Component({
   selector: 'app-adr-guidance-notes',
@@ -18,11 +16,8 @@ import { ReplaySubject, takeUntil } from 'rxjs';
   styleUrls: ['./adr-guidance-notes.component.scss'],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: AdrGuidanceNotesComponent, multi: true }],
 })
-export class AdrGuidanceNotesComponent extends BaseControlComponent implements OnInit, AfterContentInit, OnDestroy {
-
+export class AdrGuidanceNotesComponent extends CustomFormControlComponent implements OnInit, AfterContentInit, OnDestroy {
   destroy$ = new ReplaySubject<boolean>(1);
-
-  form?: FormGroup;
   formArray = new FormArray<CustomFormControl>([]);
 
   ngOnInit() {
@@ -37,20 +32,17 @@ export class AdrGuidanceNotesComponent extends BaseControlComponent implements O
   }
 
   override ngAfterContentInit() {
-    const injectedControl = this.injector.get(NgControl, null);
-    if (injectedControl) {
-      const ngControl = injectedControl.control as unknown as KeyValue<string, CustomControl>;
-      if (ngControl.value) {
-        this.name = ngControl.key;
-        this.control = ngControl.value;
-        this.form = this.injector.get(FORM_INJECTION_TOKEN) as FormGroup;
-        const value = this.form.get(this.name)?.value;
-        const values = Array.isArray(value) && value.length ? value : [null];
-        values.forEach((guidanceNoteType: string) => {
-          this.formArray.push(new CustomFormControl({ ...ngControl.value.meta }, guidanceNoteType));
-        });
-      }
-    }
+    super.ngAfterContentInit();
+    const { form, control } = this;
+
+    if (!form) return;
+    if (!control) return;
+
+    const value = form.get(this.name)?.value;
+    const values = Array.isArray(value) && value.length ? value : [null];
+    values.forEach((guidanceNoteType: string) => {
+      this.formArray.push(new CustomFormControl(control.meta, guidanceNoteType));
+    });
   }
 
   addGuidanceNote() {
