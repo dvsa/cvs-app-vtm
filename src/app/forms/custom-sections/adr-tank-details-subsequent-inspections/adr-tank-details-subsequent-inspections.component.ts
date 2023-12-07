@@ -5,7 +5,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray, NG_VALUE_ACCESSOR } from '@angular/forms';
-// eslint-disable-next-line import/no-cycle
+import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   CustomFormControl,
   CustomFormGroup,
@@ -14,13 +15,11 @@ import {
   FormNodeViewTypes,
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
 import {
   ReplaySubject,
   takeUntil,
 } from 'rxjs';
 import { CustomControlComponentComponent } from '../custom-control-component/custom-control-component.component';
-import { ValidatorNames } from '@forms/models/validators.enum';
 
 @Component({
   selector: 'app-adr-tank-details-subsequent-inspections',

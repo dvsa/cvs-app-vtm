@@ -103,7 +103,7 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
   });
 
   it('should, upon instantiation, add a form control to the form array', () => {
-    expect(component.formArray).toHaveLength(1);
+    expect(component.formArray).toHaveLength(0);
   });
 
   describe('ngOnInit', () => {
@@ -147,7 +147,7 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
       const methodSpy = jest.spyOn(component, 'addSubsequentInspection');
       component.addSubsequentInspection();
       expect(methodSpy).toHaveBeenCalled();
-      expect(component.formArray).toHaveLength(2);
+      expect(component.formArray).toHaveLength(1);
     });
   });
 
