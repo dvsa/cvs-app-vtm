@@ -1,25 +1,22 @@
 import {
   AfterContentInit,
-  ChangeDetectorRef,
   Component,
-  Injector,
   OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormArray, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   CustomFormControl,
   CustomFormGroup,
+  FormNodeEditTypes,
   FormNodeTypes,
+  FormNodeViewTypes,
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { TC3Types } from '@models/adr.enum';
-import { RouterService } from '@services/router/router.service';
 import {
-  Observable,
   ReplaySubject,
-  map,
-  take,
   takeUntil,
 } from 'rxjs';
 import { CustomControlComponentComponent } from '../custom-control-component/custom-control-component.component';
@@ -35,18 +32,9 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
   formArray = new FormArray<CustomFormGroup>([]);
 
-  isEditing?: boolean;
-
-  constructor(injector: Injector, cdr: ChangeDetectorRef, private routerService: RouterService) {
-    super(injector, cdr);
-  }
-
   ngOnInit() {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       this.control?.patchValue(changes, { emitModelToViewChange: true });
-    });
-    this.isEditing$.pipe(take(1)).subscribe((editing) => {
-      this.isEditing = editing;
     });
   }
 
@@ -57,19 +45,16 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
   override ngAfterContentInit() {
     super.ngAfterContentInit();
-    const value = this.form?.get(this.name)?.value;
-    const values = Array.isArray(value) && value.length ? value : [this.createSubsequentInspection(0).value];
+    if (this.form) {
+      const value = this.form?.get(this.name)?.value;
+      const values = Array.isArray(value) && value.length ? value : [];
 
-    values.forEach((formValue: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }, index: number) => {
-      const control = this.createSubsequentInspection(index);
-      control.patchValue(formValue);
-      this.formArray.push(control);
-
-    });
-  }
-
-  get isEditing$(): Observable<boolean> {
-    return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
+      values.forEach((formValue: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }, index: number) => {
+        const control = this.createSubsequentInspection(index);
+        control.patchValue(formValue);
+        this.formArray.push(control);
+      });
+    }
   }
 
   createSubsequentInspection(index: number) {
@@ -83,21 +68,26 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
           name: 'tc3Type',
           type: FormNodeTypes.CONTROL,
           label: 'TC3: Inspection Type',
-          // TO-DO: replace with enum
           options: getOptionsFromEnum(TC3Types),
           customId: `tc3Type[${index}]`,
+          validators: [{ name: ValidatorNames.Required }],
         },
         {
           name: 'tc3PeriodicNumber',
           label: 'TC3: Certificate Number',
           type: FormNodeTypes.CONTROL,
           customId: `tc3PeriodicNumber[${index}]`,
+          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 75 }],
         },
         {
           name: 'tc3PeriodicExpiryDate',
           label: 'TC3: Expiry Date',
           type: FormNodeTypes.CONTROL,
+          editType: FormNodeEditTypes.DATE,
+          viewType: FormNodeViewTypes.DATE,
+          isoDate: false,
           customId: `tc3PeriodicExpiryDate[${index}]`,
+          validators: [{ name: ValidatorNames.Required }],
         },
       ],
     }, {
@@ -121,7 +111,6 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
   }
 
   removeSubsequentInspection(index: number) {
-    if (this.formArray.length < 2) return;
     this.formArray.removeAt(index);
   }
 }

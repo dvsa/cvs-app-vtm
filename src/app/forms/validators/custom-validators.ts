@@ -345,6 +345,8 @@ export class CustomValidators {
   };
 
   static modifyControlsByGroup = (control: AbstractControl, groups: string[], modifyFunc: (control: CustomFormControl) => void): void => {
+    if ((control as CustomFormControl).meta.hide) return;
+
     const parentGroup = control.parent as CustomFormGroup;
     parentGroup.meta.children?.forEach((child) => {
       const childControl = parentGroup.get(child.name) as CustomFormControl;
@@ -427,6 +429,17 @@ export class CustomValidators {
           'techRecord_adrDetails_applicantDetails_postcode',
           'techRecord_adrDetails_applicantDetails_town',
           'techRecord_adrDetails_applicantDetails_street',
+          'techRecord_adrDetails_vehicleDetails_type',
+          'techRecord_adrDetails_vehicleDetails_approvalDate',
+          'techRecord_adrDetails_permittedDangerousGoods',
+          'techRecord_adrDetails_compatibilityGroupJ',
+          'techRecord_adrDetails_additionalNotes_number',
+          'techRecord_adrDetails_adrTypeApprovalNo',
+          'techRecord_adrDetails_tank_tankDetails_tankManufacturer',
+          'techRecord_adrDetails_tank_tankDetails_yearOfManufacture',
+          'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
+          'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
+          'techRecord_adrDetails_tank_tankDetails_tankCode',
         ];
         adrDetails.forEach((controlName) => {
           const childControl = control.root.get(controlName);
@@ -440,8 +453,48 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static isArray = (options: Partial<IsArrayValidatorOptions> = {}) => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      // Only perform subsequent logic if this condition is met, e.g. sibling control has value true
+      if (options.whenEquals) {
+        const { sibling, value } = options.whenEquals;
+        const siblingControl = control.parent?.get(sibling);
+        const siblingValue = siblingControl?.value;
+        const isSiblingValueIncluded = Array.isArray(siblingValue)
+          ? value.some((v) => siblingValue.includes(v))
+          : value.includes(siblingValue);
+
+        if (!isSiblingValueIncluded) return null;
+      }
+
+      if (!Array.isArray(control.value)) return { isArray: 'must be a non-empty array' };
+
+      if (options.ofType) {
+        const index = control.value.findIndex((val) => typeof val !== options.ofType);
+        return index === -1
+          ? null
+          : { isArray: { message: `${index + 1} must be of type ${options.ofType}` } };
+      }
+
+      if (options.requiredIndices) {
+        const index = control.value.findIndex((val, i) => options.requiredIndices?.includes(i) && !val);
+        return index === -1
+          ? null
+          : { isArray: { message: `${index + 1} is required` } };
+      }
+
+      return null;
+    };
+  };
 }
 
 export type EnumValidatorOptions = {
   allowFalsy: boolean;
+};
+
+export type IsArrayValidatorOptions = {
+  ofType: string;
+  requiredIndices: number[];
+  whenEquals: { sibling: string, value: unknown[] }
 };

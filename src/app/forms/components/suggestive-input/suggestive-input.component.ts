@@ -1,11 +1,15 @@
 import {
-  AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input, OnInit,
+  AfterContentInit, ChangeDetectionStrategy,
+  Component,
+  Input, OnInit,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MultiOption } from '@forms/models/options.model';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import {
-  firstValueFrom, Observable, skipWhile, take,
+  Observable,
+  firstValueFrom,
+  skipWhile, take,
 } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -28,11 +32,6 @@ export class SuggestiveInputComponent extends BaseControlComponent implements Af
 
   field_value = '';
 
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
-    super(injector, changeDetectorRef);
-  }
-
   ngOnInit(): void {
     this.options$
       .pipe(
@@ -45,8 +44,7 @@ export class SuggestiveInputComponent extends BaseControlComponent implements Af
       });
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  override async ngAfterContentInit(): Promise<void> {
+  override ngAfterContentInit() {
     super.ngAfterContentInit();
     this.addValidators();
   }

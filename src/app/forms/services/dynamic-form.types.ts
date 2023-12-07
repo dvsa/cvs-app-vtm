@@ -24,7 +24,6 @@ import { map, Observable } from 'rxjs';
 import { SpecialRefData } from './multi-options.service';
 // eslint-disable-next-line import/no-cycle
 import { DynamicFormService } from './dynamic-form.service';
-import { AdrTankDetailsSubsequentInspectionsComponent } from '@forms/custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 
 export enum FormNodeViewTypes {
   DATE = 'date',
@@ -36,6 +35,7 @@ export enum FormNodeViewTypes {
   TIME = 'time',
   VEHICLETYPE = 'vehicleType',
   VRM = 'vrm',
+  ADRINSPECTIONS = 'adrInspections',
 }
 
 export enum TagTypeLabels {
@@ -101,12 +101,12 @@ export interface FormNode {
   label?: string;
   hint?: string;
   delimited?: { regex?: string; separator: string };
-  value?: any;
+  value?: unknown;
   path?: string;
   options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
   validators?: FormNodeValidator[];
   customValidatorErrorName?: string;
-  asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
+  asyncValidators?: { name: AsyncValidatorNames; args?: unknown }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
@@ -123,7 +123,7 @@ export interface FormNode {
   enableDecimals?: boolean;
   nestingLevel?: number;
   groups?: string[];
-  component?: typeof BaseControlComponent | typeof AdrTankDetailsSubsequentInspectionsComponent;
+  component?: typeof BaseControlComponent;
 }
 
 export interface CustomTag {
@@ -133,7 +133,7 @@ export interface CustomTag {
 
 export interface FormNodeValidator {
   name: ValidatorNames;
-  args?: any;
+  args?: unknown;
 }
 
 export interface FormNodeCombinationOptions {

@@ -9,7 +9,12 @@ import { FieldErrorMessageComponent } from '@forms/components/field-error-messag
 import { SelectComponent } from '@forms/components/select/select.component';
 import { TextInputComponent } from '@forms/components/text-input/text-input.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl,
+  CustomFormGroup,
+  FormNodeTypes,
+  FormNodeViewTypes,
+} from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { AdrTankDetailsSubsequentInspectionsComponent } from './adr-tank-details-subsequent-inspections.component';
@@ -36,7 +41,50 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
             control: { key: control.meta.name, value: control },
           },
         },
-        { provide: FORM_INJECTION_TOKEN, useValue: {} },
+        {
+          provide: FORM_INJECTION_TOKEN,
+          useValue: new CustomFormGroup({
+            name: '1',
+            label: 'Subsequent',
+            type: FormNodeTypes.GROUP,
+            customId: `subsequent[${1}]`,
+            children: [
+              {
+                name: 'tc3Type',
+                type: FormNodeTypes.CONTROL,
+                label: 'TC3: Inspection Type',
+                // TO-DO: replace with enum
+                customId: `tc3Type[${1}]`,
+              },
+              {
+                name: 'tc3PeriodicNumber',
+                label: 'TC3: Certificate Number',
+                type: FormNodeTypes.CONTROL,
+
+              },
+              {
+                name: 'tc3PeriodicExpiryDate',
+                label: 'TC3: Expiry Date',
+                type: FormNodeTypes.CONTROL,
+                viewType: FormNodeViewTypes.DATE,
+              },
+            ],
+          }, {
+            tc3Type: new CustomFormControl({
+              name: 'tc3Type',
+              type: FormNodeTypes.CONTROL,
+            }),
+            tc3PeriodicNumber: new CustomFormControl({
+              name: 'tc3PeriodicNumber',
+              type: FormNodeTypes.CONTROL,
+            }),
+            tc3PeriodicExpiryDate: new CustomFormControl({
+              name: 'tc3PeriodicExpiryDate',
+              type: FormNodeTypes.CONTROL,
+            }),
+          }),
+
+        },
       ],
     })
       .compileComponents();
@@ -46,12 +94,16 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
     fixture.detectChanges();
   });
 
+  beforeEach(() => {
+    component.formArray.patchValue([]);
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('should, upon instantiation, add a form control to the form array', () => {
-    expect(component.formArray).toHaveLength(1);
+    expect(component.formArray).toHaveLength(0);
   });
 
   describe('ngOnInit', () => {
@@ -95,7 +147,7 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
       const methodSpy = jest.spyOn(component, 'addSubsequentInspection');
       component.addSubsequentInspection();
       expect(methodSpy).toHaveBeenCalled();
-      expect(component.formArray).toHaveLength(2);
+      expect(component.formArray).toHaveLength(1);
     });
   });
 
@@ -110,7 +162,7 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
       component.removeSubsequentInspection(1);
       component.removeSubsequentInspection(0);
       expect(methodSpy).toHaveBeenCalledTimes(4);
-      expect(component.formArray).toHaveLength(1); // form array cannot have less than 1 form group
+      expect(component.formArray).toHaveLength(0);
     });
   });
 });

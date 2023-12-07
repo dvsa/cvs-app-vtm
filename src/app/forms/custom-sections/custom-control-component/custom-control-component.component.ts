@@ -1,6 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormGroup, NgControl } from '@angular/forms';
+// eslint-disable-next-line import/no-cycle
 import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
 import { CustomControl } from '@forms/services/dynamic-form.types';

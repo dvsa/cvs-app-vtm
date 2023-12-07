@@ -12,7 +12,9 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { vehicleBodyTypeCodeMap, vehicleBodyTypeDescriptionMap } from '@models/body-type-enum';
+import {
+  BodyTypeCode, BodyTypeDescription, vehicleBodyTypeCodeMap, vehicleBodyTypeDescriptionMap,
+} from '@models/body-type-enum';
 import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';
@@ -68,8 +70,8 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
           const vehicleType = this.techRecord.techRecord_vehicleType === 'hgv'
             ? `${this.techRecord.techRecord_vehicleConfiguration}Hgv`
             : this.techRecord.techRecord_vehicleType;
-          const bodyTypes = vehicleBodyTypeDescriptionMap.get(vehicleType as VehicleTypes);
-          event.techRecord_bodyType_code = bodyTypes!.get(event?.techRecord_bodyType_description);
+          const bodyTypes = vehicleBodyTypeDescriptionMap.get(vehicleType as VehicleTypes) as Map<BodyTypeDescription, BodyTypeCode>;
+          event.techRecord_bodyType_code = bodyTypes.get(event?.techRecord_bodyType_description);
         }
 
         this.formChange.emit(event);
