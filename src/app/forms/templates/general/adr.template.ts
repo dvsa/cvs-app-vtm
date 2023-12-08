@@ -468,6 +468,8 @@ export const AdrTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.MaxLength, args: 1024 },
       ],
+    },
+    {
       name: 'DeclarationsSectionTitle',
       label: 'Declarations seen',
       type: FormNodeTypes.TITLE,
