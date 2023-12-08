@@ -10,6 +10,8 @@ import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
+import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
+
 @Component({
   selector: 'app-adr',
   templateUrl: './adr.component.html',
@@ -39,6 +41,13 @@ export class AdrComponent implements OnInit {
     'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
     'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
     'techRecord_adrDetails_tank_tankDetails_tankCode',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_statement',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_productList',
+    'techRecord_adrDetails_tank_tankDetails_specialProvisions',
   ];
 
   constructor(
@@ -49,12 +58,14 @@ export class AdrComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
     this.checkForAdrFields();
+    this.checkForTankStatement();
   }
 
   checkForAdrFields() {
     if (this.checkForDangerousGoodsFlag()) {
       return;
     }
+
     // eslint-disable-next-line no-restricted-syntax
     for (const adrDetail of this.adrDetails) {
       if (Object.keys(this.techRecord).includes(adrDetail)) {
@@ -66,6 +77,30 @@ export class AdrComponent implements OnInit {
 
   checkForDangerousGoodsFlag(): boolean {
     return Object.keys(this.techRecord).includes('techRecord_adrDetails_dangerousGoods');
+  }
+
+  checkForTankStatement() {
+    if (this.checkForTankStatementSelectFlag()) {
+      return;
+    }
+
+    const { techRecord_adrDetails_tank_tankDetails_tankStatement_statement: statement } = this.techRecord;
+    if (statement) {
+      this.techRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_select = ADRTankDetailsTankStatementSelect.STATEMENT;
+    }
+
+    const {
+      techRecord_adrDetails_tank_tankDetails_tankStatement_productList: productList,
+      techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: productListUnNo,
+      techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: productListRefNo,
+    } = this.techRecord;
+    if (productList || productListRefNo || (productListUnNo && productListUnNo.length > 0)) {
+      this.techRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_select = ADRTankDetailsTankStatementSelect.PRODUCT_LIST;
+    }
+  }
+
+  checkForTankStatementSelectFlag(): boolean {
+    return Object.keys(this.techRecord).includes('techRecord_adrDetails_tank_tankDetails_tankStatement_select');
   }
 
   handleFormChange(event: Record<string, unknown>) {

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { FormArray, Validators } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { ReplaySubject, skip, takeUntil } from 'rxjs';
@@ -16,23 +16,35 @@ export class AdrTankStatementUnNumberComponent extends CustomFormControlComponen
   formArray = new FormArray<CustomFormControl>([]);
   globalErrorService = inject(GlobalErrorService);
 
-  addControl() {
-    if (!this.control) return;
-    this.formArray.push(new CustomFormControl(this.control.meta));
-  }
-
   ngOnInit() {
-    this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
-      this.control?.patchValue(changes, { emitModelToViewChange: true });
-    });
-
-    this.globalErrorService.errors$.pipe(skip(1)).subscribe(() => {
-      this.submitted = true;
-    });
+    this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => this.onFormChange(changes));
+    this.globalErrorService.errors$.pipe(skip(1)).subscribe(() => this.onFormSubmitted());
   }
 
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
-    this.addControl();
+    const { form, control } = this;
+
+    if (!form) return;
+    if (!control) return;
+
+    const value = form.get(this.name)?.value;
+    const values = Array.isArray(value) && value.length ? value : [null];
+    values.forEach((unNumber: string) => this.addControl(unNumber));
+  }
+
+  addControl(value = '') {
+    if (!this.control) return;
+    const control = new CustomFormControl(this.control.meta, value);
+    control.addValidators(Validators.maxLength(1500));
+    this.formArray.push(control);
+  }
+
+  onFormChange(changes: (string | null)[] | null) {
+    this.control?.patchValue(changes, { emitModelToViewChange: true });
+  }
+
+  onFormSubmitted() {
+    this.submitted = true;
   }
 }

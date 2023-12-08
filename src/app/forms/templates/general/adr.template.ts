@@ -2,6 +2,7 @@ import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/te
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
+import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import { AdrTankStatementUnNumberComponent } from '@forms/custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
@@ -355,36 +356,40 @@ export const AdrTemplate: FormNode = {
       editType: FormNodeEditTypes.RADIO,
       groups: ['tank_details', 'dangerous_goods'],
       hide: true,
-      options: [
-        { value: 'statement', label: 'Statement' },
-        { value: 'productList', label: 'Product List' },
-      ],
+      options: getOptionsFromEnum(ADRTankDetailsTankStatementSelect),
       validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
         {
           name: ValidatorNames.ShowGroupsWhenIncludes,
           args: {
-            values: ['statement'],
+            values: [ADRTankDetailsTankStatementSelect.STATEMENT],
             groups: ['statement'],
           },
         },
         {
           name: ValidatorNames.ShowGroupsWhenIncludes,
           args: {
-            values: ['productList'],
+            values: [ADRTankDetailsTankStatementSelect.PRODUCT_LIST],
             groups: ['productList'],
           },
         },
         {
           name: ValidatorNames.HideGroupsWhenExcludes,
           args: {
-            values: ['statement'],
+            values: [ADRTankDetailsTankStatementSelect.STATEMENT],
             groups: ['statement'],
           },
         },
         {
           name: ValidatorNames.HideGroupsWhenExcludes,
           args: {
-            values: ['productList'],
+            values: [ADRTankDetailsTankStatementSelect.PRODUCT_LIST],
             groups: ['productList'],
           },
         },
@@ -401,7 +406,10 @@ export const AdrTemplate: FormNode = {
         { name: ValidatorNames.MaxLength, args: 1500 },
         {
           name: ValidatorNames.RequiredIfEquals,
-          args: { sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_select', value: ['statement'] },
+          args: {
+            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
+            value: [ADRTankDetailsTankStatementSelect.STATEMENT],
+          },
         },
       ],
     },
@@ -416,7 +424,10 @@ export const AdrTemplate: FormNode = {
         { name: ValidatorNames.MaxLength, args: 1500 },
         {
           name: ValidatorNames.RequiredIfEquals,
-          args: { sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo', value: [[], [null], ['']] },
+          args: {
+            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
+            value: [[], [null], [''], null, undefined],
+          },
         },
       ],
     },

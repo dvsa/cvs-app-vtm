@@ -1,5 +1,6 @@
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
+import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
@@ -376,6 +377,16 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
         techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
       };
 
+      const nulledTankStatementStatement = {
+        techRecord_adrDetails_tank_tankDetails_tankStatement_statement: null,
+      };
+
+      const nulledTankStatementProductList = {
+        techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
+        techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: null,
+        techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
+      };
+
       if (!editingTechRecord.techRecord_adrDetails_dangerousGoods) {
         // vehicle doesn't carry dangerous goods so null this information
         return {
@@ -433,6 +444,17 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
           ...sanitisedEditingTechRecord,
           techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: unNumbers.filter(Boolean),
         };
+      }
+
+      // If tank details 'statement' selected, null UN numbers, product list referene no., product list
+      const { techRecord_adrDetails_tank_tankDetails_tankStatement_select: select } = sanitisedEditingTechRecord;
+      if (select === ADRTankDetailsTankStatementSelect.STATEMENT) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementProductList };
+      }
+
+      // If tank details 'product list' selected, null statement reference no.
+      if (select === ADRTankDetailsTankStatementSelect.PRODUCT_LIST) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementStatement };
       }
 
       return { ...state, editingTechRecord: sanitisedEditingTechRecord };
