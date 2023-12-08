@@ -11,6 +11,7 @@ import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
+import { DateValidators } from '@forms/validators/date/date.validators';
 
 @Component({
   selector: 'app-adr',
@@ -111,6 +112,14 @@ export class AdrComponent implements OnInit {
   handleFormChange(event: Record<string, unknown>) {
     if (event == null) return;
     if (this.techRecord == null) return;
+
+    const validator = DateValidators.validDate(false, 'Date processed');
+    const approvedDate = this.form.get('techRecord_adrDetails_vehicleDetails_approvalDate');
+
+    // TODO: fix underlying issue of this not being added correctly by date component
+    if (!approvedDate?.hasValidator(validator)) {
+      approvedDate?.addValidators(validator);
+    }
 
     this.form.patchValue(event);
     this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord, ...event } as TechRecordTypeVerb<'put'>);
