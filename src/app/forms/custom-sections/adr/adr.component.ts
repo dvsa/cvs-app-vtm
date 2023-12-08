@@ -1,11 +1,14 @@
 import {
-  Component, EventEmitter, Input, OnInit, Output,
+  Component,
+  Input, OnInit,
 } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { DateValidators } from '@forms/validators/date/date.validators';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
   selector: 'app-adr',
@@ -16,7 +19,6 @@ export class AdrComponent implements OnInit {
   @Input() techRecord!: TechRecordType<'hgv'> | TechRecordType<'trl'> | TechRecordType<'lgv'>;
   @Input() isEditing = false;
   @Input() disableLoadOptions = false;
-  @Output() formChange = new EventEmitter();
 
   public template = AdrTemplate;
   public form!: CustomFormGroup;
@@ -37,10 +39,16 @@ export class AdrComponent implements OnInit {
     'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
     'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
     'techRecord_adrDetails_tank_tankDetails_tankCode',
+    'techRecord_adrDetails_brakeDeclarationsSeen',
+    'techRecord_adrDetails_brakeDeclarationIssuer',
+    'techRecord_adrDetails_brakeEndurance',
+    'techRecord_adrDetails_weight',
+    'techRecord_adrDetails_declarationsSeen',
   ];
 
   constructor(
     private dfs: DynamicFormService,
+    private technicalRecordService: TechnicalRecordService,
   ) { }
 
   ngOnInit(): void {
@@ -67,6 +75,7 @@ export class AdrComponent implements OnInit {
 
   handleFormChange(event: Record<string, unknown>) {
     if (event == null) return;
+    if (this.techRecord == null) return;
     this.form.patchValue(event);
 
     const validator = DateValidators.validDate(false, 'Date processed');
@@ -77,6 +86,6 @@ export class AdrComponent implements OnInit {
       approvedDate?.addValidators(validator);
     }
 
-    this.formChange.emit(event);
+    this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord, ...event } as TechRecordTypeVerb<'put'>);
   }
 }

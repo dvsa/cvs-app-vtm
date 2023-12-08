@@ -138,6 +138,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private handleFormChanges(event: any): void {
     if (this.isPsv && this.determineRecalculationNeeded(event) && this.form.value.techRecord_manufactureYear) {
       event.techRecord_grossLadenWeight = this.calculateGrossLadenWeight();

@@ -1,3 +1,5 @@
+import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
+import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
@@ -350,6 +352,30 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
   if (editingTechRecord) {
     const { techRecord_vehicleType: type } = editingTechRecord;
     if (type === VehicleTypes.HGV || type === VehicleTypes.TRL || type === VehicleTypes.LGV) {
+      const nulledCompatibilityGroupJ = {
+        techRecord_adrDetails_compatibilityGroupJ: null,
+      };
+
+      const nulledTankDetails = {
+        techRecord_adrDetails_tank_tankDetails_tankManufacturer: null,
+        techRecord_adrDetails_tank_tankDetails_yearOfManufacture: null,
+        techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: null,
+        techRecord_adrDetails_tank_tankDetails_tankTypeAppNo: null,
+        techRecord_adrDetails_tank_tankDetails_tankCode: null,
+        techRecord_adrDetails_tank_tankDetails_specialProvisions: null,
+        techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: null,
+        techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: null,
+        techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: null,
+        techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type: null,
+        techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicNumber: null,
+        techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicExpiryDate: null,
+        techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: null,
+        techRecord_adrDetails_tank_tankDetails_tankStatement_statement: null,
+        techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
+        techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: null,
+        techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
+      };
+
       if (!editingTechRecord.techRecord_adrDetails_dangerousGoods) {
         // vehicle doesn't carry dangerous goods so null this information
         return {
@@ -359,7 +385,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
             techRecord_adrDetails_vehicleDetails_type: null,
             techRecord_adrDetails_vehicleDetails_approvalDate: null,
             techRecord_adrDetails_permittedDangerousGoods: null,
-            techRecord_adrDetails_compatibilityGroupJ: null,
+            ...nulledCompatibilityGroupJ,
             techRecord_adrDetails_additionalExaminerNotes: null,
             techRecord_adrDetails_applicantDetails_name: null,
             techRecord_adrDetails_applicantDetails_street: null,
@@ -379,26 +405,26 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
             techRecord_adrDetails_additionalNotes_number: null,
             techRecord_adrDetails_adrTypeApprovalNo: null,
             techRecord_adrDetails_adrCertificateNotes: null,
-            techRecord_adrDetails_tank_tankDetails_tankManufacturer: null,
-            techRecord_adrDetails_tank_tankDetails_yearOfManufacture: null,
-            techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo: null,
-            techRecord_adrDetails_tank_tankDetails_tankTypeAppNo: null,
-            techRecord_adrDetails_tank_tankDetails_tankCode: null,
-            techRecord_adrDetails_tank_tankDetails_specialProvisions: null,
-            techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: null,
-            techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: null,
-            techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: null,
-            techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type: null,
-            techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicNumber: null,
-            techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicExpiryDate: null,
-            techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: null,
-            techRecord_adrDetails_tank_tankDetails_tankStatement_statement: null,
-            techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
-            techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: null,
-            techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
+            ...nulledTankDetails,
           },
         };
       }
+
+      let sanitisedEditingTechRecord = {
+        ...editingTechRecord,
+      };
+
+      const explosivesGroups: string[] = [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3];
+      if (!editingTechRecord.techRecord_adrDetails_permittedDangerousGoods?.some((value) => explosivesGroups.includes(value))) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledCompatibilityGroupJ };
+      }
+
+      const adrVehicleTypes: string[] = Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank'));
+      if (!adrVehicleTypes.includes(editingTechRecord.techRecord_adrDetails_vehicleDetails_type as string)) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankDetails };
+      }
+
+      return { ...state, editingTechRecord: sanitisedEditingTechRecord };
     }
   }
 

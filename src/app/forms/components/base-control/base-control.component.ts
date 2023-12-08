@@ -34,6 +34,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   public errorMessage?: string;
   public control?: CustomControl;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private control_value: any;
 
   constructor(protected injector: Injector, protected cdr: ChangeDetectorRef) {

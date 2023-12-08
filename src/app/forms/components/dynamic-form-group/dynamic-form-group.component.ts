@@ -15,6 +15,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Input() data: any = {};
   @Input() template?: FormNode;
   @Input() edit = false;
@@ -45,6 +46,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   entriesOf(obj: FormGroup): { key: string; value: any }[] {
     return Object.entries(obj).map(([key, value]) => ({
       key,
@@ -52,6 +54,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
     }));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   trackByFn(index: number, item: any) {
     return Object.prototype.hasOwnProperty.call(item, 'key') ? item.key : index;
   }

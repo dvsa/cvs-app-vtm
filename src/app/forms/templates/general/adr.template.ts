@@ -202,7 +202,12 @@ export const AdrTemplate: FormNode = {
       value: [],
       customValidatorErrorName: 'Guidance notes is required with Able to carry dangerous goods',
       options: getOptionsFromEnum(ADRAdditionalNotesNumber),
-      validators: [{ name: ValidatorNames.IsArray, args: { requiredIndices: [0] } }],
+      validators: [
+        {
+          name: ValidatorNames.IsArray,
+          args: { requiredIndices: [0], whenEquals: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        },
+      ],
     },
     {
       name: 'techRecord_adrDetails_adrTypeApprovalNo',
@@ -364,6 +369,100 @@ export const AdrTemplate: FormNode = {
         },
       ],
       hide: true,
+    },
+    {
+      name: 'DeclarationsSectionTitle',
+      label: 'Declarations seen',
+      type: FormNodeTypes.TITLE,
+      groups: ['declarations_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_brakeDeclarationsSeen',
+      label: 'Manufacturer brake declaration',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOX,
+      groups: ['declarations_details', 'dangerous_goods'],
+      value: false,
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.ShowGroupsWhenEqualTo,
+          args: {
+            values: [true],
+            groups: ['issuer_section'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenEqualTo,
+          args: {
+            values: [false],
+            groups: ['issuer_section', 'weight_section'],
+          },
+        },
+      ],
+
+    },
+    {
+      name: 'techRecord_adrDetails_brakeDeclarationIssuer',
+      label: 'Issuer',
+      type: FormNodeTypes.CONTROL,
+      groups: ['issuer_section', 'dangerous_goods'],
+      editType: FormNodeEditTypes.TEXTAREA,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 500 },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_brakeEndurance',
+      label: 'Brake endurance',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOX,
+
+      groups: ['issuer_section', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.ShowGroupsWhenEqualTo,
+          args: {
+            values: [true],
+            groups: ['weight_section'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenEqualTo,
+          args: {
+            values: [false, null, undefined],
+            groups: ['weight_section'],
+          },
+        },
+      ],
+
+    },
+    {
+      name: 'techRecord_adrDetails_weight',
+      label: 'Weight (kg)',
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.L,
+      groups: ['weight_section', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 8 },
+        { name: ValidatorNames.Numeric },
+        {
+          name: ValidatorNames.RequiredIfNotHidden,
+        },
+      ],
+
+    },
+    {
+      name: 'techRecord_adrDetails_declarationsSeen',
+      label: 'Owner/operator declaration',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOX,
+      groups: ['declarations_details', 'dangerous_goods'],
+      hide: true,
+
     },
   ],
 };

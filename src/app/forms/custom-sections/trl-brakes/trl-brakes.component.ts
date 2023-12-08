@@ -33,8 +33,10 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.form = this.dfs.createForm(TrlBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((event: any) => {
       if (event?.techRecord_axles) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         event.techRecord_axles = (event.techRecord_axles).filter((axle: any) => !!axle?.axleNumber);
       }
 

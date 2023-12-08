@@ -93,6 +93,17 @@ export class CustomValidators {
     };
   };
 
+  static requiredIfNotHidden = (): ValidatorFn =>
+    (control: AbstractControl): ValidationErrors | null => {
+      const customControl = control as CustomFormControl;
+      if (!control?.parent) return null;
+      if (customControl.meta.hide === false && !control.value) {
+        // If meta.hide is false and control value is empty, return a validation error
+        return { requiredIfNotHidden: customControl.meta.label };
+      }
+      return null;
+    };
+
   static requiredIfEquals = (sibling: string, values: unknown[]): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
@@ -202,6 +213,7 @@ export class CustomValidators {
         return null;
       }
 
+      // eslint-disable-next-line security/detect-non-literal-regexp
       const valid = new RegExp(regEx).test(control.value);
 
       return valid ? null : { customPattern: { message } };
@@ -456,6 +468,18 @@ export class CustomValidators {
 
   static isArray = (options: Partial<IsArrayValidatorOptions> = {}) => {
     return (control: AbstractControl): ValidationErrors | null => {
+      // Only perform subsequent logic if this condition is met, e.g. sibling control has value true
+      if (options.whenEquals) {
+        const { sibling, value } = options.whenEquals;
+        const siblingControl = control.parent?.get(sibling);
+        const siblingValue = siblingControl?.value;
+        const isSiblingValueIncluded = Array.isArray(siblingValue)
+          ? value.some((v) => siblingValue.includes(v))
+          : value.includes(siblingValue);
+
+        if (!isSiblingValueIncluded) return null;
+      }
+
       if (!Array.isArray(control.value)) return { isArray: 'must be a non-empty array' };
 
       if (options.ofType) {
@@ -484,4 +508,5 @@ export type EnumValidatorOptions = {
 export type IsArrayValidatorOptions = {
   ofType: string;
   requiredIndices: number[];
+  whenEquals: { sibling: string, value: unknown[] }
 };

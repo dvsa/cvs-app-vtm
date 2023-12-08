@@ -1,9 +1,7 @@
 import { TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { StatusCodes, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
-import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { selectTestType, selectTestTypesByVehicleType, sortedTestTypes } from './test-types.selectors';
 
 describe('selectors', () => {
