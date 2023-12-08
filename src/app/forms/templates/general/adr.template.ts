@@ -399,7 +399,7 @@ export const AdrTemplate: FormNode = {
       label: 'Weight (kg)',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
-      groups: ['weight_section'],
+      groups: ['weight_section', 'dangerous_goods'],
       hide: true,
       validators: [
         { name: ValidatorNames.MaxLength, args: 8 },
