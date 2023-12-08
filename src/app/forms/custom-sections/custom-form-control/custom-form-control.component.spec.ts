@@ -8,9 +8,9 @@ describe('CustomFormControlComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CustomFormControlComponent ]
+      declarations: [CustomFormControlComponent],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CustomFormControlComponent);
     component = fixture.componentInstance;
