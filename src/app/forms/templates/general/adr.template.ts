@@ -374,6 +374,7 @@ export const AdrTemplate: FormNode = {
       label: 'Brake endurance',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOX,
+
       groups: ['issuer_section', 'dangerous_goods'],
       hide: true,
       validators: [
@@ -387,7 +388,7 @@ export const AdrTemplate: FormNode = {
         {
           name: ValidatorNames.HideGroupsWhenEqualTo,
           args: {
-            values: [false],
+            values: [false, null, undefined],
             groups: ['weight_section'],
           },
         },
