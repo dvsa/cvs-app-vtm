@@ -183,6 +183,9 @@ export class DynamicFormService {
     const { errors } = control;
     const meta = (control as CustomFormControl).meta as FormNode | undefined;
     if (errors) {
+      if (meta?.hide) {
+        return;
+      }
       const errorList = Object.keys(errors);
       errorList.forEach((error) => {
         validationErrorList.push({
