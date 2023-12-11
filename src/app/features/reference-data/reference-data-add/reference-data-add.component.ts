@@ -22,7 +22,9 @@ import {
 })
 export class ReferenceDataCreateComponent implements OnInit {
   type: ReferenceDataResourceType = ReferenceDataResourceType.Brakes;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   newRefData: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any = {};
   isFormDirty = false;
   isFormInvalid = true;
@@ -45,6 +47,7 @@ export class ReferenceDataCreateComponent implements OnInit {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get refDataAdminType$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
@@ -62,6 +65,7 @@ export class ReferenceDataCreateComponent implements OnInit {
     void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFormChange(event: any) {
     this.newRefData = event;
   }
@@ -71,6 +75,7 @@ export class ReferenceDataCreateComponent implements OnInit {
 
     if (this.isFormInvalid) return;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const referenceData: any = {};
 
     Object.keys(this.newRefData)

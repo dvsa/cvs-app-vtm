@@ -1,10 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
+import jwt_decode from 'jwt-decode';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import jwt_decode from 'jwt-decode';
 import * as UserServiceActions from '../../store/user/user-service.actions';
 import * as UserServiceState from '../../store/user/user-service.reducer';
 
@@ -18,6 +18,7 @@ export class UserService implements OnDestroy {
         filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
         takeUntil(this.destroying$),
       )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .subscribe((result: any) => {
         const {
           payload: {
@@ -45,7 +46,7 @@ export class UserService implements OnDestroy {
   }: { name: string; userEmail: string; oid: string; accessToken: string }): void {
     window.localStorage.setItem('accessToken', accessToken);
     const decodedJWT = jwt_decode(accessToken);
-    const { roles } = decodedJWT as any;
+    const { roles } = decodedJWT as { roles: string[] };
     this.store.dispatch(UserServiceActions.Login({
       name, userEmail, oid, roles,
     }));

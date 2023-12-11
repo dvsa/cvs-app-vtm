@@ -28,6 +28,7 @@ const mockTechRecordService = {
     vin: 'testVin',
     techRecord_statusCode: StatusCodes.CURRENT,
   } as V3TechRecordModel),
+  clearReasonForCreation: jest.fn(),
 };
 
 let component: EditTechRecordButtonComponent;

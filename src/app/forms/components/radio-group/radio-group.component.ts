@@ -19,17 +19,18 @@ export class RadioGroupComponent extends BaseControlComponent {
   @Input() options: FormNodeOption<string | number | boolean | null>[] = [];
   @Input() inline = false;
 
-  getLabel(value: any): string | undefined {
+  getLabel(value: string | number | boolean | null): string | undefined {
     return this.options.find((option) => option.value === value)?.label;
   }
 
   trackByFn = (index: number): number => index;
 
-  getId(value: any, name: string) {
+  getId(value: string | number | boolean | null, name: string) {
     const id = `${name}-${value}-radio`;
     if (this.control) {
       this.control.meta.customId = id;
     }
     return id;
   }
+
 }

@@ -50,7 +50,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
   }
 
   //  URL to POST new reference data items: /reference/{ type capitalized }/{ new key } POST
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createReferenceDataItem(type: ReferenceDataResourceType, key: string, data: any) {
     return this.usersService.id$.pipe(
       withLatestFrom(this.usersService.name$),
@@ -64,7 +64,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
   }
 
   //  URL to PUT new reference data items: /reference/{ type capitalized }/{ new key } PUT
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   amendReferenceDataItem(type: ReferenceDataResourceType, key: string, data: any) {
     return this.usersService.id$.pipe(
       withLatestFrom(this.usersService.name$),
@@ -77,7 +77,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
     );
   }
 
-  deleteReferenceDataItem(type: ReferenceDataResourceType, key: string, payload: any) {
+  deleteReferenceDataItem(type: ReferenceDataResourceType, key: string, payload: Record<string, unknown>) {
     return this.usersService.id$.pipe(
       withLatestFrom(this.usersService.name$),
       switchMap(([createdId, createdName]) => {

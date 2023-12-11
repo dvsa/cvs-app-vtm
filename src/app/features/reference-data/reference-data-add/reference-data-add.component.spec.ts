@@ -84,15 +84,17 @@ describe('ReferenceDataCreateComponent', () => {
 
   describe('handleSubmit', () => {
     it('should dispatch if form is valid', () => {
-      component.newRefData = { description: 'test' };
-      jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
-        component.isFormInvalid = false;
+      fixture.ngZone?.run(() => {
+        component.newRefData = { description: 'test' };
+        jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
+          component.isFormInvalid = false;
+        });
+        const dispatch = jest.spyOn(store, 'dispatch');
+
+        component.handleSubmit();
+
+        expect(dispatch).toHaveBeenCalled();
       });
-      const dispatch = jest.spyOn(store, 'dispatch');
-
-      component.handleSubmit();
-
-      expect(dispatch).toHaveBeenCalled();
     });
     it('should not dispatch if form is invalid', () => {
       jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {

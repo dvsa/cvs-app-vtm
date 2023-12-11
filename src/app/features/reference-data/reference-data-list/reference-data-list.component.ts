@@ -25,6 +25,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   pageStart?: number;
   pageEnd?: number;
   currentPage?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: Observable<Array<any> | undefined>;
   private destroy$ = new Subject<void>();
 
@@ -94,6 +95,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.data = this.store.pipe(select(selectAllReferenceDataByResourceType(this.type)));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get refDataAdminType$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
@@ -130,12 +132,12 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  get paginatedItems$(): Observable<any[]> {
-    return this.data!.pipe(map((items) => items?.slice(this.pageStart, this.pageEnd) ?? []));
+  get paginatedItems$() {
+    return (this.data ?? of([])).pipe(map((items) => items?.slice(this.pageStart, this.pageEnd) ?? []));
   }
 
-  get numberOfRecords$(): Observable<number> {
-    return this.data!.pipe(map((items) => items?.length ?? 0));
+  get numberOfRecords$() {
+    return (this.data ?? of([])).pipe(map((items) => items?.length ?? 0));
   }
 
   search(term: string, filterterm: string) {

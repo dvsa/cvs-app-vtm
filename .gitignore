@@ -61,3 +61,5 @@ multi-reporter-config.json
 cypress/parallel-weights.json
 
 report.json
+# Sentry Config File
+.sentryclirc

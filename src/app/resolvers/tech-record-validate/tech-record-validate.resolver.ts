@@ -39,8 +39,7 @@ export const techRecordValidateResolver: ResolveFn<boolean> = (route: ActivatedR
   return store.select(selectTechRecord).pipe(
     map((record) => {
       if (!record) {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.navigate([`./tech-records/${route.params['systemNumber']}/${route.params['createdTimestamp']}`]);
+        void router.navigate([`./tech-records/${route.params['systemNumber']}/${route.params['createdTimestamp']}`]);
       }
       let validatedRecord = { ...record } as TechRecordType<'put'>;
 

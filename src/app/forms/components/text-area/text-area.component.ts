@@ -16,6 +16,6 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class TextAreaComponent extends BaseControlComponent {
   get maxLength(): number | undefined {
-    return this.control?.meta.validators?.find((v) => v.name === ValidatorNames.MaxLength)?.args;
+    return this.control?.meta.validators?.find((v) => v.name === ValidatorNames.MaxLength)?.args as number | undefined;
   }
 }

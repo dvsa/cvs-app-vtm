@@ -3,6 +3,11 @@ import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
+import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
+import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
+import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -13,19 +18,22 @@ import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '@forms/utils/enum-map';
-import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
+import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import {
   Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { selectAllReferenceDataByResourceType } from '@store/reference-data';
 import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
-import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 import { cloneDeep } from 'lodash';
-import { Subscription } from 'rxjs';
+import {
+  ReplaySubject,
+  filter,
+  takeUntil, Observable,
+} from 'rxjs';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
   selector: 'app-tyres',
@@ -38,42 +46,60 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() formChange = new EventEmitter();
 
+  private destroy$ = new ReplaySubject<boolean>(1);
+
   public isError = false;
   public errorMessage?: string;
   public form!: CustomFormGroup;
   private editingReason?: ReasonForEditing;
-  private formSubscription = new Subscription();
+  private loadIndexValues: ReferenceDataTyreLoadIndex[] | null = [];
+
+  tyresReferenceData: ReferenceDataTyre[] = [];
+  invalidAxles: Array<number> = [];
 
   constructor(
     private dynamicFormsService: DynamicFormService,
-    private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private viewportScroller: ViewportScroller,
+    private referenceDataService: ReferenceDataService,
+    private technicalRecordService: TechnicalRecordService,
   ) {
     this.editingReason = this.route.snapshot.data['reason'];
   }
 
   ngOnInit(): void {
     this.form = this.dynamicFormsService.createForm(this.template as FormNode, this.vehicleTechRecord) as CustomFormGroup;
-    this.formSubscription = this.form.cleanValueChanges.subscribe((event) => {
+    this.form.cleanValueChanges.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       if (event && !Array.isArray(event) && event['axles']) {
         event['axles'] = (event['axles'] as Axle[]).filter((axle) => !!axle?.axleNumber);
       }
       this.formChange.emit(event);
     });
+
+    this.store.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.Tyres))
+      .pipe(takeUntil(this.destroy$), filter(Boolean)).subscribe(((data) => {
+        this.tyresReferenceData = data as ReferenceDataTyre[];
+      }));
+    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
+
+    this.loadIndex$.pipe(takeUntil(this.destroy$)).subscribe((value): void => {
+      this.loadIndexValues = value;
+    });
   }
 
   ngOnChanges(simpleChanges: SimpleChanges): void {
     const fitmentUpdated = this.checkFitmentCodeHasChanged(simpleChanges);
+    this.checkAxleWeights(simpleChanges);
     if (!fitmentUpdated) {
       this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
     }
   }
 
   ngOnDestroy(): void {
-    this.formSubscription.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   get template(): FormNode | undefined {
@@ -125,9 +151,37 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     return this.axles.get([i]) as CustomFormGroup;
   }
 
+  get loadIndex$(): Observable<ReferenceDataTyreLoadIndex[] | null> {
+    return this.referenceDataService.getAll$(ReferenceDataResourceType.TyreLoadIndex) as Observable<ReferenceDataTyreLoadIndex[]>;
+  }
+
+  checkAxleWeights(simpleChanges: SimpleChanges) {
+    const { vehicleTechRecord } = simpleChanges;
+    this.invalidAxles = [];
+    if (
+      !this.isEditing
+      || !vehicleTechRecord.currentValue.techRecord_axles
+      || (vehicleTechRecord.previousValue
+      && !vehicleTechRecord.previousValue.techRecord_axles
+      && (vehicleTechRecord.currentValue.techRecord_axles === vehicleTechRecord.previousValue.techRecord_axles))) {
+      return;
+    }
+    vehicleTechRecord.currentValue.techRecord_axles.forEach((axle: HGVAxles | TRLAxles | PSVAxles) => {
+      if (axle.tyres_dataTrAxles && axle.weights_gbWeight && axle.axleNumber) {
+        const weightValue = this.technicalRecordService.getAxleFittingWeightValueFromLoadIndex(
+          axle.tyres_dataTrAxles.toString(),
+          axle.tyres_fitmentCode,
+          this.loadIndexValues,
+        );
+        if (weightValue && axle.weights_gbWeight > weightValue) {
+          this.invalidAxles.push(axle.axleNumber);
+        }
+      }
+    });
+  }
+
   checkFitmentCodeHasChanged(simpleChanges: SimpleChanges): boolean {
     const { vehicleTechRecord } = simpleChanges;
-
     if (vehicleTechRecord.firstChange !== undefined && vehicleTechRecord.firstChange === false) {
       const currentAxles = vehicleTechRecord.currentValue.techRecord_axles;
       const previousAxles = vehicleTechRecord.previousValue.techRecord_axles;
@@ -143,7 +197,8 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
           && axle.tyres_fitmentCode !== previousAxles[`${index}`].tyres_fitmentCode
           && axle.tyres_tyreCode === previousAxles[`${index}`].tyres_tyreCode
         ) {
-          this.getTyresRefData('tyres_tyreCode', axle.axleNumber);
+
+          this.getTyresRefData(axle.axleNumber);
           return true;
         }
       }
@@ -152,40 +207,47 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     return false;
   }
 
-  getTyresRefData(name: string, axleNumber: number): void {
-    if (name === 'tyres_tyreCode') {
-      this.isError = false;
-      this.referenceDataService
-        .fetchReferenceDataByKey(ReferenceDataResourceType.Tyres, String(this.vehicleTechRecord.techRecord_axles![axleNumber - 1]?.tyres_tyreCode))
-        .subscribe({
-          next: (data) => {
-            const refTyre = data as ReferenceDataTyre;
-            const indexLoad = this.vehicleTechRecord.techRecord_axles![axleNumber - 1]?.tyres_fitmentCode === FitmentCode.SINGLE
-              ? Number(refTyre.loadIndexSingleLoad)
-              : Number(refTyre.loadIndexTwinLoad);
-            const newTyre = new Tyre({
-              tyreCode: this.vehicleTechRecord.techRecord_axles![axleNumber - 1]?.tyres_tyreCode,
-              tyreSize: refTyre.tyreSize,
-              plyRating: refTyre.plyRating,
-              dataTrAxles: indexLoad,
-            });
+  handleNoAxleInfo(axleNumber: number) {
+    this.errorMessage = `Cannot find data of this tyre on axle ${axleNumber}`;
+    this.isError = true;
+    const newTyre = new Tyre({
+      tyreCode: null,
+      tyreSize: null,
+      plyRating: null,
+      dataTrAxles: null,
+    });
 
-            this.addTyreToTechRecord(newTyre, axleNumber);
-          },
-          error: () => {
-            this.errorMessage = `Cannot find data of this tyre on axle ${axleNumber}`;
-            this.isError = true;
-            const newTyre = new Tyre({
-              tyreCode: null,
-              tyreSize: null,
-              plyRating: null,
-              dataTrAxles: null,
-            });
+    this.addTyreToTechRecord(newTyre, axleNumber);
+  }
 
-            this.addTyreToTechRecord(newTyre, axleNumber);
-          },
+  getTyresRefData(axleNumber: number): void {
+    const { techRecord_axles: axles } = this.vehicleTechRecord;
+    if (axles == null) return;
+
+    const axle = axles[axleNumber - 1];
+    if (axle) {
+      const { tyres_tyreCode: code } = axle;
+      const tyreReferenceData = this.tyresReferenceData.find((tyre) => tyre.code === String(code));
+      if (tyreReferenceData) {
+        const { tyres_fitmentCode: fit } = axle;
+        const indexLoad = fit === FitmentCode.SINGLE
+          ? parseInt(String(tyreReferenceData.loadIndexSingleLoad), 10)
+          : parseInt(String(tyreReferenceData.loadIndexTwinLoad), 10);
+
+        const newTyre = new Tyre({
+          tyreCode: code,
+          tyreSize: tyreReferenceData.tyreSize,
+          plyRating: tyreReferenceData.plyRating,
+          dataTrAxles: indexLoad,
         });
+
+        this.addTyreToTechRecord(newTyre, axleNumber);
+
+        return;
+      }
     }
+
+    this.handleNoAxleInfo(axleNumber);
   }
 
   getTyreSearchPage(axleNumber: number) {

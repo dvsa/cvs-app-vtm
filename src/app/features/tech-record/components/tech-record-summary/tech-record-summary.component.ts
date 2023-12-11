@@ -41,7 +41,9 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import {
-  debounceTime, map, Observable, Subject, take, takeUntil,
+  Observable, Subject,
+  debounceTime, map,
+  take, takeUntil,
 } from 'rxjs';
 
 @Component({
@@ -195,10 +197,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
     switch (this.vehicleType) {
       case VehicleTypes.PSV:
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
         return [...commonCustomSections, this.adr.form];
       case VehicleTypes.TRL:
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return [...commonCustomSections, this.trlBrakes!.form, this.letters.form, this.adr.form];
       case VehicleTypes.LGV:
         return [this.adr.form];
@@ -207,6 +211,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFormState(event: any): void {
     const isPrimitiveArray = (a: unknown, b: unknown) => (Array.isArray(a) && !a.some((i) => typeof i === 'object') ? b : undefined);
 

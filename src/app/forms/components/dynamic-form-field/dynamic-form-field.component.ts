@@ -1,6 +1,8 @@
 import { KeyValue } from '@angular/common';
-import { AfterContentInit, Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {
+  AfterContentInit, Component, InjectionToken, Injector, Input, OnInit,
+} from '@angular/core';
+import { FormGroup, NgControl } from '@angular/forms';
 import { CustomFormControl, FormNodeEditTypes, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { Observable, map, of } from 'rxjs';
@@ -10,12 +12,14 @@ import { Observable, map, of } from 'rxjs';
   templateUrl: './dynamic-form-field.component.html',
   providers: [MultiOptionsService],
 })
-export class DynamicFormFieldComponent implements AfterContentInit {
+export class DynamicFormFieldComponent implements OnInit, AfterContentInit {
   @Input() control?: KeyValue<string, CustomFormControl>;
   @Input() form?: FormGroup;
   @Input() customId?: string;
 
-  constructor(private optionsService: MultiOptionsService) {}
+  customFormControlInjector?: Injector;
+
+  constructor(private optionsService: MultiOptionsService, private injector: Injector) {}
 
   get formNodeEditTypes(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
@@ -29,6 +33,10 @@ export class DynamicFormFieldComponent implements AfterContentInit {
       : of((meta?.options as FormNodeOption<string | number | boolean>[]) ?? []);
   }
 
+  ngOnInit(): void {
+    this.createCustomFormControlInjector();
+  }
+
   ngAfterContentInit(): void {
     const referenceData = this.control?.value.meta?.referenceData;
 
@@ -36,4 +44,15 @@ export class DynamicFormFieldComponent implements AfterContentInit {
       this.optionsService.loadOptions(referenceData);
     }
   }
+
+  createCustomFormControlInjector() {
+    this.customFormControlInjector = Injector.create({
+      providers: [
+        { provide: FORM_INJECTION_TOKEN, useValue: this.form },
+        { provide: NgControl, useValue: { control: this.control } },
+      ],
+      parent: this.injector,
+    });
+  }
 }
+export const FORM_INJECTION_TOKEN = new InjectionToken('form');

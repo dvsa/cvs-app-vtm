@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TestType, TestTypeCategory } from '@api/test-types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -6,15 +8,11 @@ import { TestTypesService } from '@services/test-types/test-types.service';
 import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { createMock, createMockList } from 'ts-auto-mock';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Router } from '@angular/router';
 import { TestTypeSelectComponent } from './test-type-select.component';
 
 describe('TestTypeSelectComponent', () => {
   let component: TestTypeSelectComponent;
   let fixture: ComponentFixture<TestTypeSelectComponent>;
-  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

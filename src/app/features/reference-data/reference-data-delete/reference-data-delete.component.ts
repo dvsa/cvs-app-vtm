@@ -26,6 +26,7 @@ import { Observable, take } from 'rxjs';
 export class ReferenceDataDeleteComponent implements OnInit {
   type!: ReferenceDataResourceType;
   key!: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   reasonForDeletion: any;
   isFormDirty = false;
   isFormInvalid = true;
@@ -79,10 +80,12 @@ export class ReferenceDataDeleteComponent implements OnInit {
     return Roles;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get refData$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key))));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get refDataAdminType$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
@@ -91,6 +94,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
     return FormNodeWidth;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFormChange(event: any) {
     this.reasonForDeletion = event;
   }

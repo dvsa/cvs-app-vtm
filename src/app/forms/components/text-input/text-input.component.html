@@ -23,7 +23,7 @@
       [(ngModel)]="value"
       [disabled]="disabled"
       (ngModelChange)="onChange($event)"
-      (blur)="onTouched(); handleEvent($event)"
+      (blur)="onTouched(); handleEvent($event); blur.emit($event)"
       (focus)="handleEvent($event)"
     />
 
@@ -36,7 +36,7 @@
       [(ngModel)]="value"
       [disabled]="disabled"
       (ngModelChange)="onChange($event)"
-      (blur)="onTouched(); handleEvent($event)"
+      (blur)="onTouched(); handleEvent($event); blur.emit($event)"
       (focus)="handleEvent($event)"
       appNumberOnly
     />

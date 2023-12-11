@@ -11,10 +11,17 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { State, initialAppState } from '@store/index';
 import { of, throwError } from 'rxjs';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TyresComponent } from './tyres.component';
 
 const mockReferenceDataService = {
   fetchReferenceDataByKey: jest.fn(),
+  loadReferenceData: jest.fn(),
+  getAll$: jest.fn().mockReturnValue(of([])),
+};
+
+const mockTechRecordService = {
+  getAxleFittingWeightValueFromLoadIndex: jest.fn(),
 };
 
 describe('TyresComponent', () => {
@@ -26,7 +33,11 @@ describe('TyresComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule, DynamicFormsModule, StoreModule.forRoot({})],
       declarations: [TyresComponent],
-      providers: [provideMockStore<State>({ initialState: initialAppState }), { provide: ReferenceDataService, useValue: mockReferenceDataService }],
+      providers: [
+        provideMockStore<State>({ initialState: initialAppState }),
+        { provide: ReferenceDataService, useValue: mockReferenceDataService },
+        { provide: TechnicalRecordService, useValue: mockTechRecordService },
+      ],
     }).compileComponents();
   });
 
@@ -94,6 +105,41 @@ describe('TyresComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('checkAxleWeights', () => {
+    const currentAxle = [{
+      weights_gbWeight: 1650, axleNumber: 1, tyres_dataTrAxles: 100, tyres_fitmentCode: 'single', tyres_tyreCode: '123',
+    }];
+    const previousAxle = [{
+      weights_gbWeight: 1649, axleNumber: 1, tyres_dataTrAxles: 100, tyres_fitmentCode: 'single', tyres_tyreCode: '123',
+    }];
+    let simpleChanges: SimpleChanges;
+    beforeEach(() => {
+      simpleChanges = {
+        vehicleTechRecord: { currentValue: { techRecord_axles: currentAxle }, previousValue: { techRecord_axles: previousAxle }, firstChange: false },
+      } as unknown as SimpleChanges;
+      component.isEditing = true;
+    });
+    it('should return if isEditing is false', () => {
+      component.isEditing = false;
+      component.checkAxleWeights(simpleChanges);
+      expect(mockTechRecordService.getAxleFittingWeightValueFromLoadIndex).not.toHaveBeenCalled();
+    });
+    it('should call getAxleFittingWeightValueFromLoadIndex', () => {
+      component.checkAxleWeights(simpleChanges);
+      expect(mockTechRecordService.getAxleFittingWeightValueFromLoadIndex).toHaveBeenCalled();
+    });
+    it('should add an invalid axle to the invalidAxles array', () => {
+      mockTechRecordService.getAxleFittingWeightValueFromLoadIndex.mockReturnValue(1649);
+      component.checkAxleWeights(simpleChanges);
+      expect(component.invalidAxles).toContain(currentAxle[0].axleNumber);
+    });
+    it('should not add a valid axle to the invalidAxles array', () => {
+      mockTechRecordService.getAxleFittingWeightValueFromLoadIndex.mockReturnValue(1651);
+      component.checkAxleWeights(simpleChanges);
+      expect(component.invalidAxles).not.toContain(currentAxle[0].axleNumber);
+    });
   });
   // TODO V3 PSV
   describe('checkFitmentCodeHasChanged', () => {
@@ -186,7 +232,7 @@ describe('TyresComponent', () => {
           plyRating: '12',
         });
       });
-      component.getTyresRefData('tyres_tyreCode', 1);
+      component.getTyresRefData(1);
 
       expect(spy).toHaveBeenCalledTimes(1);
     });
@@ -194,7 +240,7 @@ describe('TyresComponent', () => {
     it('should call add tyre to tech record with correct values when failure', () => {
       mockReferenceDataService.fetchReferenceDataByKey.mockReturnValue(throwError(() => 'error'));
 
-      component.getTyresRefData('tyres_tyreCode', 1);
+      component.getTyresRefData(1);
 
       expect(component.isError).toBe(true);
       expect(component.errorMessage).toBe('Cannot find data of this tyre on axle 1');

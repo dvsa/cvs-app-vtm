@@ -3,7 +3,7 @@ import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 
 const DEFAULT_LABEL = 'This field';
-export const ErrorMessageMap: Record<string, (...args: any) => string> = {
+export const ErrorMessageMap: Record<string, Function> = {
   // Date errors
   invalidDate: (err: { error: boolean; reason: string; index: number }) => `${err.reason}`,
   invalidOption: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is invalid`,
@@ -32,11 +32,13 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.Pattern]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} must match a pattern`,
   [ValidatorNames.Required]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [ValidatorNames.RequiredIfEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
+  [ValidatorNames.RequiredIfNotHidden]: (label?: string) => `${label || DEFAULT_LABEL}  is required`,
   [ValidatorNames.ValidateDefectNotes]: () => 'Notes is required',
   [ValidatorNames.ValidateProhibitionIssued]: () => 'Prohibition notice has not been issued.',
   [ValidatorNames.ValidateVRMTrailerIdLength]: (err: { message: string }) => err.message,
   [ValidatorNames.MustEqualSibling]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} must match ${err.sibling}`,
   [ValidatorNames.IsMemberOfEnum]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
+  [ValidatorNames.IsArray]: (err: { message: string }, label?: string) => `${label || DEFAULT_LABEL}`,
 
   [AsyncValidatorNames.RequiredIfNotAbandoned]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
