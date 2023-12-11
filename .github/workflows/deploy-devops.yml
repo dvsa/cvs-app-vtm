@@ -1,4 +1,4 @@
-name: Build and Deploy VTM to Devops
+name: Build and Deploy VTM App to Devops
 run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
 
 on:
@@ -8,7 +8,7 @@ on:
       - 'feature/CB2-9116'
 
 jobs:
-  feature-build:
+  vtm-app:
     uses: ./.github/workflows/deploy.yml
     with:
       branch: ${{ github.ref_name }}

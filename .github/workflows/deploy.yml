@@ -1,4 +1,4 @@
-name: VTM Build
+name: VTM App Build and Upload
 on:
   workflow_call:
     inputs:
@@ -36,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Get AWS Credentials
+      - name: Get AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
@@ -46,57 +46,18 @@ jobs:
       - name: Get app config from AWS Secrets Manager
         run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment }}/vtm/config --query SecretString --region=eu-west-1 --output text > src/environments/environment.deploy.ts
 
-      - name: Make branch lowercase
-        env:
-          SHORT_BRANCH: ${{ inputs.branch }}
-        run: |
-          SHORT_BRANCH=${SHORT_BRANCH##*/}
-          echo "SHORT_BRANCH=${SHORT_BRANCH,,}" >>${GITHUB_ENV}
-
-      - name: Update environment config
-        if: ${{ inputs.environment == 'feature' }}
-        run: |
-          sed  -i 's/BRANCH/'${SHORT_BRANCH}'/g' src/environments/environment.deploy.ts
-
-      - name: Build
+      - name: Build App
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: npm run build -- --configuration='deploy' --output-path='dist/'
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: VTM-App-build-output
           path: dist/
 
-
-
-
-  #  deploy_infra:
-#    needs: [build]
-#    name: "Deploy VTM Terraform"
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: aws-actions/configure-aws-credentials@v4
-#        with:
-#          role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
-#          aws-region: "eu-west-1"
-#          role-session-name: MGMTGHA
-#
-#      - uses: aws-actions/aws-secretsmanager-get-secrets@v1
-#        with:
-#          secret-ids: github/cvs-ops
-#          parse-json-secrets: true
-#
-#      - uses: actions/checkout@v3
-#      - name: Start Jobs
-#        env:
-#          ACTION: "tf-apply"
-#          BRANCH: ${{ inputs.branch }}
-#          ENVIRONMENT: ${{ inputs.environment }}
-#          ACTIONS_KEY: ${{ env.GITHUB_CVS_OPS_TOKEN }}
-#        run: python .github/scripts/dispatcher.py
-
-  deploy_app:
+  upload:
     needs: [build]
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
@@ -108,18 +69,19 @@ jobs:
           aws-region: eu-west-1
           role-session-name: GHA-VTMDeploy
 
-      - uses: aws-actions/aws-secretsmanager-get-secrets@v1
+      - name: Get secrets from AWS
+        uses: aws-actions/aws-secretsmanager-get-secrets@v1
         with:
           secret-ids: cvs-app-vtm/gha
           parse-json-secrets: true
 
-      - uses: actions/download-artifact@v3
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
         with:
           name: VTM-App-build-output
           path: dist/
 
-
-      - name: Deploy App to S3
+      - name: Upload App to S3
         working-directory: dist/
         run: aws s3 sync . s3://vtm${{ inputs.bucket }}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}
 

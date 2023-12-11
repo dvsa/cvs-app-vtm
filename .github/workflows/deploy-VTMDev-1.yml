@@ -1,11 +1,11 @@
-name: Build and Deploy VTM to VTMDev1
+name: Build and Deploy VTM App to VTMDev1
 run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
 
 on:
   workflow_dispatch:
 
 jobs:
-  feature-build:
+  vtm-app:
     uses: ./.github/workflows/deploy.yml
     with:
       branch: ${{ github.ref_name }}
