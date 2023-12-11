@@ -41,4 +41,5 @@ export enum ValidatorNames {
   AddWarningForAdrField = 'addWarningForAdrField',
   IsArray = 'isArray',
   Custom = 'custom',
+  Tc3TestValidator = 'tc3TestValidator',
 }

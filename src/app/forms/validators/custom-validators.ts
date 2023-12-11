@@ -491,6 +491,26 @@ export class CustomValidators {
   static custom = (func: (...args: unknown[]) => ValidationErrors | null, ...args: unknown[]) => {
     return (control: AbstractControl): ValidationErrors | null => func(control, ...args);
   };
+
+  static tc3TestValidator = (args: { siblings: string[], inspectionNumber: number }) => {
+
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control?.parent) return null;
+      const { label } = (control.parent as CustomFormGroup).meta;
+      const areSiblingsEmpty: boolean[] = [];
+      args.siblings.forEach((sibling: string) => {
+        const siblingControl = control?.parent?.get(sibling) as CustomFormControl;
+        const isSiblingEmpty = siblingControl.value === null || siblingControl.value === undefined || siblingControl.value === '';
+        areSiblingsEmpty.push(isSiblingEmpty);
+      });
+
+      const isControlValueEmpty = control.value === null || control.value === undefined || control.value === '';
+
+      return !areSiblingsEmpty.includes(false) && isControlValueEmpty
+        ? { tc3TestValidator: { message: `${label} ${args.inspectionNumber}: at least one field needs to contain a value` } }
+        : null;
+    };
+  };
 }
 
 export type EnumValidatorOptions = {

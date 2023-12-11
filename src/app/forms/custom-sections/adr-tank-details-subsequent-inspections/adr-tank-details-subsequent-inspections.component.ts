@@ -2,9 +2,9 @@ import {
   AfterContentInit,
   Component,
   OnDestroy,
-  OnInit,
+  OnInit
 } from '@angular/core';
-import { FormArray, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormArray, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
@@ -15,6 +15,7 @@ import {
   FormNodeViewTypes,
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { CustomValidators } from '@forms/validators/custom-validators';
 import {
   ReplaySubject,
   takeUntil,
@@ -58,11 +59,12 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
   }
 
   createSubsequentInspection(index: number) {
-    return new CustomFormGroup({
+    const newFormGroup = new CustomFormGroup({
       name: index.toString(),
       label: 'Subsequent',
       type: FormNodeTypes.GROUP,
       customId: `subsequent[${index}]`,
+      validators: [{ name: ValidatorNames.Tc3TestValidator }],
       children: [
         {
           name: 'tc3Type',
@@ -77,7 +79,7 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
           label: 'TC3: Certificate Number',
           type: FormNodeTypes.CONTROL,
           customId: `tc3PeriodicNumber[${index}]`,
-          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 75 }],
+          validators: [{ name: ValidatorNames.MaxLength, args: 10 }],
         },
         {
           name: 'tc3PeriodicExpiryDate',
@@ -104,6 +106,19 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
         type: FormNodeTypes.CONTROL,
       }),
     });
+
+    newFormGroup.get('tc3PeriodicNumber')?.addValidators(Validators.maxLength(10));
+    newFormGroup.get('tc3PeriodicExpiryDate')?.addValidators(
+      CustomValidators.tc3TestValidator({ siblings: ['tc3PeriodicNumber', 'tc3Type'], inspectionNumber: index + 1 }),
+    );
+    newFormGroup.get('tc3PeriodicNumber')?.addValidators(
+      CustomValidators.tc3TestValidator({ siblings: ['tc3PeriodicExpiryDate', 'tc3Type'], inspectionNumber: index + 1 }),
+    );
+    newFormGroup.get('tc3Type')?.addValidators(
+      CustomValidators.tc3TestValidator({ siblings: ['tc3PeriodicNumber', 'tc3PeriodicExpiryDate'], inspectionNumber: index + 1 }),
+    );
+
+    return newFormGroup;
   }
 
   addSubsequentInspection() {
@@ -112,5 +127,11 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
   removeSubsequentInspection(index: number) {
     this.formArray.removeAt(index);
+  }
+
+  handleChanges(index: number): void {
+    this.formArray.controls[index].markAllAsTouched();
+    console.log(this.formArray.controls[index]);
+    this.formArray.updateValueAndValidity();
   }
 }

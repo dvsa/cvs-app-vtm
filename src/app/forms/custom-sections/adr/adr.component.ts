@@ -1,13 +1,15 @@
 import {
   Component,
-  Input, OnInit,
+  Input, OnInit, ViewChildren,
 } from '@angular/core';
+import { FormArray } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { AdrTankDetailsSubsequentInspectionsComponent } from '../adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 
 @Component({
   selector: 'app-adr',
@@ -39,6 +41,8 @@ export class AdrComponent implements OnInit {
     'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
     'techRecord_adrDetails_tank_tankDetails_tankCode',
   ];
+
+  @ViewChildren(AdrTankDetailsSubsequentInspectionsComponent) formArray?: FormArray;
 
   constructor(
     private dfs: DynamicFormService,

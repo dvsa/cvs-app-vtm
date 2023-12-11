@@ -12,6 +12,7 @@
         [options]="$any(inspection.meta.children![0].options)"
         [formControlName]="inspection.meta.children![0].name"
         [customId]="inspection.meta.children![2].customId"
+        (blur)="handleChanges(i)"
       ></app-select>
 
       <!-- Inspection cerificate number -->
@@ -20,6 +21,7 @@
         [label]="inspection.meta.children![1].label"
         [formControlName]="inspection.meta.children![1].name"
         [customId]="inspection.meta.children![2].customId"
+        (blur)="handleChanges(i)"
       ></app-text-input>
 
       <!-- Expiry date -->
@@ -29,6 +31,7 @@
         [label]="inspection.meta.children![2].label"
         [formControlName]="inspection.meta.children![2].name"
         [customId]="inspection.meta.children![2].customId"
+        (blur)="handleChanges(i)"
       ></app-date>
 
       <p class="flex justify-end govuk-body">
