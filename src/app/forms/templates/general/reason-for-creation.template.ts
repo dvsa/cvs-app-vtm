@@ -1,6 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
-  TagTypeLabels, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes,
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes,
+  TagTypeLabels,
 } from '@forms/services/dynamic-form.types';
 import { TagType } from '@shared/components/tag/tag.component';
 
