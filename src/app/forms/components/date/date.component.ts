@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   BehaviorSubject, Observable, Subscription, combineLatest,
 } from 'rxjs';
@@ -186,6 +187,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
    */
   addValidators() {
     this.control?.addValidators([DateValidators.validDate(this.displayTime, this.label)]);
+    this.control?.meta.validators?.push({ name: ValidatorNames.Custom, args: DateValidators.validDate(this.displayTime, this.label) });
   }
 
   validate() {

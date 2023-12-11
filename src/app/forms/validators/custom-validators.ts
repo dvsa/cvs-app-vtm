@@ -487,6 +487,10 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static custom = (func: (...args: unknown[]) => ValidationErrors | null, ...args: unknown[]) => {
+    return (control: AbstractControl): ValidationErrors | null => func(control, ...args);
+  };
 }
 
 export type EnumValidatorOptions = {
