@@ -3,9 +3,6 @@ run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} ð
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'feature/CB2-9116'
 
 jobs:
   vtm-app:
