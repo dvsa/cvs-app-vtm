@@ -32,4 +32,5 @@ export class RadioGroupComponent extends BaseControlComponent {
     }
     return id;
   }
+
 }

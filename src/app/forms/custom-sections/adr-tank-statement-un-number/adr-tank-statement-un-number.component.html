@@ -1,0 +1,13 @@
+<ng-container *ngIf="control && formArray.controls[0]">
+  <app-field-error-message
+    [error]="control.invalid && (control.touched || submitted) ? control.meta.customErrorMessage : ''"
+  ></app-field-error-message>
+
+  <app-text-input
+    [name]="formArray.controls[0].meta.name"
+    [label]="formArray.controls[0].meta.label"
+    [customId]="formArray.controls[0].meta.customId"
+    [formControl]="formArray.controls[0]"
+    (blur)="control.markAsTouched()"
+  ></app-text-input>
+</ng-container>
