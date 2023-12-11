@@ -16,6 +16,7 @@ export enum ValidatorNames {
   Pattern = 'pattern',
   Required = 'required',
   RequiredIfEquals = 'requiredIfEquals',
+  RequiredIfNotHidden = 'requiredIfNotHidden',
   RequiredIfNotEquals = 'requiredIfNotEquals',
   Defined = 'defined',
   ValidateDefectNotes = 'validateDefectNotes',
@@ -34,5 +35,10 @@ export enum ValidatorNames {
   UpdateFunctionCode = 'updateFunctionCode',
   ShowGroupsWhenEqualTo = 'showGroupsWhenEqualTo',
   HideGroupsWhenEqualTo = 'hideGroupsWhenEqualTo',
+  ShowGroupsWhenIncludes = 'showGroupsWhenIncludes',
+  HideGroupsWhenIncludes = 'hideGroupsWhenIncludes',
+  ShowGroupsWhenExcludes = 'showGroupsWhenExcludes',
+  HideGroupsWhenExcludes = 'hideGroupsWhenExcludes',
   AddWarningForAdrField = 'addWarningForAdrField',
+  IsArray = 'isArray',
 }

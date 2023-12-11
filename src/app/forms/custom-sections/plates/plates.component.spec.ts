@@ -17,6 +17,8 @@ import { canGeneratePlate } from '@store/technical-records';
 import { of } from 'rxjs';
 import { PlatesComponent } from './plates.component';
 
+global.scrollTo = jest.fn();
+
 describe('PlatesComponent', () => {
   let component: PlatesComponent;
   let fixture: ComponentFixture<PlatesComponent>;
@@ -220,14 +222,18 @@ describe('PlatesComponent', () => {
       expect(errorSpy).toHaveBeenCalledWith({ error: plateFieldsErrorMessage });
     });
     it('should dispatch the canGeneratePlate action if the record is valid', () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
-      component.validateTechRecordPlates();
-      expect(dispatchSpy).toHaveBeenCalledWith(canGeneratePlate());
+      fixture.ngZone?.run(() => {
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+        component.validateTechRecordPlates();
+        expect(dispatchSpy).toHaveBeenCalledWith(canGeneratePlate());
+      });
     });
     it('should call router.navigate on a valid record', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
-      component.validateTechRecordPlates();
-      expect(navigateSpy).toHaveBeenCalledWith(['generate-plate'], { relativeTo: expect.anything() });
+      fixture.ngZone?.run(() => {
+        const navigateSpy = jest.spyOn(router, 'navigate');
+        component.validateTechRecordPlates();
+        expect(navigateSpy).toHaveBeenCalledWith(['generate-plate'], { relativeTo: expect.anything() });
+      });
     });
   });
 });

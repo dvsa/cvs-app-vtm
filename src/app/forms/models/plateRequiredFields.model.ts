@@ -5,8 +5,6 @@ export const hgvRequiredFields: string[] = [
   'techRecord_regnDate',
   'techRecord_manufactureYear',
   'techRecord_speedLimiterMrk',
-  'techRecord_approvalType',
-  'techRecord_approvalTypeNumber',
   'techRecord_variantNumber',
   'techRecord_make',
   'techRecord_model',
@@ -21,10 +19,8 @@ export const hgvRequiredFields: string[] = [
   'techRecord_vehicleConfiguration',
 ];
 
-export const axleRequiredFields: string[] = [
-  'weights_gbWeight',
+export const tyreRequiredFields: string[] = [
   'tyres_tyreSize',
-  'tyres_plyRating',
   'tyres_fitmentCode',
 ];
 
@@ -32,11 +28,8 @@ export const trlRequiredFields: string[] = [
   'trailerId',
   'vin',
   'techRecord_brakes_dtpNumber',
-  'techRecord_regnDate',
   'techRecord_manufactureYear',
   'techRecord_maxLoadOnCoupling',
-  'techRecord_approvalType',
-  'techRecord_approvalTypeNumber',
   'techRecord_variantNumber',
   'techRecord_make',
   'techRecord_model',

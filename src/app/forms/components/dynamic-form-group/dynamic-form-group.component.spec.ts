@@ -7,8 +7,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TestStationsService } from '@services/test-stations/test-stations.service';
-import { initialAppState } from '@store/.';
 import { UserService } from '@services/user-service/user-service';
+import { initialAppState } from '@store/.';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
@@ -84,6 +84,7 @@ describe('DynamicFormGroupComponent', () => {
         },
       ],
     ],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ])('entriesOf: should split the keys out into values', (input: any, expected: any) => {
     expect(component.entriesOf(input)).toStrictEqual(expected);
   });

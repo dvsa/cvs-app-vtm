@@ -1,14 +1,14 @@
 declare module 'accessible-autocomplete/dist/accessible-autocomplete.min' {
   interface ElementParam {
-    element: any;
+    element: HTMLElement;
   }
   interface EnhancedElementParam {
-    selectElement: any;
+    selectElement: HTMLElement | null;
   }
   interface DefaultParams {
     id?: string;
-    source?: Array<any>;
-    onConfirm?: (value: any) => void;
+    source?: Array<unknown>;
+    onConfirm?: (value: string) => void;
     confirmOnBlur?: boolean;
     required?: true;
     defaultValue?: string;

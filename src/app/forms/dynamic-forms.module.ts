@@ -17,6 +17,7 @@ import { DefectSelectComponent } from './components/defect-select/defect-select.
 import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynamic-form-field.component';
 import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynamic-form-group.component';
 import { FieldErrorMessageComponent } from './components/field-error-message/field-error-message.component';
+import { FieldWarningMessageComponent } from './components/field-warning-message/field-warning-message.component';
 import { NumberInputComponent } from './components/number-input/number-input.component';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
 import { ReadOnlyComponent } from './components/read-only/read-only.component';
@@ -28,9 +29,13 @@ import { TextInputComponent } from './components/text-input/text-input.component
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
+import { AdrGuidanceNotesComponent } from './custom-sections/adr-guidance-notes/adr-guidance-notes.component';
+import { AdrTankStatementUnNumberComponent } from './custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
+import { AdrComponent } from './custom-sections/adr/adr.component';
 import { BodyComponent } from './custom-sections/body/body.component';
 import { CustomDefectComponent } from './custom-sections/custom-defect/custom-defect.component';
 import { CustomDefectsComponent } from './custom-sections/custom-defects/custom-defects.component';
+import { CustomFormControlComponent } from './custom-sections/custom-form-control/custom-form-control.component';
 import { DefectComponent } from './custom-sections/defect/defect.component';
 import { DefectsComponent } from './custom-sections/defects/defects.component';
 import { DimensionsComponent } from './custom-sections/dimensions/dimensions.component';
@@ -45,11 +50,9 @@ import { NoSpaceDirective } from './directives/app-no-space.directive';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
 import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
+import { NestingLevelDirective } from './directives/nesting-level/nesting-level.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
-import { FieldWarningMessageComponent } from './components/field-warning-message/field-warning-message.component';
-import { AdrComponent } from './custom-sections/adr/adr.component';
-import { NestingLevelDirective } from './directives/nesting-level/nesting-level.directive';
 
 @NgModule({
   declarations: [
@@ -101,6 +104,9 @@ import { NestingLevelDirective } from './directives/nesting-level/nesting-level.
     FieldWarningMessageComponent,
     AdrComponent,
     NestingLevelDirective,
+    AdrGuidanceNotesComponent,
+    AdrTankStatementUnNumberComponent,
+    CustomFormControlComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

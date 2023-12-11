@@ -138,6 +138,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private handleFormChanges(event: any): void {
     if (this.isPsv && this.determineRecalculationNeeded(event) && this.form.value.techRecord_manufactureYear) {
       event.techRecord_grossLadenWeight = this.calculateGrossLadenWeight();
@@ -152,7 +153,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private determineRecalculationNeeded(event: any): boolean {
+  private determineRecalculationNeeded(event: Record<string, unknown>): boolean {
     return ['techRecord_seatsUpperDeck', 'techRecord_seatsLowerDeck', 'techRecord_manufactureYear', 'techRecord_grossKerbWeight'].some(
       (field) => event[`${field}`] !== undefined,
     );

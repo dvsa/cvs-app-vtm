@@ -84,6 +84,7 @@ export class SelectVehicleTypeComponent {
     this.store
       .select(selectTechRecord)
       .pipe(take(1))
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       .subscribe((vehicle) => !vehicle && this.trs.updateEditingTechRecord({ ...vehicle!, techRecord_vehicleType: type } as TechRecordType<'put'>));
 
     this.trs.generateEditingVehicleTechnicalRecordFromVehicleType(type);

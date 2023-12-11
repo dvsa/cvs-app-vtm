@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
-  AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators,
+  AsyncValidatorFn, FormArray, FormControl, FormGroup,
+  ValidatorFn, Validators,
 } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
@@ -9,7 +10,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 // eslint-disable-next-line import/no-cycle
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
-import { CustomValidators, EnumValidatorOptions } from '@forms/validators/custom-validators';
+import { CustomValidators, EnumValidatorOptions, IsArrayValidatorOptions } from '@forms/validators/custom-validators';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store } from '@ngrx/store';
@@ -26,6 +27,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 export class DynamicFormService {
   constructor(private store: Store<State>) {}
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
     [ValidatorNames.Alphanumeric]: () => CustomValidators.alphanumeric(),
@@ -65,13 +67,24 @@ export class DynamicFormService {
     [ValidatorNames.IsMemberOfEnum]: (args: { enum: Record<string, string>; options?: Partial<EnumValidatorOptions> }) =>
       CustomValidators.isMemberOfEnum(args.enum, args.options),
     [ValidatorNames.UpdateFunctionCode]: () => CustomValidators.updateFunctionCode(),
-    [ValidatorNames.ShowGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
-      CustomValidators.showGroupsWhenEqualTo(args.value, args.groups),
-    [ValidatorNames.HideGroupsWhenEqualTo]: (args: { value: unknown, groups: string[] }) =>
-      CustomValidators.hideGroupsWhenEqualTo(args.value, args.groups),
+    [ValidatorNames.ShowGroupsWhenEqualTo]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.showGroupsWhenEqualTo(args.values, args.groups),
+    [ValidatorNames.HideGroupsWhenEqualTo]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.hideGroupsWhenEqualTo(args.values, args.groups),
+    [ValidatorNames.ShowGroupsWhenIncludes]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.showGroupsWhenIncludes(args.values, args.groups),
+    [ValidatorNames.HideGroupsWhenIncludes]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.hideGroupsWhenIncludes(args.values, args.groups),
+    [ValidatorNames.ShowGroupsWhenExcludes]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.showGroupsWhenExcludes(args.values, args.groups),
+    [ValidatorNames.HideGroupsWhenExcludes]: (args: { values: unknown[], groups: string[] }) =>
+      CustomValidators.hideGroupsWhenExcludes(args.values, args.groups),
     [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
+    [ValidatorNames.IsArray]: (args: Partial<IsArrayValidatorOptions>) => CustomValidators.isArray(args),
+    [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
     [AsyncValidatorNames.HideIfEqualsWithCondition]: (args: { sibling: string; value: string; conditions: Condition | Condition[] }) =>
       CustomAsyncValidators.hideIfEqualsWithCondition(this.store, args.sibling, args.value, args.conditions),
@@ -88,6 +101,7 @@ export class DynamicFormService {
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
     if (!formNode) {
       return new CustomFormGroup(formNode, {});
@@ -169,10 +183,11 @@ export class DynamicFormService {
     const { errors } = control;
     const meta = (control as CustomFormControl).meta as FormNode | undefined;
     if (errors) {
+      if (meta?.hide) return;
       const errorList = Object.keys(errors);
       errorList.forEach((error) => {
         validationErrorList.push({
-          error: ErrorMessageMap[`${error}`](errors[`${error}`], meta?.customValidatorErrorName ?? meta?.label),
+          error: meta?.customErrorMessage ?? ErrorMessageMap[`${error}`](errors[`${error}`], meta?.customValidatorErrorName ?? meta?.label),
           anchorLink: meta?.customId ?? meta?.name,
         } as GlobalError);
       });

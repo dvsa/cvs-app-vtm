@@ -1,6 +1,11 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ErrorHandler,
+  LOCALE_ID, NgModule,
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { DocumentRetrievalApiModule, Configuration as DocumentRetrievalConfiguration } from '@api/document-retrieval';
 import { ApiModule as ReferenceDataApiModule, Configuration as ReferenceDataConfiguration } from '@api/reference-data';
 import { Configuration as TestResultsApiConfiguration, ApiModule as TestResultsApiModule } from '@api/test-results';
@@ -24,6 +29,7 @@ import {
   InteractionType,
   PublicClientApplication,
 } from '@azure/msal-browser';
+import * as Sentry from '@sentry/angular-ivy';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -121,6 +127,28 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
       deps: [FeatureToggleService],
       multi: true,
     },
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: true,
+      }),
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [Sentry.TraceService],
+      multi: true,
+    },
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: false,
+      }),
+    },
     MsalService,
     MsalGuard,
     MsalBroadcastService,
@@ -129,4 +157,5 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
   exports: [],
   bootstrap: [AppComponent, MsalRedirectComponent],
 })
-export class AppModule {}
+export class AppModule {
+}
