@@ -9,7 +9,9 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { AdrTankDetailsSubsequentInspectionsComponent } from '../adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
+import {
+  AdrTankDetailsSubsequentInspectionsComponent,
+} from '../adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 
 @Component({
   selector: 'app-adr',

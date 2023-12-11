@@ -2,7 +2,7 @@ import {
   AfterContentInit,
   Component,
   OnDestroy,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import { FormArray, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { TC3Types } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tc3Types.enum.js';
@@ -131,7 +131,8 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
   handleChanges(index: number): void {
     this.formArray.controls[index].markAllAsTouched();
-    console.log(this.formArray.controls[index]);
-    this.formArray.updateValueAndValidity();
+    this.formArray.controls[index].get('tc3Type')?.updateValueAndValidity();
+    this.formArray.controls[index].get('tc3PeriodicNumber')?.updateValueAndValidity();
+    this.formArray.controls[index].get('tc3PeriodicExpiryDate')?.updateValueAndValidity();
   }
 }

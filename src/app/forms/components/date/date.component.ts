@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import {
-  AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit, ViewChild,
+  AfterContentInit, ChangeDetectorRef, Component, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild,
 } from '@angular/core';
 import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -33,7 +33,9 @@ type Segments = {
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() displayTime = false;
   @Input() isoDate = true;
+  @Input() customError? = false;
   @ViewChild('dayModel') dayModel?: AbstractControlDirective;
+  @Output() blur = new EventEmitter<FocusEvent>();
 
   private day_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
   private month_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
