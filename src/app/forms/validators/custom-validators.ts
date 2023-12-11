@@ -506,8 +506,6 @@ export class CustomValidators {
 
       const isControlValueEmpty = control.value === null || control.value === undefined || control.value === '';
 
-      console.log(!areSiblingsEmpty.includes(false));
-
       return !areSiblingsEmpty.includes(false) && isControlValueEmpty
         ? { tc3TestValidator: { message: `${label} ${args.inspectionNumber}: at least one field needs to contain a value` } }
         : null;

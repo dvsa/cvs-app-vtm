@@ -130,9 +130,9 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
   }
 
   handleChanges(index: number): void {
-    this.formArray.controls[index].markAllAsTouched();
-    this.formArray.controls[index].get('tc3Type')?.updateValueAndValidity();
-    this.formArray.controls[index].get('tc3PeriodicNumber')?.updateValueAndValidity();
-    this.formArray.controls[index].get('tc3PeriodicExpiryDate')?.updateValueAndValidity();
+    this.formArray.controls[`${index}`].markAllAsTouched();
+    this.formArray.controls[`${index}`].get('tc3Type')?.updateValueAndValidity();
+    this.formArray.controls[`${index}`].get('tc3PeriodicNumber')?.updateValueAndValidity();
+    this.formArray.controls[`${index}`].get('tc3PeriodicExpiryDate')?.updateValueAndValidity();
   }
 }

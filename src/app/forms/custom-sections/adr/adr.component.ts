@@ -1,17 +1,13 @@
 import {
   Component,
-  Input, OnInit, ViewChildren,
+  Input, OnInit,
 } from '@angular/core';
-import { FormArray } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import {
-  AdrTankDetailsSubsequentInspectionsComponent,
-} from '../adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 
 @Component({
   selector: 'app-adr',
@@ -43,8 +39,6 @@ export class AdrComponent implements OnInit {
     'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
     'techRecord_adrDetails_tank_tankDetails_tankCode',
   ];
-
-  @ViewChildren(AdrTankDetailsSubsequentInspectionsComponent) formArray?: FormArray;
 
   constructor(
     private dfs: DynamicFormService,
@@ -78,6 +72,15 @@ export class AdrComponent implements OnInit {
     if (this.techRecord == null) return;
 
     this.form.patchValue(event);
+
+    const inspectionsValues = this.form?.get('techRecord_adrDetails_tank_tankDetails_tc3Details');
+
+    inspectionsValues?.value.forEach((value: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }) => {
+      if (value.tc3Type === null && value.tc3PeriodicNumber === null && value.tc3PeriodicExpiryDate === null) {
+        inspectionsValues.setErrors({ tc3TestValidator: { message: 'Subsequent Inspections: you cannot have a completely empty test' } });
+      }
+    });
+
     this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord, ...event } as TechRecordTypeVerb<'put'>);
   }
 }

@@ -41,7 +41,9 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { selectScrollPosition } from '@store/technical-records';
 import { cloneDeep, mergeWith } from 'lodash';
 import {
-  debounceTime, map, Observable, Subject, take, takeUntil,
+  Observable, Subject,
+  debounceTime, map,
+  take, takeUntil,
 } from 'rxjs';
 
 @Component({
@@ -84,7 +86,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private viewportScroller: ViewportScroller,
     private store: Store,
     private loading: LoadingService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$
@@ -227,7 +229,22 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   setErrors(forms: Array<CustomFormGroup | CustomFormArray>): void {
     const errors: GlobalError[] = [];
 
-    forms.forEach((form) => DynamicFormService.validate(form, errors));
+    forms.forEach((form) => {
+      const tc3Inspections = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details');
+      if (!tc3Inspections) {
+        DynamicFormService.validate(form, errors);
+      }
+      if (tc3Inspections) {
+        tc3Inspections?.value.forEach((value: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }, index: number) => {
+          if (value.tc3Type === null && value.tc3PeriodicNumber === null && value.tc3PeriodicExpiryDate === null) {
+            errors.push({
+              anchorLink: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
+              error: `Subsequent inspection ${index + 1} must have at least one populated field`,
+            });
+          }
+        });
+      }
+    });
 
     if (errors.length) {
       this.errorService.setErrors(errors);
