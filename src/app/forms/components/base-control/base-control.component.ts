@@ -5,6 +5,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PrefixDirective } from '@forms/directives/prefix.directive';
 import { SuffixDirective } from '@forms/directives/suffix.directive';
 import { ValidatorNames } from '@forms/models/validators.enum';
+// eslint-disable-next-line import/no-cycle
 import { CustomControl, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
 
@@ -33,9 +34,10 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   public errorMessage?: string;
   public control?: CustomControl;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private control_value: any;
 
-  constructor(private injector: Injector, protected cdr: ChangeDetectorRef) {
+  constructor(protected injector: Injector, protected cdr: ChangeDetectorRef) {
     this.name = '';
   }
 
@@ -43,7 +45,9 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
     if (ngControl) {
       this.control = ngControl.control as CustomControl;
-      if (this.control.meta) this.control.meta.changeDetection = this.cdr;
+      if (this.control && this.control.meta) {
+        this.control.meta.changeDetection = this.cdr;
+      }
     } else {
       throw new Error(`No control binding for ${this.name}`);
     }
@@ -55,7 +59,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
       if (errors) {
         const errorList = Object.keys(errors);
         const firstError = ErrorMessageMap[errorList[0] as ValidatorNames];
-        return firstError(errors[errorList[0]], this.label);
+        return this.control.meta.customErrorMessage ?? firstError(errors[errorList[0]], this.label);
       }
     }
     return '';

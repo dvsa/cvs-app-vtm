@@ -13,8 +13,8 @@ import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/index';
-import { of, ReplaySubject } from 'rxjs';
+import { State, initialAppState } from '@store/index';
+import { ReplaySubject, of } from 'rxjs';
 import { AmendVrmReasonComponent } from './tech-record-amend-vrm-reason.component';
 
 const mockDynamicFormService = {
@@ -64,18 +64,22 @@ describe('TechRecordChangeVrmComponent', () => {
   });
   describe('submit', () => {
     it('should navigate to correct-error', () => {
-      const navigationSpy = jest.spyOn(router, 'navigate');
-      component.form.controls['isCherishedTransfer'].setValue('correcting-error');
-      component.submit();
+      fixture.ngZone?.run(() => {
+        const navigationSpy = jest.spyOn(router, 'navigate');
+        component.form.controls['isCherishedTransfer'].setValue('correcting-error');
+        component.submit();
 
-      expect(navigationSpy).toHaveBeenCalledWith(['correcting-error'], { relativeTo: expect.anything() });
+        expect(navigationSpy).toHaveBeenCalledWith(['correcting-error'], { relativeTo: expect.anything() });
+      });
     });
     it('should navigate to cherished-transfer', () => {
-      const navigationSpy = jest.spyOn(router, 'navigate');
-      component.form.controls['isCherishedTransfer'].setValue('cherished-transfer');
-      component.submit();
+      fixture.ngZone?.run(() => {
+        const navigationSpy = jest.spyOn(router, 'navigate');
+        component.form.controls['isCherishedTransfer'].setValue('cherished-transfer');
+        component.submit();
 
-      expect(navigationSpy).toHaveBeenCalledWith(['cherished-transfer'], { relativeTo: expect.anything() });
+        expect(navigationSpy).toHaveBeenCalledWith(['cherished-transfer'], { relativeTo: expect.anything() });
+      });
     });
   });
 });

@@ -124,12 +124,7 @@
             techRecordCalculated.techRecord_vehicleType === 'lgv'
           "
         >
-          <app-adr
-            *featureToggleName="'adrToggle'"
-            [techRecord]="techRecordCalculated"
-            [isEditing]="(isEditing$ | async) ?? false"
-            (formChange)="handleFormState($event)"
-          ></app-adr>
+          <app-adr *featureToggleName="'adrToggle'" [techRecord]="techRecordCalculated" [isEditing]="(isEditing$ | async) ?? false"></app-adr>
         </ng-container>
       </ng-container>
 

@@ -18,6 +18,8 @@ import { Store } from '@ngrx/store';
 import { TagTypes } from '@shared/components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
 import { State } from '@store/.';
+// eslint-disable-next-line import/no-cycle
+import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { map, Observable } from 'rxjs';
 import { SpecialRefData } from './multi-options.service';
 // eslint-disable-next-line import/no-cycle
@@ -66,6 +68,7 @@ export enum FormNodeEditTypes {
   TEXT = 'text',
   TEXTAREA = 'textarea',
   APPROVAL_TYPE = 'approvalType',
+  CUSTOM = 'custom',
 }
 
 export enum FormNodeWidth {
@@ -97,12 +100,13 @@ export interface FormNode {
   label?: string;
   hint?: string;
   delimited?: { regex?: string; separator: string };
-  value?: any;
+  value?: unknown;
   path?: string;
   options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
   validators?: FormNodeValidator[];
+  customErrorMessage?: string;
   customValidatorErrorName?: string;
-  asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
+  asyncValidators?: { name: AsyncValidatorNames; args?: unknown }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
@@ -119,6 +123,7 @@ export interface FormNode {
   enableDecimals?: boolean;
   nestingLevel?: number;
   groups?: string[];
+  component?: typeof BaseControlComponent;
 }
 
 export interface CustomTag {
@@ -128,7 +133,7 @@ export interface CustomTag {
 
 export interface FormNodeValidator {
   name: ValidatorNames;
-  args?: any;
+  args?: unknown;
 }
 
 export interface FormNodeCombinationOptions {
@@ -159,7 +164,7 @@ export class CustomFormControl extends FormControl implements CustomControl {
 
   constructor(
     meta: FormNode,
-    formState?: any,
+    formState?: unknown,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null,
     asyncValidator?: AsyncValidatorOptions,
   ) {
@@ -175,9 +180,9 @@ interface BaseForm {
    *
    * @returns form json value
    */
-  getCleanValue: (form: CustomFormGroup | CustomFormArray) => { [key: string]: any } | Array<[]>;
+  getCleanValue: (form: CustomFormGroup | CustomFormArray) => { [key: string]: unknown } | Array<[]>;
 
-  cleanValueChanges: Observable<any>;
+  cleanValueChanges: Observable<unknown>;
 }
 
 export interface CustomGroup extends FormGroup {
@@ -239,7 +244,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   }
 
   override patchValue(
-    value: any[] | undefined | null,
+    value: unknown[] | undefined | null,
     options?: {
       onlySelf?: boolean;
       emitEvent?: boolean;
@@ -259,14 +264,19 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
 }
 
 // TODO: clean this
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any> | Array<[]> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const localCleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
   Object.keys(form.controls).forEach((key) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
     const control = (form.controls as any)[key];
     if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
-      localCleanValue[key] = objectOrNull(control.getCleanValue(control));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
+      (localCleanValue as any)[key] = objectOrNull(control.getCleanValue(control));
     } else if (control instanceof CustomFormArray) {
-      localCleanValue[key] = control.getCleanValue(control);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
+      (localCleanValue as any)[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl && control.meta.type === FormNodeTypes.CONTROL) {
       if (control.meta.required && control.meta.hide) {
         pushOrAssignAt(control.meta.value || null, localCleanValue, key);
@@ -283,6 +293,7 @@ function objectOrNull(obj: Object) {
   return Object.values(obj).some((value) => undefined !== value) ? obj : null;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function pushOrAssignAt(value: any, localCleanValue: Array<[]> | Record<string, unknown>, key: string) {
   if (Array.isArray(localCleanValue)) {
     localCleanValue.push(value);

@@ -23,6 +23,8 @@ import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title
 import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
 
+global.scrollTo = jest.fn();
+
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
   let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;

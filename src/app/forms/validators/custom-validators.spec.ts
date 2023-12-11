@@ -1,6 +1,8 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
@@ -231,6 +233,33 @@ describe('Required validators', () => {
     it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {
       form.controls['foo'].patchValue('some foo value');
       const result = CustomValidators.requiredIfEquals('sibling', ['some value'])(form.controls['foo']);
+      expect(result).toBeNull();
+    });
+
+    it('should not be required (return null) when the sibling and control values overlap (for arrays)', () => {
+      form.controls['foo'].patchValue(['battery']);
+      form.controls['sibling'].patchValue(['battery']);
+      const result = CustomValidators.requiredIfEquals('sibling', ['battery'])(form.controls['foo']);
+      expect(result).toBeNull();
+    });
+
+    it('should not be required (return null) when sibling value does not match passed value', () => {
+      form.controls['foo'].patchValue(['not a battery']);
+      const result = CustomValidators.requiredIfEquals('sibling', ['battery'])(form.controls['foo']);
+      expect(result).toBeNull();
+    });
+
+    it('should  be required (return null) when sibling value overlaps with values passed, and control is empty', () => {
+      form.controls['sibling'].patchValue(['battery']);
+      form.controls['foo'].patchValue([null]); // array with only falsy values is considered empty
+      const result = CustomValidators.requiredIfEquals('sibling', ['battery'])(form.controls['foo']);
+      expect(result).toEqual({ requiredIfEquals: { sibling: 'Sibling' } });
+    });
+
+    it('should not be required (return null) when sibling value overlaps with values passed, and control is not empty', () => {
+      form.controls['sibling'].patchValue(['battery']);
+      form.controls['foo'].patchValue([null, 'truthy']); // array with a falsy value, but some truthy values is considered NOT empty
+      const result = CustomValidators.requiredIfEquals('sibling', ['battery'])(form.controls['foo']);
       expect(result).toBeNull();
     });
   });
@@ -772,7 +801,7 @@ describe('showGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.showGroupsWhenEqualTo(true, ['adr'])(adr as AbstractControl);
+    CustomValidators.showGroupsWhenEqualTo([true], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(street?.meta.hide).toBe(false);
@@ -786,7 +815,7 @@ describe('showGroupsWhenEqualTo', () => {
 
     adr?.patchValue(false);
 
-    CustomValidators.showGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+    CustomValidators.showGroupsWhenEqualTo([false], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(street?.meta.hide).toBe(false);
@@ -800,7 +829,7 @@ describe('showGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.showGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+    CustomValidators.showGroupsWhenEqualTo([false], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(true);
     expect(street?.meta.hide).toBe(true);
@@ -814,7 +843,7 @@ describe('showGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.showGroupsWhenEqualTo(true, ['name'])(adr as AbstractControl);
+    CustomValidators.showGroupsWhenEqualTo([true], ['name'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(street?.meta.hide).toBe(true);
@@ -902,7 +931,7 @@ describe('hideGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.hideGroupsWhenEqualTo(true, ['adr'])(adr as AbstractControl);
+    CustomValidators.hideGroupsWhenEqualTo([true], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(true);
     expect(street?.meta.hide).toBe(true);
@@ -916,7 +945,7 @@ describe('hideGroupsWhenEqualTo', () => {
 
     adr?.patchValue(false);
 
-    CustomValidators.hideGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+    CustomValidators.hideGroupsWhenEqualTo([false], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(true);
     expect(street?.meta.hide).toBe(true);
@@ -930,7 +959,7 @@ describe('hideGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.hideGroupsWhenEqualTo(false, ['adr'])(adr as AbstractControl);
+    CustomValidators.hideGroupsWhenEqualTo([false], ['adr'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(false);
     expect(street?.meta.hide).toBe(false);
@@ -944,7 +973,7 @@ describe('hideGroupsWhenEqualTo', () => {
 
     adr?.patchValue(true);
 
-    CustomValidators.hideGroupsWhenEqualTo(true, ['name'])(adr as AbstractControl);
+    CustomValidators.hideGroupsWhenEqualTo([true], ['name'])(adr as AbstractControl);
 
     expect(name?.meta.hide).toBe(true);
     expect(street?.meta.hide).toBe(false);
@@ -1095,5 +1124,567 @@ describe('enum', () => {
     [null, 'IVA - DVSA/NI'],
   ])('should return %p when control value is %s', (expected: object | null, input) => {
     expect(CustomValidators.isMemberOfEnum(ApprovalType, { allowFalsy: true })(new FormControl(input))).toEqual(expected);
+  });
+});
+
+describe('showGroupsWhenIncludes', () => {
+  let form: CustomFormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_compatibilityGroupJ',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['compat', 'details'],
+            },
+          ],
+      },
+      {
+        dangerousGoods: new CustomFormControl(
+          {
+            name: 'dangerousGoods',
+            type: FormNodeTypes.CONTROL,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_name',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr', 'name'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_permittedDangerousGoods: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_permittedDangerousGoods',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr', 'details'],
+            validators: [
+              {
+                name: ValidatorNames.ShowGroupsWhenIncludes,
+                args: {
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+                  groups: ['compat'],
+                },
+              },
+              {
+                name: ValidatorNames.HideGroupsWhenExcludes,
+                args: {
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+                  groups: ['compat'],
+                },
+              },
+            ],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_compatibilityGroupJ: new CustomFormControl({
+          name: 'techRecord_adrDetails_compatibilityGroupJ',
+          type: FormNodeTypes.CONTROL,
+          hide: true,
+          groups: ['compat', 'details'],
+        }),
+      },
+    );
+  });
+
+  it('should set hide to FALSE when its value DOES include one of the values passed, and IS part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+
+    permitted?.patchValue([ADRDangerousGood.EXPLOSIVES_TYPE_2]);
+    permitted?.markAsDirty();
+
+    CustomValidators.showGroupsWhenIncludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(false);
+  });
+
+  it('should NOT set hide to FALSE when its value DOES include one of the values passed, but is NOT part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+
+    permitted?.patchValue(['I']);
+    permitted?.markAsDirty();
+
+    CustomValidators.showGroupsWhenIncludes(['I'], ['random_group', 'other_random_group'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(true);
+  });
+
+  it('should NOT set hide to FALSE when its value DOES NOT include one of the values passed, but IS part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+
+    permitted?.patchValue(['E']);
+    permitted?.markAsDirty();
+
+    CustomValidators.showGroupsWhenIncludes(['I'], ['compat', 'other_random_group'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(true);
+  });
+});
+
+describe('hideGroupsWhenIncludes', () => {
+  let form: CustomFormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_compatibilityGroupJ',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['compat', 'details'],
+            },
+          ],
+      },
+      {
+        dangerousGoods: new CustomFormControl(
+          {
+            name: 'dangerousGoods',
+            type: FormNodeTypes.CONTROL,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_name',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr', 'name'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_permittedDangerousGoods: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_permittedDangerousGoods',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr', 'details'],
+            validators: [
+              {
+                name: ValidatorNames.ShowGroupsWhenIncludes,
+                args: {
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+                  groups: ['compat'],
+                },
+              },
+              {
+                name: ValidatorNames.HideGroupsWhenExcludes,
+                args: {
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+                  groups: ['compat'],
+                },
+              },
+            ],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_compatibilityGroupJ: new CustomFormControl({
+          name: 'techRecord_adrDetails_compatibilityGroupJ',
+          type: FormNodeTypes.CONTROL,
+          hide: true,
+          groups: ['compat', 'details'],
+        }),
+      },
+    );
+  });
+  it('should set hide to TRUE when its value DOES include one of the values passed, and IS part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+
+    permitted?.patchValue([ADRDangerousGood.EXPLOSIVES_TYPE_2]);
+    permitted?.markAsDirty();
+
+    CustomValidators.hideGroupsWhenIncludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(true);
+  });
+
+  it('should NOT set hide to TRUE when its value DOES include one of the values passed, but is NOT part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+    compat.meta.hide = false;
+
+    permitted?.patchValue([ADRDangerousGood.EXPLOSIVES_TYPE_2]);
+    permitted?.markAsDirty();
+
+    CustomValidators.hideGroupsWhenEqualTo([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat', 'other_random_group'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(false);
+  });
+
+  it('should NOT set hide to TRUE when its value DOES NOT include one of the values passed, but IS part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+    compat.meta.hide = false;
+
+    permitted?.patchValue(['E']);
+    permitted?.markAsDirty();
+
+    CustomValidators.hideGroupsWhenIncludes(['I'], ['compat', 'other_random_group'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(false);
+  });
+});
+
+describe('showGroupsWhenExcludes', () => {
+  let form: CustomFormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_compatibilityGroupJ',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['compat', 'details'],
+            },
+          ],
+      },
+      {
+        dangerousGoods: new CustomFormControl(
+          {
+            name: 'dangerousGoods',
+            type: FormNodeTypes.CONTROL,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_name',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr', 'name'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_permittedDangerousGoods: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_permittedDangerousGoods',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr', 'details'],
+            validators: [
+              {
+                name: ValidatorNames.ShowGroupsWhenIncludes,
+                args: {
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+                  groups: ['compat'],
+                },
+              },
+              {
+                name: ValidatorNames.HideGroupsWhenExcludes,
+                args: {
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+                  groups: ['compat'],
+                },
+              },
+            ],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_compatibilityGroupJ: new CustomFormControl({
+          name: 'techRecord_adrDetails_compatibilityGroupJ',
+          type: FormNodeTypes.CONTROL,
+          hide: true,
+          groups: ['compat', 'details'],
+        }),
+      },
+    );
+  });
+  it('should set hide to FALSE when its value DOES NOT include one of the values passed, and IS part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+
+    permitted?.patchValue([ADRDangerousGood.CARBON_DISULPHIDE]);
+    permitted?.markAsDirty();
+
+    CustomValidators.showGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(false);
+  });
+
+  it('should NOT set hide to FALSE when its value DOES NOT include one of the values passed, but is NOT part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+
+    permitted?.patchValue([ADRDangerousGood.CARBON_DISULPHIDE]);
+    permitted?.markAsDirty();
+
+    CustomValidators.showGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['other_group'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(true);
+  });
+
+  it('should NOT set hide to FALSE when its value DOES include one of the values passed, but IS part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+
+    permitted?.patchValue([ADRDangerousGood.EXPLOSIVES_TYPE_2]);
+    permitted?.markAsDirty();
+
+    CustomValidators.showGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(true);
+  });
+});
+
+describe('hideGroupsWhenExcludes', () => {
+  let form: CustomFormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_compatibilityGroupJ',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['compat', 'details'],
+            },
+          ],
+      },
+      {
+        dangerousGoods: new CustomFormControl(
+          {
+            name: 'dangerousGoods',
+            type: FormNodeTypes.CONTROL,
+            groups: ['adr'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_applicantDetails_name',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr', 'name'],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_permittedDangerousGoods: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_permittedDangerousGoods',
+            type: FormNodeTypes.CONTROL,
+            hide: false,
+            groups: ['adr', 'details'],
+            validators: [
+              {
+                name: ValidatorNames.ShowGroupsWhenIncludes,
+                args: {
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+                  groups: ['compat'],
+                },
+              },
+              {
+                name: ValidatorNames.HideGroupsWhenExcludes,
+                args: {
+                  values: [ADRDangerousGood.EXPLOSIVES_TYPE_2, ADRDangerousGood.EXPLOSIVES_TYPE_3],
+                  groups: ['compat'],
+                },
+              },
+            ],
+          },
+          undefined,
+        ),
+        techRecord_adrDetails_compatibilityGroupJ: new CustomFormControl({
+          name: 'techRecord_adrDetails_compatibilityGroupJ',
+          type: FormNodeTypes.CONTROL,
+          hide: true,
+          groups: ['compat', 'details'],
+        }),
+      },
+    );
+  });
+  it('should set hide to TRUE when its value DOES NOT include one of the values passed, and IS part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+    compat.meta.hide = false;
+
+    permitted?.patchValue([ADRDangerousGood.CARBON_DISULPHIDE]);
+    permitted?.markAsDirty();
+
+    CustomValidators.hideGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(true);
+  });
+
+  it('should NOT set hide to TRUE when its value DOES NOT include one of the values passed, but is NOT part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+    compat.meta.hide = false;
+
+    permitted?.patchValue([ADRDangerousGood.CARBON_DISULPHIDE]);
+    permitted?.markAsDirty();
+
+    CustomValidators.hideGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['other_group'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(false);
+  });
+
+  it('should NOT set hide to TRUE when its value DOES include one of the values passed, but IS part of the group whitelist', () => {
+    const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
+    const permitted = form.get('techRecord_adrDetails_permittedDangerousGoods') as CustomFormControl;
+    const compat = form.get('techRecord_adrDetails_compatibilityGroupJ') as CustomFormControl;
+    compat.meta.hide = false;
+
+    permitted?.patchValue([ADRDangerousGood.EXPLOSIVES_TYPE_2]);
+    permitted?.markAsDirty();
+
+    CustomValidators.hideGroupsWhenExcludes([ADRDangerousGood.EXPLOSIVES_TYPE_2], ['compat'])(permitted as AbstractControl);
+
+    expect(name?.meta.hide).toBe(false);
+    expect(compat?.meta.hide).toBe(false);
+  });
+});
+
+describe('isArray', () => {
+  let form: CustomFormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup(
+      {
+        name: 'form-group',
+        type: FormNodeTypes.GROUP,
+        children:
+          [
+            {
+              name: 'techRecord_adrDetails_additionalNotes_number',
+              type: FormNodeTypes.CONTROL,
+              value: [],
+            },
+          ],
+      },
+      {
+        techRecord_adrDetails_additionalNotes_number: new CustomFormControl(
+          {
+            name: 'techRecord_adrDetails_additionalNotes_number',
+            type: FormNodeTypes.CONTROL,
+          },
+          undefined,
+        ),
+      },
+    );
+  });
+
+  it('should NOT mark additional notes as INVALID when its value IS an ARRAY', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue([]);
+
+    expect(CustomValidators.isArray()(control)).toBeNull();
+  });
+
+  it('should mark additional notes as INVALID when its values is NOT an ARRAY', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue('not an array');
+
+    expect(CustomValidators.isArray()(control)).toBeTruthy();
+  });
+
+  it('should NOT mark additional notes as INVALID when its value is an ARRAY of type provided in the ofType argument', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue(['1 string', '2 string']);
+    expect(CustomValidators.isArray({ ofType: 'string' })(control)).toBeNull();
+
+    control.patchValue([1, 2, 3]);
+    expect(CustomValidators.isArray({ ofType: 'number' })(control)).toBeNull();
+
+    // apparently null is object type in JS
+    control.patchValue([null, null, null]);
+    expect(CustomValidators.isArray({ ofType: 'object' })(control)).toBeNull();
+
+    control.patchValue([undefined, undefined, undefined]);
+    expect(CustomValidators.isArray({ ofType: 'undefined' })(control)).toBeNull();
+  });
+
+  it('should mark additional notes as INVALID when its value is an ARRAY but not of the type provided in the ofType argument', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue(['1 string', '2 string']);
+    expect(CustomValidators.isArray({ ofType: 'number' })(control)).toBeTruthy();
+
+    control.patchValue([1, 2, 3]);
+    expect(CustomValidators.isArray({ ofType: 'undefined' })(control)).toBeTruthy();
+
+    control.patchValue([null, null, null]);
+    expect(CustomValidators.isArray({ ofType: 'string' })(control)).toBeTruthy();
+
+    control.patchValue([undefined, undefined, undefined]);
+    expect(CustomValidators.isArray({ ofType: 'object' })(control)).toBeTruthy();
+  });
+
+  it('should NOT mark additional notes as INVALID when its value is an ARRAY and ALL of the values at indices in requiredIndices are truthy', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue(['1 string', '2 string']);
+
+    expect(CustomValidators.isArray({ requiredIndices: [1] })(control)).toBeNull();
+  });
+
+  it('should mark additional notes as INVALID when its value is an ARRAY but AT LEAST ONE of its values at requiredIndices is falsy', () => {
+    const control = form.get('techRecord_adrDetails_additionalNotes_number') as CustomFormControl;
+    control.patchValue([null, '2 string']);
+
+    expect(CustomValidators.isArray({ requiredIndices: [0] })(control)).toBeTruthy();
   });
 });

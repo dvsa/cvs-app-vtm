@@ -29,7 +29,7 @@
             GB Axles: Axle
             <ng-container *ngFor="let axle of invalidAxles; let i = index; let isLast = last">
               <ng-container *ngIf="invalidAxles.length > 1 && isLast"> and</ng-container>
-              {{ i + 1 }}<ng-container *ngIf="invalidAxles.length > 2 && i < (invalidAxles.length - 2)">,</ng-container>
+              {{ axle }}<ng-container *ngIf="invalidAxles.length > 2 && i < (invalidAxles.length - 2)">,</ng-container>
             </ng-container>
           </p>
         </app-field-warning-message>

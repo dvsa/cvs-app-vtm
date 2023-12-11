@@ -23,6 +23,8 @@ export class ReferenceDataAmendComponent implements OnInit {
   key!: string;
   isFormDirty = false;
   isFormInvalid = true;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   amendedData: any;
 
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
@@ -57,10 +59,12 @@ export class ReferenceDataAmendComponent implements OnInit {
     return Roles;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get refDataAdminType$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get data$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)));
   }
@@ -70,6 +74,7 @@ export class ReferenceDataAmendComponent implements OnInit {
     void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFormChange(event: any) {
     this.amendedData = event;
   }

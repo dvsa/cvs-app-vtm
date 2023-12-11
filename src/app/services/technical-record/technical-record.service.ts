@@ -34,6 +34,9 @@ import { cloneDeep } from 'lodash';
 import {
   Observable, catchError, combineLatest, debounceTime, filter, map, of, switchMap, take, tap, throwError,
 } from 'rxjs';
+import { ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
+import { AxleTyreProperties } from '@api/vehicle';
+import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
@@ -45,6 +48,19 @@ export class TechnicalRecordService {
         || technicalRecord.techRecord_euVehicleCategory === EUVehicleCategory.O2)
       ? (VehicleTypes.SMALL_TRL as VehicleTypes)
       : (technicalRecord.techRecord_vehicleType as VehicleTypes);
+  }
+
+  getAxleFittingWeightValueFromLoadIndex(
+    loadIndexValue: string,
+    fitmentCodeType: FitmentCodeEnum | null | undefined,
+    loadIndex: ReferenceDataTyreLoadIndex[] | null,
+  ): number | undefined {
+    let factor = 4;
+    if (fitmentCodeType === 'single') {
+      factor = 2;
+    }
+    const axleLoadIndex = loadIndex?.find((resource) => resource.resourceKey === loadIndexValue);
+    return axleLoadIndex?.loadIndex ? +axleLoadIndex.loadIndex * factor : undefined;
   }
 
   isUnique(valueToCheck: string, searchType: SEARCH_TYPES): Observable<boolean> {

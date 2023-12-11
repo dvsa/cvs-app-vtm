@@ -221,7 +221,7 @@ export class TechnicalRecordServiceEffects {
         concatMap(([{ techRecord_vehicleType }, editableTechRecord]) => {
           const techRecord = { ...cloneDeep(editableTechRecord), techRecord_vehicleType };
 
-          if (techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
+          if (techRecord.techRecord_vehicleType === VehicleTypes.SMALL_TRL) {
             techRecord.techRecord_vehicleType = VehicleTypes.TRL;
             (techRecord as TechRecordGETTRL).techRecord_euVehicleCategory = EUVehicleCategory.O1;
           }
@@ -236,6 +236,7 @@ export class TechnicalRecordServiceEffects {
           }
           if (techRecord_vehicleType === VehicleTypes.TRL) {
             (techRecord as TechRecordGETTRL).techRecord_vehicleClass_description = VehicleClassDescription.Trailer;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (techRecord as any).euVehicleCategory = null;
           }
 

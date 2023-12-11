@@ -29,6 +29,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.form = this.dfs.createForm(this.template!, this.techRecord) as CustomFormGroup;
 
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((e) => this.formChange.emit(e));
