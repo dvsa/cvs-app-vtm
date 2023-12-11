@@ -387,6 +387,10 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
         techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
       };
 
+      const nulledBatteryListNumber = {
+        techRecord_adrDetails_batteryListNumber: null,
+      };
+
       if (!editingTechRecord.techRecord_adrDetails_dangerousGoods) {
         // vehicle doesn't carry dangerous goods so null this information
         return {
@@ -455,10 +459,17 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
       // If tank details 'product list' selected, null statement reference no.
       if (select === ADRTankDetailsTankStatementSelect.PRODUCT_LIST) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementStatement };
+        // If battery list applicable is no, null the battery list number
+        const { techRecord_adrDetails_listStatementApplicable: listStatementApplicable } = sanitisedEditingTechRecord;
+        if (!listStatementApplicable) {
+          sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
+        }
+
       }
 
       return { ...state, editingTechRecord: sanitisedEditingTechRecord };
     }
+
   }
 
   return { ...state };
