@@ -1,13 +1,14 @@
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
+import { TechRecordType as NonVerbTechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   clearBatch,
   setApplicationId,
@@ -428,5 +429,25 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
     }
   }
 
+  return { ...state };
+}
+
+function handleADRExaminerNoteChanges(username: string, state: TechnicalRecordServiceState) {
+  const editingTechRecord = state.vehicleTechRecord as unknown as NonVerbTechRecordType<'hgv'>
+  | NonVerbTechRecordType<'trl'> | NonVerbTechRecordType<'lgv'>;
+  if (editingTechRecord) {
+    // if (this.form.get('techRecord_adrDetails_additionalExaminerNotes_note')?.value) {
+    const additionalExaminerNotes = {
+      note: '',
+      lastUpdatedBy: username,
+      createdAtDate: Date.now().toString(),
+    };
+    if (editingTechRecord.techRecord_adrDetails_additionalExaminerNotes === null
+        || editingTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
+      editingTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
+    }
+    editingTechRecord.techRecord_adrDetails_additionalExaminerNotes?.push(additionalExaminerNotes);
+    // }
+  }
   return { ...state };
 }

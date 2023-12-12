@@ -7,6 +7,9 @@ import { ApprovalTypeInputComponent } from '@forms/components/approval-type/appr
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
+import {
+  AdrExaminerNotesHistoryComponent,
+} from '@forms/custom-sections/adr-examiner-notes-history/adr-examiner-notes-history.component';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
@@ -103,6 +106,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     AdrComponent,
     NestingLevelDirective,
     AdrGuidanceNotesComponent,
+    AdrExaminerNotesHistoryComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

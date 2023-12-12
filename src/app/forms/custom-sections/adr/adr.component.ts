@@ -9,6 +9,7 @@ import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { DateValidators } from '@forms/validators/date/date.validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { UserService } from '@services/user-service/user-service';
 
 @Component({
   selector: 'app-adr',
@@ -44,6 +45,7 @@ export class AdrComponent implements OnInit {
   constructor(
     private dfs: DynamicFormService,
     private technicalRecordService: TechnicalRecordService,
+    private userService: UserService,
   ) { }
 
   ngOnInit(): void {
@@ -76,11 +78,32 @@ export class AdrComponent implements OnInit {
     const validator = DateValidators.validDate(false, 'Date processed');
     const approvedDate = this.form.get('techRecord_adrDetails_vehicleDetails_approvalDate');
 
+    this.handleAdditionalExaminerNotesChange();
+
     // TODO: fix underlying issue of this not being added correctly by date component
     if (!approvedDate?.hasValidator(validator)) {
       approvedDate?.addValidators(validator);
     }
-
     this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord, ...event } as TechRecordTypeVerb<'put'>);
+  }
+
+  handleAdditionalExaminerNotesChange() {
+    let additionalExaminerNotes;
+    if (this.form.get('techRecord_adrDetails_additionalExaminerNotes_note')?.value) {
+      let username;
+      this.userService.name$.subscribe((name) => {
+        username = name;
+      });
+      additionalExaminerNotes = {
+        note: this.form.get('techRecord_adrDetails_additionalExaminerNotes_note')?.value,
+        lastUpdatedBy: username,
+        createdAtDate: new Date().toISOString().split('T')[0],
+      };
+      if (this.techRecord.techRecord_adrDetails_additionalExaminerNotes === null
+        || this.techRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
+        this.techRecord.techRecord_adrDetails_additionalExaminerNotes = [];
+      }
+      this.techRecord.techRecord_adrDetails_additionalExaminerNotes?.push(additionalExaminerNotes);
+    }
   }
 }
