@@ -510,6 +510,42 @@ export class CustomValidators {
         : null;
     };
   };
+
+  static tc3ParentValidator = () => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const errorsArray: boolean[] = [];
+      if (control.value && control.value.length) {
+        control.value.forEach((value: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }) => {
+          if (value.tc3Type === null && value.tc3PeriodicNumber === null && value.tc3PeriodicExpiryDate === null) {
+            errorsArray.push(true);
+          } else {
+            errorsArray.push(false);
+          }
+        });
+        if (errorsArray.includes(true)) {
+
+          let inspections = '';
+
+          errorsArray.forEach((value, index) => {
+            if (value) {
+              if (inspections.length === 0) {
+                inspections += `${index + 1}`;
+              } else {
+                inspections += `, ${index + 1}`;
+              }
+            }
+          });
+
+          return {
+            tc3TestValidator: {
+              message: `TC3 Subsequent inspection ${inspections} must have at least one populated field`,
+            },
+          };
+        }
+      }
+      return null;
+    };
+  };
 }
 
 export type EnumValidatorOptions = {

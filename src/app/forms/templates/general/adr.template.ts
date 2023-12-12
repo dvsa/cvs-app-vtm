@@ -411,67 +411,11 @@ export const AdrTemplate: FormNode = {
             value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
           },
         },
+        {
+          name: ValidatorNames.Tc3ParentValidator,
+        },
       ],
     },
-    // {
-    //   name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
-    //   label: 'Subsequent Inspections',
-    //   type: FormNodeTypes.ARRAY,
-    //   editType: FormNodeEditTypes.CUSTOM,
-    //   viewType: FormNodeViewTypes.ADRINSPECTIONS,
-    //   component: AdrTankDetailsSubsequentInspectionsComponent,
-    //   hide: true,
-    //   children: [
-    //     {
-    //       name: '0',
-    //       label: 'Subsequent Inspections',
-    //       value: '',
-    //       type: FormNodeTypes.GROUP,
-    //       children: [
-    //         {
-    //           name: 'inspectionNumber',
-    //           label: 'Subsequent Inspection',
-    //           type: FormNodeTypes.CONTROL,
-    //         },
-    //         {
-    //           name: 'tc3Type',
-    //           type: FormNodeTypes.CONTROL,
-    //           label: 'TC3: Inspection Type',
-    //           options: getOptionsFromEnum(TC3Types),
-    //           validators: [{ name: ValidatorNames.Tc3TestValidator, args: ['tc3PeriodicNumber', 'tc3PeriodicExpiryDate'] }],
-    //         },
-    //         {
-    //           name: 'tc3PeriodicNumber',
-    //           label: 'TC3: Certificate Number',
-    //           type: FormNodeTypes.CONTROL,
-    //           validators: [
-    //             { name: ValidatorNames.MaxLength, args: 10 },
-    //             { name: ValidatorNames.Tc3TestValidator, args: ['tc3PeriodicExpiryDate', 'tc3Type'] },
-    //           ],
-    //         },
-    //         {
-    //           name: 'tc3PeriodicExpiryDate',
-    //           label: 'TC3: Expiry Date',
-    //           type: FormNodeTypes.CONTROL,
-    //           editType: FormNodeEditTypes.DATE,
-    //           viewType: FormNodeViewTypes.DATE,
-    //           isoDate: false,
-    //           validators: [{ name: ValidatorNames.Tc3TestValidator, args: ['tc3PeriodicNumber', 'tc3Type'] }],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   groups: ['tank_details', 'dangerous_goods'],
-    //   validators: [
-    //     {
-    //       name: ValidatorNames.RequiredIfEquals,
-    //       args: {
-    //         sibling: 'techRecord_adrDetails_vehicleDetails_type',
-    //         value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-    //       },
-    //     },
-    //   ],
-    // },
     {
       name: 'techRecord_adrDetails_memosApply',
       label: 'Memo 7/9 (3 month extension) applied',

@@ -82,6 +82,7 @@ export class DynamicFormService {
     [ValidatorNames.IsArray]: (args: Partial<IsArrayValidatorOptions>) => CustomValidators.isArray(args),
     [ValidatorNames.Custom]: (...args) => CustomValidators.custom(...args),
     [ValidatorNames.Tc3TestValidator]: (args: { siblings: string[], inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
+    [ValidatorNames.Tc3ParentValidator]: () => CustomValidators.tc3ParentValidator(),
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

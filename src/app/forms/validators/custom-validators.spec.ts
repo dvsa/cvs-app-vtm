@@ -1770,7 +1770,7 @@ describe('tc3FieldTestValidator', () => {
       {
         tc3TestValidator:
         {
-          message: 'Subsequent inspection 1: at least one field needs to contain a value'
+          message: 'Subsequent inspection 1: at least one field needs to contain a value',
         },
       },
     );
@@ -1795,7 +1795,7 @@ describe('tc3FieldTestValidator', () => {
       {
         tc3TestValidator:
         {
-          message: 'Subsequent inspection 1: at least one field needs to contain a value'
+          message: 'Subsequent inspection 1: at least one field needs to contain a value',
         },
       },
     );

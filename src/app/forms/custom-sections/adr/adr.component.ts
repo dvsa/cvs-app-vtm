@@ -73,14 +73,6 @@ export class AdrComponent implements OnInit {
 
     this.form.patchValue(event);
 
-    const inspectionsValues = this.form?.get('techRecord_adrDetails_tank_tankDetails_tc3Details');
-
-    inspectionsValues?.value.forEach((value: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }) => {
-      if (value.tc3Type === null && value.tc3PeriodicNumber === null && value.tc3PeriodicExpiryDate === null) {
-        inspectionsValues.setErrors({ tc3TestValidator: { message: 'Subsequent Inspections: you cannot have a completely empty test' } });
-      }
-    });
-
     this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord, ...event } as TechRecordTypeVerb<'put'>);
   }
 }
