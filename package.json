@@ -56,7 +56,7 @@
     "@ngrx/store-devtools": "^15.4.0",
     "@sentry/angular-ivy": "^7.79.0",
     "@sentry/cli": "^2.21.3",
-    "@sentry/types": "^7.80.1",
+    "@sentry/types": "^7.81.1",
     "accessible-autocomplete": "^2.0.4",
     "deep-object-diff": "^1.1.9",
     "eslint-import-resolver-typescript": "^3.6.1",
