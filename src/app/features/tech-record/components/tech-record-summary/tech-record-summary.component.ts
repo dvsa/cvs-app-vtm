@@ -34,6 +34,7 @@ import {
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { LoadingService } from '@services/loading/loading.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
@@ -72,6 +73,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   middleIndex = 0;
   isEditing = false;
   scrollPosition: [number, number] = [0, 0];
+  featureToggleName = '';
+  isADREnabled = false;
 
   private destroy$ = new Subject<void>();
 
@@ -86,7 +89,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private viewportScroller: ViewportScroller,
     private store: Store,
     private loading: LoadingService,
-  ) {}
+    private featureToggleService: FeatureToggleService,
+  ) {
+    this.featureToggleName = this.activatedRoute.snapshot.data['featureToggleName'];
+  }
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$
@@ -135,6 +141,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       this.warningService.clearWarnings();
     }
 
+    this.isADREnabled = this.featureToggleService.isFeatureEnabled(this.featureToggleName);
+
     this.store
       .select(selectScrollPosition)
       .pipe(take(1), takeUntil(this.destroy$))
@@ -166,7 +174,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       return [];
     }
     return (
-      vehicleTemplateMap.get(this.vehicleType)?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
+      vehicleTemplateMap.get(this.vehicleType)?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection'))
+        .filter((template) => template.name !== (this.isADREnabled ? '' : 'adrSection')) ?? []
     );
   }
 
