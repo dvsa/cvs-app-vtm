@@ -51,7 +51,7 @@ import {
   removeSectionState,
   unarchiveTechRecord,
   unarchiveTechRecordFailure,
-  unarchiveTechRecordSuccess,
+  unarchiveTechRecordSuccess, updateADRAdditionalExaminerNotes,
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
@@ -139,6 +139,8 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateBrakeForces, (state, action) => handleUpdateBrakeForces(state, action)),
 
   on(updateBody, (state, action) => handleUpdateBody(state, action)),
+
+  on(updateADRAdditionalExaminerNotes, (state: TechnicalRecordServiceState, action) => handleADRExaminerNoteChanges(state, action.username)),
 
   on(addAxle, (state) => handleAddAxle(state)),
   on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
@@ -432,22 +434,22 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
   return { ...state };
 }
 
-function handleADRExaminerNoteChanges(username: string, state: TechnicalRecordServiceState) {
-  const editingTechRecord = state.vehicleTechRecord as unknown as NonVerbTechRecordType<'hgv'>
-  | NonVerbTechRecordType<'trl'> | NonVerbTechRecordType<'lgv'>;
+function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, username: string) {
+  const editingTechRecord = state.vehicleTechRecord as unknown as
+    (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>) & { techRecord_adrDetails_additionalExaminerNotes_note: string };
   if (editingTechRecord) {
-    // if (this.form.get('techRecord_adrDetails_additionalExaminerNotes_note')?.value) {
-    const additionalExaminerNotes = {
-      note: '',
-      lastUpdatedBy: username,
-      createdAtDate: Date.now().toString(),
-    };
-    if (editingTechRecord.techRecord_adrDetails_additionalExaminerNotes === null
+    if (editingTechRecord.techRecord_adrDetails_additionalExaminerNotes_note) {
+      const additionalExaminerNotes = {
+        note: editingTechRecord.techRecord_adrDetails_additionalExaminerNotes_note,
+        lastUpdatedBy: username,
+        createdAtDate: Date.now().toString(),
+      };
+      if (editingTechRecord.techRecord_adrDetails_additionalExaminerNotes === null
         || editingTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
-      editingTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
+        editingTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
+      }
+      editingTechRecord.techRecord_adrDetails_additionalExaminerNotes?.push(additionalExaminerNotes);
     }
-    editingTechRecord.techRecord_adrDetails_additionalExaminerNotes?.push(additionalExaminerNotes);
-    // }
   }
   return { ...state };
 }
