@@ -1835,7 +1835,6 @@ describe('tc3ParentValidator', () => {
     });
   });
   it('should give an error if value contains a test with all null values', () => {
-    console.log(form)
     const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
 
     details.patchValue([{ tc3Type: null, tc3PeriodicNumber: null, tc3PeriodicExpiryDate: null }]);
