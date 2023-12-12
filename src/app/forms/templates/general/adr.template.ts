@@ -474,6 +474,104 @@ export const AdrTemplate: FormNode = {
       groups: ['dangerous_goods', 'battery_list'],
     },
     {
+      name: 'tankInspectionsSectionTitle',
+      type: FormNodeTypes.TITLE,
+      label: 'Tank Inspections',
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+      ],
+    },
+    {
+      name: 'tankInspectionsSectionSubheading',
+      type: FormNodeTypes.TITLE,
+      label: 'Initial',
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      label: 'TC2: Inspection type',
+      value: TC2Types.INITIAL, // TO-DO: replace with enum
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
+      label: 'TC2: Certificate Number',
+      type: FormNodeTypes.CONTROL,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 70 },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
+      label: 'TC2: Expiry Date',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.DATE,
+      viewType: FormNodeViewTypes.DATE,
+      isoDate: false,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
+      label: 'Subsequent Inspections',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CUSTOM,
+      viewType: FormNodeViewTypes.ADRINSPECTIONS,
+      component: AdrTankDetailsSubsequentInspectionsComponent,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+        {
+          name: ValidatorNames.Tc3TestValidator,
+          args: { inspectionNumber: 0 },
+        },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_memosApply',
+      label: 'Memo 7/9 (3 month extension) applied',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOXGROUP,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      options: [
+        { value: '07/09 3mth leak ext ', label: 'Yes' },
+      ],
+      validators: [],
+    },
+    {
       name: 'techRecord_adrDetails_listStatementApplicable',
       label: 'Battery List Applicable',
       width: FormNodeWidth.XS,
@@ -609,104 +707,6 @@ export const AdrTemplate: FormNode = {
       editType: FormNodeEditTypes.CHECKBOX,
       groups: ['declarations_details', 'dangerous_goods'],
       hide: true,
-    },
-    {
-      name: 'tankInspectionsSectionTitle',
-      type: FormNodeTypes.TITLE,
-      label: 'Tank Inspections',
-      groups: ['tank_details', 'dangerous_goods'],
-      hide: true,
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-      ],
-    },
-    {
-      name: 'tankInspectionsSectionSubheading',
-      type: FormNodeTypes.TITLE,
-      label: 'Initial',
-      groups: ['tank_details', 'dangerous_goods'],
-      hide: true,
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-      ],
-    },
-    {
-      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN,
-      label: 'TC2: Inspection type',
-      value: TC2Types.INITIAL, // TO-DO: replace with enum
-      hide: true,
-      groups: ['tank_details', 'dangerous_goods'],
-      validators: [],
-    },
-    {
-      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
-      label: 'TC2: Certificate Number',
-      type: FormNodeTypes.CONTROL,
-      hide: true,
-      groups: ['tank_details', 'dangerous_goods'],
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 70 },
-      ],
-    },
-    {
-      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
-      label: 'TC2: Expiry Date',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.DATE,
-      viewType: FormNodeViewTypes.DATE,
-      isoDate: false,
-      hide: true,
-      groups: ['tank_details', 'dangerous_goods'],
-      validators: [],
-    },
-    {
-      name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
-      label: 'Subsequent Inspections',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.CUSTOM,
-      viewType: FormNodeViewTypes.ADRINSPECTIONS,
-      component: AdrTankDetailsSubsequentInspectionsComponent,
-      hide: true,
-      groups: ['tank_details', 'dangerous_goods'],
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-        {
-          name: ValidatorNames.Tc3TestValidator,
-          args: { inspectionNumber: 0 },
-        },
-      ],
-    },
-    {
-      name: 'techRecord_adrDetails_memosApply',
-      label: 'Memo 7/9 (3 month extension) applied',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.CHECKBOXGROUP,
-      groups: ['tank_details', 'dangerous_goods'],
-      hide: true,
-      options: [
-        { value: '07/09 3mth leak ext ', label: 'Yes' },
-      ],
-      validators: [],
     },
   ],
 };
