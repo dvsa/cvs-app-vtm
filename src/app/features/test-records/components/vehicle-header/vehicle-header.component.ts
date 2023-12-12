@@ -1,5 +1,7 @@
 import {
-  ChangeDetectionStrategy, Component, Input, OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component, Input, OnInit,
 } from '@angular/core';
 import { TestTypesTaxonomy } from '@api/test-types';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -9,11 +11,13 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { TagType, TagTypes } from '@shared/components/tag/tag.component';
 import { techRecord } from '@store/technical-records';
-import { Observable, lastValueFrom } from 'rxjs';
+import {
+  Observable,
+  map, switchMap
+} from 'rxjs';
 
 @Component({
   selector: 'app-vehicle-header',
@@ -26,11 +30,13 @@ export class VehicleHeaderComponent implements OnInit {
   @Input() testResult?: TestResultModel | null;
   @Input() testNumber?: string | null;
   @Input() isReview = false;
-  data: string | undefined;
-  constructor(private testTypesService: TestTypesService, private techRecordService: TechnicalRecordService, private store: Store) {}
 
-  async ngOnInit() {
-    this.data = await this.fetchData();
+  testCode?: string;
+
+  constructor(private testTypesService: TestTypesService, private store: Store, private cdr: ChangeDetectorRef) {}
+
+  ngOnInit() {
+    this.getTestCode();
   }
 
   get test(): TestType | undefined {
@@ -76,45 +82,26 @@ export class VehicleHeaderComponent implements OnInit {
     }
   }
 
-  async fetchData() {
-    let vehicleType = '';
-    let getCode = '';
+  getTestCode() {
     const testCode = this.testResult?.testTypes[0].testCode;
 
     if (!testCode && this.testResult) {
-      const val = await lastValueFrom(this.techRecord$);
-      
-      vehicleType = val?.techRecord_vehicleType as string;
-
-      const response = await lastValueFrom(this.testTypesService
-        .getTestTypesid(
-          this.testResult.testTypes[0].testTypeId,
-          ['defaultTestCode'],
-          vehicleType,
-        ));
-
-      getCode = response?.defaultTestCode as string;
-      console.log(getCode);
-      console.log('*****');
-    }
-    console.log(getCode);
-    return testCode ? `(${testCode})` : '';
-  }
-
-  get testCode(): string | undefined {
-    let vehicleType = '';
-    let getCode = '';
-    const testCode = this.testResult?.testTypes[0].testCode;
-    if (!testCode && this.testResult) {
-      this.techRecord$.subscribe((val) => {
-        vehicleType = val?.techRecord_vehicleType as string;
+      const { testTypeId } = this.testResult.testTypes[0];
+      this.techRecord$.pipe(
+        map((val) => val?.techRecord_vehicleType as string),
+        switchMap((vehicleType) => this.testTypesService
+          .getTestTypesid(
+            testTypeId,
+            ['defaultTestCode'],
+            vehicleType,
+          )),
+      ).subscribe((response) => {
+        const code = response?.defaultTestCode as string;
+        const codeFormatted = code ? `(${code})` : '';
+        this.testCode = codeFormatted;
+        this.cdr.detectChanges();
       });
-      this.testTypesService.getTestTypesid(this.testResult.testTypes[0].testTypeId, ['defaultTestCode'], vehicleType)
-        .subscribe((val) => {
-          getCode = val.defaultTestCode as string;
-        });
     }
-    return testCode ? `(${testCode})` : '';
   }
 
   // eslint-disable-next-line @typescript-eslint/no-shadow

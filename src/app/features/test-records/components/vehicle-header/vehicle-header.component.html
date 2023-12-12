@@ -7,7 +7,6 @@
             <span>
               {{ test?.testTypeId ?? '' | testTypeName : (selectAllTestTypes$ | async) | defaultNullOrEmpty }}
               {{ testCode | uppercase }}
-              Data from fetchData function: {{ data }}
             </span>
             <app-icon [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"></app-icon>
           </h1>
@@ -51,7 +50,7 @@
     <div class="test_result_header">
       <div class="test_name_and_date">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">
-          <span>{{ test?.testTypeId || '' | testTypeName : (selectAllTestTypes$ | async) }} {{ testCode | uppercase }}</span>
+          <span> {{ test?.testTypeId || '' | testTypeName : (selectAllTestTypes$ | async) }} {{ testCode | uppercase }} </span>
         </h1>
         <div class="date_and_result">
           <span class="govuk-caption-l">{{ testResult?.createdAt | date : 'dd MMM yyyy' }}</span>
