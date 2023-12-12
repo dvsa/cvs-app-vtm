@@ -496,7 +496,6 @@ export class CustomValidators {
 
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
-      const { label } = (control.parent as CustomFormGroup).meta;
       const areSiblingsEmpty: boolean[] = [];
       args.siblings.forEach((sibling: string) => {
         const siblingControl = control?.parent?.get(sibling) as CustomFormControl;
@@ -507,7 +506,7 @@ export class CustomValidators {
       const isControlValueEmpty = control.value === null || control.value === undefined || control.value === '';
 
       return !areSiblingsEmpty.includes(false) && isControlValueEmpty
-        ? { tc3TestValidator: { message: `${label} ${args.inspectionNumber}: at least one field needs to contain a value` } }
+        ? { tc3TestValidator: { message: `Subsequent Inspection ${args.inspectionNumber}: at least one field needs to contain a value` } }
         : null;
     };
   };

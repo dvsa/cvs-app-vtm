@@ -1661,3 +1661,158 @@ describe('isArray', () => {
     expect(CustomValidators.isArray({ requiredIndices: [0] })(control)).toBeTruthy();
   });
 });
+
+describe('tc3FieldTestValidator', () => {
+  let form: FormGroup;
+
+  beforeEach(() => {
+    form = new CustomFormGroup({
+      name: 'group',
+      label: 'Subsequent',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'tc3Type',
+          type: FormNodeTypes.CONTROL,
+          value: null,
+          label: 'TC3: Inspection Type',
+        },
+        {
+          name: 'tc3PeriodicNumber',
+          label: 'TC3: Certificate Number',
+          value: null,
+          type: FormNodeTypes.CONTROL,
+        },
+        {
+          name: 'tc3PeriodicExpiryDate',
+          label: 'TC3: Expiry Date',
+          type: FormNodeTypes.CONTROL,
+          value: null,
+          isoDate: false,
+        },
+      ],
+    }, {
+      tc3Type: new CustomFormControl({
+        name: 'tc3Type',
+        type: FormNodeTypes.CONTROL,
+      }),
+      tc3PeriodicNumber: new CustomFormControl({
+        name: 'tc3PeriodicNumber',
+        type: FormNodeTypes.CONTROL,
+      }),
+      tc3PeriodicExpiryDate: new CustomFormControl({
+        name: 'tc3PeriodicExpiryDate',
+        type: FormNodeTypes.CONTROL,
+      }),
+    });
+  });
+  it('should give an error if all fields passed to the validator are null', () => {
+    const type = form.get('tc3Type') as CustomFormControl;
+
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        siblings: ['tc3PeriodicNumber', 'tc3PeriodicExpiryDate'],
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'Subsequent inspection 1: at least one field needs to contain a value',
+        },
+      },
+    );
+  });
+  it('should give an error if fields passed to the validator are undefined', () => {
+    const type = form.get('tc3Type') as CustomFormControl;
+    const date = form.get('tc3PeriodicExpiryDate') as CustomFormControl;
+    const number = form.get('tc3PeriodicNumber') as CustomFormControl;
+
+    type.patchValue(undefined);
+    date.patchValue(undefined);
+    number.patchValue(undefined);
+
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        siblings: ['tc3PeriodicNumber', 'tc3PeriodicExpiryDate'],
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'Subsequent inspection 1: at least one field needs to contain a value'
+        },
+      },
+    );
+  });
+  it('should give an error if fields passed to the validator are empty strings', () => {
+    const type = form.get('tc3Type') as CustomFormControl;
+    const date = form.get('tc3PeriodicExpiryDate') as CustomFormControl;
+    const number = form.get('tc3PeriodicNumber') as CustomFormControl;
+
+    type.patchValue('');
+    date.patchValue('');
+    number.patchValue('');
+
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        siblings: ['tc3PeriodicNumber', 'tc3PeriodicExpiryDate'],
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'Subsequent inspection 1: at least one field needs to contain a value'
+        },
+      },
+    );
+  });
+  it('should give an error if fields to the validator have a variety of empty values', () => {
+    const type = form.get('tc3Type') as CustomFormControl;
+    const date = form.get('tc3PeriodicExpiryDate') as CustomFormControl;
+    const number = form.get('tc3PeriodicNumber') as CustomFormControl;
+
+    type.patchValue('');
+    date.patchValue(null);
+    number.patchValue(undefined);
+
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        siblings: ['tc3PeriodicNumber', 'tc3PeriodicExpiryDate'],
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'Subsequent inspection 1: at least one field needs to contain a value'
+        },
+      },
+    );
+  });
+  it('should return null if one field passed to the validator has a value', () => {
+    const type = form.get('tc3Type') as CustomFormControl;
+    const number = form.get('tc3PeriodicNumber') as CustomFormControl;
+
+    number.patchValue('test');
+
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        siblings: ['tc3PeriodicNumber', 'tc3PeriodicExpiryDate'],
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
+
+    expect(validator).toBeNull();
+  });
+});
