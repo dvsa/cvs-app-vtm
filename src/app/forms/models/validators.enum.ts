@@ -42,5 +42,4 @@ export enum ValidatorNames {
   IsArray = 'isArray',
   Custom = 'custom',
   Tc3TestValidator = 'tc3TestValidator',
-  Tc3ParentValidator = 'tc3ParentValidator',
 }

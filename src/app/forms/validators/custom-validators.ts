@@ -492,58 +492,38 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => func(control, ...args);
   };
 
-  static tc3TestValidator = (args: { siblings: string[], inspectionNumber: number }) => {
+  static tc3TestValidator = (args: { inspectionNumber: number }) => {
 
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
-      const areSiblingsEmpty: boolean[] = [];
-      args.siblings.forEach((sibling: string) => {
-        const siblingControl = control?.parent?.get(sibling) as CustomFormControl;
-        const isSiblingEmpty = siblingControl.value === null || siblingControl.value === undefined || siblingControl.value === '';
-        areSiblingsEmpty.push(isSiblingEmpty);
-      });
+      let areControlsEmpty: boolean[] = [];
+      let inspection = '';
 
-      const isControlValueEmpty = control.value === null || control.value === undefined || control.value === '';
+      if (args.inspectionNumber !== 0) {
+        const tc3Type = control.parent?.get('tc3Type')?.value;
+        const tc3PeriodicNumber = control.parent?.get('tc3PeriodicNumber')?.value;
+        const tc3PeriodicExpiryDate = control.parent?.get('tc3PeriodicExpiryDate')?.value;
 
-      return !areSiblingsEmpty.includes(false) && isControlValueEmpty
-        ? { tc3TestValidator: { message: `Subsequent Inspection ${args.inspectionNumber}: at least one field needs to contain a value` } }
-        : null;
-    };
-  };
-
-  static tc3ParentValidator = () => {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const errorsArray: boolean[] = [];
-      if (control.value && control.value.length) {
-        control.value.forEach((value: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }) => {
-          if (value.tc3Type === null && value.tc3PeriodicNumber === null && value.tc3PeriodicExpiryDate === null) {
-            errorsArray.push(true);
-          } else {
-            errorsArray.push(false);
-          }
-        });
-        if (errorsArray.includes(true)) {
-
-          let inspections = '';
-
-          errorsArray.forEach((value, index) => {
-            if (value) {
-              if (inspections.length === 0) {
-                inspections += `${index + 1}`;
-              } else {
-                inspections += `, ${index + 1}`;
-              }
-            }
-          });
-
-          return {
-            tc3TestValidator: {
-              message: `TC3 Subsequent inspection ${inspections} must have at least one populated field`,
-            },
-          };
-        }
+        areControlsEmpty = areTc3FieldsEmpty([{ tc3Type, tc3PeriodicExpiryDate, tc3PeriodicNumber }]);
+        inspection = args.inspectionNumber as unknown as string;
+        return areControlsEmpty.includes(true)
+          ? { tc3TestValidator: { message: `TC3 Subsequent inspection ${inspection} must have at least one populated field` } }
+          : null;
       }
-      return null;
+
+      areControlsEmpty = areTc3FieldsEmpty(control.value);
+      areControlsEmpty.forEach((value, index) => {
+        if (value) {
+          if (inspection.length === 0) {
+            inspection = `${index + 1}`;
+          } else {
+            inspection += `, ${index + 1}`;
+          }
+        }
+      });
+      return areControlsEmpty.includes(true)
+        ? { tc3TestValidator: { message: `TC3 Subsequent inspection ${inspection} must have at least one populated field` } }
+        : null;
     };
   };
 }
@@ -556,4 +536,21 @@ export type IsArrayValidatorOptions = {
   ofType: string;
   requiredIndices: number[];
   whenEquals: { sibling: string, value: unknown[] }
+};
+
+const areTc3FieldsEmpty = (values: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }[]) => {
+  const isValueEmpty: boolean[] = [];
+
+  values.forEach((value) => {
+    if (
+      (value.tc3Type === null || value.tc3Type === undefined || value.tc3Type === '')
+      && (value.tc3PeriodicNumber === null || value.tc3PeriodicNumber === undefined || value.tc3PeriodicNumber === '')
+      && (value.tc3PeriodicExpiryDate === null || value.tc3PeriodicExpiryDate === undefined || value.tc3PeriodicExpiryDate === '')
+    ) {
+      isValueEmpty.push(true);
+    } else {
+      isValueEmpty.push(false);
+    }
+  });
+  return isValueEmpty;
 };

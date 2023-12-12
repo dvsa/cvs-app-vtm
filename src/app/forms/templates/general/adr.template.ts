@@ -412,7 +412,8 @@ export const AdrTemplate: FormNode = {
           },
         },
         {
-          name: ValidatorNames.Tc3ParentValidator,
+          name: ValidatorNames.Tc3TestValidator,
+          args: { inspectionNumber: 0 },
         },
       ],
     },

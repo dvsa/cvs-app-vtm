@@ -72,14 +72,12 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
           label: 'TC3: Inspection Type',
           options: getOptionsFromEnum(TC3Types),
           customId: `tc3Type[${index}]`,
-          validators: [{ name: ValidatorNames.Required }],
         },
         {
           name: 'tc3PeriodicNumber',
           label: 'TC3: Certificate Number',
           type: FormNodeTypes.CONTROL,
           customId: `tc3PeriodicNumber[${index}]`,
-          validators: [{ name: ValidatorNames.MaxLength, args: 10 }],
         },
         {
           name: 'tc3PeriodicExpiryDate',
@@ -89,7 +87,6 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
           viewType: FormNodeViewTypes.DATE,
           isoDate: false,
           customId: `tc3PeriodicExpiryDate[${index}]`,
-          validators: [{ name: ValidatorNames.Required }],
         },
       ],
     }, {
@@ -109,13 +106,13 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
 
     newFormGroup.get('tc3PeriodicNumber')?.addValidators(Validators.maxLength(10));
     newFormGroup.get('tc3PeriodicExpiryDate')?.addValidators(
-      CustomValidators.tc3TestValidator({ siblings: ['tc3PeriodicNumber', 'tc3Type'], inspectionNumber: index + 1 }),
+      CustomValidators.tc3TestValidator({ inspectionNumber: index + 1 }),
     );
     newFormGroup.get('tc3PeriodicNumber')?.addValidators(
-      CustomValidators.tc3TestValidator({ siblings: ['tc3PeriodicExpiryDate', 'tc3Type'], inspectionNumber: index + 1 }),
+      CustomValidators.tc3TestValidator({ inspectionNumber: index + 1 }),
     );
     newFormGroup.get('tc3Type')?.addValidators(
-      CustomValidators.tc3TestValidator({ siblings: ['tc3PeriodicNumber', 'tc3PeriodicExpiryDate'], inspectionNumber: index + 1 }),
+      CustomValidators.tc3TestValidator({ inspectionNumber: index + 1 }),
     );
 
     return newFormGroup;
