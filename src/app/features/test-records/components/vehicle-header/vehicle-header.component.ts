@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, Input, OnInit,
+} from '@angular/core';
 import { TestTypesTaxonomy } from '@api/test-types';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
@@ -11,7 +13,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { TagType, TagTypes } from '@shared/components/tag/tag.component';
 import { techRecord } from '@store/technical-records';
-import { Observable } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-vehicle-header',
@@ -19,13 +21,17 @@ import { Observable } from 'rxjs';
   styleUrls: ['./vehicle-header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VehicleHeaderComponent {
+export class VehicleHeaderComponent implements OnInit {
   @Input() isEditing = false;
   @Input() testResult?: TestResultModel | null;
   @Input() testNumber?: string | null;
   @Input() isReview = false;
-
+  data: string | undefined;
   constructor(private testTypesService: TestTypesService, private techRecordService: TechnicalRecordService, private store: Store) {}
+
+  async ngOnInit() {
+    this.data = await this.fetchData();
+  }
 
   get test(): TestType | undefined {
     return this.testResult?.testTypes?.find((t) => this.testNumber === t.testNumber);
@@ -70,8 +76,44 @@ export class VehicleHeaderComponent {
     }
   }
 
-  get testCode(): string | undefined {
+  async fetchData() {
+    let vehicleType = '';
+    let getCode = '';
     const testCode = this.testResult?.testTypes[0].testCode;
+
+    if (!testCode && this.testResult) {
+      const val = await lastValueFrom(this.techRecord$);
+      
+      vehicleType = val?.techRecord_vehicleType as string;
+
+      const response = await lastValueFrom(this.testTypesService
+        .getTestTypesid(
+          this.testResult.testTypes[0].testTypeId,
+          ['defaultTestCode'],
+          vehicleType,
+        ));
+
+      getCode = response?.defaultTestCode as string;
+      console.log(getCode);
+      console.log('*****');
+    }
+    console.log(getCode);
+    return testCode ? `(${testCode})` : '';
+  }
+
+  get testCode(): string | undefined {
+    let vehicleType = '';
+    let getCode = '';
+    const testCode = this.testResult?.testTypes[0].testCode;
+    if (!testCode && this.testResult) {
+      this.techRecord$.subscribe((val) => {
+        vehicleType = val?.techRecord_vehicleType as string;
+      });
+      this.testTypesService.getTestTypesid(this.testResult.testTypes[0].testTypeId, ['defaultTestCode'], vehicleType)
+        .subscribe((val) => {
+          getCode = val.defaultTestCode as string;
+        });
+    }
     return testCode ? `(${testCode})` : '';
   }
 

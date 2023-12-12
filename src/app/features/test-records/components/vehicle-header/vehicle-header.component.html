@@ -7,6 +7,7 @@
             <span>
               {{ test?.testTypeId ?? '' | testTypeName : (selectAllTestTypes$ | async) | defaultNullOrEmpty }}
               {{ testCode | uppercase }}
+              Data from fetchData function: {{ data }}
             </span>
             <app-icon [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"></app-icon>
           </h1>
