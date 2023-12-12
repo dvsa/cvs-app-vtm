@@ -16,6 +16,7 @@ export enum ValidatorNames {
   Pattern = 'pattern',
   Required = 'required',
   RequiredIfEquals = 'requiredIfEquals',
+  RequiredIfNotHidden = 'requiredIfNotHidden',
   RequiredIfNotEquals = 'requiredIfNotEquals',
   Defined = 'defined',
   ValidateDefectNotes = 'validateDefectNotes',

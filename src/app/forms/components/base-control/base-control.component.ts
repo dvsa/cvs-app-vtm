@@ -34,6 +34,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   public errorMessage?: string;
   public control?: CustomControl;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private control_value: any;
 
   constructor(protected injector: Injector, protected cdr: ChangeDetectorRef) {
@@ -58,7 +59,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
       if (errors) {
         const errorList = Object.keys(errors);
         const firstError = ErrorMessageMap[errorList[0] as ValidatorNames];
-        return firstError(errors[errorList[0]], this.label);
+        return this.control.meta.customErrorMessage ?? firstError(errors[errorList[0]], this.label);
       }
     }
     return '';

@@ -56,6 +56,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(
         debounceTime(400),
         takeUntil(this.destroy$),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mergeMap((event: any) =>
           this.store.pipe(
             select(selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, event.techRecord_brakes_dtpNumber)),

@@ -50,7 +50,9 @@ export class BaseTestRecordComponent implements AfterViewInit {
     this.handleFormChange({});
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleFormChange(event: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let latestTest: any;
     this.sections?.forEach((section) => {
       const { form } = section;

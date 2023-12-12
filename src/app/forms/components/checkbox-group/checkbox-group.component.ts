@@ -43,6 +43,7 @@ export class CheckboxGroupComponent extends BaseControlComponent {
 
     let newValue = separator ? this.value?.split(separator) : [...this.value];
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     newValue = newValue?.filter((v: any) => v !== option.value);
 
     newValue = separator ? newValue?.join(this.delimited?.separator) : newValue;

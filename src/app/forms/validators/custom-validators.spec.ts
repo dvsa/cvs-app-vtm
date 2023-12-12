@@ -235,6 +235,33 @@ describe('Required validators', () => {
       const result = CustomValidators.requiredIfEquals('sibling', ['some value'])(form.controls['foo']);
       expect(result).toBeNull();
     });
+
+    it('should not be required (return null) when the sibling and control values overlap (for arrays)', () => {
+      form.controls['foo'].patchValue(['battery']);
+      form.controls['sibling'].patchValue(['battery']);
+      const result = CustomValidators.requiredIfEquals('sibling', ['battery'])(form.controls['foo']);
+      expect(result).toBeNull();
+    });
+
+    it('should not be required (return null) when sibling value does not match passed value', () => {
+      form.controls['foo'].patchValue(['not a battery']);
+      const result = CustomValidators.requiredIfEquals('sibling', ['battery'])(form.controls['foo']);
+      expect(result).toBeNull();
+    });
+
+    it('should  be required (return null) when sibling value overlaps with values passed, and control is empty', () => {
+      form.controls['sibling'].patchValue(['battery']);
+      form.controls['foo'].patchValue([null]); // array with only falsy values is considered empty
+      const result = CustomValidators.requiredIfEquals('sibling', ['battery'])(form.controls['foo']);
+      expect(result).toEqual({ requiredIfEquals: { sibling: 'Sibling' } });
+    });
+
+    it('should not be required (return null) when sibling value overlaps with values passed, and control is not empty', () => {
+      form.controls['sibling'].patchValue(['battery']);
+      form.controls['foo'].patchValue([null, 'truthy']); // array with a falsy value, but some truthy values is considered NOT empty
+      const result = CustomValidators.requiredIfEquals('sibling', ['battery'])(form.controls['foo']);
+      expect(result).toBeNull();
+    });
   });
 
   describe('Required if not equal', () => {

@@ -93,18 +93,38 @@ export class CustomValidators {
     };
   };
 
+  static requiredIfNotHidden = (): ValidatorFn =>
+    (control: AbstractControl): ValidationErrors | null => {
+      const customControl = control as CustomFormControl;
+      if (!control?.parent) return null;
+      if (customControl.meta.hide === false && !control.value) {
+        // If meta.hide is false and control value is empty, return a validation error
+        return { requiredIfNotHidden: customControl.meta.label };
+      }
+      return null;
+    };
+
   static requiredIfEquals = (sibling: string, values: unknown[]): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
 
       const siblingControl = control.parent.get(sibling) as CustomFormControl;
       const siblingValue = siblingControl.value;
+
+      const isSiblingVisible = !siblingControl.meta.hide;
+
       const isSiblingValueIncluded = Array.isArray(siblingValue)
         ? values.some((value) => siblingValue.includes(value))
         : values.includes(siblingValue);
-      const isControlValueEmpty = control.value === null || control.value === undefined || control.value === '';
 
-      return isSiblingValueIncluded && isControlValueEmpty ? { requiredIfEquals: { sibling: siblingControl.meta.label } } : null;
+      const isControlValueEmpty = control.value === null
+        || control.value === undefined
+        || control.value === ''
+        || (Array.isArray(control.value) && (control.value.length === 0 || control.value.every((val) => !val)));
+
+      return isSiblingValueIncluded && isControlValueEmpty && isSiblingVisible
+        ? { requiredIfEquals: { sibling: siblingControl.meta.label } }
+        : null;
     };
 
   static requiredIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
@@ -202,6 +222,7 @@ export class CustomValidators {
         return null;
       }
 
+      // eslint-disable-next-line security/detect-non-literal-regexp
       const valid = new RegExp(regEx).test(control.value);
 
       return valid ? null : { customPattern: { message } };

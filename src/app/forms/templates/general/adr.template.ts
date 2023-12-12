@@ -2,10 +2,13 @@ import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/te
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
+import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
+import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
   AdrTankDetailsSubsequentInspectionsComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
+import { AdrTankStatementUnNumberComponent } from '@forms/custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC2Types } from '@models/adr.enum';
@@ -121,14 +124,14 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.ShowGroupsWhenIncludes,
           args: {
             values: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-            groups: ['tank_details'],
+            groups: ['tank_details', 'battery_list'],
           },
         },
         {
           name: ValidatorNames.HideGroupsWhenExcludes,
           args: {
             values: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-            groups: ['tank_details'],
+            groups: ['tank_details', 'battery_list'],
           },
         },
       ],
@@ -204,7 +207,7 @@ export const AdrTemplate: FormNode = {
       hide: true,
       width: FormNodeWidth.XS,
       value: [],
-      customValidatorErrorName: 'Guidance notes is required with Able to carry dangerous goods',
+      customErrorMessage: 'Guidance notes is required with Able to carry dangerous goods',
       options: getOptionsFromEnum(ADRAdditionalNotesNumber),
       validators: [
         {
@@ -331,6 +334,283 @@ export const AdrTemplate: FormNode = {
       hide: true,
     },
     {
+      name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted',
+      label: 'Substances permitted',
+      width: FormNodeWidth.XS,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.RADIO,
+      options: getOptionsFromEnum(ADRTankStatementSubstancePermitted),
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
+      label: 'Select',
+      width: FormNodeWidth.XS,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.RADIO,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      options: getOptionsFromEnum(ADRTankDetailsTankStatementSelect),
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+        {
+          name: ValidatorNames.ShowGroupsWhenIncludes,
+          args: {
+            values: [ADRTankDetailsTankStatementSelect.STATEMENT],
+            groups: ['statement'],
+          },
+        },
+        {
+          name: ValidatorNames.ShowGroupsWhenIncludes,
+          args: {
+            values: [ADRTankDetailsTankStatementSelect.PRODUCT_LIST],
+            groups: ['productList'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenExcludes,
+          args: {
+            values: [ADRTankDetailsTankStatementSelect.STATEMENT],
+            groups: ['statement'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenExcludes,
+          args: {
+            values: [ADRTankDetailsTankStatementSelect.PRODUCT_LIST],
+            groups: ['productList'],
+          },
+        },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_statement',
+      label: 'Reference number',
+      type: FormNodeTypes.CONTROL,
+      groups: ['statement', 'tank_details', 'dangerous_goods'],
+      hide: true,
+      customErrorMessage: 'Reference number is required when selecting Statement',
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 1500 },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
+            value: [ADRTankDetailsTankStatementSelect.STATEMENT],
+          },
+        },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo',
+      label: 'Reference number',
+      type: FormNodeTypes.CONTROL,
+      groups: ['productList', 'tank_details', 'dangerous_goods'],
+      hide: true,
+      customErrorMessage: 'Reference number or UN number is required when selecting Product List',
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 1500 },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
+            value: [[], [null], [''], null, undefined],
+          },
+        },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
+      label: 'UN number',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CUSTOM,
+      component: AdrTankStatementUnNumberComponent,
+      groups: ['productList', 'tank_details', 'dangerous_goods'],
+      hide: true,
+      customErrorMessage: 'Reference number or UN number is required when selecting Product List',
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: { sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo', value: [null, undefined, ''] },
+        },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productList',
+      label: 'Additional Details',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXTAREA,
+      groups: ['productList', 'tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 1500 },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_specialProvisions',
+      label: 'Special Provisions',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXTAREA,
+      hide: true,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 1024 },
+      ],
+      groups: ['dangerous_goods', 'battery_list'],
+    },
+    {
+      name: 'techRecord_adrDetails_listStatementApplicable',
+      label: 'Battery List Applicable',
+      width: FormNodeWidth.XS,
+      value: false,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.RADIO,
+      options: [
+        { value: true, label: 'Yes' },
+        { value: false, label: 'No' },
+      ],
+      validators: [
+        { name: ValidatorNames.ShowGroupsWhenEqualTo, args: { values: [true], groups: ['battery_list_applicable'] } },
+        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['battery_list_applicable'] } },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+      ],
+      hide: true,
+      groups: ['dangerous_goods', 'battery_list'],
+    },
+    {
+      name: 'techRecord_adrDetails_batteryListNumber',
+      label: 'Reference number',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.L,
+      groups: ['battery_list_applicable', 'dangerous_goods'],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 8 },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_listStatementApplicable',
+            value: [true],
+          },
+        },
+      ],
+      hide: true,
+    },
+    {
+      name: 'DeclarationsSectionTitle',
+      label: 'Declarations seen',
+      type: FormNodeTypes.TITLE,
+      groups: ['declarations_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_brakeDeclarationsSeen',
+      label: 'Manufacturer brake declaration',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOX,
+      groups: ['declarations_details', 'dangerous_goods'],
+      value: false,
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.ShowGroupsWhenEqualTo,
+          args: {
+            values: [true],
+            groups: ['issuer_section'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenEqualTo,
+          args: {
+            values: [false],
+            groups: ['issuer_section', 'weight_section'],
+          },
+        },
+      ],
+
+    },
+    {
+      name: 'techRecord_adrDetails_brakeDeclarationIssuer',
+      label: 'Issuer',
+      type: FormNodeTypes.CONTROL,
+      groups: ['issuer_section', 'dangerous_goods'],
+      editType: FormNodeEditTypes.TEXTAREA,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 500 },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_brakeEndurance',
+      label: 'Brake endurance',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOX,
+
+      groups: ['issuer_section', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.ShowGroupsWhenEqualTo,
+          args: {
+            values: [true],
+            groups: ['weight_section'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenEqualTo,
+          args: {
+            values: [false, null, undefined],
+            groups: ['weight_section'],
+          },
+        },
+      ],
+
+    },
+    {
+      name: 'techRecord_adrDetails_weight',
+      label: 'Weight (kg)',
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.L,
+      groups: ['weight_section', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 8 },
+        { name: ValidatorNames.Numeric },
+        {
+          name: ValidatorNames.RequiredIfNotHidden,
+        },
+      ],
+
+    },
+    {
+      name: 'techRecord_adrDetails_declarationsSeen',
+      label: 'Owner/operator declaration',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOX,
+      groups: ['declarations_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
       name: 'tankInspectionsSectionTitle',
       type: FormNodeTypes.TITLE,
       label: 'Tank Inspections',
@@ -363,7 +643,6 @@ export const AdrTemplate: FormNode = {
       ],
     },
     {
-
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,

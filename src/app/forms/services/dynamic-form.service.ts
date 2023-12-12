@@ -27,6 +27,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 export class DynamicFormService {
   constructor(private store: Store<State>) { }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
     [ValidatorNames.Alphanumeric]: () => CustomValidators.alphanumeric(),
@@ -82,8 +83,10 @@ export class DynamicFormService {
     [ValidatorNames.IsArray]: (args: Partial<IsArrayValidatorOptions>) => CustomValidators.isArray(args),
     [ValidatorNames.Custom]: (...args) => CustomValidators.custom(...args),
     [ValidatorNames.Tc3TestValidator]: (args: { inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
+    [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
     [AsyncValidatorNames.HideIfEqualsWithCondition]: (args: { sibling: string; value: string; conditions: Condition | Condition[] }) =>
       CustomAsyncValidators.hideIfEqualsWithCondition(this.store, args.sibling, args.value, args.conditions),
@@ -100,6 +103,7 @@ export class DynamicFormService {
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
     if (!formNode) {
       return new CustomFormGroup(formNode, {});
@@ -181,10 +185,11 @@ export class DynamicFormService {
     const { errors } = control;
     const meta = (control as CustomFormControl).meta as FormNode | undefined;
     if (errors) {
+      if (meta?.hide) return;
       const errorList = Object.keys(errors);
       errorList.forEach((error) => {
         validationErrorList.push({
-          error: ErrorMessageMap[`${error}`](errors[`${error}`], meta?.customValidatorErrorName ?? meta?.label),
+          error: meta?.customErrorMessage ?? ErrorMessageMap[`${error}`](errors[`${error}`], meta?.customValidatorErrorName ?? meta?.label),
           anchorLink: meta?.customId ?? meta?.name,
         } as GlobalError);
       });
