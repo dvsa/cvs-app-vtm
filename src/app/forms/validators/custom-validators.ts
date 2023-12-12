@@ -514,24 +514,25 @@ export class CustomValidators {
   };
 
   static tc3TestValidator = (args: { inspectionNumber: number }) => {
-
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
       let areControlsEmpty: boolean[] = [];
       let inspection = '';
-
+      // the inspection numbers for individual tests start form 1 so this checks if its an individual test or the control that contains the component
       if (args.inspectionNumber !== 0) {
         const tc3Type = control.parent?.get('tc3Type')?.value;
         const tc3PeriodicNumber = control.parent?.get('tc3PeriodicNumber')?.value;
         const tc3PeriodicExpiryDate = control.parent?.get('tc3PeriodicExpiryDate')?.value;
-
+        // areTc3FieldsEmpty takes an array of tc3 test values and checks that at least one of the fields is filled out for each test
         areControlsEmpty = areTc3FieldsEmpty([{ tc3Type, tc3PeriodicExpiryDate, tc3PeriodicNumber }]);
         inspection = args.inspectionNumber as unknown as string;
         return areControlsEmpty.includes(true)
           ? { tc3TestValidator: { message: `TC3 Subsequent inspection ${inspection} must have at least one populated field` } }
           : null;
       }
-
+      // this statement is the same logic but applied to the control that holds all of the tests.
+      // This allows the error to be displayed in the Global error service
+      if (!control.value) return null;
       areControlsEmpty = areTc3FieldsEmpty(control.value);
       areControlsEmpty.forEach((value, index) => {
         if (value) {
