@@ -85,7 +85,6 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlC
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.DATE,
           viewType: FormNodeViewTypes.DATE,
-          isoDate: false,
           customId: `tc3PeriodicExpiryDate[${index}]`,
         },
       ],
