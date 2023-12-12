@@ -459,12 +459,12 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
       // If tank details 'product list' selected, null statement reference no.
       if (select === ADRTankDetailsTankStatementSelect.PRODUCT_LIST) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementStatement };
-        // If battery list applicable is no, null the battery list number
-        const { techRecord_adrDetails_listStatementApplicable: listStatementApplicable } = sanitisedEditingTechRecord;
-        if (!listStatementApplicable) {
-          sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
-        }
+      }
 
+      // If battery list applicable is no, null the battery list number
+      const { techRecord_adrDetails_listStatementApplicable: listStatementApplicable } = sanitisedEditingTechRecord;
+      if (!listStatementApplicable) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
       }
 
       return { ...state, editingTechRecord: sanitisedEditingTechRecord };
