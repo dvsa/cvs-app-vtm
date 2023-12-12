@@ -92,6 +92,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private featureToggleService: FeatureToggleService,
   ) {
     this.featureToggleName = this.activatedRoute.snapshot.data['featureToggleName'];
+    this.isADREnabled = this.featureToggleService.isFeatureEnabled(this.featureToggleName);
   }
 
   ngOnInit(): void {
@@ -140,8 +141,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     } else if (!this.isEditing) {
       this.warningService.clearWarnings();
     }
-
-    this.isADREnabled = this.featureToggleService.isFeatureEnabled(this.featureToggleName);
 
     this.store
       .select(selectScrollPosition)

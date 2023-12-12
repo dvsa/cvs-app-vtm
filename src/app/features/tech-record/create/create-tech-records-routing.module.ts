@@ -26,7 +26,7 @@ const routes: Routes = [
             path: '',
             component: HydrateNewVehicleRecordComponent,
             data: {
-              title: 'New record details', roles: Roles.TechRecordCreate, isCustomLayout: true, isEditing: true,
+              title: 'New record details', roles: Roles.TechRecordCreate, isCustomLayout: true, isEditing: true, featureToggleName: 'adrToggle',
             },
           },
           {
