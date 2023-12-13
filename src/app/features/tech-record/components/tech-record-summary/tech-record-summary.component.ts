@@ -73,7 +73,6 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   middleIndex = 0;
   isEditing = false;
   scrollPosition: [number, number] = [0, 0];
-  featureToggleName = '';
   isADREnabled = false;
 
   private destroy$ = new Subject<void>();
@@ -90,12 +89,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private store: Store,
     private loading: LoadingService,
     private featureToggleService: FeatureToggleService,
-  ) {
-    this.featureToggleName = this.activatedRoute.snapshot.data['featureToggleName'];
-    this.isADREnabled = this.featureToggleService.isFeatureEnabled(this.featureToggleName);
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.isADREnabled = this.featureToggleService.isFeatureEnabled('adrToggle');
     this.technicalRecordService.techRecord$
       .pipe(
         map((record) => {
