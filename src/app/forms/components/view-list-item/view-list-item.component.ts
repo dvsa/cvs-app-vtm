@@ -13,6 +13,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
       multi: true,
     },
   ],
+  styleUrls: ['./view-list-item.component.scss'],
 })
 export class ViewListItemComponent extends BaseControlComponent {
   get formNodeViewTypes(): typeof FormNodeViewTypes {
