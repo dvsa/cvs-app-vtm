@@ -437,7 +437,7 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       groups: ['productList', 'tank_details', 'dangerous_goods'],
       hide: true,
-      customErrorMessage: 'Reference number or UN number is required when selecting Product List',
+      customErrorMessage: 'Reference number or UN number 1 is required when selecting Product List',
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
         {
@@ -457,7 +457,7 @@ export const AdrTemplate: FormNode = {
       component: AdrTankStatementUnNumberComponent,
       groups: ['productList', 'tank_details', 'dangerous_goods'],
       hide: true,
-      customErrorMessage: 'Reference number or UN number is required when selecting Product List',
+      customErrorMessage: 'Reference number or UN number 1 is required when selecting Product List',
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,

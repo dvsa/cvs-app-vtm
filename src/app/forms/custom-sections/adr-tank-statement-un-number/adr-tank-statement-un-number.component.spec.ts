@@ -87,4 +87,26 @@ describe('AdrTankStatementUnNumberComponent', () => {
       expect(component.formArray.value).toHaveLength(5);
     });
   });
+
+  describe('removeControl', () => {
+    it('should remove the UN number control from the form array at the index specified', () => {
+      const methodSpy = jest.spyOn(component, 'removeControl');
+      const formArraySpy = jest.spyOn(component.formArray, 'removeAt');
+
+      component.addControl();
+      component.addControl();
+      component.addControl();
+      component.addControl();
+
+      component.removeControl(3);
+      component.removeControl(2);
+
+      expect(methodSpy).toHaveBeenCalledTimes(2);
+      expect(formArraySpy).toHaveBeenCalledTimes(2);
+      expect(component.formArray.controls.at(4)).toBeUndefined();
+      expect(component.formArray.controls.at(3)).toBeUndefined();
+      expect(component.formArray.controls.at(2)).toBeDefined();
+      expect(component.formArray.controls).toHaveLength(3);
+    });
+  });
 });

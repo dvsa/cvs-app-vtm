@@ -23,14 +23,11 @@ export class AdrTankStatementUnNumberComponent extends CustomFormControlComponen
 
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
-    const { form, control } = this;
-
-    if (!form) return;
-    if (!control) return;
-
-    const value = form.get(this.name)?.value;
-    const values = Array.isArray(value) && value.length ? value : [null];
-    values.forEach((unNumber: string) => this.addControl(unNumber));
+    if (this.form && this.control) {
+      const value = this.form.get(this.name)?.value;
+      const values = Array.isArray(value) && value.length ? value : [null];
+      values.forEach((unNumber: string) => this.addControl(unNumber));
+    }
   }
 
   addControl(value = '') {
@@ -38,6 +35,11 @@ export class AdrTankStatementUnNumberComponent extends CustomFormControlComponen
     const control = new CustomFormControl(this.control.meta, value);
     control.addValidators(Validators.maxLength(1500));
     this.formArray.push(control);
+  }
+
+  removeControl(index: number) {
+    if (this.formArray.length < 2) return;
+    this.formArray.removeAt(index);
   }
 
   onFormChange(changes: (string | null)[] | null) {
