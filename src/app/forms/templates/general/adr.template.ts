@@ -120,14 +120,28 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.ShowGroupsWhenIncludes,
           args: {
             values: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-            groups: ['tank_details', 'battery_list'],
+            groups: ['tank_details'],
           },
         },
         {
           name: ValidatorNames.HideGroupsWhenExcludes,
           args: {
             values: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-            groups: ['tank_details', 'battery_list'],
+            groups: ['tank_details'],
+          },
+        },
+        {
+          name: ValidatorNames.ShowGroupsWhenIncludes,
+          args: {
+            values: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
+            groups: ['battery_list'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenExcludes,
+          args: {
+            values: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
+            groups: ['battery_list'],
           },
         },
       ],
@@ -487,7 +501,7 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.RequiredIfEquals,
           args: {
             sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
           },
         },
       ],
@@ -500,7 +514,7 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
-      groups: ['battery_list_applicable', 'dangerous_goods'],
+      groups: ['battery_list', 'battery_list_applicable', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 8 },
         {
