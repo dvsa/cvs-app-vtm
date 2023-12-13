@@ -7,7 +7,13 @@ import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hg
 import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TechRecordGETHGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import {
+  TechRecordGETCar,
+  TechRecordGETHGV,
+  TechRecordGETLGV,
+  TechRecordGETPSV,
+  TechRecordGETTRL,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { FormNode, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { VehicleSummary } from '@forms/templates/tech-records/vehicle-summary.template';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
@@ -57,7 +63,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public routerService: RouterService,
     public actions$: Actions,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.navigateUponSuccess();
@@ -98,6 +104,11 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
         this.techRecordChanges = changes;
         if (this.vehicleType === VehicleTypes.PSV || this.vehicleType === VehicleTypes.HGV) {
           delete (this.techRecordChanges as Partial<TechRecordGETPSV | TechRecordGETHGV>).techRecord_numberOfWheelsDriven;
+        } if (
+          (this.vehicleType === VehicleTypes.CAR || this.vehicleType === VehicleTypes.LGV)
+          && (changes as TechRecordGETCar | TechRecordGETLGV).techRecord_vehicleSubclass) {
+          (this.techRecordChanges as TechRecordGETCar | TechRecordGETLGV)
+            .techRecord_vehicleSubclass = (this.techRecordEdited as TechRecordGETCar | TechRecordGETLGV).techRecord_vehicleSubclass;
         }
         this.techRecordChangesKeys = this.getTechRecordChangesKeys();
         this.sectionsWhitelist = this.getSectionsWhitelist();

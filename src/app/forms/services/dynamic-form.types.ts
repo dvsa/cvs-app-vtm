@@ -35,6 +35,7 @@ export enum FormNodeViewTypes {
   TIME = 'time',
   VEHICLETYPE = 'vehicleType',
   VRM = 'vrm',
+  ADRINSPECTIONS = 'adrInspections',
 }
 
 export enum TagTypeLabels {

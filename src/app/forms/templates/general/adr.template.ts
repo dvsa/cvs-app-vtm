@@ -5,9 +5,13 @@ import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-recor
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
+import {
+  AdrTankDetailsSubsequentInspectionsComponent,
+} from '@forms/custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 import { AdrTankStatementUnNumberComponent } from '@forms/custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { TC2Types } from '@models/adr.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '../../services/dynamic-form.types';
@@ -120,14 +124,28 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.ShowGroupsWhenIncludes,
           args: {
             values: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-            groups: ['tank_details', 'battery_list'],
+            groups: ['tank_details'],
           },
         },
         {
           name: ValidatorNames.HideGroupsWhenExcludes,
           args: {
             values: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-            groups: ['tank_details', 'battery_list'],
+            groups: ['tank_details'],
+          },
+        },
+        {
+          name: ValidatorNames.ShowGroupsWhenIncludes,
+          args: {
+            values: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
+            groups: ['battery_list'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenExcludes,
+          args: {
+            values: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
+            groups: ['battery_list'],
           },
         },
       ],
@@ -470,6 +488,104 @@ export const AdrTemplate: FormNode = {
       groups: ['dangerous_goods', 'battery_list'],
     },
     {
+      name: 'tankInspectionsSectionTitle',
+      type: FormNodeTypes.TITLE,
+      label: 'Tank Inspections',
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+      ],
+    },
+    {
+      name: 'tankInspectionsSectionSubheading',
+      type: FormNodeTypes.TITLE,
+      label: 'Initial',
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      label: 'TC2: Inspection type',
+      value: TC2Types.INITIAL,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
+      label: 'TC2: Certificate Number',
+      type: FormNodeTypes.CONTROL,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 70 },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
+      label: 'TC2: Expiry Date',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.DATE,
+      viewType: FormNodeViewTypes.DATE,
+      isoDate: false,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
+      label: 'Subsequent Inspections',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CUSTOM,
+      viewType: FormNodeViewTypes.ADRINSPECTIONS,
+      component: AdrTankDetailsSubsequentInspectionsComponent,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+        {
+          name: ValidatorNames.Tc3TestValidator,
+          args: { inspectionNumber: 0 },
+        },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_memosApply',
+      label: 'Memo 7/9 (3 month extension) applied',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOXGROUP,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      options: [
+        { value: '07/09 3mth leak ext ', label: 'Yes' },
+      ],
+      validators: [],
+    },
+    {
       name: 'techRecord_adrDetails_listStatementApplicable',
       label: 'Battery List Applicable',
       width: FormNodeWidth.XS,
@@ -487,7 +603,7 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.RequiredIfEquals,
           args: {
             sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
           },
         },
       ],
@@ -500,7 +616,7 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
-      groups: ['battery_list_applicable', 'dangerous_goods'],
+      groups: ['battery_list', 'battery_list_applicable', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 8 },
         {
@@ -605,7 +721,6 @@ export const AdrTemplate: FormNode = {
       editType: FormNodeEditTypes.CHECKBOX,
       groups: ['declarations_details', 'dangerous_goods'],
       hide: true,
-
     },
   ],
 };

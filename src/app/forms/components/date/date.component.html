@@ -5,13 +5,18 @@
     </legend>
     <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
     <app-field-error-message
-      *ngIf="formSubmitted || (dayEl.touched && monthEl.touched && yearEl.touched)"
+      *ngIf="(formSubmitted && !customError) || (dayEl.touched && monthEl.touched && yearEl.touched)"
       [error]="error"
       [name]="name"
     ></app-field-error-message>
     <app-field-error-message
       *ngIf="formSubmitted || (dayEl.touched && monthEl.touched && yearEl.touched)"
       [error]="warning"
+      [name]="name"
+    ></app-field-error-message>
+    <app-field-error-message
+      *ngIf="customError && (dayEl.touched || monthEl.touched || yearEl.touched)"
+      [error]="error"
       [name]="name"
     ></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">
@@ -25,14 +30,14 @@
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': elementHasErrors(0) && (dayEl.dirty || dayEl.touched) }"
-            [id]="getId(name)"
+            [id]="dayId"
             name="{{ name }}-day"
             type="number"
             inputmode="numeric"
             [(ngModel)]="day"
             [disabled]="disabled"
             (ngModelChange)="onDayChange($event)"
-            (blur)="onTouched(); handleEvent($event); validate()"
+            (blur)="onTouched(); handleEvent($event); validate(); blur.emit($event)"
             (focus)="handleEvent($event)"
           />
         </div>
@@ -48,7 +53,7 @@
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': (monthEl.dirty || monthEl.touched) && elementHasErrors(1) }"
-            id="{{ name }}-month"
+            [id]="monthId"
             name="{{ name }}-month"
             type="number"
             inputmode="numeric"
@@ -71,7 +76,7 @@
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-4"
             [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
-            id="{{ name }}-year"
+            [id]="yearId"
             name="{{ name }}-year"
             type="number"
             inputmode="numeric"
@@ -108,7 +113,7 @@
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': elementHasErrors(0) && (dayEl.dirty || dayEl.touched) }"
-            [id]="getId(name)"
+            [id]="dayId"
             name="{{ name }}-day"
             type="number"
             inputmode="numeric"
@@ -131,7 +136,7 @@
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': (monthEl.dirty || monthEl.touched) && elementHasErrors(1) }"
-            id="{{ name }}-month"
+            [id]="monthId"
             name="{{ name }}-month"
             type="number"
             inputmode="numeric"
@@ -154,7 +159,7 @@
             [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-4"
             [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
-            id="{{ name }}-year"
+            [id]="yearId"
             name="{{ name }}-year"
             type="number"
             inputmode="numeric"

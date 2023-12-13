@@ -25,7 +25,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
   providedIn: 'root',
 })
 export class DynamicFormService {
-  constructor(private store: Store<State>) {}
+  constructor(private store: Store<State>) { }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
@@ -81,6 +81,8 @@ export class DynamicFormService {
       CustomValidators.hideGroupsWhenExcludes(args.values, args.groups),
     [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
     [ValidatorNames.IsArray]: (args: Partial<IsArrayValidatorOptions>) => CustomValidators.isArray(args),
+    [ValidatorNames.Custom]: (...args) => CustomValidators.custom(...args),
+    [ValidatorNames.Tc3TestValidator]: (args: { inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
     [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
   };
 
