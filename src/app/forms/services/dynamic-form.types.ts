@@ -36,6 +36,7 @@ export enum FormNodeViewTypes {
   VEHICLETYPE = 'vehicleType',
   VRM = 'vrm',
   ADR_EXAMINER_NOTES = 'adr_examiner_notes',
+  ADRINSPECTIONS = 'adrInspections',
 }
 
 export enum TagTypeLabels {
@@ -105,6 +106,7 @@ export interface FormNode {
   path?: string;
   options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
   validators?: FormNodeValidator[];
+  customErrorMessage?: string;
   customValidatorErrorName?: string;
   asyncValidators?: { name: AsyncValidatorNames; args?: unknown }[];
   disabled?: boolean;

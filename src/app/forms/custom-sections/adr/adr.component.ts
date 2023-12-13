@@ -1,15 +1,18 @@
 import {
   Component,
-  Input, OnInit,
+  Input,
+  OnInit,
 } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
-import { DateValidators } from '@forms/validators/date/date.validators';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
+
+import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
+import { DateValidators } from '@forms/validators/date/date.validators';
 
 @Component({
   selector: 'app-adr',
@@ -40,6 +43,18 @@ export class AdrComponent implements OnInit {
     'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
     'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
     'techRecord_adrDetails_tank_tankDetails_tankCode',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_statement',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
+    'techRecord_adrDetails_tank_tankDetails_tankStatement_productList',
+    'techRecord_adrDetails_tank_tankDetails_specialProvisions',
+    'techRecord_adrDetails_brakeDeclarationsSeen',
+    'techRecord_adrDetails_brakeDeclarationIssuer',
+    'techRecord_adrDetails_brakeEndurance',
+    'techRecord_adrDetails_weight',
+    'techRecord_adrDetails_declarationsSeen',
   ];
 
   constructor(
@@ -51,12 +66,14 @@ export class AdrComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
     this.checkForAdrFields();
+    this.checkForTankStatement();
   }
 
   checkForAdrFields() {
     if (this.checkForDangerousGoodsFlag()) {
       return;
     }
+
     // eslint-disable-next-line no-restricted-syntax
     for (const adrDetail of this.adrDetails) {
       if (Object.keys(this.techRecord).includes(adrDetail)) {
@@ -70,10 +87,33 @@ export class AdrComponent implements OnInit {
     return Object.keys(this.techRecord).includes('techRecord_adrDetails_dangerousGoods');
   }
 
+  checkForTankStatement() {
+    if (this.checkForTankStatementSelectFlag()) {
+      return;
+    }
+
+    const { techRecord_adrDetails_tank_tankDetails_tankStatement_statement: statement } = this.techRecord;
+    if (statement) {
+      this.techRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_select = ADRTankDetailsTankStatementSelect.STATEMENT;
+    }
+
+    const {
+      techRecord_adrDetails_tank_tankDetails_tankStatement_productList: productList,
+      techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo: productListUnNo,
+      techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: productListRefNo,
+    } = this.techRecord;
+    if (productList || productListRefNo || (productListUnNo && productListUnNo.length > 0)) {
+      this.techRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_select = ADRTankDetailsTankStatementSelect.PRODUCT_LIST;
+    }
+  }
+
+  checkForTankStatementSelectFlag(): boolean {
+    return Object.keys(this.techRecord).includes('techRecord_adrDetails_tank_tankDetails_tankStatement_select');
+  }
+
   handleFormChange(event: Record<string, unknown>) {
     if (event == null) return;
     if (this.techRecord == null) return;
-    this.form.patchValue(event);
 
     const validator = DateValidators.validDate(false, 'Date processed');
     const approvedDate = this.form.get('techRecord_adrDetails_vehicleDetails_approvalDate');
@@ -82,6 +122,8 @@ export class AdrComponent implements OnInit {
     if (!approvedDate?.hasValidator(validator)) {
       approvedDate?.addValidators(validator);
     }
+
+    this.form.patchValue(event);
     this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord, ...event } as TechRecordTypeVerb<'put'>);
   }
 }

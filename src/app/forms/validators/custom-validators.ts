@@ -93,18 +93,38 @@ export class CustomValidators {
     };
   };
 
+  static requiredIfNotHidden = (): ValidatorFn =>
+    (control: AbstractControl): ValidationErrors | null => {
+      const customControl = control as CustomFormControl;
+      if (!control?.parent) return null;
+      if (customControl.meta.hide === false && !control.value) {
+        // If meta.hide is false and control value is empty, return a validation error
+        return { requiredIfNotHidden: customControl.meta.label };
+      }
+      return null;
+    };
+
   static requiredIfEquals = (sibling: string, values: unknown[]): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
 
       const siblingControl = control.parent.get(sibling) as CustomFormControl;
       const siblingValue = siblingControl.value;
+
+      const isSiblingVisible = !siblingControl.meta.hide;
+
       const isSiblingValueIncluded = Array.isArray(siblingValue)
         ? values.some((value) => siblingValue.includes(value))
         : values.includes(siblingValue);
-      const isControlValueEmpty = control.value === null || control.value === undefined || control.value === '';
 
-      return isSiblingValueIncluded && isControlValueEmpty ? { requiredIfEquals: { sibling: siblingControl.meta.label } } : null;
+      const isControlValueEmpty = control.value === null
+        || control.value === undefined
+        || control.value === ''
+        || (Array.isArray(control.value) && (control.value.length === 0 || control.value.every((val) => !val)));
+
+      return isSiblingValueIncluded && isControlValueEmpty && isSiblingVisible
+        ? { requiredIfEquals: { sibling: siblingControl.meta.label } }
+        : null;
     };
 
   static requiredIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
@@ -488,6 +508,46 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static custom = (func: (...args: unknown[]) => ValidationErrors | null, ...args: unknown[]) => {
+    return (control: AbstractControl): ValidationErrors | null => func(control, ...args);
+  };
+
+  static tc3TestValidator = (args: { inspectionNumber: number }) => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control?.parent) return null;
+      let areControlsEmpty: boolean[] = [];
+      let inspection = '';
+      // the inspection numbers for individual tests start form 1 so this checks if its an individual test or the control that contains the component
+      if (args.inspectionNumber !== 0) {
+        const tc3Type = control.parent?.get('tc3Type')?.value;
+        const tc3PeriodicNumber = control.parent?.get('tc3PeriodicNumber')?.value;
+        const tc3PeriodicExpiryDate = control.parent?.get('tc3PeriodicExpiryDate')?.value;
+        // areTc3FieldsEmpty takes an array of tc3 test values and checks that at least one of the fields is filled out for each test
+        areControlsEmpty = areTc3FieldsEmpty([{ tc3Type, tc3PeriodicExpiryDate, tc3PeriodicNumber }]);
+        inspection = args.inspectionNumber as unknown as string;
+        return areControlsEmpty.includes(true)
+          ? { tc3TestValidator: { message: `TC3 Subsequent inspection ${inspection} must have at least one populated field` } }
+          : null;
+      }
+      // this statement is the same logic but applied to the control that holds all of the tests.
+      // This allows the error to be displayed in the Global error service
+      if (!control.value) return null;
+      areControlsEmpty = areTc3FieldsEmpty(control.value);
+      areControlsEmpty.forEach((value, index) => {
+        if (value) {
+          if (inspection.length === 0) {
+            inspection = `${index + 1}`;
+          } else {
+            inspection += `, ${index + 1}`;
+          }
+        }
+      });
+      return areControlsEmpty.includes(true)
+        ? { tc3TestValidator: { message: `TC3 Subsequent inspection ${inspection} must have at least one populated field` } }
+        : null;
+    };
+  };
 }
 
 export type EnumValidatorOptions = {
@@ -498,4 +558,21 @@ export type IsArrayValidatorOptions = {
   ofType: string;
   requiredIndices: number[];
   whenEquals: { sibling: string, value: unknown[] }
+};
+
+const areTc3FieldsEmpty = (values: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }[]) => {
+  const isValueEmpty: boolean[] = [];
+
+  values.forEach((value) => {
+    if (
+      (value.tc3Type === null || value.tc3Type === undefined || value.tc3Type === '')
+      && (value.tc3PeriodicNumber === null || value.tc3PeriodicNumber === undefined || value.tc3PeriodicNumber === '')
+      && (value.tc3PeriodicExpiryDate === null || value.tc3PeriodicExpiryDate === undefined || value.tc3PeriodicExpiryDate === '')
+    ) {
+      isValueEmpty.push(true);
+    } else {
+      isValueEmpty.push(false);
+    }
+  });
+  return isValueEmpty;
 };

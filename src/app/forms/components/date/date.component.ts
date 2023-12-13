@@ -1,9 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import {
-  AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit, ViewChild,
+  AfterContentInit, ChangeDetectorRef, Component, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild,
 } from '@angular/core';
 import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   BehaviorSubject, Observable, Subscription, combineLatest,
 } from 'rxjs';
@@ -32,7 +33,9 @@ type Segments = {
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() displayTime = false;
   @Input() isoDate = true;
+  @Input() customError? = false;
   @ViewChild('dayModel') dayModel?: AbstractControlDirective;
+  @Output() blur = new EventEmitter<FocusEvent>();
 
   private day_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
   private month_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
@@ -56,6 +59,10 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public hour?: number;
   public minute?: number;
 
+  dayId = '';
+  monthId = '';
+  yearId = '';
+
   constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef, public globalErrorService: GlobalErrorService) {
     super(injector, changeDetectorRef);
     this.day$ = this.day_.asObservable();
@@ -72,6 +79,9 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 
   ngOnInit(): void {
     this.subscriptions.push(this.subscribeAndPropagateChanges());
+    this.dayId = `${this.customId ?? this.name}-day`;
+    this.monthId = `${this.customId ?? this.name}-month`;
+    this.yearId = `${this.customId ?? this.name}-year`;
   }
 
   override ngAfterContentInit(): void {
@@ -179,6 +189,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
    */
   addValidators() {
     this.control?.addValidators([DateValidators.validDate(this.displayTime, this.label)]);
+    this.control?.meta.validators?.push({ name: ValidatorNames.Custom, args: DateValidators.validDate(this.displayTime, this.label) });
   }
 
   validate() {

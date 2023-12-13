@@ -33,10 +33,12 @@ import { ViewCombinationComponent } from './components/view-combination/view-com
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
 import { AdrGuidanceNotesComponent } from './custom-sections/adr-guidance-notes/adr-guidance-notes.component';
+import { AdrTankStatementUnNumberComponent } from './custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
 import { AdrComponent } from './custom-sections/adr/adr.component';
 import { BodyComponent } from './custom-sections/body/body.component';
 import { CustomDefectComponent } from './custom-sections/custom-defect/custom-defect.component';
 import { CustomDefectsComponent } from './custom-sections/custom-defects/custom-defects.component';
+import { CustomFormControlComponent } from './custom-sections/custom-form-control/custom-form-control.component';
 import { DefectComponent } from './custom-sections/defect/defect.component';
 import { DefectsComponent } from './custom-sections/defects/defects.component';
 import { DimensionsComponent } from './custom-sections/dimensions/dimensions.component';
@@ -54,6 +56,9 @@ import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.direct
 import { NestingLevelDirective } from './directives/nesting-level/nesting-level.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
+import {
+  AdrTankDetailsSubsequentInspectionsComponent,
+} from './custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 
 @NgModule({
   declarations: [
@@ -106,6 +111,9 @@ import { SuffixDirective } from './directives/suffix.directive';
     AdrComponent,
     NestingLevelDirective,
     AdrGuidanceNotesComponent,
+    AdrTankDetailsSubsequentInspectionsComponent,
+    AdrTankStatementUnNumberComponent,
+    CustomFormControlComponent,
     AdrExaminerNotesHistoryComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
@@ -154,4 +162,4 @@ import { SuffixDirective } from './directives/suffix.directive';
     AdrComponent,
   ],
 })
-export class DynamicFormsModule {}
+export class DynamicFormsModule { }
