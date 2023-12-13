@@ -16,7 +16,7 @@ import { TagType, TagTypes } from '@shared/components/tag/tag.component';
 import { techRecord } from '@store/technical-records';
 import {
   Observable,
-  map, switchMap
+  map, switchMap,
 } from 'rxjs';
 
 @Component({
