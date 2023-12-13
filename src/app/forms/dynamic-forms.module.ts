@@ -53,6 +53,9 @@ import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.direct
 import { NestingLevelDirective } from './directives/nesting-level/nesting-level.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
+import {
+  AdrTankDetailsSubsequentInspectionsComponent,
+} from './custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +108,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     AdrComponent,
     NestingLevelDirective,
     AdrGuidanceNotesComponent,
+    AdrTankDetailsSubsequentInspectionsComponent,
     AdrTankStatementUnNumberComponent,
     CustomFormControlComponent,
   ],
@@ -154,4 +158,4 @@ import { SuffixDirective } from './directives/suffix.directive';
     AdrComponent,
   ],
 })
-export class DynamicFormsModule {}
+export class DynamicFormsModule { }

@@ -41,4 +41,6 @@ export enum ValidatorNames {
   HideGroupsWhenExcludes = 'hideGroupsWhenExcludes',
   AddWarningForAdrField = 'addWarningForAdrField',
   IsArray = 'isArray',
+  Custom = 'custom',
+  Tc3TestValidator = 'tc3TestValidator',
 }

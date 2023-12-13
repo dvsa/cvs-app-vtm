@@ -86,7 +86,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private viewportScroller: ViewportScroller,
     private store: Store,
     private loading: LoadingService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$

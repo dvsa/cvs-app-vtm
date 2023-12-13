@@ -367,9 +367,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
         techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: null,
         techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: null,
         techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: null,
-        techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type: null,
-        techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicNumber: null,
-        techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicExpiryDate: null,
+        techRecord_adrDetails_tank_tankDetails_tc3Details: null,
         techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: null,
         techRecord_adrDetails_tank_tankDetails_tankStatement_statement: null,
         techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
@@ -459,12 +457,12 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
       // If tank details 'product list' selected, null statement reference no.
       if (select === ADRTankDetailsTankStatementSelect.PRODUCT_LIST) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementStatement };
-        // If battery list applicable is no, null the battery list number
-        const { techRecord_adrDetails_listStatementApplicable: listStatementApplicable } = sanitisedEditingTechRecord;
-        if (!listStatementApplicable) {
-          sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
-        }
+      }
 
+      // If battery list applicable is no, null the battery list number
+      const { techRecord_adrDetails_listStatementApplicable: listStatementApplicable } = sanitisedEditingTechRecord;
+      if (!listStatementApplicable) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
       }
 
       return { ...state, editingTechRecord: sanitisedEditingTechRecord };
