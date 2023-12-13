@@ -140,7 +140,7 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(updateBody, (state, action) => handleUpdateBody(state, action)),
 
-  on(updateADRAdditionalExaminerNotes, (state: TechnicalRecordServiceState, action) => handleADRExaminerNoteChanges(state, action.username)),
+  on(updateADRAdditionalExaminerNotes, (state, action) => handleADRExaminerNoteChanges(state, action.username)),
 
   on(addAxle, (state) => handleAddAxle(state)),
   on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
@@ -435,21 +435,27 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 }
 
 function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, username: string) {
-  const editingTechRecord = state.vehicleTechRecord as unknown as
+  const { editingTechRecord } = state;
+  const additionalNoteTechRecord = editingTechRecord as unknown as
     (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>) & { techRecord_adrDetails_additionalExaminerNotes_note: string };
   if (editingTechRecord) {
-    if (editingTechRecord.techRecord_adrDetails_additionalExaminerNotes_note) {
+    console.log(1);
+    if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes_note) {
+      console.log(2);
       const additionalExaminerNotes = {
-        note: editingTechRecord.techRecord_adrDetails_additionalExaminerNotes_note,
+        note: additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes_note,
         lastUpdatedBy: username,
-        createdAtDate: Date.now().toString(),
+        createdAtDate: new Date().toISOString().split('T')[0],
       };
-      if (editingTechRecord.techRecord_adrDetails_additionalExaminerNotes === null
-        || editingTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
-        editingTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
+      console.log(3, additionalExaminerNotes);
+      if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === null
+        || additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
+        console.log(4);
+        additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
       }
-      editingTechRecord.techRecord_adrDetails_additionalExaminerNotes?.push(additionalExaminerNotes);
+      console.log(5);
+      additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes?.push(additionalExaminerNotes);
     }
   }
-  return { ...state };
+  return { ...state, editingTechRecord: additionalNoteTechRecord as unknown as (TechRecordType<'put'>) };
 }

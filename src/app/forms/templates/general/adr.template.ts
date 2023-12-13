@@ -353,6 +353,7 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
+      viewType: FormNodeViewTypes.ADR_EXAMINER_NOTES,
       component: AdrExaminerNotesHistoryComponent,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
