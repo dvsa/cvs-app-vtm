@@ -439,21 +439,16 @@ function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, userna
   const additionalNoteTechRecord = editingTechRecord as unknown as
     (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>) & { techRecord_adrDetails_additionalExaminerNotes_note: string };
   if (editingTechRecord) {
-    console.log(1);
     if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes_note) {
-      console.log(2);
       const additionalExaminerNotes = {
         note: additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes_note,
         lastUpdatedBy: username,
         createdAtDate: new Date().toISOString().split('T')[0],
       };
-      console.log(3, additionalExaminerNotes);
       if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === null
         || additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
-        console.log(4);
         additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
       }
-      console.log(5);
       additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes?.push(additionalExaminerNotes);
     }
   }

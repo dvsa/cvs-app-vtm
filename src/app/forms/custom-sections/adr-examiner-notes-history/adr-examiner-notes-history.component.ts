@@ -3,13 +3,12 @@ import {
   Component, inject, OnDestroy, OnInit,
 } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { FormArray, FormGroup, NgControl } from '@angular/forms';
+import { FormArray, NgControl } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { CustomControl, CustomFormControl } from '@forms/services/dynamic-form.types';
 import { KeyValue } from '@angular/common';
-import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
 
 @Component({
   selector: 'app-adr-examiner-notes-history',
