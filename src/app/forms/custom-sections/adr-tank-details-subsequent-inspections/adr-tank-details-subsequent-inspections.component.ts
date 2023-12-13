@@ -20,7 +20,7 @@ import {
   ReplaySubject,
   takeUntil,
 } from 'rxjs';
-import { CustomControlComponentComponent } from '../custom-control-component/custom-control-component.component';
+import { CustomFormControlComponent } from '../custom-form-control/custom-form-control.component';
 
 @Component({
   selector: 'app-adr-tank-details-subsequent-inspections',
@@ -28,7 +28,7 @@ import { CustomControlComponentComponent } from '../custom-control-component/cus
   styleUrls: ['./adr-tank-details-subsequent-inspections.component.scss'],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsSubsequentInspectionsComponent, multi: true }],
 })
-export class AdrTankDetailsSubsequentInspectionsComponent extends CustomControlComponentComponent implements OnInit, OnDestroy, AfterContentInit {
+export class AdrTankDetailsSubsequentInspectionsComponent extends CustomFormControlComponent implements OnInit, OnDestroy, AfterContentInit {
   destroy$ = new ReplaySubject<boolean>(1);
 
   formArray = new FormArray<CustomFormGroup>([]);

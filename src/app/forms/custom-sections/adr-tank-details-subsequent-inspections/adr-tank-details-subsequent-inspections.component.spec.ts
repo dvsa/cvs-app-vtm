@@ -53,7 +53,6 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
                 name: 'tc3Type',
                 type: FormNodeTypes.CONTROL,
                 label: 'TC3: Inspection Type',
-                // TO-DO: replace with enum
                 customId: `tc3Type[${1}]`,
               },
               {

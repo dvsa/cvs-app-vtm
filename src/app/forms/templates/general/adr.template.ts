@@ -510,7 +510,7 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       label: 'TC2: Inspection type',
-      value: TC2Types.INITIAL, // TO-DO: replace with enum
+      value: TC2Types.INITIAL,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
       validators: [],
