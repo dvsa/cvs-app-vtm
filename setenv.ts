@@ -12,6 +12,8 @@ require('dotenv').config({
 const environment = argv.environment;
 const isProduction = environment === 'prod';
 const isDevelop = environment === 'dev';
+const isIntegration = environment === 'integration';
+const isPreProd = environment === 'preprod';
 const targetPath = isProduction ? `./src/environments/environment.prod.ts` : `./src/environments/environment.deploy.ts`;
 const cypressPath = 'cypress.env.json';
 
@@ -20,6 +22,8 @@ const cypressPath = 'cypress.env.json';
 const environmentFileContent = `export const environment = {
     production: ${isProduction},
     isDevelop: ${isDevelop},
+    isIntegration: ${isIntegration},
+    isPreProd: ${isPreProd},
     RemoveAADFullAccessRole: ${process.env['RemoveAADFullAccessRole']},
     EnableDevTools: ${process.env['EnableDevTools']},
     VTM_CLIENT_ID: "${process.env['VTM_CLIENT_ID']}",
