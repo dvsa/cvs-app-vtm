@@ -9,7 +9,6 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { UserService } from '@services/user-service/user-service';
 
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { DateValidators } from '@forms/validators/date/date.validators';
@@ -60,7 +59,6 @@ export class AdrComponent implements OnInit {
   constructor(
     private dfs: DynamicFormService,
     private technicalRecordService: TechnicalRecordService,
-    private userService: UserService,
   ) { }
 
   ngOnInit(): void {
