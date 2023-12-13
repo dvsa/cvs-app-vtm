@@ -346,9 +346,12 @@ export const AdrTemplate: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 1024 },
+      ],
     },
     {
-      name: 'techRecord_adrDetails_examinerNoteHistory',
+      name: 'techRecord_adrDetails_additionalExaminerNotes',
       label: 'Additional examiner notes history',
       value: null,
       type: FormNodeTypes.CONTROL,
