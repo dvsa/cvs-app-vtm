@@ -449,7 +449,7 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo',
       label: 'Reference number',
       type: FormNodeTypes.CONTROL,
-      groups: ['productList', 'statement_select', 'dangerous_goods'],
+      groups: ['productList', 'statement_select', 'tank_details', 'dangerous_goods'],
       hide: true,
       customErrorMessage: 'Reference number or UN number is required when selecting Product List',
       validators: [
