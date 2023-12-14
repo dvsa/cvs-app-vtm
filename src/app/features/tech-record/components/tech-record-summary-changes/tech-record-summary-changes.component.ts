@@ -30,13 +30,14 @@ import {
   editingTechRecord,
   selectTechRecordChanges,
   selectTechRecordDeletions,
-  techRecord,
+  techRecord, updateADRAdditionalExaminerNotes,
   updateTechRecord,
   updateTechRecordSuccess,
 } from '@store/technical-records';
 import {
   Subject, combineLatest, map, take, takeUntil,
 } from 'rxjs';
+import { UserService } from '@services/user-service/user-service';
 
 @Component({
   selector: 'app-tech-record-summary-changes',
@@ -54,6 +55,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   techRecordChangesKeys: string[] = [];
 
   sectionsWhitelist: string[] = [];
+  username = '';
 
   constructor(
     public store$: Store<State>,
@@ -63,6 +65,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public routerService: RouterService,
     public actions$: Actions,
+    public userService$: UserService,
   ) { }
 
   ngOnInit(): void {
@@ -81,6 +84,9 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   }
 
   initSubscriptions(): void {
+    this.userService$.name$.pipe(takeUntil(this.destroy$)).subscribe((name) => {
+      this.username = name;
+    });
     this.store$
       .select(techRecord)
       .pipe(take(1), takeUntil(this.destroy$))
@@ -164,6 +170,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(([systemNumber, createdTimestamp]) => {
         if (systemNumber && createdTimestamp) {
+          this.store$.dispatch(updateADRAdditionalExaminerNotes({ username: this.username }));
           this.store$.dispatch(clearADRDetailsBeforeUpdate());
           this.store$.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
         }
