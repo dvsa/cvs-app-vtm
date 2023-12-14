@@ -20,24 +20,26 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.ADRINSPECTIONS">
-      <table>
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header"></th>
-            <th scope="col" class="govuk-table__header">TC3: Inspection Type</th>
-            <th scope="col" class="govuk-table__header">TC3: Certificate Number</th>
-            <th scope="col" class="govuk-table__header">TC3: Expiry Date</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          <tr class="govuk-table__row" *ngFor="let result of value; let i = index">
-            <td class="govuk-table__cell">{{ i + 1 }}</td>
-            <td class="govuk-table__cell">{{ result.tc3Type }}</td>
-            <td class="govuk-table__cell">{{ result.tc3PeriodicNumber }}</td>
-            <td class="govuk-table__cell">{{ result.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <ng-container *ngIf="value && value.length > 0">
+        <table>
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header"></th>
+              <th scope="col" class="govuk-table__header">TC3: Inspection Type</th>
+              <th scope="col" class="govuk-table__header">TC3: Certificate Number</th>
+              <th scope="col" class="govuk-table__header">TC3: Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row" *ngFor="let result of value; let i = index">
+              <td class="govuk-table__cell">{{ i + 1 }}</td>
+              <td class="govuk-table__cell">{{ result.tc3Type }}</td>
+              <td class="govuk-table__cell">{{ result.tc3PeriodicNumber }}</td>
+              <td class="govuk-table__cell">{{ result.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
     </ng-container>
 
     <ng-container *ngSwitchDefault>

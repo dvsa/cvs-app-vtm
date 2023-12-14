@@ -561,13 +561,6 @@ export const AdrTemplate: FormNode = {
       groups: ['tank_details', 'dangerous_goods'],
       validators: [
         {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-        {
           name: ValidatorNames.Tc3TestValidator,
           args: { inspectionNumber: 0 },
         },
