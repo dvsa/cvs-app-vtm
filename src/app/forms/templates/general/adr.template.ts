@@ -364,6 +364,20 @@ export const AdrTemplate: FormNode = {
             value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
           },
         },
+        {
+          name: ValidatorNames.ShowGroupsWhenEqualTo,
+          args: {
+            values: [ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER],
+            groups: ['statement_select'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenEqualTo,
+          args: {
+            values: [ADRTankStatementSubstancePermitted.UNDER_TANK_CODE],
+            groups: ['statement_select'],
+          },
+        },
       ],
     },
     {
@@ -372,7 +386,7 @@ export const AdrTemplate: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      groups: ['tank_details', 'dangerous_goods'],
+      groups: ['statement_select', 'tank_details', 'dangerous_goods'],
       hide: true,
       options: getOptionsFromEnum(ADRTankDetailsTankStatementSelect),
       validators: [
@@ -417,7 +431,7 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_statement',
       label: 'Reference number',
       type: FormNodeTypes.CONTROL,
-      groups: ['statement', 'tank_details', 'dangerous_goods'],
+      groups: ['statement_select', 'statement', 'tank_details', 'dangerous_goods'],
       hide: true,
       customErrorMessage: 'Reference number is required when selecting Statement',
       validators: [
@@ -435,7 +449,7 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo',
       label: 'Reference number',
       type: FormNodeTypes.CONTROL,
-      groups: ['productList', 'tank_details', 'dangerous_goods'],
+      groups: ['statement_select', 'productList', 'tank_details', 'dangerous_goods'],
       hide: true,
       customErrorMessage: 'Reference number or UN number is required when selecting Product List',
       validators: [
@@ -455,7 +469,7 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
       component: AdrTankStatementUnNumberComponent,
-      groups: ['productList', 'tank_details', 'dangerous_goods'],
+      groups: ['statement_select', 'productList', 'tank_details', 'dangerous_goods'],
       hide: true,
       customErrorMessage: 'Reference number or UN number is required when selecting Product List',
       validators: [
@@ -470,7 +484,7 @@ export const AdrTemplate: FormNode = {
       label: 'Additional Details',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXTAREA,
-      groups: ['productList', 'tank_details', 'dangerous_goods'],
+      groups: ['statement_select', 'productList', 'tank_details', 'dangerous_goods'],
       hide: true,
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
