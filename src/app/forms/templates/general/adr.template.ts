@@ -431,7 +431,7 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_statement',
       label: 'Reference number',
       type: FormNodeTypes.CONTROL,
-      groups: ['statement_select', 'statement', 'tank_details', 'dangerous_goods'],
+      groups: ['statement', 'statement_select', 'tank_details', 'dangerous_goods'],
       hide: true,
       customErrorMessage: 'Reference number is required when selecting Statement',
       validators: [
@@ -449,7 +449,7 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo',
       label: 'Reference number',
       type: FormNodeTypes.CONTROL,
-      groups: ['statement_select', 'productList', 'tank_details', 'dangerous_goods'],
+      groups: ['productList', 'statement_select', 'dangerous_goods'],
       hide: true,
       customErrorMessage: 'Reference number or UN number is required when selecting Product List',
       validators: [
@@ -469,7 +469,7 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
       component: AdrTankStatementUnNumberComponent,
-      groups: ['statement_select', 'productList', 'tank_details', 'dangerous_goods'],
+      groups: ['productList', 'statement_select', 'tank_details', 'dangerous_goods'],
       hide: true,
       customErrorMessage: 'Reference number or UN number is required when selecting Product List',
       validators: [
@@ -484,7 +484,7 @@ export const AdrTemplate: FormNode = {
       label: 'Additional Details',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXTAREA,
-      groups: ['statement_select', 'productList', 'tank_details', 'dangerous_goods'],
+      groups: ['productList', 'statement_select', 'tank_details', 'dangerous_goods'],
       hide: true,
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
@@ -499,7 +499,7 @@ export const AdrTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.MaxLength, args: 1024 },
       ],
-      groups: ['dangerous_goods', 'battery_list'],
+      groups: ['dangerous_goods', 'tank_details'],
     },
     {
       name: 'tankInspectionsSectionTitle',
