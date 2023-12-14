@@ -1,6 +1,7 @@
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
+import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
@@ -388,6 +389,12 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
         techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
       };
 
+      const nulledSubstancesPermittedUNNumber = {
+        techRecord_adrDetails_tank_tankDetails_tankStatement_select: null,
+        ...nulledTankStatementStatement,
+        ...nulledTankStatementProductList,
+      };
+
       const nulledBatteryListNumber = {
         techRecord_adrDetails_batteryListNumber: null,
       };
@@ -460,6 +467,12 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
       // If tank details 'product list' selected, null statement reference no.
       if (select === ADRTankDetailsTankStatementSelect.PRODUCT_LIST) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementStatement };
+      }
+
+      // If tank details 'substances permitted' has 'tank code' option selected, null UN and product list reference no.
+      const { techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: substancesPermitted } = sanitisedEditingTechRecord;
+      if (substancesPermitted === ADRTankStatementSubstancePermitted.UNDER_TANK_CODE) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledSubstancesPermittedUNNumber };
       }
 
       // If battery list applicable is no, null the battery list number

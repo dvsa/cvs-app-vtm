@@ -103,7 +103,7 @@ export class AdrTankDetailsSubsequentInspectionsComponent extends CustomFormCont
       }),
     });
 
-    newFormGroup.get('tc3PeriodicNumber')?.addValidators(Validators.maxLength(10));
+    newFormGroup.get('tc3PeriodicNumber')?.addValidators(Validators.maxLength(75));
     newFormGroup.get('tc3PeriodicExpiryDate')?.addValidators(
       CustomValidators.tc3TestValidator({ inspectionNumber: index + 1 }),
     );

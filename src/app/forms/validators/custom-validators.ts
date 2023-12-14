@@ -399,7 +399,6 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       if (values && !values.some((value) => control.value?.includes(value))) return null;
       this.setHidePropertyForGroups(control, groups, false);
-
       return null;
     };
   };

@@ -219,7 +219,15 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       ?.map((vehicleTemplate) => ({
         ...this.toVisibleFormNode(vehicleTemplate),
         children: vehicleTemplate.children
-          ?.filter((child) => this.techRecordChangesKeys.includes(child.name))
+          ?.filter((child) => {
+            if (child.name === 'techRecord_adrDetails_additionalExaminerNotes_note') {
+              child.viewType = undefined;
+            }
+            if (child.name === 'techRecord_adrDetails_additionalExaminerNotes') {
+              child.viewType = FormNodeViewTypes.HIDDEN;
+            }
+            return this.techRecordChangesKeys.includes(child.name);
+          })
           .map((child) => this.toVisibleFormNode(child)),
       }))
       .filter((section) => Boolean(section && section.children && section.children.length > 0) || this.sectionsWhitelist.includes(section.name));
