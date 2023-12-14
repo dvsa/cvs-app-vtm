@@ -173,12 +173,14 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
           this.store$.dispatch(updateADRAdditionalExaminerNotes({ username: this.username }));
           this.store$.dispatch(clearADRDetailsBeforeUpdate());
           this.store$.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
+          this.clearTemplate();
         }
       });
   }
 
   cancel() {
     this.globalErrorService.clearErrors();
+    this.clearTemplate();
     void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
@@ -219,18 +221,18 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
       ?.map((vehicleTemplate) => ({
         ...this.toVisibleFormNode(vehicleTemplate),
         children: vehicleTemplate.children
-          ?.filter((child) => this.techRecordChangesKeys.includes(child.name))
+          ?.filter((child) => {
+            if (child.name === 'techRecord_adrDetails_additionalExaminerNotes_note') {
+              child.viewType = undefined;
+            }
+            if (child.name === 'techRecord_adrDetails_additionalExaminerNotes') {
+              child.viewType = FormNodeViewTypes.HIDDEN;
+            }
+            return this.techRecordChangesKeys.includes(child.name);
+          })
           .map((child) => this.toVisibleFormNode(child)),
       }))
-      .filter((section) => {
-        if (section.name === 'techRecord_adrDetails_additionalExaminerNotes_note') {
-          section.viewType = undefined;
-        }
-        if (section.name === 'techRecord_adrDetails_additionalExaminerNotes') {
-          section.viewType = FormNodeViewTypes.HIDDEN;
-        }
-        return Boolean(section && section.children && section.children.length > 0) || this.sectionsWhitelist.includes(section.name);
-      });
+      .filter((section) => Boolean(section && section.children && section.children.length > 0) || this.sectionsWhitelist.includes(section.name));
   }
 
   toVisibleFormNode(node: FormNode): FormNode {
@@ -242,4 +244,5 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     if (typeof value === 'object' && value !== null) return Object.values(value).length > 0;
     return true;
   }
+
 }
