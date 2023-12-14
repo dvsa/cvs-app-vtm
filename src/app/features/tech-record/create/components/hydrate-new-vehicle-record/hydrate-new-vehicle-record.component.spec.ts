@@ -13,6 +13,7 @@ import { initialAppState } from '@store/index';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
 import { createVehicleRecordSuccess } from '@store/technical-records';
 import { firstValueFrom, of, ReplaySubject } from 'rxjs';
+import { UserService } from '@services/user-service/user-service';
 import { HydrateNewVehicleRecordComponent } from './hydrate-new-vehicle-record.component';
 
 describe('HydrateNewVehicleRecordComponent', () => {
@@ -27,7 +28,16 @@ describe('HydrateNewVehicleRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HydrateNewVehicleRecordComponent],
-      providers: [provideMockActions(() => actions$), provideMockStore({ initialState: initialAppState })],
+      providers: [
+        provideMockActions(() => actions$),
+        provideMockStore({ initialState: initialAppState }),
+        {
+          provide: UserService,
+          useValue: {
+            name$: of('tester'),
+          },
+        },
+      ],
       imports: [HttpClientTestingModule, RouterTestingModule],
     }).compileComponents();
   });
