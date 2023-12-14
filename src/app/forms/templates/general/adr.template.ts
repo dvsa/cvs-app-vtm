@@ -1,6 +1,10 @@
-import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
+import {
+  ADRAdditionalNotesNumber,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
-import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
+import {
+  ADRCompatibilityGroupJ,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
@@ -13,7 +17,14 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC2Types } from '@models/adr.enum';
 import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+  AdrExaminerNotesHistoryComponent,
+} from '@forms/custom-sections/adr-examiner-notes-history/adr-examiner-notes-history.component';
+import {
+  FormNode,
+  FormNodeEditTypes,
+  FormNodeTypes,
+  FormNodeViewTypes,
+  FormNodeWidth,
 } from '../../services/dynamic-form.types';
 
 export const AdrTemplate: FormNode = {
@@ -713,6 +724,30 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOX,
       groups: ['declarations_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_additionalExaminerNotes_note',
+      label: 'Additional Examiner Notes',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXTAREA,
+      viewType: FormNodeViewTypes.HIDDEN,
+      groups: ['adr_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 1024 },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_additionalExaminerNotes',
+      label: 'Additional examiner notes history',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CUSTOM,
+      viewType: FormNodeViewTypes.ADR_EXAMINER_NOTES,
+      component: AdrExaminerNotesHistoryComponent,
+      groups: ['adr_details', 'dangerous_goods'],
       hide: true,
     },
   ],

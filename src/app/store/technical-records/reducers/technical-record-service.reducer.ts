@@ -2,13 +2,14 @@ import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enu
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
+import { TechRecordType as NonVerbTechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   clearBatch,
   setApplicationId,
@@ -51,7 +52,7 @@ import {
   removeSectionState,
   unarchiveTechRecord,
   unarchiveTechRecordFailure,
-  unarchiveTechRecordSuccess,
+  unarchiveTechRecordSuccess, updateADRAdditionalExaminerNotes,
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
@@ -139,6 +140,8 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateBrakeForces, (state, action) => handleUpdateBrakeForces(state, action)),
 
   on(updateBody, (state, action) => handleUpdateBody(state, action)),
+
+  on(updateADRAdditionalExaminerNotes, (state, action) => handleADRExaminerNoteChanges(state, action.username)),
 
   on(addAxle, (state) => handleAddAxle(state)),
   on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
@@ -471,4 +474,25 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
   }
 
   return { ...state };
+}
+
+function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, username: string) {
+  const { editingTechRecord } = state;
+  const additionalNoteTechRecord = editingTechRecord as unknown as
+    (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>) & { techRecord_adrDetails_additionalExaminerNotes_note: string };
+  if (editingTechRecord) {
+    if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes_note) {
+      const additionalExaminerNotes = {
+        note: additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes_note,
+        lastUpdatedBy: username,
+        createdAtDate: new Date().toISOString().split('T')[0],
+      };
+      if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === null
+        || additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
+        additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
+      }
+      additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes?.push(additionalExaminerNotes);
+    }
+  }
+  return { ...state, editingTechRecord: additionalNoteTechRecord as unknown as (TechRecordType<'put'>) };
 }

@@ -98,6 +98,8 @@ export const clearScrollPosition = createAction(`${prefix} clearScrollPosition`)
 
 export const clearADRDetailsBeforeUpdate = createAction(`${prefix} clearADRDetailsBeforeUpdate`);
 
+export const updateADRAdditionalExaminerNotes = createAction(`${prefix} handleADRExaminerNoteChanges`, props<{ username: string }>());
+
 function createOutcomeAction<T extends boolean>(
   title: string,
   isSuccess: T,
