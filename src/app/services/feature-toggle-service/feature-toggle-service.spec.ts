@@ -44,16 +44,17 @@ describe('feature toggle service', () => {
 
   describe('getConfig', () => {
     it('should return the correct feature toggle config', () => {
-      environment.isDevelop = true;
+      environment.ENVIRONMENT = 'dev';
       expect(service.getConfig()).toBe('assets/featureToggle.json');
 
-      environment.isDevelop = false;
-      environment.isIntegration = true;
+      environment.ENVIRONMENT = 'integration';
       expect(service.getConfig()).toBe('assets/featureToggle.int.json');
 
-      environment.isIntegration = false;
-      environment.isPreProd = true;
+      environment.ENVIRONMENT = 'preprod';
       expect(service.getConfig()).toBe('assets/featureToggle.preprod.json');
+
+      environment.ENVIRONMENT = 'prop';
+      expect(service.getConfig()).toBe('assets/featureToggle.prod.json');
     });
   });
 

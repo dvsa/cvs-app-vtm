@@ -23,10 +23,16 @@ export class FeatureToggleService {
   }
 
   getConfig() {
-    if (environment.isDevelop) return 'assets/featureToggle.json';
-    if (environment.isIntegration) return 'assets/featureToggle.int.json';
-    if (environment.isPreProd) return 'assets/featureToggle.preprod.json';
-    return 'assets/featureToggle.prod.json';
+    switch (environment.ENVIRONMENT) {
+      case 'dev':
+        return 'assets/featureToggle.json';
+      case 'integration':
+        return 'assets/featureToggle.int.json';
+      case 'preprod':
+        return 'assets/featureToggle.preprod.json';
+      default:
+        return 'assets/featureToggle.prod.json';
+    }
   }
 
   isFeatureEnabled(key: string) {
