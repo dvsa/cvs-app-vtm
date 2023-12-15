@@ -11,6 +11,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
+import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import {
@@ -34,6 +35,12 @@ describe('TechRecordSummaryChangesComponent', () => {
       providers: [
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
+        {
+          provide: UserService,
+          useValue: {
+            name$: of('tester'),
+          },
+        },
         {
           provide: RouterService,
           useValue: {

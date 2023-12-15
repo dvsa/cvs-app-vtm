@@ -19,25 +19,51 @@
       </dd>
     </ng-container>
 
-    <ng-container *ngSwitchCase="formNodeViewTypes.ADRINSPECTIONS">
-      <table>
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header"></th>
-            <th scope="col" class="govuk-table__header">TC3: Inspection Type</th>
-            <th scope="col" class="govuk-table__header">TC3: Certificate Number</th>
-            <th scope="col" class="govuk-table__header">TC3: Expiry Date</th>
-          </tr>
-        </thead>
+    <ng-container *ngSwitchCase="formNodeViewTypes.ADR_EXAMINER_NOTES">
+      <table class="govuk-table" *ngIf="value && value.length > 0">
         <tbody class="govuk-table__body">
-          <tr class="govuk-table__row" *ngFor="let result of value; let i = index">
-            <td class="govuk-table__cell">{{ i + 1 }}</td>
-            <td class="govuk-table__cell">{{ result.tc3Type }}</td>
-            <td class="govuk-table__cell">{{ result.tc3PeriodicNumber }}</td>
-            <td class="govuk-table__cell">{{ result.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
+          <tr>
+            <th scope="col" class="govuk-table__header">Date</th>
+            <th scope="col" class="govuk-table__header">Created By</th>
+            <th scope="col" class="govuk-table__header">Notes</th>
+          </tr>
+          <tr *ngFor="let result of value; let isLast = last">
+            <td class="govuk-table__cell break-words" [class.border-b-0]="isLast">{{ result.createdAtDate }}</td>
+            <td class="govuk-table__cell break-words" [class.border-b-0]="isLast">{{ result.lastUpdatedBy }}</td>
+            <td class="govuk-table__cell break-words" [class.border-b-0]="isLast">{{ result.note }}</td>
           </tr>
         </tbody>
       </table>
+      <dl class="govuk-summary-list" *ngIf="!value || value.length === 0">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+        </div>
+      </dl>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="formNodeViewTypes.ADRINSPECTIONS">
+      <ng-container *ngIf="value && value.length > 0">
+        <table>
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header"></th>
+              <th scope="col" class="govuk-table__header">TC3: Inspection Type</th>
+              <th scope="col" class="govuk-table__header">TC3: Certificate Number</th>
+              <th scope="col" class="govuk-table__header">TC3: Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row" *ngFor="let result of value; let i = index; let isLast = last">
+              <td class="govuk-table__cell break-words" [class.border-b-0]="isLast">{{ i + 1 }}</td>
+              <td class="govuk-table__cell break-words" [class.border-b-0]="isLast">{{ result.tc3Type }}</td>
+              <td class="govuk-table__cell break-words" [class.border-b-0]="isLast">{{ result.tc3PeriodicNumber }}</td>
+              <td class="govuk-table__cell break-words" [class.border-b-0]="isLast">
+                {{ result.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
     </ng-container>
 
     <ng-container *ngSwitchDefault>
