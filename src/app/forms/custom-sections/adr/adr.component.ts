@@ -12,6 +12,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { DateValidators } from '@forms/validators/date/date.validators';
+import { AdrSummaryTemplate } from '@forms/templates/general/adr-summary.template';
 
 @Component({
   selector: 'app-adr',
@@ -22,8 +23,9 @@ export class AdrComponent implements OnInit {
   @Input() techRecord!: TechRecordType<'hgv'> | TechRecordType<'trl'> | TechRecordType<'lgv'>;
   @Input() isEditing = false;
   @Input() disableLoadOptions = false;
+  @Input() isReviewScreen = false;
 
-  public template = AdrTemplate;
+  public template = !this.isReviewScreen ? AdrTemplate : AdrSummaryTemplate;
   public form!: CustomFormGroup;
   public adrDetails = [
     'techRecord_adrDetails_applicantDetails_city',
