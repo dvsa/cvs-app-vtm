@@ -404,8 +404,8 @@ export const AdrTemplate: FormNode = {
         {
           name: ValidatorNames.RequiredIfEquals,
           args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted',
+            value: [ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER],
           },
         },
         {
