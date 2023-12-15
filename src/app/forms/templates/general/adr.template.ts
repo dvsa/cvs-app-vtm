@@ -743,6 +743,7 @@ export const AdrTemplate: FormNode = {
     {
       name: 'techRecord_adrDetails_additionalExaminerNotes_note',
       label: 'Additional Examiner Notes',
+      hint: 'Will not be present on the ADR certificate',
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXTAREA,

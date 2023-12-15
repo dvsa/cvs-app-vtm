@@ -504,7 +504,7 @@ function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, userna
         || additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
         additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
       }
-      additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes?.push(additionalExaminerNotes);
+      additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes?.unshift(additionalExaminerNotes);
     }
   }
   return { ...state, editingTechRecord: additionalNoteTechRecord as unknown as (TechRecordType<'put'>) };
