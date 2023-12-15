@@ -12,6 +12,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { DateValidators } from '@forms/validators/date/date.validators';
+import { AdrSummaryTemplate } from '@forms/templates/general/adr-summary.template';
 
 @Component({
   selector: 'app-adr',
@@ -22,6 +23,7 @@ export class AdrComponent implements OnInit {
   @Input() techRecord!: TechRecordType<'hgv'> | TechRecordType<'trl'> | TechRecordType<'lgv'>;
   @Input() isEditing = false;
   @Input() disableLoadOptions = false;
+  @Input() isReviewScreen = false;
 
   public template = AdrTemplate;
   public form!: CustomFormGroup;
@@ -62,6 +64,9 @@ export class AdrComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.isReviewScreen) {
+      this.template = AdrSummaryTemplate;
+    }
     this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
     this.checkForAdrFields();
     this.checkForTankStatement();
