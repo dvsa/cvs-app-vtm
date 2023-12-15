@@ -153,7 +153,6 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     if (this.techRecordEdited?.techRecord_vehicleType === 'psv' && this.techRecordDeletions) {
       return Object.values((this.techRecordDeletions as Partial<TechRecordGETPSV>).techRecord_axles ?? {}) as [PSVAxles, ...PSVAxles[]];
     }
-
     return [] as HGVAxles[] | TRLAxles[] | PSVAxles[];
   }
 
