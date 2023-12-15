@@ -20,7 +20,7 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.ADR_EXAMINER_NOTES">
-      <table class="govuk-table" *ngIf="value || value.length > 0">
+      <table class="govuk-table" *ngIf="value && value.length > 0">
         <tbody class="govuk-table__body">
           <tr>
             <th scope="col" class="govuk-table__header">Date</th>
