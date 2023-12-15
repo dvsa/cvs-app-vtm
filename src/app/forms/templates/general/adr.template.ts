@@ -8,6 +8,9 @@ import {
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
+import {
+  AdrExaminerNotesHistoryComponent,
+} from '@forms/custom-sections/adr-examiner-notes-history/adr-examiner-notes-history.component';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
   AdrTankDetailsSubsequentInspectionsComponent,
@@ -16,9 +19,6 @@ import { AdrTankStatementUnNumberComponent } from '@forms/custom-sections/adr-ta
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC2Types } from '@models/adr.enum';
-import {
-  AdrExaminerNotesHistoryComponent,
-} from '@forms/custom-sections/adr-examiner-notes-history/adr-examiner-notes-history.component';
 import {
   FormNode,
   FormNodeEditTypes,
@@ -447,13 +447,6 @@ export const AdrTemplate: FormNode = {
       customErrorMessage: 'Reference number is required when selecting Statement',
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
-            value: [ADRTankDetailsTankStatementSelect.STATEMENT],
-          },
-        },
       ],
     },
     {
