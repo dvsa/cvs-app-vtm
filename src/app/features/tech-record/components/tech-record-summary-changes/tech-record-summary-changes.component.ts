@@ -173,14 +173,12 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
           this.store$.dispatch(updateADRAdditionalExaminerNotes({ username: this.username }));
           this.store$.dispatch(clearADRDetailsBeforeUpdate());
           this.store$.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
-          this.clearTemplate();
         }
       });
   }
 
   cancel() {
     this.globalErrorService.clearErrors();
-    this.clearTemplate();
     void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
