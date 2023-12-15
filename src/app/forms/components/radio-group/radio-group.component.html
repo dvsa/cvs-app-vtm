@@ -1,4 +1,4 @@
-<div [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
+<div [ngClass]="{ 'govuk-form-group': !noBottomMargin }" [id]="control?.meta?.name">
   <fieldset class="govuk-fieldset" [disabled]="disabled">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
       <h1 class="govuk-fieldset__heading">
@@ -23,6 +23,7 @@
           [value]="option.value"
           [(ngModel)]="value"
           (ngModelChange)="onChange($event)"
+          (blur)="control?.markAsTouched()"
         />
 
         <label class="govuk-label govuk-radios__label" [for]="name + '-' + option.value + '-radio'"> {{ option.label }} </label>
