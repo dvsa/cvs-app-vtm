@@ -18,7 +18,7 @@ const cypressPath = 'cypress.env.json';
 // in the process.env object thanks to dotenv
 const environmentFileContent = `export const environment = {
     production: ${isProduction},
-    ENVIRONMENT: '${environment}',
+    TARGET_ENV: '${environment}',
     RemoveAADFullAccessRole: ${process.env['RemoveAADFullAccessRole']},
     EnableDevTools: ${process.env['EnableDevTools']},
     VTM_CLIENT_ID: "${process.env['VTM_CLIENT_ID']}",

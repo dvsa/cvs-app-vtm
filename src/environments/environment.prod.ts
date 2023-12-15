@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  ENVIRONMENT: 'prod',
+  TARGET_ENV: 'prod',
   RemoveAADFullAccessRole: true,
   EnableDevTools: false,
   VTM_CLIENT_ID: '',

@@ -23,7 +23,7 @@ export class FeatureToggleService {
   }
 
   getConfig() {
-    switch (environment.ENVIRONMENT) {
+    switch (environment.TARGET_ENV) {
       case 'dev':
         return 'assets/featureToggle.json';
       case 'integration':
