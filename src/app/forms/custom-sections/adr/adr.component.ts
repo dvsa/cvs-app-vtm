@@ -25,7 +25,7 @@ export class AdrComponent implements OnInit {
   @Input() disableLoadOptions = false;
   @Input() isReviewScreen = false;
 
-  public template = !this.isReviewScreen ? AdrTemplate : AdrSummaryTemplate;
+  public template = AdrTemplate;
   public form!: CustomFormGroup;
   public adrDetails = [
     'techRecord_adrDetails_applicantDetails_city',
@@ -64,6 +64,9 @@ export class AdrComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.isReviewScreen) {
+      this.template = AdrSummaryTemplate;
+    }
     this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
     this.checkForAdrFields();
     this.checkForTankStatement();
