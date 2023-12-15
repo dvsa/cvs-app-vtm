@@ -17,7 +17,7 @@
         <th>Notes</th>
       </tr>
       <tr *ngFor="let examinerNote of this.getAdditionalExaminerNotes()">
-        <td class="govuk-table__cell">{{ examinerNote.createdAtDate }}</td>
+        <td class="govuk-table__cell">{{ examinerNote.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
         <td class="govuk-table__cell">{{ examinerNote.lastUpdatedBy }}</td>
         <td class="govuk-table__cell">{{ examinerNote.note }}</td>
       </tr>

@@ -14,6 +14,8 @@ on:
     secrets:
       AWS_MGMT_ROLE:
         required: true
+      AWS_ADMIN_ROLE:
+        required: true
       SENTRY_AUTH_TOKEN:
         required: true
 
@@ -41,7 +43,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
           aws-region: eu-west-1
-          role-session-name: GHA-VTMDeploy
+          role-session-name: GHA-VTM-Config
 
       - name: Get app config from AWS Secrets Manager
         run: aws secretsmanager get-secret-value --secret-id ${{ inputs.environment }}/vtm/config --query SecretString --region=eu-west-1 --output text > src/environments/environment.deploy.ts
@@ -67,7 +69,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
           aws-region: eu-west-1
-          role-session-name: GHA-VTMDeploy
+          role-session-name: GHA-VTM-Secrets
 
       - name: Get secrets from AWS
         uses: aws-actions/aws-secretsmanager-get-secrets@v1
@@ -80,6 +82,13 @@ jobs:
         with:
           name: VTM-App-build-output
           path: dist/
+
+      - name: Get AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ADMIN_ROLE }}
+          aws-region: eu-west-1
+          role-session-name: GHA-VTM-Upload
 
       - name: Upload App to S3
         working-directory: dist/

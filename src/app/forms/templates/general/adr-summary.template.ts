@@ -27,7 +27,7 @@ import {
   FormNodeWidth,
 } from '../../services/dynamic-form.types';
 
-export const AdrTemplate: FormNode = {
+export const AdrSummaryTemplate: FormNode = {
   name: 'adrSection',
   type: FormNodeTypes.SECTION,
   label: 'ADR',
@@ -404,8 +404,8 @@ export const AdrTemplate: FormNode = {
         {
           name: ValidatorNames.RequiredIfEquals,
           args: {
-            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted',
-            value: [ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER],
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
           },
         },
         {
@@ -746,7 +746,6 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXTAREA,
-      viewType: FormNodeViewTypes.HIDDEN,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
       validators: [
@@ -759,7 +758,7 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
-      viewType: FormNodeViewTypes.ADR_EXAMINER_NOTES,
+      viewType: FormNodeViewTypes.HIDDEN,
       component: AdrExaminerNotesHistoryComponent,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,

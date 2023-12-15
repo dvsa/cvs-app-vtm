@@ -1,4 +1,4 @@
-name: Build and Deploy VTM App to Develop
+name: Build and Deploy VTM App to Integration
 run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
 
 on:
@@ -13,4 +13,5 @@ jobs:
       bucket: '.integration'
     secrets:
       AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
+      AWS_ADMIN_ROLE: ${{ secrets.AWS_NONPROD_ROLE }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
