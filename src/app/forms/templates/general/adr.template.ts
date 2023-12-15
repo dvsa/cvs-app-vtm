@@ -444,7 +444,6 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       groups: ['statement', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
-      customErrorMessage: 'Reference number is required when selecting Statement',
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
       ],
