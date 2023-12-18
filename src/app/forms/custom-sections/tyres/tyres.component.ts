@@ -23,17 +23,18 @@ import {
   Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectAllReferenceDataByResourceType } from '@store/reference-data';
 import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import {
+  Observable,
   ReplaySubject,
   filter,
-  takeUntil, Observable,
+  takeUntil,
 } from 'rxjs';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
   selector: 'app-tyres',
@@ -82,7 +83,6 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       .pipe(takeUntil(this.destroy$), filter(Boolean)).subscribe(((data) => {
         this.tyresReferenceData = data as ReferenceDataTyre[];
       }));
-    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
 
     this.loadIndex$.pipe(takeUntil(this.destroy$)).subscribe((value): void => {
       this.loadIndexValues = value;
