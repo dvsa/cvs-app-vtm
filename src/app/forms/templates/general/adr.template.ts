@@ -45,7 +45,7 @@ export const AdrTemplate: FormNode = {
       ],
       validators: [
         { name: ValidatorNames.ShowGroupsWhenEqualTo, args: { values: [true], groups: ['dangerous_goods'] } },
-        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['dangerous_goods'] } },
+        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['dangerous_goods', 'dangerous_goods_hide'] } },
         { name: ValidatorNames.AddWarningForAdrField, args: 'By selecting this field it will delete all previous ADR field inputs' },
       ],
     },
@@ -156,7 +156,7 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.HideGroupsWhenExcludes,
           args: {
             values: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
-            groups: ['battery_list'],
+            groups: ['battery_list', 'battery_list_hide'],
           },
         },
       ],
@@ -626,7 +626,7 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
-      groups: ['battery_list', 'battery_list_applicable', 'dangerous_goods'],
+      groups: ['battery_list_applicable', 'battery_list_hide', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 8 },
         {
@@ -666,7 +666,7 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.HideGroupsWhenEqualTo,
           args: {
             values: [false],
-            groups: ['issuer_section', 'weight_section'],
+            groups: ['issuer_section', 'issuer_section_hide'],
           },
         },
       ],
@@ -676,7 +676,7 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_brakeDeclarationIssuer',
       label: 'Issuer',
       type: FormNodeTypes.CONTROL,
-      groups: ['issuer_section', 'dangerous_goods'],
+      groups: ['issuer_section', 'dangerous_goods_hide'],
       editType: FormNodeEditTypes.TEXTAREA,
       validators: [
         { name: ValidatorNames.MaxLength, args: 500 },
@@ -688,7 +688,7 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOX,
 
-      groups: ['issuer_section', 'dangerous_goods'],
+      groups: ['issuer_section', 'dangerous_goods_hide'],
       hide: true,
       validators: [
         {
@@ -713,7 +713,7 @@ export const AdrTemplate: FormNode = {
       label: 'Weight (kg)',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
-      groups: ['weight_section', 'dangerous_goods'],
+      groups: ['weight_section', 'issuer_section_hide', 'dangerous_goods_hide'],
       hide: true,
       validators: [
         { name: ValidatorNames.MaxLength, args: 8 },
