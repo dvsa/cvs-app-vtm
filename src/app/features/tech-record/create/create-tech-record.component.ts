@@ -11,7 +11,7 @@ import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/servic
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import {
-  NotVehicle, StatusCodes, V3TechRecordModel, VehicleTypes
+  NotVehicle, StatusCodes, V3TechRecordModel, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
