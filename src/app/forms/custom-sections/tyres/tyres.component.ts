@@ -5,9 +5,6 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
-import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
-import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
-import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -23,17 +20,18 @@ import {
   Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectAllReferenceDataByResourceType } from '@store/reference-data';
 import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import {
+  Observable,
   ReplaySubject,
   filter,
-  takeUntil, Observable,
+  takeUntil,
 } from 'rxjs';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
   selector: 'app-tyres',
@@ -41,7 +39,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
   styleUrls: ['./tyres.component.scss'],
 })
 export class TyresComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() vehicleTechRecord!: TechRecordType<'psv'> | TechRecordType<'trl'> | TechRecordType<'hgv'>;
+  @Input() vehicleTechRecord!: TechRecordType<'hgv' | 'psv' | 'trl'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -166,7 +164,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       && (vehicleTechRecord.currentValue.techRecord_axles === vehicleTechRecord.previousValue.techRecord_axles))) {
       return;
     }
-    vehicleTechRecord.currentValue.techRecord_axles.forEach((axle: HGVAxles | TRLAxles | PSVAxles) => {
+    vehicleTechRecord.currentValue.techRecord_axles.forEach((axle: Axle) => {
       if (axle.tyres_dataTrAxles && axle.weights_gbWeight && axle.axleNumber) {
         const weightValue = this.technicalRecordService.getAxleFittingWeightValueFromLoadIndex(
           axle.tyres_dataTrAxles.toString(),

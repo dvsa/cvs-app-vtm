@@ -11,7 +11,7 @@ import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/servic
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import {
-  NotTrailer, StatusCodes, V3TechRecordModel, VehicleTypes,
+  NotVehicle, StatusCodes, V3TechRecordModel, VehicleTypes
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
@@ -179,9 +179,9 @@ export class CreateTechRecordComponent implements OnChanges {
   }
 
   async isVrmUnique() {
-    (this.techRecord as NotTrailer).primaryVrm = this.form.value.vrmTrm;
+    (this.techRecord as NotVehicle<'trl'>).primaryVrm = this.form.value.vrmTrm;
     const isVrmUnique = await firstValueFrom(
-      this.technicalRecordService.isUnique((this.techRecord as NotTrailer).primaryVrm?.replace(/\s+/g, '') ?? '', SEARCH_TYPES.VRM),
+      this.technicalRecordService.isUnique((this.techRecord as NotVehicle<'trl'>).primaryVrm?.replace(/\s+/g, '') ?? '', SEARCH_TYPES.VRM),
     );
     if (!isVrmUnique) {
       this.globalErrorService.addError({ error: 'Vrm not unique', anchorLink: 'input-vrm-or-trailer-id' });

@@ -1,5 +1,6 @@
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { VehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType as TechRecordTypeByVehicle } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -14,14 +15,13 @@ export interface VehicleTechRecordModel {
 }
 
 export type V3TechRecordModel = TechRecordType<'get'> | TechRecordType<'put'>;
-export type NotTrailer =
-  | TechRecordTypeByVehicle<'hgv'>
-  | TechRecordTypeByVehicle<'psv'>
-  | TechRecordTypeByVehicle<'motorcycle'>
-  | TechRecordTypeByVehicle<'lgv'>
-  | TechRecordTypeByVehicle<'car'>;
 
-export type HgvOrTrl = TechRecordTypeByVehicle<'hgv'> | TechRecordTypeByVehicle<'trl'>;
+export type Empty<T> = { [key in keyof T]: T[key] | null };
+
+export type NotVehicle<T extends VehicleType> = TechRecordTypeByVehicle<Exclude<VehicleType, T>>;
+
+export type Axles<T extends 'hgv' | 'psv' | 'trl' = 'hgv' | 'psv' | 'trl'> = NonNullable<TechRecordTypeByVehicle<T>['techRecord_axles']>;
+export type Axle<T extends 'hgv' | 'psv' | 'trl' = 'hgv' | 'psv' | 'trl'> = Axles<T>[0];
 
 export type BatchUpdateVehicleModel = TechRecordType<'put'> & {
   createdTimestamp: string;
@@ -167,14 +167,6 @@ export enum SpeedCategorySymbol {
   N = 'n',
   P = 'p',
   Q = 'q',
-}
-
-export interface Axle {
-  axleNumber?: number;
-  brakes?: AxleBrakeProperties;
-  parkingBrakeMrk?: boolean;
-  tyres?: Tyres;
-  weights?: AxleWeights;
 }
 
 export enum FitmentCode {

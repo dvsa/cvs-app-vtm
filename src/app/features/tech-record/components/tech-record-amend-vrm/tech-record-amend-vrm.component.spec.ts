@@ -6,7 +6,9 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router'
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { NotVehicle } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -16,8 +18,6 @@ import { initialAppState, State } from '@store/index';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { NotTrailer } from '@models/vehicle-tech-record.model';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 
 const mockTechRecordService = {
@@ -112,7 +112,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      component.techRecord = mockVehicleTechnicalRecord('psv') as NotTrailer;
+      component.techRecord = mockVehicleTechnicalRecord('psv') as NotVehicle<'trl'>;
       jest.resetAllMocks();
       jest.resetModules();
     });

@@ -22,7 +22,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
   styleUrls: ['./approval-type.component.scss'],
 })
 export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() techRecord!: TechRecordType<'trl'> | TechRecordType<'psv'> | TechRecordType<'hgv'>;
+  @Input() techRecord!: TechRecordType<'hgv' | 'psv' | 'trl'>;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
   @Output() approvalTypeNumberChange = new EventEmitter<string>();
