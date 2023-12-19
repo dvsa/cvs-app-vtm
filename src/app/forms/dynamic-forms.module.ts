@@ -4,12 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
 import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
-import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
-import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
-import { SharedModule } from '@shared/shared.module';
 import {
   AdrExaminerNotesHistoryComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history/adr-examiner-notes-history.component';
+import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
+import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
+import { SharedModule } from '@shared/shared.module';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
@@ -33,6 +33,9 @@ import { ViewCombinationComponent } from './components/view-combination/view-com
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
 import { AdrGuidanceNotesComponent } from './custom-sections/adr-guidance-notes/adr-guidance-notes.component';
+import {
+  AdrTankDetailsSubsequentInspectionsComponent,
+} from './custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 import { AdrTankStatementUnNumberComponent } from './custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
 import { AdrComponent } from './custom-sections/adr/adr.component';
 import { BodyComponent } from './custom-sections/body/body.component';
@@ -56,9 +59,6 @@ import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.direct
 import { NestingLevelDirective } from './directives/nesting-level/nesting-level.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
-import {
-  AdrTankDetailsSubsequentInspectionsComponent,
-} from './custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
 
 @NgModule({
   declarations: [
@@ -160,6 +160,7 @@ import {
     ApprovalTypeFocusNextDirective,
     ModifiedWeightsComponent,
     AdrComponent,
+    FieldWarningMessageComponent,
   ],
 })
 export class DynamicFormsModule { }
