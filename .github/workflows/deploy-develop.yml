@@ -11,7 +11,7 @@ jobs:
   vtm-app:
     uses: ./.github/workflows/deploy.yml
     with:
-      branch: ${{ github.ref_name }}
+      branch: 'develop'
       environment: 'develop'
       bucket: '.develop'
     secrets:

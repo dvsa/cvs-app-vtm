@@ -8,7 +8,7 @@ jobs:
   vtm-app:
     uses: ./.github/workflows/deploy.yml
     with:
-      branch: ${{ github.ref_name }}
+      branch: 'integration'
       environment: 'integration'
       bucket: '.integration'
     secrets:
