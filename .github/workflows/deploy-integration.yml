@@ -13,4 +13,5 @@ jobs:
       bucket: '.integration'
     secrets:
       AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
+      AWS_ADMIN_ROLE: ${{ secrets.AWS_NONPROD_ROLE }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
