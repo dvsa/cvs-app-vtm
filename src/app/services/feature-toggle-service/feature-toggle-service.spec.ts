@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { FeatureToggleService } from './feature-toggle-service';
+import { environment } from '../../../environments/environment';
 
 describe('feature toggle service', () => {
   let service: FeatureToggleService;
@@ -38,6 +39,22 @@ describe('feature toggle service', () => {
 
       expect(service.config).toBeTruthy();
       expect(service.config).toEqual(expectedConfig);
+    });
+  });
+
+  describe('getConfig', () => {
+    it('should return the correct feature toggle config', () => {
+      environment.TARGET_ENV = 'dev';
+      expect(service.getConfig()).toBe('assets/featureToggle.json');
+
+      environment.TARGET_ENV = 'integration';
+      expect(service.getConfig()).toBe('assets/featureToggle.int.json');
+
+      environment.TARGET_ENV = 'preprod';
+      expect(service.getConfig()).toBe('assets/featureToggle.preprod.json');
+
+      environment.TARGET_ENV = 'prop';
+      expect(service.getConfig()).toBe('assets/featureToggle.prod.json');
     });
   });
 

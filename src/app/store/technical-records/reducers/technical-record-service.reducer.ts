@@ -3,14 +3,14 @@ import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-recor
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType as NonVerbTechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
-import { TechRecordType as NonVerbTechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   clearBatch,
   setApplicationId,
@@ -399,6 +399,16 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
         techRecord_adrDetails_batteryListNumber: null,
       };
 
+      const nulledWeight = {
+        techRecord_adrDetails_weight: null,
+      };
+
+      const nulledBrakeDeclaration = {
+        techRecord_adrDetails_brakeDeclarationIssuer: null,
+        techRecord_adrDetails_brakeEndurance: null,
+        ...nulledWeight,
+      };
+
       if (!editingTechRecord.techRecord_adrDetails_dangerousGoods) {
         // vehicle doesn't carry dangerous goods so null this information
         return {
@@ -481,6 +491,18 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
       }
 
+      // If manufacturer brake declaration is no, null dependent sections
+      const { techRecord_adrDetails_brakeDeclarationsSeen: brakeDeclarationSeen } = sanitisedEditingTechRecord;
+      if (!brakeDeclarationSeen) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBrakeDeclaration };
+      }
+
+      // If brake endurance is no, null weight field
+      const { techRecord_adrDetails_brakeEndurance: brakeEndurance } = sanitisedEditingTechRecord;
+      if (!brakeEndurance) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledWeight };
+      }
+
       return { ...state, editingTechRecord: sanitisedEditingTechRecord };
     }
 
@@ -504,7 +526,7 @@ function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, userna
         || additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
         additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
       }
-      additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes?.push(additionalExaminerNotes);
+      additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes?.unshift(additionalExaminerNotes);
     }
   }
   return { ...state, editingTechRecord: additionalNoteTechRecord as unknown as (TechRecordType<'put'>) };

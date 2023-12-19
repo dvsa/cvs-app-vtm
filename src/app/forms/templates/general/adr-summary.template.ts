@@ -8,9 +8,6 @@ import {
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
-import {
-  AdrExaminerNotesHistoryComponent,
-} from '@forms/custom-sections/adr-examiner-notes-history/adr-examiner-notes-history.component';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
   AdrTankDetailsSubsequentInspectionsComponent,
@@ -20,6 +17,9 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC2Types } from '@models/adr.enum';
 import {
+  AdrExaminerNotesHistoryComponent,
+} from '@forms/custom-sections/adr-examiner-notes-history/adr-examiner-notes-history.component';
+import {
   FormNode,
   FormNodeEditTypes,
   FormNodeTypes,
@@ -27,7 +27,7 @@ import {
   FormNodeWidth,
 } from '../../services/dynamic-form.types';
 
-export const AdrTemplate: FormNode = {
+export const AdrSummaryTemplate: FormNode = {
   name: 'adrSection',
   type: FormNodeTypes.SECTION,
   label: 'ADR',
@@ -45,7 +45,7 @@ export const AdrTemplate: FormNode = {
       ],
       validators: [
         { name: ValidatorNames.ShowGroupsWhenEqualTo, args: { values: [true], groups: ['dangerous_goods'] } },
-        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['dangerous_goods', 'dangerous_goods_hide'] } },
+        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['dangerous_goods'] } },
         { name: ValidatorNames.AddWarningForAdrField, args: 'By selecting this field it will delete all previous ADR field inputs' },
       ],
     },
@@ -156,7 +156,7 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.HideGroupsWhenExcludes,
           args: {
             values: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
-            groups: ['battery_list', 'battery_list_hide'],
+            groups: ['battery_list'],
           },
         },
       ],
@@ -404,8 +404,8 @@ export const AdrTemplate: FormNode = {
         {
           name: ValidatorNames.RequiredIfEquals,
           args: {
-            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted',
-            value: [ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER],
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
           },
         },
         {
@@ -444,8 +444,16 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       groups: ['statement', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
+      customErrorMessage: 'Reference number is required when selecting Statement',
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
+            value: [ADRTankDetailsTankStatementSelect.STATEMENT],
+          },
+        },
       ],
     },
     {
@@ -626,7 +634,7 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
-      groups: ['battery_list_applicable', 'battery_list_hide', 'dangerous_goods'],
+      groups: ['battery_list', 'battery_list_applicable', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 8 },
         {
@@ -666,7 +674,7 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.HideGroupsWhenEqualTo,
           args: {
             values: [false],
-            groups: ['issuer_section', 'issuer_section_hide'],
+            groups: ['issuer_section', 'weight_section'],
           },
         },
       ],
@@ -676,7 +684,7 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_brakeDeclarationIssuer',
       label: 'Issuer',
       type: FormNodeTypes.CONTROL,
-      groups: ['issuer_section', 'dangerous_goods_hide'],
+      groups: ['issuer_section', 'dangerous_goods'],
       editType: FormNodeEditTypes.TEXTAREA,
       validators: [
         { name: ValidatorNames.MaxLength, args: 500 },
@@ -688,7 +696,7 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOX,
 
-      groups: ['issuer_section', 'dangerous_goods_hide'],
+      groups: ['issuer_section', 'dangerous_goods'],
       hide: true,
       validators: [
         {
@@ -713,7 +721,7 @@ export const AdrTemplate: FormNode = {
       label: 'Weight (kg)',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
-      groups: ['weight_section', 'issuer_section_hide', 'dangerous_goods_hide'],
+      groups: ['weight_section', 'dangerous_goods'],
       hide: true,
       validators: [
         { name: ValidatorNames.MaxLength, args: 8 },
@@ -735,11 +743,9 @@ export const AdrTemplate: FormNode = {
     {
       name: 'techRecord_adrDetails_additionalExaminerNotes_note',
       label: 'Additional Examiner Notes',
-      hint: 'Will not be present on the ADR certificate',
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXTAREA,
-      viewType: FormNodeViewTypes.HIDDEN,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
       validators: [
@@ -752,7 +758,7 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
-      viewType: FormNodeViewTypes.ADR_EXAMINER_NOTES,
+      viewType: FormNodeViewTypes.HIDDEN,
       component: AdrExaminerNotesHistoryComponent,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,

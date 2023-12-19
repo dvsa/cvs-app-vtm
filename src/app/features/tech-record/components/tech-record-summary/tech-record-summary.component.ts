@@ -34,6 +34,7 @@ import {
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { LoadingService } from '@services/loading/loading.service';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { RouterService } from '@services/router/router.service';
@@ -72,6 +73,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   middleIndex = 0;
   isEditing = false;
   scrollPosition: [number, number] = [0, 0];
+  isADREnabled = false;
 
   private destroy$ = new Subject<void>();
 
@@ -86,9 +88,11 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     private viewportScroller: ViewportScroller,
     private store: Store,
     private loading: LoadingService,
+    private featureToggleService: FeatureToggleService,
   ) { }
 
   ngOnInit(): void {
+    this.isADREnabled = this.featureToggleService.isFeatureEnabled('adrToggle');
     this.technicalRecordService.techRecord$
       .pipe(
         map((record) => {
@@ -166,7 +170,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
       return [];
     }
     return (
-      vehicleTemplateMap.get(this.vehicleType)?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection')) ?? []
+      vehicleTemplateMap.get(this.vehicleType)?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection'))
+        .filter((template) => template.name !== (this.isADREnabled ? '' : 'adrSection')) ?? []
     );
   }
 
@@ -200,12 +205,13 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
-        return [...commonCustomSections, this.adr.form];
+        return this.isADREnabled ? [...commonCustomSections, this.adr.form] : commonCustomSections;
       case VehicleTypes.TRL:
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return [...commonCustomSections, this.trlBrakes!.form, this.letters.form, this.adr.form];
+        return this.isADREnabled ? [...commonCustomSections, this.trlBrakes!.form, this.letters.form, this.adr.form]
+          : [...commonCustomSections, this.trlBrakes!.form, this.letters.form];
       case VehicleTypes.LGV:
-        return [this.adr.form];
+        return this.isADREnabled ? [this.adr.form] : [];
       default:
         return [];
     }

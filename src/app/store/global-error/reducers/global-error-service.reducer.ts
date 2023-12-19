@@ -6,6 +6,7 @@ import {
 import { fetchSearchResult, fetchSearchResultFailed } from '@store/tech-record-search/actions/tech-record-search.actions';
 // eslint-disable-next-line import/no-cycle
 import * as TestResultActions from '@store/test-records';
+import _ from 'lodash';
 import * as ReferenceDataActions from '../../reference-data/actions/reference-data.actions';
 import * as TechnicalRecordServiceActions from '../../technical-records/actions/technical-record-service.actions';
 import { createVehicleRecordFailure } from '../../technical-records/actions/technical-record-service.actions';
@@ -57,7 +58,7 @@ export const globalErrorReducer = createReducer(
   ),
   on(GlobalErrorActions.setErrors, TestResultActions.updateTestResultFailed, TestResultActions.createTestResultFailed, (state, { errors }) => ({
     ...state,
-    errors: [...errors],
+    errors: [...(_.uniqWith(errors, (a, b) => _.isEqual(a.error, b.error)))],
   })),
   on(GlobalErrorActions.patchErrors, (state, { errors }) => ({ ...state, errors: [...state.errors, ...errors] })),
   on(createVehicleRecordFailure, (state, action) => ({ errors: [...state.errors, { error: action.error }] })),
