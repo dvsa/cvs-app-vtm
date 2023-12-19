@@ -8,9 +8,9 @@ jobs:
   vtm-app:
     uses: ./.github/workflows/deploy.yml
     with:
-      branch: ${{ github.ref_name }}
-      environment: 'integration'
-      bucket: '.integration'
+      branch: 'master'
+      environment: 'prod'
+      bucket: '.prod'
     secrets:
       AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
