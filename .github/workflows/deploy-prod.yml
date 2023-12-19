@@ -1,4 +1,4 @@
-name: Build and Deploy VTM App to Develop
+name: Build and Deploy VTM App to Prod
 run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
 
 on:
