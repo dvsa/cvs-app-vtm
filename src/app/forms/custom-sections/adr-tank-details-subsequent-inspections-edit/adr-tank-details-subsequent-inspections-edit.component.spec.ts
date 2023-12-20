@@ -17,7 +17,7 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
-import { AdrTankDetailsSubsequentInspectionsComponent } from './adr-tank-details-subsequent-inspections.component';
+import { AdrTankDetailsSubsequentInspectionsComponent } from './adr-tank-details-subsequent-inspections-edit.component';
 
 describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
   let component: AdrTankDetailsSubsequentInspectionsComponent;

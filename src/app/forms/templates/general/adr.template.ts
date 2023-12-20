@@ -17,7 +17,7 @@ import {
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
   AdrTankDetailsSubsequentInspectionsComponent,
-} from '@forms/custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
+} from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
 import { AdrTankStatementUnNumberComponent } from '@forms/custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
@@ -524,7 +524,7 @@ export const AdrTemplate: FormNode = {
       ],
     },
     {
-      name: 'tankInspectionsSectionSubtitle',
+      name: 'tankInspectionsInitial',
       type: FormNodeTypes.SUBTITLE,
       label: 'Initial',
       groups: ['tank_details', 'dangerous_goods'],
@@ -571,11 +571,27 @@ export const AdrTemplate: FormNode = {
       validators: [],
     },
     {
+      name: 'tankInspectionsSubsequent',
+      type: FormNodeTypes.SUBTITLE,
+      label: 'Subsequent',
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+      ],
+    },
+    {
       name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
       label: 'Subsequent Inspections',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.CUSTOM,
       viewType: FormNodeViewTypes.ADRINSPECTIONS,
+      editType: FormNodeEditTypes.CUSTOM,
       editComponent: AdrTankDetailsSubsequentInspectionsComponent,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],

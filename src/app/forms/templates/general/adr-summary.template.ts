@@ -17,7 +17,7 @@ import {
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
   AdrTankDetailsSubsequentInspectionsComponent,
-} from '@forms/custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
+} from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
 import { AdrTankStatementUnNumberComponent } from '@forms/custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';

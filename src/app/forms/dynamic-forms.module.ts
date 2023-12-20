@@ -36,7 +36,7 @@ import { AdrExaminerNotesHistoryViewComponent } from './custom-sections/adr-exam
 import { AdrGuidanceNotesComponent } from './custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
   AdrTankDetailsSubsequentInspectionsComponent,
-} from './custom-sections/adr-tank-details-subsequent-inspections/adr-tank-details-subsequent-inspections.component';
+} from './custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
 import { AdrTankStatementUnNumberComponent } from './custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
 import { AdrComponent } from './custom-sections/adr/adr.component';
 import { BodyComponent } from './custom-sections/body/body.component';
@@ -59,6 +59,7 @@ import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
+import { AdrTankDetailsSubsequentInspectionsViewComponent } from './custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     CustomFormControlComponent,
     AdrExaminerNotesHistoryEditComponent,
     AdrExaminerNotesHistoryViewComponent,
+    AdrTankDetailsSubsequentInspectionsViewComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
