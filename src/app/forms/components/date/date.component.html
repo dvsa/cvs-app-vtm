@@ -5,17 +5,7 @@
     </legend>
     <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
     <app-field-error-message
-      *ngIf="(formSubmitted && !customError) || (dayEl.touched && monthEl.touched && yearEl.touched)"
-      [error]="error"
-      [name]="name"
-    ></app-field-error-message>
-    <app-field-error-message
-      *ngIf="formSubmitted || (dayEl.touched && monthEl.touched && yearEl.touched)"
-      [error]="warning"
-      [name]="name"
-    ></app-field-error-message>
-    <app-field-error-message
-      *ngIf="!formSubmitted && customError && (dayEl.touched || monthEl.touched || yearEl.touched)"
+      *ngIf="formSubmitted || customError || dayEl.touched || monthEl.touched || yearEl.touched"
       [error]="error"
       [name]="name"
     ></app-field-error-message>
