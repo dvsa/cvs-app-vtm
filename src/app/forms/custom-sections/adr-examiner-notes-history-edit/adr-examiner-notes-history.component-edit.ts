@@ -19,9 +19,11 @@ export class AdrExaminerNotesHistoryEditComponent extends BaseControlComponent i
 
   destroy$ = new ReplaySubject<boolean>(1);
 
+  expanded = new Set<number>();
   formArray = new FormArray<CustomFormControl>([]);
   currentTechRecord?: TechRecordType<'hgv'> | TechRecordType<'lgv'> | TechRecordType<'trl'> = undefined;
   technicalRecordService = inject(TechnicalRecordService);
+
   ngOnInit() {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       this.control?.patchValue(changes, { emitModelToViewChange: true });

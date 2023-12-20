@@ -1,26 +1,42 @@
 <ng-container *ngIf="control">
-  <label *ngIf="control.meta.label" class="govuk-label govuk-label--m" for="{{ control.meta.name }}">
-    {{ control.meta.label }}
-  </label>
-  <dl class="govuk-summary-list" *ngIf="this.getAdditionalExaminerNotes().length === 0">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
-    </div>
-  </dl>
+  <ng-container *ngIf="getAdditionalExaminerNotes() as notes">
+    <label *ngIf="control.meta.label" class="govuk-label govuk-label--m" for="{{ control.meta.name }}">
+      {{ control.meta.label }}
+    </label>
 
-  <!-- Additional guidance notes -->
-  <table class="govuk-table" *ngIf="this.getAdditionalExaminerNotes().length > 0">
-    <tbody class="govuk-table__body">
-      <tr>
-        <th>Date</th>
-        <th>Created By</th>
-        <th>Notes</th>
-      </tr>
-      <tr *ngFor="let examinerNote of this.getAdditionalExaminerNotes()">
-        <td class="govuk-table__cell">{{ examinerNote.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
-        <td class="govuk-table__cell">{{ examinerNote.lastUpdatedBy }}</td>
-        <td class="govuk-table__cell">{{ examinerNote.note }}</td>
-      </tr>
-    </tbody>
-  </table>
+    <!-- Additional guidance notes -->
+    <table class="govuk-table" *ngIf="notes.length > 0; else empty">
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header whitespace-nowrap">Date</th>
+          <th scope="col" class="govuk-table__header whitespace-nowrap">Created By</th>
+          <th scope="col" class="govuk-table__header whitespace-nowrap">Notes</th>
+        </tr>
+        <ng-container *ngFor="let examinerNote of notes; let i = index; let isLast = last">
+          <tr class="govuk-table__row" *ngIf="i < 3">
+            <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
+              {{ examinerNote.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ examinerNote.lastUpdatedBy }}</td>
+            <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
+              <p class="m-0" [ngClass]="{ 'line-clamp-5': !expanded.has(i) }">{{ examinerNote.note }}</p>
+              <ng-container *ngIf="examinerNote.note && examinerNote.note.length > 200">
+                <a class="govuk-link govuk-!-font-size-16" href="javascript:void(0)" (click)="expanded.has(i) ? expanded.delete(i) : expanded.add(i)">
+                  {{ expanded.has(i) ? 'View less' : 'View more' }}
+                </a>
+                <br />
+              </ng-container>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <ng-template #empty>
+      <dl class="govuk-summary-list" *ngIf="notes.length === 0">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+        </div>
+      </dl>
+    </ng-template>
+  </ng-container>
 </ng-container>
