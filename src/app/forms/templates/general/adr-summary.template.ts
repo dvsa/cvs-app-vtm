@@ -546,15 +546,6 @@ export const AdrSummaryTemplate: FormNode = {
       viewComponent: AdrTankDetailsInitialInspectionViewComponent,
       groups: ['tank_details', 'dangerous_goods'],
       hide: true,
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-      ],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
@@ -582,7 +573,6 @@ export const AdrSummaryTemplate: FormNode = {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
       label: 'TC2: Expiry Date',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.DATE,
       viewType: FormNodeViewTypes.HIDDEN,
       isoDate: false,
       hide: true,

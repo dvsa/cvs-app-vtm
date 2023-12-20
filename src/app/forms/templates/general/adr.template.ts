@@ -538,25 +538,16 @@ export const AdrTemplate: FormNode = {
       viewComponent: AdrTankDetailsInitialInspectionViewComponent,
       groups: ['tank_details', 'dangerous_goods'],
       hide: true,
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-      ],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN,
       label: 'TC2: Inspection type',
       value: TC2Types.INITIAL,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
-      validators: [],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
