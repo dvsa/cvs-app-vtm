@@ -15,6 +15,7 @@ import {
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { BatchTechnicalRecordService } from '@services/batch-technical-record/batch-technical-record.service';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { firstValueFrom } from 'rxjs';
@@ -78,6 +79,7 @@ export class CreateTechRecordComponent implements OnChanges {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store,
+    public routerService: RouterService,
   ) {
     this.batchTechRecordService.clearBatch();
     this.technicalRecordService.clearSectionTemplateStates();
@@ -120,11 +122,6 @@ export class CreateTechRecordComponent implements OnChanges {
       vrmTrm.setValue('');
       vrmTrm.enable();
     }
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   async handleSubmit() {

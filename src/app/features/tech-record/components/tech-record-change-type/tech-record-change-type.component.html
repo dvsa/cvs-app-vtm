@@ -39,6 +39,6 @@
   <div class="buttons-row">
     <app-button (clicked)="handleSubmit(selectVehicleType.value)">Confirm and continue</app-button>
 
-    <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+    <app-button design="link" data-module="govuk-button" (clicked)="routerService.navigateBack()">Back</app-button>
   </div>
 </form>

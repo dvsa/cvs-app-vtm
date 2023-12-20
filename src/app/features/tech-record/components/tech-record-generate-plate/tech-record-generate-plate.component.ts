@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { PlatesInner } from '@api/vehicle';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import {
@@ -8,6 +7,7 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
@@ -33,25 +33,26 @@ export class GeneratePlateComponent implements OnInit {
   constructor(
     private actions$: Actions,
     private globalErrorService: GlobalErrorService,
-    private route: ActivatedRoute,
-    private router: Router,
     private store: Store<State>,
     public userService: UserService,
     private technicalRecordService: TechnicalRecordService,
+    public routerService: RouterService,
   ) {}
 
   ngOnInit(): void {
     this.actions$.pipe(ofType(generatePlateSuccess), take(1)).subscribe(() => {
-      this.navigateBack();
+      this.routerService.navigateBack();
     });
     this.store.pipe(select(getCanGeneratePlate), take(1)).subscribe((canGeneratePlate) => {
       if (!canGeneratePlate) {
-        this.navigateBack();
+        this.routerService.navigateBack();
       }
     });
     this.emailAddress$ = this.technicalRecordService.techRecord$.pipe(
       tap((record) => {
-        if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') this.navigateBack();
+        if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') {
+          this.routerService.navigateBack();
+        }
       }),
       map((record) => {
         if (record?.techRecord_vehicleType !== 'hgv' && record?.techRecord_vehicleType !== 'trl') {
@@ -75,11 +76,6 @@ export class GeneratePlateComponent implements OnInit {
       { label: 'Original', value: PlatesInner.PlateReasonForIssueEnum.Original },
       { label: 'Manual', value: PlatesInner.PlateReasonForIssueEnum.Manual },
     ];
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(): void {

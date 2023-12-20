@@ -38,7 +38,6 @@ describe('TechRecordGenerateLetterComponent', () => {
   let errorService: GlobalErrorService;
   let expectedVehicle = {} as TechRecordType<'trl'>;
   let fixture: ComponentFixture<GenerateLetterComponent>;
-  let route: ActivatedRoute;
   let router: Router;
   let store: MockStore;
 
@@ -66,7 +65,7 @@ describe('TechRecordGenerateLetterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GenerateLetterComponent);
     errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
+
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
@@ -77,23 +76,6 @@ describe('TechRecordGenerateLetterComponent', () => {
   });
 
   describe('navigateBack', () => {
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
-
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
-
-      component.navigateBack();
-
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-
-      component.navigateBack();
-
-      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
-    });
 
     it('should navigate back on generateLetterSuccess', () => {
       const navigateBackSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));

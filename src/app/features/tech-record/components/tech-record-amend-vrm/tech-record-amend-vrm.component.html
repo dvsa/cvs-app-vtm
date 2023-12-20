@@ -76,6 +76,6 @@
 
   <app-button-group>
     <app-button id="submit-vrm" (clicked)="handleSubmit()">Save</app-button>
-    <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+    <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="routerService.navigateBackTo('../../')">Back</app-button>
   </app-button-group>
 </div>

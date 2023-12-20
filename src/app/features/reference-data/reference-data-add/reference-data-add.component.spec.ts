@@ -1,6 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -20,9 +19,6 @@ describe('ReferenceDataCreateComponent', () => {
   let component: ReferenceDataCreateComponent;
   let fixture: ComponentFixture<ReferenceDataCreateComponent>;
   let store: MockStore<State>;
-  let router: Router;
-  let route: ActivatedRoute;
-  let errorService: GlobalErrorService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -42,36 +38,12 @@ describe('ReferenceDataCreateComponent', () => {
     store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(ReferenceDataCreateComponent);
     component = fixture.componentInstance;
-    router = TestBed.inject(Router);
-    fixture.detectChanges();
-    errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
     component.checkForms = jest.fn();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('navigateBack', () => {
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
-
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
-
-      component.navigateBack();
-
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-
-      component.navigateBack();
-
-      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
-    });
   });
 
   describe('handleFormChange', () => {

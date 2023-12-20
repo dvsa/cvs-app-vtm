@@ -37,10 +37,8 @@ const mockDynamicFormService = {
 describe('TechRecordChangeVinComponent', () => {
   const actions$ = new ReplaySubject<Action>();
   let component: AmendVinComponent;
-  let errorService: GlobalErrorService;
   let expectedTechRecord = {} as V3TechRecordModel;
   let fixture: ComponentFixture<AmendVinComponent>;
-  let route: ActivatedRoute;
   let router: Router;
   let store: MockStore;
 
@@ -61,8 +59,6 @@ describe('TechRecordChangeVinComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AmendVinComponent);
-    errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
@@ -95,23 +91,6 @@ describe('TechRecordChangeVinComponent', () => {
   });
 
   describe('navigateBack', () => {
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
-
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
-
-      component.navigateBack();
-
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-
-      component.navigateBack();
-
-      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
-    });
 
     it('should navigate away amendVinSuccess', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate');

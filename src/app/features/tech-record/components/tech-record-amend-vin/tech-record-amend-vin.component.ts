@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -30,10 +30,9 @@ export class AmendVinComponent implements OnDestroy, OnInit {
   constructor(
     private actions$: Actions,
     private globalErrorService: GlobalErrorService,
-    private route: ActivatedRoute,
     private router: Router,
     private technicalRecordService: TechnicalRecordService,
-    private routerService: RouterService,
+    public routerService: RouterService,
     private store: Store<State>,
   ) {
     this.initForm();
@@ -78,11 +77,6 @@ export class AmendVinComponent implements OnDestroy, OnInit {
     return this.form.valid;
   }
 
-  navigateBack(): void {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
-  }
-
   handleSubmit(): void {
     if (this.shouldUpdateTechRecord()) {
       this.updateTechRecord();
@@ -119,7 +113,7 @@ export class AmendVinComponent implements OnDestroy, OnInit {
   private subscribeToTechRecordUpdates(): void {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
       if (record?.techRecord_statusCode === 'archived' || !record) {
-        this.navigateBack();
+        this.routerService.navigateBack();
       } else {
         this.techRecord = record;
       }

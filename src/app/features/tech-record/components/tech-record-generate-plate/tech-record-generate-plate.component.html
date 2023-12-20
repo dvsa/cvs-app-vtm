@@ -11,6 +11,6 @@
 
   <app-button-group>
     <app-button id="submit-plate-form" (clicked)="handleSubmit()">Generate and send</app-button>
-    <app-button id="back-from-generate-plate" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+    <app-button id="back-from-generate-plate" design="link" data-module="govuk-button" (clicked)="routerService.navigateBack()">Back</app-button>
   </app-button-group>
 </form>

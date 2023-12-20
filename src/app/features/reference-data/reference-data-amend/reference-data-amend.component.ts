@@ -1,7 +1,7 @@
 import {
   Component, OnInit, QueryList, ViewChildren,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
@@ -11,6 +11,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { RouterService } from '@services/router/router.service';
 import { ReferenceDataState, amendReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { Observable, first } from 'rxjs';
 
@@ -34,8 +35,8 @@ export class ReferenceDataAmendComponent implements OnInit {
     public dfs: DynamicFormService,
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
-    private router: Router,
     private store: Store<ReferenceDataState>,
+    public routerService: RouterService,
   ) {}
 
   ngOnInit(): void {
@@ -67,11 +68,6 @@ export class ReferenceDataAmendComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get data$(): Observable<any | undefined> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, this.key)));
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -119,6 +115,6 @@ export class ReferenceDataAmendComponent implements OnInit {
       form.ngOnDestroy();
     });
 
-    this.navigateBack();
+    this.routerService.navigateBack();
   }
 }

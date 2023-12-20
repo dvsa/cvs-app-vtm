@@ -5,18 +5,20 @@ import {
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState, State } from '@store/.';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import {
-  firstValueFrom, of, ReplaySubject, BehaviorSubject,
+  BehaviorSubject,
+  firstValueFrom, of, ReplaySubject,
 } from 'rxjs';
-import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { SingleSearchResultComponent } from '../single-search-result/single-search-result.component';
 import { MultipleSearchResultsComponent } from './multiple-search-results.component';
 
@@ -37,6 +39,12 @@ describe('MultipleSearchResultsComponent', () => {
           provide: UserService,
           useValue: {
             roles$: of(['TechRecord.View', 'TechRecord.Create']),
+          },
+        },
+        {
+          provide: RouterService,
+          useValue: {
+            navigateBack: jest.fn(),
           },
         },
         TechnicalRecordHttpService,
@@ -65,7 +73,7 @@ describe('MultipleSearchResultsComponent', () => {
     });
 
     it('should navigate back when searchResults not null', fakeAsync(() => {
-      const navigateBackSpy = jest.spyOn(component, 'navigateBack');
+      const navigateBackSpy = jest.spyOn(component.routerService, 'navigateBack');
       const newData: TechRecordSearchSchema[] = [
         {
           vin: '1B7GG36N12S678410',

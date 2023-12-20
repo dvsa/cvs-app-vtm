@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
 import {
   routeEditable,
@@ -13,13 +14,17 @@ import {
   selectRouteParam,
 } from '@store/router/selectors/router.selectors';
 import { Observable, map } from 'rxjs';
-import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RouterService {
-  constructor(private store: Store<State>, private router: Router, private activatedRoute: ActivatedRoute, private location: Location) {}
+  constructor(
+    private store: Store<State>,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private globalErrorService: GlobalErrorService,
+  ) {}
 
   get router$() {
     return this.store.pipe(select(routerState));
@@ -60,5 +65,14 @@ export class RouterService {
   async addQueryParams(queryParams: Params) {
     const url = this.router.createUrlTree([], { relativeTo: this.activatedRoute, queryParams, queryParamsHandling: 'merge' }).toString();
     await this.router.navigateByUrl(url);
+  }
+
+  navigateBack() {
+    this.navigateBackTo();
+  }
+
+  navigateBackTo(path = '..') {
+    this.globalErrorService.clearErrors();
+    void this.router.navigate([path], { relativeTo: this.activatedRoute });
   }
 }

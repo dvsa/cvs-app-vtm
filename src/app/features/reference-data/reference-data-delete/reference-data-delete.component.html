@@ -19,7 +19,7 @@
 
       <app-button-group>
         <app-button id="submit" design="warning" (clicked)="handleSubmit()">Delete</app-button>
-        <app-button id="cancel" design="link" (clicked)="navigateBack()">Cancel</app-button>
+        <app-button id="cancel" design="link" (clicked)="routerService.navigateBack()">Cancel</app-button>
       </app-button-group>
     </div>
   </div>

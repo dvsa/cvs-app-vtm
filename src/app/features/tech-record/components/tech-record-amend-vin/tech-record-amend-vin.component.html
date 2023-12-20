@@ -42,6 +42,6 @@
 
   <app-button-group>
     <app-button id="submit-vin" (clicked)="handleSubmit()">Save</app-button>
-    <app-button id="back-button" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+    <app-button id="back-button" design="link" data-module="govuk-button" (clicked)="routerService.navigateBack()">Back</app-button>
   </app-button-group>
 </div>

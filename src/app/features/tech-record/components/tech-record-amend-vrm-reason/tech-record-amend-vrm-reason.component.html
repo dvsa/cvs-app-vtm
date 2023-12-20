@@ -24,7 +24,7 @@
     <app-radio-group formControlName="isCherishedTransfer" [options]="reasons" label="Reason for change"></app-radio-group>
     <app-button-group>
       <app-button id="submit-vrm" (clicked)="submit()">Continue</app-button>
-      <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+      <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="routerService.navigateBack()">Back</app-button>
     </app-button-group>
   </form>
 </div>

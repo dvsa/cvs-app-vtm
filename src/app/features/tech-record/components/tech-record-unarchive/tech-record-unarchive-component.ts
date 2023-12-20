@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
@@ -9,6 +9,7 @@ import {
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { unarchiveTechRecord, unarchiveTechRecordSuccess } from '@store/technical-records';
@@ -31,10 +32,10 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   constructor(
     private actions$: Actions,
     private errorService: GlobalErrorService,
-    private route: ActivatedRoute,
     private router: Router,
     private store: Store<State>,
     private technicalRecordService: TechnicalRecordService,
+    public routerService: RouterService,
   ) {
     this.form = new CustomFormGroup(
       { name: 'unarchivalForm', type: FormNodeTypes.GROUP },
@@ -60,10 +61,6 @@ export class TechRecordUnarchiveComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  navigateBack(relativePath = '..'): void {
-    void this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string; newRecordStatus: string }): void {

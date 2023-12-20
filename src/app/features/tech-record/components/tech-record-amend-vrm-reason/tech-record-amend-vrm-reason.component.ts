@@ -8,6 +8,7 @@ import {
   CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 import { NotTrailer, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Subject, take, takeUntil } from 'rxjs';
 
@@ -36,12 +37,13 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private technicalRecordService: TechnicalRecordService,
+    public routerService: RouterService,
   ) {}
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe((record) => {
       if (record?.techRecord_statusCode === 'archived' || !record) {
-        return this.navigateBack();
+        return this.routerService.navigateBack();
       }
       this.techRecord = record as NotTrailer;
       this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
@@ -66,11 +68,6 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
 
   get vehicleType(): VehicleTypes | undefined {
     return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   submit(): void {

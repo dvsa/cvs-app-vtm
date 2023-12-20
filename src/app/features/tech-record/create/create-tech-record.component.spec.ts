@@ -84,26 +84,6 @@ describe('CreateNewVehicleRecordComponent', () => {
     });
   });
 
-  describe('navigateBack', () => {
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
-
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
-
-      component.navigateBack();
-
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-
-      component.navigateBack();
-
-      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
-    });
-  });
-
   describe('handleSubmit', () => {
     it('should do nothing if the form is not valid', async () => {
       const formUniqueSpy = jest.spyOn(component, 'isFormValueUnique').mockImplementation();

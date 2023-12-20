@@ -13,6 +13,7 @@ import { CustomValidators } from '@forms/validators/custom-validators';
 import { NotTrailer, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
@@ -86,6 +87,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
+    public routerService: RouterService,
   ) {}
 
   ngOnInit(): void {
@@ -96,7 +98,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     });
     this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe((record) => {
       if (record?.techRecord_statusCode === 'archived' || !record) {
-        return this.navigateBack();
+        return this.routerService.navigateBackTo('../../');
       }
       this.techRecord = record as NotTrailer;
       this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
@@ -123,11 +125,6 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 
   get vehicleType(): VehicleTypes | undefined {
     return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   handleFormChange() {

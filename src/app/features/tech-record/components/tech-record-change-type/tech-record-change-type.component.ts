@@ -12,6 +12,7 @@ import {
   StatusCodes, V3TechRecordModel, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { changeVehicleType } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
@@ -40,13 +41,14 @@ export class ChangeVehicleTypeComponent implements OnInit {
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
+    public routerService: RouterService,
   ) {}
 
   ngOnInit(): void {
     this.globalErrorService.clearErrors();
     this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => {
       if (!techRecord) {
-        this.navigateBack();
+        this.routerService.navigateBack();
       } else {
         this.techRecord = techRecord;
       }
@@ -67,11 +69,6 @@ export class ChangeVehicleTypeComponent implements OnInit {
 
   get currentVrm() {
     return this.techRecord?.techRecord_vehicleType !== 'trl' ? this.techRecord?.primaryVrm : undefined;
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(selectedVehicleType: VehicleTypes): void {

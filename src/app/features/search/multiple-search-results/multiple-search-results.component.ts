@@ -1,11 +1,11 @@
-import { Location } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { Roles } from '@models/roles.enum';
-import { Store, select } from '@ngrx/store';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { SEARCH_TYPES } from '@models/search-types-enum';
+import { Store, select } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
+import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -24,7 +24,7 @@ export class MultipleSearchResultsComponent implements OnDestroy {
     private technicalRecordService: TechnicalRecordService,
     private technicalRecordHttpService: TechnicalRecordHttpService,
     private store: Store,
-    private location: Location,
+    public routerService: RouterService,
   ) {
     this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe((params) => {
       if (Object.keys(params).length === 1) {
@@ -40,11 +40,6 @@ export class MultipleSearchResultsComponent implements OnDestroy {
     });
 
     this.searchResults$ = this.technicalRecordService.searchResultsWithUniqueSystemNumbers$;
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    this.location.back();
   }
 
   ngOnDestroy() {

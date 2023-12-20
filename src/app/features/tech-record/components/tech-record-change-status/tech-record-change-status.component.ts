@@ -6,6 +6,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import {
@@ -33,6 +34,7 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<State>,
     private technicalRecordService: TechnicalRecordService,
+    public routerService: RouterService,
   ) {
     this.form = new CustomFormGroup(
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
@@ -67,10 +69,6 @@ export class TechRecordChangeStatusComponent implements OnInit, OnDestroy {
 
   get buttonLabel(): string {
     return this.isPromotion ? 'Promote' : 'Archive';
-  }
-
-  navigateBack(relativePath = '..'): void {
-    void this.router.navigate([relativePath], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string }): void {

@@ -1,7 +1,7 @@
 import {
   Component, OnInit, QueryList, ViewChildren,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
@@ -11,6 +11,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { RouterService } from '@services/router/router.service';
 import { ReferenceDataState, createReferenceDataItem, selectReferenceDataByResourceKey } from '@store/reference-data';
 import {
   Observable, catchError, filter, of, switchMap, take, throwError,
@@ -36,8 +37,8 @@ export class ReferenceDataCreateComponent implements OnInit {
     public dfs: DynamicFormService,
     private referenceDataService: ReferenceDataService,
     private route: ActivatedRoute,
-    private router: Router,
     private store: Store<ReferenceDataState>,
+    public routerService: RouterService,
   ) {}
 
   ngOnInit(): void {
@@ -58,11 +59,6 @@ export class ReferenceDataCreateComponent implements OnInit {
 
   get widths(): typeof FormNodeWidth {
     return FormNodeWidth;
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -107,7 +103,7 @@ export class ReferenceDataCreateComponent implements OnInit {
                 payload: referenceData,
               }),
             );
-            this.navigateBack();
+            this.routerService.navigateBack();
           }
         },
       });

@@ -5,6 +5,7 @@ import {
 } from '@angular/forms';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
@@ -22,6 +23,7 @@ describe('AdrTankStatementUnNumberComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [DynamicFormsModule],
       declarations: [AdrTankStatementUnNumberComponent],
       providers: [
         provideMockStore({ initialState: initialAppState }),

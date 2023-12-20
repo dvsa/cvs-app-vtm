@@ -3,7 +3,7 @@ import {
   ComponentFixture, fakeAsync, TestBed, tick,
 } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
@@ -12,6 +12,7 @@ import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
@@ -29,8 +30,6 @@ describe('TechRecordGeneratePlateComponent', () => {
   let component: GeneratePlateComponent;
   let errorService: GlobalErrorService;
   let fixture: ComponentFixture<GeneratePlateComponent>;
-  let route: ActivatedRoute;
-  let router: Router;
   let store: MockStore;
   let technicalRecordService: TechnicalRecordService;
 
@@ -50,6 +49,7 @@ describe('TechRecordGeneratePlateComponent', () => {
             roles$: of(['TechRecord.Amend']),
           },
         },
+        { provide: RouterService, useValue: { navigateBack: jest.fn() } },
       ],
       imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
     }).compileComponents();
@@ -58,8 +58,6 @@ describe('TechRecordGeneratePlateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GeneratePlateComponent);
     errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
-    router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
     component = fixture.componentInstance;
@@ -75,30 +73,13 @@ describe('TechRecordGeneratePlateComponent', () => {
         .spyOn(technicalRecordService, 'techRecord$', 'get')
         .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
     });
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
-
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
-
-      component.navigateBack();
-
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-
-      component.navigateBack();
-
-      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
-    });
 
     it('should navigate back on generatePlateSuccess', fakeAsync(() => {
       fixture.ngZone?.run(() => {
         component.ngOnInit();
         component.form.get('reason')?.setValue('Provisional');
 
-        const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();
+        const navigateBackSpy = jest.spyOn(component.routerService, 'navigateBack').mockImplementation();
 
         component.handleSubmit();
 

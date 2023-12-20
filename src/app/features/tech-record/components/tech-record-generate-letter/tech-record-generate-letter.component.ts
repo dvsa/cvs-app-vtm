@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -12,6 +11,7 @@ import { LETTER_TYPES } from '@forms/templates/general/letter-types';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { generateLetter, generateLetterSuccess } from '@store/technical-records';
@@ -49,18 +49,17 @@ export class GenerateLetterComponent implements OnInit {
     private actions$: Actions,
     public dfs: DynamicFormService,
     private globalErrorService: GlobalErrorService,
-    private route: ActivatedRoute,
-    private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
     public userService: UserService,
+    public routerService: RouterService,
   ) {}
 
   ngOnInit(): void {
     this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((techRecord) => {
       this.techRecord = techRecord;
     });
-    this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.navigateBack());
+    this.actions$.pipe(ofType(generateLetterSuccess), take(1)).subscribe(() => this.routerService.navigateBack());
   }
 
   get reasons(): Array<FormNodeOption<string>> {
@@ -72,11 +71,6 @@ export class GenerateLetterComponent implements OnInit {
 
   get emailAddress(): string | undefined {
     return this.techRecord?.techRecord_vehicleType === 'trl' ? this.techRecord?.techRecord_applicantDetails_emailAddress ?? '' : undefined;
-  }
-
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(): void {

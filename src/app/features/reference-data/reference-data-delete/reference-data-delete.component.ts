@@ -14,6 +14,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { RouterService } from '@services/router/router.service';
 import {
   ReferenceDataState, deleteReferenceDataItem, fetchReferenceDataByKey, selectReferenceDataByResourceKey,
 } from '@store/reference-data';
@@ -58,6 +59,7 @@ export class ReferenceDataDeleteComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<ReferenceDataState>,
+    public routerService: RouterService,
   ) {}
 
   ngOnInit(): void {
@@ -122,11 +124,6 @@ export class ReferenceDataDeleteComponent implements OnInit {
     this.globalErrorService.clearErrors();
   }
 
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['../..'], { relativeTo: this.route });
-  }
-
   handleSubmit() {
     this.checkForms();
 
@@ -139,6 +136,6 @@ export class ReferenceDataDeleteComponent implements OnInit {
         reason: this.reasonForDeletion.reason,
       }),
     );
-    this.navigateBack();
+    this.routerService.navigateBack();
   }
 }

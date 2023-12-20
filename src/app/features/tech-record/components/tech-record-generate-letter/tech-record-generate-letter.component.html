@@ -12,7 +12,7 @@
 
     <app-button-group>
       <app-button id="submit-letter-form" (clicked)="handleSubmit()">Generate and send</app-button>
-      <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+      <app-button design="link" data-module="govuk-button" (clicked)="routerService.navigateBack()">Back</app-button>
     </app-button-group>
   </form>
 </div>

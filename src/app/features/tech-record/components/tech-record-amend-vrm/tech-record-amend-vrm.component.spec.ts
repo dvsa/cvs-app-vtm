@@ -6,7 +6,9 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router'
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { NotTrailer } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -16,8 +18,6 @@ import { initialAppState, State } from '@store/index';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { NotTrailer } from '@models/vehicle-tech-record.model';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 
 const mockTechRecordService = {
@@ -42,7 +42,6 @@ describe('TechRecordChangeVrmComponent', () => {
   let component: AmendVrmComponent;
   let errorService: GlobalErrorService;
   let fixture: ComponentFixture<AmendVrmComponent>;
-  let route: ActivatedRoute;
   let router: Router;
   let store: MockStore<State>;
 
@@ -63,7 +62,6 @@ describe('TechRecordChangeVrmComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AmendVrmComponent);
     errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
@@ -80,23 +78,6 @@ describe('TechRecordChangeVrmComponent', () => {
   });
 
   describe('navigateBack', () => {
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
-
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
-
-      component.navigateBack();
-
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-
-      component.navigateBack();
-
-      expect(navigateSpy).toHaveBeenCalledWith(['../../'], { relativeTo: route });
-    });
 
     it('should navigate to a new record on amendVrmSuccess', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
