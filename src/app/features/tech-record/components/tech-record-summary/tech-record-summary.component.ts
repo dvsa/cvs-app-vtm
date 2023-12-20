@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ViewportScroller } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -202,12 +203,10 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
     switch (this.vehicleType) {
       case VehicleTypes.PSV:
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return [...commonCustomSections, this.psvBrakes!.form];
       case VehicleTypes.HGV:
         return this.isADREnabled ? [...commonCustomSections, this.adr.form] : commonCustomSections;
       case VehicleTypes.TRL:
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return this.isADREnabled ? [...commonCustomSections, this.trlBrakes!.form, this.letters.form, this.adr.form]
           : [...commonCustomSections, this.trlBrakes!.form, this.letters.form];
       case VehicleTypes.LGV:
