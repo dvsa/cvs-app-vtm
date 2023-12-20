@@ -4,9 +4,9 @@ import { BaseControlComponent } from '@forms/components/base-control/base-contro
 import { AdrExaminerNotesHistoryViewComponent } from '../adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 
 @Component({
-  selector: 'app-adr-tank-details-subsequent-inspections-view',
-  templateUrl: './adr-tank-details-subsequent-inspections-view.component.html',
-  styleUrls: ['./adr-tank-details-subsequent-inspections-view.component.scss'],
+  selector: 'app-adr-tank-details-initial-inspection-view',
+  templateUrl: './adr-tank-details-initial-inspection-view.component.html',
+  styleUrls: ['./adr-tank-details-initial-inspection-view.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -15,6 +15,5 @@ import { AdrExaminerNotesHistoryViewComponent } from '../adr-examiner-notes-hist
     },
   ],
 })
-export class AdrTankDetailsSubsequentInspectionsViewComponent extends BaseControlComponent {
-
+export class AdrTankDetailsInitialInspectionViewComponent extends BaseControlComponent {
 }

@@ -16,8 +16,14 @@ import {
 } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
-  AdrTankDetailsSubsequentInspectionsComponent,
+  AdrTankDetailsInitialInspectionViewComponent,
+} from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
+import {
+  AdrTankDetailsSubsequentInspectionsEditComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
+import {
+  AdrTankDetailsSubsequentInspectionsViewComponent,
+} from '@forms/custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
 import { AdrTankStatementUnNumberComponent } from '@forms/custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
@@ -523,10 +529,13 @@ export const AdrTemplate: FormNode = {
         },
       ],
     },
+    // Note: this used only for the view mode for the ADR Tank Details initial inpsection controls
     {
-      name: 'tankInspectionsInitial',
-      type: FormNodeTypes.SUBTITLE,
-      label: 'Initial',
+      name: 'tankInspectionsInitialView',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.CUSTOM,
+      viewComponent: AdrTankDetailsInitialInspectionViewComponent,
       groups: ['tank_details', 'dangerous_goods'],
       hide: true,
       validators: [
@@ -542,7 +551,7 @@ export const AdrTemplate: FormNode = {
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
       label: 'TC2: Inspection type',
       value: TC2Types.INITIAL,
       hide: true,
@@ -552,6 +561,7 @@ export const AdrTemplate: FormNode = {
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
       label: 'TC2: Certificate Number',
+      viewType: FormNodeViewTypes.HIDDEN,
       type: FormNodeTypes.CONTROL,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
@@ -563,36 +573,21 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
       label: 'TC2: Expiry Date',
       type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.DATE,
-      viewType: FormNodeViewTypes.DATE,
       isoDate: false,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
       validators: [],
     },
     {
-      name: 'tankInspectionsSubsequent',
-      type: FormNodeTypes.SUBTITLE,
-      label: 'Subsequent',
-      groups: ['tank_details', 'dangerous_goods'],
-      hide: true,
-      validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-          },
-        },
-      ],
-    },
-    {
       name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
       label: 'Subsequent Inspections',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.ADRINSPECTIONS,
+      viewType: FormNodeViewTypes.CUSTOM,
+      viewComponent: AdrTankDetailsSubsequentInspectionsViewComponent,
       editType: FormNodeEditTypes.CUSTOM,
-      editComponent: AdrTankDetailsSubsequentInspectionsComponent,
+      editComponent: AdrTankDetailsSubsequentInspectionsEditComponent,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
       validators: [

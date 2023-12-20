@@ -35,8 +35,11 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
 import { AdrExaminerNotesHistoryViewComponent } from './custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from './custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
-  AdrTankDetailsSubsequentInspectionsComponent,
+  AdrTankDetailsSubsequentInspectionsEditComponent,
 } from './custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
+import {
+  AdrTankDetailsSubsequentInspectionsViewComponent,
+} from './custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
 import { AdrTankStatementUnNumberComponent } from './custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
 import { AdrComponent } from './custom-sections/adr/adr.component';
 import { BodyComponent } from './custom-sections/body/body.component';
@@ -59,7 +62,7 @@ import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
-import { AdrTankDetailsSubsequentInspectionsViewComponent } from './custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
+import { AdrTankDetailsInitialInspectionViewComponent } from './custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
 
 @NgModule({
   declarations: [
@@ -111,12 +114,13 @@ import { AdrTankDetailsSubsequentInspectionsViewComponent } from './custom-secti
     FieldWarningMessageComponent,
     AdrComponent,
     AdrGuidanceNotesComponent,
-    AdrTankDetailsSubsequentInspectionsComponent,
+    AdrTankDetailsSubsequentInspectionsEditComponent,
     AdrTankStatementUnNumberComponent,
     CustomFormControlComponent,
     AdrExaminerNotesHistoryEditComponent,
     AdrExaminerNotesHistoryViewComponent,
     AdrTankDetailsSubsequentInspectionsViewComponent,
+    AdrTankDetailsInitialInspectionViewComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

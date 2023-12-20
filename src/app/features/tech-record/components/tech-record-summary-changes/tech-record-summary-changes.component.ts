@@ -22,6 +22,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import {
   clearADRDetailsBeforeUpdate,
@@ -37,7 +38,6 @@ import {
 import {
   Subject, combineLatest, map, take, takeUntil,
 } from 'rxjs';
-import { UserService } from '@services/user-service/user-service';
 
 @Component({
   selector: 'app-tech-record-summary-changes',
