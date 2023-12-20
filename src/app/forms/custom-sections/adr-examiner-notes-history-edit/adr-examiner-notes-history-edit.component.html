@@ -19,13 +19,7 @@
             </td>
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ examinerNote.lastUpdatedBy }}</td>
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-              <p class="m-0" [ngClass]="{ 'line-clamp-5': !expanded.has(i) }">{{ examinerNote.note }}</p>
-              <ng-container *ngIf="examinerNote.note && examinerNote.note.length > 200">
-                <a class="govuk-link govuk-!-font-size-16" href="javascript:void(0)" (click)="expanded.has(i) ? expanded.delete(i) : expanded.add(i)">
-                  {{ expanded.has(i) ? 'View less' : 'View more' }}
-                </a>
-                <br />
-              </ng-container>
+              {{ examinerNote.note }}
             </td>
           </tr>
         </ng-container>

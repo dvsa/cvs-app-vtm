@@ -15,5 +15,4 @@ import { BaseControlComponent } from '@forms/components/base-control/base-contro
   ],
 })
 export class AdrExaminerNotesHistoryViewComponent extends BaseControlComponent {
-  expanded = new Set<number>();
 }
