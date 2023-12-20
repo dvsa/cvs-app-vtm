@@ -1,8 +1,10 @@
 <div class="flex" id="{{ 'test-' + form.meta.name || 'test-dynamic-form' }}">
   <ng-template [ngTemplateOutlet]="templateHeading"></ng-template>
-  <dl *ngIf="!edit" class="govuk-summary-list">
-    <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
-  </dl>
+  <table *ngIf="!edit" class="govuk-table">
+    <tbody class="govuk-table__body">
+      <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
+    </tbody>
+  </table>
   <ng-container *ngIf="edit">
     <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
   </ng-container>
@@ -52,6 +54,10 @@
         <ng-template [ngTemplateOutlet]="titleTemplate" [ngTemplateOutletContext]="{ control: control }"></ng-template>
       </ng-container>
 
+      <ng-container *ngSwitchCase="formNodeTypes.SUBTITLE">
+        <ng-template [ngTemplateOutlet]="subtitleTemplate" [ngTemplateOutletContext]="{ control: control }"></ng-template>
+      </ng-container>
+
       <ng-container *ngSwitchCase="formNodeTypes.COMBINATION">
         <ng-template [ngTemplateOutlet]="combinationTemplate" [ngTemplateOutletContext]="{ control: control, formGroup: form }"></ng-template>
       </ng-container>
@@ -63,16 +69,16 @@
   <ng-container [formGroup]="formGroup">
     <ng-container *ngIf="control.value.meta && !control.value.meta.hide" [ngSwitch]="edit">
       <ng-container *ngIf="control.value.meta.viewType !== 'hidden'">
-        <div
+        <tr
           *ngSwitchCase="false"
           app-view-list-item
-          class="govuk-summary-list__row"
+          class="govuk-table__row"
           [label]="control.value.meta.label"
           [name]="control.value.meta.name"
           [customId]="control.value.meta.customId ?? ''"
           [viewType]="control.value.meta.viewType"
           [formControlName]="control.key"
-        ></div>
+        ></tr>
       </ng-container>
       <app-dynamic-form-field
         *ngSwitchCase="true"
@@ -110,9 +116,28 @@
 
 <ng-template #titleTemplate let-control="control">
   <ng-container *ngIf="!(control.value.meta && control.value.meta.hide)">
-    <div *ngIf="!edit">
-      <span class="govuk-label govuk-summary-list__key">{{ control.value.meta.label }}</span>
+    <ng-container *ngIf="!edit">
+      <tr class="govuk-table__row">
+        <td colspan="2" class="govuk-table__cell pt-2">
+          <h4 class="govuk-heading-m mb-0">{{ control.value.meta.label }}</h4>
+        </td>
+      </tr>
+    </ng-container>
+    <div *ngIf="edit">
+      <span class="govuk-label govuk-label--m">{{ control.value.meta.label }}</span>
     </div>
+  </ng-container>
+</ng-template>
+
+<ng-template #subtitleTemplate let-control="control">
+  <ng-container *ngIf="!(control.value.meta && control.value.meta.hide)">
+    <ng-container *ngIf="!edit">
+      <tr class="govuk-table__row">
+        <td colspan="2" class="govuk-table__cell">
+          <h4 class="govuk-heading-s mb-0">{{ control.value.meta.label }}</h4>
+        </td>
+      </tr>
+    </ng-container>
     <div *ngIf="edit">
       <span class="govuk-label govuk-label--m">{{ control.value.meta.label }}</span>
     </div>

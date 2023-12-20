@@ -9,8 +9,11 @@ import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-recor
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import {
-  AdrExaminerNotesHistoryComponent,
-} from '@forms/custom-sections/adr-examiner-notes-history/adr-examiner-notes-history.component';
+  AdrExaminerNotesHistoryEditComponent,
+} from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
+import {
+  AdrExaminerNotesHistoryViewComponent,
+} from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
   AdrTankDetailsSubsequentInspectionsComponent,
@@ -227,7 +230,7 @@ export const AdrTemplate: FormNode = {
       label: 'Guidance notes',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
-      component: AdrGuidanceNotesComponent,
+      editComponent: AdrGuidanceNotesComponent,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
       width: FormNodeWidth.XS,
@@ -471,7 +474,7 @@ export const AdrTemplate: FormNode = {
       label: 'UN number',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
-      component: AdrTankStatementUnNumberComponent,
+      editComponent: AdrTankStatementUnNumberComponent,
       groups: ['productList', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
       customErrorMessage: 'Reference number or UN number is required when selecting Product List',
@@ -521,8 +524,8 @@ export const AdrTemplate: FormNode = {
       ],
     },
     {
-      name: 'tankInspectionsSectionSubheading',
-      type: FormNodeTypes.TITLE,
+      name: 'tankInspectionsSectionSubtitle',
+      type: FormNodeTypes.SUBTITLE,
       label: 'Initial',
       groups: ['tank_details', 'dangerous_goods'],
       hide: true,
@@ -573,7 +576,7 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
       viewType: FormNodeViewTypes.ADRINSPECTIONS,
-      component: AdrTankDetailsSubsequentInspectionsComponent,
+      editComponent: AdrTankDetailsSubsequentInspectionsComponent,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
       validators: [
@@ -751,9 +754,10 @@ export const AdrTemplate: FormNode = {
       label: 'Additional examiner notes history',
       value: null,
       type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.CUSTOM,
+      viewComponent: AdrExaminerNotesHistoryViewComponent,
       editType: FormNodeEditTypes.CUSTOM,
-      viewType: FormNodeViewTypes.ADR_EXAMINER_NOTES,
-      component: AdrExaminerNotesHistoryComponent,
+      editComponent: AdrExaminerNotesHistoryEditComponent,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
     },
