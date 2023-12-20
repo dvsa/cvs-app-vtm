@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ViewportScroller } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -58,8 +57,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
   @ViewChild(BodyComponent) body!: BodyComponent;
   @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
-  @ViewChild(PsvBrakesComponent) psvBrakes?: PsvBrakesComponent;
-  @ViewChild(TrlBrakesComponent) trlBrakes?: TrlBrakesComponent;
+  @ViewChild(PsvBrakesComponent) psvBrakes!: PsvBrakesComponent;
+  @ViewChild(TrlBrakesComponent) trlBrakes!: TrlBrakesComponent;
   @ViewChild(TyresComponent) tyres!: TyresComponent;
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
   @ViewChild(LettersComponent) letters!: LettersComponent;
@@ -203,12 +202,12 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
 
     switch (this.vehicleType) {
       case VehicleTypes.PSV:
-        return [...commonCustomSections, this.psvBrakes!.form];
+        return [...commonCustomSections, this.psvBrakes.form];
       case VehicleTypes.HGV:
         return this.isADREnabled ? [...commonCustomSections, this.adr.form] : commonCustomSections;
       case VehicleTypes.TRL:
-        return this.isADREnabled ? [...commonCustomSections, this.trlBrakes!.form, this.letters.form, this.adr.form]
-          : [...commonCustomSections, this.trlBrakes!.form, this.letters.form];
+        return this.isADREnabled ? [...commonCustomSections, this.trlBrakes.form, this.letters.form, this.adr.form]
+          : [...commonCustomSections, this.trlBrakes.form, this.letters.form];
       case VehicleTypes.LGV:
         return this.isADREnabled ? [this.adr.form] : [];
       default:
