@@ -10,7 +10,7 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { NotVehicle, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -24,7 +24,7 @@ import { Subject, take, takeUntil } from 'rxjs';
   styleUrls: ['./tech-record-amend-vrm.component.scss'],
 })
 export class AmendVrmComponent implements OnDestroy, OnInit {
-  techRecord?: NotVehicle<'trl'>;
+  techRecord?: VehiclesOtherThan<'trl'>;
   makeAndModel?: string;
   isCherishedTransfer = false;
   systemNumber?: string;
@@ -98,7 +98,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
       if (record?.techRecord_statusCode === 'archived' || !record) {
         return this.navigateBack();
       }
-      this.techRecord = record as NotVehicle<'trl'>;
+      this.techRecord = record as VehiclesOtherThan<'trl'>;
       this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
     });
 

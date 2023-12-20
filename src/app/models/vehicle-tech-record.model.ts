@@ -18,7 +18,7 @@ export type V3TechRecordModel = TechRecordType<'get'> | TechRecordType<'put'>;
 
 export type Empty<T> = { [key in keyof T]: T[key] | null };
 
-export type NotVehicle<T extends VehicleType> = TechRecordTypeByVehicle<Exclude<VehicleType, T>>;
+export type VehiclesOtherThan<T extends VehicleType> = TechRecordTypeByVehicle<Exclude<VehicleType, T>>;
 
 export type Axles<T extends 'hgv' | 'psv' | 'trl' = 'hgv' | 'psv' | 'trl'> = NonNullable<TechRecordTypeByVehicle<T>['techRecord_axles']>;
 export type Axle<T extends 'hgv' | 'psv' | 'trl' = 'hgv' | 'psv' | 'trl'> = Axles<T>[0];
