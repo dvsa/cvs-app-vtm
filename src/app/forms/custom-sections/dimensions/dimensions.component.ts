@@ -17,6 +17,7 @@ import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.templ
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { WarningsEnum } from '@shared/enums/warnings.enum';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { DimensionLabelEnum } from '@shared/enums/dimension-label.enum';
 
 @Component({
   selector: 'app-dimensions',
@@ -74,11 +75,11 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   isLengthLabel(control: CustomFormControl): boolean {
-    return control.meta.label === 'Length (mm)';
+    return control.meta.label === DimensionLabelEnum.LENGTH;
   }
 
   isWidthLabel(control: CustomFormControl): boolean {
-    return control.meta.label === 'Width (mm)';
+    return control.meta.label === DimensionLabelEnum.WIDTH;
   }
   shouldDisplayLengthWarning(control: CustomFormControl): boolean {
     return parseInt(control.value, 10) > 12000;

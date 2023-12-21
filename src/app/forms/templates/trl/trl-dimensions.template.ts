@@ -3,6 +3,7 @@ import { TagType } from '@shared/components/tag/tag.component';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, TagTypeLabels,
 } from '../../services/dynamic-form.types';
+import { DimensionLabelEnum } from '@shared/enums/dimension-label.enum';
 
 export const TrlDimensionsTemplate: FormNode = {
   name: 'dimensionsSection',
@@ -11,7 +12,7 @@ export const TrlDimensionsTemplate: FormNode = {
   children: [
     {
       name: 'techRecord_dimensions_length',
-      label: 'Length (mm)',
+      label: DimensionLabelEnum.LENGTH,
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
@@ -19,7 +20,7 @@ export const TrlDimensionsTemplate: FormNode = {
     },
     {
       name: 'techRecord_dimensions_width',
-      label: 'Width (mm)',
+      label: DimensionLabelEnum.WIDTH,
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
@@ -36,7 +37,7 @@ export const TrlDimensionsTemplate: FormNode = {
           children: [
             {
               name: 'value',
-              label: 'Axle to axle (mm)',
+              label: DimensionLabelEnum.AXLE_TO_AXLE,
               value: null,
               editType: FormNodeEditTypes.NUMBER,
               type: FormNodeTypes.CONTROL,
@@ -48,42 +49,42 @@ export const TrlDimensionsTemplate: FormNode = {
     },
     {
       name: 'techRecord_frontAxleToRearAxle',
-      label: 'Front axle to rear axle (mm)',
+      label: DimensionLabelEnum.FRONT_AXLE_TO_REAR_AXLE,
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
     },
     {
       name: 'techRecord_rearAxleToRearTrl',
-      label: 'Rear axle to rear trailer',
+      label: DimensionLabelEnum.REAR_AXLE_TO_REAR_TRAILER,
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
     },
     {
       name: 'techRecord_centreOfRearmostAxleToRearOfTrl',
-      label: 'Center of Rear axle to rear of trailer',
+      label: DimensionLabelEnum.CENTER_REAR_AXLE_TO_REAR_TRAILER,
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
     },
     {
       name: 'techRecord_couplingCenterToRearAxleMin',
-      label: 'Minimum',
+      label: DimensionLabelEnum.MINIMUM,
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
     },
     {
       name: 'techRecord_couplingCenterToRearAxleMax',
-      label: 'Maximum',
+      label: DimensionLabelEnum.MAXIMUM,
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
     },
     {
       name: 'techRecord_couplingCenterToRearTrlMin',
-      label: 'Minimum',
+      label: DimensionLabelEnum.MINIMUM,
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
@@ -91,7 +92,7 @@ export const TrlDimensionsTemplate: FormNode = {
     },
     {
       name: 'techRecord_couplingCenterToRearTrlMax',
-      label: 'Maximum',
+      label: DimensionLabelEnum.MAXIMUM,
       value: null,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }],
