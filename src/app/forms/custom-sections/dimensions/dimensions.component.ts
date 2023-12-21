@@ -62,11 +62,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   handleWarningChange(control: CustomFormControl, shouldDisplay: boolean, warning: WarningsEnum) {
-    if (shouldDisplay) {
-      control.meta.warning = warning;
-    } else {
-      control.meta.warning = undefined;
-    }
+    control.meta.warning = shouldDisplay ? warning : undefined;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
