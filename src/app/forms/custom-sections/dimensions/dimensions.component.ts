@@ -65,7 +65,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
     if (shouldDisplay) {
       control.meta.warning = warning;
     } else {
-      control.meta.warning = '';
+      control.meta.warning = undefined;
     }
   }
 
