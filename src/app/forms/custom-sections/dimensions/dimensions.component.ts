@@ -51,10 +51,10 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
       const control = this.form.get(controlKey);
       if (control instanceof CustomFormControl) {
         if (this.techRecord.techRecord_vehicleType === 'hgv' || this.techRecord.techRecord_vehicleType === 'trl') {
-          if (this.isLengthLabel(control)) {
+          if (this.isLengthControl(control)) {
             this.handleWarningChange(control, this.shouldDisplayLengthWarning(control), WarningsEnum.DIMENSIONS_LENGTH_WARNING);
           }
-          if (this.isWidthLabel(control)) {
+          if (this.isWidthControl(control)) {
             this.handleWarningChange(control, this.shouldDisplayWidthWarning(control), WarningsEnum.DIMENSIONS_WIDTH_WARNING);
           }
         }
