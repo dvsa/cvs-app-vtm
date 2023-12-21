@@ -1025,9 +1025,10 @@ describe('addWarningIfFalse', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
     const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
 
-    adr?.patchValue(false);
-    adr?.markAsDirty();
     name.patchValue('test');
+    name.markAsTouched();
+    adr.patchValue(false);
+    adr.markAsDirty();
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBe('Test warning');
@@ -1036,9 +1037,10 @@ describe('addWarningIfFalse', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
     const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
 
-    adr?.patchValue(false);
-    adr?.markAsDirty();
     name.patchValue('test');
+    name.markAsTouched();
+    adr.patchValue(false);
+    adr.markAsDirty();
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBe('Test warning');
@@ -1051,7 +1053,7 @@ describe('addWarningIfFalse', () => {
   it('should not have a warning if the control is pristine and value is false', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
 
-    adr?.patchValue(false);
+    adr.patchValue(false);
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBeUndefined();
@@ -1059,8 +1061,8 @@ describe('addWarningIfFalse', () => {
   it('should not have a warning if the value is false but there is no adr information on the record', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
 
-    adr?.patchValue(false);
-    adr?.markAsDirty();
+    adr.patchValue(false);
+    adr.markAsDirty();
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBeUndefined();
