@@ -74,12 +74,12 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  isLengthLabel(control: CustomFormControl): boolean {
-    return control.meta.label === DimensionLabelEnum.LENGTH;
+  isLengthControl(control: CustomFormControl): boolean {
+    return control.meta.name === 'techRecord_dimensions_length';
   }
 
-  isWidthLabel(control: CustomFormControl): boolean {
-    return control.meta.label === DimensionLabelEnum.WIDTH;
+  isWidthControl(control: CustomFormControl): boolean {
+    return control.meta.name === 'techRecord_dimensions_height';
   }
   shouldDisplayLengthWarning(control: CustomFormControl): boolean {
     return parseInt(control.value, 10) > 12000;
