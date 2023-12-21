@@ -43,4 +43,5 @@ export enum ValidatorNames {
   IsArray = 'isArray',
   Custom = 'custom',
   Tc3TestValidator = 'tc3TestValidator',
+  DateIsInvalid = 'dateIsInvalid',
 }

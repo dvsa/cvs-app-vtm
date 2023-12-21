@@ -171,8 +171,9 @@ export const AdrTemplate: FormNode = {
       hide: true,
       isoDate: false,
       validators: [
-        { name: ValidatorNames.PastDate },
         { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        { name: ValidatorNames.PastDate },
+        { name: ValidatorNames.DateIsInvalid },
       ],
     },
     {
@@ -676,6 +677,7 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_brakeDeclarationIssuer',
       label: 'Issuer',
       type: FormNodeTypes.CONTROL,
+      hide: true,
       groups: ['issuer_section', 'dangerous_goods_hide'],
       editType: FormNodeEditTypes.TEXTAREA,
       validators: [
@@ -687,7 +689,6 @@ export const AdrTemplate: FormNode = {
       label: 'Brake endurance',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOX,
-
       groups: ['issuer_section', 'dangerous_goods_hide'],
       hide: true,
       validators: [

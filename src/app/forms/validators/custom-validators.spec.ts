@@ -1975,4 +1975,30 @@ describe('tc3ParentValidator', () => {
 
     expect(validator).toBeNull();
   });
+
+  describe('dateIsValid', () => {
+    it.each([
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, null],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, undefined],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, ''],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '---'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000--'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000-12-'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000-12-A'],
+      [null, '2000-12-01'],
+      [null, '2000-12-11'],
+      [null, '2000-12-31'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be a number' } }, '2000--11'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be a number' } }, '2000-C-11'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be between 1 and 12' } }, '2000-31-11'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be between 1 and 12' } }, '2000-00-11'],
+      [{ dateIsInvalid: { message: '\'Date\' year must be a number' } }, '-12-11'],
+      [{ dateIsInvalid: { message: '\'Date\' year must be a number' } }, 'C-12-11'],
+
+      [null, '2020-02-29'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be between 1 and 28 in the month of February' } }, '2019-02-29'],
+    ])('should return %p when control value is %s', (expected: object | null, input) => {
+      expect(CustomValidators.dateIsInvalid(new FormControl(input))).toEqual(expected);
+    });
+  });
 });

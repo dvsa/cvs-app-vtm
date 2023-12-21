@@ -3,6 +3,7 @@ import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tec
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import validateDate from 'validate-govuk-date';
 
 export class CustomValidators {
   static hideIfEmpty = (sibling: string): ValidatorFn => {
@@ -233,9 +234,17 @@ export class CustomValidators {
     return control.value === '[INVALID_OPTION]' ? { invalidOption: true } : null;
   };
 
+  static dateIsInvalid: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const [yyyy, mm, dd] = (control.value ?? '').split('-');
+    const label = control instanceof CustomFormControl ? control.meta.label : undefined;
+    const checks = validateDate(parseInt(dd ?? '', 10), parseInt(mm ?? '', 10), parseInt(yyyy ?? '', 10), label);
+    return checks && checks.error ? { dateIsInvalid: { message: checks.errors?.[0]?.reason } } : null;
+  };
+
   static pastDate: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const now = new Date();
     const date = control.value;
+
     if (date && new Date(date).getTime() > now.getTime()) {
       return { pastDate: true };
     }
