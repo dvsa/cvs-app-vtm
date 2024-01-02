@@ -442,34 +442,23 @@ export class CustomValidators {
 
   static addWarningForAdrField = (warning: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control.dirty && !control.value) {
-        const adrDetails = [
-          'techRecord_adrDetails_applicantDetails_city',
-          'techRecord_adrDetails_applicantDetails_name',
-          'techRecord_adrDetails_applicantDetails_postcode',
-          'techRecord_adrDetails_applicantDetails_town',
-          'techRecord_adrDetails_applicantDetails_street',
-          'techRecord_adrDetails_vehicleDetails_type',
-          'techRecord_adrDetails_vehicleDetails_approvalDate',
-          'techRecord_adrDetails_permittedDangerousGoods',
-          'techRecord_adrDetails_compatibilityGroupJ',
-          'techRecord_adrDetails_additionalNotes_number',
-          'techRecord_adrDetails_adrTypeApprovalNo',
-          'techRecord_adrDetails_tank_tankDetails_tankManufacturer',
-          'techRecord_adrDetails_tank_tankDetails_yearOfManufacture',
-          'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
-          'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
-          'techRecord_adrDetails_tank_tankDetails_tankCode',
-        ];
-        adrDetails.forEach((controlName) => {
-          const childControl = control.root.get(controlName);
-          if (childControl?.value) {
-            (control as CustomFormControl).meta.warning = warning;
+      if (control instanceof CustomFormControl) {
+        if (control.value) {
+          control.meta.warning = undefined;
+          return null;
+        }
+
+        if (control.dirty) {
+          const { parent } = control;
+          if (parent instanceof CustomFormGroup) {
+            const touched = Object.values(parent.controls).some((child) => child !== control && child.touched && child.value);
+            if (touched) {
+              control.meta.warning = warning;
+            }
           }
-        });
-      } if (control.value) {
-        delete (control as CustomFormControl).meta.warning;
+        }
       }
+
       return null;
     };
   };
