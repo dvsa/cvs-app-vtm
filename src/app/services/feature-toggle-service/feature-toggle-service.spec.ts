@@ -47,13 +47,16 @@ describe('feature toggle service', () => {
       environment.TARGET_ENV = 'dev';
       expect(service.getConfig()).toBe('assets/featureToggle.json');
 
+      environment.TARGET_ENV = 'undefined';
+      expect(service.getConfig()).toBe('assets/featureToggle.json');
+
       environment.TARGET_ENV = 'integration';
       expect(service.getConfig()).toBe('assets/featureToggle.int.json');
 
       environment.TARGET_ENV = 'preprod';
       expect(service.getConfig()).toBe('assets/featureToggle.preprod.json');
 
-      environment.TARGET_ENV = 'prop';
+      environment.TARGET_ENV = 'prod';
       expect(service.getConfig()).toBe('assets/featureToggle.prod.json');
     });
   });
