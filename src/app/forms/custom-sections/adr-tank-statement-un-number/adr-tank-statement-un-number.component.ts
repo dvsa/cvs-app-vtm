@@ -37,7 +37,13 @@ export class AdrTankStatementUnNumberComponent extends CustomFormControlComponen
 
   addControl(value = '') {
     if (!this.control) return;
-    if (this.formArray.length && !this.formArray.at(-1).value) return;
+
+    // Prevent adding new controls, whilst previous ones are empty
+    if (this.formArray.length && !this.formArray.at(-1).value) {
+      this.control.markAsTouched();
+      this.formArray.markAllAsTouched();
+      return;
+    }
 
     const control = new CustomFormControl({ ...this.control.meta, customId: `${this.control.meta.name}_${this.formArray.length + 1}` }, value);
     control.addValidators(Validators.maxLength(1500));
