@@ -5,8 +5,10 @@ import {
 } from '@angular/forms';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
 import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynamic-form-field.component';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
+import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { AdrTankStatementUnNumberComponent } from './adr-tank-statement-un-number.component';
 
@@ -22,6 +24,7 @@ describe('AdrTankStatementUnNumberComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [DynamicFormsModule, SharedModule],
       declarations: [AdrTankStatementUnNumberComponent],
       providers: [
         provideMockStore({ initialState: initialAppState }),
@@ -72,37 +75,42 @@ describe('AdrTankStatementUnNumberComponent', () => {
       const spy = jest.spyOn(component, 'addControl');
       component.ngAfterContentInit();
       expect(spy).toHaveBeenCalled();
-      expect(component.formArray.value).toHaveLength(2);
+      expect(component.formArray.value).toHaveLength(1);
     });
   });
 
   describe('addControl', () => {
     it('should add a copy of the control to the end of the form array', () => {
       const spy = jest.spyOn(component, 'addControl');
-      component.addControl();
-      component.addControl();
-      component.addControl();
-      component.addControl();
+      component.formArray.patchValue(['valid']); // fill in controls, to allow adding of additional ones
+      component.addControl('valid');
+      component.addControl('valid');
+      component.addControl('valid');
+      component.addControl('valid');
       expect(spy).toHaveBeenCalled();
       expect(component.formArray.value).toHaveLength(5);
+    });
+
+    it('should prevent the adding of additional controls, when the previous one is empty', () => {
+      component.addControl();
+      expect(component.formArray.value).toHaveLength(1);
     });
   });
 
   describe('removeControl', () => {
     it('should remove the UN number control from the form array at the index specified', () => {
       const methodSpy = jest.spyOn(component, 'removeControl');
-      const formArraySpy = jest.spyOn(component.formArray, 'removeAt');
 
-      component.addControl();
-      component.addControl();
-      component.addControl();
-      component.addControl();
+      component.formArray.patchValue(['valid']); // ensure initial is valid to allow adding subsequent controls
+      component.addControl('valid');
+      component.addControl('valid');
+      component.addControl('valid');
+      component.addControl('valid');
 
       component.removeControl(3);
       component.removeControl(2);
 
       expect(methodSpy).toHaveBeenCalledTimes(2);
-      expect(formArraySpy).toHaveBeenCalledTimes(2);
       expect(component.formArray.controls.at(4)).toBeUndefined();
       expect(component.formArray.controls.at(3)).toBeUndefined();
       expect(component.formArray.controls.at(2)).toBeDefined();
