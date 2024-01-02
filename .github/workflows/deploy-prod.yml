@@ -1,20 +1,17 @@
-name: Build and Deploy VTM App to Develop
+name: Build and Deploy VTM App to Prod
 run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'develop'
 
 jobs:
   vtm-app:
     uses: ./.github/workflows/deploy.yml
     with:
-      branch: 'develop'
-      environment: 'develop'
-      bucket: '.develop'
+      branch: 'master'
+      environment: 'prod'
+      bucket: '.prod'
     secrets:
       AWS_MGMT_ROLE: ${{ secrets.AWS_MGMT_ROLE }}
-      AWS_ADMIN_ROLE: ${{ secrets.AWS_NONPROD_ROLE }}
+      AWS_ADMIN_ROLE: ${{ secrets.AWS_PROD_ROLE }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
