@@ -24,14 +24,14 @@ export class FeatureToggleService {
 
   getConfig() {
     switch (environment.TARGET_ENV) {
-      case 'dev':
-        return 'assets/featureToggle.json';
+      case 'prod':
+        return 'assets/featureToggle.prod.json';
       case 'integration':
         return 'assets/featureToggle.int.json';
       case 'preprod':
         return 'assets/featureToggle.preprod.json';
       default:
-        return 'assets/featureToggle.prod.json';
+        return 'assets/featureToggle.json';
     }
   }
 
