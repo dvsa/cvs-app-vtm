@@ -8,7 +8,6 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { NotTrailer } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -93,7 +92,7 @@ describe('TechRecordChangeVrmComponent', () => {
 
   describe('handleSubmit', () => {
     beforeEach(() => {
-      component.techRecord = mockVehicleTechnicalRecord('psv') as NotTrailer;
+      component.techRecord = mockVehicleTechnicalRecord('psv') as VehiclesOtherThan<'trl'>;
       jest.resetAllMocks();
       jest.resetModules();
     });

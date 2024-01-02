@@ -3,9 +3,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
-import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
-import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   TechRecordGETCar,
@@ -17,11 +14,12 @@ import {
 import { FormNode, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { VehicleSummary } from '@forms/templates/tech-records/vehicle-summary.template';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axles, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import {
   clearADRDetailsBeforeUpdate,
@@ -37,7 +35,6 @@ import {
 import {
   Subject, combineLatest, map, take, takeUntil,
 } from 'rxjs';
-import { UserService } from '@services/user-service/user-service';
 
 @Component({
   selector: 'app-tech-record-summary-changes',
@@ -141,20 +138,20 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
     return VehicleSummary;
   }
 
-  get deletedAxles(): HGVAxles[] | TRLAxles[] | PSVAxles[] {
+  get deletedAxles(): Axles {
     if (this.techRecordEdited?.techRecord_vehicleType === 'hgv' && this.techRecordDeletions) {
-      return Object.values((this.techRecordDeletions as Partial<TechRecordGETHGV>).techRecord_axles ?? {}) as [HGVAxles, ...HGVAxles[]];
+      return Object.values((this.techRecordDeletions as Partial<TechRecordGETHGV>).techRecord_axles ?? {});
     }
 
     if (this.techRecordEdited?.techRecord_vehicleType === 'trl' && this.techRecordDeletions) {
-      return Object.values((this.techRecordDeletions as Partial<TechRecordGETTRL>).techRecord_axles ?? {}) as [TRLAxles, ...TRLAxles[]];
+      return Object.values((this.techRecordDeletions as Partial<TechRecordGETTRL>).techRecord_axles ?? {});
     }
 
     if (this.techRecordEdited?.techRecord_vehicleType === 'psv' && this.techRecordDeletions) {
-      return Object.values((this.techRecordDeletions as Partial<TechRecordGETPSV>).techRecord_axles ?? {}) as [PSVAxles, ...PSVAxles[]];
+      return Object.values((this.techRecordDeletions as Partial<TechRecordGETPSV>).techRecord_axles ?? {});
     }
 
-    return [] as HGVAxles[] | TRLAxles[] | PSVAxles[];
+    return [];
   }
 
   get sectionTemplatesState$() {

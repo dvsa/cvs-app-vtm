@@ -18,7 +18,7 @@ import { Subject, take, takeUntil } from 'rxjs';
   styleUrls: ['./tech-record-amend-vrm-reason.component.scss'],
 })
 export class AmendVrmReasonComponent implements OnDestroy, OnInit {
-  techRecord?: NotTrailer;
+  techRecord?: VehiclesOtherThan<'trl'>;
   makeAndModel?: string;
 
   form = new FormGroup({
@@ -45,7 +45,7 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
       if (record?.techRecord_statusCode === 'archived' || !record) {
         return this.routerService.navigateBack();
       }
-      this.techRecord = record as NotTrailer;
+      this.techRecord = record as VehiclesOtherThan<'trl'>;
       this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
     });
   }
