@@ -5,9 +5,6 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
-import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
-import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
-import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -42,7 +39,7 @@ import {
   styleUrls: ['./tyres.component.scss'],
 })
 export class TyresComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() vehicleTechRecord!: TechRecordType<'psv'> | TechRecordType<'trl'> | TechRecordType<'hgv'>;
+  @Input() vehicleTechRecord!: TechRecordType<'hgv' | 'psv' | 'trl'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -166,7 +163,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       && (vehicleTechRecord.currentValue.techRecord_axles === vehicleTechRecord.previousValue.techRecord_axles))) {
       return;
     }
-    vehicleTechRecord.currentValue.techRecord_axles.forEach((axle: HGVAxles | TRLAxles | PSVAxles) => {
+    vehicleTechRecord.currentValue.techRecord_axles.forEach((axle: Axle) => {
       if (axle.tyres_dataTrAxles && axle.weights_gbWeight && axle.axleNumber) {
         const weightValue = this.technicalRecordService.getAxleFittingWeightValueFromLoadIndex(
           axle.tyres_dataTrAxles.toString(),

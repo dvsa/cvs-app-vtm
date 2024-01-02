@@ -4,14 +4,15 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { HGVAxles, HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { hgvRequiredFields, trlRequiredFields, tyreRequiredFields } from '@forms/models/plateRequiredFields.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
-import { HgvOrTrl, StatusCodes } from '@models/vehicle-tech-record.model';
+import { Axle, StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { canGeneratePlate, updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
@@ -24,7 +25,7 @@ import { Subscription, debounceTime } from 'rxjs';
   styleUrls: ['./plates.component.scss'],
 })
 export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() techRecord!: HgvOrTrl;
+  @Input() techRecord!: TechRecordType<'hgv' | 'trl'>;
   @Input() isEditing = false;
 
   @Output() formChange = new EventEmitter();
@@ -142,7 +143,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
   private cannotGeneratePlate(plateRequiredFields: string[]): boolean {
     const isOneFieldEmpty = plateRequiredFields.some((field) => {
-      const value = this.techRecord[field as keyof HgvOrTrl];
+      const value = this.techRecord[field as keyof TechRecordType<'hgv' | 'trl'>];
       return value === undefined || value === null || value === '';
     });
 
@@ -153,11 +154,11 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     // check tyre fields
     const areTyresInvalid = this.techRecord.techRecord_axles?.some((axle) => {
       tyreRequiredFields.some((field) => {
-        const value = axle[field as keyof HGVAxles];
+        const value = axle[field as keyof Axle<'hgv'>];
         return value === undefined || value === null || value === '';
       });
       // either one of ply rating or load index is required
-      const plyOrLoad = axle['tyres_plyRating' as keyof HGVAxles] || axle['tyres_dataTrAxles' as keyof HGVAxles];
+      const plyOrLoad = axle['tyres_plyRating' as keyof Axle<'hgv'>] || axle['tyres_dataTrAxles' as keyof Axle<'hgv'>];
       return plyOrLoad === undefined || plyOrLoad === null || plyOrLoad === '';
     });
 
