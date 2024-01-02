@@ -7,7 +7,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
-import { HgvOrTrl, VehicleConfigurations } from '@models/vehicle-tech-record.model';
+import { VehicleConfigurations } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
@@ -58,7 +58,7 @@ describe('PlatesComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     errorService = TestBed.inject(GlobalErrorService);
-    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as HgvOrTrl;
+    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'hgv' | 'trl'>;
     store = TestBed.inject(MockStore);
     fixture.detectChanges();
   });
@@ -191,7 +191,7 @@ describe('PlatesComponent', () => {
         techRecord_vehicleConfiguration: VehicleConfigurations.RIGID,
         vin: 'HGVTEST01',
         techRecord_axles: [],
-      } as unknown as HgvOrTrl;
+      } as unknown as TechRecordType<'hgv' | 'trl'>;
 
       component.techRecord.techRecord_axles = [
         {

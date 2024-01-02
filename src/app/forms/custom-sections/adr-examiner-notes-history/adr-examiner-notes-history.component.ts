@@ -1,14 +1,14 @@
+import { KeyValue } from '@angular/common';
 import {
   AfterContentInit,
   Component, inject, OnDestroy, OnInit,
 } from '@angular/core';
-import { ReplaySubject, takeUntil } from 'rxjs';
 import { FormArray, NgControl } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { CustomControl, CustomFormControl } from '@forms/services/dynamic-form.types';
-import { KeyValue } from '@angular/common';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-adr-examiner-notes-history',
@@ -20,14 +20,14 @@ export class AdrExaminerNotesHistoryComponent extends BaseControlComponent imple
   destroy$ = new ReplaySubject<boolean>(1);
 
   formArray = new FormArray<CustomFormControl>([]);
-  currentTechRecord?: TechRecordType<'hgv'> | TechRecordType<'lgv'> | TechRecordType<'trl'> = undefined;
+  currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'> = undefined;
   technicalRecordService = inject(TechnicalRecordService);
   ngOnInit() {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       this.control?.patchValue(changes, { emitModelToViewChange: true });
     });
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((currentTechRecord) => {
-      this.currentTechRecord = currentTechRecord as TechRecordType<'hgv'> | TechRecordType<'lgv'> | TechRecordType<'trl'>;
+      this.currentTechRecord = currentTechRecord as TechRecordType<'hgv' | 'lgv' | 'trl'>;
     });
   }
 

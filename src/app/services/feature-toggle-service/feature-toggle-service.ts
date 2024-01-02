@@ -13,13 +13,26 @@ export interface FeatureConfig {
 })
 export class FeatureToggleService {
   config: FeatureConfig | null = null;
-  configPath = environment.isDevelop ? 'assets/featureToggle.json' : 'assets/featureToggle.prod.json';
+  configPath = this.getConfig();
 
   constructor(private http: HttpClient) {}
 
   async loadConfig() {
     // eslint-disable-next-line no-return-assign
     return this.config = await lastValueFrom(this.http.get<FeatureConfig>(this.configPath).pipe(take(1)));
+  }
+
+  getConfig() {
+    switch (environment.TARGET_ENV) {
+      case 'prod':
+        return 'assets/featureToggle.prod.json';
+      case 'integration':
+        return 'assets/featureToggle.int.json';
+      case 'preprod':
+        return 'assets/featureToggle.preprod.json';
+      default:
+        return 'assets/featureToggle.json';
+    }
   }
 
   isFeatureEnabled(key: string) {

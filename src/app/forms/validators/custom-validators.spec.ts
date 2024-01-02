@@ -1025,9 +1025,10 @@ describe('addWarningIfFalse', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
     const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
 
-    adr?.patchValue(false);
-    adr?.markAsDirty();
     name.patchValue('test');
+    name.markAsTouched();
+    adr.patchValue(false);
+    adr.markAsDirty();
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBe('Test warning');
@@ -1036,9 +1037,10 @@ describe('addWarningIfFalse', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
     const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
 
-    adr?.patchValue(false);
-    adr?.markAsDirty();
     name.patchValue('test');
+    name.markAsTouched();
+    adr.patchValue(false);
+    adr.markAsDirty();
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBe('Test warning');
@@ -1051,7 +1053,7 @@ describe('addWarningIfFalse', () => {
   it('should not have a warning if the control is pristine and value is false', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
 
-    adr?.patchValue(false);
+    adr.patchValue(false);
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBeUndefined();
@@ -1059,8 +1061,8 @@ describe('addWarningIfFalse', () => {
   it('should not have a warning if the value is false but there is no adr information on the record', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
 
-    adr?.patchValue(false);
-    adr?.markAsDirty();
+    adr.patchValue(false);
+    adr.markAsDirty();
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBeUndefined();
@@ -1974,5 +1976,31 @@ describe('tc3ParentValidator', () => {
     const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
 
     expect(validator).toBeNull();
+  });
+
+  describe('dateIsValid', () => {
+    it.each([
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, null],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, undefined],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, ''],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '---'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000--'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000-12-'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000-12-A'],
+      [null, '2000-12-01'],
+      [null, '2000-12-11'],
+      [null, '2000-12-31'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be a number' } }, '2000--11'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be a number' } }, '2000-C-11'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be between 1 and 12' } }, '2000-31-11'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be between 1 and 12' } }, '2000-00-11'],
+      [{ dateIsInvalid: { message: '\'Date\' year must be a number' } }, '-12-11'],
+      [{ dateIsInvalid: { message: '\'Date\' year must be a number' } }, 'C-12-11'],
+
+      [null, '2020-02-29'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be between 1 and 28 in the month of February' } }, '2019-02-29'],
+    ])('should return %p when control value is %s', (expected: object | null, input) => {
+      expect(CustomValidators.dateIsInvalid(new FormControl(input))).toEqual(expected);
+    });
   });
 });

@@ -49,7 +49,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
   public form!: CustomFormGroup;
   public searchResults: Array<ReferenceDataTyre> | null = null;
   public vehicleTechRecord?: V3TechRecordModel;
-  public viewableTechRecord?: TechRecordType<'hgv'> | TechRecordType<'psv'> | TechRecordType<'trl'>;
+  public viewableTechRecord?: TechRecordType<'hgv' | 'psv' | 'trl'>;
   private params: SearchParams = {};
   private pageStart?: number;
   private pageEnd?: number;
@@ -80,7 +80,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
       this.params = p;
     });
     this.technicalRecordService.techRecord$.pipe(take(1)).subscribe((data) => {
-      this.viewableTechRecord = data as TechRecordType<'hgv'> | TechRecordType<'psv'> | TechRecordType<'trl'>;
+      this.viewableTechRecord = data as TechRecordType<'hgv' | 'psv' | 'trl'>;
     });
     this.referenceDataService
       .getTyreSearchReturn$()

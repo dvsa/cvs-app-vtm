@@ -3,6 +3,7 @@ import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tec
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import validateDate from 'validate-govuk-date';
 
 export class CustomValidators {
   static hideIfEmpty = (sibling: string): ValidatorFn => {
@@ -233,9 +234,17 @@ export class CustomValidators {
     return control.value === '[INVALID_OPTION]' ? { invalidOption: true } : null;
   };
 
+  static dateIsInvalid: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const [yyyy, mm, dd] = (control.value ?? '').split('-');
+    const label = control instanceof CustomFormControl ? control.meta.label : undefined;
+    const checks = validateDate(parseInt(dd ?? '', 10), parseInt(mm ?? '', 10), parseInt(yyyy ?? '', 10), label);
+    return checks && checks.error ? { dateIsInvalid: { message: checks.errors?.[0]?.reason } } : null;
+  };
+
   static pastDate: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const now = new Date();
     const date = control.value;
+
     if (date && new Date(date).getTime() > now.getTime()) {
       return { pastDate: true };
     }
@@ -442,34 +451,23 @@ export class CustomValidators {
 
   static addWarningForAdrField = (warning: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control.dirty && !control.value) {
-        const adrDetails = [
-          'techRecord_adrDetails_applicantDetails_city',
-          'techRecord_adrDetails_applicantDetails_name',
-          'techRecord_adrDetails_applicantDetails_postcode',
-          'techRecord_adrDetails_applicantDetails_town',
-          'techRecord_adrDetails_applicantDetails_street',
-          'techRecord_adrDetails_vehicleDetails_type',
-          'techRecord_adrDetails_vehicleDetails_approvalDate',
-          'techRecord_adrDetails_permittedDangerousGoods',
-          'techRecord_adrDetails_compatibilityGroupJ',
-          'techRecord_adrDetails_additionalNotes_number',
-          'techRecord_adrDetails_adrTypeApprovalNo',
-          'techRecord_adrDetails_tank_tankDetails_tankManufacturer',
-          'techRecord_adrDetails_tank_tankDetails_yearOfManufacture',
-          'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
-          'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
-          'techRecord_adrDetails_tank_tankDetails_tankCode',
-        ];
-        adrDetails.forEach((controlName) => {
-          const childControl = control.root.get(controlName);
-          if (childControl?.value) {
-            (control as CustomFormControl).meta.warning = warning;
+      if (control instanceof CustomFormControl) {
+        if (control.value) {
+          control.meta.warning = undefined;
+          return null;
+        }
+
+        if (control.dirty) {
+          const { parent } = control;
+          if (parent instanceof CustomFormGroup) {
+            const touched = Object.values(parent.controls).some((child) => child !== control && child.touched && child.value);
+            if (touched) {
+              control.meta.warning = warning;
+            }
           }
-        });
-      } if (control.value) {
-        delete (control as CustomFormControl).meta.warning;
+        }
       }
+
       return null;
     };
   };
