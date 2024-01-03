@@ -79,6 +79,26 @@ describe('AdrTankStatementUnNumberComponent', () => {
     });
   });
 
+  describe('canAddControl', () => {
+
+    it('should return true if a control can be added, e.g. when the previous control is empty, and there is at least 1 control', () => {
+      const spy = jest.spyOn(component, 'canAddControl');
+      component.formArray.patchValue(['valid']);
+      const canAdd = component.canAddControl();
+      expect(spy).toHaveBeenCalled();
+      expect(canAdd).toBe(true);
+    });
+
+    it('should return false if a control cannot be added, e.g. when the previous control is empty', () => {
+      const spy = jest.spyOn(component, 'canAddControl');
+      component.formArray.patchValue(['valid']);
+      component.addControl();
+      const canAdd = component.canAddControl();
+      expect(spy).toHaveBeenCalled();
+      expect(canAdd).toBe(false);
+    });
+  });
+
   describe('addControl', () => {
     it('should add a copy of the control to the end of the form array', () => {
       const spy = jest.spyOn(component, 'addControl');

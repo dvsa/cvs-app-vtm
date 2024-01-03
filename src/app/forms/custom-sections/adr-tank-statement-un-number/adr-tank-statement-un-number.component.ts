@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import {
@@ -23,7 +22,7 @@ export class AdrTankStatementUnNumberComponent extends CustomFormControlComponen
 
   ngOnInit() {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => this.onFormChange(changes));
-    this.globalErrorService.errors$.pipe(skip(1), takeUntil(this.destroy$)).subscribe((errors) => this.onFormSubmitted(errors));
+    this.globalErrorService.errors$.pipe(skip(1), takeUntil(this.destroy$)).subscribe(() => this.onFormSubmitted());
   }
 
   override ngAfterContentInit(): void {
@@ -35,26 +34,15 @@ export class AdrTankStatementUnNumberComponent extends CustomFormControlComponen
     }
   }
 
+  canAddControl() {
+    return !(this.formArray.length && !this.formArray.at(-1).value);
+  }
+
   addControl(value = '') {
     if (!this.control) return;
-
-    // Prevent adding new controls, whilst previous ones are empty
-    if (this.formArray.length && !this.formArray.at(-1).value) {
-      this.control.markAsTouched();
-      this.formArray.markAllAsTouched();
-      return;
-    }
-
-    const control = new CustomFormControl({ ...this.control.meta, customId: `${this.control.meta.name}_${this.formArray.length + 1}` }, value);
+    if (!this.canAddControl()) return;
+    const control = new CustomFormControl(this.control.meta, value);
     control.addValidators(Validators.maxLength(1500));
-
-    // If this is a subsequent UN Number, then it is required, and must be filled in, or removed.
-    if (this.formArray.length > 0) {
-      control.meta.validators = undefined;
-      control.meta.customErrorMessage = `UN Number ${this.formArray.length + 1} must be filled in or removed`;
-      control.addValidators(Validators.required);
-    }
-
     this.formArray.push(control);
   }
 
@@ -67,16 +55,7 @@ export class AdrTankStatementUnNumberComponent extends CustomFormControlComponen
     this.control?.patchValue(changes, { emitModelToViewChange: true });
   }
 
-  onFormSubmitted(errors: GlobalError[]) {
+  onFormSubmitted() {
     this.submitted = true;
-
-    // If the form has been submitted and any subsequent UN Numbers have been left empty, add to global errors
-    if (this.formArray.length > 1 && this.formArray.at(-1).invalid) {
-      const { meta } = this.formArray.at(-1);
-      const errorMessage = meta.customErrorMessage as string;
-      if (!errors.find((error) => error.error === errorMessage)) {
-        this.globalErrorService.addError({ error: errorMessage, anchorLink: meta.customId });
-      }
-    }
   }
 }
