@@ -723,7 +723,6 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.RequiredIfNotHidden,
         },
       ],
-
     },
     {
       name: 'techRecord_adrDetails_declarationsSeen',
