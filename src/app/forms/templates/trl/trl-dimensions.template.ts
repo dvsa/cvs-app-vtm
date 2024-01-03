@@ -1,9 +1,9 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { TagType } from '@shared/components/tag/tag.component';
+import { DimensionLabelEnum } from '@shared/enums/dimension-label.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, TagTypeLabels,
 } from '../../services/dynamic-form.types';
-import { DimensionLabelEnum } from '@shared/enums/dimension-label.enum';
 
 export const TrlDimensionsTemplate: FormNode = {
   name: 'dimensionsSection',
