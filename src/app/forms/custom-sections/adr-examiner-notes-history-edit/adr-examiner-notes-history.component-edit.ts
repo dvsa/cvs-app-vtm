@@ -12,16 +12,17 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-adr-examiner-notes-history',
-  templateUrl: './adr-examiner-notes-history.component.html',
-  styleUrls: ['adr-examiner-notes-history.component.scss'],
+  templateUrl: './adr-examiner-notes-history-edit.component.html',
+  styleUrls: ['adr-examiner-notes-history.component-edit.scss'],
 })
-export class AdrExaminerNotesHistoryComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
+export class AdrExaminerNotesHistoryEditComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
 
   destroy$ = new ReplaySubject<boolean>(1);
 
   formArray = new FormArray<CustomFormControl>([]);
   currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'> = undefined;
   technicalRecordService = inject(TechnicalRecordService);
+
   ngOnInit() {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       this.control?.patchValue(changes, { emitModelToViewChange: true });

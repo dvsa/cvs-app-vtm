@@ -35,8 +35,7 @@ export enum FormNodeViewTypes {
   TIME = 'time',
   VEHICLETYPE = 'vehicleType',
   VRM = 'vrm',
-  ADR_EXAMINER_NOTES = 'adr_examiner_notes',
-  ADRINSPECTIONS = 'adrInspections',
+  CUSTOM = 'custom',
 }
 
 export enum TagTypeLabels {
@@ -53,6 +52,7 @@ export enum FormNodeTypes {
   ROOT = 'root',
   SECTION = 'section',
   TITLE = 'title',
+  SUBTITLE = 'subtitle',
 }
 
 export enum FormNodeEditTypes {
@@ -123,11 +123,10 @@ export interface FormNode {
   warning?: string;
   customTags?: CustomTag[];
   enableDecimals?: boolean;
-  nestingLevel?: number;
   groups?: string[];
-  component?: typeof BaseControlComponent;
+  viewComponent?: typeof BaseControlComponent;
+  editComponent?: typeof BaseControlComponent;
 }
-
 export interface CustomTag {
   label: TagTypeLabels;
   colour: TagTypes;
