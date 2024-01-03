@@ -35,12 +35,20 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
 import { AdrExaminerNotesHistoryViewComponent } from './custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from './custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
+  AdrTankDetailsInitialInspectionViewComponent,
+} from './custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
+import {
   AdrTankDetailsSubsequentInspectionsEditComponent,
 } from './custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
 import {
   AdrTankDetailsSubsequentInspectionsViewComponent,
 } from './custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
-import { AdrTankStatementUnNumberComponent } from './custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
+import {
+  AdrTankStatementUnNumberEditComponent,
+} from './custom-sections/adr-tank-statement-un-number-edit/adr-tank-statement-un-number-edit.component';
+import {
+  AdrTankStatementUnNumberViewComponent,
+} from './custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
 import { AdrComponent } from './custom-sections/adr/adr.component';
 import { BodyComponent } from './custom-sections/body/body.component';
 import { CustomDefectComponent } from './custom-sections/custom-defect/custom-defect.component';
@@ -62,7 +70,6 @@ import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
-import { AdrTankDetailsInitialInspectionViewComponent } from './custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
 
 @NgModule({
   declarations: [
@@ -115,12 +122,13 @@ import { AdrTankDetailsInitialInspectionViewComponent } from './custom-sections/
     AdrComponent,
     AdrGuidanceNotesComponent,
     AdrTankDetailsSubsequentInspectionsEditComponent,
-    AdrTankStatementUnNumberComponent,
+    AdrTankStatementUnNumberEditComponent,
     CustomFormControlComponent,
     AdrExaminerNotesHistoryEditComponent,
     AdrExaminerNotesHistoryViewComponent,
     AdrTankDetailsSubsequentInspectionsViewComponent,
     AdrTankDetailsInitialInspectionViewComponent,
+    AdrTankStatementUnNumberViewComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

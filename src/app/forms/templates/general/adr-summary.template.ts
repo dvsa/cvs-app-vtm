@@ -16,15 +16,17 @@ import {
 } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
-  AdrTankDetailsInitialInspectionViewComponent,
-} from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
-import {
   AdrTankDetailsSubsequentInspectionsEditComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
 import {
   AdrTankDetailsSubsequentInspectionsViewComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
-import { AdrTankStatementUnNumberComponent } from '@forms/custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
+import {
+  AdrTankStatementUnNumberEditComponent,
+} from '@forms/custom-sections/adr-tank-statement-un-number-edit/adr-tank-statement-un-number-edit.component';
+import {
+  AdrTankStatementUnNumberViewComponent,
+} from '@forms/custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC2Types } from '@models/adr.enum';
@@ -488,7 +490,9 @@ export const AdrSummaryTemplate: FormNode = {
       label: 'UN number',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
-      editComponent: AdrTankStatementUnNumberComponent,
+      viewType: FormNodeViewTypes.CUSTOM,
+      editComponent: AdrTankStatementUnNumberEditComponent,
+      viewComponent: AdrTankStatementUnNumberViewComponent,
       groups: ['productList', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
       customErrorMessage: 'Reference number or UN number is required when selecting Product List',
@@ -538,6 +542,8 @@ export const AdrSummaryTemplate: FormNode = {
       ],
     },
     // Note: this used only for the view mode for the ADR Tank Details initial inpsection controls
+    // TODO: uncomment this when needed
+    /*
     {
       name: 'tankInspectionsInitialView',
       type: FormNodeTypes.CONTROL,
@@ -547,10 +553,11 @@ export const AdrSummaryTemplate: FormNode = {
       groups: ['tank_details', 'dangerous_goods'],
       hide: true,
     },
+    */
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN,
+      // viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
       label: 'TC2: Inspection type',
       value: TC2Types.INITIAL,
@@ -583,7 +590,7 @@ export const AdrSummaryTemplate: FormNode = {
       name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
       label: 'Subsequent Inspections',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.CUSTOM,
+      viewType: FormNodeViewTypes.ADRINSPECTIONS, // TODO: replace with custom view type
       viewComponent: AdrTankDetailsSubsequentInspectionsViewComponent,
       editType: FormNodeEditTypes.CUSTOM,
       editComponent: AdrTankDetailsSubsequentInspectionsEditComponent,

@@ -10,7 +10,7 @@ import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.t
 import { provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { AdrTankStatementUnNumberComponent } from './adr-tank-statement-un-number.component';
+import { AdrTankStatementUnNumberComponent } from './adr-tank-statement-un-number-edit.component';
 
 describe('AdrTankStatementUnNumberComponent', () => {
   let component: AdrTankStatementUnNumberComponent;

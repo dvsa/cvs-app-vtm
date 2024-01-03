@@ -10,10 +10,10 @@ import { CustomFormControlComponent } from '../custom-form-control/custom-form-c
 
 @Component({
   selector: 'app-adr-tank-statement-un-number',
-  templateUrl: './adr-tank-statement-un-number.component.html',
-  styleUrls: ['./adr-tank-statement-un-number.component.scss'],
+  templateUrl: './adr-tank-statement-un-number-edit.component.html',
+  styleUrls: ['./adr-tank-statement-un-number-edit.component.scss'],
 })
-export class AdrTankStatementUnNumberComponent extends CustomFormControlComponent implements OnInit {
+export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComponent implements OnInit {
   checked = false;
   submitted = false;
   destroy$ = new ReplaySubject<boolean>(1);
