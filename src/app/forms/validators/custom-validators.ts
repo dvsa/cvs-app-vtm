@@ -235,6 +235,7 @@ export class CustomValidators {
   };
 
   static dateIsInvalid: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    if (control instanceof CustomFormControl && control.meta.hide) return null;
     const [yyyy, mm, dd] = (control.value ?? '').split('-');
     const label = control instanceof CustomFormControl ? control.meta.label : undefined;
     const checks = validateDate(parseInt(dd ?? '', 10), parseInt(mm ?? '', 10), parseInt(yyyy ?? '', 10), label);
