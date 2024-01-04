@@ -22,6 +22,9 @@ export class AdrService {
 
   carriesDangerousGoods(techRecord: TechRecordType<'hgv' | 'lgv' | 'trl'>) {
     return techRecord.techRecord_adrDetails_dangerousGoods
-    || Boolean(Object.keys(techRecord).find((key) => key !== 'techRecord_adrDetails_dangerousGoods' && key.includes('adrDetails')));
+    || (techRecord.techRecord_adrDetails_dangerousGoods !== false && Boolean(Object.keys(techRecord).find((key) =>
+      key !== 'techRecord_adrDetails_dangerousGoods'
+      && key.includes('adrDetails')
+      && techRecord[key as keyof TechRecordType<'hgv' | 'lgv' | 'trl'>] != null)));
   }
 }

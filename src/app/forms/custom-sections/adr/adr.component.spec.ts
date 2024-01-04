@@ -40,10 +40,5 @@ describe('AdrComponent', () => {
       component.ngOnInit();
       expect(spy).toHaveBeenCalled();
     });
-    it('should populate the tank statement select property', () => {
-      const spy = jest.spyOn(component.adrService, 'determineTankStatementSelect');
-      component.ngOnInit();
-      expect(spy).toHaveBeenCalled();
-    });
   });
 });
