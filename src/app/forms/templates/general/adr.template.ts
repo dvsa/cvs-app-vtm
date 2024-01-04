@@ -470,7 +470,7 @@ export const AdrTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
         {
-          name: ValidatorNames.RequiredIfEquals,
+          name: ValidatorNames.requiredIfAllEquals,
           args: {
             sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
             value: [[], [null], [''], null, undefined],
@@ -494,6 +494,7 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.RequiredIfEquals,
           args: { sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo', value: [null, undefined, ''] },
         },
+        { name: ValidatorNames.IsArray, args: { ofType: 'string' } },
       ],
     },
     {

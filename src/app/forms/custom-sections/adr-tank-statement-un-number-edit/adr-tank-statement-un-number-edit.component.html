@@ -1,6 +1,6 @@
 <ng-container *ngIf="control && formArray.controls[0]">
   <app-field-error-message
-    [error]="control.invalid && (control.touched || submitted) ? control.meta.customErrorMessage : ''"
+    [error]="formArray.controls[0].invalid && control.invalid && (control.touched || submitted) ? control.meta.customErrorMessage : ''"
   ></app-field-error-message>
 
   <app-text-input

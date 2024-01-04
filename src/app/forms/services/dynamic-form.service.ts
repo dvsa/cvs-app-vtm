@@ -56,6 +56,8 @@ export class DynamicFormService {
     [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),
     [ValidatorNames.Required]: () => Validators.required,
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: unknown[] }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
+    [ValidatorNames.requiredIfAllEquals]: (args: { sibling: string; value: unknown[] }) =>
+      CustomValidators.requiredIfAllEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: unknown }) =>
       CustomValidators.requiredIfNotEqual(args.sibling, args.value),
     [ValidatorNames.ValidateVRMTrailerIdLength]: (args: { sibling: string }) => CustomValidators.validateVRMTrailerIdLength(args.sibling),
