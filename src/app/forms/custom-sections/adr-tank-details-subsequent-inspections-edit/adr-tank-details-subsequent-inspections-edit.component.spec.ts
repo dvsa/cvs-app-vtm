@@ -17,11 +17,11 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
-import { AdrTankDetailsSubsequentInspectionsComponent } from './adr-tank-details-subsequent-inspections-edit.component';
+import { AdrTankDetailsSubsequentInspectionsEditComponent } from './adr-tank-details-subsequent-inspections-edit.component';
 
-describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
-  let component: AdrTankDetailsSubsequentInspectionsComponent;
-  let fixture: ComponentFixture<AdrTankDetailsSubsequentInspectionsComponent>;
+describe('AdrTankDetailsSubsequentInspectionsEditComponent', () => {
+  let component: AdrTankDetailsSubsequentInspectionsEditComponent;
+  let fixture: ComponentFixture<AdrTankDetailsSubsequentInspectionsEditComponent>;
 
   const control = new CustomFormControl({
     name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
@@ -30,11 +30,17 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdrTankDetailsSubsequentInspectionsComponent, SelectComponent, FieldErrorMessageComponent, DateComponent, TextInputComponent],
+      declarations: [
+        AdrTankDetailsSubsequentInspectionsEditComponent,
+        SelectComponent,
+        FieldErrorMessageComponent,
+        DateComponent,
+        TextInputComponent,
+      ],
       imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
       providers: [
         provideMockStore<State>({ initialState: initialAppState }),
-        { provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsSubsequentInspectionsComponent, multi: true },
+        { provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsSubsequentInspectionsEditComponent, multi: true },
         {
           provide: NgControl,
           useValue: {
@@ -88,7 +94,7 @@ describe('AdrTankDetailsSubsequentInspectionsComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AdrTankDetailsSubsequentInspectionsComponent);
+    fixture = TestBed.createComponent(AdrTankDetailsSubsequentInspectionsEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
-import { AdrExaminerNotesHistoryViewComponent } from '../adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 
 @Component({
   selector: 'app-adr-tank-details-subsequent-inspections-view',
@@ -10,7 +9,7 @@ import { AdrExaminerNotesHistoryViewComponent } from '../adr-examiner-notes-hist
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: AdrExaminerNotesHistoryViewComponent,
+      useExisting: AdrTankDetailsSubsequentInspectionsViewComponent,
       multi: true,
     },
   ],

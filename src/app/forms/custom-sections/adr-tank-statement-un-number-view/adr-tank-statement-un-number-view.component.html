@@ -1,4 +1,4 @@
-<ng-container *ngIf="control">
+<ng-container *ngIf="control && control.value">
   <table class="govuk-table m-0">
     <tbody class="govuk-table__body">
       <ng-container *ngFor="let unNumber of control.value; let i = index; let isLast = last">

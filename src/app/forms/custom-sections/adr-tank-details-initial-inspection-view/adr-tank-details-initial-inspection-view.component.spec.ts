@@ -1,16 +1,34 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { provideMockStore } from '@ngrx/store/testing';
+import { State, initialAppState } from '@store/index';
 import { AdrTankDetailsInitialInspectionViewComponent } from './adr-tank-details-initial-inspection-view.component';
 
 describe('AdrTankDetailsInitialInspectionViewComponent', () => {
   let component: AdrTankDetailsInitialInspectionViewComponent;
   let fixture: ComponentFixture<AdrTankDetailsInitialInspectionViewComponent>;
 
+  const control = new CustomFormControl({
+    name: 'tankInspectionsInitialView',
+    type: FormNodeTypes.CONTROL,
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdrTankDetailsInitialInspectionViewComponent ]
+      declarations: [AdrTankDetailsInitialInspectionViewComponent],
+      providers: [
+        provideMockStore<State>({ initialState: initialAppState }),
+        { provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsInitialInspectionViewComponent, multi: true },
+        {
+          provide: NgControl,
+          useValue: {
+            control: { key: control.meta.name, value: control },
+          },
+        },
+      ],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AdrTankDetailsInitialInspectionViewComponent);
     component = fixture.componentInstance;

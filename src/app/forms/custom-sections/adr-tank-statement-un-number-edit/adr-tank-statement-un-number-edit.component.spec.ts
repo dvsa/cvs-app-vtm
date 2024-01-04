@@ -10,11 +10,11 @@ import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.t
 import { provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
-import { AdrTankStatementUnNumberComponent } from './adr-tank-statement-un-number-edit.component';
+import { AdrTankStatementUnNumberEditComponent } from './adr-tank-statement-un-number-edit.component';
 
-describe('AdrTankStatementUnNumberComponent', () => {
-  let component: AdrTankStatementUnNumberComponent;
-  let fixture: ComponentFixture<AdrTankStatementUnNumberComponent>;
+describe('AdrTankStatementUnNumberEditComponent', () => {
+  let component: AdrTankStatementUnNumberEditComponent;
+  let fixture: ComponentFixture<AdrTankStatementUnNumberEditComponent>;
 
   const control = new CustomFormControl({
     name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
@@ -25,11 +25,11 @@ describe('AdrTankStatementUnNumberComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DynamicFormsModule, SharedModule],
-      declarations: [AdrTankStatementUnNumberComponent],
+      declarations: [AdrTankStatementUnNumberEditComponent],
       providers: [
         provideMockStore({ initialState: initialAppState }),
         { provide: GlobalWarningService, useValue: { error$: jest.fn() } },
-        { provide: NG_VALUE_ACCESSOR, useExisting: AdrTankStatementUnNumberComponent, multi: true },
+        { provide: NG_VALUE_ACCESSOR, useExisting: AdrTankStatementUnNumberEditComponent, multi: true },
         {
           provide: NgControl,
           useValue: {
@@ -46,7 +46,7 @@ describe('AdrTankStatementUnNumberComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AdrTankStatementUnNumberComponent);
+    fixture = TestBed.createComponent(AdrTankStatementUnNumberEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import {
@@ -22,7 +23,7 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
 
   ngOnInit() {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => this.onFormChange(changes));
-    this.globalErrorService.errors$.pipe(skip(1), takeUntil(this.destroy$)).subscribe(() => this.onFormSubmitted());
+    this.globalErrorService.errors$.pipe(skip(1), takeUntil(this.destroy$)).subscribe((errors) => this.onFormSubmitted(errors));
   }
 
   override ngAfterContentInit(): void {
@@ -41,8 +42,18 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
   addControl(value = '') {
     if (!this.control) return;
     if (!this.canAddControl()) return;
-    const control = new CustomFormControl(this.control.meta, value);
+
+    const num = this.formArray.length + 1;
+    const control = new CustomFormControl({ ...this.control.meta, customId: `${this.control.meta.name}_${num}` }, value);
     control.addValidators(Validators.maxLength(1500));
+
+    // If this is a subsequent UN Number, then it is required, and must be filled in, or removed.
+    if (this.formArray.length > 0) {
+      control.meta.validators = undefined;
+      control.meta.customErrorMessage = `UN Number ${num} is required or remove UN Number ${num}`;
+      control.addValidators(Validators.required);
+    }
+
     this.formArray.push(control);
   }
 
@@ -55,7 +66,16 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
     this.control?.patchValue(changes, { emitModelToViewChange: true });
   }
 
-  onFormSubmitted() {
+  onFormSubmitted(errors: GlobalError[]) {
     this.submitted = true;
+
+    // If the form has been submitted and any subsequent UN Numbers have been left empty, add to global errors
+    if (this.formArray.length > 1 && this.formArray.at(-1).invalid) {
+      const { meta } = this.formArray.at(-1);
+      const errorMessage = meta.customErrorMessage as string;
+      if (!errors.find((error) => error.error === errorMessage)) {
+        this.globalErrorService.addError({ error: errorMessage, anchorLink: meta.customId });
+      }
+    }
   }
 }

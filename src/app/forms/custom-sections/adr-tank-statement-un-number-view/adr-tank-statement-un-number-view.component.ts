@@ -6,6 +6,4 @@ import { BaseControlComponent } from '@forms/components/base-control/base-contro
   templateUrl: './adr-tank-statement-un-number-view.component.html',
   styleUrls: ['./adr-tank-statement-un-number-view.component.scss'],
 })
-export class AdrTankStatementUnNumberViewComponent extends BaseControlComponent {
-
-}
+export class AdrTankStatementUnNumberViewComponent extends BaseControlComponent {}
