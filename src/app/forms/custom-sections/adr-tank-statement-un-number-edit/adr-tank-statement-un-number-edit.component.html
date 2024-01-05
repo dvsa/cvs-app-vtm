@@ -34,11 +34,6 @@
   </table>
 
   <p class="govuk-body">
-    <ng-container *ngIf="canAddControl() as canAdd; else cannotAdd">
-      <a role="button" class="govuk-link" href="javascript:void(0)" (click)="addControl()"> Add UN Number </a>
-    </ng-container>
-    <ng-template #cannotAdd>
-      <a role="button" class="govuk-link govuk-link--muted" aria-disabled="true"> Add UN Number </a>
-    </ng-template>
+    <a role="button" class="govuk-link" href="javascript:void(0)" (click)="addControl()"> Add UN Number </a>
   </p>
 </ng-container>
