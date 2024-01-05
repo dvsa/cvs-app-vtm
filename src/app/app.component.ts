@@ -46,6 +46,18 @@ export class AppComponent implements OnInit, OnDestroy {
     initAll();
   }
 
+  addScript(text: string) {
+    const scriptElement = document.createElement('script');
+    let { dataLayer } = (window as any);
+    dataLayer = dataLayer || [];
+    dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    // eslint-disable-next-line operator-linebreak
+    scriptElement.async = true;
+    const src = `https://www.googletagmanager.com/gtm.js?id= ${environment.VTM_GTM_CONTAINER_ID}`;
+    scriptElement.src = src;
+    document.head.appendChild(scriptElement);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
