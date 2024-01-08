@@ -14,6 +14,7 @@ describe('AppComponent', () => {
   const MockUserService = {
     getUserName$: jest.fn().mockReturnValue(new Observable()),
   };
+  (window as any).gtag = () => {};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
