@@ -76,18 +76,22 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
       }
       : undefined;
   }
-
-  get eligibleForLetter(): boolean {
-    let hasCurrentInHistory = false;
+  // checking if the Technical Record History has current status code.
+  get checkRecordHistoryHasCurrent(): boolean {
+    let ifCurrent = false;
     this.techRecordService.techRecordHistory$.subscribe((historyArray: TechRecordSearchSchema[] | undefined) => {
       historyArray?.forEach((history: TechRecordSearchSchema) => {
         if (history.techRecord_statusCode === StatusCodes.CURRENT
-          && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) hasCurrentInHistory = true;
+          && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) ifCurrent = true;
       });
     });
+    return ifCurrent;
+  }
+
+  get eligibleForLetter(): boolean {
     const currentTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT
     || this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL;
-    return this.correctApprovalType && currentTechRecord && !this.isEditing && !hasCurrentInHistory;
+    return this.correctApprovalType && currentTechRecord && !this.isEditing && !this.checkRecordHistoryHasCurrent;
   }
 
   get reasonForIneligibility(): string {
@@ -96,17 +100,10 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     if (this.techRecord?.techRecord_statusCode !== StatusCodes.CURRENT) {
-      let reason = '';
-      this.techRecordService.techRecordHistory$.subscribe((historyArray) => {
-        historyArray?.forEach((history: TechRecordSearchSchema) => {
-          if (history.techRecord_statusCode === StatusCodes.CURRENT) {
-            // eslint-disable-next-line max-len
-            reason = 'Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters.';
-          }
-        });
-      });
-      if (reason) {
-        return reason;
+      // if the Technical Record History has current status code return related words to inform users.
+      if (this.checkRecordHistoryHasCurrent) {
+        // eslint-disable-next-line max-len
+        return 'Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters.';
       }
       return 'Generating letters is only applicable to current technical records.';
     }
