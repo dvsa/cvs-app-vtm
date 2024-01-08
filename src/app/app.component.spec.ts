@@ -5,15 +5,17 @@ import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { LoadingService } from '@services/loading/loading.service';
 import { Observable, of } from 'rxjs';
+import { CoreModule } from '@core/core.module';
+import { UserService } from '@services/user-service/user-service';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
-import { UserService } from './services/user-service/user-service';
 import { initialAppState, State } from './store';
 
 describe('AppComponent', () => {
   const MockUserService = {
     getUserName$: jest.fn().mockReturnValue(new Observable()),
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window as any).gtag = () => {};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
