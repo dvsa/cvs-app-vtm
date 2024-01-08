@@ -29,6 +29,8 @@ const environmentFileContent = `export const environment = {
     DOCUMENT_RETRIEVAL_API_KEY: "${process.env['DOCUMENT_RETRIEVAL_API_KEY']}",
     FEEDBACK_URI: "${process.env['FEEDBACK_URI']}",
     SENTRY_DSN: "${process.env['SENTRY_DSN']}",
+    VTM_GTM_CONTAINER_ID: "${process.env['VTM_GTM_CONTAINER_ID']}",
+    VTM_GTM_MEASUREMENT_ID: "${process.env['VTM_GTM_MEASUREMENT_ID']}",
   };
   `;
 
