@@ -78,9 +78,16 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get eligibleForLetter(): boolean {
+    let hasCurrentInHistory = false;
+    this.techRecordService.techRecordHistory$.subscribe((historyArray: TechRecordSearchSchema[] | undefined) => {
+      historyArray?.forEach((history: TechRecordSearchSchema) => {
+        if (history.techRecord_statusCode === StatusCodes.CURRENT
+          && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) hasCurrentInHistory = true;
+      });
+    });
     const currentTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT
     || this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL;
-    return this.correctApprovalType && currentTechRecord && !this.isEditing;
+    return this.correctApprovalType && currentTechRecord && !this.isEditing && !hasCurrentInHistory;
   }
 
   get reasonForIneligibility(): string {
