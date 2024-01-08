@@ -16,6 +16,7 @@ export const environment = {
   FEEDBACK_URI: '',
   SENTRY_DSN: '',
   VTM_GTM_CONTAINER_ID: '',
+  VTM_GTM_MEASUREMENT_ID: '',
 };
 
 /*

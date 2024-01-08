@@ -19,6 +19,7 @@ import packageInfo from '../../package.json';
 import { environment } from '../environments/environment';
 import { State } from './store';
 
+declare const gtag: Function;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -48,35 +49,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   initGoogleTagManager() {
-    this.initialiseDataLayer();
-    this.appendGTMScriptElement();
-    this.appendGTMNoScriptElement();
-  }
-
-  appendGTMNoScriptElement() {
-    const noScriptElement = document.createElement('noscript');
-    const iFrameElement = document.createElement('iframe', { });
-
-    iFrameElement.setAttribute('src', `https://www.googletagmanager.com/ns.html?id=${environment.VTM_GTM_CONTAINER_ID}`);
-    iFrameElement.setAttribute('style', 'display: none; visibility: hidden');
-    iFrameElement.setAttribute('height', '0');
-    iFrameElement.setAttribute('width', '0');
-
-    noScriptElement.appendChild(iFrameElement);
-    document.body.appendChild(noScriptElement);
-  }
-
-  appendGTMScriptElement() {
     const scriptElement = document.createElement('script');
     scriptElement.async = true;
-    scriptElement.src = `https://www.googletagmanager.com/gtm.js?id=${environment.VTM_GTM_CONTAINER_ID}`;
+    scriptElement.src = `https://www.googletagmanager.com/gtag/js?id=${environment.VTM_GTM_MEASUREMENT_ID}`;
     document.head.appendChild(scriptElement);
-  }
-
-  initialiseDataLayer() {
-    let { dataLayer } = (window as any);
-    dataLayer = dataLayer || [];
-    dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    gtag('config', environment.VTM_GTM_MEASUREMENT_ID);
   }
 
   ngOnDestroy(): void {
