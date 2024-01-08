@@ -4,6 +4,7 @@ import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVehicleVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
@@ -13,6 +14,7 @@ import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
 import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateScrollPosition } from '@store/technical-records';
 import { Subscription, debounceTime } from 'rxjs';
 
@@ -33,6 +35,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private dynamicFormService: DynamicFormService,
+    private techRecordService: TechnicalRecordService,
     private viewportScroller: ViewportScroller,
     private router: Router,
     private route: ActivatedRoute,
@@ -75,8 +78,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get eligibleForLetter(): boolean {
-    const currentTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT;
-
+    const currentTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT
+    || this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL;
     return this.correctApprovalType && currentTechRecord && !this.isEditing;
   }
 
@@ -86,6 +89,18 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     if (this.techRecord?.techRecord_statusCode !== StatusCodes.CURRENT) {
+      let reason = '';
+      this.techRecordService.techRecordHistory$.subscribe((historyArray) => {
+        historyArray?.forEach((history: TechRecordSearchSchema) => {
+          if (history.techRecord_statusCode === StatusCodes.CURRENT) {
+            // eslint-disable-next-line max-len
+            reason = 'Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters.';
+          }
+        });
+      });
+      if (reason) {
+        return reason;
+      }
       return 'Generating letters is only applicable to current technical records.';
     }
 
