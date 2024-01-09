@@ -1,12 +1,15 @@
 import {
-  Component, OnDestroy, OnInit, inject,
+  Component, OnDestroy, OnInit,
+  inject,
 } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import _ from 'lodash';
 import {
-  ReplaySubject, skip,
+  ReplaySubject,
+  skip,
   takeUntil,
 } from 'rxjs';
 import { CustomFormControlComponent } from '../custom-form-control/custom-form-control.component';
@@ -35,11 +38,14 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
 
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
-    if (this.form && this.control) {
-      const value = this.form.get(this.name)?.value;
-      const values = Array.isArray(value) && value.length ? value : [null];
-      values.forEach((unNumber: string) => this.addControl(unNumber));
-    }
+    this.buildFormArray();
+
+  }
+
+  buildFormArray() {
+    const value = this.form?.get(this.name)?.value;
+    const values = Array.isArray(value) && value.length ? value : [null];
+    values.forEach((unNumber: string) => this.addControl(unNumber));
   }
 
   canAddControl() {
@@ -56,42 +62,57 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
       return;
     }
 
-    const num = this.formArray.length + 1;
     const control = new CustomFormControl({ ...this.control.meta }, value);
-    control.meta.customId = `${this.control.meta.name}_${num}`;
     control.addValidators(Validators.maxLength(1500));
 
     // If this is a subsequent UN Number, then it is required, and must be filled in, or removed.
     if (this.formArray.length > 0) {
-      control.meta.validators = undefined;
-      control.meta.customErrorMessage = `UN Number ${num} is required or remove UN Number ${num}`;
+      const firstUnNumber = this.formArray.at(0);
+      if (!firstUnNumber.hasValidator(Validators.required)) firstUnNumber.addValidators(Validators.required);
       control.addValidators(Validators.required);
+      control.meta.validators = undefined;
     }
 
     this.formArray.push(control);
+    this.updateControls();
   }
 
   removeControl(index: number) {
     if (this.formArray.length < 2) return;
     this.formArray.removeAt(index);
+    this.updateControls();
+
+    if (this.formArray.length === 1) {
+      this.formArray.at(0).meta.customErrorMessage = undefined;
+      this.formArray.at(0).removeValidators(Validators.required);
+    }
+  }
+
+  updateControls() {
+    this.formArray.controls.forEach((control, index) => {
+      // Make all UN NUmbers labels reflect their position in form array
+      control.meta.customId = `${this.control?.meta.name}_${index + 1}`;
+      control.meta.customErrorMessage = `UN Number ${index + 1} is required or remove UN Number ${index + 1}`;
+    });
   }
 
   onFormChange(changes: (string | null)[] | null) {
     this.control?.patchValue(changes, { emitModelToViewChange: true });
   }
 
-  onFormSubmitted(errors: GlobalError[]) {
+  onFormSubmitted(globalErrors: GlobalError[]) {
     this.submitted = true;
 
-    // If the form has been submitted and any subsequent UN Numbers have been left empty, add to global errors
-    if (this.formArray.length > 1 && this.formArray.at(-1).invalid) {
-      const { meta } = this.formArray.at(-1);
-      const errorMessage = meta.customErrorMessage as string;
-      if (!errors.find((error) => error.error === errorMessage)) {
-        // add erroring control to global errors, must remove the overarching one, as this would be confusing
-        this.globalErrorService.setErrors(errors
-          .filter((error) => error.error !== this.control?.meta.customErrorMessage)
-          .concat([{ error: errorMessage, anchorLink: meta.customId }]));
+    // If ANY UN Numbers are invalid, loop through them and add to global errors, but avoid adding duplicates
+    if (this.formArray.invalid) {
+      const formErrors = this.formArray.controls
+        .filter((control) => control.invalid)
+        .map((control) => ({ error: control.meta.customErrorMessage as string, anchorLink: control.meta.customId }));
+
+      const allErrors = _.chain(globalErrors).concat(formErrors).uniqBy((error) => error.error);
+
+      if (!allErrors.isEqualWith(globalErrors).value()) {
+        this.globalErrorService.setErrors(allErrors.value());
       }
     }
   }

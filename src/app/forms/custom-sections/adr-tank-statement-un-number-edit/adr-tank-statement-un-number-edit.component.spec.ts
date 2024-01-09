@@ -137,4 +137,17 @@ describe('AdrTankStatementUnNumberEditComponent', () => {
       expect(component.formArray.controls).toHaveLength(3);
     });
   });
+
+  describe('updateControls', () => {
+    it('should update the meta properties of each control after insertion or deletion', () => {
+      const methodSpy = jest.spyOn(component, 'updateControls');
+      component.formArray.patchValue(['valid']);
+      component.addControl('valid');
+      expect(methodSpy).toHaveBeenCalled();
+      component.removeControl(0);
+      expect(methodSpy).toHaveBeenCalled();
+      expect(component.formArray.controls).toHaveLength(1);
+      expect(component.formArray.controls.at(0)?.meta.customId).toBe('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo_1');
+    });
+  });
 });
