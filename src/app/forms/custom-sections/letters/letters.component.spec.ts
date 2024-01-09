@@ -32,7 +32,6 @@ const mockTechRecordService = {
 describe('LettersComponent', () => {
   let component: LettersComponent;
   let fixture: ComponentFixture<LettersComponent>;
-  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -75,8 +74,6 @@ describe('LettersComponent', () => {
       techRecord_statusCode: 'current',
     } as TechRecordType<'trl'>;
     fixture.detectChanges();
-
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
   });
 
   it('should create', () => {
