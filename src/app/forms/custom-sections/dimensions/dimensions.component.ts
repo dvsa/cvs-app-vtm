@@ -45,19 +45,11 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   initialiseWarnings() {
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (const controlKey in this.form.controls) {
-      const control = this.form.get(controlKey);
-      if (control instanceof CustomFormControl) {
-        if (this.techRecord.techRecord_vehicleType === 'hgv' || this.techRecord.techRecord_vehicleType === 'trl') {
-          if (this.isLengthControl(control)) {
-            this.handleWarningChange(control, this.shouldDisplayLengthWarning(control), WarningsEnum.DIMENSIONS_LENGTH_WARNING);
-          }
-          if (this.isWidthControl(control)) {
-            this.handleWarningChange(control, this.shouldDisplayWidthWarning(control), WarningsEnum.DIMENSIONS_WIDTH_WARNING);
-          }
-        }
-      }
+    if (this.techRecord.techRecord_vehicleType === 'hgv' || this.techRecord.techRecord_vehicleType === 'trl') {
+      const lengthControl = this.form.get('techRecord_dimensions_length') as CustomFormControl;
+      this.handleWarningChange(lengthControl, this.shouldDisplayLengthWarning(lengthControl), WarningsEnum.DIMENSIONS_LENGTH_WARNING);
+      const widthControl = this.form.get('techRecord_dimensions_width') as CustomFormControl;
+      this.handleWarningChange(widthControl, this.shouldDisplayWidthWarning(widthControl), WarningsEnum.DIMENSIONS_WIDTH_WARNING);
     }
   }
 
