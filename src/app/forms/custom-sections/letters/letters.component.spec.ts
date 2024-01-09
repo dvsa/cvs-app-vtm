@@ -13,11 +13,26 @@ import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { of } from 'rxjs';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { LettersComponent } from './letters.component';
+
+const mockTechRecordService = {
+  techRecordHistory$: of([{
+    vin: 'test',
+    techRecord_statusCode: 'current',
+    techRecord_vehicleType: 'trl',
+    createdTimestamp: '12345',
+    systemNumber: '123',
+    techRecord_manufactureYear: 2021,
+  }] as TechRecordSearchSchema[]),
+};
 
 describe('LettersComponent', () => {
   let component: LettersComponent;
   let fixture: ComponentFixture<LettersComponent>;
+  let technicalRecordService: TechnicalRecordService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,8 +56,13 @@ describe('LettersComponent', () => {
           provide: APP_BASE_HREF,
           useValue: '/',
         },
+        {
+          provide: TechnicalRecordService,
+          useValue: mockTechRecordService,
+        },
       ],
     }).compileComponents();
+
   });
 
   beforeEach(() => {
@@ -55,6 +75,8 @@ describe('LettersComponent', () => {
       techRecord_statusCode: 'current',
     } as TechRecordType<'trl'>;
     fixture.detectChanges();
+
+    technicalRecordService = TestBed.inject(TechnicalRecordService);
   });
 
   it('should create', () => {
@@ -69,6 +91,23 @@ describe('LettersComponent', () => {
     it('should return false if the approval type is valid', () => {
       (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = ApprovalType.NTA;
       expect(component.eligibleForLetter).toBeFalsy();
+    });
+
+    it('should return false if the statuscode is archived', () => {
+      (component.techRecord as TechRecordType<'trl'>).techRecord_approvalType = ApprovalType.GB_WVTA;
+      (component.techRecord as TechRecordType<'trl'>).techRecord_statusCode = StatusCodes.ARCHIVED;
+      expect(component.eligibleForLetter).toBeFalsy();
+    });
+  });
+
+  describe('checkRecordHistoryHasCurrent', () => {
+    it('should return false if the current technical record history has current status', () => {
+      expect(component.checkForCurrentRecordInHistory).toBeFalsy();
+    });
+
+    it('should return true if the provisional technical record history has current status', () => {
+      (component.techRecord as TechRecordType<'trl'>).techRecord_statusCode = 'provisional';
+      expect(component.checkForCurrentRecordInHistory).toBeTruthy();
     });
   });
 

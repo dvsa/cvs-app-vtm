@@ -77,7 +77,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
       : undefined;
   }
   // checking if the Technical Record History has current status code.
-  get checkRecordHistoryHasCurrent(): boolean {
+  get checkForCurrentRecordInHistory(): boolean {
     let ifCurrent = false;
     this.techRecordService.techRecordHistory$.subscribe((historyArray: TechRecordSearchSchema[] | undefined) => {
       historyArray?.forEach((history: TechRecordSearchSchema) => {
@@ -89,9 +89,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get eligibleForLetter(): boolean {
-    const currentTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT
-    || this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL;
-    return this.correctApprovalType && currentTechRecord && !this.isEditing && !this.checkRecordHistoryHasCurrent;
+    const IsArchivedTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
+    return this.correctApprovalType && !IsArchivedTechRecord && !this.isEditing && !this.checkForCurrentRecordInHistory;
   }
 
   get reasonForIneligibility(): string {
@@ -101,7 +100,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.techRecord?.techRecord_statusCode !== StatusCodes.CURRENT) {
       // if the Technical Record History has current status code return related words to inform users.
-      if (this.checkRecordHistoryHasCurrent) {
+      if (this.checkForCurrentRecordInHistory) {
         // eslint-disable-next-line max-len
         return 'Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters.';
       }
