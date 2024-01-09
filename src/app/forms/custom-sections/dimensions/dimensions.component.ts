@@ -64,14 +64,6 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
       this.form.patchValue(techRecord.currentValue, { emitEvent: false });
     }
   }
-
-  isLengthControl(control: CustomFormControl): boolean {
-    return control.meta.name === 'techRecord_dimensions_length';
-  }
-
-  isWidthControl(control: CustomFormControl): boolean {
-    return control.meta.name === 'techRecord_dimensions_width';
-  }
   shouldDisplayLengthWarning(control: CustomFormControl): boolean {
     return parseInt(control.value, 10) > 12000;
   }
