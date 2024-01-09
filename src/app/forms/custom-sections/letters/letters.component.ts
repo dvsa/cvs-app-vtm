@@ -89,8 +89,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get eligibleForLetter(): boolean {
-    const IsArchivedTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
-    return this.correctApprovalType && !IsArchivedTechRecord && !this.isEditing && !this.checkForCurrentRecordInHistory;
+    const isArchivedTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
+    return this.correctApprovalType && !isArchivedTechRecord && !this.isEditing && !this.checkForCurrentRecordInHistory;
   }
 
   get reasonForIneligibility(): string {
