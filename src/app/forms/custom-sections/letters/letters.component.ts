@@ -16,7 +16,9 @@ import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@models
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateScrollPosition } from '@store/technical-records';
-import { Subscription, debounceTime } from 'rxjs';
+import {
+  ReplaySubject, Subscription, debounceTime, takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'app-letters[techRecord]',
@@ -31,7 +33,10 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   form!: CustomFormGroup;
 
+  hasCurrent = false;
+
   private formSubscription = new Subscription();
+  private destroy$ = new ReplaySubject<boolean>(1);
 
   constructor(
     private dynamicFormService: DynamicFormService,
@@ -45,6 +50,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
     this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => this.formChange.emit(event));
+    this.checkForCurrentRecordInHistory();
   }
 
   ngOnChanges(): void {
@@ -55,6 +61,19 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     this.formSubscription.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
+  checkForCurrentRecordInHistory() {
+    this.techRecordService.techRecordHistory$.pipe(takeUntil(this.destroy$)).subscribe((historyArray: TechRecordSearchSchema[] | undefined) => {
+      historyArray?.forEach((history: TechRecordSearchSchema) => {
+        if (history.techRecord_statusCode === StatusCodes.CURRENT
+          && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) {
+          this.hasCurrent = true;
+        }
+      });
+    });
   }
 
   get roles(): typeof Roles {
@@ -76,21 +95,10 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
       }
       : undefined;
   }
-  // checking if the Technical Record History has current status code.
-  get checkForCurrentRecordInHistory(): boolean {
-    let hasCurrent = false;
-    this.techRecordService.techRecordHistory$.subscribe((historyArray: TechRecordSearchSchema[] | undefined) => {
-      historyArray?.forEach((history: TechRecordSearchSchema) => {
-        if (history.techRecord_statusCode === StatusCodes.CURRENT
-          && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) hasCurrent = true;
-      });
-    });
-    return hasCurrent;
-  }
 
   get eligibleForLetter(): boolean {
     const isArchivedTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
-    return this.correctApprovalType && !isArchivedTechRecord && !this.isEditing && !this.checkForCurrentRecordInHistory;
+    return this.correctApprovalType && !isArchivedTechRecord && !this.isEditing && !this.hasCurrent;
   }
 
   get reasonForIneligibility(): string {
@@ -99,7 +107,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     if (this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) {
-      if (this.checkForCurrentRecordInHistory) {
+      if (this.hasCurrent) {
         // eslint-disable-next-line max-len
         return 'Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters.';
       }
