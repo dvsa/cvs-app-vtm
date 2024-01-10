@@ -44,7 +44,7 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
 
   buildFormArray() {
     const value = this.form?.get(this.name)?.value;
-    const values = Array.isArray(value) && value.length ? value : [null];
+    const values = Array.isArray(value) && value.length ? value : [''];
     values.forEach((unNumber: string) => this.addControl(unNumber));
   }
 
