@@ -4,18 +4,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { Roles } from '@models/roles.enum';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { State, initialAppState } from '@store/index';
 import { of } from 'rxjs';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { LettersComponent } from './letters.component';
 
 const mockTechRecordService = {
@@ -99,12 +99,13 @@ describe('LettersComponent', () => {
 
   describe('checkRecordHistoryHasCurrent', () => {
     it('should return false if the current technical record history has current status', () => {
-      expect(component.checkForCurrentRecordInHistory).toBeFalsy();
+      expect(component.hasCurrent).toBeFalsy();
     });
 
     it('should return true if the provisional technical record history has current status', () => {
       (component.techRecord as TechRecordType<'trl'>).techRecord_statusCode = 'provisional';
-      expect(component.checkForCurrentRecordInHistory).toBeTruthy();
+      component.ngOnInit();
+      expect(component.hasCurrent).toBeTruthy();
     });
   });
 
