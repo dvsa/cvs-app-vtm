@@ -8,7 +8,7 @@ import {
   CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 import { LETTER_TYPES } from '@forms/templates/general/letter-types';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
@@ -63,6 +63,11 @@ export class GenerateLetterComponent implements OnInit {
   }
 
   get reasons(): Array<FormNodeOption<string>> {
+    if (this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) {
+      return [
+        { label: 'Trailer rejected', value: LETTER_TYPES[1].value },
+      ];
+    }
     return [
       { label: 'Trailer accepted', value: LETTER_TYPES[0].value },
       { label: 'Trailer rejected', value: LETTER_TYPES[1].value },

@@ -4,6 +4,7 @@ import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { ParagraphIds } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType as TechRecordTypeVehicleVerb } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
@@ -13,8 +14,11 @@ import { LettersTemplate } from '@forms/templates/general/letters.template';
 import { Roles } from '@models/roles.enum';
 import { LettersIntoAuthApprovalType, LettersOfAuth, StatusCodes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { updateScrollPosition } from '@store/technical-records';
-import { Subscription, debounceTime } from 'rxjs';
+import {
+  ReplaySubject, Subscription, debounceTime, takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'app-letters[techRecord]',
@@ -29,10 +33,14 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   form!: CustomFormGroup;
 
+  hasCurrent = false;
+
   private formSubscription = new Subscription();
+  private destroy$ = new ReplaySubject<boolean>(1);
 
   constructor(
     private dynamicFormService: DynamicFormService,
+    private techRecordService: TechnicalRecordService,
     private viewportScroller: ViewportScroller,
     private router: Router,
     private route: ActivatedRoute,
@@ -42,6 +50,7 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.form = this.dynamicFormService.createForm(LettersTemplate, this.techRecord) as CustomFormGroup;
     this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => this.formChange.emit(event));
+    this.checkForCurrentRecordInHistory();
   }
 
   ngOnChanges(): void {
@@ -52,6 +61,19 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     this.formSubscription.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
+  checkForCurrentRecordInHistory() {
+    this.techRecordService.techRecordHistory$.pipe(takeUntil(this.destroy$)).subscribe((historyArray: TechRecordSearchSchema[] | undefined) => {
+      historyArray?.forEach((history: TechRecordSearchSchema) => {
+        if (history.techRecord_statusCode === StatusCodes.CURRENT
+          && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) {
+          this.hasCurrent = true;
+        }
+      });
+    });
   }
 
   get roles(): typeof Roles {
@@ -75,9 +97,8 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get eligibleForLetter(): boolean {
-    const currentTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.CURRENT;
-
-    return this.correctApprovalType && currentTechRecord && !this.isEditing;
+    const isArchivedTechRecord = this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED;
+    return this.correctApprovalType && !isArchivedTechRecord && !this.isEditing && !this.hasCurrent;
   }
 
   get reasonForIneligibility(): string {
@@ -85,8 +106,13 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
       return 'This section is not available when amending or creating a technical record.';
     }
 
-    if (this.techRecord?.techRecord_statusCode !== StatusCodes.CURRENT) {
-      return 'Generating letters is only applicable to current technical records.';
+    if (this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) {
+      if (this.hasCurrent) {
+        // eslint-disable-next-line max-len
+        return 'Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters.';
+      }
+    } else if (this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED) {
+      return 'Generating letters is not applicable to archived technical records.';
     }
 
     if (!this.correctApprovalType) {
