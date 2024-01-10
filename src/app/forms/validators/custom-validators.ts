@@ -128,6 +128,29 @@ export class CustomValidators {
         : null;
     };
 
+  static requiredIfAllEquals = (sibling: string, values: unknown[]): ValidatorFn =>
+    (control: AbstractControl): ValidationErrors | null => {
+      if (!control?.parent) return null;
+
+      const siblingControl = control.parent.get(sibling) as CustomFormControl;
+      const siblingValue = siblingControl.value;
+
+      const isSiblingVisible = !siblingControl.meta.hide;
+
+      const isSiblingValueIncluded = Array.isArray(siblingValue)
+        ? siblingValue.every((val) => values.includes(val))
+        : values.includes(siblingValue);
+
+      const isControlValueEmpty = control.value === null
+        || control.value === undefined
+        || control.value === ''
+        || (Array.isArray(control.value) && (control.value.length === 0 || control.value.every((val) => !val)));
+
+      return isSiblingValueIncluded && isControlValueEmpty && isSiblingVisible
+        ? { requiredIfEquals: { sibling: siblingControl.meta.label } }
+        : null;
+    };
+
   static requiredIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {

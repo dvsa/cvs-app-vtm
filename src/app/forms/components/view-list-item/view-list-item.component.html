@@ -1,24 +1,26 @@
 <ng-container *ngIf="viewType !== formNodeViewTypes.HIDDEN">
-  <dt *ngIf="viewType !== formNodeViewTypes.FULLWIDTH" class="govuk-summary-list__key">{{ label }}:</dt>
+  <td *ngIf="displayAsRow" class="govuk-table__cell" [style.width.%]="30">{{ label }}:</td>
+
   <ng-container [ngSwitch]="viewType">
     <ng-container *ngSwitchCase="formNodeViewTypes.DATE">
-      <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</dd>
+      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.DATETIME">
-      <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</dd>
+      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.TIME">
-      <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date : 'HH:mm' | defaultNullOrEmpty }}</dd>
+      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'HH:mm' | defaultNullOrEmpty }}</td>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.VRM">
-      <dd id="test-{{ name }}" class="govuk-summary-list__value">
+      <td id="test-{{ name }}" class="govuk-table__cell">
         <app-number-plate [vrm]="value"></app-number-plate>
-      </dd>
+      </td>
     </ng-container>
 
+    <!-- TODO: remove entirely, and use custom view component -->
     <ng-container *ngSwitchCase="formNodeViewTypes.ADR_EXAMINER_NOTES">
       <table class="govuk-table" *ngIf="value && value.length > 0">
         <tbody class="govuk-table__body">
@@ -45,6 +47,7 @@
       </dl>
     </ng-container>
 
+    <!-- TODO: remove entirely, and use custom view component -->
     <ng-container *ngSwitchCase="formNodeViewTypes.ADRINSPECTIONS">
       <ng-container *ngIf="value && value.length > 0">
         <table>
@@ -70,10 +73,18 @@
       </ng-container>
     </ng-container>
 
+    <ng-container *ngSwitchCase="formNodeViewTypes.CUSTOM">
+      <ng-container *ngIf="control && control.meta && control.meta.viewComponent">
+        <td colspan="2" id="test-{{ name }}" class="govuk-table__cell">
+          <ng-container [ngComponentOutlet]="control.meta.viewComponent" [ngComponentOutletInjector]="customFormControlInjector"></ng-container>
+        </td>
+      </ng-container>
+    </ng-container>
+
     <ng-container *ngSwitchDefault>
-      <dd [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-summary-list__value">
+      <td [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-table__cell">
         {{ value | refDataDecode$ : control?.meta?.referenceData | async | getControlLabel : control?.meta?.options | defaultNullOrEmpty }}
-      </dd>
+      </td>
     </ng-container>
   </ng-container>
 </ng-container>

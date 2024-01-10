@@ -24,11 +24,11 @@ import { CustomFormControlComponent } from '../custom-form-control/custom-form-c
 
 @Component({
   selector: 'app-adr-tank-details-subsequent-inspections',
-  templateUrl: './adr-tank-details-subsequent-inspections.component.html',
-  styleUrls: ['./adr-tank-details-subsequent-inspections.component.scss'],
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsSubsequentInspectionsComponent, multi: true }],
+  templateUrl: './adr-tank-details-subsequent-inspections-edit.component.html',
+  styleUrls: ['./adr-tank-details-subsequent-inspections-edit.component.scss'],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsSubsequentInspectionsEditComponent, multi: true }],
 })
-export class AdrTankDetailsSubsequentInspectionsComponent extends CustomFormControlComponent implements OnInit, OnDestroy, AfterContentInit {
+export class AdrTankDetailsSubsequentInspectionsEditComponent extends CustomFormControlComponent implements OnInit, OnDestroy, AfterContentInit {
   destroy$ = new ReplaySubject<boolean>(1);
 
   formArray = new FormArray<CustomFormGroup>([]);

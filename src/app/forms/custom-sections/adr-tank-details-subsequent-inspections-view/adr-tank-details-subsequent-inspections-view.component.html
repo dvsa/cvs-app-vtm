@@ -1,0 +1,23 @@
+<ng-container *ngIf="control">
+  <section class="govuk-!-margin-top-4">
+    <ng-container *ngFor="let inspection of control.value; let i = index">
+      <h4 class="govuk-heading-s">Subsequent {{ i + 1 }}</h4>
+      <table class="govuk-table">
+        <tbody class="govuk-table__body">
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header break-words">Inspection type:</th>
+            <td class="govuk-table__cell break-words">{{ inspection.tc3Type | defaultNullOrEmpty }}</td>
+          </tr>
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header break-words">Certificate number:</th>
+            <td class="govuk-table__cell break-words">{{ inspection.tc3PeriodicNumber | defaultNullOrEmpty }}</td>
+          </tr>
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header break-words">Inspection type:</th>
+            <td class="govuk-table__cell break-words">{{ inspection.tc3PeriodicExpiryDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+  </section>
+</ng-container>
