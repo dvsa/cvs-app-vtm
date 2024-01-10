@@ -78,14 +78,14 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
   }
   // checking if the Technical Record History has current status code.
   get checkForCurrentRecordInHistory(): boolean {
-    let ifCurrent = false;
+    let hasCurrent = false;
     this.techRecordService.techRecordHistory$.subscribe((historyArray: TechRecordSearchSchema[] | undefined) => {
       historyArray?.forEach((history: TechRecordSearchSchema) => {
         if (history.techRecord_statusCode === StatusCodes.CURRENT
-          && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) ifCurrent = true;
+          && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) hasCurrent = true;
       });
     });
-    return ifCurrent;
+    return hasCurrent;
   }
 
   get eligibleForLetter(): boolean {
@@ -98,13 +98,13 @@ export class LettersComponent implements OnInit, OnDestroy, OnChanges {
       return 'This section is not available when amending or creating a technical record.';
     }
 
-    if (this.techRecord?.techRecord_statusCode !== StatusCodes.CURRENT) {
-      // if the Technical Record History has current status code return related words to inform users.
+    if (this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL) {
       if (this.checkForCurrentRecordInHistory) {
         // eslint-disable-next-line max-len
         return 'Generating letters is not applicable to provisional records, where a current record also exists for a vehicle. Open the current record to generate letters.';
       }
-      return 'Generating letters is only applicable to current technical records.';
+    } else if (this.techRecord?.techRecord_statusCode === StatusCodes.ARCHIVED) {
+      return 'Generating letters is not applicable to archived technical records.';
     }
 
     if (!this.correctApprovalType) {
