@@ -1,0 +1,42 @@
+<ng-container *ngIf="control && formArray.controls[0]">
+  <app-field-error-message
+    [error]="!formArray.controls[0].value && control.invalid && (control.touched || submitted) ? control.meta.customErrorMessage : ''"
+  ></app-field-error-message>
+
+  <ng-container *ngIf="formArray.controls.length === 1">
+    <app-text-input
+      [id]="control.meta.name"
+      [name]="formArray.controls[0].meta.name"
+      [label]="formArray.controls[0].meta.label + ' 1'"
+      [customId]="formArray.controls[0].meta.customId"
+      [formControl]="formArray.controls[0]"
+      (blur)="formArray.controls[0].markAsTouched(); control.markAsTouched()"
+    ></app-text-input>
+  </ng-container>
+
+  <!-- Additional UN numbers -->
+  <table class="govuk-table" *ngIf="formArray.controls.length > 1">
+    <tbody class="govuk-table__body">
+      <ng-container *ngFor="let child of formArray.controls; let i = index">
+        <tr>
+          <td class="govuk-table__cell">
+            <app-text-input
+              [name]="child.meta.name"
+              [label]="(child.meta.label ?? '') + ' ' + (i + 1)"
+              [customId]="child.meta.customId"
+              [formControl]="child"
+              (blur)="child.markAsTouched(); control.markAsTouched()"
+            ></app-text-input>
+          </td>
+          <td class="govuk-table__cell align-middle">
+            <a class="govuk-link" role="button" href="javascript:void(0)" (click)="removeControl(i)">Remove</a>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <p class="govuk-body">
+    <a role="button" class="govuk-link" href="javascript:void(0)" (click)="addControl()"> Add UN Number </a>
+  </p>
+</ng-container>

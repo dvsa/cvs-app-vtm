@@ -1,29 +1,29 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  AdrExaminerNotesHistoryComponent,
-} from '@forms/custom-sections/adr-examiner-notes-history/adr-examiner-notes-history.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import {
+  AdrExaminerNotesHistoryEditComponent,
+} from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 const mockTechRecordService = {
   techRecord$: jest.fn(),
 };
-describe('ADRExaminerNotesHistoryComponent', () => {
-  let component: AdrExaminerNotesHistoryComponent;
-  let fixture: ComponentFixture<AdrExaminerNotesHistoryComponent>;
+describe('AdrExaminerNotesHistoryEditComponent', () => {
+  let component: AdrExaminerNotesHistoryEditComponent;
+  let fixture: ComponentFixture<AdrExaminerNotesHistoryEditComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdrExaminerNotesHistoryComponent],
+      declarations: [AdrExaminerNotesHistoryEditComponent],
       imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
       providers: [
         { provide: TechnicalRecordService, useValue: mockTechRecordService },
       ],
     }).compileComponents();
-    fixture = TestBed.createComponent(AdrExaminerNotesHistoryComponent);
+    fixture = TestBed.createComponent(AdrExaminerNotesHistoryEditComponent);
     component = fixture.componentInstance;
   });
   describe('ngOnDestroy', () => {
