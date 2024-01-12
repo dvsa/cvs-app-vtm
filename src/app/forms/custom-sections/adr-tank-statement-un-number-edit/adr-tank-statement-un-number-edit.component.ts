@@ -109,7 +109,10 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
         .filter((control) => control.invalid)
         .map((control) => ({ error: control.meta.customErrorMessage as string, anchorLink: control.meta.customId }));
 
-      const allErrors = _.chain(globalErrors).concat(formErrors).uniqBy((error) => error.error);
+      const allErrors = _.chain(globalErrors)
+        .filter((error) => Boolean(this.control?.hasError(error.error) && this.formArray.at(0).valid))
+        .concat(formErrors)
+        .uniqBy((error) => error.error);
 
       if (!allErrors.isEqualWith(globalErrors).value()) {
         this.globalErrorService.setErrors(allErrors.value());
