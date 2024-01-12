@@ -631,7 +631,7 @@ export const AdrTemplate: FormNode = {
       ],
       validators: [
         { name: ValidatorNames.ShowGroupsWhenEqualTo, args: { values: [true], groups: ['battery_list_applicable'] } },
-        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['battery_list_applicable'] } },
+        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false, undefined, null], groups: ['battery_list_applicable'] } },
         {
           name: ValidatorNames.RequiredIfEquals,
           args: {
@@ -649,7 +649,7 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
-      groups: ['battery_list_applicable', 'battery_list_hide'],
+      groups: ['battery_list_applicable', 'battery_list_hide', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 8 },
         {
