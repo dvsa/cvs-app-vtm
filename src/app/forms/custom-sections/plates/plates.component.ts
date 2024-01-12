@@ -141,7 +141,7 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
     void this.router.navigate(['generate-plate'], { relativeTo: this.route });
   }
 
-  private cannotGeneratePlate(plateRequiredFields: string[]): boolean {
+  cannotGeneratePlate(plateRequiredFields: string[]): boolean {
     const isOneFieldEmpty = plateRequiredFields.some((field) => {
       const value = this.techRecord[field as keyof TechRecordType<'hgv' | 'trl'>];
       return value === undefined || value === null || value === '';
@@ -153,10 +153,14 @@ export class PlatesComponent implements OnInit, OnDestroy, OnChanges {
 
     // check tyre fields
     const areTyresInvalid = this.techRecord.techRecord_axles?.some((axle) => {
-      tyreRequiredFields.some((field) => {
+      const tyreRequiredInvalid = tyreRequiredFields.map((field) => {
         const value = axle[field as keyof Axle<'hgv'>];
         return value === undefined || value === null || value === '';
       });
+
+      if (tyreRequiredInvalid.some((value) => value)) {
+        return true;
+      }
       // either one of ply rating or load index is required
       const plyOrLoad = axle['tyres_plyRating' as keyof Axle<'hgv'>] || axle['tyres_dataTrAxles' as keyof Axle<'hgv'>];
       return plyOrLoad === undefined || plyOrLoad === null || plyOrLoad === '';
