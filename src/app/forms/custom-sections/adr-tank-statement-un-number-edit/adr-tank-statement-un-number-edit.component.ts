@@ -110,7 +110,7 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
         .map((control) => ({ error: control.meta.customErrorMessage as string, anchorLink: control.meta.customId }));
 
       const allErrors = _.chain(globalErrors)
-        .filter((error) => Boolean(this.control?.hasError(error.error) && this.formArray.at(0).valid))
+        .filter((error) => !(error.error === this.control?.meta.customErrorMessage && this.formArray.at(0).valid))
         .concat(formErrors)
         .uniqBy((error) => error.error);
 
