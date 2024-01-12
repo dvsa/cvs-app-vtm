@@ -649,7 +649,7 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
-      groups: ['battery_list_applicable', 'battery_list_hide', 'dangerous_goods'],
+      groups: ['battery_list_applicable', 'battery_list_hide'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 8 },
         {
