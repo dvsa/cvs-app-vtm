@@ -92,7 +92,7 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
     this.formArray.controls.forEach((control, index) => {
       // Make all UN NUmbers labels reflect their position in form array
       control.meta.customId = `${this.control?.meta.name}_${index + 1}`;
-      control.meta.customErrorMessage = `UN Number ${index + 1} is required or remove UN Number ${index + 1}`;
+      control.meta.customErrorMessage = `UN number ${index + 1} is required or remove UN number ${index + 1}`;
     });
   }
 
