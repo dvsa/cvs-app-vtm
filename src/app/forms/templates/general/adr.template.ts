@@ -494,16 +494,7 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.RequiredIfEquals,
           args: { sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo', value: [null, undefined, ''] },
         },
-        {
-          name: ValidatorNames.IsArray,
-          args: {
-            ofType: 'string',
-            whenEquals: {
-              sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
-              value: [ADRTankDetailsTankStatementSelect.PRODUCT_LIST],
-            },
-          },
-        },
+        { name: ValidatorNames.TankDetailsUnNumberValidator },
       ],
     },
     {
