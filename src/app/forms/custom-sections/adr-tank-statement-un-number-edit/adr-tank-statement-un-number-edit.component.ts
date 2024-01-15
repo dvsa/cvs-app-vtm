@@ -92,12 +92,15 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
     this.formArray.controls.forEach((control, index) => {
       // Make all UN NUmbers labels reflect their position in form array
       control.meta.customId = `${this.control?.meta.name}_${index + 1}`;
-      control.meta.customErrorMessage = `UN number ${index + 1} is required or remove UN number ${index + 1}`;
+      control.meta.customErrorMessage = control.invalid && control.hasError('maxlength')
+        ? `UN number ${index + 1} must be less than or equal to 1500 characters`
+        : `UN number ${index + 1} is required or remove UN number ${index + 1}`;
     });
   }
 
   onFormChange(changes: (string | null)[] | null) {
     this.control?.patchValue(changes, { emitModelToViewChange: true });
+    this.updateControls();
   }
 
   onFormSubmitted(globalErrors: GlobalError[]) {
@@ -105,12 +108,15 @@ export class AdrTankStatementUnNumberEditComponent extends CustomFormControlComp
 
     // If ANY UN Numbers are invalid, loop through them and add to global errors, but avoid adding duplicates
     if (this.formArray.invalid) {
+      const firstCtrl = this.formArray.at(0);
+      const customErrorMessage = this.control?.meta.customErrorMessage;
+
       const formErrors = this.formArray.controls
         .filter((control) => control.invalid)
         .map((control) => ({ error: control.meta.customErrorMessage as string, anchorLink: control.meta.customId }));
 
       const allErrors = _.chain(globalErrors)
-        .filter((error) => !(error.error === this.control?.meta.customErrorMessage && this.formArray.at(0).valid))
+        .filter((error) => !(error.error === customErrorMessage && (firstCtrl.valid || !firstCtrl.hasError(customErrorMessage))))
         .concat(formErrors)
         .uniqBy((error) => error.error);
 
