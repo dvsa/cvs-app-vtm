@@ -87,6 +87,7 @@ export class DynamicFormService {
     [ValidatorNames.Tc3TestValidator]: (args: { inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
     [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
     [ValidatorNames.DateIsInvalid]: () => CustomValidators.dateIsInvalid,
+    [ValidatorNames.TankDetailsUnNumberValidator]: () => CustomValidators.tankDetailsUnNumberValidator,
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
