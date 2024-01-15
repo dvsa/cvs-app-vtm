@@ -631,7 +631,7 @@ export const AdrTemplate: FormNode = {
       ],
       validators: [
         { name: ValidatorNames.ShowGroupsWhenEqualTo, args: { values: [true], groups: ['battery_list_applicable'] } },
-        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['battery_list_applicable'] } },
+        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false, undefined, null], groups: ['battery_list_applicable'] } },
         {
           name: ValidatorNames.RequiredIfEquals,
           args: {
