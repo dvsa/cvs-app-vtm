@@ -28,7 +28,6 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'manufacturerAddress2',
     },
     {
       name: 'techRecord_manufacturerDetails_postTown',
@@ -43,7 +42,6 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'manufacturerCounty',
     },
     {
       name: 'techRecord_manufacturerDetails_postCode',
