@@ -1,4 +1,6 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl, ValidationErrors, ValidatorFn,
+} from '@angular/forms';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
@@ -581,6 +583,7 @@ export class CustomValidators {
    * The UN numbers form array is invalid if:
    *  - The above conditions are met, and
    *  - The reference number is empty and any UN number is the form array is empty
+   *  - The reference number is empty and any UN number is the form array has length greater than 1500 characters
    *
    * @returns
    */
@@ -589,6 +592,7 @@ export class CustomValidators {
       if (control instanceof CustomFormControl) {
         if (control.meta.hide) return null;
         if (control.parent?.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')?.value) return null;
+        if (Array.isArray(control.value) && control.value.some((value) => value?.length > 1500)) return { maxlength: true };
         return CustomValidators.isArray({ ofType: 'string' })(control);
       }
 
