@@ -14,7 +14,6 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
       validators: [{ name: ValidatorNames.MaxLength, args: 150 }],
-      customId: 'manufacturerName',
     },
     {
       name: 'techRecord_manufacturerDetails_address1',
@@ -22,7 +21,6 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XXL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'manufacturerAddress1',
     },
     {
       name: 'techRecord_manufacturerDetails_address2',
@@ -38,7 +36,6 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'manufacturerPostTown',
     },
     {
       name: 'techRecord_manufacturerDetails_address3',
@@ -54,7 +51,6 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
       validators: [{ name: ValidatorNames.MaxLength, args: 12 }],
-      customId: 'manufacturerPostCode',
     },
     {
       name: 'techRecord_manufacturerDetails_telephoneNumber',
@@ -62,7 +58,6 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
-      customId: 'manufacturerTelephoneNumber',
     },
     {
       name: 'techRecord_manufacturerDetails_emailAddress',
@@ -70,7 +65,6 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 255 }, { name: ValidatorNames.Email }],
-      customId: 'manufacturerEmailAddress',
     },
     {
       name: 'techRecord_manufacturerDetails_faxNumber',
@@ -78,7 +72,6 @@ export const ManufacturerTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
-      customId: 'manufacturerFaxNumber',
     },
     {
       name: 'techRecord_manufacturerDetails_manufacturerNotes',

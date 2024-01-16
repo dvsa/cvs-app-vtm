@@ -15,7 +15,6 @@ export const TrlPurchasers: FormNode = {
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 150 }],
-      customId: 'purchaserName',
     },
     {
       name: 'techRecord_purchaserDetails_address1',
@@ -24,7 +23,6 @@ export const TrlPurchasers: FormNode = {
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'purchaserAddress1',
     },
     {
       name: 'techRecord_purchaserDetails_address2',
@@ -33,7 +31,6 @@ export const TrlPurchasers: FormNode = {
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'purchaserAddress2',
     },
     {
       name: 'techRecord_purchaserDetails_postTown',
@@ -42,7 +39,6 @@ export const TrlPurchasers: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'purchaserPostTown',
     },
     {
       name: 'techRecord_purchaserDetails_address3',
@@ -51,7 +47,6 @@ export const TrlPurchasers: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 60 }],
-      customId: 'purchaserCounty',
     },
     {
       name: 'techRecord_purchaserDetails_postCode',
@@ -60,7 +55,6 @@ export const TrlPurchasers: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 12 }],
-      customId: 'purchaserPostCode',
     },
     {
       name: 'techRecord_purchaserDetails_telephoneNumber',
@@ -69,7 +63,6 @@ export const TrlPurchasers: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
-      customId: 'purchaserTelephoneNumber',
     },
     {
       name: 'techRecord_purchaserDetails_emailAddress',
@@ -78,7 +71,6 @@ export const TrlPurchasers: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 255 }, { name: ValidatorNames.Email }],
-      customId: 'purchaserEmailAddress',
     },
     {
       name: 'techRecord_purchaserDetails_faxNumber',
@@ -87,7 +79,6 @@ export const TrlPurchasers: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
-      customId: 'purchaserFaxNumber',
     },
     {
       name: 'techRecord_purchaserDetails_purchaserNotes',
