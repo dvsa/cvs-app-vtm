@@ -87,7 +87,7 @@ export class DynamicFormService {
     [ValidatorNames.Tc3TestValidator]: (args: { inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
     [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
     [ValidatorNames.DateIsInvalid]: () => CustomValidators.dateIsInvalid,
-    [ValidatorNames.TankDetailsUnNumberValidator]: () => CustomValidators.tankDetailsUnNumberValidator,
+    [ValidatorNames.TankDetailsUnNumberValidator]: () => CustomValidators.tankDetailsUnNumberValidator(),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -188,6 +188,7 @@ export class DynamicFormService {
   private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {
     const { errors } = control;
     const meta = (control as CustomFormControl).meta as FormNode | undefined;
+
     if (errors) {
       if (meta?.hide) return;
       const errorList = Object.keys(errors);
