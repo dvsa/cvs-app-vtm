@@ -6,8 +6,12 @@ import {
   ADRCompatibilityGroupJ,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
-import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
-import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
+import {
+  ADRTankDetailsTankStatementSelect
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
+import {
+  ADRTankStatementSubstancePermitted
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import {
   AdrExaminerNotesHistoryEditComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
@@ -765,6 +769,19 @@ export const AdrTemplate: FormNode = {
       editComponent: AdrExaminerNotesHistoryEditComponent,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_adrCertificateNotes',
+      label: 'ADR Certificate Notes',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXTAREA,
+      viewType: FormNodeViewTypes.STRING,
+      groups: ['adrDetails', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 1500 },
+      ],
     },
   ],
 };
