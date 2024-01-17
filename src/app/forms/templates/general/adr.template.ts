@@ -7,10 +7,10 @@ import {
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import {
-  ADRTankDetailsTankStatementSelect
+  ADRTankDetailsTankStatementSelect,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import {
-  ADRTankStatementSubstancePermitted
+  ADRTankStatementSubstancePermitted,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import {
   AdrExaminerNotesHistoryEditComponent,
