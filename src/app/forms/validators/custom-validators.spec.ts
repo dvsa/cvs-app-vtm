@@ -266,13 +266,37 @@ describe('Required validators', () => {
 
   describe('Required if not equal', () => {
     it('should not be required (return null) if content of sibling does not match a value', () => {
-      const result = CustomValidators.requiredIfNotEqual('sibling', 'some value')(form.controls['foo']);
+      const result = CustomValidators.requiredIfNotEquals('sibling', 'some value')(form.controls['foo']);
       expect(result).toBeNull();
     });
 
     it('should be required (return ValidationErrors) if content of sibling does not match a value', () => {
-      const result = CustomValidators.requiredIfNotEqual('sibling', 'some other value')(form.controls['foo']);
-      expect(result).toEqual({ requiredIfNotEqual: { sibling: 'Sibling' } });
+      const result = CustomValidators.requiredIfNotEquals('sibling', 'some other value')(form.controls['foo']);
+      expect(result).toEqual({ requiredIfNotEquals: { sibling: 'Sibling' } });
+    });
+
+    it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {
+      form.controls['foo'].patchValue('some foo value');
+      const result = CustomValidators.requiredIfEquals('sibling', ['some othervalue'])(form.controls['foo']);
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('Set sibling error if not equal', () => {
+    it('should not set siblings error if form control matches', () => {
+      form.controls['foo'].patchValue('some value');
+      form.controls['sibling'].patchValue(null);
+      const result = CustomValidators.setSiblingErrorsIfNotEqual('sibling', 'some value')(form.controls['foo']);
+      expect(form.controls['sibling'].errors).toBeNull();
+      expect(result).toBeNull();
+    });
+
+    it('should set the error if the form control does not match the value', () => {
+      form.controls['foo'].patchValue('some other value');
+      form.controls['sibling'].patchValue(null);
+      const result = CustomValidators.setSiblingErrorsIfNotEqual('sibling', 'some value')(form.controls['foo']);
+      expect(form.controls['sibling'].errors).not.toBeNull();
+      expect(result).toBeNull();
     });
 
     it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {

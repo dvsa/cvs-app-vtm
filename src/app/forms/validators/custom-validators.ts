@@ -153,7 +153,24 @@ export class CustomValidators {
         : null;
     };
 
-  static requiredIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
+  static setSiblingErrorsIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
+    return (control: AbstractControl): null => {
+      if (control?.parent) {
+        const siblingControl = control.parent.get(sibling) as CustomFormControl;
+        const siblingValue = siblingControl.value;
+        const newValue = Array.isArray(value) ? value.includes(control.value) : control.value === value;
+
+        if (!newValue && (siblingValue === null || siblingValue === undefined || siblingValue === '') && !siblingControl.errors) {
+          siblingControl.markAsTouched();
+          siblingControl.setErrors({ requiredIfNotEquals: { sibling: siblingControl.meta.label } });
+          siblingControl.updateValueAndValidity();
+        }
+      }
+      return null;
+    };
+  };
+
+  static requiredIfNotEquals = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
@@ -161,7 +178,7 @@ export class CustomValidators {
         const newValue = Array.isArray(value) ? value.includes(siblingValue) : siblingValue === value;
 
         if (!newValue && (control.value === null || control.value === undefined || control.value === '')) {
-          return { requiredIfNotEqual: { sibling: siblingControl.meta.label } };
+          return { requiredIfNotEquals: { sibling: siblingControl.meta.label } };
         }
       }
 

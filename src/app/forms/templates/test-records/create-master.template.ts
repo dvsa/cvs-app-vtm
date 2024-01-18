@@ -55,6 +55,7 @@ import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/de
 import { VehicleSectionGroup3 } from './section-templates/vehicle/group-3-light-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
+import { ContingencyM1IvaVehicleSection } from './section-templates/vehicle/contingency-m1-iva-vehicle-section.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -550,7 +551,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesSpecialistGroup1: {
       required: CreateRequiredSectionLgvCar,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyM1IvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup1,
       customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
