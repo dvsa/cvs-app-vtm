@@ -4,6 +4,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { RouterOutletComponent } from '@shared/components/router-outlet/router-outlet.component';
+import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
 import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { BatchVehicleDetailsComponent } from './components/batch-vehicle-details/batch-vehicle-details.component';
 import { BatchVehicleResultsComponent } from './components/batch-vehicle-results/batch-vehicle-results.component';
@@ -16,6 +17,9 @@ const routes: Routes = [
     component: RouterOutletComponent,
     data: { roles: Roles.TechRecordCreate },
     canActivate: [MsalGuard, RoleGuard],
+    resolve: {
+      data: techRecordDataResolver,
+    },
     children: [
       {
         path: '',
