@@ -145,8 +145,6 @@ export class TechnicalRecordHttpService {
 
     const body = { certificateType };
 
-    console.log(url);
-
     return this.http.post(url, body, { responseType: 'json' });
   }
 }

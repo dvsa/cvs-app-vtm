@@ -7,8 +7,11 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { UserService } from '@services/user-service/user-service';
 import { ADRCertificateTypes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCertificateTypes.enum.js';
-import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, take } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State } from '@store/index';
+import { generateADRCertificate, generateADRCertificateSuccess } from '@store/technical-records';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-adr-generate-certificate',
@@ -28,17 +31,21 @@ export class AdrGenerateCertificateComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
+    private actions$: Actions,
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
     public userService: UserService,
-    private techRecordHttpService: TechnicalRecordHttpService,
+    private store: Store<State>,
   ) {}
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.systemNumber = params['systemNumber'];
       this.createdTimestamp = params['createdTimestamp'];
+    });
+    this.actions$.pipe(ofType(generateADRCertificateSuccess), take(1)).subscribe(() => {
+      this.navigateBack();
     });
   }
 
@@ -69,14 +76,10 @@ export class AdrGenerateCertificateComponent implements OnInit, OnDestroy {
     if (!this.form.value.certificateType) {
       return this.globalErrorService.addError({ error: 'ADR Certificate Type is required', anchorLink: 'certificateType' });
     }
-    try {
-      this.techRecordHttpService.generateADRCertificate$(this.systemNumber ?? '', this.createdTimestamp ?? '', this.form.value.certificateType)
-        .pipe(takeUntil(this.destroy$)).subscribe((result) => {
-          this.navigateBack();
-        });
-    } catch (error) {
-      return this.globalErrorService.addError({ error: 'Internal Server Error, please contact technical support', anchorLink: '' });
-    }
-
+    this.store.dispatch(generateADRCertificate(
+      {
+        systemNumber: this.systemNumber ?? '', createdTimestamp: this.createdTimestamp ?? '', certificateType: this.form.value.certificateType,
+      },
+    ));
   }
 }

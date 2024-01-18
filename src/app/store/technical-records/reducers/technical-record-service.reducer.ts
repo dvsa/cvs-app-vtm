@@ -62,6 +62,9 @@ import {
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess,
+  generateADRCertificate,
+  generateADRCertificateFailure,
+  generateADRCertificateSuccess,
 } from '../actions/technical-record-service.actions';
 import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
 
@@ -134,6 +137,10 @@ export const vehicleTechRecordReducer = createReducer(
   on(generateLetter, defaultArgs),
   on(generateLetterSuccess, (state) => ({ ...state, editingTechRecord: undefined })),
   on(generateLetterFailure, failureArgs),
+
+  on(generateADRCertificate, defaultArgs),
+  on(generateADRCertificateSuccess, (state) => ({ ...state, editingTechRecord: undefined, loading: false })),
+  on(generateADRCertificateFailure, failureArgs),
 
   on(updateEditingTechRecord, (state, action) => updateEditingTechRec(state, action)),
   on(updateEditingTechRecordCancel, (state) => ({ ...state, editingTechRecord: undefined })),

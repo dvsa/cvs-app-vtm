@@ -52,6 +52,9 @@ import {
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess,
+  generateADRCertificate,
+  generateADRCertificateFailure,
+  generateADRCertificateSuccess,
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord, selectTechRecord } from '../selectors/technical-record-service.selectors';
 
@@ -287,6 +290,18 @@ export class TechnicalRecordServiceEffects {
         )),
     ));
 
+  generateADRCertificate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateADRCertificate),
+      switchMap(({
+        systemNumber, createdTimestamp, certificateType,
+      }) =>
+        this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
+          map(() => generateADRCertificateSuccess()),
+          catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
+        )),
+    ));
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {
     if (typeof error !== 'object') {
@@ -307,5 +322,6 @@ export class TechnicalRecordServiceEffects {
     archiveTechRecord_400: 'Unable to archive technical record',
     promoteTechRecord_400: 'Unable to promote technical record',
     unarchiveTechRecord_400: 'Unable to unarchive technical record',
+    generateADRCertificate_400: 'Unable to generate ADR certificate',
   };
 }
