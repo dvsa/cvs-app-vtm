@@ -54,7 +54,7 @@
     "@ngrx/router-store": "^15.4.0",
     "@ngrx/store": "^15.4.0",
     "@ngrx/store-devtools": "^15.4.0",
-    "@sentry/angular-ivy": "^7.81.1",
+    "@sentry/angular-ivy": "^7.91.0",
     "@sentry/cli": "^2.22.2",
     "@sentry/types": "^7.81.1",
     "accessible-autocomplete": "^2.0.4",
