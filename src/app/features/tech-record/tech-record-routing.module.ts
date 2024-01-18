@@ -9,6 +9,7 @@ import { techRecordCleanResolver } from 'src/app/resolvers/tech-record-clean/tec
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
 import { techRecordValidateResolver } from 'src/app/resolvers/tech-record-validate/tech-record-validate.resolver';
 import { techRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
+import { AdrGenerateCertificateComponent } from './components/adr-generate-certificate/adr-generate-certificate.component';
 import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
 import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
 import { AmendVrmReasonComponent } from './components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component';
@@ -183,6 +184,12 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: techRecordViewResolver },
     loadChildren: () => import('../test-records/create/create-test-records.module').then((m) => m.CreateTestRecordsModule),
+  },
+  {
+    path: 'adr-certificate',
+    component: AdrGenerateCertificateComponent,
+    data: { title: 'Generate ADR Certificate', roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard],
   },
 ];
 

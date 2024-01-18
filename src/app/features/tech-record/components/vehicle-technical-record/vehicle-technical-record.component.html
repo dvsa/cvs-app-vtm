@@ -24,6 +24,13 @@
             <a id="create-test" class="govuk-button" (click)="createTest(techRecord)">Create a test for this vehicle</a>
           </div>
         </ng-container>
+
+        <!-- TODO: add adr certificate section -->
+        <ng-container *ngIf="showGenerateADRCertificateButton()">
+          <div class="govuk-button-group">
+            <a id="generate-adr-cert" class="govuk-button" (click)="validateADRDetails()">Generate an ADR Certificate for this vehicle</a>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
+import { TechRecordGETHGV, TechRecordGETLGV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -14,6 +15,7 @@ import {
 } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { clearScrollPosition, updateTechRecordSuccess } from '@store/technical-records';
@@ -29,6 +31,7 @@ import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-s
   styleUrls: ['./vehicle-technical-record.component.scss'],
 })
 export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
+  [x: string]: any;
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
   @Input() techRecord?: V3TechRecordModel;
 
@@ -41,6 +44,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   isEditing = false;
   isDirty = false;
   isInvalid = false;
+  isADREnabled = false;
 
   private destroy$ = new Subject<void>();
   hasTestResultAmend: boolean | undefined = false;
@@ -55,6 +59,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     private store: Store<TechnicalRecordServiceState>,
     private actions$: Actions,
     private viewportScroller: ViewportScroller,
+    private featureToggleService: FeatureToggleService,
   ) {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
@@ -65,6 +70,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   ngOnInit(): void {
+    this.isADREnabled = this.featureToggleService.isFeatureEnabled('adrToggle');
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
       void this.router.navigate([
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
@@ -165,5 +171,30 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
       ? 'This vehicle does not have enough information to be tested. Please complete this record so tests can be recorded against it.'
       : 'This vehicle does not have enough information to be tested.'
           + ' Call the Contact Centre to complete this record so tests can be recorded against it.';
+  }
+
+  isADRVehicleType(): boolean {
+    return this.techRecord?.techRecord_vehicleType === 'hgv'
+    || this.techRecord?.techRecord_vehicleType === 'lgv'
+    || this.techRecord?.techRecord_vehicleType === 'trl';
+  }
+
+  showGenerateADRCertificateButton(): boolean {
+    const isNotArchivedAndEditing = !this.isArchived && !this.isEditing;
+    return this.isADREnabled && this.isADRVehicleType() && isNotArchivedAndEditing;
+  }
+
+  validateADRDetails(): void {
+    this.globalErrorService.clearErrors();
+    // todo- check type casting
+    if (!(this.techRecord as TechRecordGETTRL | TechRecordGETHGV | TechRecordGETLGV)?.techRecord_adrDetails_dangerousGoods) {
+      this.viewportScroller.scrollToPosition([0, 0]);
+      this.globalErrorService.addError(
+        { error: 'This vehicle is not able to carry dangerous goods, add ADR details to the technical record to generate a certificate.' },
+      );
+      return;
+    }
+
+    void this.router.navigate(['adr-certificate'], { relativeTo: this.route });
   }
 }

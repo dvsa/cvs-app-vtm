@@ -1,0 +1,8 @@
+<form [formGroup]="form">
+  <app-radio-group id="adr-cert-type" formControlName="certificateType" [options]="certificateTypes"></app-radio-group>
+
+  <app-button-group>
+    <app-button id="submit-adr-cert-form" (clicked)="handleSubmit()">Generate certificate</app-button>
+    <app-button id="back-from-generate-adr-cert" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+  </app-button-group>
+</form>
