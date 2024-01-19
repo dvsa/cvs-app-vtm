@@ -153,7 +153,7 @@ export class CustomValidators {
         : null;
     };
 
-  static setSiblingErrorsIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
+  static setSiblingAsTouchedIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
@@ -162,7 +162,6 @@ export class CustomValidators {
 
         if (!newValue && (siblingValue === null || siblingValue === undefined || siblingValue === '') && !siblingControl.errors) {
           siblingControl.markAsTouched();
-          siblingControl.setErrors({ requiredIfNotEquals: { sibling: siblingControl.meta.label } });
           siblingControl.updateValueAndValidity();
         }
       }

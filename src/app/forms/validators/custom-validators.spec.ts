@@ -283,19 +283,19 @@ describe('Required validators', () => {
   });
 
   describe('Set sibling error if not equal', () => {
-    it('should not set siblings error if form control matches', () => {
+    it('should set the sibling as touched if the value does not match', () => {
       form.controls['foo'].patchValue('some value');
       form.controls['sibling'].patchValue(null);
-      const result = CustomValidators.setSiblingErrorsIfNotEqual('sibling', 'some value')(form.controls['foo']);
-      expect(form.controls['sibling'].errors).toBeNull();
+      const result = CustomValidators.setSiblingAsTouchedIfNotEqual('sibling', '')(form.controls['foo']);
+      expect(form.controls['sibling'].touched).toBe(true);
       expect(result).toBeNull();
     });
 
-    it('should set the error if the form control does not match the value', () => {
-      form.controls['foo'].patchValue('some other value');
+    it('should not set the sibling as touched if the value does not match', () => {
+      form.controls['foo'].patchValue('some value');
       form.controls['sibling'].patchValue(null);
-      const result = CustomValidators.setSiblingErrorsIfNotEqual('sibling', 'some value')(form.controls['foo']);
-      expect(form.controls['sibling'].errors).not.toBeNull();
+      const result = CustomValidators.setSiblingAsTouchedIfNotEqual('sibling', 'some value')(form.controls['foo']);
+      expect(form.controls['sibling'].touched).toBe(false);
       expect(result).toBeNull();
     });
 

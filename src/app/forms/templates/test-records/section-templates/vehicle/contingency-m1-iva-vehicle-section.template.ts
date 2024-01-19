@@ -56,8 +56,8 @@ export const ContingencyM1IvaVehicleSection: FormNode = {
       label: 'Odometer Reading',
       value: null,
       validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Max, args: 9999999 },
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'odometerReadingUnits', value: 'miles' } },
-        { name: ValidatorNames.SetSiblingErrorsIfNotEqual, args: { sibling: 'odometerReadingUnits', value: [null] } },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'odometerReadingUnits', value: ['miles', 'kilometres'] } },
+        { name: ValidatorNames.SetSiblingAsTouchedIfNotEqual, args: { sibling: 'odometerReadingUnits', value: [null] } },
       ],
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
@@ -67,7 +67,9 @@ export const ContingencyM1IvaVehicleSection: FormNode = {
     {
       name: 'odometerReadingUnits',
       label: 'Odometer Reading Units',
-      validators: [{ name: ValidatorNames.RequiredIfNotEquals, args: { sibling: 'odometerReading', value: [null] } }],
+      validators: [{ name: ValidatorNames.RequiredIfNotEquals, args: { sibling: 'odometerReading', value: [null] } },
+        { name: ValidatorNames.SetSiblingAsTouchedIfNotEqual, args: { sibling: 'odometerReading', value: [null] } }],
+
       value: null,
       options: [
         { value: 'kilometres', label: 'Kilometres' },
