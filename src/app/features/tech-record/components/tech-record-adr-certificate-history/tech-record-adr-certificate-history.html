@@ -11,6 +11,14 @@
         <th scope="col" class="govuk-table__header">Certificate Link</th>
       </tr>
     </thead>
+    <tbody>
+      <tr *ngFor="let certificates of getAdrCertificateHistory()">
+        <td class="govuk-table__cell">{{certificates.generatedTimestamp}}</td>
+        <td class="govuk-table__cell">{{certificates.createdByName}}</td>
+        <td class="govuk-table__cell">{{certificates.certificateType}}</td>
+        <td class="govuk-table__cell">Link</td>
+      </tr>
+    </tbody>
   </table>
 </ng-container>
 
