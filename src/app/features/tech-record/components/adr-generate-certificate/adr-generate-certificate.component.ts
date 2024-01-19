@@ -16,7 +16,6 @@ import { Actions, ofType } from '@ngrx/effects';
 @Component({
   selector: 'app-adr-generate-certificate',
   templateUrl: './adr-generate-certificate.component.html',
-  styleUrls: ['./adr-generate-certificate.component.scss'],
 })
 export class AdrGenerateCertificateComponent implements OnInit, OnDestroy {
   systemNumber?: string;
@@ -78,7 +77,9 @@ export class AdrGenerateCertificateComponent implements OnInit, OnDestroy {
     }
     this.store.dispatch(generateADRCertificate(
       {
-        systemNumber: this.systemNumber ?? '', createdTimestamp: this.createdTimestamp ?? '', certificateType: this.form.value.certificateType,
+        systemNumber: this.systemNumber ?? '',
+        createdTimestamp: this.createdTimestamp ?? '',
+        certificateType: this.form.value.certificateType,
       },
     ));
   }

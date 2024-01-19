@@ -7,7 +7,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule } from '@api/test-results';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import {
+  StatusCodes, TechRecordModel, V3TechRecordModel,
+} from '@models/vehicle-tech-record.model';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -100,5 +102,30 @@ describe('VehicleTechnicalRecordComponent', () => {
   it('should create', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+  describe('showGenerateADRCertificateButton', () => {
+    it('should show generate ADR certificate button if ADR is enabled and other conditions are satisfied', () => {
+      component.isEditing = false;
+      component.isArchived = false;
+      component.isADREnabled = true;
+      jest.spyOn(component, 'isADRVehicleType').mockReturnValue(true);
+      expect(component.showGenerateADRCertificateButton()).toBeTruthy();
+    });
+
+    it('should not show generate ADR certificate button if ADR is disabled', () => {
+      component.isEditing = false;
+      component.isArchived = false;
+      component.isADREnabled = false;
+      jest.spyOn(component, 'isADRVehicleType').mockReturnValue(true);
+      expect(component.showGenerateADRCertificateButton()).toBeFalsy();
+    });
+
+    it('should not show generate ADR certificate button if not adr vehicle', () => {
+      component.isEditing = false;
+      component.isArchived = false;
+      component.isADREnabled = true;
+      jest.spyOn(component, 'isADRVehicleType').mockReturnValue(false);
+      expect(component.showGenerateADRCertificateButton()).toBeFalsy();
+    });
   });
 });
