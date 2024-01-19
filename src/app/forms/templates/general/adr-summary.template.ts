@@ -772,5 +772,18 @@ export const AdrSummaryTemplate: FormNode = {
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
     },
+    {
+      name: 'techRecord_adrDetails_adrCertificateNotes',
+      label: 'ADR Certificate Notes',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXTAREA,
+      viewType: FormNodeViewTypes.STRING,
+      groups: ['adrDetails', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 1500 },
+      ],
+    },
   ],
 };
