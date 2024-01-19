@@ -31,7 +31,6 @@ import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-s
   styleUrls: ['./vehicle-technical-record.component.scss'],
 })
 export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
-  [x: string]: any;
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
   @Input() techRecord?: V3TechRecordModel;
 
