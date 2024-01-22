@@ -185,7 +185,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
   validateADRDetails(): void {
     this.globalErrorService.clearErrors();
-    // todo- check type casting
     if (!(this.techRecord as TechRecordGETTRL | TechRecordGETHGV | TechRecordGETLGV)?.techRecord_adrDetails_dangerousGoods) {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.globalErrorService.addError(
