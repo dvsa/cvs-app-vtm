@@ -6,13 +6,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { TechRecordGETHGV, TechRecordGETLGV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { Roles } from '@models/roles.enum';
+import { TechRecordType as TechRecordVehicleType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import {
   ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
+import { AdrService } from '@services/adr/adr.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
@@ -59,6 +60,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     private actions$: Actions,
     private viewportScroller: ViewportScroller,
     private featureToggleService: FeatureToggleService,
+    public adrService: AdrService,
   ) {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
@@ -180,12 +182,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
   showGenerateADRCertificateButton(): boolean {
     const isNotArchivedAndEditing = !this.isArchived && !this.isEditing;
-    return this.isADREnabled && this.isADRVehicleType() && isNotArchivedAndEditing;
+    return this.isADREnabled && isNotArchivedAndEditing && this.isADRVehicleType();
   }
 
-  validateADRDetails(): void {
+  validateADRDetailsAndNavigate(): void {
     this.globalErrorService.clearErrors();
-    if (!(this.techRecord as TechRecordGETTRL | TechRecordGETHGV | TechRecordGETLGV)?.techRecord_adrDetails_dangerousGoods) {
+    if (!this.adrService.carriesDangerousGoods(this.techRecord as TechRecordVehicleType<'hgv' | 'lgv' | 'trl'>)) {
       this.viewportScroller.scrollToPosition([0, 0]);
       this.globalErrorService.addError(
         { error: 'This vehicle is not able to carry dangerous goods, add ADR details to the technical record to generate a certificate.' },
