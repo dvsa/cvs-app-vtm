@@ -24,6 +24,7 @@ import { TechRecordsRoutingModule } from './tech-record-routing.module';
 import { TechRecordComponent } from './tech-record.component';
 import { AmendVrmReasonComponent } from './components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component';
 import { TechRecordSummaryChangesComponent } from './components/tech-record-summary-changes/tech-record-summary-changes.component';
+import { AdrGenerateCertificateComponent } from './components/adr-generate-certificate/adr-generate-certificate.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { TechRecordSummaryChangesComponent } from './components/tech-record-summ
     TestRecordSummaryComponent,
     VehicleTechnicalRecordComponent,
     TechRecordSummaryChangesComponent,
+    AdrGenerateCertificateComponent,
   ],
   imports: [CommonModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, TechRecordsRoutingModule, SharedTechRecordsModule],
   exports: [EditTechRecordButtonComponent, TechRecordTitleComponent],
