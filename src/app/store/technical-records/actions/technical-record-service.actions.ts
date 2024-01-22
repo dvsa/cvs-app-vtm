@@ -100,6 +100,11 @@ export const clearADRDetailsBeforeUpdate = createAction(`${prefix} clearADRDetai
 
 export const updateADRAdditionalExaminerNotes = createAction(`${prefix} handleADRExaminerNoteChanges`, props<{ username: string }>());
 
+export const generateADRCertificate = createAction(`${prefix} generateADRCertificate`, props<{
+  systemNumber: string, createdTimestamp: string, certificateType: string }>());
+export const generateADRCertificateSuccess = createAction(`${prefix} generateADRCertificate Success`);
+export const generateADRCertificateFailure = createOutcomeAction('generateADRCertificate', false);
+
 function createOutcomeAction<T extends boolean>(
   title: string,
   isSuccess: T,
