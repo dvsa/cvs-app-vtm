@@ -173,28 +173,4 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
       : 'This vehicle does not have enough information to be tested.'
           + ' Call the Contact Centre to complete this record so tests can be recorded against it.';
   }
-
-  isADRVehicleType(): boolean {
-    return this.techRecord?.techRecord_vehicleType === 'hgv'
-    || this.techRecord?.techRecord_vehicleType === 'lgv'
-    || this.techRecord?.techRecord_vehicleType === 'trl';
-  }
-
-  showGenerateADRCertificateButton(): boolean {
-    const isNotArchivedAndEditing = !this.isArchived && !this.isEditing;
-    return this.isADREnabled && isNotArchivedAndEditing && this.isADRVehicleType();
-  }
-
-  validateADRDetailsAndNavigate(): void {
-    this.globalErrorService.clearErrors();
-    if (!this.adrService.carriesDangerousGoods(this.techRecord as TechRecordVehicleType<'hgv' | 'lgv' | 'trl'>)) {
-      this.viewportScroller.scrollToPosition([0, 0]);
-      this.globalErrorService.addError(
-        { error: 'This vehicle is not able to carry dangerous goods, add ADR details to the technical record to generate a certificate.' },
-      );
-      return;
-    }
-
-    void this.router.navigate(['adr-certificate'], { relativeTo: this.route });
-  }
 }

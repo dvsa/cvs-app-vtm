@@ -22,11 +22,19 @@
       </tr>
     </tbody>
   </table>
+  <div class="govuk-button-group" *ngIf="isADREnabled && !isEditing && !isArchived">
+    <a id="generate-adr-cert" class="govuk-button" (click)="validateADRDetailsAndNavigate()">Generate an ADR Certificate for this vehicle</a>
+  </div>
 </ng-container>
 
 <ng-template #noTable>
-  <h2 class="govuk-heading-m">ADR Certificates</h2>
-  <h3 class="govuk-heading-s" *ngIf="isEditing">You are unable to view certificates when editing a technical record.</h3>
-  <h3 class="govuk-heading-s" *ngIf="!isEditing && isArchived()">You are unable to view certificates for archived records.</h3>
-  <h3 class="govuk-heading-s" *ngIf="!isEditing && !isArchived() && getAdrCertificateHistory().length === 0">No ADR certificates found.</h3>
+  <h2 class="govuk-heading-m" *ngIf="isADREnabled">ADR Certificates</h2>
+  <h3 class="govuk-heading-s" *ngIf="isADREnabled && isEditing">You are unable to view certificates when editing a technical record.</h3>
+  <h3 class="govuk-heading-s" *ngIf="isADREnabled && !isEditing && isArchived">You are unable to view certificates for archived records.</h3>
+  <h3 class="govuk-heading-s" *ngIf="isADREnabled && !isEditing && !isArchived && getAdrCertificateHistory().length === 0">
+    No ADR certificates found.
+  </h3>
+  <div class="govuk-button-group" *ngIf="isADREnabled && !isEditing && !isArchived">
+    <a id="generate-adr-cert" class="govuk-button" (click)="validateADRDetailsAndNavigate()">Generate an ADR Certificate for this vehicle</a>
+  </div>
 </ng-template>

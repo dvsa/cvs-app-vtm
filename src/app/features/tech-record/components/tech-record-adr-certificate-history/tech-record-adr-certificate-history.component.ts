@@ -1,10 +1,17 @@
 import { Component, Input } from '@angular/core';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import {
+  TechRecordType,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import {
   map, Observable, Subject, takeUntil,
 } from 'rxjs';
 import { RouterService } from '@services/router/router.service';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { AdrService } from '@services/adr/adr.service';
+import { ViewportScroller } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tech-record-adr-certificate-history',
@@ -14,16 +21,24 @@ import { RouterService } from '@services/router/router.service';
 export class TechRecordAdrCertificateHistoryComponent {
   @Input() currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'>;
   isEditing = false;
+  isADREnabled = false;
   private destroy$ = new Subject<void>();
 
   constructor(
     private routerService: RouterService,
+    private featureToggleService: FeatureToggleService,
+    private globalErrorService: GlobalErrorService,
+    private adrService: AdrService,
+    private viewportScroller: ViewportScroller,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
       this.isEditing = editing;
     });
+    this.isADREnabled = this.featureToggleService.isFeatureEnabled('adrToggle');
   }
 
   get isEditing$(): Observable<boolean> {
@@ -41,11 +56,26 @@ export class TechRecordAdrCertificateHistoryComponent {
     return new Map([['fileName', this.getFileName(certificate)]]);
   }
 
-  isArchived(): boolean {
+  get isArchived(): boolean {
     return this.currentTechRecord?.techRecord_statusCode === 'archived';
   }
 
   showTable(): boolean {
-    return !this.isEditing && this.getAdrCertificateHistory().length > 0 && !this.isArchived();
+    return this.isADREnabled && !this.isEditing && this.getAdrCertificateHistory().length > 0 && !this.isArchived;
+  }
+
+  validateADRDetailsAndNavigate(): void {
+    this.globalErrorService.clearErrors();
+    if (this.currentTechRecord) {
+      if (!this.adrService.carriesDangerousGoods(this.currentTechRecord)) {
+        this.viewportScroller.scrollToPosition([0, 0]);
+        this.globalErrorService.addError(
+          { error: 'This vehicle is not able to carry dangerous goods, add ADR details to the technical record to generate a certificate.' },
+        );
+        return;
+      }
+    }
+
+    void this.router.navigate(['adr-certificate'], { relativeTo: this.route });
   }
 }
