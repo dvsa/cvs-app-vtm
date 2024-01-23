@@ -497,7 +497,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
       if (!listStatementApplicable) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
       }
-      // If the ADR body type not includes 'battery', null all fields related battery list applicable even if the listStatementApplicable is true
+      // If the ADR body type not includes 'battery', null all fields related battery list applicable
       const { techRecord_adrDetails_vehicleDetails_type: vehicleDetailsType } = sanitisedEditingTechRecord;
       if (!vehicleDetailsType?.includes('battery')) {
         sanitisedEditingTechRecord = {
