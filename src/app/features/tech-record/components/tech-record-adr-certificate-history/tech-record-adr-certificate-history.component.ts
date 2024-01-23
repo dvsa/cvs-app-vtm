@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
-import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import {
+  map, Observable, Subject, takeUntil,
+} from 'rxjs';
 import { RouterService } from '@services/router/router.service';
 
 @Component({
