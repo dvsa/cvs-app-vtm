@@ -282,8 +282,6 @@ describe('Required validators', () => {
     });
   });
 
-
-
   describe('Must Equal Sibling', () => {
     it('should return null if content of sibling matches a value', () => {
       const value = 'some value';
