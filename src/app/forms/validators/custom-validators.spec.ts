@@ -282,29 +282,7 @@ describe('Required validators', () => {
     });
   });
 
-  describe('Set sibling error if not equal', () => {
-    it('should set the sibling as touched if the value does not match', () => {
-      form.controls['foo'].patchValue('some value');
-      form.controls['sibling'].patchValue(null);
-      const result = CustomValidators.setSiblingAsTouchedIfNotEqual('sibling', '')(form.controls['foo']);
-      expect(form.controls['sibling'].touched).toBe(true);
-      expect(result).toBeNull();
-    });
 
-    it('should not set the sibling as touched if the value does not match', () => {
-      form.controls['foo'].patchValue('some value');
-      form.controls['sibling'].patchValue(null);
-      const result = CustomValidators.setSiblingAsTouchedIfNotEqual('sibling', 'some value')(form.controls['foo']);
-      expect(form.controls['sibling'].touched).toBe(false);
-      expect(result).toBeNull();
-    });
-
-    it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {
-      form.controls['foo'].patchValue('some foo value');
-      const result = CustomValidators.requiredIfEquals('sibling', ['some othervalue'])(form.controls['foo']);
-      expect(result).toBeNull();
-    });
-  });
 
   describe('Must Equal Sibling', () => {
     it('should return null if content of sibling matches a value', () => {

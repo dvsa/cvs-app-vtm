@@ -107,7 +107,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyM1IvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup1,
       seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
@@ -151,7 +151,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSection,
     },
     testTypesSpecialistGroup5: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyM1IvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup5,
       seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
@@ -278,7 +278,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyM1IvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup1,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -288,7 +288,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSectionHgvTrl,
     },
     testTypesSpecialistGroup5: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyM1IvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup5,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -503,7 +503,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesSpecialistGroup1: {
       required: CreateRequiredSectionLgvCar,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyM1IvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup1,
       customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
@@ -521,7 +521,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesSpecialistGroup5: {
       required: CreateRequiredSectionLgvCar,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyM1IvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup5,
       customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,
@@ -569,7 +569,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesSpecialistGroup5: {
       required: CreateRequiredSectionLgvCar,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyM1IvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup5,
       customDefects: CustomDefectsSection,
       visit: ContingencyVisitSection,

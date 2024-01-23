@@ -60,8 +60,6 @@ export class DynamicFormService {
       CustomValidators.requiredIfAllEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: unknown[] }) =>
       CustomValidators.requiredIfNotEquals(args.sibling, args.value),
-    [ValidatorNames.SetSiblingAsTouchedIfNotEqual]: (args: { sibling: string; value: unknown[] }) =>
-      CustomValidators.setSiblingAsTouchedIfNotEqual(args.sibling, args.value),
     [ValidatorNames.ValidateVRMTrailerIdLength]: (args: { sibling: string }) => CustomValidators.validateVRMTrailerIdLength(args.sibling),
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
     [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued,

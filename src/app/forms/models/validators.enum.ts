@@ -46,5 +46,4 @@ export enum ValidatorNames {
   Tc3TestValidator = 'tc3TestValidator',
   DateIsInvalid = 'dateIsInvalid',
   TankDetailsUnNumberValidator = 'tankDetailsUnNumberValidator',
-  SetSiblingAsTouchedIfNotEqual = 'setSiblingTouchedIfNotEqual',
 }
