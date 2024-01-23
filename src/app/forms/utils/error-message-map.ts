@@ -32,6 +32,7 @@ export const ErrorMessageMap: Record<string, Function> = {
   [ValidatorNames.Pattern]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} must match a pattern`,
   [ValidatorNames.Required]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [ValidatorNames.RequiredIfEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
+  [ValidatorNames.RequiredIfNotEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
   [ValidatorNames.requiredIfAllEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
   [ValidatorNames.RequiredIfNotHidden]: (label?: string) => `${label || DEFAULT_LABEL}  is required`,
   [ValidatorNames.ValidateDefectNotes]: () => 'Notes is required',

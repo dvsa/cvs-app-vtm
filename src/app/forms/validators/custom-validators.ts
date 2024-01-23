@@ -153,7 +153,7 @@ export class CustomValidators {
         : null;
     };
 
-  static requiredIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
+  static requiredIfNotEquals = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
@@ -161,7 +161,7 @@ export class CustomValidators {
         const newValue = Array.isArray(value) ? value.includes(siblingValue) : siblingValue === value;
 
         if (!newValue && (control.value === null || control.value === undefined || control.value === '')) {
-          return { requiredIfNotEqual: { sibling: siblingControl.meta.label } };
+          return { requiredIfNotEquals: { sibling: siblingControl.meta.label } };
         }
       }
 
