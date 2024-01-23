@@ -17,9 +17,9 @@
         <td class="govuk-table__cell">{{certificate.createdByName}}</td>
         <td class="govuk-table__cell">{{certificate.certificateType}}</td>
         <td class="govuk-table__cell">
-          <ng-container [params]="documentParams(certificate)" [fileName]="getFileName(certificate)" appRetrieveDocument class="link">
+          <button [params]="documentParams(certificate)" [fileName]="getFileName(certificate)" appRetrieveDocument class="link">
             View
-          </ng-container>
+          </button>
         </td>
       </tr>
     </tbody>
