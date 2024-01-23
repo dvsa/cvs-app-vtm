@@ -12,18 +12,23 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let certificates of getAdrCertificateHistory()">
-        <td class="govuk-table__cell">{{certificates.generatedTimestamp}}</td>
-        <td class="govuk-table__cell">{{certificates.createdByName}}</td>
-        <td class="govuk-table__cell">{{certificates.certificateType}}</td>
-        <td class="govuk-table__cell">Link</td>
+      <tr *ngFor="let certificate of getAdrCertificateHistory()">
+        <td class="govuk-table__cell">{{certificate.generatedTimestamp}}</td>
+        <td class="govuk-table__cell">{{certificate.createdByName}}</td>
+        <td class="govuk-table__cell">{{certificate.certificateType}}</td>
+        <td class="govuk-table__cell">
+          <ng-container [params]="documentParams(certificate)" [fileName]="getFileName(certificate)" appRetrieveDocument class="link">
+            View
+          </ng-container>
+        </td>
       </tr>
     </tbody>
   </table>
 </ng-container>
 
 <ng-template #noTable>
-  <h2 class="govuk-heading-m" *ngIf="isAdrVehicleType()">ADR Certificate History</h2>
-  <h3 class="govuk-heading-s" *ngIf="isAdrVehicleType() && isArchived()">You are unable to view certificates for archived records.</h3>
-  <h3 class="govuk-heading-s" *ngIf="isAdrVehicleType() && !isArchived() && getAdrCertificateHistory().length === 0">No ADR certificates found.</h3>
+  <h2 class="govuk-heading-m">ADR Certificate History</h2>
+  <h3 class="govuk-heading-s" *ngIf="isEditing">You are unable to view certificates when editing a technical record.</h3>
+  <h3 class="govuk-heading-s" *ngIf="!isEditing && isArchived()">You are unable to view certificates for archived records.</h3>
+  <h3 class="govuk-heading-s" *ngIf="!isEditing && !isArchived() && getAdrCertificateHistory().length === 0">No ADR certificates found.</h3>
 </ng-template>

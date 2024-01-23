@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
+import { RouterService } from '@services/router/router.service';
 
 @Component({
   selector: 'app-tech-record-adr-certificate-history',
@@ -9,17 +11,33 @@ import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
   styleUrls: ['./tech-record-adr-certificate-history.scss'],
 })
 export class TechRecordAdrCertificateHistoryComponent {
-  @Input() currentTechRecord?: V3TechRecordModel;
+  @Input() currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'>;
+  isEditing = false;
+  private destroy$ = new Subject<void>();
 
-  getAdrCertificateHistory(): ADRCertificateDetails[] {
-    const adrTechRecordType = this.currentTechRecord as TechRecordType<'hgv' | 'lgv' | 'trl'>;
-    return adrTechRecordType.techRecord_adrPassCertificateDetails || [];
+  constructor(
+    private routerService: RouterService,
+  ) { }
+
+  ngOnInit() {
+    this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
+      this.isEditing = editing;
+    });
   }
 
-  isAdrVehicleType() {
-    return this.currentTechRecord?.techRecord_vehicleType === 'hgv'
-      || this.currentTechRecord?.techRecord_vehicleType === 'lgv'
-      || this.currentTechRecord?.techRecord_vehicleType === 'trl';
+  get isEditing$(): Observable<boolean> {
+    return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
+  }
+
+  getAdrCertificateHistory(): ADRCertificateDetails[] {
+    return this.currentTechRecord?.techRecord_adrPassCertificateDetails || [];
+  }
+
+  getFileName(certificate: ADRCertificateDetails) {
+    return certificate.certificateId;
+  }
+  documentParams(certificate: ADRCertificateDetails): Map<string, string> {
+    return new Map([['fileName', this.getFileName(certificate)]]);
   }
 
   isArchived(): boolean {
@@ -27,6 +45,6 @@ export class TechRecordAdrCertificateHistoryComponent {
   }
 
   showTable(): boolean {
-    return this.isAdrVehicleType() && this.getAdrCertificateHistory().length > 0 && !this.isArchived();
+    return !this.isEditing && this.getAdrCertificateHistory().length > 0 && !this.isArchived();
   }
 }
