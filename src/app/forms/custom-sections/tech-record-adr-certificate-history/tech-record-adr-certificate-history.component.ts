@@ -1,5 +1,5 @@
 import {
-  ChangeDetectorRef, Component, inject, Injector, Input,
+  Component, inject, Injector, Input,
 } from '@angular/core';
 import {
   TechRecordType,
@@ -15,7 +15,6 @@ import { AdrService } from '@services/adr/adr.service';
 import { ViewportScroller } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
-import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
 
 @Component({
@@ -52,7 +51,7 @@ export class TechRecordAdrCertificateHistoryComponent extends CustomFormControlC
   }
 
   getAdrCertificateHistory(): ADRCertificateDetails[] {
-    return this.currentTechRecord?.techRecord_adrPassCertificateDetails || [];
+    return this.currentTechRecord?.techRecord_adrPassCertificateDetails?.reverse() || [];
   }
 
   getFileName(certificate: ADRCertificateDetails) {
