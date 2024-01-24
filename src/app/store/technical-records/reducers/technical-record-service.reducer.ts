@@ -497,10 +497,12 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
       if (!listStatementApplicable) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
       }
-      // If the ADR body type not includes 'battery', null the battery list number even if the listStatementApplicable is true
+      // If the ADR body type not includes 'battery', null all fields related battery list applicable
       const { techRecord_adrDetails_vehicleDetails_type: vehicleDetailsType } = sanitisedEditingTechRecord;
       if (!vehicleDetailsType?.includes('battery')) {
-        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
+        sanitisedEditingTechRecord = {
+          ...sanitisedEditingTechRecord, ...nulledBatteryListNumber, techRecord_adrDetails_listStatementApplicable: null,
+        };
       }
       // If manufacturer brake declaration is no, null dependent sections
       const { techRecord_adrDetails_brakeDeclarationsSeen: brakeDeclarationSeen } = sanitisedEditingTechRecord;
