@@ -1,5 +1,5 @@
 import {
-  Component, inject, Injector, Input,
+  Component, inject, Input,
 } from '@angular/core';
 import {
   TechRecordType,
@@ -34,6 +34,8 @@ export class TechRecordAdrCertificateHistoryComponent extends CustomFormControlC
   viewportScroller = inject(ViewportScroller);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  pageStart?: number;
+  pageEnd?: number;
 
   ngOnInit() {
     this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
@@ -50,8 +52,12 @@ export class TechRecordAdrCertificateHistoryComponent extends CustomFormControlC
     return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
   }
 
+  getAdrCertificateHistorySlice(): ADRCertificateDetails[] {
+    return this.currentTechRecord?.techRecord_adrPassCertificateDetails?.reverse().slice(this.pageStart, this.pageEnd) || [];
+  }
+
   getAdrCertificateHistory(): ADRCertificateDetails[] {
-    return this.currentTechRecord?.techRecord_adrPassCertificateDetails?.reverse() || [];
+    return this.currentTechRecord?.techRecord_adrPassCertificateDetails || [];
   }
 
   getFileName(certificate: ADRCertificateDetails) {
@@ -82,5 +88,11 @@ export class TechRecordAdrCertificateHistoryComponent extends CustomFormControlC
     }
 
     void this.router.navigate(['adr-certificate'], { relativeTo: this.route });
+  }
+
+  handlePaginationChange({ start, end }: { start: number; end: number }) {
+    this.pageStart = start;
+    this.pageEnd = end;
+    this.cdr.detectChanges();
   }
 }

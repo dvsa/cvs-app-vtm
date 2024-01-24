@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let certificate of getAdrCertificateHistory()">
+      <tr *ngFor="let certificate of getAdrCertificateHistorySlice()">
         <td class="govuk-table__cell">{{certificate.generatedTimestamp | date : 'dd/MM/yyyy HH:mm' }}</td>
         <td class="govuk-table__cell">{{certificate.createdByName}}</td>
         <td class="govuk-table__cell">{{certificate.certificateType}}</td>
@@ -20,6 +20,11 @@
           <button [params]="documentParams(certificate)" [fileName]="getFileName(certificate)" appRetrieveDocument class="link">View</button>
         </td>
       </tr>
+      <app-pagination
+        tableName="plate-history"
+        [numberOfItems]="getAdrCertificateHistory().length"
+        (paginationOptions)="handlePaginationChange($event)"
+      ></app-pagination>
     </tbody>
   </table>
   <div class="govuk-button-group" *ngIf="isADREnabled && !isEditing && !isArchived">
