@@ -127,6 +127,17 @@
           <app-adr [techRecord]="techRecordCalculated" [isEditing]="(isEditing$ | async) ?? false"></app-adr>
         </ng-container>
       </ng-container>
+      <ng-container *ngSwitchCase="'adrCertificateSection'">
+        <ng-container
+          *ngIf="
+            techRecordCalculated.techRecord_vehicleType === 'hgv' ||
+            techRecordCalculated.techRecord_vehicleType === 'trl' ||
+            techRecordCalculated.techRecord_vehicleType === 'lgv'
+          "
+        >
+          <app-tech-record-adr-certificate-history [currentTechRecord]="techRecordCalculated"></app-tech-record-adr-certificate-history>
+        </ng-container>
+      </ng-container>
 
       <app-dynamic-form-group
         *ngSwitchDefault

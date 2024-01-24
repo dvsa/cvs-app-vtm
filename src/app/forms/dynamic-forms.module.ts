@@ -10,6 +10,9 @@ import {
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
+import {
+  TechRecordAdrCertificateHistoryComponent,
+} from '@forms/custom-sections/tech-record-adr-certificate-history/tech-record-adr-certificate-history.component';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
@@ -129,6 +132,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     AdrTankDetailsSubsequentInspectionsViewComponent,
     AdrTankDetailsInitialInspectionViewComponent,
     AdrTankStatementUnNumberViewComponent,
+    TechRecordAdrCertificateHistoryComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -174,6 +178,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     ApprovalTypeFocusNextDirective,
     ModifiedWeightsComponent,
     AdrComponent,
+    TechRecordAdrCertificateHistoryComponent,
   ],
 })
 export class DynamicFormsModule { }

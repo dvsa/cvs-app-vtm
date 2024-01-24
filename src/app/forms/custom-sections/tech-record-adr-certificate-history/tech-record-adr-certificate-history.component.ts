@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, inject, Injector, Input,
+} from '@angular/core';
 import {
   TechRecordType,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
@@ -13,27 +15,26 @@ import { AdrService } from '@services/adr/adr.service';
 import { ViewportScroller } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
+import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
+import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
 
 @Component({
   selector: 'app-tech-record-adr-certificate-history',
   templateUrl: './tech-record-adr-certificate-history.html',
   styleUrls: ['./tech-record-adr-certificate-history.scss'],
 })
-export class TechRecordAdrCertificateHistoryComponent {
+export class TechRecordAdrCertificateHistoryComponent extends CustomFormControlComponent {
   @Input() currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'>;
   isEditing = false;
   isADREnabled = false;
   private destroy$ = new Subject<void>();
-
-  constructor(
-    private routerService: RouterService,
-    private featureToggleService: FeatureToggleService,
-    private globalErrorService: GlobalErrorService,
-    private adrService: AdrService,
-    private viewportScroller: ViewportScroller,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) { }
+  routerService = inject(RouterService);
+  featureToggleService = inject(FeatureToggleService);
+  globalErrorService = inject(GlobalErrorService);
+  adrService = inject(AdrService);
+  viewportScroller = inject(ViewportScroller);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
 
   ngOnInit() {
     this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
