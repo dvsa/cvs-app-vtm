@@ -12,6 +12,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { AdrService } from '@services/adr/adr.service';
 import { ViewportScroller } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Roles } from '@models/roles.enum';
 
 @Component({
   selector: 'app-tech-record-adr-certificate-history',
@@ -39,6 +40,10 @@ export class TechRecordAdrCertificateHistoryComponent {
       this.isEditing = editing;
     });
     this.isADREnabled = this.featureToggleService.isFeatureEnabled('adrToggle');
+  }
+
+  get roles(): typeof Roles {
+    return Roles;
   }
 
   get isEditing$(): Observable<boolean> {

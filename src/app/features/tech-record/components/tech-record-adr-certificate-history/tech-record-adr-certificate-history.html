@@ -35,6 +35,12 @@
     No ADR certificates found.
   </h3>
   <div class="govuk-button-group" *ngIf="isADREnabled && !isEditing && !isArchived">
-    <a id="generate-adr-cert" class="govuk-button" (click)="validateADRDetailsAndNavigate()">Generate an ADR Certificate for this vehicle</a>
+    <a
+      id="generate-adr-cert"
+      *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]"
+      class="govuk-button"
+      (click)="validateADRDetailsAndNavigate()"
+      >Generate an ADR Certificate for this vehicle</a
+    >
   </div>
 </ng-template>
