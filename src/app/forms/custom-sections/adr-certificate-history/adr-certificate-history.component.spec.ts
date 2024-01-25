@@ -5,11 +5,20 @@ import { initialAppState } from '@store/index';
 import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { AdrService } from '@services/adr/adr.service';
+import { Router } from '@angular/router';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
 import { AdrCertificateHistoryComponent } from './adr-certificate-history.component';
 
 describe('TechRecordAdrCertificateHistoryComponent', () => {
   let component: AdrCertificateHistoryComponent;
   let fixture: ComponentFixture<AdrCertificateHistoryComponent>;
+  let globalErrorService: GlobalErrorService;
+  let adrService: AdrService;
+  let router: Router;
+  let viewportScroller: ViewportScroller;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AdrCertificateHistoryComponent],
@@ -17,6 +26,7 @@ describe('TechRecordAdrCertificateHistoryComponent', () => {
         provideMockStore({ initialState: initialAppState }),
       ],
       imports: [RouterTestingModule, HttpClientTestingModule],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
   beforeEach(() => {
@@ -24,6 +34,10 @@ describe('TechRecordAdrCertificateHistoryComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.currentTechRecord = createMockHgv(0);
+    globalErrorService = TestBed.inject(GlobalErrorService);
+    adrService = TestBed.inject(AdrService);
+    router = TestBed.inject(Router);
+    viewportScroller = TestBed.inject(ViewportScroller);
   });
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -51,6 +65,37 @@ describe('TechRecordAdrCertificateHistoryComponent', () => {
         } as unknown as ADRCertificateDetails,
       ];
       expect(component.showTable()).toBe(true);
+    });
+  });
+
+  describe('validateADRDetailsAndNavigate', () => {
+    it('should navigate when carriesDangerousGoodsSpy returns true', () => {
+      fixture.ngZone?.run(() => {
+        component.currentTechRecord = createMockHgv(0);
+        component.currentTechRecord.techRecord_adrDetails_dangerousGoods = true;
+        const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
+        const carriesDangerousGoodsSpy = jest.spyOn(adrService, 'carriesDangerousGoods');
+        const routerSpy = jest.spyOn(router, 'navigate');
+        component.validateADRDetailsAndNavigate();
+        expect(clearErrorsSpy).toHaveBeenCalled();
+        expect(carriesDangerousGoodsSpy).toHaveBeenCalled();
+        expect(routerSpy).toHaveBeenCalled();
+      });
+    });
+    it('should not navigate when carriesDangerousGoods returns false', () => {
+      component.currentTechRecord = createMockHgv(0);
+      component.currentTechRecord.techRecord_adrDetails_dangerousGoods = false;
+      const clearErrorsSpy = jest.spyOn(globalErrorService, 'clearErrors');
+      const addErrorSpy = jest.spyOn(globalErrorService, 'addError');
+      const carriesDangerousGoodsSpy = jest.spyOn(adrService, 'carriesDangerousGoods');
+      const routerSpy = jest.spyOn(router, 'navigate');
+      const viewportScrollerSpy = jest.spyOn(viewportScroller, 'scrollToPosition').mockImplementation(() => {});
+      component.validateADRDetailsAndNavigate();
+      expect(clearErrorsSpy).toHaveBeenCalled();
+      expect(carriesDangerousGoodsSpy).toHaveBeenCalled();
+      expect(viewportScrollerSpy).toHaveBeenCalled();
+      expect(addErrorSpy).toHaveBeenCalled();
+      expect(routerSpy).not.toHaveBeenCalled();
     });
   });
 });
