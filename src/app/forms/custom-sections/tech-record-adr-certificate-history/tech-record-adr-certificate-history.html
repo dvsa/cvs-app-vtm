@@ -1,7 +1,7 @@
 <ng-container *ngIf="showTable(); else noTable">
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
-      ADR Certificates
+      ADR Certificates History
     </caption>
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
@@ -13,10 +13,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let certificate of adrCertificateHistory trackBy: trackByFn; let i = index">
-        <td class="govuk-table__cell">{{certificate.generatedTimestamp | date : 'dd/MM/yyyy HH:mm' }}</td>
-        <td class="govuk-table__cell">{{certificate.createdByName}}</td>
-        <td class="govuk-table__cell">{{certificate.certificateType}}</td>
-        <td class="govuk-table__cell">
+        <td class="govuk-table__cell" [id]="'adr-generated-timestamp-' + i">{{certificate.generatedTimestamp | date : 'dd/MM/yyyy HH:mm' }}</td>
+        <td class="govuk-table__cell" [id]="'adr-created-by-name-' + i">{{certificate.createdByName}}</td>
+        <td class="govuk-table__cell" [id]="'adr-certificate-type-' + i">{{certificate.certificateType}}</td>
+        <td class="govuk-table__cell" [id]="'adr-view-certificate-link-' + i">
           <button [params]="documentParams(certificate)" [fileName]="getFileName(certificate)" appRetrieveDocument class="link">View</button>
         </td>
       </tr>
@@ -27,23 +27,22 @@
     [numberOfItems]="numberOfADRCertificates"
     (paginationOptions)="handlePaginationChange($event)"
   ></app-pagination>
-  <div class="govuk-button-group" *ngIf="isADREnabled && !isEditing && !isArchived">
-    <a id="generate-adr-cert" class="govuk-button" (click)="validateADRDetailsAndNavigate()">Generate an ADR Certificate for this vehicle</a>
-  </div>
 </ng-container>
 
 <ng-template #noTable>
-  <h2 class="govuk-heading-m" *ngIf="isADREnabled">ADR Certificates</h2>
-  <h3 class="govuk-heading-s" *ngIf="isADREnabled && isEditing">You are unable to view certificates when editing a technical record.</h3>
-  <h3 class="govuk-heading-s" *ngIf="isADREnabled && !isEditing && isArchived">You are unable to view certificates for archived records.</h3>
-  <h3 class="govuk-heading-s" *ngIf="isADREnabled && !isEditing && !isArchived && numberOfADRCertificates === 0">No ADR certificates found.</h3>
-  <div class="govuk-button-group" *ngIf="isADREnabled && !isEditing && !isArchived">
-    <a
-      id="generate-adr-cert"
-      *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]"
-      class="govuk-button"
-      (click)="validateADRDetailsAndNavigate()"
-      >Generate an ADR Certificate for this vehicle</a
-    >
-  </div>
+  <dl class="govuk-summary-list">
+    <div>
+      <dt class="govuk-summary-list__key">{{ reasonForNoRecords }}</dt>
+    </div>
+  </dl>
 </ng-template>
+
+<div class="govuk-button-group" *ngIf="isADREnabled && !isEditing && !isArchived">
+  <a
+    id="generate-adr-cert"
+    *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]"
+    class="govuk-button"
+    (click)="validateADRDetailsAndNavigate()"
+    >Generate an ADR Certificate for this vehicle</a
+  >
+</div>

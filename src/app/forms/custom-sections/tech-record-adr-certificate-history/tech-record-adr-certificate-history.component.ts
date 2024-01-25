@@ -85,6 +85,16 @@ export class TechRecordAdrCertificateHistoryComponent extends CustomFormControlC
     return this.isADREnabled && !this.isEditing && this.numberOfADRCertificates > 0 && !this.isArchived;
   }
 
+  get reasonForNoRecords(): string {
+    if (this.isEditing) {
+      return 'This section is not available when amending or creating a technical record.';
+    }
+    if (this.numberOfADRCertificates === 0) {
+      return 'No ADR certificates found.';
+    }
+    return '';
+  }
+
   validateADRDetailsAndNavigate(): void {
     this.globalErrorService.clearErrors();
     if (this.currentTechRecord) {
