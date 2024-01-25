@@ -44,11 +44,11 @@ describe('TechnicalRecordServiceEffects', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
-        TechnicalRecordService,
         TechnicalRecordServiceEffects,
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
         { provide: UserService, useValue: { name$: of('name'), id$: of('iod') } },
+        { provide: TechnicalRecordService, useValue: { updateEditingTechRecord: jest.fn() } },
       ],
     });
 

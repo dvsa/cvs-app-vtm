@@ -1,6 +1,10 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AxleTyreProperties } from '@api/vehicle';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
+import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
   TechRecordGETHGV,
@@ -8,13 +12,17 @@ import {
   TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { SEARCH_TYPES } from '@models/search-types-enum';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/index';
-import { updateEditingTechRecord } from '@store/technical-records';
 import { ReferenceDataResourceType, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
-import { AxleTyreProperties } from '@api/vehicle';
+import { SEARCH_TYPES } from '@models/search-types-enum';
+import { StatusCodes, V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
+import { State, initialAppState } from '@store/index';
+import { updateEditingTechRecord } from '@store/technical-records';
+import {
+  EmptyError,
+  firstValueFrom, from, of,
+} from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { TechnicalRecordService } from './technical-record.service';
 import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
@@ -23,15 +31,20 @@ describe('TechnicalRecordService', () => {
   let service: TechnicalRecordService;
   let httpClient: HttpTestingController;
   let store: MockStore<State>;
+  let techRecordHttpService: TechnicalRecordHttpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })],
+      providers: [
+        TechnicalRecordService,
+        provideMockStore({ initialState: initialAppState }),
+      ],
     });
     httpClient = TestBed.inject(HttpTestingController);
     service = TestBed.inject(TechnicalRecordService);
     store = TestBed.inject(MockStore);
+    techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
   });
 
   afterEach(() => {
@@ -453,6 +466,313 @@ describe('TechnicalRecordService', () => {
       const fitmentCodeType = FitmentCodeEnum.Double;
       const result = service.getAxleFittingWeightValueFromLoadIndex(loadIndex, fitmentCodeType, loadIndexArray);
       expect(result).toBe(3300);
+    });
+  });
+
+  describe('getVehicleTypeWithSmallTrl', () => {
+    it('should return small trl when the vehicle is a TRL and has an EU vehicle category of o1 or o2', () => {
+      const smallTrl1 = {
+        techRecord_vehicleType: VehicleTypes.TRL,
+        techRecord_euVehicleCategory: EUVehicleCategory.O1,
+      } as unknown as V3TechRecordModel;
+
+      const smallTrl2 = {
+        techRecord_vehicleType: VehicleTypes.TRL,
+        techRecord_euVehicleCategory: EUVehicleCategory.O2,
+      } as unknown as V3TechRecordModel;
+
+      expect(service.getVehicleTypeWithSmallTrl(smallTrl1)).toEqual(VehicleTypes.SMALL_TRL);
+      expect(service.getVehicleTypeWithSmallTrl(smallTrl2)).toEqual(VehicleTypes.SMALL_TRL);
+    });
+
+    it('should return the regular vehicle type when the vehicle is not a TRL', () => {
+      const hgv = {
+        techRecord_vehicleType: VehicleTypes.HGV,
+      } as unknown as V3TechRecordModel;
+
+      expect(service.getVehicleTypeWithSmallTrl(hgv)).toEqual(VehicleTypes.HGV);
+    });
+
+    it('should return TRL when the vehicle is a TRL and has an EU vehicle category which is neither o1 or o2', () => {
+      const trl = {
+        techRecord_vehicleType: VehicleTypes.TRL,
+        techRecord_euVehicleCategory: EUVehicleCategory.O3,
+      } as unknown as V3TechRecordModel;
+
+      expect(service.getVehicleTypeWithSmallTrl(trl)).toEqual(VehicleTypes.TRL);
+    });
+  });
+
+  describe('generateEditingVehicleTechnicalRecordFromVehicleType', () => {
+    it('should dispatch the createVehicle action with the provided vehicle type', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      service.generateEditingVehicleTechnicalRecordFromVehicleType(VehicleTypes.CAR);
+      expect(dispatchSpy).toHaveBeenCalledWith({
+        techRecord_vehicleType: 'car',
+        type: '[Technical Record Service] createVehicle',
+      });
+    });
+  });
+
+  describe('validateVinForUpdate', () => {
+    it('should return an async validator which displays an appropriate error message when no new VIN is provided', async () => {
+      const vin = 'vin';
+      const control = new FormControl('vin');
+      const isUniqueSpy = jest.spyOn(service, 'isUnique')
+        .mockReturnValue(of(false));
+
+      const validator = service.validateVinForUpdate(vin);
+      await expect(firstValueFrom(from(validator(control))))
+        .resolves.toEqual({
+          validateVin: {
+            message: 'You must provide a new VIN',
+          },
+        });
+
+      expect(isUniqueSpy).toHaveBeenCalledWith(control.value, SEARCH_TYPES.VIN);
+    });
+
+    it('should return an async validator which returns null when the VIN provided is unique', async () => {
+      const vin = 'vin';
+      const control = new FormControl('new vin');
+      const isUniqueSpy = jest.spyOn(service, 'isUnique')
+        .mockReturnValue(of(true));
+
+      const validator = service.validateVinForUpdate(vin);
+      await expect(firstValueFrom(from(validator(control)))).resolves.toBeNull();
+      expect(isUniqueSpy).toHaveBeenCalledWith(control.value, SEARCH_TYPES.VIN);
+    });
+
+    it('should return an async validator which returns an error message when the VIN is different, but is in use', async () => {
+      const vin = 'vin';
+      const control = new FormControl('new vin');
+      const isUniqueSpy = jest.spyOn(service, 'isUnique')
+        .mockReturnValue(of(false));
+
+      const validator = service.validateVinForUpdate(vin);
+      await expect(firstValueFrom(from(validator(control))))
+        .resolves.toEqual({
+          validateVin: { message: 'This VIN already exists, if you continue it will be associated with two vehicles' },
+        });
+
+      expect(isUniqueSpy).toHaveBeenCalledWith(control.value, SEARCH_TYPES.VIN);
+    });
+  });
+
+  describe('validateVrmDoesNotExist', () => {
+    beforeEach(() => {
+      jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(of([]));
+    });
+
+    it('should emit empty if the control has a falsy value', async () => {
+      const previousVrm = 'previous vrm';
+      const control = new FormControl(null);
+      const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
+
+      const validator = service.validateVrmDoesNotExist(previousVrm);
+      await expect(firstValueFrom(from(validator(control))))
+        .rejects.toEqual(new EmptyError());
+
+      expect(checkVrmNotActiveSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it('should return the result of checkVrm not active when the value of the provide control is truthy', async () => {
+      const previousVrm = 'previous vrm';
+      const control = new FormControl('truthy value');
+      const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
+
+      const validator = service.validateVrmDoesNotExist(previousVrm);
+      await expect(firstValueFrom(from(validator(control))))
+        .resolves.toBeDefined();
+
+      expect(checkVrmNotActiveSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('validateVrmForCherishedTransfer', () => {
+    beforeEach(() => {
+      jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(of([]));
+    });
+
+    it('should return empty is the value of the control is falsy', async () => {
+      const control = new FormControl(null);
+      const searchSpy = jest.spyOn(techRecordHttpService, 'search$');
+      const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
+
+      const validator = service.validateVrmForCherishedTransfer();
+      await expect(firstValueFrom(from(validator(control))))
+        .rejects.toEqual(new EmptyError());
+
+      expect(searchSpy).toHaveBeenCalledTimes(0);
+      expect(checkVrmNotActiveSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it('should return the result of checkVrmNotActive when the control root has no third mark', async () => {
+      const form = new FormGroup({
+        thirdMark: new FormControl(null),
+        previousVrm: new FormControl('previous vrm'),
+        control: new FormControl('current vrm'),
+      });
+
+      const searchSpy = jest.spyOn(techRecordHttpService, 'search$');
+      const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
+
+      const validator = service.validateVrmForCherishedTransfer();
+      await expect(firstValueFrom(from(validator(form.controls.control))))
+        .resolves.toBeDefined();
+
+      expect(searchSpy).toHaveBeenCalledTimes(1);
+      expect(checkVrmNotActiveSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return null when a thirdMark is provided, and a current record exists with the previous VRM', async () => {
+      const form = new FormGroup({
+        thirdMark: new FormControl('third mark'),
+        previousVrm: new FormControl('previous vrm'),
+        control: new FormControl('current vrm'),
+      });
+
+      const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
+      const searchSpy = jest.spyOn(techRecordHttpService, 'search$')
+        .mockReturnValue(of([
+          {
+            primaryVrm: 'previous vrm',
+            techRecord_statusCode: StatusCodes.CURRENT,
+          } as TechRecordSearchSchema,
+        ]));
+
+      const validator = service.validateVrmForCherishedTransfer();
+      await expect(firstValueFrom(from(validator(form.controls.control))))
+        .resolves.toBeNull();
+
+      expect(searchSpy).toHaveBeenCalledTimes(1);
+      expect(checkVrmNotActiveSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it('should return an appropriate error message if there is a third mark, but the previous vrm does not belong to a current record', async () => {
+      const form = new FormGroup({
+        thirdMark: new FormControl('third mark'),
+        previousVrm: new FormControl('previous vrm'),
+        control: new FormControl('current vrm'),
+      });
+
+      const checkVrmNotActiveSpy = jest.spyOn(service, 'checkVrmNotActive');
+      const searchSpy = jest.spyOn(techRecordHttpService, 'search$')
+        .mockReturnValue(of([
+          {
+            primaryVrm: 'previous vrm',
+            techRecord_statusCode: StatusCodes.PROVISIONAL,
+          } as TechRecordSearchSchema,
+        ]));
+
+      const validator = service.validateVrmForCherishedTransfer();
+      await expect(firstValueFrom(from(validator(form.controls.control))))
+        .resolves.toEqual({
+          validateVrm: {
+            message: 'This VRM does not exist on a current record',
+          },
+        });
+
+      expect(searchSpy).toHaveBeenCalledTimes(1);
+      expect(checkVrmNotActiveSpy).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('clearEditingTechRecord', () => {
+    it('should dispatch the updateEditingTechRecordCancel action', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      service.clearEditingTechRecord();
+      expect(dispatchSpy).toHaveBeenCalledWith({
+        type: '[Technical Record Service] updateEditingTechRecordCancel',
+      });
+    });
+  });
+
+  describe('clearSectionTemplateStates', () => {
+    it('should dispatch the clearAllSectionStates action', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      service.clearSectionTemplateStates();
+      expect(dispatchSpy).toHaveBeenCalledWith({
+        type: '[Technical Record Service] clearAllSectionState',
+      });
+    });
+  });
+
+  describe('checkVrmNotActive', () => {
+    beforeEach(() => {
+      jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(of([]));
+    });
+
+    it('should not display an appropriate error message when the provided VRM is the same as the current', async () => {
+      const vrm = 'vrm';
+      const control = new FormControl(vrm);
+      const spy = jest.spyOn(techRecordHttpService, 'search$');
+
+      await expect(firstValueFrom(service.checkVrmNotActive(control, vrm)))
+        .resolves
+        .toEqual({ validateVrm: { message: 'You must provide a new VRM' } });
+
+      expect(spy).toHaveBeenCalledWith(SEARCH_TYPES.VRM, vrm);
+    });
+
+    it('should determine if the VRM is being used by a current tech record, and display an appropriate message', async () => {
+      const vrm = 'vrm';
+      const control = new FormControl('new vrm');
+      const spy = jest.spyOn(techRecordHttpService, 'search$')
+        .mockReturnValue(of([
+          {
+            primaryVrm: 'new vrm',
+            vin: 'vin',
+            techRecord_statusCode: StatusCodes.CURRENT,
+          } as unknown as TechRecordSearchSchema,
+        ]));
+
+      await expect(firstValueFrom(service.checkVrmNotActive(control, vrm)))
+        .resolves
+        .toEqual({
+          validateVrm: {
+            message: `A current technical record already exists for
+              new vrm with the VIN number vin.
+              Please fill in the third mark field`,
+          },
+        });
+
+      expect(spy).toHaveBeenCalledWith(SEARCH_TYPES.VRM, 'new vrm');
+    });
+
+    it('should determine if the VRM is being used by a provisional tech record, and display an appropriate message', async () => {
+      const vrm = 'vrm';
+      const control = new FormControl('new vrm');
+      const spy = jest.spyOn(techRecordHttpService, 'search$')
+        .mockReturnValue(of([
+          {
+            primaryVrm: 'new vrm',
+            vin: 'vin',
+            techRecord_statusCode: StatusCodes.PROVISIONAL,
+          } as unknown as TechRecordSearchSchema,
+        ]));
+
+      await expect(firstValueFrom(service.checkVrmNotActive(control, vrm)))
+        .resolves
+        .toEqual({
+          validateVrm: {
+            message: 'This VRM already exists on a provisional record with the VIN: vin',
+          },
+        });
+
+      expect(spy).toHaveBeenCalledWith(SEARCH_TYPES.VRM, 'new vrm');
+    });
+
+    it('should return null when the VRM is not being used by a current or provisional record', async () => {
+      const vrm = 'vrm';
+      const control = new FormControl('new vrm');
+      const spy = jest.spyOn(techRecordHttpService, 'search$').mockReturnValue(of([]));
+
+      await expect(firstValueFrom(service.checkVrmNotActive(control, vrm)))
+        .resolves
+        .toBeNull();
+
+      expect(spy).toHaveBeenCalledWith(SEARCH_TYPES.VRM, 'new vrm');
     });
   });
 });
