@@ -50,6 +50,6 @@ import { AdrGenerateCertificateComponent } from './components/adr-generate-certi
     AdrGenerateCertificateComponent,
   ],
   imports: [CommonModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, TechRecordsRoutingModule, SharedTechRecordsModule],
-    exports: [EditTechRecordButtonComponent, TechRecordTitleComponent],
+  exports: [EditTechRecordButtonComponent, TechRecordTitleComponent],
 })
 export class TechRecordsModule {}
