@@ -737,7 +737,7 @@ export const AdrTemplate: FormNode = {
         },
         {
           name: ValidatorNames.CustomPattern,
-          args: ['^\\d*(\\.\\d{0,3})?$', 'Max 3 decimal places'],
+          args: ['^\\d*(\\.\\d{0,2})?$', 'Max 2 decimal places'],
         },
       ],
     },
