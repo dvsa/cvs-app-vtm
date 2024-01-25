@@ -171,7 +171,9 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     }
     return (
       vehicleTemplateMap.get(this.vehicleType)?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection'))
-        .filter((template) => template.name !== (this.isADREnabled ? '' : 'adrSection')) ?? []
+        .filter((template) => template.name !== (this.isADREnabled ? '' : 'adrSection'))
+        .filter((template) => template.name !== (this.isADREnabled ? '' : 'adrCertificateSection'))
+        ?? []
     );
   }
 
