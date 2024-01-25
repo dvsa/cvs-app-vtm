@@ -29,25 +29,18 @@ describe('TechRecordAdrCertificateHistoryComponent', () => {
     expect(component).toBeTruthy();
   });
   describe('showTable', () => {
-    it('should return false if isADREnabled returns false', () => {
-      component.isADREnabled = false;
-      expect(component.showTable()).toBe(false);
-    });
     it('should return false if isEditing returns true', () => {
-      component.isADREnabled = true;
       component.isEditing = true;
       expect(component.showTable()).toBe(false);
     });
     it('should return false if numberOfADRCertificates returns 0', () => {
       component.currentTechRecord = createMockHgv(0);
-      component.isADREnabled = true;
       component.isEditing = false;
       component.currentTechRecord.techRecord_adrPassCertificateDetails = [];
       expect(component.showTable()).toBe(false);
     });
     it('should return true if numberOfADRCertificates returns > 0', () => {
       component.currentTechRecord = createMockHgv(0);
-      component.isADREnabled = true;
       component.isEditing = false;
       component.currentTechRecord.techRecord_adrPassCertificateDetails = [
         {

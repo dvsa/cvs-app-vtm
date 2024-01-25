@@ -26,7 +26,6 @@ import { cloneDeep } from 'lodash';
 export class AdrCertificateHistoryComponent extends CustomFormControlComponent {
   @Input() currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'>;
   isEditing = false;
-  isADREnabled = false;
   private destroy$ = new Subject<void>();
   routerService = inject(RouterService);
   featureToggleService = inject(FeatureToggleService);
@@ -42,7 +41,6 @@ export class AdrCertificateHistoryComponent extends CustomFormControlComponent {
     this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
       this.isEditing = editing;
     });
-    this.isADREnabled = this.featureToggleService.isFeatureEnabled('adrToggle');
   }
 
   get roles(): typeof Roles {
@@ -82,7 +80,7 @@ export class AdrCertificateHistoryComponent extends CustomFormControlComponent {
   }
 
   showTable(): boolean {
-    return this.isADREnabled && !this.isEditing && this.numberOfADRCertificates > 0;
+    return !this.isEditing && this.numberOfADRCertificates > 0;
   }
 
   get reasonForNoRecords(): string {

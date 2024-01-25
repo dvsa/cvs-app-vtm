@@ -37,7 +37,7 @@
   </dl>
 </ng-template>
 
-<div class="govuk-button-group" *ngIf="isADREnabled && !isEditing && !isArchived">
+<div class="govuk-button-group" *ngIf="!isEditing && !isArchived">
   <a
     id="generate-adr-cert"
     *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]"
