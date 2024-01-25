@@ -16,6 +16,7 @@ import { ViewportScroller } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-tech-record-adr-certificate-history',
@@ -52,12 +53,21 @@ export class TechRecordAdrCertificateHistoryComponent extends CustomFormControlC
     return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
   }
 
-  getAdrCertificateHistorySlice(): ADRCertificateDetails[] {
-    return this.currentTechRecord?.techRecord_adrPassCertificateDetails?.reverse().slice(this.pageStart, this.pageEnd) || [];
+  get sortedCertificates(): ADRCertificateDetails[] | undefined {
+    return cloneDeep(this.currentTechRecord?.techRecord_adrPassCertificateDetails)?.sort((a, b) =>
+      a.generatedTimestamp && b.generatedTimestamp ? new Date(b.generatedTimestamp).getTime() - new Date(a.generatedTimestamp).getTime() : 0);
   }
 
-  getAdrCertificateHistory(): ADRCertificateDetails[] {
-    return this.currentTechRecord?.techRecord_adrPassCertificateDetails || [];
+  get adrCertificateHistory(): ADRCertificateDetails[] {
+    return this.sortedCertificates?.slice(this.pageStart, this.pageEnd) || [];
+  }
+
+  trackByFn(i: number, tr: ADRCertificateDetails) {
+    return tr.generatedTimestamp;
+  }
+
+  get numberOfADRCertificates(): number {
+    return this.sortedCertificates?.length || 0;
   }
 
   getFileName(certificate: ADRCertificateDetails) {
@@ -72,7 +82,7 @@ export class TechRecordAdrCertificateHistoryComponent extends CustomFormControlC
   }
 
   showTable(): boolean {
-    return this.isADREnabled && !this.isEditing && this.getAdrCertificateHistory().length > 0 && !this.isArchived;
+    return this.isADREnabled && !this.isEditing && this.numberOfADRCertificates > 0 && !this.isArchived;
   }
 
   validateADRDetailsAndNavigate(): void {
