@@ -19,11 +19,11 @@ import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-c
 import { cloneDeep } from 'lodash';
 
 @Component({
-  selector: 'app-tech-record-adr-certificate-history',
-  templateUrl: './tech-record-adr-certificate-history.html',
-  styleUrls: ['./tech-record-adr-certificate-history.scss'],
+  selector: 'app-adr-certificate-history',
+  templateUrl: './adr-certificate-history.html',
+  styleUrls: ['./adr-certificate-history.scss'],
 })
-export class TechRecordAdrCertificateHistoryComponent extends CustomFormControlComponent {
+export class AdrCertificateHistoryComponent extends CustomFormControlComponent {
   @Input() currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'>;
   isEditing = false;
   isADREnabled = false;
@@ -82,7 +82,7 @@ export class TechRecordAdrCertificateHistoryComponent extends CustomFormControlC
   }
 
   showTable(): boolean {
-    return this.isADREnabled && !this.isEditing && this.numberOfADRCertificates > 0 && !this.isArchived;
+    return this.isADREnabled && !this.isEditing && this.numberOfADRCertificates > 0;
   }
 
   get reasonForNoRecords(): string {

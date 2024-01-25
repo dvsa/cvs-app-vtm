@@ -1,7 +1,7 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import {
-  TechRecordAdrCertificateHistoryComponent,
-} from '@forms/custom-sections/tech-record-adr-certificate-history/tech-record-adr-certificate-history.component';
+  AdrCertificateHistoryComponent,
+} from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
 
 export const AdrCertificateTemplate: FormNode = {
   name: 'adrCertificateSection',
@@ -12,7 +12,7 @@ export const AdrCertificateTemplate: FormNode = {
       name: 'techRecord_adrDetails_certificates',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.CUSTOM,
-      viewComponent: TechRecordAdrCertificateHistoryComponent,
+      viewComponent: AdrCertificateHistoryComponent,
     },
   ],
 };
