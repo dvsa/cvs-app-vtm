@@ -723,16 +723,21 @@ export const AdrTemplate: FormNode = {
     },
     {
       name: 'techRecord_adrDetails_weight',
-      label: 'Weight (kg)',
+      label: 'Weight (tonnes)',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.NUMBER,
+      enableDecimals: true,
       width: FormNodeWidth.L,
       groups: ['weight_section', 'issuer_section_hide', 'dangerous_goods_hide'],
       hide: true,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 8 },
-        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Max, args: 99999999 },
         {
           name: ValidatorNames.RequiredIfNotHidden,
+        },
+        {
+          name: ValidatorNames.CustomPattern,
+          args: ['^\\d*(\\.\\d{0,2})?$', 'Max 2 decimal places'],
         },
       ],
     },

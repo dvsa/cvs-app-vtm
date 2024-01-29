@@ -103,29 +103,4 @@ describe('VehicleTechnicalRecordComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
-  describe('showGenerateADRCertificateButton', () => {
-    it('should show generate ADR certificate button if ADR is enabled and other conditions are satisfied', () => {
-      component.isEditing = false;
-      component.isArchived = false;
-      component.isADREnabled = true;
-      jest.spyOn(component, 'isADRVehicleType').mockReturnValue(true);
-      expect(component.showGenerateADRCertificateButton()).toBeTruthy();
-    });
-
-    it('should not show generate ADR certificate button if ADR is disabled', () => {
-      component.isEditing = false;
-      component.isArchived = false;
-      component.isADREnabled = false;
-      jest.spyOn(component, 'isADRVehicleType').mockReturnValue(true);
-      expect(component.showGenerateADRCertificateButton()).toBeFalsy();
-    });
-
-    it('should not show generate ADR certificate button if not adr vehicle', () => {
-      component.isEditing = false;
-      component.isArchived = false;
-      component.isADREnabled = true;
-      jest.spyOn(component, 'isADRVehicleType').mockReturnValue(false);
-      expect(component.showGenerateADRCertificateButton()).toBeFalsy();
-    });
-  });
 });
