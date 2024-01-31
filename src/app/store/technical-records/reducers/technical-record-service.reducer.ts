@@ -36,6 +36,9 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
+  generateADRCertificate,
+  generateADRCertificateFailure,
+  generateADRCertificateSuccess,
   generateLetter,
   generateLetterFailure,
   generateLetterSuccess,
@@ -62,9 +65,6 @@ import {
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess,
-  generateADRCertificate,
-  generateADRCertificateFailure,
-  generateADRCertificateSuccess,
 } from '../actions/technical-record-service.actions';
 import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
 
@@ -433,6 +433,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
             techRecord_adrDetails_applicantDetails_city: null,
             techRecord_adrDetails_applicantDetails_postcode: null,
             techRecord_adrDetails_memosApply: null,
+            techRecord_adrDetails_m145Statement: null,
             techRecord_adrDetails_documents: null,
             techRecord_adrDetails_listStatementApplicable: null,
             techRecord_adrDetails_batteryListNumber: null,

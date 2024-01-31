@@ -130,7 +130,7 @@
 </ng-template>
 
 <ng-template #subtitleTemplate let-control="control">
-  <ng-container *ngIf="!(control.value.meta && control.value.meta.hide)">
+  <ng-container *ngIf="!(control.value.meta && control.value.meta.hide) && control.value.meta.viewType !== formNodeViewTypes.HIDDEN">
     <ng-container *ngIf="!edit">
       <tr class="govuk-table__row">
         <td colspan="2" class="govuk-table__cell">

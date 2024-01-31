@@ -611,6 +611,15 @@ export const AdrSummaryTemplate: FormNode = {
       validators: [],
     },
     {
+      name: 'techRecord_adrDetails_m145Statement',
+      label: 'M145',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOX,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [],
+    },
+    {
       name: 'techRecord_adrDetails_listStatementApplicable',
       label: 'Battery List Applicable',
       width: FormNodeWidth.XS,
