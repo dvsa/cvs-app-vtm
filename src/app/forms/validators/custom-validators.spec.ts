@@ -266,13 +266,13 @@ describe('Required validators', () => {
 
   describe('Required if not equal', () => {
     it('should not be required (return null) if content of sibling does not match a value', () => {
-      const result = CustomValidators.requiredIfNotEquals('sibling', 'some value')(form.controls['foo']);
+      const result = CustomValidators.requiredIfNotEqual('sibling', 'some value')(form.controls['foo']);
       expect(result).toBeNull();
     });
 
     it('should be required (return ValidationErrors) if content of sibling does not match a value', () => {
-      const result = CustomValidators.requiredIfNotEquals('sibling', 'some other value')(form.controls['foo']);
-      expect(result).toEqual({ requiredIfNotEquals: { sibling: 'Sibling' } });
+      const result = CustomValidators.requiredIfNotEqual('sibling', 'some other value')(form.controls['foo']);
+      expect(result).toEqual({ requiredIfNotEqual: { sibling: 'Sibling' } });
     });
 
     it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {
