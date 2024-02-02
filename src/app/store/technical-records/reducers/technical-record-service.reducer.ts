@@ -36,6 +36,9 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
+  generateADRCertificate,
+  generateADRCertificateFailure,
+  generateADRCertificateSuccess,
   generateLetter,
   generateLetterFailure,
   generateLetterSuccess,
@@ -62,9 +65,6 @@ import {
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess,
-  generateADRCertificate,
-  generateADRCertificateFailure,
-  generateADRCertificateSuccess,
 } from '../actions/technical-record-service.actions';
 import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
 
