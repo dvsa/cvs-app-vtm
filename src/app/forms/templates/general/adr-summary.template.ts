@@ -16,6 +16,9 @@ import {
 } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
 import {
+  AdrTankDetailsInitialInspectionViewComponent,
+} from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
+import {
   AdrTankDetailsSubsequentInspectionsEditComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
 import {
@@ -536,9 +539,6 @@ export const AdrSummaryTemplate: FormNode = {
         },
       ],
     },
-    // Note: this used only for the view mode for the ADR Tank Details initial inpsection controls
-    // TODO: uncomment this when needed
-    /*
     {
       name: 'tankInspectionsInitialView',
       type: FormNodeTypes.CONTROL,
@@ -548,11 +548,10 @@ export const AdrSummaryTemplate: FormNode = {
       groups: ['tank_details', 'dangerous_goods'],
       hide: true,
     },
-    */
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
       type: FormNodeTypes.CONTROL,
-      // viewType: FormNodeViewTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
       label: 'TC2: Inspection type',
       value: TC2Types.INITIAL,
@@ -585,7 +584,7 @@ export const AdrSummaryTemplate: FormNode = {
       name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
       label: 'Subsequent Inspections',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.ADRINSPECTIONS, // TODO: replace with custom view type
+      viewType: FormNodeViewTypes.CUSTOM,
       viewComponent: AdrTankDetailsSubsequentInspectionsViewComponent,
       editType: FormNodeEditTypes.CUSTOM,
       editComponent: AdrTankDetailsSubsequentInspectionsEditComponent,
