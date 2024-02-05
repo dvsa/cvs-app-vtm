@@ -1,3 +1,4 @@
+import { AdrGenerateCertTestComponent } from '@forms/components/adr-generate-cert-test/adr-generate-cert-test.component';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
@@ -53,6 +54,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
               ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'generateCert', value: 'pass' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
@@ -81,6 +83,19 @@ export const ContingencyTestSectionGroup7: FormNode = {
               editType: FormNodeEditTypes.HIDDEN,
               value: null,
               required: true,
+            },
+            {
+              name: 'generateCert',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.CUSTOM,
+              editComponent: AdrGenerateCertTestComponent,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: ['pass'] },
+                },
+              ],
             },
             {
               name: 'certificateNumber',

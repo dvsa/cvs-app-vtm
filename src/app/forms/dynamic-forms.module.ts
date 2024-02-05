@@ -5,14 +5,15 @@ import { RouterModule } from '@angular/router';
 import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
 import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
 import {
+  AdrCertificateHistoryComponent,
+} from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
+import {
   AdrExaminerNotesHistoryEditComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
-import {
-  AdrCertificateHistoryComponent,
-} from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
+import { AdrGenerateCertTestComponent } from './components/adr-generate-cert-test/adr-generate-cert-test.component';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
@@ -134,7 +135,11 @@ import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-deta
     AdrTankDetailsInitialInspectionViewComponent,
     AdrTankStatementUnNumberViewComponent,
     AdrCertificateHistoryComponent,
+<<<<<<< Updated upstream
     AdrTankDetailsM145ViewComponent,
+=======
+    AdrGenerateCertTestComponent,
+>>>>>>> Stashed changes
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
