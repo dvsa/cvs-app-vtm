@@ -15,6 +15,7 @@ import {
   AdrExaminerNotesHistoryViewComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
+import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import {
   AdrTankDetailsSubsequentInspectionsEditComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
@@ -611,6 +612,16 @@ export const AdrSummaryTemplate: FormNode = {
       validators: [],
     },
     {
+      name: 'techRecord_adrDetails_m145Statement',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.CUSTOM,
+      viewComponent: AdrTankDetailsM145ViewComponent,
+      editType: FormNodeEditTypes.CHECKBOX,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [],
+    },
+    {
       name: 'techRecord_adrDetails_listStatementApplicable',
       label: 'Battery List Applicable',
       width: FormNodeWidth.XS,
@@ -726,14 +737,13 @@ export const AdrSummaryTemplate: FormNode = {
     },
     {
       name: 'techRecord_adrDetails_weight',
-      label: 'Weight (kg)',
+      label: 'Weight (tonnes)',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
       groups: ['weight_section', 'dangerous_goods'],
       hide: true,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 8 },
-        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Max, args: 999999999 },
         {
           name: ValidatorNames.RequiredIfNotHidden,
         },
