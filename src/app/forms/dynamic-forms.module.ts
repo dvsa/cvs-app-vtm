@@ -73,6 +73,7 @@ import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
+import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 
 @NgModule({
   declarations: [
@@ -133,6 +134,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     AdrTankDetailsInitialInspectionViewComponent,
     AdrTankStatementUnNumberViewComponent,
     AdrCertificateHistoryComponent,
+    AdrTankDetailsM145ViewComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
