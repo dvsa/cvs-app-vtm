@@ -737,14 +737,13 @@ export const AdrSummaryTemplate: FormNode = {
     },
     {
       name: 'techRecord_adrDetails_weight',
-      label: 'Weight (kg)',
+      label: 'Weight (tonnes)',
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
       groups: ['weight_section', 'dangerous_goods'],
       hide: true,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 8 },
-        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Max, args: 999999999 },
         {
           name: ValidatorNames.RequiredIfNotHidden,
         },
