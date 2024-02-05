@@ -19,6 +19,7 @@ import {
   AdrExaminerNotesHistoryViewComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
+import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import {
   AdrTankDetailsSubsequentInspectionsEditComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
@@ -606,6 +607,25 @@ export const AdrTemplate: FormNode = {
       options: [
         { value: '07/09 3mth leak ext ', label: 'Yes' },
       ],
+      validators: [],
+    },
+    {
+      name: 'M15Subtitle',
+      label: 'M145',
+      type: FormNodeTypes.SUBTITLE,
+      viewType: FormNodeViewTypes.HIDDEN,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_m145Statement',
+      label: 'Yes',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.CUSTOM,
+      viewComponent: AdrTankDetailsM145ViewComponent,
+      editType: FormNodeEditTypes.CHECKBOX,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
       validators: [],
     },
     {
