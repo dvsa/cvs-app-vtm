@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/index';
-import { initialReferenceDataState, STORE_FEATURE_REFERENCE_DATA_KEY } from '@store/reference-data';
+import { State, initialAppState } from '@store/index';
+import { STORE_FEATURE_REFERENCE_DATA_KEY, initialReferenceDataState } from '@store/reference-data';
 import { RefDataDecodePipe } from './ref-data-decode.pipe';
 
 describe('RefDataDecodePipe', () => {
