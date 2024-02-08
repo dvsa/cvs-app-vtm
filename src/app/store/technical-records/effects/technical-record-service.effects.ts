@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DocumentRetrievalService } from '@api/document-retrieval';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -15,7 +16,8 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
 import {
-  catchError, concatMap, map, mergeMap, of, switchMap, tap, withLatestFrom,
+  catchError, concatMap, delay, map, mergeMap, of, switchMap, tap,
+  withLatestFrom,
 } from 'rxjs';
 import {
   amendVin,
@@ -31,6 +33,10 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
+  generateADRCertificate,
+  generateADRCertificateFailure,
+  generateADRCertificateSuccess,
+  generateContingencyADRCertificate,
   generateLetter,
   generateLetterFailure,
   generateLetterSuccess,
@@ -52,13 +58,8 @@ import {
   updateTechRecord,
   updateTechRecordFailure,
   updateTechRecordSuccess,
-  generateADRCertificate,
-  generateADRCertificateFailure,
-  generateADRCertificateSuccess,
-  generateContingencyADRCertificate,
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord, selectTechRecord } from '../selectors/technical-record-service.selectors';
-import { DocumentRetrievalService } from '@api/document-retrieval';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
@@ -119,7 +120,7 @@ export class TechnicalRecordServiceEffects {
                 error: `Unable to create vehicle with VIN ${vehicle.vin}${error.error?.errors
                   ? ` because:${(error.error.errors?.map((e: string) => `\n${e}`) as string[]).join()}`
                   : ''
-                  }`,
+                }`,
               }),
             )),
         );
@@ -312,11 +313,11 @@ export class TechnicalRecordServiceEffects {
         systemNumber, createdTimestamp, certificateType,
       }) =>
         this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
-          map((res) => {
-            const { id } = res;
-            setTimeout(() => 10000);
-            this.docRetrieval.getDocument(new Map([['fileName', id]]));
-            return generateADRCertificateSuccess();
+          delay(10000),
+          switchMap((res) => {
+            return this.docRetrieval.getDocument(new Map([['fileName', res.id]])).pipe(
+              map(() => generateADRCertificateSuccess()),
+            );
           }),
           catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
         )),
