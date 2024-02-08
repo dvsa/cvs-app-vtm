@@ -188,7 +188,7 @@ const routes: Routes = [
   {
     path: 'adr-certificate',
     component: AdrGenerateCertificateComponent,
-    data: { title: 'Generate ADR Certificate', roles: Roles.TestResultCreateContingency },
+    data: { title: 'Generate ADR Certificate', roles: Roles.TestResultCreateDeskAssessment },
     canActivate: [MsalGuard, RoleGuard],
   },
 ];
