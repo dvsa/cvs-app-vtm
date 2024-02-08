@@ -65,7 +65,7 @@ import {
   updateScrollPosition,
   updateTechRecord,
   updateTechRecordFailure,
-  updateTechRecordSuccess,
+  updateTechRecordSuccess
 } from '../actions/technical-record-service.actions';
 import { BatchRecords, initialBatchState, vehicleBatchCreateReducer } from './batch-create.reducer';
 

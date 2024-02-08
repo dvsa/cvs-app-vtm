@@ -1,4 +1,6 @@
 <ng-container>
+  <div class="govuk-heading-m">Generate ADR Certificate</div>
+
   <div class="govuk-heading-s">{{ lastCertificateDate }}</div>
 
   <ng-container>
@@ -10,7 +12,8 @@
       <app-button id="submit-adr-cert-form" (clicked)="handleSubmit()">Generate certificate</app-button>
     </app-button-group>
   </ng-container>
+
   <ng-container *ngIf="fileName">
-    <button [params]="documentParams(fileName)" [fileName]="fileName" appRetrieveDocument class="link">View</button>
+    <button [params]="documentParams(fileName)" [fileName]="fileName" appRetrieveDocument class="link">View generated certificate</button>
   </ng-container>
 </ng-container>

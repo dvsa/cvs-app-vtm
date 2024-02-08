@@ -37,7 +37,6 @@ import {
   generateADRCertificateFailure,
   generateADRCertificateSuccess,
   generateContingencyADRCertificate,
-  generateContingencyADRCertificateSuccess,
   generateLetter,
   generateLetterFailure,
   generateLetterSuccess,
@@ -58,7 +57,7 @@ import {
   unarchiveTechRecordSuccess,
   updateTechRecord,
   updateTechRecordFailure,
-  updateTechRecordSuccess,
+  updateTechRecordSuccess
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord, selectTechRecord } from '../selectors/technical-record-service.selectors';
 
@@ -302,7 +301,7 @@ export class TechnicalRecordServiceEffects {
         systemNumber, createdTimestamp, certificateType,
       }) =>
         this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
-          map(() => generateADRCertificateSuccess()),
+          map(() => generateADRCertificateSuccess({ id: '' })),
           catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
         )),
     ));
@@ -314,13 +313,12 @@ export class TechnicalRecordServiceEffects {
         systemNumber, createdTimestamp, certificateType,
       }) =>
         this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
-          delay(10000),
           switchMap((res) => {
             return this.docRetrieval.getDocument(new Map([['fileName', res.id]])).pipe(
-              map(() => generateContingencyADRCertificateSuccess({ id: res.id })),
+              map(() => generateADRCertificateSuccess({ id: res.id })),
             );
           }),
-          catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
+          catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'retrieveADRCertificate') }))),
         )),
     ));
 
@@ -345,5 +343,6 @@ export class TechnicalRecordServiceEffects {
     promoteTechRecord_400: 'Unable to promote technical record',
     unarchiveTechRecord_400: 'Unable to unarchive technical record',
     generateADRCertificate_400: 'Unable to generate ADR certificate',
+    retrieveADRCertificate_404: 'Unable to find ADR certificate',
   };
 }

@@ -12,7 +12,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { generateContingencyADRCertificate, generateContingencyADRCertificateSuccess } from '@store/technical-records';
+import { generateADRCertificateSuccess, generateContingencyADRCertificate } from '@store/technical-records';
 import { Subject, take, takeUntil } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -37,8 +37,7 @@ export class AdrGenerateCertTestComponent extends BaseControlComponent {
       this.systemNumber = (record as TechRecordGETHGV).systemNumber;
       this.createdTimestamp = (record as TechRecordGETHGV).createdTimestamp;
     });
-    this.actions$.pipe(ofType(generateContingencyADRCertificateSuccess), takeUntil(this.destroy$)).subscribe(({ id }) => {
-      console.log(id);
+    this.actions$.pipe(ofType(generateADRCertificateSuccess), takeUntil(this.destroy$)).subscribe(({ id }) => {
       this.fileName = id;
       this.cdr.detectChanges();
     });

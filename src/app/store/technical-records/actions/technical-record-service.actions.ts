@@ -103,13 +103,12 @@ export const updateADRAdditionalExaminerNotes = createAction(`${prefix} handleAD
 export const generateADRCertificate = createAction(`${prefix} generateADRCertificate`, props<{
   systemNumber: string, createdTimestamp: string, certificateType: string
 }>());
-export const generateADRCertificateSuccess = createAction(`${prefix} generateADRCertificate Success`);
+export const generateADRCertificateSuccess = createAction(`${prefix} generateADRCertificate Success`, props<{ id: string }>());
 export const generateADRCertificateFailure = createOutcomeAction('generateADRCertificate', false);
 
 export const generateContingencyADRCertificate = createAction(`${prefix} generateContingencyADRCertificate`, props<{
   systemNumber: string, createdTimestamp: string, certificateType: string
 }>());
-export const generateContingencyADRCertificateSuccess = createAction(`${prefix} generateADRCertificate Success`, props<{ id: string }>());
 
 function createOutcomeAction<T extends boolean>(
   title: string,

@@ -25,15 +25,24 @@ export interface HttpRetryConfig {
    * If true, each retry delay will be multiplied by the current retry count.
    */
   backoff?: boolean;
+
+  whiteList?: string[]
 }
 
-interface InternalConfig extends Required<Pick<HttpRetryConfig, 'count' | 'delay' | 'backoff'>>, Pick<HttpRetryConfig, 'httpStatusRetry'> {}
+interface InternalConfig extends Required<Pick<HttpRetryConfig, 'count' | 'delay' | 'backoff'>>, Pick<HttpRetryConfig, 'httpStatusRetry'> {
+  whiteList: string[]
+}
 
 @Injectable()
 export class DelayedRetryInterceptor implements HttpInterceptor {
   config: InternalConfig;
 
-  private readonly defaultConfig = { count: 3, delay: 2000, backoff: false };
+  private readonly defaultConfig = {
+    count: 3,
+    delay: 2000,
+    backoff: false,
+    whiteList: [],
+  };
 
   constructor(@Optional() @Inject(HTTP_RETRY_CONFIG) private retryConfig: HttpRetryConfig) {
     this.config = { ...this.defaultConfig, ...this.retryConfig };
@@ -42,17 +51,21 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       retry({
-        delay: (error, retryCount: number) => this.retryHandler(error, retryCount, this.config),
+        delay: (error, retryCount: number) => this.retryHandler(error, retryCount, this.config, request),
       }),
     );
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  retryHandler(error: any, retryCount: number, config: InternalConfig) {
+  retryHandler(error: any, retryCount: number, config: InternalConfig, request: HttpRequest<unknown>) {
     const {
-      delay, count, httpStatusRetry, backoff,
+      delay, count, httpStatusRetry, backoff, whiteList,
     } = config;
     const { status } = error;
+
+    if (whiteList.some((url) => request.url.includes(url))) {
+      return timer(backoff ? delay * retryCount : delay);
+    }
 
     if (httpStatusRetry && !httpStatusRetry.includes(status)) {
       throw error;
