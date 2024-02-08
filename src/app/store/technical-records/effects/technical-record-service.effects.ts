@@ -55,8 +55,10 @@ import {
   generateADRCertificate,
   generateADRCertificateFailure,
   generateADRCertificateSuccess,
+  generateContingencyADRCertificate,
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord, selectTechRecord } from '../selectors/technical-record-service.selectors';
+import { DocumentRetrievalService } from '@api/document-retrieval';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
@@ -68,6 +70,7 @@ export class TechnicalRecordServiceEffects {
     private userService: UserService,
     private store: Store<State>,
     private dfs: DynamicFormService,
+    private docRetrieval: DocumentRetrievalService,
   ) { }
 
   getTechnicalRecordHistory$ = createEffect(() =>
@@ -116,7 +119,7 @@ export class TechnicalRecordServiceEffects {
                 error: `Unable to create vehicle with VIN ${vehicle.vin}${error.error?.errors
                   ? ` because:${(error.error.errors?.map((e: string) => `\n${e}`) as string[]).join()}`
                   : ''
-                }`,
+                  }`,
               }),
             )),
         );
@@ -298,6 +301,23 @@ export class TechnicalRecordServiceEffects {
       }) =>
         this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
           map(() => generateADRCertificateSuccess()),
+          catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
+        )),
+    ));
+
+  generateContingencyADRCertificate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateContingencyADRCertificate),
+      switchMap(({
+        systemNumber, createdTimestamp, certificateType,
+      }) =>
+        this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
+          map((res) => {
+            const { id } = res;
+            setTimeout(() => 10000);
+            this.docRetrieval.getDocument(new Map([['fileName', id]]));
+            return generateADRCertificateSuccess();
+          }),
           catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
         )),
     ));

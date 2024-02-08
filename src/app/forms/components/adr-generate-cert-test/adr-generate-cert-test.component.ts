@@ -1,11 +1,17 @@
-import { ChangeDetectorRef, Component, Inject, Injector } from '@angular/core';
+import {
+  Component,
+  inject,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ADRCertificateDetails } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TechRecordGETHGV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { CustomFormControlComponent } from '@forms/custom-sections/custom-form-control/custom-form-control.component';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { generateADRCertificate } from '@store/technical-records';
-import { Subject, takeUntil } from 'rxjs';
+import { generateADRCertificate, generateContingencyADRCertificate } from '@store/technical-records';
+import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-adr-generate-cert-test',
@@ -15,16 +21,16 @@ import { Subject, takeUntil } from 'rxjs';
 export class AdrGenerateCertTestComponent extends CustomFormControlComponent {
   systemNumber?: string;
   createdTimestamp?: string;
-  private globalErrorService = Inject(GlobalErrorService);
-  private route = Inject(ActivatedRoute);
-  private store = Inject(Store<State>);
+  route = inject(ActivatedRoute);
+  store = inject(Store<State>);
+  techRecordService = inject(TechnicalRecordService);
 
   private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params: { [x: string]: string | undefined; }) => {
-      this.systemNumber = params['systemNumber'];
-      this.createdTimestamp = params['createdTimestamp'];
+    this.techRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
+      this.systemNumber = (record as TechRecordGETHGV).systemNumber;
+      this.createdTimestamp = (record as TechRecordGETHGV).createdTimestamp;
     });
   }
 
@@ -33,15 +39,26 @@ export class AdrGenerateCertTestComponent extends CustomFormControlComponent {
     this.destroy$.complete();
   }
 
-  handleSubmit(): void {
-    this.globalErrorService.clearErrors();
+  get lastCertificateDate() {
+    let sortedTests: ADRCertificateDetails[] | undefined;
+    this.techRecordService.techRecord$.pipe(take(1)).subscribe((record) => {
+      sortedTests = (record as TechRecordGETHGV | TechRecordGETTRL).techRecord_adrPassCertificateDetails?.sort((a, b) =>
+        a.generatedTimestamp && b.generatedTimestamp ? new Date(b.generatedTimestamp).getTime() - new Date(a.generatedTimestamp).getTime() : 0);
+    });
+    return sortedTests
+      ? `an ADR certificate was last generated on ${new Date(sortedTests[0].generatedTimestamp).toLocaleDateString('en-UK')}`
+      : 'there are no previous ADR certificates for this vehicle';
+  }
 
-    this.store.dispatch(generateADRCertificate(
-      {
-        systemNumber: this.systemNumber ?? '',
-        createdTimestamp: this.createdTimestamp ?? '',
-        certificateType: 'PASS',
-      },
-    ));
+  handleSubmit(): void {
+    if (this.store) {
+      this.store.dispatch(generateContingencyADRCertificate(
+        {
+          systemNumber: this.systemNumber ?? '',
+          createdTimestamp: this.createdTimestamp ?? '',
+          certificateType: 'PASS',
+        },
+      ));
+    }
   }
 }

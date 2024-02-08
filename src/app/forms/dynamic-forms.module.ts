@@ -135,11 +135,8 @@ import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-deta
     AdrTankDetailsInitialInspectionViewComponent,
     AdrTankStatementUnNumberViewComponent,
     AdrCertificateHistoryComponent,
-<<<<<<< Updated upstream
     AdrTankDetailsM145ViewComponent,
-=======
     AdrGenerateCertTestComponent,
->>>>>>> Stashed changes
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
