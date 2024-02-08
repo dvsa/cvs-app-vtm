@@ -101,12 +101,15 @@ export const clearADRDetailsBeforeUpdate = createAction(`${prefix} clearADRDetai
 export const updateADRAdditionalExaminerNotes = createAction(`${prefix} handleADRExaminerNoteChanges`, props<{ username: string }>());
 
 export const generateADRCertificate = createAction(`${prefix} generateADRCertificate`, props<{
-  systemNumber: string, createdTimestamp: string, certificateType: string }>());
+  systemNumber: string, createdTimestamp: string, certificateType: string
+}>());
 export const generateADRCertificateSuccess = createAction(`${prefix} generateADRCertificate Success`);
 export const generateADRCertificateFailure = createOutcomeAction('generateADRCertificate', false);
 
 export const generateContingencyADRCertificate = createAction(`${prefix} generateContingencyADRCertificate`, props<{
-  systemNumber: string, createdTimestamp: string, certificateType: string }>());
+  systemNumber: string, createdTimestamp: string, certificateType: string
+}>());
+export const generateContingencyADRCertificateSuccess = createAction(`${prefix} generateADRCertificate Success`, props<{ id: string }>());
 
 function createOutcomeAction<T extends boolean>(
   title: string,
@@ -114,9 +117,9 @@ function createOutcomeAction<T extends boolean>(
 ): ActionCreator<
   string,
   T extends false
-    ? (props: GlobalError) => GlobalError & TypedAction<string>
-    : (props: { vehicleTechRecord: TechRecordType<'get'> }) => { vehicleTechRecord: TechRecordType<'get'> } & TypedAction<string>
-  > {
+  ? (props: GlobalError) => GlobalError & TypedAction<string>
+  : (props: { vehicleTechRecord: TechRecordType<'get'> }) => { vehicleTechRecord: TechRecordType<'get'> } & TypedAction<string>
+> {
   const suffix = isSuccess ? 'Success' : 'Failure';
   const type = `${prefix} ${title} ${suffix}`;
 

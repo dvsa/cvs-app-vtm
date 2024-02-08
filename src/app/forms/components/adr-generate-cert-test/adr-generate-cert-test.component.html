@@ -10,4 +10,7 @@
       <app-button id="submit-adr-cert-form" (clicked)="handleSubmit()">Generate certificate</app-button>
     </app-button-group>
   </ng-container>
+  <ng-container *ngIf="fileName">
+    <button [params]="documentParams(fileName)" [fileName]="fileName" appRetrieveDocument class="link">View</button>
+  </ng-container>
 </ng-container>

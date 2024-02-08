@@ -37,6 +37,7 @@ import {
   generateADRCertificateFailure,
   generateADRCertificateSuccess,
   generateContingencyADRCertificate,
+  generateContingencyADRCertificateSuccess,
   generateLetter,
   generateLetterFailure,
   generateLetterSuccess,
@@ -120,7 +121,7 @@ export class TechnicalRecordServiceEffects {
                 error: `Unable to create vehicle with VIN ${vehicle.vin}${error.error?.errors
                   ? ` because:${(error.error.errors?.map((e: string) => `\n${e}`) as string[]).join()}`
                   : ''
-                }`,
+                  }`,
               }),
             )),
         );
@@ -316,7 +317,7 @@ export class TechnicalRecordServiceEffects {
           delay(10000),
           switchMap((res) => {
             return this.docRetrieval.getDocument(new Map([['fileName', res.id]])).pipe(
-              map(() => generateADRCertificateSuccess()),
+              map(() => generateContingencyADRCertificateSuccess({ id: res.id })),
             );
           }),
           catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
