@@ -43,7 +43,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   isEditing = false;
   isDirty = false;
   isInvalid = false;
-  isADREnabled = false;
 
   private destroy$ = new Subject<void>();
   hasTestResultAmend: boolean | undefined = false;
@@ -70,7 +69,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   ngOnInit(): void {
-    this.isADREnabled = this.featureToggleService.isFeatureEnabled('adrToggle');
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
       void this.router.navigate([
         `/tech-records/${vehicleTechRecord.vehicleTechRecord.systemNumber}/${vehicleTechRecord.vehicleTechRecord.createdTimestamp}`,
