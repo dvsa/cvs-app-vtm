@@ -12,7 +12,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { generateADRCertificateSuccess, generateContingencyADRCertificate } from '@store/technical-records';
+import { generateADRCertificate, generateADRCertificateSuccess, generateContingencyADRCertificate } from '@store/technical-records';
 import { Subject, take, takeUntil } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -65,7 +65,7 @@ export class AdrGenerateCertTestComponent extends BaseControlComponent {
 
   handleSubmit(): void {
     if (this.store) {
-      this.store.dispatch(generateContingencyADRCertificate(
+      this.store.dispatch(generateADRCertificate(
         {
           systemNumber: this.systemNumber ?? '',
           createdTimestamp: this.createdTimestamp ?? '',

@@ -2,18 +2,19 @@
   <div class="govuk-heading-m">Generate ADR Certificate</div>
 
   <div class="govuk-heading-s">{{ lastCertificateDate }}</div>
-
   <ng-container>
     <div class="govuk-hint" for="generate-cert">
       Only press this button if you wish to generate a new certificate, otherwise fill in previous certificate details below
     </div>
 
-    <app-button-group id="generate-cert">
-      <app-button id="submit-adr-cert-form" (clicked)="handleSubmit()">Generate certificate</app-button>
-    </app-button-group>
+    <app-button id="submit-adr-cert-form" (clicked)="handleSubmit()">Generate certificate</app-button>
   </ng-container>
 
   <ng-container *ngIf="fileName">
-    <button [params]="documentParams(fileName)" [fileName]="fileName" appRetrieveDocument class="link">View generated certificate</button>
+    <div id="link-div">
+      <app-button id="view-button" [params]="documentParams(fileName)" [fileName]="fileName" appRetrieveDocument type="link" design="link"
+        >View generated certificate</app-button
+      >
+    </div>
   </ng-container>
 </ng-container>
