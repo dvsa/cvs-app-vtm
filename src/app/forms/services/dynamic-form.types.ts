@@ -37,7 +37,6 @@ export enum FormNodeViewTypes {
   VRM = 'vrm',
   CUSTOM = 'custom',
   ADR_EXAMINER_NOTES = 'adrExaminerNotes', // TODO: remove in favour of custom
-  ADRINSPECTIONS = 'adrInspections', // TODO: remove in favour of custom
 }
 
 export enum TagTypeLabels {
