@@ -4,13 +4,13 @@
     <table class="govuk-table">
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row">
-          <th class="govuk-table__header break-words">Certificate number:</th>
+          <th class="govuk-table__header break-words" [style.width.%]="30">Certificate number:</th>
           <td class="govuk-table__cell break-words">
             {{ control.parent.value.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo | defaultNullOrEmpty }}
           </td>
         </tr>
         <tr class="govuk-table__row">
-          <th class="govuk-table__header break-words">Expiry date:</th>
+          <th class="govuk-table__header break-words" [style.width.%]="30">Expiry date:</th>
           <td class="govuk-table__cell break-words">
             {{
               control.parent.value.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate
