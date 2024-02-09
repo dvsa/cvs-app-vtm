@@ -41,7 +41,7 @@ export class AdrComponent implements OnInit, OnDestroy {
     this.template = this.isReviewScreen ? AdrSummaryTemplate : AdrTemplate;
     this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
     this.techRecord.techRecord_adrDetails_dangerousGoods = this.adrService.carriesDangerousGoods(this.techRecord);
-    if (this.techRecord.techRecord_adrDetails_dangerousGoods) {
+    if (this.techRecord.techRecord_adrDetails_dangerousGoods && !this.isReviewScreen) {
       this.techRecord.techRecord_adrDetails_tank_tankDetails_tankStatement_select = this.adrService.determineTankStatementSelect(this.techRecord);
     }
     this.handleSubmit();
