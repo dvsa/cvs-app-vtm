@@ -55,8 +55,8 @@ export class AdrGenerateCertTestComponent extends BaseControlComponent {
         a.generatedTimestamp && b.generatedTimestamp ? new Date(b.generatedTimestamp).getTime() - new Date(a.generatedTimestamp).getTime() : 0);
     });
     return sortedTests
-      ? `an ADR certificate was last generated on ${new Date(sortedTests[0].generatedTimestamp).toLocaleDateString('en-UK')}`
-      : 'there are no previous ADR certificates for this vehicle';
+      ? `An ADR certificate was last generated on ${new Date(sortedTests[0].generatedTimestamp).toLocaleDateString('en-UK')}`
+      : 'There are no previous ADR certificates for this vehicle';
   }
 
   documentParams(certificate: string): Map<string, string> {
