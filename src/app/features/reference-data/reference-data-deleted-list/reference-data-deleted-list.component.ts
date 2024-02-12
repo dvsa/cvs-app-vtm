@@ -27,8 +27,6 @@ export class ReferenceDataDeletedListComponent implements OnInit {
   ngOnInit(): void {
     this.route.parent?.params.pipe(take(1)).subscribe((params) => {
       this.type = params['type'];
-      this.referenceDataService.loadReferenceDataByKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type);
-      this.store.dispatch(fetchReferenceDataAudit({ resourceType: (`${this.type}#AUDIT`) as ReferenceDataResourceType }));
     });
   }
 

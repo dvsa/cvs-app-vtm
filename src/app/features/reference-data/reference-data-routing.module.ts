@@ -10,6 +10,8 @@ import { ReferenceDataDeleteComponent } from './reference-data-delete/reference-
 import { ReferenceDataDeletedListComponent } from './reference-data-deleted-list/reference-data-deleted-list.component';
 import { ReferenceDataListComponent } from './reference-data-list/reference-data-list.component';
 import { ReferenceDataSelectTypeComponent } from './reference-data-select-type/reference-data-select-type.component';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { referenceDataResolver } from '../../resolvers/reference-data/reference-data.resolver';
 
 const routes: Routes = [
   {
@@ -45,7 +47,8 @@ const routes: Routes = [
           {
             path: 'deleted-items',
             component: ReferenceDataDeletedListComponent,
-            data: { title: 'View deleted Reference Data', roles: Roles.ReferenceDataView },
+            data: { title: 'View deleted Reference Data', roles: Roles.ReferenceDataView, referenceDataType: ReferenceDataResourceType },
+            resolve: { referenceData: referenceDataResolver },
             canActivate: [MsalGuard, RoleGuard],
           },
           {
