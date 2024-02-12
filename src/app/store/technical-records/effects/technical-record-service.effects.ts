@@ -52,6 +52,7 @@ import {
   promoteTechRecord,
   promoteTechRecordFailure,
   promoteTechRecordSuccess,
+  retryInterceptorFailure,
   unarchiveTechRecord,
   unarchiveTechRecordFailure,
   unarchiveTechRecordSuccess,
@@ -306,21 +307,23 @@ export class TechnicalRecordServiceEffects {
         )),
     ));
 
-  // generateContingencyADRCertificate$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(generateContingencyADRCertificate),
-  //     switchMap(({
-  //       systemNumber, createdTimestamp, certificateType,
-  //     }) =>
-  //       this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
-  //         switchMap((res) => {
-  //           return this.docRetrieval.getDocument(new Map([['fileName', res.id]])).pipe(
-  //             map(() => generateADRCertificateSuccess({ id: res.id })),
-  //           );
-  //         }),
-  //         catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
-  //       )),
-  //   ));
+  generateContingencyADRCertificate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateContingencyADRCertificate),
+      switchMap(({
+        systemNumber, createdTimestamp, certificateType,
+      }) =>
+        this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
+          switchMap((res) => {
+            return this.docRetrieval.getDocument(new Map([['fileName', res.id]])).pipe(
+              map(() => generateADRCertificateSuccess({ id: res.id })),
+            );
+          }),
+          catchError(() => {
+            return of(retryInterceptorFailure({ error: 'document not retrieved' }));
+          }),
+        )),
+    ));
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {

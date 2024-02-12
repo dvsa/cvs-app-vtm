@@ -12,7 +12,15 @@
 
   <ng-container *ngIf="fileName">
     <div id="link-div">
-      <app-button id="view-button" [params]="documentParams(fileName)" [fileName]="fileName" appRetrieveDocument type="link" design="link"
+      <app-field-warning-message for="view-button" [warningMessage]="errorString"></app-field-warning-message>
+      <app-button
+        id="view-button"
+        [params]="documentParams(fileName)"
+        [fileName]="fileName"
+        appRetrieveDocument
+        [loading]="true"
+        type="link"
+        design="link"
         >View generated certificate</app-button
       >
     </div>

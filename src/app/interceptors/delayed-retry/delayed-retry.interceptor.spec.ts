@@ -1,14 +1,19 @@
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import {
-  fakeAsync, flush, TestBed, tick,
+  TestBed,
+  fakeAsync, flush,
+  tick,
 } from '@angular/core/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/index';
 import { DelayedRetryInterceptor, HTTP_RETRY_CONFIG } from './delayed-retry.interceptor';
 
 describe('DelayedRetryInterceptor', () => {
   let httpTestingController: HttpTestingController;
   let client: HttpClient;
   let interceptor: DelayedRetryInterceptor;
+  let store: MockStore;
 
   const DUMMY_ENDPOINT = 'https://www.someapi.com';
 
@@ -22,21 +27,31 @@ describe('DelayedRetryInterceptor', () => {
           useClass: DelayedRetryInterceptor,
           multi: true,
         },
+        provideMockStore({ initialState: initialAppState }),
       ],
     });
   });
 
   describe('default config', () => {
+    beforeEach(() => {
+      store = TestBed.inject(MockStore);
+    });
     it('should be created', () => {
       interceptor = TestBed.inject(DelayedRetryInterceptor);
       expect(interceptor).toBeTruthy();
-      expect(interceptor.config).toEqual({ count: 3, delay: 2000, backoff: false });
+      expect(interceptor.config).toEqual({
+        count: 3,
+        delay: 2000,
+        backoff: false,
+        whiteList: [],
+      });
     });
   });
 
   describe('no backof', () => {
     beforeEach(() => {
       TestBed.overrideProvider(HTTP_RETRY_CONFIG, { useValue: { delay: 500, count: 3, httpStatusRetry: [504] } });
+      store = TestBed.inject(MockStore);
       client = TestBed.inject(HttpClient);
       httpTestingController = TestBed.inject(HttpTestingController);
       interceptor = TestBed.inject(DelayedRetryInterceptor);

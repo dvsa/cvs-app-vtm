@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DocumentRetrievalService } from '@api/document-retrieval';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -39,6 +40,7 @@ describe('TechnicalRecordServiceEffects', () => {
   let techRecordHttpService: TechnicalRecordHttpService;
   let testScheduler: TestScheduler;
   let technicalRecordService: TechnicalRecordService;
+  let docRetrieval: DocumentRetrievalService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -49,12 +51,14 @@ describe('TechnicalRecordServiceEffects', () => {
         provideMockStore({ initialState: initialAppState }),
         { provide: UserService, useValue: { name$: of('name'), id$: of('iod') } },
         { provide: TechnicalRecordService, useValue: { updateEditingTechRecord: jest.fn() } },
+        DocumentRetrievalService,
       ],
     });
 
     effects = TestBed.inject(TechnicalRecordServiceEffects);
     techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
+    docRetrieval = TestBed.inject(DocumentRetrievalService);
   });
 
   beforeEach(() => {

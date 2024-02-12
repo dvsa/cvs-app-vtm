@@ -1,19 +1,27 @@
 import { HttpEventType } from '@angular/common/http';
 import { Directive, HostListener, Input } from '@angular/core';
 import { DocumentRetrievalService } from '@api/document-retrieval';
+import { Store } from '@ngrx/store';
 import { DocumentsService } from '@services/documents/documents.service';
+import { State } from '@store/index';
+import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import { takeWhile } from 'rxjs';
 
 @Directive({ selector: '[appRetrieveDocument][params][fileName]' })
 export class RetrieveDocumentDirective {
   @Input() params: Map<string, string> = new Map();
   @Input() fileName = '';
+  @Input() loading?: Boolean;
 
-  constructor(private documentRetrievalService: DocumentRetrievalService, private documentsService: DocumentsService) { }
+  constructor(private documentRetrievalService: DocumentRetrievalService, private documentsService: DocumentsService, private store: Store<State>) { }
 
   @HostListener('click', ['$event']) clickEvent(event: PointerEvent) {
     event.preventDefault();
     event.stopPropagation();
+
+    if (this.loading) {
+      this.store.dispatch(setSpinnerState({ showSpinner: true }));
+    }
 
     this.documentRetrievalService
       .getDocument(this.params)

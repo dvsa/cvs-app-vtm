@@ -1,10 +1,14 @@
 import {
-  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,
+  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 } from '@angular/common/http';
 import {
   Inject, Injectable, InjectionToken, Optional,
 } from '@angular/core';
-import { Observable, retry, timer } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State } from '@store/index';
+import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
+import { retryInterceptorFailure } from '@store/technical-records';
+import { Observable, map, retry, throwError, timer } from 'rxjs';
 
 export const HTTP_RETRY_CONFIG = new InjectionToken<HttpRetryConfig>('HttpRetryConfig');
 
@@ -44,16 +48,29 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
     whiteList: [],
   };
 
-  constructor(@Optional() @Inject(HTTP_RETRY_CONFIG) private retryConfig: HttpRetryConfig) {
+  constructor(@Optional() @Inject(HTTP_RETRY_CONFIG) private retryConfig: HttpRetryConfig, private store: Store<State>) {
     this.config = { ...this.defaultConfig, ...this.retryConfig };
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(
-      retry({
-        delay: (error, retryCount: number) => this.retryHandler(error, retryCount, this.config, request),
-      }),
-    );
+    return next.handle(request).pipe(retry({
+      delay: (error, retryCount: number) => {
+        try {
+          return this.retryHandler(error, retryCount, this.config, request);
+        } catch (httpError: any) {
+          return throwError(() => {
+            this.store.dispatch(setSpinnerState({ showSpinner: false }));
+            this.store.dispatch(retryInterceptorFailure(
+              { error: httpError.error },
+            ));
+            return httpError;
+          });
+        }
+      },
+    }), map((res) => {
+      this.store.dispatch(setSpinnerState({ showSpinner: false }));
+      return res;
+    }));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,7 +80,7 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
     } = config;
     const { status } = error;
 
-    if (whiteList.some((url) => request.url.includes(url))) {
+    if (retryCount < count && whiteList.some((url) => request.url.includes(url))) {
       return timer(backoff ? delay * retryCount : delay);
     }
 
@@ -74,7 +91,6 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
     if (retryCount >= count) {
       throw new Error('Request timed out. Check connectivity and try again.');
     }
-
     return timer(backoff ? delay * retryCount : delay);
   }
 }
