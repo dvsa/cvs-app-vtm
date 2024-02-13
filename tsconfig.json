@@ -16,12 +16,16 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "importHelpers": true,
-    "target": "es2017",
+    "target": "ES2022",
     "allowSyntheticDefaultImports": true,
     "module": "es2020",
     "lib": [
       "es2020",
       "dom"
+    ],
+    "types": [
+      "node", 
+      "jest"
     ],
     "paths": {
       "@api/*": ["src/app/api/*"],
