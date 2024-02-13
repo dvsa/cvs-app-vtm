@@ -41,12 +41,13 @@ export class AdrGenerateCertTestComponent extends CustomFormControlComponent {
       this.systemNumber = (record as TechRecordGETHGV).systemNumber;
       this.createdTimestamp = (record as TechRecordGETHGV).createdTimestamp;
     });
+
     this.actions$.pipe(ofType(generateADRCertificateSuccess), takeUntil(this.destroy$)).subscribe(({ id }) => {
       this.fileName = id;
       this.cdr.detectChanges();
     });
     this.actions$.pipe(ofType(retryInterceptorFailure), takeUntil(this.destroy$)).subscribe(() => {
-      this.errorString = 'Try link again or "Enter 000000 in Certificate Number and then press "Pass And Issue Documents Centrally" on TAS';
+      this.errorString = 'Try link again or Enter 000000 in Certificate Number and then press "Pass And Issue Documents Centrally" on TAS';
       this.cdr.detectChanges();
     });
 
@@ -68,7 +69,7 @@ export class AdrGenerateCertTestComponent extends CustomFormControlComponent {
       sortedTests = (record as TechRecordGETHGV | TechRecordGETTRL).techRecord_adrPassCertificateDetails?.sort((a, b) =>
         a.generatedTimestamp && b.generatedTimestamp ? new Date(b.generatedTimestamp).getTime() - new Date(a.generatedTimestamp).getTime() : 0);
     });
-    return sortedTests
+    return (sortedTests && sortedTests?.length > 0)
       ? `An ADR certificate was last generated on ${new Date(sortedTests[0].generatedTimestamp).toLocaleDateString('en-UK')}`
       : 'There are no previous ADR certificates for this vehicle';
   }

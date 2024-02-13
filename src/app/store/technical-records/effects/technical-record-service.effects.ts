@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DocumentRetrievalService } from '@api/document-retrieval';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -18,7 +17,7 @@ import { cloneDeep, merge } from 'lodash';
 import {
   catchError, concatMap,
   map, mergeMap, of, switchMap, tap,
-  withLatestFrom
+  withLatestFrom,
 } from 'rxjs';
 import {
   amendVin,
@@ -57,7 +56,7 @@ import {
   unarchiveTechRecordSuccess,
   updateTechRecord,
   updateTechRecordFailure,
-  updateTechRecordSuccess
+  updateTechRecordSuccess,
 } from '../actions/technical-record-service.actions';
 import { editingTechRecord, selectTechRecord } from '../selectors/technical-record-service.selectors';
 
@@ -71,7 +70,6 @@ export class TechnicalRecordServiceEffects {
     private userService: UserService,
     private store: Store<State>,
     private dfs: DynamicFormService,
-    private docRetrieval: DocumentRetrievalService,
   ) { }
 
   getTechnicalRecordHistory$ = createEffect(() =>
@@ -120,7 +118,7 @@ export class TechnicalRecordServiceEffects {
                 error: `Unable to create vehicle with VIN ${vehicle.vin}${error.error?.errors
                   ? ` because:${(error.error.errors?.map((e: string) => `\n${e}`) as string[]).join()}`
                   : ''
-                  }`,
+                }`,
               }),
             )),
         );

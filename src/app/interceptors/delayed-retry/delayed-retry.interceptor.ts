@@ -1,5 +1,5 @@
 import {
-  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
+  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,
 } from '@angular/common/http';
 import {
   Inject, Injectable, InjectionToken, Optional,
@@ -12,6 +12,7 @@ import {
   Observable,
   map,
   retry,
+  tap,
   throwError,
   timer,
 } from 'rxjs';
@@ -73,9 +74,6 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
           });
         }
       },
-    }), map((res) => {
-      this.store.dispatch(setSpinnerState({ showSpinner: false }));
-      return res;
     }));
   }
 

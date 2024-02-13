@@ -32,6 +32,7 @@ export class RetrieveDocumentDirective {
             break;
           case HttpEventType.Response:
             this.documentsService.openDocumentFromResponse(this.fileName, response.body);
+            this.store.dispatch(setSpinnerState({ showSpinner: false }));
             break;
           default:
             break;

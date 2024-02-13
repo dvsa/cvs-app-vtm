@@ -5,15 +5,16 @@ import {
   fakeAsync, flush,
   tick,
 } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/index';
+import { State, initialAppState } from '@store/index';
 import { DelayedRetryInterceptor, HTTP_RETRY_CONFIG } from './delayed-retry.interceptor';
 
 describe('DelayedRetryInterceptor', () => {
   let httpTestingController: HttpTestingController;
   let client: HttpClient;
   let interceptor: DelayedRetryInterceptor;
-  let store: MockStore;
+  let store: Store<State>;
 
   const DUMMY_ENDPOINT = 'https://www.someapi.com';
 
