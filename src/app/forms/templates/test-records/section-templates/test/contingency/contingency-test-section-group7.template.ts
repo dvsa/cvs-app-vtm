@@ -1,4 +1,4 @@
-import { AdrGenerateCertTestComponent } from '@forms/components/adr-generate-cert-test/adr-generate-cert-test.component';
+import { ContingencyAdrGenerateCertComponent } from '@forms/components/contingency-adr-generate-cert/contingency-adr-generate-cert.component';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
@@ -89,7 +89,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.CUSTOM,
-              editComponent: AdrGenerateCertTestComponent,
+              editComponent: ContingencyAdrGenerateCertComponent,
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,

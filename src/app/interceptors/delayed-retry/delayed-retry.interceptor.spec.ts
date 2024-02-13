@@ -5,16 +5,14 @@ import {
   fakeAsync, flush,
   tick,
 } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/index';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/index';
 import { DelayedRetryInterceptor, HTTP_RETRY_CONFIG } from './delayed-retry.interceptor';
 
 describe('DelayedRetryInterceptor', () => {
   let httpTestingController: HttpTestingController;
   let client: HttpClient;
   let interceptor: DelayedRetryInterceptor;
-  let store: Store<State>;
 
   const DUMMY_ENDPOINT = 'https://www.someapi.com';
 
@@ -34,9 +32,6 @@ describe('DelayedRetryInterceptor', () => {
   });
 
   describe('default config', () => {
-    beforeEach(() => {
-      store = TestBed.inject(MockStore);
-    });
     it('should be created', () => {
       interceptor = TestBed.inject(DelayedRetryInterceptor);
       expect(interceptor).toBeTruthy();
@@ -52,7 +47,6 @@ describe('DelayedRetryInterceptor', () => {
   describe('no backof', () => {
     beforeEach(() => {
       TestBed.overrideProvider(HTTP_RETRY_CONFIG, { useValue: { delay: 500, count: 3, httpStatusRetry: [504] } });
-      store = TestBed.inject(MockStore);
       client = TestBed.inject(HttpClient);
       httpTestingController = TestBed.inject(HttpTestingController);
       interceptor = TestBed.inject(DelayedRetryInterceptor);

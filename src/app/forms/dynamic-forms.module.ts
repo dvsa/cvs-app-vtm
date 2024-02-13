@@ -13,7 +13,7 @@ import {
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
-import { AdrGenerateCertTestComponent } from './components/adr-generate-cert-test/adr-generate-cert-test.component';
+import { ContingencyAdrGenerateCertComponent } from './components/contingency-adr-generate-cert/contingency-adr-generate-cert.component';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
@@ -136,7 +136,7 @@ import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-deta
     AdrTankStatementUnNumberViewComponent,
     AdrCertificateHistoryComponent,
     AdrTankDetailsM145ViewComponent,
-    AdrGenerateCertTestComponent,
+    ContingencyAdrGenerateCertComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

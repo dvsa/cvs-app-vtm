@@ -10,9 +10,7 @@ import { retryInterceptorFailure } from '@store/retry-interceptor/actions/retry-
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
 import {
   Observable,
-  map,
   retry,
-  tap,
   throwError,
   timer,
 } from 'rxjs';
@@ -64,11 +62,11 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
       delay: (error, retryCount: number) => {
         try {
           return this.retryHandler(error, retryCount, this.config, request);
-        } catch (httpError: any) {
+        } catch (httpError: unknown) {
           return throwError(() => {
             this.store.dispatch(setSpinnerState({ showSpinner: false }));
             this.store.dispatch(retryInterceptorFailure(
-              { error: httpError.error },
+              { error },
             ));
             return httpError;
           });

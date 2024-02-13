@@ -9,9 +9,9 @@ import { Action, Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State, initialAppState } from '@store/index';
-import { ReplaySubject, of } from 'rxjs';
-import { AdrGenerateCertTestComponent } from './adr-generate-cert-test.component';
 import { generateADRCertificate } from '@store/technical-records';
+import { ReplaySubject, of } from 'rxjs';
+import { ContingencyAdrGenerateCertComponent } from './contingency-adr-generate-cert.component';
 
 const mockRecord = {
   systemNumber: 'sysNum',
@@ -46,14 +46,14 @@ const mockRecord = {
 } as unknown as V3TechRecordModel;
 
 describe('AdrGenerateCertTestComponent', () => {
-  let component: AdrGenerateCertTestComponent;
-  let fixture: ComponentFixture<AdrGenerateCertTestComponent>;
+  let component: ContingencyAdrGenerateCertComponent;
+  let fixture: ComponentFixture<ContingencyAdrGenerateCertComponent>;
   let store: Store<State>;
   let techRecordService: TechnicalRecordService;
   let actions$: ReplaySubject<Action>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdrGenerateCertTestComponent],
+      declarations: [ContingencyAdrGenerateCertComponent],
       providers: [
         provideMockStore({ initialState: initialAppState }),
         { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
@@ -65,12 +65,12 @@ describe('AdrGenerateCertTestComponent', () => {
     }).compileComponents();
   });
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdrGenerateCertTestComponent);
+    fixture = TestBed.createComponent(ContingencyAdrGenerateCertComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     store = TestBed.inject(Store);
     techRecordService = TestBed.inject(TechnicalRecordService);
-    fixture = TestBed.createComponent(AdrGenerateCertTestComponent);
+    fixture = TestBed.createComponent(ContingencyAdrGenerateCertComponent);
     component = fixture.componentInstance;
   });
 

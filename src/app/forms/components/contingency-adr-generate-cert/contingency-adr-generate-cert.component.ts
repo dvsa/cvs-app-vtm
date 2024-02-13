@@ -20,11 +20,11 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'app-adr-generate-cert-test',
-  templateUrl: './adr-generate-cert-test.component.html',
-  styleUrls: ['./adr-generate-cert-test.component.scss'],
+  selector: 'app-contingency-adr-generate-cert',
+  templateUrl: './contingency-adr-generate-cert.component.html',
+  styleUrls: ['./contingency-adr-generate-cert.component.scss'],
 })
-export class AdrGenerateCertTestComponent extends CustomFormControlComponent {
+export class ContingencyAdrGenerateCertComponent extends CustomFormControlComponent {
   systemNumber?: string;
   createdTimestamp?: string;
   store = inject(Store<State>);
@@ -46,15 +46,10 @@ export class AdrGenerateCertTestComponent extends CustomFormControlComponent {
       this.fileName = id;
       this.cdr.detectChanges();
     });
+
     this.actions$.pipe(ofType(retryInterceptorFailure), takeUntil(this.destroy$)).subscribe(() => {
       this.errorString = 'Try link again or Enter 000000 in Certificate Number and then press "Pass And Issue Documents Centrally" on TAS';
       this.cdr.detectChanges();
-    });
-
-    this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe((loading) => {
-      if (loading) {
-        this.errorString = null;
-      }
     });
   }
 
