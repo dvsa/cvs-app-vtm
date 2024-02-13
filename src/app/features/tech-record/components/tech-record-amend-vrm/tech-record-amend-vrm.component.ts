@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren,
+  Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject,
 } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,6 +24,15 @@ import { Subject, take, takeUntil } from 'rxjs';
   styleUrls: ['./tech-record-amend-vrm.component.scss'],
 })
 export class AmendVrmComponent implements OnDestroy, OnInit {
+
+  actions$ = inject(Actions);
+  dfs = inject(DynamicFormService);
+  globalErrorService = inject(GlobalErrorService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  store = inject(Store<TechnicalRecordServiceState>);
+  technicalRecordService = inject(TechnicalRecordService);
+
   techRecord?: VehiclesOtherThan<'trl'>;
   makeAndModel?: string;
   isCherishedTransfer = false;
@@ -77,16 +86,6 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
   private destroy$ = new Subject<void>();
-
-  constructor(
-    private actions$: Actions,
-    public dfs: DynamicFormService,
-    private globalErrorService: GlobalErrorService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService,
-  ) {}
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {

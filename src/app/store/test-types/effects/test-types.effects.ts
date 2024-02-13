@@ -1,16 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Roles } from '@models/roles.enum';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { UserService } from '@services/user-service/user-service';
 import {
-  catchError, switchMap, map, of,
+  catchError,
+  map, of,
+  switchMap,
 } from 'rxjs';
 import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '../actions/test-types.actions';
 
 @Injectable()
 export class TestTypeEffects {
+  actions$ = inject(Actions);
+  testTypeService = inject(TestTypesService);
+  userService = inject(UserService);
+
   fetchTestTypeTaxonomy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchTestTypes),
@@ -24,6 +30,4 @@ export class TestTypeEffects {
         );
       }),
     ));
-
-  constructor(private actions$: Actions, private testTypeService: TestTypesService, private userService: UserService) { }
 }

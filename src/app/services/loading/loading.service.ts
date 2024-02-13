@@ -1,29 +1,29 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { defectsLoadingState } from '@store/defects';
+import { referenceDataLoadingState } from '@store/reference-data';
 import { getSpinner } from '@store/spinner/selectors/spinner.selectors';
+import { selectTechRecordSearchLoadingState } from '@store/tech-record-search/selector/tech-record-search.selector';
 import { technicalRecordsLoadingState } from '@store/technical-records';
 import { testResultLoadingState } from '@store/test-records';
-import { selectTestTypesLoadingState } from '@store/test-types/selectors/test-types.selectors';
 import { testStationsLoadingState } from '@store/test-stations';
-import { defectsLoadingState } from '@store/defects';
-import { combineLatest, map, Observable } from 'rxjs';
-import { referenceDataLoadingState } from '@store/reference-data';
-import { selectTechRecordSearchLoadingState } from '@store/tech-record-search/selector/tech-record-search.selector';
+import { selectTestTypesLoadingState } from '@store/test-types/selectors/test-types.selectors';
+import { combineLatest, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoadingService {
-  globalLoadingState$: Observable<boolean> = this.store.pipe(select(getSpinner));
-  testResultLoadingState$: Observable<boolean> = this.store.pipe(select(testResultLoadingState));
-  techRecordsLoadingState$: Observable<boolean> = this.store.pipe(select(technicalRecordsLoadingState));
-  testTypesLoadingState$: Observable<boolean> = this.store.pipe(select(selectTestTypesLoadingState));
-  testStationsLoadingState$: Observable<boolean> = this.store.pipe(select(testStationsLoadingState));
-  defectsLoadingState$: Observable<boolean> = this.store.pipe(select(defectsLoadingState));
-  referenceDataLoadingState$: Observable<boolean> = this.store.pipe(select(referenceDataLoadingState));
-  techRecordSearchLoadingState$: Observable<boolean> = this.store.pipe(select(selectTechRecordSearchLoadingState));
+  store = inject(Store);
 
-  constructor(private store: Store) {}
+  globalLoadingState$ = this.store.pipe(select(getSpinner));
+  testResultLoadingState$ = this.store.pipe(select(testResultLoadingState));
+  techRecordsLoadingState$ = this.store.pipe(select(technicalRecordsLoadingState));
+  testTypesLoadingState$ = this.store.pipe(select(selectTestTypesLoadingState));
+  testStationsLoadingState$ = this.store.pipe(select(testStationsLoadingState));
+  defectsLoadingState$ = this.store.pipe(select(defectsLoadingState));
+  referenceDataLoadingState$ = this.store.pipe(select(referenceDataLoadingState));
+  techRecordSearchLoadingState$ = this.store.pipe(select(selectTechRecordSearchLoadingState));
 
   private get reduceLoadingStates$() {
     return combineLatest([
@@ -38,7 +38,7 @@ export class LoadingService {
     ]).pipe(map((states) => states.some((b) => b)));
   }
 
-  get showSpinner$(): Observable<boolean> {
+  get showSpinner$() {
     return this.reduceLoadingStates$;
   }
 }

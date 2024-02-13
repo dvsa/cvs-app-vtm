@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { DefectsService } from '@services/defects/defects.service';
 import {
@@ -7,14 +7,17 @@ import {
 import {
   fetchDefect,
   fetchDefectFailed,
+  fetchDefectSuccess,
   fetchDefects,
   fetchDefectsFailed,
   fetchDefectsSuccess,
-  fetchDefectSuccess,
 } from '../actions/defects.actions';
 
 @Injectable()
 export class DefectsEffects {
+  actions$ = inject(Actions);
+  defectsService = inject(DefectsService);
+
   fetchDefects$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchDefects),
@@ -34,6 +37,4 @@ export class DefectsEffects {
           catchError((e) => of(fetchDefectFailed({ error: e.message }))),
         )),
     ));
-
-  constructor(private actions$: Actions, private defectsService: DefectsService) {}
 }

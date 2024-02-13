@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
@@ -46,6 +46,14 @@ import { selectedTestResultState, testResultInEdit } from '../selectors/test-rec
 
 @Injectable()
 export class TestResultsEffects {
+  actions$ = inject(Actions);
+  testRecordsService = inject(TestRecordsService);
+  techRecordHttpService = inject(TechnicalRecordHttpService);
+  store = inject(Store<State>);
+  router = inject(Router);
+  userService = inject(UserService);
+  dfs = inject(DynamicFormService);
+
   fetchTestResultsBySystemNumber$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchTestResultsBySystemNumber),
@@ -270,14 +278,4 @@ export class TestResultsEffects {
     filter(Boolean),
     switchMap((techRecord) => this.router.navigate(['tech-records', techRecord.systemNumber, techRecord.createdTimestamp])),
   ), { dispatch: false });
-
-  constructor(
-    private actions$: Actions,
-    private testRecordsService: TestRecordsService,
-    private techRecordHttpService: TechnicalRecordHttpService,
-    private store: Store<State>,
-    private router: Router,
-    private userService: UserService,
-    private dfs: DynamicFormService,
-  ) { }
 }
