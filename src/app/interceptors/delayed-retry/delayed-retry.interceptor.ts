@@ -6,9 +6,15 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
+import { retryInterceptorFailure } from '@store/retry-interceptor/actions/retry-interceptor.actions';
 import { setSpinnerState } from '@store/spinner/actions/spinner.actions';
-import { retryInterceptorFailure } from '@store/technical-records';
-import { Observable, map, retry, throwError, timer } from 'rxjs';
+import {
+  Observable,
+  map,
+  retry,
+  throwError,
+  timer,
+} from 'rxjs';
 
 export const HTTP_RETRY_CONFIG = new InjectionToken<HttpRetryConfig>('HttpRetryConfig');
 

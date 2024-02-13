@@ -10,7 +10,8 @@ import { Store } from '@ngrx/store';
 import { LoadingService } from '@services/loading/loading.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
-import { generateADRCertificateSuccess, generateContingencyADRCertificate, retryInterceptorFailure } from '@store/technical-records';
+import { retryInterceptorFailure } from '@store/retry-interceptor/actions/retry-interceptor.actions';
+import { generateADRCertificate, generateADRCertificateSuccess } from '@store/technical-records';
 import {
   Subject,
   debounceTime,
@@ -31,7 +32,7 @@ export class AdrGenerateCertTestComponent extends CustomFormControlComponent {
   actions$ = inject(Actions);
   loading = inject(LoadingService);
   fileName?: string;
-  errorString?: string;
+  errorString?: string | null;
 
   private destroy$ = new Subject<void>();
 
@@ -50,6 +51,9 @@ export class AdrGenerateCertTestComponent extends CustomFormControlComponent {
     });
 
     this.loading.showSpinner$.pipe(takeUntil(this.destroy$), debounceTime(10)).subscribe((loading) => {
+      if (loading) {
+        this.errorString = null;
+      }
     });
   }
 
@@ -75,7 +79,7 @@ export class AdrGenerateCertTestComponent extends CustomFormControlComponent {
 
   handleSubmit(): void {
     if (this.store) {
-      this.store.dispatch(generateContingencyADRCertificate(
+      this.store.dispatch(generateADRCertificate(
         {
           systemNumber: this.systemNumber ?? '',
           createdTimestamp: this.createdTimestamp ?? '',

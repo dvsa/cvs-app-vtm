@@ -12,7 +12,7 @@
 
   <ng-container *ngIf="fileName">
     <div id="link-div">
-      <app-field-warning-message for="view-button" [warningMessage]="errorString"></app-field-warning-message>
+      <app-field-error-message for="view-button" [error]="errorString"></app-field-error-message>
       <app-button
         id="view-button"
         [params]="documentParams(fileName)"

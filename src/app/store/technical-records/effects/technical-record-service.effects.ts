@@ -16,8 +16,9 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
 import {
-  catchError, concatMap, delay, map, mergeMap, of, switchMap, tap,
-  withLatestFrom,
+  catchError, concatMap,
+  map, mergeMap, of, switchMap, tap,
+  withLatestFrom
 } from 'rxjs';
 import {
   amendVin,
@@ -36,7 +37,6 @@ import {
   generateADRCertificate,
   generateADRCertificateFailure,
   generateADRCertificateSuccess,
-  generateContingencyADRCertificate,
   generateLetter,
   generateLetterFailure,
   generateLetterSuccess,
@@ -52,7 +52,6 @@ import {
   promoteTechRecord,
   promoteTechRecordFailure,
   promoteTechRecordSuccess,
-  retryInterceptorFailure,
   unarchiveTechRecord,
   unarchiveTechRecordFailure,
   unarchiveTechRecordSuccess,
@@ -304,24 +303,6 @@ export class TechnicalRecordServiceEffects {
         this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
           map((res) => generateADRCertificateSuccess({ id: res.id })),
           catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
-        )),
-    ));
-
-  generateContingencyADRCertificate$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(generateContingencyADRCertificate),
-      switchMap(({
-        systemNumber, createdTimestamp, certificateType,
-      }) =>
-        this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
-          switchMap((res) => {
-            return this.docRetrieval.getDocument(new Map([['fileName', res.id]])).pipe(
-              map(() => generateADRCertificateSuccess({ id: res.id })),
-            );
-          }),
-          catchError(() => {
-            return of(retryInterceptorFailure({ error: 'document not retrieved' }));
-          }),
         )),
     ));
 
