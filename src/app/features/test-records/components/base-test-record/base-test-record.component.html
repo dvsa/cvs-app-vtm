@@ -25,6 +25,18 @@
         ></app-defects>
       </app-accordion>
 
+      <app-accordion *ngSwitchCase="'requiredStandards'" [id]="template.name" [title]="template.label">
+        <app-defects
+          class="section"
+          [id]="template.name"
+          [isEditing]="isEditing"
+          [defects]="getDefects$(testResult.vehicleType) | async"
+          [template]="template"
+          [data]="testResult"
+          (formChange)="handleFormChange($event)"
+        ></app-defects>
+      </app-accordion>
+
       <app-accordion *ngSwitchCase="'customDefectsSection'" [id]="template.name" [title]="template.label">
         <app-custom-defects
           class="section"
