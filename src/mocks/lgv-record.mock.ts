@@ -1,11 +1,11 @@
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createMock } from 'ts-auto-mock';
+import { faker } from '@faker-js/faker';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
 
-export const createMockLgv = (systemNumber: number): TechRecordType<'lgv'> => createMock<TechRecordType<'lgv'>>({
+export const createMockLgv = (systemNumber: number): TechRecordType<'lgv'> => ({
   systemNumber: 'LGV',
   vin: `XMGDE04FS0H0${12344 + systemNumber + 1}`,
   secondaryVrms: null,
@@ -20,4 +20,5 @@ export const createMockLgv = (systemNumber: number): TechRecordType<'lgv'> => cr
   techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
   techRecord_euVehicleCategory: EUVehicleCategory.N1,
   techRecord_reasonForCreation: 'Brake Failure',
+  techRecord_createdById: faker.string.uuid(),
 });

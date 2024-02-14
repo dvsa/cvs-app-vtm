@@ -12,7 +12,6 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { initialAppState, State } from '@store/.';
 import { selectedTestSortedAmendmentHistory } from '@store/test-records';
-import { createMock, createMockList } from 'ts-auto-mock';
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
 describe('TestAmendmentHistoryComponent', () => {
@@ -42,16 +41,16 @@ describe('TestAmendmentHistoryComponent', () => {
 
   describe('Created By', () => {
     it('should return testerName entry if createdByName does not exist', () => {
-      const data = mockTestResultArchived();
+      const data: Partial<TestResultModel> = { ...mockTestResultArchived() };
       delete data.createdByName;
-      const name = component.getCreatedByName(data);
+      const name = component.getCreatedByName(data as TestResultModel);
 
       expect(name).toBe(data.testerName);
     });
 
     it('should return testerName entry if createdByName is empty', () => {
       const data = { ...mockTestResultArchived(), createdByName: '' };
-      const name = component.getCreatedByName(data);
+      const name = component.getCreatedByName(data as TestResultModel);
 
       expect(name).toBe(data.testerName);
     });
@@ -79,14 +78,13 @@ describe('TestAmendmentHistoryComponent', () => {
 
     describe('Table sorting', () => {
       beforeEach(() => {
-        component.testRecord = createMock<TestResultModel>({
+        component.testRecord = mockTestResult(0, {
           createdAt: '2020-01-01T00:00:00.000Z',
           reasonForCreation: 'reasonForCreation',
           createdByName: 'Tester Man',
-          testHistory: createMockList<TestResultModel>(1, (i) =>
-            createMock<TestResultModel>({
-              createdAt: new Date(`2020-01-0${i + 1}`).toISOString(),
-            })),
+          testHistory: [mockTestResult(0, {
+            createdAt: new Date('2020-01-01').toISOString(),
+          })],
         });
         fixture.detectChanges();
       });

@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { mockTestResult } from '@mocks/mock-test-result';
+import { mockTestType } from '@mocks/mock-test-types';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { SharedModule } from '@shared/shared.module';
-import { createMock, createMockList } from 'ts-auto-mock';
 import { TestRecordSummaryComponent } from './test-record-summary.component';
 
 describe('TestRecordSummaryComponent', () => {
@@ -40,7 +41,7 @@ describe('TestRecordSummaryComponent', () => {
   });
 
   it('should show table if records found', () => {
-    component.testResults = [createMock<TestResultModel>()];
+    component.testResults = [mockTestResult(0)];
     fixture.detectChanges();
 
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
@@ -52,11 +53,11 @@ describe('TestRecordSummaryComponent', () => {
 
   it('should concatinate multiple test types', () => {
     const testTypeNames = component.getTestTypeName(
-      createMock<TestResultModel>({
-        testTypes: createMockList<TestType>(2, () =>
-          createMock<TestType>({
-            testTypeName: 'name',
-          })),
+      mockTestResult(0, {
+        testTypes: [
+          mockTestType({ testTypeName: 'name' }),
+          mockTestType({ testTypeName: 'name' }),
+        ],
       }),
     );
     expect(testTypeNames).toBe('name,name');
@@ -64,11 +65,11 @@ describe('TestRecordSummaryComponent', () => {
 
   it('should concatinate multiple test results', () => {
     const testTypeResults = component.getTestTypeResults(
-      createMock<TestResultModel>({
-        testTypes: createMockList<TestType>(2, () =>
-          createMock<TestType>({
-            testResult: resultOfTestEnum.pass,
-          })),
+      mockTestResult(0, {
+        testTypes: [
+          mockTestType({ testResult: resultOfTestEnum.pass }),
+          mockTestType({ testResult: resultOfTestEnum.pass }),
+        ],
       }),
     );
     expect(testTypeResults).toBe('pass,pass');

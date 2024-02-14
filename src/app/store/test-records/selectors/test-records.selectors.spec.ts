@@ -1,22 +1,21 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Params } from '@angular/router';
-import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { mockDefect } from '@mocks/mock-defects';
+import { mockTestType } from '@mocks/mock-test-types';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TestType } from '@models/test-types/test-type.model';
-import { createMock, createMockList } from 'ts-auto-mock';
-import { mockTestResult } from '../../../../mocks/mock-test-result';
-import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
+import { mockTestResult, mockTestTypeList } from '../../../../mocks/mock-test-result';
+import { TestResultsState, initialTestResultsState } from '../reducers/test-records.reducer';
 import {
   isTestTypeKeySame,
   selectAllTestResults,
   selectAmendedDefectData,
   selectDefectData,
-  selectedAmendedTestResultState,
-  selectedTestResultState,
-  selectedTestSortedAmendmentHistory,
   selectTestResultIds,
   selectTestResultsEntities,
   selectTestResultsTotal,
+  selectedAmendedTestResultState,
+  selectedTestResultState,
+  selectedTestSortedAmendmentHistory,
   testResultLoadingState,
 } from './test-records.selectors';
 
@@ -37,9 +36,9 @@ describe('Test Results Selectors', () => {
         ...initialTestResultsState,
         ids: ['testResult1'],
         entities: {
-          testResult1: createMock<TestResultModel>({
+          testResult1: mockTestResult(0, {
             testResultId: 'testResult1',
-            testTypes: [createMock<TestType>({ testNumber: '1' })],
+            testTypes: [mockTestType({ testNumber: '1' })],
           }),
         },
       };
@@ -91,17 +90,17 @@ describe('Test Results Selectors', () => {
     beforeEach(() => {
       const date = new Date('2022-01-02');
       mock = mockTestResult();
-      mock.testHistory = mock.testHistory?.concat(...mock.testHistory);
-      mock.testHistory![0].createdAt = undefined;
-      mock.testHistory![1].createdAt = date.toISOString();
-      mock.testHistory![2].createdAt = date.toISOString();
-      mock.testHistory![3].createdAt = undefined;
-      mock.testHistory![4].createdAt = new Date(date.setDate(date.getDate() - 1)).toISOString();
-      mock.testHistory![5].createdAt = new Date(date.setDate(date.getDate() + 1)).toISOString();
-      mock.testHistory![6].createdAt = new Date(date.setDate(date.getDate() - 1)).toISOString();
-      mock.testHistory![7].createdAt = undefined;
-      mock.testHistory![8].createdAt = date.toISOString();
-      mock.testHistory![9].createdAt = date.toISOString();
+      mock.testHistory = new Array(10).fill(0).map((_, i) => mockTestResult(i));
+      mock.testHistory[0].createdAt = undefined;
+      mock.testHistory[1].createdAt = date.toISOString();
+      mock.testHistory[2].createdAt = date.toISOString();
+      mock.testHistory[3].createdAt = undefined;
+      mock.testHistory[4].createdAt = new Date(date.setDate(date.getDate() - 1)).toISOString();
+      mock.testHistory[5].createdAt = new Date(date.setDate(date.getDate() + 1)).toISOString();
+      mock.testHistory[6].createdAt = new Date(date.setDate(date.getDate() - 1)).toISOString();
+      mock.testHistory[7].createdAt = undefined;
+      mock.testHistory[8].createdAt = date.toISOString();
+      mock.testHistory[9].createdAt = date.toISOString();
     });
 
     it('should sort the test history', () => {
@@ -126,11 +125,11 @@ describe('Test Results Selectors', () => {
   });
 
   describe('selectedAmendedTestResultState', () => {
-    const testResult = createMock<TestResultModel>({
-      testHistory: createMockList<TestResultModel>(2, (i) =>
-        createMock<TestResultModel>({
+    const testResult = mockTestResult(0, {
+      testHistory: new Array(2).fill(0).map((_, i) =>
+        mockTestResult(0, {
           createdAt: `2020-01-01T00:0${i}:00.000Z`,
-          testTypes: createMockList<TestType>(1, (j) => createMock<TestType>({ testTypeId: `${i}${j}`, testNumber: 'ABC00' })),
+          testTypes: mockTestTypeList(1, { testNumber: 'ABC00' }),
         })),
     });
 
@@ -158,14 +157,10 @@ describe('Test Results Selectors', () => {
   });
 
   describe('selectAmendedDefectData', () => {
-    const amendedTestResultState = createMock<TestResultModel>({
-      testTypes: createMockList<TestType>(1, () =>
-        createMock<TestType>({
-          defects: createMockList<TestResultDefect>(1, (i) =>
-            createMock<TestResultDefect>({
-              imNumber: i,
-            })),
-        })),
+    const amendedTestResultState = mockTestResult(0, {
+      testTypes: [mockTestType({
+        defects: [mockDefect(0, { imNumber: 1 })],
+      })],
     });
 
     it('should return defect array from first testType in testResult', () => {

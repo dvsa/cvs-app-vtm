@@ -17,7 +17,12 @@ describe('TechRecordAmendReasonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordAmendReasonComponent],
-      imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule, StoreModule.forRoot({})],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: 'test-reason', component: jest.fn() }]),
+        DynamicFormsModule,
+        ReactiveFormsModule,
+        StoreModule.forRoot({}),
+      ],
       providers: [GlobalErrorService],
     }).compileComponents();
 
@@ -62,6 +67,7 @@ describe('TechRecordAmendReasonComponent', () => {
 
     it('should set errors when the form is invalid', () => {
       const setErrorsSpy = jest.spyOn(errorsService, 'setErrors').mockImplementation();
+      component.form.get('reason')?.setValue(undefined);
 
       fixture.debugElement.query(By.css('#submit')).nativeElement.click();
 

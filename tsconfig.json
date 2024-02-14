@@ -38,10 +38,7 @@
       "@store/*": ["src/app/store/*"],
       "@shared/*": ["src/app/shared/*"],
       "@directives/*": ["src/app/directives/*"]
-    },
-    "plugins": [
-      { "transform": "ts-auto-mock/transformer", "cacheBetweenTests": false }
-    ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
