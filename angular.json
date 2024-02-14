@@ -24,7 +24,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "outputPath": "dist/cvs-app-vtm",
             "index": "src/index.html",
@@ -42,15 +42,7 @@
                 "output": "./assets/"
               }
             ],
-            "styles": [
-              "src/global-styles.scss"
-            ],
-            "scripts": [],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "./node_modules/govuk-frontend/govuk/all"
-              ]
-            },
+            "styles": ["src/global-styles.scss"],
             "allowedCommonJsDependencies": ["validate-govuk-date"]
           },
           "configurations": {
