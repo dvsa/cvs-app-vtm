@@ -17,6 +17,7 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { ContingencyAdrGenerateCertComponent } from './components/contingency-adr-generate-cert/contingency-adr-generate-cert.component';
 import { DateComponent } from './components/date/date.component';
 import { FocusNextDirective } from './components/date/focus-next.directive';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
@@ -137,6 +138,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     AdrTankStatementUnNumberViewComponent,
     AdrCertificateHistoryComponent,
     AdrTankDetailsM145ViewComponent,
+    ContingencyAdrGenerateCertComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
