@@ -140,11 +140,11 @@ export class TechnicalRecordHttpService {
     return this.http.post<TechRecordType<'get'>>(url, body, { responseType: 'json' });
   }
 
-  generateADRCertificate$(systemNumber: string, createdTimestamp: string, certificateType: string): Observable<Object> {
+  generateADRCertificate$(systemNumber: string, createdTimestamp: string, certificateType: string): Observable<{ message: string, id: string }> {
     const url = `${environment.VTM_API_URI}/v3/technical-records/adrCertificate/${systemNumber}/${createdTimestamp}`;
 
     const body = { certificateType };
 
-    return this.http.post(url, body, { responseType: 'json' });
+    return this.http.post<{ message: string, id: string }>(url, body, { responseType: 'json' });
   }
 }

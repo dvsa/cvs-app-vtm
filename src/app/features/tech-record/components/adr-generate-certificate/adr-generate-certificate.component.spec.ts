@@ -102,7 +102,7 @@ describe('AdrGenerateCertificateComponent', () => {
 
         component.handleSubmit();
 
-        actions$.next(generateADRCertificateSuccess());
+        actions$.next(generateADRCertificateSuccess({ id: '' }));
         tick();
 
         expect(navigateBackSpy).toHaveBeenCalled();

@@ -51,10 +51,10 @@ describe('TechnicalRecordServiceEffects', () => {
         { provide: TechnicalRecordService, useValue: { updateEditingTechRecord: jest.fn() } },
       ],
     });
-
     effects = TestBed.inject(TechnicalRecordServiceEffects);
     techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
+
   });
 
   beforeEach(() => {
