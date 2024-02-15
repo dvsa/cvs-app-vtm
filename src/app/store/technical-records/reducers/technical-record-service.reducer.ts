@@ -39,6 +39,7 @@ import {
   generateADRCertificate,
   generateADRCertificateFailure,
   generateADRCertificateSuccess,
+  generateContingencyADRCertificate,
   generateLetter,
   generateLetterFailure,
   generateLetterSuccess,
@@ -139,6 +140,7 @@ export const vehicleTechRecordReducer = createReducer(
   on(generateLetterFailure, failureArgs),
 
   on(generateADRCertificate, defaultArgs),
+  on(generateContingencyADRCertificate, defaultArgs),
   on(generateADRCertificateSuccess, (state) => ({ ...state, editingTechRecord: undefined, loading: false })),
   on(generateADRCertificateFailure, failureArgs),
 

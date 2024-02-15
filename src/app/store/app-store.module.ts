@@ -16,6 +16,7 @@ import { TestStationsStateModule } from './test-stations/test-stations-state.mod
 import { TestTypesStateModule } from './test-types/test-types.module';
 import { UserStateModule } from './user/user-state.module';
 import { GlobalWarningStateModule } from './global-warning/global-warning-state.module';
+import { RetryInterceptorStateModule } from './retry-interceptor/retry-interceptor.module';
 
 @NgModule({
   declarations: [],
@@ -42,6 +43,7 @@ import { GlobalWarningStateModule } from './global-warning/global-warning-state.
     TestTypesStateModule,
     UserStateModule,
     TechRecordSearchStateModule,
+    RetryInterceptorStateModule,
   ],
 })
 export class AppStoreModule {}
