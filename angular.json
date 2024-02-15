@@ -24,7 +24,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser-esbuild",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/cvs-app-vtm",
             "index": "src/index.html",
@@ -82,7 +82,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "forceEsbuild": true
+            "forceEsbuild": false
           },
           "configurations": {
             "production": {
