@@ -571,34 +571,6 @@ export class CustomValidators {
         : null;
     };
   };
-
-  /**
-   * Custom validator specifically for the UN numbers section of the ADR section of a tech record, applicable to:
-   *  - HGVs, TRLs, or LGVs,
-   *  - which carry dangerous goods, and
-   *  - have an ADR body type which contains the words 'tank' or 'battery', and
-   *  - have substances permitted selected with the 'class UN' option, and
-   *  - have the subsequent 'product list' option selected from the subsequent select control
-   *
-   * The UN numbers form array is invalid if:
-   *  - The above conditions are met, and
-   *  - The reference number is empty and any UN number is the form array is empty
-   *  - The reference number is empty and any UN number is the form array has length greater than 1500 characters
-   *
-   * @returns
-   */
-  static tankDetailsUnNumberValidator = () => {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (control instanceof CustomFormControl) {
-        if (control.meta.hide) return null;
-        if (control.parent?.get('techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo')?.value) return null;
-        if (Array.isArray(control.value) && control.value.some((value) => value?.length > 1500)) return { maxlength: true };
-        return CustomValidators.isArray({ ofType: 'string' })(control);
-      }
-
-      return null;
-    };
-  };
 }
 
 export type EnumValidatorOptions = {
