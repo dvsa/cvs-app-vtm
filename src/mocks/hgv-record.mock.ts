@@ -2,6 +2,7 @@ import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/en
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryHgv.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { faker } from '@faker-js/faker';
 import { BodyTypeDescription } from '@models/body-type-enum';
 import {
