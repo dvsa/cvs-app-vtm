@@ -1,4 +1,3 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
 
 export const RequiredStandardsTpl: FormNode = {
@@ -58,7 +57,6 @@ export const RequiredStandardsTpl: FormNode = {
                       label: 'Notes',
                       value: null,
                       type: FormNodeTypes.CONTROL,
-                      // disabled: true, ?
                     },
                     {
                       name: 'prs',
