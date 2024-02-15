@@ -73,14 +73,12 @@ export class ContingencyAdrGenerateCertComponent extends CustomFormControlCompon
   }
 
   handleSubmit(): void {
-    if (this.store) {
-      this.store.dispatch(generateADRCertificate(
-        {
-          systemNumber: this.systemNumber ?? '',
-          createdTimestamp: this.createdTimestamp ?? '',
-          certificateType: 'PASS',
-        },
-      ));
-    }
+    this.store.dispatch(generateADRCertificate(
+      {
+        systemNumber: this.systemNumber ?? '',
+        createdTimestamp: this.createdTimestamp ?? '',
+        certificateType: 'PASS',
+      },
+    ));
   }
 }

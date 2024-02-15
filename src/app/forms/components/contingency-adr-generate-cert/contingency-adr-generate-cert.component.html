@@ -1,28 +1,26 @@
+<label class="govuk-label govuk-label--m">Generate ADR Certificate</label>
+
+<label class="govuk-label govuk-label--s">{{ lastCertificateDate }}</label>
 <ng-container>
-  <label class="govuk-label govuk-label--m">Generate ADR Certificate</label>
+  <div class="govuk-hint" for="generate-cert">
+    Only press this button if you wish to generate a new certificate, otherwise fill in previous certificate details below
+  </div>
 
-  <label class="govuk-label govuk-label--s">{{ lastCertificateDate }}</label>
-  <ng-container>
-    <div class="govuk-hint" for="generate-cert">
-      Only press this button if you wish to generate a new certificate, otherwise fill in previous certificate details below
-    </div>
+  <app-button id="submit-adr-cert-form" (clicked)="handleSubmit()">Generate certificate</app-button>
+</ng-container>
 
-    <app-button id="submit-adr-cert-form" (clicked)="handleSubmit()">Generate certificate</app-button>
-  </ng-container>
-
-  <ng-container *ngIf="fileName">
-    <div id="link-div">
-      <app-field-error-message for="view-button" [error]="errorString"></app-field-error-message>
-      <app-button
-        id="view-button"
-        [params]="documentParams(fileName)"
-        [fileName]="fileName"
-        appRetrieveDocument
-        [loading]="true"
-        type="link"
-        design="link"
-        >View certificate</app-button
-      >
-    </div>
-  </ng-container>
+<ng-container *ngIf="fileName">
+  <div id="link-div">
+    <app-field-error-message for="view-button" [error]="errorString"></app-field-error-message>
+    <app-button
+      id="view-button"
+      [params]="documentParams(fileName)"
+      [fileName]="fileName"
+      appRetrieveDocument
+      [loading]="true"
+      type="link"
+      design="link"
+      >View certificate</app-button
+    >
+  </div>
 </ng-container>
