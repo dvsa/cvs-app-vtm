@@ -62,8 +62,9 @@ export class BaseTestRecordComponent implements AfterViewInit {
     });
     const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
     const customDefectsValue = this.customDefects?.form.getCleanValue(this.customDefects?.form);
+    const requiredStandardsValue = this.requiredStandards?.form.getCleanValue(this.requiredStandards?.form);
 
-    latestTest = merge(latestTest, defectsValue, customDefectsValue, event);
+    latestTest = merge(latestTest, defectsValue, customDefectsValue, requiredStandardsValue, event);
     if (latestTest && Object.keys(latestTest).length > 0) {
       this.newTestResult.emit(latestTest as TestResultModel);
     }

@@ -30,6 +30,7 @@
           class="section"
           [id]="template.name"
           [isEditing]="isEditing"
+          [requiredStandards]="getDefects$(testResult.vehicleType) | async"
           [template]="template"
           [data]="testResult"
           (formChange)="handleFormChange($event)"
