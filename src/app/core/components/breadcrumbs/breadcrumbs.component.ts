@@ -34,8 +34,4 @@ export class BreadcrumbsComponent {
       }),
     );
   }
-
-  trackByFn(index: number, breadcrumb: { label: string; path: string }) {
-    return breadcrumb.path || index;
-  }
 }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="techRecord.techRecord_vehicleType === 'psv'">
+@if (techRecord.techRecord_vehicleType === 'psv') {
   <app-switchable-input
     [form]="form"
     [type]="editTypes.DROPDOWN"
@@ -7,9 +7,8 @@
     [isEditing]="isEditing"
     [options]="getOptionsFromEnum(approvalType)"
     [width]="widths.L"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.APPROVAL_TYPE"
@@ -19,9 +18,8 @@
     [width]="widths.XL"
     [approvalType]="chosenApprovalType"
     [approvalTypeChange]="approvalTypeChange"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.TEXT"
@@ -29,9 +27,8 @@
     label="National type number"
     [isEditing]="isEditing"
     [width]="widths.XL"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.TEXT"
@@ -39,9 +36,8 @@
     label="COIF Serial number"
     [isEditing]="isEditing"
     [width]="widths.XL"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.TEXT"
@@ -49,9 +45,8 @@
     label="COIF Certifier name"
     [isEditing]="isEditing"
     [width]="widths.XL"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.DATE"
@@ -60,9 +55,8 @@
     [isEditing]="isEditing"
     [width]="widths.XL"
     [readOnlyDate]="true"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.TEXT"
@@ -70,9 +64,8 @@
     label="Variant number"
     [isEditing]="isEditing"
     [width]="widths.XL"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.TEXT"
@@ -80,11 +73,11 @@
     label="Variant version number"
     [isEditing]="isEditing"
     [width]="widths.XL"
-  >
+    >
   </app-switchable-input>
-</ng-container>
+}
 
-<ng-container *ngIf="techRecord.techRecord_vehicleType === 'hgv' || techRecord.techRecord_vehicleType === 'trl'">
+@if (techRecord.techRecord_vehicleType === 'hgv' || techRecord.techRecord_vehicleType === 'trl') {
   <app-switchable-input
     [form]="form"
     [type]="editTypes.DROPDOWN"
@@ -93,9 +86,8 @@
     [isEditing]="isEditing"
     [options]="getOptionsFromEnum(approvalType)"
     [width]="widths.L"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.APPROVAL_TYPE"
@@ -105,9 +97,8 @@
     [width]="widths.XL"
     [approvalType]="chosenApprovalType"
     [approvalTypeChange]="approvalTypeChange"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.TEXT"
@@ -115,9 +106,8 @@
     label="National type number"
     [isEditing]="isEditing"
     [width]="widths.XL"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.TEXT"
@@ -125,9 +115,8 @@
     label="Variant number"
     [isEditing]="isEditing"
     [width]="widths.XL"
-  >
+    >
   </app-switchable-input>
-
   <app-switchable-input
     [form]="form"
     [type]="editTypes.TEXT"
@@ -135,6 +124,6 @@
     label="Variant version number"
     [isEditing]="isEditing"
     [width]="widths.XL"
-  >
+    >
   </app-switchable-input>
-</ng-container>
+}

@@ -1,21 +1,21 @@
-<app-switchable-input
-  *ngIf="isEditing; else view"
-  [form]="form"
-  [type]="editTypes.AUTOCOMPLETE"
-  name="techRecord_brakes_brakeCodeOriginal"
-  label="Brake code"
-  [hint]="'If year of manufacture is 1988, check your brake code'"
-  [isEditing]="isEditing"
-  [prefix]="brakeCodePrefix"
-  [propOptions$]="brakeCodeOptions$"
-></app-switchable-input>
-
-<ng-template #view>
+@if (isEditing) {
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.AUTOCOMPLETE"
+    name="techRecord_brakes_brakeCodeOriginal"
+    label="Brake code"
+    [hint]="'If year of manufacture is 1988, check your brake code'"
+    [isEditing]="isEditing"
+    [prefix]="brakeCodePrefix"
+    [propOptions$]="brakeCodeOptions$"
+  ></app-switchable-input>
+} @else {
   <div>
     <label class="govuk-label govuk-label--m" for="brake-code">Brake code</label>
     <span class="govuk-body" id="brake-code">{{ brakeCode }}</span>
   </div>
-</ng-template>
+}
+
 
 <app-switchable-input
   [form]="form"
@@ -110,14 +110,15 @@
   <label class="govuk-label govuk-label--m" for="parking-brake">Parking Brake</label>
 
   <div id="parking-brake" class="govuk-checkboxes">
-    <app-switchable-input
-      *ngFor="let axle of axles.controls; let i = index"
-      [form]="getAxleForm(i)"
-      [type]="editTypes.CHECKBOX"
-      [customId]="'parkingBrakeMrk' + (i + 1)"
-      name="parkingBrakeMrk"
-      [label]="'Axle ' + (i + 1)"
-      [isEditing]="isEditing"
-    ></app-switchable-input>
+    @for (axle of axles.controls; track axle; let i = $index) {
+      <app-switchable-input
+        [form]="getAxleForm(i)"
+        [type]="editTypes.CHECKBOX"
+        [customId]="'parkingBrakeMrk' + (i + 1)"
+        name="parkingBrakeMrk"
+        [label]="'Axle ' + (i + 1)"
+        [isEditing]="isEditing"
+      ></app-switchable-input>
+    }
   </div>
 </div>

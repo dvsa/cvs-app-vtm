@@ -1,10 +1,10 @@
-<ng-container *ngIf="control">
-  <label *ngIf="control.meta.label" class="govuk-label govuk-label--m" for="{{ control.meta.name }}">
-    {{ control.meta.label }}
-  </label>
-
+@if (control) {
+  @if (control.meta.label) {
+    <label class="govuk-label govuk-label--m" for="{{ control.meta.name }}">
+      {{ control.meta.label }}
+    </label>
+  }
   <app-field-error-message [error]="error"></app-field-error-message>
-
   <app-select
     [name]="name"
     [options]="$any(control.meta.options)"
@@ -15,34 +15,36 @@
     [formControl]="formArray.controls[0]"
     (blur)="control.markAsTouched()"
   ></app-select>
-
   <!-- Additional guidance notes -->
-  <table class="govuk-table" *ngIf="formArray.controls.length > 1">
-    <tbody class="govuk-table__body">
-      <ng-container *ngFor="let child of formArray.controls; let i = index; let isFirst = first">
-        <tr *ngIf="!isFirst">
-          <td class="govuk-table__cell">
-            <app-select
-              [name]="child.meta.name"
-              [options]="$any(child.meta.options)"
-              [hint]="child.meta.hint"
-              [width]="child.meta.width"
-              [customId]="child.meta.customId"
-              [warning]="child.meta.warning"
-              [noBottomMargin]="true"
-              [formControl]="child"
-              (blur)="control.markAsTouched()"
-            ></app-select>
-          </td>
-          <td class="govuk-table__cell">
-            <a class="govuk-link" role="button" href="javascript:void(0)" (click)="removeGuidanceNote(i)">Remove</a>
-          </td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-
+  @if (formArray.controls.length > 1) {
+    <table class="govuk-table">
+      <tbody class="govuk-table__body">
+        @for (child of formArray.controls; track child; let i = $index; let isFirst = $first) {
+          @if (!isFirst) {
+            <tr>
+              <td class="govuk-table__cell">
+                <app-select
+                  [name]="child.meta.name"
+                  [options]="$any(child.meta.options)"
+                  [hint]="child.meta.hint"
+                  [width]="child.meta.width"
+                  [customId]="child.meta.customId"
+                  [warning]="child.meta.warning"
+                  [noBottomMargin]="true"
+                  [formControl]="child"
+                  (blur)="control.markAsTouched()"
+                ></app-select>
+              </td>
+              <td class="govuk-table__cell">
+                <a class="govuk-link" role="button" href="javascript:void(0)" (click)="removeGuidanceNote(i)">Remove</a>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  }
   <p class="govuk-body">
     <a class="govuk-link" role="button" href="javascript:void(0)" (click)="addGuidanceNote()">Add guidance notes</a>
   </p>
-</ng-container>
+}

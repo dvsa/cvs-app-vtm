@@ -1,48 +1,60 @@
 <div [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
-  <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">
-    {{ label }}
-    <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
-  </label>
+  @if (label) {
+    <label class="govuk-label govuk-label--m" for="{{ name }}">
+      {{ label }}
+      @for (tag of control?.meta?.customTags; track tag) {
+        <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+      }
+    </label>
+  }
 
-  <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+  @if (hint) {
+    <div id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+  }
 
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
   <app-field-error-message [error]="warning" [name]="name"></app-field-error-message>
 
   <div class="govuk-input__wrapper">
-    <div *ngIf="prefix" class="govuk-input__suffix prefix" aria-hidden="true">
-      <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>
-    </div>
+    @if (prefix) {
+      <div class="govuk-input__suffix prefix" aria-hidden="true">
+        <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>
+      </div>
+    }
 
-    <input
-      *ngIf="!numeric"
-      [id]="customId ?? name"
-      name="{{ name }}"
-      type="text"
-      [class]="style"
-      [(ngModel)]="value"
-      [disabled]="disabled"
-      (ngModelChange)="onChange($event)"
-      (blur)="onTouched(); handleEvent($event); blur.emit($event)"
-      (focus)="handleEvent($event)"
-    />
+    @if (!numeric) {
+      <input
+        [id]="customId ?? name"
+        name="{{ name }}"
+        type="text"
+        [class]="style"
+        [(ngModel)]="value"
+        [disabled]="disabled"
+        (ngModelChange)="onChange($event)"
+        (blur)="onTouched(); handleEvent($event); blur.emit($event)"
+        (focus)="handleEvent($event)"
+        />
+    }
 
-    <input
-      *ngIf="numeric"
-      [id]="customId ?? name"
-      name="{{ name }}"
-      type="text"
-      [class]="style"
-      [(ngModel)]="value"
-      [disabled]="disabled"
-      (ngModelChange)="onChange($event)"
-      (blur)="onTouched(); handleEvent($event); blur.emit($event)"
-      (focus)="handleEvent($event)"
-      appNumberOnly
-    />
+    @if (numeric) {
+      <input
+        [id]="customId ?? name"
+        name="{{ name }}"
+        type="text"
+        [class]="style"
+        [(ngModel)]="value"
+        [disabled]="disabled"
+        (ngModelChange)="onChange($event)"
+        (blur)="onTouched(); handleEvent($event); blur.emit($event)"
+        (focus)="handleEvent($event)"
+        appNumberOnly
+        />
+    }
 
-    <div *ngIf="suffix" class="govuk-input__suffix" aria-hidden="true">
-      <ng-container [ngTemplateOutlet]="suffix.templateRef"></ng-container>
-    </div>
+    @if (suffix) {
+      <div class="govuk-input__suffix" aria-hidden="true">
+        <ng-container [ngTemplateOutlet]="suffix.templateRef"></ng-container>
+      </div>
+    }
   </div>
 </div>

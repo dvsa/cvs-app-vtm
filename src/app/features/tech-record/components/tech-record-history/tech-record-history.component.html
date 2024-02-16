@@ -1,4 +1,4 @@
-<ng-container *ngIf="techRecordHistory$ | async">
+@if (techRecordHistory$ | async) {
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       Technical Records History
@@ -13,31 +13,34 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row" *ngFor="let searchResult of techRecordHistoryPage$ | async; trackBy: trackByFn; let i = index">
-        <th scope="row" class="govuk-table__header" [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
-          {{ searchResult.techRecord_statusCode }}
-        </th>
-        <td class="govuk-table__cell word-break" [id]="searchResult.techRecord_statusCode + '-reason-' + i">
-          {{ searchResult.techRecord_reasonForCreation }}
-        </td>
-        <td class="govuk-table__cell word-break" [id]="searchResult.techRecord_statusCode + '-created-by-' + i">
-          {{ searchResult.techRecord_createdByName }}
-        </td>
-        <td class="govuk-table__cell" [id]="searchResult.createdTimestamp + '-created-at-' + i">
-          {{ searchResult.createdTimestamp | date : 'dd/MM/yyyy HH:mm' }}
-        </td>
-        <td class="govuk-table__cell">
-          <app-button
-            *ngIf="searchResult.createdTimestamp !== currentTimeStamp"
-            id="view-test-{{ searchResult.vin }}"
-            type="link"
-            design="link"
-            [routerLink]="[summaryLinkUrl(searchResult)]"
-          >
-            View
-          </app-button>
-        </td>
-      </tr>
+      @for (searchResult of techRecordHistoryPage$ | async; track trackByFn(i, searchResult); let i = $index) {
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header" [id]="searchResult.techRecord_statusCode + '-status-header-' + i">
+            {{ searchResult.techRecord_statusCode }}
+          </th>
+          <td class="govuk-table__cell word-break" [id]="searchResult.techRecord_statusCode + '-reason-' + i">
+            {{ searchResult.techRecord_reasonForCreation }}
+          </td>
+          <td class="govuk-table__cell word-break" [id]="searchResult.techRecord_statusCode + '-created-by-' + i">
+            {{ searchResult.techRecord_createdByName }}
+          </td>
+          <td class="govuk-table__cell" [id]="searchResult.createdTimestamp + '-created-at-' + i">
+            {{ searchResult.createdTimestamp | date : 'dd/MM/yyyy HH:mm' }}
+          </td>
+          <td class="govuk-table__cell">
+            @if (searchResult.createdTimestamp !== currentTimeStamp) {
+              <app-button
+                id="view-test-{{ searchResult.vin }}"
+                type="link"
+                design="link"
+                [routerLink]="[summaryLinkUrl(searchResult)]"
+                >
+                View
+              </app-button>
+            }
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
   <app-pagination
@@ -45,4 +48,4 @@
     [numberOfItems]="(numberOfRecords$ | async) ?? 0"
     (paginationOptions)="handlePaginationChange($event)"
   ></app-pagination>
-</ng-container>
+}

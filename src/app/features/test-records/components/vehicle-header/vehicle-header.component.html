@@ -1,5 +1,6 @@
-<ng-container [ngSwitch]="isEditing">
-  <ng-container *ngSwitchCase="true">
+
+@switch (isEditing) {
+  @case (true) {
     <div class="govuk-grid-row vehicle-overview govuk-!-margin-bottom-4">
       <div class="govuk-grid-column-two-thirds">
         <div class="vehicle_heading">
@@ -13,28 +14,30 @@
         </div>
       </div>
     </div>
-
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
         <h2 class="govuk-heading-m">Vehicle details</h2>
         <dl class="govuk-summary-list">
-          <ng-container [ngSwitch]="testResult?.vehicleType">
-            <ng-container *ngSwitchCase="vehicleTypes.SMALL_TRL"></ng-container>
-
-            <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Trailer ID</dt>
-              <dd id="test-testTypeId" class="govuk-summary-list__value">
-                {{ testResult?.trailerId | defaultNullOrEmpty }}
-              </dd>
-            </div>
-
-            <div *ngSwitchDefault class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">VRM</dt>
-              <dd id="test-testTypeId" class="govuk-summary-list__value">
-                <app-number-plate [vrm]="testResult?.vrm"></app-number-plate>
-              </dd>
-            </div>
-          </ng-container>
+          @switch (testResult?.vehicleType) {
+            @case (vehicleTypes.SMALL_TRL) {
+            }
+            @case (vehicleTypes.TRL) {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Trailer ID</dt>
+                <dd id="test-testTypeId" class="govuk-summary-list__value">
+                  {{ testResult?.trailerId | defaultNullOrEmpty }}
+                </dd>
+              </div>
+            }
+            @default {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">VRM</dt>
+                <dd id="test-testTypeId" class="govuk-summary-list__value">
+                  <app-number-plate [vrm]="testResult?.vrm"></app-number-plate>
+                </dd>
+              </div>
+            }
+          }
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">VIN</dt>
             <dd class="govuk-summary-list__value">
@@ -44,9 +47,8 @@
         </dl>
       </div>
     </div>
-  </ng-container>
-
-  <ng-container *ngSwitchCase="false">
+  }
+  @case (false) {
     <div class="test_result_header">
       <div class="test_name_and_date">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">
@@ -57,7 +59,6 @@
           <app-tag [type]="tagType">{{ resultOfTest | defaultNullOrEmpty }}</app-tag>
         </div>
       </div>
-
       <div class="tester_and_location">
         <dl class="govuk-summary-list govuk-summary-list--no-border">
           <div class="govuk-summary-list__row">
@@ -71,35 +72,33 @@
         </dl>
       </div>
     </div>
-
     <ng-content></ng-content>
-
     <div class="vehicle_heading govuk-!-margin-bottom-6">
       <h2 class="govuk-heading-l">
-        <ng-container *ngIf="techRecord$ | async as techRecord">
+        @if (techRecord$ | async; as techRecord) {
           {{ getVehicleDescription(techRecord, testResult?.vehicleType) }}
-        </ng-container>
-
+        }
         <app-icon [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"></app-icon>
       </h2>
     </div>
     <h3 class="govuk-heading-m">Vehicle overview</h3>
     <dl class="govuk-summary-list">
-      <ng-container *ngSwitch="testResult?.vehicleType">
-        <ng-container *ngSwitchCase="vehicleTypes.SMALL_TRL"></ng-container>
-
-        <div *ngSwitchCase="vehicleTypes.TRL" class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Trailer ID</dt>
-          <dd id="test-testTypeId" class="govuk-summary-list__value">{{ testResult?.trailerId | defaultNullOrEmpty }}</dd>
-        </div>
-
-        <div *ngSwitchDefault class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">VRM</dt>
-          <dd id="test-testTypeId" class="govuk-summary-list__value">
-            <app-number-plate [vrm]="testResult?.vrm"></app-number-plate>
-          </dd>
-        </div>
-      </ng-container>
+      @switch(testResult?.vehicleType) {
+        @case (vehicleTypes.TRL) {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Trailer ID</dt>
+            <dd id="test-testTypeId" class="govuk-summary-list__value">{{ testResult?.trailerId | defaultNullOrEmpty }}</dd>
+          </div>
+        }
+        @default {
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">VRM</dt>
+            <dd id="test-testTypeId" class="govuk-summary-list__value">
+              <app-number-plate [vrm]="testResult?.vrm"></app-number-plate>
+            </dd>
+          </div>
+        }
+      }
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VIN</dt>
         <dd id="test-vin" class="govuk-summary-list__value">
@@ -124,20 +123,24 @@
           {{ testResult?.euVehicleCategory | defaultNullOrEmpty }}
         </dd>
       </div>
-      <div *ngIf="testResult?.vehicleType !== vehicleTypes.TRL" class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Odometer reading</dt>
-        <dd id="test-odomReading" class="govuk-summary-list__value">
-          {{ combinedOdometerReading(testResult?.odometerReading | digitGroupSeparator, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
-        </dd>
-      </div>
-      <div *ngIf="resultOfTest !== 'cancelled'" class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Certificate:</dt>
-        <dd id="test-certificate" class="govuk-summary-list__value">
-          <app-test-certificate [testNumber]="testNumber || ''" [vin]="testResult?.vin || ''" [isClickable]="!isReview">
-            {{ test?.certificateNumber | defaultNullOrEmpty }}
-          </app-test-certificate>
-        </dd>
-      </div>
+      @if (testResult?.vehicleType !== vehicleTypes.TRL) {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Odometer reading</dt>
+          <dd id="test-odomReading" class="govuk-summary-list__value">
+            {{ combinedOdometerReading(testResult?.odometerReading | digitGroupSeparator, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
+          </dd>
+        </div>
+      }
+      @if (resultOfTest !== 'cancelled') {
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Certificate:</dt>
+          <dd id="test-certificate" class="govuk-summary-list__value">
+            <app-test-certificate [testNumber]="testNumber || ''" [vin]="testResult?.vin || ''" [isClickable]="!isReview">
+              {{ test?.certificateNumber | defaultNullOrEmpty }}
+            </app-test-certificate>
+          </dd>
+        </div>
+      }
     </dl>
-  </ng-container>
-</ng-container>
+  }
+}

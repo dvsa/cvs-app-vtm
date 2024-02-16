@@ -1,3 +1,5 @@
 <div *appRoleRequired="roles.TechRecordView">
-  <app-dynamic-form-group *ngIf="template" [template]="template" [data]="vehicleDisplayData" class="govuk-summary-list"></app-dynamic-form-group>
+  @if (template) {
+    <app-dynamic-form-group [template]="template" [data]="vehicleDisplayData" class="govuk-summary-list"></app-dynamic-form-group>
+  }
 </div>

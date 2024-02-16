@@ -23,8 +23,6 @@ export class RadioGroupComponent extends BaseControlComponent {
     return this.options.find((option) => option.value === value)?.label;
   }
 
-  trackByFn = (index: number): number => index;
-
   getId(value: string | number | boolean | null, name: string) {
     const id = `${name}-${value}-radio`;
     if (this.control) {

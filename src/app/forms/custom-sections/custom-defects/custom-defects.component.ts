@@ -43,10 +43,6 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
     return this.customDefectsForm?.controls[`${i}`] as CustomFormGroup;
   }
 
-  trackByFn(index: number): number {
-    return index;
-  }
-
   get defectCount() {
     return this.customDefectsForm?.controls.length;
   }

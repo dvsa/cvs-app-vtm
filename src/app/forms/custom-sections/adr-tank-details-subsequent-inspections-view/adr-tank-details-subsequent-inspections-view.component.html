@@ -1,6 +1,6 @@
-<ng-container *ngIf="control">
+@if (control) {
   <section class="govuk-!-margin-top-4">
-    <ng-container *ngFor="let inspection of control.value; let i = index">
+    @for (inspection of control.value; track inspection; let i = $index) {
       <h4 class="govuk-heading-s">Subsequent {{ i + 1 }}</h4>
       <table class="govuk-table">
         <tbody class="govuk-table__body">
@@ -18,6 +18,6 @@
           </tr>
         </tbody>
       </table>
-    </ng-container>
+    }
   </section>
-</ng-container>
+}

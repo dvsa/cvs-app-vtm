@@ -1,16 +1,17 @@
-<div *ngIf="vehicle$ | async as vehicle" class="govuk-grid-row">
-  <div class="govuk-grid-column-one-third">
-    <div class="govuk-grid-row">
+@if (vehicle$ | async; as vehicle) {
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <app-tech-record-title [vehicle]="vehicle" [hideActions]="true"></app-tech-record-title>
+          <app-button id="submit-record-continue" (clicked)="handleSubmit()">Submit new record</app-button>
+        </div>
+      </div>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
       <div class="govuk-grid-column-full">
-        <app-tech-record-title [vehicle]="vehicle" [hideActions]="true"></app-tech-record-title>
-        <app-button id="submit-record-continue" (clicked)="handleSubmit()">Submit new record</app-button>
+        <app-tech-record-summary (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
       </div>
     </div>
   </div>
-
-  <div class="govuk-grid-column-two-thirds">
-    <div class="govuk-grid-column-full">
-      <app-tech-record-summary (isFormInvalid)="isInvalid = $event"></app-tech-record-summary>
-    </div>
-  </div>
-</div>
+}

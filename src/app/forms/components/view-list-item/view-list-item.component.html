@@ -1,66 +1,67 @@
-<ng-container *ngIf="viewType !== formNodeViewTypes.HIDDEN">
-  <td *ngIf="displayAsRow" class="govuk-table__cell" [style.width.%]="30">{{ label }}:</td>
-
-  <ng-container [ngSwitch]="viewType">
-    <ng-container *ngSwitchCase="formNodeViewTypes.DATE">
+@if (viewType !== formNodeViewTypes.HIDDEN) {
+  @if (displayAsRow) {
+    <td class="govuk-table__cell" [style.width.%]="30">{{ label }}:</td>
+  }
+  @switch (viewType) {
+    @case (formNodeViewTypes.DATE) {
       <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="formNodeViewTypes.DATETIME">
+    }
+    @case (formNodeViewTypes.DATETIME) {
       <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="formNodeViewTypes.TIME">
+    }
+    @case (formNodeViewTypes.TIME) {
       <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'HH:mm' | defaultNullOrEmpty }}</td>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="formNodeViewTypes.VRM">
+    }
+    @case (formNodeViewTypes.VRM) {
       <td id="test-{{ name }}" class="govuk-table__cell">
         <app-number-plate [vrm]="value"></app-number-plate>
       </td>
-    </ng-container>
-
+    }
     <!-- TODO: remove entirely, and use custom view component -->
-    <ng-container *ngSwitchCase="formNodeViewTypes.ADR_EXAMINER_NOTES">
+    @case (formNodeViewTypes.ADR_EXAMINER_NOTES) {
       <td class="govuk-table__cell">
-        <table class="govuk-table" *ngIf="value && value.length > 0">
-          <tbody class="govuk-table__body">
-            <tr>
-              <th scope="col" class="govuk-table__header">Date</th>
-              <th scope="col" class="govuk-table__header">Created By</th>
-              <th scope="col" class="govuk-table__header">Notes</th>
-            </tr>
-            <ng-container *ngFor="let result of value; let i = index; let isLast = last">
-              <tr *ngIf="i < 3">
-                <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-                  {{ result.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
-                </td>
-                <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.lastUpdatedBy }}</td>
-                <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.note }}</td>
+        @if (value && value.length > 0) {
+          <table class="govuk-table">
+            <tbody class="govuk-table__body">
+              <tr>
+                <th scope="col" class="govuk-table__header">Date</th>
+                <th scope="col" class="govuk-table__header">Created By</th>
+                <th scope="col" class="govuk-table__header">Notes</th>
               </tr>
-            </ng-container>
-          </tbody>
-        </table>
-        <dl class="govuk-summary-list" *ngIf="!value || value.length === 0">
-          <div class="govuk-summary-list__row border-b-0">
-            <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
-          </div>
-        </dl>
+              @for (result of value; track result; let i = $index; let isLast = $last) {
+                @if (i < 3) {
+                  <tr>
+                    <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
+                      {{ result.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+                    </td>
+                    <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.lastUpdatedBy }}</td>
+                    <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.note }}</td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        }
+        @if (!value || value.length === 0) {
+          <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row border-b-0">
+              <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+            </div>
+          </dl>
+        }
       </td>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="formNodeViewTypes.CUSTOM">
-      <ng-container *ngIf="control && control.meta && control.meta.viewComponent">
+    }
+    @case (formNodeViewTypes.CUSTOM) {
+      @if (control && control.meta && control.meta.viewComponent) {
         <td colspan="2" id="test-{{ name }}" class="govuk-table__cell">
           <ng-container [ngComponentOutlet]="control.meta.viewComponent" [ngComponentOutletInjector]="customFormControlInjector"></ng-container>
         </td>
-      </ng-container>
-    </ng-container>
-
-    <ng-container *ngSwitchDefault>
+      }
+    }
+    @default {
       <td [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-table__cell">
         {{ value | refDataDecode$ : control?.meta?.referenceData | async | getControlLabel : control?.meta?.options | defaultNullOrEmpty }}
       </td>
-    </ng-container>
-  </ng-container>
-</ng-container>
+    }
+  }
+}

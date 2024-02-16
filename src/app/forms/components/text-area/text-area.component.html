@@ -1,13 +1,19 @@
 <div class="govuk-form-group">
-  <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">
-    {{ label }}
-    <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
-  </label>
+  @if (label) {
+    <label class="govuk-label govuk-label--m" for="{{ name }}">
+      {{ label }}
+      @for (tag of control?.meta?.customTags; track tag) {
+        <app-tag type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+      }
+    </label>
+  }
 
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
   <app-field-error-message [error]="warning" [name]="name"></app-field-error-message>
 
-  <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+  @if (hint) {
+    <div id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+  }
 
   <textarea
     class="govuk-textarea"
@@ -23,15 +29,18 @@
     [ngClass]="{ 'govuk-!-margin-bottom-2': maxLength }"
   ></textarea>
 
-  <ng-container *ngIf="maxLength">
-    <div id="{{ name }}-max-length" class="govuk-character-count__message govuk-hint" *ngIf="maxLength - value?.length >= 0; else overLimit">
-      You have {{ maxLength - value?.length }} character{{ maxLength - value?.length !== 1 ? 's' : '' }} remaining
-    </div>
-  </ng-container>
+  @if (maxLength) {
+    @if (maxLength - value?.length >= 0) {
+      <div id="{{ name }}-max-length" class="govuk-character-count__message govuk-hint">
+        You have {{ maxLength - value?.length }} character{{ maxLength - value?.length !== 1 ? 's' : '' }} remaining
+      </div>
+    } @else {
+      @if (maxLength) {
+        <div id="{{ name }}-max-length" class="govuk-error-message">
+          You have {{ -(maxLength - value?.length) }} character{{ -(maxLength - value?.length) !== 1 ? 's' : '' }} too many
+        </div>
+      }
+    }
+  }
 </div>
 
-<ng-template #overLimit>
-  <div id="{{ name }}-max-length" class="govuk-error-message" *ngIf="maxLength">
-    You have {{ -(maxLength - value?.length) }} character{{ -(maxLength - value?.length) !== 1 ? 's' : '' }} too many
-  </div>
-</ng-template>

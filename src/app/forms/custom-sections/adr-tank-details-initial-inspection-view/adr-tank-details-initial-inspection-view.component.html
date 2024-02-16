@@ -1,4 +1,4 @@
-<ng-container *ngIf="control && control.parent">
+@if (control && control.parent) {
   <section class="govuk-!-margin-top-4">
     <h4 class="govuk-heading-s">Initial</h4>
     <table class="govuk-table">
@@ -13,13 +13,13 @@
           <th class="govuk-table__header break-words" [style.width.%]="30">Expiry date:</th>
           <td class="govuk-table__cell break-words">
             {{
-              control.parent.value.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate
-                | date : 'dd/MM/yyyy'
-                | defaultNullOrEmpty
+            control.parent.value.techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate
+            | date : 'dd/MM/yyyy'
+            | defaultNullOrEmpty
             }}
           </td>
         </tr>
       </tbody>
     </table>
   </section>
-</ng-container>
+}

@@ -9,13 +9,14 @@
     [options]="vehicleTypeOptions"
   ></app-radio-group>
 
-  <app-radio-group
-    *ngIf="vehicleType.value === 'trl'"
-    name="tes1-tes2"
-    label="Trailer form type"
-    formControlName="tes1Tes2"
-    [options]="tes1Tes2Options"
-  ></app-radio-group>
+  @if (vehicleType.value === 'trl') {
+    <app-radio-group
+      name="tes1-tes2"
+      label="Trailer form type"
+      formControlName="tes1Tes2"
+      [options]="tes1Tes2Options"
+    ></app-radio-group>
+  }
 
   <app-button id="create-batch-continue" (clicked)="handleSubmit(vehicleType.value)">Continue</app-button>
 

@@ -1,30 +1,30 @@
-<div *ngIf="techRecord">
-  <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
-
-  <dl class="govuk-summary-list">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Vehicle type</dt>
-      <dd id="vehicleType" class="govuk-summary-list__value">
-        {{ vehicleType | defaultNullOrEmpty | uppercase }}
-      </dd>
-    </div>
-
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">VRM</dt>
-      <app-number-plate *ngIf="techRecord.primaryVrm" [vrm]="techRecord.primaryVrm"></app-number-plate>
-    </div>
-
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">VIN/chassis number</dt>
-      <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
-    </div>
-  </dl>
-
-  <form [formGroup]="form">
-    <app-radio-group formControlName="isCherishedTransfer" [options]="reasons" label="Reason for change"></app-radio-group>
-    <app-button-group>
-      <app-button id="submit-vrm" (clicked)="submit()">Continue</app-button>
-      <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
-    </app-button-group>
-  </form>
-</div>
+@if (techRecord) {
+  <div>
+    <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle type</dt>
+        <dd id="vehicleType" class="govuk-summary-list__value">
+          {{ vehicleType | defaultNullOrEmpty | uppercase }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">VRM</dt>
+        @if (techRecord.primaryVrm) {
+          <app-number-plate [vrm]="techRecord.primaryVrm"></app-number-plate>
+        }
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">VIN/chassis number</dt>
+        <dd id="vehicleType" class="govuk-summary-list__value">{{ techRecord.vin | defaultNullOrEmpty }}</dd>
+      </div>
+    </dl>
+    <form [formGroup]="form">
+      <app-radio-group formControlName="isCherishedTransfer" [options]="reasons" label="Reason for change"></app-radio-group>
+      <app-button-group>
+        <app-button id="submit-vrm" (clicked)="submit()">Continue</app-button>
+        <app-button id="cancel-amend-vrm" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+      </app-button-group>
+    </form>
+  </div>
+}

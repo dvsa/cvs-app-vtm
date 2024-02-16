@@ -25,7 +25,7 @@
             type="text"
             (keyup.enter)="search(searchTerm.value, searchFilter.value)"
             class="govuk-input govuk-!-width-two-thirds"
-          />
+            />
           <button
             class="govuk-button margin-right search-btn"
             type="submit"
@@ -33,7 +33,7 @@
             enterkeyhint="search"
             data-gem-track-click-module-started="true"
             (click)="search(searchTerm.value, searchFilter.value)"
-          >
+            >
             <svg
               class="gem-c-search__icon"
               width="20"
@@ -43,7 +43,7 @@
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
               focusable="false"
-            >
+              >
               <circle cx="12.0161" cy="11.0161" r="8.51613" stroke="currentColor" stroke-width="3"></circle>
               <line x1="17.8668" y1="17.3587" x2="26.4475" y2="25.9393" stroke="currentColor" stroke-width="3"></line>
             </svg>
@@ -60,21 +60,27 @@
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th *ngFor="let column of (refDataAdminType$ | async).columns" scope="col" class="govuk-table__header">{{ column.heading }}</th>
+          @for (column of (refDataAdminType$ | async).columns; track column) {
+            <th scope="col" class="govuk-table__header">{{ column.heading }}</th>
+          }
           <th scope="col" class="govuk-table__header"></th>
         </tr>
       </thead>
 
       <tbody class="govuk-table__body">
-        <tr class="govuk-table__row" *ngFor="let item of paginatedItems$ | async">
-          <td *ngFor="let column of (refDataAdminType$ | async).columns" class="govuk-table__cell">{{ item[column.name] }}</td>
-          <td class="govuk-table__cell" id="buttons">
-            <app-button-group>
-              <app-button id="amend" design="link" (clicked)="amend(item)">Amend</app-button>
-              <app-button id="delete" design="link" (clicked)="delete(item)">Delete</app-button>
-            </app-button-group>
-          </td>
-        </tr>
+        @for (item of paginatedItems$ | async; track item) {
+          <tr class="govuk-table__row">
+            @for (column of (refDataAdminType$ | async).columns; track column) {
+              <td class="govuk-table__cell">{{ item[column.name] }}</td>
+            }
+            <td class="govuk-table__cell" id="buttons">
+              <app-button-group>
+                <app-button id="amend" design="link" (clicked)="amend(item)">Amend</app-button>
+                <app-button id="delete" design="link" (clicked)="delete(item)">Delete</app-button>
+              </app-button-group>
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
     <app-pagination
