@@ -1,21 +1,25 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MsalModule } from '@azure/msal-angular';
+import { CoreModule } from '@core/core.module';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { LoadingService } from '@services/loading/loading.service';
-import { Observable, of } from 'rxjs';
-import { CoreModule } from '@core/core.module';
 import { UserService } from '@services/user-service/user-service';
+import { Observable, of } from 'rxjs';
 import { AppComponent } from './app.component';
-import { initialAppState, State } from './store';
+import { State, initialAppState } from './store';
+
+declare global {
+  function gtag(): void;
+}
 
 describe('AppComponent', () => {
   const MockUserService = {
     getUserName$: jest.fn().mockReturnValue(new Observable()),
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).gtag = () => {};
+
+  window.gtag = jest.fn();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

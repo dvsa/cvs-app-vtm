@@ -76,6 +76,7 @@
         "@typescript-eslint/no-unsafe-call": "off",
         "@typescript-eslint/no-unsafe-member-access": "off",
         "jest/no-done-callback": "off",
+        "jest/expect-expect": ["error", { "assertFunctionNames": ["expect", "expectObservable"]}],
         "@typescript-eslint/no-unsafe-return": "off",
         "@typescript-eslint/restrict-template-expressions": "off"
       }
