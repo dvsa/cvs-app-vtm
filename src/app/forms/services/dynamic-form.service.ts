@@ -185,6 +185,12 @@ export class DynamicFormService {
     });
   }
 
+  static validateControl(control: FormControl | CustomFormControl, errors: GlobalError[]) {
+    control.markAsTouched();
+    (control as CustomFormControl).meta?.changeDetection?.detectChanges();
+    this.getControlErrors(control, errors);
+  }
+
   private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {
     const { errors } = control;
     const meta = (control as CustomFormControl).meta as FormNode | undefined;

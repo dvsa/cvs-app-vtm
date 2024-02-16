@@ -1,11 +1,14 @@
 import {
   AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren,
 } from '@angular/core';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
 import { DefectsComponent } from '@forms/custom-sections/defects/defects.component';
 import { RequiredStandardsComponent } from '@forms/custom-sections/required-standards/required-standards.component';
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormControl, FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
@@ -44,6 +47,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
     private store: Store,
+    private globalErrorService: GlobalErrorService,
   ) {
     this.techRecord$ = this.store.select(selectTechRecord);
   }
@@ -68,6 +72,17 @@ export class BaseTestRecordComponent implements AfterViewInit {
     if (latestTest && Object.keys(latestTest).length > 0) {
       this.newTestResult.emit(latestTest as TestResultModel);
     }
+  }
+
+  validateEuVehicleCategory(_event: any) {
+    this.sections?.forEach((section) => {
+      const { form } = section;
+      if (form.meta.name === 'vehicleSection') {
+        const errors: GlobalError[] = [];
+        DynamicFormService.validateControl(form.get('euVehicleCategory') as CustomFormControl, errors);
+        this.globalErrorService.setErrors(errors);
+      }
+    });
   }
 
   getDefects$(type: VehicleTypes): Observable<Defect[]> {

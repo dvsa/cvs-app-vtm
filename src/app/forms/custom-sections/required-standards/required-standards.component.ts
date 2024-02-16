@@ -1,12 +1,13 @@
+import { ViewportScroller } from '@angular/common';
 import {
   Component, EventEmitter, Input, OnDestroy, OnInit, Output,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { Store } from '@ngrx/store';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -19,12 +20,19 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy {
   @Input() data: Partial<TestResultModel> = {};
 
   @Output() formChange = new EventEmitter();
+  @Output() validateEuVehicleCategory = new EventEmitter();
 
   public form!: CustomFormGroup;
   private formSubscription = new Subscription();
   private requiredStandardsFormArray?: CustomFormArray;
 
-  constructor(private dfs: DynamicFormService, private store: Store, private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private dfs: DynamicFormService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private viewportScroller: ViewportScroller,
+    private globalErrorService: GlobalErrorService,
+  ) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
@@ -38,7 +46,12 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy {
   }
 
   onAddRequiredStandard(): void {
-    // TODO: validate eu cat stuff
+    this.globalErrorService.clearErrors();
+    if (!this.data?.euVehicleCategory) {
+      this.validateEuVehicleCategory.emit();
+      this.viewportScroller.scrollToPosition([0, 0]);
+      return;
+    }
     void this.router.navigate(['selectRequiredStandard'], { queryParamsHandling: 'preserve', relativeTo: this.route });
   }
 
