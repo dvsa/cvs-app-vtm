@@ -4,6 +4,7 @@ import {
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
 import { DefectsComponent } from '@forms/custom-sections/defects/defects.component';
+import { RequiredStandardsComponent } from '@forms/custom-sections/required-standards/required-standards.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
@@ -28,6 +29,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
   @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
   @ViewChild(DefectsComponent) defects?: DefectsComponent;
   @ViewChild(CustomDefectsComponent) customDefects?: CustomDefectsComponent;
+  @ViewChild(RequiredStandardsComponent) requiredStandards?: RequiredStandardsComponent;
 
   @Input() testResult!: TestResultModel;
   @Input() isEditing = false;
@@ -60,8 +62,9 @@ export class BaseTestRecordComponent implements AfterViewInit {
     });
     const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
     const customDefectsValue = this.customDefects?.form.getCleanValue(this.customDefects?.form);
+    const requiredStandardsValue = this.requiredStandards?.form.getCleanValue(this.requiredStandards?.form);
 
-    latestTest = merge(latestTest, defectsValue, customDefectsValue, event);
+    latestTest = merge(latestTest, defectsValue, customDefectsValue, requiredStandardsValue, event);
     if (latestTest && Object.keys(latestTest).length > 0) {
       this.newTestResult.emit(latestTest as TestResultModel);
     }

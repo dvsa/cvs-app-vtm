@@ -1,5 +1,7 @@
 {
     "testToggle": false,
-    "adrToggle": false
+    "adrToggle": true,
+    "adrCertToggle": false,
+    "requiredStandards": false
   }
   

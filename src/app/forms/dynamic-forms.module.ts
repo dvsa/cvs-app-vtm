@@ -5,18 +5,19 @@ import { RouterModule } from '@angular/router';
 import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
 import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
 import {
+  AdrCertificateHistoryComponent,
+} from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
+import {
   AdrExaminerNotesHistoryEditComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
-import {
-  AdrCertificateHistoryComponent,
-} from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { ContingencyAdrGenerateCertComponent } from './components/contingency-adr-generate-cert/contingency-adr-generate-cert.component';
 import { DateComponent } from './components/date/date.component';
 import { FocusNextDirective } from './components/date/focus-next.directive';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
@@ -40,6 +41,7 @@ import { AdrGuidanceNotesComponent } from './custom-sections/adr-guidance-notes/
 import {
   AdrTankDetailsInitialInspectionViewComponent,
 } from './custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
+import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import {
   AdrTankDetailsSubsequentInspectionsEditComponent,
 } from './custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
@@ -64,6 +66,7 @@ import { LettersComponent } from './custom-sections/letters/letters.component';
 import { ModifiedWeightsComponent } from './custom-sections/modified-weights/modified-weights.component';
 import { PlatesComponent } from './custom-sections/plates/plates.component';
 import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
+import { RequiredStandardsComponent } from './custom-sections/required-standards/required-standards.component';
 import { TrlBrakesComponent } from './custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
@@ -73,7 +76,6 @@ import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
-import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +109,7 @@ import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-deta
     TrlBrakesComponent,
     ReadOnlyComponent,
     CustomDefectsComponent,
+    RequiredStandardsComponent,
     CustomDefectComponent,
     SwitchableInputComponent,
     ReadOnlyComponent,
@@ -135,6 +138,7 @@ import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-deta
     AdrTankStatementUnNumberViewComponent,
     AdrCertificateHistoryComponent,
     AdrTankDetailsM145ViewComponent,
+    ContingencyAdrGenerateCertComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -161,6 +165,7 @@ import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-deta
     DimensionsComponent,
     TrlBrakesComponent,
     ReadOnlyComponent,
+    RequiredStandardsComponent,
     CustomDefectsComponent,
     CustomDefectComponent,
     SwitchableInputComponent,
