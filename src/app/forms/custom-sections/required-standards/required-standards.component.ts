@@ -1,10 +1,12 @@
 import {
   Component, EventEmitter, Input, OnDestroy, OnInit, Output,
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { Store } from '@ngrx/store';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -14,7 +16,6 @@ import { Subscription, debounceTime } from 'rxjs';
 export class RequiredStandardsComponent implements OnInit, OnDestroy {
   @Input() isEditing = false;
   @Input() template!: FormNode;
-  @Input() requiredStandards?: any[] | null = []; // TODO: fix this to use actual RS
   @Input() data: Partial<TestResultModel> = {};
 
   @Output() formChange = new EventEmitter();
@@ -23,7 +24,7 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy {
   private formSubscription = new Subscription();
   private requiredStandardsFormArray?: CustomFormArray;
 
-  constructor(private dfs: DynamicFormService) {}
+  constructor(private dfs: DynamicFormService, private store: Store, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
@@ -34,6 +35,11 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.formSubscription.unsubscribe();
+  }
+
+  onAddRequiredStandard(): void {
+    // TODO: validate eu cat stuff
+    void this.router.navigate(['selectRequiredStandard'], { queryParamsHandling: 'preserve', relativeTo: this.route });
   }
 
   get requiredStandardsForm(): CustomFormArray {
