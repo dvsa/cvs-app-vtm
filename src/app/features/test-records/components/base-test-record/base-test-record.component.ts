@@ -69,12 +69,13 @@ export class BaseTestRecordComponent implements AfterViewInit {
     const requiredStandardsValue = this.requiredStandards?.form.getCleanValue(this.requiredStandards?.form);
 
     latestTest = merge(latestTest, defectsValue, customDefectsValue, requiredStandardsValue, event);
+
     if (latestTest && Object.keys(latestTest).length > 0) {
       this.newTestResult.emit(latestTest as TestResultModel);
     }
   }
 
-  validateEuVehicleCategory(_event: any) {
+  validateEuVehicleCategory(_event: unknown) {
     this.sections?.forEach((section) => {
       const { form } = section;
       if (form.meta.name === 'vehicleSection') {

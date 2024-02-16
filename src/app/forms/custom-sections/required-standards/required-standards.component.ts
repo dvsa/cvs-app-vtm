@@ -1,6 +1,6 @@
 import { ViewportScroller } from '@angular/common';
 import {
-  Component, EventEmitter, Input, OnDestroy, OnInit, Output,
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -14,10 +14,10 @@ import { Subscription, debounceTime } from 'rxjs';
   selector: 'app-required-standards[template]',
   templateUrl: './required-standards.component.html',
 })
-export class RequiredStandardsComponent implements OnInit, OnDestroy {
+export class RequiredStandardsComponent implements OnInit, OnDestroy, OnChanges {
   @Input() isEditing = false;
   @Input() template!: FormNode;
-  @Input() data: Partial<TestResultModel> = {};
+  @Input() testData: Partial<TestResultModel> = {};
 
   @Output() formChange = new EventEmitter();
   @Output() validateEuVehicleCategory = new EventEmitter();
@@ -35,7 +35,7 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
+    this.form = this.dfs.createForm(this.template, this.testData) as CustomFormGroup;
     this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
       this.formChange.emit(event);
     });
@@ -45,9 +45,18 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy {
     this.formSubscription.unsubscribe();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const { testData } = changes;
+
+    if (testData?.currentValue?.euVehicleCategory !== testData?.previousValue?.euVehicleCategory) {
+      this.form?.get(['testTypes', '0', 'requiredStandards'])?.patchValue([], { emitEvent: true });
+    }
+
+  }
+
   onAddRequiredStandard(): void {
     this.globalErrorService.clearErrors();
-    if (!this.data?.euVehicleCategory) {
+    if (!this.testData?.euVehicleCategory) {
       this.validateEuVehicleCategory.emit();
       this.viewportScroller.scrollToPosition([0, 0]);
       return;
