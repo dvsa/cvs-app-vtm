@@ -1,21 +1,26 @@
 import { DefectGETIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
-import { EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { getRequiredStandards, getRequiredStandardsFailure, getRequiredStandardsSuccess } from '../actions/required-standards.actions';
 
-export interface RequiredStandardState extends EntityState<DefectGETIVA> {
+export interface RequiredStandardState {
   loading: boolean;
   error: string;
+  requiredStandards: DefectGETIVA
 }
 
 export const STORE_FEATURE_REQUIRED_STANDARDS_KEY = 'RequiredStandards';
 
 export const requiredStandardsFeatureState = createFeatureSelector<RequiredStandardState>(STORE_FEATURE_REQUIRED_STANDARDS_KEY);
 
-export const initialRequiredStandardsState = {
+export const initialRequiredStandardsState: RequiredStandardState = {
   loading: false,
-  error: null,
-  requiredStandards: {},
+  error: '',
+  requiredStandards: {
+    basic: [],
+    normal: [],
+    euVehicleCategories: [],
+  },
+
 };
 
 export const requiredStandardsReducer = createReducer(
