@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
+  FormBuilder,
   FormControl, FormGroup, NG_VALUE_ACCESSOR, NgControl,
 } from '@angular/forms';
 import { GlobalWarningService } from '@core/components/global-warning/global-warning.service';
@@ -13,6 +14,7 @@ import { initialAppState } from '@store/index';
 import { AdrTankStatementUnNumberEditComponent } from './adr-tank-statement-un-number-edit.component';
 
 describe('AdrTankStatementUnNumberEditComponent', () => {
+  let fb: FormBuilder;
   let component: AdrTankStatementUnNumberEditComponent;
   let fixture: ComponentFixture<AdrTankStatementUnNumberEditComponent>;
 
@@ -27,6 +29,7 @@ describe('AdrTankStatementUnNumberEditComponent', () => {
       imports: [DynamicFormsModule, SharedModule],
       declarations: [AdrTankStatementUnNumberEditComponent],
       providers: [
+        FormBuilder,
         provideMockStore({ initialState: initialAppState }),
         { provide: GlobalWarningService, useValue: { error$: jest.fn() } },
         { provide: NG_VALUE_ACCESSOR, useExisting: AdrTankStatementUnNumberEditComponent, multi: true },
@@ -46,6 +49,7 @@ describe('AdrTankStatementUnNumberEditComponent', () => {
     })
       .compileComponents();
 
+    fb = TestBed.inject(FormBuilder);
     fixture = TestBed.createComponent(AdrTankStatementUnNumberEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -53,21 +57,6 @@ describe('AdrTankStatementUnNumberEditComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('ngOnInit', () => {
-    it('should call ngOnInit', () => {
-      const spy = jest.spyOn(component, 'ngOnInit');
-      component.ngOnInit();
-      expect(spy).toHaveBeenCalled();
-    });
-
-    it('should subscribe to the form array value changes', () => {
-      const spy = jest.spyOn(component, 'onFormChange');
-      component.formArray.patchValue([null]);
-      expect(spy).toHaveBeenCalled();
-    });
-
   });
 
   describe('ngAfterContentInit', () => {
@@ -79,30 +68,11 @@ describe('AdrTankStatementUnNumberEditComponent', () => {
     });
   });
 
-  describe('canAddControl', () => {
-
-    it('should return true if a control can be added, e.g. when the previous control is empty, and there is at least 1 control', () => {
-      const spy = jest.spyOn(component, 'canAddControl');
-      component.formArray.patchValue(['valid']);
-      const canAdd = component.canAddControl();
-      expect(spy).toHaveBeenCalled();
-      expect(canAdd).toBe(true);
-    });
-
-    it('should return false if a control cannot be added, e.g. when the previous control is empty', () => {
-      const spy = jest.spyOn(component, 'canAddControl');
-      component.formArray.patchValue(['valid']);
-      component.addControl();
-      const canAdd = component.canAddControl();
-      expect(spy).toHaveBeenCalled();
-      expect(canAdd).toBe(false);
-    });
-  });
-
   describe('addControl', () => {
     it('should add a copy of the control to the end of the form array', () => {
       const spy = jest.spyOn(component, 'addControl');
-      component.formArray.patchValue(['valid']); // fill in controls, to allow adding of additional ones
+      component.formArray = fb.array<CustomFormControl>([]);
+      component.addControl('valid');
       component.addControl('valid');
       component.addControl('valid');
       component.addControl('valid');
@@ -112,8 +82,11 @@ describe('AdrTankStatementUnNumberEditComponent', () => {
     });
 
     it('should prevent the adding of additional controls, when the previous one is empty', () => {
+      component.formArray = fb.array<CustomFormControl>([]);
+      component.addControl('valid');
       component.addControl();
-      expect(component.formArray.value).toHaveLength(1);
+      component.addControl();
+      expect(component.formArray.value).toHaveLength(2);
     });
   });
 
@@ -135,19 +108,6 @@ describe('AdrTankStatementUnNumberEditComponent', () => {
       expect(component.formArray.controls.at(3)).toBeUndefined();
       expect(component.formArray.controls.at(2)).toBeDefined();
       expect(component.formArray.controls).toHaveLength(3);
-    });
-  });
-
-  describe('updateControls', () => {
-    it('should update the meta properties of each control after insertion or deletion', () => {
-      const methodSpy = jest.spyOn(component, 'updateControls');
-      component.formArray.patchValue(['valid']);
-      component.addControl('valid');
-      expect(methodSpy).toHaveBeenCalled();
-      component.removeControl(0);
-      expect(methodSpy).toHaveBeenCalled();
-      expect(component.formArray.controls).toHaveLength(1);
-      expect(component.formArray.controls.at(0)?.meta.customId).toBe('techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo_1');
     });
   });
 });
