@@ -76,40 +76,44 @@ describe('BaseTestRecordComponent', () => {
     });
   });
 
-  it('should call the validate function of eu vehicle category', () => {
-    component.sections = [{ form: new CustomFormGroup({ name: 'vehicleSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
-      {
-        form: new CustomFormGroup({
-          name: 'testSection',
-          type: FormNodeTypes.GROUP,
-          children: [],
-        }, {}),
-      }] as unknown as QueryList<DynamicFormGroupComponent>;
+  describe('validateEuVehicleCategory failure', () => {
+    it('should not call the validate function of eu vehicle category', () => {
+      component.sections = [{ form: new CustomFormGroup({ name: 'anotherTestSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
+        {
+          form: new CustomFormGroup({
+            name: 'testSection',
+            type: FormNodeTypes.GROUP,
+            children: [],
+          }, {}),
+        }] as unknown as QueryList<DynamicFormGroupComponent>;
 
-    const spy = jest.spyOn(DynamicFormService, 'validateControl');
-    spy.mockImplementation(() => undefined);
+      const errorspy = jest.spyOn(DynamicFormService, 'validateControl');
+      errorspy.mockImplementation(() => undefined);
 
-    component.validateEuVehicleCategory('test');
+      component.validateEuVehicleCategory('test');
 
-    expect(spy).toHaveBeenCalledTimes(1);
+      expect(errorspy).toHaveBeenCalledTimes(0);
+    });
   });
 
-  it('should not call the validate function of eu vehicle category', () => {
-    component.sections = [{ form: new CustomFormGroup({ name: 'anotherTestSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
-      {
-        form: new CustomFormGroup({
-          name: 'testSection',
-          type: FormNodeTypes.GROUP,
-          children: [],
-        }, {}),
-      }] as unknown as QueryList<DynamicFormGroupComponent>;
+  describe('validateEuVehicleCategory success', () => {
+    it('should call the validate function of eu vehicle category', () => {
+      component.sections = [{ form: new CustomFormGroup({ name: 'vehicleSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
+        {
+          form: new CustomFormGroup({
+            name: 'testSection',
+            type: FormNodeTypes.GROUP,
+            children: [],
+          }, {}),
+        }] as unknown as QueryList<DynamicFormGroupComponent>;
 
-    const errorspy = jest.spyOn(DynamicFormService, 'validateControl');
-    errorspy.mockImplementation(() => undefined);
+      const spy = jest.spyOn(DynamicFormService, 'validateControl');
+      spy.mockImplementation(() => undefined);
 
-    component.validateEuVehicleCategory('test');
+      component.validateEuVehicleCategory('test');
 
-    expect(errorspy).toHaveBeenCalledTimes(0);
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
   });
 
 });
