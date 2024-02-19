@@ -6,9 +6,9 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import {
-    getRequiredStandards,
-    getRequiredStandardsFailure,
-    getRequiredStandardsSuccess,
+  getRequiredStandards,
+  getRequiredStandardsFailure,
+  getRequiredStandardsSuccess,
 } from '@store/required-standards/actions/required-standards.actions';
 import { testResultInEdit } from '@store/test-records/selectors/test-records.selectors';
 import { Observable } from 'rxjs';
