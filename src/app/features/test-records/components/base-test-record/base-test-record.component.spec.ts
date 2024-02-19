@@ -54,7 +54,7 @@ describe('BaseTestRecordComponent', () => {
     fixture = TestBed.createComponent(BaseTestRecordComponent);
     component = fixture.componentInstance;
     component.testResult = { vin: 'ABC002', testTypes: [{ testResult: resultOfTestEnum.fail }] } as TestResultModel;
-    component.sections = undefined;
+    jest.clearAllMocks();
     fixture.detectChanges();
   });
 
@@ -76,27 +76,7 @@ describe('BaseTestRecordComponent', () => {
     });
   });
 
-  describe('validateEuVehicleCategory failure', () => {
-    it('should not call the validate function of eu vehicle category', () => {
-      component.sections = [{ form: new CustomFormGroup({ name: 'anotherTestSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
-        {
-          form: new CustomFormGroup({
-            name: 'testSection',
-            type: FormNodeTypes.GROUP,
-            children: [],
-          }, {}),
-        }] as unknown as QueryList<DynamicFormGroupComponent>;
-
-      const errorspy = jest.spyOn(DynamicFormService, 'validateControl');
-      errorspy.mockImplementation(() => undefined);
-
-      component.validateEuVehicleCategory('test');
-
-      expect(errorspy).toHaveBeenCalledTimes(0);
-    });
-  });
-
-  describe('validateEuVehicleCategory success', () => {
+  describe('validateEuVehicleCategory', () => {
     it('should call the validate function of eu vehicle category', () => {
       component.sections = [{ form: new CustomFormGroup({ name: 'vehicleSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
         {
@@ -114,6 +94,23 @@ describe('BaseTestRecordComponent', () => {
 
       expect(spy).toHaveBeenCalledTimes(1);
     });
-  });
 
+    it('should not call the validate function of eu vehicle category', () => {
+      component.sections = [{ form: new CustomFormGroup({ name: 'anotherTestSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
+        {
+          form: new CustomFormGroup({
+            name: 'testSection',
+            type: FormNodeTypes.GROUP,
+            children: [],
+          }, {}),
+        }] as unknown as QueryList<DynamicFormGroupComponent>;
+
+      const spy = jest.spyOn(DynamicFormService, 'validateControl');
+      spy.mockImplementation(() => undefined);
+
+      component.validateEuVehicleCategory('test');
+
+      expect(spy).toHaveBeenCalledTimes(0);
+    });
+  });
 });
