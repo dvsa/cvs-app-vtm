@@ -78,7 +78,6 @@ export class BaseTestRecordComponent implements AfterViewInit {
   validateEuVehicleCategory(_event: unknown) {
     this.sections?.forEach((section) => {
       const { form } = section;
-      console.error(form.meta.name);
       if (form.meta.name === 'vehicleSection') {
         const errors: GlobalError[] = [];
         DynamicFormService.validateControl(form.get('euVehicleCategory') as CustomFormControl, errors);
