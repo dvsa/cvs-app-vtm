@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { RequiredStandardsService } from '@services/required-standards/required-standards.service';
 import {
@@ -8,6 +8,9 @@ import { getRequiredStandards, getRequiredStandardsFailure, getRequiredStandards
 
 @Injectable()
 export class RequiredStandardsEffects {
+  actions$ = inject(Actions);
+  requiredStandardsService = inject(RequiredStandardsService);
+
   getRequiredStandards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getRequiredStandards),
@@ -16,6 +19,4 @@ export class RequiredStandardsEffects {
         catchError((e) => of(getRequiredStandardsFailure({ error: e.message }))),
       )),
     ));
-
-  constructor(private actions$: Actions, private requiredStandardsService: RequiredStandardsService) {}
 }
