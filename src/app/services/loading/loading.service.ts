@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { defectsLoadingState } from '@store/defects';
+import { referenceDataLoadingState } from '@store/reference-data';
+import { requiredStandardsLoadingState } from '@store/required-standards/selectors/required-standards.selector';
 import { getSpinner } from '@store/spinner/selectors/spinner.selectors';
+import { selectTechRecordSearchLoadingState } from '@store/tech-record-search/selector/tech-record-search.selector';
 import { technicalRecordsLoadingState } from '@store/technical-records';
 import { testResultLoadingState } from '@store/test-records';
-import { selectTestTypesLoadingState } from '@store/test-types/selectors/test-types.selectors';
 import { testStationsLoadingState } from '@store/test-stations';
-import { defectsLoadingState } from '@store/defects';
+import { selectTestTypesLoadingState } from '@store/test-types/selectors/test-types.selectors';
 import { combineLatest, map, Observable } from 'rxjs';
-import { referenceDataLoadingState } from '@store/reference-data';
-import { selectTechRecordSearchLoadingState } from '@store/tech-record-search/selector/tech-record-search.selector';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class LoadingService {
   defectsLoadingState$: Observable<boolean> = this.store.pipe(select(defectsLoadingState));
   referenceDataLoadingState$: Observable<boolean> = this.store.pipe(select(referenceDataLoadingState));
   techRecordSearchLoadingState$: Observable<boolean> = this.store.pipe(select(selectTechRecordSearchLoadingState));
+  requiredStandardsLoadingState$: Observable<boolean> = this.store.pipe(select(requiredStandardsLoadingState));
 
   constructor(private store: Store) {}
 
@@ -35,6 +37,7 @@ export class LoadingService {
       this.defectsLoadingState$,
       this.referenceDataLoadingState$,
       this.techRecordSearchLoadingState$,
+      this.requiredStandardsLoadingState$,
     ]).pipe(map((states) => states.some((b) => b)));
   }
 
