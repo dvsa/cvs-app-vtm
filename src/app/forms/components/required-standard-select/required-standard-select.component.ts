@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DefectGETIVA, RequiredStandard, SectionIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
 import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { Store } from '@ngrx/store';
 import { RequiredStandardState } from '@store/required-standards/reducers/required-standards.reducer';
@@ -13,13 +14,13 @@ import { Subject } from 'rxjs';
 })
 export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 
-  requiredStandards?: any;
+  requiredStandards?: SectionIVA[];
   normalAndBasic?: boolean;
   isEditing = false;
   selectedInspectionType?: INSPECTION_TYPE;
-  selectedSection?: any; // TODO: fix these types
-  selectedRequiredStandard?: any;
-  payload: any; // TODO: this is bad
+  selectedSection?: SectionIVA;
+  selectedRequiredStandard?: RequiredStandard;
+  basicAndNormalRequiredStandards?: DefectGETIVA;
 
   onDestroy$ = new Subject();
 
@@ -34,7 +35,7 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
       if (requiredStandards.basic.length) {
         this.normalAndBasic = true;
         this.requiredStandards = [];
-        this.payload = requiredStandards;
+        this.basicAndNormalRequiredStandards = requiredStandards;
       } else {
         this.requiredStandards = requiredStandards.normal;
         this.selectedInspectionType = INSPECTION_TYPE.NORMAL;
@@ -50,26 +51,29 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 
   handleSelectBasicOrNormal(inspectionType: INSPECTION_TYPE): void {
     this.requiredStandards = inspectionType === INSPECTION_TYPE.BASIC
-      ? this.payload?.basic : this.payload?.normal;
+      ? this.basicAndNormalRequiredStandards?.basic : this.basicAndNormalRequiredStandards?.normal;
   }
 
-  handleSelect(selected?: any, type?: Types): void {
+  handleSelect(selected?: INSPECTION_TYPE | SectionIVA | RequiredStandard, type?: Types): void {
     switch (type) {
       case Types.InspectionType:
-        this.handleSelectBasicOrNormal(selected);
-        console.log(this.requiredStandards);
+        this.handleSelectBasicOrNormal(selected as INSPECTION_TYPE);
         this.selectedInspectionType = selected as INSPECTION_TYPE;
         this.selectedSection = undefined;
         this.selectedRequiredStandard = undefined;
         break;
       case Types.Section:
-        this.selectedSection = selected;
+        this.selectedSection = selected as SectionIVA;
         this.selectedRequiredStandard = undefined;
         break;
       case Types.RequiredStandard:
-        this.selectedRequiredStandard = selected;
-        // TODO: add navigation to next page
-        console.log(this.selectedRequiredStandard);
+        this.selectedRequiredStandard = selected as RequiredStandard;
+        if (this.selectedRequiredStandard) {
+          void this.router.navigate([this.selectedRequiredStandard.refCalculation], {
+            relativeTo: this.route,
+            queryParamsHandling: 'merge',
+          });
+        }
         break;
       default:
         console.error('Unsupported:');
@@ -89,5 +93,6 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 enum Types {
   InspectionType,
   Section,
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   RequiredStandard,
 }

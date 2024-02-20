@@ -1,4 +1,4 @@
-<ng-container *ngIf="requiredStandards.length || normalAndBasic; else noRequiredStandards">
+<ng-container *ngIf="requiredStandards?.length || normalAndBasic; else noRequiredStandards">
   <h1 class="govuk-heading-l">Select a required standard</h1>
   <div class="requiredStandards">
     <div *ngIf="normalAndBasic">
@@ -6,12 +6,12 @@
         <ol class="list">
           <li *ngFor="let type of inspectionTypes; let i = index">
             <a
-              [id]="'rs-list-item-' + i"
+              [id]="'normal-or-basic-list-item-' + i"
               class="browse__link browse__link--inactive"
               [ngClass]="{ 'browse__link--active': type === selectedInspectionType }"
               (click)="handleSelect(type, types.InspectionType)"
             >
-              {{ type }} <span [ngClass]="{ 'list__item--more': true }"></span>
+              {{ type | defaultNullOrEmpty }} <span [ngClass]="{ 'list__item--more': true }"></span>
             </a>
           </li>
         </ol>
@@ -22,18 +22,18 @@
       <ol class="list">
         <li *ngFor="let section of requiredStandards; let i = index">
           <a
-            [id]="'rs-list-item-' + i"
+            [id]="'section-list-item-' + i"
             class="browse__link browse__link--inactive"
             [ngClass]="{ 'browse__link--active': section === selectedSection }"
             (click)="handleSelect(section, types.Section)"
           >
-            {{ section.sectionDescription }} <span [ngClass]="{ 'list__item--more': true }"></span>
+            {{ section.sectionNumber }}. {{ section.sectionDescription }} <span [ngClass]="{ 'list__item--more': true }"></span>
           </a>
         </li>
       </ol>
     </div>
 
-    <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedRequiredStandard }">
+    <div class="list_container">
       <ol class="list">
         <li *ngFor="let rs of selectedSection?.requiredStandards; let i = index">
           <a
@@ -42,7 +42,7 @@
             [ngClass]="{ 'browse__link--active': rs === selectedRequiredStandard }"
             (click)="handleSelect(rs, types.RequiredStandard)"
           >
-            {{ rs.requiredStandard }} <span [ngClass]="{ 'list__item--more': true }"></span>
+            {{ rs.refCalculation }} {{ rs.requiredStandard }} <span [ngClass]="{ 'list__item--more': true }"></span>
           </a>
         </li>
       </ol>
