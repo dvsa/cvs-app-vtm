@@ -5,7 +5,7 @@ import { INSPECTION_TYPE } from '@models/test-results/test-result-required-stand
 import { Store } from '@ngrx/store';
 import { RequiredStandardState } from '@store/required-standards/reducers/required-standards.reducer';
 import { getRequiredStandardsState } from '@store/required-standards/selectors/required-standards.selector';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-required-standard-select',
@@ -31,7 +31,7 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.requiredStandardsStore.select(getRequiredStandardsState).subscribe((requiredStandards) => {
+    this.requiredStandardsStore.select(getRequiredStandardsState).pipe(takeUntil(this.onDestroy$)).subscribe((requiredStandards) => {
       if (requiredStandards.basic.length) {
         this.normalAndBasic = true;
         this.requiredStandards = [];
