@@ -28,6 +28,7 @@ import { FieldWarningMessageComponent } from './components/field-warning-message
 import { NumberInputComponent } from './components/number-input/number-input.component';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
 import { ReadOnlyComponent } from './components/read-only/read-only.component';
+import { RequiredStandardSelectComponent } from './components/required-standard-select/required-standard-select.component';
 import { SelectComponent } from './components/select/select.component';
 import { SuggestiveInputComponent } from './components/suggestive-input/suggestive-input.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
@@ -100,6 +101,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
     DefectSelectComponent,
+    RequiredStandardSelectComponent,
     FocusNextDirective,
     TruncatePipe,
     WeightsComponent,
@@ -158,6 +160,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
     DefectSelectComponent,
+    RequiredStandardSelectComponent,
     WeightsComponent,
     LettersComponent,
     PlatesComponent,

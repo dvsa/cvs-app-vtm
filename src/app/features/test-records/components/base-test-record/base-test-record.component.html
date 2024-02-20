@@ -31,10 +31,10 @@
             class="section"
             [id]="template.name"
             [isEditing]="isEditing"
-            [requiredStandards]="getDefects$(testResult.vehicleType) | async"
             [template]="template"
-            [data]="testResult"
+            [testData]="testResult"
             (formChange)="handleFormChange($event)"
+            (validateEuVehicleCategory)="validateEuVehicleCategory($event)"
           ></app-required-standards>
         </app-accordion>
       </ng-container>

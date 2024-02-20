@@ -16,6 +16,15 @@ import {
   initialReferenceDataState, referenceDataReducer, ReferenceDataState, STORE_FEATURE_REFERENCE_DATA_KEY,
 } from './reference-data';
 import {
+  initialRequiredStandardsState, requiredStandardsReducer, RequiredStandardState, STORE_FEATURE_REQUIRED_STANDARDS_KEY,
+} from './required-standards/reducers/required-standards.reducer';
+import {
+  initialTechSearchResultState,
+  SearchResultState,
+  STORE_FEATURE_SEARCH_TECH_RESULTS_KEY,
+  techSearchResultReducer,
+} from './tech-record-search/reducer/tech-record-search.reducer';
+import {
   initialState as initialTechnicalRecordsState,
   STORE_FEATURE_TECHNICAL_RECORDS_KEY,
   TechnicalRecordServiceState,
@@ -33,12 +42,6 @@ import {
 import {
   initialState as initialUserState, STORE_FEATURE_USER_KEY, userServiceReducer, UserServiceState,
 } from './user/user-service.reducer';
-import {
-  initialTechSearchResultState,
-  SearchResultState,
-  STORE_FEATURE_SEARCH_TECH_RESULTS_KEY,
-  techSearchResultReducer,
-} from './tech-record-search/reducer/tech-record-search.reducer';
 
 export interface State {
   [STORE_FEATURE_DEFECTS_KEY]: DefectsState;
@@ -51,6 +54,7 @@ export interface State {
   [STORE_FEATURE_TEST_TYPES_KEY]: TestTypeState;
   [STORE_FEATURE_USER_KEY]: UserServiceState;
   [STORE_FEATURE_SEARCH_TECH_RESULTS_KEY]: SearchResultState;
+  [STORE_FEATURE_REQUIRED_STANDARDS_KEY]: RequiredStandardState;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   router?: any;
 }
@@ -66,6 +70,7 @@ export const initialAppState = {
   [STORE_FEATURE_TEST_TYPES_KEY]: initialTestTypeState,
   [STORE_FEATURE_USER_KEY]: initialUserState,
   [STORE_FEATURE_SEARCH_TECH_RESULTS_KEY]: initialTechSearchResultState,
+  [STORE_FEATURE_REQUIRED_STANDARDS_KEY]: initialRequiredStandardsState,
 };
 
 export const reducers: ActionReducerMap<State> = {
@@ -79,4 +84,5 @@ export const reducers: ActionReducerMap<State> = {
   [STORE_FEATURE_TEST_TYPES_KEY]: testTypesReducer,
   [STORE_FEATURE_USER_KEY]: userServiceReducer,
   [STORE_FEATURE_SEARCH_TECH_RESULTS_KEY]: techSearchResultReducer,
+  [STORE_FEATURE_REQUIRED_STANDARDS_KEY]: requiredStandardsReducer,
 };
