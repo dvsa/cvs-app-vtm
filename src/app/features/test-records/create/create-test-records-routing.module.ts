@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DefectSelectComponent } from '@forms/components/defect-select/defect-select.component';
 import { RequiredStandardSelectComponent } from '@forms/components/required-standard-select/required-standard-select.component';
 import { DefectComponent } from '@forms/custom-sections/defect/defect.component';
+import { RequiredStandardComponent } from '@forms/custom-sections/required-standard/required-standard.component';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { contingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
@@ -68,11 +69,17 @@ const routes: Routes = [
             path: 'selectRequiredStandard',
             component: TestRouterOutletComponent,
             resolve: { RequiredStandards: requiredStandardsResolver },
-            data: { title: 'Select required Standard', roles: Roles.TestResultCreateContingency },
+            data: { title: 'Select Required Standard', roles: Roles.TestResultCreateContingency },
             children: [
               {
                 path: '',
                 component: RequiredStandardSelectComponent,
+                canActivate: [RoleGuard],
+              },
+              {
+                path: ':ref',
+                component: RequiredStandardComponent,
+                data: { title: 'Required Standard', roles: Roles.TestResultCreateContingency, isEditing: true },
                 canActivate: [RoleGuard],
               },
             ],
