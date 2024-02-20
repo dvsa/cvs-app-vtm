@@ -15,7 +15,9 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
 import {
-  catchError, concatMap, map, mergeMap, of, switchMap, tap, withLatestFrom,
+  catchError, concatMap,
+  map, mergeMap, of, switchMap, tap,
+  withLatestFrom,
 } from 'rxjs';
 import {
   amendVin,
@@ -295,7 +297,7 @@ export class TechnicalRecordServiceEffects {
         systemNumber, createdTimestamp, certificateType,
       }) =>
         this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
-          map(() => generateADRCertificateSuccess()),
+          map((res) => generateADRCertificateSuccess({ id: res.id })),
           catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
         )),
     ));

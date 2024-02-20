@@ -43,6 +43,7 @@ export const ErrorMessageMap: Record<string, Function> = {
   [ValidatorNames.IsArray]: (err: { message: string }, label?: string) => `${label || DEFAULT_LABEL}`,
   [ValidatorNames.Tc3TestValidator]: (err: { message: string }) => `${err.message}`,
   [ValidatorNames.DateIsInvalid]: (err: { message?: string }, label?: string) => err.message ?? `${label || DEFAULT_LABEL} is invalid`,
+  [ValidatorNames.Custom]: (err: { message: string }) => err.message,
 
   [AsyncValidatorNames.RequiredIfNotAbandoned]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,

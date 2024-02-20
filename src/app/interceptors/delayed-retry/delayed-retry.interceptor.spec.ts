@@ -1,8 +1,12 @@
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import {
-  fakeAsync, flush, TestBed, tick,
+  TestBed,
+  fakeAsync, flush,
+  tick,
 } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/index';
 import { DelayedRetryInterceptor, HTTP_RETRY_CONFIG } from './delayed-retry.interceptor';
 
 describe('DelayedRetryInterceptor', () => {
@@ -22,6 +26,7 @@ describe('DelayedRetryInterceptor', () => {
           useClass: DelayedRetryInterceptor,
           multi: true,
         },
+        provideMockStore({ initialState: initialAppState }),
       ],
     });
   });
@@ -30,7 +35,12 @@ describe('DelayedRetryInterceptor', () => {
     it('should be created', () => {
       interceptor = TestBed.inject(DelayedRetryInterceptor);
       expect(interceptor).toBeTruthy();
-      expect(interceptor.config).toEqual({ count: 3, delay: 2000, backoff: false });
+      expect(interceptor.config).toEqual({
+        count: 3,
+        delay: 2000,
+        backoff: false,
+        whiteList: [],
+      });
     });
   });
 

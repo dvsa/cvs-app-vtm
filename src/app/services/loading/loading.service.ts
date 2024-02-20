@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { defectsLoadingState } from '@store/defects';
 import { referenceDataLoadingState } from '@store/reference-data';
+import { requiredStandardsLoadingState } from '@store/required-standards/selectors/required-standards.selector';
 import { getSpinner } from '@store/spinner/selectors/spinner.selectors';
 import { selectTechRecordSearchLoadingState } from '@store/tech-record-search/selector/tech-record-search.selector';
 import { technicalRecordsLoadingState } from '@store/technical-records';
@@ -24,6 +25,7 @@ export class LoadingService {
   defectsLoadingState$ = this.store.pipe(select(defectsLoadingState));
   referenceDataLoadingState$ = this.store.pipe(select(referenceDataLoadingState));
   techRecordSearchLoadingState$ = this.store.pipe(select(selectTechRecordSearchLoadingState));
+  requiredStandardsLoadingState$ = this.store.pipe(select(requiredStandardsLoadingState));
 
   private get reduceLoadingStates$() {
     return combineLatest([
@@ -35,6 +37,7 @@ export class LoadingService {
       this.defectsLoadingState$,
       this.referenceDataLoadingState$,
       this.techRecordSearchLoadingState$,
+      this.requiredStandardsLoadingState$,
     ]).pipe(map((states) => states.some((b) => b)));
   }
 

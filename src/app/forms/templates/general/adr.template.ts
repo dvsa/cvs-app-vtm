@@ -19,10 +19,10 @@ import {
   AdrExaminerNotesHistoryViewComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
-import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import {
   AdrTankDetailsInitialInspectionViewComponent,
 } from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
+import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import {
   AdrTankDetailsSubsequentInspectionsEditComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
@@ -37,6 +37,7 @@ import {
 } from '@forms/custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { AdrValidators } from '@forms/validators/adr/adr.validators';
 import { TC2Types } from '@models/adr.enum';
 import {
   FormNode,
@@ -469,17 +470,9 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       groups: ['productList', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
-      customErrorMessage: 'Reference number or UN number 1 is required when selecting Product List',
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
-        {
-          name: ValidatorNames.requiredIfAllEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
-            value: [[], [null], [''], null, undefined],
-          },
-        },
-      ],
+        { name: ValidatorNames.Custom, args: AdrValidators.validateProductListRefNo }],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
@@ -491,13 +484,8 @@ export const AdrTemplate: FormNode = {
       viewComponent: AdrTankStatementUnNumberViewComponent,
       groups: ['productList', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
-      customErrorMessage: 'Reference number or UN number 1 is required when selecting Product List',
       validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: { sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo', value: [null, undefined, ''] },
-        },
-        { name: ValidatorNames.TankDetailsUnNumberValidator },
+        { name: ValidatorNames.Custom, args: AdrValidators.validateProductListUNNumbers },
       ],
     },
     {
