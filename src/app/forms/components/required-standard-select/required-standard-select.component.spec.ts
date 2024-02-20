@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/iva/defects/enums/euVehicleCategory.enum.js';
-import { DefectGETIVA, RequiredStandard, SectionIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
+import { RequiredStandard, SectionIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
 import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
@@ -12,12 +12,6 @@ describe('RequiredStandardSelectComponent', () => {
   let component: RequiredStandardSelectComponent;
   let fixture: ComponentFixture<RequiredStandardSelectComponent>;
   let router: Router;
-
-  const requiredStandards: DefectGETIVA = {
-    basic: [],
-    normal: [],
-    euVehicleCategories: [],
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
