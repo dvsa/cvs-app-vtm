@@ -75,6 +75,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   validateEuVehicleCategory(_event: unknown) {
     this.sections?.forEach((section) => {
       const { form } = section;
