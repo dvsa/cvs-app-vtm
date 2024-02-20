@@ -67,6 +67,7 @@ import { LettersComponent } from './custom-sections/letters/letters.component';
 import { ModifiedWeightsComponent } from './custom-sections/modified-weights/modified-weights.component';
 import { PlatesComponent } from './custom-sections/plates/plates.component';
 import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
+import { RequiredStandardComponent } from './custom-sections/required-standard/required-standard.component';
 import { RequiredStandardsComponent } from './custom-sections/required-standards/required-standards.component';
 import { TrlBrakesComponent } from './custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
@@ -111,6 +112,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     TrlBrakesComponent,
     ReadOnlyComponent,
     CustomDefectsComponent,
+    RequiredStandardComponent,
     RequiredStandardsComponent,
     CustomDefectComponent,
     SwitchableInputComponent,
@@ -168,6 +170,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     DimensionsComponent,
     TrlBrakesComponent,
     ReadOnlyComponent,
+    RequiredStandardComponent,
     RequiredStandardsComponent,
     CustomDefectsComponent,
     CustomDefectComponent,
