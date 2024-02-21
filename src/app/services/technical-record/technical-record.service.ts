@@ -184,6 +184,8 @@ export class TechnicalRecordService {
           const thirdMark = vrmControl.root.get('thirdMark')?.value;
           const previousVrm = vrmControl.root.get('previousVrm')?.value;
           if (thirdMark) {
+            const vrmNotNew = previousVrm === vrmControl.value;
+            if (vrmNotNew) return of({ validateVrm: { message: 'You must provide a new VRM' } });
             return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, vrmControl.value).pipe(
               map((results) => {
                 if (results.some((result) => result.techRecord_statusCode === StatusCodes.CURRENT)) {
@@ -258,6 +260,7 @@ export class TechnicalRecordService {
         const provisionalRecord = results.filter((result) => result.techRecord_statusCode === StatusCodes.PROVISIONAL);
 
         if (control.value === previousVrm) {
+          console.log('new vrm message should be showing');
           return { validateVrm: { message: 'You must provide a new VRM' } };
         }
         if (currentRecord.length > 0) {
@@ -273,6 +276,7 @@ export class TechnicalRecordService {
         if (provisionalRecord.length > 0) {
           return { validateVrm: { message: `This VRM already exists on a provisional record with the VIN: ${provisionalRecord[0].vin}` } };
         }
+        console.log('you made it to null');
         return null;
       }),
       catchError((err: HttpErrorResponse) => {
