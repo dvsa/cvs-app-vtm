@@ -87,7 +87,6 @@ export class DynamicFormService {
     [ValidatorNames.Tc3TestValidator]: (args: { inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
     [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
     [ValidatorNames.DateIsInvalid]: () => CustomValidators.dateIsInvalid,
-    [ValidatorNames.TankDetailsUnNumberValidator]: () => CustomValidators.tankDetailsUnNumberValidator(),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -185,19 +184,34 @@ export class DynamicFormService {
     });
   }
 
+  static validateControl(control: FormControl | CustomFormControl, errors: GlobalError[]) {
+    control.markAsTouched();
+    (control as CustomFormControl).meta?.changeDetection?.detectChanges();
+    this.getControlErrors(control, errors);
+  }
+
   private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {
     const { errors } = control;
     const meta = (control as CustomFormControl).meta as FormNode | undefined;
 
     if (errors) {
       if (meta?.hide) return;
-      const errorList = Object.keys(errors);
-      errorList.forEach((error) => {
-        validationErrorList.push({
-          error: meta?.customErrorMessage ?? ErrorMessageMap[`${error}`](errors[`${error}`], meta?.customValidatorErrorName ?? meta?.label),
-          anchorLink: meta?.customId ?? meta?.name,
-        } as GlobalError);
+      Object.entries(errors).forEach(([error, data]) => {
+        // If an anchor link is provided, use that, otherwise determine target element from customId or name
+        const defaultAnchorLink = meta?.customId ?? meta?.name;
+        const anchorLink = typeof data === 'object' && data !== null
+          ? data.anchorLink ?? defaultAnchorLink
+          : defaultAnchorLink;
+
+        // If typeof data is an array, assume we're passing the service multiple global errors
+        const globalErrors = Array.isArray(data) ? data : [{
+          error: meta?.customErrorMessage ?? ErrorMessageMap[`${error}`](data, meta?.customValidatorErrorName ?? meta?.label),
+          anchorLink,
+        }];
+
+        validationErrorList.push(...globalErrors);
       });
     }
+
   }
 }

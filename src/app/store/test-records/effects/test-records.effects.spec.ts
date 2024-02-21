@@ -1,5 +1,4 @@
-/* eslint-disable jest/expect-expect */
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -308,8 +307,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1']!),
+            sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1'] as Record<string, FormNode>),
             sectionsValue: { testTypes: [{ testTypeId: '1' }] } as unknown as TestResultModel,
           }),
           c: updateResultOfTest(),
@@ -431,8 +429,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            sectionTemplates: Object.values(masterTpl.psv['default']!),
+            sectionTemplates: Object.values(masterTpl.psv['default'] as Record<string, FormNode>),
             sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel,
           }),
           c: updateResultOfTest(),
@@ -464,8 +461,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateContingencyTestTemplatesAndtestResultToUpdate$).toBe('-b', {
           b: templateSectionsChanged({
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1']!),
+            sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1'] as Record<string, FormNode>),
             sectionsValue: {
               contingencyTestNumber: undefined,
               countryOfRegistration: '',
@@ -567,8 +563,8 @@ describe('TestResultsEffects', () => {
         // mock action to trigger effect
         actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
         // mock service call
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        jest.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---b|', { b: testResult }) as Observable<any>);
+        jest.spyOn(testResultsService, 'postTestResult')
+          .mockReturnValue(cold('---b|', { b: testResult }) as unknown as Observable<HttpResponse<unknown>>);
 
         // expect effect to return success action
         expectObservable(effects.createTestResult$).toBe('----b', {

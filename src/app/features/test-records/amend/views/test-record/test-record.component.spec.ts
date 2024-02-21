@@ -154,8 +154,7 @@ describe('TestRecordComponent', () => {
 
     it('should call updateTestResult with value of all forms merged into one', async () => {
       fixture.detectChanges();
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => Promise.resolve(true));
+      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => true);
       const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
       store.overrideSelector(isTestTypeKeySame('testTypeId'), false);
       store.overrideSelector(testResultInEdit, testRecord);

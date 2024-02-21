@@ -25,6 +25,20 @@
         ></app-defects>
       </app-accordion>
 
+      <ng-container *ngSwitchCase="'requiredStandards'">
+        <app-accordion *featureToggleName="'requiredStandards'" [id]="template.name" [title]="template.label">
+          <app-required-standards
+            class="section"
+            [id]="template.name"
+            [isEditing]="isEditing"
+            [template]="template"
+            [testData]="testResult"
+            (formChange)="handleFormChange($event)"
+            (validateEuVehicleCategory)="validateEuVehicleCategory($event)"
+          ></app-required-standards>
+        </app-accordion>
+      </ng-container>
+
       <app-accordion *ngSwitchCase="'customDefectsSection'" [id]="template.name" [title]="template.label">
         <app-custom-defects
           class="section"
