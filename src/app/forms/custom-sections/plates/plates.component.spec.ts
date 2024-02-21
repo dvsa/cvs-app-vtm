@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { TyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
@@ -257,8 +256,7 @@ describe('PlatesComponent', () => {
         techRecord_frontVehicleTo5thWheelCouplingMax: 1,
         techRecord_dimensions_length: 1,
         techRecord_dimensions_width: 1,
-        // eslint-disable-next-line no-underscore-dangle
-        techRecord_tyreUseCode: TyreUseCode._2R,
+        techRecord_tyreUseCode: '2R',
         techRecord_roadFriendly: true,
         techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
         techRecord_axles: [{
@@ -288,8 +286,7 @@ describe('PlatesComponent', () => {
         techRecord_frontVehicleTo5thWheelCouplingMax: 1,
         techRecord_dimensions_length: 1,
         techRecord_dimensions_width: 1,
-        // eslint-disable-next-line no-underscore-dangle
-        techRecord_tyreUseCode: TyreUseCode._2R,
+        techRecord_tyreUseCode: '2R',
         techRecord_roadFriendly: true,
         techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
         techRecord_axles: [{
@@ -319,8 +316,7 @@ describe('PlatesComponent', () => {
         techRecord_frontVehicleTo5thWheelCouplingMax: 1,
         techRecord_dimensions_length: 1,
         techRecord_dimensions_width: 1,
-        // eslint-disable-next-line no-underscore-dangle
-        techRecord_tyreUseCode: TyreUseCode._2R,
+        techRecord_tyreUseCode: '2R',
         techRecord_roadFriendly: true,
         techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
         techRecord_axles: [{
@@ -350,8 +346,7 @@ describe('PlatesComponent', () => {
         techRecord_frontVehicleTo5thWheelCouplingMax: 1,
         techRecord_dimensions_length: 1,
         techRecord_dimensions_width: 1,
-        // eslint-disable-next-line no-underscore-dangle
-        techRecord_tyreUseCode: TyreUseCode._2R,
+        techRecord_tyreUseCode: '2R',
         techRecord_roadFriendly: true,
         techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
         techRecord_axles: [{
@@ -381,8 +376,7 @@ describe('PlatesComponent', () => {
         techRecord_frontVehicleTo5thWheelCouplingMax: 1,
         techRecord_dimensions_length: 1,
         techRecord_dimensions_width: 1,
-        // eslint-disable-next-line no-underscore-dangle
-        techRecord_tyreUseCode: TyreUseCode._2R,
+        techRecord_tyreUseCode: '2R',
         techRecord_roadFriendly: true,
         techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
         techRecord_axles: [],
@@ -407,8 +401,7 @@ describe('PlatesComponent', () => {
         techRecord_frontVehicleTo5thWheelCouplingMax: 1,
         techRecord_dimensions_length: 1,
         techRecord_dimensions_width: 1,
-        // eslint-disable-next-line no-underscore-dangle
-        techRecord_tyreUseCode: TyreUseCode._2R,
+        techRecord_tyreUseCode: '2R',
         techRecord_roadFriendly: true,
         techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
         techRecord_axles: [{
@@ -437,8 +430,7 @@ describe('PlatesComponent', () => {
         techRecord_frontVehicleTo5thWheelCouplingMax: 1,
         techRecord_dimensions_length: 1,
         techRecord_dimensions_width: 1,
-        // eslint-disable-next-line no-underscore-dangle
-        techRecord_tyreUseCode: TyreUseCode._2R,
+        techRecord_tyreUseCode: '2R',
         techRecord_roadFriendly: true,
         techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
         techRecord_axles: [{
@@ -468,8 +460,7 @@ describe('PlatesComponent', () => {
         techRecord_frontVehicleTo5thWheelCouplingMax: 1,
         techRecord_dimensions_length: 1,
         techRecord_dimensions_width: 1,
-        // eslint-disable-next-line no-underscore-dangle
-        techRecord_tyreUseCode: TyreUseCode._2R,
+        techRecord_tyreUseCode: '2R',
         techRecord_roadFriendly: true,
         techRecord_vehicleConfiguration: VehicleConfiguration.ARTICULATED,
         techRecord_axles: [{

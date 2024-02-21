@@ -28,13 +28,11 @@ describe('AdrExaminerNotesHistoryEditComponent', () => {
   });
   describe('ngOnDestroy', () => {
     it('should call destroy$.next and destroy$.complete', () => {
-      jest.spyOn(component.destroy$, 'next');
-      jest.spyOn(component.destroy$, 'complete');
+      const nextSpy = jest.spyOn(component.destroy$, 'next');
+      const completeSpy = jest.spyOn(component.destroy$, 'complete');
       component.ngOnDestroy();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.destroy$.next).toHaveBeenCalled();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(component.destroy$.complete).toHaveBeenCalled();
+      expect(nextSpy).toHaveBeenCalled();
+      expect(completeSpy).toHaveBeenCalled();
     });
   });
 
