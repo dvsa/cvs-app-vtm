@@ -1,4 +1,3 @@
-/* eslint-disable jest/expect-expect */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TestStation } from '@models/test-stations/test-station.model';

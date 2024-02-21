@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   ComponentFixture, fakeAsync, inject, TestBed, tick,
 } from '@angular/core/testing';
+import { FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -84,9 +85,8 @@ describe('DynamicFormGroupComponent', () => {
         },
       ],
     ],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ])('entriesOf: should split the keys out into values', (input: any, expected: any) => {
-    expect(component.entriesOf(input)).toStrictEqual(expected);
+  ])('entriesOf: should split the keys out into values', (input, expected) => {
+    expect(component.entriesOf(input as unknown as FormGroup<object>)).toStrictEqual(expected);
   });
 
   describe('formNodeTypes', () => {

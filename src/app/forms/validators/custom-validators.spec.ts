@@ -363,8 +363,7 @@ describe('customPattern', () => {
     const validation = customPattern(new FormControl(input));
     expect(validation).toEqual(expected);
     if (validation) {
-      // eslint-disable-next-line prefer-destructuring
-      const message = validation['customPattern']['message'];
+      const { customPattern: { message } } = validation;
       // eslint-disable-next-line jest/no-conditional-expect
       expect(message).toEqual(msg);
     } else {

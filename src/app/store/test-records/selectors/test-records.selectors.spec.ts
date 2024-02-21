@@ -1,22 +1,21 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Params } from '@angular/router';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType } from '@models/test-types/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
-import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
+import { TestResultsState, initialTestResultsState } from '../reducers/test-records.reducer';
 import {
   isTestTypeKeySame,
   selectAllTestResults,
   selectAmendedDefectData,
   selectDefectData,
-  selectedAmendedTestResultState,
-  selectedTestResultState,
-  selectedTestSortedAmendmentHistory,
   selectTestResultIds,
   selectTestResultsEntities,
   selectTestResultsTotal,
+  selectedAmendedTestResultState,
+  selectedTestResultState,
+  selectedTestSortedAmendmentHistory,
   testResultLoadingState,
 } from './test-records.selectors';
 
@@ -91,23 +90,23 @@ describe('Test Results Selectors', () => {
     beforeEach(() => {
       const date = new Date('2022-01-02');
       mock = mockTestResult();
-      mock.testHistory = mock.testHistory?.concat(...mock.testHistory);
-      mock.testHistory![0].createdAt = undefined;
-      mock.testHistory![1].createdAt = date.toISOString();
-      mock.testHistory![2].createdAt = date.toISOString();
-      mock.testHistory![3].createdAt = undefined;
-      mock.testHistory![4].createdAt = new Date(date.setDate(date.getDate() - 1)).toISOString();
-      mock.testHistory![5].createdAt = new Date(date.setDate(date.getDate() + 1)).toISOString();
-      mock.testHistory![6].createdAt = new Date(date.setDate(date.getDate() - 1)).toISOString();
-      mock.testHistory![7].createdAt = undefined;
-      mock.testHistory![8].createdAt = date.toISOString();
-      mock.testHistory![9].createdAt = date.toISOString();
+      mock.testHistory = mock.testHistory?.concat(...mock.testHistory) ?? [];
+      mock.testHistory[0].createdAt = undefined;
+      mock.testHistory[1].createdAt = date.toISOString();
+      mock.testHistory[2].createdAt = date.toISOString();
+      mock.testHistory[3].createdAt = undefined;
+      mock.testHistory[4].createdAt = new Date(date.setDate(date.getDate() - 1)).toISOString();
+      mock.testHistory[5].createdAt = new Date(date.setDate(date.getDate() + 1)).toISOString();
+      mock.testHistory[6].createdAt = new Date(date.setDate(date.getDate() - 1)).toISOString();
+      mock.testHistory[7].createdAt = undefined;
+      mock.testHistory[8].createdAt = date.toISOString();
+      mock.testHistory[9].createdAt = date.toISOString();
     });
 
     it('should sort the test history', () => {
       // Adding entries with null created at at the end if they exist
       const sortedTestHistory = selectedTestSortedAmendmentHistory.projector(mock);
-      let previous = new Date(sortedTestHistory[0].createdAt!).getTime();
+      let previous = new Date(sortedTestHistory[0].createdAt as string).getTime();
       const notfound: TestResultModel[] = [];
       sortedTestHistory?.forEach((test) => {
         if (test.createdAt) {
@@ -137,7 +136,7 @@ describe('Test Results Selectors', () => {
     it('should return amended record that matches "createdAt" route param value', () => {
       const selectedState = selectedAmendedTestResultState.projector(testResult, { testNumber: 'ABC00', createdAt: '2020-01-01T00:00:00.000Z' });
       expect(selectedState).toBeDefined();
-      expect(testResult.testHistory![1].testTypes).toHaveLength(1);
+      expect(testResult.testHistory?.[1].testTypes).toHaveLength(1);
     });
 
     it('should return return undefined when "createdAt" route param value does not match any amended records', () => {

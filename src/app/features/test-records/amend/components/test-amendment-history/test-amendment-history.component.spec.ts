@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { formatDate } from '@angular/common';
 import {
   ComponentFixture, fakeAsync, TestBed, tick,
@@ -97,32 +95,32 @@ describe('TestAmendmentHistoryComponent', () => {
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
         expect(cells[0].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.reasonForCreation));
         expect(cells[1].nativeElement.innerHTML).toBe(component.testRecord?.createdByName);
-        expect(cells[2].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.createdAt!, 'MMM d, yyyy', 'en'));
+        expect(cells[2].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.createdAt as string, 'MMM d, yyyy', 'en'));
         expect(cells[3].nativeElement.innerHTML).toBe('');
       });
 
       it('should have the second row be the first entry from amendement version history', fakeAsync(() => {
-        store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord!.testHistory!);
+        store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord?.testHistory ?? []);
         tick();
         fixture.detectChanges();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-        expect(cells[4].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.testHistory![0].reasonForCreation));
-        expect(cells[5].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.testHistory![0].createdByName));
-        expect(cells[6].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.testHistory![0].createdAt!, 'MMM d, yyyy', 'en'));
+        expect(cells[4].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.testHistory?.[0].reasonForCreation));
+        expect(cells[5].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.testHistory?.[0].createdByName));
+        expect(cells[6].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.testHistory?.[0].createdAt as string, 'MMM d, yyyy', 'en'));
         expect(cells[7].nativeElement.innerHTML).toContain('View');
       }));
     });
 
     it('should have links to view amended records', fakeAsync(() => {
       component.testRecord = mockTestResult();
-      store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord.testHistory!);
+      store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord.testHistory ?? []);
       tick();
       fixture.detectChanges();
 
       const links = fixture.debugElement.queryAll(By.css('a'));
 
       links.forEach((e) => expect(e.nativeElement.innerHTML).toBe('View'));
-      expect(links).toHaveLength(component.testRecord?.testHistory!.length);
+      expect(links).toHaveLength(component.testRecord?.testHistory?.length ?? 0);
     }));
   });
 });
