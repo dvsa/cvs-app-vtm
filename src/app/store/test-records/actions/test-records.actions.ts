@@ -2,6 +2,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 // eslint-disable-next-line import/no-cycle
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Update } from '@ngrx/entity';
@@ -51,3 +52,17 @@ export const templateSectionsChanged = createAction(
 export const createDefect = createAction('[test-results] create defect', props<{ defect: TestResultDefect }>());
 export const updateDefect = createAction('[test-results] save defect', props<{ defect: TestResultDefect; index: number }>());
 export const removeDefect = createAction('[test-results] remove defect', props<{ index: number }>());
+
+export const createRequiredStandard = createAction(
+  '[test-results] create required standard',
+  props<{ requiredStandard: TestResultRequiredStandard }>(),
+);
+
+export const updateRequiredStandard = createAction(
+  '[test-results] update required standard',
+  props<{ requiredStandard: TestResultRequiredStandard, index: number }>(),
+);
+
+export const removeRequiredStandard = createAction('[test-results] remove required standard', props<{ index: number }>());
+
+export const updateResultOfTestRequiredStandards = createAction('[test-results] update test result required standards');

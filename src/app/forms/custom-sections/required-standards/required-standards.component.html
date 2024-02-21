@@ -16,7 +16,13 @@
         <tbody class="govuk-table__body">
           <tr *ngFor="let requiredStandard of testRequiredStandards; let i = index" class="govuk-table__row">
             <td class="govuk-table__cell">
-              <a data-action="retain-data" class="govuk-link govuk-link--no-visited-state">{{ requiredStandard.refCalculation }}</a>
+              <a
+                data-action="retain-data"
+                routerLink="requiredStandard/{{ i }}"
+                queryParamsHandling="preserve"
+                class="govuk-link govuk-link--no-visited-state"
+                >{{ requiredStandard.refCalculation }}</a
+              >
             </td>
             <td class="govuk-table__cell">
               {{ requiredStandard.requiredStandard | truncate : 250 }}
