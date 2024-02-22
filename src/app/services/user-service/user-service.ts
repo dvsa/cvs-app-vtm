@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
 import { Store, select } from '@ngrx/store';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import * as UserServiceActions from '../../store/user/user-service.actions';
@@ -45,7 +45,7 @@ export class UserService implements OnDestroy {
     name, userEmail, oid, accessToken,
   }: { name: string; userEmail: string; oid: string; accessToken: string }): void {
     window.localStorage.setItem('accessToken', accessToken);
-    const decodedJWT = jwt_decode(accessToken);
+    const decodedJWT = jwtDecode(accessToken);
     const { roles } = decodedJWT as { roles: string[] };
     this.store.dispatch(UserServiceActions.Login({
       name, userEmail, oid, roles,
