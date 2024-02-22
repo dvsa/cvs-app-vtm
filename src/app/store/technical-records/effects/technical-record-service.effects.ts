@@ -108,7 +108,7 @@ export class TechnicalRecordServiceEffects {
       ofType(createVehicleRecord),
       withLatestFrom(this.batchTechRecordService.applicationId$, this.userService.name$, this.userService.id$),
       concatMap(([{ vehicle }, applicationId]) => {
-        const vehicleRecord = { ...vehicle, applicationId };
+        const vehicleRecord = { ...vehicle, techRecord_applicationId: applicationId };
 
         return this.techRecordHttpService.createVehicleRecord$(vehicleRecord).pipe(
           map((response) => createVehicleRecordSuccess({ vehicleTechRecord: response })),
