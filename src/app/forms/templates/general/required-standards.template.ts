@@ -53,6 +53,18 @@ export const RequiredStandardsTpl: FormNode = {
                       disabled: true,
                     },
                     {
+                      name: 'additionalInfo',
+                      label: 'Additional information',
+                      type: FormNodeTypes.CONTROL,
+                      disabled: true,
+                    },
+                    {
+                      name: 'inspectionTypes',
+                      label: 'Inspection Types',
+                      type: FormNodeTypes.CONTROL,
+                      disabled: true,
+                    },
+                    {
                       name: 'additionalNotes',
                       label: 'Notes',
                       value: null,
