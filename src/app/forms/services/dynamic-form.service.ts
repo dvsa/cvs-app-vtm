@@ -87,6 +87,8 @@ export class DynamicFormService {
     [ValidatorNames.Tc3TestValidator]: (args: { inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
     [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
     [ValidatorNames.DateIsInvalid]: () => CustomValidators.dateIsInvalid,
+    [ValidatorNames.MinArrayLengthIfNotEmpty]: (args: { minimumLength: number }) =>
+      CustomValidators.minArrayLengthIfNotEmpty(args.minimumLength),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -170,6 +172,9 @@ export class DynamicFormService {
   }
 
   static validate(form: CustomFormGroup | CustomFormArray | FormGroup | FormArray, errors: GlobalError[], updateValidity = true) {
+    if (form.errors && form.errors[ValidatorNames.MinArrayLengthIfNotEmpty]) {
+      errors.push()
+    }
     Object.entries(form.controls).forEach(([, value]) => {
       if (!(value instanceof FormControl || value instanceof CustomFormControl)) {
         this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
