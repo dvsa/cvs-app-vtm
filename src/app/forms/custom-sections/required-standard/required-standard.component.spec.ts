@@ -1,5 +1,4 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,7 +18,6 @@ import { RequiredStandardComponent } from './required-standard.component';
 describe('RequiredStandardComponent', () => {
   let component: RequiredStandardComponent;
   let fixture: ComponentFixture<RequiredStandardComponent>;
-  let el: DebugElement;
   let router: Router;
   let store: MockStore<State>;
   let resultService: ResultOfTestService;
@@ -40,7 +38,6 @@ describe('RequiredStandardComponent', () => {
     resultService = TestBed.inject(ResultOfTestService);
     dfs = TestBed.inject(DynamicFormService);
     component = fixture.componentInstance;
-    el = fixture.debugElement;
     jest.clearAllMocks();
   });
 

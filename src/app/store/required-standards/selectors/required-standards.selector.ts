@@ -7,7 +7,7 @@ export const getRequiredStandardsState = createSelector(requiredStandardsFeature
 export const getRequiredStandardFromTypeAndRef = (inspectionType: INSPECTION_TYPE, rsRefCalculation: string) =>
   createSelector(requiredStandardsFeatureState, (state) => {
     const deRefRsCalculation = rsRefCalculation.split('.');
-    const sectionNumber = parseInt(deRefRsCalculation[0], 10) < 10 ? `0${deRefRsCalculation[0]}` : deRefRsCalculation[0];
+    const sectionNumber = deRefRsCalculation[0];
     // eslint-disable-next-line security/detect-object-injection
     const section = state.requiredStandards[inspectionType]
       .find((sec) => sec.sectionNumber === sectionNumber);
