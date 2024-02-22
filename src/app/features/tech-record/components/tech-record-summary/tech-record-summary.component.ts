@@ -252,6 +252,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   private normaliseAxles(record: V3TechRecordModel): V3TechRecordModel {
     const type = record.techRecord_vehicleType;
     const category = record.techRecord_euVehicleCategory;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (type === VehicleTypes.HGV || (type === VehicleTypes.TRL && category !== 'o1' && category !== 'o2')) {
       const [axles, axleSpacing] = this.axlesService.normaliseAxles(
         record.techRecord_axles ?? [],

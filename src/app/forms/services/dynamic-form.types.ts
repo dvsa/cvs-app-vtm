@@ -253,6 +253,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     },
   ): void {
     if (value) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       if (value.length !== this.controls.length && this.meta.children && this.meta.children[0].type === 'group') {
         if (value.length > this.controls.length) {
           super.push(this.dynamicFormService.createForm(this.meta.children[0], value));

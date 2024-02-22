@@ -480,11 +480,13 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 
       // If tank details 'statement' selected, null UN numbers, product list referene no., product list
       const { techRecord_adrDetails_tank_tankDetails_tankStatement_select: select } = sanitisedEditingTechRecord;
+      //  eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       if (select === ADRTankDetailsTankStatementSelect.STATEMENT) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementProductList };
       }
 
       // If tank details 'product list' selected, null statement reference no.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       if (select === ADRTankDetailsTankStatementSelect.PRODUCT_LIST) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementStatement };
       }
