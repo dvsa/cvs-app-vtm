@@ -17,7 +17,7 @@ import {
   createRequiredStandard, removeRequiredStandard, testResultInEdit, toEditOrNotToEdit, updateRequiredStandard,
 } from '@store/test-records';
 import {
-  Subject, filter,
+  Subject, distinctUntilChanged,
   takeUntil, withLatestFrom,
 } from 'rxjs';
 
@@ -55,13 +55,12 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
 
     this.store.pipe(select(this.isEditing ? testResultInEdit : toEditOrNotToEdit)).pipe(
       withLatestFrom(inspectionType, rsRefCalculation, requiredStandardIndex),
-      takeUntil(this.onDestroy$), // TODO: we are broke here
-      filter(([testResult]) => !!testResult),
+      takeUntil(this.onDestroy$),
+      distinctUntilChanged((prev, curr) => prev[0]?.testTypes[0]?.testResult === curr[0]?.testTypes[0]?.testResult),
     ).subscribe(([testResult, inspectionTypeValue, rsRefCalculationValue, requiredStandardIndexValue]) => {
       if (!testResult) this.navigateBack();
       this.requiredStandardForm = (this.dfs.createForm(RequiredStandardsTpl, testResult) as CustomFormGroup)
         .get(['testTypes', '0', 'requiredStandards']) as CustomFormArray;
-
       if (requiredStandardIndexValue) {
         this.amendingRs = true;
         this.index = Number(requiredStandardIndexValue);
@@ -69,10 +68,8 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
         this.requiredStandard = testResult?.testTypes[0]?.requiredStandards?.at(this.index);
       } else {
         this.amendingRs = false;
-        console.log(inspectionTypeValue, rsRefCalculationValue);
         this.store.pipe(select(getRequiredStandardFromTypeAndRef(inspectionTypeValue as INSPECTION_TYPE, rsRefCalculationValue ?? '')))
           .subscribe((requiredStandard) => {
-            console.log(requiredStandard);
             if (!requiredStandard) this.navigateBack();
             const rsControl = {
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -80,6 +77,7 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
               prs: false,
               additionalNotes: '',
             };
+
             this.requiredStandard = rsControl;
             this.requiredStandardForm?.addControl(rsControl);
             // eslint-disable-next-line no-unsafe-optional-chaining
@@ -96,7 +94,7 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
   }
 
   navigateBack() {
-    // this.resultService.updateResultOfTestRequiredStandards();
+    this.resultService.updateResultOfTestRequiredStandards();
     void this.router.navigate(this.amendingRs ? ['../../'] : ['../../../'], { relativeTo: this.activatedRoute, queryParamsHandling: 'preserve' });
   }
 
@@ -104,7 +102,8 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
     if (!this.requiredStandard) {
       return;
     }
-    this.requiredStandardForm?.controls[this.requiredStandardForm.length - 1].get('prs')?.patchValue(!this.requiredStandard.prs);
+    this.requiredStandard.prs = !this.requiredStandard.prs;
+    this.requiredStandardForm?.controls[this.requiredStandardForm.length - 1].get('prs')?.patchValue(this.requiredStandard.prs);
   }
 
   handleSubmit() {
