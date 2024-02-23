@@ -133,5 +133,30 @@ describe('AdrGenerateCertificateComponent', () => {
       expect(dispatchSpy).toHaveBeenCalledTimes(2);
       expect(dispatchSpy).toHaveBeenLastCalledWith(generateADRCertificate({ systemNumber: '', createdTimestamp: '', certificateType: 'PASS' }));
     });
+
+    it('should dispatch action with default values when systemNumber and createdTimestamp are null', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      component.form.get('certificateType')?.setValue('PASS');
+      component.systemNumber = '123';
+      component.createdTimestamp = '2021';
+
+      component.handleSubmit();
+      expect(dispatchSpy).toHaveBeenCalled();
+      expect(dispatchSpy).toHaveBeenLastCalledWith(
+        generateADRCertificate({ systemNumber: '123', createdTimestamp: '2021', certificateType: 'PASS' }),
+      );
+    });
+  });
+
+  describe('test get functions', () => {
+    it('should get correct value when call get functions', () => {
+      const expectedValue = [
+        { label: 'New ADR Certificate', value: 'PASS' },
+        { label: 'Replacement ADR Certificate', value: 'REPLACEMENT' },
+      ];
+      expect(component.width).toBe(10);
+      expect(component.certificateTypes).toEqual(expectedValue);
+    });
   });
 });

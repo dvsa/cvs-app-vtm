@@ -46,7 +46,6 @@ describe('AdrComponent', () => {
   describe('handle form change', () => {
     it('the form should be updated', () => {
       const testData = { test: 11 };
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       const spy = jest.spyOn(component.form, 'patchValue');
       component.handleFormChange(testData);
       expect(spy).toHaveBeenCalled();
@@ -54,7 +53,6 @@ describe('AdrComponent', () => {
 
     it('should not update the form if the event is null', () => {
       const testData = null as unknown as Record<string, unknown>;
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       const spy = jest.spyOn(component.form, 'patchValue');
       component.handleFormChange(testData);
       expect(spy).not.toHaveBeenCalled();
@@ -63,7 +61,6 @@ describe('AdrComponent', () => {
     it('should not update the form if the techRecord is null', () => {
       component.techRecord = null as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>;
       const testData = { test: 11 };
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       const spy = jest.spyOn(component.form, 'patchValue');
       component.handleFormChange(testData);
       expect(spy).not.toHaveBeenCalled();
