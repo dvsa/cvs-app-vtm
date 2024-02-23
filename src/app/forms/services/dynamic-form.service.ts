@@ -172,8 +172,19 @@ export class DynamicFormService {
   }
 
   static validate(form: CustomFormGroup | CustomFormArray | FormGroup | FormArray, errors: GlobalError[], updateValidity = true) {
-    if (form.errors && form.errors[ValidatorNames.MinArrayLengthIfNotEmpty]) {
-      errors.push()
+    if (form.errors) {
+      Object.entries(form.errors).forEach(([key, error]) => {
+        Object.entries(error).forEach(([validatorName, data]) => {
+          if (form instanceof CustomFormGroup || form instanceof CustomFormArray) {
+            // If an anchor link is provided, use that, otherwise determine target element from customId or name
+            const anchorLink = form.meta?.customId ?? form.meta?.name;
+            errors.push({
+              error: ErrorMessageMap[`${validatorName}`](data),
+              anchorLink,
+            });
+          }
+        });
+      });
     }
     Object.entries(form.controls).forEach(([, value]) => {
       if (!(value instanceof FormControl || value instanceof CustomFormControl)) {
