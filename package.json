@@ -30,7 +30,6 @@
     "test:ci": "jest --ci --runInBand --watchAll=false --reporters=default",
     "mock-api": "npx ts-node ./mock-api/mock-api-server.ts",
     "prepare": "husky install && ts-patch install -s",
-    "postinstall": "ngcc",
     "e2e": "npm run config && cypress run",
     "e2e:open": "npm run config && cypress open",
     "e2e:parallel": "cypress-parallel -s e2e -t 3 -d cypress/e2e",

@@ -32,5 +32,16 @@ export const createMockTestType = (params: Partial<TestType> = {}): TestType => 
   },
   customDefects: [],
   additionalNotesRecorded: '',
+  requiredStandards: [{
+    sectionNumber: 'string',
+    sectionDescription: 'string',
+    rsNumber: 1,
+    requiredStandard: 'string',
+    refCalculation: 'string',
+    additionalInfo: false,
+    inspectionTypes: ['basic'],
+    prs: false,
+    additionalNotes: 'string',
+  }],
   ...params,
 });
