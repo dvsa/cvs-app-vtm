@@ -7,12 +7,15 @@
 <ng-template #editRs let-data="data">
   <ng-container *ngIf="requiredStandard">
     <div class="govuk-grid-row govuk-!-margin-bottom-5">
-      <div class="govuk-grid-column-four-fifths">
+      <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Required Standard Details</h1>
-        <h2 class="govuk-heading-s">{{ requiredStandard.refCalculation }} {{ requiredStandard.sectionDescription }}</h2>
-        <h3 class="govuk-heading-s">{{ requiredStandard.requiredStandard }}</h3>
+        <span class="govuk-caption-m">{{ requiredStandard.sectionDescription }}</span>
+        <h2 class="govuk-heading-s">{{ requiredStandard.refCalculation }} - {{ requiredStandard.sectionDescription }}: {{ requiredStandard.requiredStandard }}</h2>
         <app-tag *ngIf="requiredStandard.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
-
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
         <ng-container [formGroup]="form">
           <app-text-area name="additionalNotes" label="Additional Notes" formControlName="additionalNotes"></app-text-area>
 
