@@ -92,7 +92,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
               editComponent: ContingencyAdrGenerateCertComponent,
               validators: [
                 {
-                  name: ValidatorNames.RequiredIfEquals,
+                  name: ValidatorNames.ShowGroupsWhenEqualTo,
                   args: { sibling: 'testResult', value: ['pass'] },
                 },
               ],
