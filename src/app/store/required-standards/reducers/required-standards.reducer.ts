@@ -27,7 +27,17 @@ export const requiredStandardsReducer = createReducer(
   initialRequiredStandardsState,
 
   on(getRequiredStandards, (state) => ({ ...state, loading: true })),
-  on(getRequiredStandardsSuccess, (state, action) => ({ ...state, requiredStandards: action.requiredStandards, loading: false })),
+  on(getRequiredStandardsSuccess, (state, action) => ({ ...state, requiredStandards: orderRequiredStandards(action.requiredStandards), loading: false })),
   on(getRequiredStandardsFailure, (state) => ({ ...state, loading: false })),
 
 );
+
+function orderRequiredStandards(requiredStandards: DefectGETIVA) {
+  if(requiredStandards.basic.length) {
+    requiredStandards.basic.sort((current, next) => current.sectionNumber.localeCompare(next.sectionNumber, 'en', { numeric: true }));
+  }
+  if(requiredStandards.normal.length) {
+    requiredStandards.normal.sort((current, next) => current.sectionNumber.localeCompare(next.sectionNumber, 'en', { numeric: true }));
+  }
+  return requiredStandards;
+}
