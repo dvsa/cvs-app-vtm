@@ -576,7 +576,7 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       console.log(control);
       if (control.value.length && control.value.length < minimumLength) {
-        return { minArrayLengthIfNotEmptyValidator: { message: 'basic error' } };
+        return { minArrayLengthIfNotEmpty: { message: `You must add a minimum of ${minimumLength} axles before submitting the technical record.` } };
       }
       return null;
     };

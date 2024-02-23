@@ -172,20 +172,7 @@ export class DynamicFormService {
   }
 
   static validate(form: CustomFormGroup | CustomFormArray | FormGroup | FormArray, errors: GlobalError[], updateValidity = true) {
-    if (form.errors) {
-      Object.entries(form.errors).forEach(([key, error]) => {
-        Object.entries(error).forEach(([validatorName, data]) => {
-          if (form instanceof CustomFormGroup || form instanceof CustomFormArray) {
-            // If an anchor link is provided, use that, otherwise determine target element from customId or name
-            const anchorLink = form.meta?.customId ?? form.meta?.name;
-            errors.push({
-              error: ErrorMessageMap[`${validatorName}`](data),
-              anchorLink,
-            });
-          }
-        });
-      });
-    }
+    this.getFormLevelErrors(form, errors);
     Object.entries(form.controls).forEach(([, value]) => {
       if (!(value instanceof FormControl || value instanceof CustomFormControl)) {
         this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
@@ -198,6 +185,22 @@ export class DynamicFormService {
         this.getControlErrors(value, errors);
       }
     });
+  }
+
+  static getFormLevelErrors(form: CustomFormGroup | CustomFormArray | FormGroup | FormArray, errors: GlobalError[]) {
+    if (!(form instanceof CustomFormGroup || form instanceof CustomFormArray)) {
+      return;
+    }
+    if (form.errors) {
+      Object.entries(form.errors).forEach(([key, error]) => {
+        // If an anchor link is provided, use that, otherwise determine target element from customId or name
+        const anchorLink = form.meta?.customId ?? form.meta?.name;
+        errors.push({
+          error: ErrorMessageMap[`${key}`](error),
+          anchorLink,
+        });
+      });
+    }
   }
 
   static validateControl(control: FormControl | CustomFormControl, errors: GlobalError[]) {

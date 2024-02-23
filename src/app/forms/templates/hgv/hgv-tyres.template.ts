@@ -9,7 +9,6 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TagType } from '@shared/components/tag/tag.component';
-import { meta } from '@typescript-eslint/parser';
 
 export const tyresTemplateHgv: FormNode = {
   name: 'tyreSection',
