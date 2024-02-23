@@ -20,6 +20,10 @@ export class CustomAsyncValidators {
     return CustomAsyncValidators.checkResultDependantOnCustomDefects(store, [resultOfTestEnum.pass, resultOfTestEnum.fail, resultOfTestEnum.prs]);
   }
 
+  static resultDependantOnRequiredStandards(store: Store<State>): AsyncValidatorFn {
+    return CustomAsyncValidators.checkResultDependantOnRequiredStandards(store, [resultOfTestEnum.pass, resultOfTestEnum.fail, resultOfTestEnum.prs]);
+  }
+
   static passResultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
     return CustomAsyncValidators.checkResultDependantOnCustomDefects(store, resultOfTestEnum.pass);
   }
@@ -53,6 +57,44 @@ export class CustomAsyncValidators {
               ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
           ) {
             return { invalidTestResult: { message: 'Cannot mark test as PRS when no defects are present' } };
+          }
+          return null;
+
+        }),
+      );
+  }
+
+  static checkResultDependantOnRequiredStandards(store: Store<State>, limitToResult: resultOfTestEnum | resultOfTestEnum[]): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      store.pipe(
+        take(1),
+        select(testResultInEdit),
+        map((testResult) => {
+          const hasRequiredStandards = testResult?.testTypes?.some((
+            testType,
+          ) => testType?.requiredStandards && testType.requiredStandards.length > 0);
+
+          if (
+            control.value === 'pass'
+            && hasRequiredStandards
+            && (!limitToResult || Array.isArray(limitToResult)
+              ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
+          ) {
+            return { invalidTestResult: { message: 'Cannot pass test when required standards are present' } };
+          } if (
+            control.value === 'fail'
+            && !hasRequiredStandards
+            && (!limitToResult || Array.isArray(limitToResult)
+              ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
+          ) {
+            return { invalidTestResult: { message: 'Cannot fail test when no required standards are present' } };
+          } if (
+            control.value === 'prs'
+            && !hasRequiredStandards
+            && (!limitToResult || Array.isArray(limitToResult)
+              ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
+          ) {
+            return { invalidTestResult: { message: 'Cannot mark test as PRS when no required standards are present' } };
           }
           return null;
 

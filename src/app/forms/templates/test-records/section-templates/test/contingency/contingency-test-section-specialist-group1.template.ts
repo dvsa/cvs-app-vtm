@@ -53,7 +53,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { value: 'prs', label: 'PRS' },
               ],
               asyncValidators: [
-                { name: AsyncValidatorNames.ResultDependantOnCustomDefects }, // TODO: change this to depend on requiredStandards
+                { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
                 {
                   name: AsyncValidatorNames.HideIfEqualsWithCondition,
                   args: {
