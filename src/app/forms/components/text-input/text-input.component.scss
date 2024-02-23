@@ -2,3 +2,20 @@
   border: 2px solid #0b0c0c;
   border-right: 0;
 }
+
+.tags {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
