@@ -66,6 +66,12 @@ const routes: Routes = [
             ],
           },
           {
+            path: 'requiredStandard/:requiredStandardIndex',
+            component: RequiredStandardComponent,
+            data: { title: 'Required Standard', roles: Roles.TestResultCreateContingency, isEditing: true },
+            canActivate: [RoleGuard],
+          },
+          {
             path: 'selectRequiredStandard',
             component: TestRouterOutletComponent,
             resolve: { RequiredStandards: requiredStandardsResolver },
@@ -77,7 +83,7 @@ const routes: Routes = [
                 canActivate: [RoleGuard],
               },
               {
-                path: ':ref',
+                path: ':inspectionType/:ref',
                 component: RequiredStandardComponent,
                 data: { title: 'Required Standard', roles: Roles.TestResultCreateContingency, isEditing: true },
                 canActivate: [RoleGuard],

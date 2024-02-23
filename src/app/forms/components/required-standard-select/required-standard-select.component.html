@@ -38,11 +38,11 @@
         <li *ngFor="let rs of selectedSection?.requiredStandards; let i = index">
           <a
             [id]="'rs-list-item-' + i"
-            class="browse__link browse__link--inactive"
-            [ngClass]="{ 'browse__link--active': rs === selectedRequiredStandard }"
+            class="browse__normal-link browse__normal-link--inactive"
+            [ngClass]="{ 'browse__normal-link--active': rs === selectedRequiredStandard }"
             (click)="handleSelect(rs, types.RequiredStandard)"
           >
-            {{ rs.refCalculation }} {{ rs.requiredStandard }} <span [ngClass]="{ 'list__item--more': true }"></span>
+            {{ rs.refCalculation }} {{ rs.requiredStandard }}
           </a>
         </li>
       </ol>

@@ -8,7 +8,14 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { Subscription, debounceTime } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
+import { testResultInEdit } from '@store/test-records';
+import { isEqual } from 'lodash';
+import {
+  Subject, Subscription, debounceTime, distinctUntilChanged,
+  takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'app-required-standards[template]',
@@ -26,12 +33,16 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy, OnChanges 
   private formSubscription = new Subscription();
   private requiredStandardsFormArray?: CustomFormArray;
 
+  onDestroy$ = new Subject();
+
   constructor(
     private dfs: DynamicFormService,
     private router: Router,
     private route: ActivatedRoute,
     private viewportScroller: ViewportScroller,
     private globalErrorService: GlobalErrorService,
+    private resultService: ResultOfTestService,
+    private store: Store,
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +50,13 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy, OnChanges 
     this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
       this.formChange.emit(event);
     });
+    this.store.pipe(select(testResultInEdit)).pipe(
+      takeUntil(this.onDestroy$),
+      distinctUntilChanged((prev, curr) => isEqual(prev?.testTypes?.at(0)?.requiredStandards, curr?.testTypes?.at(0)?.requiredStandards)),
+    )
+      .subscribe(() => {
+        this.resultService.updateResultOfTestRequiredStandards();
+      });
   }
 
   ngOnDestroy(): void {

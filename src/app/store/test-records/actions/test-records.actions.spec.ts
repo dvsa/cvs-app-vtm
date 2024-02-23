@@ -1,13 +1,17 @@
 import {
+  createRequiredStandard,
+  fetchSelectedTestResult,
+  fetchSelectedTestResultFailed,
+  fetchSelectedTestResultSuccess,
+  fetchTestResults,
   fetchTestResultsBySystemNumber,
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
-  fetchTestResults,
   fetchTestResultsFailed,
   fetchTestResultsSuccess,
-  fetchSelectedTestResult,
-  fetchSelectedTestResultSuccess,
-  fetchSelectedTestResultFailed,
+  removeRequiredStandard,
+  updateRequiredStandard,
+  updateResultOfTestRequiredStandards,
 } from './test-records.actions';
 
 describe('Test Result Actions', () => {
@@ -21,5 +25,9 @@ describe('Test Result Actions', () => {
     expect(fetchSelectedTestResult.type).toBe('[API/test-results], Fetch by ID');
     expect(fetchSelectedTestResultSuccess.type).toBe('[API/test-results], Fetch by ID Success');
     expect(fetchSelectedTestResultFailed.type).toBe('[API/test-results], Fetch by ID Failed');
+    expect(createRequiredStandard.type).toBe('[test-results] create required standard');
+    expect(updateRequiredStandard.type).toBe('[test-results] update required standard');
+    expect(removeRequiredStandard.type).toBe('[test-results] remove required standard');
+    expect(updateResultOfTestRequiredStandards.type).toBe('[test-results] update test result required standards');
   });
 });

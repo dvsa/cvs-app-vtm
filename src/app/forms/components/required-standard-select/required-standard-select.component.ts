@@ -69,7 +69,7 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
       case Types.RequiredStandard:
         this.selectedRequiredStandard = selected as RequiredStandard;
         if (this.selectedRequiredStandard) {
-          void this.router.navigate([this.selectedRequiredStandard.refCalculation], {
+          void this.router.navigate([`${this.selectedInspectionType}/${this.selectedRequiredStandard.refCalculation}`], {
             relativeTo: this.route,
             queryParamsHandling: 'merge',
           });

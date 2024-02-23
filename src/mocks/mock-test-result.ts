@@ -5,8 +5,8 @@ import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
 import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
 // disable linting error as this util function is only used in tests and should, therefore, be a devDependency
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createMock, createMockList } from 'ts-auto-mock';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
+import { createMock, createMockList } from 'ts-auto-mock';
 import * as Emissions from '../app/models/test-types/emissions.enum';
 import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { mockDefectList } from './mock-defects';
@@ -57,6 +57,20 @@ const mockTestTypeList = (numberOfItems = 1) =>
           defectNotes: 'bad',
         },
       ],
+
+      requiredStandards: [{
+        sectionNumber: 'string',
+        sectionDescription: 'string',
+        rsNumber: 1,
+        requiredStandard: 'string',
+        refCalculation: 'string',
+        additionalInfo: false,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        inspectionTypes: ['basic'],
+        prs: false,
+        additionalNotes: 'string',
+      }],
     });
   });
 
