@@ -1,9 +1,11 @@
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Action } from '@ngrx/store';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import {
   createDefect,
+  createRequiredStandard,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
@@ -13,7 +15,9 @@ import {
   fetchTestResultsBySystemNumberSuccess,
   fetchTestResultsSuccess,
   removeDefect,
+  removeRequiredStandard,
   updateDefect,
+  updateRequiredStandard,
   updateResultOfTest,
   updateTestResult,
   updateTestResultFailed,
@@ -390,7 +394,7 @@ describe('Test Results Reducer', () => {
   });
 
   describe('updateDefect', () => {
-    it('should create defect', () => {
+    it('should update defect', () => {
       const defect = { imNumber: 2 } as TestResultDefect;
       const newDefect = { imNumber: 1 } as TestResultDefect;
       const testResult = {
@@ -412,7 +416,7 @@ describe('Test Results Reducer', () => {
   });
 
   describe('removeDefect', () => {
-    it('should create defect', () => {
+    it('should remove defect', () => {
       const defect = { imNumber: 2 } as TestResultDefect;
       const testResult = {
         testTypes: [
@@ -427,4 +431,58 @@ describe('Test Results Reducer', () => {
       expect(newState.editingTestResult?.testTypes[0].defects?.length).toBe(0);
     });
   });
+
+  describe('createRequiredStandard', () => {
+    it('should create required standard', () => {
+      const requiredStandard = { sectionNumber: 2 } as unknown as TestResultRequiredStandard;
+      const testResult = {
+        testTypes: [
+          {
+            requiredStandards: [requiredStandard],
+          },
+        ],
+      } as unknown as TestResultModel;
+      const action = createRequiredStandard({ requiredStandard });
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+
+      expect(newState.editingTestResult?.testTypes[0].requiredStandards?.length).toBe(2);
+    });
+  });
+
+  describe('updateRequiredStandard', () => {
+    it('should update required standard', () => {
+      const requiredStandard = { sectionNumber: 2 } as unknown as TestResultRequiredStandard;
+      const newRequiredStandard = { sectionNumber: 1 } as unknown as TestResultRequiredStandard;
+      const testResult = {
+        testTypes: [
+          {
+            requiredStandards: [requiredStandard],
+          },
+        ],
+      } as unknown as TestResultModel;
+      const action = updateRequiredStandard({ requiredStandard: newRequiredStandard, index: 0 });
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+
+      expect(newState.editingTestResult?.testTypes[0].requiredStandards?.length).toBe(1);
+      expect(newState.editingTestResult?.testTypes?.at(0)?.requiredStandards?.at(0)?.sectionNumber).toBe(1);
+    });
+  });
+
+  describe('removeRequiredStandard', () => {
+    it('should remove required standard', () => {
+      const requiredStandard = { sectionNumber: 2 } as unknown as TestResultRequiredStandard;
+      const testResult = {
+        testTypes: [
+          {
+            requiredStandards: [requiredStandard],
+          },
+        ],
+      } as unknown as TestResultModel;
+      const action = removeRequiredStandard({ index: 0 });
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+
+      expect(newState.editingTestResult?.testTypes[0].requiredStandards?.length).toBe(0);
+    });
+  });
+
 });

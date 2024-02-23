@@ -185,6 +185,8 @@ export class TechnicalRecordService {
           const thirdMark = vrmControl.root.get('thirdMark')?.value;
           const previousVrm = vrmControl.root.get('previousVrm')?.value;
           if (thirdMark) {
+            const vrmNotNew = previousVrm === vrmControl.value;
+            if (vrmNotNew) return of({ validateVrm: { message: 'You must provide a new VRM' } });
             return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, vrmControl.value).pipe(
               map((results) => {
                 if (results.some((result) => result.techRecord_statusCode === StatusCodes.CURRENT)) {

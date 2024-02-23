@@ -61,18 +61,19 @@ a {
 
 .browse__normal-link {
   font-family: 'GDS Transport', arial, sans-serif;
-  text-decoration: underline;
-  text-underline-offset: 0.1em;
-  text-decoration-thickness: max(1px, 0.0925rem);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 700;
-  font-size: 14px;
-  font-size: 0.875rem;
-  line-height: 1.1428571429;
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, 0.0625rem);
+  text-underline-offset: 0.1em;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.25;
+  position: relative;
   display: block;
-  padding: 5px 30px 5px 15px;
-  color: $govuk-brand-colour;
+  padding: 15px 25px 20px 15px;
+  color: $govuk-link-colour;
 }
 .browse__normal:hover {
   color: $govuk-link-hover-colour;

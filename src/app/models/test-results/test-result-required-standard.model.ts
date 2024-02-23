@@ -1,3 +1,5 @@
+import { InspectionType } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
+
 export interface TestResultRequiredStandard {
   sectionNumber: string;
   sectionDescription: string;
@@ -5,7 +7,7 @@ export interface TestResultRequiredStandard {
   requiredStandard: string;
   refCalculation: string;
   additionalInfo: boolean;
-  inspectionTypes: INSPECTION_TYPE[];
+  inspectionTypes: InspectionType[];
   prs?: boolean;
   additionalNotes?: string;
 }

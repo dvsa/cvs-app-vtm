@@ -102,6 +102,7 @@ export class DynamicFormService {
       testResult: resultOfTestEnum | resultOfTestEnum[]; sibling: string; value: unknown
     }) => CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
+    [AsyncValidatorNames.ResultDependantOnRequiredStandards]: () => CustomAsyncValidators.resultDependantOnRequiredStandards(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
   };
