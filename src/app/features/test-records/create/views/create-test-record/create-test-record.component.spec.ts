@@ -31,7 +31,9 @@ import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-
 import { TestTypeNamePipe } from '@shared/pipes/test-type-name/test-type-name.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
-import { sectionTemplates, testResultInEdit, toEditOrNotToEdit } from '@store/test-records';
+import {
+  cleanedTestResultInEdit, sectionTemplates, testResultInEdit, toEditOrNotToEdit,
+} from '@store/test-records';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
@@ -108,7 +110,7 @@ describe('CreateTestRecordComponent', () => {
     fixture.detectChanges();
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
-    store.overrideSelector(testResultInEdit, testRecord);
+    store.overrideSelector(cleanedTestResultInEdit, testRecord);
     store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1'] ?? {}));
 
     component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
@@ -197,7 +199,7 @@ describe('CreateTestRecordComponent', () => {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => Promise.resolve(true));
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
-    store.overrideSelector(testResultInEdit, testRecord);
+    store.overrideSelector(cleanedTestResultInEdit, testRecord);
     store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1'] ?? ''));
 
     fixture.detectChanges();

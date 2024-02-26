@@ -80,7 +80,12 @@ export class TestRecordsService {
   get testResult$() {
     return this.store.pipe(select(selectedTestResultState));
   }
+
   get editingTestResult$() {
+    return this.store.pipe(select(testResultInEdit));
+  }
+
+  get cleanedEditingTestResult$() {
     return this.store.pipe(select(cleanedTestResultInEdit));
   }
 

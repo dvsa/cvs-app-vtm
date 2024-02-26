@@ -1,3 +1,4 @@
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType } from '@models/test-types/test-type.model';
@@ -5,7 +6,6 @@ import { createSelector } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 // eslint-disable-next-line import/no-cycle
 import { testResultAdapter, testResultsFeatureState } from '../reducers/test-records.reducer';
-import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
 
 const {
   selectIds, selectEntities, selectAll, selectTotal,
@@ -46,12 +46,17 @@ export const selectedTestResultState = createSelector(
 export const testResultInEdit = createSelector(testResultsFeatureState, (state) => state.editingTestResult);
 
 export const cleanedTestResultInEdit = createSelector(testResultsFeatureState, (state) => {
-  if (state.editingTestResult?.testTypes.at(0)) {
-    const {testTypeId, requiredStandards} = state.editingTestResult?.testTypes.at(0)!;
+  if (state.editingTestResult?.testTypes?.at(0)) {
+    const { testTypeId, requiredStandards } = state.editingTestResult.testTypes[0];
+    console.log((TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId)));
+    console.log((TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId)));
+    console.log(!(requiredStandards ?? []).length);
     if ((TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId)) && !(requiredStandards ?? []).length) {
-      delete state.editingTestResult?.testTypes.at(0)!.requiredStandards;
+      console.log('i like to delete');
+      delete state.editingTestResult?.testTypes[0].requiredStandards;
     }
   }
+  console.log(state.editingTestResult);
   return state.editingTestResult;
 });
 

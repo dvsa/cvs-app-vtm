@@ -21,7 +21,8 @@ import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
 import { routeEditable, selectRouteData, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
-  initialTestResultsState, isTestTypeKeySame, sectionTemplates, testResultInEdit,
+  cleanedTestResultInEdit,
+  initialTestResultsState, isTestTypeKeySame, sectionTemplates,
 } from '@store/test-records';
 import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../../forms/dynamic-forms.module';
@@ -157,7 +158,7 @@ describe('TestRecordComponent', () => {
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => true);
       const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
       store.overrideSelector(isTestTypeKeySame('testTypeId'), false);
-      store.overrideSelector(testResultInEdit, testRecord);
+      store.overrideSelector(cleanedTestResultInEdit, testRecord);
       store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1'] ?? ''));
 
       component.isAnyFormDirty = jest.fn().mockReturnValue(true);
