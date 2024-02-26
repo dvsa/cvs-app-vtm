@@ -75,7 +75,7 @@ const routes: Routes = [
     ],
   },
   {
-    path: RootRoutes.WILCARD,
+    path: RootRoutes.WILDCARD,
     pathMatch: 'full',
     component: PageNotFoundComponent,
   },
