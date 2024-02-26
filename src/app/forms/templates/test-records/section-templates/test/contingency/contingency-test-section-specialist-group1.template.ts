@@ -1,4 +1,5 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
+import { TEST_TYPES_GROUP1_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
@@ -59,7 +60,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                   args: {
                     sibling: 'certificateNumber',
                     value: 'fail',
-                    conditions: { field: 'testTypeId', operator: 'equals', value: ['150', '151', '181', '182'] },
+                    conditions: { field: 'testTypeId', operator: 'equals', value: TEST_TYPES_GROUP1_SPEC_TEST },
                   },
                 },
               ],
@@ -95,7 +96,19 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.STRING,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Alphanumeric }],
+              validators: [
+                { name: ValidatorNames.Alphanumeric },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: {
+                    sibling: 'testResult',
+                    value: [
+                      'pass',
+                      'prs',
+                    ],
+                  },
+                },
+              ],
               required: true,
               value: null,
             },
