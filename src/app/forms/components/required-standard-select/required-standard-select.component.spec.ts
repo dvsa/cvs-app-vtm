@@ -81,7 +81,7 @@ describe('RequiredStandardSelectComponent', () => {
       component.handleSelect({ refCalculation: '1.2' } as unknown as RequiredStandard, Types.RequiredStandard);
 
       expect(spy).toHaveBeenCalled();
-      expect(spy).toHaveBeenCalledWith(['1.2'], expect.anything());
+      expect(spy).toHaveBeenCalledWith(['normal/1.2'], expect.anything());
       expect(component.selectedRequiredStandard).toStrictEqual({ refCalculation: '1.2' });
     });
     it('should error when I try call it with another type', () => {
