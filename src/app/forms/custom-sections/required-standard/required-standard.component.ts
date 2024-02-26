@@ -68,7 +68,10 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
         this.requiredStandard = testResult?.testTypes[0]?.requiredStandards?.at(this.index);
       } else {
         this.amendingRs = false;
-        this.store.pipe(select(getRequiredStandardFromTypeAndRef(inspectionTypeValue as INSPECTION_TYPE, rsRefCalculationValue ?? '')))
+        this.store.pipe(
+          select(getRequiredStandardFromTypeAndRef(inspectionTypeValue as INSPECTION_TYPE, rsRefCalculationValue ?? '')),
+          takeUntil(this.onDestroy$),
+        )
           .subscribe((requiredStandard) => {
             if (!requiredStandard) this.navigateBack();
             const rsControl = {
