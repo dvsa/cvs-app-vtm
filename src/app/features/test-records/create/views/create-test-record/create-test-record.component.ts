@@ -107,7 +107,9 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
       return;
     }
 
-    const testResult = await firstValueFrom(this.testRecordsService.cleanedEditingTestResult$.pipe());
+    this.testRecordsService.cleanTestResult();
+
+    const testResult = await firstValueFrom(this.testResult$);
     const testResultClone = cloneDeep(testResult) as TestResultModel;
 
     this.testRecordsService.createTestResult(testResultClone);
@@ -120,7 +122,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     this.errorService.clearErrors();
     this.testMode = TestModeEnum.View;
 
-    const testResult = await firstValueFrom(this.testRecordsService.cleanedEditingTestResult$.pipe());
+    const testResult = await firstValueFrom(this.testResult$);
     if (testResult && this.techRecord?.techRecord_statusCode === StatusCodes.PROVISIONAL
       && this.testTypeId
       && this.validateUpdateStatus(testResult.testTypes[0].testResult, this.testTypeId)) {

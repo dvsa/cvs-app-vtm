@@ -6,7 +6,6 @@ import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { TestResultsState, initialTestResultsState } from '../reducers/test-records.reducer';
 import {
-  cleanedTestResultInEdit,
   isTestTypeKeySame,
   selectAllTestResults,
   selectAmendedDefectData,
@@ -224,65 +223,6 @@ describe('Test Results Selectors', () => {
       } as TestResultModel;
       const state = isTestTypeKeySame('testTypeId').projector(amendTestResult, oldTestResult);
       expect(state).toBe(true);
-    });
-  });
-
-  describe('cleanedTestResultInEdit', () => {
-    it('should return the state unaltered if no editing test result', () => {
-      const state = {
-      } as unknown as TestResultsState;
-      const endState = cleanedTestResultInEdit.projector(state);
-
-      expect(endState).toBeUndefined();
-    });
-
-    it('should return the state unaltered if no test type', () => {
-      const state = {
-        editingTestResult: {
-        },
-      } as unknown as TestResultsState;
-      const endState = cleanedTestResultInEdit.projector(state);
-
-      expect(endState).toStrictEqual(state.editingTestResult); //
-    });
-
-    it('should return the state unaltered if required standards are populated', () => {
-      const state = {
-        editingTestResult: {
-          testTypes: [
-            { requiredStandards: ['I am a RS'], testTypeId: '125' },
-          ],
-        },
-      } as unknown as TestResultsState;
-      const endState = cleanedTestResultInEdit.projector(state);
-
-      expect(endState?.testTypes[0].requiredStandards).toBeDefined();
-    });
-
-    it('should return the state unaltered if test type is not spec 1 or spec 5', () => {
-      const state = {
-        editingTestResult: {
-          testTypes: [
-            { requiredStandards: ['I am a RS'], testTypeId: 'xyz' },
-          ],
-        },
-      } as unknown as TestResultsState;
-      const endState = cleanedTestResultInEdit.projector(state);
-
-      expect(endState?.testTypes[0].requiredStandards).toBeDefined();
-    });
-
-    it('should delete RS if empty from state', () => {
-      const state = {
-        editingTestResult: {
-          testTypes: [
-            { requiredStandards: [], testTypeId: '125' },
-          ],
-        },
-      } as unknown as TestResultsState;
-      const endState = cleanedTestResultInEdit.projector(state);
-
-      expect(endState?.testTypes[0].requiredStandards).toBeUndefined();
     });
   });
 });
