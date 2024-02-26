@@ -7,7 +7,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import {
   CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
-import { NotTrailer, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Subject, take, takeUntil } from 'rxjs';
