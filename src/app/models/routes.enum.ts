@@ -7,7 +7,7 @@ export enum RootRoutes {
   REFERENCE_DATA = 'reference-data',
   FEATURE_TOGGLE = 'feature-toggle',
   ERROR = 'error',
-  WILCARD = '**',
+  WILDCARD = '**',
 }
 
 export enum SearchRoutes {
