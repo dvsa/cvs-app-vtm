@@ -5,6 +5,7 @@ import { createSelector } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 // eslint-disable-next-line import/no-cycle
 import { testResultAdapter, testResultsFeatureState } from '../reducers/test-records.reducer';
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
 
 const {
   selectIds, selectEntities, selectAll, selectTotal,
@@ -43,6 +44,16 @@ export const selectedTestResultState = createSelector(
 );
 
 export const testResultInEdit = createSelector(testResultsFeatureState, (state) => state.editingTestResult);
+
+export const cleanedTestResultInEdit = createSelector(testResultsFeatureState, (state) => {
+  if (state.editingTestResult?.testTypes.at(0)) {
+    const {testTypeId, requiredStandards} = state.editingTestResult?.testTypes.at(0)!;
+    if ((TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId)) && !(requiredStandards ?? []).length) {
+      delete state.editingTestResult?.testTypes.at(0)!.requiredStandards;
+    }
+  }
+  return state.editingTestResult;
+});
 
 export const toEditOrNotToEdit = createSelector(testResultInEdit, selectedTestResultState, (editingTestResult, selectedTestResult) => {
   return editingTestResult || selectedTestResult;
