@@ -180,7 +180,7 @@ const routes: Routes = [
     loadChildren: () => import('../test-records/amend/amend-test-records.module').then((m) => m.AmendTestRecordsModule),
   },
   {
-    path: TechRecordRoutes.TECH_RECORD_TEST_RECORDS_CREATE_TESTS,
+    path: TechRecordRoutes.TECH_RECORD_TEST_RECORDS_CREATE_TEST,
     data: { title: 'Create Contingency test', roles: Roles.TestResultCreateContingency },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: techRecordViewResolver },
