@@ -34,7 +34,14 @@
   max-width: 32rem;
 }
 
-.tags {
+.flex {
   display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-2 {
   gap: 0.5rem;
 }
