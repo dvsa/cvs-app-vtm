@@ -48,15 +48,10 @@ export const testResultInEdit = createSelector(testResultsFeatureState, (state) 
 export const cleanedTestResultInEdit = createSelector(testResultsFeatureState, (state) => {
   if (state.editingTestResult?.testTypes?.at(0)) {
     const { testTypeId, requiredStandards } = state.editingTestResult.testTypes[0];
-    console.log((TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId)));
-    console.log((TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId)));
-    console.log(!(requiredStandards ?? []).length);
     if ((TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId)) && !(requiredStandards ?? []).length) {
-      console.log('i like to delete');
       delete state.editingTestResult?.testTypes[0].requiredStandards;
     }
   }
-  console.log(state.editingTestResult);
   return state.editingTestResult;
 });
 
