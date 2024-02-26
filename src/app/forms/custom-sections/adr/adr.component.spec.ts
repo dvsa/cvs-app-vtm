@@ -7,6 +7,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { AdrService } from '@services/adr/adr.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { AdrComponent } from './adr.component';
 
 describe('AdrComponent', () => {
@@ -39,6 +40,30 @@ describe('AdrComponent', () => {
       const spy = jest.spyOn(component.adrService, 'carriesDangerousGoods');
       component.ngOnInit();
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('handleFormChange', () => {
+    it('the form should be updated', () => {
+      const testData = { test: 11 };
+      const spy = jest.spyOn(component.form, 'patchValue');
+      component.handleFormChange(testData);
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should not update the form if the event is null', () => {
+      const testData = null as unknown as Record<string, unknown>;
+      const spy = jest.spyOn(component.form, 'patchValue');
+      component.handleFormChange(testData);
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('should not update the form if the techRecord is null', () => {
+      component.techRecord = null as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>;
+      const testData = { test: 11 };
+      const spy = jest.spyOn(component.form, 'patchValue');
+      component.handleFormChange(testData);
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 });

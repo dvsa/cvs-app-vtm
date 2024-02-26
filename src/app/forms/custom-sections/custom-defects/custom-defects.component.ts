@@ -21,6 +21,7 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
   form!: CustomFormGroup;
 
   private formSubscription = new Subscription();
+  defectNameType?: string;
 
   constructor(private dfs: DynamicFormService) {}
 
@@ -29,6 +30,7 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
     this.formSubscription = this.form.cleanValueChanges.subscribe((event) => {
       this.formChange.emit(event);
     });
+    this.defectNameType = this.template.name === 'additionalDefectsSection' ? 'Additional Defect' : 'Custom Defect';
   }
 
   ngOnDestroy(): void {
