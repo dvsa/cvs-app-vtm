@@ -46,12 +46,14 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  describe('test route navigate', () => {
+  describe('router.initialNavigation', () => {
     it('should init at default page', () => {
       router.initialNavigation();
       expect(router.url).toBe('/');
     });
+  });
 
+  describe('router.navigateByUrl', () => {
     it('should navigate to search page', () => {
       const navigateSpy = jest.spyOn(router, 'navigateByUrl');
       void router.navigateByUrl('/search');

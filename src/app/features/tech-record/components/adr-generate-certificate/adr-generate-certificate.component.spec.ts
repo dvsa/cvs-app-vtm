@@ -149,7 +149,7 @@ describe('AdrGenerateCertificateComponent', () => {
     });
   });
 
-  describe('test get functions', () => {
+  describe('certificateTypes', () => {
     it('should get correct value when call get functions', () => {
       const expectedValue = [
         { label: 'New ADR Certificate', value: 'PASS' },

@@ -43,7 +43,7 @@ describe('AdrComponent', () => {
     });
   });
 
-  describe('handle form change', () => {
+  describe('handleFormChange', () => {
     it('the form should be updated', () => {
       const testData = { test: 11 };
       const spy = jest.spyOn(component.form, 'patchValue');
