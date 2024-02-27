@@ -160,7 +160,6 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateHgvVehicleBodyType(record: TechRecordVehicleType<'hgv'>) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (record.techRecord_vehicleConfiguration === 'articulated') {
       this.store.dispatch(updateEditingTechRecord({
         vehicleTechRecord: {

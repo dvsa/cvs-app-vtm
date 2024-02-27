@@ -36,7 +36,6 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
       return of(value);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (resourceType === SpecialRefData.ReasonsForAbandoning) {
       this.store
         .select(getSingleVehicleType)

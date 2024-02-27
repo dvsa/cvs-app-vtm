@@ -41,6 +41,5 @@ export const userServiceReducer = createReducer(
 );
 
 function getRoles(rolesArray: string[]): string[] {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
   return environment.RemoveAADFullAccessRole ? rolesArray.filter((role) => role !== Roles.Admin) : rolesArray;
 }
