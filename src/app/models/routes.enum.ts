@@ -33,7 +33,7 @@ export enum TechRecordRoutes {
   NOTIFIABLE_ALTERATION_NEEDED_CHANGE_SUMMARY = 'notifiable-alteration-needed/change-summary',
   NOTIFIABLE_ALTERATION_NEEDED_TYRE_SEARCH = 'notifiable-alteration-needed/tyre-search/:axleNumber',
   TEST_RECORDS = 'test-records/test-result/:testResultId/:testNumber',
-  TEST_RECORDS_CREATE_TEST = 'test-records/create-test',
+  CREATE_TEST = 'test-records/create-test',
   ADR_CERTIFICATE = 'adr-certificate',
 }
 
