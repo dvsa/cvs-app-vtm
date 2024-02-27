@@ -9,7 +9,9 @@ import {
 } from '@store/reference-data';
 import { getSingleVehicleType } from '@store/technical-records';
 import {
-  Observable, Subject, combineLatest, map, of, take,
+  Observable, Subject,
+  asapScheduler,
+  combineLatest, map, of, take,
 } from 'rxjs';
 
 @Pipe({
@@ -57,10 +59,15 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
         });
     }
 
-    this.store.dispatch(fetchReferenceData({ resourceType: resourceType as ReferenceDataResourceType }));
-    this.store.dispatch(
-      fetchReferenceDataByKeySearch({ resourceType: (`${resourceType}#AUDIT`) as ReferenceDataResourceType, resourceKey: `${value}#` }),
-    );
+    asapScheduler.schedule(() => {
+      this.store.dispatch(fetchReferenceData({ resourceType: resourceType as ReferenceDataResourceType }));
+    });
+
+    asapScheduler.schedule(() => {
+      this.store.dispatch(
+        fetchReferenceDataByKeySearch({ resourceType: (`${resourceType}#AUDIT`) as ReferenceDataResourceType, resourceKey: `${value}#` }),
+      );
+    });
 
     return combineLatest([
       this.store.select(selectReferenceDataByResourceKey(resourceType as ReferenceDataResourceType, value)),
