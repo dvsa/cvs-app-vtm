@@ -27,12 +27,12 @@ const routes: Routes = [
         redirectTo: 'type',
       },
       {
-        path: TestRecordCreateRoutes.TEST_RECORD_CREATE_TYPE,
+        path: TestRecordCreateRoutes.CREATE_TYPE,
         component: CreateTestTypeComponent,
         resolve: { testTypeTaxonomy: testTypeTaxonomyResolver, contingencyTest: contingencyTestResolver },
       },
       {
-        path: TestRecordCreateRoutes.TEST_RECORD_CREATE_TEST_DETAILS,
+        path: TestRecordCreateRoutes.CREATE_TEST_DETAILS,
         component: TestRouterOutletComponent,
         resolve: { TestTypeTaxonomy: testTypeTaxonomyResolver, defectTaxonomy: defectsTaxonomyResolver, testStations: testStationsResolver },
         data: { title: 'Test details', roles: Roles.TestResultCreateContingency, breadcrumbPreserveQueryParams: true },
@@ -43,13 +43,13 @@ const routes: Routes = [
             component: CreateTestRecordComponent,
           },
           {
-            path: TestRecordCreateRoutes.TEST_RECORD_CREATE_TEST_DETAILS_DEFECT,
+            path: TestRecordCreateRoutes.CREATE_TEST_DETAILS_DEFECT,
             component: DefectComponent,
             data: { title: 'Defect', roles: Roles.TestResultCreateContingency, isEditing: true },
             canActivate: [RoleGuard],
           },
           {
-            path: TestRecordCreateRoutes.TEST_RECORD_CREATE_TEST_DETAILS_SELECT_DEFECT,
+            path: TestRecordCreateRoutes.CREATE_TEST_DETAILS_SELECT_DEFECT,
             component: TestRouterOutletComponent,
             data: { title: 'Select defect', roles: Roles.TestResultCreateContingency },
             children: [
@@ -59,7 +59,7 @@ const routes: Routes = [
                 canActivate: [RoleGuard],
               },
               {
-                path: TestRecordCreateRoutes.TEST_RECORD_CREATE_TEST_DETAILS_SELECT_DEFECT_REF,
+                path: TestRecordCreateRoutes.CREATE_TEST_DETAILS_SELECT_DEFECT_REF,
                 component: DefectComponent,
                 data: { title: 'Defect', roles: Roles.TestResultCreateContingency, isEditing: true },
                 canActivate: [RoleGuard],
@@ -67,13 +67,13 @@ const routes: Routes = [
             ],
           },
           {
-            path: TestRecordCreateRoutes.TEST_RECORD_CREATE_TEST_DETAILS_REQUIRED_STANDARD,
+            path: TestRecordCreateRoutes.CREATE_TEST_DETAILS_REQUIRED_STANDARD,
             component: RequiredStandardComponent,
             data: { title: 'Required Standard', roles: Roles.TestResultCreateContingency, isEditing: true },
             canActivate: [RoleGuard],
           },
           {
-            path: TestRecordCreateRoutes.TEST_RECORD_CREATE_TEST_DETAILS_SELECT_REQUIRED_STANDARD,
+            path: TestRecordCreateRoutes.CREATE_TEST_DETAILS_SELECT_REQUIRED_STANDARD,
             component: TestRouterOutletComponent,
             resolve: { RequiredStandards: requiredStandardsResolver },
             data: { title: 'Select Required Standard', roles: Roles.TestResultCreateContingency },
@@ -84,7 +84,7 @@ const routes: Routes = [
                 canActivate: [RoleGuard],
               },
               {
-                path: TestRecordCreateRoutes.TEST_RECORD_CREATE_TEST_DETAILS_SELECT_REQUIRED_STANDARD_REF,
+                path: TestRecordCreateRoutes.CREATE_TEST_DETAILS_SELECT_REQUIRED_STANDARD_REF,
                 component: RequiredStandardComponent,
                 data: { title: 'Required Standard', roles: Roles.TestResultCreateContingency, isEditing: true },
                 canActivate: [RoleGuard],

@@ -28,7 +28,7 @@ const routes: Routes = [
         component: TestResultSummaryComponent,
       },
       {
-        path: TestRecordAmendRoutes.TEST_RECORD_AMEND_AMEND_TEST,
+        path: TestRecordAmendRoutes.AMEND_AMEND_TEST,
         component: TestRouterOutletComponent,
         data: { title: 'Amend test record', roles: Roles.TestResultAmend },
         canActivate: [RoleGuard],
@@ -38,7 +38,7 @@ const routes: Routes = [
             component: TestAmendReasonComponent,
           },
           {
-            path: TestRecordAmendRoutes.TEST_RECORD_AMEND_INCORRECT_TEST_TYPE,
+            path: TestRecordAmendRoutes.AMEND_INCORRECT_TEST_TYPE,
             component: TestRouterOutletComponent,
             data: { title: 'Select a test type', roles: Roles.TestResultAmend },
             resolve: { testTypeTaxonomy: testTypeTaxonomyResolver },
@@ -51,7 +51,7 @@ const routes: Routes = [
             ],
           },
           {
-            path: TestRecordAmendRoutes.TEST_RECORD_AMEND_TEST_DETAILS,
+            path: TestRecordAmendRoutes.AMEND_TEST_DETAILS,
             component: TestRouterOutletComponent,
             data: { title: 'Test details', roles: Roles.TestResultAmend },
             resolve: { load: testResultResolver, testTypeTaxonomy: testTypeTaxonomyResolver, defectTaxonomy: defectsTaxonomyResolver },
@@ -63,13 +63,13 @@ const routes: Routes = [
                 component: TestRecordComponent,
               },
               {
-                path: TestRecordAmendRoutes.TEST_RECORD_AMEND_DEFECT,
+                path: TestRecordAmendRoutes.AMEND_DEFECT,
                 component: DefectComponent,
                 data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
                 canActivate: [RoleGuard],
               },
               {
-                path: TestRecordAmendRoutes.TEST_RECORD_AMEND_TEST_DETAILS_SELECT_DEFECT,
+                path: TestRecordAmendRoutes.AMEND_TEST_DETAILS_SELECT_DEFECT,
                 component: TestRouterOutletComponent,
                 data: { title: 'Select Defect', roles: Roles.TestResultAmend },
                 canActivate: [RoleGuard],
@@ -80,7 +80,7 @@ const routes: Routes = [
                     canActivate: [RoleGuard],
                   },
                   {
-                    path: TestRecordAmendRoutes.TEST_RECORD_AMEND_TEST_DETAILS_SELECT_DEFECT_REFERENCE,
+                    path: TestRecordAmendRoutes.AMEND_TEST_DETAILS_SELECT_DEFECT_REFERENCE,
                     component: DefectComponent,
                     data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
                     canActivate: [RoleGuard],
@@ -92,19 +92,19 @@ const routes: Routes = [
         ],
       },
       {
-        path: TestRecordAmendRoutes.TEST_RECORD_AMEND_AMENDED_TEST,
+        path: TestRecordAmendRoutes.AMEND_AMENDED_TEST,
         component: AmendedTestRecordComponent,
         data: { title: 'Amended test result', roles: Roles.TestResultView },
         canActivate: [RoleGuard],
       },
       {
-        path: TestRecordAmendRoutes.TEST_RECORD_AMEND_CANCEL_TEST,
+        path: TestRecordAmendRoutes.AMEND_CANCEL_TEST,
         component: ConfirmCancellationComponent,
         data: { title: 'Cancel test result', roles: Roles.TestResultAmend },
         canActivate: [RoleGuard],
       },
       {
-        path: TestRecordAmendRoutes.TEST_RECORD_AMEND_DEFECT,
+        path: TestRecordAmendRoutes.AMEND_DEFECT,
         component: DefectComponent,
         data: { title: 'Defect', roles: Roles.TestResultView, isEditing: false },
         resolve: { load: testResultResolver },
