@@ -4,10 +4,10 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
+import { TechRecordCreateRoutes } from '@models/routes.enum';
 import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { HydrateNewVehicleRecordComponent } from './components/hydrate-new-vehicle-record/hydrate-new-vehicle-record.component';
 import { CreateTechRecordComponent } from './create-tech-record.component';
-import { TechRecordCreateRoutes } from '@models/routes.enum';
 
 const routes: Routes = [
   {
