@@ -8,10 +8,12 @@ import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-reco
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
+import { createMockTestResult } from '@mocks/test-result.mock';
+import { createMockTestType } from '@mocks/test-type.mock';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
-import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -23,8 +25,6 @@ import { State, initialAppState } from '@store/.';
 import { selectQueryParams, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { createMock, createMockList } from 'ts-auto-mock';
-import { PartialDeep } from 'ts-auto-mock/partial/partial';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
 import { masterTpl } from '../../../forms/templates/test-records/master.template';
 import {
@@ -291,9 +291,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should dispatch templateSectionsChanged with new sections and test result', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '1' }) as PartialDeep<TestType>) as PartialDeep<TestType>,
+        testTypes: [createMockTestType({ testTypeId: '1' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -316,9 +316,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return empty section templates if action testResult.vehicleType === undefined', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: undefined,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '1' }) as PartialDeep<TestType>) as PartialDeep<TestType>,
+        testTypes: [createMockTestType({ testTypeId: '1' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -339,9 +339,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return empty section templates if action testResult.vehicleType is not known by masterTpl', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: 'car' as VehicleTypes,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '1' }) as PartialDeep<TestType>) as PartialDeep<TestType>,
+        testTypes: [createMockTestType({ testTypeId: '1' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -363,9 +363,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return empty section templates if testTypeId doesnt apply to vehicleType', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '190' }) as PartialDeep<TestType>) as PartialDeep<TestType>,
+        testTypes: [createMockTestType({ testTypeId: '190' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -388,9 +388,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return empty section templates if testTypeId is known but not in master template and edit is true', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '39' }) as PartialDeep<TestType>) as PartialDeep<TestType>,
+        testTypes: [createMockTestType(({ testTypeId: '39' }))],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -413,9 +413,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return default section templates if testTypeId is known but not in master template and edit is false', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '39' }) as PartialDeep<TestType>) as PartialDeep<TestType>,
+        testTypes: [createMockTestType({ testTypeId: '39' })],
       });
       testScheduler.run(({ hot, expectObservable }) => {
         store.overrideSelector(selectQueryParams, { edit: 'false' });
@@ -445,9 +445,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should dispatch templateSectionsChanged with new sections and test result', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '1' }) as PartialDeep<TestType>) as PartialDeep<TestType>,
+        testTypes: [createMockTestType({ testTypeId: '1' })],
       });
 
       store.overrideSelector(testResultInEdit, testResult);
@@ -533,9 +533,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return empty section templates if action testResult.vehicleType === undefined', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: undefined,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '1' }) as PartialDeep<TestType>) as PartialDeep<TestType>,
+        testTypes: [createMockTestType({ testTypeId: '1' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {

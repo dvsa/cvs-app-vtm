@@ -33,7 +33,7 @@ export class ReferenceDataDeletedListComponent implements OnInit {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get refDataAdminType$(): Observable<any | undefined> {
+  get refDataAdminType$(): Observable<any> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 

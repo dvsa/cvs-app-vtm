@@ -83,8 +83,7 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
 
             this.requiredStandard = rsControl;
             this.requiredStandardForm?.addControl(rsControl);
-            // eslint-disable-next-line no-unsafe-optional-chaining
-            this.form = this.requiredStandardForm?.controls[this.requiredStandardForm?.length - 1] as CustomFormGroup;
+            this.form = this.requiredStandardForm?.controls[this.index ?? this.requiredStandardForm.length - 1] as CustomFormGroup;
 
           });
       }
@@ -106,7 +105,7 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
       return;
     }
     this.requiredStandard.prs = !this.requiredStandard.prs;
-    this.requiredStandardForm?.controls[this.requiredStandardForm.length - 1].get('prs')?.patchValue(this.requiredStandard.prs);
+    this.requiredStandardForm?.controls[this.index ?? this.requiredStandardForm.length - 1].get('prs')?.patchValue(this.requiredStandard.prs);
   }
 
   handleSubmit() {

@@ -1,8 +1,8 @@
 import { Params } from '@angular/router';
-import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { mockDefect } from '@mocks/mock-defects';
+import { createMockTestResult } from '@mocks/test-result.mock';
+import { createMockTestType } from '@mocks/test-type.mock';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TestType } from '@models/test-types/test-type.model';
-import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { TestResultsState, initialTestResultsState } from '../reducers/test-records.reducer';
 import {
@@ -36,9 +36,9 @@ describe('Test Results Selectors', () => {
         ...initialTestResultsState,
         ids: ['testResult1'],
         entities: {
-          testResult1: createMock<TestResultModel>({
+          testResult1: createMockTestResult({
             testResultId: 'testResult1',
-            testTypes: [createMock<TestType>({ testNumber: '1' })],
+            testTypes: [createMockTestType({ testNumber: '1' })],
           }),
         },
       };
@@ -58,6 +58,7 @@ describe('Test Results Selectors', () => {
 
   describe('selectDefectData', () => {
     const state: TestResultModel = mockTestResult();
+    state.testTypes[0].defects = [mockDefect()];
 
     it('should return defect data for the first testType in selected test result', () => {
       const defectState = selectDefectData.projector(state);
@@ -125,11 +126,11 @@ describe('Test Results Selectors', () => {
   });
 
   describe('selectedAmendedTestResultState', () => {
-    const testResult = createMock<TestResultModel>({
-      testHistory: createMockList<TestResultModel>(2, (i) =>
-        createMock<TestResultModel>({
+    const testResult = createMockTestResult({
+      testHistory: new Array(2).fill(0).map((i) =>
+        createMockTestResult({
           createdAt: `2020-01-01T00:0${i}:00.000Z`,
-          testTypes: createMockList<TestType>(1, (j) => createMock<TestType>({ testTypeId: `${i}${j}`, testNumber: 'ABC00' })),
+          testTypes: [createMockTestType({ testTypeId: `${i}1`, testNumber: 'ABC00' })],
         })),
     });
 
@@ -157,14 +158,12 @@ describe('Test Results Selectors', () => {
   });
 
   describe('selectAmendedDefectData', () => {
-    const amendedTestResultState = createMock<TestResultModel>({
-      testTypes: createMockList<TestType>(1, () =>
-        createMock<TestType>({
-          defects: createMockList<TestResultDefect>(1, (i) =>
-            createMock<TestResultDefect>({
-              imNumber: i,
-            })),
-        })),
+    const amendedTestResultState = createMockTestResult({
+      testTypes: [
+        createMockTestType({
+          defects: [mockDefect(1)],
+        }),
+      ],
     });
 
     it('should return defect array from first testType in testResult', () => {

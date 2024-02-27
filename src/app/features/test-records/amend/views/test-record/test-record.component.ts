@@ -90,6 +90,8 @@ export class TestRecordComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.testRecordsService.cleanTestResult();
+
     const testResult = await firstValueFrom(this.testResult$);
     const testResultClone = cloneDeep(testResult) as TestResultModel;
 

@@ -10,7 +10,8 @@ This is used by the DVSA staff to create and update technical records & test res
 
 Prerequisites:
 
-- Node 18
+- Node 18.18.0 or higher
+- NPM 9.8.1 or higher
 - Git Secrets
 
 ### Using Make

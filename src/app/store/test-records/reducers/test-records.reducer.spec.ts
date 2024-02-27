@@ -4,6 +4,7 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { Action } from '@ngrx/store';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import {
+  cleanTestResult,
   createDefect,
   createRequiredStandard,
   fetchSelectedTestResult,
@@ -56,7 +57,7 @@ describe('Test Results Reducer', () => {
         ids: ['TestResultId0001', 'TestResultId0002', 'TestResultId0003'],
         entities: { TestResultId0001: testResults[0], TestResultId0002: testResults[1], TestResultId0003: testResults[2] },
       };
-      const action = fetchTestResultsSuccess({ payload: [...testResults] });
+      const action = fetchTestResultsSuccess({ payload: testResults });
       const state = testResultsReducer(initialTestResultsState, action);
 
       expect(state).toEqual(newState);
@@ -485,4 +486,64 @@ describe('Test Results Reducer', () => {
     });
   });
 
+  describe('cleanTestResultPayload', () => {
+    it('should return the state unaltered if no editing test result', () => {
+      const action = cleanTestResult();
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: undefined }, action);
+
+      expect(newState).toStrictEqual({ ...initialTestResultsState, editingTestResult: undefined });
+
+    });
+
+    it('should return the state unaltered if no test type', () => {
+      const editingTestResult = {
+        foo: 'bar',
+      } as unknown as TestResultModel;
+
+      const action = cleanTestResult();
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
+
+      expect(newState).toStrictEqual({ ...initialTestResultsState, editingTestResult });
+    });
+
+    it('should return the state unaltered if required standards are populated', () => {
+      const editingTestResult = {
+        testTypes: [
+          { requiredStandards: ['I am a RS'], testTypeId: '125' },
+        ],
+      } as unknown as TestResultModel;
+
+      const action = cleanTestResult();
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
+
+      expect(newState).toStrictEqual({ ...initialTestResultsState, editingTestResult });
+    });
+
+    it('should return the state unaltered if test type is not spec 1 or spec 5', () => {
+      const editingTestResult = {
+        testTypes: [
+          { requiredStandards: ['I am a RS'], testTypeId: 'xyz' },
+        ],
+      } as unknown as TestResultModel;
+
+      const action = cleanTestResult();
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
+
+      expect(newState).toStrictEqual({ ...initialTestResultsState, editingTestResult });
+
+    });
+
+    it('should delete RS if empty from state', () => {
+      const editingTestResult = {
+        testTypes: [
+          { requiredStandards: [], testTypeId: '125' },
+        ],
+      } as unknown as TestResultModel;
+
+      const action = cleanTestResult();
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
+
+      expect(newState.editingTestResult?.testTypes[0].requiredStandards).toBeUndefined();
+    });
+  });
 });
