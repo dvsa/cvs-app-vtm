@@ -21,7 +21,7 @@ const routes: Routes = [
         data: { roles: Roles.TechRecordCreate },
       },
       {
-        path: TechRecordCreateRoutes.CREATE_NEW_RECORD_DETAILS,
+        path: TechRecordCreateRoutes.NEW_RECORD_DETAILS,
         children: [
           {
             path: '',
@@ -31,7 +31,7 @@ const routes: Routes = [
             },
           },
           {
-            path: TechRecordCreateRoutes.CREATE_TYRE_SEARCH,
+            path: TechRecordCreateRoutes.TYRE_SEARCH,
             component: TechRecordSearchTyresComponent,
             data: { title: 'Tyre search', roles: Roles.TechRecordCreate, isEditing: true },
           },

@@ -29,7 +29,7 @@ const routes: Routes = [
         canActivate: [MsalGuard, RoleGuard],
       },
       {
-        path: TechRecordCreateBatchRoutes.CREATE_BATCH_BATCH_RECORD,
+        path: TechRecordCreateBatchRoutes.RECORD,
         component: RouterOutletComponent,
         data: { title: 'Batch Record', roles: Roles.TechRecordCreate, isCustomLayout: true },
         children: [
@@ -41,17 +41,17 @@ const routes: Routes = [
             },
           },
           {
-            path: TechRecordCreateBatchRoutes.CREATE_BATCH_BATCH_RECORD_DETAILS,
+            path: TechRecordCreateBatchRoutes.DETAILS,
             component: BatchVehicleDetailsComponent,
             data: { title: 'Add batch of vehicles', roles: Roles.TechRecordCreate, isEditing: true },
           },
           {
-            path: TechRecordCreateBatchRoutes.CREATE_BATCH_BATCH_RECORD_BATCH_RESULT,
+            path: TechRecordCreateBatchRoutes.BATCH_RESULT,
             data: { title: 'Batch summary' },
             component: BatchVehicleResultsComponent,
           },
           {
-            path: TechRecordCreateBatchRoutes.CREATE_BATCH_BATCH_RECORD_TYRE_SEARCH,
+            path: TechRecordCreateBatchRoutes.TYRE_SEARCH,
             component: TechRecordSearchTyresComponent,
             data: { title: 'Tyre search', roles: Roles.TechRecordCreate, isEditing: true },
             canActivate: [MsalGuard, RoleGuard],

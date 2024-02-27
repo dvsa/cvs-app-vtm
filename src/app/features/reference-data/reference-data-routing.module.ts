@@ -26,7 +26,7 @@ const routes: Routes = [
         canActivate: [MsalGuard, RoleGuard],
       },
       {
-        path: ReferenceDataRoutes.DATA_TYPE,
+        path: ReferenceDataRoutes.TYPE,
         component: RouterOutletComponent,
         data: { title: 'Search Reference Data', roles: Roles.ReferenceDataView },
         canActivate: [MsalGuard, RoleGuard],
@@ -38,25 +38,25 @@ const routes: Routes = [
             canActivate: [MsalGuard, RoleGuard],
           },
           {
-            path: ReferenceDataRoutes.DATA_CREATE,
+            path: ReferenceDataRoutes.CREATE,
             component: ReferenceDataCreateComponent,
             data: { title: 'Add Reference Data', roles: Roles.ReferenceDataAmend },
             canActivate: [MsalGuard, RoleGuard],
           },
           {
-            path: ReferenceDataRoutes.DATA_DELETED_ITEMS,
+            path: ReferenceDataRoutes.DELETED_ITEMS,
             component: ReferenceDataDeletedListComponent,
             data: { title: 'View deleted Reference Data', roles: Roles.ReferenceDataView },
             canActivate: [MsalGuard, RoleGuard],
           },
           {
-            path: ReferenceDataRoutes.DATA_KEY,
+            path: ReferenceDataRoutes.KEY,
             component: ReferenceDataAmendComponent,
             data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataAmend },
             canActivate: [MsalGuard, RoleGuard],
           },
           {
-            path: ReferenceDataRoutes.DATA_DELETE,
+            path: ReferenceDataRoutes.DELETE,
             component: ReferenceDataDeleteComponent,
             data: { title: 'Delete Reference Data', roles: Roles.ReferenceDataAmend },
             canActivate: [MsalGuard, RoleGuard],

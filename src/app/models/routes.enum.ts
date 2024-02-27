@@ -38,44 +38,43 @@ export enum TechRecordRoutes {
 }
 
 export enum TechRecordCreateRoutes {
-  CREATE_NEW_RECORD_DETAILS = 'new-record-details',
-  CREATE_TYRE_SEARCH = 'tyre-search/:axleNumber',
+  NEW_RECORD_DETAILS = 'new-record-details',
+  TYRE_SEARCH = 'tyre-search/:axleNumber',
 }
 
 export enum TechRecordCreateBatchRoutes {
-  CREATE_BATCH_BATCH_RECORD = ':vehicleType',
-  CREATE_BATCH_BATCH_RECORD_DETAILS = 'details',
-  CREATE_BATCH_BATCH_RECORD_BATCH_RESULT = 'batch-results',
-  CREATE_BATCH_BATCH_RECORD_TYRE_SEARCH = 'tyre-search/:axleNumber',
+  RECORD = ':vehicleType',
+  DETAILS = 'details',
+  BATCH_RESULT = 'batch-results',
+  TYRE_SEARCH = 'tyre-search/:axleNumber',
 }
 
 export enum ReferenceDataRoutes {
-  DATA_TYPE = ':type',
-  DATA_CREATE = 'create',
-  DATA_DELETED_ITEMS = 'deleted-items',
-  DATA_KEY = ':key',
-  DATA_DELETE = ':key/delete',
+  TYPE = ':type',
+  CREATE = 'create',
+  DELETED_ITEMS = 'deleted-items',
+  KEY = ':key',
+  DELETE = ':key/delete',
 }
 
 export enum TestRecordAmendRoutes {
-  AMEND_ROOT = '',
-  AMEND_AMEND_TEST = 'amend-test',
-  AMEND_INCORRECT_TEST_TYPE = 'incorrect-test-type',
-  AMEND_TEST_DETAILS = 'amend-test-details',
-  AMEND_DEFECT = 'defect/:defectIndex',
-  AMEND_TEST_DETAILS_SELECT_DEFECT = 'selectDefect',
-  AMEND_TEST_DETAILS_SELECT_DEFECT_REFERENCE = ':ref',
-  AMEND_AMENDED_TEST = 'amended/:createdAt',
-  AMEND_CANCEL_TEST = 'cancel-test',
+  AMEND_TEST = 'amend-test',
+  INCORRECT_TEST_TYPE = 'incorrect-test-type',
+  TEST_DETAILS = 'amend-test-details',
+  DEFECT = 'defect/:defectIndex',
+  SELECT_DEFECT = 'selectDefect',
+  SELECT_DEFECT_REFERENCE = ':ref',
+  AMENDED_TEST = 'amended/:createdAt',
+  CANCEL_TEST = 'cancel-test',
 }
 
 export enum TestRecordCreateRoutes {
-  CREATE_TYPE = 'type',
-  CREATE_TEST_DETAILS = 'test-details',
-  CREATE_TEST_DETAILS_DEFECT = 'defect/:defectIndex',
-  CREATE_TEST_DETAILS_SELECT_DEFECT = 'selectDefect',
-  CREATE_TEST_DETAILS_SELECT_DEFECT_REF = ':ref',
-  CREATE_TEST_DETAILS_REQUIRED_STANDARD = 'requiredStandard/:requiredStandardIndex',
-  CREATE_TEST_DETAILS_SELECT_REQUIRED_STANDARD = 'selectRequiredStandard',
-  CREATE_TEST_DETAILS_SELECT_REQUIRED_STANDARD_REF = ':inspectionType/:ref',
+  TYPE = 'type',
+  TEST_DETAILS = 'test-details',
+  DEFECT = 'defect/:defectIndex',
+  SELECT_DEFECT = 'selectDefect',
+  SELECT_DEFECT_REF = ':ref',
+  REQUIRED_STANDARD = 'requiredStandard/:requiredStandardIndex',
+  SELECT_REQUIRED_STANDARD = 'selectRequiredStandard',
+  REQUIRED_STANDARD_REF = ':inspectionType/:ref',
 }
