@@ -11,10 +11,10 @@ import { defectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defe
 import { requiredStandardsResolver } from 'src/app/resolvers/required-standards/required-standards.resolver';
 import { testStationsResolver } from 'src/app/resolvers/test-stations/test-stations.resolver';
 import { testTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
+import { TestRecordCreateRoutes } from '@models/routes.enum';
 import { CreateTestRecordComponent } from './views/create-test-record/create-test-record.component';
 import { CreateTestTypeComponent } from './views/create-test-type/create-test-type.component';
 import { TestRouterOutletComponent } from './views/test-router-outlet/test-router-outlet.component';
-import { TestRecordCreateRoutes } from '@models/routes.enum';
 
 const routes: Routes = [
   {
