@@ -8,6 +8,7 @@ import { Roles } from '@models/roles.enum';
 import { defectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
 import { testResultResolver } from 'src/app/resolvers/test-result/test-result.resolver';
 import { testTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
+import { TestRecordAmendRoutes } from '@models/routes.enum';
 import { AmendedTestRecordComponent } from './views/amended-test-record/amended-test-record.component';
 import { ConfirmCancellationComponent } from './views/confirm-cancellation/confirm-cancellation.component';
 import { TestAmendReasonComponent } from './views/test-amend-reason/test-amend-reason.component';
@@ -15,7 +16,6 @@ import { TestRecordComponent } from './views/test-record/test-record.component';
 import { TestResultSummaryComponent } from './views/test-result-summary/test-result-summary.component';
 import { TestRouterOutletComponent } from './views/test-router-outlet/test-router-outlet.component';
 import { TestTypeSelectWrapperComponent } from './views/test-type-select-wrapper/test-type-select-wrapper.component';
-import { TestRecordAmendRoutes } from '@models/routes.enum';
 
 const routes: Routes = [
   {
@@ -63,7 +63,7 @@ const routes: Routes = [
                 component: TestRecordComponent,
               },
               {
-                path: TestRecordAmendRoutes.TEST_RECORD_AMEND_TEST_DETAILS_DEFECT,
+                path: TestRecordAmendRoutes.TEST_RECORD_AMEND_DEFECT,
                 component: DefectComponent,
                 data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
                 canActivate: [RoleGuard],
