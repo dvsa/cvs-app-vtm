@@ -5,6 +5,7 @@ import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { RouterOutletComponent } from '@shared/components/router-outlet/router-outlet.component';
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
+import { TechRecordCreateBatchRoutes } from '@models/routes.enum';
 import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { BatchVehicleDetailsComponent } from './components/batch-vehicle-details/batch-vehicle-details.component';
 import { BatchVehicleResultsComponent } from './components/batch-vehicle-results/batch-vehicle-results.component';
@@ -28,7 +29,7 @@ const routes: Routes = [
         canActivate: [MsalGuard, RoleGuard],
       },
       {
-        path: ':vehicleType',
+        path: TechRecordCreateBatchRoutes.RECORD,
         component: RouterOutletComponent,
         data: { title: 'Batch Record', roles: Roles.TechRecordCreate, isCustomLayout: true },
         children: [
@@ -40,17 +41,17 @@ const routes: Routes = [
             },
           },
           {
-            path: 'details',
+            path: TechRecordCreateBatchRoutes.DETAILS,
             component: BatchVehicleDetailsComponent,
             data: { title: 'Add batch of vehicles', roles: Roles.TechRecordCreate, isEditing: true },
           },
           {
-            path: 'batch-results',
+            path: TechRecordCreateBatchRoutes.BATCH_RESULT,
             data: { title: 'Batch summary' },
             component: BatchVehicleResultsComponent,
           },
           {
-            path: 'tyre-search/:axleNumber',
+            path: TechRecordCreateBatchRoutes.TYRE_SEARCH,
             component: TechRecordSearchTyresComponent,
             data: { title: 'Tyre search', roles: Roles.TechRecordCreate, isEditing: true },
             canActivate: [MsalGuard, RoleGuard],
