@@ -13,6 +13,7 @@ import { Store, select } from '@ngrx/store';
 import {
   TestResultsState,
   cancelEditingTestResult,
+  cleanTestResult,
   contingencyTestTypeSelected,
   createTestResult,
   editingTestResult,
@@ -79,6 +80,7 @@ export class TestRecordsService {
   get testResult$() {
     return this.store.pipe(select(selectedTestResultState));
   }
+
   get editingTestResult$() {
     return this.store.pipe(select(testResultInEdit));
   }
@@ -131,6 +133,10 @@ export class TestRecordsService {
 
   createTestResult(value: TestResultModel): void {
     this.store.dispatch(createTestResult({ value }));
+  }
+
+  cleanTestResult() {
+    return this.store.dispatch(cleanTestResult());
   }
 
   static getTestTypeGroup(testTypeId: string): string | undefined {

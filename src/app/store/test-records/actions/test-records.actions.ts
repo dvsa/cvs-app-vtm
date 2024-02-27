@@ -31,6 +31,8 @@ export const updateTestResult = createAction('[test-results] Update test result'
 export const updateTestResultSuccess = createAction('[API/test-results] Update test result Success', props<{ payload: Update<TestResultModel> }>());
 export const updateTestResultFailed = createAction('[API/test-results] Update test result Failed', props<{ errors: GlobalError[] }>());
 
+export const cleanTestResult = createAction('[test-results] Clean test result for submission');
+
 export const editingTestResult = createAction('[test-results] Editing', props<{ testTypeId: string }>());
 export const updateEditingTestResult = createAction('[test-results] Update editing', props<{ testResult: TestResultModel }>());
 export const cancelEditingTestResult = createAction('[test-results] Cancel editing');

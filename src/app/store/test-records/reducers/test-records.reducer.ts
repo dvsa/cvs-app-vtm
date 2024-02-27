@@ -1,3 +1,4 @@
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
 // eslint-disable-next-line import/no-cycle
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/test-result-defect.model';
@@ -11,6 +12,7 @@ import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import {
   cancelEditingTestResult,
+  cleanTestResult,
   createDefect,
   createRequiredStandard,
   createTestResult,
@@ -107,6 +109,8 @@ export const testResultsReducer = createReducer(
 
   on(updateResultOfTestRequiredStandards, (state) =>
     ({ ...state, editingTestResult: calculateTestResultRequiredStandards(state.editingTestResult) })),
+
+  on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
@@ -123,6 +127,16 @@ function createNewRequiredStandard(testResultState: TestResultModel | undefined,
   testResult.testTypes[0].requiredStandards.push(requiredStandard);
 
   return { ...testResult };
+}
+
+function cleanTestResultPayload(testResult: TestResultModel | undefined) {
+  if (testResult?.testTypes?.at(0)) {
+    const { testTypeId, requiredStandards } = testResult.testTypes[0];
+    if ((TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId)) && !(requiredStandards ?? []).length) {
+      delete testResult.testTypes[0].requiredStandards;
+    }
+  }
+  return testResult;
 }
 
 function updateRequiredStandardAtIndex(testResultState: TestResultModel | undefined, requiredStandard: TestResultRequiredStandard, index: number) {
