@@ -1,15 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { FormGroup, ValidationErrors } from '@angular/forms';
+import { operatorEnum } from '@forms/models/condition.model';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { createMockCustomDefect } from '@mocks/custom-defect.mock';
 import { mockTestResult } from '@mocks/mock-test-result';
+import { TestResultModel } from '@models/test-results/test-result.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/.';
+import { State, initialAppState } from '@store/.';
 import { testResultInEdit } from '@store/test-records';
 import { initialTestStationsState } from '@store/test-stations';
-import { firstValueFrom, Observable } from 'rxjs';
-import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { operatorEnum } from '@forms/models/condition.model';
+import { Observable, firstValueFrom } from 'rxjs';
 import { CustomAsyncValidators } from './custom-async-validators';
 
 describe('resultDependantOnCustomDefects', () => {
@@ -31,7 +32,9 @@ describe('resultDependantOnCustomDefects', () => {
   it('should fail validation when value is "pass" and defects are present', async () => {
     form.controls['testResult'].patchValue('pass');
 
-    store.overrideSelector(testResultInEdit, mockTestResult());
+    const mockedTestResult = mockTestResult();
+    mockedTestResult.testTypes[0].customDefects = [createMockCustomDefect()];
+    store.overrideSelector(testResultInEdit, mockedTestResult);
 
     const result = await firstValueFrom(
       CustomAsyncValidators.resultDependantOnCustomDefects(store)(form.controls['testResult']) as Observable<ValidationErrors | null>,
@@ -102,7 +105,9 @@ describe('passResultDependantOnCustomDefects', () => {
   it('should fail validation when value is "pass" and defects are present', async () => {
     form.controls['testResult'].patchValue('pass');
 
-    store.overrideSelector(testResultInEdit, mockTestResult());
+    const mockedTestResult = mockTestResult();
+    mockedTestResult.testTypes[0].customDefects = [createMockCustomDefect()];
+    store.overrideSelector(testResultInEdit, mockedTestResult);
 
     const result = await firstValueFrom(
       CustomAsyncValidators.passResultDependantOnCustomDefects(store)(form.controls['testResult']) as Observable<ValidationErrors | null>,

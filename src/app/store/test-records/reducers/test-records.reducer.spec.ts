@@ -57,7 +57,7 @@ describe('Test Results Reducer', () => {
         ids: ['TestResultId0001', 'TestResultId0002', 'TestResultId0003'],
         entities: { TestResultId0001: testResults[0], TestResultId0002: testResults[1], TestResultId0003: testResults[2] },
       };
-      const action = fetchTestResultsSuccess({ payload: [...testResults] });
+      const action = fetchTestResultsSuccess({ payload: testResults });
       const state = testResultsReducer(initialTestResultsState, action);
 
       expect(state).toEqual(newState);
