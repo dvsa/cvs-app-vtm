@@ -1,3 +1,4 @@
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
@@ -5,9 +6,8 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
-export const ContingencyM1IvaVehicleSection: FormNode = {
+export const ContingencyIvaMsvaVehicleSection: FormNode = {
   name: 'vehicleSection',
   label: 'Vehicle Details',
   type: FormNodeTypes.GROUP,
