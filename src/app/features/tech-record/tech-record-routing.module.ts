@@ -9,6 +9,7 @@ import { techRecordCleanResolver } from 'src/app/resolvers/tech-record-clean/tec
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
 import { techRecordValidateResolver } from 'src/app/resolvers/tech-record-validate/tech-record-validate.resolver';
 import { techRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
+import { TechRecordRoutes } from '@models/routes.enum';
 import { AdrGenerateCertificateComponent } from './components/adr-generate-certificate/adr-generate-certificate.component';
 import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
 import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
@@ -37,7 +38,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'correcting-an-error',
+    path: TechRecordRoutes.CORRECT_ERROR,
     component: TechRecordComponent,
     data: {
       roles: Roles.TechRecordAmend,
@@ -53,7 +54,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'notifiable-alteration-needed',
+    path: TechRecordRoutes.NOTIFIABLE_ALTERATION_NEEDED,
     component: TechRecordComponent,
     data: {
       roles: Roles.TechRecordAmend,
@@ -70,73 +71,73 @@ const routes: Routes = [
   },
 
   {
-    path: 'change-vin',
+    path: TechRecordRoutes.CHANGE_VIN,
     component: AmendVinComponent,
     data: { title: 'Change VIN', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
   },
   {
-    path: 'change-vrm',
+    path: TechRecordRoutes.CHANGE_VRM,
     component: AmendVrmReasonComponent,
     data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard],
   },
   {
-    path: 'change-vrm/:reason',
+    path: TechRecordRoutes.REASON_TO_CHANGE_VRM,
     component: AmendVrmComponent,
     data: { title: 'Change VRM', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard],
   },
   {
-    path: 'generate-plate',
+    path: TechRecordRoutes.GENERATE_PLATE,
     component: GeneratePlateComponent,
     data: { title: 'Generate plate', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { load: techRecordViewResolver },
   },
   {
-    path: 'generate-letter',
+    path: TechRecordRoutes.GENERATE_LETTER,
     component: GenerateLetterComponent,
     data: { title: 'Generate letter', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { load: techRecordViewResolver },
   },
   {
-    path: 'amend-reason',
+    path: TechRecordRoutes.AMEND_REASON,
     component: TechRecordAmendReasonComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
   },
   {
-    path: 'change-status',
+    path: TechRecordRoutes.CHANGE_STATUS,
     component: TechRecordChangeStatusComponent,
     data: { title: 'Promote or Archive Tech Record', roles: Roles.TechRecordArchive },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { load: techRecordViewResolver },
   },
   {
-    path: 'unarchive-record',
+    path: TechRecordRoutes.UNARCHIVE_RECORD,
     component: TechRecordUnarchiveComponent,
     data: { title: 'Unarchive Record', roles: Roles.TechRecordUnarchive },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { load: techRecordViewResolver },
   },
   {
-    path: 'change-vehicle-type',
+    path: TechRecordRoutes.CHANGE_VEHICLE_TYPE,
     component: ChangeVehicleTypeComponent,
     data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend, isEditing: true },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: techRecordViewResolver },
   },
   {
-    path: 'change-vta-visibility',
+    path: TechRecordRoutes.CHANGE_VTA_VISIBILITY,
     component: TechRecordChangeVisibilityComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: techRecordViewResolver },
   },
   {
-    path: 'correcting-an-error/tyre-search/:axleNumber',
+    path: TechRecordRoutes.CORRECT_ERROR_TYRE_SEARCH,
     component: TechRecordSearchTyresComponent,
     data: {
       title: 'Tyre search',
@@ -148,19 +149,19 @@ const routes: Routes = [
     resolve: { techRecord: techRecordViewResolver },
   },
   {
-    path: 'correcting-an-error/change-summary',
+    path: TechRecordRoutes.CORRECT_ERROR_CHANGE_SUMMARY,
     component: TechRecordSummaryChangesComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
   },
   {
-    path: 'notifiable-alteration-needed/change-summary',
+    path: TechRecordRoutes.NOTIFIABLE_ALTERATION_NEEDED_CHANGE_SUMMARY,
     component: TechRecordSummaryChangesComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
   },
   {
-    path: 'notifiable-alteration-needed/tyre-search/:axleNumber',
+    path: TechRecordRoutes.NOTIFIABLE_ALTERATION_NEEDED_TYRE_SEARCH,
     component: TechRecordSearchTyresComponent,
     data: {
       title: 'Tyre search',
@@ -172,21 +173,21 @@ const routes: Routes = [
     resolve: { techRecord: techRecordViewResolver },
   },
   {
-    path: 'test-records/test-result/:testResultId/:testNumber',
+    path: TechRecordRoutes.TEST_RECORDS,
     data: { title: 'Test record', roles: Roles.TestResultView },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: techRecordViewResolver },
     loadChildren: () => import('../test-records/amend/amend-test-records.module').then((m) => m.AmendTestRecordsModule),
   },
   {
-    path: 'test-records/create-test',
+    path: TechRecordRoutes.CREATE_TEST,
     data: { title: 'Create Contingency test', roles: Roles.TestResultCreateContingency },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: techRecordViewResolver },
     loadChildren: () => import('../test-records/create/create-test-records.module').then((m) => m.CreateTestRecordsModule),
   },
   {
-    path: 'adr-certificate',
+    path: TechRecordRoutes.ADR_CERTIFICATE,
     component: AdrGenerateCertificateComponent,
     data: { title: 'Generate ADR Certificate', roles: Roles.TestResultCreateDeskAssessment },
     canActivate: [MsalGuard, RoleGuard],

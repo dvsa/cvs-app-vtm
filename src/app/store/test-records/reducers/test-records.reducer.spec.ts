@@ -1,9 +1,12 @@
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Action } from '@ngrx/store';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import {
+  cleanTestResult,
   createDefect,
+  createRequiredStandard,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
@@ -13,13 +16,15 @@ import {
   fetchTestResultsBySystemNumberSuccess,
   fetchTestResultsSuccess,
   removeDefect,
+  removeRequiredStandard,
   updateDefect,
+  updateRequiredStandard,
   updateResultOfTest,
   updateTestResult,
   updateTestResultFailed,
   updateTestResultSuccess,
 } from '../actions/test-records.actions';
-import { initialTestResultsState, testResultsReducer, TestResultsState } from './test-records.reducer';
+import { TestResultsState, initialTestResultsState, testResultsReducer } from './test-records.reducer';
 
 describe('Test Results Reducer', () => {
   describe('unknown action', () => {
@@ -52,7 +57,7 @@ describe('Test Results Reducer', () => {
         ids: ['TestResultId0001', 'TestResultId0002', 'TestResultId0003'],
         entities: { TestResultId0001: testResults[0], TestResultId0002: testResults[1], TestResultId0003: testResults[2] },
       };
-      const action = fetchTestResultsSuccess({ payload: [...testResults] });
+      const action = fetchTestResultsSuccess({ payload: testResults });
       const state = testResultsReducer(initialTestResultsState, action);
 
       expect(state).toEqual(newState);
@@ -390,7 +395,7 @@ describe('Test Results Reducer', () => {
   });
 
   describe('updateDefect', () => {
-    it('should create defect', () => {
+    it('should update defect', () => {
       const defect = { imNumber: 2 } as TestResultDefect;
       const newDefect = { imNumber: 1 } as TestResultDefect;
       const testResult = {
@@ -412,7 +417,7 @@ describe('Test Results Reducer', () => {
   });
 
   describe('removeDefect', () => {
-    it('should create defect', () => {
+    it('should remove defect', () => {
       const defect = { imNumber: 2 } as TestResultDefect;
       const testResult = {
         testTypes: [
@@ -425,6 +430,120 @@ describe('Test Results Reducer', () => {
       const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 
       expect(newState.editingTestResult?.testTypes[0].defects?.length).toBe(0);
+    });
+  });
+
+  describe('createRequiredStandard', () => {
+    it('should create required standard', () => {
+      const requiredStandard = { sectionNumber: 2 } as unknown as TestResultRequiredStandard;
+      const testResult = {
+        testTypes: [
+          {
+            requiredStandards: [requiredStandard],
+          },
+        ],
+      } as unknown as TestResultModel;
+      const action = createRequiredStandard({ requiredStandard });
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+
+      expect(newState.editingTestResult?.testTypes[0].requiredStandards?.length).toBe(2);
+    });
+  });
+
+  describe('updateRequiredStandard', () => {
+    it('should update required standard', () => {
+      const requiredStandard = { sectionNumber: 2 } as unknown as TestResultRequiredStandard;
+      const newRequiredStandard = { sectionNumber: 1 } as unknown as TestResultRequiredStandard;
+      const testResult = {
+        testTypes: [
+          {
+            requiredStandards: [requiredStandard],
+          },
+        ],
+      } as unknown as TestResultModel;
+      const action = updateRequiredStandard({ requiredStandard: newRequiredStandard, index: 0 });
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+
+      expect(newState.editingTestResult?.testTypes[0].requiredStandards?.length).toBe(1);
+      expect(newState.editingTestResult?.testTypes?.at(0)?.requiredStandards?.at(0)?.sectionNumber).toBe(1);
+    });
+  });
+
+  describe('removeRequiredStandard', () => {
+    it('should remove required standard', () => {
+      const requiredStandard = { sectionNumber: 2 } as unknown as TestResultRequiredStandard;
+      const testResult = {
+        testTypes: [
+          {
+            requiredStandards: [requiredStandard],
+          },
+        ],
+      } as unknown as TestResultModel;
+      const action = removeRequiredStandard({ index: 0 });
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+
+      expect(newState.editingTestResult?.testTypes[0].requiredStandards?.length).toBe(0);
+    });
+  });
+
+  describe('cleanTestResultPayload', () => {
+    it('should return the state unaltered if no editing test result', () => {
+      const action = cleanTestResult();
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: undefined }, action);
+
+      expect(newState).toStrictEqual({ ...initialTestResultsState, editingTestResult: undefined });
+
+    });
+
+    it('should return the state unaltered if no test type', () => {
+      const editingTestResult = {
+        foo: 'bar',
+      } as unknown as TestResultModel;
+
+      const action = cleanTestResult();
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
+
+      expect(newState).toStrictEqual({ ...initialTestResultsState, editingTestResult });
+    });
+
+    it('should return the state unaltered if required standards are populated', () => {
+      const editingTestResult = {
+        testTypes: [
+          { requiredStandards: ['I am a RS'], testTypeId: '125' },
+        ],
+      } as unknown as TestResultModel;
+
+      const action = cleanTestResult();
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
+
+      expect(newState).toStrictEqual({ ...initialTestResultsState, editingTestResult });
+    });
+
+    it('should return the state unaltered if test type is not spec 1 or spec 5', () => {
+      const editingTestResult = {
+        testTypes: [
+          { requiredStandards: ['I am a RS'], testTypeId: 'xyz' },
+        ],
+      } as unknown as TestResultModel;
+
+      const action = cleanTestResult();
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
+
+      expect(newState).toStrictEqual({ ...initialTestResultsState, editingTestResult });
+
+    });
+
+    it('should delete RS if empty from state', () => {
+      const editingTestResult = {
+        testTypes: [
+          { requiredStandards: [], testTypeId: '125' },
+        ],
+      } as unknown as TestResultModel;
+
+      const action = cleanTestResult();
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult }, action);
+
+      expect(newState.editingTestResult?.testTypes[0].requiredStandards).toBeUndefined();
     });
   });
 });

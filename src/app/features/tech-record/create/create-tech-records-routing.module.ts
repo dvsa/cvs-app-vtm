@@ -4,6 +4,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
+import { TechRecordCreateRoutes } from '@models/routes.enum';
 import { TechRecordSearchTyresComponent } from '../components/tech-record-search-tyres/tech-record-search-tyres.component';
 import { HydrateNewVehicleRecordComponent } from './components/hydrate-new-vehicle-record/hydrate-new-vehicle-record.component';
 import { CreateTechRecordComponent } from './create-tech-record.component';
@@ -20,7 +21,7 @@ const routes: Routes = [
         data: { roles: Roles.TechRecordCreate },
       },
       {
-        path: 'new-record-details',
+        path: TechRecordCreateRoutes.NEW_RECORD_DETAILS,
         children: [
           {
             path: '',
@@ -30,7 +31,7 @@ const routes: Routes = [
             },
           },
           {
-            path: 'tyre-search/:axleNumber',
+            path: TechRecordCreateRoutes.TYRE_SEARCH,
             component: TechRecordSearchTyresComponent,
             data: { title: 'Tyre search', roles: Roles.TechRecordCreate, isEditing: true },
           },

@@ -2,6 +2,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 // eslint-disable-next-line import/no-cycle
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Update } from '@ngrx/entity';
@@ -30,6 +31,8 @@ export const updateTestResult = createAction('[test-results] Update test result'
 export const updateTestResultSuccess = createAction('[API/test-results] Update test result Success', props<{ payload: Update<TestResultModel> }>());
 export const updateTestResultFailed = createAction('[API/test-results] Update test result Failed', props<{ errors: GlobalError[] }>());
 
+export const cleanTestResult = createAction('[test-results] Clean test result for submission');
+
 export const editingTestResult = createAction('[test-results] Editing', props<{ testTypeId: string }>());
 export const updateEditingTestResult = createAction('[test-results] Update editing', props<{ testResult: TestResultModel }>());
 export const cancelEditingTestResult = createAction('[test-results] Cancel editing');
@@ -51,3 +54,17 @@ export const templateSectionsChanged = createAction(
 export const createDefect = createAction('[test-results] create defect', props<{ defect: TestResultDefect }>());
 export const updateDefect = createAction('[test-results] save defect', props<{ defect: TestResultDefect; index: number }>());
 export const removeDefect = createAction('[test-results] remove defect', props<{ index: number }>());
+
+export const createRequiredStandard = createAction(
+  '[test-results] create required standard',
+  props<{ requiredStandard: TestResultRequiredStandard }>(),
+);
+
+export const updateRequiredStandard = createAction(
+  '[test-results] update required standard',
+  props<{ requiredStandard: TestResultRequiredStandard, index: number }>(),
+);
+
+export const removeRequiredStandard = createAction('[test-results] remove required standard', props<{ index: number }>());
+
+export const updateResultOfTestRequiredStandards = createAction('[test-results] update test result required standards');

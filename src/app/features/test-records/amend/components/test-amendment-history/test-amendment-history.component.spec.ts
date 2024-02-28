@@ -5,12 +5,12 @@ import {
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
+import { createMockTestResult } from '@mocks/test-result.mock';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { initialAppState, State } from '@store/.';
 import { selectedTestSortedAmendmentHistory } from '@store/test-records';
-import { createMock, createMockList } from 'ts-auto-mock';
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
 describe('TestAmendmentHistoryComponent', () => {
@@ -41,7 +41,7 @@ describe('TestAmendmentHistoryComponent', () => {
   describe('Created By', () => {
     it('should return testerName entry if createdByName does not exist', () => {
       const data = mockTestResultArchived();
-      delete data.createdByName;
+      data.createdByName = undefined as unknown as string;
       const name = component.getCreatedByName(data);
 
       expect(name).toBe(data.testerName);
@@ -49,7 +49,7 @@ describe('TestAmendmentHistoryComponent', () => {
 
     it('should return testerName entry if createdByName is empty', () => {
       const data = { ...mockTestResultArchived(), createdByName: '' };
-      const name = component.getCreatedByName(data);
+      const name = component.getCreatedByName(data as TestResultModel);
 
       expect(name).toBe(data.testerName);
     });
@@ -77,14 +77,16 @@ describe('TestAmendmentHistoryComponent', () => {
 
     describe('Table sorting', () => {
       beforeEach(() => {
-        component.testRecord = createMock<TestResultModel>({
+        component.testRecord = createMockTestResult({
           createdAt: '2020-01-01T00:00:00.000Z',
           reasonForCreation: 'reasonForCreation',
           createdByName: 'Tester Man',
-          testHistory: createMockList<TestResultModel>(1, (i) =>
-            createMock<TestResultModel>({
-              createdAt: new Date(`2020-01-0${i + 1}`).toISOString(),
-            })),
+          testHistory: [
+            createMockTestResult({
+              createdAt: new Date('2020-01-01').toISOString(),
+              createdByName: '_',
+            }),
+          ],
         });
         fixture.detectChanges();
       });

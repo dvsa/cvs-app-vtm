@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CustomDefectComponent } from '../custom-defect/custom-defect.component';
 import { CustomDefectsComponent } from './custom-defects.component';
@@ -27,6 +27,7 @@ describe('CustomDefectsComponent', () => {
     fixture = TestBed.createComponent(CustomDefectsComponent);
     component = fixture.componentInstance;
     el = fixture.debugElement;
+    component.template = { name: 'test component', type: FormNodeTypes.GROUP };
     fixture.detectChanges();
   });
 

@@ -1,6 +1,8 @@
+import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
 // eslint-disable-next-line import/no-cycle
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
@@ -10,7 +12,9 @@ import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import {
   cancelEditingTestResult,
+  cleanTestResult,
   createDefect,
+  createRequiredStandard,
   createTestResult,
   createTestResultFailed,
   createTestResultSuccess,
@@ -24,11 +28,14 @@ import {
   fetchTestResultsSuccess,
   initialContingencyTest,
   removeDefect,
+  removeRequiredStandard,
   setResultOfTest,
   templateSectionsChanged,
   updateDefect,
   updateEditingTestResult,
+  updateRequiredStandard,
   updateResultOfTest,
+  updateResultOfTestRequiredStandards,
   updateTestResult,
   updateTestResultFailed,
   updateTestResultSuccess,
@@ -92,9 +99,71 @@ export const testResultsReducer = createReducer(
   on(createDefect, (state, action) => ({ ...state, editingTestResult: createNewDefect(state.editingTestResult, action.defect) })),
   on(updateDefect, (state, action) => ({ ...state, editingTestResult: updateDefectAtIndex(state.editingTestResult, action.defect, action.index) })),
   on(removeDefect, (state, action) => ({ ...state, editingTestResult: removeDefectAtIndex(state.editingTestResult, action.index) })),
+
+  on(createRequiredStandard, (state, action) =>
+    ({ ...state, editingTestResult: createNewRequiredStandard(state.editingTestResult, action.requiredStandard) })),
+  on(updateRequiredStandard, (state, action) =>
+    ({ ...state, editingTestResult: updateRequiredStandardAtIndex(state.editingTestResult, action.requiredStandard, action.index) })),
+  on(removeRequiredStandard, (state, action) =>
+    ({ ...state, editingTestResult: removeRequiredStandardAtIndex(state.editingTestResult, action.index) })),
+
+  on(updateResultOfTestRequiredStandards, (state) =>
+    ({ ...state, editingTestResult: calculateTestResultRequiredStandards(state.editingTestResult) })),
+
+  on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
+
+function createNewRequiredStandard(testResultState: TestResultModel | undefined, requiredStandard: TestResultRequiredStandard) {
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+
+  if (!testResult.testTypes[0].requiredStandards) {
+    return;
+  }
+  testResult.testTypes[0].requiredStandards.push(requiredStandard);
+
+  return { ...testResult };
+}
+
+function cleanTestResultPayload(testResult: TestResultModel | undefined) {
+  if (testResult?.testTypes?.at(0)) {
+    const { testTypeId, requiredStandards } = testResult.testTypes[0];
+    if ((TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId)) && !(requiredStandards ?? []).length) {
+      delete testResult.testTypes[0].requiredStandards;
+    }
+  }
+  return testResult;
+}
+
+function updateRequiredStandardAtIndex(testResultState: TestResultModel | undefined, requiredStandard: TestResultRequiredStandard, index: number) {
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+  if (!testResult.testTypes[0].requiredStandards) {
+    return;
+  }
+  testResult.testTypes[0].requiredStandards[`${index}`] = requiredStandard;
+
+  return { ...testResult };
+}
+
+function removeRequiredStandardAtIndex(testResultState: TestResultModel | undefined, index: number) {
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+  if (!testResult.testTypes[0].requiredStandards) {
+    return;
+  }
+  testResult.testTypes[0].requiredStandards.splice(index, 1);
+
+  return { ...testResult };
+}
 
 function createNewDefect(testResultState: TestResultModel | undefined, defect: TestResultDefect): TestResultModel | undefined {
   if (!testResultState) {
@@ -169,6 +238,34 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
         || defect.deficiencyCategory === DeficiencyCategoryEnum.Minor
         || (defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous && defect.prs)
         || (defect.deficiencyCategory === DeficiencyCategoryEnum.Major && defect.prs),
+    )
+      ? resultOfTestEnum.prs
+      : resultOfTestEnum.fail;
+
+    return testType;
+  });
+  return { ...testResult, testTypes: [...newTestTypes] };
+}
+
+function calculateTestResultRequiredStandards(testResultState: TestResultModel | undefined): TestResultModel | undefined {
+  if (!testResultState) {
+    return;
+  }
+
+  const testResult = cloneDeep(testResultState);
+
+  const newTestTypes = testResult.testTypes.map((testType) => {
+    if (testType.testResult === resultOfTestEnum.abandoned || !testType.requiredStandards || TypeOfTest.DESK_BASED === testResultState?.typeOfTest) {
+      return testType;
+    }
+
+    if (!testType.requiredStandards.length) {
+      testType.testResult = resultOfTestEnum.pass;
+      return testType;
+    }
+
+    testType.testResult = testType.requiredStandards.every(
+      (rs) => rs.prs,
     )
       ? resultOfTestEnum.prs
       : resultOfTestEnum.fail;
