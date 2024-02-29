@@ -55,6 +55,7 @@ import { AmendDeskBasedTestSectionLgvGroup5 } from './section-templates/test/des
 import { AmendDeskBasedTestSectionGroup4LgvCarMotorcycle } from './section-templates/test/desk-based/desk-based-test-section-group4-lgv-template';
 import { RequiredStandardsTpl } from '../general/required-standards.template';
 import { AdditionalDefectsSection } from './section-templates/additionalDefects/additional-defects-section.template';
+import { ContingencyIvaMsvaVehicleSection } from './section-templates/vehicle/contingency-iva-msva-vehicle-section.template';
 
 /**
  * Keys of root object must a a valid vehicle type.
@@ -117,7 +118,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSection,
     },
     testTypesSpecialistGroup1: {
-      vehicle: VehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: SpecialistTestSectionGroup1,
       visit: VisitSection,
       notes: NotesSection,
@@ -156,7 +157,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSpecialistSection,
     },
     testTypesSpecialistGroup5: {
-      vehicle: VehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: SpecialistTestSectionGroup5,
       visit: VisitSection,
       notes: NotesSection,
@@ -286,7 +287,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSection,
     },
     testTypesSpecialistGroup1: {
-      vehicle: VehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: SpecialistTestSectionGroup1,
       visit: VisitSection,
       notes: NotesSection,
@@ -296,7 +297,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: SpecialistRequiredSectionHGVTRL,
     },
     testTypesSpecialistGroup5: {
-      vehicle: VehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: SpecialistTestSectionGroup5,
       visit: VisitSection,
       notes: NotesSection,
@@ -495,7 +496,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     },
     testTypesSpecialistGroup1: {
       required: SpecialistRequiredSectionLgvCarSmallTrl,
-      vehicle: VehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: SpecialistTestSectionGroup1,
       requiredStandards: RequiredStandardsTpl,
       customDefects: AdditionalDefectsSection,
@@ -505,7 +506,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     },
     testTypesSpecialistGroup5: {
       required: SpecialistRequiredSectionLgvCarSmallTrl,
-      vehicle: VehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: SpecialistTestSectionGroup5,
       requiredStandards: RequiredStandardsTpl,
       customDefects: AdditionalDefectsSection,
@@ -542,7 +543,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     },
     testTypesSpecialistGroup1: {
       required: SpecialistRequiredSectionLgvCarSmallTrl,
-      vehicle: VehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: SpecialistTestSectionGroup1,
       requiredStandards: RequiredStandardsTpl,
       customDefects: AdditionalDefectsSection,
@@ -552,7 +553,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     },
     testTypesSpecialistGroup5: {
       required: SpecialistRequiredSectionLgvCarSmallTrl,
-      vehicle: VehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: SpecialistTestSectionGroup5,
       requiredStandards: RequiredStandardsTpl,
       customDefects: AdditionalDefectsSection,
@@ -592,7 +593,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     },
     testTypesSpecialistGroup1: {
       required: RequiredSpecialistSectionMotorcycle,
-      vehicle: VehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: SpecialistTestSectionGroup1,
       requiredStandards: RequiredStandardsTpl,
       customDefects: AdditionalDefectsSection,
