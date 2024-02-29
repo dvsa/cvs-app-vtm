@@ -572,11 +572,11 @@ export class CustomValidators {
     };
   };
 
-  static minArrayLengthIfNotEmpty = (minimumLength: number): ValidatorFn => {
+  static minArrayLengthIfNotEmpty = (minimumLength: number, message: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      console.log(control);
-      if (control.value.length && control.value.length < minimumLength) {
-        return { minArrayLengthIfNotEmpty: { message: `You must add a minimum of ${minimumLength} axles before submitting the technical record.` } };
+      // console.log(control);
+      if (control.value?.length && control.value.length < minimumLength) {
+        return { minArrayLengthIfNotEmpty: { message } };
       }
       return null;
     };

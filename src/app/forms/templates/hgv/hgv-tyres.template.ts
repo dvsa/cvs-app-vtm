@@ -30,7 +30,7 @@ export const tyresTemplateHgv: FormNode = {
       value: '',
       type: FormNodeTypes.ARRAY,
       validators: [{
-        name: ValidatorNames.MinArrayLengthIfNotEmpty, args: { minimumLength: 2 },
+        name: ValidatorNames.MinArrayLengthIfNotEmpty, args: { minimumLength: 2, message: 'You cannot submit a HGV with less than 2 axles.' },
       },
       ],
       children: [

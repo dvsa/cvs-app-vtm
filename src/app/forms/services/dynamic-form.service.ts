@@ -87,8 +87,8 @@ export class DynamicFormService {
     [ValidatorNames.Tc3TestValidator]: (args: { inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
     [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
     [ValidatorNames.DateIsInvalid]: () => CustomValidators.dateIsInvalid,
-    [ValidatorNames.MinArrayLengthIfNotEmpty]: (args: { minimumLength: number }) =>
-      CustomValidators.minArrayLengthIfNotEmpty(args.minimumLength),
+    [ValidatorNames.MinArrayLengthIfNotEmpty]: (args: { minimumLength: number, message: string }) =>
+      CustomValidators.minArrayLengthIfNotEmpty(args.minimumLength, args.message),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

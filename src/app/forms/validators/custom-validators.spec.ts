@@ -1,9 +1,15 @@
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
-import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
+import {
+  VehicleClassDescription,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl,
+  CustomFormGroup,
+  FormNodeTypes
+} from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
 
@@ -2001,5 +2007,72 @@ describe('tc3ParentValidator', () => {
     ])('should return %p when control value is %s', (expected: object | null, input) => {
       expect(CustomValidators.dateIsInvalid(new FormControl(input))).toEqual(expected);
     });
+  });
+});
+
+describe('minArrayLengthIfNotEmpty', () => {
+  let form: FormGroup;
+  beforeEach(() => {
+    form = new CustomFormGroup({
+      name: 'tyresSection',
+      label: 'Tyres',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'techRecord_axles',
+          value: '',
+          type: FormNodeTypes.ARRAY,
+          validators: [{
+            name: ValidatorNames.MinArrayLengthIfNotEmpty, args: { minimumLength: 2, message: 'You cannot submit a HGV with less than 2 axles.' },
+          },
+          ],
+          children: [
+            {
+              name: '0',
+              label: 'Axle',
+              value: '',
+              type: FormNodeTypes.GROUP,
+              children: [],
+            },
+          ],
+        },
+      ],
+    }, {
+      axles: new FormControl({
+        name: 'techRecord_axles',
+        type: FormNodeTypes.ARRAY,
+        groups: [],
+        children: [
+          {
+            name: '0',
+            label: 'Axle',
+            value: '',
+            type: FormNodeTypes.GROUP,
+            children: [],
+          },
+        ],
+      }),
+    });
+  });
+  it('should return null if the minimum length is reached', () => {
+    const axles = form.get('axles') as FormArray;
+    const message = 'message';
+    axles.patchValue({
+      name: '1',
+      label: 'Axle',
+      value: '',
+      type: FormNodeTypes.GROUP,
+      children: [],
+    });
+    console.log(axles);
+    const validator = CustomValidators.minArrayLengthIfNotEmpty(2, message)(axles as AbstractControl);
+    expect(validator).toBeNull();
+  });
+  it('should return an error if the array is not empty but doesnt reach minimum length', () => {
+    const axles = form.get('axles') as FormArray;
+    const message = 'message';
+    console.log(axles.value);
+    const validator = CustomValidators.minArrayLengthIfNotEmpty(2, message)(axles as AbstractControl);
+    expect(validator).toEqual(null);
   });
 });
