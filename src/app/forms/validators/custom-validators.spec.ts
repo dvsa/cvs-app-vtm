@@ -1,4 +1,8 @@
-import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl, FormGroup,
+} from '@angular/forms';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import {
@@ -8,7 +12,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   CustomFormControl,
   CustomFormGroup,
-  FormNodeTypes
+  FormNodeTypes,
 } from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
@@ -2011,68 +2015,60 @@ describe('tc3ParentValidator', () => {
 });
 
 describe('minArrayLengthIfNotEmpty', () => {
-  let form: FormGroup;
-  beforeEach(() => {
-    form = new CustomFormGroup({
-      name: 'tyresSection',
-      label: 'Tyres',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'techRecord_axles',
-          value: '',
-          type: FormNodeTypes.ARRAY,
-          validators: [{
-            name: ValidatorNames.MinArrayLengthIfNotEmpty, args: { minimumLength: 2, message: 'You cannot submit a HGV with less than 2 axles.' },
-          },
-          ],
-          children: [
-            {
-              name: '0',
-              label: 'Axle',
-              value: '',
-              type: FormNodeTypes.GROUP,
-              children: [],
-            },
-          ],
-        },
-      ],
-    }, {
-      axles: new FormControl({
-        name: 'techRecord_axles',
-        type: FormNodeTypes.ARRAY,
-        groups: [],
-        children: [
-          {
-            name: '0',
-            label: 'Axle',
-            value: '',
-            type: FormNodeTypes.GROUP,
-            children: [],
-          },
-        ],
-      }),
-    });
+  it('should return null if the form array is empty', () => {
+    const formArray = new FormArray([]);
+    expect(CustomValidators.minArrayLengthIfNotEmpty(2, 'Error message')(formArray)).toBeNull();
   });
-  it('should return null if the minimum length is reached', () => {
-    const axles = form.get('axles') as FormArray;
-    const message = 'message';
-    axles.patchValue({
-      name: '1',
-      label: 'Axle',
-      value: '',
-      type: FormNodeTypes.GROUP,
-      children: [],
-    });
-    console.log(axles);
-    const validator = CustomValidators.minArrayLengthIfNotEmpty(2, message)(axles as AbstractControl);
-    expect(validator).toBeNull();
-  });
+
   it('should return an error if the array is not empty but doesnt reach minimum length', () => {
-    const axles = form.get('axles') as FormArray;
-    const message = 'message';
-    console.log(axles.value);
-    const validator = CustomValidators.minArrayLengthIfNotEmpty(2, message)(axles as AbstractControl);
-    expect(validator).toEqual(null);
+    const formArray = new FormArray([
+      new FormControl({
+        axleNumber: 1,
+        tyres_tyreSize: null,
+        tyres_fitmentCode: null,
+        tyres_dataTrAxles: null,
+        tyres_plyRating: null,
+        tyres_tyreCode: null,
+        weights_gbWeight: null,
+        weights_designWeight: null,
+        parkingBrakeMrk: false,
+        weights_eecWeight: null,
+      }),
+    ]);
+
+    expect(CustomValidators.minArrayLengthIfNotEmpty(2, 'Error message')(formArray)).toStrictEqual(expect.objectContaining({
+      minArrayLengthIfNotEmpty: { message: 'Error message' },
+    }));
+  });
+
+  it('should return null if the minimum length is reached', () => {
+    const formArray = new FormArray([
+      new FormControl({
+        axleNumber: 1,
+        tyres_tyreSize: null,
+        tyres_fitmentCode: null,
+        tyres_dataTrAxles: null,
+        tyres_plyRating: null,
+        tyres_tyreCode: null,
+        weights_gbWeight: null,
+        weights_designWeight: null,
+        parkingBrakeMrk: false,
+        weights_eecWeight: null,
+      }),
+      new FormControl({
+        axleNumber: 2,
+        tyres_tyreSize: null,
+        tyres_fitmentCode: null,
+        tyres_dataTrAxles: null,
+        tyres_plyRating: null,
+        tyres_tyreCode: null,
+        weights_gbWeight: null,
+        weights_designWeight: null,
+        parkingBrakeMrk: false,
+        weights_eecWeight: null,
+      }),
+    ]);
+
+    expect(CustomValidators.minArrayLengthIfNotEmpty(2, 'Error message')(formArray)).toBeNull();
   });
 });

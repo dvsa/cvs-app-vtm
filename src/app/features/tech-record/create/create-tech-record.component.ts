@@ -137,7 +137,7 @@ export class CreateTechRecordComponent implements OnChanges {
 
     const formValueUnique = await this.isFormValueUnique();
 
-    const validAxles = this.validateAxles();
+    this.validateAxles();
 
     this.store.dispatch(setSpinnerState({ showSpinner: false }));
 
