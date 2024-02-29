@@ -21,7 +21,7 @@
           </dl>
           <dl class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">PRS?</dt>
-            <dd class="govuk-summary-list__value">{{ !! requiredStandard.prs | defaultNullOrEmpty }}</dd>
+            <dd class="govuk-summary-list__value">{{ !!requiredStandard.prs | defaultNullOrEmpty }}</dd>
           </dl>
         </dl>
       </div>
@@ -34,7 +34,9 @@
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Required Standard Details</h1>
         <span class="govuk-caption-m">{{ requiredStandard.sectionDescription }}</span>
-        <h2 class="govuk-heading-s">{{ requiredStandard.refCalculation }} - {{ requiredStandard.sectionDescription }}: {{ requiredStandard.requiredStandard }}</h2>
+        <h2 class="govuk-heading-s">
+          {{ requiredStandard.refCalculation }} - {{ requiredStandard.sectionDescription }}: {{ requiredStandard.requiredStandard }}
+        </h2>
         <app-tag *ngIf="requiredStandard.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
       </div>
     </div>
