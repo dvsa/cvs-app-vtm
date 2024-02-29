@@ -1,9 +1,33 @@
 <ng-template [ngTemplateOutlet]="isEditing ? editRs : viewRs" [ngTemplateOutletContext]="{ data: form }"></ng-template>
 
 <ng-template #viewRs let-data="data">
-  <h1>View me</h1>
+  <ng-container *ngIf="requiredStandard">
+    <h1 class="govuk-heading-l">Required Standard</h1>
+    <div class="govuk-grid-row govuk-!-margin-bottom-5">
+      <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-m">{{ requiredStandard.sectionDescription }}</span>
+        <h2 class="govuk-heading-s">
+          {{ requiredStandard.refCalculation }} - {{ requiredStandard.sectionDescription }}: {{ requiredStandard.requiredStandard }}
+        </h2>
+        <app-tag *ngIf="requiredStandard.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <dl class="govuk-summary-list">
+          <dl class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Notes</dt>
+            <dd class="govuk-summary-list__value">{{ requiredStandard.additionalNotes | defaultNullOrEmpty }}</dd>
+          </dl>
+          <dl class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">PRS?</dt>
+            <dd class="govuk-summary-list__value">{{ !! requiredStandard.prs | defaultNullOrEmpty }}</dd>
+          </dl>
+        </dl>
+      </div>
+    </div>
+  </ng-container>
 </ng-template>
-
 <ng-template #editRs let-data="data">
   <ng-container *ngIf="requiredStandard">
     <div class="govuk-grid-row govuk-!-margin-bottom-5">
