@@ -8,7 +8,8 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Roles } from '@models/roles.enum';
 import {
-  NotTrailer, V3TechRecordModel, VehicleTypes,
+  V3TechRecordModel, VehicleTypes,
+  VehiclesOtherThan,
 } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -82,7 +83,7 @@ describe('TechRecordTitleComponent', () => {
       expect(vrmField.textContent).not.toContain('TESTV RM4');
     });
     it('should not create previous-vrm-span if no secondary vrm exists', () => {
-      delete (mockRecord as NotTrailer).secondaryVrms;
+      delete (mockRecord as VehiclesOtherThan<'trl'>).secondaryVrms;
       fixture.detectChanges();
 
       const vrmField = fixture.debugElement.query(By.css('#previous-vrm-span'));

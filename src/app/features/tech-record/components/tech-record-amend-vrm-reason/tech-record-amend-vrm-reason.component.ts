@@ -7,7 +7,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import {
   CustomFormControl, FormNodeOption, FormNodeTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
-import { NotTrailer, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Subject, take, takeUntil } from 'rxjs';
 
@@ -17,7 +17,7 @@ import { Subject, take, takeUntil } from 'rxjs';
   styleUrls: ['./tech-record-amend-vrm-reason.component.scss'],
 })
 export class AmendVrmReasonComponent implements OnDestroy, OnInit {
-  techRecord?: NotTrailer;
+  techRecord?: VehiclesOtherThan<'trl'>;
   makeAndModel?: string;
 
   form = new FormGroup({
@@ -43,7 +43,7 @@ export class AmendVrmReasonComponent implements OnDestroy, OnInit {
       if (record?.techRecord_statusCode === 'archived' || !record) {
         return this.navigateBack();
       }
-      this.techRecord = record as NotTrailer;
+      this.techRecord = record as VehiclesOtherThan<'trl'>;
       this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
     });
   }

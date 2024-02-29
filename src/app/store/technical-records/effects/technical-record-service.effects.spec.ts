@@ -1,4 +1,3 @@
-/* eslint-disable jest/expect-expect */
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
@@ -44,17 +43,17 @@ describe('TechnicalRecordServiceEffects', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
-        TechnicalRecordService,
         TechnicalRecordServiceEffects,
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
         { provide: UserService, useValue: { name$: of('name'), id$: of('iod') } },
+        { provide: TechnicalRecordService, useValue: { updateEditingTechRecord: jest.fn() } },
       ],
     });
-
     effects = TestBed.inject(TechnicalRecordServiceEffects);
     techRecordHttpService = TestBed.inject(TechnicalRecordHttpService);
     technicalRecordService = TestBed.inject(TechnicalRecordService);
+
   });
 
   beforeEach(() => {

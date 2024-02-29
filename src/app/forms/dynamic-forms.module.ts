@@ -4,6 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
 import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
+import {
+  AdrCertificateHistoryComponent,
+} from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
+import {
+  AdrExaminerNotesHistoryEditComponent,
+} from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
@@ -11,6 +17,7 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { ContingencyAdrGenerateCertComponent } from './components/contingency-adr-generate-cert/contingency-adr-generate-cert.component';
 import { DateComponent } from './components/date/date.component';
 import { FocusNextDirective } from './components/date/focus-next.directive';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
@@ -21,6 +28,7 @@ import { FieldWarningMessageComponent } from './components/field-warning-message
 import { NumberInputComponent } from './components/number-input/number-input.component';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
 import { ReadOnlyComponent } from './components/read-only/read-only.component';
+import { RequiredStandardSelectComponent } from './components/required-standard-select/required-standard-select.component';
 import { SelectComponent } from './components/select/select.component';
 import { SuggestiveInputComponent } from './components/suggestive-input/suggestive-input.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
@@ -29,8 +37,24 @@ import { TextInputComponent } from './components/text-input/text-input.component
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
+import { AdrExaminerNotesHistoryViewComponent } from './custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from './custom-sections/adr-guidance-notes/adr-guidance-notes.component';
-import { AdrTankStatementUnNumberComponent } from './custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
+import {
+  AdrTankDetailsInitialInspectionViewComponent,
+} from './custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
+import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
+import {
+  AdrTankDetailsSubsequentInspectionsEditComponent,
+} from './custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
+import {
+  AdrTankDetailsSubsequentInspectionsViewComponent,
+} from './custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
+import {
+  AdrTankStatementUnNumberEditComponent,
+} from './custom-sections/adr-tank-statement-un-number-edit/adr-tank-statement-un-number-edit.component';
+import {
+  AdrTankStatementUnNumberViewComponent,
+} from './custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
 import { AdrComponent } from './custom-sections/adr/adr.component';
 import { BodyComponent } from './custom-sections/body/body.component';
 import { CustomDefectComponent } from './custom-sections/custom-defect/custom-defect.component';
@@ -43,6 +67,8 @@ import { LettersComponent } from './custom-sections/letters/letters.component';
 import { ModifiedWeightsComponent } from './custom-sections/modified-weights/modified-weights.component';
 import { PlatesComponent } from './custom-sections/plates/plates.component';
 import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
+import { RequiredStandardComponent } from './custom-sections/required-standard/required-standard.component';
+import { RequiredStandardsComponent } from './custom-sections/required-standards/required-standards.component';
 import { TrlBrakesComponent } from './custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
@@ -50,7 +76,6 @@ import { NoSpaceDirective } from './directives/app-no-space.directive';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
 import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
 import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
-import { NestingLevelDirective } from './directives/nesting-level/nesting-level.directive';
 import { PrefixDirective } from './directives/prefix.directive';
 import { SuffixDirective } from './directives/suffix.directive';
 
@@ -77,6 +102,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
     DefectSelectComponent,
+    RequiredStandardSelectComponent,
     FocusNextDirective,
     TruncatePipe,
     WeightsComponent,
@@ -86,6 +112,8 @@ import { SuffixDirective } from './directives/suffix.directive';
     TrlBrakesComponent,
     ReadOnlyComponent,
     CustomDefectsComponent,
+    RequiredStandardComponent,
+    RequiredStandardsComponent,
     CustomDefectComponent,
     SwitchableInputComponent,
     ReadOnlyComponent,
@@ -103,10 +131,18 @@ import { SuffixDirective } from './directives/suffix.directive';
     ModifiedWeightsComponent,
     FieldWarningMessageComponent,
     AdrComponent,
-    NestingLevelDirective,
     AdrGuidanceNotesComponent,
-    AdrTankStatementUnNumberComponent,
+    AdrTankDetailsSubsequentInspectionsEditComponent,
+    AdrTankStatementUnNumberEditComponent,
     CustomFormControlComponent,
+    AdrExaminerNotesHistoryEditComponent,
+    AdrExaminerNotesHistoryViewComponent,
+    AdrTankDetailsSubsequentInspectionsViewComponent,
+    AdrTankDetailsInitialInspectionViewComponent,
+    AdrTankStatementUnNumberViewComponent,
+    AdrCertificateHistoryComponent,
+    AdrTankDetailsM145ViewComponent,
+    ContingencyAdrGenerateCertComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -126,6 +162,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
     DefectSelectComponent,
+    RequiredStandardSelectComponent,
     WeightsComponent,
     LettersComponent,
     PlatesComponent,
@@ -133,6 +170,8 @@ import { SuffixDirective } from './directives/suffix.directive';
     DimensionsComponent,
     TrlBrakesComponent,
     ReadOnlyComponent,
+    RequiredStandardComponent,
+    RequiredStandardsComponent,
     CustomDefectsComponent,
     CustomDefectComponent,
     SwitchableInputComponent,
@@ -152,6 +191,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     ApprovalTypeFocusNextDirective,
     ModifiedWeightsComponent,
     AdrComponent,
+    AdrCertificateHistoryComponent,
   ],
 })
-export class DynamicFormsModule {}
+export class DynamicFormsModule { }

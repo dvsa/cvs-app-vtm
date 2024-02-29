@@ -266,13 +266,13 @@ describe('Required validators', () => {
 
   describe('Required if not equal', () => {
     it('should not be required (return null) if content of sibling does not match a value', () => {
-      const result = CustomValidators.requiredIfNotEqual('sibling', 'some value')(form.controls['foo']);
+      const result = CustomValidators.requiredIfNotEquals('sibling', 'some value')(form.controls['foo']);
       expect(result).toBeNull();
     });
 
     it('should be required (return ValidationErrors) if content of sibling does not match a value', () => {
-      const result = CustomValidators.requiredIfNotEqual('sibling', 'some other value')(form.controls['foo']);
-      expect(result).toEqual({ requiredIfNotEqual: { sibling: 'Sibling' } });
+      const result = CustomValidators.requiredIfNotEquals('sibling', 'some other value')(form.controls['foo']);
+      expect(result).toEqual({ requiredIfNotEquals: { sibling: 'Sibling' } });
     });
 
     it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {
@@ -363,8 +363,7 @@ describe('customPattern', () => {
     const validation = customPattern(new FormControl(input));
     expect(validation).toEqual(expected);
     if (validation) {
-      // eslint-disable-next-line prefer-destructuring
-      const message = validation['customPattern']['message'];
+      const { customPattern: { message } } = validation;
       // eslint-disable-next-line jest/no-conditional-expect
       expect(message).toEqual(msg);
     } else {
@@ -1025,9 +1024,10 @@ describe('addWarningIfFalse', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
     const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
 
-    adr?.patchValue(false);
-    adr?.markAsDirty();
     name.patchValue('test');
+    name.markAsTouched();
+    adr.patchValue(false);
+    adr.markAsDirty();
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBe('Test warning');
@@ -1036,9 +1036,10 @@ describe('addWarningIfFalse', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
     const name = form.get('techRecord_adrDetails_applicantDetails_name') as CustomFormControl;
 
-    adr?.patchValue(false);
-    adr?.markAsDirty();
     name.patchValue('test');
+    name.markAsTouched();
+    adr.patchValue(false);
+    adr.markAsDirty();
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBe('Test warning');
@@ -1051,7 +1052,7 @@ describe('addWarningIfFalse', () => {
   it('should not have a warning if the control is pristine and value is false', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
 
-    adr?.patchValue(false);
+    adr.patchValue(false);
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBeUndefined();
@@ -1059,8 +1060,8 @@ describe('addWarningIfFalse', () => {
   it('should not have a warning if the value is false but there is no adr information on the record', () => {
     const adr = form.get('dangerousGoods') as CustomFormControl;
 
-    adr?.patchValue(false);
-    adr?.markAsDirty();
+    adr.patchValue(false);
+    adr.markAsDirty();
 
     CustomValidators.addWarningForAdrField('Test warning')(adr as AbstractControl);
     expect(adr.meta.warning).toBeUndefined();
@@ -1686,5 +1687,319 @@ describe('isArray', () => {
     control.patchValue([null, '2 string']);
 
     expect(CustomValidators.isArray({ requiredIndices: [0] })(control)).toBeTruthy();
+  });
+});
+
+describe('tc3FieldTestValidator', () => {
+  let form: FormGroup;
+
+  beforeEach(() => {
+    form = new CustomFormGroup({
+      name: 'group',
+      label: 'Subsequent',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'tc3Type',
+          type: FormNodeTypes.CONTROL,
+          value: null,
+          label: 'TC3: Inspection Type',
+        },
+        {
+          name: 'tc3PeriodicNumber',
+          label: 'TC3: Certificate Number',
+          value: null,
+          type: FormNodeTypes.CONTROL,
+        },
+        {
+          name: 'tc3PeriodicExpiryDate',
+          label: 'TC3: Expiry Date',
+          type: FormNodeTypes.CONTROL,
+          value: null,
+          isoDate: false,
+        },
+      ],
+    }, {
+      tc3Type: new CustomFormControl({
+        name: 'tc3Type',
+        type: FormNodeTypes.CONTROL,
+      }),
+      tc3PeriodicNumber: new CustomFormControl({
+        name: 'tc3PeriodicNumber',
+        type: FormNodeTypes.CONTROL,
+      }),
+      tc3PeriodicExpiryDate: new CustomFormControl({
+        name: 'tc3PeriodicExpiryDate',
+        type: FormNodeTypes.CONTROL,
+      }),
+    });
+  });
+  it('should give an error if all fields passed to the validator are null', () => {
+    const type = form.get('tc3Type') as CustomFormControl;
+
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
+  });
+  it('should give an error if fields passed to the validator are undefined', () => {
+    const type = form.get('tc3Type') as CustomFormControl;
+    const date = form.get('tc3PeriodicExpiryDate') as CustomFormControl;
+    const number = form.get('tc3PeriodicNumber') as CustomFormControl;
+
+    type.patchValue(undefined);
+    date.patchValue(undefined);
+    number.patchValue(undefined);
+
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
+  });
+  it('should give an error if fields passed to the validator are empty strings', () => {
+    const type = form.get('tc3Type') as CustomFormControl;
+    const date = form.get('tc3PeriodicExpiryDate') as CustomFormControl;
+    const number = form.get('tc3PeriodicNumber') as CustomFormControl;
+
+    type.patchValue('');
+    date.patchValue('');
+    number.patchValue('');
+
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
+  });
+  it('should give an error if fields to the validator have a variety of empty values', () => {
+    const type = form.get('tc3Type') as CustomFormControl;
+    const date = form.get('tc3PeriodicExpiryDate') as CustomFormControl;
+    const number = form.get('tc3PeriodicNumber') as CustomFormControl;
+
+    type.patchValue('');
+    date.patchValue(null);
+    number.patchValue(undefined);
+
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
+  });
+  it('should return null if one field passed to the validator has a value', () => {
+    const type = form.get('tc3Type') as CustomFormControl;
+    const number = form.get('tc3PeriodicNumber') as CustomFormControl;
+
+    number.patchValue('test');
+
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
+
+    expect(validator).toBeNull();
+  });
+});
+
+describe('tc3ParentValidator', () => {
+  let form: FormGroup;
+
+  beforeEach(() => {
+    form = new CustomFormGroup({
+      name: 'group',
+      label: 'Subsequent',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
+          type: FormNodeTypes.CONTROL,
+          value: null,
+        },
+      ],
+    }, {
+      techRecord_adrDetails_tank_tankDetails_tc3Details: new CustomFormControl({
+        name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
+        type: FormNodeTypes.CONTROL,
+      }),
+    });
+  });
+  it('should give an error if value contains a test with all null values', () => {
+    const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
+
+    details.patchValue([{ tc3Type: null, tc3PeriodicNumber: null, tc3PeriodicExpiryDate: null }]);
+
+    const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
+  });
+  it('should give an error if fields passed to the validator are undefined', () => {
+    const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
+
+    details.patchValue([{ tc3Type: undefined, tc3PeriodicNumber: undefined, tc3PeriodicExpiryDate: undefined }]);
+
+    const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
+  });
+  it('should give an error if fields passed to the validator are empty strings', () => {
+    const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
+
+    details.patchValue([{ tc3Type: '', tc3PeriodicNumber: '', tc3PeriodicExpiryDate: '' }]);
+
+    const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
+  });
+  it('should give an error if fields to the validator have a variety of empty values', () => {
+    const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
+
+    details.patchValue([{ tc3Type: null, tc3PeriodicNumber: undefined, tc3PeriodicExpiryDate: '' }]);
+
+    const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
+  });
+  it('should tell you which test needs to be filled out', () => {
+    const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
+
+    details.patchValue([
+      { tc3Type: null, tc3PeriodicNumber: 'test', tc3PeriodicExpiryDate: '' },
+      { tc3Type: null, tc3PeriodicNumber: undefined, tc3PeriodicExpiryDate: '' },
+      { tc3Type: null, tc3PeriodicNumber: 'test', tc3PeriodicExpiryDate: '' },
+    ]);
+
+    const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 2 must have at least one populated field',
+        },
+      },
+    );
+  });
+  it('should tell you which test needs to be filled out if there are multiple', () => {
+    const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
+
+    details.patchValue([
+      { tc3Type: null, tc3PeriodicNumber: 'test', tc3PeriodicExpiryDate: '' },
+      { tc3Type: null, tc3PeriodicNumber: undefined, tc3PeriodicExpiryDate: '' },
+      { tc3Type: null, tc3PeriodicNumber: 'test', tc3PeriodicExpiryDate: '' },
+      { tc3Type: null, tc3PeriodicNumber: '', tc3PeriodicExpiryDate: '' },
+      { tc3Type: null, tc3PeriodicNumber: '', tc3PeriodicExpiryDate: '' },
+    ]);
+
+    const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 2, 4, 5 must have at least one populated field',
+        },
+      },
+    );
+  });
+  it('should return null if one field passed to the validator has a value', () => {
+    const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
+
+    details.patchValue([{ tc3Type: 'test', tc3PeriodicNumber: null, tc3PeriodicExpiryDate: null }]);
+    const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
+
+    expect(validator).toBeNull();
+  });
+
+  describe('dateIsValid', () => {
+    it.each([
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, null],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, undefined],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, ''],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '---'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000--'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000-12-'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000-12-A'],
+      [null, '2000-12-01'],
+      [null, '2000-12-11'],
+      [null, '2000-12-31'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be a number' } }, '2000--11'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be a number' } }, '2000-C-11'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be between 1 and 12' } }, '2000-31-11'],
+      [{ dateIsInvalid: { message: '\'Date\' month must be between 1 and 12' } }, '2000-00-11'],
+      [{ dateIsInvalid: { message: '\'Date\' year must be a number' } }, '-12-11'],
+      [{ dateIsInvalid: { message: '\'Date\' year must be a number' } }, 'C-12-11'],
+
+      [null, '2020-02-29'],
+      [{ dateIsInvalid: { message: '\'Date\' day must be between 1 and 28 in the month of February' } }, '2019-02-29'],
+    ])('should return %p when control value is %s', (expected: object | null, input) => {
+      expect(CustomValidators.dateIsInvalid(new FormControl(input))).toEqual(expected);
+    });
   });
 });

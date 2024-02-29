@@ -1,15 +1,50 @@
-import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
+import {
+  ADRAdditionalNotesNumber,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
-import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
+import {
+  ADRCompatibilityGroupJ,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
-import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
-import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
+import {
+  ADRTankDetailsTankStatementSelect,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
+import {
+  ADRTankStatementSubstancePermitted,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
+import {
+  AdrExaminerNotesHistoryEditComponent,
+} from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
+import {
+  AdrExaminerNotesHistoryViewComponent,
+} from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
-import { AdrTankStatementUnNumberComponent } from '@forms/custom-sections/adr-tank-statement-un-number/adr-tank-statement-un-number.component';
+import {
+  AdrTankDetailsInitialInspectionViewComponent,
+} from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
+import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
+import {
+  AdrTankDetailsSubsequentInspectionsEditComponent,
+} from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
+import {
+  AdrTankDetailsSubsequentInspectionsViewComponent,
+} from '@forms/custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
+import {
+  AdrTankStatementUnNumberEditComponent,
+} from '@forms/custom-sections/adr-tank-statement-un-number-edit/adr-tank-statement-un-number-edit.component';
+import {
+  AdrTankStatementUnNumberViewComponent,
+} from '@forms/custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { AdrValidators } from '@forms/validators/adr/adr.validators';
+import { TC2Types } from '@models/adr.enum';
 import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+  FormNode,
+  FormNodeEditTypes,
+  FormNodeTypes,
+  FormNodeViewTypes,
+  FormNodeWidth,
 } from '../../services/dynamic-form.types';
 
 export const AdrTemplate: FormNode = {
@@ -30,7 +65,7 @@ export const AdrTemplate: FormNode = {
       ],
       validators: [
         { name: ValidatorNames.ShowGroupsWhenEqualTo, args: { values: [true], groups: ['dangerous_goods'] } },
-        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['dangerous_goods'] } },
+        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['dangerous_goods', 'dangerous_goods_hide'] } },
         { name: ValidatorNames.AddWarningForAdrField, args: 'By selecting this field it will delete all previous ADR field inputs' },
       ],
     },
@@ -50,7 +85,6 @@ export const AdrTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.MaxLength, args: 150 },
       ],
-      customId: 'adrName',
       groups: ['applicant_details', 'dangerous_goods'],
       hide: true,
     },
@@ -61,7 +95,6 @@ export const AdrTemplate: FormNode = {
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 150 }],
-      customId: 'adrStreet',
       groups: ['applicant_details', 'dangerous_goods'],
       hide: true,
     },
@@ -72,7 +105,6 @@ export const AdrTemplate: FormNode = {
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
-      customId: 'adrPostTown',
       groups: ['applicant_details', 'dangerous_goods'],
       hide: true,
     },
@@ -83,7 +115,6 @@ export const AdrTemplate: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
-      customId: 'adrPostCity',
       groups: ['applicant_details', 'dangerous_goods'],
       hide: true,
     },
@@ -94,7 +125,6 @@ export const AdrTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 25 }],
-      customId: 'adrPostCode',
       groups: ['applicant_details', 'dangerous_goods'],
       hide: true,
     },
@@ -120,14 +150,28 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.ShowGroupsWhenIncludes,
           args: {
             values: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-            groups: ['tank_details', 'battery_list'],
+            groups: ['tank_details'],
           },
         },
         {
           name: ValidatorNames.HideGroupsWhenExcludes,
           args: {
             values: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
-            groups: ['tank_details', 'battery_list'],
+            groups: ['tank_details', 'tank_details_hide'],
+          },
+        },
+        {
+          name: ValidatorNames.ShowGroupsWhenIncludes,
+          args: {
+            values: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
+            groups: ['battery_list'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenExcludes,
+          args: {
+            values: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
+            groups: ['battery_list', 'battery_list_hide'],
           },
         },
       ],
@@ -142,8 +186,9 @@ export const AdrTemplate: FormNode = {
       hide: true,
       isoDate: false,
       validators: [
-        { name: ValidatorNames.PastDate },
         { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        { name: ValidatorNames.PastDate },
+        { name: ValidatorNames.DateIsInvalid },
       ],
     },
     {
@@ -198,7 +243,7 @@ export const AdrTemplate: FormNode = {
       label: 'Guidance notes',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
-      component: AdrGuidanceNotesComponent,
+      editComponent: AdrGuidanceNotesComponent,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
       width: FormNodeWidth.XS,
@@ -346,6 +391,20 @@ export const AdrTemplate: FormNode = {
             value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
           },
         },
+        {
+          name: ValidatorNames.ShowGroupsWhenEqualTo,
+          args: {
+            values: [ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER],
+            groups: ['statement_select'],
+          },
+        },
+        {
+          name: ValidatorNames.HideGroupsWhenEqualTo,
+          args: {
+            values: [ADRTankStatementSubstancePermitted.UNDER_TANK_CODE, null, undefined],
+            groups: ['statement_select', 'statement_select_hide'],
+          },
+        },
       ],
     },
     {
@@ -354,15 +413,15 @@ export const AdrTemplate: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
-      groups: ['tank_details', 'dangerous_goods'],
+      groups: ['statement_select', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
       options: getOptionsFromEnum(ADRTankDetailsTankStatementSelect),
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,
           args: {
-            sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted',
+            value: [ADRTankStatementSubstancePermitted.UNDER_UN_NUMBER],
           },
         },
         {
@@ -399,52 +458,34 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_statement',
       label: 'Reference number',
       type: FormNodeTypes.CONTROL,
-      groups: ['statement', 'tank_details', 'dangerous_goods'],
+      groups: ['statement', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
-      customErrorMessage: 'Reference number is required when selecting Statement',
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_select',
-            value: [ADRTankDetailsTankStatementSelect.STATEMENT],
-          },
-        },
       ],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo',
       label: 'Reference number',
       type: FormNodeTypes.CONTROL,
-      groups: ['productList', 'tank_details', 'dangerous_goods'],
+      groups: ['productList', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
-      customErrorMessage: 'Reference number or UN number is required when selecting Product List',
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: {
-            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
-            value: [[], [null], [''], null, undefined],
-          },
-        },
-      ],
+        { name: ValidatorNames.Custom, args: AdrValidators.validateProductListRefNo }],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListUnNo',
       label: 'UN number',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CUSTOM,
-      component: AdrTankStatementUnNumberComponent,
-      groups: ['productList', 'tank_details', 'dangerous_goods'],
+      viewType: FormNodeViewTypes.CUSTOM,
+      editComponent: AdrTankStatementUnNumberEditComponent,
+      viewComponent: AdrTankStatementUnNumberViewComponent,
+      groups: ['productList', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
-      customErrorMessage: 'Reference number or UN number is required when selecting Product List',
       validators: [
-        {
-          name: ValidatorNames.RequiredIfEquals,
-          args: { sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo', value: [null, undefined, ''] },
-        },
+        { name: ValidatorNames.Custom, args: AdrValidators.validateProductListUNNumbers },
       ],
     },
     {
@@ -452,7 +493,7 @@ export const AdrTemplate: FormNode = {
       label: 'Additional Details',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXTAREA,
-      groups: ['productList', 'tank_details', 'dangerous_goods'],
+      groups: ['productList', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
       validators: [
         { name: ValidatorNames.MaxLength, args: 1500 },
@@ -467,7 +508,112 @@ export const AdrTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.MaxLength, args: 1024 },
       ],
-      groups: ['dangerous_goods', 'battery_list'],
+      groups: ['dangerous_goods', 'tank_details'],
+    },
+    {
+      name: 'tankInspectionsSectionTitle',
+      type: FormNodeTypes.TITLE,
+      label: 'Tank Inspections',
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: {
+            sibling: 'techRecord_adrDetails_vehicleDetails_type',
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+          },
+        },
+      ],
+    },
+    {
+      name: 'tankInspectionsInitialView',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.CUSTOM,
+      viewComponent: AdrTankDetailsInitialInspectionViewComponent,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+      label: 'TC2: Inspection type',
+      value: TC2Types.INITIAL,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo',
+      label: 'TC2: Certificate Number',
+      viewType: FormNodeViewTypes.HIDDEN,
+      type: FormNodeTypes.CONTROL,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 70 },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
+      label: 'TC2: Expiry Date',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.DATE,
+      isoDate: false,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [],
+    },
+    {
+      name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
+      label: 'Subsequent Inspections',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.CUSTOM,
+      viewComponent: AdrTankDetailsSubsequentInspectionsViewComponent,
+      editType: FormNodeEditTypes.CUSTOM,
+      editComponent: AdrTankDetailsSubsequentInspectionsEditComponent,
+      hide: true,
+      groups: ['tank_details', 'dangerous_goods'],
+      validators: [
+        {
+          name: ValidatorNames.Tc3TestValidator,
+          args: { inspectionNumber: 0 },
+        },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_memosApply',
+      label: 'Memo 7/9 (3 month extension) applied',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.CHECKBOXGROUP,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      options: [
+        { value: '07/09 3mth leak ext ', label: 'Yes' },
+      ],
+      validators: [],
+    },
+    {
+      name: 'M15Subtitle',
+      label: 'M145',
+      type: FormNodeTypes.SUBTITLE,
+      viewType: FormNodeViewTypes.HIDDEN,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_m145Statement',
+      label: 'Yes',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.CUSTOM,
+      viewComponent: AdrTankDetailsM145ViewComponent,
+      editType: FormNodeEditTypes.CHECKBOX,
+      groups: ['tank_details', 'dangerous_goods'],
+      hide: true,
+      validators: [],
     },
     {
       name: 'techRecord_adrDetails_listStatementApplicable',
@@ -482,12 +628,12 @@ export const AdrTemplate: FormNode = {
       ],
       validators: [
         { name: ValidatorNames.ShowGroupsWhenEqualTo, args: { values: [true], groups: ['battery_list_applicable'] } },
-        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['battery_list_applicable'] } },
+        { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false, undefined, null], groups: ['battery_list_applicable'] } },
         {
           name: ValidatorNames.RequiredIfEquals,
           args: {
             sibling: 'techRecord_adrDetails_vehicleDetails_type',
-            value: Object.values(ADRBodyType).filter((value) => value.includes('battery') || value.includes('tank')) as string[],
+            value: Object.values(ADRBodyType).filter((value) => value.includes('battery')) as string[],
           },
         },
       ],
@@ -500,7 +646,7 @@ export const AdrTemplate: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.L,
-      groups: ['battery_list_applicable', 'dangerous_goods'],
+      groups: ['battery_list_applicable', 'battery_list_hide', 'dangerous_goods'],
       validators: [
         { name: ValidatorNames.MaxLength, args: 8 },
         {
@@ -540,7 +686,7 @@ export const AdrTemplate: FormNode = {
           name: ValidatorNames.HideGroupsWhenEqualTo,
           args: {
             values: [false],
-            groups: ['issuer_section', 'weight_section'],
+            groups: ['issuer_section', 'issuer_section_hide'],
           },
         },
       ],
@@ -550,7 +696,8 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_brakeDeclarationIssuer',
       label: 'Issuer',
       type: FormNodeTypes.CONTROL,
-      groups: ['issuer_section', 'dangerous_goods'],
+      hide: true,
+      groups: ['issuer_section', 'dangerous_goods_hide'],
       editType: FormNodeEditTypes.TEXTAREA,
       validators: [
         { name: ValidatorNames.MaxLength, args: 500 },
@@ -561,8 +708,7 @@ export const AdrTemplate: FormNode = {
       label: 'Brake endurance',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOX,
-
-      groups: ['issuer_section', 'dangerous_goods'],
+      groups: ['issuer_section', 'dangerous_goods_hide'],
       hide: true,
       validators: [
         {
@@ -584,19 +730,23 @@ export const AdrTemplate: FormNode = {
     },
     {
       name: 'techRecord_adrDetails_weight',
-      label: 'Weight (kg)',
+      label: 'Weight (tonnes)',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.NUMBER,
+      enableDecimals: true,
       width: FormNodeWidth.L,
-      groups: ['weight_section', 'dangerous_goods'],
+      groups: ['weight_section', 'issuer_section_hide', 'dangerous_goods_hide'],
       hide: true,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 8 },
-        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Max, args: 99999999 },
         {
           name: ValidatorNames.RequiredIfNotHidden,
         },
+        {
+          name: ValidatorNames.CustomPattern,
+          args: ['^\\d*(\\.\\d{0,2})?$', 'Max 2 decimal places'],
+        },
       ],
-
     },
     {
       name: 'techRecord_adrDetails_declarationsSeen',
@@ -605,7 +755,45 @@ export const AdrTemplate: FormNode = {
       editType: FormNodeEditTypes.CHECKBOX,
       groups: ['declarations_details', 'dangerous_goods'],
       hide: true,
-
+    },
+    {
+      name: 'techRecord_adrDetails_additionalExaminerNotes_note',
+      label: 'Additional Examiner Notes',
+      hint: 'Will not be present on the ADR certificate',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXTAREA,
+      viewType: FormNodeViewTypes.HIDDEN,
+      groups: ['adr_details', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 1024 },
+      ],
+    },
+    {
+      name: 'techRecord_adrDetails_additionalExaminerNotes',
+      label: 'Additional examiner notes history',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.ADR_EXAMINER_NOTES, // TODO: replace with custom
+      viewComponent: AdrExaminerNotesHistoryViewComponent,
+      editType: FormNodeEditTypes.CUSTOM,
+      editComponent: AdrExaminerNotesHistoryEditComponent,
+      groups: ['adr_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_adrCertificateNotes',
+      label: 'ADR Certificate Notes',
+      value: null,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXTAREA,
+      viewType: FormNodeViewTypes.STRING,
+      groups: ['adrDetails', 'dangerous_goods'],
+      hide: true,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 1500 },
+      ],
     },
   ],
 };

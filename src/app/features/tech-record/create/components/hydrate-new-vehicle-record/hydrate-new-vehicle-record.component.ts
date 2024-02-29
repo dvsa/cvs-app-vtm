@@ -14,13 +14,14 @@ import {
   clearADRDetailsBeforeUpdate,
   createVehicleRecord,
   createVehicleRecordSuccess,
-  selectTechRecord,
+  selectTechRecord, updateADRAdditionalExaminerNotes,
 } from '@store/technical-records';
 import { BatchRecord } from '@store/technical-records/reducers/batch-create.reducer';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import {
   Observable, Subject, map, take, takeUntil, withLatestFrom,
 } from 'rxjs';
+import { UserService } from '@services/user-service/user-service';
 import { TechRecordSummaryComponent } from '../../../components/tech-record-summary/tech-record-summary.component';
 
 @Component({
@@ -31,6 +32,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
   @ViewChild(TechRecordSummaryComponent) summary?: TechRecordSummaryComponent;
   isInvalid = false;
   batchForm?: FormGroup;
+  username = '';
 
   private destroy$ = new Subject<void>();
 
@@ -42,11 +44,16 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService,
     private batchTechRecordService: BatchTechnicalRecordService,
+    public userService$: UserService,
   ) { }
 
   ngOnInit(): void {
     this.actions$.pipe(ofType(createVehicleRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
       void this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
+    });
+
+    this.userService$.name$.pipe(takeUntil(this.destroy$)).subscribe((name) => {
+      this.username = name;
     });
 
     this.store
@@ -95,6 +102,7 @@ export class HydrateNewVehicleRecordComponent implements OnDestroy, OnInit {
 
     if (this.isInvalid) return;
 
+    this.store.dispatch(updateADRAdditionalExaminerNotes({ username: this.username }));
     this.store.dispatch(clearADRDetailsBeforeUpdate());
     this.store
       .select(selectTechRecord)

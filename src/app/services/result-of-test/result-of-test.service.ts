@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
-import { resultOfTestSelector, setResultOfTest, updateResultOfTest } from '@store/test-records';
+import {
+  resultOfTestSelector, setResultOfTest, updateResultOfTest, updateResultOfTestRequiredStandards,
+} from '@store/test-records';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -17,6 +19,10 @@ export class ResultOfTestService {
 
   updateResultOfTest() {
     this.store.dispatch(updateResultOfTest());
+  }
+
+  updateResultOfTestRequiredStandards() {
+    this.store.dispatch(updateResultOfTestRequiredStandards());
   }
 
   toggleAbandoned(result: resultOfTestEnum) {

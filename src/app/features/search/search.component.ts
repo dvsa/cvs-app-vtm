@@ -6,7 +6,7 @@ import { Roles } from '@models/roles.enum';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { Store } from '@ngrx/store';
 import { clearAllSectionStates, clearScrollPosition } from '@store/technical-records';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-search',

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HGVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
-import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
-import { TRLAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
-import { AxleSpacing } from '@models/vehicle-tech-record.model';
+import {
+  Axle, AxleSpacing, Axles, Empty,
+} from '@models/vehicle-tech-record.model';
 import cloneDeep from 'lodash.clonedeep';
 
 @Injectable({
@@ -10,9 +9,9 @@ import cloneDeep from 'lodash.clonedeep';
 })
 export class AxlesService {
   normaliseAxles(
-    axles?: HGVAxles[] | PSVAxles[] | TRLAxles[],
+    axles?: Axles,
     axleSpacings?: AxleSpacing[],
-  ): [HGVAxles[] | PSVAxles[] | TRLAxles[] | undefined, AxleSpacing[] | undefined] {
+  ): [Axles | undefined, AxleSpacing[] | undefined] {
     let newAxles = cloneDeep(axles ?? []);
     let newAxleSpacings = cloneDeep(axleSpacings ?? []);
 
@@ -44,8 +43,8 @@ export class AxlesService {
 
   generateAxlesFromAxleSpacings(
     vehicleAxleSpacingsLength: number,
-    previousAxles?: HGVAxles[] | PSVAxles[] | TRLAxles[],
-  ): HGVAxles[] | PSVAxles[] | TRLAxles[] {
+    previousAxles?: Empty<Axle>[],
+  ): Empty<Axle>[] {
     const axles = previousAxles ?? [];
 
     for (let i = axles.length; i < vehicleAxleSpacingsLength + 1; i++) {
@@ -55,13 +54,12 @@ export class AxlesService {
     return axles;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  generateEmptyAxle(axleNumber: number): any {
+  generateEmptyAxle(axleNumber: number): Empty<Axle> & { axleNumber?: number } {
     return {
       axleNumber,
       weights_gbWeight: null,
       weights_eecWeight: null,
-      weights_designedWeight: null,
+      weights_designWeight: null,
       tyres_tyreSize: null,
       tyres_fitmentCode: null,
       tyres_dataTrAxles: null,

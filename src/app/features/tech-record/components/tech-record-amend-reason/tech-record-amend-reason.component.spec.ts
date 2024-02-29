@@ -17,7 +17,12 @@ describe('TechRecordAmendReasonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordAmendReasonComponent],
-      imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule, StoreModule.forRoot({})],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: 'test-reason', component: jest.fn() }]),
+        DynamicFormsModule,
+        ReactiveFormsModule,
+        StoreModule.forRoot({}),
+      ],
       providers: [GlobalErrorService],
     }).compileComponents();
 

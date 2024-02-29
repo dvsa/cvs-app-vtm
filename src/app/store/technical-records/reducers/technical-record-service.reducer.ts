@@ -1,7 +1,9 @@
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
+import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType as NonVerbTechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { BodyTypeCode, vehicleBodyTypeCodeMap } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
@@ -34,6 +36,10 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
+  generateADRCertificate,
+  generateADRCertificateFailure,
+  generateADRCertificateSuccess,
+  generateContingencyADRCertificate,
   generateLetter,
   generateLetterFailure,
   generateLetterSuccess,
@@ -51,7 +57,7 @@ import {
   removeSectionState,
   unarchiveTechRecord,
   unarchiveTechRecordFailure,
-  unarchiveTechRecordSuccess,
+  unarchiveTechRecordSuccess, updateADRAdditionalExaminerNotes,
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
@@ -133,12 +139,19 @@ export const vehicleTechRecordReducer = createReducer(
   on(generateLetterSuccess, (state) => ({ ...state, editingTechRecord: undefined })),
   on(generateLetterFailure, failureArgs),
 
+  on(generateADRCertificate, defaultArgs),
+  on(generateContingencyADRCertificate, defaultArgs),
+  on(generateADRCertificateSuccess, (state) => ({ ...state, editingTechRecord: undefined, loading: false })),
+  on(generateADRCertificateFailure, failureArgs),
+
   on(updateEditingTechRecord, (state, action) => updateEditingTechRec(state, action)),
   on(updateEditingTechRecordCancel, (state) => ({ ...state, editingTechRecord: undefined })),
 
   on(updateBrakeForces, (state, action) => handleUpdateBrakeForces(state, action)),
 
   on(updateBody, (state, action) => handleUpdateBody(state, action)),
+
+  on(updateADRAdditionalExaminerNotes, (state, action) => handleADRExaminerNoteChanges(state, action.username)),
 
   on(addAxle, (state) => handleAddAxle(state)),
   on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
@@ -367,9 +380,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
         techRecord_adrDetails_tank_tankDetails_tc2Details_tc2Type: null,
         techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateApprovalNo: null,
         techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate: null,
-        techRecord_adrDetails_tank_tankDetails_tc3Details_tc3Type: null,
-        techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicNumber: null,
-        techRecord_adrDetails_tank_tankDetails_tc3Type_tc3PeriodicExpiryDate: null,
+        techRecord_adrDetails_tank_tankDetails_tc3Details: null,
         techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: null,
         techRecord_adrDetails_tank_tankDetails_tankStatement_statement: null,
         techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo: null,
@@ -387,8 +398,24 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
         techRecord_adrDetails_tank_tankDetails_tankStatement_productList: null,
       };
 
+      const nulledSubstancesPermittedUNNumber = {
+        techRecord_adrDetails_tank_tankDetails_tankStatement_select: null,
+        ...nulledTankStatementStatement,
+        ...nulledTankStatementProductList,
+      };
+
       const nulledBatteryListNumber = {
         techRecord_adrDetails_batteryListNumber: null,
+      };
+
+      const nulledWeight = {
+        techRecord_adrDetails_weight: null,
+      };
+
+      const nulledBrakeDeclaration = {
+        techRecord_adrDetails_brakeDeclarationIssuer: null,
+        techRecord_adrDetails_brakeEndurance: null,
+        ...nulledWeight,
       };
 
       if (!editingTechRecord.techRecord_adrDetails_dangerousGoods) {
@@ -408,6 +435,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
             techRecord_adrDetails_applicantDetails_city: null,
             techRecord_adrDetails_applicantDetails_postcode: null,
             techRecord_adrDetails_memosApply: null,
+            techRecord_adrDetails_m145Statement: null,
             techRecord_adrDetails_documents: null,
             techRecord_adrDetails_listStatementApplicable: null,
             techRecord_adrDetails_batteryListNumber: null,
@@ -459,12 +487,36 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
       // If tank details 'product list' selected, null statement reference no.
       if (select === ADRTankDetailsTankStatementSelect.PRODUCT_LIST) {
         sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledTankStatementStatement };
-        // If battery list applicable is no, null the battery list number
-        const { techRecord_adrDetails_listStatementApplicable: listStatementApplicable } = sanitisedEditingTechRecord;
-        if (!listStatementApplicable) {
-          sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
-        }
+      }
 
+      // If tank details 'substances permitted' has 'tank code' option selected, null UN and product list reference no.
+      const { techRecord_adrDetails_tank_tankDetails_tankStatement_substancesPermitted: substancesPermitted } = sanitisedEditingTechRecord;
+      if (substancesPermitted === ADRTankStatementSubstancePermitted.UNDER_TANK_CODE) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledSubstancesPermittedUNNumber };
+      }
+
+      // If battery list applicable is no, null the battery list number
+      const { techRecord_adrDetails_listStatementApplicable: listStatementApplicable } = sanitisedEditingTechRecord;
+      if (!listStatementApplicable) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBatteryListNumber };
+      }
+      // If the ADR body type not includes 'battery', null all fields related battery list applicable
+      const { techRecord_adrDetails_vehicleDetails_type: vehicleDetailsType } = sanitisedEditingTechRecord;
+      if (!vehicleDetailsType?.includes('battery')) {
+        sanitisedEditingTechRecord = {
+          ...sanitisedEditingTechRecord, ...nulledBatteryListNumber, techRecord_adrDetails_listStatementApplicable: null,
+        };
+      }
+      // If manufacturer brake declaration is no, null dependent sections
+      const { techRecord_adrDetails_brakeDeclarationsSeen: brakeDeclarationSeen } = sanitisedEditingTechRecord;
+      if (!brakeDeclarationSeen) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledBrakeDeclaration };
+      }
+
+      // If brake endurance is no, null weight field
+      const { techRecord_adrDetails_brakeEndurance: brakeEndurance } = sanitisedEditingTechRecord;
+      if (!brakeEndurance) {
+        sanitisedEditingTechRecord = { ...sanitisedEditingTechRecord, ...nulledWeight };
       }
 
       return { ...state, editingTechRecord: sanitisedEditingTechRecord };
@@ -473,4 +525,25 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
   }
 
   return { ...state };
+}
+
+function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, username: string) {
+  const { editingTechRecord } = state;
+  const additionalNoteTechRecord = editingTechRecord as unknown as
+    (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>) & { techRecord_adrDetails_additionalExaminerNotes_note: string };
+  if (editingTechRecord) {
+    if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes_note) {
+      const additionalExaminerNotes = {
+        note: additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes_note,
+        lastUpdatedBy: username,
+        createdAtDate: new Date().toISOString().split('T')[0],
+      };
+      if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === null
+        || additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
+        additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
+      }
+      additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes?.unshift(additionalExaminerNotes);
+    }
+  }
+  return { ...state, editingTechRecord: additionalNoteTechRecord as unknown as (TechRecordType<'put'>) };
 }

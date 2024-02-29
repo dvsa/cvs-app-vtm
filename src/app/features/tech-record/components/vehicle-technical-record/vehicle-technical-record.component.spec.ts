@@ -7,7 +7,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule } from '@api/test-results';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
+import {
+  StatusCodes, TechRecordModel, V3TechRecordModel,
+} from '@models/vehicle-tech-record.model';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';

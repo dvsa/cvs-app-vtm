@@ -1,12 +1,14 @@
 <div [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
-  <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">
+  <label *ngIf="label" class="flex flex-wrap gap-2 govuk-label govuk-label--m" for="{{ name }}">
     {{ label }}
-    <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+    <div class="flex flex-wrap gap-2">
+      <app-tag *ngFor="let tag of control?.meta?.customTags" type="{{ tag.colour }}">{{ tag.label }}</app-tag>
+    </div>
   </label>
 
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 
-  <app-field-error-message [error]="error ? error : warning" [name]="name"></app-field-error-message>
+  <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
   <app-field-error-message [error]="warning" [name]="name"></app-field-error-message>
 
   <div class="govuk-input__wrapper">
@@ -16,7 +18,7 @@
 
     <input
       *ngIf="!numeric"
-      id="{{ name }}"
+      [id]="customId ?? name"
       name="{{ name }}"
       type="text"
       [class]="style"
@@ -29,7 +31,7 @@
 
     <input
       *ngIf="numeric"
-      id="{{ name }}"
+      [id]="customId ?? name"
       name="{{ name }}"
       type="text"
       [class]="style"

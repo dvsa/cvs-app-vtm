@@ -9,8 +9,6 @@ export const hgvRequiredFields: string[] = [
   'techRecord_make',
   'techRecord_model',
   'techRecord_functionCode',
-  'techRecord_frontVehicleTo5thWheelCouplingMin',
-  'techRecord_frontVehicleTo5thWheelCouplingMax',
   'techRecord_dimensions_length',
   'techRecord_dimensions_width',
   'techRecord_tyreUseCode',

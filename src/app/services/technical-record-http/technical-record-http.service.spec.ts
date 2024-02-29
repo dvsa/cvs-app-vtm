@@ -7,7 +7,7 @@ import { SEARCH_TYPES } from '@models/search-types-enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { fetchSearchResult } from '@store/tech-record-search/actions/tech-record-search.actions';
-import { lastValueFrom, of } from 'rxjs';
+import { first, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { TechnicalRecordHttpService } from './technical-record-http.service';
 
@@ -67,8 +67,9 @@ describe('TechnicalRecordService', () => {
           techRecord_reasonForCreation: 'test',
         } as unknown as TechRecordType<'put'>;
 
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises, jest/valid-expect
-        expect(lastValueFrom(service.createVehicleRecord$(expectedVehicle))).resolves.toEqual(expectedVehicle);
+        service.createVehicleRecord$(expectedVehicle).pipe(first()).subscribe((response) => {
+          expect(response).toEqual(expectedVehicle);
+        });
 
         const request = httpClient.expectOne(`${environment.VTM_API_URI}/v3/technical-records`);
         request.flush(expectedVehicle);

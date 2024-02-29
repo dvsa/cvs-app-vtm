@@ -16,6 +16,7 @@ export enum ValidatorNames {
   Pattern = 'pattern',
   Required = 'required',
   RequiredIfEquals = 'requiredIfEquals',
+  requiredIfAllEquals = 'requiredIfAllEquals',
   RequiredIfNotHidden = 'requiredIfNotHidden',
   RequiredIfNotEquals = 'requiredIfNotEquals',
   Defined = 'defined',
@@ -41,4 +42,7 @@ export enum ValidatorNames {
   HideGroupsWhenExcludes = 'hideGroupsWhenExcludes',
   AddWarningForAdrField = 'addWarningForAdrField',
   IsArray = 'isArray',
+  Custom = 'custom',
+  Tc3TestValidator = 'tc3TestValidator',
+  DateIsInvalid = 'dateIsInvalid',
 }

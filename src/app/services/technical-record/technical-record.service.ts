@@ -1,10 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { AxleTyreProperties } from '@api/vehicle';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { TechRecordGETHGV, TechRecordGETPSV, TechRecordGETTRL } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
+import { ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import {
   StatusCodes,
@@ -34,8 +36,6 @@ import { cloneDeep } from 'lodash';
 import {
   Observable, catchError, combineLatest, debounceTime, filter, map, of, switchMap, take, tap, throwError,
 } from 'rxjs';
-import { ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
-import { AxleTyreProperties } from '@api/vehicle';
 import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
 
 @Injectable({ providedIn: 'root' })
@@ -184,6 +184,8 @@ export class TechnicalRecordService {
           const thirdMark = vrmControl.root.get('thirdMark')?.value;
           const previousVrm = vrmControl.root.get('previousVrm')?.value;
           if (thirdMark) {
+            const vrmNotNew = previousVrm === vrmControl.value;
+            if (vrmNotNew) return of({ validateVrm: { message: 'You must provide a new VRM' } });
             return this.techRecordHttpService.search$(SEARCH_TYPES.VRM, vrmControl.value).pipe(
               map((results) => {
                 if (results.some((result) => result.techRecord_statusCode === StatusCodes.CURRENT)) {

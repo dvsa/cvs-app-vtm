@@ -11,7 +11,6 @@ require('dotenv').config({
 // read the command line arguments passed with yargs
 const environment = argv.environment;
 const isProduction = environment === 'prod';
-const isDevelop = environment === 'dev';
 const targetPath = isProduction ? `./src/environments/environment.prod.ts` : `./src/environments/environment.deploy.ts`;
 const cypressPath = 'cypress.env.json';
 
@@ -19,7 +18,7 @@ const cypressPath = 'cypress.env.json';
 // in the process.env object thanks to dotenv
 const environmentFileContent = `export const environment = {
     production: ${isProduction},
-    isDevelop: ${isDevelop},
+    TARGET_ENV: '${process.env["TARGET_ENV"]}',
     RemoveAADFullAccessRole: ${process.env['RemoveAADFullAccessRole']},
     EnableDevTools: ${process.env['EnableDevTools']},
     VTM_CLIENT_ID: "${process.env['VTM_CLIENT_ID']}",
@@ -30,6 +29,8 @@ const environmentFileContent = `export const environment = {
     DOCUMENT_RETRIEVAL_API_KEY: "${process.env['DOCUMENT_RETRIEVAL_API_KEY']}",
     FEEDBACK_URI: "${process.env['FEEDBACK_URI']}",
     SENTRY_DSN: "${process.env['SENTRY_DSN']}",
+    VTM_GTM_CONTAINER_ID: "${process.env['VTM_GTM_CONTAINER_ID']}",
+    VTM_GTM_MEASUREMENT_ID: "${process.env['VTM_GTM_MEASUREMENT_ID']}",
   };
   `;
 

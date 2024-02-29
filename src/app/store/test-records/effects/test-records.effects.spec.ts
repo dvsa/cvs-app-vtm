@@ -1,5 +1,4 @@
-/* eslint-disable jest/expect-expect */
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,10 +8,12 @@ import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-reco
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
+import { createMockTestResult } from '@mocks/test-result.mock';
+import { createMockTestType } from '@mocks/test-type.mock';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
-import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -24,7 +25,6 @@ import { State, initialAppState } from '@store/.';
 import { selectQueryParams, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
 import { masterTpl } from '../../../forms/templates/test-records/master.template';
 import {
@@ -291,9 +291,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should dispatch templateSectionsChanged with new sections and test result', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '1' })),
+        testTypes: [createMockTestType({ testTypeId: '1' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -307,8 +307,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1']!),
+            sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1'] as Record<string, FormNode>),
             sectionsValue: { testTypes: [{ testTypeId: '1' }] } as unknown as TestResultModel,
           }),
           c: updateResultOfTest(),
@@ -317,9 +316,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return empty section templates if action testResult.vehicleType === undefined', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: undefined,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '1' })),
+        testTypes: [createMockTestType({ testTypeId: '1' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -340,9 +339,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return empty section templates if action testResult.vehicleType is not known by masterTpl', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: 'car' as VehicleTypes,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '1' })),
+        testTypes: [createMockTestType({ testTypeId: '1' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -364,9 +363,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return empty section templates if testTypeId doesnt apply to vehicleType', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '190' })),
+        testTypes: [createMockTestType({ testTypeId: '190' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -389,9 +388,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return empty section templates if testTypeId is known but not in master template and edit is true', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '39' })),
+        testTypes: [createMockTestType(({ testTypeId: '39' }))],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -414,9 +413,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return default section templates if testTypeId is known but not in master template and edit is false', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '39' })),
+        testTypes: [createMockTestType({ testTypeId: '39' })],
       });
       testScheduler.run(({ hot, expectObservable }) => {
         store.overrideSelector(selectQueryParams, { edit: 'false' });
@@ -430,8 +429,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            sectionTemplates: Object.values(masterTpl.psv['default']!),
+            sectionTemplates: Object.values(masterTpl.psv['default'] as Record<string, FormNode>),
             sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel,
           }),
           c: updateResultOfTest(),
@@ -447,9 +445,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should dispatch templateSectionsChanged with new sections and test result', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '1' })),
+        testTypes: [createMockTestType({ testTypeId: '1' })],
       });
 
       store.overrideSelector(testResultInEdit, testResult);
@@ -463,8 +461,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateContingencyTestTemplatesAndtestResultToUpdate$).toBe('-b', {
           b: templateSectionsChanged({
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1']!),
+            sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1'] as Record<string, FormNode>),
             sectionsValue: {
               contingencyTestNumber: undefined,
               countryOfRegistration: '',
@@ -536,9 +533,9 @@ describe('TestResultsEffects', () => {
     });
 
     it('should return empty section templates if action testResult.vehicleType === undefined', () => {
-      const testResult = createMock<TestResultModel>({
+      const testResult = createMockTestResult({
         vehicleType: undefined,
-        testTypes: createMockList<TestType>(1, () => createMock<TestType>({ testTypeId: '1' })),
+        testTypes: [createMockTestType({ testTypeId: '1' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -566,8 +563,8 @@ describe('TestResultsEffects', () => {
         // mock action to trigger effect
         actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
         // mock service call
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        jest.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---b|', { b: testResult }) as Observable<any>);
+        jest.spyOn(testResultsService, 'postTestResult')
+          .mockReturnValue(cold('---b|', { b: testResult }) as unknown as Observable<HttpResponse<unknown>>);
 
         // expect effect to return success action
         expectObservable(effects.createTestResult$).toBe('----b', {

@@ -6,6 +6,7 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 export const techRecordDataResolver: ResolveFn<boolean> = () => {
   const referenceDataService = inject(ReferenceDataService);
   referenceDataService.loadReferenceData(ReferenceDataResourceType.Tyres);
+  referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
 
   return true;
 };

@@ -1,13 +1,12 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TestType, TestTypeCategory } from '@api/test-types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { createMockTestTypeCategory } from '@mocks/test-type-category.mock';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
-import { createMock, createMockList } from 'ts-auto-mock';
 import { TestTypeSelectComponent } from './test-type-select.component';
 
 describe('TestTypeSelectComponent', () => {
@@ -37,16 +36,16 @@ describe('TestTypeSelectComponent', () => {
   });
 
   it('should return testType id', () => {
-    expect(component.tackByFn(0, createMock<TestType>({ id: '1' }))).toBe('1');
+    expect(component.tackByFn(0, createMockTestTypeCategory({ id: '1' }))).toBe('1');
   });
 
   it('should return true if prop nextTestTypesOrCategories exists', () => {
-    expect(component.hasNext(createMock<TestTypeCategory>({ nextTestTypesOrCategories: [] }))).toBeTruthy();
-    expect(component.hasNext(createMock<TestType>())).toBeFalsy();
+    expect(component.hasNext(createMockTestTypeCategory({ nextTestTypesOrCategories: [] }))).toBeTruthy();
+    expect(component.hasNext(createMockTestTypeCategory())).toBeFalsy();
   });
 
   it('should return true if category with given id exists in array', () => {
-    component.categories = createMockList<TestTypeCategory>(3, (id) => createMock<TestTypeCategory>({ id: `${id + 1}` }));
+    component.categories = new Array(3).fill(0).map((id) => createMockTestTypeCategory({ id: `${id + 1}` }));
     expect(component.isSelected('1')).toBeTruthy();
     expect(component.isSelected('4')).toBeFalsy();
   });
@@ -57,19 +56,19 @@ describe('TestTypeSelectComponent', () => {
         expect(val.id).toBe('1');
         done();
       });
-      component.categories = createMockList<TestTypeCategory>(3, (id) => createMock<TestTypeCategory>({ id: `${id + 1}` }));
-      component.handleCategory(createMock<TestType>({ id: '1' }), 0);
+      component.categories = new Array(3).fill(0).map((id) => createMockTestTypeCategory({ id: `${id + 1}` }));
+      component.handleCategory(createMockTestTypeCategory({ id: '1' }), 0);
     });
 
     it('should push a new category into categories', () => {
-      component.categories = createMockList<TestTypeCategory>(2, (id) => createMock<TestTypeCategory>({ id: `${id + 1}` }));
-      component.handleCategory(createMock<TestTypeCategory>({ id: '3', nextTestTypesOrCategories: [] }), 2);
+      component.categories = new Array(2).fill(0).map((id) => createMockTestTypeCategory({ id: `${id + 1}` }));
+      component.handleCategory(createMockTestTypeCategory({ id: '3', nextTestTypesOrCategories: [] }), 2);
       expect(component.categories).toHaveLength(3);
     });
 
     it('should replace last category for given categories', () => {
-      component.categories = createMockList<TestTypeCategory>(2, (id) => createMock<TestTypeCategory>({ id: `${id + 1}` }));
-      component.handleCategory(createMock<TestTypeCategory>({ id: '3', nextTestTypesOrCategories: [] }), 1);
+      component.categories = new Array(2).fill(0).map((id) => createMockTestTypeCategory({ id: `${id + 1}` }));
+      component.handleCategory(createMockTestTypeCategory({ id: '3', nextTestTypesOrCategories: [] }), 1);
       expect(component.categories).toHaveLength(2);
       expect(component.categories[1].id).toBe('3');
     });

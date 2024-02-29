@@ -1,8 +1,11 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl, ValidationErrors, ValidatorFn,
+} from '@angular/forms';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import validateDate from 'validate-govuk-date';
 
 export class CustomValidators {
   static hideIfEmpty = (sibling: string): ValidatorFn => {
@@ -127,7 +130,30 @@ export class CustomValidators {
         : null;
     };
 
-  static requiredIfNotEqual = (sibling: string, value: unknown): ValidatorFn => {
+  static requiredIfAllEquals = (sibling: string, values: unknown[]): ValidatorFn =>
+    (control: AbstractControl): ValidationErrors | null => {
+      if (!control?.parent) return null;
+
+      const siblingControl = control.parent.get(sibling) as CustomFormControl;
+      const siblingValue = siblingControl.value;
+
+      const isSiblingVisible = !siblingControl.meta.hide;
+
+      const isSiblingValueIncluded = Array.isArray(siblingValue)
+        ? siblingValue.every((val) => values.includes(val))
+        : values.includes(siblingValue);
+
+      const isControlValueEmpty = control.value === null
+        || control.value === undefined
+        || control.value === ''
+        || (Array.isArray(control.value) && (control.value.length === 0 || control.value.every((val) => !val)));
+
+      return isSiblingValueIncluded && isControlValueEmpty && isSiblingVisible
+        ? { requiredIfEquals: { sibling: siblingControl.meta.label } }
+        : null;
+    };
+
+  static requiredIfNotEquals = (sibling: string, value: unknown): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
@@ -135,7 +161,7 @@ export class CustomValidators {
         const newValue = Array.isArray(value) ? value.includes(siblingValue) : siblingValue === value;
 
         if (!newValue && (control.value === null || control.value === undefined || control.value === '')) {
-          return { requiredIfNotEqual: { sibling: siblingControl.meta.label } };
+          return { requiredIfNotEquals: { sibling: siblingControl.meta.label } };
         }
       }
 
@@ -233,9 +259,18 @@ export class CustomValidators {
     return control.value === '[INVALID_OPTION]' ? { invalidOption: true } : null;
   };
 
+  static dateIsInvalid: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    if (control instanceof CustomFormControl && control.meta.hide) return null;
+    const [yyyy, mm, dd] = (control.value ?? '').split('-');
+    const label = control instanceof CustomFormControl ? control.meta.label : undefined;
+    const checks = validateDate(parseInt(dd ?? '', 10), parseInt(mm ?? '', 10), parseInt(yyyy ?? '', 10), label);
+    return checks && checks.error ? { dateIsInvalid: { message: checks.errors?.[0]?.reason } } : null;
+  };
+
   static pastDate: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const now = new Date();
     const date = control.value;
+
     if (date && new Date(date).getTime() > now.getTime()) {
       return { pastDate: true };
     }
@@ -399,7 +434,6 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       if (values && !values.some((value) => control.value?.includes(value))) return null;
       this.setHidePropertyForGroups(control, groups, false);
-
       return null;
     };
   };
@@ -443,34 +477,23 @@ export class CustomValidators {
 
   static addWarningForAdrField = (warning: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control.dirty && !control.value) {
-        const adrDetails = [
-          'techRecord_adrDetails_applicantDetails_city',
-          'techRecord_adrDetails_applicantDetails_name',
-          'techRecord_adrDetails_applicantDetails_postcode',
-          'techRecord_adrDetails_applicantDetails_town',
-          'techRecord_adrDetails_applicantDetails_street',
-          'techRecord_adrDetails_vehicleDetails_type',
-          'techRecord_adrDetails_vehicleDetails_approvalDate',
-          'techRecord_adrDetails_permittedDangerousGoods',
-          'techRecord_adrDetails_compatibilityGroupJ',
-          'techRecord_adrDetails_additionalNotes_number',
-          'techRecord_adrDetails_adrTypeApprovalNo',
-          'techRecord_adrDetails_tank_tankDetails_tankManufacturer',
-          'techRecord_adrDetails_tank_tankDetails_yearOfManufacture',
-          'techRecord_adrDetails_tank_tankDetails_tankManufacturerSerialNo',
-          'techRecord_adrDetails_tank_tankDetails_tankTypeAppNo',
-          'techRecord_adrDetails_tank_tankDetails_tankCode',
-        ];
-        adrDetails.forEach((controlName) => {
-          const childControl = control.root.get(controlName);
-          if (childControl?.value) {
-            (control as CustomFormControl).meta.warning = warning;
+      if (control instanceof CustomFormControl) {
+        if (control.value) {
+          control.meta.warning = undefined;
+          return null;
+        }
+
+        if (control.dirty) {
+          const { parent } = control;
+          if (parent instanceof CustomFormGroup) {
+            const touched = Object.values(parent.controls).some((child) => child !== control && child.touched && child.value);
+            if (touched) {
+              control.meta.warning = warning;
+            }
           }
-        });
-      } if (control.value) {
-        delete (control as CustomFormControl).meta.warning;
+        }
       }
+
       return null;
     };
   };
@@ -508,6 +531,46 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static custom = (func: (...args: unknown[]) => ValidationErrors | null, ...args: unknown[]) => {
+    return (control: AbstractControl): ValidationErrors | null => func(control, ...args);
+  };
+
+  static tc3TestValidator = (args: { inspectionNumber: number }) => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control?.parent) return null;
+      let areControlsEmpty: boolean[] = [];
+      let inspection = '';
+      // the inspection numbers for individual tests start form 1 so this checks if its an individual test or the control that contains the component
+      if (args.inspectionNumber !== 0) {
+        const tc3Type = control.parent?.get('tc3Type')?.value;
+        const tc3PeriodicNumber = control.parent?.get('tc3PeriodicNumber')?.value;
+        const tc3PeriodicExpiryDate = control.parent?.get('tc3PeriodicExpiryDate')?.value;
+        // areTc3FieldsEmpty takes an array of tc3 test values and checks that at least one of the fields is filled out for each test
+        areControlsEmpty = areTc3FieldsEmpty([{ tc3Type, tc3PeriodicExpiryDate, tc3PeriodicNumber }]);
+        inspection = args.inspectionNumber as unknown as string;
+        return areControlsEmpty.includes(true)
+          ? { tc3TestValidator: { message: `TC3 Subsequent inspection ${inspection} must have at least one populated field` } }
+          : null;
+      }
+      // this statement is the same logic but applied to the control that holds all of the tests.
+      // This allows the error to be displayed in the Global error service
+      if (!control.value) return null;
+      areControlsEmpty = areTc3FieldsEmpty(control.value);
+      areControlsEmpty.forEach((value, index) => {
+        if (value) {
+          if (inspection.length === 0) {
+            inspection = `${index + 1}`;
+          } else {
+            inspection += `, ${index + 1}`;
+          }
+        }
+      });
+      return areControlsEmpty.includes(true)
+        ? { tc3TestValidator: { message: `TC3 Subsequent inspection ${inspection} must have at least one populated field` } }
+        : null;
+    };
+  };
 }
 
 export type EnumValidatorOptions = {
@@ -518,4 +581,21 @@ export type IsArrayValidatorOptions = {
   ofType: string;
   requiredIndices: number[];
   whenEquals: { sibling: string, value: unknown[] }
+};
+
+const areTc3FieldsEmpty = (values: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }[]) => {
+  const isValueEmpty: boolean[] = [];
+
+  values.forEach((value) => {
+    if (
+      (value.tc3Type === null || value.tc3Type === undefined || value.tc3Type === '')
+      && (value.tc3PeriodicNumber === null || value.tc3PeriodicNumber === undefined || value.tc3PeriodicNumber === '')
+      && (value.tc3PeriodicExpiryDate === null || value.tc3PeriodicExpiryDate === undefined || value.tc3PeriodicExpiryDate === '')
+    ) {
+      isValueEmpty.push(true);
+    } else {
+      isValueEmpty.push(false);
+    }
+  });
+  return isValueEmpty;
 };

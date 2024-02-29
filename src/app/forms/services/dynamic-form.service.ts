@@ -25,7 +25,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
   providedIn: 'root',
 })
 export class DynamicFormService {
-  constructor(private store: Store<State>) {}
+  constructor(private store: Store<State>) { }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
@@ -56,8 +56,10 @@ export class DynamicFormService {
     [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),
     [ValidatorNames.Required]: () => Validators.required,
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: unknown[] }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
-    [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: unknown }) =>
-      CustomValidators.requiredIfNotEqual(args.sibling, args.value),
+    [ValidatorNames.requiredIfAllEquals]: (args: { sibling: string; value: unknown[] }) =>
+      CustomValidators.requiredIfAllEquals(args.sibling, args.value),
+    [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: unknown[] }) =>
+      CustomValidators.requiredIfNotEquals(args.sibling, args.value),
     [ValidatorNames.ValidateVRMTrailerIdLength]: (args: { sibling: string }) => CustomValidators.validateVRMTrailerIdLength(args.sibling),
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
     [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued,
@@ -81,7 +83,10 @@ export class DynamicFormService {
       CustomValidators.hideGroupsWhenExcludes(args.values, args.groups),
     [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
     [ValidatorNames.IsArray]: (args: Partial<IsArrayValidatorOptions>) => CustomValidators.isArray(args),
+    [ValidatorNames.Custom]: (...args) => CustomValidators.custom(...args),
+    [ValidatorNames.Tc3TestValidator]: (args: { inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
     [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
+    [ValidatorNames.DateIsInvalid]: () => CustomValidators.dateIsInvalid,
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -97,6 +102,7 @@ export class DynamicFormService {
       testResult: resultOfTestEnum | resultOfTestEnum[]; sibling: string; value: unknown
     }) => CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
+    [AsyncValidatorNames.ResultDependantOnRequiredStandards]: () => CustomAsyncValidators.resultDependantOnRequiredStandards(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
   };
@@ -179,18 +185,34 @@ export class DynamicFormService {
     });
   }
 
+  static validateControl(control: FormControl | CustomFormControl, errors: GlobalError[]) {
+    control.markAsTouched();
+    (control as CustomFormControl).meta?.changeDetection?.detectChanges();
+    this.getControlErrors(control, errors);
+  }
+
   private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {
     const { errors } = control;
     const meta = (control as CustomFormControl).meta as FormNode | undefined;
+
     if (errors) {
       if (meta?.hide) return;
-      const errorList = Object.keys(errors);
-      errorList.forEach((error) => {
-        validationErrorList.push({
-          error: meta?.customErrorMessage ?? ErrorMessageMap[`${error}`](errors[`${error}`], meta?.customValidatorErrorName ?? meta?.label),
-          anchorLink: meta?.customId ?? meta?.name,
-        } as GlobalError);
+      Object.entries(errors).forEach(([error, data]) => {
+        // If an anchor link is provided, use that, otherwise determine target element from customId or name
+        const defaultAnchorLink = meta?.customId ?? meta?.name;
+        const anchorLink = typeof data === 'object' && data !== null
+          ? data.anchorLink ?? defaultAnchorLink
+          : defaultAnchorLink;
+
+        // If typeof data is an array, assume we're passing the service multiple global errors
+        const globalErrors = Array.isArray(data) ? data : [{
+          error: meta?.customErrorMessage ?? ErrorMessageMap[`${error}`](data, meta?.customValidatorErrorName ?? meta?.label),
+          anchorLink,
+        }];
+
+        validationErrorList.push(...globalErrors);
       });
     }
+
   }
 }

@@ -9,6 +9,9 @@ import { createMockTrl } from '@mocks/trl-record.mock';
 import { BodyTypeCode, BodyTypeDescription } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  TechRecordType as NonVerbTechRecordType,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { mockVehicleTechnicalRecord } from '../../../../mocks/mock-vehicle-technical-record.mock';
 import {
   addAxle,
@@ -26,7 +29,7 @@ import {
   getBySystemNumberFailure,
   getBySystemNumberSuccess,
   removeAxle,
-  removeSectionState,
+  removeSectionState, updateADRAdditionalExaminerNotes,
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
@@ -493,7 +496,7 @@ describe('Vehicle Technical Record Reducer', () => {
     });
   });
 
-  describe('clear the all techRecord properties with an adr suffix', () => {
+  describe('clearADRDetailsBeforeUpdate', () => {
     it('should set all ADR fields to null when: vehicleType = HGV and dangerousGoods = false', () => {
       initialState.editingTechRecord = createMockHgv(1234) as TechRecordPUTHGV;
       initialState.editingTechRecord.techRecord_adrDetails_dangerousGoods = false;
@@ -554,5 +557,33 @@ describe('Vehicle Technical Record Reducer', () => {
       expect((newState.editingTechRecord as TechRecordPUTLGV).techRecord_adrDetails_adrCertificateNotes).toBe('Test notes');
     });
 
+  });
+  describe('handleADRExaminerNoteChanges', () => {
+    it('should', () => {
+      const testNote = {
+        note: 'testNote',
+        createdAtDate: new Date().toISOString().split('T')[0],
+        lastUpdatedBy: 'someone',
+      };
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
+        vehicleTechRecord: {
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testVin',
+        } as unknown as TechRecordType<'get'>,
+        editingTechRecord: {
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testVin',
+          techRecord_adrDetails_additionalExaminerNotes_note: testNote.note,
+        } as unknown as TechRecordType<'put'>,
+        loading: true,
+      };
+      const action = updateADRAdditionalExaminerNotes({ username: testNote.lastUpdatedBy });
+      const newState = vehicleTechRecordReducer(state, action);
+      expect((newState.editingTechRecord as unknown as (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>))?.techRecord_adrDetails_additionalExaminerNotes)
+        .toContainEqual(testNote);
+    });
   });
 });

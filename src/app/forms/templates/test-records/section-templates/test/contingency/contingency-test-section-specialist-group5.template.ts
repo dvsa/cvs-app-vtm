@@ -1,4 +1,5 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
+import { TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
@@ -52,7 +53,17 @@ export const ContingencyTestSectionSpecialistGroup5: FormNode = {
                 { value: 'fail', label: 'Fail' },
                 { value: 'prs', label: 'PRS' },
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
+              asyncValidators: [
+                { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
+                {
+                  name: AsyncValidatorNames.HideIfEqualsWithCondition,
+                  args: {
+                    sibling: 'certificateNumber',
+                    value: 'fail',
+                    conditions: { field: 'testTypeId', operator: 'equals', value: TEST_TYPES_GROUP5_SPEC_TEST },
+                  },
+                },
+              ],
               type: FormNodeTypes.CONTROL,
             },
             {
@@ -82,10 +93,24 @@ export const ContingencyTestSectionSpecialistGroup5: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
+              required: true,
+              viewType: FormNodeViewTypes.STRING,
+              editType: FormNodeEditTypes.TEXT,
+              validators: [
+                { name: ValidatorNames.Alphanumeric },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: {
+                    sibling: 'testResult',
+                    value: [
+                      'pass',
+                      'prs',
+                    ],
+                  },
+                },
+              ],
             },
             {
               name: 'testTypeStartTimestamp',

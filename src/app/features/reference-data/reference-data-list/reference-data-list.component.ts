@@ -96,7 +96,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get refDataAdminType$(): Observable<any | undefined> {
+  get refDataAdminType$(): Observable<any> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 

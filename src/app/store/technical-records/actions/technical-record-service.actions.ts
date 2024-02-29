@@ -98,6 +98,18 @@ export const clearScrollPosition = createAction(`${prefix} clearScrollPosition`)
 
 export const clearADRDetailsBeforeUpdate = createAction(`${prefix} clearADRDetailsBeforeUpdate`);
 
+export const updateADRAdditionalExaminerNotes = createAction(`${prefix} handleADRExaminerNoteChanges`, props<{ username: string }>());
+
+export const generateADRCertificate = createAction(`${prefix} generateADRCertificate`, props<{
+  systemNumber: string, createdTimestamp: string, certificateType: string
+}>());
+export const generateADRCertificateSuccess = createAction(`${prefix} generateADRCertificate Success`, props<{ id: string }>());
+export const generateADRCertificateFailure = createOutcomeAction('generateADRCertificate', false);
+
+export const generateContingencyADRCertificate = createAction(`${prefix} generateContingencyADRCertificate`, props<{
+  systemNumber: string, createdTimestamp: string, certificateType: string
+}>());
+
 function createOutcomeAction<T extends boolean>(
   title: string,
   isSuccess: T,

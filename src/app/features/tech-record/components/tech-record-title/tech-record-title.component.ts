@@ -18,7 +18,7 @@ import { Observable, take } from 'rxjs';
 })
 export class TechRecordTitleComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Input() vehicle?: V3TechRecordModel | any;
+  @Input() vehicle?: any;
   @Input() actions: TechRecordActions = TechRecordActions.NONE;
   @Input() hideActions = false;
   @Input() customTitle = '';

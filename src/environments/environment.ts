@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  isDevelop: false,
+  TARGET_ENV: 'dev',
   RemoveAADFullAccessRole: true,
   EnableDevTools: true,
   VTM_CLIENT_ID: '',
@@ -15,6 +15,8 @@ export const environment = {
   DOCUMENT_RETRIEVAL_API_KEY: '',
   FEEDBACK_URI: '',
   SENTRY_DSN: '',
+  VTM_GTM_CONTAINER_ID: '',
+  VTM_GTM_MEASUREMENT_ID: '',
 };
 
 /*

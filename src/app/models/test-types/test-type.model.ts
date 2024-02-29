@@ -1,4 +1,5 @@
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
+import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import * as Emissions from './emissions.enum';
 
 export interface TestType {
@@ -31,6 +32,7 @@ export interface TestType {
   particulateTrapFitted: string;
   particulateTrapSerialNumber: string;
   defects?: TestResultDefects;
+  requiredStandards?: TestResultRequiredStandard[];
   customDefects: CustomDefects[];
 
   additionalNotesRecorded: string;

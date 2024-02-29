@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   ComponentFixture, fakeAsync, inject, TestBed, tick,
 } from '@angular/core/testing';
+import { FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -84,9 +85,8 @@ describe('DynamicFormGroupComponent', () => {
         },
       ],
     ],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ])('entriesOf: should split the keys out into values', (input: any, expected: any) => {
-    expect(component.entriesOf(input)).toStrictEqual(expected);
+  ])('entriesOf: should split the keys out into values', (input, expected) => {
+    expect(component.entriesOf(input as unknown as FormGroup<object>)).toStrictEqual(expected);
   });
 
   describe('formNodeTypes', () => {
@@ -153,11 +153,11 @@ describe('DynamicFormGroupComponent', () => {
 
       fixture.detectChanges();
 
-      const dtList = fixture.debugElement.queryAll(By.css('dt'));
-      const ddList = fixture.debugElement.queryAll(By.css('dd'));
+      const trList = fixture.debugElement.queryAll(By.css('tr'));
+      const tdList = fixture.debugElement.queryAll(By.css('td'));
 
-      expect(dtList).toHaveLength(4);
-      expect(ddList).toHaveLength(4);
+      expect(trList).toHaveLength(4);
+      expect(tdList).toHaveLength(8);
     }));
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -234,11 +234,11 @@ describe('DynamicFormGroupComponent', () => {
 
       fixture.detectChanges();
 
-      const dtList = fixture.debugElement.queryAll(By.css('dt'));
-      const ddList = fixture.debugElement.queryAll(By.css('dd'));
+      const trList = fixture.debugElement.queryAll(By.css('tr'));
+      const tdList = fixture.debugElement.queryAll(By.css('td'));
 
-      expect(dtList).toHaveLength(10);
-      expect(ddList).toHaveLength(10);
+      expect(trList).toHaveLength(10);
+      expect(tdList).toHaveLength(20);
     }));
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
@@ -359,11 +359,11 @@ describe('DynamicFormGroupComponent', () => {
 
       fixture.detectChanges();
 
-      const dtList = fixture.debugElement.queryAll(By.css('dt'));
-      const ddList = fixture.debugElement.queryAll(By.css('dd'));
+      const trList = fixture.debugElement.queryAll(By.css('tr'));
+      const tdList = fixture.debugElement.queryAll(By.css('td'));
 
-      expect(dtList).toHaveLength(6);
-      expect(ddList).toHaveLength(6);
+      expect(trList).toHaveLength(6);
+      expect(tdList).toHaveLength(12);
     }));
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {

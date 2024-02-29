@@ -16,5 +16,5 @@ export const TagType = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagComponent {
-  @Input() type: TagTypes | string = TagType.BLUE;
+  @Input() type: string = TagType.BLUE;
 }

@@ -81,12 +81,12 @@ export class ReferenceDataDeleteComponent implements OnInit {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get refData$(): Observable<any | undefined> {
+  get refData$(): Observable<any> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(this.type, decodeURIComponent(this.key))));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get refDataAdminType$(): Observable<any | undefined> {
+  get refDataAdminType$(): Observable<any> {
     return this.store.pipe(select(selectReferenceDataByResourceKey(ReferenceDataResourceType.ReferenceDataAdminType, this.type)));
   }
 

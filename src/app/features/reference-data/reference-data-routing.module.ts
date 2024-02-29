@@ -4,6 +4,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { RouterOutletComponent } from '@shared/components/router-outlet/router-outlet.component';
+import { ReferenceDataRoutes } from '@models/routes.enum';
 import { ReferenceDataCreateComponent } from './reference-data-add/reference-data-add.component';
 import { ReferenceDataAmendComponent } from './reference-data-amend/reference-data-amend.component';
 import { ReferenceDataDeleteComponent } from './reference-data-delete/reference-data-delete.component';
@@ -25,7 +26,7 @@ const routes: Routes = [
         canActivate: [MsalGuard, RoleGuard],
       },
       {
-        path: ':type',
+        path: ReferenceDataRoutes.TYPE,
         component: RouterOutletComponent,
         data: { title: 'Search Reference Data', roles: Roles.ReferenceDataView },
         canActivate: [MsalGuard, RoleGuard],
@@ -37,25 +38,25 @@ const routes: Routes = [
             canActivate: [MsalGuard, RoleGuard],
           },
           {
-            path: 'create',
+            path: ReferenceDataRoutes.CREATE,
             component: ReferenceDataCreateComponent,
             data: { title: 'Add Reference Data', roles: Roles.ReferenceDataAmend },
             canActivate: [MsalGuard, RoleGuard],
           },
           {
-            path: 'deleted-items',
+            path: ReferenceDataRoutes.DELETED_ITEMS,
             component: ReferenceDataDeletedListComponent,
             data: { title: 'View deleted Reference Data', roles: Roles.ReferenceDataView },
             canActivate: [MsalGuard, RoleGuard],
           },
           {
-            path: ':key',
+            path: ReferenceDataRoutes.KEY,
             component: ReferenceDataAmendComponent,
             data: { title: 'Amend Reference Data', roles: Roles.ReferenceDataAmend },
             canActivate: [MsalGuard, RoleGuard],
           },
           {
-            path: ':key/delete',
+            path: ReferenceDataRoutes.DELETE,
             component: ReferenceDataDeleteComponent,
             data: { title: 'Delete Reference Data', roles: Roles.ReferenceDataAmend },
             canActivate: [MsalGuard, RoleGuard],

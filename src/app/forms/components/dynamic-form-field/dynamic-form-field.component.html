@@ -1,9 +1,4 @@
-<div
-  *ngIf="form && control && control.value.meta.editType !== formNodeEditTypes.HIDDEN"
-  [ngSwitch]="control.value.meta.editType"
-  [formGroup]="form"
-  [appNestingLevel]="$any(form).meta.nestingLevel ?? 0"
->
+<div *ngIf="form && control && control.value.meta.editType !== formNodeEditTypes.HIDDEN" [ngSwitch]="control.value.meta.editType" [formGroup]="form">
   <app-autocomplete
     *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE"
     [label]="control.value.meta.label"
@@ -122,8 +117,8 @@
   </app-text-input>
 
   <ng-container *ngSwitchCase="formNodeEditTypes.CUSTOM">
-    <ng-container *ngIf="control.value.meta.component">
-      <ng-container [ngComponentOutlet]="control.value.meta.component" [ngComponentOutletInjector]="customFormControlInjector"></ng-container>
+    <ng-container *ngIf="control.value.meta.editComponent">
+      <ng-container [ngComponentOutlet]="control.value.meta.editComponent" [ngComponentOutletInjector]="customFormControlInjector"></ng-container>
     </ng-container>
   </ng-container>
 

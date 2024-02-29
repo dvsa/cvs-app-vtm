@@ -2,6 +2,8 @@ import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsTpl } from '../general/defect.template';
+import { RequiredStandardsTpl } from '../general/required-standards.template';
+import { AdditionalDefectsSection } from './section-templates/additionalDefects/additional-defects-section.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
 import { DeskBasedEmissionsSection } from './section-templates/emissions/desk-based-emissions-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
@@ -38,13 +40,14 @@ import {
 } from './section-templates/test/desk-based/desk-based-test-section-group1And4-HGV-TRL.template';
 import { DeskBasedTestSectionGroup2And5 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
 import { DeskBasedTestSectionGroup3 } from './section-templates/test/desk-based/desk-based-test-section-group3.template';
-import { DeskBasedTestSectionGroup4LgvCarMotorcycle } from './section-templates/test/desk-based/desk-based-test-section-group4-lgv-template';
 import { DeskBasedTestSectionGroup4Psv } from './section-templates/test/desk-based/desk-based-test-section-group4-PSV.template';
+import { DeskBasedTestSectionGroup4LgvCarMotorcycle } from './section-templates/test/desk-based/desk-based-test-section-group4-lgv-template';
 import { DeskBasedTestSectionLgvGroup5 } from './section-templates/test/desk-based/desk-based-test-section-group5-LGV';
 import { SpecialistTestSectionGroup3 } from './section-templates/test/specialist/specialist-test-section-group3.template';
 import { TestSection } from './section-templates/test/test-section.template';
 import { ContingencyVehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/contingency-default-psv-hgv-light-vehicle-section.template';
 import { ContingencyVehicleSectionDefaultTrl } from './section-templates/vehicle/contingency-default-trl-vehicle-section.template';
+import { ContingencyIvaMsvaVehicleSection } from './section-templates/vehicle/contingency-iva-msva-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
 import {
@@ -106,13 +109,14 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup1,
       seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      customDefects: CustomDefectsSection,
+      requiredStandards: RequiredStandardsTpl,
       defects: defectsHiddenSection,
+      customDefects: AdditionalDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSection,
     },
@@ -150,12 +154,13 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSection,
     },
     testTypesSpecialistGroup5: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup5,
       seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      customDefects: CustomDefectsSection,
+      requiredStandards: RequiredStandardsTpl,
+      customDefects: AdditionalDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSection,
@@ -277,22 +282,24 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection,
     },
     testTypesSpecialistGroup1: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup1,
       visit: ContingencyVisitSection,
       notes: NotesSection,
+      requiredStandards: RequiredStandardsTpl,
       defects: defectsHiddenSection,
-      customDefects: CustomDefectsSection,
+      customDefects: AdditionalDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSectionHgvTrl,
     },
     testTypesSpecialistGroup5: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup5,
       visit: ContingencyVisitSection,
       notes: NotesSection,
+      requiredStandards: RequiredStandardsTpl,
       defects: defectsHiddenSection,
-      customDefects: CustomDefectsSection,
+      customDefects: AdditionalDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSectionHgvTrl,
     },
@@ -433,8 +440,9 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       test: ContingencyTestSectionSpecialistGroup1,
       visit: ContingencyVisitSection,
       notes: NotesSection,
+      requiredStandards: RequiredStandardsTpl,
       defects: defectsHiddenSection,
-      customDefects: CustomDefectsSection,
+      customDefects: AdditionalDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSectionHgvTrl,
     },
@@ -443,8 +451,9 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       test: ContingencyTestSectionSpecialistGroup5,
       visit: ContingencyVisitSection,
       notes: NotesSection,
+      requiredStandards: RequiredStandardsTpl,
       defects: defectsHiddenSection,
-      customDefects: CustomDefectsSection,
+      customDefects: AdditionalDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSectionHgvTrl,
     },
@@ -502,9 +511,10 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesSpecialistGroup1: {
       required: CreateRequiredSectionLgvCar,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup1,
-      customDefects: CustomDefectsSection,
+      requiredStandards: RequiredStandardsTpl,
+      customDefects: AdditionalDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
@@ -520,9 +530,10 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesSpecialistGroup5: {
       required: CreateRequiredSectionLgvCar,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup5,
-      customDefects: CustomDefectsSection,
+      requiredStandards: RequiredStandardsTpl,
+      customDefects: AdditionalDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
@@ -550,9 +561,10 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesSpecialistGroup1: {
       required: CreateRequiredSectionLgvCar,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup1,
-      customDefects: CustomDefectsSection,
+      requiredStandards: RequiredStandardsTpl,
+      customDefects: AdditionalDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
@@ -568,9 +580,10 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesSpecialistGroup5: {
       required: CreateRequiredSectionLgvCar,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup5,
-      customDefects: CustomDefectsSection,
+      requiredStandards: RequiredStandardsTpl,
+      customDefects: AdditionalDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,
@@ -608,9 +621,10 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesSpecialistGroup1: {
       required: CreateRequiredSectionMotorcycle,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      vehicle: ContingencyIvaMsvaVehicleSection,
       test: ContingencyTestSectionSpecialistGroup1,
-      customDefects: CustomDefectsSection,
+      requiredStandards: RequiredStandardsTpl,
+      customDefects: AdditionalDefectsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection,

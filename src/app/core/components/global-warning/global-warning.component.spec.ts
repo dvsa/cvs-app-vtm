@@ -42,5 +42,11 @@ describe('GlobalWarningComponent', () => {
 
       expect(document.activeElement).toBe(input);
     });
+
+    it('should do nothing if no anchor link is provided', () => {
+      const spy = jest.spyOn(document, 'getElementById');
+      component.goto({ warning: 'navigate', anchorLink: undefined });
+      expect(spy).not.toHaveBeenCalled();
+    });
   });
 });

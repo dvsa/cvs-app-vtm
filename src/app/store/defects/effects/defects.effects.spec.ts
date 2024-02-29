@@ -1,4 +1,3 @@
-/* eslint-disable jest/expect-expect */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Defect } from '@models/defects/defect.model';
@@ -91,8 +90,7 @@ describe('DefectsEffects', () => {
     it.each(testCases)('should return fetchDefectSuccess action on successfull API call', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { id, payload } = value;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const entity = payload.find((d) => d.imNumber === id)!;
+        const entity = payload.find((d) => d.imNumber === id) as Defect;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: fetchDefect({ id }) });

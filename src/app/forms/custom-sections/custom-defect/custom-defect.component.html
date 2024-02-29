@@ -3,7 +3,7 @@
 <ng-template #viewCustomDefect let-data="data">
   <h3 class="govuk-heading-m">Defect {{ index + 1 }}</h3>
   <dl *ngIf="data.getCleanValue(data) as customDefect" class="govuk-summary-list">
-    <ng-template
+    <ng-template *ngIf="templateName === 'customDefectsSection'"
       [ngTemplateOutlet]="viewDefectRow"
       [ngTemplateOutletContext]="{ label: 'Reference number', data: customDefect?.referenceNumber | defaultNullOrEmpty }"
     ></ng-template>
@@ -37,7 +37,7 @@
     </div>
   </div>
   <ng-container [formGroup]="form">
-    <app-text-input formControlName="referenceNumber" label="Reference Number" [width]="30"></app-text-input>
+    <app-text-input *ngIf="templateName === 'customDefectsSection'" formControlName="referenceNumber" label="Reference Number" [width]="30"></app-text-input>
     <app-text-input formControlName="defectName" label="Defect Name" [width]="30"></app-text-input>
     <app-text-area formControlName="defectNotes" label="Defect Notes"></app-text-area>
   </ng-container>

@@ -31,7 +31,9 @@ import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-
 import { TestTypeNamePipe } from '@shared/pipes/test-type-name/test-type-name.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
-import { sectionTemplates, testResultInEdit, toEditOrNotToEdit } from '@store/test-records';
+import {
+  sectionTemplates, testResultInEdit, toEditOrNotToEdit,
+} from '@store/test-records';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';

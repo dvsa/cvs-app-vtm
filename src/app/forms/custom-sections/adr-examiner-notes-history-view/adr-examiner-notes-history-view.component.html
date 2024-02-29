@@ -1,0 +1,32 @@
+<ng-container *ngIf="control">
+  <section class="govuk-!-margin-top-4">
+    <h3 class="govuk-heading-m">ADR Examiner Notes History</h3>
+    <table class="govuk-table" *ngIf="control.value && control.value.length > 0; else empty">
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header whitespace-nowrap">Date</th>
+          <th scope="col" class="govuk-table__header whitespace-nowrap">Created By</th>
+          <th scope="col" class="govuk-table__header whitespace-nowrap">Notes</th>
+        </tr>
+        <ng-container *ngFor="let result of control.value; let i = index; let isLast = last">
+          <tr class="govuk-table__row" *ngIf="i < 3">
+            <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
+              {{ result.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.lastUpdatedBy }}</td>
+            <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
+              {{ result.note }}
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <ng-template #empty>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row border-b-0">
+          <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
+        </div>
+      </dl>
+    </ng-template>
+  </section>
+</ng-container>

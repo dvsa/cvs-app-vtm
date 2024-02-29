@@ -12,5 +12,6 @@ export class CustomDefectComponent {
   @Input() form!: CustomFormGroup;
   @Input() index!: number;
   @Input() isEditing = false;
+  @Input() templateName?: string;
   @Output() removeCustomDefect = new EventEmitter<number>();
 }

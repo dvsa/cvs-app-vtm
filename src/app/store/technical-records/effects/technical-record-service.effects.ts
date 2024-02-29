@@ -15,7 +15,9 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/index';
 import { cloneDeep, merge } from 'lodash';
 import {
-  catchError, concatMap, map, mergeMap, of, switchMap, tap, withLatestFrom,
+  catchError, concatMap,
+  map, mergeMap, of, switchMap, tap,
+  withLatestFrom,
 } from 'rxjs';
 import {
   amendVin,
@@ -31,6 +33,9 @@ import {
   createVehicleRecord,
   createVehicleRecordFailure,
   createVehicleRecordSuccess,
+  generateADRCertificate,
+  generateADRCertificateFailure,
+  generateADRCertificateSuccess,
   generateLetter,
   generateLetterFailure,
   generateLetterSuccess,
@@ -103,7 +108,7 @@ export class TechnicalRecordServiceEffects {
       ofType(createVehicleRecord),
       withLatestFrom(this.batchTechRecordService.applicationId$, this.userService.name$, this.userService.id$),
       concatMap(([{ vehicle }, applicationId]) => {
-        const vehicleRecord = { ...vehicle, applicationId };
+        const vehicleRecord = { ...vehicle, techRecord_applicationId: applicationId };
 
         return this.techRecordHttpService.createVehicleRecord$(vehicleRecord).pipe(
           map((response) => createVehicleRecordSuccess({ vehicleTechRecord: response })),
@@ -287,6 +292,18 @@ export class TechnicalRecordServiceEffects {
         )),
     ));
 
+  generateADRCertificate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateADRCertificate),
+      switchMap(({
+        systemNumber, createdTimestamp, certificateType,
+      }) =>
+        this.techRecordHttpService.generateADRCertificate$(systemNumber, createdTimestamp, certificateType).pipe(
+          map((res) => generateADRCertificateSuccess({ id: res.id })),
+          catchError((error) => of(generateADRCertificateFailure({ error: this.getTechRecordErrorMessage(error, 'generateADRCertificate') }))),
+        )),
+    ));
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {
     if (typeof error !== 'object') {
@@ -307,5 +324,6 @@ export class TechnicalRecordServiceEffects {
     archiveTechRecord_400: 'Unable to archive technical record',
     promoteTechRecord_400: 'Unable to promote technical record',
     unarchiveTechRecord_400: 'Unable to unarchive technical record',
+    generateADRCertificate_400: 'Unable to generate ADR certificate',
   };
 }

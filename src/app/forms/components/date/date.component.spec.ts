@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable jest/no-conditional-expect */
 import { Component, ViewChild } from '@angular/core';
 import {
@@ -50,7 +49,7 @@ describe('DateComponent', () => {
   });
 
   it('should add validators', () => {
-    const addValidatorsSpy = jest.spyOn(component.dateComponent!, 'addValidators');
+    const addValidatorsSpy = jest.spyOn(component.dateComponent as DateComponent, 'addValidators');
     fixture.detectChanges();
 
     expect(addValidatorsSpy).toHaveBeenCalledTimes(1);
@@ -76,8 +75,10 @@ describe('DateComponent', () => {
         minute: number | undefined,
         displayTime = false,
       ) => {
-        component.dateComponent!.originalDate = '2022-01-01T01:06:00.000';
-        component.dateComponent!.displayTime = displayTime;
+        if (component.dateComponent) {
+          component.dateComponent.originalDate = '2022-01-01T01:06:00.000';
+          component.dateComponent.displayTime = displayTime;
+        }
 
         fixture.detectChanges();
 
@@ -113,9 +114,11 @@ describe('DateComponent', () => {
         minute: number | undefined,
         displayTime = false,
       ) => {
-        component.dateComponent!.originalDate = '2022-01-01T01:06:00.000';
-        component.dateComponent!.displayTime = displayTime;
-        component.dateComponent!.isoDate = false;
+        if (component.dateComponent) {
+          component.dateComponent.originalDate = '2022-01-01T01:06:00.000';
+          component.dateComponent.displayTime = displayTime;
+          component.dateComponent.isoDate = false;
+        }
 
         fixture.detectChanges();
 
@@ -151,23 +154,29 @@ describe('DateComponent', () => {
 
   describe('error handling', () => {
     it('should return empty if the day, month and year are not defined', () => {
-      component.dateComponent!.errors = { error: true, date: new Date(), errors: [{ error: false, reason: 'foo', index: 1 }] };
+      if (component.dateComponent) {
+        component.dateComponent.errors = { error: true, date: new Date(), errors: [{ error: false, reason: 'foo', index: 1 }] };
+      }
       expect(component.dateComponent?.elementHasErrors(1)).toBe(false);
     });
 
     it('should return true if there are some errors with the same index', () => {
-      component.dateComponent!.day = 2;
-      component.dateComponent!.year = 2021;
-      component.dateComponent!.month = 2;
-      component.dateComponent!.errors = { error: true, date: new Date(), errors: [{ error: false, reason: 'foo', index: 1 }] };
+      if (component.dateComponent) {
+        component.dateComponent.day = 2;
+        component.dateComponent.year = 2021;
+        component.dateComponent.month = 2;
+        component.dateComponent.errors = { error: true, date: new Date(), errors: [{ error: false, reason: 'foo', index: 1 }] };
+      }
       expect(component.dateComponent?.elementHasErrors(1)).toBe(true);
     });
 
     it('should return false if there are no errors with the same index', () => {
-      component.dateComponent!.day = 2;
-      component.dateComponent!.year = 2021;
-      component.dateComponent!.month = 2;
-      component.dateComponent!.errors = { error: true, date: new Date(), errors: [{ error: false, reason: 'foo', index: 1 }] };
+      if (component.dateComponent) {
+        component.dateComponent.day = 2;
+        component.dateComponent.year = 2021;
+        component.dateComponent.month = 2;
+        component.dateComponent.errors = { error: true, date: new Date(), errors: [{ error: false, reason: 'foo', index: 1 }] };
+      }
       expect(component.dateComponent?.elementHasErrors(2)).toBe(false);
     });
   });

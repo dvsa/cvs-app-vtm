@@ -2,10 +2,10 @@ import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/en
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescriptionPSV.enum.js';
 import { VehicleConfiguration } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleConfigurationHgvPsv.enum.js';
-import { PSVAxles } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/psv/skeleton';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { BodyTypeDescription } from '@models/body-type-enum';
 import {
+  Axles,
   FuelTypes, Retarders, StatusCodes,
   VehicleSizes,
 } from '../app/models/vehicle-tech-record.model';
@@ -22,7 +22,7 @@ export const createMockPsv = (systemNumber: number): TechRecordType<'psv'> => ({
   techRecord_vehicleType: 'psv',
   techRecord_regnDate: '1234',
   techRecord_manufactureYear: 2022,
-  techRecord_axles: axles as unknown as PSVAxles[],
+  techRecord_axles: axles as unknown as Axles<'psv'>,
   techRecord_noOfAxles: 2,
   techRecord_brakes_dtpNumber: '1234',
   techRecord_brakes_brakeCode: '1234',

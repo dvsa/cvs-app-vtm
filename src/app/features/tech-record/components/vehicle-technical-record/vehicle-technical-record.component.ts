@@ -12,8 +12,10 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import {
   ReasonForEditing, StatusCodes, TechRecordModel, V3TechRecordModel, VehicleTypes,
 } from '@models/vehicle-tech-record.model';
+import { AdrService } from '@services/adr/adr.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { clearScrollPosition, updateTechRecordSuccess } from '@store/technical-records';
@@ -55,6 +57,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     private store: Store<TechnicalRecordServiceState>,
     private actions$: Actions,
     private viewportScroller: ViewportScroller,
+    private featureToggleService: FeatureToggleService,
+    public adrService: AdrService,
   ) {
     this.testResults$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;

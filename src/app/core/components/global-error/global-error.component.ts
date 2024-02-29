@@ -11,10 +11,26 @@ export class GlobalErrorComponent {
 
   goto(error: GlobalError) {
     if (error.anchorLink) {
-      const el = document.getElementById(error.anchorLink);
-      if (el) {
-        el.focus({ preventScroll: false });
-      }
+      let focusCount = 0;
+
+      document.querySelectorAll(`
+          #${error.anchorLink},
+          #${error.anchorLink} a[href]:not([tabindex='-1']),
+          #${error.anchorLink} area[href]:not([tabindex='-1']),
+          #${error.anchorLink} input:not([disabled]):not([tabindex='-1']),
+          #${error.anchorLink} select:not([disabled]):not([tabindex='-1']),
+          #${error.anchorLink} textarea:not([disabled]):not([tabindex='-1']),
+          #${error.anchorLink} button:not([disabled]):not([tabindex='-1']),
+          #${error.anchorLink} iframe:not([tabindex='-1']),
+          #${error.anchorLink} [tabindex]:not([tabindex='-1']),
+          #${error.anchorLink} [contentEditable=true]:not([tabindex='-1'])
+      `)
+        .forEach((el) => {
+          if (el instanceof HTMLElement && focusCount < 2) {
+            focusCount++;
+            el.focus({ preventScroll: false });
+          }
+        });
     }
   }
 }
