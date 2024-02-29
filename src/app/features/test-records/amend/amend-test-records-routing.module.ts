@@ -16,6 +16,9 @@ import { TestRecordComponent } from './views/test-record/test-record.component';
 import { TestResultSummaryComponent } from './views/test-result-summary/test-result-summary.component';
 import { TestRouterOutletComponent } from './views/test-router-outlet/test-router-outlet.component';
 import { TestTypeSelectWrapperComponent } from './views/test-type-select-wrapper/test-type-select-wrapper.component';
+import { RequiredStandardComponent } from '@forms/custom-sections/required-standard/required-standard.component';
+import { RequiredStandardSelectComponent } from '@forms/components/required-standard-select/required-standard-select.component';
+import { requiredStandardsResolver } from 'src/app/resolvers/required-standards/required-standards.resolver';
 
 const routes: Routes = [
   {
@@ -87,6 +90,31 @@ const routes: Routes = [
                   },
                 ],
               },
+              {
+                path: TestRecordAmendRoutes.REQUIRED_STANDARD,
+                component: RequiredStandardComponent,
+                data: { title: 'Required Standard', roles: Roles.TestResultAmend, isEditing: true },
+                canActivate: [RoleGuard],
+              },
+              {
+                path: TestRecordAmendRoutes.SELECT_REQUIRED_STANDARD,
+                component: TestRouterOutletComponent,
+                resolve: { RequiredStandards: requiredStandardsResolver },
+                data: { title: 'Select Required Standard', roles: Roles.TestResultAmend },
+                children: [
+                  {
+                    path: '',
+                    component: RequiredStandardSelectComponent,
+                    canActivate: [RoleGuard],
+                  },
+                  {
+                    path: TestRecordAmendRoutes.REQUIRED_STANDARD_REF,
+                    component: RequiredStandardComponent,
+                    data: { title: 'Required Standard', roles: Roles.TestResultAmend, isEditing: true },
+                    canActivate: [RoleGuard],
+                  },
+                ],
+              },
             ],
           },
         ],
@@ -107,6 +135,13 @@ const routes: Routes = [
         path: TestRecordAmendRoutes.DEFECT,
         component: DefectComponent,
         data: { title: 'Defect', roles: Roles.TestResultView, isEditing: false },
+        resolve: { load: testResultResolver },
+        canActivate: [RoleGuard],
+      },
+      {
+        path: TestRecordAmendRoutes.REQUIRED_STANDARD,
+        component: RequiredStandardComponent,
+        data: { title: 'Required Standard', roles: Roles.TestResultView, isEditing: false },
         resolve: { load: testResultResolver },
         canActivate: [RoleGuard],
       },
