@@ -137,8 +137,6 @@ export class CreateTechRecordComponent implements OnChanges {
 
     const formValueUnique = await this.isFormValueUnique();
 
-    this.validateAxles();
-
     this.store.dispatch(setSpinnerState({ showSpinner: false }));
 
     if (!formValueUnique) {
@@ -150,10 +148,6 @@ export class CreateTechRecordComponent implements OnChanges {
     this.technicalRecordService.generateEditingVehicleTechnicalRecordFromVehicleType(this.techRecord.techRecord_vehicleType as VehicleTypes);
     this.technicalRecordService.clearSectionTemplateStates();
     await this.router.navigate(['../create/new-record-details'], { relativeTo: this.route });
-  }
-
-  validateAxles() {
-
   }
 
   async isFormValueUnique() {
