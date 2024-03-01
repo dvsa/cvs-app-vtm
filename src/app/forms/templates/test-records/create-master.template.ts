@@ -57,12 +57,9 @@ import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/de
 import { VehicleSectionGroup3 } from './section-templates/vehicle/group-3-light-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
-<<<<<<< HEAD
 import { AdditionalDefectsSection } from './section-templates/additionalDefects/additional-defects-section.template';
-=======
 import { OldIVAContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency/old-contingency-specialist-group1.template';
 import { OldIVAContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency/old-contingency-specialist-group5.template';
->>>>>>> 0ac54603 (feat(cb2-11177): update feature flag logic for new iva and msva tests (#1419))
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
