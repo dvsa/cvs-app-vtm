@@ -3,6 +3,7 @@ import { FormNode } from '@forms/services/dynamic-form.types';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsTpl } from '../general/defect.template';
 import { RequiredStandardsTpl } from '../general/required-standards.template';
+import { AdditionalDefectsSection } from './section-templates/additionalDefects/additional-defects-section.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
 import { DeskBasedEmissionsSection } from './section-templates/emissions/desk-based-emissions-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
@@ -57,7 +58,6 @@ import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/de
 import { VehicleSectionGroup3 } from './section-templates/vehicle/group-3-light-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
-import { AdditionalDefectsSection } from './section-templates/additionalDefects/additional-defects-section.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -289,6 +289,16 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       requiredStandards: RequiredStandardsTpl,
       defects: defectsHiddenSection,
       customDefects: AdditionalDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: CreateRequiredSectionHgvTrl,
+    },
+    testTypesSpecialistGroup1OldIVA: {
+      vehicle: ContingencyM1IvaVehicleSection,
+      test: ContingencyTestSectionSpecialistGroup1,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSectionHgvTrl,
     },

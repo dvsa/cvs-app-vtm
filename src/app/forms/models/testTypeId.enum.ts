@@ -220,6 +220,7 @@ export const TEST_TYPES = {
   testTypesGroup5And13: TEST_TYPES_GROUP5_13,
   testTypesGroup15And16: TEST_TYPES_GROUP15_16,
   testTypesSpecialistGroup1: TEST_TYPES_GROUP1_SPEC_TEST,
+  testTypesSpecialistGroup1OldIVA: TEST_TYPES_GROUP1_SPEC_TEST,
   testTypesSpecialistGroup2: TEST_TYPES_GROUP2_SPEC_TEST,
   testTypesSpecialistGroup3: TEST_TYPES_GROUP3_SPEC_TEST,
   testTypesSpecialistGroup4: TEST_TYPES_GROUP4_SPEC_TEST,

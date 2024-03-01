@@ -225,8 +225,10 @@ export class TestResultsEffects {
         const testTypeGroup = TestRecordsService.getTestTypeGroup(id);
         const vehicleTpl = contingencyTestTemplates[`${vehicleType}`];
 
+        const templateString = false ? `${testTypeGroup}OldIVA` : testTypeGroup;
+
         const tpl = testTypeGroup && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup)
-          ? vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES]
+          ? vehicleTpl[templateString as keyof typeof TEST_TYPES]
           : vehicleTpl['default'];
 
         const mergedForms = {} as TestResultModel;
