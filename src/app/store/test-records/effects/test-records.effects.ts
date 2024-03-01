@@ -24,6 +24,7 @@ import {
   catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take,
   withLatestFrom,
 } from 'rxjs';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import {
   contingencyTestTypeSelected,
   createTestResult,
@@ -223,10 +224,15 @@ export class TestResultsEffects {
         }
 
         const testTypeGroup = TestRecordsService.getTestTypeGroup(id);
-        const vehicleTpl = contingencyTestTemplates[`${vehicleType}`];
+        // tech-debt: feature flag check to be removed when required standard is enabled
+        const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredStandards');
+        const isIVAorMSVATest = testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
 
-        const tpl = testTypeGroup && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup)
-          ? vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES]
+        const vehicleTpl = contingencyTestTemplates[`${vehicleType}`];
+        const testTypeGroupString = !isRequiredStandardsEnabled && isIVAorMSVATest ? `${testTypeGroup}OldIVAorMSVA` : testTypeGroup;
+
+        const tpl = testTypeGroupString && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroupString)
+          ? vehicleTpl[testTypeGroupString as keyof typeof TEST_TYPES]
           : vehicleTpl['default'];
 
         const mergedForms = {} as TestResultModel;
@@ -279,5 +285,6 @@ export class TestResultsEffects {
     private router: Router,
     private userService: UserService,
     private dfs: DynamicFormService,
+    private featureToggleService: FeatureToggleService,
   ) { }
 }
