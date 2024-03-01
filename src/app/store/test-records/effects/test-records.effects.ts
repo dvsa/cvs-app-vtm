@@ -170,11 +170,22 @@ export class TestResultsEffects {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
+
+        // tech-debt: feature flag check to be removed when required standard is enabled
+        const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredStandards');
+        const isIVAorMSVATest = testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
+
+        // tech-debt: remove check for old iva and msva tests at some point
+        const isOldIVAorMSVAtest = !!selectedTestResult?.testTypes[0]?.customDefects?.length
+        && !!selectedTestResult?.testTypes[0]?.customDefects?.every((defect) => !!defect.referenceNumber);
+
         const vehicleTpl = masterTpl[`${vehicleType}`];
+        const testTypeGroupString = (!isRequiredStandardsEnabled || isOldIVAorMSVAtest)
+                                    && isIVAorMSVATest ? `${testTypeGroup}OldIVAorMSVA` : testTypeGroup;
 
         let tpl;
-        if (testTypeGroup && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup)) {
-          tpl = vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES];
+        if (testTypeGroupString && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroupString)) {
+          tpl = vehicleTpl[testTypeGroupString as keyof typeof TEST_TYPES];
         } else if (isEditing === 'true') {
           tpl = undefined;
         } else {
