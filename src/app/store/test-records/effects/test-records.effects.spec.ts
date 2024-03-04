@@ -9,7 +9,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { createMockTestResult } from '@mocks/test-result.mock';
-import { createMockTestType } from '@mocks/test-type.mock';
+import { createMockTestType, createMockTestTypeOldIVA } from '@mocks/test-type.mock';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
@@ -25,6 +25,7 @@ import { State, initialAppState } from '@store/.';
 import { selectQueryParams, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
 import { masterTpl } from '../../../forms/templates/test-records/master.template';
 import {
@@ -80,6 +81,32 @@ jest.mock('../../../forms/templates/test-records/master.template', () => ({
           ],
         },
       },
+      testTypesSpecialistGroup1: {
+        test: <FormNode>{
+          name: 'NewSpecialistTest',
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'testTypes',
+              type: FormNodeTypes.ARRAY,
+              children: [{ name: '0', type: FormNodeTypes.GROUP, children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }] }],
+            },
+          ],
+        },
+      },
+      testTypesSpecialistGroup1OldIVAorMSVA: {
+        test: <FormNode>{
+          name: 'OldSpecialistTest',
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'testTypes',
+              type: FormNodeTypes.ARRAY,
+              children: [{ name: '0', type: FormNodeTypes.GROUP, children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }] }],
+            },
+          ],
+        },
+      },
     },
   },
 }));
@@ -90,6 +117,7 @@ describe('TestResultsEffects', () => {
   let testScheduler: TestScheduler;
   let testResultsService: TestRecordsService;
   let store: MockStore<State>;
+  let featureToggleService: FeatureToggleService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -123,12 +151,14 @@ describe('TestResultsEffects', () => {
         },
         RouterService,
         DynamicFormService,
+        FeatureToggleService,
       ],
     });
 
     store = TestBed.inject(MockStore);
     effects = TestBed.inject(TestResultsEffects);
     testResultsService = TestBed.inject(TestRecordsService);
+    featureToggleService = TestBed.inject(FeatureToggleService);
   });
 
   beforeEach(() => {
@@ -314,7 +344,82 @@ describe('TestResultsEffects', () => {
         });
       });
     });
+    it('should dispatch templateSectionsChanged with new sections when custom defects is not present', () => {
+      const testResult = createMockTestResult({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: [createMockTestType({ testTypeId: '126' })],
+      });
+      jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(true);
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectQueryParams, { edit: 'true' });
+        store.overrideSelector(selectedTestResultState, testResult);
 
+        actions$ = hot('-a', {
+          a: editingTestResult({
+            testTypeId: '126',
+          }),
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
+          b: templateSectionsChanged({
+            sectionTemplates: Object.values(masterTpl.psv['testTypesSpecialistGroup1'] as Record<string, FormNode>),
+            sectionsValue: { testTypes: [{ testTypeId: '126' }] } as unknown as TestResultModel,
+          }),
+          c: updateResultOfTest(),
+        });
+      });
+    });
+    it('should dispatch templateSectionsChanged with old sections when custom defects is present', () => {
+      const testResult = createMockTestResult({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: [createMockTestTypeOldIVA({ testTypeId: '126' })],
+      });
+      jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(true);
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectQueryParams, { edit: 'true' });
+        store.overrideSelector(selectedTestResultState, testResult);
+
+        actions$ = hot('-a', {
+          a: editingTestResult({
+            testTypeId: '126',
+          }),
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
+          b: templateSectionsChanged({
+            sectionTemplates: Object.values(masterTpl.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>),
+            sectionsValue: { testTypes: [{ testTypeId: '126' }] } as unknown as TestResultModel,
+          }),
+          c: updateResultOfTest(),
+        });
+      });
+    });
+
+    it('should dispatch templateSectionsChanged with old sections when feature flag is off', () => {
+      const testResult = createMockTestResult({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: [createMockTestType({ testTypeId: '126' })],
+      });
+      jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(false);
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectQueryParams, { edit: 'true' });
+        store.overrideSelector(selectedTestResultState, testResult);
+
+        actions$ = hot('-a', {
+          a: editingTestResult({
+            testTypeId: '126',
+          }),
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
+          b: templateSectionsChanged({
+            sectionTemplates: Object.values(masterTpl.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>),
+            sectionsValue: { testTypes: [{ testTypeId: '126' }] } as unknown as TestResultModel,
+          }),
+          c: updateResultOfTest(),
+        });
+      });
+    });
     it('should return empty section templates if action testResult.vehicleType === undefined', () => {
       const testResult = createMockTestResult({
         vehicleType: undefined,
@@ -512,6 +617,93 @@ describe('TestResultsEffects', () => {
                   testResult: resultOfTestEnum.fail,
                   testTypeEndTimestamp: '',
                   testTypeId: '1',
+                  testTypeName: '',
+                  testTypeStartTimestamp: '',
+                },
+              ],
+              testerEmailAddress: '',
+              testerName: '',
+              testerStaffId: '',
+              typeOfTest: TypeOfTest.CONTINGENCY,
+              vehicleClass: null,
+              vehicleConfiguration: undefined,
+              vehicleSize: undefined,
+              vehicleType: 'psv',
+              vin: '',
+              vrm: '',
+            } as unknown as TestResultModel,
+          }),
+        });
+      });
+    });
+
+    it('should dispatch templateSectionsChanged with old sections for IVA when flag is false', () => {
+      const testResult = createMockTestResult({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: [createMockTestType({ testTypeId: '126' })],
+      });
+      jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(false);
+      store.overrideSelector(testResultInEdit, testResult);
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        actions$ = hot('-a', {
+          a: contingencyTestTypeSelected({
+            testType: '126',
+          }),
+        });
+
+        expectObservable(effects.generateContingencyTestTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>),
+            sectionsValue: {
+              contingencyTestNumber: undefined,
+              countryOfRegistration: '',
+              createdById: undefined,
+              createdByName: undefined,
+              euVehicleCategory: EUVehicleCategory.M1,
+              firstUseDate: null,
+              lastUpdatedAt: undefined,
+              lastUpdatedById: undefined,
+              lastUpdatedByName: undefined,
+              noOfAxles: undefined,
+              numberOfSeats: undefined,
+              numberOfWheelsDriven: undefined,
+              odometerReading: 0,
+              odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
+              preparerId: '',
+              preparerName: '',
+              reasonForCancellation: undefined,
+              reasonForCreation: undefined,
+              regnDate: undefined,
+              source: undefined,
+              shouldEmailCertificate: undefined,
+              systemNumber: '',
+              testEndTimestamp: '',
+              testResultId: '',
+              testStartTimestamp: '',
+              testStationName: '',
+              testStationPNumber: '',
+              testStationType: 'atf',
+              testStatus: undefined,
+              testTypes: [
+                {
+                  additionalCommentsForAbandon: null,
+                  additionalNotesRecorded: '',
+                  certificateLink: undefined,
+                  certificateNumber: '',
+                  customDefects: [],
+                  defects: [],
+                  deletionFlag: undefined,
+                  lastSeatbeltInstallationCheckDate: '',
+                  name: '',
+                  numberOfSeatbeltsFitted: 0,
+                  prohibitionIssued: false,
+                  reasonForAbandoning: '',
+                  seatbeltInstallationCheckDate: false,
+                  secondaryCertificateNumber: null,
+                  testResult: resultOfTestEnum.fail,
+                  testTypeEndTimestamp: '',
+                  testTypeId: '126',
                   testTypeName: '',
                   testTypeStartTimestamp: '',
                 },
