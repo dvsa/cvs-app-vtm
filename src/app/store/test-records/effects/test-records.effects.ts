@@ -43,7 +43,7 @@ import {
   updateTestResultFailed,
   updateTestResultSuccess,
 } from '../actions/test-records.actions';
-import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
+import { isTestTypeOldIvaOrMsva, selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
 
 @Injectable()
 export class TestResultsEffects {
@@ -160,8 +160,9 @@ export class TestResultsEffects {
         of(action).pipe(withLatestFrom(
           this.store.pipe(select(selectedTestResultState)),
           this.store.pipe(select(selectQueryParam('edit'))),
+          this.store.pipe(select(isTestTypeOldIvaOrMsva)),
         ), take(1))),
-      concatMap(([action, selectedTestResult, isEditing]) => {
+      concatMap(([action, selectedTestResult, isEditing, isOldIVAorMSVAtest]) => {
         const { testTypeId } = action;
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -174,10 +175,6 @@ export class TestResultsEffects {
         // tech-debt: feature flag check to be removed when required standard is enabled
         const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredStandards');
         const isIVAorMSVATest = testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
-
-        // tech-debt: remove check for old iva and msva tests at some point
-        const isOldIVAorMSVAtest = !!selectedTestResult?.testTypes[0]?.customDefects?.length
-        && !!selectedTestResult?.testTypes[0]?.customDefects?.every((defect) => !!defect.referenceNumber);
 
         const vehicleTpl = masterTpl[`${vehicleType}`];
         const testTypeGroupString = (!isRequiredStandardsEnabled || isOldIVAorMSVAtest)

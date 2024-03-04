@@ -9,7 +9,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { createMockTestResult } from '@mocks/test-result.mock';
-import { createMockTestType, createMockTestTypeOldIVA } from '@mocks/test-type.mock';
+import { createMockTestType } from '@mocks/test-type.mock';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
@@ -47,7 +47,7 @@ import {
   updateTestResultFailed,
   updateTestResultSuccess,
 } from '../actions/test-records.actions';
-import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
+import { isTestTypeOldIvaOrMsva, selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
 import { TestResultsEffects } from './test-records.effects';
 
 jest.mock('../../../forms/templates/test-records/master.template', () => ({
@@ -353,6 +353,7 @@ describe('TestResultsEffects', () => {
       testScheduler.run(({ hot, expectObservable }) => {
         store.overrideSelector(selectQueryParams, { edit: 'true' });
         store.overrideSelector(selectedTestResultState, testResult);
+        store.overrideSelector(isTestTypeOldIvaOrMsva, false);
 
         actions$ = hot('-a', {
           a: editingTestResult({
@@ -372,12 +373,13 @@ describe('TestResultsEffects', () => {
     it('should dispatch templateSectionsChanged with old sections when custom defects is present', () => {
       const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: [createMockTestTypeOldIVA({ testTypeId: '126' })],
+        testTypes: [createMockTestType({ testTypeId: '126' })],
       });
       jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(true);
       testScheduler.run(({ hot, expectObservable }) => {
         store.overrideSelector(selectQueryParams, { edit: 'true' });
         store.overrideSelector(selectedTestResultState, testResult);
+        store.overrideSelector(isTestTypeOldIvaOrMsva, true);
 
         actions$ = hot('-a', {
           a: editingTestResult({
@@ -404,6 +406,7 @@ describe('TestResultsEffects', () => {
       testScheduler.run(({ hot, expectObservable }) => {
         store.overrideSelector(selectQueryParams, { edit: 'true' });
         store.overrideSelector(selectedTestResultState, testResult);
+        store.overrideSelector(isTestTypeOldIvaOrMsva, false);
 
         actions$ = hot('-a', {
           a: editingTestResult({
