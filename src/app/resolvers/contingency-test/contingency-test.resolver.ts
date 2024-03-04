@@ -101,7 +101,7 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
   );
 };
 
-function getBodyMake(techRecord: V3TechRecordModel | undefined) {
+export function getBodyMake(techRecord: V3TechRecordModel | undefined) {
   if (techRecord?.techRecord_vehicleType === 'psv') {
     return techRecord.techRecord_bodyMake;
   }
@@ -113,7 +113,7 @@ function getBodyMake(techRecord: V3TechRecordModel | undefined) {
   return undefined;
 }
 
-function getBodyModel(techRecord: V3TechRecordModel | undefined) {
+export function getBodyModel(techRecord: V3TechRecordModel | undefined) {
   if (techRecord?.techRecord_vehicleType === 'psv') {
     return techRecord.techRecord_bodyModel;
   }
@@ -125,7 +125,7 @@ function getBodyModel(techRecord: V3TechRecordModel | undefined) {
   return undefined;
 }
 
-function getBodyType(techRecord: V3TechRecordModel | undefined) {
+export function getBodyType(techRecord: V3TechRecordModel | undefined) {
   const vehicleType = techRecord?.techRecord_vehicleType;
 
   if (!vehicleType || (vehicleType !== 'hgv' && vehicleType !== 'psv' && vehicleType !== 'trl')) return undefined;
