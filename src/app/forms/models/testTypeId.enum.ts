@@ -229,4 +229,6 @@ export const TEST_TYPES = {
   testTypesDeskBasedGroup3: TEST_TYPES_GROUP3_DESK_BASED_TEST,
   testTypesDeskBasedGroup4: TEST_TYPES_GROUP4_DESK_BASED_TEST,
   testTypesDeskBasedGroup5: TEST_TYPES_GROUP5_DESK_BASED_TEST,
+  testTypesSpecialistGroup1OldIVAorMSVA: TEST_TYPES_GROUP1_SPEC_TEST,
+  testTypesSpecialistGroup5OldIVAorMSVA: TEST_TYPES_GROUP5_SPEC_TEST,
 };
