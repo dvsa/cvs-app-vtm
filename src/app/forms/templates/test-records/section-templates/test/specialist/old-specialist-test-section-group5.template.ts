@@ -5,7 +5,7 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
-export const SpecialistTestSectionGroup5: FormNode = {
+export const OldIVASpecialistTestSectionGroup5: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -60,7 +60,7 @@ export const SpecialistTestSectionGroup5: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnRequiredStandards }],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
             },
             {

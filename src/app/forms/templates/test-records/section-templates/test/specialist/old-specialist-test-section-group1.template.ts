@@ -5,7 +5,7 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
-export const SpecialistTestSectionGroup5: FormNode = {
+export const OldIVASpecialistTestSectionGroup1: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -60,7 +60,17 @@ export const SpecialistTestSectionGroup5: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnRequiredStandards }],
+              asyncValidators: [
+                { name: AsyncValidatorNames.ResultDependantOnCustomDefects },
+                {
+                  name: AsyncValidatorNames.HideIfEqualsWithCondition,
+                  args: {
+                    sibling: 'certificateNumber',
+                    value: 'fail',
+                    conditions: { field: 'testTypeId', operator: 'equals', value: ['150', '151', '181', '182'] },
+                  },
+                },
+              ],
               type: FormNodeTypes.CONTROL,
             },
             {
@@ -99,6 +109,17 @@ export const SpecialistTestSectionGroup5: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'certificateNumber',
+              label: 'Certificate number',
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.TEXT,
+              validators: [{ name: ValidatorNames.Alphanumeric }],
+              viewType: FormNodeViewTypes.HIDDEN,
+              width: FormNodeWidth.L,
+              required: true,
+              value: null,
             },
             {
               name: 'testNumber',
