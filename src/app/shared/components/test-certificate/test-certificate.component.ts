@@ -4,7 +4,7 @@ import {
 import { select, Store } from '@ngrx/store';
 import { isTestTypeOldIvaOrMsva, toEditOrNotToEdit } from '@store/test-records';
 import {
-  Subject, takeUntil, combineLatest, filter,
+  Subject, takeUntil, combineLatest,
 } from 'rxjs';
 import { State } from '@store/index';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
@@ -32,7 +32,6 @@ export class TestCertificateComponent implements OnInit, OnDestroy {
       this.store.pipe(select(toEditOrNotToEdit)),
       this.store.pipe(select(isTestTypeOldIvaOrMsva)),
     ]).pipe(
-      filter(([testResult]) => !!testResult),
       takeUntil(this.destroyed$),
     ).subscribe(([testResult, isOldIvaOrMsva]) => {
       if (testResult && isRequiredStandardsEnabled) {
