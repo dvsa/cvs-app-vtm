@@ -1,12 +1,11 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { TEST_TYPES_GROUP1_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
-export const SpecialistTestSectionGroup1: FormNode = {
+export const OldIVASpecialistTestSectionGroup5: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -61,17 +60,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
               ],
-              asyncValidators: [
-                { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
-                {
-                  name: AsyncValidatorNames.HideIfEqualsWithCondition,
-                  args: {
-                    sibling: 'certificateNumber',
-                    value: 'fail',
-                    conditions: { field: 'testTypeId', operator: 'equals', value: TEST_TYPES_GROUP1_SPEC_TEST },
-                  },
-                },
-              ],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
             },
             {
@@ -110,28 +99,6 @@ export const SpecialistTestSectionGroup1: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
-            },
-            {
-              name: 'certificateNumber',
-              label: 'Certificate number',
-              type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: {
-                    sibling: 'testResult',
-                    value: [
-                      'pass',
-                      'prs',
-                    ],
-                  },
-                },
-              ],
-              viewType: FormNodeViewTypes.HIDDEN,
-              width: FormNodeWidth.L,
-              required: true,
-              value: null,
             },
             {
               name: 'testNumber',

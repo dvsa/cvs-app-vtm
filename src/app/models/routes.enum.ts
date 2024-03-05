@@ -66,6 +66,9 @@ export enum TestRecordAmendRoutes {
   SELECT_DEFECT_REFERENCE = ':ref',
   AMENDED_TEST = 'amended/:createdAt',
   CANCEL_TEST = 'cancel-test',
+  REQUIRED_STANDARD = 'requiredStandard/:requiredStandardIndex',
+  SELECT_REQUIRED_STANDARD = 'selectRequiredStandard',
+  REQUIRED_STANDARD_REF = ':inspectionType/:ref',
 }
 
 export enum TestRecordCreateRoutes {
