@@ -51,9 +51,9 @@ export class AppComponent implements OnInit, OnDestroy {
   initGoogleTagManager() {
     const scriptElement = document.createElement('script');
     scriptElement.async = true;
-    scriptElement.src = `https://www.googletagmanager.com/gtag/js?id=${environment.VTM_GTM_MEASUREMENT_ID}`;
+    scriptElement.src = 'https://www.googletagmanager.com/gtag/js?id=G-2HPH9QZ1M5';
     document.head.appendChild(scriptElement);
-    gtag('config', environment.VTM_GTM_MEASUREMENT_ID);
+    gtag('config', 'G-2HPH9QZ1M5');
   }
 
   ngOnDestroy(): void {
