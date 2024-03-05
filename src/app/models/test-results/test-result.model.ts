@@ -1,3 +1,5 @@
+import { TechRecordBodyType } from '@api/vehicle/model/techRecordBodyType';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
 import { TestType } from '@models/test-types/test-type.model';
@@ -5,7 +7,6 @@ import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { StatusCodes, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { TestResultStatus } from './test-result-status.enum';
 import { TestCodes } from './testCodes.enum';
 import { TypeOfTest } from './typeOfTest.enum';
@@ -43,6 +44,10 @@ export interface TestResultModel {
   vehicleType: VehicleTypes;
   testHistory?: TestResultModel[];
   testStatus?: TestResultStatus;
+
+  make?: string;
+  model?: string;
+  bodyType?: TechRecordBodyType;
 
   /**
    * Applicable only when updating/creating a test from VTM

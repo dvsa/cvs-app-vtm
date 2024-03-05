@@ -5,6 +5,7 @@ import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestType } from '@models/test-types/test-type.model';
+import { V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
@@ -73,6 +74,9 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
             lastUpdatedById: user.oid,
             typeOfTest: TypeOfTest.CONTINGENCY,
             source: 'vtm',
+            make: getBodyMake(viewableTechRecord),
+            model: getBodyModel(viewableTechRecord),
+            bodyType: getBodyType(viewableTechRecord),
             testTypes: [
               {
                 testResult: 'pass',
@@ -96,3 +100,38 @@ export const contingencyTestResolver: ResolveFn<boolean> = () => {
     }),
   );
 };
+
+export function getBodyMake(techRecord: V3TechRecordModel | undefined) {
+  if (techRecord?.techRecord_vehicleType === 'psv') {
+    return techRecord.techRecord_bodyMake;
+  }
+
+  if (techRecord?.techRecord_vehicleType === 'hgv' || techRecord?.techRecord_vehicleType === 'trl') {
+    return techRecord.techRecord_make;
+  }
+
+  return undefined;
+}
+
+export function getBodyModel(techRecord: V3TechRecordModel | undefined) {
+  if (techRecord?.techRecord_vehicleType === 'psv') {
+    return techRecord.techRecord_bodyModel;
+  }
+
+  if (techRecord?.techRecord_vehicleType === 'hgv' || techRecord?.techRecord_vehicleType === 'trl') {
+    return techRecord.techRecord_model;
+  }
+
+  return undefined;
+}
+
+export function getBodyType(techRecord: V3TechRecordModel | undefined) {
+  const vehicleType = techRecord?.techRecord_vehicleType;
+
+  if (!vehicleType || (vehicleType !== 'hgv' && vehicleType !== 'psv' && vehicleType !== 'trl')) return undefined;
+
+  return {
+    code: techRecord.techRecord_bodyType_code,
+    description: techRecord.techRecord_bodyType_description,
+  };
+}
