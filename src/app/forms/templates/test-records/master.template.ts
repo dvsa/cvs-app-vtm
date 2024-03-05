@@ -496,9 +496,9 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       test: OldIVASpecialistTestSectionGroup5,
       visit: VisitSection,
       notes: NotesSection,
+      customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: SpecialistRequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection,
     },
     testTypesDeskBasedGroup1: {
       required: RequiredSection,
