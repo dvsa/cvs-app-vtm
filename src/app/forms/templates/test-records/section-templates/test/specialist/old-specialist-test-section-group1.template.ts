@@ -1,12 +1,11 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { TEST_TYPES_GROUP1_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
-export const SpecialistTestSectionGroup1: FormNode = {
+export const OldIVASpecialistTestSectionGroup1: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -62,13 +61,13 @@ export const SpecialistTestSectionGroup1: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
               ],
               asyncValidators: [
-                { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
+                { name: AsyncValidatorNames.ResultDependantOnCustomDefects },
                 {
                   name: AsyncValidatorNames.HideIfEqualsWithCondition,
                   args: {
                     sibling: 'certificateNumber',
                     value: 'fail',
-                    conditions: { field: 'testTypeId', operator: 'equals', value: TEST_TYPES_GROUP1_SPEC_TEST },
+                    conditions: { field: 'testTypeId', operator: 'equals', value: ['150', '151', '181', '182'] },
                   },
                 },
               ],
@@ -116,18 +115,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: {
-                    sibling: 'testResult',
-                    value: [
-                      'pass',
-                      'prs',
-                    ],
-                  },
-                },
-              ],
+              validators: [{ name: ValidatorNames.Alphanumeric }],
               viewType: FormNodeViewTypes.HIDDEN,
               width: FormNodeWidth.L,
               required: true,

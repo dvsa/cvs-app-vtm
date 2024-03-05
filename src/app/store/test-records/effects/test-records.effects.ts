@@ -43,7 +43,7 @@ import {
   updateTestResultFailed,
   updateTestResultSuccess,
 } from '../actions/test-records.actions';
-import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
+import { isTestTypeOldIvaOrMsva, selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
 
 @Injectable()
 export class TestResultsEffects {
@@ -160,8 +160,9 @@ export class TestResultsEffects {
         of(action).pipe(withLatestFrom(
           this.store.pipe(select(selectedTestResultState)),
           this.store.pipe(select(selectQueryParam('edit'))),
+          this.store.pipe(select(isTestTypeOldIvaOrMsva)),
         ), take(1))),
-      concatMap(([action, selectedTestResult, isEditing]) => {
+      concatMap(([action, selectedTestResult, isEditing, isOldIVAorMSVAtest]) => {
         const { testTypeId } = action;
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -170,11 +171,18 @@ export class TestResultsEffects {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
+
+        // tech-debt: feature flag check to be removed when required standard is enabled
+        const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredStandards');
+        const isIVAorMSVATest = testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
+
         const vehicleTpl = masterTpl[`${vehicleType}`];
+        const testTypeGroupString = (!isRequiredStandardsEnabled || isOldIVAorMSVAtest)
+                                    && isIVAorMSVATest ? `${testTypeGroup}OldIVAorMSVA` : testTypeGroup;
 
         let tpl;
-        if (testTypeGroup && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup)) {
-          tpl = vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES];
+        if (testTypeGroupString && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroupString)) {
+          tpl = vehicleTpl[testTypeGroupString as keyof typeof TEST_TYPES];
         } else if (isEditing === 'true') {
           tpl = undefined;
         } else {
