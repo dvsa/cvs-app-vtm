@@ -9,28 +9,30 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpEvent } from '@angular/common/http';
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
 import { Observable } from 'rxjs';
 
-import { DeleteItem } from '../model/deleteItem';import { ReferenceDataApiResponse } from '../model/referenceDataApiResponse';
+import { DeleteItem } from '../model/deleteItem';
+import { ReferenceDataApiResponse } from '../model/referenceDataApiResponse';
 import { ReferenceDataItem } from '../model/referenceDataItem';
 import { ReferenceDataItemApiResponse } from '../model/referenceDataItemApiResponse';
 
 import { ResourceKey } from '../model/resourceKey';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { CacheBucket, withCache } from '@ngneat/cashew';
 import { Configuration } from '../configuration';
+import { BASE_PATH } from '../variables';
 
 
 @Injectable()
 export class ReferenceDataService {
-
     protected basePath = 'https://url/api/v1';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
+    public cacheBucket = new CacheBucket();
 
     constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
         if (basePath) {
@@ -56,6 +58,9 @@ export class ReferenceDataService {
         return false;
     }
 
+    public getReferenceLookupResourceTypeResourceKeyGetCacheKey(resourceType: string,  resourceKey: ResourceKey) {
+        return `${this.basePath}/reference/lookup/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`
+    }
 
     /**
      * Lookup any resourceType with its key, allows partials.
@@ -112,14 +117,20 @@ export class ReferenceDataService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ReferenceDataApiResponse>('get',`${this.basePath}/reference/lookup/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+        const key = this.getReferenceLookupResourceTypeResourceKeyGetCacheKey(resourceType, resourceKey);
+
+        return this.httpClient.request<ReferenceDataApiResponse>('get', key,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
             }
         );
+    }
+
+    public getReferenceLookupTyresSearchKeyParamGetCacheKey(searchKey: string, param: string) {
+        return `${this.basePath}/reference/lookup/tyres/${encodeURIComponent(String(searchKey))}/${encodeURIComponent(String(param))}`;
     }
 
     /**
@@ -177,14 +188,25 @@ export class ReferenceDataService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ReferenceDataApiResponse>('get',`${this.basePath}/reference/lookup/tyres/${encodeURIComponent(String(searchKey))}/${encodeURIComponent(String(param))}`,
+        const key = this.getReferenceLookupTyresSearchKeyParamGetCacheKey(searchKey, param);
+
+        return this.httpClient.request<ReferenceDataApiResponse>('get', key,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
+                context: withCache({
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key,
+                })
             }
         );
+    }
+
+    public getReferenceResourceTypeGetCacheKey(resourceType: string, paginationToken?: string) {
+        return `${this.basePath}/reference/${encodeURIComponent(String(resourceType))}?pageinationToken=${paginationToken}`;
     }
 
     /**
@@ -250,7 +272,12 @@ export class ReferenceDataService {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
+                context: withCache({
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key: this.getReferenceResourceTypeGetCacheKey(resourceType, paginationToken)
+                })
             }
         );
     }
@@ -332,6 +359,10 @@ export class ReferenceDataService {
         );
     }
 
+    public referenceResourceTypeResourceKeyGetCacheKey(resourceType: string, resourceKey: ResourceKey): string {
+        return `${this.basePath}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`
+    }
+
     /**
      * Get reference data for a particular resourceType and resourceKey.
      * 
@@ -388,12 +419,19 @@ export class ReferenceDataService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ReferenceDataItemApiResponse>('get',`${this.basePath}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+        const key = this.referenceResourceTypeResourceKeyGetCacheKey(resourceType, resourceKey);
+
+        return this.httpClient.request<ReferenceDataItemApiResponse>('get', key,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress, 
+                context: withCache({
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key,
+                })
             }
         );
     }

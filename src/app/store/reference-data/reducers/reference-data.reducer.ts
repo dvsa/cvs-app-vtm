@@ -1,5 +1,5 @@
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
 import {
@@ -23,6 +23,7 @@ import {
   fetchTyreReferenceDataByKeySearchFailed,
   fetchTyreReferenceDataByKeySearchSuccess,
   removeTyreSearch,
+  setReferenceDataLoading,
 } from '../actions/reference-data.actions';
 
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
@@ -190,6 +191,7 @@ export const referenceDataReducer = createReducer(
     ...state,
     [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], filter: action.filter, term: action.term },
   })),
+  on(setReferenceDataLoading, (state, { resourceType, loading }) => ({ ...state, [resourceType]: { ...state[`${resourceType}`], loading } })),
 );
 
 export const referenceDataFeatureState = createFeatureSelector<ReferenceDataState>(STORE_FEATURE_REFERENCE_DATA_KEY);

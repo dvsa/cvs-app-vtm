@@ -1,4 +1,8 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClientModule,
+  provideHttpClient, withInterceptors,
+} from '@angular/common/http';
 import {
   APP_INITIALIZER,
   ErrorHandler,
@@ -29,6 +33,7 @@ import {
   InteractionType,
   PublicClientApplication,
 } from '@azure/msal-browser';
+import { provideHttpCache, withHttpCacheInterceptor } from '@ngneat/cashew';
 import * as Sentry from '@sentry/angular-ivy';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { environment } from '../environments/environment';
@@ -81,8 +86,8 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MsalModule,
     HttpClientModule,
+    MsalModule,
     AppStoreModule,
     InterceptorModule,
     CoreModule,
@@ -100,6 +105,8 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
     ),
   ],
   providers: [
+    provideHttpClient(withInterceptors([withHttpCacheInterceptor()])),
+    provideHttpCache(),
     {
       provide: LOCALE_ID,
       useValue: 'en',

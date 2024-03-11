@@ -9,18 +9,23 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent }                           from '@angular/common/http';
-import { CustomHttpUrlEncodingCodec }                        from '../encoder';
+import {
+    HttpClient,
+    HttpEvent,
+    HttpHeaders, HttpParams,
+    HttpResponse
+} from '@angular/common/http';
+import { Inject, Injectable, Optional } from '@angular/core';
+import { CustomHttpUrlEncodingCodec } from '../encoder';
 
-import { Observable }                                        from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { TestTypeInfo } from '../model/testTypeInfo';
 import { TestTypesTaxonomy } from '../model/testTypesTaxonomy';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
+import { withCache } from '@ngneat/cashew';
+import { Configuration } from '../configuration';
+import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 
 
 @Injectable()
@@ -102,7 +107,10 @@ export class TestTypesService {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
+                context: withCache({
+                    mode: 'stateManagement'
+                }),
             }
         );
     }
@@ -205,7 +213,10 @@ export class TestTypesService {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
+                context: withCache({
+                    mode: 'stateManagement'
+                }),
             }
         );
     }
