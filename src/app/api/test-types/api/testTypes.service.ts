@@ -23,7 +23,7 @@ import { Observable } from 'rxjs';
 import { TestTypeInfo } from '../model/testTypeInfo';
 import { TestTypesTaxonomy } from '../model/testTypesTaxonomy';
 
-import { withCache } from '@ngneat/cashew';
+import { CacheBucket, withCache } from '@ngneat/cashew';
 import { Configuration } from '../configuration';
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 
@@ -34,6 +34,7 @@ export class TestTypesService {
     protected basePath = 'https://url/api/v1';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
+    public cacheBucket = new CacheBucket();
 
     constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
         if (basePath) {
@@ -57,6 +58,10 @@ export class TestTypesService {
             }
         }
         return false;
+    }
+
+    public getTestTypesCacheKey(typeOfTest?: string): string {
+        return `${this.basePath}/test-types?typeOfTest=${typeOfTest}`
     }
 
 
@@ -109,11 +114,18 @@ export class TestTypesService {
                 observe: observe,
                 reportProgress: reportProgress,
                 context: withCache({
-                    mode: 'stateManagement'
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key: this.getTestTypesCacheKey(typeOfTest)
                 }),
             }
         );
     }
+
+    public getTestTypesidCachKey(id: string, params: HttpParams): string {
+        return `${this.basePath}/test-types/${id}?${params.toString()}`
+    }
+
 
     /**
      * Return test type information by ID
@@ -215,7 +227,9 @@ export class TestTypesService {
                 observe: observe,
                 reportProgress: reportProgress,
                 context: withCache({
-                    mode: 'stateManagement'
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key: this.getTestTypesidCachKey(id, queryParameters)
                 }),
             }
         );

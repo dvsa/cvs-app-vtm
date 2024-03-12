@@ -1,7 +1,11 @@
 import { TestType, TestTypeCategory } from '@api/test-types';
-import { EntityAdapter, createEntityAdapter, EntityState } from '@ngrx/entity';
+import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { fetchTestTypesFailed, fetchTestTypesSuccess, fetchTestTypes } from '../actions/test-types.actions';
+import {
+  fetchTestTypes,
+  fetchTestTypesFailed, fetchTestTypesSuccess,
+  setTestTypesLoading,
+} from '../actions/test-types.actions';
 
 export const STORE_FEATURE_TEST_TYPES_KEY = 'testTypes';
 
@@ -18,6 +22,7 @@ export const testTypesReducer = createReducer(
   on(fetchTestTypes, (state) => ({ ...state, loading: true })),
   on(fetchTestTypesSuccess, (state, action) => ({ ...testTypesAdapter.setAll(action.payload, state), loading: false })),
   on(fetchTestTypesFailed, (state) => ({ ...state, loading: false })),
+  on(setTestTypesLoading, (state, { loading }) => ({ ...state, loading })),
 );
 
 export const testTypesFeatureState = createFeatureSelector<TestTypeState>(STORE_FEATURE_TEST_TYPES_KEY);

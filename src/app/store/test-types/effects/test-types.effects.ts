@@ -5,22 +5,35 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { UserService } from '@services/user-service/user-service';
 import {
-  catchError, switchMap, map, of,
+  catchError,
+  iif,
+  map, of,
+  switchMap,
 } from 'rxjs';
-import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '../actions/test-types.actions';
+import {
+  fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess, setTestTypesLoading,
+} from '../actions/test-types.actions';
 
 @Injectable()
 export class TestTypeEffects {
+  fetchTestTypeTaxonomyRequest$ = (typeOfTest?: string) => {
+    return this.testTypeService.getTestTypes(typeOfTest).pipe(
+      map((testTypes) => fetchTestTypesSuccess({ payload: testTypes })),
+      catchError((e) => of(fetchTestTypesFailed({ error: e.message }))),
+    );
+  };
+
   fetchTestTypeTaxonomy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchTestTypes),
       switchMap(() => this.userService.roles$),
       switchMap((roles) => {
         const typeOfTest = Roles.TestResultCreateDeskAssessment.split(',').some((role) => roles?.includes(role)) ? TypeOfTest.DESK_BASED : undefined;
-
-        return this.testTypeService.getTestTypes(typeOfTest).pipe(
-          map((testTypes) => fetchTestTypesSuccess({ payload: testTypes })),
-          catchError((e) => of(fetchTestTypesFailed({ error: e.message }))),
+        return iif(
+          () =>
+            this.testTypeService.cacheBucket.has(this.testTypeService.getTestTypesCacheKey(typeOfTest)),
+          of(setTestTypesLoading({ loading: false })),
+          this.fetchTestTypeTaxonomyRequest$(typeOfTest),
         );
       }),
     ));
