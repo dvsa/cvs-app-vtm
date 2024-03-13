@@ -9,28 +9,35 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Inject, Injectable, Optional, inject } from '@angular/core';
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
 import { Observable } from 'rxjs';
 
-import { DeleteItem } from '../model/deleteItem';import { ReferenceDataApiResponse } from '../model/referenceDataApiResponse';
+import { DeleteItem } from '../model/deleteItem';
+import { ReferenceDataApiResponse } from '../model/referenceDataApiResponse';
 import { ReferenceDataItem } from '../model/referenceDataItem';
 import { ReferenceDataItemApiResponse } from '../model/referenceDataItemApiResponse';
 
 import { ResourceKey } from '../model/resourceKey';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { CacheBucket, withCache } from '@ngneat/cashew';
+import { Store } from '@ngrx/store';
+import { ReferenceDataState, setReferenceDataLoading } from '@store/reference-data';
 import { Configuration } from '../configuration';
+import { BASE_PATH } from '../variables';
 
 
 @Injectable()
 export class ReferenceDataService {
+    protected store = inject(Store<ReferenceDataState>);
 
     protected basePath = 'https://url/api/v1';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
+    protected cacheBucket = new CacheBucket();
 
     constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
         if (basePath) {
@@ -41,21 +48,6 @@ export class ReferenceDataService {
             this.basePath = basePath || configuration.basePath || this.basePath;
         }
     }
-
-    /**
-     * @param consumes string[] mime-types
-     * @return true: consumes contains 'multipart/form-data', false: otherwise
-     */
-    private canConsumeForm(consumes: string[]): boolean {
-        const form = 'multipart/form-data';
-        for (const consume of consumes) {
-            if (form === consume) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     /**
      * Lookup any resourceType with its key, allows partials.
@@ -108,16 +100,23 @@ export class ReferenceDataService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
+        const url = `${this.basePath}/reference/lookup/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`;
 
-        return this.httpClient.request<ReferenceDataApiResponse>('get',`${this.basePath}/reference/lookup/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+        if (!this.cacheBucket.has(url)) {
+            this.store.dispatch(setReferenceDataLoading({ resourceType: resourceType as ReferenceDataResourceType, loading: true}));
+        }
+
+        return this.httpClient.request<ReferenceDataApiResponse>('get', url,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
+                context: withCache({
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key: url,
+                })
             }
         );
     }
@@ -173,16 +172,23 @@ export class ReferenceDataService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
+        const url = `${this.basePath}/reference/lookup/tyres/${encodeURIComponent(String(searchKey))}/${encodeURIComponent(String(param))}`
 
-        return this.httpClient.request<ReferenceDataApiResponse>('get',`${this.basePath}/reference/lookup/tyres/${encodeURIComponent(String(searchKey))}/${encodeURIComponent(String(param))}`,
+        if (!this.cacheBucket.has(url)) {
+            this.store.dispatch(setReferenceDataLoading({ resourceType: ReferenceDataResourceType.Tyres, loading: true}));
+        }
+
+        return this.httpClient.request<ReferenceDataApiResponse>('get', url,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
+                context: withCache({
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key: url
+                })
             }
         );
     }
@@ -240,17 +246,25 @@ export class ReferenceDataService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
+        const url = `${this.basePath}/reference/${encodeURIComponent(String(resourceType))}`;
+        const key = `${url}?${queryParameters.toString()}`;
 
-        return this.httpClient.request<ReferenceDataApiResponse>('get',`${this.basePath}/reference/${encodeURIComponent(String(resourceType))}`,
+        if (!this.cacheBucket.has(key)) {
+            this.store.dispatch(setReferenceDataLoading({ resourceType: resourceType as ReferenceDataResourceType, loading: true }));
+        }
+
+        return this.httpClient.request<ReferenceDataApiResponse>('get', url,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
+                context: withCache({
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key
+                })
             }
         );
     }
@@ -384,16 +398,23 @@ export class ReferenceDataService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
+        const url = `${this.basePath}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`;
 
-        return this.httpClient.request<ReferenceDataItemApiResponse>('get',`${this.basePath}/reference/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+        if (!this.cacheBucket.has(url)) {
+            this.store.dispatch(setReferenceDataLoading({ resourceType: resourceType as ReferenceDataResourceType, loading: true }));
+        }
+
+        return this.httpClient.request<ReferenceDataItemApiResponse>('get', url,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
+                context: withCache({
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key: url,
+                })
             }
         );
     }

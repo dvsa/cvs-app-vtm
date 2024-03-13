@@ -10,6 +10,8 @@ export const fetchTestStation = createAction(getTitle(), props<{ id: string }>()
 export const fetchTestStationSuccess = createAction(getTitle(false, 'Success'), props<{ id: string; payload: TestStation }>());
 export const fetchTestStationFailed = createAction(getTitle(false, 'Failed'), props<GlobalError>());
 
+export const setTestStationsLoading = createAction(getTitle(false, 'Set Loading'), props<{ loading: boolean }>());
+
 function getTitle(isPlural = false, suffix = ''): string {
   const plural = isPlural ? 's' : ' by ID';
   suffix = suffix ? ` ${suffix}` : suffix;

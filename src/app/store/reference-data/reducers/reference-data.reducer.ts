@@ -1,5 +1,5 @@
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
 import {
@@ -23,6 +23,7 @@ import {
   fetchTyreReferenceDataByKeySearchFailed,
   fetchTyreReferenceDataByKeySearchSuccess,
   removeTyreSearch,
+  setReferenceDataLoading,
 } from '../actions/reference-data.actions';
 
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
@@ -90,7 +91,7 @@ export const initialReferenceDataState: ReferenceDataState = {
 
 export const referenceDataReducer = createReducer(
   initialReferenceDataState,
-  on(fetchReferenceData, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: true } })),
+  on(fetchReferenceData, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType] } })),
   on(fetchReferenceDataSuccess, (state, action) => {
     const { resourceType, payload, paginated } = action;
     return {
@@ -99,7 +100,7 @@ export const referenceDataReducer = createReducer(
     };
   }),
   on(fetchReferenceDataFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
-  on(fetchReferenceDataAudit, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: true } })),
+  on(fetchReferenceDataAudit, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType] } })),
   on(fetchReferenceDataAuditSuccess, (state, action) => {
     const { resourceType, payload, paginated } = action;
     return {
@@ -108,7 +109,7 @@ export const referenceDataReducer = createReducer(
     };
   }),
   on(fetchReferenceDataAuditFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
-  on(fetchReferenceDataByKey, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: true } })),
+  on(fetchReferenceDataByKey, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType] } })),
   on(fetchReferenceDataByKeySuccess, (state, action) => {
     const { resourceType, payload } = action;
     return {
@@ -119,7 +120,7 @@ export const referenceDataReducer = createReducer(
   on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
   on(fetchReferenceDataByKeySearch, (state, action) => ({
     ...state,
-    [action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: true },
+    [action.resourceType]: { ...state[action.resourceType], searchReturn: null },
   })),
   on(fetchReferenceDataByKeySearchSuccess, (state, action) => {
     const { resourceType, payload } = action;
@@ -136,7 +137,7 @@ export const referenceDataReducer = createReducer(
   })),
   on(fetchTyreReferenceDataByKeySearch, (state) => ({
     ...state,
-    [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null, loading: true },
+    [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null },
   })),
   on(fetchTyreReferenceDataByKeySearchSuccess, (state, action) => {
     const { resourceType, payload } = action;
@@ -189,6 +190,9 @@ export const referenceDataReducer = createReducer(
   on(addSearchInformation, (state, action) => ({
     ...state,
     [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], filter: action.filter, term: action.term },
+  })),
+  on(setReferenceDataLoading, (state, { loading, resourceType }) => ({
+    ...state, [`${resourceType}`]: { ...state[`${resourceType}`], loading },
   })),
 );
 

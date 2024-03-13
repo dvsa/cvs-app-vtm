@@ -3,8 +3,6 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import {
   BASE_PATH, Configuration, TestTypesService as TestTypesApiService, TestTypesTaxonomy,
 } from '@api/test-types';
-import { Store } from '@ngrx/store';
-import { State } from '@store/.';
 import { testTypeIdChanged } from '@store/test-records';
 import { fetchTestTypes } from '@store/test-types/actions/test-types.actions';
 import { selectTestTypesByVehicleType } from '@store/test-types/selectors/test-types.selectors';
@@ -18,7 +16,6 @@ export class TestTypesService extends TestTypesApiService {
     httpClient: HttpClient,
     @Optional() @Inject(BASE_PATH) basePath: string,
     @Optional() configuration: Configuration,
-    private store: Store<State>,
   ) {
     super(httpClient, basePath, configuration);
   }

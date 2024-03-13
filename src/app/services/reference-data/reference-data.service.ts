@@ -12,11 +12,10 @@ import {
   ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre, User,
 } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store, select } from '@ngrx/store';
+import { select } from '@ngrx/store';
 import { UserService } from '@services/user-service/user-service';
 import {
   ReferenceDataEntityStateSearch,
-  ReferenceDataState,
   addSearchInformation,
   fetchReferenceData,
   fetchReferenceDataByKey,
@@ -44,7 +43,6 @@ export class ReferenceDataService extends ReferenceDataApiService {
     @Optional() configuration: Configuration,
     httpClient: HttpClient,
     private usersService: UserService,
-    private store: Store<ReferenceDataState>,
   ) {
     super(httpClient, basePath, configuration);
   }

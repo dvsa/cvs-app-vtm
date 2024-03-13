@@ -9,26 +9,34 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent }                           from '@angular/common/http';
-import { CustomHttpUrlEncodingCodec }                        from '../encoder';
+import {
+    HttpClient,
+    HttpEvent,
+    HttpHeaders, HttpParams,
+    HttpResponse
+} from '@angular/common/http';
+import { Inject, Injectable, Optional, inject } from '@angular/core';
+import { CustomHttpUrlEncodingCodec } from '../encoder';
 
-import { Observable }                                        from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { TestTypeInfo } from '../model/testTypeInfo';
 import { TestTypesTaxonomy } from '../model/testTypesTaxonomy';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
+import { CacheBucket, withCache } from "@ngneat/cashew";
+import { Store } from '@ngrx/store';
+import { setTestTypesLoading } from '@store/test-types/actions/test-types.actions';
+import { Configuration } from '../configuration';
+import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 
 
 @Injectable()
 export class TestTypesService {
-
+    protected store = inject(Store);
     protected basePath = 'https://url/api/v1';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
+    protected cacheBucket = new CacheBucket();
 
     constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
         if (basePath) {
@@ -39,21 +47,6 @@ export class TestTypesService {
             this.basePath = basePath || configuration.basePath || this.basePath;
         }
     }
-
-    /**
-     * @param consumes string[] mime-types
-     * @return true: consumes contains 'multipart/form-data', false: otherwise
-     */
-    private canConsumeForm(consumes: string[]): boolean {
-        const form = 'multipart/form-data';
-        for (const consume of consumes) {
-            if (form === consume) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     /**
      * Return test types
@@ -92,17 +85,25 @@ export class TestTypesService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
+        const url = `${this.basePath}/test-types`;
+        const key  = `${url}?${queryParameters.toString()}`;
 
-        return this.httpClient.request<TestTypesTaxonomy>('get',`${this.basePath}/test-types`,
+        if (!this.cacheBucket.has(key)) {
+            this.store.dispatch(setTestTypesLoading({ loading: true }));
+        }
+
+        return this.httpClient.request<TestTypesTaxonomy>('get', url,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
+                context: withCache({
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key
+                })
             }
         );
     }
@@ -139,13 +140,6 @@ export class TestTypesService {
         if (vehicleType === null || vehicleType === undefined) {
             throw new Error('Required parameter vehicleType was null or undefined when calling getTestTypesid.');
         }
-
-
-
-
-
-
-
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if (fields) {
@@ -195,17 +189,25 @@ export class TestTypesService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
+        const url = `${this.basePath}/test-types/${encodeURIComponent(String(id))}`;
+        const key = `${url}?${queryParameters.toString()}`;
 
-        return this.httpClient.request<TestTypeInfo>('get',`${this.basePath}/test-types/${encodeURIComponent(String(id))}`,
+        if (!this.cacheBucket.has(key)) {
+            this.store.dispatch(setTestTypesLoading({ loading: true }));
+        }
+
+        return this.httpClient.request<TestTypeInfo>('get', url,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
-                reportProgress: reportProgress
+                reportProgress: reportProgress,
+                context: withCache({
+                    mode: 'stateManagement',
+                    bucket: this.cacheBucket,
+                    key
+                })
             }
         );
     }

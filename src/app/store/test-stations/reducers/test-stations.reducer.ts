@@ -2,12 +2,11 @@ import { TestStation } from '@models/test-stations/test-station.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import {
-  fetchTestStation,
   fetchTestStationFailed,
-  fetchTestStations,
   fetchTestStationsFailed,
   fetchTestStationsSuccess,
   fetchTestStationSuccess,
+  setTestStationsLoading,
 } from '../actions/test-stations.actions';
 
 export interface TestStationsState extends EntityState<TestStation> {
@@ -28,11 +27,11 @@ export const initialTestStationsState = testStationsAdapter.getInitialState({ lo
 export const testStationsReducer = createReducer(
   initialTestStationsState,
 
-  on(fetchTestStations, (state) => ({ ...state, loading: true })),
   on(fetchTestStationsSuccess, (state, action) => ({ ...testStationsAdapter.setAll(action.payload, state), loading: false })),
   on(fetchTestStationsFailed, (state) => ({ ...testStationsAdapter.setAll([], state), loading: false })),
 
-  on(fetchTestStation, (state) => ({ ...state, loading: true })),
   on(fetchTestStationSuccess, (state, action) => ({ ...testStationsAdapter.upsertOne(action.payload, state), loading: false })),
   on(fetchTestStationFailed, (state) => ({ ...testStationsAdapter.setAll([], state), loading: false })),
+
+  on(setTestStationsLoading, (state, { loading }) => ({ ...state, loading })),
 );

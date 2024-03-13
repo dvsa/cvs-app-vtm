@@ -2,23 +2,49 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
 import { TestStation } from '@models/test-stations/test-station.model';
+import { CacheBucket, withCache } from '@ngneat/cashew';
 import { Store } from '@ngrx/store';
-import { testStations, TestStationsState } from '@store/test-stations';
-import { map, Observable } from 'rxjs';
+import { TestStationsState, setTestStationsLoading, testStations } from '@store/test-stations';
+import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TestStationsService {
   private url = `${environment.VTM_API_URI}/test-stations/`;
+  private cacheBucket = new CacheBucket();
 
   constructor(private http: HttpClient, private store: Store<TestStationsState>) {}
 
   fetchTestStations(): Observable<Array<TestStation>> {
-    return this.http.get<Array<TestStation>>(this.url, { responseType: 'json' });
+    if (!this.cacheBucket.has(this.url)) {
+      this.store.dispatch(setTestStationsLoading({ loading: true }));
+    }
+
+    return this.http.get<Array<TestStation>>(this.url, {
+      responseType: 'json',
+      context: withCache({
+        mode: 'stateManagement',
+        bucket: this.cacheBucket,
+        key: this.url,
+      }),
+    });
   }
 
   fetchTestStation(id: string): Observable<TestStation> {
-    return this.http.get<TestStation>(this.url + id, { responseType: 'json' });
+    const url = this.url + id;
+
+    if (!this.cacheBucket.has(url)) {
+      this.store.dispatch(setTestStationsLoading({ loading: true }));
+    }
+
+    return this.http.get<TestStation>(url, {
+      responseType: 'json',
+      context: withCache({
+        mode: 'stateManagement',
+        bucket: this.cacheBucket,
+        key: this.url,
+      }),
+    });
   }
 
   getTestStationsOptions(): Observable<MultiOptions> {
