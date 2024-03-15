@@ -110,7 +110,7 @@ export function getBodyMake(techRecord: V3TechRecordModel | undefined) {
     return techRecord.techRecord_make;
   }
 
-  return undefined;
+  return null;
 }
 
 export function getBodyModel(techRecord: V3TechRecordModel | undefined) {
@@ -122,13 +122,13 @@ export function getBodyModel(techRecord: V3TechRecordModel | undefined) {
     return techRecord.techRecord_model;
   }
 
-  return undefined;
+  return null;
 }
 
 export function getBodyType(techRecord: V3TechRecordModel | undefined) {
   const vehicleType = techRecord?.techRecord_vehicleType;
 
-  if (!vehicleType || (vehicleType !== 'hgv' && vehicleType !== 'psv' && vehicleType !== 'trl')) return undefined;
+  if (!vehicleType || (vehicleType !== 'hgv' && vehicleType !== 'psv' && vehicleType !== 'trl')) return null;
 
   return {
     code: techRecord.techRecord_bodyType_code,

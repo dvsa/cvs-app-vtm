@@ -1,0 +1,10 @@
+{
+  "name": "vtm",
+  "description": "",
+  "team": "",
+  "documentation": "",
+  "language": "node",
+  "terraform": false,
+  "monorepo": false,
+  "dynamo_tables": []
+}

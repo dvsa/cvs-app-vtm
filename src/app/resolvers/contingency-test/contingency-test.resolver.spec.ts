@@ -119,7 +119,7 @@ describe('ContingencyTestResolver', () => {
       } as V3TechRecordModel;
 
       const make = getBodyMake(techRecord);
-      expect(make).toBeUndefined();
+      expect(make).toBeNull();
     });
   });
 
@@ -160,7 +160,7 @@ describe('ContingencyTestResolver', () => {
       } as V3TechRecordModel;
 
       const model = getBodyModel(techRecord);
-      expect(model).toBeUndefined();
+      expect(model).toBeNull();
     });
   });
 
@@ -207,7 +207,7 @@ describe('ContingencyTestResolver', () => {
       } as V3TechRecordModel;
 
       const bodyType = getBodyType(techRecord);
-      expect(bodyType).toBeUndefined();
+      expect(bodyType).toBeNull();
     });
   });
 
