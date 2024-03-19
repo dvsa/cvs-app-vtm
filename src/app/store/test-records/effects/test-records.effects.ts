@@ -11,6 +11,7 @@ import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
@@ -24,7 +25,6 @@ import {
   catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take,
   withLatestFrom,
 } from 'rxjs';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import {
   contingencyTestTypeSelected,
   createTestResult,
@@ -280,7 +280,11 @@ export class TestResultsEffects {
     delay(3000),
     map((action) => action.payload.changes.systemNumber as string),
     switchMap((systemNumber) => this.techRecordHttpService.getBySystemNumber$(systemNumber)),
-    map((results) => results.find((result) => result.techRecord_statusCode === StatusCodes.CURRENT)),
+    map((results) => {
+      // Attempt to find current, if none exists fallback to provisional (to avoid showing an archived record)
+      const current = results.find((result) => result.techRecord_statusCode === StatusCodes.CURRENT);
+      return current ?? results.find((result) => result.techRecord_statusCode === StatusCodes.PROVISIONAL);
+    }),
     filter(Boolean),
     switchMap((techRecord) => this.router.navigate(['tech-records', techRecord.systemNumber, techRecord.createdTimestamp])),
   ), { dispatch: false });
