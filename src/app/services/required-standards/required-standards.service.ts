@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DefectGETIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
+import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -10,8 +10,8 @@ export class RequiredStandardsService {
 
   constructor(private http: HttpClient) {}
 
-  getRequiredStandards(euVehicleCategory: string): Observable<DefectGETIVA> {
-    return this.http.get<DefectGETIVA>(`${this.url}?euVehicleCategory=${euVehicleCategory}`, { responseType: 'json' });
+  getRequiredStandards(euVehicleCategory: string): Observable<DefectGETRequiredStandards> {
+    return this.http.get<DefectGETRequiredStandards>(`${this.url}?euVehicleCategory=${euVehicleCategory}`, { responseType: 'json' });
   }
 
 }

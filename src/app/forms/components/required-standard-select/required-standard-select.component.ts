@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DefectGETIVA, RequiredStandard, SectionIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
+import { DefectGETRequiredStandards, RequiredStandard, RequiredStandardTaxonomySection } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { Store } from '@ngrx/store';
 import { RequiredStandardState } from '@store/required-standards/reducers/required-standards.reducer';
@@ -14,13 +14,13 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
 
-  requiredStandards?: SectionIVA[];
+  requiredStandards?: RequiredStandardTaxonomySection[];
   normalAndBasic?: boolean;
   isEditing = false;
   selectedInspectionType?: INSPECTION_TYPE;
-  selectedSection?: SectionIVA;
+  selectedSection?: RequiredStandardTaxonomySection;
   selectedRequiredStandard?: RequiredStandard;
-  basicAndNormalRequiredStandards?: DefectGETIVA;
+  basicAndNormalRequiredStandards?: DefectGETRequiredStandards;
 
   onDestroy$ = new Subject();
 
@@ -54,7 +54,7 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
       ? this.basicAndNormalRequiredStandards?.basic : this.basicAndNormalRequiredStandards?.normal;
   }
 
-  handleSelect(selected?: INSPECTION_TYPE | SectionIVA | RequiredStandard, type?: Types): void {
+  handleSelect(selected?: INSPECTION_TYPE | RequiredStandardTaxonomySection | RequiredStandard, type?: Types): void {
     switch (type) {
       case Types.InspectionType:
         this.handleSelectBasicOrNormal(selected as INSPECTION_TYPE);
@@ -63,7 +63,7 @@ export class RequiredStandardSelectComponent implements OnInit, OnDestroy {
         this.selectedRequiredStandard = undefined;
         break;
       case Types.Section:
-        this.selectedSection = selected as SectionIVA;
+        this.selectedSection = selected as RequiredStandardTaxonomySection;
         this.selectedRequiredStandard = undefined;
         break;
       case Types.RequiredStandard:
