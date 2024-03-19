@@ -93,6 +93,7 @@ describe('AdrComponent', () => {
 
     it('should error if no filename', () => {
       component.techRecord.techRecord_adrDetails_documentId = undefined;
+      // eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
       expect(() => { component.fileName; }).toThrow('Could not find ADR Documentation');
     });
   });

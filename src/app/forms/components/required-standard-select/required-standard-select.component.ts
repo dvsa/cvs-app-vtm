@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DefectGETRequiredStandards, RequiredStandard, RequiredStandardTaxonomySection } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
+import {
+  DefectGETRequiredStandards,
+  RequiredStandard,
+  RequiredStandardTaxonomySection,
+} from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { Store } from '@ngrx/store';
 import { RequiredStandardState } from '@store/required-standards/reducers/required-standards.reducer';

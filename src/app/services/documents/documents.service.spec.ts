@@ -18,7 +18,6 @@ describe('DocumentsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(DocumentsService);
-    // jest.resetAllMocks();
   });
 
   it('should be created', () => {
