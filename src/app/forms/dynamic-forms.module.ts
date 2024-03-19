@@ -192,6 +192,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     ModifiedWeightsComponent,
     AdrComponent,
     AdrCertificateHistoryComponent,
+    FieldWarningMessageComponent,
   ],
 })
 export class DynamicFormsModule { }
