@@ -1,4 +1,10 @@
 <div *ngIf="techRecord">
+  <app-field-warning-message
+    *ngIf="showWarning"
+    [warningMessage]="
+      'Cherished transfers will update the VRM on the most recent test record for HGVs and PSVs, where an annual test certificate has been generated'
+    "
+  ></app-field-warning-message>
   <h2 class="govuk-heading-l">{{ makeAndModel }}</h2>
 
   <dl class="govuk-summary-list">

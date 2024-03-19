@@ -1,6 +1,4 @@
-import {
-  ComponentFixture, fakeAsync, TestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -31,6 +29,7 @@ const mockTechRecordService = {
   validateVrmDoesNotExist: jest.fn(),
   validateVrmForCherishedTransfer: jest.fn(),
   checkVrmNotActive: jest.fn(),
+  getVehicleTypeWithSmallTrl: jest.fn(),
 };
 
 const mockDynamicFormService = {
@@ -168,6 +167,36 @@ describe('TechRecordChangeVrmComponent', () => {
           newVrm: 'TESTVRM1', cherishedTransfer: true, systemNumber: 'PSV', createdTimestamp: 'now', thirdMark: '3MARK',
         }),
       );
+    });
+  });
+
+  describe('showWarning', () => {
+    it('should return true if the vehicle type is a psv', () => {
+      component.techRecord = { techRecord_vehicleType: 'psv' } as VehiclesOtherThan<'trl'>;
+      mockTechRecordService.getVehicleTypeWithSmallTrl.mockReturnValue('psv');
+
+      expect(component.showWarning).toBe(true);
+    });
+
+    it('should return true if the vehicle type is a hgv', () => {
+      component.techRecord = { techRecord_vehicleType: 'hgv' } as VehiclesOtherThan<'trl'>;
+      mockTechRecordService.getVehicleTypeWithSmallTrl.mockReturnValue('hgv');
+
+      expect(component.showWarning).toBe(true);
+    });
+
+    it('should return false if the vehicle type is not a psv or hgv', () => {
+      component.techRecord = { techRecord_vehicleType: 'lgv' } as VehiclesOtherThan<'trl'>;
+      mockTechRecordService.getVehicleTypeWithSmallTrl.mockReturnValue('lgv');
+
+      expect(component.showWarning).toBe(false);
+    });
+
+    it('should default to false if the vehicle type is not present', () => {
+      component.techRecord = undefined;
+      mockTechRecordService.getVehicleTypeWithSmallTrl.mockReturnValue(undefined);
+
+      expect(component.showWarning).toBe(false);
     });
   });
 });
