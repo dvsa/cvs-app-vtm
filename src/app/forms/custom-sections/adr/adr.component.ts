@@ -72,7 +72,7 @@ export class AdrComponent implements OnInit, OnDestroy {
   }
 
   hasAdrDocumentation(): boolean {
-    return !!this.techRecord.techRecord_adrDetails_documentId;
+    return !!this.techRecord.techRecord_adrDetails_documentId && !this.isEditing;
   }
 
   handleSubmit() {
