@@ -42,18 +42,52 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.startSentry();
-    this.initGoogleTagManager();
+    await this.initGoogleTagManager();
     initAll();
   }
 
-  initGoogleTagManager() {
-    const scriptElement = document.createElement('script');
-    scriptElement.async = true;
-    scriptElement.src = `https://www.googletagmanager.com/gtag/js?id=${environment.VTM_GTM_MEASUREMENT_ID}`;
-    document.head.appendChild(scriptElement);
-    gtag('config', environment.VTM_GTM_MEASUREMENT_ID);
+  async initGoogleTagManager() {
+    this.initialiseDataLayer();
+    await this.appendGTMScriptElement();
+    this.appendGTMNoScriptElement();
+  }
+
+  appendGTMNoScriptElement() {
+    const noScriptElement = document.createElement('noscript');
+    const iFrameElement = document.createElement('iframe', { });
+
+    iFrameElement.setAttribute('src', `https://www.googletagmanager.com/ns.html?id=${environment.VTM_GTM_CONTAINER_ID}`);
+    iFrameElement.setAttribute('style', 'display: none; visibility: hidden');
+    iFrameElement.setAttribute('height', '0');
+    iFrameElement.setAttribute('width', '0');
+
+    noScriptElement.appendChild(iFrameElement);
+    document.body.appendChild(noScriptElement);
+  }
+
+  async appendGTMScriptElement() {
+    // const scriptElement = document.createElement('script');
+    // scriptElement.async = true;
+    // scriptElement.src = `https://www.googletagmanager.com/gtm.js?id=${environment.VTM_GTM_CONTAINER_ID}`;
+    // document.head.appendChild(scriptElement);
+
+    try {
+      const gtResponse = await (
+        await fetch(`https://www.googletagmanager.com/gtm.js?id=${environment.VTM_GTM_CONTAINER_ID}`)
+      ).text();
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval
+      Function(gtResponse)();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  initialiseDataLayer() {
+    let { dataLayer } = (window as any);
+    dataLayer = dataLayer || [];
+    dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
   }
 
   ngOnDestroy(): void {
