@@ -31,9 +31,6 @@ import {
 } from '@azure/msal-browser';
 import * as Sentry from '@sentry/angular-ivy';
 
-import Analytics, { AnalyticsInstance } from 'analytics';
-import googleTagManager from '@analytics/google-tag-manager';
-
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { CoreModule } from '@core/core.module';
 import { UserService } from '@services/user-service/user-service';
