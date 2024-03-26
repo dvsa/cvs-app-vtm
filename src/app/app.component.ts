@@ -34,7 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private store: Store<State>,
     private googleAnalyticsService: GoogleAnalyticsService,
   ) {
-    this.router.events.pipe(takeUntil(this.destroy$)).subscribe( (event: Event) => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         void this.googleAnalyticsService.pageView(document.title, event.urlAfterRedirects);
       }
