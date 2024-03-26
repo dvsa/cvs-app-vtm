@@ -19,7 +19,6 @@ import packageInfo from '../../package.json';
 import { environment } from '../environments/environment';
 import { State } from './store';
 
-declare const gtag: Function;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -35,25 +34,16 @@ export class AppComponent implements OnInit, OnDestroy {
     private store: Store<State>,
     private googleAnalyticsService: GoogleAnalyticsService,
   ) {
-    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event: Event) => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe( (event: Event) => {
       if (event instanceof NavigationEnd) {
-        this.googleAnalyticsService.pageView(document.title, event.urlAfterRedirects);
+        void this.googleAnalyticsService.pageView(document.title, event.urlAfterRedirects);
       }
     });
   }
 
   ngOnInit() {
     this.startSentry();
-    this.initGoogleTagManager();
     initAll();
-  }
-
-  initGoogleTagManager() {
-    const scriptElement = document.createElement('script');
-    scriptElement.async = true;
-    scriptElement.src = `https://www.googletagmanager.com/gtag/js?id=${environment.VTM_GTM_MEASUREMENT_ID}`;
-    document.head.appendChild(scriptElement);
-    gtag('config', environment.VTM_GTM_MEASUREMENT_ID);
   }
 
   ngOnDestroy(): void {

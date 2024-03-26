@@ -31,7 +31,7 @@ import {
 } from '@azure/msal-browser';
 import * as Sentry from '@sentry/angular-ivy';
 
-import Analytics from 'analytics';
+import Analytics, { AnalyticsInstance } from 'analytics';
 import googleTagManager from '@analytics/google-tag-manager';
 
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
@@ -76,16 +76,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     loginFailedRoute: '',
   };
 }
-
-export const analytics = Analytics({
-  app: 'cvs-app-vtm',
-  version: '0.0.1',
-  plugins: [
-    googleTagManager({
-      containerId: environment.VTM_GTM_CONTAINER_ID,
-    }),
-  ],
-});
 
 const featureFactory = (
   featureFlagsService: FeatureToggleService,
