@@ -30,14 +30,15 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import * as Sentry from '@sentry/angular-ivy';
+
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { CoreModule } from '@core/core.module';
+import { UserService } from '@services/user-service/user-service';
+import { AppStoreModule } from '@store/app-store.module';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
 import { InterceptorModule } from './interceptors/interceptor.module';
-import { UserService } from './services/user-service/user-service';
-import { AppStoreModule } from './store/app-store.module';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -73,8 +74,9 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   };
 }
 
-const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
-  featureFlagsService.loadConfig();
+const featureFactory = (
+  featureFlagsService: FeatureToggleService,
+) => () => featureFlagsService.loadConfig();
 
 @NgModule({
   declarations: [AppComponent],
