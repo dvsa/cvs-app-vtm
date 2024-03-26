@@ -23,6 +23,7 @@
       "es2020",
       "dom"
     ],
+    "typeRoots": ["./node_modules/@types", "./types"],
     "paths": {
       "@api/*": ["src/app/api/*"],
       "@core/*": ["src/app/core/*"],
