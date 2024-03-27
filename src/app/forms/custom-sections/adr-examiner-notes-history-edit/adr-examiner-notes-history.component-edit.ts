@@ -60,7 +60,7 @@ export class AdrExaminerNotesHistoryEditComponent extends BaseControlComponent i
   }
 
   getEditAdditionalExaminerNotePage(examinerNoteIndex: number) {
-    const route = this.editingReason ? `../${this.editingReason}/edit-additional-examiner-note/${examinerNoteIndex}` : `./tyre-search/${examinerNoteIndex}`;
+    const route = `../${this.editingReason}/edit-additional-examiner-note/${examinerNoteIndex}`;
 
     this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
 
