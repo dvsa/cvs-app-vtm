@@ -23,7 +23,7 @@
               {{ examinerNote.createdAtDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
             </td>
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-              <app-button design="link" id="edit-additional-examiner-note" (clicked)="getEditAdditionalExaminerNotePage(i)">Edit</app-button>
+              <a class="button" id="edit-additional-examiner-note" (click)="getEditAdditionalExaminerNotePage(i)"> Edit </a>
             </td>
           </tr>
         </ng-container>
