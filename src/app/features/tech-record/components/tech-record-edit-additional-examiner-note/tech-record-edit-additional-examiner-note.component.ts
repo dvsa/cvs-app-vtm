@@ -6,6 +6,7 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 @Component({
   selector: 'tech-record-edit-additional-examiner-note',
@@ -67,6 +68,14 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  get editTypes(): typeof FormNodeEditTypes {
+    return FormNodeEditTypes;
+  }
+
+  get widths(): typeof FormNodeWidth {
+    return FormNodeWidth;
   }
 
 }
