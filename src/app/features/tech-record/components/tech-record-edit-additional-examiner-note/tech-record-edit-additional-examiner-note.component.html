@@ -1,1 +1,7 @@
-<div>This is a blank page right now.</div>
+<div *ngIf="currentTechRecord">
+  This is a blank page right now.
+  <app-button-group>
+    <app-button id="submit-examiner-note" (clicked)="handleSubmit()">Save</app-button>
+    <app-button id="cancel-amend-examiner-note" design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
+  </app-button-group>
+</div>
