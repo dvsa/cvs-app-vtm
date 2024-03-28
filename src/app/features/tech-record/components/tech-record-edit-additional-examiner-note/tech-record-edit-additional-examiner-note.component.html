@@ -5,15 +5,15 @@
       <dl class="govuk-summary-list">
         <h1 class="govuk-heading-l">Edit Additional Examiner Note</h1>
         <div class="govuk-summary-list__row">
-          <form>
-            <app-switchable-input
-              [form]="form"
-              [type]="editTypes.TEXTAREA"
-              name="techRecord_adrDetails_additionalExaminerNotes"
-              label="AdditionalExaminerNote"
-              [isEditing]="true"
-              [width]="widths.L"
-            ></app-switchable-input>
+          <form [formGroup]="form">
+            <app-text-input
+              formControlName="additionalExaminerNote"
+              name="AdditionalExaminerNote"
+              label="Additional Examiner Note"
+              [width]="width.L"
+              (focusout)="isFormValid()"
+            >
+            </app-text-input>
           </form>
         </div>
       </dl>

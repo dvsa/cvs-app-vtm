@@ -6,7 +6,8 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
-import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'tech-record-edit-additional-examiner-note',
@@ -18,6 +19,8 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   examinerNote!: AdditionalExaminerNotes;
   examinerNoteIndex!: number;
   destroy$ = new ReplaySubject<boolean>(1);
+  form!: FormGroup;
+  formControl!: CustomFormControl;
 
   constructor(
     private router: Router,
@@ -39,6 +42,13 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
       this.examinerNote = additionalExaminerNotes[this.examinerNoteIndex];
       console.log(this.examinerNote);
     }
+    this.formControl = new CustomFormControl({
+      name: 'additionalExaminerNote', type: FormNodeTypes.CONTROL,
+    }, '', [Validators.required]);
+    this.form = new FormGroup({
+      additionalExaminerNote: this.formControl,
+    });
+    this.formControl.patchValue(this.examinerNote.note);
   }
 
   navigateBack() {
@@ -74,7 +84,7 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
     return FormNodeEditTypes;
   }
 
-  get widths(): typeof FormNodeWidth {
+  get width(): typeof FormNodeWidth {
     return FormNodeWidth;
   }
 
