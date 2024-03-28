@@ -26,7 +26,7 @@ import { AmendVrmReasonComponent } from './components/tech-record-amend-vrm-reas
 import { TechRecordSummaryChangesComponent } from './components/tech-record-summary-changes/tech-record-summary-changes.component';
 import { AdrGenerateCertificateComponent } from './components/adr-generate-certificate/adr-generate-certificate.component';
 import {
-  TechRecordEditAdditionalExaminerNoteComponent
+  TechRecordEditAdditionalExaminerNoteComponent,
 } from './components/tech-record-edit-additional-examiner-note/tech-record-edit-additional-examiner-note.component';
 
 @NgModule({
