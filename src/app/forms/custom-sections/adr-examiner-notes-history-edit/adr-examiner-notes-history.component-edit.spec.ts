@@ -13,7 +13,6 @@ import { initialAppState } from '@store/index';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
 
 const mockTechRecordService = {
   techRecord$: jest.fn(),
