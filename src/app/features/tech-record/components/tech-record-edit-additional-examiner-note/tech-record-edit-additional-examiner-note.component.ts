@@ -38,11 +38,15 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getTechRecord();
+    this.getExaminerNote();
+    this.setupForm();
+  }
+
+  getTechRecord() {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((currentTechRecord) => {
       this.currentTechRecord = currentTechRecord as TechRecordType<'hgv' | 'lgv' | 'trl'>;
     });
-    this.getExaminerNote();
-    this.setupForm();
   }
 
   getExaminerNote() {
