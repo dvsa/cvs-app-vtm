@@ -11,7 +11,6 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { AxlesService } from '@services/axles/axles.service';
 import { cloneDeep } from 'lodash';
-import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import {
   clearBatch,
   setApplicationId,
@@ -154,7 +153,7 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(updateADRAdditionalExaminerNotes, (state, action) => handleADRExaminerNoteChanges(state, action.username)),
 
-  on(updateExistingADRAdditionalExaminerNote, (state, action) => handleUpdateExistingADRAdditionalExaminerNote(state, action)),
+  on(updateExistingADRAdditionalExaminerNote, (state, action) => handleUpdateExistingADRExaminerNote(state, action)),
 
   on(addAxle, (state) => handleAddAxle(state)),
   on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
@@ -551,16 +550,16 @@ function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, userna
   return { ...state, editingTechRecord: additionalNoteTechRecord as unknown as (TechRecordType<'put'>) };
 }
 
-function handleUpdateExistingADRAdditionalExaminerNote(
+function handleUpdateExistingADRExaminerNote(
   state: TechnicalRecordServiceState,
-  action: { additionalExaminerNote: AdditionalExaminerNotes, examinerNoteIndex: number },
+  action: { additionalExaminerNote: string, examinerNoteIndex: number },
 ) {
   const { editingTechRecord } = state;
   const editedTechRecord = editingTechRecord as unknown as
     (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>);
   if (editedTechRecord) {
     const examinerNotes = editedTechRecord.techRecord_adrDetails_additionalExaminerNotes;
-    examinerNotes![action.examinerNoteIndex].note = action.additionalExaminerNote.note;
+    examinerNotes![action.examinerNoteIndex].note = action.additionalExaminerNote;
   }
   return { ...state, editingTechRecord: editingTechRecord as unknown as (TechRecordType<'put'>) };
 }

@@ -103,7 +103,7 @@ export const updateADRAdditionalExaminerNotes = createAction(`${prefix} updateAD
 
 export const updateExistingADRAdditionalExaminerNote = createAction(
   `${prefix} updateExistingADRAdditionalExaminerNote`,
-  props<{ additionalExaminerNote: AdditionalExaminerNotes, examinerNoteIndex: number }>(),
+  props<{ additionalExaminerNote: string, examinerNoteIndex: number }>(),
 );
 
 export const generateADRCertificate = createAction(`${prefix} generateADRCertificate`, props<{

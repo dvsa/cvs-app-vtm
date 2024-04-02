@@ -4,7 +4,6 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { ReplaySubject, take, takeUntil } from 'rxjs';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import {
   CustomFormControl,
   FormNodeEditTypes,
@@ -15,8 +14,6 @@ import { FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { updateExistingADRAdditionalExaminerNote } from '@store/technical-records';
-import cloneDeep from 'lodash.clonedeep';
-import { isEqual } from 'lodash';
 
 @Component({
   selector: 'tech-record-edit-additional-examiner-note',
@@ -25,10 +22,9 @@ import { isEqual } from 'lodash';
 })
 export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   currentTechRecord!: TechRecordType<'hgv' | 'trl' | 'lgv'>;
-  examinerNote!: AdditionalExaminerNotes;
-  examinerNoteOriginal!: AdditionalExaminerNotes;
   examinerNoteIndex!: number;
-  editedExaminerNote?: string | null;
+  editedExaminerNote: string = '';
+  originalExaminerNote: string = '';
   destroy$ = new ReplaySubject<boolean>(1);
   form!: FormGroup;
   formControl!: CustomFormControl;
@@ -55,10 +51,12 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
     });
     const additionalExaminerNotes = this.currentTechRecord?.techRecord_adrDetails_additionalExaminerNotes;
     if (additionalExaminerNotes) {
-      this.examinerNote = additionalExaminerNotes[this.examinerNoteIndex];
-      this.examinerNoteOriginal = cloneDeep(this.examinerNote);
+      const examinerNote = additionalExaminerNotes[this.examinerNoteIndex].note;
+      if (examinerNote) {
+        this.originalExaminerNote = examinerNote;
+        this.editedExaminerNote = examinerNote;
+      }
     }
-    this.editedExaminerNote = this.examinerNote.note;
   }
 
   setupForm() {
@@ -68,7 +66,7 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
     this.form = new FormGroup({
       additionalExaminerNote: this.formControl,
     });
-    this.formControl.patchValue(this.examinerNote.note);
+    this.formControl.patchValue(this.editedExaminerNote);
   }
 
   navigateBack() {
@@ -77,11 +75,11 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   }
 
   handleSubmit(): void {
-    if (!isEqual(this.examinerNote, this.examinerNoteOriginal)) {
+    if (this.originalExaminerNote !== this.editedExaminerNote) {
       this.store.dispatch(
         updateExistingADRAdditionalExaminerNote({
           examinerNoteIndex: this.examinerNoteIndex,
-          additionalExaminerNote: this.examinerNote,
+          additionalExaminerNote: this.editedExaminerNote,
         }),
       );
     }
@@ -90,7 +88,6 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
 
   ngOnChanges(examinerNote: string) {
     this.editedExaminerNote = examinerNote;
-    this.examinerNote.note = examinerNote;
   }
 
   get editTypes(): typeof FormNodeEditTypes {
