@@ -15,6 +15,9 @@ const mockTechRecordService = {
 describe('AdrExaminerNotesHistoryEditComponent', () => {
   let component: AdrExaminerNotesHistoryEditComponent;
   let fixture: ComponentFixture<AdrExaminerNotesHistoryEditComponent>;
+
+  const MOCK_HGV = mockVehicleTechnicalRecord(VehicleTypes.HGV) as TechRecordType<'hgv'>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AdrExaminerNotesHistoryEditComponent],
@@ -54,6 +57,38 @@ describe('AdrExaminerNotesHistoryEditComponent', () => {
       component.currentTechRecord.techRecord_adrDetails_additionalExaminerNotes = [testNote];
       const notes = component.getAdditionalExaminerNotes();
       expect(notes).toEqual([testNote]);
+    });
+  });
+
+  describe('handlePaginationChange', () => {
+    it('should set the start and end pages', () => {
+      component.handlePaginationChange({ start: 0, end: 3 });
+
+      expect(component.pageStart).toBe(0);
+      expect(component.pageEnd).toBe(3);
+    });
+  });
+
+  describe('currentAdrNotesPage', () => {
+    it('should return a sliced array of adr notes depending on the page the user is on', () => {
+      component.currentTechRecord = { ...MOCK_HGV };
+      component.pageStart = 1;
+      component.pageEnd = 2;
+      component.currentTechRecord.techRecord_adrDetails_additionalExaminerNotes = [
+        { createdAtDate: 'test1', lastUpdatedBy: 'test1', note: 'test note 1' },
+        { createdAtDate: 'test2', lastUpdatedBy: 'test2', note: 'test note 2' },
+      ];
+      expect(component.currentAdrNotesPage).toEqual([
+        { createdAtDate: 'test2', lastUpdatedBy: 'test2', note: 'test note 2' },
+      ]);
+    });
+
+    it('should return an empty array if the adr examiner notes is undefined', () => {
+      component.currentTechRecord = { ...MOCK_HGV };
+      component.pageStart = 2;
+      component.pageEnd = 3;
+      component.currentTechRecord.techRecord_adrDetails_additionalExaminerNotes = undefined;
+      expect(component.currentAdrNotesPage).toEqual([]);
     });
   });
 });

@@ -33,7 +33,7 @@ export class AdrExaminerNotesHistoryViewComponent extends BaseControlComponent i
     });
   }
 
-  handlePaginationChange({ start, end }: { start: number; end: number }) {
+  handlePaginationChange({ start, end }: { start: number; end: number }): void {
     this.pageStart = start;
     this.pageEnd = end;
     this.cdr.detectChanges();

@@ -12,7 +12,7 @@
           <th scope="col" class="govuk-table__header whitespace-nowrap">Created By</th>
           <th scope="col" class="govuk-table__header whitespace-nowrap">Notes</th>
         </tr>
-        <ng-container *ngFor="let examinerNote of notes; let i = index; let isLast = last">
+        <ng-container *ngFor="let examinerNote of currentAdrNotesPage; let i = index; let isLast = last">
           <tr class="govuk-table__row" *ngIf="i < 3">
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
               {{ examinerNote.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
@@ -25,6 +25,13 @@
         </ng-container>
       </tbody>
     </table>
+    <app-pagination
+      tableName="adr-notes-history"
+      *ngIf="notes.length"
+      [numberOfItems]="notes.length"
+      [itemsPerPage]="3"
+      (paginationOptions)="handlePaginationChange($event)"
+    ></app-pagination>
     <ng-template #empty>
       <dl class="govuk-summary-list" *ngIf="notes.length === 0">
         <div class="govuk-summary-list__row">
