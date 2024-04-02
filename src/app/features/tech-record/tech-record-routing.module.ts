@@ -207,7 +207,7 @@ const routes: Routes = [
     path: TechRecordRoutes.NOTIFIABLE_ALTERNATION_NEEDED_EDIT_ADDITIONAL_EXAMINER_NOTE,
     component: TechRecordEditAdditionalExaminerNoteComponent,
     data: {
-      title: 'edit-additional-examiner-note',
+      title: 'Edit Additional Examiner Note',
       roles: Roles.TechRecordAmend,
       isEditing: true,
       reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED,
