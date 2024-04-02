@@ -590,11 +590,6 @@ describe('Vehicle Technical Record Reducer', () => {
     it('should', () => {
       const state: TechnicalRecordServiceState = {
         ...initialState,
-        vehicleTechRecord: {
-          systemNumber: 'foo',
-          createdTimestamp: 'bar',
-          vin: 'testVin',
-        } as unknown as TechRecordType<'get'>,
         editingTechRecord: {
           systemNumber: 'foo',
           createdTimestamp: 'bar',
@@ -609,8 +604,11 @@ describe('Vehicle Technical Record Reducer', () => {
         } as unknown as TechRecordType<'put'>,
         loading: true,
       };
-      // const newNote
-      // const action = updateExistingADRAdditionalExaminerNote()
+      const newNote = 'foobar';
+      const action = updateExistingADRAdditionalExaminerNote({ additionalExaminerNote: newNote, examinerNoteIndex: 0 });
+      const newState = vehicleTechRecordReducer(state, action);
+      const editingTechRecord = newState.editingTechRecord as unknown as (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>);
+      expect(editingTechRecord.techRecord_adrDetails_additionalExaminerNotes![0].note).toEqual(newNote);
     });
   });
 });
