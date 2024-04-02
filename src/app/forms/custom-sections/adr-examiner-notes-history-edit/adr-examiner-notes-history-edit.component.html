@@ -8,18 +8,22 @@
     <table class="govuk-table" *ngIf="notes.length > 0; else empty">
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header whitespace-nowrap">Date</th>
-          <th scope="col" class="govuk-table__header whitespace-nowrap">Created By</th>
           <th scope="col" class="govuk-table__header whitespace-nowrap">Notes</th>
+          <th scope="col" class="govuk-table__header whitespace-nowrap">Created By</th>
+          <th scope="col" class="govuk-table__header whitespace-nowrap">Date</th>
+          <th scope="col" class="govuk-table__header whitespace-nowrap"></th>
         </tr>
         <ng-container *ngFor="let examinerNote of currentAdrNotesPage; let i = index; let isLast = last">
           <tr class="govuk-table__row" *ngIf="i < 3">
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-              {{ examinerNote.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+              {{ examinerNote.note }}
             </td>
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ examinerNote.lastUpdatedBy }}</td>
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-              {{ examinerNote.note }}
+              {{ examinerNote.createdAtDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
+              <a class="button" id="edit-additional-examiner-note" (click)="getEditAdditionalExaminerNotePage(i)"> Edit </a>
             </td>
           </tr>
         </ng-container>
