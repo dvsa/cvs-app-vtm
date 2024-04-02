@@ -177,7 +177,7 @@ const routes: Routes = [
     path: TechRecordRoutes.CORRECT_ERROR_EDIT_ADDITIONAL_EXAMINER_NOTE,
     component: TechRecordEditAdditionalExaminerNoteComponent,
     data: {
-      title: 'edit-additional-examiner-note',
+      title: 'Edit Additional Examiner Note',
       roles: Roles.TechRecordAmend,
       isEditing: true,
       reason: ReasonForEditing.CORRECTING_AN_ERROR,

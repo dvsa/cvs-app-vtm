@@ -39,7 +39,11 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((currentTechRecord) => {
       this.currentTechRecord = currentTechRecord as TechRecordType<'hgv' | 'lgv' | 'trl'>;
     });
+    this.getExaminerNote();
+    this.setupForm();
+  }
 
+  getExaminerNote() {
     this.route.params.pipe(take(1)).subscribe((params) => {
       this.examinerNoteIndex = params['examinerNoteIndex'];
     });
@@ -49,6 +53,9 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
       console.log(this.examinerNote);
     }
     this.editedExaminerNote = this.examinerNote.note;
+  }
+
+  setupForm() {
     this.formControl = new CustomFormControl({
       name: 'additionalExaminerNote', type: FormNodeTypes.CONTROL,
     }, '', [Validators.required]);
@@ -83,9 +90,12 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
 
     const errors: GlobalError[] = [];
 
+    const anchorLink = '';
+
     // check for errors in form
     if (this.editedExaminerNote?.length === 0) {
-      // errors.push();
+      const error = 'Additional Examiner Note must be populated.';
+      errors.push({ error, anchorLink } as GlobalError);
     }
 
     if (errors?.length > 0) {

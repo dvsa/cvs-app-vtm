@@ -1,21 +1,19 @@
 <div *ngIf="currentTechRecord">
-  This is a blank page right now.
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
       <dl class="govuk-summary-list">
         <h1 class="govuk-heading-l">Edit Additional Examiner Note</h1>
         <div class="govuk-summary-list__row">
           <form [formGroup]="form">
-            <app-text-input
+            <app-text-area
               #examinerNote
               formControlName="additionalExaminerNote"
               name="AdditionalExaminerNote"
-              label="Additional Examiner Note"
               [width]="width.L"
               (focusout)="isFormValid()"
               (ngModelChange)="ngOnChanges(examinerNote.value)"
             >
-            </app-text-input>
+            </app-text-area>
           </form>
         </div>
       </dl>
