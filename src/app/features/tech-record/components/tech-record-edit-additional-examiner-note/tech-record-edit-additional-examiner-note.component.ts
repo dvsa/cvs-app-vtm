@@ -71,9 +71,6 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   }
 
   handleSubmit(): void {
-    if (!this.isFormValid()) {
-      return;
-    }
     console.log('should dispatch amendAdditionalExaminerNote action');
     // this.store.dispatch(
     //   amendAdditionalExaminerNote({})
@@ -83,26 +80,6 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   ngOnChanges(examinerNote: string) {
     console.log(examinerNote);
     this.editedExaminerNote = examinerNote;
-  }
-
-  isFormValid(): boolean {
-    this.globalErrorService.clearErrors();
-
-    const errors: GlobalError[] = [];
-
-    const anchorLink = '';
-
-    // check for errors in form
-    if (this.editedExaminerNote?.length === 0) {
-      const error = 'Additional Examiner Note must be populated.';
-      errors.push({ error, anchorLink } as GlobalError);
-    }
-
-    if (errors?.length > 0) {
-      this.globalErrorService.setErrors(errors);
-      return false;
-    }
-    return true;
   }
 
   get editTypes(): typeof FormNodeEditTypes {
