@@ -7,11 +7,13 @@
         <div class="govuk-summary-list__row">
           <form [formGroup]="form">
             <app-text-input
+              #examinerNote
               formControlName="additionalExaminerNote"
               name="AdditionalExaminerNote"
               label="Additional Examiner Note"
               [width]="width.L"
               (focusout)="isFormValid()"
+              (ngModelChange)="ngOnChanges(examinerNote.value)"
             >
             </app-text-input>
           </form>

@@ -6,7 +6,12 @@ import { ReplaySubject, take, takeUntil } from 'rxjs';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
-import { CustomFormControl, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl,
+  FormNodeEditTypes,
+  FormNodeTypes,
+  FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 import { FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -18,6 +23,7 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   currentTechRecord!: TechRecordType<'hgv' | 'trl' | 'lgv'>;
   examinerNote!: AdditionalExaminerNotes;
   examinerNoteIndex!: number;
+  editedExaminerNote?: string | null;
   destroy$ = new ReplaySubject<boolean>(1);
   form!: FormGroup;
   formControl!: CustomFormControl;
@@ -42,6 +48,7 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
       this.examinerNote = additionalExaminerNotes[this.examinerNoteIndex];
       console.log(this.examinerNote);
     }
+    this.editedExaminerNote = this.examinerNote.note;
     this.formControl = new CustomFormControl({
       name: 'additionalExaminerNote', type: FormNodeTypes.CONTROL,
     }, '', [Validators.required]);
@@ -66,12 +73,20 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
     // );
   }
 
+  ngOnChanges(examinerNote: string) {
+    console.log(examinerNote);
+    this.editedExaminerNote = examinerNote;
+  }
+
   isFormValid(): boolean {
     this.globalErrorService.clearErrors();
 
     const errors: GlobalError[] = [];
 
     // check for errors in form
+    if (this.editedExaminerNote?.length === 0) {
+      // errors.push();
+    }
 
     if (errors?.length > 0) {
       this.globalErrorService.setErrors(errors);
