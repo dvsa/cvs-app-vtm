@@ -774,7 +774,7 @@ export const AdrSummaryTemplate: FormNode = {
       label: 'Additional examiner notes history',
       value: null,
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN,
+      viewType: FormNodeViewTypes.CUSTOM,
       viewComponent: AdrExaminerNotesHistoryViewComponent,
       editType: FormNodeEditTypes.CUSTOM,
       editComponent: AdrExaminerNotesHistoryEditComponent,
