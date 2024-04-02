@@ -8,6 +8,7 @@ import {
 } from '@ngrx/store';
 // eslint-disable-next-line import/no-unresolved
 import { TypedAction } from '@ngrx/store/src/models';
+import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 
 const prefix = '[Technical Record Service]';
 
@@ -100,7 +101,10 @@ export const clearADRDetailsBeforeUpdate = createAction(`${prefix} clearADRDetai
 
 export const updateADRAdditionalExaminerNotes = createAction(`${prefix} updateADRAdditionalExaminerNotes`, props<{ username: string }>());
 
-export const updateExistingADRAdditionalExaminerNote = createAction(`${prefix} updateExistingADRAdditionalExaminerNote`);
+export const updateExistingADRAdditionalExaminerNote = createAction(
+  `${prefix} updateExistingADRAdditionalExaminerNote`,
+  props<{ additionalExaminerNote: AdditionalExaminerNotes, examinerNoteIndex: number }>(),
+);
 
 export const generateADRCertificate = createAction(`${prefix} generateADRCertificate`, props<{
   systemNumber: string, createdTimestamp: string, certificateType: string

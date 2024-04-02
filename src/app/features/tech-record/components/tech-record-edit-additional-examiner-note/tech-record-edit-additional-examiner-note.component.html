@@ -10,7 +10,6 @@
               formControlName="additionalExaminerNote"
               name="AdditionalExaminerNote"
               [width]="width.L"
-              (focusout)="isFormValid()"
               (ngModelChange)="ngOnChanges(examinerNote.value)"
             >
             </app-text-area>
