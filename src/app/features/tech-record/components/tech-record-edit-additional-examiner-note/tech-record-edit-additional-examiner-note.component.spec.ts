@@ -3,12 +3,12 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordEditAdditionalExaminerNoteComponent } from './tech-record-edit-additional-examiner-note.component';
-
 
 const mockTechRecordService = {
   techRecord$: jest.fn(),
@@ -16,6 +16,11 @@ const mockTechRecordService = {
 describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
   let fixture: ComponentFixture<TechRecordEditAdditionalExaminerNoteComponent>;
   let component: TechRecordEditAdditionalExaminerNoteComponent;
+  let router: Router;
+  let errorService: GlobalErrorService;
+  let route: ActivatedRoute;
+  let store: MockStore;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordEditAdditionalExaminerNoteComponent],
@@ -28,26 +33,63 @@ describe('TechRecordEditAdditionalExaminerNoteComponent', () => {
     }).compileComponents();
     fixture = TestBed.createComponent(TechRecordEditAdditionalExaminerNoteComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+    errorService = TestBed.inject(GlobalErrorService);
+    route = TestBed.inject(ActivatedRoute);
+    store = TestBed.inject(MockStore);
   });
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  describe('getTechRecord', () => {
-
-  });
-  describe('getExaminerNote', () => {
-
-  });
-  describe('setupForm', () => {
-
-  });
   describe('ngOnInit', () => {
-
+    it('should call all initialisation functions', () => {
+      const examinerNoteSpy = jest.spyOn(component, 'getExaminerNote').mockReturnValue();
+      const techRecordSpy = jest.spyOn(component, 'getTechRecord').mockReturnValue();
+      const formSpy = jest.spyOn(component, 'setupForm').mockReturnValue();
+      component.ngOnInit();
+      expect(examinerNoteSpy).toHaveBeenCalled();
+      expect(formSpy).toHaveBeenCalled();
+      expect(techRecordSpy).toHaveBeenCalled();
+    });
   });
   describe('navigateBack', () => {
+    it('should clear all errors', () => {
+      jest.spyOn(router, 'navigate').mockImplementation();
 
+      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+
+      component.navigateBack();
+
+      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should navigate back to the previous page', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+      component.navigateBack();
+
+      expect(navigateSpy).toHaveBeenCalledWith(['../../'], { relativeTo: route });
+    });
   });
   describe('handleSubmit', () => {
+    it('should not dispatch an action if the notes are the same', () => {
+      const storeSpy = jest.spyOn(store, 'dispatch');
+      const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockReturnValue();
+      component.originalExaminerNote = 'foobar';
+      component.editedExaminerNote = 'foobar';
+      component.handleSubmit();
+      expect(storeSpy).not.toHaveBeenCalled();
+      expect(navigateBackSpy).toHaveBeenCalled();
+    });
 
+    it('should dispatch an action if the notes are not the same', () => {
+      const storeSpy = jest.spyOn(store, 'dispatch');
+      const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockReturnValue();
+      component.originalExaminerNote = 'foo';
+      component.editedExaminerNote = 'bar';
+      component.handleSubmit();
+      expect(storeSpy).toHaveBeenCalled();
+      expect(navigateBackSpy).toHaveBeenCalled();
+    });
   });
 });
