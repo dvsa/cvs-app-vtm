@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  AdrExaminerNotesHistoryEditComponent
+  AdrExaminerNotesHistoryEditComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -8,10 +8,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { TechRecordEditAdditionalExaminerNoteComponent } from './tech-record-edit-additional-examiner-note.component';
-
 
 const mockTechRecordService = {
   techRecord$: jest.fn(),
