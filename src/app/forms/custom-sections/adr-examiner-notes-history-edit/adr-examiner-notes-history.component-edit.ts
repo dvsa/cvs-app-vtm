@@ -14,6 +14,7 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
+import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 
 @Component({
   selector: 'app-adr-examiner-notes-history',
@@ -21,9 +22,7 @@ import { ReasonForEditing } from '@models/vehicle-tech-record.model';
   styleUrls: ['adr-examiner-notes-history.component-edit.scss'],
 })
 export class AdrExaminerNotesHistoryEditComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
-
   destroy$ = new ReplaySubject<boolean>(1);
-
   formArray = new FormArray<CustomFormControl>([]);
   currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'> = undefined;
   technicalRecordService = inject(TechnicalRecordService);
@@ -32,8 +31,10 @@ export class AdrExaminerNotesHistoryEditComponent extends BaseControlComponent i
   router = inject(Router);
   route = inject(ActivatedRoute);
   editingReason?: ReasonForEditing;
+  pageStart?: number;
+  pageEnd?: number;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
       this.control?.patchValue(changes, { emitModelToViewChange: true });
     });
@@ -43,7 +44,7 @@ export class AdrExaminerNotesHistoryEditComponent extends BaseControlComponent i
     this.editingReason = this.route.snapshot.data['reason'];
   }
 
-  override ngAfterContentInit() {
+  override ngAfterContentInit(): void {
     const injectedControl = this.injector.get(NgControl, null);
     if (injectedControl) {
       const ngControl = injectedControl.control as unknown as KeyValue<string, CustomControl>;
@@ -54,9 +55,18 @@ export class AdrExaminerNotesHistoryEditComponent extends BaseControlComponent i
     }
   }
 
-  getAdditionalExaminerNotes() {
-    const returnValue = this.currentTechRecord ? this.currentTechRecord.techRecord_adrDetails_additionalExaminerNotes ?? [] : [];
-    return returnValue;
+  handlePaginationChange({ start, end }: { start: number; end: number }): void {
+    this.pageStart = start;
+    this.pageEnd = end;
+    this.cdr.detectChanges();
+  }
+
+  getAdditionalExaminerNotes(): AdditionalExaminerNotes[] {
+    return this.currentTechRecord?.techRecord_adrDetails_additionalExaminerNotes ?? [];
+  }
+
+  get currentAdrNotesPage(): AdditionalExaminerNotes[] {
+    return this.currentTechRecord?.techRecord_adrDetails_additionalExaminerNotes?.slice(this.pageStart, this.pageEnd) ?? [];
   }
 
   getEditAdditionalExaminerNotePage(examinerNoteIndex: number) {
@@ -67,9 +77,8 @@ export class AdrExaminerNotesHistoryEditComponent extends BaseControlComponent i
     void this.router.navigate([route], { relativeTo: this.route, state: this.currentTechRecord });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();
   }
-
 }
