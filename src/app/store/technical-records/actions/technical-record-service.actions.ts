@@ -8,7 +8,6 @@ import {
 } from '@ngrx/store';
 // eslint-disable-next-line import/no-unresolved
 import { TypedAction } from '@ngrx/store/src/models';
-import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 
 const prefix = '[Technical Record Service]';
 
