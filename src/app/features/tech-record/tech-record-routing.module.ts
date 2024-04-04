@@ -170,7 +170,10 @@ const routes: Routes = [
   {
     path: TechRecordRoutes.CORRECT_ERROR_CHANGE_SUMMARY,
     component: TechRecordSummaryChangesComponent,
-    data: { roles: Roles.TechRecordAmend },
+    data: {
+      roles: Roles.TechRecordAmend,
+      isEditing: true,
+    },
     canActivate: [MsalGuard, RoleGuard],
   },
   {
@@ -188,7 +191,10 @@ const routes: Routes = [
   {
     path: TechRecordRoutes.NOTIFIABLE_ALTERATION_NEEDED_CHANGE_SUMMARY,
     component: TechRecordSummaryChangesComponent,
-    data: { roles: Roles.TechRecordAmend },
+    data: {
+      roles: Roles.TechRecordAmend,
+      isEditing: true,
+    },
     canActivate: [MsalGuard, RoleGuard],
   },
   {
