@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input,
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -21,7 +23,6 @@ export class CollapsibleTextComponent {
   @Input() isCollapsed = true;
 
   constructor(private cdr: ChangeDetectorRef) {
-    console.log('created');
   }
 
   getCollapsedString() {
@@ -32,10 +33,8 @@ export class CollapsibleTextComponent {
   }
 
   open() {
-    console.log('test');
     this.isCollapsed = false;
     this.cdr.markForCheck();
-    console.log(this.isCollapsed);
   }
 
   close() {

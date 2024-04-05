@@ -6,7 +6,10 @@ import { BaseControlComponent } from '@forms/components/base-control/base-contro
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  map, Observable, Subject, takeUntil,
+} from 'rxjs';
+import { RouterService } from '@services/router/router.service';
 
 @Component({
   selector: 'app-adr-examiner-notes-history-view',
@@ -22,6 +25,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class AdrExaminerNotesHistoryViewComponent extends BaseControlComponent implements OnInit, OnDestroy {
   technicalRecordService = inject(TechnicalRecordService);
+  routerService = inject(RouterService);
   currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'> | undefined;
   pageStart?: number;
   pageEnd?: number;
@@ -31,6 +35,10 @@ export class AdrExaminerNotesHistoryViewComponent extends BaseControlComponent i
     this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((currentTechRecord) => {
       this.currentTechRecord = currentTechRecord as TechRecordType<'hgv' | 'lgv' | 'trl'>;
     });
+  }
+
+  get isEditing$(): Observable<boolean> {
+    return this.routerService.getRouteDataProperty$('isEditing').pipe(map((isEditing) => !!isEditing));
   }
 
   handlePaginationChange({ start, end }: { start: number; end: number }): void {

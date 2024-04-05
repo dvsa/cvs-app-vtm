@@ -11,11 +11,16 @@
           <ng-container *ngFor="let result of currentAdrNotesPage; let i = index; let isLast = last">
             <tr class="govuk-table__row" *ngIf="i < 3">
               <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-                <collapsible-text [text]="result.note ?? ''" [maxChars]="150"></collapsible-text>
+                <ng-container *ngIf="(isEditing$ | async) === false">
+                  <collapsible-text [text]="result.note ?? ''" [maxChars]="150"></collapsible-text>
+                </ng-container>
+                <ng-container *ngIf="(isEditing$ | async) === true">
+                  {{ result.note }}
+                </ng-container>
               </td>
               <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.lastUpdatedBy }}</td>
               <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-                {{ result.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+                {{ result.createdAtDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
               </td>
             </tr>
           </ng-container>
