@@ -3,6 +3,12 @@
     <div class="govuk-grid-column-full">
       <dl class="govuk-summary-list">
         <h1 class="govuk-heading-l">Edit Additional Examiner Note</h1>
+        <div class="parent-div">
+          <td class="govuk-heading-s">Date</td>
+          <td class="table-value">{{ examinerNoteObj.createdAtDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
+          <td class="govuk-heading-s">Created by</td>
+          <td class="table-value">{{ examinerNoteObj.lastUpdatedBy }}</td>
+        </div>
         <div class="govuk-summary-list__row">
           <form [formGroup]="form">
             <app-text-area

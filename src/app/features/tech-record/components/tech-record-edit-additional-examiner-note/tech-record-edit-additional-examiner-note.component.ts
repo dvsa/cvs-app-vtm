@@ -14,6 +14,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import { updateExistingADRAdditionalExaminerNote } from '@store/technical-records';
+import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 
 @Component({
   selector: 'tech-record-edit-additional-examiner-note',
@@ -25,6 +26,7 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   examinerNoteIndex!: number;
   editedExaminerNote: string = '';
   originalExaminerNote: string = '';
+  examinerNoteObj!: AdditionalExaminerNotes;
   destroy$ = new ReplaySubject<boolean>(1);
   form!: FormGroup;
   formControl!: CustomFormControl;
@@ -57,6 +59,7 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
     if (additionalExaminerNotes) {
       const examinerNote = additionalExaminerNotes[this.examinerNoteIndex].note;
       if (examinerNote) {
+        this.examinerNoteObj = additionalExaminerNotes[this.examinerNoteIndex];
         this.originalExaminerNote = examinerNote;
         this.editedExaminerNote = examinerNote;
       }

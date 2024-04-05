@@ -3,7 +3,7 @@
     {{ getCollapsedString() }}
   </div>
 
-  <button type="button" class="govuk-accordion__section-button" [attr.aria-expanded]="false" (click)="open()">
+  <button type="button" class="govuk-accordion__section-button" [attr.aria-expanded]="false" (click)="open()" *ngIf="text.length >= maxChars">
     <span class="govuk-accordion__section-toggle" data-nosnippet="">
       <span class="govuk-accordion__section-toggle-focus">
         <span class="govuk-accordion-nav__chevron govuk-accordion-nav__chevron--down"></span>
