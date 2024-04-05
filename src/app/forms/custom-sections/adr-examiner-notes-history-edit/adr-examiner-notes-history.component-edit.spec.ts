@@ -60,7 +60,7 @@ describe('AdrExaminerNotesHistoryEditComponent', () => {
       component.currentTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV) as TechRecordType<'hgv'>;
       const testNote = {
         note: 'testNote',
-        createdAtDate: new Date().toISOString().split('T')[0],
+        createdAtDate: new Date().toISOString(),
         lastUpdatedBy: 'Someone Somewhere',
       };
       component.currentTechRecord.techRecord_adrDetails_additionalExaminerNotes = [testNote];

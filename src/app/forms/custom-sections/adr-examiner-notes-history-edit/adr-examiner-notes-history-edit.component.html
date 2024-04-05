@@ -20,7 +20,7 @@
             </td>
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ examinerNote.lastUpdatedBy }}</td>
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-              {{ examinerNote.createdAtDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
+              {{ examinerNote.createdAtDate | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
             </td>
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
               <a class="button" id="edit-additional-examiner-note" (click)="getEditAdditionalExaminerNotePage(i)"> Edit </a>

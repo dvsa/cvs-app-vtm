@@ -538,7 +538,7 @@ function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, userna
       const additionalExaminerNotes = {
         note: additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes_note,
         lastUpdatedBy: username,
-        createdAtDate: new Date().toISOString().split('T')[0],
+        createdAtDate: new Date().toISOString(),
       };
       if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === null
         || additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {

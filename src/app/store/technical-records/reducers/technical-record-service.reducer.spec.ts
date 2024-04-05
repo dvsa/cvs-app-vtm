@@ -562,7 +562,7 @@ describe('Vehicle Technical Record Reducer', () => {
     it('should', () => {
       const testNote = {
         note: 'testNote',
-        createdAtDate: new Date().toISOString().split('T')[0],
+        createdAtDate: new Date().toISOString(),
         lastUpdatedBy: 'someone',
       };
       const state: TechnicalRecordServiceState = {
