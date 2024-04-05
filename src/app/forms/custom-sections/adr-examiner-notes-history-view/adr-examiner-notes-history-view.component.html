@@ -16,7 +16,7 @@
               </td>
               <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.lastUpdatedBy }}</td>
               <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-                {{ result.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+                {{ result.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
               </td>
             </tr>
           </ng-container>
