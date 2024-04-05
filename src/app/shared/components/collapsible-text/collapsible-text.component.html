@@ -1,0 +1,28 @@
+<ng-container *ngIf="isCollapsed">
+  <div>
+    {{ getCollapsedString() }}
+  </div>
+
+  <button type="button" class="govuk-accordion__section-button" [attr.aria-expanded]="false" (click)="open()" *ngIf="text.length >= maxChars">
+    <span class="govuk-accordion__section-toggle" data-nosnippet="">
+      <span class="govuk-accordion__section-toggle-focus">
+        <span class="govuk-accordion-nav__chevron govuk-accordion-nav__chevron--down"></span>
+        <span class="govuk-accordion__section-toggle-text"> Show </span>
+      </span>
+    </span>
+  </button>
+</ng-container>
+<ng-container *ngIf="!isCollapsed">
+  <div>
+    {{ text }}
+  </div>
+
+  <button type="button" class="govuk-accordion__section-button" [attr.aria-expanded]="false" (click)="close()">
+    <span class="govuk-accordion__section-toggle" data-nosnippet="">
+      <span class="govuk-accordion__section-toggle-focus">
+        <span class="govuk-accordion-nav__chevron govuk-accordion-nav__chevron--down"></span>
+        <span class="govuk-accordion__section-toggle-text"> Hide </span>
+      </span>
+    </span>
+  </button>
+</ng-container>

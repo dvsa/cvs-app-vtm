@@ -61,7 +61,7 @@ import {
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
-  updateEditingTechRecordCancel,
+  updateEditingTechRecordCancel, updateExistingADRAdditionalExaminerNote,
   updateScrollPosition,
   updateTechRecord,
   updateTechRecordFailure,
@@ -152,6 +152,8 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateBody, (state, action) => handleUpdateBody(state, action)),
 
   on(updateADRAdditionalExaminerNotes, (state, action) => handleADRExaminerNoteChanges(state, action.username)),
+
+  on(updateExistingADRAdditionalExaminerNote, (state, action) => handleUpdateExistingADRExaminerNote(state, action)),
 
   on(addAxle, (state) => handleAddAxle(state)),
   on(removeAxle, (state, action) => handleRemoveAxle(state, action)),
@@ -546,4 +548,18 @@ function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, userna
     }
   }
   return { ...state, editingTechRecord: additionalNoteTechRecord as unknown as (TechRecordType<'put'>) };
+}
+
+function handleUpdateExistingADRExaminerNote(
+  state: TechnicalRecordServiceState,
+  action: { additionalExaminerNote: string, examinerNoteIndex: number },
+) {
+  const { editingTechRecord } = state;
+  const editedTechRecord = editingTechRecord as unknown as
+    (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>);
+  if (editedTechRecord) {
+    const examinerNotes = editedTechRecord.techRecord_adrDetails_additionalExaminerNotes;
+    examinerNotes![action.examinerNoteIndex].note = action.additionalExaminerNote;
+  }
+  return { ...state, editingTechRecord: editingTechRecord as unknown as (TechRecordType<'put'>) };
 }

@@ -9,6 +9,8 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { of } from 'rxjs';
 import { AdrExaminerNotesHistoryViewComponent } from './adr-examiner-notes-history-view.component';
+import { RouterService } from '@services/router/router.service';
+
 
 describe('AdrExaminerNotesHistoryViewComponent', () => {
   let component: AdrExaminerNotesHistoryViewComponent;
@@ -18,6 +20,7 @@ describe('AdrExaminerNotesHistoryViewComponent', () => {
   const mockTechRecordService = {
     techRecord$: of({ ...MOCK_HGV }),
   };
+  const mockRouterService = {};
 
   const control = new CustomFormControl({
     name: 'techRecord_adrDetails_additionalExaminerNotes',
@@ -30,6 +33,7 @@ describe('AdrExaminerNotesHistoryViewComponent', () => {
       providers: [
         provideMockStore<State>({ initialState: initialAppState }),
         { provide: TechnicalRecordService, useValue: mockTechRecordService },
+        { provide: RouterService, useValue: mockRouterService },
         { provide: NG_VALUE_ACCESSOR, useExisting: AdrExaminerNotesHistoryViewComponent, multi: true },
         {
           provide: NgControl,

@@ -170,14 +170,17 @@ const routes: Routes = [
   {
     path: TechRecordRoutes.CORRECT_ERROR_CHANGE_SUMMARY,
     component: TechRecordSummaryChangesComponent,
-    data: { roles: Roles.TechRecordAmend },
+    data: {
+      roles: Roles.TechRecordAmend,
+      isEditing: true,
+    },
     canActivate: [MsalGuard, RoleGuard],
   },
   {
     path: TechRecordRoutes.CORRECT_ERROR_EDIT_ADDITIONAL_EXAMINER_NOTE,
     component: TechRecordEditAdditionalExaminerNoteComponent,
     data: {
-      title: 'edit-additional-examiner-note',
+      title: 'Edit Additional Examiner Note',
       roles: Roles.TechRecordAmend,
       isEditing: true,
       reason: ReasonForEditing.CORRECTING_AN_ERROR,
@@ -188,7 +191,10 @@ const routes: Routes = [
   {
     path: TechRecordRoutes.NOTIFIABLE_ALTERATION_NEEDED_CHANGE_SUMMARY,
     component: TechRecordSummaryChangesComponent,
-    data: { roles: Roles.TechRecordAmend },
+    data: {
+      roles: Roles.TechRecordAmend,
+      isEditing: true,
+    },
     canActivate: [MsalGuard, RoleGuard],
   },
   {
@@ -207,7 +213,7 @@ const routes: Routes = [
     path: TechRecordRoutes.NOTIFIABLE_ALTERNATION_NEEDED_EDIT_ADDITIONAL_EXAMINER_NOTE,
     component: TechRecordEditAdditionalExaminerNoteComponent,
     data: {
-      title: 'edit-additional-examiner-note',
+      title: 'Edit Additional Examiner Note',
       roles: Roles.TechRecordAmend,
       isEditing: true,
       reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED,

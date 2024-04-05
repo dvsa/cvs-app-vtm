@@ -33,7 +33,7 @@ import {
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
-  updateEditingTechRecordCancel,
+  updateEditingTechRecordCancel, updateExistingADRAdditionalExaminerNote,
   updateScrollPosition,
   updateTechRecord,
   updateTechRecordFailure,
@@ -584,6 +584,31 @@ describe('Vehicle Technical Record Reducer', () => {
       const newState = vehicleTechRecordReducer(state, action);
       expect((newState.editingTechRecord as unknown as (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>))?.techRecord_adrDetails_additionalExaminerNotes)
         .toContainEqual(testNote);
+    });
+  });
+  describe('handleUpdateExistingADRExaminerNote', () => {
+    it('should', () => {
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
+        editingTechRecord: {
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testVin',
+          techRecord_adrDetails_additionalExaminerNotes: [
+            {
+              note: 'foo',
+              createdAtDate: 'bar',
+              lastUpdatedBy: 'foo',
+            },
+          ],
+        } as unknown as TechRecordType<'put'>,
+        loading: true,
+      };
+      const newNote = 'foobar';
+      const action = updateExistingADRAdditionalExaminerNote({ additionalExaminerNote: newNote, examinerNoteIndex: 0 });
+      const newState = vehicleTechRecordReducer(state, action);
+      const editingTechRecord = newState.editingTechRecord as unknown as (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>);
+      expect(editingTechRecord.techRecord_adrDetails_additionalExaminerNotes![0].note).toEqual(newNote);
     });
   });
 });
