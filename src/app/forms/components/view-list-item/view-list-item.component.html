@@ -3,15 +3,15 @@
 
   <ng-container [ngSwitch]="viewType">
     <ng-container *ngSwitchCase="formNodeViewTypes.DATE">
-      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
+      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.DATETIME">
-      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
+      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.TIME">
-      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'HH:mm' | defaultNullOrEmpty }}</td>
+      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</td>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.VRM">
@@ -33,7 +33,7 @@
             <ng-container *ngFor="let result of value; let i = index; let isLast = last">
               <tr *ngIf="i < 3">
                 <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-                  {{ result.createdAtDate | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}
+                  {{ result.createdAtDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
                 </td>
                 <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.lastUpdatedBy }}</td>
                 <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.note }}</td>
@@ -58,8 +58,8 @@
     </ng-container>
 
     <ng-container *ngSwitchDefault>
-      <td [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-table__cell">
-        {{ value | refDataDecode$ : control?.meta?.referenceData | async | getControlLabel : control?.meta?.options | defaultNullOrEmpty }}
+      <td [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-table__cell break-all">
+        {{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}
       </td>
     </ng-container>
   </ng-container>
