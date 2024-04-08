@@ -21,7 +21,7 @@ export const tyresTemplateHgv: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      width: FormNodeWidth.XS,
+      width: FormNodeWidth.UNSET,
       options: getOptionsFromEnum(TyreUseCode),
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
