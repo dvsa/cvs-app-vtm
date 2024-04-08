@@ -1,12 +1,12 @@
 import { TestType } from '@api/test-types';
 import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { StatusCodes, VehicleSubclass } from '@models/vehicle-tech-record.model';
-import { createSelector } from '@ngrx/store';
-import { toEditOrNotToEdit } from '@store/test-records';
-import { selectTechRecordHistory } from '@store/technical-records';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TestResultModel } from '@models/test-results/test-result.model';
+import { StatusCodes, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { createSelector } from '@ngrx/store';
+import { selectTechRecordHistory } from '@store/technical-records';
+import { toEditOrNotToEdit } from '@store/test-records';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
 
 const {
@@ -114,7 +114,8 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
     vehicleSubclass,
     numberOfWheelsDriven,
   } = testResult;
-  const filterFirstTestIds : string[] = ['41', '95', '82', '83', '119', '120', '65', '66', '67', '103', '104', '51'];
+  const filterAllFirstTestIds = ['41', '119', '120', '67', '103', '104', '51'];
+  const filterHgvFirstTestIds = ['41', '119', '120', '67', '103', '104'];
   return (
     testTypes
       .filter((testType) => !vehicleType || !testType.forVehicleType || testType.forVehicleType.includes(vehicleType))
@@ -148,7 +149,11 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
         (testType) => !statusCode
         || statusCode !== StatusCodes.PROVISIONAL
         || !hasCurrentRecordInHistory
-        || !filterFirstTestIds.includes(testType.id),
+        || !(
+          vehicleType === VehicleTypes.HGV
+            ? filterHgvFirstTestIds.includes(testType.id)
+            : filterAllFirstTestIds.includes(testType.id)
+        ),
       )
       .map((testType: TestTypeCategory) => {
         const newTestType = { ...testType } as TestTypeCategory;
