@@ -12,7 +12,7 @@
             <tr class="govuk-table__row" *ngIf="i < 3">
               <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
                 <ng-container *ngIf="(isEditing$ | async) === false">
-                  <collapsible-text [text]="result.note ?? ''" [maxChars]="151"></collapsible-text>
+                  <collapsible-text [text]="result.note ?? ''" [maxChars]="150"></collapsible-text>
                 </ng-container>
                 <ng-container *ngIf="(isEditing$ | async) === true">
                   {{ result.note }}
