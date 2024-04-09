@@ -1,5 +1,5 @@
 <ng-container *ngIf="isCollapsed">
-  <div class="break-all">{{ text | slice: 0 : maxChars - 1 }}<span *ngIf="text.length >= maxChars">...</span></div>
+  <div class="break-all">{{ text | slice: 0 : maxChars }}<span *ngIf="text.length > maxChars">...</span></div>
 
   <button type="button" class="govuk-accordion__section-button" [attr.aria-expanded]="false" (click)="open()" *ngIf="text.length > maxChars">
     <span class="govuk-accordion__section-toggle" data-nosnippet="">
