@@ -16,7 +16,7 @@
         <ng-container *ngFor="let examinerNote of currentAdrNotesPage; let i = index; let isLast = last">
           <tr class="govuk-table__row" *ngIf="i < 3">
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-              <collapsible-text [text]="examinerNote.note ?? ''" [maxChars]="150"></collapsible-text>
+              <collapsible-text [text]="examinerNote.note ?? ''" [maxChars]="151"></collapsible-text>
             </td>
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ examinerNote.lastUpdatedBy }}</td>
             <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
