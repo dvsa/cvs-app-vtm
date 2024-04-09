@@ -61,6 +61,7 @@ export class ReferenceDataListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    console.log('reference data list create form');
     this.form = this.dfs.createForm(this.searchTemplate) as CustomFormGroup;
     this.route.params.pipe(take(1)).subscribe((params) => {
       this.type = params['type'];

@@ -74,6 +74,7 @@ export class TechRecordSearchTyresComponent implements OnInit {
   };
 
   ngOnInit() {
+    console.log('tech record search tyres create form');
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
     this.route.params.pipe(take(1)).subscribe((p) => {

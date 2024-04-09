@@ -27,6 +27,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
+    console.log('defects create form');
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
     this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
       this.formChange.emit(event);

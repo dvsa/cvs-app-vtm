@@ -46,6 +46,7 @@ export class RequiredStandardsComponent implements OnInit, OnDestroy, OnChanges 
   ) {}
 
   ngOnInit(): void {
+    console.log('required standards create form');
     this.form = this.dfs.createForm(this.template, this.testData) as CustomFormGroup;
     this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe((event) => {
       this.formChange.emit(event);

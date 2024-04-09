@@ -25,6 +25,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
   @Output() formChange = new EventEmitter();
 
   form: CustomFormGroup | CustomFormArray = new CustomFormGroup({ name: 'dynamic-form', type: FormNodeTypes.GROUP, children: [] }, {});
+  createdForm?: CustomFormGroup | CustomFormArray;
 
   private destroy$ = new Subject<void>();
 
@@ -32,13 +33,13 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { template, data } = changes;
-    if (template && template.currentValue && data.previousValue !== undefined) {
+    if (template && template.currentValue && !this.createdForm) {
+      console.log('form created');
       this.form = this.dfs.createForm(template.currentValue, this.data);
+      this.createdForm = this.form;
     }
     if (data?.currentValue && data?.previousValue && !isEqual(data.currentValue, data.previousValue)) {
       console.log('dynamic form group onChanges');
-      console.log(data.previousValue);
-      console.log(data.currentValue);
       console.log(detailedDiff(data.currentValue, data.previousValue));
       this.form.patchValue(data.currentValue, { emitEvent: false });
     }

@@ -39,6 +39,7 @@ export class ApprovalTypeComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.approvalType = this.techRecord.techRecord_vehicleType === 'psv'
     || this.techRecord.techRecord_vehicleType === 'hgv' ? approvalTypeHgvOrPsv : approvalType;
+    console.log('approval type create form');
     this.form = this.dfs.createForm(
       this.techRecord.techRecord_vehicleType === 'psv' ? PsvTypeApprovalTemplate : HgvAndTrlTypeApprovalTemplate,
       this.techRecord,

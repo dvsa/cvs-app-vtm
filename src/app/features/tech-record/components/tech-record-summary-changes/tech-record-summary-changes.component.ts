@@ -66,12 +66,14 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    console.log('ngOnInit');
     this.navigateUponSuccess();
     this.initSubscriptions();
   }
 
   navigateUponSuccess(): void {
     this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe((vehicleTechRecord) => {
+      alert();
       this.store$.dispatch(clearAllSectionStates());
       this.store$.dispatch(clearScrollPosition());
       void this.router.navigate([

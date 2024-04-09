@@ -208,6 +208,7 @@ export class TechnicalRecordServiceEffects {
 
           return of(
             techRecordTemplate.reduce((mergedNodes, formNode) => {
+              console.log('generateTechRecordBasedOnSectionTemplates$ create form');
               const form = this.dfs.createForm(formNode, techRecord);
               return merge(mergedNodes, form.getCleanValue(form));
             }, {}) as TechRecordType<'put'>,
@@ -248,6 +249,7 @@ export class TechnicalRecordServiceEffects {
           const techRecordTemplate = vehicleTemplateMap.get(techRecord_vehicleType) || [];
           return of(
             techRecordTemplate.reduce((mergedNodes, formNode) => {
+              console.log('generateTechRecordBasedOnSectionTemplatesAfterVehicleTypeChange$ create form');
               const form = this.dfs.createForm(formNode, techRecord);
               return merge(mergedNodes, form.getCleanValue(form));
             }, {}) as TechRecordType<'put'>,

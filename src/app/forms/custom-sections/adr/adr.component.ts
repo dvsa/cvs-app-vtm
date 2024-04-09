@@ -39,6 +39,7 @@ export class AdrComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.template = this.isReviewScreen ? AdrSummaryTemplate : AdrTemplate;
+    console.log('adr component create form');
     this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
     this.techRecord.techRecord_adrDetails_dangerousGoods = this.adrService.carriesDangerousGoods(this.techRecord);
     if (this.techRecord.techRecord_adrDetails_dangerousGoods && !this.isReviewScreen) {

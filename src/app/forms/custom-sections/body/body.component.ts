@@ -51,6 +51,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.template = this.techRecord.techRecord_vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
+    console.log('body create form');
     this.form = this.dfs.createForm(this.template, this.techRecord) as CustomFormGroup;
     this.form.cleanValueChanges
       .pipe(

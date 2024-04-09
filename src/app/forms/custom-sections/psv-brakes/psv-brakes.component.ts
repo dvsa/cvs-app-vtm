@@ -47,6 +47,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    console.log('psv brakes create form');
     this.form = this.dfs.createForm(PsvBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
 
     (this.form.cleanValueChanges as Observable<Partial<TechRecordType<'psv'>>>)

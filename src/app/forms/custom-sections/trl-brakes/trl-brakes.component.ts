@@ -31,6 +31,7 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
+    console.log('trl brakes create form');
     this.form = this.dfs.createForm(TrlBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

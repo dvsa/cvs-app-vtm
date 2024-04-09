@@ -111,6 +111,7 @@ export class DynamicFormService {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
+    console.log('createForm');
 
     // what does this do???? why would form node ever be falsy but be passed in as a param???
     if (!formNode) {

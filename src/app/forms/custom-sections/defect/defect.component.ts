@@ -81,6 +81,7 @@ export class DefectComponent implements OnInit, OnDestroy {
         if (!testResult) this.navigateBack();
         this.defects = testResult?.testTypes[0].defects;
         this.vehicleType = testResult?.vehicleType;
+        console.log('defect create form');
         this.defectsForm = (this.dfs.createForm(DefectsTpl, testResult) as CustomFormGroup).get(['testTypes', '0', 'defects']) as CustomFormArray;
         if (defectIndexValue) {
           this.index = Number(defectIndexValue);

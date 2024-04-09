@@ -196,6 +196,7 @@ export class TestResultsEffects {
         const mergedForms = {};
         Object.values(tpl).forEach((node) => {
           const form = this.dfs.createForm(node, selectedTestResult);
+          console.log('generateSectionTemplatesAndtestResultToUpdate$ create form');
           merge(mergedForms, form.getCleanValue(form));
         });
 
@@ -246,6 +247,7 @@ export class TestResultsEffects {
         const mergedForms = {} as TestResultModel;
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         Object.values(tpl!).forEach((node) => {
+          console.log('generateContingencyTestTemplatesAndtestResultToUpdate$ create form');
           const form = this.dfs.createForm(node, editedTestResult);
           merge(mergedForms, form.getCleanValue(form));
         });

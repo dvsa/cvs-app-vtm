@@ -61,6 +61,7 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
       if (!testResult) this.navigateBack();
       this.requiredStandardForm = (this.dfs.createForm(RequiredStandardsTpl, testResult) as CustomFormGroup)
         .get(['testTypes', '0', 'requiredStandards']) as CustomFormArray;
+      console.log('required standard create form');
       if (requiredStandardIndexValue) {
         this.amendingRs = true;
         this.index = Number(requiredStandardIndexValue);
