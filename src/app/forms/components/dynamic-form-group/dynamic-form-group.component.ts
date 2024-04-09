@@ -3,10 +3,12 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { isEqual } from 'lodash';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import {
   CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes,
 } from '../../services/dynamic-form.types';
+import { detailedDiff } from 'deep-object-diff';
 
 @Component({
   selector: 'app-dynamic-form-group',
@@ -19,6 +21,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
   @Input() data: any = {};
   @Input() template?: FormNode;
   @Input() edit = false;
+  @Input() disableChanges? = false;
   @Output() formChange = new EventEmitter();
 
   form: CustomFormGroup | CustomFormArray = new CustomFormGroup({ name: 'dynamic-form', type: FormNodeTypes.GROUP, children: [] }, {});
@@ -29,16 +32,23 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { template, data } = changes;
-    if (template && template.currentValue) {
+    if (template && template.currentValue && data.previousValue !== undefined) {
       this.form = this.dfs.createForm(template.currentValue, this.data);
     }
-    if (data?.currentValue && data.currentValue !== data.previousValue) {
+    if (data?.currentValue && data?.previousValue && !isEqual(data.currentValue, data.previousValue)) {
+      console.log('dynamic form group onChanges');
+      console.log(data.previousValue);
+      console.log(data.currentValue);
+      console.log(detailedDiff(data.currentValue, data.previousValue));
       this.form.patchValue(data.currentValue, { emitEvent: false });
     }
   }
 
   ngOnInit(): void {
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((e) => this.formChange.emit(e));
+    // if (this.template) {
+    //   this.form = this.dfs.createForm(this.template, this.data);
+    // }
   }
 
   ngOnDestroy(): void {

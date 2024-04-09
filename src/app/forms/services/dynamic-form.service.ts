@@ -111,6 +111,8 @@ export class DynamicFormService {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
+
+    // what does this do???? why would form node ever be falsy but be passed in as a param???
     if (!formNode) {
       return new CustomFormGroup(formNode, {});
     }
@@ -140,7 +142,7 @@ export class DynamicFormService {
 
       if (form instanceof FormGroup) {
         form.addControl(name, control);
-      } else if (form instanceof FormArray) {
+      } else {
         this.createControls(child, data).forEach((element) => form.push(element));
       }
     });

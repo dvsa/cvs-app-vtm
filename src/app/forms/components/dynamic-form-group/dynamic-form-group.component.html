@@ -1,4 +1,4 @@
-<div class="flex" id="{{ 'test-' + form.meta.name || 'test-dynamic-form' }}">
+<div class="flex" id="{{ 'test-' + form.meta?.name || 'test-dynamic-form' }}">
   <ng-template [ngTemplateOutlet]="templateHeading"></ng-template>
   <table *ngIf="!edit" class="govuk-table">
     <tbody class="govuk-table__body">
@@ -11,10 +11,10 @@
 </div>
 
 <ng-template #templateHeading>
-  <ng-container [ngSwitch]="form.meta.viewType">
+  <ng-container [ngSwitch]="form.meta?.viewType">
     <ng-container *ngSwitchCase="formNodeViewTypes.SUBHEADING">
       <div class="subheading-container">
-        <h2 class="govuk-heading-m">{{ form.meta.label }}</h2>
+        <h2 class="govuk-heading-m">{{ form.meta?.label }}</h2>
         <a
           *ngIf="form.meta.subHeadingLink"
           class="govuk-link"

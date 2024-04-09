@@ -5,7 +5,7 @@
   </app-banner>
 
   <app-icon [icon]="techRecordEdited.techRecord_vehicleType || ''"></app-icon>
-  <app-dynamic-form-group [data]="techRecordEdited" [template]="vehicleSummary"></app-dynamic-form-group>
+    <app-dynamic-form-group [data]="techRecordEdited" [template]="vehicleSummary"></app-dynamic-form-group>
 
   <app-accordion-control [class]="'padding'" [sectionState]="sectionTemplatesState$ | async">
     <ng-container *ngFor="let section of customVehicleTemplate; let i = index">
