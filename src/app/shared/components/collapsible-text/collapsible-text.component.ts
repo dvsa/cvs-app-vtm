@@ -26,10 +26,13 @@ export class CollapsibleTextComponent {
   }
 
   getCollapsedString() {
-    if (this.text.length <= this.maxChars) {
+    if (this.text.length < this.maxChars) {
       return this.text;
     }
-    return this.text.slice(0, this.maxChars);
+    if (this.text.length === this.maxChars) {
+      return this.text;
+    }
+    return `${this.text.slice(0, this.maxChars)}...`;
   }
 
   open() {
