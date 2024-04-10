@@ -232,7 +232,7 @@ export class CustomAsyncValidators {
       return store.select(editingTechRecord).pipe(take(1), map((form) => {
         if (
           form
-          && (form.techRecord_vehicleType === 'hgv' || form.techRecord_vehicleType === 'lgv' || form.techRecord_vehicleType === 'trl')
+          && (form.techRecord_vehicleType === 'hgv' || form.techRecord_vehicleType === 'trl')
           && (form.techRecord_adrDetails_dangerousGoods)) {
           return Validators.required(control);
         }

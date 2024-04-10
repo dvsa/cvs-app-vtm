@@ -723,7 +723,7 @@ describe('requiredWhenCarryingDangerousGoods', () => {
       }, null),
     });
   });
-  it('should return null if the vehicle is not an ADR vehicle (HGV, LGV, or TRL', async () => {
+  it('should return null if the vehicle is not of type HGV or TRL', async () => {
     // Not applicable tech record vehicle type
     const carTechRecord: TechRecordType<'car', 'put'> = {
       techRecord_vehicleType: 'car',
