@@ -450,6 +450,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
             techRecord_adrDetails_additionalNotes_number: null,
             techRecord_adrDetails_adrTypeApprovalNo: null,
             techRecord_adrDetails_adrCertificateNotes: null,
+            techRecord_adrDetails_newCertificateRequested: null,
             ...nulledTankDetails,
           },
         };
