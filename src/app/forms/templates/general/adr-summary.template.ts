@@ -766,6 +766,7 @@ export const AdrSummaryTemplate: FormNode = {
       editType: FormNodeEditTypes.CHECKBOX,
       viewType: FormNodeViewTypes.CUSTOM,
       viewComponent: AdrNewCertificateRequiredViewComponent,
+      value: false,
       groups: ['dangerous_goods'],
       hide: true,
     },
