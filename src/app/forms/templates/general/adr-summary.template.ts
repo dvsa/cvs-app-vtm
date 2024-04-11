@@ -14,11 +14,10 @@ import {
 import {
   AdrExaminerNotesHistoryViewComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
-import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
-import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import {
   AdrTankDetailsInitialInspectionViewComponent,
 } from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
+import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import {
   AdrTankDetailsSubsequentInspectionsEditComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
@@ -236,20 +235,13 @@ export const AdrSummaryTemplate: FormNode = {
       name: 'techRecord_adrDetails_additionalNotes_number',
       label: 'Guidance notes',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.CUSTOM,
-      editComponent: AdrGuidanceNotesComponent,
+      editType: FormNodeEditTypes.CHECKBOXGROUP,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
       width: FormNodeWidth.XS,
       value: [],
-      customErrorMessage: 'Guidance notes is required with Able to carry dangerous goods',
       options: getOptionsFromEnum(ADRAdditionalNotesNumber),
-      validators: [
-        {
-          name: ValidatorNames.IsArray,
-          args: { requiredIndices: [0], whenEquals: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
-        },
-      ],
+      validators: [],
     },
     {
       name: 'techRecord_adrDetails_adrTypeApprovalNo',
