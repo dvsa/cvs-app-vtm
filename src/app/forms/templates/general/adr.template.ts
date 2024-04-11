@@ -22,7 +22,9 @@ import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-n
 import {
   AdrTankDetailsInitialInspectionViewComponent,
 } from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
-import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
+import {
+  AdrTankDetailsM145ViewComponent
+} from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import {
   AdrTankDetailsSubsequentInspectionsEditComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
@@ -175,6 +177,19 @@ export const AdrTemplate: FormNode = {
           },
         },
       ],
+    },
+    {
+      name: 'techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys',
+      label: 'Vehicle used on international journeys',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.RADIO,
+      options: [
+        { value: 'yes', label: 'Yes' },
+        { value: 'no', label: 'No' },
+        { value: 'n/a', label: 'Not applicable' },
+      ],
+      hide: true,
+      groups: ['adr_details', 'dangerous_goods'],
     },
     {
       name: 'techRecord_adrDetails_vehicleDetails_approvalDate',

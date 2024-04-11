@@ -427,6 +427,7 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
           editingTechRecord: {
             ...editingTechRecord,
             techRecord_adrDetails_vehicleDetails_type: null,
+            techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys: null,
             techRecord_adrDetails_vehicleDetails_approvalDate: null,
             techRecord_adrDetails_permittedDangerousGoods: null,
             ...nulledCompatibilityGroupJ,
