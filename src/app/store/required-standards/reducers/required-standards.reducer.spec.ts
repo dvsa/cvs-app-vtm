@@ -1,4 +1,4 @@
-import { DefectGETIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
+import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { getRequiredStandards, getRequiredStandardsFailure, getRequiredStandardsSuccess } from '../actions/required-standards.actions';
 import { RequiredStandardState, initialRequiredStandardsState, requiredStandardsReducer } from './required-standards.reducer';
 
@@ -34,9 +34,9 @@ describe('Required Standards Reducer', () => {
       it('should set all test result records', () => {
         const newState: RequiredStandardState = {
           ...initialRequiredStandardsState,
-          requiredStandards: expectedRequiredStandards as unknown as DefectGETIVA,
+          requiredStandards: expectedRequiredStandards as unknown as DefectGETRequiredStandards,
         };
-        const action = getRequiredStandardsSuccess({ requiredStandards: expectedRequiredStandards as unknown as DefectGETIVA });
+        const action = getRequiredStandardsSuccess({ requiredStandards: expectedRequiredStandards as unknown as DefectGETRequiredStandards });
         const state = requiredStandardsReducer(initialRequiredStandardsState, action);
 
         expect(state).toEqual(newState);

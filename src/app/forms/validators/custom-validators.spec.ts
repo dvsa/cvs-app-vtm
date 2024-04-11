@@ -1,9 +1,19 @@
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl, FormGroup,
+} from '@angular/forms';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
-import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
+import {
+  VehicleClassDescription,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl,
+  CustomFormGroup,
+  FormNodeTypes,
+} from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
 
@@ -2001,5 +2011,64 @@ describe('tc3ParentValidator', () => {
     ])('should return %p when control value is %s', (expected: object | null, input) => {
       expect(CustomValidators.dateIsInvalid(new FormControl(input))).toEqual(expected);
     });
+  });
+});
+
+describe('minArrayLengthIfNotEmpty', () => {
+  it('should return null if the form array is empty', () => {
+    const formArray = new FormArray([]);
+    expect(CustomValidators.minArrayLengthIfNotEmpty(2, 'Error message')(formArray)).toBeNull();
+  });
+
+  it('should return an error if the array is not empty but doesnt reach minimum length', () => {
+    const formArray = new FormArray([
+      new FormControl({
+        axleNumber: 1,
+        tyres_tyreSize: null,
+        tyres_fitmentCode: null,
+        tyres_dataTrAxles: null,
+        tyres_plyRating: null,
+        tyres_tyreCode: null,
+        weights_gbWeight: null,
+        weights_designWeight: null,
+        parkingBrakeMrk: false,
+        weights_eecWeight: null,
+      }),
+    ]);
+
+    expect(CustomValidators.minArrayLengthIfNotEmpty(2, 'Error message')(formArray)).toStrictEqual(expect.objectContaining({
+      minArrayLengthIfNotEmpty: { message: 'Error message' },
+    }));
+  });
+
+  it('should return null if the minimum length is reached', () => {
+    const formArray = new FormArray([
+      new FormControl({
+        axleNumber: 1,
+        tyres_tyreSize: null,
+        tyres_fitmentCode: null,
+        tyres_dataTrAxles: null,
+        tyres_plyRating: null,
+        tyres_tyreCode: null,
+        weights_gbWeight: null,
+        weights_designWeight: null,
+        parkingBrakeMrk: false,
+        weights_eecWeight: null,
+      }),
+      new FormControl({
+        axleNumber: 2,
+        tyres_tyreSize: null,
+        tyres_fitmentCode: null,
+        tyres_dataTrAxles: null,
+        tyres_plyRating: null,
+        tyres_tyreCode: null,
+        weights_gbWeight: null,
+        weights_designWeight: null,
+        parkingBrakeMrk: false,
+        weights_eecWeight: null,
+      }),
+    ]);
+
+    expect(CustomValidators.minArrayLengthIfNotEmpty(2, 'Error message')(formArray)).toBeNull();
   });
 });

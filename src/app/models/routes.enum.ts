@@ -30,8 +30,10 @@ export enum TechRecordRoutes {
   CHANGE_VTA_VISIBILITY = 'change-vta-visibility',
   CORRECT_ERROR_TYRE_SEARCH = 'correcting-an-error/tyre-search/:axleNumber',
   CORRECT_ERROR_CHANGE_SUMMARY = 'correcting-an-error/change-summary',
+  CORRECT_ERROR_EDIT_ADDITIONAL_EXAMINER_NOTE = 'correcting-an-error/edit-additional-examiner-note/:examinerNoteIndex',
   NOTIFIABLE_ALTERATION_NEEDED_CHANGE_SUMMARY = 'notifiable-alteration-needed/change-summary',
   NOTIFIABLE_ALTERATION_NEEDED_TYRE_SEARCH = 'notifiable-alteration-needed/tyre-search/:axleNumber',
+  NOTIFIABLE_ALTERNATION_NEEDED_EDIT_ADDITIONAL_EXAMINER_NOTE = 'notifiable-alteration-needed/edit-additional-examiner-note/:examinerNoteIndex',
   TEST_RECORDS = 'test-records/test-result/:testResultId/:testNumber',
   CREATE_TEST = 'test-records/create-test',
   ADR_CERTIFICATE = 'adr-certificate',
@@ -66,6 +68,9 @@ export enum TestRecordAmendRoutes {
   SELECT_DEFECT_REFERENCE = ':ref',
   AMENDED_TEST = 'amended/:createdAt',
   CANCEL_TEST = 'cancel-test',
+  REQUIRED_STANDARD = 'requiredStandard/:requiredStandardIndex',
+  SELECT_REQUIRED_STANDARD = 'selectRequiredStandard',
+  REQUIRED_STANDARD_REF = ':inspectionType/:ref',
 }
 
 export enum TestRecordCreateRoutes {

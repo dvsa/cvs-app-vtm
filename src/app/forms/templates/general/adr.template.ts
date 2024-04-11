@@ -581,6 +581,7 @@ export const AdrTemplate: FormNode = {
     {
       name: 'techRecord_adrDetails_memosApply',
       label: 'Memo 7/9 (3 month extension) applied',
+      hint: 'Only applicable for vehicles used on national journeys',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOXGROUP,
       groups: ['tank_details', 'dangerous_goods'],
@@ -751,6 +752,13 @@ export const AdrTemplate: FormNode = {
       hide: true,
     },
     {
+      name: 'ExaminerNotesSectionTitle',
+      label: 'Additional Examiner Notes History',
+      type: FormNodeTypes.TITLE,
+      groups: ['adr_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
       name: 'techRecord_adrDetails_additionalExaminerNotes_note',
       label: 'Additional Examiner Notes',
       hint: 'Will not be present on the ADR certificate',
@@ -769,7 +777,7 @@ export const AdrTemplate: FormNode = {
       label: 'Additional examiner notes history',
       value: null,
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.ADR_EXAMINER_NOTES, // TODO: replace with custom
+      viewType: FormNodeViewTypes.CUSTOM,
       viewComponent: AdrExaminerNotesHistoryViewComponent,
       editType: FormNodeEditTypes.CUSTOM,
       editComponent: AdrExaminerNotesHistoryEditComponent,

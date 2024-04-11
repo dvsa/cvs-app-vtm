@@ -87,6 +87,8 @@ export class DynamicFormService {
     [ValidatorNames.Tc3TestValidator]: (args: { inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
     [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
     [ValidatorNames.DateIsInvalid]: () => CustomValidators.dateIsInvalid,
+    [ValidatorNames.MinArrayLengthIfNotEmpty]: (args: { minimumLength: number, message: string }) =>
+      CustomValidators.minArrayLengthIfNotEmpty(args.minimumLength, args.message),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -171,6 +173,7 @@ export class DynamicFormService {
   }
 
   static validate(form: CustomFormGroup | CustomFormArray | FormGroup | FormArray, errors: GlobalError[], updateValidity = true) {
+    this.getFormLevelErrors(form, errors);
     Object.entries(form.controls).forEach(([, value]) => {
       if (!(value instanceof FormControl || value instanceof CustomFormControl)) {
         this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
@@ -183,6 +186,22 @@ export class DynamicFormService {
         this.getControlErrors(value, errors);
       }
     });
+  }
+
+  static getFormLevelErrors(form: CustomFormGroup | CustomFormArray | FormGroup | FormArray, errors: GlobalError[]) {
+    if (!(form instanceof CustomFormGroup || form instanceof CustomFormArray)) {
+      return;
+    }
+    if (form.errors) {
+      Object.entries(form.errors).forEach(([key, error]) => {
+        // If an anchor link is provided, use that, otherwise determine target element from customId or name
+        const anchorLink = form.meta?.customId ?? form.meta?.name;
+        errors.push({
+          error: ErrorMessageMap[`${key}`](error),
+          anchorLink,
+        });
+      });
+    }
   }
 
   static validateControl(control: FormControl | CustomFormControl, errors: GlobalError[]) {

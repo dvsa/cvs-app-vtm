@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/iva/defects/enums/euVehicleCategory.enum.js';
-import { RequiredStandard, SectionIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/required-standards/defects/enums/euVehicleCategory.enum.js';
+import { RequiredStandard, RequiredStandardTaxonomySection } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
@@ -36,8 +36,8 @@ describe('RequiredStandardSelectComponent', () => {
   describe('handleSelectBasicOrNormal', () => {
     it('should work for basic inspection', () => {
       component.basicAndNormalRequiredStandards = {
-        basic: ['basic' as unknown as SectionIVA, 'basic1' as unknown as SectionIVA],
-        normal: ['normal' as unknown as SectionIVA, 'normal1' as unknown as SectionIVA],
+        basic: ['basic' as unknown as RequiredStandardTaxonomySection, 'basic1' as unknown as RequiredStandardTaxonomySection],
+        normal: ['normal' as unknown as RequiredStandardTaxonomySection, 'normal1' as unknown as RequiredStandardTaxonomySection],
         euVehicleCategories: [EUVehicleCategory.M1],
       };
 
@@ -47,8 +47,8 @@ describe('RequiredStandardSelectComponent', () => {
     });
     it('should work for normal inspection', () => {
       component.basicAndNormalRequiredStandards = {
-        basic: ['basic' as unknown as SectionIVA, 'basic1' as unknown as SectionIVA],
-        normal: ['normal' as unknown as SectionIVA, 'normal1' as unknown as SectionIVA],
+        basic: ['basic' as unknown as RequiredStandardTaxonomySection, 'basic1' as unknown as RequiredStandardTaxonomySection],
+        normal: ['normal' as unknown as RequiredStandardTaxonomySection, 'normal1' as unknown as RequiredStandardTaxonomySection],
         euVehicleCategories: [EUVehicleCategory.M1],
       };
 
@@ -70,7 +70,7 @@ describe('RequiredStandardSelectComponent', () => {
       expect(component.selectedRequiredStandard).toBeUndefined();
     });
     it('should handle when I pick a section', () => {
-      component.handleSelect('section' as unknown as SectionIVA, Types.Section);
+      component.handleSelect('section' as unknown as RequiredStandardTaxonomySection, Types.Section);
 
       expect(component.selectedSection).toBe('section');
       expect(component.selectedRequiredStandard).toBeUndefined();

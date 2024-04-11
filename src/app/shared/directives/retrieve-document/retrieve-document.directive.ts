@@ -12,10 +12,13 @@ export class RetrieveDocumentDirective {
   @Input() params: Map<string, string> = new Map();
   @Input() fileName = '';
   @Input() loading?: Boolean;
+  @Input() certNotNeeded: boolean = false;
+  @Input() fileType: string = 'pdf';
 
   constructor(private documentRetrievalService: DocumentRetrievalService, private documentsService: DocumentsService, private store: Store<State>) { }
 
   @HostListener('click', ['$event']) clickEvent(event: PointerEvent) {
+    if (this.certNotNeeded) return;
     event.preventDefault();
     event.stopPropagation();
 
@@ -31,7 +34,7 @@ export class RetrieveDocumentDirective {
           case HttpEventType.DownloadProgress:
             break;
           case HttpEventType.Response:
-            this.documentsService.openDocumentFromResponse(this.fileName, response.body);
+            this.documentsService.openDocumentFromResponse(this.fileName, response.body, this.fileType);
             this.store.dispatch(setSpinnerState({ showSpinner: false }));
             break;
           default:

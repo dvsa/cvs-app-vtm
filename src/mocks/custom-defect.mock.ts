@@ -6,3 +6,9 @@ export const createMockCustomDefect = (params: Partial<CustomDefects> = {}): Cus
   defectNotes: 'defectNotes',
   ...params,
 });
+
+export const createMockAdditionalDefect = (params: Partial<CustomDefects> = {}): CustomDefects => ({
+  defectName: 'defectName',
+  defectNotes: 'defectNotes',
+  ...params,
+});

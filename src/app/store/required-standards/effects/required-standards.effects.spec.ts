@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { DefectGETIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
+import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -21,7 +21,7 @@ describe('RequiredStandardEffects', () => {
     {
       requiredStandards: [{
         rsNumber: 1,
-      }] as unknown as DefectGETIVA,
+      }] as unknown as DefectGETRequiredStandards,
     },
   ];
 

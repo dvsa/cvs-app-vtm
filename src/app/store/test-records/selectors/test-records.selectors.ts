@@ -52,6 +52,11 @@ export const testResultLoadingState = createSelector(testResultsFeatureState, (s
 
 export const selectDefectData = createSelector(selectedTestResultState, (testResult) => getDefectFromTestResult(testResult));
 
+export const isTestTypeOldIvaOrMsva = createSelector(toEditOrNotToEdit, (testResult) => {
+  return !!testResult?.testTypes[0]?.customDefects?.length
+    && !!testResult?.testTypes[0]?.customDefects?.every((defect) => !!defect.referenceNumber);
+});
+
 export const selectedTestSortedAmendmentHistory = createSelector(selectedTestResultState, (testResult) => {
   if (!testResult || !testResult.testHistory) {
     return [];

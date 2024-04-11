@@ -750,6 +750,13 @@ export const AdrSummaryTemplate: FormNode = {
       hide: true,
     },
     {
+      name: 'ExaminerNotesSectionTitle',
+      label: 'Additional Examiner Notes History',
+      type: FormNodeTypes.TITLE,
+      groups: ['adr_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
       name: 'techRecord_adrDetails_additionalExaminerNotes_note',
       label: 'Additional Examiner Notes',
       value: null,
@@ -766,7 +773,7 @@ export const AdrSummaryTemplate: FormNode = {
       label: 'Additional examiner notes history',
       value: null,
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN,
+      viewType: FormNodeViewTypes.CUSTOM,
       viewComponent: AdrExaminerNotesHistoryViewComponent,
       editType: FormNodeEditTypes.CUSTOM,
       editComponent: AdrExaminerNotesHistoryEditComponent,
