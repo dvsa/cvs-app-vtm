@@ -23,7 +23,7 @@ import {
   AdrTankDetailsInitialInspectionViewComponent,
 } from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
 import {
-  AdrTankDetailsM145ViewComponent
+  AdrTankDetailsM145ViewComponent,
 } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import {
   AdrTankDetailsSubsequentInspectionsEditComponent,

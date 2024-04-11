@@ -8,9 +8,8 @@ import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { of } from 'rxjs';
-import { AdrExaminerNotesHistoryViewComponent } from './adr-examiner-notes-history-view.component';
 import { RouterService } from '@services/router/router.service';
-
+import { AdrExaminerNotesHistoryViewComponent } from './adr-examiner-notes-history-view.component';
 
 describe('AdrExaminerNotesHistoryViewComponent', () => {
   let component: AdrExaminerNotesHistoryViewComponent;
