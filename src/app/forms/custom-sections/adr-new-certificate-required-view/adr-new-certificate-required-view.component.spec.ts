@@ -6,6 +6,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { AdrTankDetailsM145ViewComponent } from '../adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import { AdrNewCertificateRequiredViewComponent } from './adr-new-certificate-required-view.component';
+import { SharedModule } from '@shared/shared.module';
 
 describe('AdrNewCertificateRequiredViewComponent', () => {
   let component: AdrNewCertificateRequiredViewComponent;
@@ -19,7 +20,8 @@ describe('AdrNewCertificateRequiredViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdrNewCertificateRequiredViewComponent],
+      declarations: [AdrNewCertificateRequiredViewComponent],
+      imports: [SharedModule],
       providers: [
         provideMockStore<State>({ initialState: initialAppState }),
         { provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsM145ViewComponent, multi: true },
