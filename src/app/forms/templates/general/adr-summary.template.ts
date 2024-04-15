@@ -174,6 +174,18 @@ export const AdrSummaryTemplate: FormNode = {
       ],
     },
     {
+      name: 'techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys',
+      label: 'Vehicle used on international journeys',
+      type: FormNodeTypes.CONTROL,
+      options: [
+        { value: 'yes', label: 'Yes' },
+        { value: 'no', label: 'No' },
+        { value: 'n/a', label: 'Not applicable' },
+      ],
+      hide: true,
+      groups: ['adr_details', 'dangerous_goods'],
+    },
+    {
       name: 'techRecord_adrDetails_vehicleDetails_approvalDate',
       label: 'Date processed',
       type: FormNodeTypes.CONTROL,
