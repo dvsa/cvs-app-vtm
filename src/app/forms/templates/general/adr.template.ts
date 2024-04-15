@@ -19,6 +19,9 @@ import {
   AdrExaminerNotesHistoryViewComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
 import {
+  AdrNewCertificateRequiredViewComponent,
+} from '@forms/custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
+import {
   AdrTankDetailsInitialInspectionViewComponent,
 } from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
 import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
@@ -749,6 +752,24 @@ export const AdrTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOX,
       groups: ['declarations_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'NewCertificateRequested',
+      label: 'New Certificate required',
+      type: FormNodeTypes.TITLE,
+      groups: ['dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_newCertificateRequested',
+      label: 'Yes',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.CUSTOM,
+      viewComponent: AdrNewCertificateRequiredViewComponent,
+      editType: FormNodeEditTypes.CHECKBOX,
+      value: false,
+      groups: ['dangerous_goods'],
       hide: true,
     },
     {
