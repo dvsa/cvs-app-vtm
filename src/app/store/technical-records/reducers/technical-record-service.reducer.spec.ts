@@ -559,7 +559,16 @@ describe('Vehicle Technical Record Reducer', () => {
 
   });
   describe('handleADRExaminerNoteChanges', () => {
-    it('should', () => {
+    beforeEach(() => {
+      const mockedDate = new Date(2024, 5, 20);
+      jest.useFakeTimers();
+      jest.setSystemTime(mockedDate);
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+    it('should handle any changes made to the adr examiner notes', () => {
       const testNote = {
         note: 'testNote',
         createdAtDate: new Date().toISOString(),
