@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
+import { CancelEditTechActivateGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
+import { TechRecordRoutes } from '@models/routes.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { techRecordCleanResolver } from 'src/app/resolvers/tech-record-clean/tech-record-clean.resolver';
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
 import { techRecordValidateResolver } from 'src/app/resolvers/tech-record-validate/tech-record-validate.resolver';
 import { techRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
-import { TechRecordRoutes } from '@models/routes.enum';
 import { AdrGenerateCertificateComponent } from './components/adr-generate-certificate/adr-generate-certificate.component';
 import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
 import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
@@ -31,7 +31,7 @@ const routes: Routes = [
     component: TechRecordComponent,
     data: { roles: Roles.TechRecordView, isCustomLayout: true },
     canActivateChild: [MsalGuard, RoleGuard],
-    canActivate: [CancelEditTechGuard],
+    canActivate: [CancelEditTechActivateGuard],
     resolve: {
       load: techRecordViewResolver,
       data: techRecordDataResolver,

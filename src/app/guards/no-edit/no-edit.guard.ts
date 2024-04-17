@@ -1,31 +1,21 @@
-import { Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import {
-  ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree,
+  ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree,
 } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { State } from '@store/.';
+import { Store, select } from '@ngrx/store';
 import { routeEditable } from '@store/router/selectors/router.selectors';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class NoEditGuard implements CanActivate {
-  constructor(private store: Store<State>, private router: Router) {}
+export const NoEditGuard = (_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> => {
+  const store = inject(Store);
+  const router = inject(Router);
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
-    return this.store.pipe(
-      select(routeEditable),
-      map((editable) => {
-        if (!editable) {
-          return true;
-        }
+  return store.pipe(select(routeEditable), map((editable) => {
+    if (!editable) return true;
 
-        const tree = this.router.parseUrl(state.url);
-        delete tree.queryParams['edit'];
+    const tree = router.parseUrl(state.url);
+    delete tree.queryParams['edit'];
 
-        return tree;
-      }),
-    );
-  }
-}
+    return tree;
+  }));
+};

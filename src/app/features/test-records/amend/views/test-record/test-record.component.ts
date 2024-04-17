@@ -41,7 +41,6 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {

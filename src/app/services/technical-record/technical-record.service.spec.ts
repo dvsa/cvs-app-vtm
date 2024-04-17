@@ -19,10 +19,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { State, initialAppState } from '@store/index';
 import { updateEditingTechRecord } from '@store/technical-records';
-import {
-  EmptyError,
-  firstValueFrom, from, of,
-} from 'rxjs';
+import { firstValueFrom, from, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { TechnicalRecordService } from './technical-record.service';
 import FitmentCodeEnum = AxleTyreProperties.FitmentCodeEnum;
@@ -571,7 +568,7 @@ describe('TechnicalRecordService', () => {
 
       const validator = service.validateVrmDoesNotExist(previousVrm);
       await expect(firstValueFrom(from(validator(control))))
-        .rejects.toEqual(new EmptyError());
+        .rejects.toEqual(new Error('no elements in sequence'));
 
       expect(checkVrmNotActiveSpy).toHaveBeenCalledTimes(0);
     });
@@ -601,7 +598,7 @@ describe('TechnicalRecordService', () => {
 
       const validator = service.validateVrmForCherishedTransfer();
       await expect(firstValueFrom(from(validator(control))))
-        .rejects.toEqual(new EmptyError());
+        .rejects.toEqual(new Error('no elements in sequence'));
 
       expect(searchSpy).toHaveBeenCalledTimes(0);
       expect(checkVrmNotActiveSpy).toHaveBeenCalledTimes(0);

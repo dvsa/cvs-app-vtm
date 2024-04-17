@@ -1,24 +1,17 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router, UrlTree } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { State } from '@store/.';
+import { inject } from '@angular/core';
+import { Router, UrlTree } from '@angular/router';
+import { Store, select } from '@ngrx/store';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class NoQueryParamsGuard implements CanActivate {
-  constructor(private store: Store<State>, private router: Router) {}
-  canActivate(): Observable<boolean | UrlTree> {
-    return this.store.pipe(
-      select(selectQueryParams),
-      map((queryParams) => {
-        if (!Object.keys(queryParams).length) {
-          return this.router.getCurrentNavigation()?.previousNavigation?.finalUrl ?? this.router.parseUrl('');
-        }
-        return true;
-      }),
-    );
-  }
-}
+export const NoQueryParamsGuard = (): Observable<boolean | UrlTree> => {
+  const store = inject(Store);
+  const router = inject(Router);
+
+  return store.pipe(
+    select(selectQueryParams),
+    map((queryParams) => Object.keys(queryParams).length > 0
+      ? true
+      : router.getCurrentNavigation()?.previousNavigation?.finalUrl ?? router.parseUrl('')),
+  );
+};
