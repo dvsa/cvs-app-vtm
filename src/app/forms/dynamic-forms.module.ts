@@ -38,7 +38,9 @@ import { ViewCombinationComponent } from './components/view-combination/view-com
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
 import { AdrExaminerNotesHistoryViewComponent } from './custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
-import { AdrGuidanceNotesComponent } from './custom-sections/adr-guidance-notes/adr-guidance-notes.component';
+import {
+  AdrNewCertificateRequiredViewComponent,
+} from './custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
 import {
   AdrTankDetailsInitialInspectionViewComponent,
 } from './custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
@@ -131,7 +133,6 @@ import { SuffixDirective } from './directives/suffix.directive';
     ModifiedWeightsComponent,
     FieldWarningMessageComponent,
     AdrComponent,
-    AdrGuidanceNotesComponent,
     AdrTankDetailsSubsequentInspectionsEditComponent,
     AdrTankStatementUnNumberEditComponent,
     CustomFormControlComponent,
@@ -143,6 +144,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     AdrCertificateHistoryComponent,
     AdrTankDetailsM145ViewComponent,
     ContingencyAdrGenerateCertComponent,
+    AdrNewCertificateRequiredViewComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -192,6 +194,7 @@ import { SuffixDirective } from './directives/suffix.directive';
     ModifiedWeightsComponent,
     AdrComponent,
     AdrCertificateHistoryComponent,
+    FieldWarningMessageComponent,
   ],
 })
 export class DynamicFormsModule { }
