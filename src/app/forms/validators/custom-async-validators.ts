@@ -1,4 +1,6 @@
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl, AsyncValidatorFn, ValidationErrors, Validators,
+} from '@angular/forms';
 import { Condition, operatorEnum } from '@forms/models/condition.model';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
@@ -9,6 +11,7 @@ import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
+import { editingTechRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
 import {
@@ -223,6 +226,21 @@ export class CustomAsyncValidators {
         }),
       );
   }
+
+  static requiredWhenCarryingDangerousGoods = (store: Store<State>) => {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return store.select(editingTechRecord).pipe(take(1), map((form) => {
+        if (
+          form
+          && (form.techRecord_vehicleType === 'hgv' || form.techRecord_vehicleType === 'trl')
+          && (form.techRecord_adrDetails_dangerousGoods)) {
+          return Validators.required(control);
+        }
+
+        return null;
+      }));
+    };
+  };
 
   private static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[]) {
     if (!Array.isArray(conditions)) {
