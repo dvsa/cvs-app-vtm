@@ -1,3 +1,4 @@
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { TagType } from '@shared/components/tag/tag.component';
 import {
@@ -27,6 +28,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 50 }],
+      asyncValidators: [{ name: AsyncValidatorNames.RequiredWhenCarryingDangerousGoods }],
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
