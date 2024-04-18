@@ -218,6 +218,8 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   getTyresRefData(axleNumber: number): void {
+    this.errorMessage = undefined;
+
     const { techRecord_axles: axles } = this.vehicleTechRecord;
     if (axles == null) return;
 
