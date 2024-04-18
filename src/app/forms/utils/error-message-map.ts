@@ -50,4 +50,5 @@ export const ErrorMessageMap: Record<string, Function> = {
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotResult]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
+  [AsyncValidatorNames.RequiredWhenCarryingDangerousGoods]: (err: { message: string }) => err.message,
 };
