@@ -4,9 +4,9 @@ import { NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
+import { SharedModule } from '@shared/shared.module';
 import { AdrTankDetailsM145ViewComponent } from '../adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import { AdrNewCertificateRequiredViewComponent } from './adr-new-certificate-required-view.component';
-import { SharedModule } from '@shared/shared.module';
 
 describe('AdrNewCertificateRequiredViewComponent', () => {
   let component: AdrNewCertificateRequiredViewComponent;
