@@ -20,35 +20,6 @@
       </td>
     </ng-container>
 
-    <!-- TODO: remove entirely, and use custom view component -->
-    <ng-container *ngSwitchCase="formNodeViewTypes.ADR_EXAMINER_NOTES">
-      <td class="govuk-table__cell">
-        <table class="govuk-table" *ngIf="value && value.length > 0">
-          <tbody class="govuk-table__body">
-            <tr>
-              <th scope="col" class="govuk-table__header">Date</th>
-              <th scope="col" class="govuk-table__header">Created By</th>
-              <th scope="col" class="govuk-table__header">Notes</th>
-            </tr>
-            <ng-container *ngFor="let result of value; let i = index; let isLast = last">
-              <tr *ngIf="i < 3">
-                <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-                  {{ result.createdAtDate | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}
-                </td>
-                <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.lastUpdatedBy }}</td>
-                <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.note }}</td>
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
-        <dl class="govuk-summary-list" *ngIf="!value || value.length === 0">
-          <div class="govuk-summary-list__row border-b-0">
-            <dt class="govuk-summary-list__key">No additional examiner notes history available</dt>
-          </div>
-        </dl>
-      </td>
-    </ng-container>
-
     <ng-container *ngSwitchCase="formNodeViewTypes.CUSTOM">
       <ng-container *ngIf="control && control.meta && control.meta.viewComponent">
         <td colspan="2" id="test-{{ name }}" class="govuk-table__cell">
