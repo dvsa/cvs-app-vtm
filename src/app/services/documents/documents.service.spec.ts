@@ -32,9 +32,25 @@ describe('DocumentsService', () => {
 
       service.openDocumentFromResponse(fileName, responseBody);
 
-      expect(convertToBlobSpy).toHaveBeenCalledWith(responseBody);
-      expect(createFileLinkSpy).toHaveBeenCalledWith(fileName, new Blob());
+      expect(convertToBlobSpy).toHaveBeenCalledWith(responseBody, 'pdf');
+      expect(createFileLinkSpy).toHaveBeenCalledWith(fileName, new Blob(), 'pdf');
       expect(simulateClickSpy).toHaveBeenCalledWith(fakeAnchor);
+    });
+
+    it('should download a document sent back with a signed url', () => {
+      const convertToBlobSpy = jest.spyOn(service, 'convertToBlob');
+      const createFileLinkSpy = jest.spyOn(service, 'createFileLink');
+      const simulateClickSpy = jest.spyOn(service, 'simulateClick');
+
+      const fakeAnchorZip = domParser
+        .parseFromString('<a download="fileName.zip" href="Response body" target="_blank" />', 'text/html')
+        .querySelector('a');
+
+      service.openDocumentFromResponse(fileName, responseBody, 'zip');
+
+      expect(convertToBlobSpy).not.toHaveBeenCalled();
+      expect(createFileLinkSpy).not.toHaveBeenCalled();
+      expect(simulateClickSpy).toHaveBeenCalledWith(fakeAnchorZip);
     });
   });
 
@@ -52,7 +68,7 @@ describe('DocumentsService', () => {
 
   describe('createFileLink', () => {
     it('should create a downloadable anchor link for a pdf file, using the file name and blob provided', () => {
-      expect(service.createFileLink(fileName, new Blob())).toEqual(fakeAnchor);
+      expect(service.createFileLink(fileName, new Blob(), 'pdf')).toEqual(fakeAnchor);
     });
   });
 

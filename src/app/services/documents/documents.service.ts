@@ -2,15 +2,26 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class DocumentsService {
-  openDocumentFromResponse(fileName: string, responseBody: unknown): void {
-    const blob = this.convertToBlob(responseBody);
+  openDocumentFromResponse(fileName: string, responseBody: unknown, fileType: string = 'pdf'): void {
+    if (fileType === 'zip') {
+      const link: HTMLAnchorElement = document.createElement('a');
 
-    const link = this.createFileLink(fileName, blob);
+      link.href = (responseBody as string).toString();
+      link.target = '_blank';
+      link.download = `${fileName}.${fileType}`;
 
-    this.simulateClick(link);
+      this.simulateClick(link);
+    } else {
+      const blob = this.convertToBlob(responseBody, fileType);
+
+      const link = this.createFileLink(fileName, blob, fileType);
+
+      this.simulateClick(link);
+    }
+
   }
 
-  convertToBlob(data: unknown): Blob {
+  convertToBlob(data: unknown, fileType?: string): Blob {
     if (typeof data !== 'string') throw new Error('Cannot convert to a blob. Data needs to be of type string');
 
     const byteArray = new Uint8Array(
@@ -20,17 +31,17 @@ export class DocumentsService {
         .map((char) => char.charCodeAt(0)),
     );
 
-    return new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });
+    return new Blob([byteArray], { type: `application/${fileType}; charset=utf-8` });
   }
 
-  createFileLink(fileName: string, blob: Blob): HTMLAnchorElement {
+  createFileLink(fileName: string, blob: Blob, fileType?: string): HTMLAnchorElement {
     const url = window.URL.createObjectURL(blob);
 
     const link: HTMLAnchorElement = document.createElement('a');
 
     link.href = url;
     link.target = '_blank';
-    link.download = `${fileName}.pdf`;
+    link.download = `${fileName}.${fileType}`;
 
     return link;
   }

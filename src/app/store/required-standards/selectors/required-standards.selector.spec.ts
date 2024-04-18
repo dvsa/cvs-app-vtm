@@ -1,5 +1,5 @@
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/iva/defects/enums/euVehicleCategory.enum.js';
-import { DefectGETIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/required-standards/defects/enums/euVehicleCategory.enum.js';
+import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { INSPECTION_TYPE } from '@models/test-results/test-result-required-standard.model';
 import { RequiredStandardState, initialRequiredStandardsState } from '../reducers/required-standards.reducer';
 import { getRequiredStandardFromTypeAndRef, getRequiredStandardsState, requiredStandardsLoadingState } from './required-standards.selector';
@@ -28,7 +28,7 @@ describe('RequiredStandardsLoadingState', () => {
         additionalInfo: false,
         inspectionTypes: [INSPECTION_TYPE.NORMAL],
       };
-      const requiredStandards: DefectGETIVA = {
+      const requiredStandards: DefectGETRequiredStandards = {
         normal: [{
           sectionNumber: '01',
           sectionDescription: 'desc',
@@ -50,7 +50,7 @@ describe('RequiredStandardsLoadingState', () => {
       expect(selectedState).toStrictEqual({ ...requiredStandard, sectionNumber: '01', sectionDescription: 'desc' });
     });
     it('should return undefined if no section or RS is found', () => {
-      const requiredStandards: DefectGETIVA = {
+      const requiredStandards: DefectGETRequiredStandards = {
         normal: [{
           sectionNumber: '01',
           sectionDescription: 'desc',

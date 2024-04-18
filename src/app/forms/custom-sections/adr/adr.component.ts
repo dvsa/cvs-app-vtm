@@ -60,6 +60,21 @@ export class AdrComponent implements OnInit, OnDestroy {
     this.technicalRecordService.updateEditingTechRecord({ ...this.techRecord, ...event } as TechRecordTypeVerb<'put'>);
   }
 
+  get documentParams(): Map<string, string> {
+    return new Map([['adrDocumentId', this.fileName]]);
+  }
+
+  get fileName(): string {
+    if (this.hasAdrDocumentation()) {
+      return this.techRecord.techRecord_adrDetails_documentId ?? '';
+    }
+    throw new Error('Could not find ADR Documentation.');
+  }
+
+  hasAdrDocumentation(): boolean {
+    return !!this.techRecord.techRecord_adrDetails_documentId && !this.isEditing;
+  }
+
   handleSubmit() {
     this.globalErrorService.errors$
       .pipe(takeUntil(this.destroy$), skipWhile((errors) => errors.length === 0))

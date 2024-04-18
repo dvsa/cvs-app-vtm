@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { DocumentRetrievalService } from '@api/document-retrieval';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
 import { FeatureToggleDirective } from '@directives/feature-toggle.directive';
+import { CollapsibleTextComponent } from '@shared/components/collapsible-text/collapsible-text.component';
 import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
 import { BannerComponent } from './components/banner/banner.component';
@@ -54,6 +55,7 @@ import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
     TyreAxleLoadPipe,
     GetControlLabelPipe,
     FormatVehicleTypePipe,
+    CollapsibleTextComponent,
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -80,6 +82,7 @@ import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
     TyreAxleLoadPipe,
     GetControlLabelPipe,
     FormatVehicleTypePipe,
+    CollapsibleTextComponent,
 
   ],
   providers: [DocumentRetrievalService],
