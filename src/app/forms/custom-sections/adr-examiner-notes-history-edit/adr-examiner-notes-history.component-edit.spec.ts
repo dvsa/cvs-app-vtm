@@ -8,6 +8,11 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/index';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const mockTechRecordService = {
   techRecord$: jest.fn(),
@@ -15,16 +20,23 @@ const mockTechRecordService = {
 describe('AdrExaminerNotesHistoryEditComponent', () => {
   let component: AdrExaminerNotesHistoryEditComponent;
   let fixture: ComponentFixture<AdrExaminerNotesHistoryEditComponent>;
+  let router: Router;
+
+  const MOCK_HGV = mockVehicleTechnicalRecord(VehicleTypes.HGV) as TechRecordType<'hgv'>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AdrExaminerNotesHistoryEditComponent],
-      imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule],
+      imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
       providers: [
         { provide: TechnicalRecordService, useValue: mockTechRecordService },
+        provideMockStore({ initialState: initialAppState }),
+        { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AdrExaminerNotesHistoryEditComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
   });
   describe('ngOnDestroy', () => {
     it('should call destroy$.next and destroy$.complete', () => {
@@ -48,12 +60,51 @@ describe('AdrExaminerNotesHistoryEditComponent', () => {
       component.currentTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV) as TechRecordType<'hgv'>;
       const testNote = {
         note: 'testNote',
-        createdAtDate: new Date().toISOString().split('T')[0],
+        createdAtDate: new Date().toISOString(),
         lastUpdatedBy: 'Someone Somewhere',
       };
       component.currentTechRecord.techRecord_adrDetails_additionalExaminerNotes = [testNote];
       const notes = component.getAdditionalExaminerNotes();
       expect(notes).toEqual([testNote]);
+    });
+  });
+  describe('getEditAdditionalExaminerNotePage', () => {
+    it('should navigate you to the EditAdditionalExaminerNotePage', () => {
+      const routerSpy = jest.spyOn(router, 'navigate');
+      component.getEditAdditionalExaminerNotePage(1);
+      expect(routerSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('handlePaginationChange', () => {
+    it('should set the start and end pages', () => {
+      component.handlePaginationChange({ start: 0, end: 3 });
+
+      expect(component.pageStart).toBe(0);
+      expect(component.pageEnd).toBe(3);
+    });
+  });
+
+  describe('currentAdrNotesPage', () => {
+    it('should return a sliced array of adr notes depending on the page the user is on', () => {
+      component.currentTechRecord = { ...MOCK_HGV };
+      component.pageStart = 1;
+      component.pageEnd = 2;
+      component.currentTechRecord.techRecord_adrDetails_additionalExaminerNotes = [
+        { createdAtDate: 'test1', lastUpdatedBy: 'test1', note: 'test note 1' },
+        { createdAtDate: 'test2', lastUpdatedBy: 'test2', note: 'test note 2' },
+      ];
+      expect(component.currentAdrNotesPage).toEqual([
+        { createdAtDate: 'test2', lastUpdatedBy: 'test2', note: 'test note 2' },
+      ]);
+    });
+
+    it('should return an empty array if the adr examiner notes is undefined', () => {
+      component.currentTechRecord = { ...MOCK_HGV };
+      component.pageStart = 2;
+      component.pageEnd = 3;
+      component.currentTechRecord.techRecord_adrDetails_additionalExaminerNotes = undefined;
+      expect(component.currentAdrNotesPage).toEqual([]);
     });
   });
 });
