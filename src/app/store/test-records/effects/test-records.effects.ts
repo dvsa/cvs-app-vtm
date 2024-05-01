@@ -142,7 +142,11 @@ export class TestResultsEffects {
           take(1),
         )),
       mergeMap(([testResult, name, id, userEmail, { systemNumber }, testResults]) => {
-        return this.testRecordsService.saveTestResult(systemNumber, { name, id, userEmail }, this.testRecordsService.prepareTestResultForAmendment(testResults, testResult)).pipe(
+        return this.testRecordsService.saveTestResult(
+          systemNumber,
+          { name, id, userEmail },
+          this.testRecordsService.prepareTestResultForAmendment(testResults, testResult),
+        ).pipe(
           take(1),
           map((responseBody) => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),
           catchError((e) => {
