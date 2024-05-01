@@ -11,6 +11,7 @@ import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
@@ -24,7 +25,6 @@ import {
   catchError, concatMap, delay, filter, map, mergeMap, of, switchMap, take,
   withLatestFrom,
 } from 'rxjs';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import {
   contingencyTestTypeSelected,
   createTestResult,
@@ -43,7 +43,12 @@ import {
   updateTestResultFailed,
   updateTestResultSuccess,
 } from '../actions/test-records.actions';
-import { isTestTypeOldIvaOrMsva, selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
+import {
+  isTestTypeOldIvaOrMsva,
+  selectAllTestResultsInDateOrder,
+  selectedTestResultState,
+  testResultInEdit,
+} from '../selectors/test-records.selectors';
 
 @Injectable()
 export class TestResultsEffects {
@@ -127,11 +132,17 @@ export class TestResultsEffects {
       ofType(updateTestResult),
       mergeMap((action) =>
         of(action.value).pipe(
-          withLatestFrom(this.userService.name$, this.userService.id$, this.userService.userEmail$, this.store.pipe(select(selectRouteNestedParams))),
+          withLatestFrom(
+            this.userService.name$,
+            this.userService.id$,
+            this.userService.userEmail$,
+            this.store.select(selectRouteNestedParams),
+            this.store.select(selectAllTestResultsInDateOrder),
+          ),
           take(1),
         )),
-      mergeMap(([testResult, name, id, userEmail, { systemNumber }]) => {
-        return this.testRecordsService.saveTestResult(systemNumber, { name, id, userEmail }, testResult).pipe(
+      mergeMap(([testResult, name, id, userEmail, { systemNumber }, testResults]) => {
+        return this.testRecordsService.saveTestResult(systemNumber, { name, id, userEmail }, this.testRecordsService.prepareTestResultForAmendment(testResults, testResult)).pipe(
           take(1),
           map((responseBody) => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),
           catchError((e) => {
