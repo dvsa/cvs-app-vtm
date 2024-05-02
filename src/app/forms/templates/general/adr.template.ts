@@ -810,7 +810,6 @@ export const AdrTemplate: FormNode = {
     },
     {
       name: 'techRecord_adrDetails_additionalExaminerNotes',
-      label: 'Additional examiner notes history',
       value: null,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.CUSTOM,
