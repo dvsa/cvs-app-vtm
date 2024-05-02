@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   CompleteTestResults, DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService,
 } from '@api/test-results';
-import { TEST_TYPES } from '@forms/models/testTypeId.enum';
+import { TEST_TYPES, TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
@@ -137,6 +137,25 @@ export class TestRecordsService {
 
   cleanTestResult() {
     return this.store.dispatch(cleanTestResult());
+  }
+
+  prepareTestResultForAmendment(testResults: TestResultModel[], testResult: TestResultModel): TestResultModel {
+    const lastIvaOrMsvaTest = testResults.find((test) => {
+      const testType = test?.testTypes[0];
+      const testTypeId = testType?.testTypeId ?? '';
+      const isIVAorMSVATest = TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId);
+
+      return isIVAorMSVATest;
+    });
+
+    if (!lastIvaOrMsvaTest) {
+      return testResult;
+    }
+
+    // If certificateNumber is falsy, then use the last IVA or MSVA test certificate number
+    testResult.testTypes[0].certificateNumber ??= lastIvaOrMsvaTest.testTypes[0].certificateNumber;
+
+    return testResult;
   }
 
   static getTestTypeGroup(testTypeId: string): string | undefined {
