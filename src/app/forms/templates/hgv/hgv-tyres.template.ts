@@ -21,7 +21,7 @@ export const tyresTemplateHgv: FormNode = {
       value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      width: FormNodeWidth.XS,
+      width: FormNodeWidth.UNSET,
       options: getOptionsFromEnum(TyreUseCode),
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
@@ -31,8 +31,7 @@ export const tyresTemplateHgv: FormNode = {
       type: FormNodeTypes.ARRAY,
       validators: [{
         name: ValidatorNames.MinArrayLengthIfNotEmpty, args: { minimumLength: 2, message: 'You cannot submit a HGV with less than 2 axles.' },
-      },
-      ],
+      }],
       children: [
         {
           name: '0',

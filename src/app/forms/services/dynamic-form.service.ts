@@ -107,6 +107,7 @@ export class DynamicFormService {
     [AsyncValidatorNames.ResultDependantOnRequiredStandards]: () => CustomAsyncValidators.resultDependantOnRequiredStandards(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
+    [AsyncValidatorNames.RequiredWhenCarryingDangerousGoods]: () => CustomAsyncValidators.requiredWhenCarryingDangerousGoods(this.store),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

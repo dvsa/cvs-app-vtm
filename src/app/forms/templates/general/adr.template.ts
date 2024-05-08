@@ -18,11 +18,15 @@ import {
 import {
   AdrExaminerNotesHistoryViewComponent,
 } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
-import { AdrGuidanceNotesComponent } from '@forms/custom-sections/adr-guidance-notes/adr-guidance-notes.component';
+import {
+  AdrNewCertificateRequiredViewComponent,
+} from '@forms/custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
 import {
   AdrTankDetailsInitialInspectionViewComponent,
 } from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
-import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
+import {
+  AdrTankDetailsM145ViewComponent,
+} from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import {
   AdrTankDetailsSubsequentInspectionsEditComponent,
 } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
@@ -177,6 +181,19 @@ export const AdrTemplate: FormNode = {
       ],
     },
     {
+      name: 'techRecord_adrDetails_vehicleDetails_usedOnInternationalJourneys',
+      label: 'Vehicle used on international journeys',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.RADIO,
+      options: [
+        { value: 'yes', label: 'Yes' },
+        { value: 'no', label: 'No' },
+        { value: 'n/a', label: 'Not applicable' },
+      ],
+      hide: true,
+      groups: ['adr_details', 'dangerous_goods'],
+    },
+    {
       name: 'techRecord_adrDetails_vehicleDetails_approvalDate',
       label: 'Date processed',
       type: FormNodeTypes.CONTROL,
@@ -242,19 +259,14 @@ export const AdrTemplate: FormNode = {
       name: 'techRecord_adrDetails_additionalNotes_number',
       label: 'Guidance notes',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.CUSTOM,
-      editComponent: AdrGuidanceNotesComponent,
+      editType: FormNodeEditTypes.CHECKBOXGROUP,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
       width: FormNodeWidth.XS,
       value: [],
-      customErrorMessage: 'Guidance notes is required with Able to carry dangerous goods',
       options: getOptionsFromEnum(ADRAdditionalNotesNumber),
       validators: [
-        {
-          name: ValidatorNames.IsArray,
-          args: { requiredIndices: [0], whenEquals: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
-        },
+        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
       ],
     },
     {
@@ -587,6 +599,7 @@ export const AdrTemplate: FormNode = {
     {
       name: 'techRecord_adrDetails_memosApply',
       label: 'Memo 7/9 (3 month extension) applied',
+      hint: 'Only applicable for vehicles used on national journeys',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.CHECKBOXGROUP,
       groups: ['tank_details', 'dangerous_goods'],
@@ -757,6 +770,31 @@ export const AdrTemplate: FormNode = {
       hide: true,
     },
     {
+      name: 'NewCertificateRequested',
+      label: 'New Certificate required',
+      type: FormNodeTypes.TITLE,
+      groups: ['dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'techRecord_adrDetails_newCertificateRequested',
+      label: 'Yes',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.CUSTOM,
+      viewComponent: AdrNewCertificateRequiredViewComponent,
+      editType: FormNodeEditTypes.CHECKBOX,
+      value: false,
+      groups: ['dangerous_goods'],
+      hide: true,
+    },
+    {
+      name: 'ExaminerNotesSectionTitle',
+      label: 'Additional Examiner Notes History',
+      type: FormNodeTypes.TITLE,
+      groups: ['adr_details', 'dangerous_goods'],
+      hide: true,
+    },
+    {
       name: 'techRecord_adrDetails_additionalExaminerNotes_note',
       label: 'Additional Examiner Notes',
       hint: 'Will not be present on the ADR certificate',
@@ -772,10 +810,9 @@ export const AdrTemplate: FormNode = {
     },
     {
       name: 'techRecord_adrDetails_additionalExaminerNotes',
-      label: 'Additional examiner notes history',
       value: null,
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.ADR_EXAMINER_NOTES, // TODO: replace with custom
+      viewType: FormNodeViewTypes.CUSTOM,
       viewComponent: AdrExaminerNotesHistoryViewComponent,
       editType: FormNodeEditTypes.CUSTOM,
       editComponent: AdrExaminerNotesHistoryEditComponent,
