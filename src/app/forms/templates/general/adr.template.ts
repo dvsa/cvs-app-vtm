@@ -788,13 +788,6 @@ export const AdrTemplate: FormNode = {
       hide: true,
     },
     {
-      name: 'ExaminerNotesSectionTitle',
-      label: 'Additional Examiner Notes History',
-      type: FormNodeTypes.TITLE,
-      groups: ['adr_details', 'dangerous_goods'],
-      hide: true,
-    },
-    {
       name: 'techRecord_adrDetails_additionalExaminerNotes_note',
       label: 'Additional Examiner Notes',
       hint: 'Will not be present on the ADR certificate',
@@ -811,6 +804,7 @@ export const AdrTemplate: FormNode = {
     {
       name: 'techRecord_adrDetails_additionalExaminerNotes',
       value: null,
+      label: 'Additional Examiner Notes History',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.CUSTOM,
       viewComponent: AdrExaminerNotesHistoryViewComponent,

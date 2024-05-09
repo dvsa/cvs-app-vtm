@@ -1,10 +1,6 @@
-import {
-  ADRAdditionalNotesNumber,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
+import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
-import {
-  ADRCompatibilityGroupJ,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
+import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
@@ -37,11 +33,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC2Types } from '@models/adr.enum';
 import {
-  FormNode,
-  FormNodeEditTypes,
-  FormNodeTypes,
-  FormNodeViewTypes,
-  FormNodeWidth,
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '../../services/dynamic-form.types';
 
 export const AdrSummaryTemplate: FormNode = {
@@ -79,9 +71,7 @@ export const AdrSummaryTemplate: FormNode = {
       value: null,
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 150 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 150 }],
       groups: ['applicant_details', 'dangerous_goods'],
       hide: true,
     },
@@ -266,9 +256,7 @@ export const AdrSummaryTemplate: FormNode = {
       width: FormNodeWidth.L,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 40 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 40 }],
     },
     {
       name: 'tankDetailsSectionTitle',
@@ -516,9 +504,7 @@ export const AdrSummaryTemplate: FormNode = {
       editType: FormNodeEditTypes.TEXTAREA,
       groups: ['productList', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 1500 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1500 }],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_specialProvisions',
@@ -526,9 +512,7 @@ export const AdrSummaryTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXTAREA,
       hide: true,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 1024 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }],
       groups: ['dangerous_goods', 'tank_details'],
     },
     {
@@ -574,9 +558,7 @@ export const AdrSummaryTemplate: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 70 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 70 }],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
@@ -612,9 +594,7 @@ export const AdrSummaryTemplate: FormNode = {
       editType: FormNodeEditTypes.CHECKBOXGROUP,
       groups: ['tank_details', 'dangerous_goods'],
       hide: true,
-      options: [
-        { value: '07/09 3mth leak ext ', label: 'Yes' },
-      ],
+      options: [{ value: '07/09 3mth leak ext ', label: 'Yes' }],
       validators: [],
     },
     {
@@ -702,7 +682,6 @@ export const AdrSummaryTemplate: FormNode = {
           },
         },
       ],
-
     },
     {
       name: 'techRecord_adrDetails_brakeDeclarationIssuer',
@@ -711,9 +690,7 @@ export const AdrSummaryTemplate: FormNode = {
       hide: true,
       groups: ['issuer_section', 'dangerous_goods'],
       editType: FormNodeEditTypes.TEXTAREA,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 500 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 500 }],
     },
     {
       name: 'techRecord_adrDetails_brakeEndurance',
@@ -739,7 +716,6 @@ export const AdrSummaryTemplate: FormNode = {
           },
         },
       ],
-
     },
     {
       name: 'techRecord_adrDetails_weight',
@@ -754,7 +730,6 @@ export const AdrSummaryTemplate: FormNode = {
           name: ValidatorNames.RequiredIfNotHidden,
         },
       ],
-
     },
     {
       name: 'techRecord_adrDetails_declarationsSeen',
@@ -783,13 +758,6 @@ export const AdrSummaryTemplate: FormNode = {
       hide: true,
     },
     {
-      name: 'ExaminerNotesSectionTitle',
-      label: 'Additional Examiner Notes History',
-      type: FormNodeTypes.TITLE,
-      groups: ['adr_details', 'dangerous_goods'],
-      hide: true,
-    },
-    {
       name: 'techRecord_adrDetails_additionalExaminerNotes_note',
       label: 'Additional Examiner Notes',
       value: null,
@@ -797,13 +765,12 @@ export const AdrSummaryTemplate: FormNode = {
       editType: FormNodeEditTypes.TEXTAREA,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 1024 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }],
     },
     {
       name: 'techRecord_adrDetails_additionalExaminerNotes',
       value: null,
+      label: 'Additional Examiner Notes History',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.CUSTOM,
       viewComponent: AdrExaminerNotesHistoryViewComponent,
@@ -821,9 +788,7 @@ export const AdrSummaryTemplate: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       groups: ['adrDetails', 'dangerous_goods'],
       hide: true,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 1500 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1500 }],
     },
   ],
 };
