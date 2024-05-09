@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/index';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { of } from 'rxjs';
+import { provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { State, initialAppState } from '@store/index';
+import { of } from 'rxjs';
 import { AdrExaminerNotesHistoryViewComponent } from './adr-examiner-notes-history-view.component';
 
 describe('AdrExaminerNotesHistoryViewComponent', () => {
@@ -24,6 +24,7 @@ describe('AdrExaminerNotesHistoryViewComponent', () => {
   const control = new CustomFormControl({
     name: 'techRecord_adrDetails_additionalExaminerNotes',
     type: FormNodeTypes.CONTROL,
+    label: 'Additional Examiner Notes History',
   });
 
   beforeEach(async () => {
