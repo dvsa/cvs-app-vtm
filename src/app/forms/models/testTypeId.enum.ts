@@ -99,8 +99,6 @@ export const TEST_TYPES_GROUP1_SPEC_TEST: string[] = [
   '138',
   '139',
   '140',
-  '150',
-  '151',
   '158',
   '159',
   '161',
@@ -116,15 +114,13 @@ export const TEST_TYPES_GROUP1_SPEC_TEST: string[] = [
   '170',
   '172',
   '173',
-  '181',
-  '182',
 ];
 
 // Test/Retest COIF with annual test, Seatbelt installation check COIF with annual test
 export const TEST_TYPES_GROUP2_SPEC_TEST: string[] = ['142', '146', '175', '177'];
 
 // Test/Retest COIF without annual test, Type approved to bus directive COIF, Annex 7 COIF, TILT COIF retest
-export const TEST_TYPES_GROUP3_SPEC_TEST: string[] = ['143', '144', '148', '176', '178', '179'];
+export const TEST_TYPES_GROUP3_SPEC_TEST: string[] = ['143', '144', '148', '176', '178', '179', '150', '151', '181', '182'];
 
 // Test Seatbelt installation check COIF without annual test
 export const TEST_TYPES_GROUP4_SPEC_TEST: string[] = ['147'];
