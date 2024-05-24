@@ -12,13 +12,12 @@ version: v1.25.0
 ignore:
   SNYK-JS-BRACES:
     - '*':
-    reason: Remediation not yet available
-    expires: 2024-11-24T09:01:15.119Z
-    created: 2024-05-24T09:01:15.122Z
+      reason: Remediation not yet available
+      expires: 2024-11-24T09:01:15.119Z
+      created: 2024-05-24T09:01:15.122Z
   SNYK-JS-MICROMATCH:
     - '*':
-    reason: Remediation not yet available
-    expires: 2024-11-24T09:01:15.119Z
-    created: 2024-05-24T09:01:15.122Z
+      reason: Remediation not yet available
+      expires: 2024-11-24T09:01:15.119Z
+      created: 2024-05-24T09:01:15.122Z
 patch: {}
-
