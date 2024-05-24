@@ -10,12 +10,12 @@ version: v1.25.0
 
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-JS-BRACES:
+  SNYK-JS-BRACES-6838727:
     - '*':
       reason: Remediation not yet available
       expires: 2024-11-24T09:01:15.119Z
       created: 2024-05-24T09:01:15.122Z
-  SNYK-JS-MICROMATCH:
+  SNYK-JS-MICROMATCH-6838728:
     - '*':
       reason: Remediation not yet available
       expires: 2024-11-24T09:01:15.119Z
