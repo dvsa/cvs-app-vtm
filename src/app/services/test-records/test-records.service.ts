@@ -197,7 +197,7 @@ export class TestRecordsService {
   }
 
   private canHandleTestType(templateMap: Record<VehicleTypes, Record<string, Record<string, FormNode>>>) {
-    return function handleTestType <T>(source: Observable<T>): Observable<boolean> {
+    return function handleTestType<T>(source: Observable<T>): Observable<boolean> {
       const handle = (testResult: TestResultModel | undefined): boolean => {
         if (!testResult) {
           return false;
