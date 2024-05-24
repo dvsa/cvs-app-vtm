@@ -46,7 +46,7 @@ export interface TestResultModel {
   testStatus?: TestResultStatus;
 
   make?: string;
-  model?: string;
+  model?: string | null;
   bodyType?: TechRecordBodyType;
 
   /**

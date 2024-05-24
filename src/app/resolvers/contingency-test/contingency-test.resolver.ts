@@ -115,7 +115,7 @@ export function getBodyMake(techRecord: V3TechRecordModel | undefined) {
 
 export function getBodyModel(techRecord: V3TechRecordModel | undefined) {
   if (techRecord?.techRecord_vehicleType === 'psv') {
-    return techRecord.techRecord_bodyModel;
+    return techRecord.techRecord_bodyModel ? techRecord.techRecord_bodyModel : null;
   }
 
   if (techRecord?.techRecord_vehicleType === 'hgv' || techRecord?.techRecord_vehicleType === 'trl') {
