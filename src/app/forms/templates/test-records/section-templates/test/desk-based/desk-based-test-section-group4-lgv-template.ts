@@ -1,7 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const DeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
   name: 'testSection',
@@ -56,7 +54,7 @@ export const DeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Test start date and time',
-              viewType: FormNodeViewTypes.TIME,
+              viewType: FormNodeViewTypes.DATETIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
@@ -69,7 +67,7 @@ export const DeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Test end date and time',
-              viewType: FormNodeViewTypes.TIME,
+              viewType: FormNodeViewTypes.DATETIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
@@ -161,7 +159,7 @@ export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Test start date and time',
-              viewType: FormNodeViewTypes.TIME,
+              viewType: FormNodeViewTypes.DATETIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
@@ -174,7 +172,7 @@ export const AmendDeskBasedTestSectionGroup4LgvCarMotorcycle: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Test end date and time',
-              viewType: FormNodeViewTypes.TIME,
+              viewType: FormNodeViewTypes.DATETIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
