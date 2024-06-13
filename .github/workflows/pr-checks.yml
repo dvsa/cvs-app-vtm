@@ -19,9 +19,9 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -39,9 +39,9 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -59,9 +59,9 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -77,9 +77,9 @@ jobs:
       matrix:
         node-version: [18.18.0]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -92,9 +92,11 @@ jobs:
     runs-on: X64
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
+
       - uses: actions/setup-node@v4
         with:
           node-version: '16'
@@ -104,12 +106,15 @@ jobs:
           role-to-assume: ${{ secrets.AWS_MGMT_ROLE }}
           aws-region: ${{ secrets.DVSA_AWS_REGION }}
           role-session-name: 'cvs-app-vtm'
-      - uses: aws-actions/aws-secretsmanager-get-secrets@v1
+
+      - uses: aws-actions/aws-secretsmanager-get-secrets@v2
         with: 
           secret-ids: sonarqube-gha
           parse-json-secrets: true
+
       - name: Install dependencies
         run: npm ci --include=optional
+
       - name: Run SonarQube scanner
         run: |
           npm run sonar-scanner -- \
