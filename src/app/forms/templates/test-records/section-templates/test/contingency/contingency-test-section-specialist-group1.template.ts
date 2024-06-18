@@ -1,7 +1,9 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { TEST_TYPES_GROUP1_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import {
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+} from '@forms/services/dynamic-form.types';
 
 export const ContingencyTestSectionSpecialistGroup1: FormNode = {
   name: 'testSection',
