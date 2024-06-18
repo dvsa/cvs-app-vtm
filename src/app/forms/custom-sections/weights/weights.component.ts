@@ -135,7 +135,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
           (this.vehicleTechRecord as TechRecordType<'psv'>).techRecord_grossLadenWeight = event.techRecord_grossLadenWeight;
           this.form.patchValue({ techRecord_grossLadenWeight: event.techRecord_grossLadenWeight }, { emitEvent: false });
           this.formChange.emit(event);
-          updateBrakeForces({ grossLadenWeight: event.techRecord_grossLadenWeight, grossKerbWeight: event.techRecord_grossKerbWeight });
+          this.store.dispatch(updateBrakeForces({ grossLadenWeight: event.techRecord_grossLadenWeight, grossKerbWeight: event.techRecord_grossKerbWeight }));
           return;
         }
         this.handleFormChanges(event);
