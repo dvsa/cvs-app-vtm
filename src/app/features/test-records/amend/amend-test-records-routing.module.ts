@@ -74,7 +74,7 @@ const routes: Routes = [
               {
                 path: TestRecordAmendRoutes.SELECT_DEFECT,
                 component: TestRouterOutletComponent,
-                data: { title: 'Select Defect', roles: Roles.TestResultAmend },
+                data: { title: 'Select defect', roles: Roles.TestResultAmend },
                 canActivate: [RoleGuard],
                 children: [
                   {

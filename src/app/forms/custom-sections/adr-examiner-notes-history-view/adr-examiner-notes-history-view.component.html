@@ -1,6 +1,9 @@
 <ng-container *ngIf="control">
   <ng-container *ngIf="adrNotes">
     <section class="govuk-!-margin-top-4">
+      <label *ngIf="control.meta?.label" class="govuk-label govuk-label--m">
+        {{ control.meta.label }}
+      </label>
       <table class="govuk-table" *ngIf="adrNotes && adrNotes.length > 0; else empty">
         <tbody class="govuk-table__body">
           <tr class="govuk-table__row">

@@ -3,15 +3,15 @@
 
   <ng-container [ngSwitch]="viewType">
     <ng-container *ngSwitchCase="formNodeViewTypes.DATE">
-      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
+      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</td>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.DATETIME">
-      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
+      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</td>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.TIME">
-      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date : 'HH:mm' | defaultNullOrEmpty }}</td>
+      <td id="test-{{ name }}" class="govuk-table__cell">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</td>
     </ng-container>
 
     <ng-container *ngSwitchCase="formNodeViewTypes.VRM">
@@ -29,8 +29,8 @@
     </ng-container>
 
     <ng-container *ngSwitchDefault>
-      <td [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-table__cell">
-        {{ value | refDataDecode$ : control?.meta?.referenceData | async | getControlLabel : control?.meta?.options | defaultNullOrEmpty }}
+      <td [id]="customId ? 'test-' + customId : 'test-' + name" class="govuk-table__cell break-all">
+        {{ value | refDataDecode$: control?.meta?.referenceData | async | getControlLabel: control?.meta?.options | defaultNullOrEmpty }}
       </td>
     </ng-container>
   </ng-container>

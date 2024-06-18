@@ -7,7 +7,6 @@ export class DocumentsService {
       const link: HTMLAnchorElement = document.createElement('a');
 
       link.href = (responseBody as string).toString();
-      link.target = '_blank';
       link.download = `${fileName}.${fileType}`;
 
       this.simulateClick(link);
