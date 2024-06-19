@@ -53,6 +53,22 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { value: 'fail', label: 'Fail' },
                 { value: 'prs', label: 'PRS' },
               ],
+              validators: [
+                {
+                  name: ValidatorNames.ShowGroupsWhenIncludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['failOnly'],
+                  },
+                },
+                {
+                  name: ValidatorNames.HideGroupsWhenExcludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['failOnly'],
+                  },
+                },
+              ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
                 {
@@ -150,6 +166,24 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { value: false, label: 'No' },
               ],
               validators: [{ name: ValidatorNames.Required }],
+            },
+            {
+              name: 'reapplicationRequiredBy',
+              label: 'Reapplication required by',
+              editType: FormNodeEditTypes.DATE,
+              viewType: FormNodeViewTypes.DATE,
+              type: FormNodeTypes.CONTROL,
+              groups: ['failOnly'],
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: {
+                    sibling: 'testResult',
+                    value: ['fail'],
+                  },
+                },
+                { name: ValidatorNames.FutureDate },
+              ],
             },
           ],
         },
