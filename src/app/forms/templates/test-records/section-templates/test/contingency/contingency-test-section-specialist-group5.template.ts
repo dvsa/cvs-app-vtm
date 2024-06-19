@@ -170,6 +170,7 @@ export const ContingencyTestSectionSpecialistGroup5: FormNode = {
             {
               name: 'reapplicationRequiredBy',
               label: 'Reapplication required by',
+              hint: 'For example, 27 3 2007',
               editType: FormNodeEditTypes.DATE,
               viewType: FormNodeViewTypes.DATE,
               type: FormNodeTypes.CONTROL,
