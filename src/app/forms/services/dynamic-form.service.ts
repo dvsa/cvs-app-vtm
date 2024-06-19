@@ -55,7 +55,7 @@ export class DynamicFormService {
     [ValidatorNames.PastDate]: () => CustomValidators.pastDate,
     [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),
     [ValidatorNames.Required]: () => Validators.required,
-    [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: unknown[] }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
+    [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: unknown[], customErrorMessage?: string }) => CustomValidators.requiredIfEquals(args.sibling, args.value, args.customErrorMessage),
     [ValidatorNames.requiredIfAllEquals]: (args: { sibling: string; value: unknown[] }) =>
       CustomValidators.requiredIfAllEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: unknown[] }) =>
