@@ -5,7 +5,7 @@ import { lastValueFrom, take } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface FeatureConfig {
-  [key:string]:boolean;
+  [key: string]: boolean;
 }
 
 @Injectable({
@@ -19,7 +19,7 @@ export class FeatureToggleService {
 
   async loadConfig() {
     // eslint-disable-next-line no-return-assign
-    return this.config = await lastValueFrom(this.http.get<FeatureConfig>(this.configPath).pipe(take(1)));
+    return (this.config = await lastValueFrom(this.http.get<FeatureConfig>(this.configPath).pipe(take(1))));
   }
 
   getConfig() {
@@ -41,5 +41,4 @@ export class FeatureToggleService {
     }
     return false;
   }
-
 }

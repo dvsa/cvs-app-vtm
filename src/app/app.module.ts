@@ -1,8 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {
-  APP_INITIALIZER,
-  ErrorHandler,
-  LOCALE_ID, NgModule,
+  APP_INITIALIZER, ErrorHandler, LOCALE_ID, NgModule,
 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -24,13 +22,11 @@ import {
   MsalService,
 } from '@azure/msal-angular';
 import {
-  BrowserCacheLocation,
-  IPublicClientApplication,
-  InteractionType,
-  PublicClientApplication,
+  BrowserCacheLocation, IPublicClientApplication, InteractionType, PublicClientApplication,
 } from '@azure/msal-browser';
 import * as Sentry from '@sentry/angular-ivy';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -73,8 +69,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   };
 }
 
-const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
-  featureFlagsService.loadConfig();
+const featureFactory = (featureFlagsService: FeatureToggleService) => () => featureFlagsService.loadConfig();
 
 @NgModule({
   declarations: [AppComponent],
@@ -98,6 +93,8 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
           },
         }),
     ),
+    NgxGoogleAnalyticsModule.forRoot(environment.VTM_GTM_MEASUREMENT_ID),
+    NgxGoogleAnalyticsRouterModule,
   ],
   providers: [
     {
@@ -157,5 +154,4 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
   exports: [],
   bootstrap: [AppComponent, MsalRedirectComponent],
 })
-export class AppModule {
-}
+export class AppModule {}
