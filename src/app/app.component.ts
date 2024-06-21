@@ -1,10 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="govuk.d.ts">
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Event, NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular-ivy';
-import { GoogleAnalyticsService } from '@services/google-analytics/google-analytics.service';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
@@ -13,13 +12,11 @@ import {
   Subject,
   map,
   take,
-  takeUntil,
 } from 'rxjs';
 import packageInfo from '../../package.json';
 import { environment } from '../environments/environment';
 import { State } from './store';
 
-declare const gtag: Function;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -33,27 +30,17 @@ export class AppComponent implements OnInit, OnDestroy {
     private loadingService: LoadingService,
     private router: Router,
     private store: Store<State>,
-    private googleAnalyticsService: GoogleAnalyticsService,
   ) {
-    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-        this.googleAnalyticsService.pageView(document.title, event.urlAfterRedirects);
-      }
-    });
+    // this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event: Event) => {
+    //   if (event instanceof NavigationEnd) {
+    //     this.googleAnalyticsService.pageView(document.title, event.urlAfterRedirects);
+    //   }
+    // });
   }
 
   ngOnInit() {
     this.startSentry();
-    this.initGoogleTagManager();
     initAll();
-  }
-
-  initGoogleTagManager() {
-    const scriptElement = document.createElement('script');
-    scriptElement.async = true;
-    scriptElement.src = `https://www.googletagmanager.com/gtag/js?id=${environment.VTM_GTM_MEASUREMENT_ID}`;
-    document.head.appendChild(scriptElement);
-    gtag('config', environment.VTM_GTM_MEASUREMENT_ID);
   }
 
   ngOnDestroy(): void {
