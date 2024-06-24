@@ -61,7 +61,8 @@ export const SpecialistTestSectionGroup5: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
+              asyncValidators: [
+                { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
                 {
                   name: AsyncValidatorNames.HideIfEqualsWithCondition,
                   args: {
@@ -132,10 +133,7 @@ export const SpecialistTestSectionGroup5: FormNode = {
                   name: ValidatorNames.RequiredIfEquals,
                   args: {
                     sibling: 'testResult',
-                    value: [
-                      'pass',
-                      'prs',
-                    ],
+                    value: ['pass', 'prs'],
                   },
                 },
               ],
@@ -178,6 +176,26 @@ export const SpecialistTestSectionGroup5: FormNode = {
                 { value: false, label: 'No' },
               ],
               validators: [{ name: ValidatorNames.Required }],
+            },
+            {
+              name: 'reapplicationDate',
+              label: 'Reapplication date',
+              hint: 'For example, 27 3 2007',
+              editType: FormNodeEditTypes.DATE,
+              viewType: FormNodeViewTypes.DATE,
+              type: FormNodeTypes.CONTROL,
+              groups: ['failOnly'],
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: {
+                    sibling: 'testResult',
+                    value: ['fail'],
+                    customErrorMessage: 'Reapplication date is required',
+                  },
+                },
+                { name: ValidatorNames.FutureDate },
+              ],
             },
           ],
         },

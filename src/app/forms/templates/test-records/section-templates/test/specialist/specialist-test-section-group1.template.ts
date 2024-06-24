@@ -116,15 +116,13 @@ export const SpecialistTestSectionGroup1: FormNode = {
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Alphanumeric },
+              validators: [
+                { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
                   args: {
                     sibling: 'testResult',
-                    value: [
-                      'pass',
-                      'prs',
-                    ],
+                    value: ['pass', 'prs'],
                   },
                 },
               ],
@@ -179,6 +177,26 @@ export const SpecialistTestSectionGroup1: FormNode = {
                 { value: false, label: 'No' },
               ],
               validators: [{ name: ValidatorNames.Required }],
+            },
+            {
+              name: 'reapplicationDate',
+              label: 'Reapplication date',
+              hint: 'For example, 27 3 2007',
+              editType: FormNodeEditTypes.DATE,
+              viewType: FormNodeViewTypes.DATE,
+              type: FormNodeTypes.CONTROL,
+              groups: ['failOnly'],
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: {
+                    sibling: 'testResult',
+                    value: ['fail'],
+                    customErrorMessage: 'Reapplication date is required',
+                  },
+                },
+                { name: ValidatorNames.FutureDate },
+              ],
             },
           ],
         },
