@@ -18,6 +18,9 @@ export const PsvTyresTemplate: FormNode = {
       name: 'techRecord_axles',
       value: '',
       type: FormNodeTypes.ARRAY,
+      validators: [{
+        name: ValidatorNames.MinArrayLengthIfNotEmpty, args: { minimumLength: 2, message: 'You cannot submit a PSV with less than 2 axles.' },
+      }],
       children: [
         {
           name: '0',
