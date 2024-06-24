@@ -1,9 +1,9 @@
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
   name: 'vehicleSection',
@@ -73,6 +73,24 @@ export const DeskBasedVehicleSectionGroup5Lgv: FormNode = {
       name: 'preparerId',
       label: 'Preparer ID',
       value: '',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+    {
+      name: 'make',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+    {
+      name: 'model',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+    {
+      name: 'bodyType',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN,

@@ -1,11 +1,11 @@
-import { DefectGETIVA } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
+import { DefectGETRequiredStandards } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { getRequiredStandards, getRequiredStandardsFailure, getRequiredStandardsSuccess } from '../actions/required-standards.actions';
 
 export interface RequiredStandardState {
   loading: boolean;
   error: string;
-  requiredStandards: DefectGETIVA
+  requiredStandards: DefectGETRequiredStandards
 }
 
 export const STORE_FEATURE_REQUIRED_STANDARDS_KEY = 'RequiredStandards';
@@ -36,7 +36,7 @@ export const requiredStandardsReducer = createReducer(
 
 );
 
-function orderRequiredStandards(requiredStandards: DefectGETIVA) {
+function orderRequiredStandards(requiredStandards: DefectGETRequiredStandards) {
   if (requiredStandards.basic.length) {
     requiredStandards.basic.sort((current, next) => current.sectionNumber.localeCompare(next.sectionNumber, 'en', { numeric: true }));
   }

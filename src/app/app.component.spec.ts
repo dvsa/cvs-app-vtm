@@ -9,21 +9,18 @@ import { UserService } from '@services/user-service/user-service';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { GoogleTagManagerService } from 'angular-google-tag-manager';
+import { GoogleAnalyticsServiceMock } from '@mocks/google-analytics-service.mock';
 import { AppComponent } from './app.component';
 import { State, initialAppState } from './store';
 import { AppRoutingModule } from './app-routing.module';
-
-declare global {
-  function gtag(): void;
-}
 
 describe('AppComponent', () => {
   const MockUserService = {
     getUserName$: jest.fn().mockReturnValue(new Observable()),
   };
   let router: Router;
-
-  window.gtag = jest.fn();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -34,6 +31,7 @@ describe('AppComponent', () => {
         { provide: LoadingService, useValue: { showSpinner$: of(false) } },
         { provide: UserService, useValue: MockUserService },
         PageNotFoundComponent,
+        { provide: GoogleTagManagerService, useClass: GoogleAnalyticsServiceMock },
       ],
     }).compileComponents();
     router = TestBed.inject(Router);

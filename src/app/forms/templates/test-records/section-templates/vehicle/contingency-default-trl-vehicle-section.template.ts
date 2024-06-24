@@ -1,3 +1,4 @@
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
@@ -5,7 +6,6 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const ContingencyVehicleSectionDefaultTrl: FormNode = {
   name: 'vehicleSection',
@@ -69,6 +69,24 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
       disabled: true,
+    },
+    {
+      name: 'make',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+    {
+      name: 'model',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+    {
+      name: 'bodyType',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
     },
   ],
 };

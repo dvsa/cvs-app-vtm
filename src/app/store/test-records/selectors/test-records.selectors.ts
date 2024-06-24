@@ -19,6 +19,9 @@ export const selectTestResultsEntities = createSelector(testResultsFeatureState,
 // select the array of tests result
 export const selectAllTestResults = createSelector(testResultsFeatureState, (state) => selectAll(state));
 
+// select the array of tests results in order of createdAt (most recent to oldest)
+export const selectAllTestResultsInDateOrder = createSelector(selectAllTestResults, (testResults) => testResults.sort(byDate));
+
 // select the total test results count
 export const selectTestResultsTotal = createSelector(testResultsFeatureState, (state) => selectTotal(state));
 
@@ -51,6 +54,10 @@ export const toEditOrNotToEdit = createSelector(testResultInEdit, selectedTestRe
 export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
 
 export const selectDefectData = createSelector(selectedTestResultState, (testResult) => getDefectFromTestResult(testResult));
+
+export const isTestTypeOldIvaOrMsva = createSelector(toEditOrNotToEdit, (testResult) => {
+  return !!testResult?.testTypes[0]?.customDefects?.length && !!testResult?.testTypes[0]?.customDefects?.every((defect) => !!defect.referenceNumber);
+});
 
 export const selectedTestSortedAmendmentHistory = createSelector(selectedTestResultState, (testResult) => {
   if (!testResult || !testResult.testHistory) {

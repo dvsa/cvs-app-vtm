@@ -20,7 +20,7 @@
         ></app-test-record-summary>
 
         <ng-container *ngIf="showCreateTestButton()">
-          <div class="govuk-button-group" *appRoleRequired="roles.TestResultCreateDeskAssessment">
+          <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssessment]">
             <a id="create-test" class="govuk-button" (click)="createTest(techRecord)">Create a test for this vehicle</a>
           </div>
         </ng-container>

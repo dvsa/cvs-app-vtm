@@ -1,4 +1,5 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
+import { TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
@@ -60,7 +61,16 @@ export const SpecialistTestSectionGroup5: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
+                {
+                  name: AsyncValidatorNames.HideIfEqualsWithCondition,
+                  args: {
+                    sibling: 'certificateNumber',
+                    value: 'fail',
+                    conditions: { field: 'testTypeId', operator: 'equals', value: TEST_TYPES_GROUP5_SPEC_TEST },
+                  },
+                },
+              ],
               type: FormNodeTypes.CONTROL,
             },
             {
@@ -107,6 +117,28 @@ export const SpecialistTestSectionGroup5: FormNode = {
               disabled: true,
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
+            },
+            {
+              name: 'certificateNumber',
+              label: 'Certificate number',
+              value: null,
+              type: FormNodeTypes.CONTROL,
+              required: true,
+              viewType: FormNodeViewTypes.STRING,
+              editType: FormNodeEditTypes.TEXT,
+              validators: [
+                { name: ValidatorNames.Alphanumeric },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: {
+                    sibling: 'testResult',
+                    value: [
+                      'pass',
+                      'prs',
+                    ],
+                  },
+                },
+              ],
             },
             {
               name: 'testTypeStartTimestamp',

@@ -95,5 +95,23 @@ export const ContingencyIvaMsvaVehicleSection: FormNode = {
       editType: FormNodeEditTypes.HIDDEN,
       disabled: true,
     },
+    {
+      name: 'make',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+    {
+      name: 'model',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+    {
+      name: 'bodyType',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
   ],
 };

@@ -571,6 +571,15 @@ export class CustomValidators {
         : null;
     };
   };
+
+  static minArrayLengthIfNotEmpty = (minimumLength: number, message: string): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value?.length && control.value.length < minimumLength) {
+        return { minArrayLengthIfNotEmpty: { message } };
+      }
+      return null;
+    };
+  };
 }
 
 export type EnumValidatorOptions = {

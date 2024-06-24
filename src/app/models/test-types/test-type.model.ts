@@ -42,7 +42,7 @@ export interface TestType {
 }
 
 export interface CustomDefects {
-  referenceNumber: string;
+  referenceNumber?: string;
   defectName: string;
   defectNotes: string;
 }

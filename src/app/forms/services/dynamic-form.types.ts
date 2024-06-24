@@ -83,6 +83,7 @@ export enum FormNodeWidth {
   S = 4,
   XS = 3,
   XXS = 2,
+  UNSET = 'unset',
 }
 
 export interface FormNodeOption<T> {

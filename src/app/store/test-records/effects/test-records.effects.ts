@@ -11,6 +11,7 @@ import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
@@ -42,7 +43,12 @@ import {
   updateTestResultFailed,
   updateTestResultSuccess,
 } from '../actions/test-records.actions';
-import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
+import {
+  isTestTypeOldIvaOrMsva,
+  selectAllTestResultsInDateOrder,
+  selectedTestResultState,
+  testResultInEdit,
+} from '../selectors/test-records.selectors';
 
 @Injectable()
 export class TestResultsEffects {
@@ -126,11 +132,21 @@ export class TestResultsEffects {
       ofType(updateTestResult),
       mergeMap((action) =>
         of(action.value).pipe(
-          withLatestFrom(this.userService.name$, this.userService.id$, this.userService.userEmail$, this.store.pipe(select(selectRouteNestedParams))),
+          withLatestFrom(
+            this.userService.name$,
+            this.userService.id$,
+            this.userService.userEmail$,
+            this.store.select(selectRouteNestedParams),
+            this.store.select(selectAllTestResultsInDateOrder),
+          ),
           take(1),
         )),
-      mergeMap(([testResult, name, id, userEmail, { systemNumber }]) => {
-        return this.testRecordsService.saveTestResult(systemNumber, { name, id, userEmail }, testResult).pipe(
+      mergeMap(([testResult, name, id, userEmail, { systemNumber }, testResults]) => {
+        return this.testRecordsService.saveTestResult(
+          systemNumber,
+          { name, id, userEmail },
+          this.testRecordsService.prepareTestResultForAmendment(testResults, testResult),
+        ).pipe(
           take(1),
           map((responseBody) => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),
           catchError((e) => {
@@ -159,8 +175,9 @@ export class TestResultsEffects {
         of(action).pipe(withLatestFrom(
           this.store.pipe(select(selectedTestResultState)),
           this.store.pipe(select(selectQueryParam('edit'))),
+          this.store.pipe(select(isTestTypeOldIvaOrMsva)),
         ), take(1))),
-      concatMap(([action, selectedTestResult, isEditing]) => {
+      concatMap(([action, selectedTestResult, isEditing, isOldIVAorMSVAtest]) => {
         const { testTypeId } = action;
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -169,11 +186,18 @@ export class TestResultsEffects {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
+
+        // tech-debt: feature flag check to be removed when required standard is enabled
+        const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredStandards');
+        const isIVAorMSVATest = testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
+
         const vehicleTpl = masterTpl[`${vehicleType}`];
+        const testTypeGroupString = (!isRequiredStandardsEnabled || isOldIVAorMSVAtest)
+                                    && isIVAorMSVATest ? `${testTypeGroup}OldIVAorMSVA` : testTypeGroup;
 
         let tpl;
-        if (testTypeGroup && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup)) {
-          tpl = vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES];
+        if (testTypeGroupString && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroupString)) {
+          tpl = vehicleTpl[testTypeGroupString as keyof typeof TEST_TYPES];
         } else if (isEditing === 'true') {
           tpl = undefined;
         } else {
@@ -223,10 +247,15 @@ export class TestResultsEffects {
         }
 
         const testTypeGroup = TestRecordsService.getTestTypeGroup(id);
-        const vehicleTpl = contingencyTestTemplates[`${vehicleType}`];
+        // tech-debt: feature flag check to be removed when required standard is enabled
+        const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredStandards');
+        const isIVAorMSVATest = testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
 
-        const tpl = testTypeGroup && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup)
-          ? vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES]
+        const vehicleTpl = contingencyTestTemplates[`${vehicleType}`];
+        const testTypeGroupString = !isRequiredStandardsEnabled && isIVAorMSVATest ? `${testTypeGroup}OldIVAorMSVA` : testTypeGroup;
+
+        const tpl = testTypeGroupString && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroupString)
+          ? vehicleTpl[testTypeGroupString as keyof typeof TEST_TYPES]
           : vehicleTpl['default'];
 
         const mergedForms = {} as TestResultModel;
@@ -279,5 +308,6 @@ export class TestResultsEffects {
     private router: Router,
     private userService: UserService,
     private dfs: DynamicFormService,
+    private featureToggleService: FeatureToggleService,
   ) { }
 }

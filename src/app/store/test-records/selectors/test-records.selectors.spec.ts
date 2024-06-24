@@ -3,6 +3,7 @@ import { mockDefect } from '@mocks/mock-defects';
 import { createMockTestResult } from '@mocks/test-result.mock';
 import { createMockTestType } from '@mocks/test-type.mock';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { createMockAdditionalDefect, createMockCustomDefect } from '@mocks/custom-defect.mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { TestResultsState, initialTestResultsState } from '../reducers/test-records.reducer';
 import {
@@ -17,6 +18,7 @@ import {
   selectedTestResultState,
   selectedTestSortedAmendmentHistory,
   testResultLoadingState,
+  isTestTypeOldIvaOrMsva,
 } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
@@ -53,6 +55,29 @@ describe('Test Results Selectors', () => {
       const state: TestResultsState = { ...initialTestResultsState, loading: true };
       const selectedState = testResultLoadingState.projector(state);
       expect(selectedState).toBeTruthy();
+    });
+  });
+
+  describe('isTestTypeOldIvaOrMsva', () => {
+    it('should return true if all custom defects have a reference number', () => {
+      const state: TestResultModel = mockTestResult();
+      state.testTypes[0].customDefects = [createMockCustomDefect()];
+      const isOldIvaOrMsva = isTestTypeOldIvaOrMsva.projector(state);
+      expect(isOldIvaOrMsva).toBe(true);
+    });
+
+    it('should return false if all custom defects do not have a reference number', () => {
+      const state: TestResultModel = mockTestResult();
+      state.testTypes[0].customDefects = [createMockAdditionalDefect()];
+      const isOldIvaOrMsva = isTestTypeOldIvaOrMsva.projector(state);
+      expect(isOldIvaOrMsva).toBe(false);
+    });
+
+    it('should return false if no custom defects are present', () => {
+      const state: TestResultModel = mockTestResult();
+      state.testTypes[0].customDefects = [];
+      const isOldIvaOrMsva = isTestTypeOldIvaOrMsva.projector(state);
+      expect(isOldIvaOrMsva).toBe(false);
     });
   });
 

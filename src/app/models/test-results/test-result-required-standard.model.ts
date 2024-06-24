@@ -1,4 +1,4 @@
-import { InspectionType } from '@dvsa/cvs-type-definitions/types/iva/defects/get';
+import { InspectionType } from '@dvsa/cvs-type-definitions/types/required-standards/defects/get';
 
 export interface TestResultRequiredStandard {
   sectionNumber: string;

@@ -9,4 +9,5 @@ export enum AsyncValidatorNames {
   RequiredIfNotResult = 'requiredIfNotResult',
   HideIfEqualsWithCondition = 'hideIfEqualsWithCondition',
   PassResultDependantOnCustomDefects = 'passResultDependantOnCustomDefects',
+  RequiredWhenCarryingDangerousGoods = 'requiredWhenCarryingDangerousGoods',
 }

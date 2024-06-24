@@ -1,10 +1,10 @@
+import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 
 export const VehicleSectionDefaultPsvHgvLight: FormNode = {
   name: 'vehicleSection',
@@ -111,6 +111,24 @@ export const VehicleSectionDefaultPsvHgvLight: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN,
       disabled: true,
       width: FormNodeWidth.L,
+    },
+    {
+      name: 'make',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+    {
+      name: 'model',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
+    },
+    {
+      name: 'bodyType',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN,
     },
   ],
 };
