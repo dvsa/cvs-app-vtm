@@ -40,10 +40,20 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      validators: [
-        { name: ValidatorNames.PastDate },
-      ],
+      validators: [{ name: ValidatorNames.PastDate }],
       isoDate: false,
+    },
+    {
+      name: 'techRecord_manufactureMonth',
+      label: 'Month of manufacture',
+      value: null,
+      width: FormNodeWidth.XS,
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.NUMBER,
+      validators: [
+        { name: ValidatorNames.Min, args: 1 },
+        { name: ValidatorNames.Max, args: 12 },
+      ],
     },
     {
       name: 'techRecord_manufactureYear',
@@ -52,11 +62,7 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [
-        { name: ValidatorNames.Max, args: 9999 },
-        { name: ValidatorNames.Min, args: 1000 },
-        { name: ValidatorNames.PastYear },
-      ],
+      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.PastYear }],
       customTags: [{ colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
     },
     {
@@ -66,7 +72,6 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-
       isoDate: false,
     },
     {
@@ -116,9 +121,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.SELECT,
-      options: [
-        { label: 'trailer', value: 'trailer' },
-      ],
+      options: [{ label: 'trailer', value: 'trailer' }],
       validators: [{ name: ValidatorNames.Required }],
       customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }],
     },
@@ -152,7 +155,10 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
       validators: [{ name: ValidatorNames.UpdateFunctionCode }],
-      customTags: [{ colour: TagType.RED, label: TagTypeLabels.REQUIRED }, { colour: TagType.PURPLE, label: TagTypeLabels.PLATES }],
+      customTags: [
+        { colour: TagType.RED, label: TagTypeLabels.REQUIRED },
+        { colour: TagType.PURPLE, label: TagTypeLabels.PLATES },
+      ],
     },
     {
       name: 'techRecord_frameDescription',
