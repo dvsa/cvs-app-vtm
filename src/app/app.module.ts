@@ -31,6 +31,8 @@ import {
 } from '@azure/msal-browser';
 import * as Sentry from '@sentry/angular-ivy';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { GoogleTagManagerModule } from 'angular-google-tag-manager';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -98,6 +100,9 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () =>
           },
         }),
     ),
+    GoogleTagManagerModule.forRoot({
+      id: environment.VTM_GTM_CONTAINER_ID,
+    }),
   ],
   providers: [
     {

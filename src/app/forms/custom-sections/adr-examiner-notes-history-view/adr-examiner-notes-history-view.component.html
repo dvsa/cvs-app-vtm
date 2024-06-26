@@ -1,5 +1,5 @@
 <ng-container *ngIf="control">
-  <ng-container *ngIf="adrNotes">
+  <ng-container *ngIf="getAdditionalExaminerNotes() as adrNotes">
     <section class="govuk-!-margin-top-4">
       <label *ngIf="control.meta?.label" class="govuk-label govuk-label--m">
         {{ control.meta.label }}
