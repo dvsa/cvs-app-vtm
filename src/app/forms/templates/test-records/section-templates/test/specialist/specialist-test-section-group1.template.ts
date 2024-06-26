@@ -60,6 +60,20 @@ export const SpecialistTestSectionGroup1: FormNode = {
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
+                {
+                  name: ValidatorNames.ShowGroupsWhenIncludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['failOnly'],
+                  },
+                },
+                {
+                  name: ValidatorNames.HideGroupsWhenExcludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['failOnly'],
+                  },
+                },
               ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
