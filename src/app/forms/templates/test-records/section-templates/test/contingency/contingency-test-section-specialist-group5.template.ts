@@ -162,26 +162,6 @@ export const ContingencyTestSectionSpecialistGroup5: FormNode = {
               ],
               validators: [{ name: ValidatorNames.Required }],
             },
-            {
-              name: 'reapplicationDate',
-              label: 'Reapplication date',
-              hint: 'For example, 27 3 2007',
-              editType: FormNodeEditTypes.DATE,
-              viewType: FormNodeViewTypes.DATE,
-              type: FormNodeTypes.CONTROL,
-              groups: ['failOnly'],
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: {
-                    sibling: 'testResult',
-                    value: ['fail'],
-                    customErrorMessage: 'Reapplication date is required',
-                  },
-                },
-                { name: ValidatorNames.FutureDate },
-              ],
-            },
           ],
         },
       ],
