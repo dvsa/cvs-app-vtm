@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from '@core/components/server-error/server-error.component';
-import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
+import { CancelEditTechDeactivateGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 import { FeatureToggleGuard } from '@guards/feature-toggle-guard/feature-toggle.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
@@ -20,14 +20,14 @@ const routes: Routes = [
         path: RootRoutes.ROOT,
         data: { title: 'Home', roles: Roles.TechRecordView },
         canActivate: [MsalGuard, RoleGuard],
-        canDeactivate: [CancelEditTechGuard],
+        canDeactivate: [CancelEditTechDeactivateGuard],
         loadChildren: () => import('./features/home/home.module').then((m) => m.HomeModule),
       },
       {
         path: RootRoutes.SEARCH_TECHNICAL_RECORD,
         data: { title: 'Technical record search', roles: Roles.TechRecordView },
         canActivate: [MsalGuard, RoleGuard],
-        canDeactivate: [CancelEditTechGuard],
+        canDeactivate: [CancelEditTechDeactivateGuard],
         loadChildren: () => import('./features/search/search.module').then((m) => m.SearchModule),
       },
       {

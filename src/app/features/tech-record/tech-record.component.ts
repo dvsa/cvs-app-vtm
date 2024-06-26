@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { Roles } from '@models/roles.enum';
@@ -16,11 +16,9 @@ export class TechRecordComponent implements OnInit {
 
   constructor(
     private techRecordService: TechnicalRecordService,
-    private router: Router,
     public errorService: GlobalErrorService,
     private route: ActivatedRoute,
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {

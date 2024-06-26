@@ -1,24 +1,19 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { InteractionStatus } from '@azure/msal-browser';
 import { UserService } from '@services/user-service/user-service';
 import {
-  filter, map, Observable, switchMap,
+  Observable, filter, map, switchMap,
 } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class RoleGuard implements CanActivate {
-  constructor(private userService: UserService) {}
+export const RoleGuard = (next: ActivatedRouteSnapshot): Observable<boolean> => {
+  const userService = inject(UserService);
 
-  canActivate(next: ActivatedRouteSnapshot): Observable<boolean> {
-    return this.userService.inProgress$.pipe(
-      filter((status: InteractionStatus) => InteractionStatus.None === status),
-      switchMap(() => this.userService.roles$),
-      map((roles) => {
-        return roles?.some((x) => next.data['roles'].includes(x)) || false;
-      }),
-    );
-  }
-}
+  return userService.inProgress$.pipe(
+    filter((status: InteractionStatus) => InteractionStatus.None === status),
+    switchMap(() => userService.roles$),
+    map((roles) => {
+      return roles?.some((x) => next.data['roles'].includes(x)) || false;
+    }),
+  );
+};

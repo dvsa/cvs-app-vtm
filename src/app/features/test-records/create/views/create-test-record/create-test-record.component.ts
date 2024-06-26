@@ -56,7 +56,6 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     private store: Store<State>,
     private warningService: GlobalWarningService,
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {

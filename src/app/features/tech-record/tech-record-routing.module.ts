@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
+import { CancelEditTechActivateGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
+import { TechRecordRoutes } from '@models/routes.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { techRecordCleanResolver } from 'src/app/resolvers/tech-record-clean/tech-record-clean.resolver';
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
 import { techRecordValidateResolver } from 'src/app/resolvers/tech-record-validate/tech-record-validate.resolver';
 import { techRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
-import { TechRecordRoutes } from '@models/routes.enum';
 import {
   AdrGenerateCertificateComponent,
 } from './components/adr-generate-certificate/adr-generate-certificate.component';
@@ -29,6 +29,9 @@ import {
   TechRecordChangeVisibilityComponent,
 } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 import {
+  TechRecordEditAdditionalExaminerNoteComponent,
+} from './components/tech-record-edit-additional-examiner-note/tech-record-edit-additional-examiner-note.component';
+import {
   GenerateLetterComponent,
 } from './components/tech-record-generate-letter/tech-record-generate-letter.component';
 import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
@@ -40,9 +43,6 @@ import {
 } from './components/tech-record-summary-changes/tech-record-summary-changes.component';
 import { TechRecordUnarchiveComponent } from './components/tech-record-unarchive/tech-record-unarchive-component';
 import { TechRecordComponent } from './tech-record.component';
-import {
-  TechRecordEditAdditionalExaminerNoteComponent,
-} from './components/tech-record-edit-additional-examiner-note/tech-record-edit-additional-examiner-note.component';
 
 const routes: Routes = [
   {
@@ -50,7 +50,7 @@ const routes: Routes = [
     component: TechRecordComponent,
     data: { roles: Roles.TechRecordView, isCustomLayout: true },
     canActivateChild: [MsalGuard, RoleGuard],
-    canActivate: [CancelEditTechGuard],
+    canActivate: [CancelEditTechActivateGuard],
     resolve: {
       load: techRecordViewResolver,
       data: techRecordDataResolver,

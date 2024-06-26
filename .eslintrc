@@ -15,7 +15,13 @@
         "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
-      "extends": ["plugin:import/errors", "plugin:import/warnings", "plugin:import/typescript", "@dvsa/eslint-config-ts"],
+      "extends": [
+        "plugin:import/errors", 
+        "plugin:import/warnings", 
+        "plugin:import/typescript",
+        "plugin:deprecation/recommended",
+        "@dvsa/eslint-config-ts"
+      ],
       "rules": {
         "import/no-named-default": "off",
         "no-param-reassign": "off",
