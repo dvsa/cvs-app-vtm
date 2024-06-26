@@ -131,11 +131,11 @@ describe('TechRecordChangeTypeComponent', () => {
 
   describe('handleSubmit', () => {
     it('should add an error when no vehicle type is selected', () => {
-      const addErrorSpy = jest.spyOn(errorService, 'addError');
+      const setErrorsSpy = jest.spyOn(errorService, 'setErrors');
 
       component.handleSubmit(null as unknown as VehicleTypes);
 
-      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
+      expect(setErrorsSpy).toHaveBeenCalledWith([{ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' }]);
     });
 
     it('should dispatch the changeVehicleType action', () => {
