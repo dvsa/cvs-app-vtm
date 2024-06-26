@@ -131,7 +131,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Test start date and time',
-              viewType: FormNodeViewTypes.TIME,
+              viewType: FormNodeViewTypes.DATETIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
@@ -144,7 +144,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Test end date and time',
-              viewType: FormNodeViewTypes.TIME,
+              viewType: FormNodeViewTypes.DATETIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
