@@ -77,7 +77,7 @@
           <ng-template
             *ngIf="isPsv"
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'tyres_speedCategorySymbol', type: types.DROPDOWN, width: widths.XXS, options: speedCategorySymbol }"
+            [ngTemplateOutletContext]="{ name: 'tyres_speedCategorySymbol', type: types.DROPDOWN, width: widths.UNSET, options: speedCategorySymbol }"
           ></ng-template>
 
           <ng-template
@@ -130,7 +130,7 @@
       [type]="types.DROPDOWN"
       name="techRecord_tyreUseCode"
       label="Tyre Use Code"
-      [width]="widths.XS"
+      [width]="widths.UNSET"
       [isEditing]="isEditing"
       [options]="tyreUseCode"
     ></app-switchable-input>

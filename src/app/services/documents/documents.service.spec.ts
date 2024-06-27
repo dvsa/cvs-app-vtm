@@ -43,7 +43,7 @@ describe('DocumentsService', () => {
       const simulateClickSpy = jest.spyOn(service, 'simulateClick');
 
       const fakeAnchorZip = domParser
-        .parseFromString('<a download="fileName.zip" href="Response body" target="_blank" />', 'text/html')
+        .parseFromString('<a download="fileName.zip" href="Response body" />', 'text/html')
         .querySelector('a');
 
       service.openDocumentFromResponse(fileName, responseBody, 'zip');

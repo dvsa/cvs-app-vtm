@@ -169,4 +169,11 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     }
     return true;
   }
+
+  get showWarning(): boolean {
+    if (this.vehicleType) {
+      return this.vehicleType === 'psv' || this.vehicleType === 'hgv';
+    }
+    return false;
+  }
 }

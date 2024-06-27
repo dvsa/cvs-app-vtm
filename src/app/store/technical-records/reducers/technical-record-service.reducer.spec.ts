@@ -33,7 +33,7 @@ import {
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
-  updateEditingTechRecordCancel,
+  updateEditingTechRecordCancel, updateExistingADRAdditionalExaminerNote,
   updateScrollPosition,
   updateTechRecord,
   updateTechRecordFailure,
@@ -559,10 +559,19 @@ describe('Vehicle Technical Record Reducer', () => {
 
   });
   describe('handleADRExaminerNoteChanges', () => {
-    it('should', () => {
+    beforeEach(() => {
+      const mockedDate = new Date(2024, 5, 20);
+      jest.useFakeTimers();
+      jest.setSystemTime(mockedDate);
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+    it('should handle any changes made to the adr examiner notes', () => {
       const testNote = {
         note: 'testNote',
-        createdAtDate: new Date().toISOString().split('T')[0],
+        createdAtDate: new Date().toISOString(),
         lastUpdatedBy: 'someone',
       };
       const state: TechnicalRecordServiceState = {
@@ -584,6 +593,31 @@ describe('Vehicle Technical Record Reducer', () => {
       const newState = vehicleTechRecordReducer(state, action);
       expect((newState.editingTechRecord as unknown as (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>))?.techRecord_adrDetails_additionalExaminerNotes)
         .toContainEqual(testNote);
+    });
+  });
+  describe('handleUpdateExistingADRExaminerNote', () => {
+    it('should', () => {
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
+        editingTechRecord: {
+          systemNumber: 'foo',
+          createdTimestamp: 'bar',
+          vin: 'testVin',
+          techRecord_adrDetails_additionalExaminerNotes: [
+            {
+              note: 'foo',
+              createdAtDate: 'bar',
+              lastUpdatedBy: 'foo',
+            },
+          ],
+        } as unknown as TechRecordType<'put'>,
+        loading: true,
+      };
+      const newNote = 'foobar';
+      const action = updateExistingADRAdditionalExaminerNote({ additionalExaminerNote: newNote, examinerNoteIndex: 0 });
+      const newState = vehicleTechRecordReducer(state, action);
+      const editingTechRecord = newState.editingTechRecord as unknown as (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>);
+      expect(editingTechRecord.techRecord_adrDetails_additionalExaminerNotes![0].note).toEqual(newNote);
     });
   });
 });

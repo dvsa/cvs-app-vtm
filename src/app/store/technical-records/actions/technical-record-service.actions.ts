@@ -98,7 +98,12 @@ export const clearScrollPosition = createAction(`${prefix} clearScrollPosition`)
 
 export const clearADRDetailsBeforeUpdate = createAction(`${prefix} clearADRDetailsBeforeUpdate`);
 
-export const updateADRAdditionalExaminerNotes = createAction(`${prefix} handleADRExaminerNoteChanges`, props<{ username: string }>());
+export const updateADRAdditionalExaminerNotes = createAction(`${prefix} updateADRAdditionalExaminerNotes`, props<{ username: string }>());
+
+export const updateExistingADRAdditionalExaminerNote = createAction(
+  `${prefix} updateExistingADRAdditionalExaminerNote`,
+  props<{ additionalExaminerNote: string, examinerNoteIndex: number }>(),
+);
 
 export const generateADRCertificate = createAction(`${prefix} generateADRCertificate`, props<{
   systemNumber: string, createdTimestamp: string, certificateType: string

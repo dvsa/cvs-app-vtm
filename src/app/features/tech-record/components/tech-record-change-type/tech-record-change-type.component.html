@@ -37,7 +37,7 @@
   </ng-container>
 
   <div class="buttons-row">
-    <app-button (clicked)="handleSubmit(selectVehicleType.value)">Confirm and continue</app-button>
+    <app-button id="confirm-and-continue-button" (clicked)="handleSubmit(selectVehicleType.value)">Confirm and continue</app-button>
 
     <app-button design="link" data-module="govuk-button" (clicked)="navigateBack()">Back</app-button>
   </div>
