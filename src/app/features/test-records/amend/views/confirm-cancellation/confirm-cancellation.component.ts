@@ -68,6 +68,8 @@ export class ConfirmCancellationComponent implements OnDestroy {
 
     const reason: string = this.form.get('reason')?.value;
 
+    this.testRecordsService.cleanTestResult();
+
     this.testRecordsService.cancelTest(reason);
   }
 }
