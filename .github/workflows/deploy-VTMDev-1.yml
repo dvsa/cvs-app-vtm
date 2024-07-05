@@ -3,12 +3,17 @@ run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} ð
 
 on:
   workflow_dispatch:
+    inputs:
+      branch:
+        description: Directory of schema
+        required: false
+        type: string
 
 jobs:
   vtm-app:
     uses: ./.github/workflows/deploy.yml
     with:
-      branch: ${{ github.ref_name }}
+      branch: ${{ inputs.branch || github.ref_name }}
       environment: 'vtmdev-1'
       bucket: '-vtmdev-1.develop'
     secrets:
