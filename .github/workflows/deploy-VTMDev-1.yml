@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: Directory of schema
+        description: Branch to promoto
         required: false
         type: string
 
