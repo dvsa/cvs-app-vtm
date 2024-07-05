@@ -1,11 +1,11 @@
 name: Build and Deploy VTM App to VTMDev1
-run-name: "${{ github.actor }} - ${{ github.ref_name }} - ${{ github.run_id }} 🚀"
+run-name: "${{ github.actor }} - ${{ inputs.branch || github.ref_name }} - ${{ github.run_id }} 🚀"
 
 on:
   workflow_dispatch:
     inputs:
       branch:
-        description: Branch to promoto
+        description: Branch to promote
         required: false
         type: string
 
