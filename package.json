@@ -29,7 +29,7 @@
     "test:watch": "jest --watch",
     "test:ci": "jest --ci --runInBand --watchAll=false --reporters=default",
     "mock-api": "npx ts-node ./mock-api/mock-api-server.ts",
-    "prepare": "husky install && ts-patch install -s",
+    "prepare": "husky && ts-patch install -s",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org driver-and-vehicle-standards-a --project vehicle-test-management ./dist && sentry-cli sourcemaps upload --org driver-and-vehicle-standards-a --project vehicle-test-management ./dist"
   },
   "private": true,
