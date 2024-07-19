@@ -1,7 +1,0 @@
-{
-  "vehicleType": "psv",
-  "vehicleClass": { "code": "4", "description": "MOT class 4" },
-  "bodyType": { "code": "b", "description": "box" },
-  "reasonForCreation": "Cypress auto testing",
-  "brakes": { "brakeCode": "123" }
-}

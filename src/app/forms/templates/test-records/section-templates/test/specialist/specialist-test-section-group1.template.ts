@@ -60,6 +60,20 @@ export const SpecialistTestSectionGroup1: FormNode = {
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
+                {
+                  name: ValidatorNames.ShowGroupsWhenIncludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['failOnly'],
+                  },
+                },
+                {
+                  name: ValidatorNames.HideGroupsWhenExcludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['failOnly'],
+                  },
+                },
               ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
@@ -116,15 +130,13 @@ export const SpecialistTestSectionGroup1: FormNode = {
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Alphanumeric },
+              validators: [
+                { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
                   args: {
                     sibling: 'testResult',
-                    value: [
-                      'pass',
-                      'prs',
-                    ],
+                    value: ['pass', 'prs'],
                   },
                 },
               ],
@@ -179,6 +191,26 @@ export const SpecialistTestSectionGroup1: FormNode = {
                 { value: false, label: 'No' },
               ],
               validators: [{ name: ValidatorNames.Required }],
+            },
+            {
+              name: 'reapplicationDate',
+              label: 'Reapplication date',
+              hint: 'For example, 27 3 2007',
+              editType: FormNodeEditTypes.DATE,
+              viewType: FormNodeViewTypes.DATE,
+              type: FormNodeTypes.CONTROL,
+              groups: ['failOnly'],
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: {
+                    sibling: 'testResult',
+                    value: ['fail'],
+                    customErrorMessage: 'Reapplication date is required',
+                  },
+                },
+                { name: ValidatorNames.FutureDate },
+              ],
             },
           ],
         },

@@ -61,7 +61,8 @@ export const SpecialistTestSectionGroup5: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
+              asyncValidators: [
+                { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
                 {
                   name: AsyncValidatorNames.HideIfEqualsWithCondition,
                   args: {
@@ -132,10 +133,7 @@ export const SpecialistTestSectionGroup5: FormNode = {
                   name: ValidatorNames.RequiredIfEquals,
                   args: {
                     sibling: 'testResult',
-                    value: [
-                      'pass',
-                      'prs',
-                    ],
+                    value: ['pass', 'prs'],
                   },
                 },
               ],

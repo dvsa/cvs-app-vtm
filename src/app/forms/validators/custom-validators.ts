@@ -107,7 +107,7 @@ export class CustomValidators {
       return null;
     };
 
-  static requiredIfEquals = (sibling: string, values: unknown[]): ValidatorFn =>
+  static requiredIfEquals = (sibling: string, values: unknown[], customErrorMessage?: string): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
 
@@ -126,7 +126,7 @@ export class CustomValidators {
         || (Array.isArray(control.value) && (control.value.length === 0 || control.value.every((val) => !val)));
 
       return isSiblingValueIncluded && isControlValueEmpty && isSiblingVisible
-        ? { requiredIfEquals: { sibling: siblingControl.meta.label } }
+        ? { requiredIfEquals: { sibling: siblingControl.meta.label, customErrorMessage } }
         : null;
     };
 

@@ -4,7 +4,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import * as Sentry from '@sentry/angular-ivy';
-import { GoogleAnalyticsService } from '@services/google-analytics/google-analytics.service';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
@@ -12,14 +11,14 @@ import { initAll } from 'govuk-frontend/govuk/all';
 import {
   Subject,
   map,
-  take,
-  takeUntil,
+  take, takeUntil,
 } from 'rxjs';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import packageInfo from '../../package.json';
 import { environment } from '../environments/environment';
 import { State } from './store';
 
-declare const gtag: Function;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -32,28 +31,24 @@ export class AppComponent implements OnInit, OnDestroy {
     public userService: UserService,
     private loadingService: LoadingService,
     private router: Router,
+    private gtmService: GoogleTagManagerService,
     private store: Store<State>,
-    private googleAnalyticsService: GoogleAnalyticsService,
-  ) {
+  ) { }
+
+  async ngOnInit() {
+    this.startSentry();
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
-        this.googleAnalyticsService.pageView(document.title, event.urlAfterRedirects);
+
+        const gtmTag = {
+          event: document.title,
+          pageName: event.urlAfterRedirects,
+        };
+        void this.gtmService.pushTag(gtmTag);
       }
     });
-  }
-
-  ngOnInit() {
-    this.startSentry();
-    this.initGoogleTagManager();
+    await this.gtmService.addGtmToDom();
     initAll();
-  }
-
-  initGoogleTagManager() {
-    const scriptElement = document.createElement('script');
-    scriptElement.async = true;
-    scriptElement.src = `https://www.googletagmanager.com/gtag/js?id=${environment.VTM_GTM_MEASUREMENT_ID}`;
-    document.head.appendChild(scriptElement);
-    gtag('config', environment.VTM_GTM_MEASUREMENT_ID);
   }
 
   ngOnDestroy(): void {

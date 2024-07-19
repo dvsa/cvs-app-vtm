@@ -69,13 +69,13 @@ describe('AdrExaminerNotesHistoryViewComponent', () => {
       component.currentTechRecord.techRecord_adrDetails_additionalExaminerNotes = [
         { createdAtDate: 'test', lastUpdatedBy: 'test', note: 'test note' },
       ];
-      expect(component.adrNotes).toEqual([{ createdAtDate: 'test', lastUpdatedBy: 'test', note: 'test note' }]);
+      expect(component.getAdditionalExaminerNotes()).toEqual([{ createdAtDate: 'test', lastUpdatedBy: 'test', note: 'test note' }]);
     });
 
     it('should return an empty array if the adr examiner notes is undefined', () => {
       component.currentTechRecord = { ...MOCK_HGV };
       component.currentTechRecord.techRecord_adrDetails_additionalExaminerNotes = undefined;
-      expect(component.adrNotes).toEqual([]);
+      expect(component.getAdditionalExaminerNotes()).toEqual([]);
     });
   });
 
