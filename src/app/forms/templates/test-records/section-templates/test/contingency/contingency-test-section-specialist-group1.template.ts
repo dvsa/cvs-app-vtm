@@ -54,7 +54,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { value: 'prs', label: 'PRS' },
               ],
               validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueRequired', value: ['pass', 'prs'] } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueRequired', value: ['pass', 'prs'] } },
               ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
