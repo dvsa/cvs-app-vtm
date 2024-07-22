@@ -40,7 +40,7 @@ export interface TestType {
   deletionFlag?: boolean;
   secondaryCertificateNumber?: string | null;
   reapplicationDate?: string;
-  issueDocumentsCentrally?: boolean;
+  issueRequired?: boolean;
 }
 
 export interface CustomDefects {

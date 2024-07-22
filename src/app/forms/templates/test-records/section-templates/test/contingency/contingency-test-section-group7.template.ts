@@ -2,7 +2,7 @@ import { ContingencyAdrGenerateCertComponent } from '@forms/components/contingen
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+    FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 
 export const ContingencyTestSectionGroup7: FormNode = {
@@ -56,13 +56,13 @@ export const ContingencyTestSectionGroup7: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'generateCert', value: 'pass' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueDocumentsCentrally', value: 'pass' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueRequired', value: 'pass' } },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
             },
             {
-              name: 'issueDocumentsCentrally',
+              name: 'issueRequired',
               type: FormNodeTypes.CONTROL,
               label: 'Issue documents centrally',
               editType: FormNodeEditTypes.RADIO,
@@ -117,7 +117,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
               validators: [
                 { name: ValidatorNames.Alphanumeric },
                 // Make required if test result is pass/prs, but issue documents centrally is false
-                { name: ValidatorNames.IssueDocumentsCentrally },
+                { name: ValidatorNames.IssueRequired },
               ],
               required: true,
               value: null,

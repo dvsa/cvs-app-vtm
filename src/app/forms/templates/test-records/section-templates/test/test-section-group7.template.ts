@@ -1,7 +1,7 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+    FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
 
@@ -60,13 +60,13 @@ export const TestSectionGroup7: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: ['pass', 'prs', 'abandoned'] } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueDocumentsCentrally', value: ['pass', 'prs'] } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueRequired', value: ['pass', 'prs'] } },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
             },
             {
-              name: 'issueDocumentsCentrally',
+              name: 'issueRequired',
               type: FormNodeTypes.CONTROL,
               label: 'Issue documents centrally',
               editType: FormNodeEditTypes.RADIO,
@@ -91,7 +91,7 @@ export const TestSectionGroup7: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               validators: [
                 // Make required if test result is pass/prs, but issue documents centrally is false
-                { name: ValidatorNames.IssueDocumentsCentrally },
+                { name: ValidatorNames.IssueRequired },
               ],
               required: true,
               value: null,

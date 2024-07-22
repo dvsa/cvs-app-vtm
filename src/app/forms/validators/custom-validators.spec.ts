@@ -1,5 +1,5 @@
 import {
-  AbstractControl, FormArray, FormControl, FormGroup,
+    AbstractControl, FormArray, FormControl, FormGroup,
 } from '@angular/forms';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
@@ -2027,51 +2027,51 @@ describe('minArrayLengthIfNotEmpty', () => {
   });
 });
 
-describe('IssueDocumentsCentrally', () => {
+describe('IssueRequired', () => {
   let form: FormGroup;
 
   beforeEach(() => {
     form = new FormGroup({
       testResult: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'testResult' }, 'pass'),
       certificateNumber: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'certificateNumber' }, null),
-      issueDocumentsCentrally: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'issueDocumentsCentrally' }, true),
+      issueRequired: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'issueRequired' }, true),
     });
   });
 
-  describe('when issueDocumentsCentrally is true', () => {
+  describe('when issueRequired is true', () => {
     beforeEach(() => {
-      form.get('issueDocumentsCentrally')?.patchValue(true);
+      form.get('issueRequired')?.patchValue(true);
     });
 
     it('should return null when testResult is prs', () => {
       form.get('testResult')?.patchValue('prs');
       const control = form.get('certificateNumber') as FormControl;
-      expect(CustomValidators.issueDocumentsCentrally()(control)).toBeNull();
+      expect(CustomValidators.issueRequired()(control)).toBeNull();
     });
 
     it('should return null when testResult is pass', () => {
       form.get('testResult')?.patchValue('pass');
       const control = form.get('certificateNumber') as FormControl;
-      expect(CustomValidators.issueDocumentsCentrally()(control)).toBeNull();
+      expect(CustomValidators.issueRequired()(control)).toBeNull();
     });
   });
 
-  describe('when issueDocumentsCentrally is false', () => {
+  describe('when issueRequired is false', () => {
     beforeEach(() => {
-      form.get('issueDocumentsCentrally')?.patchValue(false);
+      form.get('issueRequired')?.patchValue(false);
     });
     it('should return null when testResult is pass, but the control is populated', () => {
       form.get('testResult')?.patchValue('pass');
       const control = form.get('certificateNumber') as FormControl;
       control.patchValue('value');
-      expect(CustomValidators.issueDocumentsCentrally()(control)).toBeNull();
+      expect(CustomValidators.issueRequired()(control)).toBeNull();
     });
 
     it('should return error when testResult is pass, but the control is not populated', () => {
       form.get('testResult')?.patchValue('pass');
       const control = form.get('certificateNumber') as FormControl;
       control.patchValue(null);
-      expect(CustomValidators.issueDocumentsCentrally()(control)).toEqual({
+      expect(CustomValidators.issueRequired()(control)).toEqual({
         requiredIfEquals: { customErrorMessage: undefined, sibling: undefined },
       });
     });

@@ -569,12 +569,12 @@ export class CustomValidators {
     };
   };
 
-  static issueDocumentsCentrally = (): ValidatorFn => {
+  static issueRequired = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       const isPRS = control.parent?.value.testResult === 'prs';
       const isPass = control.parent?.value.testResult === 'pass';
-      const issueDocumentsCentrally = control.parent?.value.issueDocumentsCentrally;
-      if ((isPRS || isPass) && issueDocumentsCentrally) {
+      const issueRequired = control.parent?.value.issueRequired;
+      if ((isPRS || isPass) && issueRequired) {
         return null;
       }
 

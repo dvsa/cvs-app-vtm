@@ -11,34 +11,34 @@ import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import {
-  cancelEditingTestResult,
-  cleanTestResult,
-  createDefect,
-  createRequiredStandard,
-  createTestResult,
-  createTestResultFailed,
-  createTestResultSuccess,
-  fetchSelectedTestResult,
-  fetchSelectedTestResultFailed,
-  fetchSelectedTestResultSuccess,
-  fetchTestResults,
-  fetchTestResultsBySystemNumber,
-  fetchTestResultsBySystemNumberFailed,
-  fetchTestResultsBySystemNumberSuccess,
-  fetchTestResultsSuccess,
-  initialContingencyTest,
-  removeDefect,
-  removeRequiredStandard,
-  setResultOfTest,
-  templateSectionsChanged,
-  updateDefect,
-  updateEditingTestResult,
-  updateRequiredStandard,
-  updateResultOfTest,
-  updateResultOfTestRequiredStandards,
-  updateTestResult,
-  updateTestResultFailed,
-  updateTestResultSuccess,
+    cancelEditingTestResult,
+    cleanTestResult,
+    createDefect,
+    createRequiredStandard,
+    createTestResult,
+    createTestResultFailed,
+    createTestResultSuccess,
+    fetchSelectedTestResult,
+    fetchSelectedTestResultFailed,
+    fetchSelectedTestResultSuccess,
+    fetchTestResults,
+    fetchTestResultsBySystemNumber,
+    fetchTestResultsBySystemNumberFailed,
+    fetchTestResultsBySystemNumberSuccess,
+    fetchTestResultsSuccess,
+    initialContingencyTest,
+    removeDefect,
+    removeRequiredStandard,
+    setResultOfTest,
+    templateSectionsChanged,
+    updateDefect,
+    updateEditingTestResult,
+    updateRequiredStandard,
+    updateResultOfTest,
+    updateResultOfTestRequiredStandards,
+    updateTestResult,
+    updateTestResultFailed,
+    updateTestResultSuccess,
 } from '../actions/test-records.actions';
 
 export const STORE_FEATURE_TEST_RESULTS_KEY = 'testRecords';
@@ -153,8 +153,8 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
       }
     }
 
-    // If test type has issueDocumentsCentrally set to true, set the certificateNumber/secondaryCertificateNumber to 000000
-    if (testType.issueDocumentsCentrally) {
+    // If test type has issueRequired set to true, set the certificateNumber/secondaryCertificateNumber to 000000
+    if (testType.issueRequired) {
       testType.certificateNumber = '000000';
       testType.secondaryCertificateNumber = '000000';
     }
