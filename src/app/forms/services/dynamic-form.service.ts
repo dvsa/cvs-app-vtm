@@ -85,8 +85,7 @@ export class DynamicFormService {
     [ValidatorNames.DateIsInvalid]: () => CustomValidators.dateIsInvalid,
     [ValidatorNames.MinArrayLengthIfNotEmpty]: (args: { minimumLength: number; message: string }) =>
       CustomValidators.minArrayLengthIfNotEmpty(args.minimumLength, args.message),
-    [ValidatorNames.PatchSiblingWhenEqualTo]: (args: { sibling: string; value: unknown; siblingValue: unknown }) =>
-      CustomValidators.patchSiblingWhenEqual(args.sibling, args.value, args.siblingValue),
+    [ValidatorNames.IssueDocumentsCentrally]: () => CustomValidators.issueDocumentsCentrally(),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

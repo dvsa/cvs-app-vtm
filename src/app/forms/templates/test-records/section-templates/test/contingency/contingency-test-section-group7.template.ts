@@ -69,10 +69,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' },
               ],
-              validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: false } },
-                { name: ValidatorNames.PatchSiblingWhenEqualTo, args: { sibling: 'certificateNumber', value: true, siblingValue: '000000' } },
-              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: false } }],
             },
             {
               name: 'testTypeName',
@@ -117,10 +114,8 @@ export const ContingencyTestSectionGroup7: FormNode = {
               type: FormNodeTypes.CONTROL,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] },
-                },
+                // Make required if test result is pass/prs, but issue documents centrally is false
+                { name: ValidatorNames.IssueDocumentsCentrally },
               ],
               required: true,
               value: null,

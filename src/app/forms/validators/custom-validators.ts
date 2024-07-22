@@ -574,14 +574,16 @@ export class CustomValidators {
     };
   };
 
-  static patchSiblingWhenEqual = (sibling: string, value: unknown, siblingValue: unknown): ValidatorFn => {
+  static issueDocumentsCentrally = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control.value && control.value === value) {
-        const siblingControl = control.parent?.get(sibling) as CustomFormControl | undefined;
-        siblingControl?.patchValue(siblingValue, { onlySelf: true, emitEvent: false });
+      const isPRS = control.parent?.value.testResult === 'prs';
+      const isPass = control.parent?.value.testResult === 'pass';
+      const issueDocumentsCentrally = control.parent?.value.issueDocumentsCentrally;
+      if ((isPRS || isPass) && issueDocumentsCentrally) {
+        return null;
       }
 
-      return null;
+      return CustomValidators.requiredIfEquals('testResult', ['pass'])(control);
     };
   };
 }

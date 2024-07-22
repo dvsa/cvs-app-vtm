@@ -1,9 +1,7 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { TEST_TYPES_GROUP1_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const SpecialistTestSectionGroup1: FormNode = {
@@ -60,20 +58,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
-                {
-                  name: ValidatorNames.ShowGroupsWhenIncludes,
-                  args: {
-                    values: ['fail'],
-                    groups: ['failOnly'],
-                  },
-                },
-                {
-                  name: ValidatorNames.HideGroupsWhenExcludes,
-                  args: {
-                    values: ['fail'],
-                    groups: ['failOnly'],
-                  },
-                },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueDocumentsCentrally', value: ['pass', 'prs'] } },
               ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
@@ -87,6 +72,18 @@ export const SpecialistTestSectionGroup1: FormNode = {
                 },
               ],
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'issueDocumentsCentrally',
+              type: FormNodeTypes.CONTROL,
+              label: 'Issue documents centrally',
+              editType: FormNodeEditTypes.RADIO,
+              value: false,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' },
+              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: false } }],
             },
             {
               name: 'reasonForAbandoning',
@@ -132,13 +129,8 @@ export const SpecialistTestSectionGroup1: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: {
-                    sibling: 'testResult',
-                    value: ['pass', 'prs'],
-                  },
-                },
+                // Make required if test result is pass/prs, but issue documents centrally is false
+                { name: ValidatorNames.IssueDocumentsCentrally },
               ],
               viewType: FormNodeViewTypes.HIDDEN,
               width: FormNodeWidth.L,

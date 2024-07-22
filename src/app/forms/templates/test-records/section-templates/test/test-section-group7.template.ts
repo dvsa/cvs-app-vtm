@@ -73,6 +73,7 @@ export const TestSectionGroup7: FormNode = {
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' },
               ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: false } }],
             },
             {
               name: 'testTypeName',
@@ -86,6 +87,10 @@ export const TestSectionGroup7: FormNode = {
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
+              validators: [
+                // Make required if test result is pass/prs, but issue documents centrally is false
+                { name: ValidatorNames.IssueDocumentsCentrally },
+              ],
               required: true,
               value: null,
             },

@@ -100,11 +100,11 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               label: 'Issue documents centrally',
               editType: FormNodeEditTypes.RADIO,
               value: false,
-              groups: ['passOrPRS'],
               options: [
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' },
               ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: false } }],
             },
             {
               name: 'testTypeName',
@@ -138,13 +138,8 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: {
-                    sibling: 'testResult',
-                    value: ['pass', 'prs'],
-                  },
-                },
+                // Make required if test result is pass/prs, but issue documents centrally is false
+                { name: ValidatorNames.IssueDocumentsCentrally },
               ],
               required: true,
               value: null,

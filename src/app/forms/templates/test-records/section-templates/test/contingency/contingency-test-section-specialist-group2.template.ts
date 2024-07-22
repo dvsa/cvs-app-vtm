@@ -56,18 +56,8 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
                   args: { sibling: 'secondaryCertificateNumber', value: 'pass' },
                 },
                 {
-                  name: ValidatorNames.ShowGroupsWhenExcludes,
-                  args: {
-                    values: ['fail'],
-                    groups: ['passOrPRS'],
-                  },
-                },
-                {
-                  name: ValidatorNames.HideGroupsWhenIncludes,
-                  args: {
-                    values: ['fail'],
-                    groups: ['passOrPRS'],
-                  },
+                  name: ValidatorNames.HideIfNotEqual,
+                  args: { sibling: 'issueDocumentsCentrally', value: ['pass', 'prs'] },
                 },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
@@ -79,18 +69,17 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
               label: 'Issue documents centrally',
               editType: FormNodeEditTypes.RADIO,
               value: false,
-              groups: ['passOrPRS'],
               options: [
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' },
               ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: false } }],
             },
             {
               name: 'testTypeName',
               label: 'Description',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL,
             },
             {
@@ -126,10 +115,8 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               hint: 'COIF Certificate number',
               validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] },
-                },
+                // Make required if test result is pass/prs, but issue documents centrally is false
+                { name: ValidatorNames.IssueDocumentsCentrally },
                 { name: ValidatorNames.MaxLength, args: 20 },
                 { name: ValidatorNames.Alphanumeric },
               ],
