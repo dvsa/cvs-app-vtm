@@ -111,6 +111,7 @@ export class DynamicFormService {
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
     [AsyncValidatorNames.RequiredWhenCarryingDangerousGoods]: () => CustomAsyncValidators.requiredWhenCarryingDangerousGoods(this.store),
+    [AsyncValidatorNames.Custom]: (...args) => CustomAsyncValidators.custom(this.store, ...args),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
