@@ -118,7 +118,7 @@ export const testResultsReducer = createReducer(
     editingTestResult: calculateTestResultRequiredStandards(state.editingTestResult),
   })),
 
-  on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) }))
+  on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
@@ -249,7 +249,7 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
     }
 
     const failOrPrs = testType.defects.some(
-      (defect) => defect.deficiencyCategory === DeficiencyCategoryEnum.Major || defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous
+      (defect) => defect.deficiencyCategory === DeficiencyCategoryEnum.Major || defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous,
     );
     if (!failOrPrs) {
       testType.testResult = resultOfTestEnum.pass;
@@ -258,10 +258,10 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
 
     testType.testResult = testType.defects.every(
       (defect) =>
-        defect.deficiencyCategory === DeficiencyCategoryEnum.Advisory ||
-        defect.deficiencyCategory === DeficiencyCategoryEnum.Minor ||
-        (defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous && defect.prs) ||
-        (defect.deficiencyCategory === DeficiencyCategoryEnum.Major && defect.prs)
+        defect.deficiencyCategory === DeficiencyCategoryEnum.Advisory
+        || defect.deficiencyCategory === DeficiencyCategoryEnum.Minor
+        || (defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous && defect.prs)
+        || (defect.deficiencyCategory === DeficiencyCategoryEnum.Major && defect.prs),
     )
       ? resultOfTestEnum.prs
       : resultOfTestEnum.fail;

@@ -1,4 +1,6 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren,
+} from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
@@ -45,7 +47,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
     private store: Store,
-    private globalErrorService: GlobalErrorService
+    private globalErrorService: GlobalErrorService,
   ) {
     this.techRecord$ = this.store.select(selectTechRecord);
   }

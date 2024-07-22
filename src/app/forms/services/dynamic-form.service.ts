@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators,
+} from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { Condition } from '@forms/models/condition.model';
@@ -12,7 +14,9 @@ import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
-import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
+import {
+  CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes,
+} from './dynamic-form.types';
 
 type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 
@@ -115,18 +119,20 @@ export class DynamicFormService {
       return new CustomFormGroup(formNode, {});
     }
 
-    const form: CustomFormGroup | CustomFormArray =
-      formNode.type === FormNodeTypes.ARRAY ? new CustomFormArray(formNode, [], this.store) : new CustomFormGroup(formNode, {});
+    const form: CustomFormGroup | CustomFormArray = formNode.type === FormNodeTypes.ARRAY
+      ? new CustomFormArray(formNode, [], this.store)
+      : new CustomFormGroup(formNode, {});
 
     data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
 
     formNode.children?.forEach((child) => {
-      const { name, type, value, validators, asyncValidators, disabled } = child;
+      const {
+        name, type, value, validators, asyncValidators, disabled,
+      } = child;
 
-      const control =
-        FormNodeTypes.CONTROL === type
-          ? new CustomFormControl({ ...child }, { value, disabled: !!disabled })
-          : this.createForm(child, data[`${name}`]);
+      const control = FormNodeTypes.CONTROL === type
+        ? new CustomFormControl({ ...child }, { value, disabled: !!disabled })
+        : this.createForm(child, data[`${name}`]);
 
       if (validators?.length) {
         this.addValidators(control, validators);
@@ -156,10 +162,9 @@ export class DynamicFormService {
     // make sure the template has the correct name to the node.
     return Array.isArray(data)
       ? data.map(() =>
-          FormNodeTypes.CONTROL !== child.type
-            ? this.createForm(child, data[Number(child.name)])
-            : new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })
-        )
+        FormNodeTypes.CONTROL !== child.type
+          ? this.createForm(child, data[Number(child.name)])
+          : new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled }))
       : [new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })];
   }
 
@@ -224,11 +229,11 @@ export class DynamicFormService {
         const globalErrors = Array.isArray(data)
           ? data
           : [
-              {
-                error: meta?.customErrorMessage ?? ErrorMessageMap[`${error}`](data, meta?.customValidatorErrorName ?? meta?.label),
-                anchorLink,
-              },
-            ];
+            {
+              error: meta?.customErrorMessage ?? ErrorMessageMap[`${error}`](data, meta?.customValidatorErrorName ?? meta?.label),
+              anchorLink,
+            },
+          ];
 
         validationErrorList.push(...globalErrors);
       });
