@@ -1,5 +1,5 @@
 import {
-    AbstractControl, FormArray, FormControl, FormGroup,
+  AbstractControl, FormArray, FormControl, FormGroup,
 } from '@angular/forms';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';

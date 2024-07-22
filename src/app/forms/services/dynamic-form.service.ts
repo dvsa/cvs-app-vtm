@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-    AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators,
+  AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators,
 } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
@@ -15,7 +15,7 @@ import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/index';
 import {
-    CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes,
+  CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes,
 } from './dynamic-form.types';
 
 type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;

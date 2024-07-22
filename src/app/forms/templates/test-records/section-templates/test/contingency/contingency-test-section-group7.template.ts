@@ -2,7 +2,7 @@ import { ContingencyAdrGenerateCertComponent } from '@forms/components/contingen
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
-    FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
+  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 
 export const ContingencyTestSectionGroup7: FormNode = {
