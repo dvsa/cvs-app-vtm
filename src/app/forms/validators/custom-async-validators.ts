@@ -265,8 +265,8 @@ export class CustomAsyncValidators {
   }
 
   static custom = (
-    store: Store<State>, 
-    func: (...args: unknown[]) => Observable<ValidationErrors | null>, 
+    store: Store<State>,
+    func: (...args: unknown[]) => Observable<ValidationErrors | null>,
     ...args: unknown[]
   ) => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
