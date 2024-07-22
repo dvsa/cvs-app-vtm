@@ -1,9 +1,7 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { TEST_TYPES_GROUP1_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const ContingencyTestSectionSpecialistGroup1: FormNode = {
   name: 'testSection',
@@ -68,6 +66,20 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                     groups: ['failOnly'],
                   },
                 },
+                {
+                  name: ValidatorNames.ShowGroupsWhenExcludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['passOrPRS'],
+                  },
+                },
+                {
+                  name: ValidatorNames.HideGroupsWhenIncludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['passOrPRS'],
+                  },
+                },
               ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
@@ -81,6 +93,18 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 },
               ],
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'issueDocumentsCentrally',
+              type: FormNodeTypes.CONTROL,
+              label: 'Issue documents centrally',
+              editType: FormNodeEditTypes.RADIO,
+              value: false,
+              groups: ['passOrPRS'],
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' },
+              ],
             },
             {
               name: 'testTypeName',
@@ -118,10 +142,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                   name: ValidatorNames.RequiredIfEquals,
                   args: {
                     sibling: 'testResult',
-                    value: [
-                      'pass',
-                      'prs',
-                    ],
+                    value: ['pass', 'prs'],
                   },
                 },
               ],

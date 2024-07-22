@@ -1,6 +1,4 @@
-import {
-  Component, OnDestroy, OnInit, ViewChild,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -15,9 +13,7 @@ import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import {
-  Observable, Subject, combineLatest, filter, firstValueFrom, map, of, switchMap, take, takeUntil,
-} from 'rxjs';
+import { Observable, Subject, combineLatest, filter, firstValueFrom, map, of, switchMap, take, takeUntil } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -39,14 +35,14 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private routerService: RouterService,
-    private testRecordsService: TestRecordsService,
+    private testRecordsService: TestRecordsService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {
     this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
-      switchMap((editingTestResult) => (editingTestResult ? of(editingTestResult) : this.testRecordsService.testResult$)),
+      switchMap((editingTestResult) => (editingTestResult ? of(editingTestResult) : this.testRecordsService.testResult$))
     );
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
 
@@ -57,7 +53,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     combineLatest([this.testResult$, this.routerService.getQueryParam$('testType'), this.testRecordsService.sectionTemplates$])
       .pipe(
         take(1),
-        filter(([testResult]) => !!testResult),
+        filter(([testResult]) => !!testResult)
       )
       .subscribe(([testResult, testType, sectionTemplates]) => {
         if (!sectionTemplates && testResult) {

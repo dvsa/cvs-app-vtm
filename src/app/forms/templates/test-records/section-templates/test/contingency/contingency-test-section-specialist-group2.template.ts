@@ -1,8 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const ContingencyTestSectionSpecialistGroup2: FormNode = {
   name: 'testSection',
@@ -52,9 +50,40 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
                 { value: 'fail', label: 'Fail' },
                 { value: 'prs', label: 'PRS' },
               ],
-              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: 'pass' } }],
+              validators: [
+                {
+                  name: ValidatorNames.HideIfNotEqual,
+                  args: { sibling: 'secondaryCertificateNumber', value: 'pass' },
+                },
+                {
+                  name: ValidatorNames.ShowGroupsWhenExcludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['passOrPRS'],
+                  },
+                },
+                {
+                  name: ValidatorNames.HideGroupsWhenIncludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['passOrPRS'],
+                  },
+                },
+              ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'issueDocumentsCentrally',
+              type: FormNodeTypes.CONTROL,
+              label: 'Issue documents centrally',
+              editType: FormNodeEditTypes.RADIO,
+              value: false,
+              groups: ['passOrPRS'],
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' },
+              ],
             },
             {
               name: 'testTypeName',

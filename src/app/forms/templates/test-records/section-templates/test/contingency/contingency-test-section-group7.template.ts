@@ -1,9 +1,7 @@
 import { ContingencyAdrGenerateCertComponent } from '@forms/components/contingency-adr-generate-cert/contingency-adr-generate-cert.component';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const ContingencyTestSectionGroup7: FormNode = {
   name: 'testSection',
@@ -56,9 +54,25 @@ export const ContingencyTestSectionGroup7: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'generateCert', value: 'pass' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueDocumentsCentrally', value: 'pass' } },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'issueDocumentsCentrally',
+              type: FormNodeTypes.CONTROL,
+              label: 'Issue documents centrally',
+              editType: FormNodeEditTypes.RADIO,
+              value: false,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' },
+              ],
+              validators: [
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: false } },
+                { name: ValidatorNames.PatchSiblingWhenEqualTo, args: { sibling: 'certificateNumber', value: true, siblingValue: '000000' } },
+              ],
             },
             {
               name: 'testTypeName',

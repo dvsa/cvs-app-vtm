@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  CompleteTestResults, DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService,
-} from '@api/test-results';
+import { CompleteTestResults, DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { TEST_TYPES, TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
@@ -44,7 +42,7 @@ export class TestRecordsService {
     private store: Store<TestResultsState>,
     private updateTestResultsService: UpdateTestResultsService,
     private getTestResultService: GetTestResultsService,
-    private createTestResultsService: CreateTestResultsService,
+    private createTestResultsService: CreateTestResultsService
   ) {}
 
   fetchTestResultbySystemNumber(
@@ -55,17 +53,15 @@ export class TestRecordsService {
       toDateTime?: Date;
       testResultId?: string;
       version?: string;
-    } = {},
+    } = {}
   ): Observable<Array<TestResultModel>> {
     if (!systemNumber) {
       return throwError(() => new Error('systemNumber is required'));
     }
 
-    const {
-      status, fromDateTime, toDateTime, testResultId, version,
-    } = queryparams;
+    const { status, fromDateTime, toDateTime, testResultId, version } = queryparams;
     return this.getTestResultService.testResultsSystemNumberGet(systemNumber, status, fromDateTime, toDateTime, testResultId, version) as Observable<
-    Array<TestResultModel>
+      Array<TestResultModel>
     >;
   }
 
@@ -110,7 +106,7 @@ export class TestRecordsService {
     user: { name: string; id?: string; userEmail?: string },
     body: TestResultModel,
     observe?: 'body',
-    reportProgress?: boolean,
+    reportProgress?: boolean
   ): Observable<TestResultModel> {
     const { name, id, userEmail } = user;
     const tr = cloneDeep(body);
@@ -119,7 +115,7 @@ export class TestRecordsService {
       { msUserDetails: { msOid: id, msUser: name, msEmailAddress: userEmail }, testResult: tr } as CompleteTestResults,
       systemNumber,
       observe,
-      reportProgress,
+      reportProgress
     ) as Observable<TestResultModel>;
   }
 

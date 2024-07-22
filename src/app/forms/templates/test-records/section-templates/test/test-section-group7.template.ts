@@ -1,8 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const TestSectionGroup7: FormNode = {
@@ -60,9 +58,21 @@ export const TestSectionGroup7: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: ['pass', 'prs', 'abandoned'] } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueDocumentsCentrally', value: ['pass', 'prs'] } },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'issueDocumentsCentrally',
+              type: FormNodeTypes.CONTROL,
+              label: 'Issue documents centrally',
+              editType: FormNodeEditTypes.RADIO,
+              value: false,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' },
+              ],
             },
             {
               name: 'testTypeName',

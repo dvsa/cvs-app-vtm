@@ -1,8 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const ContingencyTestSectionSpecialistGroup3And4: FormNode = {
   name: 'testSection',
@@ -55,9 +53,35 @@ export const ContingencyTestSectionSpecialistGroup3And4: FormNode = {
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: ['pass'] } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: ['pass'] } },
+                {
+                  name: ValidatorNames.ShowGroupsWhenExcludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['passOrPRS'],
+                  },
+                },
+                {
+                  name: ValidatorNames.HideGroupsWhenIncludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['passOrPRS'],
+                  },
+                },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'issueDocumentsCentrally',
+              type: FormNodeTypes.CONTROL,
+              label: 'Issue documents centrally',
+              editType: FormNodeEditTypes.RADIO,
+              value: false,
+              groups: ['passOrPRS'],
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' },
+              ],
             },
             {
               name: 'testTypeName',

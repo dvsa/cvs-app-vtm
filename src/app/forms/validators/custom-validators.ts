@@ -1,6 +1,4 @@
-import {
-  AbstractControl, ValidationErrors, ValidatorFn,
-} from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
@@ -96,7 +94,8 @@ export class CustomValidators {
     };
   };
 
-  static requiredIfNotHidden = (): ValidatorFn =>
+  static requiredIfNotHidden =
+    (): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       const customControl = control as CustomFormControl;
       if (!control?.parent) return null;
@@ -107,7 +106,8 @@ export class CustomValidators {
       return null;
     };
 
-  static requiredIfEquals = (sibling: string, values: unknown[], customErrorMessage?: string): ValidatorFn =>
+  static requiredIfEquals =
+    (sibling: string, values: unknown[], customErrorMessage?: string): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
 
@@ -120,17 +120,19 @@ export class CustomValidators {
         ? values.some((value) => siblingValue.includes(value))
         : values.includes(siblingValue);
 
-      const isControlValueEmpty = control.value === null
-        || control.value === undefined
-        || control.value === ''
-        || (Array.isArray(control.value) && (control.value.length === 0 || control.value.every((val) => !val)));
+      const isControlValueEmpty =
+        control.value === null ||
+        control.value === undefined ||
+        control.value === '' ||
+        (Array.isArray(control.value) && (control.value.length === 0 || control.value.every((val) => !val)));
 
       return isSiblingValueIncluded && isControlValueEmpty && isSiblingVisible
         ? { requiredIfEquals: { sibling: siblingControl.meta.label, customErrorMessage } }
         : null;
     };
 
-  static requiredIfAllEquals = (sibling: string, values: unknown[]): ValidatorFn =>
+  static requiredIfAllEquals =
+    (sibling: string, values: unknown[]): ValidatorFn =>
     (control: AbstractControl): ValidationErrors | null => {
       if (!control?.parent) return null;
 
@@ -139,18 +141,15 @@ export class CustomValidators {
 
       const isSiblingVisible = !siblingControl.meta.hide;
 
-      const isSiblingValueIncluded = Array.isArray(siblingValue)
-        ? siblingValue.every((val) => values.includes(val))
-        : values.includes(siblingValue);
+      const isSiblingValueIncluded = Array.isArray(siblingValue) ? siblingValue.every((val) => values.includes(val)) : values.includes(siblingValue);
 
-      const isControlValueEmpty = control.value === null
-        || control.value === undefined
-        || control.value === ''
-        || (Array.isArray(control.value) && (control.value.length === 0 || control.value.every((val) => !val)));
+      const isControlValueEmpty =
+        control.value === null ||
+        control.value === undefined ||
+        control.value === '' ||
+        (Array.isArray(control.value) && (control.value.length === 0 || control.value.every((val) => !val)));
 
-      return isSiblingValueIncluded && isControlValueEmpty && isSiblingVisible
-        ? { requiredIfEquals: { sibling: siblingControl.meta.label } }
-        : null;
+      return isSiblingValueIncluded && isControlValueEmpty && isSiblingVisible ? { requiredIfEquals: { sibling: siblingControl.meta.label } } : null;
     };
 
   static requiredIfNotEquals = (sibling: string, value: unknown): ValidatorFn => {
@@ -505,9 +504,7 @@ export class CustomValidators {
         const { sibling, value } = options.whenEquals;
         const siblingControl = control.parent?.get(sibling);
         const siblingValue = siblingControl?.value;
-        const isSiblingValueIncluded = Array.isArray(siblingValue)
-          ? value.some((v) => siblingValue.includes(v))
-          : value.includes(siblingValue);
+        const isSiblingValueIncluded = Array.isArray(siblingValue) ? value.some((v) => siblingValue.includes(v)) : value.includes(siblingValue);
 
         if (!isSiblingValueIncluded) return null;
       }
@@ -516,16 +513,12 @@ export class CustomValidators {
 
       if (options.ofType) {
         const index = control.value.findIndex((val) => typeof val !== options.ofType);
-        return index === -1
-          ? null
-          : { isArray: { message: `${index + 1} must be of type ${options.ofType}` } };
+        return index === -1 ? null : { isArray: { message: `${index + 1} must be of type ${options.ofType}` } };
       }
 
       if (options.requiredIndices) {
         const index = control.value.findIndex((val, i) => options.requiredIndices?.includes(i) && !val);
-        return index === -1
-          ? null
-          : { isArray: { message: `${index + 1} is required` } };
+        return index === -1 ? null : { isArray: { message: `${index + 1} is required` } };
       }
 
       return null;
@@ -580,6 +573,17 @@ export class CustomValidators {
       return null;
     };
   };
+
+  static patchSiblingWhenEqual = (sibling: string, value: unknown, siblingValue: unknown): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value && control.value === value) {
+        const siblingControl = control.parent?.get(sibling) as CustomFormControl | undefined;
+        siblingControl?.patchValue(siblingValue, { onlySelf: true, emitEvent: false });
+      }
+
+      return null;
+    };
+  };
 }
 
 export type EnumValidatorOptions = {
@@ -589,17 +593,17 @@ export type EnumValidatorOptions = {
 export type IsArrayValidatorOptions = {
   ofType: string;
   requiredIndices: number[];
-  whenEquals: { sibling: string, value: unknown[] }
+  whenEquals: { sibling: string; value: unknown[] };
 };
 
-const areTc3FieldsEmpty = (values: { tc3Type: string, tc3PeriodicNumber: string, tc3PeriodicExpiryDate: string }[]) => {
+const areTc3FieldsEmpty = (values: { tc3Type: string; tc3PeriodicNumber: string; tc3PeriodicExpiryDate: string }[]) => {
   const isValueEmpty: boolean[] = [];
 
   values.forEach((value) => {
     if (
-      (value.tc3Type === null || value.tc3Type === undefined || value.tc3Type === '')
-      && (value.tc3PeriodicNumber === null || value.tc3PeriodicNumber === undefined || value.tc3PeriodicNumber === '')
-      && (value.tc3PeriodicExpiryDate === null || value.tc3PeriodicExpiryDate === undefined || value.tc3PeriodicExpiryDate === '')
+      (value.tc3Type === null || value.tc3Type === undefined || value.tc3Type === '') &&
+      (value.tc3PeriodicNumber === null || value.tc3PeriodicNumber === undefined || value.tc3PeriodicNumber === '') &&
+      (value.tc3PeriodicExpiryDate === null || value.tc3PeriodicExpiryDate === undefined || value.tc3PeriodicExpiryDate === '')
     ) {
       isValueEmpty.push(true);
     } else {
