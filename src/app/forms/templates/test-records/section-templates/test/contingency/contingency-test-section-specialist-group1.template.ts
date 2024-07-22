@@ -54,34 +54,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { value: 'prs', label: 'PRS' },
               ],
               validators: [
-                {
-                  name: ValidatorNames.ShowGroupsWhenIncludes,
-                  args: {
-                    values: ['fail'],
-                    groups: ['failOnly'],
-                  },
-                },
-                {
-                  name: ValidatorNames.HideGroupsWhenExcludes,
-                  args: {
-                    values: ['fail'],
-                    groups: ['failOnly'],
-                  },
-                },
-                {
-                  name: ValidatorNames.ShowGroupsWhenExcludes,
-                  args: {
-                    values: ['fail'],
-                    groups: ['passOrPRS'],
-                  },
-                },
-                {
-                  name: ValidatorNames.HideGroupsWhenIncludes,
-                  args: {
-                    values: ['fail'],
-                    groups: ['passOrPRS'],
-                  },
-                },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueRequired', value: ['pass', 'prs'] } }
               ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
