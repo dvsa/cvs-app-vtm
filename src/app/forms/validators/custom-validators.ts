@@ -573,7 +573,7 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       const isPRS = control.parent?.value.testResult === 'prs';
       const isPass = control.parent?.value.testResult === 'pass';
-      const issueRequired = control.parent?.value.issueRequired;
+      const issueRequired = control.parent?.value.centralDocs?.issueRequired;
       if ((isPRS || isPass) && issueRequired) {
         return null;
       }

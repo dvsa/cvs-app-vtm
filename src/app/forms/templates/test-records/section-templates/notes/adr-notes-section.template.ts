@@ -28,9 +28,7 @@ export const AdrNotesSection: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               editType: FormNodeEditTypes.TEXTAREA,
-              validators: [
-                { name: ValidatorNames.MaxLength, args: 500 },
-              ],
+              validators: [{ name: ValidatorNames.MaxLength, args: 500 }],
               asyncValidators: [
                 // @TODO abstract into generic custom validator when used in multiple places
                 {
@@ -39,7 +37,7 @@ export const AdrNotesSection: FormNode = {
                     return store.pipe(
                       select(testResultInEdit),
                       take(1),
-                      map((testResult) => testResult?.testTypes.at(0)?.issueRequired),
+                      map((testResult) => testResult?.testTypes.at(0)?.centralDocs?.issueRequired),
                       tap((issueRequired) => {
                         control.meta.hint = issueRequired ? 'Enter a reason for issuing documents centrally' : '';
                       }),

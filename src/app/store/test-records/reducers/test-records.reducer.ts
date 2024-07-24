@@ -156,12 +156,12 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
     // If the test type is a fail/cancel/abandon, and issueRequired is true, set it to false
     const isFail = testType.testResult === resultOfTestEnum.fail;
     const isAbandon = testType.testResult === resultOfTestEnum.abandoned;
-    if ((isFail || isAbandon) && testType.issueRequired) {
-      testType.issueRequired = false;
+    if ((isFail || isAbandon) && testType.centralDocs?.issueRequired) {
+      testType.centralDocs.issueRequired = false;
     }
 
     // If test type has issueRequired set to true, set the certificateNumber/secondaryCertificateNumber to 000000
-    if (testType.issueRequired) {
+    if (testType.centralDocs?.issueRequired) {
       testType.certificateNumber = '000000';
       testType.secondaryCertificateNumber = '000000';
     }

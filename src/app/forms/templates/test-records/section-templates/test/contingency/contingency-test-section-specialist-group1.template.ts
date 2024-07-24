@@ -53,9 +53,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { value: 'fail', label: 'Fail' },
                 { value: 'prs', label: 'PRS' },
               ],
-              validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueRequired', value: ['pass', 'prs'] } },
-              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } }],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
                 {
@@ -70,16 +68,22 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               type: FormNodeTypes.CONTROL,
             },
             {
-              name: 'issueRequired',
-              type: FormNodeTypes.CONTROL,
-              label: 'Issue documents centrally',
-              editType: FormNodeEditTypes.RADIO,
-              value: false,
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' },
+              name: 'centralDocs',
+              type: FormNodeTypes.GROUP,
+              children: [
+                {
+                  name: 'issueRequired',
+                  type: FormNodeTypes.CONTROL,
+                  label: 'Issue documents centrally',
+                  editType: FormNodeEditTypes.RADIO,
+                  value: false,
+                  options: [
+                    { value: true, label: 'Yes' },
+                    { value: false, label: 'No' },
+                  ],
+                  validators: [{ name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'certificateNumber', value: true } }],
+                },
               ],
-              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: false } }],
             },
             {
               name: 'testTypeName',

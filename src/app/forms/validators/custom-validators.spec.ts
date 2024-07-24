@@ -1,6 +1,4 @@
-import {
-  AbstractControl, FormArray, FormControl, FormGroup,
-} from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
@@ -174,7 +172,7 @@ describe('parent sibling validators', () => {
     form = new FormGroup({
       parent: new CustomFormGroup(
         { name: 'parent', type: FormNodeTypes.GROUP },
-        { child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }) },
+        { child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }) }
       ),
       sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL, hide: false }),
     });
@@ -214,7 +212,7 @@ describe('Required validators', () => {
           type: FormNodeTypes.CONTROL,
           children: [],
         },
-        null,
+        null
       ),
     });
     form.controls['sibling'].patchValue('some value');
@@ -458,7 +456,7 @@ describe('aheadOfDate', () => {
           type: FormNodeTypes.CONTROL,
           children: [],
         },
-        null,
+        null
       ),
     });
   });
@@ -494,7 +492,7 @@ describe('dateNotExceed', () => {
           type: FormNodeTypes.CONTROL,
           children: [],
         },
-        null,
+        null
       ),
     });
   });
@@ -544,7 +542,7 @@ describe('validate VRM/TrailerId Length', () => {
         {
           child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }),
           sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL }),
-        },
+        }
       ),
     });
   });
@@ -628,7 +626,7 @@ describe('handlePsvPassengersChange', () => {
       techRecord_vehicleSize: new CustomFormControl({ name: 'techRecord_vehicleSize', type: FormNodeTypes.CONTROL }, undefined),
       techRecord_vehicleClass_description: new CustomFormControl(
         { name: 'techRecord_vehicleClass_description', type: FormNodeTypes.CONTROL },
-        undefined,
+        undefined
       ),
       techRecord_seatsLowerDeck: new CustomFormControl({ name: 'techRecord_seatsLowerDeck', type: FormNodeTypes.CONTROL }, undefined),
       techRecord_seatsUpperDeck: new CustomFormControl({ name: 'techRecord_seatsUpperDeck', type: FormNodeTypes.CONTROL }, undefined),
@@ -763,7 +761,7 @@ describe('showGroupsWhenEqualTo', () => {
             name: 'dangerousGoods',
             type: FormNodeTypes.CONTROL,
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
           {
@@ -772,7 +770,7 @@ describe('showGroupsWhenEqualTo', () => {
             hide: true,
             groups: ['adr', 'name'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_street: new CustomFormControl(
           {
@@ -781,7 +779,7 @@ describe('showGroupsWhenEqualTo', () => {
             hide: true,
             groups: ['adr'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_town: new CustomFormControl(
           {
@@ -790,9 +788,9 @@ describe('showGroupsWhenEqualTo', () => {
             hide: true,
             groups: ['adr'],
           },
-          undefined,
+          undefined
         ),
-      },
+      }
     );
   });
   it('should set hide as false on a control if it is in a group included in the array passed and values match true', () => {
@@ -892,7 +890,7 @@ describe('hideGroupsWhenEqualTo', () => {
             name: 'dangerousGoods',
             type: FormNodeTypes.CONTROL,
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
           {
@@ -901,7 +899,7 @@ describe('hideGroupsWhenEqualTo', () => {
             hide: false,
             groups: ['adr', 'name'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_street: new CustomFormControl(
           {
@@ -910,7 +908,7 @@ describe('hideGroupsWhenEqualTo', () => {
             hide: false,
             groups: ['adr'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_town: new CustomFormControl(
           {
@@ -919,9 +917,9 @@ describe('hideGroupsWhenEqualTo', () => {
             hide: false,
             groups: ['adr'],
           },
-          undefined,
+          undefined
         ),
-      },
+      }
     );
   });
   it('should set hide as true on a control if it is in a group included in the array passed and values match true', () => {
@@ -1008,7 +1006,7 @@ describe('addWarningIfFalse', () => {
             name: 'dangerousGoods',
             type: FormNodeTypes.CONTROL,
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
           {
@@ -1016,9 +1014,9 @@ describe('addWarningIfFalse', () => {
             type: FormNodeTypes.CONTROL,
             hide: false,
           },
-          undefined,
+          undefined
         ),
-      },
+      }
     );
   });
   it('should display a warning if the value is false and it has adr fields on record', () => {
@@ -1157,7 +1155,7 @@ describe('showGroupsWhenIncludes', () => {
             type: FormNodeTypes.CONTROL,
             groups: ['adr'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
           {
@@ -1166,7 +1164,7 @@ describe('showGroupsWhenIncludes', () => {
             hide: false,
             groups: ['adr', 'name'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_permittedDangerousGoods: new CustomFormControl(
           {
@@ -1191,7 +1189,7 @@ describe('showGroupsWhenIncludes', () => {
               },
             ],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_compatibilityGroupJ: new CustomFormControl({
           name: 'techRecord_adrDetails_compatibilityGroupJ',
@@ -1199,7 +1197,7 @@ describe('showGroupsWhenIncludes', () => {
           hide: true,
           groups: ['compat', 'details'],
         }),
-      },
+      }
     );
   });
 
@@ -1274,7 +1272,7 @@ describe('hideGroupsWhenIncludes', () => {
             type: FormNodeTypes.CONTROL,
             groups: ['adr'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
           {
@@ -1283,7 +1281,7 @@ describe('hideGroupsWhenIncludes', () => {
             hide: false,
             groups: ['adr', 'name'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_permittedDangerousGoods: new CustomFormControl(
           {
@@ -1308,7 +1306,7 @@ describe('hideGroupsWhenIncludes', () => {
               },
             ],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_compatibilityGroupJ: new CustomFormControl({
           name: 'techRecord_adrDetails_compatibilityGroupJ',
@@ -1316,7 +1314,7 @@ describe('hideGroupsWhenIncludes', () => {
           hide: true,
           groups: ['compat', 'details'],
         }),
-      },
+      }
     );
   });
   it('should set hide to TRUE when its value DOES include one of the values passed, and IS part of the group whitelist', () => {
@@ -1392,7 +1390,7 @@ describe('showGroupsWhenExcludes', () => {
             type: FormNodeTypes.CONTROL,
             groups: ['adr'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
           {
@@ -1401,7 +1399,7 @@ describe('showGroupsWhenExcludes', () => {
             hide: false,
             groups: ['adr', 'name'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_permittedDangerousGoods: new CustomFormControl(
           {
@@ -1426,7 +1424,7 @@ describe('showGroupsWhenExcludes', () => {
               },
             ],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_compatibilityGroupJ: new CustomFormControl({
           name: 'techRecord_adrDetails_compatibilityGroupJ',
@@ -1434,7 +1432,7 @@ describe('showGroupsWhenExcludes', () => {
           hide: true,
           groups: ['compat', 'details'],
         }),
-      },
+      }
     );
   });
   it('should set hide to FALSE when its value DOES NOT include one of the values passed, and IS part of the group whitelist', () => {
@@ -1508,7 +1506,7 @@ describe('hideGroupsWhenExcludes', () => {
             type: FormNodeTypes.CONTROL,
             groups: ['adr'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_applicantDetails_name: new CustomFormControl(
           {
@@ -1517,7 +1515,7 @@ describe('hideGroupsWhenExcludes', () => {
             hide: false,
             groups: ['adr', 'name'],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_permittedDangerousGoods: new CustomFormControl(
           {
@@ -1542,7 +1540,7 @@ describe('hideGroupsWhenExcludes', () => {
               },
             ],
           },
-          undefined,
+          undefined
         ),
         techRecord_adrDetails_compatibilityGroupJ: new CustomFormControl({
           name: 'techRecord_adrDetails_compatibilityGroupJ',
@@ -1550,7 +1548,7 @@ describe('hideGroupsWhenExcludes', () => {
           hide: true,
           groups: ['compat', 'details'],
         }),
-      },
+      }
     );
   });
   it('should set hide to TRUE when its value DOES NOT include one of the values passed, and IS part of the group whitelist', () => {
@@ -1620,9 +1618,9 @@ describe('isArray', () => {
             name: 'techRecord_adrDetails_additionalNotes_number',
             type: FormNodeTypes.CONTROL,
           },
-          undefined,
+          undefined
         ),
-      },
+      }
     );
   });
 
@@ -1730,7 +1728,7 @@ describe('tc3FieldTestValidator', () => {
           name: 'tc3PeriodicExpiryDate',
           type: FormNodeTypes.CONTROL,
         }),
-      },
+      }
     );
   });
   it('should give an error if all fields passed to the validator are null', () => {
@@ -1839,7 +1837,7 @@ describe('tc3ParentValidator', () => {
           name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
           type: FormNodeTypes.CONTROL,
         }),
-      },
+      }
     );
   });
   it('should give an error if value contains a test with all null values', () => {
@@ -1941,25 +1939,25 @@ describe('tc3ParentValidator', () => {
 
   describe('dateIsValid', () => {
     it.each([
-      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, null],
-      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, undefined],
-      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, ''],
-      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '---'],
-      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000--'],
-      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000-12-'],
-      [{ dateIsInvalid: { message: '\'Date\' day must be a number' } }, '2000-12-A'],
+      [{ dateIsInvalid: { message: "'Date' day must be a number" } }, null],
+      [{ dateIsInvalid: { message: "'Date' day must be a number" } }, undefined],
+      [{ dateIsInvalid: { message: "'Date' day must be a number" } }, ''],
+      [{ dateIsInvalid: { message: "'Date' day must be a number" } }, '---'],
+      [{ dateIsInvalid: { message: "'Date' day must be a number" } }, '2000--'],
+      [{ dateIsInvalid: { message: "'Date' day must be a number" } }, '2000-12-'],
+      [{ dateIsInvalid: { message: "'Date' day must be a number" } }, '2000-12-A'],
       [null, '2000-12-01'],
       [null, '2000-12-11'],
       [null, '2000-12-31'],
-      [{ dateIsInvalid: { message: '\'Date\' month must be a number' } }, '2000--11'],
-      [{ dateIsInvalid: { message: '\'Date\' month must be a number' } }, '2000-C-11'],
-      [{ dateIsInvalid: { message: '\'Date\' month must be between 1 and 12' } }, '2000-31-11'],
-      [{ dateIsInvalid: { message: '\'Date\' month must be between 1 and 12' } }, '2000-00-11'],
-      [{ dateIsInvalid: { message: '\'Date\' year must be a number' } }, '-12-11'],
-      [{ dateIsInvalid: { message: '\'Date\' year must be a number' } }, 'C-12-11'],
+      [{ dateIsInvalid: { message: "'Date' month must be a number" } }, '2000--11'],
+      [{ dateIsInvalid: { message: "'Date' month must be a number" } }, '2000-C-11'],
+      [{ dateIsInvalid: { message: "'Date' month must be between 1 and 12" } }, '2000-31-11'],
+      [{ dateIsInvalid: { message: "'Date' month must be between 1 and 12" } }, '2000-00-11'],
+      [{ dateIsInvalid: { message: "'Date' year must be a number" } }, '-12-11'],
+      [{ dateIsInvalid: { message: "'Date' year must be a number" } }, 'C-12-11'],
 
       [null, '2020-02-29'],
-      [{ dateIsInvalid: { message: '\'Date\' day must be between 1 and 28 in the month of February' } }, '2019-02-29'],
+      [{ dateIsInvalid: { message: "'Date' day must be between 1 and 28 in the month of February" } }, '2019-02-29'],
     ])('should return %p when control value is %s', (expected: object | null, input) => {
       expect(CustomValidators.dateIsInvalid(new FormControl(input))).toEqual(expected);
     });
@@ -1991,7 +1989,7 @@ describe('minArrayLengthIfNotEmpty', () => {
     expect(CustomValidators.minArrayLengthIfNotEmpty(2, 'Error message')(formArray)).toStrictEqual(
       expect.objectContaining({
         minArrayLengthIfNotEmpty: { message: 'Error message' },
-      }),
+      })
     );
   });
 
@@ -2034,13 +2032,22 @@ describe('IssueRequired', () => {
     form = new FormGroup({
       testResult: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'testResult' }, 'pass'),
       certificateNumber: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'certificateNumber' }, null),
-      issueRequired: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'issueRequired' }, true),
+      centralDocs: new CustomFormGroup(
+        {
+          name: 'centralDocs',
+          type: FormNodeTypes.GROUP,
+          children: [{ type: FormNodeTypes.CONTROL, name: 'issueRequired' }],
+        },
+        {
+          issueRequired: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'issueRequired' }, true),
+        }
+      ),
     });
   });
 
   describe('when issueRequired is true', () => {
     beforeEach(() => {
-      form.get('issueRequired')?.patchValue(true);
+      form.get(['centralDocs', 'issueRequired'])?.patchValue(true);
     });
 
     it('should return null when testResult is prs', () => {
@@ -2058,7 +2065,7 @@ describe('IssueRequired', () => {
 
   describe('when issueRequired is false', () => {
     beforeEach(() => {
-      form.get('issueRequired')?.patchValue(false);
+      form.get(['centralDocs', 'issueRequired'])?.patchValue(false);
     });
     it('should return null when testResult is pass, but the control is populated', () => {
       form.get('testResult')?.patchValue('pass');
