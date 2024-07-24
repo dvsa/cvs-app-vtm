@@ -62,25 +62,9 @@ export const SpecialistTestSectionGroup2: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: 'pass' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: ['pass', 'abandoned'] } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testAnniversaryDate', value: ['pass', 'abandoned'] } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueRequired', value: ['pass', 'prs'] } },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
-            },
-            {
-              name: 'issueRequired',
-              type: FormNodeTypes.CONTROL,
-              label: 'Issue documents centrally',
-              editType: FormNodeEditTypes.RADIO,
-              value: false,
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' },
-              ],
-              validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: false } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: false } },
-              ],
             },
             {
               name: 'reasonForAbandoning',
@@ -137,8 +121,10 @@ export const SpecialistTestSectionGroup2: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
-                // Make required if test result is pass/prs, but issue documents centrally is false
-                { name: ValidatorNames.IssueRequired },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: ['pass'] },
+                },
                 { name: ValidatorNames.MaxLength, args: 20 },
               ],
               width: FormNodeWidth.XL,

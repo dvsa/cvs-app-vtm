@@ -55,7 +55,6 @@ export const ContingencyTestSectionSpecialistGroup3And4: FormNode = {
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: ['pass'] } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: ['pass'] } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueRequired', value: ['pass', 'prs'] } },
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
@@ -120,8 +119,10 @@ export const ContingencyTestSectionSpecialistGroup3And4: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
-                // Make required if test result is pass/prs, but issue documents centrally is false
-                { name: ValidatorNames.IssueRequired },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: ['pass'] },
+                },
                 { name: ValidatorNames.MaxLength, args: 20 },
               ],
             },

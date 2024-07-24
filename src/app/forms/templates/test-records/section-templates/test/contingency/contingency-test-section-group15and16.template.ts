@@ -51,9 +51,24 @@ export const ContingencyTestSectionGroup15and16: FormNode = {
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' },
               ],
-              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } }],
+              validators: [
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'issueRequired', value: ['pass', 'prs'] } },
+              ],
               asyncValidators: [{ name: AsyncValidatorNames.PassResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'issueRequired',
+              type: FormNodeTypes.CONTROL,
+              label: 'Issue documents centrally',
+              editType: FormNodeEditTypes.RADIO,
+              value: false,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' },
+              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: false } }],
             },
             {
               name: 'reasonForAbandoning',
@@ -76,7 +91,12 @@ export const ContingencyTestSectionGroup15and16: FormNode = {
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.Alphanumeric }],
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.Alphanumeric },
+                // Make required if test result is pass/prs, but issue documents centrally is false
+                { name: ValidatorNames.IssueRequired },
+              ],
               viewType: FormNodeViewTypes.HIDDEN,
               required: true,
               value: null,
