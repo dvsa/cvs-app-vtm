@@ -86,12 +86,6 @@ export const ContingencyTestSectionSpecialistGroup3And4: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] },
-                },
-              ],
               required: true,
               value: null,
             },
