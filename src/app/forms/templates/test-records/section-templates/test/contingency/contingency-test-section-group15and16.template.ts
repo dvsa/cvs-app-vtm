@@ -74,6 +74,13 @@ export const ContingencyTestSectionGroup15and16: FormNode = {
                   ],
                   validators: [{ name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'certificateNumber', value: true } }],
                 },
+                {
+                  name: 'reasonsForIssue',
+                  type: FormNodeTypes.CONTROL,
+                  viewType: FormNodeViewTypes.HIDDEN,
+                  editType: FormNodeEditTypes.HIDDEN,
+                  value: [],
+                },
               ],
             },
             {
