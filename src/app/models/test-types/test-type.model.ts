@@ -39,6 +39,15 @@ export interface TestType {
   certificateLink?: string | null;
   deletionFlag?: boolean;
   secondaryCertificateNumber?: string | null;
+  reapplicationDate?: string;
+
+  centralDocs?: CentralDocs;
+}
+
+export interface CentralDocs {
+  issueRequired: boolean;
+  notes?: string;
+  reasonsForIssue?: string[];
 }
 
 export interface CustomDefects {
