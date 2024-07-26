@@ -2,15 +2,21 @@ import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsTpl } from '../general/defect.template';
+import { RequiredStandardsTpl } from '../general/required-standards.template';
+import { AdditionalDefectsSection } from './section-templates/additionalDefects/additional-defects-section.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
 import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
 import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
 import { defectsHiddenSection } from './section-templates/required/defect-hidden-section.template';
+import {
+  AmendDeskBasedRequiredHiddenSectionGroup4Motorcyle,
+} from './section-templates/required/desk-based-required-hidden-group4-motorcycle-amend.template';
 import { DeskBasedRequiredHiddenSectionGroup5Lgv } from './section-templates/required/desk-based-required-hidden-group5-lgv.template';
 import { DeskBasedRequiredSectionHgvTrl } from './section-templates/required/desk-based-required-hidden-section-hgv-trl.template';
 import { DeskBasedRequiredSectionPsv } from './section-templates/required/desk-based-required-hidden-section-psv.template';
+import { AmendDeskBasedRequiredHiddenSectionGroup4 } from './section-templates/required/desk-based-required-section-group4-amend.template';
 import { RequiredSectionHGVTRL } from './section-templates/required/required-hidden-section-hgv-trl.template';
 import { RequiredSection } from './section-templates/required/required-hidden-section.template';
 import { SpecialistRequiredSectionHGVTRL } from './section-templates/required/specialist-required-hidden-section-hgv-trl.template';
@@ -23,6 +29,10 @@ import { amendDeskBasedTestSectionGroup1And4HgvTrl } from './section-templates/t
 import { AmendDeskBasedTestSectionGroup2And5 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
 import { AmendDeskBasedTestSectionGroup3 } from './section-templates/test/desk-based/desk-based-test-section-group3.template';
 import { amendDeskBasedTestSectionGroup4Psv } from './section-templates/test/desk-based/desk-based-test-section-group4-PSV.template';
+import { AmendDeskBasedTestSectionGroup4LgvCarMotorcycle } from './section-templates/test/desk-based/desk-based-test-section-group4-lgv-template';
+import { AmendDeskBasedTestSectionLgvGroup5 } from './section-templates/test/desk-based/desk-based-test-section-group5-LGV';
+import { OldIVASpecialistTestSectionGroup1 } from './section-templates/test/specialist/old-specialist-test-section-group1.template';
+import { OldIVASpecialistTestSectionGroup5 } from './section-templates/test/specialist/old-specialist-test-section-group5.template';
 import { SpecialistTestSectionGroup1 } from './section-templates/test/specialist/specialist-test-section-group1.template';
 import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist/specialist-test-section-group2.template';
 import { SpecialistTestSectionGroup3And4 } from './section-templates/test/specialist/specialist-test-section-group3And4.template';
@@ -35,29 +45,22 @@ import { TestSectionGroup3And4And8 } from './section-templates/test/test-section
 import { TestSectionGroup5And13 } from './section-templates/test/test-section-group5And13.template';
 import { TestSectionGroup6And11 } from './section-templates/test/test-section-group6And11.template';
 import { TestSectionGroup7 } from './section-templates/test/test-section-group7.template';
+import { TestSectionGroup8Notifiable } from './section-templates/test/test-section-group8Notifiable.template';
 import { TestSectionGroup9And10 } from './section-templates/test/test-section-group9And10.template';
 import { TestSection } from './section-templates/test/test-section.template';
+import { IvaMsvaVehicleSection } from './section-templates/vehicle/amend-iva-msva-psv-hgv-light.template';
 import { VehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/default-psv-hgv-light-vehicle-section.template';
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
-import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
+import {
+  DeskBasedVehicleSectionDefaultPsvHgv,
+} from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
 import {
   DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvGroup1And2And4And5,
 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
 import { DeskBasedVehicleSectionGroup4LGV } from './section-templates/vehicle/desk-based-vehicle-section-group4-lgv.template';
-import { VisitSection } from './section-templates/visit/visit-section.template';
 import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/desk-based-vehicle-section-group5-lgv.template';
-import { AmendDeskBasedRequiredHiddenSectionGroup4 } from './section-templates/required/desk-based-required-section-group4-amend.template';
-import {
-  AmendDeskBasedRequiredHiddenSectionGroup4Motorcyle,
-} from './section-templates/required/desk-based-required-hidden-group4-motorcycle-amend.template';
-import { AmendDeskBasedTestSectionLgvGroup5 } from './section-templates/test/desk-based/desk-based-test-section-group5-LGV';
-import { AmendDeskBasedTestSectionGroup4LgvCarMotorcycle } from './section-templates/test/desk-based/desk-based-test-section-group4-lgv-template';
-import { RequiredStandardsTpl } from '../general/required-standards.template';
-import { AdditionalDefectsSection } from './section-templates/additionalDefects/additional-defects-section.template';
-import { OldIVASpecialistTestSectionGroup1 } from './section-templates/test/specialist/old-specialist-test-section-group1.template';
-import { IvaMsvaVehicleSection } from './section-templates/vehicle/amend-iva-msva-psv-hgv-light.template';
-import { OldIVASpecialistTestSectionGroup5 } from './section-templates/test/specialist/old-specialist-test-section-group5.template';
+import { VisitSection } from './section-templates/visit/visit-section.template';
 
 /**
  * Keys of root object must a a valid vehicle type.
@@ -103,6 +106,15 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup3And4And8,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSection,
+    },
+    testTypesGroup8Notifiable: {
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSectionGroup8Notifiable,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
@@ -242,6 +254,15 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup3And4And8,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSectionHGVTRL,
+    },
+    testTypesGroup8Notifiable: {
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSectionGroup8Notifiable,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
@@ -408,6 +429,15 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup3And4And8,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSectionHGVTRL,
+    },
+    testTypesGroup8Notifiable: {
+      vehicle: VehicleSectionDefaultTrl,
+      test: TestSectionGroup8Notifiable,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
