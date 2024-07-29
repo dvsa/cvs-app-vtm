@@ -75,6 +75,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   scrollPosition: [number, number] = [0, 0];
   isADREnabled = false;
   isADRCertGenEnabled = false;
+  issueDocsCentrally = false;
 
   private destroy$ = new Subject<void>();
 
@@ -95,6 +96,8 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isADREnabled = this.featureToggleService.isFeatureEnabled('adrToggle');
     this.isADRCertGenEnabled = this.featureToggleService.isFeatureEnabled('adrCertToggle');
+    this.issueDocsCentrally = this.featureToggleService.isFeatureEnabled('issueDocsCentrally');
+
     this.technicalRecordService.techRecord$
       .pipe(
         map((record) => {
@@ -168,13 +171,16 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     this.isEditing$.pipe(takeUntil(this.destroy$)).subscribe((editing) => {
       this.isEditing = editing;
     });
+
     if (!this.vehicleType) {
       return [];
     }
+
     return (
       vehicleTemplateMap.get(this.vehicleType)?.filter((template) => template.name !== (this.isEditing ? 'audit' : 'reasonForCreationSection'))
         .filter((template) => template.name !== (this.isADREnabled ? '' : 'adrSection'))
         .filter((template) => template.name !== (this.isADRCertGenEnabled ? '' : 'adrCertificateSection'))
+        .filter((template) => template.name !== (this.issueDocsCentrally ? '' : 'centralDocs'))
         ?? []
     );
   }
