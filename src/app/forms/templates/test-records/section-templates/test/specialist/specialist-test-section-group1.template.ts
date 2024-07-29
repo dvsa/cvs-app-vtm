@@ -60,7 +60,20 @@ export const SpecialistTestSectionGroup1: FormNode = {
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } },
+                {
+                  name: ValidatorNames.ShowGroupsWhenIncludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['failOnly'],
+                  },
+                },
+                {
+                  name: ValidatorNames.HideGroupsWhenExcludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['failOnly'],
+                  },
+                },
               ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
@@ -74,31 +87,6 @@ export const SpecialistTestSectionGroup1: FormNode = {
                 },
               ],
               type: FormNodeTypes.CONTROL,
-            },
-            {
-              name: 'centralDocs',
-              type: FormNodeTypes.GROUP,
-              children: [
-                {
-                  name: 'issueRequired',
-                  type: FormNodeTypes.CONTROL,
-                  label: 'Issue documents centrally',
-                  editType: FormNodeEditTypes.RADIO,
-                  value: false,
-                  options: [
-                    { value: true, label: 'Yes' },
-                    { value: false, label: 'No' },
-                  ],
-                  validators: [{ name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'certificateNumber', value: true } }],
-                },
-                {
-                  name: 'reasonsForIssue',
-                  type: FormNodeTypes.CONTROL,
-                  viewType: FormNodeViewTypes.HIDDEN,
-                  editType: FormNodeEditTypes.HIDDEN,
-                  value: [],
-                },
-              ],
             },
             {
               name: 'reasonForAbandoning',
@@ -144,8 +132,13 @@ export const SpecialistTestSectionGroup1: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
-                // Make required if test result is pass/prs, but issue documents centrally is false
-                { name: ValidatorNames.IssueRequired },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: {
+                    sibling: 'testResult',
+                    value: ['pass', 'prs'],
+                  },
+                },
               ],
               viewType: FormNodeViewTypes.HIDDEN,
               width: FormNodeWidth.L,

@@ -52,12 +52,7 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
                 { value: 'fail', label: 'Fail' },
                 { value: 'prs', label: 'PRS' },
               ],
-              validators: [
-                {
-                  name: ValidatorNames.HideIfNotEqual,
-                  args: { sibling: 'secondaryCertificateNumber', value: 'pass' },
-                },
-              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: 'pass' } }],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
             },
@@ -66,6 +61,7 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
+
               type: FormNodeTypes.CONTROL,
             },
             {

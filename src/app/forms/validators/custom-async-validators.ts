@@ -263,14 +263,4 @@ export class CustomAsyncValidators {
 
     return operator === operatorEnum.Equals ? isTrue : !isTrue;
   }
-
-  static custom = (
-    store: Store<State>,
-    func: (...args: unknown[]) => Observable<ValidationErrors | null>,
-    ...args: unknown[]
-  ) => {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return func(control, store, ...args);
-    };
-  };
 }

@@ -50,7 +50,7 @@ interface Extras {
   sectionTemplates?: FormNode[];
 }
 
-export interface TestResultsState extends EntityState<TestResultModel>, Extras {}
+export interface TestResultsState extends EntityState<TestResultModel>, Extras { }
 
 const selectTestResultId = (a: TestResultModel): string => {
   return a.testResultId;
@@ -100,23 +100,15 @@ export const testResultsReducer = createReducer(
   on(updateDefect, (state, action) => ({ ...state, editingTestResult: updateDefectAtIndex(state.editingTestResult, action.defect, action.index) })),
   on(removeDefect, (state, action) => ({ ...state, editingTestResult: removeDefectAtIndex(state.editingTestResult, action.index) })),
 
-  on(createRequiredStandard, (state, action) => ({
-    ...state,
-    editingTestResult: createNewRequiredStandard(state.editingTestResult, action.requiredStandard),
-  })),
-  on(updateRequiredStandard, (state, action) => ({
-    ...state,
-    editingTestResult: updateRequiredStandardAtIndex(state.editingTestResult, action.requiredStandard, action.index),
-  })),
-  on(removeRequiredStandard, (state, action) => ({
-    ...state,
-    editingTestResult: removeRequiredStandardAtIndex(state.editingTestResult, action.index),
-  })),
+  on(createRequiredStandard, (state, action) =>
+    ({ ...state, editingTestResult: createNewRequiredStandard(state.editingTestResult, action.requiredStandard) })),
+  on(updateRequiredStandard, (state, action) =>
+    ({ ...state, editingTestResult: updateRequiredStandardAtIndex(state.editingTestResult, action.requiredStandard, action.index) })),
+  on(removeRequiredStandard, (state, action) =>
+    ({ ...state, editingTestResult: removeRequiredStandardAtIndex(state.editingTestResult, action.index) })),
 
-  on(updateResultOfTestRequiredStandards, (state) => ({
-    ...state,
-    editingTestResult: calculateTestResultRequiredStandards(state.editingTestResult),
-  })),
+  on(updateResultOfTestRequiredStandards, (state) =>
+    ({ ...state, editingTestResult: calculateTestResultRequiredStandards(state.editingTestResult) })),
 
   on(cleanTestResult, (state) => ({ ...state, editingTestResult: cleanTestResultPayload(state.editingTestResult) })),
 );
@@ -138,38 +130,13 @@ function createNewRequiredStandard(testResultState: TestResultModel | undefined,
 }
 
 function cleanTestResultPayload(testResult: TestResultModel | undefined) {
-  if (!testResult || !testResult.testTypes) {
-    return testResult;
+  if (testResult?.testTypes?.at(0)) {
+    const { testTypeId, requiredStandards } = testResult.testTypes[0];
+    if ((TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId) || TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId)) && !(requiredStandards ?? []).length) {
+      delete testResult.testTypes[0].requiredStandards;
+    }
   }
-
-  const testTypes = testResult.testTypes.map((testType, index) => {
-    // Remove empty requiredStandards from pass/prs non-voluntary IVA/MVSA tests
-    if (index === 0) {
-      const { testTypeId, requiredStandards } = testType;
-      const isGroup1SpecTest = TEST_TYPES_GROUP1_SPEC_TEST.includes(testTypeId);
-      const isGroup5SpecTest = TEST_TYPES_GROUP5_SPEC_TEST.includes(testTypeId);
-      if ((isGroup1SpecTest || isGroup5SpecTest) && !(requiredStandards ?? []).length) {
-        delete testType.requiredStandards;
-      }
-    }
-
-    // If the test type is a fail/cancel/abandon, and issueRequired is true, set it to false
-    const isFail = testType.testResult === resultOfTestEnum.fail;
-    const isAbandon = testType.testResult === resultOfTestEnum.abandoned;
-    if ((isFail || isAbandon) && testType.centralDocs?.issueRequired) {
-      testType.centralDocs.issueRequired = false;
-    }
-
-    // If test type has issueRequired set to true, set the certificateNumber/secondaryCertificateNumber to 000000
-    if (testType.centralDocs?.issueRequired) {
-      testType.certificateNumber = '000000';
-      testType.secondaryCertificateNumber = '000000';
-    }
-
-    return testType;
-  });
-
-  return { ...testResult, testTypes };
+  return testResult;
 }
 
 function updateRequiredStandardAtIndex(testResultState: TestResultModel | undefined, requiredStandard: TestResultRequiredStandard, index: number) {
@@ -256,7 +223,9 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
     }
 
     const failOrPrs = testType.defects.some(
-      (defect) => defect.deficiencyCategory === DeficiencyCategoryEnum.Major || defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous,
+      (defect) =>
+        defect.deficiencyCategory === DeficiencyCategoryEnum.Major
+        || defect.deficiencyCategory === DeficiencyCategoryEnum.Dangerous,
     );
     if (!failOrPrs) {
       testType.testResult = resultOfTestEnum.pass;
@@ -295,7 +264,11 @@ function calculateTestResultRequiredStandards(testResultState: TestResultModel |
       return testType;
     }
 
-    testType.testResult = testType.requiredStandards.every((rs) => rs.prs) ? resultOfTestEnum.prs : resultOfTestEnum.fail;
+    testType.testResult = testType.requiredStandards.every(
+      (rs) => rs.prs,
+    )
+      ? resultOfTestEnum.prs
+      : resultOfTestEnum.fail;
 
     return testType;
   });
