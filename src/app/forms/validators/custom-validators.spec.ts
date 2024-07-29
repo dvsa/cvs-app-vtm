@@ -1,11 +1,19 @@
 import {
-  AbstractControl, FormArray, FormControl, FormGroup,
+  AbstractControl,
+  FormArray,
+  FormControl, FormGroup,
 } from '@angular/forms';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ApprovalType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/approvalType.enum.js';
-import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
+import {
+  VehicleClassDescription,
+} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import {
+  CustomFormControl,
+  CustomFormGroup,
+  FormNodeTypes,
+} from '@forms/services/dynamic-form.types';
 import { VehicleSizes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { CustomValidators } from './custom-validators';
 
@@ -365,9 +373,7 @@ describe('customPattern', () => {
     const validation = customPattern(new FormControl(input));
     expect(validation).toEqual(expected);
     if (validation) {
-      const {
-        customPattern: { message },
-      } = validation;
+      const { customPattern: { message } } = validation;
       // eslint-disable-next-line jest/no-conditional-expect
       expect(message).toEqual(msg);
     } else {
@@ -731,31 +737,32 @@ describe('showGroupsWhenEqualTo', () => {
       {
         name: 'form-group',
         type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'dangerousGoods',
-            value: false,
-            type: FormNodeTypes.CONTROL,
-          },
-          {
-            name: 'techRecord_adrDetails_applicantDetails_name',
-            type: FormNodeTypes.CONTROL,
-            hide: true,
-            groups: ['adr'],
-          },
-          {
-            name: 'techRecord_adrDetails_applicantDetails_street',
-            type: FormNodeTypes.CONTROL,
-            hide: true,
-            groups: ['adr'],
-          },
-          {
-            name: 'techRecord_adrDetails_applicantDetails_town',
-            type: FormNodeTypes.CONTROL,
-            hide: true,
-            groups: ['adr'],
-          },
-        ],
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_name',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_street',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_town',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['adr'],
+            },
+          ],
       },
       {
         dangerousGoods: new CustomFormControl(
@@ -860,31 +867,32 @@ describe('hideGroupsWhenEqualTo', () => {
       {
         name: 'form-group',
         type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'dangerousGoods',
-            value: false,
-            type: FormNodeTypes.CONTROL,
-          },
-          {
-            name: 'techRecord_adrDetails_applicantDetails_name',
-            type: FormNodeTypes.CONTROL,
-            hide: false,
-            groups: ['adr'],
-          },
-          {
-            name: 'techRecord_adrDetails_applicantDetails_street',
-            type: FormNodeTypes.CONTROL,
-            hide: false,
-            groups: ['adr'],
-          },
-          {
-            name: 'techRecord_adrDetails_applicantDetails_town',
-            type: FormNodeTypes.CONTROL,
-            hide: false,
-            groups: ['adr'],
-          },
-        ],
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_name',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_street',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+              groups: ['adr'],
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_town',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+              groups: ['adr'],
+            },
+          ],
       },
       {
         dangerousGoods: new CustomFormControl(
@@ -989,18 +997,19 @@ describe('addWarningIfFalse', () => {
       {
         name: 'form-group',
         type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'dangerousGoods',
-            value: true,
-            type: FormNodeTypes.CONTROL,
-          },
-          {
-            name: 'techRecord_adrDetails_applicantDetails_name',
-            type: FormNodeTypes.CONTROL,
-            hide: false,
-          },
-        ],
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: true,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_applicantDetails_name',
+              type: FormNodeTypes.CONTROL,
+              hide: false,
+            },
+          ],
       },
       {
         dangerousGoods: new CustomFormControl(
@@ -1136,19 +1145,20 @@ describe('showGroupsWhenIncludes', () => {
       {
         name: 'form-group',
         type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'dangerousGoods',
-            value: false,
-            type: FormNodeTypes.CONTROL,
-          },
-          {
-            name: 'techRecord_adrDetails_compatibilityGroupJ',
-            type: FormNodeTypes.CONTROL,
-            hide: true,
-            groups: ['compat', 'details'],
-          },
-        ],
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_compatibilityGroupJ',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['compat', 'details'],
+            },
+          ],
       },
       {
         dangerousGoods: new CustomFormControl(
@@ -1253,19 +1263,20 @@ describe('hideGroupsWhenIncludes', () => {
       {
         name: 'form-group',
         type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'dangerousGoods',
-            value: false,
-            type: FormNodeTypes.CONTROL,
-          },
-          {
-            name: 'techRecord_adrDetails_compatibilityGroupJ',
-            type: FormNodeTypes.CONTROL,
-            hide: true,
-            groups: ['compat', 'details'],
-          },
-        ],
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_compatibilityGroupJ',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['compat', 'details'],
+            },
+          ],
       },
       {
         dangerousGoods: new CustomFormControl(
@@ -1371,19 +1382,20 @@ describe('showGroupsWhenExcludes', () => {
       {
         name: 'form-group',
         type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'dangerousGoods',
-            value: false,
-            type: FormNodeTypes.CONTROL,
-          },
-          {
-            name: 'techRecord_adrDetails_compatibilityGroupJ',
-            type: FormNodeTypes.CONTROL,
-            hide: true,
-            groups: ['compat', 'details'],
-          },
-        ],
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_compatibilityGroupJ',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['compat', 'details'],
+            },
+          ],
       },
       {
         dangerousGoods: new CustomFormControl(
@@ -1487,19 +1499,20 @@ describe('hideGroupsWhenExcludes', () => {
       {
         name: 'form-group',
         type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'dangerousGoods',
-            value: false,
-            type: FormNodeTypes.CONTROL,
-          },
-          {
-            name: 'techRecord_adrDetails_compatibilityGroupJ',
-            type: FormNodeTypes.CONTROL,
-            hide: true,
-            groups: ['compat', 'details'],
-          },
-        ],
+        children:
+          [
+            {
+              name: 'dangerousGoods',
+              value: false,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'techRecord_adrDetails_compatibilityGroupJ',
+              type: FormNodeTypes.CONTROL,
+              hide: true,
+              groups: ['compat', 'details'],
+            },
+          ],
       },
       {
         dangerousGoods: new CustomFormControl(
@@ -1606,13 +1619,14 @@ describe('isArray', () => {
       {
         name: 'form-group',
         type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'techRecord_adrDetails_additionalNotes_number',
-            type: FormNodeTypes.CONTROL,
-            value: [],
-          },
-        ],
+        children:
+          [
+            {
+              name: 'techRecord_adrDetails_additionalNotes_number',
+              type: FormNodeTypes.CONTROL,
+              value: [],
+            },
+          ],
       },
       {
         techRecord_adrDetails_additionalNotes_number: new CustomFormControl(
@@ -1690,61 +1704,63 @@ describe('tc3FieldTestValidator', () => {
   let form: FormGroup;
 
   beforeEach(() => {
-    form = new CustomFormGroup(
-      {
-        name: 'group',
-        label: 'Subsequent',
-        type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'tc3Type',
-            type: FormNodeTypes.CONTROL,
-            value: null,
-            label: 'TC3: Inspection Type',
-          },
-          {
-            name: 'tc3PeriodicNumber',
-            label: 'TC3: Certificate Number',
-            value: null,
-            type: FormNodeTypes.CONTROL,
-          },
-          {
-            name: 'tc3PeriodicExpiryDate',
-            label: 'TC3: Expiry Date',
-            type: FormNodeTypes.CONTROL,
-            value: null,
-            isoDate: false,
-          },
-        ],
-      },
-      {
-        tc3Type: new CustomFormControl({
+    form = new CustomFormGroup({
+      name: 'group',
+      label: 'Subsequent',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
           name: 'tc3Type',
           type: FormNodeTypes.CONTROL,
-        }),
-        tc3PeriodicNumber: new CustomFormControl({
+          value: null,
+          label: 'TC3: Inspection Type',
+        },
+        {
           name: 'tc3PeriodicNumber',
+          label: 'TC3: Certificate Number',
+          value: null,
           type: FormNodeTypes.CONTROL,
-        }),
-        tc3PeriodicExpiryDate: new CustomFormControl({
+        },
+        {
           name: 'tc3PeriodicExpiryDate',
+          label: 'TC3: Expiry Date',
           type: FormNodeTypes.CONTROL,
-        }),
-      },
-    );
+          value: null,
+          isoDate: false,
+        },
+      ],
+    }, {
+      tc3Type: new CustomFormControl({
+        name: 'tc3Type',
+        type: FormNodeTypes.CONTROL,
+      }),
+      tc3PeriodicNumber: new CustomFormControl({
+        name: 'tc3PeriodicNumber',
+        type: FormNodeTypes.CONTROL,
+      }),
+      tc3PeriodicExpiryDate: new CustomFormControl({
+        name: 'tc3PeriodicExpiryDate',
+        type: FormNodeTypes.CONTROL,
+      }),
+    });
   });
   it('should give an error if all fields passed to the validator are null', () => {
     const type = form.get('tc3Type') as CustomFormControl;
 
-    const validator = CustomValidators.tc3TestValidator({
-      inspectionNumber: 1,
-    })(type as AbstractControl);
-
-    expect(validator).toEqual({
-      tc3TestValidator: {
-        message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        inspectionNumber: 1,
       },
-    });
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
   });
   it('should give an error if fields passed to the validator are undefined', () => {
     const type = form.get('tc3Type') as CustomFormControl;
@@ -1755,15 +1771,20 @@ describe('tc3FieldTestValidator', () => {
     date.patchValue(undefined);
     number.patchValue(undefined);
 
-    const validator = CustomValidators.tc3TestValidator({
-      inspectionNumber: 1,
-    })(type as AbstractControl);
-
-    expect(validator).toEqual({
-      tc3TestValidator: {
-        message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        inspectionNumber: 1,
       },
-    });
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
   });
   it('should give an error if fields passed to the validator are empty strings', () => {
     const type = form.get('tc3Type') as CustomFormControl;
@@ -1774,15 +1795,20 @@ describe('tc3FieldTestValidator', () => {
     date.patchValue('');
     number.patchValue('');
 
-    const validator = CustomValidators.tc3TestValidator({
-      inspectionNumber: 1,
-    })(type as AbstractControl);
-
-    expect(validator).toEqual({
-      tc3TestValidator: {
-        message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        inspectionNumber: 1,
       },
-    });
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
   });
   it('should give an error if fields to the validator have a variety of empty values', () => {
     const type = form.get('tc3Type') as CustomFormControl;
@@ -1793,15 +1819,20 @@ describe('tc3FieldTestValidator', () => {
     date.patchValue(null);
     number.patchValue(undefined);
 
-    const validator = CustomValidators.tc3TestValidator({
-      inspectionNumber: 1,
-    })(type as AbstractControl);
-
-    expect(validator).toEqual({
-      tc3TestValidator: {
-        message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        inspectionNumber: 1,
       },
-    });
+    )(type as AbstractControl);
+
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
+      },
+    );
   });
   it('should return null if one field passed to the validator has a value', () => {
     const type = form.get('tc3Type') as CustomFormControl;
@@ -1809,9 +1840,11 @@ describe('tc3FieldTestValidator', () => {
 
     number.patchValue('test');
 
-    const validator = CustomValidators.tc3TestValidator({
-      inspectionNumber: 1,
-    })(type as AbstractControl);
+    const validator = CustomValidators.tc3TestValidator(
+      {
+        inspectionNumber: 1,
+      },
+    )(type as AbstractControl);
 
     expect(validator).toBeNull();
   });
@@ -1821,26 +1854,23 @@ describe('tc3ParentValidator', () => {
   let form: FormGroup;
 
   beforeEach(() => {
-    form = new CustomFormGroup(
-      {
-        name: 'group',
-        label: 'Subsequent',
-        type: FormNodeTypes.GROUP,
-        children: [
-          {
-            name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
-            type: FormNodeTypes.CONTROL,
-            value: null,
-          },
-        ],
-      },
-      {
-        techRecord_adrDetails_tank_tankDetails_tc3Details: new CustomFormControl({
+    form = new CustomFormGroup({
+      name: 'group',
+      label: 'Subsequent',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
           name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
           type: FormNodeTypes.CONTROL,
-        }),
-      },
-    );
+          value: null,
+        },
+      ],
+    }, {
+      techRecord_adrDetails_tank_tankDetails_tc3Details: new CustomFormControl({
+        name: 'techRecord_adrDetails_tank_tankDetails_tc3Details',
+        type: FormNodeTypes.CONTROL,
+      }),
+    });
   });
   it('should give an error if value contains a test with all null values', () => {
     const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
@@ -1849,11 +1879,14 @@ describe('tc3ParentValidator', () => {
 
     const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
 
-    expect(validator).toEqual({
-      tc3TestValidator: {
-        message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
       },
-    });
+    );
   });
   it('should give an error if fields passed to the validator are undefined', () => {
     const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
@@ -1862,11 +1895,14 @@ describe('tc3ParentValidator', () => {
 
     const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
 
-    expect(validator).toEqual({
-      tc3TestValidator: {
-        message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
       },
-    });
+    );
   });
   it('should give an error if fields passed to the validator are empty strings', () => {
     const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
@@ -1875,11 +1911,14 @@ describe('tc3ParentValidator', () => {
 
     const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
 
-    expect(validator).toEqual({
-      tc3TestValidator: {
-        message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
       },
-    });
+    );
   });
   it('should give an error if fields to the validator have a variety of empty values', () => {
     const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
@@ -1888,11 +1927,14 @@ describe('tc3ParentValidator', () => {
 
     const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
 
-    expect(validator).toEqual({
-      tc3TestValidator: {
-        message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 1 must have at least one populated field',
+        },
       },
-    });
+    );
   });
   it('should tell you which test needs to be filled out', () => {
     const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
@@ -1905,11 +1947,14 @@ describe('tc3ParentValidator', () => {
 
     const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
 
-    expect(validator).toEqual({
-      tc3TestValidator: {
-        message: 'TC3 Subsequent inspection 2 must have at least one populated field',
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 2 must have at least one populated field',
+        },
       },
-    });
+    );
   });
   it('should tell you which test needs to be filled out if there are multiple', () => {
     const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
@@ -1924,11 +1969,14 @@ describe('tc3ParentValidator', () => {
 
     const validator = CustomValidators.tc3TestValidator({ inspectionNumber: 0 })(details as AbstractControl);
 
-    expect(validator).toEqual({
-      tc3TestValidator: {
-        message: 'TC3 Subsequent inspection 2, 4, 5 must have at least one populated field',
+    expect(validator).toEqual(
+      {
+        tc3TestValidator:
+        {
+          message: 'TC3 Subsequent inspection 2, 4, 5 must have at least one populated field',
+        },
       },
-    });
+    );
   });
   it('should return null if one field passed to the validator has a value', () => {
     const details = form.get('techRecord_adrDetails_tank_tankDetails_tc3Details') as CustomFormControl;
@@ -1988,11 +2036,9 @@ describe('minArrayLengthIfNotEmpty', () => {
       }),
     ]);
 
-    expect(CustomValidators.minArrayLengthIfNotEmpty(2, 'Error message')(formArray)).toStrictEqual(
-      expect.objectContaining({
-        minArrayLengthIfNotEmpty: { message: 'Error message' },
-      }),
-    );
+    expect(CustomValidators.minArrayLengthIfNotEmpty(2, 'Error message')(formArray)).toStrictEqual(expect.objectContaining({
+      minArrayLengthIfNotEmpty: { message: 'Error message' },
+    }));
   });
 
   it('should return null if the minimum length is reached', () => {
@@ -2024,65 +2070,5 @@ describe('minArrayLengthIfNotEmpty', () => {
     ]);
 
     expect(CustomValidators.minArrayLengthIfNotEmpty(2, 'Error message')(formArray)).toBeNull();
-  });
-});
-
-describe('IssueRequired', () => {
-  let form: FormGroup;
-
-  beforeEach(() => {
-    form = new FormGroup({
-      testResult: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'testResult' }, 'pass'),
-      certificateNumber: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'certificateNumber' }, null),
-      centralDocs: new CustomFormGroup(
-        {
-          name: 'centralDocs',
-          type: FormNodeTypes.GROUP,
-          children: [{ type: FormNodeTypes.CONTROL, name: 'issueRequired' }],
-        },
-        {
-          issueRequired: new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'issueRequired' }, true),
-        },
-      ),
-    });
-  });
-
-  describe('when issueRequired is true', () => {
-    beforeEach(() => {
-      form.get(['centralDocs', 'issueRequired'])?.patchValue(true);
-    });
-
-    it('should return null when testResult is prs', () => {
-      form.get('testResult')?.patchValue('prs');
-      const control = form.get('certificateNumber') as FormControl;
-      expect(CustomValidators.issueRequired()(control)).toBeNull();
-    });
-
-    it('should return null when testResult is pass', () => {
-      form.get('testResult')?.patchValue('pass');
-      const control = form.get('certificateNumber') as FormControl;
-      expect(CustomValidators.issueRequired()(control)).toBeNull();
-    });
-  });
-
-  describe('when issueRequired is false', () => {
-    beforeEach(() => {
-      form.get(['centralDocs', 'issueRequired'])?.patchValue(false);
-    });
-    it('should return null when testResult is pass, but the control is populated', () => {
-      form.get('testResult')?.patchValue('pass');
-      const control = form.get('certificateNumber') as FormControl;
-      control.patchValue('value');
-      expect(CustomValidators.issueRequired()(control)).toBeNull();
-    });
-
-    it('should return error when testResult is pass, but the control is not populated', () => {
-      form.get('testResult')?.patchValue('pass');
-      const control = form.get('certificateNumber') as FormControl;
-      control.patchValue(null);
-      expect(CustomValidators.issueRequired()(control)).toEqual({
-        requiredIfEquals: { customErrorMessage: undefined, sibling: undefined },
-      });
-    });
   });
 });
