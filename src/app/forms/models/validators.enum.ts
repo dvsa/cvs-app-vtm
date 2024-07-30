@@ -46,4 +46,5 @@ export enum ValidatorNames {
   Tc3TestValidator = 'tc3TestValidator',
   DateIsInvalid = 'dateIsInvalid',
   MinArrayLengthIfNotEmpty = 'minArrayLengthIfNotEmpty',
+  IssueRequired = 'issueRequired',
 }

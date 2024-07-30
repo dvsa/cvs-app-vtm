@@ -7,6 +7,7 @@ import { AdditionalDefectsSection } from './section-templates/additionalDefects/
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
 import { DeskBasedEmissionsSection } from './section-templates/emissions/desk-based-emissions-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
+import { AdrNotesSection } from './section-templates/notes/adr-notes-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
 import { reasonForCreationHiddenSection, reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
 import { CreateRequiredSectionHgvTrl } from './section-templates/required/contingency-required-hidden-section-hgv-trl.template';
@@ -34,6 +35,8 @@ import {
   ContingencyTestSectionSpecialistGroup3And4,
 } from './section-templates/test/contingency/contingency-test-section-specialist-group3And4.template';
 import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency/contingency-test-section-specialist-group5.template';
+import { OldIVAContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency/old-contingency-specialist-group1.template';
+import { OldIVAContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency/old-contingency-specialist-group5.template';
 import { DeskBasedTestSectionGroup1Psv } from './section-templates/test/desk-based/desk-based-test-section-group1-PSV.template';
 import {
   DeskBasedTestSectionGroup1And4HgvTrl as DeskBasedTestSectionGroup1And4And5HgvTrl,
@@ -58,8 +61,6 @@ import { DeskBasedVehicleSectionGroup5Lgv } from './section-templates/vehicle/de
 import { VehicleSectionGroup3 } from './section-templates/vehicle/group-3-light-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
-import { OldIVAContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency/old-contingency-specialist-group1.template';
-import { OldIVAContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency/old-contingency-specialist-group5.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -280,7 +281,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionGroup7,
       visit: ContingencyVisitSection,
-      notes: NotesSection,
+      notes: AdrNotesSection,
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
@@ -454,7 +455,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       vehicle: ContingencyVehicleSectionDefaultTrl,
       test: ContingencyTestSectionGroup7,
       visit: ContingencyVisitSection,
-      notes: NotesSection,
+      notes: AdrNotesSection,
       customDefects: CustomDefectsSection,
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
