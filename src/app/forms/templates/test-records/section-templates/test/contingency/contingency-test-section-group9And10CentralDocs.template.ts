@@ -48,9 +48,7 @@ export const ContingencyTestSectionGroup9And10CentralDocs: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               value: null,
               type: FormNodeTypes.CONTROL,
-              validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: 'pass' } },
-              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } }],
             },
             {
               name: 'centralDocs',
