@@ -3,6 +3,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   CustomFormControl, FormNode, FormNodeEditTypes, FormNodeTypes,
 } from '@forms/services/dynamic-form.types';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store, select } from '@ngrx/store';
 import { State } from '@store/index';
 import { testResultInEdit } from '@store/test-records';
@@ -37,7 +38,12 @@ export const AdrNotesSection: FormNode = {
                     return store.pipe(
                       select(testResultInEdit),
                       take(1),
-                      map((testResult) => testResult?.testTypes.at(0)?.centralDocs?.issueRequired),
+                      map((testResult) => {
+                        const testType = testResult?.testTypes.at(0);
+                        const isPRS = testType?.testResult === resultOfTestEnum.prs;
+                        const isPass = testType?.testResult === resultOfTestEnum.pass;
+                        return testType?.centralDocs?.issueRequired && (isPRS || isPass);
+                      }),
                       tap((issueRequired) => {
                         control.meta.hint = issueRequired ? 'Enter a reason for issuing documents centrally' : '';
                       }),
