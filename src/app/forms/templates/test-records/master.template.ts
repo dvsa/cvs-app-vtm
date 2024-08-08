@@ -48,6 +48,7 @@ import { TestSectionGroup6And11 } from './section-templates/test/test-section-gr
 import { TestSectionGroup7 } from './section-templates/test/test-section-group7.template';
 import { TestSectionGroup8Notifiable } from './section-templates/test/test-section-group8Notifiable.template';
 import { TestSectionGroup9And10 } from './section-templates/test/test-section-group9And10.template';
+import { TestSectionGroup9And10CentralDocs } from './section-templates/test/test-section-group9And10CentralDocs.template';
 import { TestSection } from './section-templates/test/test-section.template';
 import { IvaMsvaVehicleSection } from './section-templates/vehicle/amend-iva-msva-psv-hgv-light.template';
 import { VehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/default-psv-hgv-light-vehicle-section.template';
@@ -306,6 +307,16 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL,
     },
+    testTypesGroup9And10CentralDocs: {
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSectionGroup9And10CentralDocs,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSectionHGVTRL,
+    },
     testTypesGroup12And14: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup12And14,
@@ -474,6 +485,16 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     testTypesGroup9And10: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup9And10,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSectionHGVTRL,
+    },
+    testTypesGroup9And10CentralDocs: {
+      vehicle: VehicleSectionDefaultTrl,
+      test: TestSectionGroup9And10CentralDocs,
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
