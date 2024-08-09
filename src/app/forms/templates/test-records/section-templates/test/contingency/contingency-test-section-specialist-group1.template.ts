@@ -53,6 +53,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { value: 'fail', label: 'Fail' },
                 { value: 'prs', label: 'PRS' },
               ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } }],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
                 {
@@ -65,6 +66,31 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 },
               ],
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'centralDocs',
+              type: FormNodeTypes.GROUP,
+              children: [
+                {
+                  name: 'issueRequired',
+                  type: FormNodeTypes.CONTROL,
+                  label: 'Issue documents centrally',
+                  editType: FormNodeEditTypes.RADIO,
+                  value: false,
+                  options: [
+                    { value: true, label: 'Yes' },
+                    { value: false, label: 'No' },
+                  ],
+                  validators: [{ name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'certificateNumber', value: true } }],
+                },
+                {
+                  name: 'reasonsForIssue',
+                  type: FormNodeTypes.CONTROL,
+                  viewType: FormNodeViewTypes.HIDDEN,
+                  editType: FormNodeEditTypes.HIDDEN,
+                  value: [],
+                },
+              ],
             },
             {
               name: 'testTypeName',
@@ -98,13 +124,8 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: {
-                    sibling: 'testResult',
-                    value: ['pass', 'prs'],
-                  },
-                },
+                // Make required if test result is pass/prs, but issue documents centrally is false
+                { name: ValidatorNames.IssueRequired },
               ],
               required: true,
               value: null,
@@ -147,6 +168,26 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { value: false, label: 'No' },
               ],
               validators: [{ name: ValidatorNames.Required }],
+            },
+            {
+              name: 'reapplicationDate',
+              label: 'Reapplication date',
+              hint: 'For example, 27 3 2007',
+              editType: FormNodeEditTypes.DATE,
+              viewType: FormNodeViewTypes.DATE,
+              type: FormNodeTypes.CONTROL,
+              groups: ['failOnly'],
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: {
+                    sibling: 'testResult',
+                    value: ['fail'],
+                    customErrorMessage: 'Reapplication date is required',
+                  },
+                },
+                { name: ValidatorNames.FutureDate },
+              ],
             },
           ],
         },

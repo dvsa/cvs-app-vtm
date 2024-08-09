@@ -1,11 +1,10 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 
-export const ContingencyTestSectionSpecialistGroup5: FormNode = {
+export const ContingencyTestSectionGroup8Notifiable: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -51,36 +50,34 @@ export const ContingencyTestSectionSpecialistGroup5: FormNode = {
               options: [
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' },
-                { value: 'prs', label: 'PRS' },
               ],
-              validators: [
-                {
-                  name: ValidatorNames.ShowGroupsWhenIncludes,
-                  args: {
-                    values: ['fail'],
-                    groups: ['failOnly'],
-                  },
-                },
-                {
-                  name: ValidatorNames.HideGroupsWhenExcludes,
-                  args: {
-                    values: ['fail'],
-                    groups: ['failOnly'],
-                  },
-                },
-              ],
-              asyncValidators: [
-                { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
-                {
-                  name: AsyncValidatorNames.HideIfEqualsWithCondition,
-                  args: {
-                    sibling: 'certificateNumber',
-                    value: 'fail',
-                    conditions: { field: 'testTypeId', operator: 'equals', value: TEST_TYPES_GROUP5_SPEC_TEST },
-                  },
-                },
-              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass'] } }],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'centralDocs',
+              type: FormNodeTypes.GROUP,
+              children: [
+                {
+                  name: 'issueRequired',
+                  type: FormNodeTypes.CONTROL,
+                  label: 'Issue documents centrally',
+                  editType: FormNodeEditTypes.RADIO,
+                  value: false,
+                  options: [
+                    { value: true, label: 'Yes' },
+                    { value: false, label: 'No' },
+                  ],
+                },
+                {
+                  name: 'reasonsForIssue',
+                  type: FormNodeTypes.CONTROL,
+                  viewType: FormNodeViewTypes.HIDDEN,
+                  editType: FormNodeEditTypes.HIDDEN,
+                  value: [],
+                },
+              ],
             },
             {
               name: 'testTypeName',
@@ -109,28 +106,17 @@ export const ContingencyTestSectionSpecialistGroup5: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              value: null,
+              value: '',
               type: FormNodeTypes.CONTROL,
-              required: true,
-              viewType: FormNodeViewTypes.STRING,
-              editType: FormNodeEditTypes.TEXT,
-              validators: [
-                { name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: {
-                    sibling: 'testResult',
-                    value: ['pass', 'prs'],
-                  },
-                },
-              ],
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Test start date and time',
-              viewType: FormNodeViewTypes.DATETIME,
+              viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
@@ -143,7 +129,7 @@ export const ContingencyTestSectionSpecialistGroup5: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Test end date and time',
-              viewType: FormNodeViewTypes.DATETIME,
+              viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },

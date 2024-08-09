@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-  AsyncValidatorFn, FormArray, FormControl, FormGroup,
-  ValidatorFn, Validators,
+  AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidatorFn, Validators,
 } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
@@ -25,7 +24,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
   providedIn: 'root',
 })
 export class DynamicFormService {
-  constructor(private store: Store<State>) { }
+  constructor(private store: Store<State>) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
@@ -55,7 +54,8 @@ export class DynamicFormService {
     [ValidatorNames.PastDate]: () => CustomValidators.pastDate,
     [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),
     [ValidatorNames.Required]: () => Validators.required,
-    [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: unknown[] }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
+    [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: unknown[]; customErrorMessage?: string }) =>
+      CustomValidators.requiredIfEquals(args.sibling, args.value, args.customErrorMessage),
     [ValidatorNames.requiredIfAllEquals]: (args: { sibling: string; value: unknown[] }) =>
       CustomValidators.requiredIfAllEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: unknown[] }) =>
@@ -69,17 +69,17 @@ export class DynamicFormService {
     [ValidatorNames.IsMemberOfEnum]: (args: { enum: Record<string, string>; options?: Partial<EnumValidatorOptions> }) =>
       CustomValidators.isMemberOfEnum(args.enum, args.options),
     [ValidatorNames.UpdateFunctionCode]: () => CustomValidators.updateFunctionCode(),
-    [ValidatorNames.ShowGroupsWhenEqualTo]: (args: { values: unknown[], groups: string[] }) =>
+    [ValidatorNames.ShowGroupsWhenEqualTo]: (args: { values: unknown[]; groups: string[] }) =>
       CustomValidators.showGroupsWhenEqualTo(args.values, args.groups),
-    [ValidatorNames.HideGroupsWhenEqualTo]: (args: { values: unknown[], groups: string[] }) =>
+    [ValidatorNames.HideGroupsWhenEqualTo]: (args: { values: unknown[]; groups: string[] }) =>
       CustomValidators.hideGroupsWhenEqualTo(args.values, args.groups),
-    [ValidatorNames.ShowGroupsWhenIncludes]: (args: { values: unknown[], groups: string[] }) =>
+    [ValidatorNames.ShowGroupsWhenIncludes]: (args: { values: unknown[]; groups: string[] }) =>
       CustomValidators.showGroupsWhenIncludes(args.values, args.groups),
-    [ValidatorNames.HideGroupsWhenIncludes]: (args: { values: unknown[], groups: string[] }) =>
+    [ValidatorNames.HideGroupsWhenIncludes]: (args: { values: unknown[]; groups: string[] }) =>
       CustomValidators.hideGroupsWhenIncludes(args.values, args.groups),
-    [ValidatorNames.ShowGroupsWhenExcludes]: (args: { values: unknown[], groups: string[] }) =>
+    [ValidatorNames.ShowGroupsWhenExcludes]: (args: { values: unknown[]; groups: string[] }) =>
       CustomValidators.showGroupsWhenExcludes(args.values, args.groups),
-    [ValidatorNames.HideGroupsWhenExcludes]: (args: { values: unknown[], groups: string[] }) =>
+    [ValidatorNames.HideGroupsWhenExcludes]: (args: { values: unknown[]; groups: string[] }) =>
       CustomValidators.hideGroupsWhenExcludes(args.values, args.groups),
     [ValidatorNames.AddWarningForAdrField]: (warning: string) => CustomValidators.addWarningForAdrField(warning),
     [ValidatorNames.IsArray]: (args: Partial<IsArrayValidatorOptions>) => CustomValidators.isArray(args),
@@ -87,8 +87,9 @@ export class DynamicFormService {
     [ValidatorNames.Tc3TestValidator]: (args: { inspectionNumber: number }) => CustomValidators.tc3TestValidator(args),
     [ValidatorNames.RequiredIfNotHidden]: () => CustomValidators.requiredIfNotHidden(),
     [ValidatorNames.DateIsInvalid]: () => CustomValidators.dateIsInvalid,
-    [ValidatorNames.MinArrayLengthIfNotEmpty]: (args: { minimumLength: number, message: string }) =>
+    [ValidatorNames.MinArrayLengthIfNotEmpty]: (args: { minimumLength: number; message: string }) =>
       CustomValidators.minArrayLengthIfNotEmpty(args.minimumLength, args.message),
+    [ValidatorNames.IssueRequired]: () => CustomValidators.issueRequired(),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -101,13 +102,16 @@ export class DynamicFormService {
     [AsyncValidatorNames.RequiredIfNotResult]: (args: { testResult: resultOfTestEnum | resultOfTestEnum[] }) =>
       CustomAsyncValidators.requiredIfNotResult(this.store, args.testResult),
     [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (args: {
-      testResult: resultOfTestEnum | resultOfTestEnum[]; sibling: string; value: unknown
+      testResult: resultOfTestEnum | resultOfTestEnum[];
+      sibling: string;
+      value: unknown;
     }) => CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
     [AsyncValidatorNames.ResultDependantOnRequiredStandards]: () => CustomAsyncValidators.resultDependantOnRequiredStandards(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
     [AsyncValidatorNames.RequiredWhenCarryingDangerousGoods]: () => CustomAsyncValidators.requiredWhenCarryingDangerousGoods(this.store),
+    [AsyncValidatorNames.Custom]: (...args) => CustomAsyncValidators.custom(this.store, ...args),
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -220,19 +224,20 @@ export class DynamicFormService {
       Object.entries(errors).forEach(([error, data]) => {
         // If an anchor link is provided, use that, otherwise determine target element from customId or name
         const defaultAnchorLink = meta?.customId ?? meta?.name;
-        const anchorLink = typeof data === 'object' && data !== null
-          ? data.anchorLink ?? defaultAnchorLink
-          : defaultAnchorLink;
+        const anchorLink = typeof data === 'object' && data !== null ? data.anchorLink ?? defaultAnchorLink : defaultAnchorLink;
 
         // If typeof data is an array, assume we're passing the service multiple global errors
-        const globalErrors = Array.isArray(data) ? data : [{
-          error: meta?.customErrorMessage ?? ErrorMessageMap[`${error}`](data, meta?.customValidatorErrorName ?? meta?.label),
-          anchorLink,
-        }];
+        const globalErrors = Array.isArray(data)
+          ? data
+          : [
+            {
+              error: meta?.customErrorMessage ?? ErrorMessageMap[`${error}`](data, meta?.customValidatorErrorName ?? meta?.label),
+              anchorLink,
+            },
+          ];
 
         validationErrorList.push(...globalErrors);
       });
     }
-
   }
 }
