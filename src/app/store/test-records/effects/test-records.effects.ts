@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { TestTypesService } from '@api/test-types';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -238,7 +239,22 @@ export class TestResultsEffects {
           ),
           take(1),
         )),
-      concatMap(([action, editedTestResult, testTypeTaxonomy, testStation, user]) => {
+      switchMap(([action, editedTestResult, testType, testStation, user]) => {
+        return this.testTypesService.getTestTypesid(
+          testType!.id, 
+          ['defaultTestCode'], 
+          editedTestResult!.vehicleType,
+          editedTestResult!.vehicleSize,
+          editedTestResult!.vehicleConfiguration!,
+          editedTestResult!.noOfAxles,
+          editedTestResult!.euVehicleCategory!,
+          String(editedTestResult!.vehicleClass!),
+          String(editedTestResult!.vehicleSubclass!),
+        ).pipe(
+          map((res) => [action, editedTestResult, testType, testStation, user, res.defaultTestCode] as const),
+        )
+      }),
+      concatMap(([action, editedTestResult, testTypeTaxonomy, testStation, user, testCode]) => {
         const id = action.testType;
 
         const vehicleType = editedTestResult?.vehicleType;
@@ -266,6 +282,7 @@ export class TestResultsEffects {
         });
 
         mergedForms.testTypes[0].testTypeId = id;
+        mergedForms.testTypes[0].testCode = String(testCode);
         mergedForms.testTypes[0].name = testTypeTaxonomy?.name ?? '';
         mergedForms.testTypes[0].testTypeName = testTypeTaxonomy?.testTypeName ?? '';
         mergedForms.typeOfTest = (testTypeTaxonomy?.typeOfTest as TypeOfTest) ?? TypeOfTest.CONTINGENCY;
@@ -309,5 +326,6 @@ export class TestResultsEffects {
     private userService: UserService,
     private dfs: DynamicFormService,
     private featureToggleService: FeatureToggleService,
+    private testTypesService: TestTypesService
   ) { }
 }
