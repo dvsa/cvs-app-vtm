@@ -241,8 +241,8 @@ export class TestResultsEffects {
         )),
       switchMap(([action, editedTestResult, testType, testStation, user]) => {
         return this.testTypesService.getTestTypesid(
-          testType!.id, 
-          ['defaultTestCode'], 
+          String(testType?.id),
+          ['defaultTestCode'],
           editedTestResult!.vehicleType,
           editedTestResult!.vehicleSize,
           editedTestResult!.vehicleConfiguration!,
@@ -252,7 +252,7 @@ export class TestResultsEffects {
           String(editedTestResult!.vehicleSubclass!),
         ).pipe(
           map((res) => [action, editedTestResult, testType, testStation, user, res.defaultTestCode] as const),
-        )
+        );
       }),
       concatMap(([action, editedTestResult, testTypeTaxonomy, testStation, user, testCode]) => {
         const id = action.testType;
@@ -326,6 +326,6 @@ export class TestResultsEffects {
     private userService: UserService,
     private dfs: DynamicFormService,
     private featureToggleService: FeatureToggleService,
-    private testTypesService: TestTypesService
+    private testTypesService: TestTypesService,
   ) { }
 }

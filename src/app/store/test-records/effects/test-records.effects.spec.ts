@@ -3,6 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
+import { TestTypesService } from '@api/test-types';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -18,6 +19,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
@@ -25,7 +27,6 @@ import { State, initialAppState } from '@store/.';
 import { selectQueryParams, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
 import { masterTpl } from '../../../forms/templates/test-records/master.template';
 import {
@@ -152,6 +153,7 @@ describe('TestResultsEffects', () => {
         RouterService,
         DynamicFormService,
         FeatureToggleService,
+        { provide: TestTypesService, useValue: { getTestTypesid: jest.fn().mockReturnValue(of(createMockTestType())) } },
       ],
     });
 
@@ -571,6 +573,7 @@ describe('TestResultsEffects', () => {
           b: templateSectionsChanged({
             sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1'] as Record<string, FormNode>),
             sectionsValue: {
+              bodyMake: undefined,
               contingencyTestNumber: undefined,
               countryOfRegistration: '',
               createdById: undefined,
@@ -620,6 +623,7 @@ describe('TestResultsEffects', () => {
                   testResult: resultOfTestEnum.fail,
                   testTypeEndTimestamp: '',
                   testTypeId: '1',
+                  testCode: 'undefined',
                   testTypeName: '',
                   testTypeStartTimestamp: '',
                 },
@@ -659,6 +663,7 @@ describe('TestResultsEffects', () => {
           b: templateSectionsChanged({
             sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>),
             sectionsValue: {
+              bodyType: undefined,
               contingencyTestNumber: undefined,
               countryOfRegistration: '',
               createdById: undefined,
@@ -668,6 +673,8 @@ describe('TestResultsEffects', () => {
               lastUpdatedAt: undefined,
               lastUpdatedById: undefined,
               lastUpdatedByName: undefined,
+              make: undefined,
+              model: undefined,
               noOfAxles: undefined,
               numberOfSeats: undefined,
               numberOfWheelsDriven: undefined,
@@ -707,6 +714,7 @@ describe('TestResultsEffects', () => {
                   testResult: resultOfTestEnum.fail,
                   testTypeEndTimestamp: '',
                   testTypeId: '126',
+                  testCode: 'undefined',
                   testTypeName: '',
                   testTypeStartTimestamp: '',
                 },
