@@ -53,6 +53,22 @@ export const ContingencyTestSectionSpecialistGroup5: FormNode = {
                 { value: 'fail', label: 'Fail' },
                 { value: 'prs', label: 'PRS' },
               ],
+              validators: [
+                {
+                  name: ValidatorNames.ShowGroupsWhenIncludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['failOnly'],
+                  },
+                },
+                {
+                  name: ValidatorNames.HideGroupsWhenExcludes,
+                  args: {
+                    values: ['fail'],
+                    groups: ['failOnly'],
+                  },
+                },
+              ],
               asyncValidators: [
                 { name: AsyncValidatorNames.ResultDependantOnRequiredStandards },
                 {
@@ -104,10 +120,7 @@ export const ContingencyTestSectionSpecialistGroup5: FormNode = {
                   name: ValidatorNames.RequiredIfEquals,
                   args: {
                     sibling: 'testResult',
-                    value: [
-                      'pass',
-                      'prs',
-                    ],
+                    value: ['pass', 'prs'],
                   },
                 },
               ],
