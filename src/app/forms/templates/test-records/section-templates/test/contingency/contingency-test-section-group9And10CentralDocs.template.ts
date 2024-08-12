@@ -1,10 +1,9 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 
-export const ContingencyTestSectionSpecialistGroup2: FormNode = {
+export const ContingencyTestSectionGroup9And10CentralDocs: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -45,28 +44,36 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' },
-                { value: 'prs', label: 'PRS' },
-              ],
-              validators: [
-                {
-                  name: ValidatorNames.HideIfNotEqual,
-                  args: { sibling: 'secondaryCertificateNumber', value: 'pass' },
-                },
-              ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
+              value: null,
               type: FormNodeTypes.CONTROL,
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } }],
             },
             {
-              name: 'testTypeName',
-              label: 'Description',
-              value: '',
-              disabled: true,
-              type: FormNodeTypes.CONTROL,
+              name: 'centralDocs',
+              type: FormNodeTypes.GROUP,
+              children: [
+                {
+                  name: 'issueRequired',
+                  type: FormNodeTypes.CONTROL,
+                  label: 'Issue documents centrally',
+                  editType: FormNodeEditTypes.RADIO,
+                  value: false,
+                  options: [
+                    { value: true, label: 'Yes' },
+                    { value: false, label: 'No' },
+                  ],
+                  validators: [{ name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'certificateNumber', value: true } }],
+                },
+                {
+                  name: 'reasonsForIssue',
+                  type: FormNodeTypes.CONTROL,
+                  viewType: FormNodeViewTypes.HIDDEN,
+                  editType: FormNodeEditTypes.HIDDEN,
+                  value: [],
+                },
+              ],
             },
             {
               name: 'reasonForAbandoning',
@@ -93,21 +100,12 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
               editType: FormNodeEditTypes.HIDDEN,
             },
             {
-              name: 'secondaryCertificateNumber',
-              label: 'Secondary Certificate number',
-              value: '',
+              name: 'testExpiryDate',
+              label: 'Expiry Date',
+              disabled: true,
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.STRING,
-              editType: FormNodeEditTypes.TEXT,
-              hint: 'COIF Certificate number',
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] },
-                },
-                { name: ValidatorNames.MaxLength, args: 20 },
-                { name: ValidatorNames.Alphanumeric },
-              ],
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
             },
             {
               name: 'testTypeStartTimestamp',
@@ -138,15 +136,11 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
             },
             {
               name: 'prohibitionIssued',
-              type: FormNodeTypes.CONTROL,
               label: 'Prohibition issued',
+              type: FormNodeTypes.CONTROL,
               value: null,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' },
-              ],
-              validators: [{ name: ValidatorNames.Required }],
+              editType: FormNodeEditTypes.HIDDEN,
+              required: true,
             },
           ],
         },

@@ -12,7 +12,6 @@ require('dotenv').config({
 const environment = argv.environment;
 const isProduction = environment === 'prod';
 const targetPath = isProduction ? `./src/environments/environment.prod.ts` : `./src/environments/environment.deploy.ts`;
-const cypressPath = 'cypress.env.json';
 
 // we have access to our environment variables
 // in the process.env object thanks to dotenv
@@ -34,20 +33,10 @@ const environmentFileContent = `export const environment = {
   };
   `;
 
-const cypressCredsFile = JSON.stringify({
-  aad_username: process.env['AAD_USER'],
-  aad_password: process.env['AAD_PASSWORD'],
-  vtm_api_uri: process.env['VTM_API_URI']
-});
-
 const filesToWrite = [
   {
     path: targetPath,
     contents: environmentFileContent
-  },
-  {
-    path: cypressPath,
-    contents: cypressCredsFile
   }
 ];
 

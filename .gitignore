@@ -52,14 +52,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Cypress
-cypress.env.json
-cypress/videos
-cypress/screenshots
-runner-results
-multi-reporter-config.json
-cypress/parallel-weights.json
-
 report.json
 # Sentry Config File
 .sentryclirc
