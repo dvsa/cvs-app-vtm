@@ -86,7 +86,7 @@
     "@types/json-server": "^0.14.7",
     "@types/lodash.clonedeep": "^4.5.9",
     "@types/lodash.merge": "^4.6.9",
-    "@types/node": "^22.2.0",
+    "@types/node": "^20.14.8",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
