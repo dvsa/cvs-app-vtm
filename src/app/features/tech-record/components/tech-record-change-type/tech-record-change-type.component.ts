@@ -76,7 +76,7 @@ export class ChangeVehicleTypeComponent implements OnInit {
 
   handleSubmit(selectedVehicleType: VehicleTypes): void {
     if (!selectedVehicleType) {
-      return this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
+      return this.globalErrorService.setErrors([{ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' }]);
     }
 
     if (
@@ -84,10 +84,10 @@ export class ChangeVehicleTypeComponent implements OnInit {
       && ((this.techRecord as TechRecordTypeByVehicle<'trl'>)?.techRecord_euVehicleCategory === EUVehicleCategory.O1
         || (this.techRecord as TechRecordTypeByVehicle<'trl'>)?.techRecord_euVehicleCategory === EUVehicleCategory.O2)
     ) {
-      return this.globalErrorService.addError({
+      return this.globalErrorService.setErrors([{
         error: 'You cannot change vehicle type to TRL when EU vehicle category is set to \'O1\' or \'O2\'',
         anchorLink: 'selectedVehicleType',
-      });
+      }]);
     }
 
     this.store.dispatch(changeVehicleType({ techRecord_vehicleType: selectedVehicleType }));
