@@ -6,6 +6,7 @@ import { RequiredStandardsTpl } from '../general/required-standards.template';
 import { AdditionalDefectsSection } from './section-templates/additionalDefects/additional-defects-section.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
+import { AdrNotesSection } from './section-templates/notes/adr-notes-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
 import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
 import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
@@ -47,13 +48,12 @@ import { TestSectionGroup6And11 } from './section-templates/test/test-section-gr
 import { TestSectionGroup7 } from './section-templates/test/test-section-group7.template';
 import { TestSectionGroup8Notifiable } from './section-templates/test/test-section-group8Notifiable.template';
 import { TestSectionGroup9And10 } from './section-templates/test/test-section-group9And10.template';
+import { TestSectionGroup9And10CentralDocs } from './section-templates/test/test-section-group9And10CentralDocs.template';
 import { TestSection } from './section-templates/test/test-section.template';
 import { IvaMsvaVehicleSection } from './section-templates/vehicle/amend-iva-msva-psv-hgv-light.template';
 import { VehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/default-psv-hgv-light-vehicle-section.template';
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
-import {
-  DeskBasedVehicleSectionDefaultPsvHgv,
-} from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
+import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
 import {
   DeskBasedVehicleSectionHgvGroup1And2And4 as DeskBasedVehicleSectionHgvGroup1And2And4And5,
@@ -292,7 +292,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup7,
       visit: VisitSection,
-      notes: NotesSection,
+      notes: AdrNotesSection,
       reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
       required: RequiredSectionHGVTRL,
@@ -300,6 +300,16 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     testTypesGroup9And10: {
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup9And10,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSectionHGVTRL,
+    },
+    testTypesGroup9And10CentralDocs: {
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSectionGroup9And10CentralDocs,
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
@@ -467,7 +477,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup7,
       visit: VisitSection,
-      notes: NotesSection,
+      notes: AdrNotesSection,
       reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
       required: RequiredSectionHGVTRL,
@@ -475,6 +485,16 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     testTypesGroup9And10: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup9And10,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSectionHGVTRL,
+    },
+    testTypesGroup9And10CentralDocs: {
+      vehicle: VehicleSectionDefaultTrl,
+      test: TestSectionGroup9And10CentralDocs,
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,

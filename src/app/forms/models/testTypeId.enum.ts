@@ -33,33 +33,11 @@ export const TEST_TYPES_GROUP6_11: string[] = ['62', '63', '122', '101', '91'];
 // ADR tests for HGV and TRL
 export const TEST_TYPES_GROUP7: string[] = ['59', '60', '50'];
 
-// tests for HGV and TRL - Annual tests, First tests, Annual retests, Paid/Part paid prohibition clearance
-export const TEST_TYPES_GROUP9_10: string[] = [
-  '76',
-  '95',
-  '94',
-  '53',
-  '54',
-  '65',
-  '66',
-  '70',
-  '79',
-  '82',
-  '83',
-  '41',
-  '40',
-  '98',
-  '99',
-  '103',
-  '104',
-  '67',
-  '107',
-  '113',
-  '116',
-  '119',
-  '120',
-  '199',
-];
+// tests for HGV and TRL - Annual tests, Annual retests, Paid/Part paid prohibition clearance on annual test
+export const TEST_TYPES_GROUP9_10: string[] = ['76', '94', '53', '54', '70', '79', '40', '98', '99', '67', '107', '113', '116', '199'];
+
+// tests for HGV and TRL - First tests, Paid/Part paid prohibition clearance on first test
+export const TEST_TYPES_GROUP9_10_CENTRAL_DOCS = ['95', '41', '65', '103', '66', '104', '82', '119', '83', '120'];
 
 // tests for TRL - Paid/Part paid prohibition clearance(retest, full inspection, part inspection, without cert)
 export const TEST_TYPES_GROUP12_14: string[] = ['117', '108', '109', '110', '114', '71', '72', '73', '77', '80'];
@@ -200,6 +178,7 @@ export const TEST_TYPES = {
   testTypesGroup7: TEST_TYPES_GROUP7,
   testTypesGroup8Notifiable: TEST_TYPES_GROUP8_NOTIFABLE,
   testTypesGroup9And10: TEST_TYPES_GROUP9_10,
+  testTypesGroup9And10CentralDocs: TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
   testTypesGroup6And11: TEST_TYPES_GROUP6_11,
   testTypesGroup12And14: TEST_TYPES_GROUP12_14,
   testTypesGroup5And13: TEST_TYPES_GROUP5_13,
