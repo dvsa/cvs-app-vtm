@@ -13,26 +13,14 @@ export const TEST_TYPES_GROUP2: string[] = ['15', '16', '23', '19', '22'];
 // 38 through 36 - tests for PSV - Notifiable alteration check, voluntary brake test, voluntary multi check, voluntary speed limiter check
 // voluntary smoke test, voluntary headlamp aim test, vitesse 100 replacement, vitesse 100 application, voluntary tempo 100
 // 86 through 90 - tests for HGV - voluntary multi-check, voluntary speed limiter check, voluntary smoke and headlamp aim test
+// NOTE: the 47, and 48 from group 8 are excluded and use there own template to enable issuing documents centrally
+export const TEST_TYPES_GROUP3_4_8: string[] = ['38', '30', '33', '34', '32', '31', '100', '121', '36', '86', '88', '89', '90', '87', '85'];
+
+// 47 - free notifiable alteration (HGV/TRL), 48 - paid notifiable alteration (HGV/TRL)
+export const TEST_TYPES_GROUP8_NOTIFABLE = ['47', '48'];
+
 // 87 through 85 - tests for HGV and TRL - voluntary shaker plate check, Free/Paid notifiable alteration, voluntary break test
-export const TEST_TYPES_GROUP3_4_8: string[] = [
-  '38',
-  '30',
-  '33',
-  '34',
-  '32',
-  '31',
-  '100',
-  '121',
-  '36',
-  '86',
-  '88',
-  '89',
-  '90',
-  '87',
-  '47',
-  '48',
-  '85',
-];
+export const TEST_TYPES_GROUP8_VOLUNTARY = ['85', '87'];
 
 // 56 and 49 - tests for HGV and TRL - Paid TIR retest, TIR test
 // 57 - test for TRL - Free TIR retest
@@ -45,33 +33,11 @@ export const TEST_TYPES_GROUP6_11: string[] = ['62', '63', '122', '101', '91'];
 // ADR tests for HGV and TRL
 export const TEST_TYPES_GROUP7: string[] = ['59', '60', '50'];
 
-// tests for HGV and TRL - Annual tests, First tests, Annual retests, Paid/Part paid prohibition clearance
-export const TEST_TYPES_GROUP9_10: string[] = [
-  '76',
-  '95',
-  '94',
-  '53',
-  '54',
-  '65',
-  '66',
-  '70',
-  '79',
-  '82',
-  '83',
-  '41',
-  '40',
-  '98',
-  '99',
-  '103',
-  '104',
-  '67',
-  '107',
-  '113',
-  '116',
-  '119',
-  '120',
-  '199',
-];
+// tests for HGV and TRL - Annual tests, Annual retests, Paid/Part paid prohibition clearance on annual test
+export const TEST_TYPES_GROUP9_10: string[] = ['76', '94', '53', '54', '70', '79', '40', '98', '99', '67', '107', '113', '116', '199'];
+
+// tests for HGV and TRL - First tests, Paid/Part paid prohibition clearance on first test
+export const TEST_TYPES_GROUP9_10_CENTRAL_DOCS = ['95', '41', '65', '103', '66', '104', '82', '119', '83', '120'];
 
 // tests for TRL - Paid/Part paid prohibition clearance(retest, full inspection, part inspection, without cert)
 export const TEST_TYPES_GROUP12_14: string[] = ['117', '108', '109', '110', '114', '71', '72', '73', '77', '80'];
@@ -210,7 +176,9 @@ export const TEST_TYPES = {
   testTypesGroup2: TEST_TYPES_GROUP2,
   testTypesGroup3And4And8: TEST_TYPES_GROUP3_4_8,
   testTypesGroup7: TEST_TYPES_GROUP7,
+  testTypesGroup8Notifiable: TEST_TYPES_GROUP8_NOTIFABLE,
   testTypesGroup9And10: TEST_TYPES_GROUP9_10,
+  testTypesGroup9And10CentralDocs: TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
   testTypesGroup6And11: TEST_TYPES_GROUP6_11,
   testTypesGroup12And14: TEST_TYPES_GROUP12_14,
   testTypesGroup5And13: TEST_TYPES_GROUP5_13,

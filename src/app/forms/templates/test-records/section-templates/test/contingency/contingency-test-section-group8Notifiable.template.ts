@@ -4,7 +4,7 @@ import {
   FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 
-export const ContingencyTestSectionSpecialistGroup2: FormNode = {
+export const ContingencyTestSectionGroup8Notifiable: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -50,22 +50,41 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
               options: [
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' },
-                { value: 'prs', label: 'PRS' },
               ],
-              validators: [
-                {
-                  name: ValidatorNames.HideIfNotEqual,
-                  args: { sibling: 'secondaryCertificateNumber', value: 'pass' },
-                },
-              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass'] } }],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'centralDocs',
+              type: FormNodeTypes.GROUP,
+              children: [
+                {
+                  name: 'issueRequired',
+                  type: FormNodeTypes.CONTROL,
+                  label: 'Issue documents centrally',
+                  editType: FormNodeEditTypes.RADIO,
+                  value: false,
+                  options: [
+                    { value: true, label: 'Yes' },
+                    { value: false, label: 'No' },
+                  ],
+                },
+                {
+                  name: 'reasonsForIssue',
+                  type: FormNodeTypes.CONTROL,
+                  viewType: FormNodeViewTypes.HIDDEN,
+                  editType: FormNodeEditTypes.HIDDEN,
+                  value: [],
+                },
+              ],
             },
             {
               name: 'testTypeName',
               label: 'Description',
               value: '',
               disabled: true,
+
               type: FormNodeTypes.CONTROL,
             },
             {
@@ -91,23 +110,6 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-            },
-            {
-              name: 'secondaryCertificateNumber',
-              label: 'Secondary Certificate number',
-              value: '',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.STRING,
-              editType: FormNodeEditTypes.TEXT,
-              hint: 'COIF Certificate number',
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] },
-                },
-                { name: ValidatorNames.MaxLength, args: 20 },
-                { name: ValidatorNames.Alphanumeric },
-              ],
             },
             {
               name: 'testTypeStartTimestamp',
