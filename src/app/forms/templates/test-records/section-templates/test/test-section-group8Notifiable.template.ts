@@ -5,7 +5,7 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
 
-export const TestSectionGroup15And16: FormNode = {
+export const TestSectionGroup8Notifiable: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -58,10 +58,9 @@ export const TestSectionGroup15And16: FormNode = {
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: ['pass', 'abandoned'] } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass'] } },
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.PassResultDependantOnCustomDefects }],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL,
             },
             {
@@ -78,7 +77,6 @@ export const TestSectionGroup15And16: FormNode = {
                     { value: true, label: 'Yes' },
                     { value: false, label: 'No' },
                   ],
-                  validators: [{ name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'certificateNumber', value: true } }],
                 },
                 {
                   name: 'reasonsForIssue',
@@ -88,6 +86,20 @@ export const TestSectionGroup15And16: FormNode = {
                   value: [],
                 },
               ],
+            },
+            {
+              name: 'testTypeName',
+              label: 'Description',
+              value: '',
+              disabled: true,
+              type: FormNodeTypes.CONTROL,
+            },
+            {
+              name: 'testNumber',
+              label: 'Test Number',
+              value: '',
+              disabled: true,
+              type: FormNodeTypes.CONTROL,
             },
             {
               name: 'reasonForAbandoning',
@@ -108,60 +120,15 @@ export const TestSectionGroup15And16: FormNode = {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               value: '',
+              required: true,
               label: 'Additional details for abandoning',
               editType: FormNodeEditTypes.TEXTAREA,
-              required: true,
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: ['abandoned'] },
                 },
                 { name: ValidatorNames.MaxLength, args: 500 },
-              ],
-            },
-            {
-              name: 'testTypeName',
-              label: 'Description',
-              value: '',
-              disabled: true,
-              type: FormNodeTypes.CONTROL,
-            },
-            {
-              name: 'certificateNumber',
-              label: 'Certificate number',
-              type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.TEXT,
-              validators: [
-                { name: ValidatorNames.Required },
-                { name: ValidatorNames.Alphanumeric },
-                // Make required if test result is pass/prs, but issue documents centrally is false
-                { name: ValidatorNames.IssueRequired },
-              ],
-              viewType: FormNodeViewTypes.HIDDEN,
-              required: true,
-              value: null,
-            },
-            {
-              name: 'testNumber',
-              label: 'Test Number',
-              value: '',
-              disabled: true,
-              type: FormNodeTypes.CONTROL,
-            },
-            {
-              name: 'testExpiryDate',
-              label: 'Expiry Date',
-              value: '',
-              disabled: false,
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE,
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: ['pass'] },
-                },
-                { name: ValidatorNames.FutureDate },
               ],
             },
             {
