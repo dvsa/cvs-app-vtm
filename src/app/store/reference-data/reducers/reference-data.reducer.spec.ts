@@ -61,6 +61,7 @@ describe('Reference Data Reducer', () => {
 			const { resourceType, payload } = value;
 			const ids = payload.map((v) => v.resourceKey);
 			const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
+				// biome-ignore lint/performance/noAccumulatingSpread: Ignoring as it's a spec
 				(acc, v) => ({ ...acc, [v.resourceKey]: v }),
 				{} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
 			);

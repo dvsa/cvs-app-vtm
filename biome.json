@@ -21,7 +21,6 @@
             "noSwitchDeclarations": "off"
           },
           "performance": {
-            "noAccumulatingSpread": "off",
             "noDelete": "off"
           },
           "suspicious": {

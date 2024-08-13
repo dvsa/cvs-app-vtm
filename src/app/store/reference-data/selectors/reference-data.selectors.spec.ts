@@ -12,6 +12,7 @@ describe('Reference Data Selectors', () => {
 			const { resourceType, payload } = value;
 			const ids = payload.map((v) => v.resourceKey);
 			const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
+				// biome-ignore lint/performance/noAccumulatingSpread: Ignoring as it's a spec
 				(acc, v) => ({ ...acc, [v.resourceKey]: v }),
 				{} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
 			);
@@ -30,6 +31,7 @@ describe('Reference Data Selectors', () => {
 			const { resourceType, payload } = value;
 			const ids: string[] = payload.map((v) => v.resourceKey as string);
 			const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
+				// biome-ignore lint/performance/noAccumulatingSpread: Ignoring as it's a spec
 				(acc, v) => ({ ...acc, [v.resourceKey]: v }),
 				{} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
 			);
