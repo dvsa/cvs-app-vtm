@@ -13,7 +13,6 @@
             "noForEach": "off",
             "noUselessConstructor": "off",
             "useLiteralKeys": "off",
-            "useOptionalChain": "off",
             "useRegexLiterals": "off"
           },
           "correctness": {

@@ -211,7 +211,7 @@ export class TestRecordsService {
 				}
 
 				const { vehicleType } = testResult;
-				const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
+				const testTypeId = testResult.testTypes?.[0].testTypeId;
 				const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
 				const vehicleTpl = vehicleType && templateMap[`${vehicleType}`];
 

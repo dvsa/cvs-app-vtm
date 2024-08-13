@@ -44,7 +44,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
 
 	ngOnChanges(changes: SimpleChanges): void {
 		const { template, data } = changes;
-		if (template && template.currentValue) {
+		if (template?.currentValue) {
 			this.form = this.dfs.createForm(template.currentValue, this.data);
 		}
 		if (data?.currentValue && data.currentValue !== data.previousValue) {

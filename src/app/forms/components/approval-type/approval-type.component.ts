@@ -192,7 +192,7 @@ export class ApprovalTypeInputComponent
 	}
 
 	ngOnDestroy(): void {
-		this.subscriptions.forEach((s) => s && s.unsubscribe());
+		this.subscriptions.forEach((s) => s?.unsubscribe());
 	}
 
 	onTechRecord_approvalTypeNumber1_Change(event: string | undefined) {

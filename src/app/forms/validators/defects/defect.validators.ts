@@ -3,7 +3,7 @@ import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
 
 export class DefectValidators {
 	static validateDefectNotes: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-		if (control?.parent && control.parent.parent) {
+		if (control?.parent?.parent) {
 			const grandParent = control.parent.parent;
 			const defCategory = grandParent?.get('deficiencyCategory')?.value as deficiencyCategory;
 			const prohibitionIssued = grandParent.get('prohibitionIssued')?.value as boolean;

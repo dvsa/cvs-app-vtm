@@ -74,7 +74,7 @@ export class CustomValidators {
 
 	static hideIfParentSiblingNotEqual = (parentSibling: string, value: unknown): ValidatorFn => {
 		return (control: AbstractControl): ValidationErrors | null => {
-			if (control?.parent && control.parent.parent) {
+			if (control?.parent?.parent) {
 				const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
 
 				siblingControl.meta.hide = Array.isArray(value) ? !value.includes(control.value) : control.value !== value;
@@ -86,7 +86,7 @@ export class CustomValidators {
 
 	static hideIfParentSiblingEquals = (parentSibling: string, value: unknown): ValidatorFn => {
 		return (control: AbstractControl): ValidationErrors | null => {
-			if (control?.parent && control.parent.parent) {
+			if (control?.parent?.parent) {
 				const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
 				siblingControl.meta.hide =
 					Array.isArray(value) && control.value ? value.includes(control.value) : control.value === value;
@@ -281,7 +281,7 @@ export class CustomValidators {
 			Number.parseInt(yyyy ?? '', 10),
 			label
 		);
-		return checks && checks.error ? { dateIsInvalid: { message: checks.errors?.[0]?.reason } } : null;
+		return checks?.error ? { dateIsInvalid: { message: checks.errors?.[0]?.reason } } : null;
 	};
 
 	static pastDate: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -469,7 +469,7 @@ export class CustomValidators {
 
 	static hideGroupsWhenIncludes = (values: unknown[] | undefined, groups: string[]): ValidatorFn => {
 		return (control: AbstractControl): ValidationErrors | null => {
-			if (values && values.some((value) => control.value?.includes(value))) {
+			if (values?.some((value) => control.value?.includes(value))) {
 				this.setHidePropertyForGroups(control, groups, true);
 			}
 
@@ -479,7 +479,7 @@ export class CustomValidators {
 
 	static showGroupsWhenExcludes = (values: unknown[] | undefined, groups: string[]): ValidatorFn => {
 		return (control: AbstractControl): ValidationErrors | null => {
-			if (values && values.some((value) => control.value?.includes(value))) return null;
+			if (values?.some((value) => control.value?.includes(value))) return null;
 			this.setHidePropertyForGroups(control, groups, false);
 
 			return null;
@@ -488,7 +488,7 @@ export class CustomValidators {
 
 	static hideGroupsWhenExcludes = (values: unknown[] | undefined, groups: string[]): ValidatorFn => {
 		return (control: AbstractControl): ValidationErrors | null => {
-			if (values && values.some((value) => control.value?.includes(value))) return null;
+			if (values?.some((value) => control.value?.includes(value))) return null;
 			this.setHidePropertyForGroups(control, groups, true);
 
 			return null;

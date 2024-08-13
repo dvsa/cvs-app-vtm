@@ -108,7 +108,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 	}
 
 	ngOnDestroy(): void {
-		this.subscriptions.forEach((s) => s && s.unsubscribe());
+		this.subscriptions.forEach((s) => s?.unsubscribe());
 	}
 
 	onDayChange(event: number | undefined) {

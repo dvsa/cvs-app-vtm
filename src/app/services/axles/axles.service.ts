@@ -28,8 +28,7 @@ export class AxlesService {
 		while (axleNumber < numberOfAxles) {
 			axleSpacing.push({
 				axles: `${axleNumber}-${axleNumber + 1}`,
-				value:
-					axleSpacingOriginal && axleSpacingOriginal[axleNumber - 1] ? axleSpacingOriginal[axleNumber - 1].value : null,
+				value: axleSpacingOriginal?.[axleNumber - 1] ? axleSpacingOriginal[axleNumber - 1].value : null,
 			});
 			axleNumber++;
 		}
