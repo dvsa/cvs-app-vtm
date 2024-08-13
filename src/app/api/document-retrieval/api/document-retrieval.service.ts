@@ -80,7 +80,7 @@ export class DocumentRetrievalService {
 				typeof this.configuration.accessToken === 'function'
 					? this.configuration.accessToken()
 					: this.configuration.accessToken;
-			headers = headers.set('Authorization', 'Bearer ' + accessToken);
+			headers = headers.set('Authorization', `Bearer ${accessToken}`);
 		}
 
 		// api keys
@@ -140,7 +140,7 @@ export class DocumentRetrievalService {
 				typeof this.configuration.accessToken === 'function'
 					? this.configuration.accessToken()
 					: this.configuration.accessToken;
-			headers = headers.set('Authorization', 'Bearer ' + accessToken);
+			headers = headers.set('Authorization', `Bearer ${accessToken}`);
 		}
 
 		// api keys
@@ -182,7 +182,7 @@ export class DocumentRetrievalService {
 				typeof this.configuration.accessToken === 'function'
 					? this.configuration.accessToken()
 					: this.configuration.accessToken;
-			headers = headers.set('Authorization', 'Bearer ' + accessToken);
+			headers = headers.set('Authorization', `Bearer ${accessToken}`);
 		}
 
 		if (this.configuration.apiKeys) {
