@@ -10,7 +10,15 @@ import { CreateTestTypeComponent } from './views/create-test-type/create-test-ty
 import { TestRouterOutletComponent } from './views/test-router-outlet/test-router-outlet.component';
 
 @NgModule({
-  declarations: [CreateTestTypeComponent, CreateTestRecordComponent, TestRouterOutletComponent],
-  imports: [CommonModule, CreateTestRecordsRoutingModule, DynamicFormsModule, SharedModule, FormsModule, ReactiveFormsModule, TestRecordsModule],
+	declarations: [CreateTestTypeComponent, CreateTestRecordComponent, TestRouterOutletComponent],
+	imports: [
+		CommonModule,
+		CreateTestRecordsRoutingModule,
+		DynamicFormsModule,
+		SharedModule,
+		FormsModule,
+		ReactiveFormsModule,
+		TestRecordsModule,
+	],
 })
 export class CreateTestRecordsModule {}

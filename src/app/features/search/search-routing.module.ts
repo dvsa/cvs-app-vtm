@@ -6,21 +6,21 @@ import { MultipleSearchResultsComponent } from './multiple-search-results/multip
 import { SearchComponent } from './search.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'prefix',
-    component: SearchComponent,
-  },
-  {
-    path: SearchRoutes.SEARCH_RESULT,
-    component: MultipleSearchResultsComponent,
-    canActivate: [NoQueryParamsGuard],
-    data: { title: 'Search Results' },
-  },
+	{
+		path: '',
+		pathMatch: 'prefix',
+		component: SearchComponent,
+	},
+	{
+		path: SearchRoutes.SEARCH_RESULT,
+		component: MultipleSearchResultsComponent,
+		canActivate: [NoQueryParamsGuard],
+		data: { title: 'Search Results' },
+	},
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule],
 })
 export class SearchRoutingModule {}

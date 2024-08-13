@@ -9,24 +9,24 @@ import { initialAppState } from '@store/index';
 import { TechRecordHistoryComponent } from './tech-record-history.component';
 
 describe('TechRecordHistoryComponent', () => {
-  let component: TechRecordHistoryComponent;
-  let fixture: ComponentFixture<TechRecordHistoryComponent>;
+	let component: TechRecordHistoryComponent;
+	let fixture: ComponentFixture<TechRecordHistoryComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [TechRecordHistoryComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
-      providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [TechRecordHistoryComponent],
+			imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
+			providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TechRecordHistoryComponent);
-    component = fixture.componentInstance;
-    component.currentTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
-    fixture.detectChanges();
-  });
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(TechRecordHistoryComponent);
+		component = fixture.componentInstance;
+		component.currentTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+		fixture.detectChanges();
+	});
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

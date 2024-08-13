@@ -3,9 +3,9 @@ import { AdditionalInformation } from './additional-information.model';
 import { Item } from './item.model';
 
 export interface Defect {
-  additionalInfo: AdditionalInformation;
-  forVehicleType: VehicleTypes[];
-  imDescription: string;
-  imNumber: number;
-  items: Item[];
+	additionalInfo: AdditionalInformation;
+	forVehicleType: VehicleTypes[];
+	imDescription: string;
+	imNumber: number;
+	items: Item[];
 }

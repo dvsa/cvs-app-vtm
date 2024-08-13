@@ -13,5 +13,4 @@ import { TestTypeRecords } from './testTypeRecords';
 /**
  * Nullable only for Cancelled tests.
  */
-export interface TestTypes extends Array<TestTypeRecords> { 
-}
+export interface TestTypes extends Array<TestTypeRecords> {}

@@ -11,109 +11,109 @@ import { of } from 'rxjs';
 import { ReferenceDataCreateComponent } from './reference-data-add.component';
 
 const mockRefDataService = {
-  loadReferenceData: jest.fn(),
-  loadReferenceDataByKey: jest.fn(),
-  fetchReferenceDataByKey: jest.fn(),
+	loadReferenceData: jest.fn(),
+	loadReferenceDataByKey: jest.fn(),
+	fetchReferenceDataByKey: jest.fn(),
 };
 
 describe('ReferenceDataCreateComponent', () => {
-  let component: ReferenceDataCreateComponent;
-  let fixture: ComponentFixture<ReferenceDataCreateComponent>;
-  let store: MockStore<State>;
-  let router: Router;
-  let route: ActivatedRoute;
-  let errorService: GlobalErrorService;
+	let component: ReferenceDataCreateComponent;
+	let fixture: ComponentFixture<ReferenceDataCreateComponent>;
+	let store: MockStore<State>;
+	let router: Router;
+	let route: ActivatedRoute;
+	let errorService: GlobalErrorService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ReferenceDataCreateComponent],
-      imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [
-        GlobalErrorService,
-        provideMockStore({ initialState: initialAppState }),
-        ReferenceDataService,
-        { provide: UserService, useValue: {} },
-        { provide: ReferenceDataService, useValue: mockRefDataService },
-      ],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [ReferenceDataCreateComponent],
+			imports: [RouterTestingModule, HttpClientTestingModule],
+			providers: [
+				GlobalErrorService,
+				provideMockStore({ initialState: initialAppState }),
+				ReferenceDataService,
+				{ provide: UserService, useValue: {} },
+				{ provide: ReferenceDataService, useValue: mockRefDataService },
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    store = TestBed.inject(MockStore);
-    fixture = TestBed.createComponent(ReferenceDataCreateComponent);
-    component = fixture.componentInstance;
-    router = TestBed.inject(Router);
-    fixture.detectChanges();
-    errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
-    fixture.detectChanges();
-    component.checkForms = jest.fn();
-  });
+	beforeEach(() => {
+		store = TestBed.inject(MockStore);
+		fixture = TestBed.createComponent(ReferenceDataCreateComponent);
+		component = fixture.componentInstance;
+		router = TestBed.inject(Router);
+		fixture.detectChanges();
+		errorService = TestBed.inject(GlobalErrorService);
+		route = TestBed.inject(ActivatedRoute);
+		fixture.detectChanges();
+		component.checkForms = jest.fn();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  describe('navigateBack', () => {
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
+	describe('navigateBack', () => {
+		it('should clear all errors', () => {
+			jest.spyOn(router, 'navigate').mockImplementation();
 
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-      component.navigateBack();
+			component.navigateBack();
 
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
+			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
+		});
 
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		it('should navigate back to the previous page', () => {
+			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.navigateBack();
+			component.navigateBack();
 
-      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
-    });
-  });
+			expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
+		});
+	});
 
-  describe('handleFormChange', () => {
-    it('should set newRefData', () => {
-      component.handleFormChange({ foo: 'bar' });
+	describe('handleFormChange', () => {
+		it('should set newRefData', () => {
+			component.handleFormChange({ foo: 'bar' });
 
-      expect(component.newRefData).toEqual({ foo: 'bar' });
-    });
-  });
+			expect(component.newRefData).toEqual({ foo: 'bar' });
+		});
+	});
 
-  describe('handleSubmit', () => {
-    it('should dispatch if form is valid', () => {
-      fixture.ngZone?.run(() => {
-        component.newRefData = { description: 'test' };
-        jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
-          component.isFormInvalid = false;
-        });
-        const dispatch = jest.spyOn(store, 'dispatch');
+	describe('handleSubmit', () => {
+		it('should dispatch if form is valid', () => {
+			fixture.ngZone?.run(() => {
+				component.newRefData = { description: 'test' };
+				jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
+					component.isFormInvalid = false;
+				});
+				const dispatch = jest.spyOn(store, 'dispatch');
 
-        component.handleSubmit();
+				component.handleSubmit();
 
-        expect(dispatch).toHaveBeenCalled();
-      });
-    });
-    it('should not dispatch if form is invalid', () => {
-      jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
-        component.isFormInvalid = true;
-      });
-      const dispatch = jest.spyOn(store, 'dispatch');
+				expect(dispatch).toHaveBeenCalled();
+			});
+		});
+		it('should not dispatch if form is invalid', () => {
+			jest.spyOn(component, 'checkForms').mockImplementationOnce(() => {
+				component.isFormInvalid = true;
+			});
+			const dispatch = jest.spyOn(store, 'dispatch');
 
-      component.handleSubmit();
+			component.handleSubmit();
 
-      expect(dispatch).not.toHaveBeenCalled();
-    });
-    it('should not dispatch if ref data already exists', () => {
-      jest.spyOn(mockRefDataService, 'fetchReferenceDataByKey').mockReturnValueOnce(of({ foo: 'bar' }));
+			expect(dispatch).not.toHaveBeenCalled();
+		});
+		it('should not dispatch if ref data already exists', () => {
+			jest.spyOn(mockRefDataService, 'fetchReferenceDataByKey').mockReturnValueOnce(of({ foo: 'bar' }));
 
-      const dispatch = jest.spyOn(store, 'dispatch');
+			const dispatch = jest.spyOn(store, 'dispatch');
 
-      component.handleSubmit();
+			component.handleSubmit();
 
-      expect(dispatch).not.toHaveBeenCalled();
-    });
-  });
+			expect(dispatch).not.toHaveBeenCalled();
+		});
+	});
 });

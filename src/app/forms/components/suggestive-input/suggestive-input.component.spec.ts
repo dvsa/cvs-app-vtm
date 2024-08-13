@@ -9,70 +9,70 @@ import { FieldErrorMessageComponent } from '../field-error-message/field-error-m
 import { SuggestiveInputComponent } from './suggestive-input.component';
 
 @Component({
-  selector: 'app-host-component',
-  template: `<form [formGroup]="form">
+	selector: 'app-host-component',
+	template: `<form [formGroup]="form">
     <app-suggestive-input name="foo" formControlName="foo" [options$]="options$"></app-suggestive-input>
   </form> `,
-  styles: [],
+	styles: [],
 })
 class HostComponent {
-  form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, ''),
-  });
-  options$: Observable<MultiOption[]> = of([
-    { label: 'Banana', value: 'banana' },
-    { label: 'Apple', value: 'apple' },
-  ]);
+	form = new FormGroup({
+		foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, ''),
+	});
+	options$: Observable<MultiOption[]> = of([
+		{ label: 'Banana', value: 'banana' },
+		{ label: 'Apple', value: 'apple' },
+	]);
 }
 
 describe('SuggestiveInputComponent', () => {
-  let component: HostComponent;
-  let fixture: ComponentFixture<HostComponent>;
-  let suggestiveInput: SuggestiveInputComponent;
+	let component: HostComponent;
+	let fixture: ComponentFixture<HostComponent>;
+	let suggestiveInput: SuggestiveInputComponent;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [HostComponent, SuggestiveInputComponent, FieldErrorMessageComponent],
-      imports: [FormsModule, ReactiveFormsModule],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [HostComponent, SuggestiveInputComponent, FieldErrorMessageComponent],
+			imports: [FormsModule, ReactiveFormsModule],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(HostComponent);
-    component = fixture.componentInstance;
-    suggestiveInput = fixture.debugElement.query(By.directive(SuggestiveInputComponent)).componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(HostComponent);
+		component = fixture.componentInstance;
+		suggestiveInput = fixture.debugElement.query(By.directive(SuggestiveInputComponent)).componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  describe('getters', () => {
-    it('should retutn the correct class', () => {
-      suggestiveInput.width = FormNodeWidth.L;
-      expect(suggestiveInput.style).toBe('govuk-input govuk-input--width-10');
-      suggestiveInput.width = undefined;
-      expect(suggestiveInput.style).toBe('govuk-input');
-    });
-  });
+	describe('getters', () => {
+		it('should retutn the correct class', () => {
+			suggestiveInput.width = FormNodeWidth.L;
+			expect(suggestiveInput.style).toBe('govuk-input govuk-input--width-10');
+			suggestiveInput.width = undefined;
+			expect(suggestiveInput.style).toBe('govuk-input');
+		});
+	});
 
-  describe('SuggestiveInputComponent.prototype.handleChangeForOption.name', () => {
-    it('should find matching option and patch value', async () => {
-      await suggestiveInput.handleChangeForOption('Banana');
-      expect(component.form.get('foo')?.value).toBe('banana');
-    });
+	describe('SuggestiveInputComponent.prototype.handleChangeForOption.name', () => {
+		it('should find matching option and patch value', async () => {
+			await suggestiveInput.handleChangeForOption('Banana');
+			expect(component.form.get('foo')?.value).toBe('banana');
+		});
 
-    it('should not find matching option and patch `[INVALID_OPTION]`, control should also be invalid', async () => {
-      await suggestiveInput.handleChangeForOption('Orange');
-      const foo = component.form.get('foo');
-      expect(foo?.value).toBe('[INVALID_OPTION]');
-      expect(foo?.invalid).toBeTruthy();
-    });
+		it('should not find matching option and patch `[INVALID_OPTION]`, control should also be invalid', async () => {
+			await suggestiveInput.handleChangeForOption('Orange');
+			const foo = component.form.get('foo');
+			expect(foo?.value).toBe('[INVALID_OPTION]');
+			expect(foo?.invalid).toBeTruthy();
+		});
 
-    it('should not find matching option and patch empty string', async () => {
-      await suggestiveInput.handleChangeForOption('');
-      expect(component.form.get('foo')?.value).toBe('');
-    });
-  });
+		it('should not find matching option and patch empty string', async () => {
+			await suggestiveInput.handleChangeForOption('');
+			expect(component.form.get('foo')?.value).toBe('');
+		});
+	});
 });

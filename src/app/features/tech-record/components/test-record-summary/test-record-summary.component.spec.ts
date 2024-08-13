@@ -9,110 +9,107 @@ import { SharedModule } from '@shared/shared.module';
 import { TestRecordSummaryComponent } from './test-record-summary.component';
 
 describe('TestRecordSummaryComponent', () => {
-  let component: TestRecordSummaryComponent;
-  let fixture: ComponentFixture<TestRecordSummaryComponent>;
+	let component: TestRecordSummaryComponent;
+	let fixture: ComponentFixture<TestRecordSummaryComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [TestRecordSummaryComponent],
-      imports: [RouterTestingModule, SharedModule],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [TestRecordSummaryComponent],
+			imports: [RouterTestingModule, SharedModule],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TestRecordSummaryComponent);
-    component = fixture.componentInstance;
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(TestRecordSummaryComponent);
+		component = fixture.componentInstance;
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  it('should not show table if no records found', () => {
-    component.testResults = [];
-    fixture.detectChanges();
+	it('should not show table if no records found', () => {
+		component.testResults = [];
+		fixture.detectChanges();
 
-    const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
-    expect(heading).toBeTruthy();
-    expect(heading.nativeElement.innerHTML).toBe('No test records found.');
+		const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
+		expect(heading).toBeTruthy();
+		expect(heading.nativeElement.innerHTML).toBe('No test records found.');
 
-    const table = fixture.debugElement.query(By.css('.govuk-table__body'));
-    expect(table).toBeFalsy();
-  });
+		const table = fixture.debugElement.query(By.css('.govuk-table__body'));
+		expect(table).toBeFalsy();
+	});
 
-  it('should show table if records found', () => {
-    component.testResults = [createMockTestResult()];
-    fixture.detectChanges();
+	it('should show table if records found', () => {
+		component.testResults = [createMockTestResult()];
+		fixture.detectChanges();
 
-    const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
-    expect(heading).toBeFalsy();
+		const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
+		expect(heading).toBeFalsy();
 
-    const table = fixture.debugElement.query(By.css('.govuk-table__body'));
-    expect(table).toBeTruthy();
-  });
+		const table = fixture.debugElement.query(By.css('.govuk-table__body'));
+		expect(table).toBeTruthy();
+	});
 
-  it('should concatinate multiple test types', () => {
-    const testTypeNames = component.getTestTypeName(
-      createMockTestResult({
-        testTypes: [
-          createMockTestType({ testTypeName: 'name' }),
-          createMockTestType({ testTypeName: 'name' }),
-        ],
-      }),
-    );
-    expect(testTypeNames).toBe('name,name');
-  });
+	it('should concatinate multiple test types', () => {
+		const testTypeNames = component.getTestTypeName(
+			createMockTestResult({
+				testTypes: [createMockTestType({ testTypeName: 'name' }), createMockTestType({ testTypeName: 'name' })],
+			})
+		);
+		expect(testTypeNames).toBe('name,name');
+	});
 
-  it('should concatinate multiple test results', () => {
-    const testTypeResults = component.getTestTypeResults(
-      createMockTestResult({
-        testTypes: [
-          createMockTestType({ testResult: resultOfTestEnum.pass }),
-          createMockTestType({ testResult: resultOfTestEnum.pass }),
-        ],
-      }),
-    );
-    expect(testTypeResults).toBe('pass,pass');
-  });
+	it('should concatinate multiple test results', () => {
+		const testTypeResults = component.getTestTypeResults(
+			createMockTestResult({
+				testTypes: [
+					createMockTestType({ testResult: resultOfTestEnum.pass }),
+					createMockTestType({ testResult: resultOfTestEnum.pass }),
+				],
+			})
+		);
+		expect(testTypeResults).toBe('pass,pass');
+	});
 
-  it('should retrieve all testTypes and creates sorted TestField[]', () => {
-    const mockRecords = [
-      {
-        testResultId: '1',
-        testTypes: [
-          {
-            testTypeStartTimestamp: new Date('12/12/2022').toISOString(),
-            testNumber: '1',
-            testResult: resultOfTestEnum.pass,
-            testTypeName: 'annual',
-          },
-          {
-            testTypeStartTimestamp: new Date('12/12/2023').toISOString(),
-            testNumber: '2',
-            testResult: resultOfTestEnum.pass,
-            testTypeName: 'annual',
-          },
-        ],
-      },
-      {
-        testResultId: '1',
-        testTypes: [
-          {
-            testTypeStartTimestamp: new Date('12/12/2021').toISOString(),
-            testNumber: '1',
-            testResult: resultOfTestEnum.pass,
-            testTypeName: 'annual',
-          },
-        ],
-      },
-    ] as TestResultModel[];
-    component.testResults = mockRecords;
-    const testFieldResults = component.sortedTestTypeFields;
+	it('should retrieve all testTypes and creates sorted TestField[]', () => {
+		const mockRecords = [
+			{
+				testResultId: '1',
+				testTypes: [
+					{
+						testTypeStartTimestamp: new Date('12/12/2022').toISOString(),
+						testNumber: '1',
+						testResult: resultOfTestEnum.pass,
+						testTypeName: 'annual',
+					},
+					{
+						testTypeStartTimestamp: new Date('12/12/2023').toISOString(),
+						testNumber: '2',
+						testResult: resultOfTestEnum.pass,
+						testTypeName: 'annual',
+					},
+				],
+			},
+			{
+				testResultId: '1',
+				testTypes: [
+					{
+						testTypeStartTimestamp: new Date('12/12/2021').toISOString(),
+						testNumber: '1',
+						testResult: resultOfTestEnum.pass,
+						testTypeName: 'annual',
+					},
+				],
+			},
+		] as TestResultModel[];
+		component.testResults = mockRecords;
+		const testFieldResults = component.sortedTestTypeFields;
 
-    expect(testFieldResults).toHaveLength(3);
+		expect(testFieldResults).toHaveLength(3);
 
-    expect(testFieldResults[0].testTypeStartTimestamp).toBe(mockRecords[0].testTypes[1].testTypeStartTimestamp);
-    expect(testFieldResults[1].testTypeStartTimestamp).toBe(mockRecords[0].testTypes[0].testTypeStartTimestamp);
-    expect(testFieldResults[2].testTypeStartTimestamp).toBe(mockRecords[1].testTypes[0].testTypeStartTimestamp);
-  });
+		expect(testFieldResults[0].testTypeStartTimestamp).toBe(mockRecords[0].testTypes[1].testTypeStartTimestamp);
+		expect(testFieldResults[1].testTypeStartTimestamp).toBe(mockRecords[0].testTypes[0].testTypeStartTimestamp);
+		expect(testFieldResults[2].testTypeStartTimestamp).toBe(mockRecords[1].testTypes[0].testTypeStartTimestamp);
+	});
 });

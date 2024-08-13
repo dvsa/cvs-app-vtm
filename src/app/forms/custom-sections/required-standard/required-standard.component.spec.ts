@@ -16,173 +16,173 @@ import { testResultInEdit } from '@store/test-records';
 import { RequiredStandardComponent } from './required-standard.component';
 
 describe('RequiredStandardComponent', () => {
-  let component: RequiredStandardComponent;
-  let fixture: ComponentFixture<RequiredStandardComponent>;
-  let router: Router;
-  let store: MockStore<State>;
-  let resultService: ResultOfTestService;
-  let dfs: DynamicFormService;
+	let component: RequiredStandardComponent;
+	let fixture: ComponentFixture<RequiredStandardComponent>;
+	let router: Router;
+	let store: MockStore<State>;
+	let resultService: ResultOfTestService;
+	let dfs: DynamicFormService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, HttpClientTestingModule],
-      declarations: [RequiredStandardComponent],
-      providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, HttpClientTestingModule],
+			declarations: [RequiredStandardComponent],
+			providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(RequiredStandardComponent);
-    router = TestBed.inject(Router);
-    store = TestBed.inject(MockStore);
-    resultService = TestBed.inject(ResultOfTestService);
-    dfs = TestBed.inject(DynamicFormService);
-    component = fixture.componentInstance;
-    jest.clearAllMocks();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(RequiredStandardComponent);
+		router = TestBed.inject(Router);
+		store = TestBed.inject(MockStore);
+		resultService = TestBed.inject(ResultOfTestService);
+		dfs = TestBed.inject(DynamicFormService);
+		component = fixture.componentInstance;
+		jest.clearAllMocks();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  describe('ngOnInit', () => {
-    it('should init and navigate back if no test result', () => {
-      component.isEditing = true;
-      store.overrideSelector(testResultInEdit, undefined);
-      const spy = jest.spyOn(component, 'navigateBack');
+	describe('ngOnInit', () => {
+		it('should init and navigate back if no test result', () => {
+			component.isEditing = true;
+			store.overrideSelector(testResultInEdit, undefined);
+			const spy = jest.spyOn(component, 'navigateBack');
 
-      component.ngOnInit();
+			component.ngOnInit();
 
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
+			expect(spy).toHaveBeenCalledTimes(1);
+		});
 
-    it('should init and use index to amend the required standard', () => {
-      component.isEditing = true;
-      store.overrideSelector(
-        testResultInEdit,
-        mockTestResult(),
-      );
-      store.overrideSelector(selectRouteParams, { requiredStandardIndex: '0' });
-      component.ngOnInit();
+		it('should init and use index to amend the required standard', () => {
+			component.isEditing = true;
+			store.overrideSelector(testResultInEdit, mockTestResult());
+			store.overrideSelector(selectRouteParams, { requiredStandardIndex: '0' });
+			component.ngOnInit();
 
-      expect(component.amendingRs).toBeTruthy();
-      expect(component.requiredStandard).toBeDefined();
-    });
+			expect(component.amendingRs).toBeTruthy();
+			expect(component.requiredStandard).toBeDefined();
+		});
 
-    it('should init and get required standard from the store', () => {
-      component.isEditing = true;
-      store.overrideSelector(
-        testResultInEdit,
-        mockTestResult(),
-      );
-      store.overrideSelector(selectRouteParams, { ref: '1.1', inspectionType: 'basic', requiredStandardIndex: undefined });
+		it('should init and get required standard from the store', () => {
+			component.isEditing = true;
+			store.overrideSelector(testResultInEdit, mockTestResult());
+			store.overrideSelector(selectRouteParams, {
+				ref: '1.1',
+				inspectionType: 'basic',
+				requiredStandardIndex: undefined,
+			});
 
-      store.overrideSelector(
-        getRequiredStandardFromTypeAndRef(INSPECTION_TYPE.BASIC, '1.1'),
-        { sectionNumber: '1' } as unknown as TestResultRequiredStandard,
-      );
+			store.overrideSelector(getRequiredStandardFromTypeAndRef(INSPECTION_TYPE.BASIC, '1.1'), {
+				sectionNumber: '1',
+			} as unknown as TestResultRequiredStandard);
 
-      component.ngOnInit();
+			component.ngOnInit();
 
-      expect(component.amendingRs).toBeFalsy();
-      expect(component.requiredStandard).toBeDefined();
-    });
+			expect(component.amendingRs).toBeFalsy();
+			expect(component.requiredStandard).toBeDefined();
+		});
 
-    it('should init and fail to required standard from the store so navigate back', () => {
-      component.isEditing = true;
-      store.overrideSelector(
-        testResultInEdit,
-        mockTestResult(),
-      );
-      store.overrideSelector(selectRouteParams, { ref: '1.1', inspectionType: 'basic', requiredStandardIndex: undefined });
+		it('should init and fail to required standard from the store so navigate back', () => {
+			component.isEditing = true;
+			store.overrideSelector(testResultInEdit, mockTestResult());
+			store.overrideSelector(selectRouteParams, {
+				ref: '1.1',
+				inspectionType: 'basic',
+				requiredStandardIndex: undefined,
+			});
 
-      store.overrideSelector(
-        getRequiredStandardFromTypeAndRef(INSPECTION_TYPE.BASIC, '1.1'),
-        undefined,
-      );
-      const spy = jest.spyOn(component, 'navigateBack');
+			store.overrideSelector(getRequiredStandardFromTypeAndRef(INSPECTION_TYPE.BASIC, '1.1'), undefined);
+			const spy = jest.spyOn(component, 'navigateBack');
 
-      component.ngOnInit();
+			component.ngOnInit();
 
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-  });
+			expect(spy).toHaveBeenCalledTimes(1);
+		});
+	});
 
-  describe('navigateBack', () => {
-    it('should navigate back two levels if in amend mode', () => {
-      jest.spyOn(resultService, 'updateResultOfTestRequiredStandards').getMockImplementation();
-      component.amendingRs = true;
-      const spy = jest.spyOn(router, 'navigate');
+	describe('navigateBack', () => {
+		it('should navigate back two levels if in amend mode', () => {
+			jest.spyOn(resultService, 'updateResultOfTestRequiredStandards').getMockImplementation();
+			component.amendingRs = true;
+			const spy = jest.spyOn(router, 'navigate');
 
-      component.navigateBack();
+			component.navigateBack();
 
-      expect(spy).toHaveBeenCalledWith(['../../'], expect.anything());
+			expect(spy).toHaveBeenCalledWith(['../../'], expect.anything());
+		});
 
-    });
+		it('should navigate back three levels if not in amend mode', () => {
+			jest.spyOn(resultService, 'updateResultOfTestRequiredStandards').getMockImplementation();
+			component.amendingRs = false;
+			const spy = jest.spyOn(router, 'navigate');
 
-    it('should navigate back three levels if not in amend mode', () => {
-      jest.spyOn(resultService, 'updateResultOfTestRequiredStandards').getMockImplementation();
-      component.amendingRs = false;
-      const spy = jest.spyOn(router, 'navigate');
+			component.navigateBack();
 
-      component.navigateBack();
+			expect(spy).toHaveBeenCalledWith(['../../../'], expect.anything());
+		});
+	});
 
-      expect(spy).toHaveBeenCalledWith(['../../../'], expect.anything());
-    });
-  });
+	describe('toggleRsPrsField', () => {
+		it('should error if there is no required standard', () => {
+			component.requiredStandard = undefined;
 
-  describe('toggleRsPrsField', () => {
-    it('should error if there is no required standard', () => {
-      component.requiredStandard = undefined;
+			const res = component.toggleRsPrsField();
 
-      const res = component.toggleRsPrsField();
+			expect(res).toBeUndefined();
+		});
+		it('should flip bool value of prs', () => {
+			component.requiredStandard = { prs: true } as unknown as TestResultRequiredStandard;
 
-      expect(res).toBeUndefined();
-    });
-    it('should flip bool value of prs', () => {
-      component.requiredStandard = { prs: true } as unknown as TestResultRequiredStandard;
+			component.toggleRsPrsField();
 
-      component.toggleRsPrsField();
+			expect(component.requiredStandard).toStrictEqual({ prs: false });
+		});
+	});
 
-      expect(component.requiredStandard).toStrictEqual({ prs: false });
-    });
-  });
+	describe('handleSubmit', () => {
+		beforeEach(() => {
+			component.form = dfs.createForm(
+				{
+					name: 'test section',
+					type: FormNodeTypes.SECTION,
+					children: [{ name: 'prs', type: FormNodeTypes.CONTROL }],
+				},
+				{ prs: false }
+			) as CustomFormGroup;
+		});
+		it('should return if the form is invalid', () => {
+			jest.spyOn(DynamicFormService, 'validate').mockImplementation();
+			component.form.controls['prs'].setErrors({ incorrect: true });
 
-  describe('handleSubmit', () => {
-    beforeEach(() => {
-      component.form = dfs.createForm({
-        name: 'test section',
-        type: FormNodeTypes.SECTION,
-        children: [{ name: 'prs', type: FormNodeTypes.CONTROL }],
-      }, { prs: false }) as CustomFormGroup;
-    });
-    it('should return if the form is invalid', () => {
-      jest.spyOn(DynamicFormService, 'validate').mockImplementation();
-      component.form.controls['prs'].setErrors({ incorrect: true });
+			const res = component.handleSubmit();
 
-      const res = component.handleSubmit();
+			expect(res).toBeUndefined();
+		});
 
-      expect(res).toBeUndefined();
-    });
+		it('should call update RS if in amend mode', () => {
+			jest.spyOn(DynamicFormService, 'validate').mockImplementation();
+			component.index = 1;
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-    it('should call update RS if in amend mode', () => {
-      jest.spyOn(DynamicFormService, 'validate').mockImplementation();
-      component.index = 1;
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
+			component.handleSubmit();
 
-      component.handleSubmit();
+			expect(dispatchSpy).toHaveBeenCalledWith(
+				expect.objectContaining({ type: '[test-results] update required standard' })
+			);
+		});
 
-      expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: '[test-results] update required standard' }));
-    });
+		it('should call create RS if not in amend mode', () => {
+			jest.spyOn(DynamicFormService, 'validate').mockImplementation();
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-    it('should call create RS if not in amend mode', () => {
-      jest.spyOn(DynamicFormService, 'validate').mockImplementation();
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
+			component.handleSubmit();
 
-      component.handleSubmit();
-
-      expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: '[test-results] create required standard' }));
-    });
-  });
-
+			expect(dispatchSpy).toHaveBeenCalledWith(
+				expect.objectContaining({ type: '[test-results] create required standard' })
+			);
+		});
+	});
 });

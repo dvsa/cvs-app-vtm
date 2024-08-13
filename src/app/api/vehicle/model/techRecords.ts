@@ -10,5 +10,4 @@
  */
 import { TechRecord } from './techRecord';
 
-export interface TechRecords extends Array<TechRecord> { 
-}
+export interface TechRecords extends Array<TechRecord> {}

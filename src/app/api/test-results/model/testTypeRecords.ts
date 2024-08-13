@@ -9,5 +9,4 @@
  * Do not edit the class manually.
  */
 
-export interface TestTypeRecords { 
-}
+export type TestTypeRecords = {};

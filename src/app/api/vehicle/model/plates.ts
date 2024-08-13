@@ -10,5 +10,4 @@
  */
 import { PlatesInner } from './platesInner';
 
-export interface Plates extends Array<PlatesInner> { 
-}
+export interface Plates extends Array<PlatesInner> {}
