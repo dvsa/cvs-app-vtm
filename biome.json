@@ -23,7 +23,6 @@
             "noDuplicateTestHooks": "off",
             "noExplicitAny": "off",
             "noImplicitAnyLet": "off",
-            "noPrototypeBuiltins": "off",
             "useValidTypeof": "off"
           },
           "style": {
