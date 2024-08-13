@@ -1,3 +1,48 @@
 {
-  "extends": ["@dvsa/biome-config/biome"]
+  "extends": ["@dvsa/biome-config/biome"],
+  "formatter": {
+    "ignore": ["src/app/api/**"]
+  },
+  "overrides": [
+    {
+      "include": ["**/*.mock.ts", "**/*.spec.ts", "**/*.ts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noBannedTypes": "off",
+            "noForEach": "off",
+            "noThisInStatic": "off",
+            "noUselessConstructor": "off",
+            "useLiteralKeys": "off",
+            "useOptionalChain": "off",
+            "useRegexLiterals": "off"
+          },
+          "correctness": {
+            "noInvalidUseBeforeDeclaration": "off",
+            "noVoidTypeReturn": "off",
+            "noSwitchDeclarations": "off"
+          },
+          "performance": {
+            "noAccumulatingSpread": "off",
+            "noDelete": "off"
+          },
+          "suspicious": {
+            "noAssignInExpressions": "off",
+            "noDoubleEquals": "off",
+            "noDuplicateTestHooks": "off",
+            "noExplicitAny": "off",
+            "noImplicitAnyLet": "off",
+            "noPrototypeBuiltins": "off",
+            "noShadowRestrictedNames": "off",
+            "useValidTypeof": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "off",
+            "noParameterAssign": "off",
+            "useTemplate": "off"
+          }
+        }
+      }
+    }
+  ]
 }
