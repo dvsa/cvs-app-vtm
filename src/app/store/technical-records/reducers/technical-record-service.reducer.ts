@@ -353,8 +353,9 @@ function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: n
 
 	newState.editingTechRecord.techRecord_axles.splice(action.index, 1);
 
-	// eslint-disable-next-line no-return-assign
-	newState.editingTechRecord.techRecord_axles.forEach((axle, i) => (axle.axleNumber = i + 1));
+	newState.editingTechRecord.techRecord_axles.forEach((axle, i) => {
+		axle.axleNumber = i + 1;
+	});
 
 	newState.editingTechRecord.techRecord_noOfAxles = newState.editingTechRecord.techRecord_axles.length;
 

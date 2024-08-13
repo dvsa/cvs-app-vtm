@@ -23,7 +23,6 @@
             "noDelete": "off"
           },
           "suspicious": {
-            "noAssignInExpressions": "off",
             "noDoubleEquals": "off",
             "noDuplicateTestHooks": "off",
             "noExplicitAny": "off",

@@ -198,7 +198,9 @@ export class DocumentRetrievalService {
 
 		let params = new HttpParams({ encoder: new CustomHttpUrlEncodingCodec() });
 
-		paramMap.forEach((value, key) => (params = params.set(key, value)));
+    paramMap.forEach((value, key) => {
+      params = params.set(key, value);
+    });
 
 		return this.httpClient.get(`${this.basePath}/v1/document-retrieval`, {
 			headers,

@@ -18,8 +18,8 @@ export class FeatureToggleService {
 	constructor(private http: HttpClient) {}
 
 	async loadConfig() {
-		// eslint-disable-next-line no-return-assign
-		return (this.config = await lastValueFrom(this.http.get<FeatureConfig>(this.configPath).pipe(take(1))));
+		this.config = await lastValueFrom(this.http.get<FeatureConfig>(this.configPath).pipe(take(1)));
+		return this.config;
 	}
 
 	getConfig() {
