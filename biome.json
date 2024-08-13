@@ -17,7 +17,6 @@
           },
           "correctness": {
             "noInvalidUseBeforeDeclaration": "off",
-            "noVoidTypeReturn": "off",
             "noSwitchDeclarations": "off"
           },
           "performance": {

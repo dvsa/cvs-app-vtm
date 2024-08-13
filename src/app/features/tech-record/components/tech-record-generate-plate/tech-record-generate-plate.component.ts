@@ -87,12 +87,15 @@ export class GeneratePlateComponent implements OnInit {
 
 	handleSubmit(): void {
 		this.globalErrorService.clearErrors();
+
 		if (!this.form.value.reason) {
-			return this.globalErrorService.addError({
+			this.globalErrorService.addError({
 				error: 'Reason for generating plate is required',
 				anchorLink: 'reason',
 			});
+			return;
 		}
+
 		this.store.dispatch(generatePlate({ reason: this.form.value.reason }));
 		this.store.dispatch(cannotGeneratePlate());
 	}

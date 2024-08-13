@@ -90,7 +90,7 @@ export class BatchVehicleTemplateComponent {
 	}
 
 	statusChange(): void {
-		return this.batchTechRecordService.setVehicleStatus(this.form.get('vehicleStatus')?.value);
+		this.batchTechRecordService.setVehicleStatus(this.form.get('vehicleStatus')?.value);
 	}
 
 	get isVehicleStatusValid(): boolean {

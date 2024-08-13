@@ -24,7 +24,11 @@ export class CheckboxGroupComponent extends BaseControlComponent {
 	}
 
 	handleChange(event: boolean, option: FormNodeOption<OptionsType>): void {
-		return event ? this.add(option) : this.remove(option);
+		if (event) {
+			this.add(option);
+		} else {
+			this.remove(option);
+		}
 	}
 
 	private add(option: FormNodeOption<OptionsType>) {
