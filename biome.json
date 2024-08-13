@@ -16,7 +16,6 @@
             "useRegexLiterals": "off"
           },
           "correctness": {
-            "noInvalidUseBeforeDeclaration": "off",
             "noSwitchDeclarations": "off"
           },
           "performance": {

@@ -25,6 +25,45 @@ import { Observable, map } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
 
+// TODO: clean this
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any> | Array<[]> => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const localCleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
+	Object.keys(form.controls).forEach((key) => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
+		const control = (form.controls as any)[key];
+		if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
+			(localCleanValue as any)[key] = objectOrNull(control.getCleanValue(control));
+		} else if (control instanceof CustomFormArray) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
+			(localCleanValue as any)[key] = control.getCleanValue(control);
+		} else if (control instanceof CustomFormControl && control.meta.type === FormNodeTypes.CONTROL) {
+			if (control.meta.required && control.meta.hide) {
+				pushOrAssignAt(control.meta.value || null, localCleanValue, key);
+			} else if (!control.meta.hide) {
+				pushOrAssignAt(control.value, localCleanValue, key);
+			}
+		}
+	});
+
+	return localCleanValue;
+};
+
+function objectOrNull(obj: Object) {
+	return Object.values(obj).some((value) => undefined !== value) ? obj : null;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function pushOrAssignAt(value: any, localCleanValue: Array<[]> | Record<string, unknown>, key: string) {
+	if (Array.isArray(localCleanValue)) {
+		localCleanValue.push(value);
+	} else {
+		localCleanValue[`${key}`] = value;
+	}
+}
+
 export enum FormNodeViewTypes {
 	DATE = 'date',
 	DATETIME = 'dateTime',
@@ -263,44 +302,5 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
 			}
 			super.patchValue(value, options);
 		}
-	}
-}
-
-// TODO: clean this
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any> | Array<[]> => {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const localCleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
-	Object.keys(form.controls).forEach((key) => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
-		const control = (form.controls as any)[key];
-		if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
-			(localCleanValue as any)[key] = objectOrNull(control.getCleanValue(control));
-		} else if (control instanceof CustomFormArray) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
-			(localCleanValue as any)[key] = control.getCleanValue(control);
-		} else if (control instanceof CustomFormControl && control.meta.type === FormNodeTypes.CONTROL) {
-			if (control.meta.required && control.meta.hide) {
-				pushOrAssignAt(control.meta.value || null, localCleanValue, key);
-			} else if (!control.meta.hide) {
-				pushOrAssignAt(control.value, localCleanValue, key);
-			}
-		}
-	});
-
-	return localCleanValue;
-};
-
-function objectOrNull(obj: Object) {
-	return Object.values(obj).some((value) => undefined !== value) ? obj : null;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function pushOrAssignAt(value: any, localCleanValue: Array<[]> | Record<string, unknown>, key: string) {
-	if (Array.isArray(localCleanValue)) {
-		localCleanValue.push(value);
-	} else {
-		localCleanValue[`${key}`] = value;
 	}
 }
