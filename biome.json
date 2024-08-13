@@ -15,9 +15,6 @@
             "useLiteralKeys": "off",
             "useRegexLiterals": "off"
           },
-          "correctness": {
-            "noSwitchDeclarations": "off"
-          },
           "performance": {
             "noDelete": "off"
           },
