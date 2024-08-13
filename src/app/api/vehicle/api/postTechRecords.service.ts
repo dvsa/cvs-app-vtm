@@ -84,7 +84,7 @@ export class PostTechRecordsService {
 				typeof this.configuration.accessToken === 'function'
 					? this.configuration.accessToken()
 					: this.configuration.accessToken;
-			headers = headers.set('Authorization', 'Bearer ' + accessToken);
+			headers = headers.set('Authorization', `Bearer ${accessToken}`);
 		}
 
 		// to determine the Accept header
