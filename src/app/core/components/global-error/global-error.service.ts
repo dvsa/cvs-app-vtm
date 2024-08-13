@@ -1,45 +1,44 @@
 import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
-import {
-  addError, clearError, patchErrors, setErrors,
-} from '@store/global-error/actions/global-error.actions';
+import { addError, clearError, patchErrors, setErrors } from '@store/global-error/actions/global-error.actions';
 import { globalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { Observable } from 'rxjs';
 import { GlobalError } from './global-error.interface';
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class GlobalErrorService {
-  private errors: Observable<GlobalError[]>;
+	private errors: Observable<GlobalError[]>;
 
-  constructor(private store: Store<State>) {
-    this.errors = this.store.pipe(select(globalErrorState));
-  }
+	constructor(private store: Store<State>) {
+		this.errors = this.store.pipe(select(globalErrorState));
+	}
 
-  get errors$() {
-    return this.errors;
-  }
+	get errors$() {
+		return this.errors;
+	}
 
-  addError(error: GlobalError) {
-    this.store.dispatch(addError(error));
-  }
+	addError(error: GlobalError) {
+		this.store.dispatch(addError(error));
+	}
 
-  setErrors(errors: GlobalError[]) {
-    this.store.dispatch(setErrors({ errors }));
-  }
+	setErrors(errors: GlobalError[]) {
+		this.store.dispatch(setErrors({ errors }));
+	}
 
-  patchErrors(errors: GlobalError[]) {
-    this.store.dispatch(patchErrors({ errors }));
-  }
+	patchErrors(errors: GlobalError[]) {
+		this.store.dispatch(patchErrors({ errors }));
+	}
 
-  clearErrors(): void {
-    this.store.dispatch(clearError());
-  }
+	clearErrors(): void {
+		this.store.dispatch(clearError());
+	}
 
-  focusAllControls() {
-    document.querySelectorAll(`
+	focusAllControls() {
+		document
+			.querySelectorAll(`
       a[href]:not([tabindex='-1']),
       area[href]:not([tabindex='-1']),
       input:not([disabled]):not([tabindex='-1']),
@@ -50,11 +49,11 @@ export class GlobalErrorService {
       [tabindex]:not([tabindex='-1']),
       [contentEditable=true]:not([tabindex='-1'])
     `)
-      .forEach((element) => {
-        if (element instanceof HTMLElement) {
-          element.focus();
-          element.blur();
-        }
-      });
-  }
+			.forEach((element) => {
+				if (element instanceof HTMLElement) {
+					element.focus();
+					element.blur();
+				}
+			});
+	}
 }

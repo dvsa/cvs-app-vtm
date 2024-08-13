@@ -1,14 +1,19 @@
 import {
-  fetchDefect, fetchDefectFailed, fetchDefects, fetchDefectsFailed, fetchDefectsSuccess, fetchDefectSuccess,
+	fetchDefect,
+	fetchDefectFailed,
+	fetchDefectSuccess,
+	fetchDefects,
+	fetchDefectsFailed,
+	fetchDefectsSuccess,
 } from './defects.actions';
 
 describe('Defects Actions', () => {
-  it('should return correct types', () => {
-    expect(fetchDefects.type).toBe('[API/defects] Fetch Defects');
-    expect(fetchDefectsSuccess.type).toBe('[API/defects] Fetch Defects Success');
-    expect(fetchDefectsFailed.type).toBe('[API/defects] Fetch Defects Failed');
-    expect(fetchDefect.type).toBe('[API/defects] Fetch Defect by ID');
-    expect(fetchDefectSuccess.type).toBe('[API/defects] Fetch Defect by ID Success');
-    expect(fetchDefectFailed.type).toBe('[API/defects] Fetch Defect by ID Failed');
-  });
+	it('should return correct types', () => {
+		expect(fetchDefects.type).toBe('[API/defects] Fetch Defects');
+		expect(fetchDefectsSuccess.type).toBe('[API/defects] Fetch Defects Success');
+		expect(fetchDefectsFailed.type).toBe('[API/defects] Fetch Defects Failed');
+		expect(fetchDefect.type).toBe('[API/defects] Fetch Defect by ID');
+		expect(fetchDefectSuccess.type).toBe('[API/defects] Fetch Defect by ID Success');
+		expect(fetchDefectFailed.type).toBe('[API/defects] Fetch Defect by ID Failed');
+	});
 });

@@ -12,74 +12,78 @@ import { of } from 'rxjs';
 import { DynamicFormFieldComponent } from './dynamic-form-field.component';
 
 describe('DynamicFormFieldComponent', () => {
-  let component: DynamicFormFieldComponent;
-  let fixture: ComponentFixture<DynamicFormFieldComponent>;
-  let service: ReferenceDataService;
+	let component: DynamicFormFieldComponent;
+	let fixture: ComponentFixture<DynamicFormFieldComponent>;
+	let service: ReferenceDataService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [DynamicFormFieldComponent],
-      imports: [FormsModule, HttpClientTestingModule, ReactiveFormsModule],
-      providers: [
-        provideMockStore({ initialState: initialAppState }),
-        ReferenceDataService,
-        TestStationsService,
-        { provide: UserService, useValue: {} },
-      ],
-    }).compileComponents();
-    service = TestBed.inject(ReferenceDataService);
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [DynamicFormFieldComponent],
+			imports: [FormsModule, HttpClientTestingModule, ReactiveFormsModule],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				ReferenceDataService,
+				TestStationsService,
+				{ provide: UserService, useValue: {} },
+			],
+		}).compileComponents();
+		service = TestBed.inject(ReferenceDataService);
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DynamicFormFieldComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    component.control = {
-      key: 'birthday',
-      value: new CustomFormControl({
-        name: 'test',
-        type: FormNodeTypes.CONTROL,
-        referenceData: ReferenceDataResourceType.CountryOfRegistration,
-      }),
-    };
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(DynamicFormFieldComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+		component.control = {
+			key: 'birthday',
+			value: new CustomFormControl({
+				name: 'test',
+				type: FormNodeTypes.CONTROL,
+				referenceData: ReferenceDataResourceType.CountryOfRegistration,
+			}),
+		};
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  it('should get options', () => {
-    const options = component.options$;
-    expect(options).toBeTruthy();
-  });
+	it('should get options', () => {
+		const options = component.options$;
+		expect(options).toBeTruthy();
+	});
 
-  it('should return the metadata options', (done) => {
-    component.control = {
-      key: 'birthday',
-      value: new CustomFormControl({ name: 'test', type: FormNodeTypes.CONTROL, options: [{ value: '1', label: 'test' }] }),
-    };
-    component.form = new FormGroup({});
-    component.options$.subscribe((value) => {
-      expect(value).toBeTruthy();
-      expect(value).toEqual([{ value: '1', label: 'test' }]);
-      done();
-    });
-  });
+	it('should return the metadata options', (done) => {
+		component.control = {
+			key: 'birthday',
+			value: new CustomFormControl({
+				name: 'test',
+				type: FormNodeTypes.CONTROL,
+				options: [{ value: '1', label: 'test' }],
+			}),
+		};
+		component.form = new FormGroup({});
+		component.options$.subscribe((value) => {
+			expect(value).toBeTruthy();
+			expect(value).toEqual([{ value: '1', label: 'test' }]);
+			done();
+		});
+	});
 
-  it('should return the reference data options', (done) => {
-    service.getAll$ = jest.fn().mockReturnValue(of([{ resourceKey: '1', description: 'test' }]));
-    component.form = new FormGroup({});
-    component.options$.subscribe((value) => {
-      expect(value).toBeTruthy();
-      expect(value).toEqual([{ value: '1', label: 'test' }]);
-      done();
-    });
-  });
+	it('should return the reference data options', (done) => {
+		service.getAll$ = jest.fn().mockReturnValue(of([{ resourceKey: '1', description: 'test' }]));
+		component.form = new FormGroup({});
+		component.options$.subscribe((value) => {
+			expect(value).toBeTruthy();
+			expect(value).toEqual([{ value: '1', label: 'test' }]);
+			done();
+		});
+	});
 
-  it('should fetch the reference data on init', () => {
-    service.loadReferenceData = jest.fn();
-    component.ngAfterContentInit();
-    const spy = jest.spyOn(service, 'loadReferenceData');
-    expect(spy).toHaveBeenCalled();
-  });
+	it('should fetch the reference data on init', () => {
+		service.loadReferenceData = jest.fn();
+		component.ngAfterContentInit();
+		const spy = jest.spyOn(service, 'loadReferenceData');
+		expect(spy).toHaveBeenCalled();
+	});
 });

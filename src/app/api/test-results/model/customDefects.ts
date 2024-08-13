@@ -10,5 +10,4 @@
  */
 import { CustomDefect } from './customDefect';
 
-export interface CustomDefects extends Array<CustomDefect> { 
-}
+export interface CustomDefects extends Array<CustomDefect> {}

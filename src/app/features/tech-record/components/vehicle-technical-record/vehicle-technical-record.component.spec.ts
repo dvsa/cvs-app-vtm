@@ -7,9 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule } from '@api/test-results';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import {
-  StatusCodes, TechRecordModel, V3TechRecordModel,
-} from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, V3TechRecordModel } from '@models/vehicle-tech-record.model';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -28,79 +26,79 @@ import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.comp
 global.scrollTo = jest.fn();
 
 describe('VehicleTechnicalRecordComponent', () => {
-  let component: VehicleTechnicalRecordComponent;
-  let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;
-  @Component({})
-  class TechRecordSummaryStubComponent {
-    checkForms() {}
-  }
+	let component: VehicleTechnicalRecordComponent;
+	let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;
+	@Component({})
+	class TechRecordSummaryStubComponent {
+		checkForms() {}
+	}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        ApiModule,
-        DynamicFormsModule,
-        EffectsModule.forRoot(),
-        HttpClientTestingModule,
-        RouterModule.forRoot([]),
-        RouterTestingModule,
-        SharedModule,
-        StoreModule.forRoot({}),
-      ],
-      declarations: [
-        EditTechRecordButtonComponent,
-        TechRecordHistoryComponent,
-        TechRecordSummaryComponent,
-        TechRecordTitleComponent,
-        TechRecordSummaryStubComponent,
-        TestRecordSummaryComponent,
-        VehicleTechnicalRecordComponent,
-      ],
-      providers: [
-        MultiOptionsService,
-        provideMockStore({ initialState: initialAppState }),
-        { provide: APP_BASE_HREF, useValue: '/' },
-        {
-          provide: UserService,
-          useValue: {
-            roles$: of(['TestResult.View', 'TestResult.CreateContingency']),
-          },
-        },
-        {
-          provide: TechnicalRecordService,
-          useValue: {
-            get techRecord$() {
-              return of({
-                systemNumber: 'foo',
-                createdTimestamp: 'bar',
-                vin: 'testVin',
-                techRecord_statusCode: StatusCodes.CURRENT,
-              });
-            },
-            updateEditingTechRecord: () => {},
-            get editableTechRecord$() {
-              return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' });
-            },
-            get sectionStates$() {
-              return of(['TEST_SECTION']);
-            },
-            getVehicleTypeWithSmallTrl: (techRecord: TechRecordModel) => {
-              return techRecord.vehicleType;
-            },
-          },
-        },
-      ],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [
+				ApiModule,
+				DynamicFormsModule,
+				EffectsModule.forRoot(),
+				HttpClientTestingModule,
+				RouterModule.forRoot([]),
+				RouterTestingModule,
+				SharedModule,
+				StoreModule.forRoot({}),
+			],
+			declarations: [
+				EditTechRecordButtonComponent,
+				TechRecordHistoryComponent,
+				TechRecordSummaryComponent,
+				TechRecordTitleComponent,
+				TechRecordSummaryStubComponent,
+				TestRecordSummaryComponent,
+				VehicleTechnicalRecordComponent,
+			],
+			providers: [
+				MultiOptionsService,
+				provideMockStore({ initialState: initialAppState }),
+				{ provide: APP_BASE_HREF, useValue: '/' },
+				{
+					provide: UserService,
+					useValue: {
+						roles$: of(['TestResult.View', 'TestResult.CreateContingency']),
+					},
+				},
+				{
+					provide: TechnicalRecordService,
+					useValue: {
+						get techRecord$() {
+							return of({
+								systemNumber: 'foo',
+								createdTimestamp: 'bar',
+								vin: 'testVin',
+								techRecord_statusCode: StatusCodes.CURRENT,
+							});
+						},
+						updateEditingTechRecord: () => {},
+						get editableTechRecord$() {
+							return of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' });
+						},
+						get sectionStates$() {
+							return of(['TEST_SECTION']);
+						},
+						getVehicleTypeWithSmallTrl: (techRecord: TechRecordModel) => {
+							return techRecord.vehicleType;
+						},
+					},
+				},
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(VehicleTechnicalRecordComponent);
-    component = fixture.componentInstance;
-    component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(VehicleTechnicalRecordComponent);
+		component = fixture.componentInstance;
+		component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
+	});
 
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		fixture.detectChanges();
+		expect(component).toBeTruthy();
+	});
 });

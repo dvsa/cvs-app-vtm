@@ -11,8 +11,8 @@
  */
 import { ResourceKey } from './resourceKey';
 
-export interface ReferenceDataItem { 
-    resourceType: string;
-    resourceKey: ResourceKey;
-    reason?: string;
+export interface ReferenceDataItem {
+	resourceType: string;
+	resourceKey: ResourceKey;
+	reason?: string;
 }

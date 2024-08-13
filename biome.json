@@ -1,0 +1,3 @@
+{
+  "extends": ["@dvsa/biome-config/biome"]
+}

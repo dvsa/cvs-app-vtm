@@ -3,16 +3,16 @@ import { GlobalWarning } from './global-warning.interface';
 import { GlobalWarningService } from './global-warning.service';
 
 @Component({
-  selector: 'app-global-warning',
-  templateUrl: './global-warning.component.html',
+	selector: 'app-global-warning',
+	templateUrl: './global-warning.component.html',
 })
 export class GlobalWarningComponent {
-  constructor(public globalWarningService: GlobalWarningService) {}
+	constructor(public globalWarningService: GlobalWarningService) {}
 
-  goto(warning: GlobalWarning) {
-    if (warning.anchorLink) {
-      const el = document.getElementById(warning.anchorLink);
-      el?.focus({ preventScroll: false });
-    }
-  }
+	goto(warning: GlobalWarning) {
+		if (warning.anchorLink) {
+			const el = document.getElementById(warning.anchorLink);
+			el?.focus({ preventScroll: false });
+		}
+	}
 }

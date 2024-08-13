@@ -11,6 +11,6 @@
  */
 import { ReferenceDataItem } from './referenceDataItem';
 
-export interface ReferenceDataApiResponseWithoutPagination { 
-    data: Array<ReferenceDataItem>;
+export interface ReferenceDataApiResponseWithoutPagination {
+	data: Array<ReferenceDataItem>;
 }

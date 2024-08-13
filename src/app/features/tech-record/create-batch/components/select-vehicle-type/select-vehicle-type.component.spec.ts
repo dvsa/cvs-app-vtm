@@ -14,76 +14,76 @@ import { of } from 'rxjs';
 import { SelectVehicleTypeComponent } from './select-vehicle-type.component';
 
 describe('SelectVehicleTypeComponent', () => {
-  let component: SelectVehicleTypeComponent;
-  let fixture: ComponentFixture<SelectVehicleTypeComponent>;
-  let errorService: GlobalErrorService;
-  let route: ActivatedRoute;
-  let router: Router;
+	let component: SelectVehicleTypeComponent;
+	let fixture: ComponentFixture<SelectVehicleTypeComponent>;
+	let errorService: GlobalErrorService;
+	let route: ActivatedRoute;
+	let router: Router;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SelectVehicleTypeComponent],
-      imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule],
-      providers: [
-        GlobalErrorService,
-        provideMockStore({ initialState: initialAppState }),
-        { provide: ActivatedRoute, useValue: { params: of([{ vehicleType: 'trl' }]) } },
-      ],
-    }).compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [SelectVehicleTypeComponent],
+			imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule],
+			providers: [
+				GlobalErrorService,
+				provideMockStore({ initialState: initialAppState }),
+				{ provide: ActivatedRoute, useValue: { params: of([{ vehicleType: 'trl' }]) } },
+			],
+		}).compileComponents();
 
-    fixture = TestBed.createComponent(SelectVehicleTypeComponent);
-    errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
-    router = TestBed.inject(Router);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+		fixture = TestBed.createComponent(SelectVehicleTypeComponent);
+		errorService = TestBed.inject(GlobalErrorService);
+		route = TestBed.inject(ActivatedRoute);
+		router = TestBed.inject(Router);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  describe('get vehicleTypeOptions', () => {
-    it('should return the expected options', () => {
-      expect(component.vehicleTypeOptions).toBeTruthy();
-    });
-  });
+	describe('get vehicleTypeOptions', () => {
+		it('should return the expected options', () => {
+			expect(component.vehicleTypeOptions).toBeTruthy();
+		});
+	});
 
-  describe('cancel', () => {
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
+	describe('cancel', () => {
+		it('should clear all errors', () => {
+			jest.spyOn(router, 'navigate').mockImplementation();
 
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-      component.cancel();
+			component.cancel();
 
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
+			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
+		});
 
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		it('should navigate back to the previous page', () => {
+			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.cancel();
+			component.cancel();
 
-      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
-    });
-  });
+			expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
+		});
+	});
 
-  describe('handleSubmit', () => {
-    it('should do nothing if the form is not valid', () => {
-      jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(false);
-      const navigateSpy = jest.spyOn(router, 'navigate');
-      component.handleSubmit(VehicleTypes.TRL);
-      expect(navigateSpy).toHaveBeenCalledTimes(0);
-    });
+	describe('handleSubmit', () => {
+		it('should do nothing if the form is not valid', () => {
+			jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(false);
+			const navigateSpy = jest.spyOn(router, 'navigate');
+			component.handleSubmit(VehicleTypes.TRL);
+			expect(navigateSpy).toHaveBeenCalledTimes(0);
+		});
 
-    it('should navigate to batch records when successful', () => {
-      jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
-      const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      component.handleSubmit(VehicleTypes.HGV);
+		it('should navigate to batch records when successful', () => {
+			jest.spyOn(component, 'isFormValid', 'get').mockReturnValue(true);
+			const routerSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+			component.handleSubmit(VehicleTypes.HGV);
 
-      fixture.detectChanges();
-      expect(routerSpy).toHaveBeenCalledWith(['hgv'], { relativeTo: route });
-    });
-  });
+			fixture.detectChanges();
+			expect(routerSpy).toHaveBeenCalledWith(['hgv'], { relativeTo: route });
+		});
+	});
 });

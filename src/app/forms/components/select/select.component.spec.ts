@@ -9,63 +9,63 @@ import { FieldErrorMessageComponent } from '../field-error-message/field-error-m
 import { SelectComponent } from './select.component';
 
 @Component({
-  selector: 'app-host-component',
-  template: `<form [formGroup]="form">
+	selector: 'app-host-component',
+	template: `<form [formGroup]="form">
     <app-select name="foo" label="Foo" [options]="options" formControlName="foo"></app-select>
   </form> `,
-  styles: [],
+	styles: [],
 })
 class HostComponent {
-  @ViewChild(SelectComponent) select?: SelectComponent;
+	@ViewChild(SelectComponent) select?: SelectComponent;
 
-  form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
-  });
-  options: FormNodeOption<string | number | boolean>[] = [
-    { label: 'Value 1', value: '1' },
-    { label: 'Value 2', value: '2' },
-    { label: 'Value 3', value: '3' },
-  ];
+	form = new FormGroup({
+		foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
+	});
+	options: FormNodeOption<string | number | boolean>[] = [
+		{ label: 'Value 1', value: '1' },
+		{ label: 'Value 2', value: '2' },
+		{ label: 'Value 3', value: '3' },
+	];
 }
 
 describe('SelectComponent', () => {
-  let component: HostComponent;
-  let fixture: ComponentFixture<HostComponent>;
+	let component: HostComponent;
+	let fixture: ComponentFixture<HostComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [BaseControlComponent, FieldErrorMessageComponent, HostComponent, SelectComponent],
-      imports: [FormsModule, ReactiveFormsModule],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [BaseControlComponent, FieldErrorMessageComponent, HostComponent, SelectComponent],
+			imports: [FormsModule, ReactiveFormsModule],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(HostComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(HostComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  describe('value', () => {
-    it('should be propagated from element to the form control', () => {
-      const select = fixture.debugElement.query(By.css('select')).nativeElement as HTMLSelectElement;
-      const foo = component.form.get('foo');
-      select.selectedIndex = 1;
-      select.dispatchEvent(new Event('change'));
+	describe('value', () => {
+		it('should be propagated from element to the form control', () => {
+			const select = fixture.debugElement.query(By.css('select')).nativeElement as HTMLSelectElement;
+			const foo = component.form.get('foo');
+			select.selectedIndex = 1;
+			select.dispatchEvent(new Event('change'));
 
-      expect(foo?.value).toBe('1');
-      expect(foo?.value).not.toBeNull();
-    });
+			expect(foo?.value).toBe('1');
+			expect(foo?.value).not.toBeNull();
+		});
 
-    it('should select the right option when the form value is updated', () => {
-      component.form.patchValue({ foo: '2' });
-      fixture.detectChanges();
-      const select = fixture.debugElement.query(By.css('select'));
-      expect(select).toBeTruthy();
-      expect(select.nativeElement.value).toBe('2: 2');
-    });
-  });
+		it('should select the right option when the form value is updated', () => {
+			component.form.patchValue({ foo: '2' });
+			fixture.detectChanges();
+			const select = fixture.debugElement.query(By.css('select'));
+			expect(select).toBeTruthy();
+			expect(select.nativeElement.value).toBe('2: 2');
+		});
+	});
 });
