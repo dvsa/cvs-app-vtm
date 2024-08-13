@@ -194,17 +194,17 @@ export class DynamicFormService {
 		errors: GlobalError[],
 		updateValidity = true
 	) {
-		this.getFormLevelErrors(form, errors);
+		DynamicFormService.getFormLevelErrors(form, errors);
 		Object.entries(form.controls).forEach(([, value]) => {
 			if (!(value instanceof FormControl || value instanceof CustomFormControl)) {
-				this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
+				DynamicFormService.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
 			} else {
 				value.markAsTouched();
 				if (updateValidity) {
 					value.updateValueAndValidity();
 				}
 				(value as CustomFormControl).meta?.changeDetection?.detectChanges();
-				this.getControlErrors(value, errors);
+				DynamicFormService.getControlErrors(value, errors);
 			}
 		});
 	}
@@ -228,7 +228,7 @@ export class DynamicFormService {
 	static validateControl(control: FormControl | CustomFormControl, errors: GlobalError[]) {
 		control.markAsTouched();
 		(control as CustomFormControl).meta?.changeDetection?.detectChanges();
-		this.getControlErrors(control, errors);
+		DynamicFormService.getControlErrors(control, errors);
 	}
 
 	private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {

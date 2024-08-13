@@ -237,18 +237,18 @@ export class CustomValidators {
 	};
 
 	static validateVinCharacters() {
-		return this.customPattern(['^(?!.*[OIQ]).*$', 'should not contain O, I or Q']);
+		return CustomValidators.customPattern(['^(?!.*[OIQ]).*$', 'should not contain O, I or Q']);
 	}
 	static alphanumeric(): ValidatorFn {
-		return this.customPattern(['^[a-zA-Z0-9]*$', 'must be alphanumeric']);
+		return CustomValidators.customPattern(['^[a-zA-Z0-9]*$', 'must be alphanumeric']);
 	}
 
 	static numeric(): ValidatorFn {
-		return this.customPattern(['^\\d*$', 'must be a whole number']);
+		return CustomValidators.customPattern(['^\\d*$', 'must be a whole number']);
 	}
 
 	static email(): ValidatorFn {
-		return this.customPattern([
+		return CustomValidators.customPattern([
 			'^[\\w\\-\\.\\+]+@([\\w-]+\\.)+[\\w-]{2,}$',
 			'Enter an email address in the correct format, like name@example.com',
 		]);
