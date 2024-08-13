@@ -24,9 +24,6 @@
             "noExplicitAny": "off",
             "noImplicitAnyLet": "off",
             "useValidTypeof": "off"
-          },
-          "style": {
-            "noNonNullAssertion": "off"
           }
         }
       }

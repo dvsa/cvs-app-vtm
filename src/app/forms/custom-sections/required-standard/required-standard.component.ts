@@ -81,13 +81,15 @@ export class RequiredStandardComponent implements OnInit, OnDestroy {
 							takeUntil(this.onDestroy$)
 						)
 						.subscribe((requiredStandard) => {
-							if (!requiredStandard) this.navigateBack();
+							if (!requiredStandard) {
+								this.navigateBack();
+							}
+
 							const rsControl = {
-								// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-								...requiredStandard!,
+								...(requiredStandard || {}),
 								prs: false,
 								additionalNotes: '',
-							};
+							} as TestResultRequiredStandard;
 
 							this.requiredStandard = rsControl;
 							this.requiredStandardForm?.addControl(rsControl);

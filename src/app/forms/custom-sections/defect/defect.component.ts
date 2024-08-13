@@ -84,7 +84,7 @@ export class DefectComponent implements OnInit, OnDestroy {
 					this.index = Number(defectIndexValue);
 					this.form = this.defectsForm.controls[this.index] as CustomFormGroup;
 					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					this.defect = this.defects![this.index];
+					this.defect = this.defects?.[this.index];
 				} else if (defectRefValue && this.vehicleType) {
 					this.store
 						.select(selectByDeficiencyRef(defectRefValue, this.vehicleType))
@@ -182,12 +182,13 @@ export class DefectComponent implements OnInit, OnDestroy {
 		if (info) {
 			type LocationKey = keyof typeof info.location;
 
-			Object.keys(info.location).forEach((key) => {
+			for (const key of Object.keys(info.location)) {
 				const options = info?.location[key as LocationKey];
+
 				if (options) {
 					this.infoDictionary[`${key}`] = this.mapOptions(options);
 				}
-			});
+			}
 		}
 	}
 

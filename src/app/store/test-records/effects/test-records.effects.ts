@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { FormNode } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -203,31 +204,35 @@ export class TestResultsEffects {
 			concatMap(([action, selectedTestResult, isEditing, isOldIVAorMSVAtest]) => {
 				const { testTypeId } = action;
 
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				const { vehicleType } = selectedTestResult!;
+				const { vehicleType } = selectedTestResult ?? {};
+
 				if (!vehicleType || !Object.prototype.hasOwnProperty.call(masterTpl, vehicleType)) {
 					return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
 				}
+
 				const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
 
 				// tech-debt: feature flag check to be removed when required standard is enabled
 				const isRequiredStandardsEnabled = this.featureToggleService.isFeatureEnabled('requiredStandards');
+
 				const isIVAorMSVATest =
 					testTypeGroup === 'testTypesSpecialistGroup1' || testTypeGroup === 'testTypesSpecialistGroup5';
 
 				const vehicleTpl = masterTpl[`${vehicleType}`];
+
 				const testTypeGroupString =
 					(!isRequiredStandardsEnabled || isOldIVAorMSVAtest) && isIVAorMSVATest
 						? `${testTypeGroup}OldIVAorMSVA`
 						: testTypeGroup;
 
-				let tpl;
+				let tpl: Record<string, FormNode> | undefined;
+
 				if (testTypeGroupString && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroupString)) {
 					tpl = vehicleTpl[testTypeGroupString as keyof typeof TEST_TYPES];
 				} else if (isEditing === 'true') {
 					tpl = undefined;
 				} else {
-					tpl = vehicleTpl['default'];
+					tpl = vehicleTpl.default;
 				}
 
 				if (!tpl) {
@@ -235,10 +240,11 @@ export class TestResultsEffects {
 				}
 
 				const mergedForms = {};
-				Object.values(tpl).forEach((node) => {
+
+				for (const node of Object.values(tpl)) {
 					const form = this.dfs.createForm(node, selectedTestResult);
 					merge(mergedForms, form.getCleanValue(form));
-				});
+				}
 
 				if (testTypeId) {
 					(mergedForms as TestResultModel).testTypes[0].testTypeId = testTypeId;
@@ -290,14 +296,14 @@ export class TestResultsEffects {
 				const tpl =
 					testTypeGroupString && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroupString)
 						? vehicleTpl[testTypeGroupString as keyof typeof TEST_TYPES]
-						: vehicleTpl['default'];
+						: vehicleTpl.default;
 
 				const mergedForms = {} as TestResultModel;
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				Object.values(tpl!).forEach((node) => {
+
+				for (const node of Object.values(tpl || {})) {
 					const form = this.dfs.createForm(node, editedTestResult);
 					merge(mergedForms, form.getCleanValue(form));
-				});
+				}
 
 				mergedForms.testTypes[0].testTypeId = id;
 				mergedForms.testTypes[0].name = testTypeTaxonomy?.name ?? '';
@@ -319,8 +325,7 @@ export class TestResultsEffects {
 					mergedForms.testStationType = TestStationType.ATF;
 				}
 
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl!), sectionsValue: mergedForms }));
+				return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl || {}), sectionsValue: mergedForms }));
 			})
 		)
 	);
