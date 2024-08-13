@@ -30,7 +30,6 @@
             "noExplicitAny": "off",
             "noImplicitAnyLet": "off",
             "noPrototypeBuiltins": "off",
-            "noShadowRestrictedNames": "off",
             "useValidTypeof": "off"
           },
           "style": {
