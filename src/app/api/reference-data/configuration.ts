@@ -72,11 +72,8 @@ export class Configuration {
 	 * @param mime - MIME (Multipurpose Internet Mail Extensions)
 	 * @return True if the given MIME is JSON, false otherwise.
 	 */
-	public isJsonMime(mime: string): boolean {
-		const jsonMime: RegExp = /^(application\\/jnos | [^;\/ \t]+\;
-		\/[^
-		\/ \t]+[+]json)[ \t]*(
-		.*)?$/i
-		return mime != null && (jsonMime.test(mime) || mime.toLowerCase() === 'application/json-patch+json');
-	}
+  public isJsonMime(mime: string): boolean {
+    const jsonMime: RegExp = new RegExp('^(application\/json|[^;/ \t]+\/[^;/ \t]+[+]json)[ \t]*(;.*)?$', 'i');
+    return mime != null && (jsonMime.test(mime) || mime.toLowerCase() === 'application/json-patch+json');
+  }
 }

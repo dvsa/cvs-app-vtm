@@ -332,18 +332,16 @@ describe('TestResultsEffects', () => {
 			testScheduler.run(({ hot, cold, expectObservable }) => {
 				actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
 
-				jest
-					.spyOn(testResultsService, 'saveTestResult')
-					.mockReturnValue(
-						cold(
-							'---#|',
-							{},
-							new HttpErrorResponse({
-								status: 400,
-								error: { errors: ['"name" is missing', '"age" is missing', 'random error'] },
-							})
-						)
-					);
+				jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(
+					cold(
+						'---#|',
+						{},
+						new HttpErrorResponse({
+							status: 400,
+							error: { errors: ['"name" is missing', '"age" is missing', 'random error'] },
+						})
+					)
+				);
 
 				const expectedErrors: GlobalError[] = [
 					{ error: '"name" is missing', anchorLink: 'name' },
