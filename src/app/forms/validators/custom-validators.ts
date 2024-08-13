@@ -400,10 +400,12 @@ export class CustomValidators {
 		checkEnum: Record<string, string>,
 		options: Partial<EnumValidatorOptions> = {}
 	): ValidatorFn => {
-		options = { allowFalsy: false, ...options };
+		const opts = { allowFalsy: false, ...options };
 
 		return (control: AbstractControl): ValidationErrors | null => {
-			if (options.allowFalsy && !control.value) return null;
+			if (opts.allowFalsy && !control.value) {
+				return null;
+			}
 			return Object.values(checkEnum).includes(control.value) ? null : { enum: true };
 		};
 	};

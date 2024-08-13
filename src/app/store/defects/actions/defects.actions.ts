@@ -12,6 +12,6 @@ export const fetchDefectFailed = createAction(getTitle(false, 'Failed'), props<G
 
 function getTitle(isPlural = false, suffix = ''): string {
 	const plural = isPlural ? 's' : ' by ID';
-	suffix = suffix ? ` ${suffix}` : suffix;
-	return `[API/defects] Fetch Defect${plural}${suffix}`;
+	const title = suffix ? ` ${suffix}` : suffix;
+	return `[API/defects] Fetch Defect${plural}${title}`;
 }

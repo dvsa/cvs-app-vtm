@@ -15,6 +15,6 @@ export const fetchTestStationFailed = createAction(getTitle(false, 'Failed'), pr
 
 function getTitle(isPlural = false, suffix = ''): string {
 	const plural = isPlural ? 's' : ' by ID';
-	suffix = suffix ? ` ${suffix}` : suffix;
-	return `[API/test-stations] Fetch Test Station${plural}${suffix}`;
+	const title = suffix ? ` ${suffix}` : suffix;
+	return `[API/test-stations] Fetch Test Station${plural}${title}`;
 }

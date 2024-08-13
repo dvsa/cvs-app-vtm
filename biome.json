@@ -26,8 +26,7 @@
             "useValidTypeof": "off"
           },
           "style": {
-            "noNonNullAssertion": "off",
-            "noParameterAssign": "off"
+            "noNonNullAssertion": "off"
           }
         }
       }

@@ -125,8 +125,7 @@ export class DynamicFormService {
 		[AsyncValidatorNames.Custom]: (...args) => CustomAsyncValidators.custom(this.store, ...args),
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
+	createForm(formNode: FormNode, originalData?: any): CustomFormGroup | CustomFormArray {
 		if (!formNode) {
 			return new CustomFormGroup(formNode, {});
 		}
@@ -136,7 +135,7 @@ export class DynamicFormService {
 				? new CustomFormArray(formNode, [], this.store)
 				: new CustomFormGroup(formNode, {});
 
-		data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
+		const data = originalData ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
 
 		formNode.children?.forEach((child) => {
 			const { name, type, value, validators, asyncValidators, disabled } = child;
