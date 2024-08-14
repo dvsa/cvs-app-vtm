@@ -5,9 +5,7 @@ import { FeatureToggleRoutingModule } from './feature-toggle-routing.module';
 import { FeatureToggleComponent } from './feature-toggle/feature-toggle.component';
 
 @NgModule({
-  declarations: [FeatureToggleComponent],
-  imports: [
-    CommonModule, SharedModule, FeatureToggleRoutingModule,
-  ],
+	declarations: [FeatureToggleComponent],
+	imports: [CommonModule, SharedModule, FeatureToggleRoutingModule],
 })
-export class FeatureToggleModule { }
+export class FeatureToggleModule {}

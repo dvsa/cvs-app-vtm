@@ -5,55 +5,51 @@ import { FeatureToggleService } from '@services/feature-toggle-service/feature-t
 import { FeatureToggleGuard } from './feature-toggle.guard';
 
 describe('feature toggle guard', () => {
-  let guard: FeatureToggleGuard;
+	let guard: FeatureToggleGuard;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      providers: [
-        FeatureToggleGuard,
-        { provide: FeatureToggleService, useValue: { isFeatureEnabled: () => true } },
-      ],
-    });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [RouterTestingModule],
+			providers: [FeatureToggleGuard, { provide: FeatureToggleService, useValue: { isFeatureEnabled: () => true } }],
+		});
 
-    guard = TestBed.inject(FeatureToggleGuard);
-  });
+		guard = TestBed.inject(FeatureToggleGuard);
+	});
 
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(guard).toBeTruthy();
+	});
 
-  it('should return true when the feature is enabled', () => {
-    const next = new ActivatedRouteSnapshot();
-    next.data = { featureToggleName: 'testToggle' };
+	it('should return true when the feature is enabled', () => {
+		const next = new ActivatedRouteSnapshot();
+		next.data = { featureToggleName: 'testToggle' };
 
-    jest.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(true);
+		jest.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(true);
 
-    const guardResponse = guard.canActivate(next);
+		const guardResponse = guard.canActivate(next);
 
-    expect(guardResponse).toBeTruthy();
-  });
+		expect(guardResponse).toBeTruthy();
+	});
 
-  it('should return false when the feature is disabled', () => {
-    const next = new ActivatedRouteSnapshot();
-    next.data = { featureToggleName: 'testToggle' };
+	it('should return false when the feature is disabled', () => {
+		const next = new ActivatedRouteSnapshot();
+		next.data = { featureToggleName: 'testToggle' };
 
-    jest.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(false);
+		jest.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(false);
 
-    const guardResponse = guard.canActivate(next);
+		const guardResponse = guard.canActivate(next);
 
-    expect(guardResponse).toBeFalsy();
-  });
+		expect(guardResponse).toBeFalsy();
+	});
 
-  it('should return false when no feature is given', () => {
-    const next = new ActivatedRouteSnapshot();
-    next.data = { };
+	it('should return false when no feature is given', () => {
+		const next = new ActivatedRouteSnapshot();
+		next.data = {};
 
-    jest.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(true);
+		jest.spyOn(TestBed.inject(FeatureToggleService), 'isFeatureEnabled').mockReturnValue(true);
 
-    const guardResponse = guard.canActivate(next);
+		const guardResponse = guard.canActivate(next);
 
-    expect(guardResponse).toBeFalsy();
-  });
-
+		expect(guardResponse).toBeFalsy();
+	});
 });

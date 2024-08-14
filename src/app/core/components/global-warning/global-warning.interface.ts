@@ -1,4 +1,4 @@
 export interface GlobalWarning {
-  warning: string;
-  anchorLink?: string;
+	warning: string;
+	anchorLink?: string;
 }

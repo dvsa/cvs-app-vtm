@@ -64,7 +64,13 @@ jest.mock('../../../forms/templates/test-records/master.template', () => ({
             {
               name: 'testTypes',
               type: FormNodeTypes.ARRAY,
-              children: [{ name: '0', type: FormNodeTypes.GROUP, children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }] }],
+              children: [
+                {
+                  name: '0',
+                  type: FormNodeTypes.GROUP,
+                  children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }],
+                },
+              ],
             },
           ],
         },
@@ -77,7 +83,13 @@ jest.mock('../../../forms/templates/test-records/master.template', () => ({
             {
               name: 'testTypes',
               type: FormNodeTypes.ARRAY,
-              children: [{ name: '0', type: FormNodeTypes.GROUP, children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }] }],
+              children: [
+                {
+                  name: '0',
+                  type: FormNodeTypes.GROUP,
+                  children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }],
+                },
+              ],
             },
           ],
         },
@@ -90,7 +102,13 @@ jest.mock('../../../forms/templates/test-records/master.template', () => ({
             {
               name: 'testTypes',
               type: FormNodeTypes.ARRAY,
-              children: [{ name: '0', type: FormNodeTypes.GROUP, children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }] }],
+              children: [
+                {
+                  name: '0',
+                  type: FormNodeTypes.GROUP,
+                  children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }],
+                },
+              ],
             },
           ],
         },
@@ -103,7 +121,13 @@ jest.mock('../../../forms/templates/test-records/master.template', () => ({
             {
               name: 'testTypes',
               type: FormNodeTypes.ARRAY,
-              children: [{ name: '0', type: FormNodeTypes.GROUP, children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }] }],
+              children: [
+                {
+                  name: '0',
+                  type: FormNodeTypes.GROUP,
+                  children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }],
+                },
+              ],
             },
           ],
         },
@@ -198,7 +222,9 @@ describe('TestResultsEffects', () => {
         jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', {
-          b: fetchTestResultsBySystemNumberFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' }),
+          b: fetchTestResultsBySystemNumberFailed({
+            error: 'Http failure response for (unknown url): 500 Internal server error',
+          }),
         });
       });
     });
@@ -298,11 +324,16 @@ describe('TestResultsEffects', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
 
-        jest
-          .spyOn(testResultsService, 'saveTestResult')
-          .mockReturnValue(
-            cold('---#|', {}, new HttpErrorResponse({ status: 400, error: { errors: ['"name" is missing', '"age" is missing', 'random error'] } })),
-          );
+        jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(
+          cold(
+            '---#|',
+            {},
+            new HttpErrorResponse({
+              status: 400,
+              error: { errors: ['"name" is missing', '"age" is missing', 'random error'] },
+            })
+          )
+        );
 
         const expectedErrors: GlobalError[] = [
           { error: '"name" is missing', anchorLink: 'name' },
@@ -500,7 +531,7 @@ describe('TestResultsEffects', () => {
     it('should return empty section templates if testTypeId is known but not in master template and edit is true', () => {
       const testResult = createMockTestResult({
         vehicleType: VehicleTypes.PSV,
-        testTypes: [createMockTestType(({ testTypeId: '39' }))],
+        testTypes: [createMockTestType({ testTypeId: '39' })],
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
@@ -623,7 +654,6 @@ describe('TestResultsEffects', () => {
                   testResult: resultOfTestEnum.fail,
                   testTypeEndTimestamp: '',
                   testTypeId: '1',
-                  testCode: 'undefined',
                   testTypeName: '',
                   testTypeStartTimestamp: '',
                 },
@@ -663,7 +693,7 @@ describe('TestResultsEffects', () => {
           b: templateSectionsChanged({
             sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>),
             sectionsValue: {
-              bodyType: undefined,
+              bodyMake: undefined,
               contingencyTestNumber: undefined,
               countryOfRegistration: '',
               createdById: undefined,
@@ -714,7 +744,7 @@ describe('TestResultsEffects', () => {
                   testResult: resultOfTestEnum.fail,
                   testTypeEndTimestamp: '',
                   testTypeId: '126',
-                  testCode: 'undefined',
+                  testCode: undefined,
                   testTypeName: '',
                   testTypeStartTimestamp: '',
                 },
@@ -766,7 +796,8 @@ describe('TestResultsEffects', () => {
         // mock action to trigger effect
         actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
         // mock service call
-        jest.spyOn(testResultsService, 'postTestResult')
+        jest
+          .spyOn(testResultsService, 'postTestResult')
           .mockReturnValue(cold('---b|', { b: testResult }) as unknown as Observable<HttpResponse<unknown>>);
 
         // expect effect to return success action

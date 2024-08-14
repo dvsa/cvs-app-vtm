@@ -21,137 +21,143 @@ import { ReplaySubject, of } from 'rxjs';
 import { GenerateLetterComponent } from './tech-record-generate-letter.component';
 
 const mockTechRecordService = {
-  get techRecord$() {
-    return of(mockVehicleTechnicalRecord('trl'));
-  },
-  updateEditingTechRecord: jest.fn(),
-  isUnique: jest.fn(),
+	get techRecord$() {
+		return of(mockVehicleTechnicalRecord('trl'));
+	},
+	updateEditingTechRecord: jest.fn(),
+	isUnique: jest.fn(),
 };
 
 const mockDynamicFormService = {
-  createForm: jest.fn(),
+	createForm: jest.fn(),
 };
 
 describe('TechRecordGenerateLetterComponent', () => {
-  const actions$ = new ReplaySubject<Action>();
-  let component: GenerateLetterComponent;
-  let errorService: GlobalErrorService;
-  let expectedVehicle = {} as TechRecordType<'trl'>;
-  let fixture: ComponentFixture<GenerateLetterComponent>;
-  let route: ActivatedRoute;
-  let router: Router;
-  let store: MockStore;
+	const actions$ = new ReplaySubject<Action>();
+	let component: GenerateLetterComponent;
+	let errorService: GlobalErrorService;
+	let expectedVehicle = {} as TechRecordType<'trl'>;
+	let fixture: ComponentFixture<GenerateLetterComponent>;
+	let route: ActivatedRoute;
+	let router: Router;
+	let store: MockStore;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [GenerateLetterComponent],
-      providers: [
-        GlobalErrorService,
-        provideMockActions(() => actions$),
-        provideMockStore({ initialState: initialAppState }),
-        { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
-        { provide: DynamicFormService, useValue: mockDynamicFormService },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService },
-        {
-          provide: UserService,
-          useValue: {
-            roles$: of(['TechRecord.Amend']),
-          },
-        },
-      ],
-      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, FixNavigationTriggeredOutsideAngularZoneNgModule],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [GenerateLetterComponent],
+			providers: [
+				GlobalErrorService,
+				provideMockActions(() => actions$),
+				provideMockStore({ initialState: initialAppState }),
+				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
+				{ provide: DynamicFormService, useValue: mockDynamicFormService },
+				{ provide: TechnicalRecordService, useValue: mockTechRecordService },
+				{
+					provide: UserService,
+					useValue: {
+						roles$: of(['TechRecord.Amend']),
+					},
+				},
+			],
+			imports: [
+				RouterTestingModule,
+				SharedModule,
+				ReactiveFormsModule,
+				DynamicFormsModule,
+				FixNavigationTriggeredOutsideAngularZoneNgModule,
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(GenerateLetterComponent);
-    errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
-    router = TestBed.inject(Router);
-    store = TestBed.inject(MockStore);
-    component = fixture.componentInstance;
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(GenerateLetterComponent);
+		errorService = TestBed.inject(GlobalErrorService);
+		route = TestBed.inject(ActivatedRoute);
+		router = TestBed.inject(Router);
+		store = TestBed.inject(MockStore);
+		component = fixture.componentInstance;
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  describe('navigateBack', () => {
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
+	describe('navigateBack', () => {
+		it('should clear all errors', () => {
+			jest.spyOn(router, 'navigate').mockImplementation();
 
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-      component.navigateBack();
+			component.navigateBack();
 
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
+			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
+		});
 
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		it('should navigate back to the previous page', () => {
+			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.navigateBack();
+			component.navigateBack();
 
-      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
-    });
+			expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
+		});
 
-    it('should navigate back on generateLetterSuccess', () => {
-      const navigateBackSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		it('should navigate back on generateLetterSuccess', () => {
+			const navigateBackSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.ngOnInit();
+			component.ngOnInit();
 
-      actions$.next(generateLetterSuccess());
+			actions$.next(generateLetterSuccess());
 
-      expect(navigateBackSpy).toHaveBeenCalled();
-    });
-  });
+			expect(navigateBackSpy).toHaveBeenCalled();
+		});
+	});
 
-  describe('handleSubmit', () => {
-    beforeEach(() => {
-      expectedVehicle = mockVehicleTechnicalRecord('trl') as TechRecordType<'trl'>;
-    });
+	describe('handleSubmit', () => {
+		beforeEach(() => {
+			expectedVehicle = mockVehicleTechnicalRecord('trl') as TechRecordType<'trl'>;
+		});
 
-    it('should add an error when the field is not filled out', () => {
-      const addErrorSpy = jest.spyOn(errorService, 'addError');
+		it('should add an error when the field is not filled out', () => {
+			const addErrorSpy = jest.spyOn(errorService, 'addError');
 
-      component.handleSubmit();
+			component.handleSubmit();
 
-      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Letter type is required', anchorLink: 'letterType' });
-    });
+			expect(addErrorSpy).toHaveBeenCalledWith({ error: 'Letter type is required', anchorLink: 'letterType' });
+		});
 
-    describe('it should dispatch the generateLetter action with the correct paragraphIds', () => {
-      it('should dispatch with id 3 on acceptance', () => {
-        const dispatchSpy = jest.spyOn(store, 'dispatch');
-        component.techRecord = expectedVehicle;
-        component.techRecord.techRecord_approvalType = ApprovalType.UKNI_WVTA;
+		describe('it should dispatch the generateLetter action with the correct paragraphIds', () => {
+			it('should dispatch with id 3 on acceptance', () => {
+				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				component.techRecord = expectedVehicle;
+				component.techRecord.techRecord_approvalType = ApprovalType.UKNI_WVTA;
 
-        component.form.get('letterType')?.setValue('trailer acceptance');
-        component.handleSubmit();
+				component.form.get('letterType')?.setValue('trailer acceptance');
+				component.handleSubmit();
 
-        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 3 }));
-      });
+				expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 3 }));
+			});
 
-      it('should dispatch with id 4 on rejection', () => {
-        const dispatchSpy = jest.spyOn(store, 'dispatch');
-        component.techRecord = expectedVehicle;
-        component.techRecord.techRecord_approvalType = ApprovalType.GB_WVTA;
+			it('should dispatch with id 4 on rejection', () => {
+				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				component.techRecord = expectedVehicle;
+				component.techRecord.techRecord_approvalType = ApprovalType.GB_WVTA;
 
-        component.form.get('letterType')?.setValue('trailer rejection');
-        component.handleSubmit();
+				component.form.get('letterType')?.setValue('trailer rejection');
+				component.handleSubmit();
 
-        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer rejection', paragraphId: 4 }));
-      });
+				expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer rejection', paragraphId: 4 }));
+			});
 
-      it('should dispatch with id 6 on acceptance', () => {
-        const dispatchSpy = jest.spyOn(store, 'dispatch');
-        component.techRecord = expectedVehicle;
-        component.techRecord.techRecord_approvalType = ApprovalType.GB_WVTA;
+			it('should dispatch with id 6 on acceptance', () => {
+				const dispatchSpy = jest.spyOn(store, 'dispatch');
+				component.techRecord = expectedVehicle;
+				component.techRecord.techRecord_approvalType = ApprovalType.GB_WVTA;
 
-        component.form.get('letterType')?.setValue('trailer acceptance');
-        component.handleSubmit();
+				component.form.get('letterType')?.setValue('trailer acceptance');
+				component.handleSubmit();
 
-        expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 6 }));
-      });
-    });
-  });
+				expect(dispatchSpy).toHaveBeenCalledWith(generateLetter({ letterType: 'trailer acceptance', paragraphId: 6 }));
+			});
+		});
+	});
 });

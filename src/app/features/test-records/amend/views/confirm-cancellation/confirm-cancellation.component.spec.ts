@@ -14,33 +14,33 @@ import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehic
 import { ConfirmCancellationComponent } from './confirm-cancellation.component';
 
 describe('ConfirmCancellationComponent', () => {
-  let component: ConfirmCancellationComponent;
-  let fixture: ComponentFixture<ConfirmCancellationComponent>;
+	let component: ConfirmCancellationComponent;
+	let fixture: ComponentFixture<ConfirmCancellationComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ConfirmCancellationComponent, VehicleHeaderComponent],
-      imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule],
-      providers: [
-        provideMockStore({ initialState: initialAppState }),
-        provideMockActions(() => new ReplaySubject<Action>()),
-        {
-          provide: TestRecordsService,
-          useValue: {
-            cancelTest: () => {},
-          },
-        },
-      ],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [ConfirmCancellationComponent, VehicleHeaderComponent],
+			imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				provideMockActions(() => new ReplaySubject<Action>()),
+				{
+					provide: TestRecordsService,
+					useValue: {
+						cancelTest: () => {},
+					},
+				},
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmCancellationComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(ConfirmCancellationComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

@@ -9,37 +9,41 @@ import { takeWhile } from 'rxjs';
 
 @Directive({ selector: '[appRetrieveDocument][params][fileName]' })
 export class RetrieveDocumentDirective {
-  @Input() params: Map<string, string> = new Map();
-  @Input() fileName = '';
-  @Input() loading?: Boolean;
-  @Input() certNotNeeded: boolean = false;
-  @Input() fileType: string = 'pdf';
+	@Input() params: Map<string, string> = new Map();
+	@Input() fileName = '';
+	@Input() loading?: boolean;
+	@Input() certNotNeeded = false;
+	@Input() fileType = 'pdf';
 
-  constructor(private documentRetrievalService: DocumentRetrievalService, private documentsService: DocumentsService, private store: Store<State>) { }
+	constructor(
+		private documentRetrievalService: DocumentRetrievalService,
+		private documentsService: DocumentsService,
+		private store: Store<State>
+	) {}
 
-  @HostListener('click', ['$event']) clickEvent(event: PointerEvent) {
-    if (this.certNotNeeded) return;
-    event.preventDefault();
-    event.stopPropagation();
+	@HostListener('click', ['$event']) clickEvent(event: PointerEvent) {
+		if (this.certNotNeeded) return;
+		event.preventDefault();
+		event.stopPropagation();
 
-    if (this.loading) {
-      this.store.dispatch(setSpinnerState({ showSpinner: true }));
-    }
+		if (this.loading) {
+			this.store.dispatch(setSpinnerState({ showSpinner: true }));
+		}
 
-    this.documentRetrievalService
-      .getDocument(this.params)
-      .pipe(takeWhile((doc) => doc.type !== HttpEventType.Response, true))
-      .subscribe((response) => {
-        switch (response.type) {
-          case HttpEventType.DownloadProgress:
-            break;
-          case HttpEventType.Response:
-            this.documentsService.openDocumentFromResponse(this.fileName, response.body, this.fileType);
-            this.store.dispatch(setSpinnerState({ showSpinner: false }));
-            break;
-          default:
-            break;
-        }
-      });
-  }
+		this.documentRetrievalService
+			.getDocument(this.params)
+			.pipe(takeWhile((doc) => doc.type !== HttpEventType.Response, true))
+			.subscribe((response) => {
+				switch (response.type) {
+					case HttpEventType.DownloadProgress:
+						break;
+					case HttpEventType.Response:
+						this.documentsService.openDocumentFromResponse(this.fileName, response.body, this.fileType);
+						this.store.dispatch(setSpinnerState({ showSpinner: false }));
+						break;
+					default:
+						break;
+				}
+			});
+	}
 }

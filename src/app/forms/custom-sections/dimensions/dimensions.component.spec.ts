@@ -10,23 +10,23 @@ import { initialAppState } from '@store/index';
 import { DimensionsComponent } from './dimensions.component';
 
 describe('DimensionsComponent', () => {
-  let component: DimensionsComponent;
-  let fixture: ComponentFixture<DimensionsComponent>;
+	let component: DimensionsComponent;
+	let fixture: ComponentFixture<DimensionsComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [DimensionsComponent],
-      imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState })],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [DimensionsComponent],
+			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule],
+			providers: [provideMockStore({ initialState: initialAppState })],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DimensionsComponent);
-    component = fixture.componentInstance;
-    component.techRecord = mockVehicleTechnicalRecord('psv') as TechRecordType<'hgv'>;
-  });
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(DimensionsComponent);
+		component = fixture.componentInstance;
+		component.techRecord = mockVehicleTechnicalRecord('psv') as TechRecordType<'hgv'>;
+	});
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

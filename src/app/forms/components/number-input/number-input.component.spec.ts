@@ -8,36 +8,42 @@ import { FieldWarningMessageComponent } from '../field-warning-message/field-war
 import { NumberInputComponent } from './number-input.component';
 
 @Component({
-  selector: 'app-host-component',
-  template: `<form [formGroup]="form">
+	selector: 'app-host-component',
+	template: `<form [formGroup]="form">
     <app-number-input name="foo" label="Foo" formControlName="foo"></app-number-input>
   </form> `,
-  styles: [],
+	styles: [],
 })
 class HostComponent {
-  form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, ''),
-  });
+	form = new FormGroup({
+		foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, ''),
+	});
 }
 
 describe('NumberInputComponent', () => {
-  let component: HostComponent;
-  let fixture: ComponentFixture<HostComponent>;
+	let component: HostComponent;
+	let fixture: ComponentFixture<HostComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [HostComponent, NumberInputComponent, BaseControlComponent, FieldErrorMessageComponent, FieldWarningMessageComponent],
-      imports: [FormsModule, ReactiveFormsModule],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [
+				HostComponent,
+				NumberInputComponent,
+				BaseControlComponent,
+				FieldErrorMessageComponent,
+				FieldWarningMessageComponent,
+			],
+			imports: [FormsModule, ReactiveFormsModule],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(HostComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(HostComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

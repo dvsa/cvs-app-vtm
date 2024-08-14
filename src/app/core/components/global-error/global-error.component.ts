@@ -3,17 +3,18 @@ import { GlobalError } from './global-error.interface';
 import { GlobalErrorService } from './global-error.service';
 
 @Component({
-  selector: 'app-global-error',
-  templateUrl: './global-error.component.html',
+	selector: 'app-global-error',
+	templateUrl: './global-error.component.html',
 })
 export class GlobalErrorComponent {
-  constructor(public globalErrorService: GlobalErrorService) {}
+	constructor(public globalErrorService: GlobalErrorService) {}
 
-  goto(error: GlobalError) {
-    if (error.anchorLink) {
-      let focusCount = 0;
+	goto(error: GlobalError) {
+		if (error.anchorLink) {
+			let focusCount = 0;
 
-      document.querySelectorAll(`
+			document
+				.querySelectorAll(`
           #${error.anchorLink},
           #${error.anchorLink} a[href]:not([tabindex='-1']),
           #${error.anchorLink} area[href]:not([tabindex='-1']),
@@ -25,12 +26,12 @@ export class GlobalErrorComponent {
           #${error.anchorLink} [tabindex]:not([tabindex='-1']),
           #${error.anchorLink} [contentEditable=true]:not([tabindex='-1'])
       `)
-        .forEach((el) => {
-          if (el instanceof HTMLElement && focusCount < 2) {
-            focusCount++;
-            el.focus({ preventScroll: false });
-          }
-        });
-    }
-  }
+				.forEach((el) => {
+					if (el instanceof HTMLElement && focusCount < 2) {
+						focusCount++;
+						el.focus({ preventScroll: false });
+					}
+				});
+		}
+	}
 }

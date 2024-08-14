@@ -7,36 +7,36 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 import { ReadOnlyComponent } from './read-only.component';
 
 @Component({
-  selector: 'app-host-component',
-  template: `<form [formGroup]="form">
+	selector: 'app-host-component',
+	template: `<form [formGroup]="form">
     <app-read-only name="foo" label="Foo" formControlName="foo"></app-read-only>
   </form> `,
-  styles: [],
+	styles: [],
 })
 class HostComponent {
-  form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, ''),
-  });
+	form = new FormGroup({
+		foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, ''),
+	});
 }
 
 describe('ReadOnlyComponent', () => {
-  let component: HostComponent;
-  let fixture: ComponentFixture<HostComponent>;
+	let component: HostComponent;
+	let fixture: ComponentFixture<HostComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [BaseControlComponent, HostComponent, ReadOnlyComponent],
-      imports: [FormsModule, ReactiveFormsModule, SharedModule],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [BaseControlComponent, HostComponent, ReadOnlyComponent],
+			imports: [FormsModule, ReactiveFormsModule, SharedModule],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(HostComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(HostComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

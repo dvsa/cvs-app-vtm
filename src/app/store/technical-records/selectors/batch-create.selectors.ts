@@ -16,7 +16,9 @@ export const selectVehicleType = createSelector(selectBatchState, (state) => sta
 export const selectBatchSuccess = createSelector(selectAllBatch, (state) => state.filter((v) => v.created));
 export const selectBatchSuccessCount = createSelector(selectBatchSuccess, (state) => state.length);
 
-export const selectBatchCreated = createSelector(selectAllBatch, (state) => state.filter((v) => v.amendedRecord === false));
+export const selectBatchCreated = createSelector(selectAllBatch, (state) =>
+	state.filter((v) => v.amendedRecord === false)
+);
 export const selectBatchCreatedCount = createSelector(selectBatchCreated, (state) => state.length);
 export const selectBatchCreatedSuccess = createSelector(selectBatchCreated, (state) => state.filter((v) => v.created));
 export const selectBatchCreatedSuccessCount = createSelector(selectBatchCreatedSuccess, (state) => state.length);

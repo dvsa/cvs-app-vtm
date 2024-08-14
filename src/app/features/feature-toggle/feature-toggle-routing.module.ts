@@ -5,16 +5,16 @@ import { FeatureToggleGuard } from '@guards/feature-toggle-guard/feature-toggle.
 import { FeatureToggleComponent } from './feature-toggle/feature-toggle.component';
 
 const routes = [
-  {
-    path: '',
-    component: FeatureToggleComponent,
-    data: { title: 'Feature Toggle', featureToggleName: 'testToggle' },
-    canActivate: [MsalGuard, FeatureToggleGuard],
-  },
+	{
+		path: '',
+		component: FeatureToggleComponent,
+		data: { title: 'Feature Toggle', featureToggleName: 'testToggle' },
+		canActivate: [MsalGuard, FeatureToggleGuard],
+	},
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule],
 })
 export class FeatureToggleRoutingModule {}
