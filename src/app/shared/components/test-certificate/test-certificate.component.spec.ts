@@ -22,9 +22,7 @@ describe('TestCertificateComponent', () => {
 			imports: [HttpClientTestingModule],
 			providers: [DocumentRetrievalService, provideMockStore({ initialState: initialAppState }), FeatureToggleService],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TestCertificateComponent);
 		component = fixture.componentInstance;
 		store = TestBed.inject(MockStore);

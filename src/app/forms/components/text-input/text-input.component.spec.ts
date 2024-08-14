@@ -25,9 +25,7 @@ describe('TextInputComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [TextInputComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

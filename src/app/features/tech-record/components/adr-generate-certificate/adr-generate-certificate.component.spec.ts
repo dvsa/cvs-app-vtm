@@ -52,8 +52,7 @@ describe('AdrGenerateCertificateComponent', () => {
 			],
 			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
 		}).compileComponents();
-	});
-	beforeEach(() => {
+
 		fixture = TestBed.createComponent(AdrGenerateCertificateComponent);
 		errorService = TestBed.inject(GlobalErrorService);
 		route = TestBed.inject(ActivatedRoute);

@@ -9,9 +9,7 @@ describe('TagComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [TagComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TagComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

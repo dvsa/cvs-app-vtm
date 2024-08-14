@@ -95,9 +95,7 @@ describe('AdrTankDetailsSubsequentInspectionsEditComponent', () => {
 		fixture = TestBed.createComponent(AdrTankDetailsSubsequentInspectionsEditComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
-	});
 
-	beforeEach(() => {
 		component.formArray.patchValue([]);
 	});
 

@@ -17,9 +17,7 @@ describe('TestRecordSummaryComponent', () => {
 			declarations: [TestRecordSummaryComponent],
 			imports: [RouterTestingModule, SharedModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TestRecordSummaryComponent);
 		component = fixture.componentInstance;
 	});

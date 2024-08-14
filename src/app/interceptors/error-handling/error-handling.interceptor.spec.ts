@@ -42,9 +42,7 @@ describe('ErrorInterceptor', () => {
 				},
 			],
 		});
-	});
 
-	beforeEach(() => {
 		router = TestBed.inject(Router);
 		http = TestBed.inject(HttpClient);
 		httpController = TestBed.inject(HttpTestingController);

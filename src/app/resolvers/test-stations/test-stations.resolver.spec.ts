@@ -22,9 +22,7 @@ describe('TestTypeTaxonomyResolver', () => {
 		store = TestBed.inject(MockStore);
 		resolver = (...resolverParameters) =>
 			TestBed.runInInjectionContext(() => testStationsResolver(...resolverParameters));
-	});
 
-	beforeEach(() => {
 		testScheduler = new TestScheduler((actual, expected) => {
 			expect(actual).toEqual(expected);
 		});

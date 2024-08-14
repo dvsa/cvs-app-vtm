@@ -67,9 +67,7 @@ describe('TechRecordGenerateLetterComponent', () => {
 				FixNavigationTriggeredOutsideAngularZoneNgModule,
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(GenerateLetterComponent);
 		errorService = TestBed.inject(GlobalErrorService);
 		route = TestBed.inject(ActivatedRoute);

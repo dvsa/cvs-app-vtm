@@ -36,9 +36,7 @@ describe('CheckboxGroupComponent', () => {
 			declarations: [HostComponent, CheckboxGroupComponent, BaseControlComponent, FieldErrorMessageComponent],
 			imports: [FormsModule, ReactiveFormsModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

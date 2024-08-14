@@ -19,9 +19,7 @@ describe('TestAmendReasonComponent', () => {
 
 		router = TestBed.inject(Router);
 		route = TestBed.inject(ActivatedRoute);
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TestAmendReasonComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

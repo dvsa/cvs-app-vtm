@@ -51,9 +51,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 			],
 			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(GeneratePlateComponent);
 		errorService = TestBed.inject(GlobalErrorService);
 		route = TestBed.inject(ActivatedRoute);

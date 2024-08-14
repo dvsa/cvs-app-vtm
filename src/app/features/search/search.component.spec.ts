@@ -28,9 +28,7 @@ describe('SearchComponent', () => {
 			imports: [HttpClientTestingModule, RouterTestingModule],
 			providers: [GlobalErrorService, TechnicalRecordService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		store = TestBed.inject(MockStore);
 		store.overrideSelector(globalErrorState, expectedErrors);
 		fixture = TestBed.createComponent(SearchComponent);

@@ -44,9 +44,7 @@ describe('DefectSelectComponent', () => {
 			declarations: [DefectSelectComponent],
 			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(DefectSelectComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

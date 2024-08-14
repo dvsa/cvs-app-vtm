@@ -35,18 +35,14 @@ describe('PaginationComponent', () => {
 			declarations: [HostComponent, PaginationComponent],
 			imports: [RouterTestingModule.withRoutes([{ path: '', component: PaginationComponent }])],
 		}).compileComponents();
-	}));
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		hostComponent = fixture.componentInstance;
 		component = fixture.debugElement.query(By.directive(PaginationComponent)).componentInstance;
 		el = fixture.debugElement;
-
 		router = TestBed.inject(Router);
-
 		fixture.detectChanges();
-	});
+	}));
 
 	it('should create', () => {
 		expect(component).toBeTruthy();

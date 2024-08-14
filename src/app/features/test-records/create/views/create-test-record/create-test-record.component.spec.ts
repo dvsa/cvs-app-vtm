@@ -86,9 +86,7 @@ describe('CreateTestRecordComponent', () => {
 				DynamicFormService,
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(CreateTestRecordComponent);
 		component = fixture.componentInstance;
 		router = TestBed.inject(Router);

@@ -30,9 +30,7 @@ describe('PsvBrakesComponent', () => {
 				{ provide: UserService, useValue: {} },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(PsvBrakesComponent);
 		component = fixture.componentInstance;
 

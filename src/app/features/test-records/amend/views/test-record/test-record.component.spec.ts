@@ -57,9 +57,7 @@ describe('TestRecordComponent', () => {
 				TechnicalRecordService,
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TestRecordComponent);
 		component = fixture.componentInstance;
 		el = fixture.debugElement;

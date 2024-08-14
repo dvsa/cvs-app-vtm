@@ -34,9 +34,7 @@ describe('TestResultResolver', () => {
 		resolver = (...resolverParameters) =>
 			TestBed.runInInjectionContext(() => testResultResolver(...resolverParameters));
 		store = TestBed.inject(MockStore);
-	});
 
-	beforeEach(() => {
 		testScheduler = new TestScheduler((actual, expected) => {
 			expect(actual).toEqual(expected);
 		});

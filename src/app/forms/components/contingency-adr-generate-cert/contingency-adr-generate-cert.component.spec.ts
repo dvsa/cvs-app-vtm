@@ -62,8 +62,7 @@ describe('AdrGenerateCertTestComponent', () => {
 			imports: [HttpClientTestingModule],
 			schemas: [CUSTOM_ELEMENTS_SCHEMA],
 		}).compileComponents();
-	});
-	beforeEach(() => {
+
 		fixture = TestBed.createComponent(ContingencyAdrGenerateCertComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

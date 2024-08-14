@@ -11,9 +11,7 @@ describe('HomeButtonComponent', () => {
 			declarations: [HomeButtonComponent],
 			imports: [RouterTestingModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HomeButtonComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

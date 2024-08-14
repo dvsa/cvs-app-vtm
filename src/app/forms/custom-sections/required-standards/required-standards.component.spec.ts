@@ -26,9 +26,7 @@ describe('RequiredStandardsComponent', () => {
 			declarations: [RequiredStandardsComponent, ButtonComponent, TruncatePipe, TagComponent],
 			providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(RequiredStandardsComponent);
 		router = TestBed.inject(Router);
 		component = fixture.componentInstance;

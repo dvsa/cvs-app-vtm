@@ -19,7 +19,6 @@
           },
           "suspicious": {
             "noDoubleEquals": "off",
-            "noDuplicateTestHooks": "off",
             "noExplicitAny": "off",
             "useValidTypeof": "off"
           }

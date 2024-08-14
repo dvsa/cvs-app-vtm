@@ -47,9 +47,7 @@ describe('TestStationsEffects', () => {
 
 		effects = TestBed.inject(TestStationsEffects);
 		service = TestBed.inject(TestStationsService);
-	});
 
-	beforeEach(() => {
 		testScheduler = new TestScheduler((actual, expected) => {
 			expect(actual).toEqual(expected);
 		});

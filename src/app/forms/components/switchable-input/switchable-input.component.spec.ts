@@ -34,9 +34,7 @@ describe('SwitchableInputComponent', () => {
 			],
 			imports: [FormsModule, ReactiveFormsModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(SwitchableInputComponent);
 		component = fixture.componentInstance;
 		component.type = FormNodeEditTypes.TEXT;

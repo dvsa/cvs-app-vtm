@@ -10,9 +10,7 @@ describe('BannerComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [BannerComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(BannerComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

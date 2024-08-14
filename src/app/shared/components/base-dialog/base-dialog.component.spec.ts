@@ -10,9 +10,7 @@ describe('BaseDialogComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [BaseDialogComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(BaseDialogComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

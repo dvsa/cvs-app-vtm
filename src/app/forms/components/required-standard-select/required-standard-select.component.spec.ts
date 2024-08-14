@@ -22,9 +22,7 @@ describe('RequiredStandardSelectComponent', () => {
 			declarations: [RequiredStandardSelectComponent],
 			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(RequiredStandardSelectComponent);
 		router = TestBed.inject(Router);
 		component = fixture.componentInstance;

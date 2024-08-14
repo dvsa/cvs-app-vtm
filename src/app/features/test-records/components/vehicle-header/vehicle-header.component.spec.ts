@@ -32,9 +32,7 @@ describe('VehicleHeaderComponent', () => {
 				{ provide: TechnicalRecordService, useValue: mockTechnicalRecordService },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(VehicleHeaderComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

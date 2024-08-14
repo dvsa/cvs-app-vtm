@@ -22,9 +22,7 @@ describe('DefectsTaxonomyResolver', () => {
 		resolver = (...resolverParameters) =>
 			TestBed.runInInjectionContext(() => defectsTaxonomyResolver(...resolverParameters));
 		store = TestBed.inject(MockStore);
-	});
 
-	beforeEach(() => {
 		testScheduler = new TestScheduler((actual, expected) => {
 			expect(actual).toEqual(expected);
 		});

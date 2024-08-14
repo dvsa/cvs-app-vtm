@@ -26,8 +26,7 @@ describe('TechRecordAdrCertificateHistoryComponent', () => {
 			imports: [RouterTestingModule, HttpClientTestingModule],
 			schemas: [NO_ERRORS_SCHEMA],
 		}).compileComponents();
-	});
-	beforeEach(() => {
+
 		fixture = TestBed.createComponent(AdrCertificateHistoryComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
@@ -37,6 +36,7 @@ describe('TechRecordAdrCertificateHistoryComponent', () => {
 		router = TestBed.inject(Router);
 		viewportScroller = TestBed.inject(ViewportScroller);
 	});
+
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});

@@ -52,9 +52,7 @@ describe('BaseTestRecordComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(BaseTestRecordComponent);
 		component = fixture.componentInstance;
 		component.testResult = { vin: 'ABC002', testTypes: [{ testResult: resultOfTestEnum.fail }] } as TestResultModel;

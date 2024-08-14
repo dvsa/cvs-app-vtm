@@ -55,9 +55,7 @@ describe('TechRecordSummaryComponent', () => {
 				},
 			})
 			.compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TechRecordSummaryComponent);
 		store = TestBed.inject(MockStore);
 		techRecordService = TestBed.inject(TechnicalRecordService);

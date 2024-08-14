@@ -28,9 +28,7 @@ describe('FocusNextDirective', () => {
 		await TestBed.configureTestingModule({
 			declarations: [TestComponent, FocusNextDirective],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TestComponent);
 		component = fixture.componentInstance;
 		de = fixture.debugElement;

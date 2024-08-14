@@ -34,9 +34,7 @@ describe('DataTypeListComponent', () => {
 				{ provide: UserService, useValue: { roles$: of([Roles.ReferenceDataView]) } },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(ReferenceDataListComponent);
 		component = fixture.componentInstance;
 		route = TestBed.inject(ActivatedRoute);

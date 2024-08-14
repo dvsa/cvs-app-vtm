@@ -46,9 +46,7 @@ describe('RequiredStandardEffects', () => {
 
 		effects = TestBed.inject(RequiredStandardsEffects);
 		service = TestBed.inject(RequiredStandardsService);
-	});
 
-	beforeEach(() => {
 		testScheduler = new TestScheduler((actual, expected) => {
 			expect(actual).toEqual(expected);
 		});

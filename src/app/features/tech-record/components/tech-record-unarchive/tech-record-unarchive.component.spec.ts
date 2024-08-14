@@ -45,9 +45,7 @@ describe('TechRecordUnarchiveComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TechRecordUnarchiveComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

@@ -39,9 +39,7 @@ describe('TechRecordChangeVrmComponent', () => {
 			],
 			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(AmendVrmReasonComponent);
 		errorService = TestBed.inject(GlobalErrorService);
 		router = TestBed.inject(Router);

@@ -44,9 +44,7 @@ describe('TechRecordHoldComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TechRecordChangeVisibilityComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

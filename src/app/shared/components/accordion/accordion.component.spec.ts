@@ -21,10 +21,8 @@ describe('AccordionComponent', () => {
 			declarations: [AccordionComponent, HostComponent],
 			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-		store = TestBed.inject(MockStore);
-	});
 
-	beforeEach(() => {
+		store = TestBed.inject(MockStore);
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.debugElement.query(By.directive(AccordionComponent)).componentInstance;
 		fixture.detectChanges();

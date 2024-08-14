@@ -20,12 +20,9 @@ describe('GlobalWarningComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			declarations: [GlobalWarningComponent, MockComponent],
-			imports: [],
 			providers: [GlobalWarningService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(MockComponent);
 		component = fixture.debugElement.query(By.directive(GlobalWarningComponent)).componentInstance;
 		fixture.detectChanges();

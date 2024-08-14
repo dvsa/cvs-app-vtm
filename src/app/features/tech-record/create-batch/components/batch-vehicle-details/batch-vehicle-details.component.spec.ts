@@ -29,9 +29,7 @@ describe('BatchVehicleDetailsComponent', () => {
 				provideMockStore({ initialState: initialAppState }),
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(BatchVehicleDetailsComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

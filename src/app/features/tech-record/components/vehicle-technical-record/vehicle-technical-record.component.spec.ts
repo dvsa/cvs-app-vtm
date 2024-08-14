@@ -89,9 +89,7 @@ describe('VehicleTechnicalRecordComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(VehicleTechnicalRecordComponent);
 		component = fixture.componentInstance;
 		component.techRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;

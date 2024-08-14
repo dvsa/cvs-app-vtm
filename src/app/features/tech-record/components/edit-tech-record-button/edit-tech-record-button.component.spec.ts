@@ -63,9 +63,7 @@ describe('EditTechRecordButtonComponent', () => {
 			],
 			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(EditTechRecordButtonComponent);
 		router = TestBed.inject(Router);
 		store = TestBed.inject(MockStore);

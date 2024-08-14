@@ -17,9 +17,7 @@ describe('BatchVehicleResultsComponent', () => {
 			declarations: [BatchVehicleResultsComponent],
 			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(BatchVehicleResultsComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

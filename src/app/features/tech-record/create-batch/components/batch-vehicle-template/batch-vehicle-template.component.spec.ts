@@ -65,9 +65,7 @@ describe('BatchVehicleTemplateComponent', () => {
 				{ provide: BatchTechnicalRecordService, useValue: mockBatchTechRecordService },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(BatchVehicleTemplateComponent);
 		store = TestBed.inject(MockStore);
 		router = TestBed.inject(Router);

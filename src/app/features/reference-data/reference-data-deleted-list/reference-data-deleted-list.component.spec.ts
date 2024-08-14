@@ -31,9 +31,7 @@ describe('DataTypeListComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(ReferenceDataDeletedListComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

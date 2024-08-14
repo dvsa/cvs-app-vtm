@@ -72,9 +72,7 @@ describe('DefectComponent', () => {
 
 		router = TestBed.inject(Router);
 		store = TestBed.inject(MockStore);
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(DefectComponent);
 		component = fixture.componentInstance;
 	});

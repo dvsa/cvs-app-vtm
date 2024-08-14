@@ -35,9 +35,7 @@ describe('SuggestiveInputComponent', () => {
 			declarations: [HostComponent, SuggestiveInputComponent, FieldErrorMessageComponent],
 			imports: [FormsModule, ReactiveFormsModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		suggestiveInput = fixture.debugElement.query(By.directive(SuggestiveInputComponent)).componentInstance;

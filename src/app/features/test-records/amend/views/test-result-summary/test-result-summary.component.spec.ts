@@ -27,9 +27,7 @@ describe('TestResultSummaryComponent', () => {
 				RouterService,
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TestResultSummaryComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
