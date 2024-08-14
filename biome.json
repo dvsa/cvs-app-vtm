@@ -11,8 +11,7 @@
           "complexity": {
             "noForEach": "off",
             "noUselessConstructor": "off",
-            "useLiteralKeys": "off",
-            "useRegexLiterals": "off"
+            "useLiteralKeys": "off"
           },
           "performance": {
             "noDelete": "off"

@@ -22,7 +22,7 @@ export class FocusNextDirective {
 	}
 
 	private getNextElement(currentSegment: string, value: string): string | undefined {
-		let nextEl: string;
+		let nextEl: string | undefined = undefined;
 
 		if (value.length === 2) {
 			switch (currentSegment) {
