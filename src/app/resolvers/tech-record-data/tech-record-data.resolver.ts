@@ -4,9 +4,9 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 
 export const techRecordDataResolver: ResolveFn<boolean> = () => {
-  const referenceDataService = inject(ReferenceDataService);
-  referenceDataService.loadReferenceData(ReferenceDataResourceType.Tyres);
-  referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
+	const referenceDataService = inject(ReferenceDataService);
+	referenceDataService.loadReferenceData(ReferenceDataResourceType.Tyres);
+	referenceDataService.loadReferenceData(ReferenceDataResourceType.TyreLoadIndex);
 
-  return true;
+	return true;
 };

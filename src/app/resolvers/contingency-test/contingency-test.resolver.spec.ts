@@ -12,203 +12,194 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { UserService } from '@services/user-service/user-service';
 import { State, initialAppState } from '@store/.';
 import { initialContingencyTest } from '@store/test-records';
-import {
-  Observable,
-  ReplaySubject,
-  firstValueFrom,
-  of,
-  throwError,
-} from 'rxjs';
-import {
-  contingencyTestResolver,
-  getBodyMake,
-  getBodyModel,
-  getBodyType,
-} from './contingency-test.resolver';
+import { Observable, ReplaySubject, firstValueFrom, of, throwError } from 'rxjs';
+import { contingencyTestResolver, getBodyMake, getBodyModel, getBodyType } from './contingency-test.resolver';
 
 describe('ContingencyTestResolver', () => {
-  let resolver: ResolveFn<boolean>;
-  const actions$ = new ReplaySubject<Action>();
-  let store: MockStore<State>;
-  let techRecordService: TechnicalRecordService;
+	let resolver: ResolveFn<boolean>;
+	const actions$ = new ReplaySubject<Action>();
+	let store: MockStore<State>;
+	let techRecordService: TechnicalRecordService;
 
-  const MockUserService = {
-    getUserName$: jest.fn().mockReturnValue(new Observable()),
-    get user$() {
-      return of('foo');
-    },
-  };
+	const MockUserService = {
+		getUserName$: jest.fn().mockReturnValue(new Observable()),
+		get user$() {
+			return of('foo');
+		},
+	};
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [
-        provideMockStore({ initialState: initialAppState }),
-        provideMockActions(() => actions$),
-        TechnicalRecordService,
-        { provide: UserService, useValue: MockUserService },
-      ],
-    });
-    resolver = (...resolverParameters) =>
-      TestBed.runInInjectionContext(() => contingencyTestResolver(...resolverParameters));
-    store = TestBed.inject(MockStore);
-    techRecordService = TestBed.inject(TechnicalRecordService);
-  });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [HttpClientTestingModule, RouterTestingModule],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				provideMockActions(() => actions$),
+				TechnicalRecordService,
+				{ provide: UserService, useValue: MockUserService },
+			],
+		});
+		resolver = (...resolverParameters) =>
+			TestBed.runInInjectionContext(() => contingencyTestResolver(...resolverParameters));
+		store = TestBed.inject(MockStore);
+		techRecordService = TestBed.inject(TechnicalRecordService);
+	});
 
-  it('should be created', () => {
-    expect(resolver).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(resolver).toBeTruthy();
+	});
 
-  it('should return true and dispatch the initial contingency test action', async () => {
-    const dispatchSpy = jest.spyOn(store, 'dispatch');
-    jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
-    const result = TestBed.runInInjectionContext(
-      () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
-    ) as Observable<boolean>;
-    const resolveResult = await firstValueFrom(result);
+	it('should return true and dispatch the initial contingency test action', async () => {
+		const dispatchSpy = jest.spyOn(store, 'dispatch');
+		jest
+			.spyOn(techRecordService, 'techRecord$', 'get')
+			.mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
+		const result = TestBed.runInInjectionContext(() =>
+			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
+		) as Observable<boolean>;
+		const resolveResult = await firstValueFrom(result);
 
-    expect(resolveResult).toBe(true);
-    expect(dispatchSpy).toHaveBeenCalledTimes(1);
-    expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: initialContingencyTest.type, testResult: expect.anything() }));
-  });
+		expect(resolveResult).toBe(true);
+		expect(dispatchSpy).toHaveBeenCalledTimes(1);
+		expect(dispatchSpy).toHaveBeenCalledWith(
+			expect.objectContaining({ type: initialContingencyTest.type, testResult: expect.anything() })
+		);
+	});
 
-  it('should return false if there is an error', async () => {
-    jest.spyOn(techRecordService, 'techRecord$', 'get').mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
-    jest.spyOn(MockUserService, 'user$', 'get').mockImplementationOnce(() => throwError(() => new Error('foo')));
-    const result = TestBed.runInInjectionContext(
-      () => resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
-    ) as Observable<boolean>;
-    const resolveResult = await firstValueFrom(result);
-    expect(resolveResult).toBe(false);
-  });
+	it('should return false if there is an error', async () => {
+		jest
+			.spyOn(techRecordService, 'techRecord$', 'get')
+			.mockReturnValue(of(mockVehicleTechnicalRecord('psv') as TechRecordType<'psv'>));
+		jest.spyOn(MockUserService, 'user$', 'get').mockImplementationOnce(() => throwError(() => new Error('foo')));
+		const result = TestBed.runInInjectionContext(() =>
+			resolver({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)
+		) as Observable<boolean>;
+		const resolveResult = await firstValueFrom(result);
+		expect(resolveResult).toBe(false);
+	});
 
-  describe('getBodyMake', () => {
-    it('should return vehicle make if vehicle is psv', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'psv',
-        techRecord_bodyMake: 'test make 1',
-      } as V3TechRecordModel;
+	describe('getBodyMake', () => {
+		it('should return vehicle make if vehicle is psv', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'psv',
+				techRecord_bodyMake: 'test make 1',
+			} as V3TechRecordModel;
 
-      const make = getBodyMake(techRecord);
-      expect(make).toBe('test make 1');
-    });
+			const make = getBodyMake(techRecord);
+			expect(make).toBe('test make 1');
+		});
 
-    it('should return vehicle make if vehicle is hgv', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'hgv',
-        techRecord_make: 'test make 2',
-      } as V3TechRecordModel;
+		it('should return vehicle make if vehicle is hgv', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'hgv',
+				techRecord_make: 'test make 2',
+			} as V3TechRecordModel;
 
-      const make = getBodyMake(techRecord);
-      expect(make).toBe('test make 2');
-    });
+			const make = getBodyMake(techRecord);
+			expect(make).toBe('test make 2');
+		});
 
-    it('should return vehicle make if vehicle is trl', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'trl',
-        techRecord_make: 'test make 3',
-      } as V3TechRecordModel;
+		it('should return vehicle make if vehicle is trl', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'trl',
+				techRecord_make: 'test make 3',
+			} as V3TechRecordModel;
 
-      const make = getBodyMake(techRecord);
-      expect(make).toBe('test make 3');
-    });
+			const make = getBodyMake(techRecord);
+			expect(make).toBe('test make 3');
+		});
 
-    it('should not return vehicle make if vehicle is not hgv, psv or trl', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'car',
-      } as V3TechRecordModel;
+		it('should not return vehicle make if vehicle is not hgv, psv or trl', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'car',
+			} as V3TechRecordModel;
 
-      const make = getBodyMake(techRecord);
-      expect(make).toBeNull();
-    });
-  });
+			const make = getBodyMake(techRecord);
+			expect(make).toBeNull();
+		});
+	});
 
-  describe('getBodyModel', () => {
-    it('should return vehicle model if vehicle is psv', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'psv',
-        techRecord_bodyModel: 'test model 1',
-      } as V3TechRecordModel;
+	describe('getBodyModel', () => {
+		it('should return vehicle model if vehicle is psv', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'psv',
+				techRecord_bodyModel: 'test model 1',
+			} as V3TechRecordModel;
 
-      const model = getBodyModel(techRecord);
-      expect(model).toBe('test model 1');
-    });
+			const model = getBodyModel(techRecord);
+			expect(model).toBe('test model 1');
+		});
 
-    it('should return vehicle model if vehicle is hgv', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'hgv',
-        techRecord_model: 'test model 2',
-      } as V3TechRecordModel;
+		it('should return vehicle model if vehicle is hgv', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'hgv',
+				techRecord_model: 'test model 2',
+			} as V3TechRecordModel;
 
-      const model = getBodyModel(techRecord);
-      expect(model).toBe('test model 2');
-    });
+			const model = getBodyModel(techRecord);
+			expect(model).toBe('test model 2');
+		});
 
-    it('should return vehicle model if vehicle is trl', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'trl',
-        techRecord_model: 'test model 3',
-      } as V3TechRecordModel;
+		it('should return vehicle model if vehicle is trl', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'trl',
+				techRecord_model: 'test model 3',
+			} as V3TechRecordModel;
 
-      const model = getBodyModel(techRecord);
-      expect(model).toBe('test model 3');
-    });
+			const model = getBodyModel(techRecord);
+			expect(model).toBe('test model 3');
+		});
 
-    it('should not return vehicle model if vehicle is not hgv, psv or trl', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'car',
-      } as V3TechRecordModel;
+		it('should not return vehicle model if vehicle is not hgv, psv or trl', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'car',
+			} as V3TechRecordModel;
 
-      const model = getBodyModel(techRecord);
-      expect(model).toBeNull();
-    });
-  });
+			const model = getBodyModel(techRecord);
+			expect(model).toBeNull();
+		});
+	});
 
-  describe('getBodyType', () => {
-    it('should return vehicle body type if vehicle is psv', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'psv',
-        techRecord_bodyType_code: 'test code 1',
-        techRecord_bodyType_description: 'flat',
+	describe('getBodyType', () => {
+		it('should return vehicle body type if vehicle is psv', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'psv',
+				techRecord_bodyType_code: 'test code 1',
+				techRecord_bodyType_description: 'flat',
+			} as V3TechRecordModel;
 
-      } as V3TechRecordModel;
+			const bodyType = getBodyType(techRecord);
+			expect(bodyType).toStrictEqual({ code: 'test code 1', description: 'flat' });
+		});
 
-      const bodyType = getBodyType(techRecord);
-      expect(bodyType).toStrictEqual({ code: 'test code 1', description: 'flat' });
-    });
+		it('should return vehicle body type if vehicle is hgv', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'hgv',
+				techRecord_bodyType_code: 'test code 2',
+				techRecord_bodyType_description: 'flat',
+			} as V3TechRecordModel;
 
-    it('should return vehicle body type if vehicle is hgv', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'hgv',
-        techRecord_bodyType_code: 'test code 2',
-        techRecord_bodyType_description: 'flat',
+			const bodyType = getBodyType(techRecord);
+			expect(bodyType).toStrictEqual({ code: 'test code 2', description: 'flat' });
+		});
 
-      } as V3TechRecordModel;
+		it('should return vehicle body type if vehicle is trl', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'trl',
+				techRecord_bodyType_code: 'test code 3',
+				techRecord_bodyType_description: 'flat',
+			} as V3TechRecordModel;
 
-      const bodyType = getBodyType(techRecord);
-      expect(bodyType).toStrictEqual({ code: 'test code 2', description: 'flat' });
-    });
+			const bodyType = getBodyType(techRecord);
+			expect(bodyType).toStrictEqual({ code: 'test code 3', description: 'flat' });
+		});
 
-    it('should return vehicle body type if vehicle is trl', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'trl',
-        techRecord_bodyType_code: 'test code 3',
-        techRecord_bodyType_description: 'flat',
+		it('should not return vehicle body type if vehicle is not hgv, psv or trl', () => {
+			const techRecord = {
+				techRecord_vehicleType: 'car',
+			} as V3TechRecordModel;
 
-      } as V3TechRecordModel;
-
-      const bodyType = getBodyType(techRecord);
-      expect(bodyType).toStrictEqual({ code: 'test code 3', description: 'flat' });
-    });
-
-    it('should not return vehicle body type if vehicle is not hgv, psv or trl', () => {
-      const techRecord = {
-        techRecord_vehicleType: 'car',
-      } as V3TechRecordModel;
-
-      const bodyType = getBodyType(techRecord);
-      expect(bodyType).toBeNull();
-    });
-  });
-
+			const bodyType = getBodyType(techRecord);
+			expect(bodyType).toBeNull();
+		});
+	});
 });

@@ -6,7 +6,7 @@ import { FeatureToggleService } from '@services/feature-toggle-service/feature-t
 import { FeatureToggleDirective } from './feature-toggle.directive';
 
 @Component({
-  template: `
+	template: `
     <div id="testToggleEnabled" *featureToggleName="'testToggleEnabled'">
       <h1>This does display</h1>
     </div>
@@ -24,38 +24,38 @@ import { FeatureToggleDirective } from './feature-toggle.directive';
 class TestComponent {}
 
 describe('FeatureToggleDirective', () => {
-  let fixture: ComponentFixture<TestComponent>;
-  let service: FeatureToggleService;
+	let fixture: ComponentFixture<TestComponent>;
+	let service: FeatureToggleService;
 
-  beforeEach(() => {
-    fixture = TestBed.configureTestingModule({
-      declarations: [FeatureToggleDirective, TestComponent],
-      providers: [FeatureToggleService, HttpClient, HttpHandler],
-    }).createComponent(TestComponent);
+	beforeEach(() => {
+		fixture = TestBed.configureTestingModule({
+			declarations: [FeatureToggleDirective, TestComponent],
+			providers: [FeatureToggleService, HttpClient, HttpHandler],
+		}).createComponent(TestComponent);
 
-    service = TestBed.inject(FeatureToggleService);
-    service.config = { testToggleEnabled: true, testToggleDisabled: false };
+		service = TestBed.inject(FeatureToggleService);
+		service.config = { testToggleEnabled: true, testToggleDisabled: false };
 
-    fixture.detectChanges(); // initial binding
-  });
+		fixture.detectChanges(); // initial binding
+	});
 
-  it('should be able to see the enabled toggled state', () => {
-    const seenBox = fixture.debugElement.queryAll(By.css('#testToggleEnabled'));
-    expect(seenBox).toHaveLength(1);
-  });
+	it('should be able to see the enabled toggled state', () => {
+		const seenBox = fixture.debugElement.queryAll(By.css('#testToggleEnabled'));
+		expect(seenBox).toHaveLength(1);
+	});
 
-  it('should not be able to see the disabled toggled state', () => {
-    const seenBox = fixture.debugElement.queryAll(By.css('#testToggleDisabled'));
-    expect(seenBox).toEqual([]);
-  });
+	it('should not be able to see the disabled toggled state', () => {
+		const seenBox = fixture.debugElement.queryAll(By.css('#testToggleDisabled'));
+		expect(seenBox).toEqual([]);
+	});
 
-  it('should not be able to see the random key state', () => {
-    const seenBox = fixture.debugElement.queryAll(By.css('#randomKey'));
-    expect(seenBox).toEqual([]);
-  });
+	it('should not be able to see the random key state', () => {
+		const seenBox = fixture.debugElement.queryAll(By.css('#randomKey'));
+		expect(seenBox).toEqual([]);
+	});
 
-  it('should be able to see with no directive', () => {
-    const seenBox = fixture.debugElement.queryAll(By.css('#noToggle'));
-    expect(seenBox).toHaveLength(1);
-  });
+	it('should be able to see with no directive', () => {
+		const seenBox = fixture.debugElement.queryAll(By.css('#noToggle'));
+		expect(seenBox).toHaveLength(1);
+	});
 });

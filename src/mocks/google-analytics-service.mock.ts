@@ -1,5 +1,5 @@
 export class GoogleAnalyticsServiceMock {
-  checkForId() {}
-  pushTag() {}
-  addGtmToDom() {}
+	checkForId() {}
+	pushTag() {}
+	addGtmToDom() {}
 }

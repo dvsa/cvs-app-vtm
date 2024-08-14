@@ -13,29 +13,33 @@ import { of } from 'rxjs';
 import { ReferenceDataDeletedListComponent } from './reference-data-deleted-list.component';
 
 describe('DataTypeListComponent', () => {
-  let component: ReferenceDataDeletedListComponent;
-  let fixture: ComponentFixture<ReferenceDataDeletedListComponent>;
+	let component: ReferenceDataDeletedListComponent;
+	let fixture: ComponentFixture<ReferenceDataDeletedListComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ReferenceDataDeletedListComponent, RoleRequiredDirective, PaginationComponent],
-      imports: [RouterTestingModule, HttpClientTestingModule, HttpClientModule],
-      providers: [provideMockStore({ initialState: initialAppState }), ReferenceDataService, {
-        provide: UserService,
-        useValue: {
-          roles$: of([Roles.ReferenceDataView]),
-        },
-      }],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [ReferenceDataDeletedListComponent, RoleRequiredDirective, PaginationComponent],
+			imports: [RouterTestingModule, HttpClientTestingModule, HttpClientModule],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				ReferenceDataService,
+				{
+					provide: UserService,
+					useValue: {
+						roles$: of([Roles.ReferenceDataView]),
+					},
+				},
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ReferenceDataDeletedListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(ReferenceDataDeletedListComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

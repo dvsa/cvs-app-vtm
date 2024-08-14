@@ -6,25 +6,25 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { CancelEditTechGuard } from './cancel-edit-tech.guard';
 
 describe('CancelEditTechGuard', () => {
-  let guard: CancelEditTechGuard;
+	let guard: CancelEditTechGuard;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      providers: [
-        CancelEditTechGuard,
-        provideMockStore({}),
-        { provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
-      ],
-    });
-    guard = TestBed.inject(CancelEditTechGuard);
-  });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [RouterTestingModule],
+			providers: [
+				CancelEditTechGuard,
+				provideMockStore({}),
+				{ provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
+			],
+		});
+		guard = TestBed.inject(CancelEditTechGuard);
+	});
 
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(guard).toBeTruthy();
+	});
 
-  it('should return true', () => {
-    expect(guard.canDeactivate()).toBeTruthy();
-  });
+	it('should return true', () => {
+		expect(guard.canDeactivate()).toBeTruthy();
+	});
 });

@@ -12,42 +12,42 @@ import { ReplaySubject, of } from 'rxjs';
 import { SingleSearchResultComponent } from './single-search-result.component';
 
 describe('SingleSearchResultComponent', () => {
-  let component: SingleSearchResultComponent;
-  let fixture: ComponentFixture<SingleSearchResultComponent>;
-  const actions$ = new ReplaySubject<Action>();
+	let component: SingleSearchResultComponent;
+	let fixture: ComponentFixture<SingleSearchResultComponent>;
+	const actions$ = new ReplaySubject<Action>();
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SingleSearchResultComponent, RoleRequiredDirective],
-      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule],
-      providers: [
-        provideMockStore({ initialState: initialAppState }),
-        provideMockActions(() => actions$),
-        {
-          provide: UserService,
-          useValue: {
-            roles$: of(['TechRecord.View']),
-          },
-        },
-      ],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [SingleSearchResultComponent, RoleRequiredDirective],
+			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				provideMockActions(() => actions$),
+				{
+					provide: UserService,
+					useValue: {
+						roles$: of(['TechRecord.View']),
+					},
+				},
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SingleSearchResultComponent);
-    component = fixture.componentInstance;
-    component.searchResult = {
-      systemNumber: '123',
-      createdTimestamp: '123',
-      vin: '76890',
-      techRecord_vehicleType: 'psv',
-      techRecord_statusCode: 'current',
-      techRecord_manufactureYear: 1998,
-    };
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(SingleSearchResultComponent);
+		component = fixture.componentInstance;
+		component.searchResult = {
+			systemNumber: '123',
+			createdTimestamp: '123',
+			vin: '76890',
+			techRecord_vehicleType: 'psv',
+			techRecord_statusCode: 'current',
+			techRecord_manufactureYear: 1998,
+		};
+	});
 
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		fixture.detectChanges();
+		expect(component).toBeTruthy();
+	});
 });

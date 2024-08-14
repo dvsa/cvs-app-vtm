@@ -9,113 +9,117 @@ import { initialAppState } from '@store/.';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import {
-  fetchDefect,
-  fetchDefectFailed,
-  fetchDefects,
-  fetchDefectsFailed,
-  fetchDefectsSuccess,
-  fetchDefectSuccess,
+	fetchDefect,
+	fetchDefectFailed,
+	fetchDefectSuccess,
+	fetchDefects,
+	fetchDefectsFailed,
+	fetchDefectsSuccess,
 } from '../actions/defects.actions';
 import { DefectsEffects } from './defects.effects';
 
 describe('DefectsEffects', () => {
-  let effects: DefectsEffects;
-  let actions$ = new Observable<Action>();
-  let testScheduler: TestScheduler;
-  let service: DefectsService;
+	let effects: DefectsEffects;
+	let actions$ = new Observable<Action>();
+	let testScheduler: TestScheduler;
+	let service: DefectsService;
 
-  const expectedResult = { imNumber: 1 } as Defect;
-  const testCases = [
-    {
-      id: expectedResult.imNumber,
-      payload: [expectedResult],
-    },
-  ];
+	const expectedResult = { imNumber: 1 } as Defect;
+	const testCases = [
+		{
+			id: expectedResult.imNumber,
+			payload: [expectedResult],
+		},
+	];
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
-        DefectsEffects,
-        provideMockActions(() => actions$),
-        DefectsService,
-        provideMockStore({
-          initialState: initialAppState,
-        }),
-      ],
-    });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [HttpClientTestingModule],
+			providers: [
+				DefectsEffects,
+				provideMockActions(() => actions$),
+				DefectsService,
+				provideMockStore({
+					initialState: initialAppState,
+				}),
+			],
+		});
 
-    effects = TestBed.inject(DefectsEffects);
-    service = TestBed.inject(DefectsService);
-  });
+		effects = TestBed.inject(DefectsEffects);
+		service = TestBed.inject(DefectsService);
+	});
 
-  beforeEach(() => {
-    testScheduler = new TestScheduler((actual, expected) => {
-      expect(actual).toEqual(expected);
-    });
-  });
+	beforeEach(() => {
+		testScheduler = new TestScheduler((actual, expected) => {
+			expect(actual).toEqual(expected);
+		});
+	});
 
-  describe('fetchDefects$', () => {
-    it.each(testCases)('should return fetchDefectsSuccess action on successfull API call', (value) => {
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        const { payload } = value;
+	describe('fetchDefects$', () => {
+		it.each(testCases)('should return fetchDefectsSuccess action on successfull API call', (value) => {
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				const { payload } = value;
 
-        // mock action to trigger effect
-        actions$ = hot('-a--', { a: fetchDefects() });
+				// mock action to trigger effect
+				actions$ = hot('-a--', { a: fetchDefects() });
 
-        // mock service call
-        jest.spyOn(service, 'fetchDefects').mockReturnValue(cold('--a|', { a: payload }));
+				// mock service call
+				jest.spyOn(service, 'fetchDefects').mockReturnValue(cold('--a|', { a: payload }));
 
-        // expect effect to return success action
-        expectObservable(effects.fetchDefects$).toBe('---b', {
-          b: fetchDefectsSuccess({ payload }),
-        });
-      });
-    });
+				// expect effect to return success action
+				expectObservable(effects.fetchDefects$).toBe('---b', {
+					b: fetchDefectsSuccess({ payload }),
+				});
+			});
+		});
 
-    it.each(testCases)('should return fetchDefectsFailed action on API error', () => {
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a--', { a: fetchDefects() });
+		it.each(testCases)('should return fetchDefectsFailed action on API error', () => {
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				actions$ = hot('-a--', { a: fetchDefects() });
 
-        const expectedError = new Error('Reference data resourceType is required');
+				const expectedError = new Error('Reference data resourceType is required');
 
-        jest.spyOn(service, 'fetchDefects').mockReturnValue(cold('--#|', {}, expectedError));
+				jest.spyOn(service, 'fetchDefects').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.fetchDefects$).toBe('---b', { b: fetchDefectsFailed({ error: 'Reference data resourceType is required' }) });
-      });
-    });
-  });
+				expectObservable(effects.fetchDefects$).toBe('---b', {
+					b: fetchDefectsFailed({ error: 'Reference data resourceType is required' }),
+				});
+			});
+		});
+	});
 
-  describe('fetchDefect$', () => {
-    it.each(testCases)('should return fetchDefectSuccess action on successfull API call', (value) => {
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        const { id, payload } = value;
-        const entity = payload.find((d) => d.imNumber === id) as Defect;
+	describe('fetchDefect$', () => {
+		it.each(testCases)('should return fetchDefectSuccess action on successfull API call', (value) => {
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				const { id, payload } = value;
+				const entity = payload.find((d) => d.imNumber === id) as Defect;
 
-        // mock action to trigger effect
-        actions$ = hot('-a--', { a: fetchDefect({ id }) });
+				// mock action to trigger effect
+				actions$ = hot('-a--', { a: fetchDefect({ id }) });
 
-        // mock service call
-        jest.spyOn(service, 'fetchDefect').mockReturnValue(cold('--a|', { a: entity }));
+				// mock service call
+				jest.spyOn(service, 'fetchDefect').mockReturnValue(cold('--a|', { a: entity }));
 
-        // expect effect to return success action
-        expectObservable(effects.fetchDefect$).toBe('---b', {
-          b: fetchDefectSuccess({ id, payload: entity }),
-        });
-      });
-    });
+				// expect effect to return success action
+				expectObservable(effects.fetchDefect$).toBe('---b', {
+					b: fetchDefectSuccess({ id, payload: entity }),
+				});
+			});
+		});
 
-    it.each(testCases)('should return fetchDefectFailed action on API error', (value) => {
-      testScheduler.run(({ hot, cold, expectObservable }) => {
-        const { id } = value;
-        actions$ = hot('-a--', { a: fetchDefect({ id }) });
+		it.each(testCases)('should return fetchDefectFailed action on API error', (value) => {
+			testScheduler.run(({ hot, cold, expectObservable }) => {
+				const { id } = value;
+				actions$ = hot('-a--', { a: fetchDefect({ id }) });
 
-        const expectedError = new Error('Reference data resourceKey is required');
+				const expectedError = new Error('Reference data resourceKey is required');
 
-        jest.spyOn(service, 'fetchDefect').mockReturnValue(cold('--#|', {}, expectedError));
+				jest.spyOn(service, 'fetchDefect').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.fetchDefect$).toBe('---b', { b: fetchDefectFailed({ error: 'Reference data resourceKey is required' }) });
-      });
-    });
-  });
+				expectObservable(effects.fetchDefect$).toBe('---b', {
+					b: fetchDefectFailed({ error: 'Reference data resourceKey is required' }),
+				});
+			});
+		});
+	});
 });

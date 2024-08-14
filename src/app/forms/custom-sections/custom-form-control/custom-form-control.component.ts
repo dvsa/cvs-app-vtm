@@ -6,28 +6,28 @@ import { FORM_INJECTION_TOKEN } from '@forms/components/dynamic-form-field/dynam
 import { CustomControl } from '@forms/services/dynamic-form.types';
 
 @Component({
-  selector: 'app-custom-form-control',
-  templateUrl: './custom-form-control.component.html',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: CustomFormControlComponent,
-      multi: true,
-    },
-  ],
+	selector: 'app-custom-form-control',
+	templateUrl: './custom-form-control.component.html',
+	providers: [
+		{
+			provide: NG_VALUE_ACCESSOR,
+			useExisting: CustomFormControlComponent,
+			multi: true,
+		},
+	],
 })
 export class CustomFormControlComponent extends BaseControlComponent {
-  protected form?: FormGroup;
+	protected form?: FormGroup;
 
-  override ngAfterContentInit(): void {
-    const injectedControl = this.injector.get(NgControl, null);
-    if (injectedControl) {
-      const ngControl = injectedControl.control as unknown as KeyValue<string, CustomControl>;
-      if (ngControl.value) {
-        this.name = ngControl.key;
-        this.control = ngControl.value;
-        this.form = this.injector.get(FORM_INJECTION_TOKEN) as FormGroup;
-      }
-    }
-  }
+	override ngAfterContentInit(): void {
+		const injectedControl = this.injector.get(NgControl, null);
+		if (injectedControl) {
+			const ngControl = injectedControl.control as unknown as KeyValue<string, CustomControl>;
+			if (ngControl.value) {
+				this.name = ngControl.key;
+				this.control = ngControl.value;
+				this.form = this.injector.get(FORM_INJECTION_TOKEN) as FormGroup;
+			}
+		}
+	}
 }
