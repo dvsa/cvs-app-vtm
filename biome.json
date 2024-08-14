@@ -1,9 +1,6 @@
 {
   "extends": ["@dvsa/biome-config/biome"],
-  "formatter": {
-    "ignore": ["src/app/api/**"]
-  },
-  "linter": {
+  "files": {
     "ignore": ["src/app/api/**"]
   },
   "overrides": [

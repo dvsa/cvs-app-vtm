@@ -70,9 +70,40 @@ export const TestSectionGroup5And13: FormNode = {
 									name: ValidatorNames.HideIfNotEqual,
 									args: { sibling: 'certificateNumber', value: ['pass', 'prs', 'abandoned'] },
 								},
+								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass', 'prs'] } },
 							],
 							asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
 							type: FormNodeTypes.CONTROL,
+						},
+						{
+							name: 'centralDocs',
+							type: FormNodeTypes.GROUP,
+							children: [
+								{
+									name: 'issueRequired',
+									type: FormNodeTypes.CONTROL,
+									label: 'Issue documents centrally',
+									editType: FormNodeEditTypes.RADIO,
+									value: false,
+									options: [
+										{ value: true, label: 'Yes' },
+										{ value: false, label: 'No' },
+									],
+									validators: [
+										{
+											name: ValidatorNames.HideIfParentSiblingEqual,
+											args: { sibling: 'certificateNumber', value: true },
+										},
+									],
+								},
+								{
+									name: 'reasonsForIssue',
+									type: FormNodeTypes.CONTROL,
+									viewType: FormNodeViewTypes.HIDDEN,
+									editType: FormNodeEditTypes.HIDDEN,
+									value: [],
+								},
+							],
 						},
 						{
 							name: 'testTypeName',
@@ -88,7 +119,10 @@ export const TestSectionGroup5And13: FormNode = {
 							type: FormNodeTypes.CONTROL,
 							viewType: FormNodeViewTypes.HIDDEN,
 							editType: FormNodeEditTypes.HIDDEN,
-							required: true,
+							validators: [
+								// Make required if test result is pass/prs, but issue documents centrally is false
+								{ name: ValidatorNames.IssueRequired },
+							],
 							value: null,
 						},
 						{
