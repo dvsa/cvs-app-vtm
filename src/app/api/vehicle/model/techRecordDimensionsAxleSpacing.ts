@@ -9,10 +9,10 @@
  * Do not edit the class manually.
  */
 
-export interface TechRecordDimensionsAxleSpacing {
-	axles?: string;
-	/**
-	 * Optional for HGV
-	 */
-	value?: number;
+export interface TechRecordDimensionsAxleSpacing { 
+    axles?: string;
+    /**
+     * Optional for HGV
+     */
+    value?: number;
 }

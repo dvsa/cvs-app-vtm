@@ -12,6 +12,4 @@
 import { ReferenceDataApiResponseWithPagination } from './referenceDataApiResponseWithPagination';
 import { ReferenceDataApiResponseWithoutPagination } from './referenceDataApiResponseWithoutPagination';
 
-export type ReferenceDataApiResponse =
-	| ReferenceDataApiResponseWithoutPagination
-	| ReferenceDataApiResponseWithPagination;
+export type ReferenceDataApiResponse = ReferenceDataApiResponseWithoutPagination | ReferenceDataApiResponseWithPagination;

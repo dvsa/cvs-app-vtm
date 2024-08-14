@@ -10,4 +10,5 @@
  */
 import { Defect } from './defect';
 
-export interface Defects extends Array<Defect> {}
+export interface Defects extends Array<Defect> { 
+}

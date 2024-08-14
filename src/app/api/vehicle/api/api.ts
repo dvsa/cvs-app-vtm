@@ -8,10 +8,4 @@ export * from './postTechRecords.service';
 import { PostTechRecordsService } from './postTechRecords.service';
 export * from './updateTechRecords.service';
 import { UpdateTechRecordsService } from './updateTechRecords.service';
-export const APIS = [
-	AddProvisionalTechRecordService,
-	ArchiveTechRecordStatusService,
-	GetTechRecordsService,
-	PostTechRecordsService,
-	UpdateTechRecordsService,
-];
+export const APIS = [AddProvisionalTechRecordService, ArchiveTechRecordStatusService, GetTechRecordsService, PostTechRecordsService, UpdateTechRecordsService];
