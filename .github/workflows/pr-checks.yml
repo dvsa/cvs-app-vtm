@@ -85,7 +85,6 @@ jobs:
           cache: 'npm'
       - name: Run audit
         run: npm audit --audit-level=critical
-<<<<<<< Updated upstream
 
   scanner:
     permissions:
@@ -105,7 +104,7 @@ jobs:
           role-session-name: 'cvs-app-vtm'
 
       - uses: aws-actions/aws-secretsmanager-get-secrets@v2
-        with: 
+        with:
           secret-ids: sonarqube-gha
           parse-json-secrets: true
 
@@ -120,5 +119,3 @@ jobs:
           -Dsonar.login=${{ env.SONARQUBE_GHA_TOKEN }} \
           -Dsonar.projectName=${{ github.repository }} \
           -Dsonar.projectVersion=1.0.${{ github.run_id }}
-=======
->>>>>>> Stashed changes
