@@ -6,36 +6,35 @@ import { State, initialAppState } from '@store/index';
 import { AdrTankDetailsInitialInspectionViewComponent } from './adr-tank-details-initial-inspection-view.component';
 
 describe('AdrTankDetailsInitialInspectionViewComponent', () => {
-  let component: AdrTankDetailsInitialInspectionViewComponent;
-  let fixture: ComponentFixture<AdrTankDetailsInitialInspectionViewComponent>;
+	let component: AdrTankDetailsInitialInspectionViewComponent;
+	let fixture: ComponentFixture<AdrTankDetailsInitialInspectionViewComponent>;
 
-  const control = new CustomFormControl({
-    name: 'tankInspectionsInitialView',
-    type: FormNodeTypes.CONTROL,
-  });
+	const control = new CustomFormControl({
+		name: 'tankInspectionsInitialView',
+		type: FormNodeTypes.CONTROL,
+	});
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [AdrTankDetailsInitialInspectionViewComponent],
-      providers: [
-        provideMockStore<State>({ initialState: initialAppState }),
-        { provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsInitialInspectionViewComponent, multi: true },
-        {
-          provide: NgControl,
-          useValue: {
-            control: { key: control.meta.name, value: control },
-          },
-        },
-      ],
-    })
-      .compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [AdrTankDetailsInitialInspectionViewComponent],
+			providers: [
+				provideMockStore<State>({ initialState: initialAppState }),
+				{ provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsInitialInspectionViewComponent, multi: true },
+				{
+					provide: NgControl,
+					useValue: {
+						control: { key: control.meta.name, value: control },
+					},
+				},
+			],
+		}).compileComponents();
 
-    fixture = TestBed.createComponent(AdrTankDetailsInitialInspectionViewComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+		fixture = TestBed.createComponent(AdrTankDetailsInitialInspectionViewComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

@@ -1,25 +1,25 @@
 declare module 'accessible-autocomplete/dist/accessible-autocomplete.min' {
-  interface ElementParam {
-    element: HTMLElement;
-  }
-  interface EnhancedElementParam {
-    selectElement: HTMLElement | null;
-  }
-  interface DefaultParams {
-    id?: string;
-    source?: Array<unknown>;
-    onConfirm?: (value: string) => void;
-    confirmOnBlur?: boolean;
-    required?: true;
-    defaultValue?: string;
-    autoselect?: boolean;
-    showAllValues?: boolean;
-    dropdownArrow?: Function;
-  }
+	interface ElementParam {
+		element: HTMLElement;
+	}
+	interface EnhancedElementParam {
+		selectElement: HTMLElement | null;
+	}
+	interface DefaultParams {
+		id?: string;
+		source?: Array<unknown>;
+		onConfirm?: (value: string) => void;
+		confirmOnBlur?: boolean;
+		required?: true;
+		defaultValue?: string;
+		autoselect?: boolean;
+		showAllValues?: boolean;
+		dropdownArrow?: Function;
+	}
 
-  export interface AutocompleteParams extends DefaultParams, ElementParam {}
-  export interface AutocompleteEnhanceParams extends DefaultParams, EnhancedElementParam {}
+	export interface AutocompleteParams extends DefaultParams, ElementParam {}
+	export interface AutocompleteEnhanceParams extends DefaultParams, EnhancedElementParam {}
 
-  export default function accesibleAutocomplete(params: AutocompleteParams): void;
-  export function enhanceSelectElement(params: AutocompleteEnhanceParams): void;
+	export default function accesibleAutocomplete(params: AutocompleteParams): void;
+	export function enhanceSelectElement(params: AutocompleteEnhanceParams): void;
 }

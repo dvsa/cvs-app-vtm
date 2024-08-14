@@ -11,4 +11,4 @@ export const testStation = (id: string) => createSelector(testStationsFeatureSta
 export const testStationsLoadingState = createSelector(testStationsFeatureState, (state) => state.loading);
 
 export const getTestStationFromProperty = (property: keyof TestStation, value: string) =>
-  createSelector(testStations, (stations) => stations.find((station) => station[`${property}`] === value));
+	createSelector(testStations, (stations) => stations.find((station) => station[`${property}`] === value));

@@ -3,20 +3,20 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  TARGET_ENV: 'dev',
-  RemoveAADFullAccessRole: true,
-  EnableDevTools: true,
-  VTM_CLIENT_ID: '',
-  VTM_AUTHORITY_ID: '',
-  VTM_REDIRECT_URI: '/',
-  VTM_API_URI: '',
-  VTM_API_CLIENT_ID: '',
-  DOCUMENT_RETRIEVAL_API_KEY: '',
-  FEEDBACK_URI: '',
-  SENTRY_DSN: '',
-  VTM_GTM_CONTAINER_ID: '',
-  VTM_GTM_MEASUREMENT_ID: '',
+	production: false,
+	TARGET_ENV: 'dev',
+	RemoveAADFullAccessRole: true,
+	EnableDevTools: true,
+	VTM_CLIENT_ID: '',
+	VTM_AUTHORITY_ID: '',
+	VTM_REDIRECT_URI: '/',
+	VTM_API_URI: '',
+	VTM_API_CLIENT_ID: '',
+	DOCUMENT_RETRIEVAL_API_KEY: '',
+	FEEDBACK_URI: '',
+	SENTRY_DSN: '',
+	VTM_GTM_CONTAINER_ID: '',
+	VTM_GTM_MEASUREMENT_ID: '',
 };
 
 /*

@@ -1,4 +1,4 @@
 export interface GlobalError {
-  error: string;
-  anchorLink?: string;
+	error: string;
+	anchorLink?: string;
 }

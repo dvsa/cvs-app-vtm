@@ -3,27 +3,27 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuffixDirective } from './suffix.directive';
 
 @Component({
-  template: '<ng-template appSuffix></ng-template>',
+	template: '<ng-template appSuffix></ng-template>',
 })
 class TestComponent {}
 
 describe('SuffixDirective', () => {
-  let fixture: ComponentFixture<TestComponent>;
-  let component: TestComponent;
+	let fixture: ComponentFixture<TestComponent>;
+	let component: TestComponent;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SuffixDirective, TestComponent],
-      providers: [TemplateRef],
-    }).compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [SuffixDirective, TestComponent],
+			providers: [TemplateRef],
+		}).compileComponents();
 
-    fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+		fixture = TestBed.createComponent(TestComponent);
+		fixture.detectChanges();
 
-    component = fixture.componentInstance;
-  });
+		component = fixture.componentInstance;
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

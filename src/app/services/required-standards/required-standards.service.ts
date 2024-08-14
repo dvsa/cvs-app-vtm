@@ -6,12 +6,13 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class RequiredStandardsService {
-  private url = `${environment.VTM_API_URI}/defects/required-standards`;
+	private url = `${environment.VTM_API_URI}/defects/required-standards`;
 
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) {}
 
-  getRequiredStandards(euVehicleCategory: string): Observable<DefectGETRequiredStandards> {
-    return this.http.get<DefectGETRequiredStandards>(`${this.url}?euVehicleCategory=${euVehicleCategory}`, { responseType: 'json' });
-  }
-
+	getRequiredStandards(euVehicleCategory: string): Observable<DefectGETRequiredStandards> {
+		return this.http.get<DefectGETRequiredStandards>(`${this.url}?euVehicleCategory=${euVehicleCategory}`, {
+			responseType: 'json',
+		});
+	}
 }
