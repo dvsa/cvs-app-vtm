@@ -9,8 +9,8 @@
  * Do not edit the class manually.
  */
 
-export interface CustomDefect {
-	referenceNumber?: string;
-	defectName?: string;
-	defectNotes?: string;
+export interface CustomDefect { 
+    referenceNumber?: string;
+    defectName?: string;
+    defectNotes?: string;
 }

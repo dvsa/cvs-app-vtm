@@ -10,4 +10,5 @@
  */
 import { CompleteTestResults } from './completeTestResults';
 
-export interface TestResults extends Array<CompleteTestResults> {}
+export interface TestResults extends Array<CompleteTestResults> { 
+}

@@ -9,7 +9,7 @@
  * Do not edit the class manually.
  */
 
-export interface TechRecordArchiveAndProvisionalPayloadMsUserDetails {
-	msUser?: string;
-	msOid?: string;
+export interface TechRecordArchiveAndProvisionalPayloadMsUserDetails { 
+    msUser?: string;
+    msOid?: string;
 }

@@ -10,4 +10,5 @@
  * Do not edit the class manually.
  */
 
-export type EmptyObject = {};
+export interface EmptyObject { 
+}

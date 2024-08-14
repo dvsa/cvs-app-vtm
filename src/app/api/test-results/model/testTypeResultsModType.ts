@@ -12,21 +12,21 @@
 /**
  * Used only for LEC tests. p = particulate trap, m = modification or change of engine, g = gas engine.
  */
-export interface TestTypeResultsModType {
-	code?: TestTypeResultsModType.CodeEnum;
-	description?: TestTypeResultsModType.DescriptionEnum;
+export interface TestTypeResultsModType { 
+    code?: TestTypeResultsModType.CodeEnum;
+    description?: TestTypeResultsModType.DescriptionEnum;
 }
 export namespace TestTypeResultsModType {
-	export type CodeEnum = 'p' | 'm' | 'g';
-	export const CodeEnum = {
-		P: 'p' as CodeEnum,
-		M: 'm' as CodeEnum,
-		G: 'g' as CodeEnum,
-	};
-	export type DescriptionEnum = 'particulate trap' | 'modification or change of engine' | 'gas engine';
-	export const DescriptionEnum = {
-		ParticulateTrap: 'particulate trap' as DescriptionEnum,
-		ModificationOrChangeOfEngine: 'modification or change of engine' as DescriptionEnum,
-		GasEngine: 'gas engine' as DescriptionEnum,
-	};
+    export type CodeEnum = 'p' | 'm' | 'g';
+    export const CodeEnum = {
+        P: 'p' as CodeEnum,
+        M: 'm' as CodeEnum,
+        G: 'g' as CodeEnum
+    };
+    export type DescriptionEnum = 'particulate trap' | 'modification or change of engine' | 'gas engine';
+    export const DescriptionEnum = {
+        ParticulateTrap: 'particulate trap' as DescriptionEnum,
+        ModificationOrChangeOfEngine: 'modification or change of engine' as DescriptionEnum,
+        GasEngine: 'gas engine' as DescriptionEnum
+    };
 }

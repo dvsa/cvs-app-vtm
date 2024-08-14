@@ -10,7 +10,7 @@
  */
 import { DefectAdditionalInformationLocation } from './defectAdditionalInformationLocation';
 
-export interface DefectAdditionalInformation {
-	location?: DefectAdditionalInformationLocation;
-	notes?: string;
+export interface DefectAdditionalInformation { 
+    location?: DefectAdditionalInformationLocation;
+    notes?: string;
 }
