@@ -21,7 +21,6 @@
             "noDoubleEquals": "off",
             "noDuplicateTestHooks": "off",
             "noExplicitAny": "off",
-            "noImplicitAnyLet": "off",
             "useValidTypeof": "off"
           }
         }

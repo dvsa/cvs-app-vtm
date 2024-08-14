@@ -45,7 +45,6 @@ export function sortReferenceData(resourceType: ReferenceDataResourceType) {
 		});
 }
 
-// eslint-disable-next-line no-underscore-dangle
 function _sort(type: ReferenceDataResourceType, data: ReferenceDataItem[]) {
 	const dataToSort = [...(data as ReferenceData[])];
 	switch (type) {
@@ -57,12 +56,17 @@ function _sort(type: ReferenceDataResourceType, data: ReferenceDataItem[]) {
 }
 
 type ReferenceData = ReferenceDataItem & Record<string, string | number>;
+
+type SortKeyValue = string | number;
+
 function sorter(sortkey: keyof ReferenceData | undefined = 'description') {
-	// eslint-disable-next-line no-nested-ternary, @typescript-eslint/no-explicit-any
-	const compare = (a: any, b: any) => (typeof a === 'string' ? (a <= b ? (a < b ? -1 : 0) : 1) : a - b);
+	const compare = (a: SortKeyValue, b: SortKeyValue): number =>
+		typeof a === 'string' && typeof b === 'string' ? (a <= b ? (a < b ? -1 : 0) : 1) : (a as number) - (b as number);
+
 	return (a: ReferenceData, b: ReferenceData) => {
-		let l;
-		let r;
+		let l: SortKeyValue = '';
+		let r: SortKeyValue = '';
+
 		if (sortkey && Object.prototype.hasOwnProperty.call(a, sortkey)) {
 			l = a[`${sortkey}`];
 			r = b[`${sortkey}`];

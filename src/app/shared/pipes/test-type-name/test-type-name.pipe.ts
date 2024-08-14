@@ -17,7 +17,7 @@ export class TestTypeNamePipe implements PipeTransform {
 			);
 		}
 
-		let result;
+		let result: TestType | undefined;
 		testTypes.some(idMatch);
 		return result;
 	}
