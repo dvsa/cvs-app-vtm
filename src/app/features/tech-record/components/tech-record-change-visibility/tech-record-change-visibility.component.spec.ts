@@ -17,36 +17,42 @@ import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title
 import { TechRecordChangeVisibilityComponent } from './tech-record-change-visibility.component';
 
 describe('TechRecordHoldComponent', () => {
-  let actions$: ReplaySubject<Action>;
-  let component: TechRecordChangeVisibilityComponent;
-  let fixture: ComponentFixture<TechRecordChangeVisibilityComponent>;
+	let actions$: ReplaySubject<Action>;
+	let component: TechRecordChangeVisibilityComponent;
+	let fixture: ComponentFixture<TechRecordChangeVisibilityComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [TechRecordChangeVisibilityComponent, TechRecordTitleComponent],
-      imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule, StoreModule.forRoot({})],
-      providers: [
-        provideMockActions(() => actions$),
-        provideMockStore({ initialState: initialAppState }),
-        { provide: APP_BASE_HREF, useValue: '/' },
-        {
-          provide: UserService,
-          useValue: {
-            roles$: of([Roles.TechRecordArchive]),
-          },
-        },
-      ],
-    }).compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [TechRecordChangeVisibilityComponent, TechRecordTitleComponent],
+			imports: [
+				DynamicFormsModule,
+				HttpClientTestingModule,
+				ReactiveFormsModule,
+				RouterTestingModule,
+				SharedModule,
+				StoreModule.forRoot({}),
+			],
+			providers: [
+				provideMockActions(() => actions$),
+				provideMockStore({ initialState: initialAppState }),
+				{ provide: APP_BASE_HREF, useValue: '/' },
+				{
+					provide: UserService,
+					useValue: {
+						roles$: of([Roles.TechRecordArchive]),
+					},
+				},
+			],
+		}).compileComponents();
+	});
 
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(TechRecordChangeVisibilityComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TechRecordChangeVisibilityComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

@@ -1,7 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {
-  ComponentFixture, fakeAsync, TestBed, tick,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,146 +15,151 @@ import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
 import { generateADRCertificate, generateADRCertificateSuccess } from '@store/technical-records';
-import { of, ReplaySubject } from 'rxjs';
+import { ReplaySubject, of } from 'rxjs';
 
 import { AdrGenerateCertificateComponent } from './adr-generate-certificate.component';
 
 const mockDynamicFormService = {
-  createForm: jest.fn(),
+	createForm: jest.fn(),
 };
 
 describe('AdrGenerateCertificateComponent', () => {
-  let component: AdrGenerateCertificateComponent;
-  let fixture: ComponentFixture<AdrGenerateCertificateComponent>;
-  const actions$ = new ReplaySubject<Action>();
-  let errorService: GlobalErrorService;
-  let route: ActivatedRoute;
-  let router: Router;
-  let store: MockStore;
-  let technicalRecordService: TechnicalRecordService;
+	let component: AdrGenerateCertificateComponent;
+	let fixture: ComponentFixture<AdrGenerateCertificateComponent>;
+	const actions$ = new ReplaySubject<Action>();
+	let errorService: GlobalErrorService;
+	let route: ActivatedRoute;
+	let router: Router;
+	let store: MockStore;
+	let technicalRecordService: TechnicalRecordService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [AdrGenerateCertificateComponent],
-      providers: [
-        GlobalErrorService,
-        provideMockActions(() => actions$),
-        provideMockStore({ initialState: initialAppState }),
-        { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
-        { provide: DynamicFormService, useValue: mockDynamicFormService },
-        TechnicalRecordService,
-        {
-          provide: UserService,
-          useValue: {
-            roles$: of(['TechRecord.Amend']),
-          },
-        },
-      ],
-      imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
-    }).compileComponents();
-  });
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AdrGenerateCertificateComponent);
-    errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
-    router = TestBed.inject(Router);
-    store = TestBed.inject(MockStore);
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
-    component = fixture.componentInstance;
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [AdrGenerateCertificateComponent],
+			providers: [
+				GlobalErrorService,
+				provideMockActions(() => actions$),
+				provideMockStore({ initialState: initialAppState }),
+				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
+				{ provide: DynamicFormService, useValue: mockDynamicFormService },
+				TechnicalRecordService,
+				{
+					provide: UserService,
+					useValue: {
+						roles$: of(['TechRecord.Amend']),
+					},
+				},
+			],
+			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
+		}).compileComponents();
+	});
+	beforeEach(() => {
+		fixture = TestBed.createComponent(AdrGenerateCertificateComponent);
+		errorService = TestBed.inject(GlobalErrorService);
+		route = TestBed.inject(ActivatedRoute);
+		router = TestBed.inject(Router);
+		store = TestBed.inject(MockStore);
+		technicalRecordService = TestBed.inject(TechnicalRecordService);
+		component = fixture.componentInstance;
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  describe('navigateBack', () => {
-    beforeEach(() => {
-      jest
-        .spyOn(technicalRecordService, 'techRecord$', 'get')
-        .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
-    });
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
+	describe('navigateBack', () => {
+		beforeEach(() => {
+			jest
+				.spyOn(technicalRecordService, 'techRecord$', 'get')
+				.mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
+		});
+		it('should clear all errors', () => {
+			jest.spyOn(router, 'navigate').mockImplementation();
 
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-      component.navigateBack();
+			component.navigateBack();
 
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
+			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
+		});
 
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		it('should navigate back to the previous page', () => {
+			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.navigateBack();
+			component.navigateBack();
 
-      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
-    });
+			expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
+		});
 
-    it('should navigate back on generateADRCertificateSuccess', fakeAsync(() => {
-      fixture.ngZone?.run(() => {
-        component.ngOnInit();
-        component.form.get('certificateType')?.setValue('PASS');
+		it('should navigate back on generateADRCertificateSuccess', fakeAsync(() => {
+			fixture.ngZone?.run(() => {
+				component.ngOnInit();
+				component.form.get('certificateType')?.setValue('PASS');
 
-        const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();
+				const navigateBackSpy = jest.spyOn(component, 'navigateBack').mockImplementation();
 
-        component.handleSubmit();
+				component.handleSubmit();
 
-        actions$.next(generateADRCertificateSuccess({ id: '' }));
-        tick();
+				actions$.next(generateADRCertificateSuccess({ id: '' }));
+				tick();
 
-        expect(navigateBackSpy).toHaveBeenCalled();
-      });
-    }));
-  });
+				expect(navigateBackSpy).toHaveBeenCalled();
+			});
+		}));
+	});
 
-  describe('handleSubmit', () => {
-    beforeEach(() => {
-      jest
-        .spyOn(technicalRecordService, 'techRecord$', 'get')
-        .mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
-    });
-    it('should add an error when the field is not filled out', () => {
-      const addErrorSpy = jest.spyOn(errorService, 'addError');
+	describe('handleSubmit', () => {
+		beforeEach(() => {
+			jest
+				.spyOn(technicalRecordService, 'techRecord$', 'get')
+				.mockReturnValue(of({ systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel));
+		});
+		it('should add an error when the field is not filled out', () => {
+			const addErrorSpy = jest.spyOn(errorService, 'addError');
 
-      component.handleSubmit();
+			component.handleSubmit();
 
-      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'ADR Certificate Type is required', anchorLink: 'certificateType' });
-    });
+			expect(addErrorSpy).toHaveBeenCalledWith({
+				error: 'ADR Certificate Type is required',
+				anchorLink: 'certificateType',
+			});
+		});
 
-    it('should dispatch the generateADRCertificate action', () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
+		it('should dispatch the generateADRCertificate action', () => {
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-      component.form.get('certificateType')?.setValue('PASS');
+			component.form.get('certificateType')?.setValue('PASS');
 
-      component.handleSubmit();
-      expect(dispatchSpy).toHaveBeenCalledTimes(2);
-      expect(dispatchSpy).toHaveBeenLastCalledWith(generateADRCertificate({ systemNumber: '', createdTimestamp: '', certificateType: 'PASS' }));
-    });
+			component.handleSubmit();
+			expect(dispatchSpy).toHaveBeenCalledTimes(2);
+			expect(dispatchSpy).toHaveBeenLastCalledWith(
+				generateADRCertificate({ systemNumber: '', createdTimestamp: '', certificateType: 'PASS' })
+			);
+		});
 
-    it('should dispatch action with default values when systemNumber and createdTimestamp are null', () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
+		it('should dispatch action with default values when systemNumber and createdTimestamp are null', () => {
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-      component.form.get('certificateType')?.setValue('PASS');
-      component.systemNumber = '123';
-      component.createdTimestamp = '2021';
+			component.form.get('certificateType')?.setValue('PASS');
+			component.systemNumber = '123';
+			component.createdTimestamp = '2021';
 
-      component.handleSubmit();
-      expect(dispatchSpy).toHaveBeenCalled();
-      expect(dispatchSpy).toHaveBeenLastCalledWith(
-        generateADRCertificate({ systemNumber: '123', createdTimestamp: '2021', certificateType: 'PASS' }),
-      );
-    });
-  });
+			component.handleSubmit();
+			expect(dispatchSpy).toHaveBeenCalled();
+			expect(dispatchSpy).toHaveBeenLastCalledWith(
+				generateADRCertificate({ systemNumber: '123', createdTimestamp: '2021', certificateType: 'PASS' })
+			);
+		});
+	});
 
-  describe('certificateTypes', () => {
-    it('should get correct value when call get functions', () => {
-      const expectedValue = [
-        { label: 'New ADR Certificate', value: 'PASS' },
-        { label: 'Replacement ADR Certificate', value: 'REPLACEMENT' },
-      ];
-      expect(component.width).toBe(10);
-      expect(component.certificateTypes).toEqual(expectedValue);
-    });
-  });
+	describe('certificateTypes', () => {
+		it('should get correct value when call get functions', () => {
+			const expectedValue = [
+				{ label: 'New ADR Certificate', value: 'PASS' },
+				{ label: 'Replacement ADR Certificate', value: 'REPLACEMENT' },
+			];
+			expect(component.width).toBe(10);
+			expect(component.certificateTypes).toEqual(expectedValue);
+		});
+	});
 });

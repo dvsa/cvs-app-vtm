@@ -16,37 +16,44 @@ import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title
 import { TechRecordUnarchiveComponent } from './tech-record-unarchive-component';
 
 describe('TechRecordUnarchiveComponent', () => {
-  let actions$: ReplaySubject<Action>;
-  let component: TechRecordUnarchiveComponent;
-  let fixture: ComponentFixture<TechRecordUnarchiveComponent>;
+	let actions$: ReplaySubject<Action>;
+	let component: TechRecordUnarchiveComponent;
+	let fixture: ComponentFixture<TechRecordUnarchiveComponent>;
 
-  beforeEach(async () => {
-    actions$ = new ReplaySubject<Action>();
+	beforeEach(async () => {
+		actions$ = new ReplaySubject<Action>();
 
-    await TestBed.configureTestingModule({
-      declarations: [TechRecordUnarchiveComponent, TechRecordTitleComponent],
-      imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule, StoreModule.forRoot({})],
-      providers: [
-        provideMockActions(() => actions$),
-        provideMockStore({ initialState: initialAppState }),
-        { provide: APP_BASE_HREF, useValue: '/' },
-        {
-          provide: UserService,
-          useValue: {
-            roles$: of([Roles.TechRecordArchive]),
-          },
-        },
-      ],
-    }).compileComponents();
-  });
+		await TestBed.configureTestingModule({
+			declarations: [TechRecordUnarchiveComponent, TechRecordTitleComponent],
+			imports: [
+				DynamicFormsModule,
+				HttpClientTestingModule,
+				ReactiveFormsModule,
+				RouterTestingModule,
+				SharedModule,
+				StoreModule.forRoot({}),
+			],
+			providers: [
+				provideMockActions(() => actions$),
+				provideMockStore({ initialState: initialAppState }),
+				{ provide: APP_BASE_HREF, useValue: '/' },
+				{
+					provide: UserService,
+					useValue: {
+						roles$: of([Roles.TechRecordArchive]),
+					},
+				},
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TechRecordUnarchiveComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(TechRecordUnarchiveComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });
