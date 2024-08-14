@@ -13,24 +13,29 @@ import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehic
 import { TestResultSummaryComponent } from './test-result-summary.component';
 
 describe('TestResultSummaryComponent', () => {
-  let component: TestResultSummaryComponent;
-  let fixture: ComponentFixture<TestResultSummaryComponent>;
+	let component: TestResultSummaryComponent;
+	let fixture: ComponentFixture<TestResultSummaryComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [TestResultSummaryComponent, VehicleHeaderComponent, NumberPlateComponent, TagComponent],
-      imports: [RouterTestingModule, HttpClientTestingModule, TestResultsApiModule],
-      providers: [provideMockStore({ initialState: initialAppState }), TestRecordsService, TechnicalRecordService, RouterService],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [TestResultSummaryComponent, VehicleHeaderComponent, NumberPlateComponent, TagComponent],
+			imports: [RouterTestingModule, HttpClientTestingModule, TestResultsApiModule],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				TestRecordsService,
+				TechnicalRecordService,
+				RouterService,
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TestResultSummaryComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(TestResultSummaryComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

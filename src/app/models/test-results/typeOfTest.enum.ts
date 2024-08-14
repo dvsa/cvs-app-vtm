@@ -1,4 +1,4 @@
 export enum TypeOfTest {
-  CONTINGENCY = 'contingency',
-  DESK_BASED = 'desk-based',
+	CONTINGENCY = 'contingency',
+	DESK_BASED = 'desk-based',
 }

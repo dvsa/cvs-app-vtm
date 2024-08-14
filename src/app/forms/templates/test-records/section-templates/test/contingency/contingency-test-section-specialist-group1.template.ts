@@ -1,9 +1,7 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { TEST_TYPES_GROUP1_SPEC_TEST } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const ContingencyTestSectionSpecialistGroup1: FormNode = {
   name: 'testSection',
@@ -81,7 +79,12 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                     { value: true, label: 'Yes' },
                     { value: false, label: 'No' },
                   ],
-                  validators: [{ name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'certificateNumber', value: true } }],
+                  validators: [
+                    {
+                      name: ValidatorNames.HideIfParentSiblingEqual,
+                      args: { sibling: 'certificateNumber', value: true },
+                    },
+                  ],
                 },
                 {
                   name: 'reasonsForIssue',

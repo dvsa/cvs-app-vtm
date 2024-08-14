@@ -12,100 +12,109 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { State } from '@store/index';
 import { techRecord, updateTechRecord, updateTechRecordSuccess } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
-import {
-  Subject, skipWhile, take, takeUntil, withLatestFrom,
-} from 'rxjs';
+import { Subject, skipWhile, take, takeUntil, withLatestFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-tech-record-change-visibility',
-  templateUrl: './tech-record-change-visibility.component.html',
-  styleUrls: ['./tech-record-change-visibility.component.scss'],
+	selector: 'app-tech-record-change-visibility',
+	templateUrl: './tech-record-change-visibility.component.html',
+	styleUrls: ['./tech-record-change-visibility.component.scss'],
 })
 export class TechRecordChangeVisibilityComponent implements OnInit, OnDestroy {
-  techRecord?: V3TechRecordModel;
+	techRecord?: V3TechRecordModel;
 
-  form: CustomFormGroup;
-  private destroy$ = new Subject<void>();
+	form: CustomFormGroup;
+	private destroy$ = new Subject<void>();
 
-  constructor(
-    private actions$: Actions,
-    private errorService: GlobalErrorService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private store: Store<State>,
-    private technicalRecordService: TechnicalRecordService,
-    private routerService: RouterService,
-  ) {
-    this.form = new CustomFormGroup(
-      { name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
-      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) },
-    );
-    this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      void this.router.navigate([`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`]);
-    });
-  }
+	constructor(
+		private actions$: Actions,
+		private errorService: GlobalErrorService,
+		private route: ActivatedRoute,
+		private router: Router,
+		private store: Store<State>,
+		private technicalRecordService: TechnicalRecordService,
+		private routerService: RouterService
+	) {
+		this.form = new CustomFormGroup(
+			{ name: 'reasonForChangingVisibility', type: FormNodeTypes.GROUP },
+			{
+				reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [
+					Validators.required,
+				]),
+			}
+		);
+		this.actions$.pipe(ofType(updateTechRecordSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+			void this.router.navigate([
+				`/tech-records/${vehicleTechRecord.systemNumber}/${vehicleTechRecord.createdTimestamp}`,
+			]);
+		});
+	}
 
-  get title(): string {
-    return `${this.techRecord?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record in VTA`;
-  }
+	get title(): string {
+		return `${this.techRecord?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record in VTA`;
+	}
 
-  get buttonLabel(): string {
-    return `${this.techRecord?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record`;
-  }
+	get buttonLabel(): string {
+		return `${this.techRecord?.techRecord_hiddenInVta ? 'Show' : 'Hide'} record`;
+	}
 
-  ngOnInit(): void {
-    this.store
-      .select(techRecord)
-      .pipe(take(1))
-      .subscribe((record) => {
-        this.techRecord = record;
-      });
-  }
+	ngOnInit(): void {
+		this.store
+			.select(techRecord)
+			.pipe(take(1))
+			.subscribe((record) => {
+				this.techRecord = record;
+			});
+	}
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
 
-  goBack(): void {
-    void this.router.navigate(['..'], { relativeTo: this.route });
-  }
+	goBack(): void {
+		void this.router.navigate(['..'], { relativeTo: this.route });
+	}
 
-  handleSubmit(form: { reason: string }): void {
-    if (this.form.valid) {
-      this.errorService.clearErrors();
-    } else {
-      this.errorService.setErrors([
-        {
-          error: `Reason for ${this.techRecord?.techRecord_hiddenInVta ? 'showing' : 'hiding'} is required`,
-          anchorLink: 'reasonForChangingVisibility',
-        },
-      ]);
-    }
+	handleSubmit(form: { reason: string }): void {
+		if (this.form.valid) {
+			this.errorService.clearErrors();
+		} else {
+			this.errorService.setErrors([
+				{
+					error: `Reason for ${this.techRecord?.techRecord_hiddenInVta ? 'showing' : 'hiding'} is required`,
+					anchorLink: 'reasonForChangingVisibility',
+				},
+			]);
+		}
 
-    if (!this.form.valid || !form.reason) {
-      return;
-    }
+		if (!this.form.valid || !form.reason) {
+			return;
+		}
 
-    const updatedTechRecord: TechRecordType<'put'> = {
-      ...cloneDeep(this.techRecord as TechRecordType<'put'>),
-      techRecord_reasonForCreation: form.reason,
-      techRecord_hiddenInVta: !this.techRecord?.techRecord_hiddenInVta,
-    };
+		const updatedTechRecord: TechRecordType<'put'> = {
+			...cloneDeep(this.techRecord as TechRecordType<'put'>),
+			techRecord_reasonForCreation: form.reason,
+			techRecord_hiddenInVta: !this.techRecord?.techRecord_hiddenInVta,
+		};
 
-    this.technicalRecordService.updateEditingTechRecord(updatedTechRecord);
+		this.technicalRecordService.updateEditingTechRecord(updatedTechRecord);
 
-    this.technicalRecordService.techRecord$
-      .pipe(
-        takeUntil(this.destroy$),
-        skipWhile((technicalRecord) => technicalRecord?.techRecord_hiddenInVta !== this.techRecord?.techRecord_hiddenInVta),
-        withLatestFrom(this.routerService.getRouteNestedParam$('systemNumber'), this.routerService.getRouteNestedParam$('createdTimestamp')),
-        take(1),
-      )
-      .subscribe(([, systemNumber, createdTimestamp]) => {
-        if (systemNumber && createdTimestamp) {
-          this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
-        }
-      });
-  }
+		this.technicalRecordService.techRecord$
+			.pipe(
+				takeUntil(this.destroy$),
+				skipWhile(
+					(technicalRecord) => technicalRecord?.techRecord_hiddenInVta !== this.techRecord?.techRecord_hiddenInVta
+				),
+				withLatestFrom(
+					this.routerService.getRouteNestedParam$('systemNumber'),
+					this.routerService.getRouteNestedParam$('createdTimestamp')
+				),
+				take(1)
+			)
+			.subscribe(([, systemNumber, createdTimestamp]) => {
+				if (systemNumber && createdTimestamp) {
+					this.store.dispatch(updateTechRecord({ systemNumber, createdTimestamp }));
+				}
+			});
+	}
 }

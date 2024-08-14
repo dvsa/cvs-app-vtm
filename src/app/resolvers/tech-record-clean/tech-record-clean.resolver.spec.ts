@@ -10,99 +10,111 @@ import { Observable, firstValueFrom, of } from 'rxjs';
 import { techRecordCleanResolver } from './tech-record-clean.resolver';
 
 describe('techRecordCleanResolver', () => {
-  const executeResolver: ResolveFn<Observable<boolean>> = (...resolverParameters) =>
-    TestBed.runInInjectionContext(() => techRecordCleanResolver(...resolverParameters));
+	const executeResolver: ResolveFn<Observable<boolean>> = (...resolverParameters) =>
+		TestBed.runInInjectionContext(() => techRecordCleanResolver(...resolverParameters));
 
-  const actions$ = new Observable<Action>();
-  const mockActivatedRouteSnapshot = jest.fn;
-  let store: MockStore<State>;
-  let activatedRouteSnapshot: ActivatedRouteSnapshot;
+	const actions$ = new Observable<Action>();
+	const mockActivatedRouteSnapshot = jest.fn;
+	let store: MockStore<State>;
+	let activatedRouteSnapshot: ActivatedRouteSnapshot;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      providers: [
-        provideMockStore({ initialState: initialAppState }),
-        provideMockActions(() => actions$),
-        { provide: ActivatedRouteSnapshot, useValue: mockActivatedRouteSnapshot },
-      ],
-    });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [RouterTestingModule],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				provideMockActions(() => actions$),
+				{ provide: ActivatedRouteSnapshot, useValue: mockActivatedRouteSnapshot },
+			],
+		});
 
-    store = TestBed.inject(MockStore);
-    activatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
-    activatedRouteSnapshot.data = {
-      isEditing: true,
-    };
-  });
+		store = TestBed.inject(MockStore);
+		activatedRouteSnapshot = TestBed.inject(ActivatedRouteSnapshot);
+		activatedRouteSnapshot.data = {
+			isEditing: true,
+		};
+	});
 
-  it('should be created', () => {
-    expect(executeResolver).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(executeResolver).toBeTruthy();
+	});
 
-  describe('fetch tech record', () => {
-    it('should update the editing tech record when approval type = Small series and approval number is in NKS format', async () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
-      jest.spyOn(store, 'select').mockReturnValue(of({
-        techRecord_vehicleType: 'hgv',
-        techRecord_approvalType: 'Small series' as ApprovalType,
-        techRecord_approvalTypeNumber: '811*NKS*666666',
-      }));
-      const result = executeResolver(activatedRouteSnapshot, {} as RouterStateSnapshot) as Observable<boolean>;
-      const resolveResult = await firstValueFrom(result);
+	describe('fetch tech record', () => {
+		it('should update the editing tech record when approval type = Small series and approval number is in NKS format', async () => {
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			jest.spyOn(store, 'select').mockReturnValue(
+				of({
+					techRecord_vehicleType: 'hgv',
+					techRecord_approvalType: 'Small series' as ApprovalType,
+					techRecord_approvalTypeNumber: '811*NKS*666666',
+				})
+			);
+			const result = executeResolver(activatedRouteSnapshot, {} as RouterStateSnapshot) as Observable<boolean>;
+			const resolveResult = await firstValueFrom(result);
 
-      expect(resolveResult).toBe(true);
-      expect(dispatchSpy).toHaveBeenCalledTimes(1);
-      expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
-        vehicleTechRecord: {
-          techRecord_approvalType: ApprovalType.SMALL_SERIES_NKS,
-          techRecord_approvalTypeNumber: '811*NKS*666666',
-          techRecord_vehicleType: 'hgv',
-        },
-      }));
-    });
+			expect(resolveResult).toBe(true);
+			expect(dispatchSpy).toHaveBeenCalledTimes(1);
+			expect(dispatchSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					vehicleTechRecord: {
+						techRecord_approvalType: ApprovalType.SMALL_SERIES_NKS,
+						techRecord_approvalTypeNumber: '811*NKS*666666',
+						techRecord_vehicleType: 'hgv',
+					},
+				})
+			);
+		});
 
-    it('should update the editing tech record when approval type = Small series and approval number is in NKSXX format', async () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
-      jest.spyOn(store, 'select').mockReturnValue(of({
-        techRecord_vehicleType: 'hgv',
-        techRecord_approvalType: 'Small series' as ApprovalType,
-        techRecord_approvalTypeNumber: '811*NKSXX/1234*666666',
-      }));
-      const result = executeResolver(activatedRouteSnapshot, {} as RouterStateSnapshot) as Observable<boolean>;
-      const resolveResult = await firstValueFrom(result);
+		it('should update the editing tech record when approval type = Small series and approval number is in NKSXX format', async () => {
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			jest.spyOn(store, 'select').mockReturnValue(
+				of({
+					techRecord_vehicleType: 'hgv',
+					techRecord_approvalType: 'Small series' as ApprovalType,
+					techRecord_approvalTypeNumber: '811*NKSXX/1234*666666',
+				})
+			);
+			const result = executeResolver(activatedRouteSnapshot, {} as RouterStateSnapshot) as Observable<boolean>;
+			const resolveResult = await firstValueFrom(result);
 
-      expect(resolveResult).toBe(true);
-      expect(dispatchSpy).toHaveBeenCalledTimes(1);
-      expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
-        vehicleTechRecord: {
-          techRecord_approvalType: ApprovalType.SMALL_SERIES_NKSXX,
-          techRecord_approvalTypeNumber: '811*NKSXX/1234*666666',
-          techRecord_vehicleType: 'hgv',
-        },
-      }));
-    });
+			expect(resolveResult).toBe(true);
+			expect(dispatchSpy).toHaveBeenCalledTimes(1);
+			expect(dispatchSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					vehicleTechRecord: {
+						techRecord_approvalType: ApprovalType.SMALL_SERIES_NKSXX,
+						techRecord_approvalTypeNumber: '811*NKSXX/1234*666666',
+						techRecord_vehicleType: 'hgv',
+					},
+				})
+			);
+		});
 
-    it('should not update the editing tech record when the approval type is Small series, but the approval number is invalid', async () => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
-      jest.spyOn(store, 'select').mockReturnValue(of({
-        techRecord_vehicleType: 'hgv',
-        techRecord_approvalType: 'Small series' as ApprovalType,
-        techRecord_approvalTypeNumber: 'INVALID NUMBER',
-      }));
-      const result = executeResolver(activatedRouteSnapshot, {} as RouterStateSnapshot) as Observable<boolean>;
-      const resolveResult = await firstValueFrom(result);
+		it('should not update the editing tech record when the approval type is Small series, but the approval number is invalid', async () => {
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
+			jest.spyOn(store, 'select').mockReturnValue(
+				of({
+					techRecord_vehicleType: 'hgv',
+					techRecord_approvalType: 'Small series' as ApprovalType,
+					techRecord_approvalTypeNumber: 'INVALID NUMBER',
+				})
+			);
+			const result = executeResolver(activatedRouteSnapshot, {} as RouterStateSnapshot) as Observable<boolean>;
+			const resolveResult = await firstValueFrom(result);
 
-      expect(resolveResult).toBe(true);
-      expect(dispatchSpy).toHaveBeenCalledTimes(1);
+			expect(resolveResult).toBe(true);
+			expect(dispatchSpy).toHaveBeenCalledTimes(1);
 
-      // This bad data gets nulled by the tech-record-validate resolver
-      expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
-        vehicleTechRecord: {
-          techRecord_approvalType: 'Small series' as ApprovalType,
-          techRecord_approvalTypeNumber: 'INVALID NUMBER',
-          techRecord_vehicleType: 'hgv',
-        },
-      }));
-    });
-  });
+			// This bad data gets nulled by the tech-record-validate resolver
+			expect(dispatchSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					vehicleTechRecord: {
+						techRecord_approvalType: 'Small series' as ApprovalType,
+						techRecord_approvalTypeNumber: 'INVALID NUMBER',
+						techRecord_vehicleType: 'hgv',
+					},
+				})
+			);
+		});
+	});
 });

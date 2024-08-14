@@ -1,64 +1,71 @@
+import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { State } from '@store/.';
 import {
-  routeEditable,
-  routerState,
-  selectQueryParam,
-  selectQueryParams,
-  selectRouteData,
-  selectRouteDataProperty,
-  selectRouteNestedParams,
-  selectRouteParam,
+	routeEditable,
+	routerState,
+	selectQueryParam,
+	selectQueryParams,
+	selectRouteData,
+	selectRouteDataProperty,
+	selectRouteNestedParams,
+	selectRouteParam,
 } from '@store/router/selectors/router.selectors';
 import { Observable, map } from 'rxjs';
-import { Location } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class RouterService {
-  constructor(private store: Store<State>, private router: Router, private activatedRoute: ActivatedRoute, private location: Location) {}
+	constructor(
+		private store: Store<State>,
+		private router: Router,
+		private activatedRoute: ActivatedRoute,
+		private location: Location
+	) {}
 
-  get router$() {
-    return this.store.pipe(select(routerState));
-  }
+	get router$() {
+		return this.store.pipe(select(routerState));
+	}
 
-  get queryParams$(): Observable<Params> {
-    return this.store.pipe(select(selectQueryParams));
-  }
+	get queryParams$(): Observable<Params> {
+		return this.store.pipe(select(selectQueryParams));
+	}
 
-  getQueryParam$(param: string) {
-    return this.store.pipe(select(selectQueryParam(param)));
-  }
+	getQueryParam$(param: string) {
+		return this.store.pipe(select(selectQueryParam(param)));
+	}
 
-  getRouteParam$(param: string) {
-    return this.store.pipe(select(selectRouteParam(param)));
-  }
+	getRouteParam$(param: string) {
+		return this.store.pipe(select(selectRouteParam(param)));
+	}
 
-  get routeNestedParams$() {
-    return this.store.pipe(select(selectRouteNestedParams));
-  }
+	get routeNestedParams$() {
+		return this.store.pipe(select(selectRouteNestedParams));
+	}
 
-  getRouteNestedParam$(param: string): Observable<string | undefined> {
-    return this.routeNestedParams$.pipe(map((route) => route[`${param}`]));
-  }
+	getRouteNestedParam$(param: string): Observable<string | undefined> {
+		return this.routeNestedParams$.pipe(map((route) => route[`${param}`]));
+	}
 
-  get routeEditable$() {
-    return this.store.pipe(select(routeEditable));
-  }
+	get routeEditable$() {
+		return this.store.pipe(select(routeEditable));
+	}
 
-  get routeData$() {
-    return this.store.pipe(select(selectRouteData));
-  }
+	get routeData$() {
+		return this.store.pipe(select(selectRouteData));
+	}
 
-  getRouteDataProperty$(property: string) {
-    return this.store.pipe(select(selectRouteDataProperty(property)));
-  }
+	getRouteDataProperty$(property: string) {
+		return this.store.pipe(select(selectRouteDataProperty(property)));
+	}
 
-  async addQueryParams(queryParams: Params) {
-    const url = this.router.createUrlTree([], { relativeTo: this.activatedRoute, queryParams, queryParamsHandling: 'merge' }).toString();
-    await this.router.navigateByUrl(url);
-  }
+	async addQueryParams(queryParams: Params) {
+		const url = this.router
+			.createUrlTree([], { relativeTo: this.activatedRoute, queryParams, queryParamsHandling: 'merge' })
+			.toString();
+		await this.router.navigateByUrl(url);
+	}
 }
