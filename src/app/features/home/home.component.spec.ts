@@ -12,34 +12,34 @@ import { HomeButtonComponent } from './components/home-button/home-button.compon
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
-  let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
-  const actions$ = new ReplaySubject<Action>();
+	let component: HomeComponent;
+	let fixture: ComponentFixture<HomeComponent>;
+	const actions$ = new ReplaySubject<Action>();
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [HomeComponent, HomeButtonComponent, RoleRequiredDirective],
-      imports: [RouterTestingModule, SharedModule, HttpClientModule],
-      providers: [
-        FormBuilder,
-        provideMockActions(() => actions$),
-        {
-          provide: UserService,
-          useValue: {
-            roles$: of(['TechRecord.View']),
-          },
-        },
-      ],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [HomeComponent, HomeButtonComponent, RoleRequiredDirective],
+			imports: [RouterTestingModule, SharedModule, HttpClientModule],
+			providers: [
+				FormBuilder,
+				provideMockActions(() => actions$),
+				{
+					provide: UserService,
+					useValue: {
+						roles$: of(['TechRecord.View']),
+					},
+				},
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(HomeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(HomeComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

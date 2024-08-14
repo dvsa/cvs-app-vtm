@@ -1,20 +1,18 @@
-import {
-  Directive, ElementRef, HostListener, Input,
-} from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
-  selector: '[appFocusOnCharacterLimit]',
+	selector: '[appFocusOnCharacterLimit]',
 })
 export class FocusOnCharacterLimitDirective {
-  @Input() nextElement: ElementRef | undefined;
-  @Input() characterLimit = 0;
+	@Input() nextElement: ElementRef | undefined;
+	@Input() characterLimit = 0;
 
-  constructor(private el: ElementRef) {}
+	constructor(private el: ElementRef) {}
 
-  @HostListener('input', ['$event.target.value'])
-  onInput(value: string): void {
-    if (value.length >= this.characterLimit && this.nextElement) {
-      this.nextElement.nativeElement.focus();
-    }
-  }
+	@HostListener('input', ['$event.target.value'])
+	onInput(value: string): void {
+		if (value.length >= this.characterLimit && this.nextElement) {
+			this.nextElement.nativeElement.focus();
+		}
+	}
 }

@@ -2,7 +2,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
+import {
+	DefaultService as CreateTestResultsService,
+	GetTestResultsService,
+	UpdateTestResultsService,
+} from '@api/test-results';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
@@ -24,93 +28,103 @@ import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.compone
 import { BaseTestRecordComponent } from './base-test-record.component';
 
 describe('BaseTestRecordComponent', () => {
-  let component: BaseTestRecordComponent;
-  let fixture: ComponentFixture<BaseTestRecordComponent>;
+	let component: BaseTestRecordComponent;
+	let fixture: ComponentFixture<BaseTestRecordComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [BaseTestRecordComponent, DefaultNullOrEmpty, VehicleHeaderComponent],
-      imports: [DynamicFormsModule, HttpClientTestingModule, SharedModule, RouterTestingModule],
-      providers: [
-        RouterService,
-        GlobalErrorService,
-        provideMockStore({ initialState: initialAppState }),
-        TestTypesService,
-        TechnicalRecordService,
-        UpdateTestResultsService,
-        GetTestResultsService,
-        CreateTestResultsService,
-        {
-          provide: UserService,
-          useValue: {
-            roles$: of([Roles.TestResultCreateContingency, Roles.TestResultAmend]),
-          },
-        },
-      ],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [BaseTestRecordComponent, DefaultNullOrEmpty, VehicleHeaderComponent],
+			imports: [DynamicFormsModule, HttpClientTestingModule, SharedModule, RouterTestingModule],
+			providers: [
+				RouterService,
+				GlobalErrorService,
+				provideMockStore({ initialState: initialAppState }),
+				TestTypesService,
+				TechnicalRecordService,
+				UpdateTestResultsService,
+				GetTestResultsService,
+				CreateTestResultsService,
+				{
+					provide: UserService,
+					useValue: {
+						roles$: of([Roles.TestResultCreateContingency, Roles.TestResultAmend]),
+					},
+				},
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(BaseTestRecordComponent);
-    component = fixture.componentInstance;
-    component.testResult = { vin: 'ABC002', testTypes: [{ testResult: resultOfTestEnum.fail }] } as TestResultModel;
-    jest.clearAllMocks();
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(BaseTestRecordComponent);
+		component = fixture.componentInstance;
+		component.testResult = { vin: 'ABC002', testTypes: [{ testResult: resultOfTestEnum.fail }] } as TestResultModel;
+		jest.clearAllMocks();
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  describe('BaseTestRecordComponent.prototype.handleFormChange.name', () => {
-    it('should emit the new test result', (done) => {
-      const event = { vin: 'ABC001' } as TestResultModel;
-      const expectedValue = { vin: 'ABC001' };
+	describe('BaseTestRecordComponent.prototype.handleFormChange.name', () => {
+		it('should emit the new test result', (done) => {
+			const event = { vin: 'ABC001' } as TestResultModel;
+			const expectedValue = { vin: 'ABC001' };
 
-      component.newTestResult.subscribe((testResult) => {
-        expect(testResult).toEqual(expectedValue);
-        done();
-      });
+			component.newTestResult.subscribe((testResult) => {
+				expect(testResult).toEqual(expectedValue);
+				done();
+			});
 
-      component.handleFormChange(event);
-    });
-  });
+			component.handleFormChange(event);
+		});
+	});
 
-  describe('validateEuVehicleCategory', () => {
-    it('should call the validate function of eu vehicle category', () => {
-      component.sections = [{ form: new CustomFormGroup({ name: 'vehicleSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
-        {
-          form: new CustomFormGroup({
-            name: 'testSection',
-            type: FormNodeTypes.GROUP,
-            children: [],
-          }, {}),
-        }] as unknown as QueryList<DynamicFormGroupComponent>;
+	describe('validateEuVehicleCategory', () => {
+		it('should call the validate function of eu vehicle category', () => {
+			component.sections = [
+				{ form: new CustomFormGroup({ name: 'vehicleSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
+				{
+					form: new CustomFormGroup(
+						{
+							name: 'testSection',
+							type: FormNodeTypes.GROUP,
+							children: [],
+						},
+						{}
+					),
+				},
+			] as unknown as QueryList<DynamicFormGroupComponent>;
 
-      const spy = jest.spyOn(DynamicFormService, 'validateControl');
-      spy.mockImplementation(() => undefined);
+			const spy = jest.spyOn(DynamicFormService, 'validateControl');
+			spy.mockImplementation(() => undefined);
 
-      component.validateEuVehicleCategory('test');
+			component.validateEuVehicleCategory('test');
 
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
+			expect(spy).toHaveBeenCalledTimes(1);
+		});
 
-    it('should not call the validate function of eu vehicle category', () => {
-      component.sections = [{ form: new CustomFormGroup({ name: 'anotherTestSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
-        {
-          form: new CustomFormGroup({
-            name: 'testSection',
-            type: FormNodeTypes.GROUP,
-            children: [],
-          }, {}),
-        }] as unknown as QueryList<DynamicFormGroupComponent>;
+		it('should not call the validate function of eu vehicle category', () => {
+			component.sections = [
+				{ form: new CustomFormGroup({ name: 'anotherTestSection', type: FormNodeTypes.GROUP, children: [] }, {}) },
+				{
+					form: new CustomFormGroup(
+						{
+							name: 'testSection',
+							type: FormNodeTypes.GROUP,
+							children: [],
+						},
+						{}
+					),
+				},
+			] as unknown as QueryList<DynamicFormGroupComponent>;
 
-      const spy = jest.spyOn(DynamicFormService, 'validateControl');
-      spy.mockImplementation(() => undefined);
+			const spy = jest.spyOn(DynamicFormService, 'validateControl');
+			spy.mockImplementation(() => undefined);
 
-      component.validateEuVehicleCategory('test');
+			component.validateEuVehicleCategory('test');
 
-      expect(spy).toHaveBeenCalledTimes(0);
-    });
-  });
+			expect(spy).toHaveBeenCalledTimes(0);
+		});
+	});
 });

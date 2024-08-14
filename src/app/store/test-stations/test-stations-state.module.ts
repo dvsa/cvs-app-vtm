@@ -6,11 +6,11 @@ import { TestStationsEffects } from './effects/test-stations.effects';
 import { STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer } from './reducers/test-stations.reducer';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    StoreModule.forFeature(STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer),
-    EffectsModule.forFeature([TestStationsEffects]),
-  ],
+	declarations: [],
+	imports: [
+		CommonModule,
+		StoreModule.forFeature(STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer),
+		EffectsModule.forFeature([TestStationsEffects]),
+	],
 })
 export class TestStationsStateModule {}

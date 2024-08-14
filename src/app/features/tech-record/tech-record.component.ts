@@ -7,38 +7,38 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { take } from 'rxjs';
 
 @Component({
-  selector: 'app-tech-record',
-  templateUrl: './tech-record.component.html',
+	selector: 'app-tech-record',
+	templateUrl: './tech-record.component.html',
 })
 export class TechRecordComponent implements OnInit {
-  systemNumber?: string;
-  createdTimestamp?: string;
+	systemNumber?: string;
+	createdTimestamp?: string;
 
-  constructor(
-    private techRecordService: TechnicalRecordService,
-    private router: Router,
-    public errorService: GlobalErrorService,
-    private route: ActivatedRoute,
-  ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-  }
+	constructor(
+		private techRecordService: TechnicalRecordService,
+		private router: Router,
+		public errorService: GlobalErrorService,
+		private route: ActivatedRoute
+	) {
+		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+	}
 
-  ngOnInit(): void {
-    this.route.params.pipe(take(1)).subscribe((params) => {
-      this.systemNumber = params['systemNumber'];
-      this.createdTimestamp = params['createdTimestamp'];
-    });
-  }
+	ngOnInit(): void {
+		this.route.params.pipe(take(1)).subscribe((params) => {
+			this.systemNumber = params['systemNumber'];
+			this.createdTimestamp = params['createdTimestamp'];
+		});
+	}
 
-  get techRecord$() {
-    return this.techRecordService.techRecord$;
-  }
+	get techRecord$() {
+		return this.techRecordService.techRecord$;
+	}
 
-  get roles() {
-    return Roles;
-  }
+	get roles() {
+		return Roles;
+	}
 
-  getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
-    return errors.find((error) => error.anchorLink === name);
-  }
+	getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
+		return errors.find((error) => error.anchorLink === name);
+	}
 }

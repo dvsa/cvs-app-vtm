@@ -1,89 +1,89 @@
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ErrorInterceptor } from './error-handling.interceptor';
 
 @Component({
-  selector: 'app-dummy-component',
-  template: '',
+	selector: 'app-dummy-component',
+	template: '',
 })
 class DummyComponent {}
 
 describe('ErrorInterceptor', () => {
-  let router: Router;
-  let http: HttpClient;
-  let httpController: HttpTestingController;
+	let router: Router;
+	let http: HttpClient;
+	let httpController: HttpTestingController;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule.withRoutes([
-          {
-            path: '',
-            component: DummyComponent,
-          },
-          {
-            path: 'error',
-            component: DummyComponent,
-          },
-        ]),
-      ],
-      providers: [
-        ErrorInterceptor,
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: ErrorInterceptor,
-          multi: true,
-        },
-      ],
-    });
-  });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			declarations: [DummyComponent],
+			imports: [
+				HttpClientTestingModule,
+				RouterTestingModule.withRoutes([
+					{
+						path: '',
+						component: DummyComponent,
+					},
+					{
+						path: 'error',
+						component: DummyComponent,
+					},
+				]),
+			],
+			providers: [
+				ErrorInterceptor,
+				{
+					provide: HTTP_INTERCEPTORS,
+					useClass: ErrorInterceptor,
+					multi: true,
+				},
+			],
+		});
+	});
 
-  beforeEach(() => {
-    router = TestBed.inject(Router);
-    http = TestBed.inject(HttpClient);
-    httpController = TestBed.inject(HttpTestingController);
-    jest.clearAllMocks();
-  });
+	beforeEach(() => {
+		router = TestBed.inject(Router);
+		http = TestBed.inject(HttpClient);
+		httpController = TestBed.inject(HttpTestingController);
+		jest.clearAllMocks();
+	});
 
-  it('should be created', () => {
-    const interceptor: ErrorInterceptor = TestBed.inject(ErrorInterceptor);
+	it('should be created', () => {
+		const interceptor: ErrorInterceptor = TestBed.inject(ErrorInterceptor);
 
-    expect(interceptor).toBeTruthy();
-  });
+		expect(interceptor).toBeTruthy();
+	});
 
-  it('should navigate to error page on a 500', fakeAsync(() => {
-    http.get('http://www.google.com').subscribe({
-      next: () => {},
-      error: (e) => {
-        expect(e.status).toBe(500);
-      },
-    });
+	it('should navigate to error page on a 500', fakeAsync(() => {
+		http.get('http://www.google.com').subscribe({
+			next: () => {},
+			error: (e) => {
+				expect(e.status).toBe(500);
+			},
+		});
 
-    const req = httpController.expectOne('http://www.google.com');
-    req.flush('string', { status: 500, statusText: 'Internal Server Error' });
+		const req = httpController.expectOne('http://www.google.com');
+		req.flush('string', { status: 500, statusText: 'Internal Server Error' });
 
-    tick();
+		tick();
 
-    expect(router.url).toBe('/error');
-  }));
+		expect(router.url).toBe('/error');
+	}));
 
-  it('should not navigate to error page on a success', fakeAsync(() => {
-    http.get('http://www.google.com').subscribe({
-      next: (response) => {
-        expect(response).toBe('string');
-      },
-      error: () => {},
-    });
+	it('should not navigate to error page on a success', fakeAsync(() => {
+		http.get('http://www.google.com').subscribe({
+			next: (response) => {
+				expect(response).toBe('string');
+			},
+			error: () => {},
+		});
 
-    const req = httpController.expectOne('http://www.google.com');
-    req.flush('string');
-    tick();
-    expect(router.url).toBe('/');
-  }));
+		const req = httpController.expectOne('http://www.google.com');
+		req.flush('string');
+		tick();
+		expect(router.url).toBe('/');
+	}));
 });

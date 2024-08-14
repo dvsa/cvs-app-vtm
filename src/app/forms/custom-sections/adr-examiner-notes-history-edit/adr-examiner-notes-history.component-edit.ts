@@ -1,7 +1,5 @@
 import { KeyValue, ViewportScroller } from '@angular/common';
-import {
-  AfterContentInit, Component, OnDestroy, OnInit, inject,
-} from '@angular/core';
+import { AfterContentInit, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormArray, NgControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
@@ -16,70 +14,75 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-adr-examiner-notes-history',
-  templateUrl: './adr-examiner-notes-history-edit.component.html',
-  styleUrls: ['adr-examiner-notes-history.component-edit.scss'],
+	selector: 'app-adr-examiner-notes-history',
+	templateUrl: './adr-examiner-notes-history-edit.component.html',
+	styleUrls: ['adr-examiner-notes-history.component-edit.scss'],
 })
-export class AdrExaminerNotesHistoryEditComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
-  destroy$ = new ReplaySubject<boolean>(1);
-  formArray = new FormArray<CustomFormControl>([]);
-  currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'> = undefined;
-  technicalRecordService = inject(TechnicalRecordService);
-  store = inject(Store<TechnicalRecordServiceState>);
-  viewportScroller = inject(ViewportScroller);
-  router = inject(Router);
-  route = inject(ActivatedRoute);
-  editingReason?: ReasonForEditing;
-  pageStart?: number;
-  pageEnd?: number;
+export class AdrExaminerNotesHistoryEditComponent
+	extends BaseControlComponent
+	implements OnInit, OnDestroy, AfterContentInit
+{
+	destroy$ = new ReplaySubject<boolean>(1);
+	formArray = new FormArray<CustomFormControl>([]);
+	currentTechRecord?: TechRecordType<'hgv' | 'lgv' | 'trl'> = undefined;
+	technicalRecordService = inject(TechnicalRecordService);
+	store = inject(Store<TechnicalRecordServiceState>);
+	viewportScroller = inject(ViewportScroller);
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+	editingReason?: ReasonForEditing;
+	pageStart?: number;
+	pageEnd?: number;
 
-  ngOnInit(): void {
-    this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
-      this.control?.patchValue(changes, { emitModelToViewChange: true });
-    });
-    this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((currentTechRecord) => {
-      this.currentTechRecord = currentTechRecord as TechRecordType<'hgv' | 'lgv' | 'trl'>;
-    });
-    this.editingReason = this.route.snapshot.data['reason'];
-  }
+	ngOnInit(): void {
+		this.formArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((changes) => {
+			this.control?.patchValue(changes, { emitModelToViewChange: true });
+		});
+		this.technicalRecordService.techRecord$.pipe(takeUntil(this.destroy$)).subscribe((currentTechRecord) => {
+			this.currentTechRecord = currentTechRecord as TechRecordType<'hgv' | 'lgv' | 'trl'>;
+		});
+		this.editingReason = this.route.snapshot.data['reason'];
+	}
 
-  override ngAfterContentInit(): void {
-    const injectedControl = this.injector.get(NgControl, null);
-    if (injectedControl) {
-      const ngControl = injectedControl.control as unknown as KeyValue<string, CustomControl>;
-      if (ngControl.value) {
-        this.name = ngControl.key;
-        this.control = ngControl.value;
-      }
-    }
-  }
+	override ngAfterContentInit(): void {
+		const injectedControl = this.injector.get(NgControl, null);
+		if (injectedControl) {
+			const ngControl = injectedControl.control as unknown as KeyValue<string, CustomControl>;
+			if (ngControl.value) {
+				this.name = ngControl.key;
+				this.control = ngControl.value;
+			}
+		}
+	}
 
-  handlePaginationChange({ start, end }: { start: number; end: number }): void {
-    this.pageStart = start;
-    this.pageEnd = end;
-    this.cdr.detectChanges();
-  }
+	handlePaginationChange({ start, end }: { start: number; end: number }): void {
+		this.pageStart = start;
+		this.pageEnd = end;
+		this.cdr.detectChanges();
+	}
 
-  getAdditionalExaminerNotes(): AdditionalExaminerNotes[] {
-    return (this.currentTechRecord?.techRecord_adrDetails_additionalExaminerNotes ?? []).sort(
-      (a, b) => +new Date(b.createdAtDate ?? '') - +new Date(a.createdAtDate ?? ''),
-    );
-  }
+	getAdditionalExaminerNotes(): AdditionalExaminerNotes[] {
+		return (this.currentTechRecord?.techRecord_adrDetails_additionalExaminerNotes ?? []).sort(
+			(a, b) => +new Date(b.createdAtDate ?? '') - +new Date(a.createdAtDate ?? '')
+		);
+	}
 
-  get currentAdrNotesPage(): AdditionalExaminerNotes[] {
-    return this.currentTechRecord?.techRecord_adrDetails_additionalExaminerNotes?.slice(this.pageStart, this.pageEnd) ?? [];
-  }
+	get currentAdrNotesPage(): AdditionalExaminerNotes[] {
+		return (
+			this.currentTechRecord?.techRecord_adrDetails_additionalExaminerNotes?.slice(this.pageStart, this.pageEnd) ?? []
+		);
+	}
 
-  getEditAdditionalExaminerNotePage(examinerNoteIndex: number) {
-    const route = `../${this.editingReason}/edit-additional-examiner-note/${examinerNoteIndex}`;
+	getEditAdditionalExaminerNotePage(examinerNoteIndex: number) {
+		const route = `../${this.editingReason}/edit-additional-examiner-note/${examinerNoteIndex}`;
 
-    this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
+		this.store.dispatch(updateScrollPosition({ position: this.viewportScroller.getScrollPosition() }));
 
-    void this.router.navigate([route], { relativeTo: this.route, state: this.currentTechRecord });
-  }
+		void this.router.navigate([route], { relativeTo: this.route, state: this.currentTechRecord });
+	}
 
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
-  }
+	ngOnDestroy(): void {
+		this.destroy$.next(true);
+		this.destroy$.complete();
+	}
 }

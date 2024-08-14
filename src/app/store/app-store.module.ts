@@ -20,32 +20,32 @@ import { TestTypesStateModule } from './test-types/test-types.module';
 import { UserStateModule } from './user/user-state.module';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),
-    environment.EnableDevTools
-      ? StoreDevtoolsModule.instrument({
-        name: 'VTM Web Dev Tools',
-        maxAge: 25, // Retains last 25 states
-        logOnly: environment.production, // Log-only mode in production
-      })
-      : [],
-    DefectsStateModule,
-    GlobalErrorStateModule,
-    GlobalWarningStateModule,
-    ReferenceDataStateModule,
-    RouterStateModule,
-    SpinnerStateModule,
-    TechnicalRecordsStateModule,
-    TestRecordsStateModule,
-    TestStationsStateModule,
-    TestTypesStateModule,
-    UserStateModule,
-    TechRecordSearchStateModule,
-    RetryInterceptorStateModule,
-    RequiredStandardsStateModule,
-  ],
+	declarations: [],
+	imports: [
+		CommonModule,
+		StoreModule.forRoot({}),
+		EffectsModule.forRoot([]),
+		environment.EnableDevTools
+			? StoreDevtoolsModule.instrument({
+					name: 'VTM Web Dev Tools',
+					maxAge: 25, // Retains last 25 states
+					logOnly: environment.production, // Log-only mode in production
+				})
+			: [],
+		DefectsStateModule,
+		GlobalErrorStateModule,
+		GlobalWarningStateModule,
+		ReferenceDataStateModule,
+		RouterStateModule,
+		SpinnerStateModule,
+		TechnicalRecordsStateModule,
+		TestRecordsStateModule,
+		TestStationsStateModule,
+		TestTypesStateModule,
+		UserStateModule,
+		TechRecordSearchStateModule,
+		RetryInterceptorStateModule,
+		RequiredStandardsStateModule,
+	],
 })
 export class AppStoreModule {}

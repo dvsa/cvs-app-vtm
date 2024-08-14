@@ -11,90 +11,97 @@ import { initialAppState } from '@store/index';
 import { AdrComponent } from './adr.component';
 
 describe('AdrComponent', () => {
-  let component: AdrComponent;
-  let fixture: ComponentFixture<AdrComponent>;
+	let component: AdrComponent;
+	let fixture: ComponentFixture<AdrComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [AdrComponent],
-      imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule],
-      providers: [
-        provideMockStore({ initialState: initialAppState }),
-        { provide: TechnicalRecordService, useValue: { updateEditingTechRecord: jest.fn() } },
-        { provide: AdrService, useValue: { carriesDangerousGoods: jest.fn(), determineTankStatementSelect: jest.fn() } },
-      ],
-    }).compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [AdrComponent],
+			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule],
+			providers: [
+				provideMockStore({ initialState: initialAppState }),
+				{ provide: TechnicalRecordService, useValue: { updateEditingTechRecord: jest.fn() } },
+				{
+					provide: AdrService,
+					useValue: { carriesDangerousGoods: jest.fn(), determineTankStatementSelect: jest.fn() },
+				},
+			],
+		}).compileComponents();
 
-    fixture = TestBed.createComponent(AdrComponent);
-    component = fixture.componentInstance;
-    component.techRecord = createMockHgv(1234);
-    fixture.detectChanges();
-  });
+		fixture = TestBed.createComponent(AdrComponent);
+		component = fixture.componentInstance;
+		component.techRecord = createMockHgv(1234);
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  describe('ngOnInit', () => {
-    it('should populate the dangerous goods property', () => {
-      const spy = jest.spyOn(component.adrService, 'carriesDangerousGoods');
-      component.ngOnInit();
-      expect(spy).toHaveBeenCalled();
-    });
-  });
+	describe('ngOnInit', () => {
+		it('should populate the dangerous goods property', () => {
+			const spy = jest.spyOn(component.adrService, 'carriesDangerousGoods');
+			component.ngOnInit();
+			expect(spy).toHaveBeenCalled();
+		});
+	});
 
-  describe('handleFormChange', () => {
-    it('the form should be updated', () => {
-      const testData = { test: 11 };
-      const spy = jest.spyOn(component.form, 'patchValue');
-      component.handleFormChange(testData);
-      expect(spy).toHaveBeenCalled();
-    });
+	describe('handleFormChange', () => {
+		it('the form should be updated', () => {
+			const testData = { test: 11 };
+			const spy = jest.spyOn(component.form, 'patchValue');
+			component.handleFormChange(testData);
+			expect(spy).toHaveBeenCalled();
+		});
 
-    it('should not update the form if the event is null', () => {
-      const testData = null as unknown as Record<string, unknown>;
-      const spy = jest.spyOn(component.form, 'patchValue');
-      component.handleFormChange(testData);
-      expect(spy).not.toHaveBeenCalled();
-    });
+		it('should not update the form if the event is null', () => {
+			const testData = null as unknown as Record<string, unknown>;
+			const spy = jest.spyOn(component.form, 'patchValue');
+			component.handleFormChange(testData);
+			expect(spy).not.toHaveBeenCalled();
+		});
 
-    it('should not update the form if the techRecord is null', () => {
-      component.techRecord = null as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>;
-      const testData = { test: 11 };
-      const spy = jest.spyOn(component.form, 'patchValue');
-      component.handleFormChange(testData);
-      expect(spy).not.toHaveBeenCalled();
-    });
-  });
+		it('should not update the form if the techRecord is null', () => {
+			component.techRecord = null as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>;
+			const testData = { test: 11 };
+			const spy = jest.spyOn(component.form, 'patchValue');
+			component.handleFormChange(testData);
+			expect(spy).not.toHaveBeenCalled();
+		});
+	});
 
-  describe('adr documentation methods', () => {
-    it('should return false if I do not have a document id', () => {
-      component.techRecord = { } as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>;
-      const res = component.hasAdrDocumentation();
-      expect(res).toBeFalsy();
-    });
+	describe('adr documentation methods', () => {
+		it('should return false if I do not have a document id', () => {
+			component.techRecord = {} as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>;
+			const res = component.hasAdrDocumentation();
+			expect(res).toBeFalsy();
+		});
 
-    it('should return true if I do have a document id', () => {
-      component.techRecord = { techRecord_adrDetails_documentId: '1234' } as unknown as TechRecordType<'hgv' | 'lgv' | 'trl'>;
-      const res = component.hasAdrDocumentation();
-      expect(res).toBeTruthy();
-    });
+		it('should return true if I do have a document id', () => {
+			component.techRecord = { techRecord_adrDetails_documentId: '1234' } as unknown as TechRecordType<
+				'hgv' | 'lgv' | 'trl'
+			>;
+			const res = component.hasAdrDocumentation();
+			expect(res).toBeTruthy();
+		});
 
-    it('should return a map with filename in', () => {
-      const map = new Map([['adrDocumentId', 'filename']]);
-      component.techRecord.techRecord_adrDetails_documentId = 'filename';
-      expect(component.documentParams).toStrictEqual(map);
-    });
+		it('should return a map with filename in', () => {
+			const map = new Map([['adrDocumentId', 'filename']]);
+			component.techRecord.techRecord_adrDetails_documentId = 'filename';
+			expect(component.documentParams).toStrictEqual(map);
+		});
 
-    it('should return the filename', () => {
-      component.techRecord.techRecord_adrDetails_documentId = 'filename';
-      expect(component.fileName).toBe('filename');
-    });
+		it('should return the filename', () => {
+			component.techRecord.techRecord_adrDetails_documentId = 'filename';
+			expect(component.fileName).toBe('filename');
+		});
 
-    it('should error if no filename', () => {
-      component.techRecord.techRecord_adrDetails_documentId = undefined;
-      // eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
-      expect(() => { component.fileName; }).toThrow('Could not find ADR Documentation');
-    });
-  });
+		it('should error if no filename', () => {
+			component.techRecord.techRecord_adrDetails_documentId = undefined;
+			// eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
+			expect(() => {
+				component.fileName;
+			}).toThrow('Could not find ADR Documentation');
+		});
+	});
 });

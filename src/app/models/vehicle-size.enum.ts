@@ -1,4 +1,4 @@
 export enum VehicleSize {
-  SMALL = 'small',
-  LARGE = 'large',
+	SMALL = 'small',
+	LARGE = 'large',
 }

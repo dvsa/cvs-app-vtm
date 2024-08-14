@@ -4,13 +4,17 @@ import { DelayedRetryModule } from './delayed-retry/delayed-retry.module';
 import { ErrorInterceptorModule } from './error-handling/error-handling.module';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    DelayedRetryModule.forRoot({
-      count: 3, delay: 2000, httpStatusRetry: [504], backoff: true, whiteList: ['document-retrieval'],
-    }),
-    ErrorInterceptorModule.forRoot({ httpStatusRedirect: [500], redirectTo: 'error' }),
-  ],
+	declarations: [],
+	imports: [
+		CommonModule,
+		DelayedRetryModule.forRoot({
+			count: 3,
+			delay: 2000,
+			httpStatusRetry: [504],
+			backoff: true,
+			whiteList: ['document-retrieval'],
+		}),
+		ErrorInterceptorModule.forRoot({ httpStatusRedirect: [500], redirectTo: 'error' }),
+	],
 })
 export class InterceptorModule {}

@@ -11,33 +11,33 @@
  */
 
 export interface DefectAdditionalInformationLocation {
-  vertical?: VerticalEnum;
-  horizontal?: HorizontalEnum;
-  lateral?: LateralEnum;
-  longitudinal?: LongitudinalEnum;
-  rowNumber?: number;
-  seatNumber?: number;
-  axleNumber?: number;
+	vertical?: VerticalEnum;
+	horizontal?: HorizontalEnum;
+	lateral?: LateralEnum;
+	longitudinal?: LongitudinalEnum;
+	rowNumber?: number;
+	seatNumber?: number;
+	axleNumber?: number;
 }
 
 export type VerticalEnum = 'upper' | 'lower';
 export const VerticalTypeEnum = {
-  Upper: 'upper' as VerticalEnum,
-  Lower: 'lower' as VerticalEnum,
+	Upper: 'upper' as VerticalEnum,
+	Lower: 'lower' as VerticalEnum,
 };
 export type HorizontalEnum = 'inner' | 'outer';
 export const HorizontalTypeEnum = {
-  Inner: 'inner' as HorizontalEnum,
-  Outer: 'outer' as HorizontalEnum,
+	Inner: 'inner' as HorizontalEnum,
+	Outer: 'outer' as HorizontalEnum,
 };
 export type LateralEnum = 'nearside' | 'centre' | 'offside';
 export const LateralTypeEnum = {
-  Nearside: 'nearside' as LateralEnum,
-  Centre: 'centre' as LateralEnum,
-  Offside: 'offside' as LateralEnum,
+	Nearside: 'nearside' as LateralEnum,
+	Centre: 'centre' as LateralEnum,
+	Offside: 'offside' as LateralEnum,
 };
 export type LongitudinalEnum = 'front' | 'rear';
 export const LongitudinalTypeEnum = {
-  Front: 'front' as LongitudinalEnum,
-  Rear: 'rear' as LongitudinalEnum,
+	Front: 'front' as LongitudinalEnum,
+	Rear: 'rear' as LongitudinalEnum,
 };
