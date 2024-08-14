@@ -31,7 +31,8 @@ jobs:
         run: npm run build --ignore-scripts -- --configuration production
 
   test:
-    runs-on: ubuntu-latest
+    runs-on:
+      - ARM64
 
     strategy:
       matrix:
