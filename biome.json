@@ -3,13 +3,15 @@
   "formatter": {
     "ignore": ["src/app/api/**"]
   },
+  "linter": {
+    "ignore": ["src/app/api/**"]
+  },
   "overrides": [
     {
       "include": ["**/*.mock.ts", "**/*.spec.ts", "**/*.ts"],
       "linter": {
         "rules": {
           "complexity": {
-            "noBannedTypes": "off",
             "noForEach": "off",
             "noUselessConstructor": "off",
             "useLiteralKeys": "off",

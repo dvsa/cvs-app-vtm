@@ -51,7 +51,7 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any
 	return localCleanValue;
 };
 
-function objectOrNull(obj: Object) {
+function objectOrNull<T extends {}>(obj: T) {
 	return Object.values(obj).some((value) => undefined !== value) ? obj : null;
 }
 

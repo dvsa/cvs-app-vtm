@@ -14,7 +14,7 @@ declare module 'accessible-autocomplete/dist/accessible-autocomplete.min' {
 		defaultValue?: string;
 		autoselect?: boolean;
 		showAllValues?: boolean;
-		dropdownArrow?: Function;
+		dropdownArrow?: () => unknown;
 	}
 
 	export interface AutocompleteParams extends DefaultParams, ElementParam {}
