@@ -32,8 +32,8 @@ describe('TechRecordGeneratePlateComponent', () => {
 	let store: MockStore;
 	let technicalRecordService: TechnicalRecordService;
 
-	beforeEach( () => {
-    TestBed.configureTestingModule({
+	beforeEach(() => {
+		TestBed.configureTestingModule({
 			declarations: [GeneratePlateComponent],
 			providers: [
 				GlobalErrorService,

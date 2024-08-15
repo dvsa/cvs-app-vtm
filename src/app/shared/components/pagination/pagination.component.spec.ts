@@ -30,8 +30,8 @@ describe('PaginationComponent', () => {
 	let el: DebugElement;
 	let router: Router;
 
-	beforeEach(waitForAsync( () => {
-    TestBed.configureTestingModule({
+	beforeEach(waitForAsync(() => {
+		TestBed.configureTestingModule({
 			declarations: [HostComponent, PaginationComponent],
 			imports: [RouterTestingModule.withRoutes([{ path: '', component: PaginationComponent }])],
 		}).compileComponents();
