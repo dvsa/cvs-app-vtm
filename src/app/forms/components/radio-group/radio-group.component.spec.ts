@@ -38,9 +38,7 @@ describe('RadioGroupComponent', () => {
 			imports: [FormsModule, ReactiveFormsModule],
 			providers: [ReferenceDataService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

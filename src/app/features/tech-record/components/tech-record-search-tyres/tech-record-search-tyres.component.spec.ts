@@ -69,9 +69,7 @@ describe('TechRecordSearchTyresComponent', () => {
 				{ provide: GlobalErrorService, useValue: mockGlobalErrorService },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TechRecordSearchTyresComponent);
 		router = TestBed.inject(Router);
 		route = TestBed.inject(ActivatedRoute);

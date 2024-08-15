@@ -60,8 +60,7 @@ export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, (tes
 				const newTestType = { ...testType } as TestTypeCategory;
 
 				if (Object.prototype.hasOwnProperty.call(newTestType, 'nextTestTypesOrCategories')) {
-					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					newTestType.nextTestTypesOrCategories = sortTestTypes(newTestType.nextTestTypesOrCategories!);
+					newTestType.nextTestTypesOrCategories = sortTestTypes(newTestType.nextTestTypesOrCategories || []);
 				}
 
 				return newTestType;
@@ -179,9 +178,8 @@ function filterTestTypes(
 				const newTestType = { ...testType } as TestTypeCategory;
 
 				if (Object.prototype.hasOwnProperty.call(newTestType, 'nextTestTypesOrCategories')) {
-					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					newTestType.nextTestTypesOrCategories = filterTestTypes(
-						newTestType.nextTestTypesOrCategories!,
+						newTestType.nextTestTypesOrCategories || [],
 						testResult,
 						hasCurrentRecordInHistory
 					);

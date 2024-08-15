@@ -183,9 +183,7 @@ describe('TestResultsEffects', () => {
 		effects = TestBed.inject(TestResultsEffects);
 		testResultsService = TestBed.inject(TestRecordsService);
 		featureToggleService = TestBed.inject(FeatureToggleService);
-	});
 
-	beforeEach(() => {
 		testScheduler = new TestScheduler((actual, expected) => {
 			expect(actual).toEqual(expected);
 		});

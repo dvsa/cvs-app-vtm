@@ -29,9 +29,7 @@ describe('ReferenceDataAddComponent', () => {
 				{ provide: UserService, useValue: {} },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		store = TestBed.inject(MockStore);
 		fixture = TestBed.createComponent(ReferenceDataDeleteComponent);
 		component = fixture.componentInstance;
@@ -44,6 +42,7 @@ describe('ReferenceDataAddComponent', () => {
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
+
 	describe('navigateBack', () => {
 		it('should clear all errors', () => {
 			jest.spyOn(router, 'navigate').mockImplementation();

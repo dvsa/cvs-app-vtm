@@ -1,6 +1,5 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, Validators } from '@angular/forms';
 import { Condition, operatorEnum } from '@forms/models/condition.model';
-// eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -189,11 +188,11 @@ export class CustomAsyncValidators {
 	}
 
 	static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {
-		return this.requiredIfNotResult(store, resultOfTestEnum.fail);
+		return CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail);
 	}
 
 	static requiredIfNotAbandoned(store: Store<State>): AsyncValidatorFn {
-		return this.requiredIfNotResult(store, resultOfTestEnum.abandoned);
+		return CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.abandoned);
 	}
 
 	static requiredIfNotResultAndSiblingEquals(
@@ -285,10 +284,8 @@ export class CustomAsyncValidators {
 	private static checkCondition(testResult: TestResultModel, condition: Condition) {
 		const { field, operator, value } = condition;
 
-		// eslint-disable-next-line no-prototype-builtins
-		const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
-			? // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
-				(testResult.testTypes[0] as any)[field]
+		const fieldValue = Object.hasOwn(testResult.testTypes[0], field)
+			? (testResult.testTypes[0] as any)[field]
 			: testResult[field as keyof TestResultModel];
 
 		const isTrue = Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value;

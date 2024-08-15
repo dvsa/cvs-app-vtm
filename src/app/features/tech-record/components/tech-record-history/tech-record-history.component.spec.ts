@@ -18,14 +18,13 @@ describe('TechRecordHistoryComponent', () => {
 			imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
 			providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TechRecordHistoryComponent);
 		component = fixture.componentInstance;
 		component.currentTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as V3TechRecordModel;
 		fixture.detectChanges();
 	});
+
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});

@@ -19,13 +19,12 @@ describe('DimensionsComponent', () => {
 			imports: [DynamicFormsModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule],
 			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(DimensionsComponent);
 		component = fixture.componentInstance;
 		component.techRecord = mockVehicleTechnicalRecord('psv') as TechRecordType<'hgv'>;
 	});
+
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});

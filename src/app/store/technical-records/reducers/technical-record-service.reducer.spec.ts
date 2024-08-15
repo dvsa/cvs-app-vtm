@@ -687,7 +687,7 @@ describe('Vehicle Technical Record Reducer', () => {
 			const action = updateExistingADRAdditionalExaminerNote({ additionalExaminerNote: newNote, examinerNoteIndex: 0 });
 			const newState = vehicleTechRecordReducer(state, action);
 			const editingTechRecord = newState.editingTechRecord as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>;
-			expect(editingTechRecord.techRecord_adrDetails_additionalExaminerNotes![0].note).toEqual(newNote);
+			expect(editingTechRecord.techRecord_adrDetails_additionalExaminerNotes?.[0].note).toEqual(newNote);
 		});
 	});
 });

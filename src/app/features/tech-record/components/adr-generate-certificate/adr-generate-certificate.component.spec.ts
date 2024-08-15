@@ -33,8 +33,8 @@ describe('AdrGenerateCertificateComponent', () => {
 	let store: MockStore;
 	let technicalRecordService: TechnicalRecordService;
 
-	beforeEach(async () => {
-		await TestBed.configureTestingModule({
+	beforeEach(() => {
+		TestBed.configureTestingModule({
 			declarations: [AdrGenerateCertificateComponent],
 			providers: [
 				GlobalErrorService,
@@ -52,8 +52,7 @@ describe('AdrGenerateCertificateComponent', () => {
 			],
 			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
 		}).compileComponents();
-	});
-	beforeEach(() => {
+
 		fixture = TestBed.createComponent(AdrGenerateCertificateComponent);
 		errorService = TestBed.inject(GlobalErrorService);
 		route = TestBed.inject(ActivatedRoute);

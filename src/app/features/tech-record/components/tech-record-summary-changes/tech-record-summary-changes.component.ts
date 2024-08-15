@@ -229,8 +229,7 @@ export class TechRecordSummaryChangesComponent implements OnInit, OnDestroy {
 			}))
 			.filter(
 				(section) =>
-					Boolean(section && section.children && section.children.length > 0) ||
-					this.sectionsWhitelist.includes(section.name)
+					Boolean(section?.children && section.children.length > 0) || this.sectionsWhitelist.includes(section.name)
 			);
 	}
 

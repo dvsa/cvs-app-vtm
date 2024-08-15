@@ -25,9 +25,7 @@ describe('BaseControlComponent', () => {
 			})
 				.overrideComponent(BaseControlComponent, { add: { providers: [NG_CONTROL_PROVIDER] } })
 				.compileComponents();
-		});
 
-		beforeEach(() => {
 			fixture = TestBed.createComponent(BaseControlComponent);
 			component = fixture.componentInstance;
 			fixture.detectChanges();
@@ -120,14 +118,12 @@ describe('BaseControlComponent', () => {
 				declarations: [BaseControlComponent],
 				imports: [FormsModule],
 			}).compileComponents();
-		});
 
-		beforeEach(() => {
 			fixture = TestBed.createComponent(BaseControlComponent);
 			component = fixture.componentInstance;
 		});
 
-		it('shoud throw no control binding error', () => {
+		it('should throw no control binding error', () => {
 			expect(component).toBeTruthy();
 			expect(() => fixture.detectChanges()).toThrow(Error);
 		});

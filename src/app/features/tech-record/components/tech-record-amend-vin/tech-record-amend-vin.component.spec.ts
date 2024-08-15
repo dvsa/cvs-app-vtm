@@ -55,9 +55,7 @@ describe('TechRecordChangeVinComponent', () => {
 			],
 			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(AmendVinComponent);
 		errorService = TestBed.inject(GlobalErrorService);
 		route = TestBed.inject(ActivatedRoute);

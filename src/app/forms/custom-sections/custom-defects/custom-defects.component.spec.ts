@@ -21,9 +21,7 @@ describe('CustomDefectsComponent', () => {
 			declarations: [CustomDefectsComponent, CustomDefectComponent],
 			providers: [DynamicFormService, provideMockStore({})],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(CustomDefectsComponent);
 		component = fixture.componentInstance;
 		el = fixture.debugElement;

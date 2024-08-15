@@ -9,9 +9,7 @@ describe('CollapsibleTextComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [CollapsibleTextComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(CollapsibleTextComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

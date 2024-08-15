@@ -54,7 +54,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 		const ngControl: NgControl | null = this.injector.get(NgControl, null);
 		if (ngControl) {
 			this.control = ngControl.control as CustomControl;
-			if (this.control && this.control.meta) {
+			if (this.control?.meta) {
 				this.control.meta.changeDetection = this.cdr;
 			}
 		} else {

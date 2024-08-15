@@ -50,7 +50,7 @@ export class AdrValidators {
 		}
 
 		// If any of the control indices have length greater than 1500 characters, show an error message for each
-		if (control.value && control.value.some((unNumber: string) => unNumber.length > 1500)) {
+		if (control.value?.some((unNumber: string) => unNumber.length > 1500)) {
 			return {
 				multiple: control.value
 					.map((unNumber: string, index: number) =>

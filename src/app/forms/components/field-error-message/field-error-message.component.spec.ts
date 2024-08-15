@@ -10,9 +10,7 @@ describe('FieldErrorMessageComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [FieldErrorMessageComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(FieldErrorMessageComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

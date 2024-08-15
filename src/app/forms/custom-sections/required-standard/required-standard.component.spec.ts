@@ -29,9 +29,7 @@ describe('RequiredStandardComponent', () => {
 			declarations: [RequiredStandardComponent],
 			providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(RequiredStandardComponent);
 		router = TestBed.inject(Router);
 		store = TestBed.inject(MockStore);

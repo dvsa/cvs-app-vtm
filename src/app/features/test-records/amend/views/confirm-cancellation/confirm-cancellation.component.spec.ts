@@ -32,9 +32,7 @@ describe('ConfirmCancellationComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(ConfirmCancellationComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

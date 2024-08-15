@@ -25,9 +25,7 @@ describe('ListItemOutputComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [ViewListItemComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

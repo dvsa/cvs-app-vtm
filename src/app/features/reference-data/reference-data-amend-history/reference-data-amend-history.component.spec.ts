@@ -21,9 +21,7 @@ describe('ReferenceDataAmendHistoryComponent', () => {
 				{ provide: UserService, useValue: {} },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(ReferenceDataAmendHistoryComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

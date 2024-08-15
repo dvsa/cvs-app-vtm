@@ -9,9 +9,7 @@ describe('PageNotFoundComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [PageNotFoundComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(PageNotFoundComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

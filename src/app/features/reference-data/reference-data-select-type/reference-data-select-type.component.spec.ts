@@ -32,9 +32,7 @@ describe('ReferenceDataComponent', () => {
 				{ provide: UserService, useValue: { roles$: of([Roles.ReferenceDataView]) } },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(ReferenceDataSelectTypeComponent);
 		component = fixture.componentInstance;
 		router = TestBed.inject(Router);

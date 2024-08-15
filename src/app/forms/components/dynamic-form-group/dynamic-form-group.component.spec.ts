@@ -27,9 +27,7 @@ describe('DynamicFormGroupComponent', () => {
 				{ provide: UserService, useValue: {} },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(DynamicFormGroupComponent);
 		component = fixture.componentInstance;
 		// Don't detect changes on the first load as it will prevent change detection

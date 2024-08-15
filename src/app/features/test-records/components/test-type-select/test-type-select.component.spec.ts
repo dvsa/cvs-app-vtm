@@ -23,9 +23,7 @@ describe('TestTypeSelectComponent', () => {
 				{ provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TestTypeSelectComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

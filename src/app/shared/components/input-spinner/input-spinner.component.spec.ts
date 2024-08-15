@@ -10,9 +10,7 @@ describe('InputSpinnerComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [InputSpinnerComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(InputSpinnerComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

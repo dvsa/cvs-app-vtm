@@ -60,9 +60,7 @@ describe('PlatesComponent', () => {
 				GlobalErrorService,
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(PlatesComponent);
 		component = fixture.componentInstance;
 		router = TestBed.inject(Router);

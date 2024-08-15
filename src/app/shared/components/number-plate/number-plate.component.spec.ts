@@ -10,9 +10,7 @@ describe('NumberPlateComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [NumberPlateComponent, DefaultNullOrEmpty],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(NumberPlateComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

@@ -39,44 +39,46 @@ export class RefDataDecodePipe implements PipeTransform, OnDestroy {
 			return of(value);
 		}
 
-		if (resourceType === SpecialRefData.ReasonsForAbandoning) {
+		let calculatedResourceType = resourceType;
+
+		if (calculatedResourceType === SpecialRefData.ReasonsForAbandoning) {
 			this.store
 				.select(getSingleVehicleType)
 				.pipe(take(1))
 				.subscribe((vehicleType) => {
 					switch (vehicleType) {
 						case VehicleTypes.HGV:
-							resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
+							calculatedResourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
 							break;
 						case VehicleTypes.PSV:
-							resourceType = ReferenceDataResourceType.ReasonsForAbandoningPsv;
+							calculatedResourceType = ReferenceDataResourceType.ReasonsForAbandoningPsv;
 							break;
 						case VehicleTypes.TRL:
-							resourceType = ReferenceDataResourceType.ReasonsForAbandoningTrl;
+							calculatedResourceType = ReferenceDataResourceType.ReasonsForAbandoningTrl;
 							break;
 						default:
-							resourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
+							calculatedResourceType = ReferenceDataResourceType.ReasonsForAbandoningHgv;
 							break;
 					}
 				});
 		}
 
 		asapScheduler.schedule(() => {
-			this.store.dispatch(fetchReferenceData({ resourceType: resourceType as ReferenceDataResourceType }));
+			this.store.dispatch(fetchReferenceData({ resourceType: calculatedResourceType as ReferenceDataResourceType }));
 		});
 
 		asapScheduler.schedule(() => {
 			this.store.dispatch(
 				fetchReferenceDataByKeySearch({
-					resourceType: `${resourceType}#AUDIT` as ReferenceDataResourceType,
+					resourceType: `${calculatedResourceType}#AUDIT` as ReferenceDataResourceType,
 					resourceKey: `${value}#`,
 				})
 			);
 		});
 
 		return combineLatest([
-			this.store.select(selectReferenceDataByResourceKey(resourceType as ReferenceDataResourceType, value)),
-			this.store.select(selectSearchReturn(`${resourceType}#AUDIT` as ReferenceDataResourceTypeAudit)),
+			this.store.select(selectReferenceDataByResourceKey(calculatedResourceType as ReferenceDataResourceType, value)),
+			this.store.select(selectSearchReturn(`${calculatedResourceType}#AUDIT` as ReferenceDataResourceTypeAudit)),
 		]).pipe(
 			map(([refDataItem, refDataItemAudit]) => {
 				if (!refDataItem) {

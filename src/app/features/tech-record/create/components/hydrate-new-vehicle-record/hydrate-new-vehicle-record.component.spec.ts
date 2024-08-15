@@ -38,9 +38,7 @@ describe('HydrateNewVehicleRecordComponent', () => {
 			],
 			imports: [HttpClientTestingModule, RouterTestingModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HydrateNewVehicleRecordComponent);
 		route = TestBed.inject(ActivatedRoute);
 		errorService = TestBed.inject(GlobalErrorService);

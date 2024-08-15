@@ -23,9 +23,7 @@ describe('AbandonDialogComponent', () => {
 			imports: [DynamicFormsModule, SharedModule, RouterTestingModule, HttpClientTestingModule],
 			providers: [provideMockStore({ initialState: initialAppState }), DynamicFormService],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(AbandonDialogComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

@@ -86,11 +86,15 @@ export class GenerateLetterComponent implements OnInit {
 
 	handleSubmit(): void {
 		this.globalErrorService.clearErrors();
+
 		if (this.form.value.letterType === '') {
-			return this.globalErrorService.addError({ error: 'Letter type is required', anchorLink: 'letterType' });
+			this.globalErrorService.addError({ error: 'Letter type is required', anchorLink: 'letterType' });
+			return;
 		}
+
 		if (!this.techRecord) {
-			return this.globalErrorService.addError({ error: 'Could not retrieve current technical record' });
+			this.globalErrorService.addError({ error: 'Could not retrieve current technical record' });
+			return;
 		}
 
 		const paragraphId =

@@ -25,9 +25,7 @@ describe('CheckboxComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [CheckboxComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

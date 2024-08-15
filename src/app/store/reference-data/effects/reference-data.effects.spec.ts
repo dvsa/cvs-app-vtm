@@ -65,9 +65,7 @@ describe('ReferenceDataEffects', () => {
 		effects = TestBed.inject(ReferenceDataEffects);
 		store = TestBed.inject(MockStore);
 		referenceDataService = TestBed.inject(ReferenceDataService);
-	});
 
-	beforeEach(() => {
 		testScheduler = new TestScheduler((actual, expected) => {
 			expect(actual).toEqual(expected);
 		});

@@ -36,9 +36,7 @@ describe('ReferenceDataCreateComponent', () => {
 				{ provide: ReferenceDataService, useValue: mockRefDataService },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		store = TestBed.inject(MockStore);
 		fixture = TestBed.createComponent(ReferenceDataCreateComponent);
 		component = fixture.componentInstance;

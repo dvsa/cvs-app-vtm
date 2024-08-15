@@ -23,9 +23,7 @@ describe('GlobalErrorComponent', () => {
 			imports: [],
 			providers: [GlobalErrorService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(MockComponent);
 		component = fixture.debugElement.query(By.directive(GlobalErrorComponent)).componentInstance;
 		fixture.detectChanges();

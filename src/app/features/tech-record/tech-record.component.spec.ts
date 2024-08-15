@@ -20,9 +20,7 @@ describe('TechRecordComponent', () => {
 			declarations: [TechRecordComponent],
 			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		store = TestBed.inject(MockStore);
 		store.overrideSelector(selectRouteNestedParams, { vin: '123456' });
 

@@ -23,9 +23,7 @@ describe('TestAmendmentHistoryComponent', () => {
 			imports: [RouterTestingModule],
 			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TestAmendmentHistoryComponent);
 		component = fixture.componentInstance;
 		store = TestBed.inject(MockStore);

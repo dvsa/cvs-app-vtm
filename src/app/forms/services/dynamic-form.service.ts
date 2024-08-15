@@ -125,8 +125,7 @@ export class DynamicFormService {
 		[AsyncValidatorNames.Custom]: (...args) => CustomAsyncValidators.custom(this.store, ...args),
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
+	createForm(formNode: FormNode, originalData?: any): CustomFormGroup | CustomFormArray {
 		if (!formNode) {
 			return new CustomFormGroup(formNode, {});
 		}
@@ -136,7 +135,7 @@ export class DynamicFormService {
 				? new CustomFormArray(formNode, [], this.store)
 				: new CustomFormGroup(formNode, {});
 
-		data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
+		const data = originalData ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
 
 		formNode.children?.forEach((child) => {
 			const { name, type, value, validators, asyncValidators, disabled } = child;
@@ -194,17 +193,17 @@ export class DynamicFormService {
 		errors: GlobalError[],
 		updateValidity = true
 	) {
-		this.getFormLevelErrors(form, errors);
+		DynamicFormService.getFormLevelErrors(form, errors);
 		Object.entries(form.controls).forEach(([, value]) => {
 			if (!(value instanceof FormControl || value instanceof CustomFormControl)) {
-				this.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
+				DynamicFormService.validate(value as CustomFormGroup | CustomFormArray, errors, updateValidity);
 			} else {
 				value.markAsTouched();
 				if (updateValidity) {
 					value.updateValueAndValidity();
 				}
 				(value as CustomFormControl).meta?.changeDetection?.detectChanges();
-				this.getControlErrors(value, errors);
+				DynamicFormService.getControlErrors(value, errors);
 			}
 		});
 	}
@@ -228,7 +227,7 @@ export class DynamicFormService {
 	static validateControl(control: FormControl | CustomFormControl, errors: GlobalError[]) {
 		control.markAsTouched();
 		(control as CustomFormControl).meta?.changeDetection?.detectChanges();
-		this.getControlErrors(control, errors);
+		DynamicFormService.getControlErrors(control, errors);
 	}
 
 	private static getControlErrors(control: FormControl | CustomFormControl, validationErrorList: GlobalError[]) {

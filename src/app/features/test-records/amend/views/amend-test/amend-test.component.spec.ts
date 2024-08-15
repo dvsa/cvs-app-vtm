@@ -11,9 +11,7 @@ describe('AmendTestComponent', () => {
 			declarations: [AmendTestComponent],
 			imports: [RouterTestingModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(AmendTestComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

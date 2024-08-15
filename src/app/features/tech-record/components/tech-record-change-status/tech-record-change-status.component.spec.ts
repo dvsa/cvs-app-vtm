@@ -45,9 +45,7 @@ describe('TechRecordChangeStatusComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TechRecordChangeStatusComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

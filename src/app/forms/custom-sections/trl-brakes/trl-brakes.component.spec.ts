@@ -22,9 +22,7 @@ describe('BrakesComponent', () => {
 			imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule],
 			providers: [provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TrlBrakesComponent);
 		component = fixture.componentInstance;
 		component.vehicleTechRecord = mockVehicleTechnicalRecord('trl') as TechRecordType<'trl'>;

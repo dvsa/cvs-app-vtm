@@ -32,9 +32,7 @@ describe('DefectsComponent', () => {
 			],
 			providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(DefectsComponent);
 		component = fixture.componentInstance;
 		el = fixture.debugElement;

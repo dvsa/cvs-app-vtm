@@ -19,9 +19,7 @@ describe('BreadcrumbsComponent', () => {
 			imports: [RouterTestingModule],
 			providers: [RouterService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(BreadcrumbsComponent);
 		component = fixture.componentInstance;
 		store = TestBed.inject(MockStore);

@@ -129,7 +129,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
 	}
 
 	loadReferenceDataByKey(resourceType: ReferenceDataResourceType, resourceKey: string | number): void {
-		return this.store.dispatch(fetchReferenceDataByKey({ resourceType, resourceKey }));
+		this.store.dispatch(fetchReferenceDataByKey({ resourceType, resourceKey }));
 	}
 
 	fetchReferenceDataByKeySearch(

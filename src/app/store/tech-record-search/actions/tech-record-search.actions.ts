@@ -11,6 +11,6 @@ export const fetchSearchResultSuccess = createAction(
 export const fetchSearchResultFailed = createAction(getTitle('Failed'), props<GlobalError>());
 
 function getTitle(suffix = ''): string {
-	suffix = suffix ? ` ${suffix}` : suffix;
-	return `[API/tech-records search] Search Results ${suffix}`;
+	const title = suffix ? ` ${suffix}` : suffix;
+	return `[API/tech-records search] Search Results ${title}`;
 }

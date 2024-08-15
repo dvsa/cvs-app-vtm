@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { testResultInEdit } from '@store/test-records';
 import { catchError, map, mergeMap, of, switchMap, take } from 'rxjs';
@@ -40,12 +39,9 @@ import { handleNotFound, sortReferenceData } from './operators';
 
 @Injectable()
 export class ReferenceDataEffects {
-	constructor(
-		private actions$: Actions,
-		private userService: UserService,
-		private referenceDataService: ReferenceDataService,
-		private store: Store<State>
-	) {}
+	private actions$ = inject(Actions);
+	private referenceDataService = inject(ReferenceDataService);
+	private store = inject<Store<State>>(Store);
 
 	fetchReferenceDataByType$ = createEffect(() =>
 		this.actions$.pipe(

@@ -28,9 +28,7 @@ describe('TechRecordAmendReasonComponent', () => {
 
 		route = TestBed.inject(ActivatedRoute);
 		router = TestBed.inject(Router);
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TechRecordAmendReasonComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

@@ -19,13 +19,11 @@ describe('PreventDoubleClickDirective', () => {
 		await TestBed.configureTestingModule({
 			declarations: [HostComponent, PreventDoubleClickDirective],
 		}).compileComponents();
-	}));
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
-	});
+	}));
 
 	it('should emit clicked once', () => {
 		const emitSpy = jest.spyOn(component.clicked, 'emit');

@@ -96,8 +96,9 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 					queryParamsHandling: 'merge',
 				});
 				break;
-			default:
+			default: {
 				let advisoryRoute = `${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}.advisory`;
+
 				if (this.selectedDefect?.imNumber === 71 && this.selectedItem?.itemNumber === 1) {
 					advisoryRoute += this.selectedItem.itemDescription === 'All Roller Brake Test Machines:' ? '.0' : '.1';
 				}
@@ -107,6 +108,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 					queryParamsHandling: 'merge',
 				});
 				break;
+			}
 		}
 	}
 }

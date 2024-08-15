@@ -27,14 +27,15 @@ export class SearchComponent {
 		this.globalErrorService.clearErrors();
 		this.store.dispatch(clearAllSectionStates());
 		this.store.dispatch(clearScrollPosition());
-		term = term.trim();
 
-		if (!term) {
+		const formattedTerm = term.trim();
+
+		if (!formattedTerm) {
 			this.globalErrorService.addError({ error: this.missingTermErrorMessage, anchorLink: 'search-term' });
 		} else if (!Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES)) {
 			this.globalErrorService.addError({ error: this.missingTypeErrorMessage, anchorLink: 'search-type' });
 		} else {
-			void this.router.navigate(['/search/results'], { queryParams: { [type]: term } });
+			void this.router.navigate(['/search/results'], { queryParams: { [type]: formattedTerm } });
 		}
 	}
 

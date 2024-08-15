@@ -106,11 +106,11 @@ export class TechnicalRecordHttpService {
 		return this.http.patch<TechRecordType<'get'>>(url, body, { responseType: 'json' });
 	}
 
-	generatePlate$(
+	generatePlate$<T>(
 		vehicleRecord: TechRecordType<'get'>,
 		reason: string,
 		user: { name?: string; email?: string }
-	): Observable<Object> {
+	): Observable<T> {
 		const url = `${environment.VTM_API_URI}/v3/technical-records/plate/${vehicleRecord.systemNumber}/${vehicleRecord.createdTimestamp}`;
 
 		const body = {
@@ -119,7 +119,7 @@ export class TechnicalRecordHttpService {
 			recipientEmailAddress: vehicleRecord?.techRecord_applicantDetails_emailAddress ?? user.email,
 		};
 
-		return this.http.post(url, body, { responseType: 'json' });
+		return this.http.post<T>(url, body, { responseType: 'json' });
 	}
 
 	generateLetter$(

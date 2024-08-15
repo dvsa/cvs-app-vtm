@@ -28,9 +28,7 @@ describe('ReadOnlyComponent', () => {
 			declarations: [BaseControlComponent, HostComponent, ReadOnlyComponent],
 			imports: [FormsModule, ReactiveFormsModule, SharedModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

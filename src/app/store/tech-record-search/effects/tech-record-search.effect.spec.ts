@@ -45,9 +45,7 @@ describe('DefectsEffects', () => {
 
 		effects = TestBed.inject(TechSearchResultsEffects);
 		service = TestBed.inject(TechnicalRecordHttpService);
-	});
 
-	beforeEach(() => {
 		testScheduler = new TestScheduler((actual, expected) => {
 			expect(actual).toEqual(expected);
 		});

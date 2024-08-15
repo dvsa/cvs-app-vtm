@@ -48,9 +48,7 @@ describe('ApprovalTypeComponent', () => {
 			imports: [FormsModule, ReactiveFormsModule],
 			providers: [GlobalErrorService, provideMockStore({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 	});

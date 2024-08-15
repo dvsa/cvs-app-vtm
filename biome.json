@@ -9,36 +9,17 @@
       "linter": {
         "rules": {
           "complexity": {
-            "noBannedTypes": "off",
             "noForEach": "off",
-            "noThisInStatic": "off",
             "noUselessConstructor": "off",
-            "useLiteralKeys": "off",
-            "useOptionalChain": "off",
-            "useRegexLiterals": "off"
-          },
-          "correctness": {
-            "noInvalidUseBeforeDeclaration": "off",
-            "noVoidTypeReturn": "off",
-            "noSwitchDeclarations": "off"
+            "useLiteralKeys": "off"
           },
           "performance": {
-            "noAccumulatingSpread": "off",
             "noDelete": "off"
           },
           "suspicious": {
-            "noAssignInExpressions": "off",
             "noDoubleEquals": "off",
-            "noDuplicateTestHooks": "off",
             "noExplicitAny": "off",
-            "noImplicitAnyLet": "off",
-            "noPrototypeBuiltins": "off",
-            "noShadowRestrictedNames": "off",
             "useValidTypeof": "off"
-          },
-          "style": {
-            "noNonNullAssertion": "off",
-            "noParameterAssign": "off"
           }
         }
       }

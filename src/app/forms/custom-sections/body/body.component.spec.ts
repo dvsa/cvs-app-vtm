@@ -46,9 +46,7 @@ describe('BodyComponent', () => {
 		multiOptionsService = TestBed.inject(MultiOptionsService);
 		dynamicFormService = TestBed.inject(DynamicFormService);
 		referenceDataService = TestBed.inject(ReferenceDataService);
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(BodyComponent);
 		component = fixture.componentInstance;
 		component.techRecord = {

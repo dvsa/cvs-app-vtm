@@ -32,8 +32,8 @@ describe('TechRecordGeneratePlateComponent', () => {
 	let store: MockStore;
 	let technicalRecordService: TechnicalRecordService;
 
-	beforeEach(async () => {
-		await TestBed.configureTestingModule({
+	beforeEach(() => {
+		TestBed.configureTestingModule({
 			declarations: [GeneratePlateComponent],
 			providers: [
 				GlobalErrorService,
@@ -51,9 +51,7 @@ describe('TechRecordGeneratePlateComponent', () => {
 			],
 			imports: [RouterTestingModule, SharedModule, ReactiveFormsModule, DynamicFormsModule, HttpClientTestingModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(GeneratePlateComponent);
 		errorService = TestBed.inject(GlobalErrorService);
 		route = TestBed.inject(ActivatedRoute);

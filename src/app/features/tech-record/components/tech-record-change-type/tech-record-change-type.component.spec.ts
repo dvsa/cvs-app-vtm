@@ -61,9 +61,7 @@ describe('TechRecordChangeTypeComponent', () => {
 				FixNavigationTriggeredOutsideAngularZoneNgModule,
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(ChangeVehicleTypeComponent);
 		errorService = TestBed.inject(GlobalErrorService);
 		route = TestBed.inject(ActivatedRoute);

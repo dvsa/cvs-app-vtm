@@ -75,12 +75,15 @@ export class AdrGenerateCertificateComponent implements OnInit, OnDestroy {
 
 	handleSubmit(): void {
 		this.globalErrorService.clearErrors();
+
 		if (!this.form.value.certificateType) {
-			return this.globalErrorService.addError({
+			this.globalErrorService.addError({
 				error: 'ADR Certificate Type is required',
 				anchorLink: 'certificateType',
 			});
+			return;
 		}
+
 		this.store.dispatch(
 			generateADRCertificate({
 				systemNumber: this.systemNumber ?? '',

@@ -39,9 +39,7 @@ describe('AutocompleteComponent', () => {
 			declarations: [AutocompleteComponent, HostComponent, FieldErrorMessageComponent],
 			imports: [FormsModule, ReactiveFormsModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		autocompleteComponent = fixture.debugElement.query(By.directive(AutocompleteComponent)).componentInstance;

@@ -70,9 +70,7 @@ describe('LettersComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(LettersComponent);
 		component = fixture.componentInstance;
 		component.techRecord = {

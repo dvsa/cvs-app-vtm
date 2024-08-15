@@ -21,7 +21,7 @@ export class DateValidators {
 			}
 
 			if (displayTime) {
-				return this.validateTime(t, label);
+				return DateValidators.validateTime(t, label);
 			}
 
 			return null;

@@ -10,9 +10,7 @@ describe('PhaseBannerComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [PhaseBannerComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(PhaseBannerComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

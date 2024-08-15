@@ -31,9 +31,7 @@ describe('ViewCombinationComponent', () => {
 			declarations: [ViewCombinationComponent],
 			imports: [SharedModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(ViewCombinationComponent);
 		component = fixture.componentInstance;
 		component.formNode = formNode;

@@ -25,9 +25,7 @@ describe('TestTypeSelectWrapperComponent', () => {
 				{ provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TestTypeSelectWrapperComponent);
 		component = fixture.componentInstance;
 		router = TestBed.inject(Router);

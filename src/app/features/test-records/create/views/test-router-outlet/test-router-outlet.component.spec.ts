@@ -11,9 +11,7 @@ describe('TestRouterOutletComponent', () => {
 			declarations: [TestRouterOutletComponent],
 			imports: [RouterTestingModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(TestRouterOutletComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

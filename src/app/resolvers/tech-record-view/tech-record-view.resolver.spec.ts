@@ -29,9 +29,7 @@ describe('TechRecordViewResolver', () => {
 		store = TestBed.inject(MockStore);
 		resolver = (...resolverParameters) =>
 			TestBed.runInInjectionContext(() => techRecordViewResolver(...resolverParameters));
-	});
 
-	beforeEach(() => {
 		testScheduler = new TestScheduler((actual, expected) => {
 			expect(actual).toEqual(expected);
 		});

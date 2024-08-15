@@ -21,9 +21,7 @@ describe('WeightsComponent', () => {
 			declarations: [NumberInputComponent, WeightsComponent],
 			providers: [provideMockStore<State>({ initialState: initialAppState })],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(WeightsComponent);
 		store = TestBed.inject(MockStore);
 		component = fixture.componentInstance;

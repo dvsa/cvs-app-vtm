@@ -25,9 +25,7 @@ describe('TextAreaComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [TextAreaComponent],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

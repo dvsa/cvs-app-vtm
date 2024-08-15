@@ -20,11 +20,15 @@ export class CheckboxGroupComponent extends BaseControlComponent {
 	@Input() delimited?: { regex?: string; separator: string };
 
 	isChecked(option: string | number | boolean): boolean {
-		return this.value && this.value.includes(option);
+		return this.value?.includes(option);
 	}
 
 	handleChange(event: boolean, option: FormNodeOption<OptionsType>): void {
-		return event ? this.add(option) : this.remove(option);
+		if (event) {
+			this.add(option);
+		} else {
+			this.remove(option);
+		}
 	}
 
 	private add(option: FormNodeOption<OptionsType>) {
@@ -39,8 +43,7 @@ export class CheckboxGroupComponent extends BaseControlComponent {
 
 	private remove(option: FormNodeOption<OptionsType>) {
 		// eslint-disable-next-line security/detect-non-literal-regexp
-		const separator =
-			this.delimited && this.delimited?.regex ? new RegExp(this.delimited?.regex) : this.delimited?.separator;
+		const separator = this.delimited?.regex ? new RegExp(this.delimited?.regex) : this.delimited?.separator;
 
 		let newValue = separator ? this.value?.split(separator) : [...this.value];
 

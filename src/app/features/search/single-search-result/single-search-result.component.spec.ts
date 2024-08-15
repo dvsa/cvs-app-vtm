@@ -31,9 +31,7 @@ describe('SingleSearchResultComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(SingleSearchResultComponent);
 		component = fixture.componentInstance;
 		component.searchResult = {

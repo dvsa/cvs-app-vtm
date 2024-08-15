@@ -3,7 +3,10 @@ import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 
 const DEFAULT_LABEL = 'This field';
-export const ErrorMessageMap: Record<string, Function> = {
+
+type ErrorMessageFunction = (err: any, label?: string) => string;
+
+export const ErrorMessageMap: Record<string, ErrorMessageFunction> = {
 	// Date errors
 	invalidDate: (err: { error: boolean; reason: string; index: number }) => `${err.reason}`,
 	invalidOption: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is invalid`,

@@ -31,9 +31,7 @@ describe('CreateTestTypeComponent', () => {
 				{ provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(CreateTestTypeComponent);
 		techRecordService = TestBed.inject(TechnicalRecordService);
 		component = fixture.componentInstance;

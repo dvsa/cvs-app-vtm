@@ -32,9 +32,7 @@ describe('CreateNewVehicleRecordComponent', () => {
 				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(CreateTechRecordComponent);
 		errorService = TestBed.inject(GlobalErrorService);
 		route = TestBed.inject(ActivatedRoute);

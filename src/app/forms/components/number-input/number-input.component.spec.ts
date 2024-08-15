@@ -35,9 +35,7 @@ describe('NumberInputComponent', () => {
 			],
 			imports: [FormsModule, ReactiveFormsModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(HostComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

@@ -230,11 +230,8 @@ function handleUpdateBrakeForces(
 	if (data.grossLadenWeight) {
 		const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
 
-		newState.editingTechRecord.techRecord_brakes_brakeCode =
-			(prefix.length <= 2
-				? `0${prefix}`
-				: // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					prefix) + newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal!;
+		newState.editingTechRecord.techRecord_brakes_brakeCode = ((prefix.length <= 2 ? `0${prefix}` : prefix) +
+			newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal) as string;
 		newState.editingTechRecord.techRecord_brakes_brakeForceWheelsNotLocked_serviceBrakeForceA = Math.round(
 			(data.grossLadenWeight * 16) / 100
 		);
@@ -353,8 +350,9 @@ function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: n
 
 	newState.editingTechRecord.techRecord_axles.splice(action.index, 1);
 
-	// eslint-disable-next-line no-return-assign
-	newState.editingTechRecord.techRecord_axles.forEach((axle, i) => (axle.axleNumber = i + 1));
+	newState.editingTechRecord.techRecord_axles.forEach((axle, i) => {
+		axle.axleNumber = i + 1;
+	});
 
 	newState.editingTechRecord.techRecord_noOfAxles = newState.editingTechRecord.techRecord_axles.length;
 
@@ -605,7 +603,10 @@ function handleUpdateExistingADRExaminerNote(
 	const editedTechRecord = editingTechRecord as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>;
 	if (editedTechRecord) {
 		const examinerNotes = editedTechRecord.techRecord_adrDetails_additionalExaminerNotes;
-		examinerNotes![action.examinerNoteIndex].note = action.additionalExaminerNote;
+
+		if (examinerNotes) {
+			examinerNotes[action.examinerNoteIndex].note = action.additionalExaminerNote;
+		}
 	}
 	return { ...state, editingTechRecord: editingTechRecord as unknown as TechRecordType<'put'> };
 }

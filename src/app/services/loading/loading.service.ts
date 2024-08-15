@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { defectsLoadingState } from '@store/defects';
 import { referenceDataLoadingState } from '@store/reference-data';
@@ -15,6 +15,8 @@ import { Observable, combineLatest, map } from 'rxjs';
 	providedIn: 'root',
 })
 export class LoadingService {
+	private store = inject(Store);
+
 	globalLoadingState$: Observable<boolean> = this.store.pipe(select(getSpinner));
 	testResultLoadingState$: Observable<boolean> = this.store.pipe(select(testResultLoadingState));
 	techRecordsLoadingState$: Observable<boolean> = this.store.pipe(select(technicalRecordsLoadingState));
@@ -24,8 +26,6 @@ export class LoadingService {
 	referenceDataLoadingState$: Observable<boolean> = this.store.pipe(select(referenceDataLoadingState));
 	techRecordSearchLoadingState$: Observable<boolean> = this.store.pipe(select(selectTechRecordSearchLoadingState));
 	requiredStandardsLoadingState$: Observable<boolean> = this.store.pipe(select(requiredStandardsLoadingState));
-
-	constructor(private store: Store) {}
 
 	private get reduceLoadingStates$() {
 		return combineLatest([

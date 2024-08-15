@@ -13,9 +13,7 @@ describe('CustomDefectComponent', () => {
 			declarations: [],
 			imports: [SharedModule, DynamicFormsModule],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		fixture = TestBed.createComponent(CustomDefectComponent);
 		component = fixture.componentInstance;
 	});

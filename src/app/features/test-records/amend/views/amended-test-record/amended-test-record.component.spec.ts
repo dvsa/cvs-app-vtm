@@ -37,9 +37,7 @@ describe('AmendedTestRecordComponent', () => {
 				},
 			],
 		}).compileComponents();
-	});
 
-	beforeEach(() => {
 		store = TestBed.inject(MockStore);
 		store.overrideSelector(selectedAmendedTestResultState, mockTestResult());
 		store.overrideSelector(selectAmendedDefectData, mockDefectList());

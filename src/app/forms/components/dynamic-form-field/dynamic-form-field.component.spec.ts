@@ -27,10 +27,8 @@ describe('DynamicFormFieldComponent', () => {
 				{ provide: UserService, useValue: {} },
 			],
 		}).compileComponents();
-		service = TestBed.inject(ReferenceDataService);
-	});
 
-	beforeEach(() => {
+		service = TestBed.inject(ReferenceDataService);
 		fixture = TestBed.createComponent(DynamicFormFieldComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

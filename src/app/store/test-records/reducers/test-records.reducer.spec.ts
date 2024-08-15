@@ -412,10 +412,7 @@ describe('Test Results Reducer', () => {
 			const action = updateDefect({ defect: newDefect, index: 0 });
 			const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
 
-			const path =
-				newState.editingTestResult?.testTypes[0] &&
-				newState.editingTestResult?.testTypes[0].defects &&
-				newState.editingTestResult?.testTypes[0].defects[0].imNumber;
+			const path = newState.editingTestResult?.testTypes[0]?.defects?.[0].imNumber;
 
 			expect(path).toBe(1);
 		});
