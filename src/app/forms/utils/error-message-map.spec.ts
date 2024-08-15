@@ -61,11 +61,11 @@ describe('ErrorMessageMap', () => {
 		],
 	])('should return "%s" for %s with %o', (expected, key, props) => {
 		if (props) {
-			// eslint-disable-next-line jest/no-conditional-expect
-			expect(ErrorMessageMap[`${key}`](...props)).toBe(expected);
+			// @ts-ignore
+      expect(ErrorMessageMap[`${key}`](...props)).toBe(expected);
 		} else {
-			// eslint-disable-next-line jest/no-conditional-expect
-			expect(ErrorMessageMap[`${key}`]()).toBe(expected);
+			// @ts-ignore
+      expect(ErrorMessageMap[`${key}`]()).toBe(expected);
 		}
 	});
 });

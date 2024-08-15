@@ -33,8 +33,8 @@ describe('AdrGenerateCertificateComponent', () => {
 	let store: MockStore;
 	let technicalRecordService: TechnicalRecordService;
 
-	beforeEach(async () => {
-		await TestBed.configureTestingModule({
+	beforeEach( () => {
+    TestBed.configureTestingModule({
 			declarations: [AdrGenerateCertificateComponent],
 			providers: [
 				GlobalErrorService,
