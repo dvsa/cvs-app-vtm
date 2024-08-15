@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
@@ -50,6 +50,15 @@ import {
 
 @Injectable()
 export class TestResultsEffects {
+	private actions$ = inject(Actions);
+	private testRecordsService = inject(TestRecordsService);
+	private techRecordHttpService = inject(TechnicalRecordHttpService);
+	private store = inject<Store<State>>(Store);
+	private router = inject(Router);
+	private userService = inject(UserService);
+	private dfs = inject(DynamicFormService);
+	private featureToggleService = inject(FeatureToggleService);
+
 	fetchTestResultsBySystemNumber$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(fetchTestResultsBySystemNumber),
@@ -345,15 +354,4 @@ export class TestResultsEffects {
 			),
 		{ dispatch: false }
 	);
-
-	constructor(
-		private actions$: Actions,
-		private testRecordsService: TestRecordsService,
-		private techRecordHttpService: TechnicalRecordHttpService,
-		private store: Store<State>,
-		private router: Router,
-		private userService: UserService,
-		private dfs: DynamicFormService,
-		private featureToggleService: FeatureToggleService
-	) {}
 }

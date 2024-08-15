@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategory.enum.js';
 import { VehicleClassDescription } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/vehicleClassDescription.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
@@ -62,15 +62,13 @@ import { editingTechRecord, selectTechRecord } from '../selectors/technical-reco
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
-	constructor(
-		private actions$: Actions,
-		private techRecordHttpService: TechnicalRecordHttpService,
-		private technicalRecordService: TechnicalRecordService,
-		private batchTechRecordService: BatchTechnicalRecordService,
-		private userService: UserService,
-		private store: Store<State>,
-		private dfs: DynamicFormService
-	) {}
+	private actions$ = inject(Actions);
+	private techRecordHttpService = inject(TechnicalRecordHttpService);
+	private technicalRecordService = inject(TechnicalRecordService);
+	private batchTechRecordService = inject(BatchTechnicalRecordService);
+	private userService = inject(UserService);
+	private store = inject<Store<State>>(Store);
+	private dfs = inject(DynamicFormService);
 
 	getTechnicalRecordHistory$ = createEffect(() =>
 		this.actions$.pipe(
