@@ -74,11 +74,7 @@ export class AppComponent implements OnInit, OnDestroy {
 			enableTracing: false,
 			integrations: [
 				Sentry.browserTracingIntegration(),
-				Sentry.replayIntegration(),
-				// new Sentry.BrowserTracing({
-				// 	routingInstrumentation: Sentry.routingInstrumentation,
-				// }),
-				// new Sentry.Replay(),
+				Sentry.replayIntegration()
 			],
 		});
 	}
