@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -73,88 +73,79 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 
 const featureFactory = (featureFlagsService: FeatureToggleService) => () => featureFlagsService.loadConfig();
 
-@NgModule({
-	declarations: [AppComponent],
-	imports: [
-		BrowserModule,
-		AppRoutingModule,
-		MsalModule,
-		HttpClientModule,
-		AppStoreModule,
-		InterceptorModule,
-		CoreModule,
-		TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_API_URI })),
-		TestTypesApiModule.forRoot(() => new TestTypesApiConfiguration({ basePath: environment.VTM_API_URI })),
-		ReferenceDataApiModule.forRoot(() => new ReferenceDataConfiguration({ basePath: environment.VTM_API_URI })),
-		DocumentRetrievalApiModule.forRoot(
-			() =>
-				new DocumentRetrievalConfiguration({
-					basePath: environment.VTM_API_URI,
-					apiKeys: {
-						'X-Api-Key': environment.DOCUMENT_RETRIEVAL_API_KEY,
-					},
-				})
-		),
-		GoogleTagManagerModule.forRoot({
-			id: environment.VTM_GTM_CONTAINER_ID,
-		}),
-	],
-	providers: [
-		{
-			provide: LOCALE_ID,
-			useValue: 'en',
-		},
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: MsalInterceptor,
-			multi: true,
-		},
-		{
-			provide: MSAL_INSTANCE,
-			useFactory: MSALInstanceFactory,
-		},
-		{
-			provide: MSAL_GUARD_CONFIG,
-			useFactory: MSALGuardConfigFactory,
-		},
-		{
-			provide: MSAL_INTERCEPTOR_CONFIG,
-			useFactory: MSALInterceptorConfigFactory,
-		},
-		{
-			provide: APP_INITIALIZER,
-			useFactory: featureFactory,
-			deps: [FeatureToggleService],
-			multi: true,
-		},
-		{
-			provide: ErrorHandler,
-			useValue: Sentry.createErrorHandler({
-				showDialog: true,
-			}),
-		},
-		{
-			provide: Sentry.TraceService,
-			deps: [Router],
-		},
-		{
-			provide: APP_INITIALIZER,
-			useFactory: () => () => {},
-			deps: [Sentry.TraceService],
-			multi: true,
-		},
-		{
-			provide: ErrorHandler,
-			useValue: Sentry.createErrorHandler({
-				showDialog: false,
-			}),
-		},
-		MsalService,
-		MsalGuard,
-		MsalBroadcastService,
-		UserService,
-	],
-	exports: [],
-	bootstrap: [AppComponent, MsalRedirectComponent],
-})
+@NgModule({ declarations: [AppComponent],
+    exports: [],
+    bootstrap: [AppComponent, MsalRedirectComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        MsalModule,
+        AppStoreModule,
+        InterceptorModule,
+        CoreModule,
+        TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_API_URI })),
+        TestTypesApiModule.forRoot(() => new TestTypesApiConfiguration({ basePath: environment.VTM_API_URI })),
+        ReferenceDataApiModule.forRoot(() => new ReferenceDataConfiguration({ basePath: environment.VTM_API_URI })),
+        DocumentRetrievalApiModule.forRoot(() => new DocumentRetrievalConfiguration({
+            basePath: environment.VTM_API_URI,
+            apiKeys: {
+                'X-Api-Key': environment.DOCUMENT_RETRIEVAL_API_KEY,
+            },
+        })),
+        GoogleTagManagerModule.forRoot({
+            id: environment.VTM_GTM_CONTAINER_ID,
+        })], providers: [
+        {
+            provide: LOCALE_ID,
+            useValue: 'en',
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: MsalInterceptor,
+            multi: true,
+        },
+        {
+            provide: MSAL_INSTANCE,
+            useFactory: MSALInstanceFactory,
+        },
+        {
+            provide: MSAL_GUARD_CONFIG,
+            useFactory: MSALGuardConfigFactory,
+        },
+        {
+            provide: MSAL_INTERCEPTOR_CONFIG,
+            useFactory: MSALInterceptorConfigFactory,
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: featureFactory,
+            deps: [FeatureToggleService],
+            multi: true,
+        },
+        {
+            provide: ErrorHandler,
+            useValue: Sentry.createErrorHandler({
+                showDialog: true,
+            }),
+        },
+        {
+            provide: Sentry.TraceService,
+            deps: [Router],
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: () => () => { },
+            deps: [Sentry.TraceService],
+            multi: true,
+        },
+        {
+            provide: ErrorHandler,
+            useValue: Sentry.createErrorHandler({
+                showDialog: false,
+            }),
+        },
+        MsalService,
+        MsalGuard,
+        MsalBroadcastService,
+        UserService,
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}
