@@ -4,8 +4,8 @@
   "description": "DVSA CVS Vehicle Testing Management Application",
   "main": "index.js",
   "engines": {
-    "node": "20.16.0",
-    "npm": "9.8.1"
+    "node": "20.16.*",
+    "npm": "10.8.*"
   },
   "scripts": {
     "ng": "ng",
@@ -47,10 +47,10 @@
     "@ngrx/router-store": "^18.0.2",
     "@ngrx/store": "^18.0.2",
     "@ngrx/store-devtools": "^18.0.2",
-    "@sentry/angular-ivy": "^7.118.0",
-    "@sentry/types": "^7.118.0",
+    "@sentry/angular": "^8.26.0",
+    "@sentry/types": "^8.26.0",
     "accessible-autocomplete": "^2.0.4",
-    "angular-google-tag-manager": "^1.9.0",
+    "angular-google-tag-manager": "^1.10.0",
     "deep-object-diff": "^1.1.9",
     "govuk-frontend": "^4.7.0",
     "jwt-decode": "^4.0.0",

@@ -25,7 +25,7 @@ import {
 	InteractionType,
 	PublicClientApplication,
 } from '@azure/msal-browser';
-import * as Sentry from '@sentry/angular-ivy';
+import * as Sentry from '@sentry/angular';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { GoogleTagManagerModule } from 'angular-google-tag-manager';
