@@ -72,10 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
 			tracesSampleRate: 0.025,
 			replaysOnErrorSampleRate: 1.0,
 			enableTracing: false,
-			integrations: [
-				Sentry.browserTracingIntegration(),
-				Sentry.replayIntegration()
-			],
+			integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
 		});
 	}
 }
