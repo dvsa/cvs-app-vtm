@@ -70,7 +70,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 			.subscribe((testTypeId) => {
 				this.testRecordsService.contingencyTestTypeSelected(testTypeId as string);
 				// @ts-ignore
-        this.testTypeId = testTypeId;
+				this.testTypeId = testTypeId;
 			});
 
 		this.watchForCreateSuccess();

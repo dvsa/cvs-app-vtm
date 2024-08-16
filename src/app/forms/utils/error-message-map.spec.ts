@@ -62,10 +62,10 @@ describe('ErrorMessageMap', () => {
 	])('should return "%s" for %s with %o', (expected, key, props) => {
 		if (props) {
 			// @ts-ignore
-      expect(ErrorMessageMap[`${key}`](...props)).toBe(expected);
+			expect(ErrorMessageMap[`${key}`](...props)).toBe(expected);
 		} else {
 			// @ts-ignore
-      expect(ErrorMessageMap[`${key}`]()).toBe(expected);
+			expect(ErrorMessageMap[`${key}`]()).toBe(expected);
 		}
 	});
 });

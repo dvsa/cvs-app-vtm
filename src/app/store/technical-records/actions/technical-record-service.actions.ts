@@ -3,7 +3,7 @@ import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { ActionCreator, ActionCreatorProps, createAction, props, Action } from '@ngrx/store';
+import { Action, ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 // eslint-disable-next-line import/no-unresolved
 
 const prefix = '[Technical Record Service]';
