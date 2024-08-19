@@ -623,98 +623,7 @@ describe('TestResultsEffects', () => {
 							contingencyTestTemplates.psv['testTypesGroup1'] as Record<string, FormNode>
 						),
 						sectionsValue: {
-							bodyMake: undefined,
-							contingencyTestNumber: undefined,
-							countryOfRegistration: '',
-							createdById: undefined,
-							createdByName: undefined,
-							euVehicleCategory: EUVehicleCategory.M1,
-							firstUseDate: null,
-							lastUpdatedAt: undefined,
-							lastUpdatedById: undefined,
-							lastUpdatedByName: undefined,
-							noOfAxles: undefined,
-							numberOfSeats: undefined,
-							numberOfWheelsDriven: undefined,
-							odometerReading: 0,
-							odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
-							preparerId: '',
-							preparerName: '',
-							reasonForCancellation: undefined,
-							reasonForCreation: undefined,
-							regnDate: undefined,
-							source: undefined,
-							shouldEmailCertificate: undefined,
-							systemNumber: '',
-							testEndTimestamp: '',
-							testResultId: '',
-							testStartTimestamp: '',
-							testStationName: '',
-							testStationPNumber: '',
-							testStationType: 'atf',
-							testStatus: undefined,
-							testTypes: [
-								{
-									additionalCommentsForAbandon: null,
-									additionalNotesRecorded: '',
-									certificateLink: undefined,
-									certificateNumber: '',
-									customDefects: [],
-									defects: [],
-									deletionFlag: undefined,
-									lastSeatbeltInstallationCheckDate: '',
-									name: '',
-									numberOfSeatbeltsFitted: 0,
-									prohibitionIssued: false,
-									reasonForAbandoning: '',
-									seatbeltInstallationCheckDate: false,
-									secondaryCertificateNumber: null,
-									testExpiryDate: '',
-									testResult: resultOfTestEnum.fail,
-									testTypeEndTimestamp: '',
-									testTypeId: '1',
-									testTypeName: '',
-									testTypeStartTimestamp: '',
-								},
-							],
-							testerEmailAddress: '',
-							testerName: '',
-							testerStaffId: '',
-							typeOfTest: TypeOfTest.CONTINGENCY,
-							vehicleClass: null,
-							vehicleConfiguration: undefined,
-							vehicleSize: undefined,
-							vehicleType: 'psv',
-							vin: '',
-							vrm: '',
-						} as unknown as TestResultModel,
-					}),
-				});
-			});
-		});
-
-		it('should dispatch templateSectionsChanged with old sections for IVA when flag is false', () => {
-			const testResult = createMockTestResult({
-				vehicleType: VehicleTypes.PSV,
-				testTypes: [createMockTestType({ testTypeId: '126' })],
-			});
-			jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(false);
-			store.overrideSelector(testResultInEdit, testResult);
-
-			testScheduler.run(({ hot, expectObservable }) => {
-				actions$ = hot('-a', {
-					a: contingencyTestTypeSelected({
-						testType: '126',
-					}),
-				});
-
-				expectObservable(effects.generateContingencyTestTemplatesAndtestResultToUpdate$).toBe('-b', {
-					b: templateSectionsChanged({
-						sectionTemplates: Object.values(
-							contingencyTestTemplates.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>
-						),
-						sectionsValue: {
-							bodyMake: undefined,
+							bodyType: undefined,
 							contingencyTestNumber: undefined,
 							countryOfRegistration: '',
 							createdById: undefined,
@@ -762,10 +671,104 @@ describe('TestResultsEffects', () => {
 									reasonForAbandoning: '',
 									seatbeltInstallationCheckDate: false,
 									secondaryCertificateNumber: null,
+									testCode: 'undefined',
+									testExpiryDate: '',
+									testResult: resultOfTestEnum.fail,
+									testTypeEndTimestamp: '',
+									testTypeId: '1',
+									testTypeName: '',
+									testTypeStartTimestamp: '',
+								},
+							],
+							testerEmailAddress: '',
+							testerName: '',
+							testerStaffId: '',
+							typeOfTest: TypeOfTest.CONTINGENCY,
+							vehicleClass: null,
+							vehicleConfiguration: undefined,
+							vehicleSize: undefined,
+							vehicleType: 'psv',
+							vin: '',
+							vrm: '',
+						} as unknown as TestResultModel,
+					}),
+				});
+			});
+		});
+
+		it('should dispatch templateSectionsChanged with old sections for IVA when flag is false', () => {
+			const testResult = createMockTestResult({
+				vehicleType: VehicleTypes.PSV,
+				testTypes: [createMockTestType({ testTypeId: '126' })],
+			});
+			jest.spyOn(featureToggleService, 'isFeatureEnabled').mockReturnValue(false);
+			store.overrideSelector(testResultInEdit, testResult);
+
+			testScheduler.run(({ hot, expectObservable }) => {
+				actions$ = hot('-a', {
+					a: contingencyTestTypeSelected({
+						testType: '126',
+					}),
+				});
+
+				expectObservable(effects.generateContingencyTestTemplatesAndtestResultToUpdate$).toBe('-b', {
+					b: templateSectionsChanged({
+						sectionTemplates: Object.values(
+							contingencyTestTemplates.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>
+						),
+						sectionsValue: {
+							bodyType: undefined,
+							contingencyTestNumber: undefined,
+							countryOfRegistration: '',
+							createdById: undefined,
+							createdByName: undefined,
+							euVehicleCategory: EUVehicleCategory.M1,
+							firstUseDate: null,
+							lastUpdatedAt: undefined,
+							lastUpdatedById: undefined,
+							lastUpdatedByName: undefined,
+							noOfAxles: undefined,
+							numberOfSeats: undefined,
+							numberOfWheelsDriven: undefined,
+							odometerReading: 0,
+							odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
+							preparerId: '',
+							preparerName: '',
+							reasonForCancellation: undefined,
+							reasonForCreation: undefined,
+							regnDate: undefined,
+							source: undefined,
+							shouldEmailCertificate: undefined,
+							make: undefined,
+							model: undefined,
+							systemNumber: '',
+							testEndTimestamp: '',
+							testResultId: '',
+							testStartTimestamp: '',
+							testStationName: '',
+							testStationPNumber: '',
+							testStationType: 'atf',
+							testStatus: undefined,
+							testTypes: [
+								{
+									additionalCommentsForAbandon: null,
+									additionalNotesRecorded: '',
+									certificateLink: undefined,
+									certificateNumber: '',
+									customDefects: [],
+									defects: [],
+									deletionFlag: undefined,
+									lastSeatbeltInstallationCheckDate: '',
+									name: '',
+									numberOfSeatbeltsFitted: 0,
+									prohibitionIssued: false,
+									reasonForAbandoning: '',
+									seatbeltInstallationCheckDate: false,
+									secondaryCertificateNumber: null,
 									testResult: resultOfTestEnum.fail,
 									testTypeEndTimestamp: '',
 									testTypeId: '126',
-									testCode: undefined,
+									testCode: 'undefined',
 									testTypeName: '',
 									testTypeStartTimestamp: '',
 								},
