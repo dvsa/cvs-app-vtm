@@ -84,8 +84,8 @@ export class CustomValidators {
 	static hideIfParentSiblingEquals = (parentSibling: string, value: unknown): ValidatorFn => {
 		return (control: AbstractControl): ValidationErrors | null => {
 			if (control && control.parent && control.parent.parent) {
-				if ((control.parent as CustomFormControl | CustomFormGroup).meta.hide) return null;
-				if ((control.parent.parent as CustomFormControl | CustomFormGroup).meta.hide) return null;
+				if ((control.parent as CustomFormControl | CustomFormGroup).meta?.hide) return null;
+				if ((control.parent.parent as CustomFormControl | CustomFormGroup).meta?.hide) return null;
 				const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
 				siblingControl.meta.hide =
 					Array.isArray(value) && control.value ? value.includes(control.value) : control.value === value;
