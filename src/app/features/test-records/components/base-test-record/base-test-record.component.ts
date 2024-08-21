@@ -22,12 +22,11 @@ import { Roles } from '@models/roles.enum';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { DefectsState, filteredDefects } from '@store/defects';
-import { selectTechRecord } from '@store/technical-records';
 import merge from 'lodash.merge';
 import { Observable, map } from 'rxjs';
 
@@ -52,10 +51,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
 	private defectsStore = inject(Store<DefectsState>);
 	private routerService = inject(RouterService);
 	private testRecordsService = inject(TestRecordsService);
-	private store = inject(Store);
 	private globalErrorService = inject(GlobalErrorService);
-
-	techRecord = this.store.selectSignal(selectTechRecord);
 
 	ngAfterViewInit(): void {
 		this.handleFormChange({});
@@ -76,8 +72,6 @@ export class BaseTestRecordComponent implements AfterViewInit {
 		latestTest = merge(latestTest, defectsValue, customDefectsValue, requiredStandardsValue, event);
 
 		if (this.shouldUpdateTest(latestTest)) {
-			const techRecord = this.techRecord();
-			latestTest.statusCode = techRecord?.techRecord_statusCode as StatusCodes;
 			this.newTestResult.emit(latestTest);
 		}
 	}
