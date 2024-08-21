@@ -7,6 +7,7 @@ import {
 	QueryList,
 	ViewChild,
 	ViewChildren,
+	inject,
 } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -21,7 +22,7 @@ import { Roles } from '@models/roles.enum';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
-import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
@@ -48,16 +49,13 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
 	@Output() newTestResult = new EventEmitter<TestResultModel>();
 
-	techRecord$: Observable<V3TechRecordModel | undefined>;
-	constructor(
-		private defectsStore: Store<DefectsState>,
-		private routerService: RouterService,
-		private testRecordsService: TestRecordsService,
-		private store: Store,
-		private globalErrorService: GlobalErrorService
-	) {
-		this.techRecord$ = this.store.select(selectTechRecord);
-	}
+	private defectsStore = inject(Store<DefectsState>);
+	private routerService = inject(RouterService);
+	private testRecordsService = inject(TestRecordsService);
+	private store = inject(Store);
+	private globalErrorService = inject(GlobalErrorService);
+
+	techRecord = this.store.selectSignal(selectTechRecord);
 
 	ngAfterViewInit(): void {
 		this.handleFormChange({});
@@ -77,9 +75,15 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
 		latestTest = merge(latestTest, defectsValue, customDefectsValue, requiredStandardsValue, event);
 
-		if (latestTest && Object.keys(latestTest).length > 0) {
-			this.newTestResult.emit(latestTest as TestResultModel);
+		if (this.shouldUpdateTest(latestTest)) {
+			const techRecord = this.techRecord();
+			latestTest.statusCode = techRecord?.techRecord_statusCode as StatusCodes;
+			this.newTestResult.emit(latestTest);
 		}
+	}
+
+	shouldUpdateTest(latestTest: unknown): latestTest is TestResultModel {
+		return !!latestTest && Object.keys(latestTest).length > 0;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
