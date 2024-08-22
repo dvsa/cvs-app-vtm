@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -29,6 +29,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 	createdTimestamp?: string;
 	formValidity = false;
 	width: FormNodeWidth = FormNodeWidth.L;
+
+	private technicalRecordService = inject(TechnicalRecordService);
 
 	cherishedTransferForm = new FormGroup({
 		currentVrm: new CustomFormControl(
@@ -94,8 +96,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
 		private globalErrorService: GlobalErrorService,
 		private route: ActivatedRoute,
 		private router: Router,
-		private store: Store<TechnicalRecordServiceState>,
-		private technicalRecordService: TechnicalRecordService
+		private store: Store<TechnicalRecordServiceState>
 	) {}
 
 	ngOnInit(): void {
