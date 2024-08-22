@@ -3,9 +3,8 @@ import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
+import { Action, ActionCreator, ActionCreatorProps, createAction, props } from '@ngrx/store';
 // eslint-disable-next-line import/no-unresolved
-import { TypedAction } from '@ngrx/store/src/models';
 
 const prefix = '[Technical Record Service]';
 
@@ -165,10 +164,10 @@ function createOutcomeAction<T extends boolean>(
 ): ActionCreator<
 	string,
 	T extends false
-		? (props: GlobalError) => GlobalError & TypedAction<string>
+		? (props: GlobalError) => GlobalError & Action<string>
 		: (props: { vehicleTechRecord: TechRecordType<'get'> }) => {
 				vehicleTechRecord: TechRecordType<'get'>;
-			} & TypedAction<string>
+			} & Action<string>
 > {
 	const suffix = isSuccess ? 'Success' : 'Failure';
 	const type = `${prefix} ${title} ${suffix}`;
