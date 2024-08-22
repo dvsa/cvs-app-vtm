@@ -628,6 +628,24 @@ export class CustomValidators {
 			return CustomValidators.requiredIfEquals('testResult', ['pass'])(control);
 		};
 	};
+
+	static maxDecimalPlaces = (decimalPlaces: number): ValidatorFn => {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (!control.value) return null;
+			if (!(control instanceof CustomFormControl)) return null;
+
+			const value = control.value as number;
+			const decimalPlacesCount = (value.toString().split('.')[1] || '').length;
+
+			return decimalPlacesCount > decimalPlaces
+				? {
+						maxDecimalPlaces: {
+							message: `${control.meta.label} must have a maximum of ${decimalPlaces} decimal places`,
+						},
+					}
+				: null;
+		};
+	};
 }
 
 export type EnumValidatorOptions = {

@@ -1,9 +1,11 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
 	selector: '[appNumberOnly]',
 })
 export class NumberOnlyDirective {
+	@Input() enableDecimals? = false;
+
 	inputElement: HTMLInputElement;
 
 	private navigationKeys = [
@@ -36,7 +38,8 @@ export class NumberOnlyDirective {
 			(e.key === 'a' && e.metaKey === true) ||
 			(e.key === 'c' && e.metaKey === true) ||
 			(e.key === 'v' && e.metaKey === true) ||
-			(e.key === 'x' && e.metaKey === true)
+			(e.key === 'x' && e.metaKey === true) ||
+			(this.enableDecimals && e.key === '.')
 		) {
 			return;
 		}

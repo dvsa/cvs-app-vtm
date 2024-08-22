@@ -1,6 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
 
@@ -34,7 +34,13 @@ export const DeskBasedEmissionsSection: FormNode = {
 							name: 'smokeTestKLimitApplied',
 							label: 'Smoke test K limit applied',
 							type: FormNodeTypes.CONTROL,
-							validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
+							viewType: FormNodeViewTypes.STRING,
+							editType: FormNodeEditTypes.NUMERICSTRING,
+							enableDecimals: true,
+							validators: [
+								{ name: ValidatorNames.Max, args: 9.999 },
+								{ name: ValidatorNames.MaxDecimalPlaces, args: 3 },
+							],
 							required: true,
 							value: null,
 						},

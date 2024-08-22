@@ -2145,4 +2145,28 @@ describe('IssueRequired', () => {
 			});
 		});
 	});
+
+	describe('maxDecimalPlaces', () => {
+		it('should allow zero decimal places when the max is 2', () => {
+			const control = new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'control', label: 'control' }, 1);
+			expect(CustomValidators.maxDecimalPlaces(2)(control)).toBeNull();
+		});
+
+		it('should allow one decimal places when the max is 2', () => {
+			const control = new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'control', label: 'control' }, 1.1);
+			expect(CustomValidators.maxDecimalPlaces(2)(control)).toBeNull();
+		});
+
+		it('should allow two decimal places when the max is 2', () => {
+			const control = new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'control', label: 'control' }, 1.11);
+			expect(CustomValidators.maxDecimalPlaces(2)(control)).toBeNull();
+		});
+
+		it('should not allow three decimal places when the max is 2', () => {
+			const control = new CustomFormControl({ type: FormNodeTypes.CONTROL, name: 'control', label: 'control' }, 1.111);
+			expect(CustomValidators.maxDecimalPlaces(2)(control)).toEqual({
+				maxDecimalPlaces: { message: 'control must have a maximum of 2 decimal places' },
+			});
+		});
+	});
 });

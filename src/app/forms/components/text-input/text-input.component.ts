@@ -16,6 +16,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class TextInputComponent extends BaseControlComponent {
 	@Input() numeric = false;
+	@Input() enableDecimals? = false;
 	@Output() blur = new EventEmitter<FocusEvent>();
 
 	get style(): string {

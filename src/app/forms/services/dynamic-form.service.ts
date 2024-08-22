@@ -93,6 +93,7 @@ export class DynamicFormService {
 		[ValidatorNames.MinArrayLengthIfNotEmpty]: (args: { minimumLength: number; message: string }) =>
 			CustomValidators.minArrayLengthIfNotEmpty(args.minimumLength, args.message),
 		[ValidatorNames.IssueRequired]: () => CustomValidators.issueRequired(),
+		[ValidatorNames.MaxDecimalPlaces]: (args: number) => CustomValidators.maxDecimalPlaces(args),
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
