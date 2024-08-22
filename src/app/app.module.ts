@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -25,7 +25,7 @@ import {
 	InteractionType,
 	PublicClientApplication,
 } from '@azure/msal-browser';
-import * as Sentry from '@sentry/angular-ivy';
+import * as Sentry from '@sentry/angular';
 import { FeatureToggleService } from '@services/feature-toggle-service/feature-toggle-service';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { GoogleTagManagerModule } from 'angular-google-tag-manager';
@@ -75,11 +75,12 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () => feat
 
 @NgModule({
 	declarations: [AppComponent],
+	exports: [],
+	bootstrap: [AppComponent, MsalRedirectComponent],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
 		MsalModule,
-		HttpClientModule,
 		AppStoreModule,
 		InterceptorModule,
 		CoreModule,
@@ -153,8 +154,7 @@ const featureFactory = (featureFlagsService: FeatureToggleService) => () => feat
 		MsalGuard,
 		MsalBroadcastService,
 		UserService,
+		provideHttpClient(withInterceptorsFromDi()),
 	],
-	exports: [],
-	bootstrap: [AppComponent, MsalRedirectComponent],
 })
 export class AppModule {}
