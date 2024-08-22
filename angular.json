@@ -24,12 +24,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/cvs-app-vtm",
+            "outputPath": {
+              "base": "dist/cvs-app-vtm"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "sourceMap": true,
@@ -46,7 +49,15 @@
               "src/global-styles.scss"
             ],
             "scripts": [],
-            "allowedCommonJsDependencies": ["validate-govuk-date"]
+            "allowedCommonJsDependencies": [
+              "validate-govuk-date"
+            ],
+            "browser": "src/main.ts",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "."
+              ]
+            }
           },
           "configurations": {
             "production": {
@@ -60,10 +71,7 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "extractLicenses": true
             },
             "deploy": {
               "fileReplacements": [
@@ -76,30 +84,27 @@
               "outputHashing": "all",
               "sourceMap": true,
               "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": true,
-              "buildOptimizer": true
+              "extractLicenses": true
             }
           },
           "defaultConfiguration": "deploy"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "cvs-app-vtm:build:production"
+              "buildTarget": "cvs-app-vtm:build:production"
             },
             "deploy": {
-              "browserTarget": "cvs-app-vtm:build:deploy"
+              "buildTarget": "cvs-app-vtm:build:deploy"
             }
           },
           "defaultConfiguration": "deploy"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
-            "browserTarget": "cvs-app-vtm:build"
+            "buildTarget": "cvs-app-vtm:build"
           }
         },
         "lint": {
@@ -114,9 +119,7 @@
       }
     }
   },
-  "defaultProject": "cvs-app-vtm",
   "cli": {
-    "analytics": false,
-    "defaultCollection": "@angular-eslint/schematics"
+    "analytics": false
   }
 }
