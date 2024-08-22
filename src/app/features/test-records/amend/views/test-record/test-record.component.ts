@@ -67,6 +67,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 					this.testRecordsService.editingTestResult(testResult);
 				}
 				if (testType && testType !== testResult?.testTypes[0].testTypeId) {
+					// @ts-ignore
 					this.testRecordsService.testTypeChange(testType);
 				}
 			});

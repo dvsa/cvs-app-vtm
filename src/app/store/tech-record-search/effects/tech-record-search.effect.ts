@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';
@@ -11,6 +11,9 @@ import {
 
 @Injectable()
 export class TechSearchResultsEffects {
+	private actions$ = inject(Actions);
+	private techRecordHttpService = inject(TechnicalRecordHttpService);
+
 	fetchSearchResults$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(fetchSearchResult),
@@ -47,9 +50,4 @@ export class TechSearchResultsEffects {
 		getTechnicalRecords_404:
 			'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
 	};
-
-	constructor(
-		private actions$: Actions,
-		private techRecordHttpService: TechnicalRecordHttpService
-	) {}
 }
