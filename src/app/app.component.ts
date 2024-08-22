@@ -3,7 +3,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import * as Sentry from '@sentry/angular-ivy';
+import * as Sentry from '@sentry/angular';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
@@ -72,12 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
 			tracesSampleRate: 0.025,
 			replaysOnErrorSampleRate: 1.0,
 			enableTracing: false,
-			integrations: [
-				new Sentry.BrowserTracing({
-					routingInstrumentation: Sentry.routingInstrumentation,
-				}),
-				new Sentry.Replay(),
-			],
+			integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
 		});
 	}
 }
