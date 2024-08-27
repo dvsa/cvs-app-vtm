@@ -18,13 +18,11 @@ jest.config.js
 protractor.conf.js
 /src/app/api/*
 /mock-api
-/cypress
 /.vscode
 /.storybook
 /.husky
 /.github
 setenv.ts
 setup-jest.ts
-cypress.config.ts
 jest-global-mocks.ts
 environment.deploy.ts

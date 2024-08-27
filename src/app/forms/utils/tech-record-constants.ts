@@ -26,6 +26,8 @@ import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { SmallTrailerTechRecord } from '@forms/templates/small-trailer/small-trailer-tech-record.template';
 
+import { AdrCertificateTemplate } from '@forms/templates/general/adr-certificate.template';
+import { AdrTemplate } from '@forms/templates/general/adr.template';
 import { TechRecordReasonForCreationSection } from '@forms/templates/general/reason-for-creation.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
@@ -35,93 +37,109 @@ import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.temp
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { AdrTemplate } from '@forms/templates/general/adr.template';
-import { AdrCertificateTemplate } from '@forms/templates/general/adr-certificate.template';
 
 // The map below initializes the array of sections that the *ngFor in tech summary component's template will iterate over.
 // The order in which each section is introduced in the array will determine its order on the page when rendered.
 // Sections which use custom components require a FormNode object with 'name' and 'label' properties.
 
 export const vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
-  [
-    VehicleTypes.PSV,
-    [
-      /*  1 */ TechRecordReasonForCreationSection,
-      /*  2 */ PsvNotes,
-      /*  3 */ PsvTechRecord,
-      /*  4 */ PsvTypeApprovalTemplate,
-      /*  5 */ PsvBrakesTemplate,
-      /*  6 */ PsvDdaTemplate,
-      /*  7 */ DocumentsTemplate,
-      /*  8 */ PsvBodyTemplate,
-      /*  9 */ PsvWeightsTemplate,
-      /* 10 */ PsvTyresTemplate,
-      /* 11 */ PsvDimensionsTemplate,
-    ],
-  ],
-  [
-    VehicleTypes.HGV,
-    [
-      /*  1 */ TechRecordReasonForCreationSection,
-      /*  2 */ NotesTemplate,
-      /*  3 */ HgvTechRecord,
-      /*  4 */ HgvAndTrlTypeApprovalTemplate,
-      /*  5 */ ApplicantDetails,
-      /*  6 */ DocumentsTemplate,
-      /*  7 */ HgvAndTrlBodyTemplate,
-      /*  8 */ HgvWeight,
-      /*  9 */ tyresTemplateHgv,
-      /* 10 */ HgvDimensionsTemplate,
-      /* 11 */ PlatesTemplate,
-      /* 12 */ AdrTemplate,
-      /* 13 */ AdrCertificateTemplate,
-    ],
-  ],
-  [
-    VehicleTypes.TRL,
-    [
-      /*  1 */ TechRecordReasonForCreationSection,
-      /*  2 */ NotesTemplate,
-      /*  3 */ TrlTechRecordTemplate,
-      /*  4 */ HgvAndTrlTypeApprovalTemplate,
-      /*  5 */ ApplicantDetails,
-      /*  6 */ DocumentsTemplate,
-      /*  7 */ LettersTemplate,
-      /*  8 */ HgvAndTrlBodyTemplate,
-      /*  9 */ TrlWeight,
-      /* 10 */ tyresTemplateTrl,
-      /* 11 */ TrlBrakesTemplate,
-      /* 12 */ TrlPurchasers,
-      /* 13 */ TrlDimensionsTemplate,
-      /* 14 */ PlatesTemplate,
-      /* 15 */ TrlAuthIntoServiceTemplate,
-      /* 16 */ ManufacturerTemplate,
-      /* 17 */ AdrTemplate,
-      /* 18 */ AdrCertificateTemplate,
-    ],
-  ],
-  [
-    VehicleTypes.SMALL_TRL,
-    [TechRecordReasonForCreationSection, /* 2 */ SmallTrailerTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit],
-  ],
-  [
-    VehicleTypes.LGV,
-    [
-      /* 1 */TechRecordReasonForCreationSection,
-      /* 2 */ LgvTechRecord,
-      /* 3 */ ApplicantDetails,
-      /* 4 */ NotesTemplate,
-      /* 5 */ Audit,
-      /* 6 */ AdrTemplate,
-      /* 7 */ AdrCertificateTemplate,
-    ],
-  ],
-  [
-    VehicleTypes.CAR,
-    [TechRecordReasonForCreationSection, /* 2 */ CarTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit],
-  ],
-  [
-    VehicleTypes.MOTORCYCLE,
-    [TechRecordReasonForCreationSection, /* 2 */ MotorcycleTechRecord, /* 3 */ ApplicantDetails, /* 4 */ NotesTemplate, /* 5 */ Audit],
-  ],
+	[
+		VehicleTypes.PSV,
+		[
+			/*  1 */ TechRecordReasonForCreationSection,
+			/*  2 */ PsvNotes,
+			/*  3 */ PsvTechRecord,
+			/*  4 */ PsvTypeApprovalTemplate,
+			/*  5 */ PsvBrakesTemplate,
+			/*  6 */ PsvDdaTemplate,
+			/*  7 */ DocumentsTemplate,
+			/*  8 */ PsvBodyTemplate,
+			/*  9 */ PsvWeightsTemplate,
+			/* 10 */ PsvTyresTemplate,
+			/* 11 */ PsvDimensionsTemplate,
+		],
+	],
+	[
+		VehicleTypes.HGV,
+		[
+			/*  1 */ TechRecordReasonForCreationSection,
+			/*  2 */ NotesTemplate,
+			/*  3 */ HgvTechRecord,
+			/*  4 */ HgvAndTrlTypeApprovalTemplate,
+			/*  5 */ ApplicantDetails,
+			/*  6 */ DocumentsTemplate,
+			/*  7 */ HgvAndTrlBodyTemplate,
+			/*  8 */ HgvWeight,
+			/*  9 */ tyresTemplateHgv,
+			/* 10 */ HgvDimensionsTemplate,
+			/* 11 */ PlatesTemplate,
+			/* 12 */ AdrTemplate,
+			/* 13 */ AdrCertificateTemplate,
+		],
+	],
+	[
+		VehicleTypes.TRL,
+		[
+			/*  1 */ TechRecordReasonForCreationSection,
+			/*  2 */ NotesTemplate,
+			/*  3 */ TrlTechRecordTemplate,
+			/*  4 */ HgvAndTrlTypeApprovalTemplate,
+			/*  5 */ ApplicantDetails,
+			/*  6 */ DocumentsTemplate,
+			/*  7 */ LettersTemplate,
+			/*  8 */ HgvAndTrlBodyTemplate,
+			/*  9 */ TrlWeight,
+			/* 10 */ tyresTemplateTrl,
+			/* 11 */ TrlBrakesTemplate,
+			/* 12 */ TrlPurchasers,
+			/* 13 */ TrlDimensionsTemplate,
+			/* 14 */ PlatesTemplate,
+			/* 15 */ TrlAuthIntoServiceTemplate,
+			/* 16 */ ManufacturerTemplate,
+			/* 17 */ AdrTemplate,
+			/* 18 */ AdrCertificateTemplate,
+		],
+	],
+	[
+		VehicleTypes.SMALL_TRL,
+		[
+			TechRecordReasonForCreationSection,
+			/* 2 */ SmallTrailerTechRecord,
+			/* 3 */ ApplicantDetails,
+			/* 4 */ NotesTemplate,
+			/* 5 */ Audit,
+		],
+	],
+	[
+		VehicleTypes.LGV,
+		[
+			/* 1 */ TechRecordReasonForCreationSection,
+			/* 2 */ LgvTechRecord,
+			/* 3 */ ApplicantDetails,
+			/* 4 */ NotesTemplate,
+			/* 5 */ Audit,
+			/* 6 */ AdrTemplate,
+			/* 7 */ AdrCertificateTemplate,
+		],
+	],
+	[
+		VehicleTypes.CAR,
+		[
+			TechRecordReasonForCreationSection,
+			/* 2 */ CarTechRecord,
+			/* 3 */ ApplicantDetails,
+			/* 4 */ NotesTemplate,
+			/* 5 */ Audit,
+		],
+	],
+	[
+		VehicleTypes.MOTORCYCLE,
+		[
+			TechRecordReasonForCreationSection,
+			/* 2 */ MotorcycleTechRecord,
+			/* 3 */ ApplicantDetails,
+			/* 4 */ NotesTemplate,
+			/* 5 */ Audit,
+		],
+	],
 ]);

@@ -6,15 +6,15 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DefectsService {
-  private url = `${environment.VTM_API_URI}/defects`;
+	private url = `${environment.VTM_API_URI}/defects`;
 
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) {}
 
-  fetchDefects(): Observable<Defect[]> {
-    return this.http.get<Defect[]>(this.url, { responseType: 'json' });
-  }
+	fetchDefects(): Observable<Defect[]> {
+		return this.http.get<Defect[]>(this.url, { responseType: 'json' });
+	}
 
-  fetchDefect(id: number): Observable<Defect> {
-    return this.http.get<Defect>(`${this.url}/${id}`, { responseType: 'json' });
-  }
+	fetchDefect(id: number): Observable<Defect> {
+		return this.http.get<Defect>(`${this.url}/${id}`, { responseType: 'json' });
+	}
 }

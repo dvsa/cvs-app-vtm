@@ -12,65 +12,65 @@ import { TestCodes } from './testCodes.enum';
 import { TypeOfTest } from './typeOfTest.enum';
 
 export interface TestResultModel {
-  testResultId: string;
+	testResultId: string;
 
-  systemNumber: string;
-  vin: string;
-  vrm?: string; // Mandatory for PSV and HGV, not applicable to TRL
+	systemNumber: string;
+	vin: string;
+	vrm?: string; // Mandatory for PSV and HGV, not applicable to TRL
 
-  createdAt?: string;
-  testStartTimestamp: string | Date;
-  testEndTimestamp: string | Date;
+	createdAt?: string;
+	testStartTimestamp: string | Date;
+	testEndTimestamp: string | Date;
 
-  testTypes: TestType[];
+	testTypes: TestType[];
 
-  trailerId: string;
-  countryOfRegistration: string;
-  euVehicleCategory: EUVehicleCategory | null;
-  odometerReading: number;
-  odometerReadingUnits: OdometerReadingUnits;
-  preparerName: string;
-  preparerId: string;
+	trailerId: string;
+	countryOfRegistration: string;
+	euVehicleCategory: EUVehicleCategory | null;
+	odometerReading: number;
+	odometerReadingUnits: OdometerReadingUnits;
+	preparerName: string;
+	preparerId: string;
 
-  testStationName: string;
-  testStationPNumber: string;
-  testStationType: TestStationType;
-  testerName: string;
-  testerEmailAddress: string;
-  testerStaffId: string;
+	testStationName: string;
+	testStationPNumber: string;
+	testStationType: TestStationType;
+	testerName: string;
+	testerEmailAddress: string;
+	testerStaffId: string;
 
-  reasonForCreation?: string;
-  reasonForCancellation?: string;
-  vehicleType: VehicleTypes;
-  testHistory?: TestResultModel[];
-  testStatus?: TestResultStatus;
+	reasonForCreation?: string;
+	reasonForCancellation?: string;
+	vehicleType: VehicleTypes;
+	testHistory?: TestResultModel[];
+	testStatus?: TestResultStatus;
 
-  make?: string;
-  model?: string;
-  bodyType?: TechRecordBodyType;
+	make?: string;
+	model?: string | null;
+	bodyType?: TechRecordBodyType;
 
-  /**
-   * Applicable only when updating/creating a test from VTM
-   */
-  createdByName?: string;
-  createdById?: string;
-  lastUpdatedByName?: string;
-  typeOfTest?: TypeOfTest;
-  contingencyTestNumber?: string;
-  source?: string;
-  lastUpdatedById?: string;
-  testVersion?: string | null;
-  testCode?: TestCodes;
+	/**
+	 * Applicable only when updating/creating a test from VTM
+	 */
+	createdByName?: string;
+	createdById?: string;
+	lastUpdatedByName?: string;
+	typeOfTest?: TypeOfTest;
+	contingencyTestNumber?: string;
+	source?: string;
+	lastUpdatedById?: string;
+	testVersion?: string | null;
+	testCode?: TestCodes;
 
-  vehicleSize?: VehicleSize;
-  vehicleConfiguration?: VehicleConfiguration | null;
-  noOfAxles?: number;
-  vehicleClass?: VehicleClass;
-  vehicleSubclass?: Array<VehicleSubclass>;
-  numberOfWheelsDriven?: number;
-  statusCode?: StatusCodes;
-  /**
-   * Used only for TRL
-   */
-  firstUseDate?: string;
+	vehicleSize?: VehicleSize;
+	vehicleConfiguration?: VehicleConfiguration | null;
+	noOfAxles?: number;
+	vehicleClass?: VehicleClass;
+	vehicleSubclass?: Array<VehicleSubclass>;
+	numberOfWheelsDriven?: number;
+	statusCode?: StatusCodes;
+	/**
+	 * Used only for TRL
+	 */
+	firstUseDate?: string;
 }

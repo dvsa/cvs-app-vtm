@@ -5,22 +5,21 @@
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "esModuleInterop": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "importHelpers": true,
-    "target": "es2017",
-    "allowSyntheticDefaultImports": true,
-    "module": "es2020",
+    "target": "ES2022",
+    "module": "ES2022",
     "lib": [
-      "es2020",
+      "es2023",
       "dom"
     ],
     "paths": {
@@ -33,7 +32,8 @@
       "@services/*": ["src/app/services/*"],
       "@store/*": ["src/app/store/*"],
       "@shared/*": ["src/app/shared/*"],
-      "@directives/*": ["src/app/directives/*"]
+      "@directives/*": ["src/app/directives/*"],
+      "govuk-frontend/*": ["node_modules/govuk-frontend/*"]
     }
   },
   "angularCompilerOptions": {
@@ -42,5 +42,5 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "exclude": ["cypress.config.ts", "cypress", "node_modules"]
+  "exclude": ["node_modules"]
 }

@@ -1,6 +1,9 @@
 <ng-container *ngIf="control">
-  <ng-container *ngIf="adrNotes">
+  <ng-container *ngIf="getAdditionalExaminerNotes() as adrNotes">
     <section class="govuk-!-margin-top-4">
+      <label *ngIf="control.meta?.label" class="govuk-label govuk-label--m">
+        {{ control.meta.label }}
+      </label>
       <table class="govuk-table" *ngIf="adrNotes && adrNotes.length > 0; else empty">
         <tbody class="govuk-table__body">
           <tr class="govuk-table__row">
@@ -20,7 +23,7 @@
               </td>
               <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">{{ result.lastUpdatedBy }}</td>
               <td class="govuk-table__cell break-words" [class.border-b-0]="i === 2 || isLast">
-                {{ result.createdAtDate | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
+                {{ result.createdAtDate | date : 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}
               </td>
             </tr>
           </ng-container>

@@ -1,6 +1,4 @@
-import {
-  Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren,
-} from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -19,161 +17,180 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-change-amend-vrm',
-  templateUrl: './tech-record-amend-vrm.component.html',
-  styleUrls: ['./tech-record-amend-vrm.component.scss'],
+	selector: 'app-change-amend-vrm',
+	templateUrl: './tech-record-amend-vrm.component.html',
+	styleUrls: ['./tech-record-amend-vrm.component.scss'],
 })
 export class AmendVrmComponent implements OnDestroy, OnInit {
-  techRecord?: VehiclesOtherThan<'trl'>;
-  makeAndModel?: string;
-  isCherishedTransfer = false;
-  systemNumber?: string;
-  createdTimestamp?: string;
-  formValidity = false;
-  width: FormNodeWidth = FormNodeWidth.L;
+	techRecord?: VehiclesOtherThan<'trl'>;
+	makeAndModel?: string;
+	isCherishedTransfer = false;
+	systemNumber?: string;
+	createdTimestamp?: string;
+	formValidity = false;
+	width: FormNodeWidth = FormNodeWidth.L;
 
-  cherishedTransferForm = new FormGroup({
-    currentVrm: new CustomFormControl(
-      {
-        name: 'current-Vrm',
-        label: 'Current VRM',
-        type: FormNodeTypes.CONTROL,
-      },
-      '',
-      [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      this.technicalRecordService.validateVrmForCherishedTransfer(),
-    ),
-    previousVrm: new CustomFormControl({
-      name: 'previous-Vrm',
-      label: 'Previous VRM',
-      type: FormNodeTypes.CONTROL,
-      disabled: true,
-    }),
-    thirdMark: new CustomFormControl(
-      {
-        name: 'third-Mark',
-        label: 'Third Mark',
-        type: FormNodeTypes.CONTROL,
-      },
-      undefined,
-      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-    ),
-  });
-  correctingAnErrorForm = new FormGroup({
-    newVrm: new CustomFormControl(
-      {
-        name: 'new-Vrm',
-        label: 'New VRM',
-        type: FormNodeTypes.CONTROL,
-      },
-      '',
-      [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-    ),
-  });
+	private technicalRecordService = inject(TechnicalRecordService);
 
-  @Output() isFormDirty = new EventEmitter<boolean>();
-  @Output() isFormInvalid = new EventEmitter<boolean>();
+	cherishedTransferForm = new FormGroup({
+		currentVrm: new CustomFormControl(
+			{
+				name: 'current-Vrm',
+				label: 'Current VRM',
+				type: FormNodeTypes.CONTROL,
+			},
+			'',
+			[
+				Validators.required,
+				CustomValidators.alphanumeric(),
+				CustomValidators.notZNumber,
+				Validators.minLength(3),
+				Validators.maxLength(9),
+			],
+			this.technicalRecordService.validateVrmForCherishedTransfer()
+		),
+		previousVrm: new CustomFormControl({
+			name: 'previous-Vrm',
+			label: 'Previous VRM',
+			type: FormNodeTypes.CONTROL,
+			disabled: true,
+		}),
+		thirdMark: new CustomFormControl(
+			{
+				name: 'third-Mark',
+				label: 'Third Mark',
+				type: FormNodeTypes.CONTROL,
+			},
+			undefined,
+			[CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)]
+		),
+	});
+	correctingAnErrorForm = new FormGroup({
+		newVrm: new CustomFormControl(
+			{
+				name: 'new-Vrm',
+				label: 'New VRM',
+				type: FormNodeTypes.CONTROL,
+			},
+			'',
+			[
+				Validators.required,
+				CustomValidators.alphanumeric(),
+				CustomValidators.notZNumber,
+				Validators.minLength(3),
+				Validators.maxLength(9),
+			]
+		),
+	});
 
-  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
+	@Output() isFormDirty = new EventEmitter<boolean>();
+	@Output() isFormInvalid = new EventEmitter<boolean>();
 
-  private destroy$ = new Subject<void>();
+	@ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
 
-  constructor(
-    private actions$: Actions,
-    public dfs: DynamicFormService,
-    private globalErrorService: GlobalErrorService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService,
-  ) {}
+	private destroy$ = new Subject<void>();
 
-  ngOnInit(): void {
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      this.systemNumber = params['systemNumber'];
-      this.createdTimestamp = params['createdTimestamp'];
-      this.isCherishedTransfer = params['reason'] === 'cherished-transfer';
-    });
-    this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe((record) => {
-      if (record?.techRecord_statusCode === 'archived' || !record) {
-        return this.navigateBack();
-      }
-      this.techRecord = record as VehiclesOtherThan<'trl'>;
-      this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
-    });
+	constructor(
+		private actions$: Actions,
+		public dfs: DynamicFormService,
+		private globalErrorService: GlobalErrorService,
+		private route: ActivatedRoute,
+		private router: Router,
+		private store: Store<TechnicalRecordServiceState>
+	) {}
 
-    this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
-      void this.router.navigate(['/tech-records', `${vehicleTechRecord.systemNumber}`, `${vehicleTechRecord.createdTimestamp}`]);
-    });
+	ngOnInit(): void {
+		this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+			this.systemNumber = params['systemNumber'];
+			this.createdTimestamp = params['createdTimestamp'];
+			this.isCherishedTransfer = params['reason'] === 'cherished-transfer';
+		});
+		this.technicalRecordService.techRecord$.pipe(take(1), takeUntil(this.destroy$)).subscribe((record) => {
+			if (record?.techRecord_statusCode === 'archived' || !record) {
+				return this.navigateBack();
+			}
+			this.techRecord = record as VehiclesOtherThan<'trl'>;
+			this.makeAndModel = this.technicalRecordService.getMakeAndModel(record);
+		});
 
-    this.cherishedTransferForm.controls['previousVrm'].setValue(this.techRecord?.primaryVrm ?? '');
-    this.cherishedTransferForm.controls['previousVrm'].disable();
-    this.cherishedTransferForm.controls['thirdMark'].setAsyncValidators(
-      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? ''),
-    );
-    this.correctingAnErrorForm.controls['newVrm'].setAsyncValidators(
-      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? ''),
-    );
-  }
+		this.actions$.pipe(ofType(amendVrmSuccess), takeUntil(this.destroy$)).subscribe(({ vehicleTechRecord }) => {
+			void this.router.navigate([
+				'/tech-records',
+				`${vehicleTechRecord.systemNumber}`,
+				`${vehicleTechRecord.createdTimestamp}`,
+			]);
+		});
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+		this.cherishedTransferForm.controls['previousVrm'].setValue(this.techRecord?.primaryVrm ?? '');
+		this.cherishedTransferForm.controls['previousVrm'].disable();
+		this.cherishedTransferForm.controls['thirdMark'].setAsyncValidators(
+			this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? '')
+		);
+		this.correctingAnErrorForm.controls['newVrm'].setAsyncValidators(
+			this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? '')
+		);
+	}
 
-  get vehicleType(): VehicleTypes | undefined {
-    return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
-  }
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
 
-  navigateBack() {
-    this.globalErrorService.clearErrors();
-    void this.router.navigate(['../../'], { relativeTo: this.route });
-  }
+	get vehicleType(): VehicleTypes | undefined {
+		return this.techRecord ? this.technicalRecordService.getVehicleTypeWithSmallTrl(this.techRecord) : undefined;
+	}
 
-  handleFormChange() {
-    if (this.isCherishedTransfer) {
-      this.cherishedTransferForm.get('currentVrm')?.updateValueAndValidity();
-    }
-  }
+	navigateBack() {
+		this.globalErrorService.clearErrors();
+		void this.router.navigate(['../../'], { relativeTo: this.route });
+	}
 
-  handleSubmit(): void {
-    if (!this.isFormValid()) {
-      return;
-    }
+	handleFormChange() {
+		if (this.isCherishedTransfer) {
+			this.cherishedTransferForm.get('currentVrm')?.updateValueAndValidity();
+		}
+	}
 
-    this.store.dispatch(
-      amendVrm({
-        newVrm: this.isCherishedTransfer ? this.cherishedTransferForm.value.currentVrm : this.correctingAnErrorForm.value.newVrm,
-        cherishedTransfer: this.isCherishedTransfer,
-        thirdMark: this.isCherishedTransfer ? this.cherishedTransferForm.value.thirdMark : undefined,
-        systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber,
-        createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp,
-      }),
-    );
-  }
+	handleSubmit(): void {
+		if (!this.isFormValid()) {
+			return;
+		}
 
-  isFormValid(): boolean {
-    this.globalErrorService.clearErrors();
+		this.store.dispatch(
+			amendVrm({
+				newVrm: this.isCherishedTransfer
+					? this.cherishedTransferForm.value.currentVrm
+					: this.correctingAnErrorForm.value.newVrm,
+				cherishedTransfer: this.isCherishedTransfer,
+				thirdMark: this.isCherishedTransfer ? this.cherishedTransferForm.value.thirdMark : undefined,
+				systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber,
+				createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp,
+			})
+		);
+	}
 
-    const errors: GlobalError[] = [];
+	isFormValid(): boolean {
+		this.globalErrorService.clearErrors();
 
-    if (this.isCherishedTransfer) {
-      DynamicFormService.validate(this.cherishedTransferForm, errors, false);
-    } else {
-      DynamicFormService.validate(this.correctingAnErrorForm, errors, false);
-    }
+		const errors: GlobalError[] = [];
 
-    if (errors?.length > 0) {
-      this.globalErrorService.setErrors(errors);
-      return false;
-    }
-    return true;
-  }
+		if (this.isCherishedTransfer) {
+			DynamicFormService.validate(this.cherishedTransferForm, errors, false);
+		} else {
+			DynamicFormService.validate(this.correctingAnErrorForm, errors, false);
+		}
 
-  get showWarning(): boolean {
-    if (this.vehicleType) {
-      return this.vehicleType === 'psv' || this.vehicleType === 'hgv';
-    }
-    return false;
-  }
+		if (errors?.length > 0) {
+			this.globalErrorService.setErrors(errors);
+			return false;
+		}
+		return true;
+	}
+
+	get showWarning(): boolean {
+		if (this.vehicleType) {
+			return this.vehicleType === 'psv' || this.vehicleType === 'hgv';
+		}
+		return false;
+	}
 }

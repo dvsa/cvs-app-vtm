@@ -5,35 +5,35 @@ import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.t
 import { CheckboxComponent } from './checkbox.component';
 
 @Component({
-  selector: 'app-host-component',
-  template: `<form [formGroup]="form">
+	selector: 'app-host-component',
+	template: `<form [formGroup]="form">
     <app-checkbox name="foo" formControlName="foo"></app-checkbox>
   </form> `,
-  styles: [],
+	styles: [],
 })
 class HostComponent {
-  form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, ''),
-  });
+	form = new FormGroup({
+		foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, ''),
+	});
 }
 
 describe('CheckboxComponent', () => {
-  let component: HostComponent;
-  let fixture: ComponentFixture<HostComponent>;
+	let component: HostComponent;
+	let fixture: ComponentFixture<HostComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [CheckboxComponent],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [CheckboxComponent],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(HostComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(HostComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });
