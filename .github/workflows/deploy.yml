@@ -59,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: VTM-App-build-output
-          path: dist/
+          path: dist/browser
 
   upload:
     needs: [build]
@@ -83,7 +83,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: VTM-App-build-output
-          path: dist/
+          path: dist/browser
 
       - name: Get AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -93,6 +93,6 @@ jobs:
           role-session-name: GHA-VTM-Upload
 
       - name: Upload App to S3
-        working-directory: dist/
+        working-directory: dist/browser
         run: aws s3 sync . s3://vtm${{ inputs.bucket }}.${{ env.CVS_APP_VTM_GHA_DOMAIN }}
 
