@@ -911,119 +911,133 @@ describe('requiredWhenCarryingDangerousGoods', () => {
 });
 
 describe('requiredWhenCarryingDangerousGoods', () => {
-  let form: FormGroup;
-  let store: MockStore<State>;
+	let form: FormGroup;
+	let store: MockStore<State>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [provideMockStore({ initialState: initialAppState })],
-    });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [provideMockStore({ initialState: initialAppState })],
+		});
 
-    store = TestBed.inject(MockStore);
+		store = TestBed.inject(MockStore);
 
-    form = new FormGroup({
-      techRecord_make: new CustomFormControl({
-        name: 'techRecord_make',
-        type: FormNodeTypes.CONTROL,
-        children: [],
-      }, null),
-      techRecord_adrDetails_dangerousGoods: new CustomFormControl({
-        name: 'techRecord_adrDetails_dangerousGoods',
-        type: FormNodeTypes.CONTROL,
-        children: [],
-      }, null),
-    });
-  });
-  it('should return null if the vehicle is not of type HGV or TRL', async () => {
-    // Not applicable tech record vehicle type
-    const carTechRecord: TechRecordType<'car', 'put'> = {
-      techRecord_vehicleType: 'car',
-      vin: 'car',
-      techRecord_reasonForCreation: 'test',
-      techRecord_statusCode: 'provisional',
-    };
+		form = new FormGroup({
+			techRecord_make: new CustomFormControl(
+				{
+					name: 'techRecord_make',
+					type: FormNodeTypes.CONTROL,
+					children: [],
+				},
+				null
+			),
+			techRecord_adrDetails_dangerousGoods: new CustomFormControl(
+				{
+					name: 'techRecord_adrDetails_dangerousGoods',
+					type: FormNodeTypes.CONTROL,
+					children: [],
+				},
+				null
+			),
+		});
+	});
+	it('should return null if the vehicle is not of type HGV or TRL', async () => {
+		// Not applicable tech record vehicle type
+		const carTechRecord: TechRecordType<'car', 'put'> = {
+			techRecord_vehicleType: 'car',
+			vin: 'car',
+			techRecord_reasonForCreation: 'test',
+			techRecord_statusCode: 'provisional',
+		};
 
-    store.overrideSelector(editingTechRecord, carTechRecord);
+		store.overrideSelector(editingTechRecord, carTechRecord);
 
-    const result = CustomAsyncValidators.requiredWhenCarryingDangerousGoods(store)(form.get('techRecord_make') as AbstractControl);
-    await expect(lastValueFrom(result)).resolves.toBeNull();
-  });
+		const result = CustomAsyncValidators.requiredWhenCarryingDangerousGoods(store)(
+			form.get('techRecord_make') as AbstractControl
+		);
+		await expect(lastValueFrom(result)).resolves.toBeNull();
+	});
 
-  it('should return null if the control is populated', async () => {
-    // Applicable vehicle tech record type
-    const hgvTechRecord: TechRecordType<'hgv', 'put'> = {
-      techRecord_vehicleType: 'hgv',
-      partialVin: '',
-      techRecord_bodyType_description: '',
-      techRecord_noOfAxles: 2,
-      techRecord_reasonForCreation: 'test',
-      techRecord_statusCode: 'provisional',
-      techRecord_vehicleClass_description: 'heavy goods vehicle',
-      primaryVrm: '',
-      vin: '',
+	it('should return null if the control is populated', async () => {
+		// Applicable vehicle tech record type
+		const hgvTechRecord: TechRecordType<'hgv', 'put'> = {
+			techRecord_vehicleType: 'hgv',
+			partialVin: '',
+			techRecord_bodyType_description: '',
+			techRecord_noOfAxles: 2,
+			techRecord_reasonForCreation: 'test',
+			techRecord_statusCode: 'provisional',
+			techRecord_vehicleClass_description: 'heavy goods vehicle',
+			primaryVrm: '',
+			vin: '',
 
-      // Vehicle does carry dangerous goods
-      techRecord_adrDetails_dangerousGoods: true,
-    };
+			// Vehicle does carry dangerous goods
+			techRecord_adrDetails_dangerousGoods: true,
+		};
 
-    // ...but the control is populated
-    form.get('techRecord_make')?.patchValue('make');
+		// ...but the control is populated
+		form.get('techRecord_make')?.patchValue('make');
 
-    store.overrideSelector(editingTechRecord, hgvTechRecord);
+		store.overrideSelector(editingTechRecord, hgvTechRecord);
 
-    const result = CustomAsyncValidators.requiredWhenCarryingDangerousGoods(store)(form.get('techRecord_make') as AbstractControl);
-    await expect(lastValueFrom(result)).resolves.toBeNull();
-  });
+		const result = CustomAsyncValidators.requiredWhenCarryingDangerousGoods(store)(
+			form.get('techRecord_make') as AbstractControl
+		);
+		await expect(lastValueFrom(result)).resolves.toBeNull();
+	});
 
-  it('should return null if the vehicle is an ADR vehicle, but does not carry dangerous goods', async () => {
-    // Applicable vehicle tech record type
-    const hgvTechRecord: TechRecordType<'hgv', 'put'> = {
-      techRecord_vehicleType: 'hgv',
-      partialVin: '',
-      techRecord_bodyType_description: '',
-      techRecord_noOfAxles: 2,
-      techRecord_reasonForCreation: 'test',
-      techRecord_statusCode: 'provisional',
-      techRecord_vehicleClass_description: 'heavy goods vehicle',
-      primaryVrm: '',
-      vin: '',
+	it('should return null if the vehicle is an ADR vehicle, but does not carry dangerous goods', async () => {
+		// Applicable vehicle tech record type
+		const hgvTechRecord: TechRecordType<'hgv', 'put'> = {
+			techRecord_vehicleType: 'hgv',
+			partialVin: '',
+			techRecord_bodyType_description: '',
+			techRecord_noOfAxles: 2,
+			techRecord_reasonForCreation: 'test',
+			techRecord_statusCode: 'provisional',
+			techRecord_vehicleClass_description: 'heavy goods vehicle',
+			primaryVrm: '',
+			vin: '',
 
-      // Vehicle doesn't carry dangerous goods
-      techRecord_adrDetails_dangerousGoods: false,
-    };
+			// Vehicle doesn't carry dangerous goods
+			techRecord_adrDetails_dangerousGoods: false,
+		};
 
-    // ...and the control isn't populated
-    form.get('techRecord_make')?.patchValue(null);
+		// ...and the control isn't populated
+		form.get('techRecord_make')?.patchValue(null);
 
-    store.overrideSelector(editingTechRecord, hgvTechRecord);
+		store.overrideSelector(editingTechRecord, hgvTechRecord);
 
-    const result = CustomAsyncValidators.requiredWhenCarryingDangerousGoods(store)(form.get('techRecord_make') as AbstractControl);
-    await expect(lastValueFrom(result)).resolves.toBeNull();
-  });
+		const result = CustomAsyncValidators.requiredWhenCarryingDangerousGoods(store)(
+			form.get('techRecord_make') as AbstractControl
+		);
+		await expect(lastValueFrom(result)).resolves.toBeNull();
+	});
 
-  it('should return the required validation error when the vehicle is an ADR vehicle, and carries dangerous goods is selected', async () => {
-    // Applicable vehicle tech record type
-    const hgvTechRecord: TechRecordType<'hgv', 'put'> = {
-      techRecord_vehicleType: 'hgv',
-      partialVin: '',
-      techRecord_bodyType_description: '',
-      techRecord_noOfAxles: 2,
-      techRecord_reasonForCreation: 'test',
-      techRecord_statusCode: 'provisional',
-      techRecord_vehicleClass_description: 'heavy goods vehicle',
-      primaryVrm: '',
-      vin: '',
+	it('should return the required validation error when the vehicle is an ADR vehicle, and carries dangerous goods is selected', async () => {
+		// Applicable vehicle tech record type
+		const hgvTechRecord: TechRecordType<'hgv', 'put'> = {
+			techRecord_vehicleType: 'hgv',
+			partialVin: '',
+			techRecord_bodyType_description: '',
+			techRecord_noOfAxles: 2,
+			techRecord_reasonForCreation: 'test',
+			techRecord_statusCode: 'provisional',
+			techRecord_vehicleClass_description: 'heavy goods vehicle',
+			primaryVrm: '',
+			vin: '',
 
-      // Vehicle does carry dangerous goods
-      techRecord_adrDetails_dangerousGoods: true,
-    };
+			// Vehicle does carry dangerous goods
+			techRecord_adrDetails_dangerousGoods: true,
+		};
 
-    // ...and the control isn't populated
-    form.get('techRecord_make')?.patchValue(null);
+		// ...and the control isn't populated
+		form.get('techRecord_make')?.patchValue(null);
 
-    store.overrideSelector(editingTechRecord, hgvTechRecord);
+		store.overrideSelector(editingTechRecord, hgvTechRecord);
 
-    const result = CustomAsyncValidators.requiredWhenCarryingDangerousGoods(store)(form.get('techRecord_make') as AbstractControl);
-    await expect(lastValueFrom(result)).resolves.toStrictEqual({ required: true });
-  });
+		const result = CustomAsyncValidators.requiredWhenCarryingDangerousGoods(store)(
+			form.get('techRecord_make') as AbstractControl
+		);
+		await expect(lastValueFrom(result)).resolves.toStrictEqual({ required: true });
+	});
 });

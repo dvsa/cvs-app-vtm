@@ -9,32 +9,32 @@ import { AdrTankDetailsM145ViewComponent } from '../adr-tank-details-m145-view/a
 import { AdrNewCertificateRequiredViewComponent } from './adr-new-certificate-required-view.component';
 
 describe('AdrNewCertificateRequiredViewComponent', () => {
-  let component: AdrNewCertificateRequiredViewComponent;
-  let fixture: ComponentFixture<AdrNewCertificateRequiredViewComponent>;
+	let component: AdrNewCertificateRequiredViewComponent;
+	let fixture: ComponentFixture<AdrNewCertificateRequiredViewComponent>;
 
-  const control = new CustomFormControl({
-    name: 'techRecord_adrDetails_m145Statement',
-    type: FormNodeTypes.CONTROL,
-    value: [],
-  });
+	const control = new CustomFormControl({
+		name: 'techRecord_adrDetails_m145Statement',
+		type: FormNodeTypes.CONTROL,
+		value: [],
+	});
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [AdrNewCertificateRequiredViewComponent],
-      imports: [SharedModule],
-      providers: [
-        provideMockStore<State>({ initialState: initialAppState }),
-        { provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsM145ViewComponent, multi: true },
-        { provide: NgControl, useValue: { control } },
-      ],
-    }).compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [AdrNewCertificateRequiredViewComponent],
+			imports: [SharedModule],
+			providers: [
+				provideMockStore<State>({ initialState: initialAppState }),
+				{ provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsM145ViewComponent, multi: true },
+				{ provide: NgControl, useValue: { control } },
+			],
+		}).compileComponents();
 
-    fixture = TestBed.createComponent(AdrNewCertificateRequiredViewComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+		fixture = TestBed.createComponent(AdrNewCertificateRequiredViewComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

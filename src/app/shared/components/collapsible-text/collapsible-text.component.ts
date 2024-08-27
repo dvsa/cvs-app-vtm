@@ -1,20 +1,20 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'collapsible-text',
-  templateUrl: './collapsible-text.component.html',
-  styleUrls: ['./collapsible-text.component.scss'],
+	selector: 'collapsible-text',
+	templateUrl: './collapsible-text.component.html',
+	styleUrls: ['./collapsible-text.component.scss'],
 })
 export class CollapsibleTextComponent {
-  @Input() text = '';
-  @Input() maxChars = 0;
-  @Input() isCollapsed = true;
+	@Input() text = '';
+	@Input() maxChars = 0;
+	@Input() isCollapsed = true;
 
-  open() {
-    this.isCollapsed = false;
-  }
+	open() {
+		this.isCollapsed = false;
+	}
 
-  close() {
-    this.isCollapsed = true;
-  }
+	close() {
+		this.isCollapsed = true;
+	}
 }
