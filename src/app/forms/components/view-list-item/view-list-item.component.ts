@@ -4,39 +4,37 @@ import { FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
-  selector: '[app-view-list-item]',
-  templateUrl: './view-list-item.component.html',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: ViewListItemComponent,
-      multi: true,
-    },
-  ],
-  styleUrls: ['./view-list-item.component.scss'],
+	selector: '[app-view-list-item]',
+	templateUrl: './view-list-item.component.html',
+	providers: [
+		{
+			provide: NG_VALUE_ACCESSOR,
+			useExisting: ViewListItemComponent,
+			multi: true,
+		},
+	],
+	styleUrls: ['./view-list-item.component.scss'],
 })
 export class ViewListItemComponent extends BaseControlComponent {
-  customFormControlInjector?: Injector;
+	customFormControlInjector?: Injector;
 
-  get formNodeViewTypes(): typeof FormNodeViewTypes {
-    return FormNodeViewTypes;
-  }
+	get formNodeViewTypes(): typeof FormNodeViewTypes {
+		return FormNodeViewTypes;
+	}
 
-  get displayAsRow() {
-    return !(this.viewType === this.formNodeViewTypes.FULLWIDTH || this.viewType === this.formNodeViewTypes.CUSTOM);
-  }
+	get displayAsRow() {
+		return !(this.viewType === this.formNodeViewTypes.FULLWIDTH || this.viewType === this.formNodeViewTypes.CUSTOM);
+	}
 
-  override ngAfterContentInit(): void {
-    super.ngAfterContentInit();
-    this.createCustomFormControlInjector();
-  }
+	override ngAfterContentInit(): void {
+		super.ngAfterContentInit();
+		this.createCustomFormControlInjector();
+	}
 
-  createCustomFormControlInjector() {
-    this.customFormControlInjector = Injector.create({
-      providers: [
-        { provide: NgControl, useValue: { control: this.control } },
-      ],
-      parent: this.injector,
-    });
-  }
+	createCustomFormControlInjector() {
+		this.customFormControlInjector = Injector.create({
+			providers: [{ provide: NgControl, useValue: { control: this.control } }],
+			parent: this.injector,
+		});
+	}
 }

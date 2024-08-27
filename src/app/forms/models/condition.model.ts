@@ -1,10 +1,10 @@
 export enum operatorEnum {
-  Equals = 'equals',
-  NotEquals = 'not equals',
+	Equals = 'equals',
+	NotEquals = 'not equals',
 }
 
 export interface Condition {
-  field: string;
-  operator: operatorEnum;
-  value: unknown;
+	field: string;
+	operator: operatorEnum;
+	value: unknown;
 }

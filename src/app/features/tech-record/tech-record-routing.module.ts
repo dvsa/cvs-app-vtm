@@ -4,45 +4,27 @@ import { MsalGuard } from '@azure/msal-angular';
 import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
+import { TechRecordRoutes } from '@models/routes.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { techRecordCleanResolver } from 'src/app/resolvers/tech-record-clean/tech-record-clean.resolver';
 import { techRecordDataResolver } from 'src/app/resolvers/tech-record-data/tech-record-data.resolver';
 import { techRecordValidateResolver } from 'src/app/resolvers/tech-record-validate/tech-record-validate.resolver';
 import { techRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
-import { TechRecordRoutes } from '@models/routes.enum';
-import {
-  AdrGenerateCertificateComponent,
-} from './components/adr-generate-certificate/adr-generate-certificate.component';
-import {
-  TechRecordAmendReasonComponent,
-} from './components/tech-record-amend-reason/tech-record-amend-reason.component';
+import { AdrGenerateCertificateComponent } from './components/adr-generate-certificate/adr-generate-certificate.component';
+import { TechRecordAmendReasonComponent } from './components/tech-record-amend-reason/tech-record-amend-reason.component';
 import { AmendVinComponent } from './components/tech-record-amend-vin/tech-record-amend-vin.component';
-import {
-  AmendVrmReasonComponent,
-} from './components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component';
+import { AmendVrmReasonComponent } from './components/tech-record-amend-vrm-reason/tech-record-amend-vrm-reason.component';
 import { AmendVrmComponent } from './components/tech-record-amend-vrm/tech-record-amend-vrm.component';
-import {
-  TechRecordChangeStatusComponent,
-} from './components/tech-record-change-status/tech-record-change-status.component';
+import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { ChangeVehicleTypeComponent } from './components/tech-record-change-type/tech-record-change-type.component';
-import {
-  TechRecordChangeVisibilityComponent,
-} from './components/tech-record-change-visibility/tech-record-change-visibility.component';
-import {
-  GenerateLetterComponent,
-} from './components/tech-record-generate-letter/tech-record-generate-letter.component';
+import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
+import { TechRecordEditAdditionalExaminerNoteComponent } from './components/tech-record-edit-additional-examiner-note/tech-record-edit-additional-examiner-note.component';
+import { GenerateLetterComponent } from './components/tech-record-generate-letter/tech-record-generate-letter.component';
 import { GeneratePlateComponent } from './components/tech-record-generate-plate/tech-record-generate-plate.component';
-import {
-  TechRecordSearchTyresComponent,
-} from './components/tech-record-search-tyres/tech-record-search-tyres.component';
-import {
-  TechRecordSummaryChangesComponent,
-} from './components/tech-record-summary-changes/tech-record-summary-changes.component';
+import { TechRecordSearchTyresComponent } from './components/tech-record-search-tyres/tech-record-search-tyres.component';
+import { TechRecordSummaryChangesComponent } from './components/tech-record-summary-changes/tech-record-summary-changes.component';
 import { TechRecordUnarchiveComponent } from './components/tech-record-unarchive/tech-record-unarchive-component';
 import { TechRecordComponent } from './tech-record.component';
-import {
-  TechRecordEditAdditionalExaminerNoteComponent,
-} from './components/tech-record-edit-additional-examiner-note/tech-record-edit-additional-examiner-note.component';
 
 const routes: Routes = [
   {
@@ -247,4 +229,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TechRecordsRoutingModule { }
+export class TechRecordsRoutingModule {}

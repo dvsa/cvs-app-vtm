@@ -1,12 +1,6 @@
 import { TyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import {
-  FormNode,
-  FormNodeEditTypes,
-  FormNodeTypes,
-  FormNodeWidth,
-  TagTypeLabels,
-} from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, TagTypeLabels } from '@forms/services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TagType } from '@shared/components/tag/tag.component';
 
@@ -29,9 +23,12 @@ export const tyresTemplateHgv: FormNode = {
       name: 'techRecord_axles',
       value: '',
       type: FormNodeTypes.ARRAY,
-      validators: [{
-        name: ValidatorNames.MinArrayLengthIfNotEmpty, args: { minimumLength: 2, message: 'You cannot submit a HGV with less than 2 axles.' },
-      }],
+      validators: [
+        {
+          name: ValidatorNames.MinArrayLengthIfNotEmpty,
+          args: { minimumLength: 2, message: 'You cannot submit a HGV with less than 2 axles.' },
+        },
+      ],
       children: [
         {
           name: '0',

@@ -1,6 +1,4 @@
-import {
-  AbstractControl, AsyncValidatorFn, ValidationErrors, Validators,
-} from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors, Validators } from '@angular/forms';
 import { Condition, operatorEnum } from '@forms/models/condition.model';
 // eslint-disable-next-line import/no-cycle
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
@@ -14,9 +12,7 @@ import { selectUserByResourceKey } from '@store/reference-data';
 import { editingTechRecord } from '@store/technical-records';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
-import {
-  Observable, catchError, map, of, take, tap,
-} from 'rxjs';
+import { Observable, catchError, map, of, take, tap } from 'rxjs';
 
 export class CustomAsyncValidators {
   static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -40,30 +36,28 @@ export class CustomAsyncValidators {
           const hasCustomDefects = testResult?.testTypes?.some((testType) => testType?.customDefects && testType.customDefects.length > 0);
 
           if (
-            control.value === 'pass'
-            && hasCustomDefects
-            && (!limitToResult || Array.isArray(limitToResult)
-              ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
+            control.value === 'pass' &&
+            hasCustomDefects &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
           ) {
             return { invalidTestResult: { message: 'Cannot pass test when defects are present' } };
-          } if (
-            control.value === 'fail'
-            && !hasCustomDefects
-            && (!limitToResult || Array.isArray(limitToResult)
-              ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
+          }
+          if (
+            control.value === 'fail' &&
+            !hasCustomDefects &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
           ) {
             return { invalidTestResult: { message: 'Cannot fail test when no defects are present' } };
-          } if (
-            control.value === 'prs'
-            && !hasCustomDefects
-            && (!limitToResult || Array.isArray(limitToResult)
-              ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
+          }
+          if (
+            control.value === 'prs' &&
+            !hasCustomDefects &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
           ) {
             return { invalidTestResult: { message: 'Cannot mark test as PRS when no defects are present' } };
           }
           return null;
-
-        }),
+        })
       );
   }
 
@@ -73,35 +67,33 @@ export class CustomAsyncValidators {
         take(1),
         select(testResultInEdit),
         map((testResult) => {
-          const hasRequiredStandards = testResult?.testTypes?.some((
-            testType,
-          ) => testType?.requiredStandards && testType.requiredStandards.length > 0);
+          const hasRequiredStandards = testResult?.testTypes?.some(
+            (testType) => testType?.requiredStandards && testType.requiredStandards.length > 0
+          );
 
           if (
-            control.value === 'pass'
-            && hasRequiredStandards
-            && (!limitToResult || Array.isArray(limitToResult)
-              ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
+            control.value === 'pass' &&
+            hasRequiredStandards &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
           ) {
             return { invalidTestResult: { message: 'Cannot pass test when required standards are present' } };
-          } if (
-            control.value === 'fail'
-            && !hasRequiredStandards
-            && (!limitToResult || Array.isArray(limitToResult)
-              ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
+          }
+          if (
+            control.value === 'fail' &&
+            !hasRequiredStandards &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
           ) {
             return { invalidTestResult: { message: 'Cannot fail test when no required standards are present' } };
-          } if (
-            control.value === 'prs'
-            && !hasRequiredStandards
-            && (!limitToResult || Array.isArray(limitToResult)
-              ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
+          }
+          if (
+            control.value === 'prs' &&
+            !hasRequiredStandards &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
           ) {
             return { invalidTestResult: { message: 'Cannot mark test as PRS when no required standards are present' } };
           }
           return null;
-
-        }),
+        })
       );
   }
 
@@ -123,7 +115,7 @@ export class CustomAsyncValidators {
           }
         }),
         map(() => null),
-        catchError(() => of(null)),
+        catchError(() => of(null))
       );
     };
   }
@@ -142,7 +134,7 @@ export class CustomAsyncValidators {
           }
         }),
         map(() => null),
-        catchError(() => of(null)),
+        catchError(() => of(null))
       );
     };
   }
@@ -155,14 +147,14 @@ export class CustomAsyncValidators {
         map((testResult) => {
           const currentResult = testResult?.testTypes[0].testResult;
           if (
-            (Array.isArray(result) ? currentResult && !result.includes(currentResult) : currentResult !== result)
-            && (control.value == null || control.value === '')
+            (Array.isArray(result) ? currentResult && !result.includes(currentResult) : currentResult !== result) &&
+            (control.value == null || control.value === '')
           ) {
             if (Array.isArray(result)) return { requiredIfNotResult: true };
             return { [`requiredIfNot${result}`]: true };
           }
           return null;
-        }),
+        })
       );
   }
 
@@ -178,7 +170,7 @@ export class CustomAsyncValidators {
     store: Store<State>,
     result: resultOfTestEnum | resultOfTestEnum[],
     sibling: string,
-    value: unknown,
+    value: unknown
   ): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
@@ -193,16 +185,16 @@ export class CustomAsyncValidators {
             const currentResult = testResult?.testTypes[0].testResult;
 
             if (
-              (Array.isArray(result) ? currentResult && !result.includes(currentResult) : currentResult !== result)
-              && newValue
-              && (control.value === null || control.value === undefined || control.value === '')
+              (Array.isArray(result) ? currentResult && !result.includes(currentResult) : currentResult !== result) &&
+              newValue &&
+              (control.value === null || control.value === undefined || control.value === '')
             ) {
               return { requiredIfNotResultAndSiblingEquals: true };
             }
           }
 
           return null;
-        }),
+        })
       );
   }
 
@@ -223,22 +215,22 @@ export class CustomAsyncValidators {
           siblingControl.meta.hide = conditionsPassed && (Array.isArray(value) ? value.includes(control.value) : control.value === value);
 
           return null;
-        }),
+        })
       );
   }
 
   static requiredWhenCarryingDangerousGoods = (store: Store<State>) => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return store.select(editingTechRecord).pipe(take(1), map((form) => {
-        if (
-          form
-          && (form.techRecord_vehicleType === 'hgv' || form.techRecord_vehicleType === 'trl')
-          && (form.techRecord_adrDetails_dangerousGoods)) {
-          return Validators.required(control);
-        }
+      return store.select(editingTechRecord).pipe(
+        take(1),
+        map((form) => {
+          if (form && (form.techRecord_vehicleType === 'hgv' || form.techRecord_vehicleType === 'trl') && form.techRecord_adrDetails_dangerousGoods) {
+            return Validators.required(control);
+          }
 
-        return null;
-      }));
+          return null;
+        })
+      );
     };
   };
 
@@ -255,12 +247,18 @@ export class CustomAsyncValidators {
 
     // eslint-disable-next-line no-prototype-builtins
     const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
-      ? (testResult.testTypes[0] as any)[field]
-      : (testResult)[field as keyof TestResultModel];
+      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
+        (testResult.testTypes[0] as any)[field]
+      : testResult[field as keyof TestResultModel];
 
     const isTrue = Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value;
 
     return operator === operatorEnum.Equals ? isTrue : !isTrue;
   }
+
+  static custom = (store: Store<State>, func: (...args: unknown[]) => Observable<ValidationErrors | null>, ...args: unknown[]) => {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return func(control, store, ...args);
+    };
+  };
 }

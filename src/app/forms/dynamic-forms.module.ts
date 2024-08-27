@@ -4,12 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ApprovalTypeFocusNextDirective } from '@forms/components/approval-type/approval-type-focus-next.directive';
 import { ApprovalTypeInputComponent } from '@forms/components/approval-type/approval-type.component';
-import {
-  AdrCertificateHistoryComponent,
-} from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
-import {
-  AdrExaminerNotesHistoryEditComponent,
-} from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
+import { AdrCertificateHistoryComponent } from '@forms/custom-sections/adr-certificate-history/adr-certificate-history.component';
+import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { ApprovalTypeComponent } from '@forms/custom-sections/approval-type/approval-type.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
@@ -38,25 +34,13 @@ import { ViewCombinationComponent } from './components/view-combination/view-com
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
 import { AdrExaminerNotesHistoryViewComponent } from './custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
-import {
-  AdrNewCertificateRequiredViewComponent,
-} from './custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
-import {
-  AdrTankDetailsInitialInspectionViewComponent,
-} from './custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
+import { AdrNewCertificateRequiredViewComponent } from './custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
+import { AdrTankDetailsInitialInspectionViewComponent } from './custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
 import { AdrTankDetailsM145ViewComponent } from './custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
-import {
-  AdrTankDetailsSubsequentInspectionsEditComponent,
-} from './custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
-import {
-  AdrTankDetailsSubsequentInspectionsViewComponent,
-} from './custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
-import {
-  AdrTankStatementUnNumberEditComponent,
-} from './custom-sections/adr-tank-statement-un-number-edit/adr-tank-statement-un-number-edit.component';
-import {
-  AdrTankStatementUnNumberViewComponent,
-} from './custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
+import { AdrTankDetailsSubsequentInspectionsEditComponent } from './custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
+import { AdrTankDetailsSubsequentInspectionsViewComponent } from './custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
+import { AdrTankStatementUnNumberEditComponent } from './custom-sections/adr-tank-statement-un-number-edit/adr-tank-statement-un-number-edit.component';
+import { AdrTankStatementUnNumberViewComponent } from './custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
 import { AdrComponent } from './custom-sections/adr/adr.component';
 import { BodyComponent } from './custom-sections/body/body.component';
 import { CustomDefectComponent } from './custom-sections/custom-defect/custom-defect.component';
@@ -197,4 +181,4 @@ import { SuffixDirective } from './directives/suffix.directive';
     FieldWarningMessageComponent,
   ],
 })
-export class DynamicFormsModule { }
+export class DynamicFormsModule {}

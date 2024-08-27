@@ -57,7 +57,11 @@ const routes: Routes = [
             path: TestRecordAmendRoutes.TEST_DETAILS,
             component: TestRouterOutletComponent,
             data: { title: 'Test details', roles: Roles.TestResultAmend },
-            resolve: { load: testResultResolver, testTypeTaxonomy: testTypeTaxonomyResolver, defectTaxonomy: defectsTaxonomyResolver },
+            resolve: {
+              load: testResultResolver,
+              testTypeTaxonomy: testTypeTaxonomyResolver,
+              defectTaxonomy: defectsTaxonomyResolver,
+            },
             canActivate: [RoleGuard],
             canDeactivate: [CancelEditTestGuard],
             children: [

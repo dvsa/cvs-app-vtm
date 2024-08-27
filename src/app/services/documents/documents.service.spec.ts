@@ -8,9 +8,7 @@ const fileName = 'fileName';
 const responseBody = 'Response body';
 
 const domParser = new DOMParser();
-const fakeAnchor = domParser
-  .parseFromString('<a download="fileName.pdf" href="objectURL" target="_blank" />', 'text/html')
-  .querySelector('a');
+const fakeAnchor = domParser.parseFromString('<a download="fileName.pdf" href="objectURL" target="_blank" />', 'text/html').querySelector('a');
 
 describe('DocumentsService', () => {
   let service: DocumentsService;
@@ -42,9 +40,7 @@ describe('DocumentsService', () => {
       const createFileLinkSpy = jest.spyOn(service, 'createFileLink');
       const simulateClickSpy = jest.spyOn(service, 'simulateClick');
 
-      const fakeAnchorZip = domParser
-        .parseFromString('<a download="fileName.zip" href="Response body" />', 'text/html')
-        .querySelector('a');
+      const fakeAnchorZip = domParser.parseFromString('<a download="fileName.zip" href="Response body" />', 'text/html').querySelector('a');
 
       service.openDocumentFromResponse(fileName, responseBody, 'zip');
 

@@ -1,18 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import {
-  AdrExaminerNotesHistoryEditComponent,
-} from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
+import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
-import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
 
 const mockTechRecordService = {
   techRecord$: jest.fn(),
@@ -56,7 +54,6 @@ describe('AdrExaminerNotesHistoryEditComponent', () => {
       expect(notes).toEqual([]);
     });
     it('should return a populated array if additionalExaminerNotes is not empty', () => {
-
       component.currentTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV) as TechRecordType<'hgv'>;
       const testNote = {
         note: 'testNote',
@@ -94,9 +91,7 @@ describe('AdrExaminerNotesHistoryEditComponent', () => {
         { createdAtDate: 'test1', lastUpdatedBy: 'test1', note: 'test note 1' },
         { createdAtDate: 'test2', lastUpdatedBy: 'test2', note: 'test note 2' },
       ];
-      expect(component.currentAdrNotesPage).toEqual([
-        { createdAtDate: 'test2', lastUpdatedBy: 'test2', note: 'test note 2' },
-      ]);
+      expect(component.currentAdrNotesPage).toEqual([{ createdAtDate: 'test2', lastUpdatedBy: 'test2', note: 'test note 2' }]);
     });
 
     it('should return an empty array if the adr examiner notes is undefined', () => {

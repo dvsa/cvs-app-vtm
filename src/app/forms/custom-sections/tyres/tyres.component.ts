@@ -1,24 +1,18 @@
 import { ViewportScroller } from '@angular/common';
-import {
-  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import {
-  CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType, ReferenceDataTyre, ReferenceDataTyreLoadIndex } from '@models/reference-data.model';
-import {
-  Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes,
-} from '@models/vehicle-tech-record.model';
+import { Axle, FitmentCode, ReasonForEditing, SpeedCategorySymbol, Tyre, Tyres, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -26,12 +20,7 @@ import { selectAllReferenceDataByResourceType } from '@store/reference-data';
 import { addAxle, removeAxle, updateScrollPosition } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
-import {
-  Observable,
-  ReplaySubject,
-  filter,
-  takeUntil,
-} from 'rxjs';
+import { Observable, ReplaySubject, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tyres',
@@ -62,7 +51,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     private store: Store<TechnicalRecordServiceState>,
     private viewportScroller: ViewportScroller,
     private referenceDataService: ReferenceDataService,
-    private technicalRecordService: TechnicalRecordService,
+    private technicalRecordService: TechnicalRecordService
   ) {
     this.editingReason = this.route.snapshot.data['reason'];
   }
@@ -76,10 +65,12 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       this.formChange.emit(event);
     });
 
-    this.store.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.Tyres))
-      .pipe(takeUntil(this.destroy$), filter(Boolean)).subscribe(((data) => {
+    this.store
+      .select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.Tyres))
+      .pipe(takeUntil(this.destroy$), filter(Boolean))
+      .subscribe((data) => {
         this.tyresReferenceData = data as ReferenceDataTyre[];
-      }));
+      });
 
     this.loadIndex$.pipe(takeUntil(this.destroy$)).subscribe((value): void => {
       this.loadIndexValues = value;
@@ -156,11 +147,12 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     const { vehicleTechRecord } = simpleChanges;
     this.invalidAxles = [];
     if (
-      !this.isEditing
-      || !vehicleTechRecord.currentValue.techRecord_axles
-      || (vehicleTechRecord.previousValue
-      && !vehicleTechRecord.previousValue.techRecord_axles
-      && (vehicleTechRecord.currentValue.techRecord_axles === vehicleTechRecord.previousValue.techRecord_axles))) {
+      !this.isEditing ||
+      !vehicleTechRecord.currentValue.techRecord_axles ||
+      (vehicleTechRecord.previousValue &&
+        !vehicleTechRecord.previousValue.techRecord_axles &&
+        vehicleTechRecord.currentValue.techRecord_axles === vehicleTechRecord.previousValue.techRecord_axles)
+    ) {
       return;
     }
     vehicleTechRecord.currentValue.techRecord_axles.forEach((axle: Axle) => {
@@ -168,7 +160,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
         const weightValue = this.technicalRecordService.getAxleFittingWeightValueFromLoadIndex(
           axle.tyres_dataTrAxles.toString(),
           axle.tyres_fitmentCode,
-          this.loadIndexValues,
+          this.loadIndexValues
         );
         if (weightValue && axle.weights_gbWeight > weightValue) {
           this.invalidAxles.push(axle.axleNumber);
@@ -188,13 +180,12 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       // eslint-disable-next-line no-restricted-syntax
       for (const [index, axle] of currentAxles.entries()) {
         if (
-          axle?.tyres_fitmentCode !== undefined
-          && previousAxles[`${index}`]
-          && previousAxles[`${index}`].tyres_fitmentCode !== undefined
-          && axle.tyres_fitmentCode !== previousAxles[`${index}`].tyres_fitmentCode
-          && axle.tyres_tyreCode === previousAxles[`${index}`].tyres_tyreCode
+          axle?.tyres_fitmentCode !== undefined &&
+          previousAxles[`${index}`] &&
+          previousAxles[`${index}`].tyres_fitmentCode !== undefined &&
+          axle.tyres_fitmentCode !== previousAxles[`${index}`].tyres_fitmentCode &&
+          axle.tyres_tyreCode === previousAxles[`${index}`].tyres_tyreCode
         ) {
-
           this.getTyresRefData(axle.axleNumber);
           return true;
         }
@@ -229,9 +220,10 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       const tyreReferenceData = this.tyresReferenceData.find((tyre) => tyre.code === String(code));
       if (tyreReferenceData) {
         const { tyres_fitmentCode: fit } = axle;
-        const indexLoad = fit === FitmentCode.SINGLE
-          ? parseInt(String(tyreReferenceData.loadIndexSingleLoad), 10)
-          : parseInt(String(tyreReferenceData.loadIndexTwinLoad), 10);
+        const indexLoad =
+          fit === FitmentCode.SINGLE
+            ? Number.parseInt(String(tyreReferenceData.loadIndexSingleLoad), 10)
+            : Number.parseInt(String(tyreReferenceData.loadIndexTwinLoad), 10);
 
         const newTyre = new Tyre({
           tyreCode: code,

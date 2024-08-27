@@ -1,48 +1,22 @@
-import {
-  ADRAdditionalNotesNumber,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
+import { ADRAdditionalNotesNumber } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrAdditionalNotesNumber.enum.js';
 import { ADRBodyType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrBodyType.enum.js';
-import {
-  ADRCompatibilityGroupJ,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
+import { ADRCompatibilityGroupJ } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrCompatibilityGroupJ.enum.js';
 import { ADRDangerousGood } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrDangerousGood.enum.js';
 import { ADRTankDetailsTankStatementSelect } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankDetailsTankStatementSelect.enum.js';
 import { ADRTankStatementSubstancePermitted } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/adrTankStatementSubstancePermitted.js';
-import {
-  AdrExaminerNotesHistoryEditComponent,
-} from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
-import {
-  AdrExaminerNotesHistoryViewComponent,
-} from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
-import {
-  AdrNewCertificateRequiredViewComponent,
-} from '@forms/custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
-import {
-  AdrTankDetailsInitialInspectionViewComponent,
-} from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
+import { AdrExaminerNotesHistoryEditComponent } from '@forms/custom-sections/adr-examiner-notes-history-edit/adr-examiner-notes-history.component-edit';
+import { AdrExaminerNotesHistoryViewComponent } from '@forms/custom-sections/adr-examiner-notes-history-view/adr-examiner-notes-history-view.component';
+import { AdrNewCertificateRequiredViewComponent } from '@forms/custom-sections/adr-new-certificate-required-view/adr-new-certificate-required-view.component';
+import { AdrTankDetailsInitialInspectionViewComponent } from '@forms/custom-sections/adr-tank-details-initial-inspection-view/adr-tank-details-initial-inspection-view.component';
 import { AdrTankDetailsM145ViewComponent } from '@forms/custom-sections/adr-tank-details-m145-view/adr-tank-details-m145-view.component';
-import {
-  AdrTankDetailsSubsequentInspectionsEditComponent,
-} from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
-import {
-  AdrTankDetailsSubsequentInspectionsViewComponent,
-} from '@forms/custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
-import {
-  AdrTankStatementUnNumberEditComponent,
-} from '@forms/custom-sections/adr-tank-statement-un-number-edit/adr-tank-statement-un-number-edit.component';
-import {
-  AdrTankStatementUnNumberViewComponent,
-} from '@forms/custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
+import { AdrTankDetailsSubsequentInspectionsEditComponent } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-edit/adr-tank-details-subsequent-inspections-edit.component';
+import { AdrTankDetailsSubsequentInspectionsViewComponent } from '@forms/custom-sections/adr-tank-details-subsequent-inspections-view/adr-tank-details-subsequent-inspections-view.component';
+import { AdrTankStatementUnNumberEditComponent } from '@forms/custom-sections/adr-tank-statement-un-number-edit/adr-tank-statement-un-number-edit.component';
+import { AdrTankStatementUnNumberViewComponent } from '@forms/custom-sections/adr-tank-statement-un-number-view/adr-tank-statement-un-number-view.component';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TC2Types } from '@models/adr.enum';
-import {
-  FormNode,
-  FormNodeEditTypes,
-  FormNodeTypes,
-  FormNodeViewTypes,
-  FormNodeWidth,
-} from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const AdrSummaryTemplate: FormNode = {
   name: 'adrSection',
@@ -63,7 +37,10 @@ export const AdrSummaryTemplate: FormNode = {
       validators: [
         { name: ValidatorNames.ShowGroupsWhenEqualTo, args: { values: [true], groups: ['dangerous_goods'] } },
         { name: ValidatorNames.HideGroupsWhenEqualTo, args: { values: [false], groups: ['dangerous_goods'] } },
-        { name: ValidatorNames.AddWarningForAdrField, args: 'By selecting this field it will delete all previous ADR field inputs' },
+        {
+          name: ValidatorNames.AddWarningForAdrField,
+          args: 'By selecting this field it will delete all previous ADR field inputs',
+        },
       ],
     },
     {
@@ -79,9 +56,7 @@ export const AdrSummaryTemplate: FormNode = {
       value: null,
       width: FormNodeWidth.XXL,
       type: FormNodeTypes.CONTROL,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 150 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 150 }],
       groups: ['applicant_details', 'dangerous_goods'],
       hide: true,
     },
@@ -142,7 +117,10 @@ export const AdrSummaryTemplate: FormNode = {
       hide: true,
       options: getOptionsFromEnum(ADRBodyType),
       validators: [
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
+        },
         {
           name: ValidatorNames.ShowGroupsWhenIncludes,
           args: {
@@ -196,7 +174,10 @@ export const AdrSummaryTemplate: FormNode = {
       isoDate: false,
       validators: [
         { name: ValidatorNames.PastDate },
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
+        },
       ],
     },
     {
@@ -222,7 +203,10 @@ export const AdrSummaryTemplate: FormNode = {
             groups: ['compatibility_group_j'],
           },
         },
-        { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] } },
+        {
+          name: ValidatorNames.RequiredIfEquals,
+          args: { sibling: 'techRecord_adrDetails_dangerousGoods', value: [true] },
+        },
       ],
     },
     {
@@ -266,9 +250,7 @@ export const AdrSummaryTemplate: FormNode = {
       width: FormNodeWidth.L,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 40 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 40 }],
     },
     {
       name: 'tankDetailsSectionTitle',
@@ -505,7 +487,10 @@ export const AdrSummaryTemplate: FormNode = {
       validators: [
         {
           name: ValidatorNames.RequiredIfEquals,
-          args: { sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo', value: [null, undefined, ''] },
+          args: {
+            sibling: 'techRecord_adrDetails_tank_tankDetails_tankStatement_productListRefNo',
+            value: [null, undefined, ''],
+          },
         },
       ],
     },
@@ -516,9 +501,7 @@ export const AdrSummaryTemplate: FormNode = {
       editType: FormNodeEditTypes.TEXTAREA,
       groups: ['productList', 'statement_select_hide', 'tank_details_hide', 'dangerous_goods'],
       hide: true,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 1500 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1500 }],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_specialProvisions',
@@ -526,9 +509,7 @@ export const AdrSummaryTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXTAREA,
       hide: true,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 1024 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }],
       groups: ['dangerous_goods', 'tank_details'],
     },
     {
@@ -574,9 +555,7 @@ export const AdrSummaryTemplate: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN,
       hide: true,
       groups: ['tank_details', 'dangerous_goods'],
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 70 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 70 }],
     },
     {
       name: 'techRecord_adrDetails_tank_tankDetails_tc2Details_tc2IntermediateExpiryDate',
@@ -612,9 +591,7 @@ export const AdrSummaryTemplate: FormNode = {
       editType: FormNodeEditTypes.CHECKBOXGROUP,
       groups: ['tank_details', 'dangerous_goods'],
       hide: true,
-      options: [
-        { value: '07/09 3mth leak ext ', label: 'Yes' },
-      ],
+      options: [{ value: '07/09 3mth leak ext ', label: 'Yes' }],
       validators: [],
     },
     {
@@ -702,7 +679,6 @@ export const AdrSummaryTemplate: FormNode = {
           },
         },
       ],
-
     },
     {
       name: 'techRecord_adrDetails_brakeDeclarationIssuer',
@@ -711,9 +687,7 @@ export const AdrSummaryTemplate: FormNode = {
       hide: true,
       groups: ['issuer_section', 'dangerous_goods'],
       editType: FormNodeEditTypes.TEXTAREA,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 500 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 500 }],
     },
     {
       name: 'techRecord_adrDetails_brakeEndurance',
@@ -739,7 +713,6 @@ export const AdrSummaryTemplate: FormNode = {
           },
         },
       ],
-
     },
     {
       name: 'techRecord_adrDetails_weight',
@@ -754,7 +727,6 @@ export const AdrSummaryTemplate: FormNode = {
           name: ValidatorNames.RequiredIfNotHidden,
         },
       ],
-
     },
     {
       name: 'techRecord_adrDetails_declarationsSeen',
@@ -783,13 +755,6 @@ export const AdrSummaryTemplate: FormNode = {
       hide: true,
     },
     {
-      name: 'ExaminerNotesSectionTitle',
-      label: 'Additional Examiner Notes History',
-      type: FormNodeTypes.TITLE,
-      groups: ['adr_details', 'dangerous_goods'],
-      hide: true,
-    },
-    {
       name: 'techRecord_adrDetails_additionalExaminerNotes_note',
       label: 'Additional Examiner Notes',
       value: null,
@@ -797,14 +762,12 @@ export const AdrSummaryTemplate: FormNode = {
       editType: FormNodeEditTypes.TEXTAREA,
       groups: ['adr_details', 'dangerous_goods'],
       hide: true,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 1024 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1024 }],
     },
     {
       name: 'techRecord_adrDetails_additionalExaminerNotes',
-      label: 'Additional examiner notes history',
       value: null,
+      label: 'Additional Examiner Notes History',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.CUSTOM,
       viewComponent: AdrExaminerNotesHistoryViewComponent,
@@ -822,9 +785,7 @@ export const AdrSummaryTemplate: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       groups: ['adrDetails', 'dangerous_goods'],
       hide: true,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 1500 },
-      ],
+      validators: [{ name: ValidatorNames.MaxLength, args: 1500 }],
     },
   ],
 };

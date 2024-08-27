@@ -1,9 +1,7 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { TagType } from '@shared/components/tag/tag.component';
-import {
-  FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels,
-} from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth, TagTypeLabels } from '../../services/dynamic-form.types';
 
 export const HgvAndTrlBodyTemplate: FormNode = {
   name: 'bodySection',
@@ -80,7 +78,12 @@ export const HgvAndTrlBodyTemplate: FormNode = {
       width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.CustomPattern, args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'] }],
+      validators: [
+        {
+          name: ValidatorNames.CustomPattern,
+          args: ['^[A-Z0-9 ]{0,10}$', 'max length 10 uppercase letters or numbers'],
+        },
+      ],
     },
   ],
 };

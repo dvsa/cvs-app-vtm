@@ -11,6 +11,8 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { Params } from '@angular/router';
+// eslint-disable-next-line import/no-cycle
+import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
@@ -18,12 +20,10 @@ import { Store } from '@ngrx/store';
 import { TagTypes } from '@shared/components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
 import { State } from '@store/.';
-// eslint-disable-next-line import/no-cycle
-import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
-import { map, Observable } from 'rxjs';
-import { SpecialRefData } from './multi-options.service';
+import { Observable, map } from 'rxjs';
 // eslint-disable-next-line import/no-cycle
 import { DynamicFormService } from './dynamic-form.service';
+import { SpecialRefData } from './multi-options.service';
 
 export enum FormNodeViewTypes {
   DATE = 'date',
@@ -169,7 +169,7 @@ export class CustomFormControl extends FormControl implements CustomControl {
     meta: FormNode,
     formState?: unknown,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null,
-    asyncValidator?: AsyncValidatorOptions,
+    asyncValidator?: AsyncValidatorOptions
   ) {
     super(formState, validatorOrOpts, asyncValidator);
     this.meta = meta;
@@ -201,7 +201,7 @@ export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm 
       [key: string]: AbstractControl;
     },
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorOptions,
+    asyncValidator?: AsyncValidatorOptions
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
@@ -227,7 +227,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     controls: AbstractControl[],
     store: Store<State>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorOptions,
+    asyncValidator?: AsyncValidatorOptions
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
@@ -251,7 +251,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     options?: {
       onlySelf?: boolean;
       emitEvent?: boolean;
-    },
+    }
   ): void {
     if (value) {
       if (value.length !== this.controls.length && this.meta.children && this.meta.children[0].type === 'group') {
@@ -275,10 +275,10 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
     const control = (form.controls as any)[key];
     if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
       (localCleanValue as any)[key] = objectOrNull(control.getCleanValue(control));
     } else if (control instanceof CustomFormArray) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, security/detect-object-injection
       (localCleanValue as any)[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl && control.meta.type === FormNodeTypes.CONTROL) {
       if (control.meta.required && control.meta.hide) {

@@ -7,13 +7,13 @@ import { fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess } 
 import { map, take } from 'rxjs';
 
 export const testStationsResolver: ResolveFn<boolean> = () => {
-  const store: Store<State> = inject(Store<State>);
-  const action$: Actions = inject(Actions);
-  store.dispatch(fetchTestStations());
+	const store: Store<State> = inject(Store<State>);
+	const action$: Actions = inject(Actions);
+	store.dispatch(fetchTestStations());
 
-  return action$.pipe(
-    ofType(fetchTestStationsSuccess, fetchTestStationsFailed),
-    take(1),
-    map((action) => action.type === fetchTestStationsSuccess.type),
-  );
+	return action$.pipe(
+		ofType(fetchTestStationsSuccess, fetchTestStationsFailed),
+		take(1),
+		map((action) => action.type === fetchTestStationsSuccess.type)
+	);
 };

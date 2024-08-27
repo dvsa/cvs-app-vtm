@@ -12,76 +12,81 @@ import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record
 import { titleResolver } from './resolvers/title/title.resolver';
 
 const routes: Routes = [
-  {
-    path: RootRoutes.ROOT,
-    resolve: { title: titleResolver },
-    children: [
-      {
-        path: RootRoutes.ROOT,
-        data: { title: 'Home', roles: Roles.TechRecordView },
-        canActivate: [MsalGuard, RoleGuard],
-        canDeactivate: [CancelEditTechGuard],
-        loadChildren: () => import('./features/home/home.module').then((m) => m.HomeModule),
-      },
-      {
-        path: RootRoutes.SEARCH_TECHNICAL_RECORD,
-        data: { title: 'Technical record search', roles: Roles.TechRecordView },
-        canActivate: [MsalGuard, RoleGuard],
-        canDeactivate: [CancelEditTechGuard],
-        loadChildren: () => import('./features/search/search.module').then((m) => m.SearchModule),
-      },
-      {
-        path: RootRoutes.CREATE_TECHNICAL_RECORD,
-        data: { title: 'Create new technical record', roles: Roles.TechRecordCreate },
-        canActivate: [MsalGuard, RoleGuard],
-        loadChildren: () => import('./features/tech-record/create/create-tech-records.module').then((m) => m.CreateTechRecordsModule),
-      },
-      {
-        path: RootRoutes.BATCH_CREATE_TECHNICAL_RECORD,
-        data: { title: 'Select Vehicle Type', roles: Roles.TechRecordCreate },
-        canActivate: [MsalGuard, RoleGuard],
-        loadChildren: () => import('./features/tech-record/create-batch/create-batch.module').then((m) => m.CreateBatchModule),
-      },
-      {
-        path: RootRoutes.CURRENT_TEST_RESULT,
-        data: { title: 'Test Result', roles: Roles.TestResultView },
-        canActivate: [MsalGuard, RoleGuard],
-        resolve: { techRecord: techRecordViewResolver },
-        loadChildren: () => import('./features/test-records/amend/amend-test-records.module').then((m) => m.AmendTestRecordsModule),
-      },
-      {
-        path: RootRoutes.CURRENT_TECH_RECORD,
-        data: { title: 'Tech Record', roles: Roles.TechRecordView },
-        canActivate: [MsalGuard, RoleGuard],
-        loadChildren: () => import('./features/tech-record/tech-record.module').then((m) => m.TechRecordsModule),
-      },
-      {
-        path: RootRoutes.REFERENCE_DATA,
-        data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
-        canActivate: [MsalGuard, RoleGuard],
-        loadChildren: () => import('./features/reference-data/reference-data.module').then((m) => m.ReferenceDataModule),
-      },
-      {
-        path: RootRoutes.FEATURE_TOGGLE,
-        data: { title: 'Feature Toggle', featureToggleName: 'testToggle' },
-        canActivate: [MsalGuard, FeatureToggleGuard],
-        loadChildren: () => import('./features/feature-toggle/feature-toggle.module').then((m) => m.FeatureToggleModule),
-      },
-      {
-        path: RootRoutes.ERROR,
-        pathMatch: 'full',
-        component: ServerErrorComponent,
-      },
-    ],
-  },
-  {
-    path: RootRoutes.WILDCARD,
-    pathMatch: 'full',
-    component: PageNotFoundComponent,
-  },
+	{
+		path: RootRoutes.ROOT,
+		resolve: { title: titleResolver },
+		children: [
+			{
+				path: RootRoutes.ROOT,
+				data: { title: 'Home', roles: Roles.TechRecordView },
+				canActivate: [MsalGuard, RoleGuard],
+				canDeactivate: [CancelEditTechGuard],
+				loadChildren: () => import('./features/home/home.module').then((m) => m.HomeModule),
+			},
+			{
+				path: RootRoutes.SEARCH_TECHNICAL_RECORD,
+				data: { title: 'Technical record search', roles: Roles.TechRecordView },
+				canActivate: [MsalGuard, RoleGuard],
+				canDeactivate: [CancelEditTechGuard],
+				loadChildren: () => import('./features/search/search.module').then((m) => m.SearchModule),
+			},
+			{
+				path: RootRoutes.CREATE_TECHNICAL_RECORD,
+				data: { title: 'Create new technical record', roles: Roles.TechRecordCreate },
+				canActivate: [MsalGuard, RoleGuard],
+				loadChildren: () =>
+					import('./features/tech-record/create/create-tech-records.module').then((m) => m.CreateTechRecordsModule),
+			},
+			{
+				path: RootRoutes.BATCH_CREATE_TECHNICAL_RECORD,
+				data: { title: 'Select Vehicle Type', roles: Roles.TechRecordCreate },
+				canActivate: [MsalGuard, RoleGuard],
+				loadChildren: () =>
+					import('./features/tech-record/create-batch/create-batch.module').then((m) => m.CreateBatchModule),
+			},
+			{
+				path: RootRoutes.CURRENT_TEST_RESULT,
+				data: { title: 'Test Result', roles: Roles.TestResultView },
+				canActivate: [MsalGuard, RoleGuard],
+				resolve: { techRecord: techRecordViewResolver },
+				loadChildren: () =>
+					import('./features/test-records/amend/amend-test-records.module').then((m) => m.AmendTestRecordsModule),
+			},
+			{
+				path: RootRoutes.CURRENT_TECH_RECORD,
+				data: { title: 'Tech Record', roles: Roles.TechRecordView },
+				canActivate: [MsalGuard, RoleGuard],
+				loadChildren: () => import('./features/tech-record/tech-record.module').then((m) => m.TechRecordsModule),
+			},
+			{
+				path: RootRoutes.REFERENCE_DATA,
+				data: { title: 'Select Reference Data Type', roles: Roles.ReferenceDataView },
+				canActivate: [MsalGuard, RoleGuard],
+				loadChildren: () =>
+					import('./features/reference-data/reference-data.module').then((m) => m.ReferenceDataModule),
+			},
+			{
+				path: RootRoutes.FEATURE_TOGGLE,
+				data: { title: 'Feature Toggle', featureToggleName: 'testToggle' },
+				canActivate: [MsalGuard, FeatureToggleGuard],
+				loadChildren: () =>
+					import('./features/feature-toggle/feature-toggle.module').then((m) => m.FeatureToggleModule),
+			},
+			{
+				path: RootRoutes.ERROR,
+				pathMatch: 'full',
+				component: ServerErrorComponent,
+			},
+		],
+	},
+	{
+		path: RootRoutes.WILDCARD,
+		pathMatch: 'full',
+		component: PageNotFoundComponent,
+	},
 ];
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
-  exports: [RouterModule],
+	imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+	exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -8,8 +8,7 @@ describe('CollapsibleTextComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CollapsibleTextComponent],
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

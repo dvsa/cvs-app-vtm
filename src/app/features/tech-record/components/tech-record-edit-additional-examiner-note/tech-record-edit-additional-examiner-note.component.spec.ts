@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/index';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { initialAppState } from '@store/index';
+import { of } from 'rxjs';
 import { TechRecordEditAdditionalExaminerNoteComponent } from './tech-record-edit-additional-examiner-note.component';
 
 const mockTechRecordService = {

@@ -1,7 +1,11 @@
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
+import { TechRecordType as NonVerbTechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import {
-  TechRecordPUTHGV, TechRecordPUTLGV, TechRecordPUTTRL, TechRecordType as TechRecordTypeVehicleVerb,
+  TechRecordPUTHGV,
+  TechRecordPUTLGV,
+  TechRecordPUTTRL,
+  TechRecordType as TechRecordTypeVehicleVerb,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
 import { createMockHgv } from '@mocks/hgv-record.mock';
 import { createMockLgv } from '@mocks/lgv-record.mock';
@@ -9,9 +13,6 @@ import { createMockTrl } from '@mocks/trl-record.mock';
 import { BodyTypeCode, BodyTypeDescription } from '@models/body-type-enum';
 import { PsvMake } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import {
-  TechRecordType as NonVerbTechRecordType,
-} from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { mockVehicleTechnicalRecord } from '../../../../mocks/mock-vehicle-technical-record.mock';
 import {
   addAxle,
@@ -29,11 +30,13 @@ import {
   getBySystemNumberFailure,
   getBySystemNumberSuccess,
   removeAxle,
-  removeSectionState, updateADRAdditionalExaminerNotes,
+  removeSectionState,
+  updateADRAdditionalExaminerNotes,
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
-  updateEditingTechRecordCancel, updateExistingADRAdditionalExaminerNote,
+  updateEditingTechRecordCancel,
+  updateExistingADRAdditionalExaminerNote,
   updateScrollPosition,
   updateTechRecord,
   updateTechRecordFailure,
@@ -94,7 +97,11 @@ describe('Vehicle Technical Record Reducer', () => {
     it('should set loading to true', () => {
       const expectedVehicle = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>;
 
-      const oldState: TechnicalRecordServiceState = { ...initialState, vehicleTechRecord: expectedVehicle, loading: false };
+      const oldState: TechnicalRecordServiceState = {
+        ...initialState,
+        vehicleTechRecord: expectedVehicle,
+        loading: false,
+      };
 
       const newState = vehicleTechRecordReducer(oldState, createVehicleRecord({ vehicle: {} as TechRecordType<'put'> }));
 
@@ -182,7 +189,11 @@ describe('Vehicle Technical Record Reducer', () => {
         vehicleTechRecord: { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as TechRecordType<'get'>,
         loading: true,
       };
-      const action = archiveTechRecord({ systemNumber: 'foo', createdTimestamp: 'bar', reasonForArchiving: 'some reason' });
+      const action = archiveTechRecord({
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        reasonForArchiving: 'some reason',
+      });
       const newState = vehicleTechRecordReducer(state, action);
 
       expect(state).toEqual(newState);
@@ -193,8 +204,16 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('archiveTechRecordSuccess', () => {
     it('should set the new vehicle tech records state after update success', () => {
-      const oldRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'get'>;
-      const newRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVinNew' } as unknown as TechRecordType<'get'>;
+      const oldRecord = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+      } as unknown as TechRecordType<'get'>;
+      const newRecord = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVinNew',
+      } as unknown as TechRecordType<'get'>;
 
       const state: TechnicalRecordServiceState = {
         ...initialState,
@@ -222,7 +241,11 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('updateEditingTechRecord', () => {
     it('should set the editingTechRecord', () => {
-      const vehicleTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;
+      const vehicleTechRecord = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+      } as unknown as TechRecordType<'put'>;
       const action = updateEditingTechRecord({ vehicleTechRecord });
       const newState = vehicleTechRecordReducer(initialState, action);
 
@@ -234,7 +257,11 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('updateEditingTechRecordCancel', () => {
     it('should clear the state', () => {
-      initialState.editingTechRecord = { systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin' } as unknown as TechRecordType<'put'>;
+      initialState.editingTechRecord = {
+        systemNumber: 'foo',
+        createdTimestamp: 'bar',
+        vin: 'testVin',
+      } as unknown as TechRecordType<'put'>;
       const action = updateEditingTechRecordCancel();
       const newState = vehicleTechRecordReducer(initialState, action);
 
@@ -372,7 +399,7 @@ describe('Vehicle Technical Record Reducer', () => {
     describe('updateBody', () => {
       it('should update body', () => {
         expect((initialState.editingTechRecord as TechRecordTypeVehicleVerb<'psv', 'put'>).techRecord_bodyType_description).toBe(
-          BodyTypeDescription.DOUBLE_DECKER,
+          BodyTypeDescription.DOUBLE_DECKER
         );
 
         const expectedData = {
@@ -556,7 +583,6 @@ describe('Vehicle Technical Record Reducer', () => {
       expect(newState.editingTechRecord).toBeDefined();
       expect((newState.editingTechRecord as TechRecordPUTLGV).techRecord_adrDetails_adrCertificateNotes).toBe('Test notes');
     });
-
   });
   describe('handleADRExaminerNoteChanges', () => {
     beforeEach(() => {
@@ -591,8 +617,9 @@ describe('Vehicle Technical Record Reducer', () => {
       };
       const action = updateADRAdditionalExaminerNotes({ username: testNote.lastUpdatedBy });
       const newState = vehicleTechRecordReducer(state, action);
-      expect((newState.editingTechRecord as unknown as (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>))?.techRecord_adrDetails_additionalExaminerNotes)
-        .toContainEqual(testNote);
+      expect(
+        (newState.editingTechRecord as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>)?.techRecord_adrDetails_additionalExaminerNotes
+      ).toContainEqual(testNote);
     });
   });
   describe('handleUpdateExistingADRExaminerNote', () => {
@@ -616,7 +643,7 @@ describe('Vehicle Technical Record Reducer', () => {
       const newNote = 'foobar';
       const action = updateExistingADRAdditionalExaminerNote({ additionalExaminerNote: newNote, examinerNoteIndex: 0 });
       const newState = vehicleTechRecordReducer(state, action);
-      const editingTechRecord = newState.editingTechRecord as unknown as (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>);
+      const editingTechRecord = newState.editingTechRecord as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>;
       expect(editingTechRecord.techRecord_adrDetails_additionalExaminerNotes![0].note).toEqual(newNote);
     });
   });

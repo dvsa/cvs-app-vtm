@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -12,17 +12,20 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState, State } from '@store/index';
+import { State, initialAppState } from '@store/index';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
 import { amendVrm, amendVrmSuccess } from '@store/technical-records';
-import { of, ReplaySubject } from 'rxjs';
+import { ReplaySubject, of } from 'rxjs';
 import { AmendVrmComponent } from './tech-record-amend-vrm.component';
 
 const mockTechRecordService = {
   techRecord$: of({}),
   get viewableTechRecord$() {
     return of({
-      systemNumber: 'foo', createdTimestamp: 'bar', vin: 'testVin', primaryVrm: 'TESTVRM',
+      systemNumber: 'foo',
+      createdTimestamp: 'bar',
+      vin: 'testVin',
+      primaryVrm: 'TESTVRM',
     });
   },
   updateEditingTechRecord: jest.fn(),
@@ -52,7 +55,10 @@ describe('TechRecordChangeVrmComponent', () => {
         GlobalErrorService,
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),
-        { provide: ActivatedRoute, useValue: { params: of([{ id: 1, reason: 'correcting-error' }]), snapshot: new ActivatedRouteSnapshot() } },
+        {
+          provide: ActivatedRoute,
+          useValue: { params: of([{ id: 1, reason: 'correcting-error' }]), snapshot: new ActivatedRouteSnapshot() },
+        },
         { provide: DynamicFormService, useValue: mockDynamicFormService },
         { provide: TechnicalRecordService, useValue: mockTechRecordService },
       ],
@@ -136,7 +142,7 @@ describe('TechRecordChangeVrmComponent', () => {
           thirdMark: '',
           systemNumber: 'PSV',
           createdTimestamp: 'now',
-        }),
+        })
       );
     });
     it('should dispatch the amendVrm action', fakeAsync(() => {
@@ -148,8 +154,12 @@ describe('TechRecordChangeVrmComponent', () => {
 
       expect(dispatchSpy).toHaveBeenCalledWith(
         amendVrm({
-          newVrm: 'TESTVRM1', cherishedTransfer: false, systemNumber: 'PSV', createdTimestamp: 'now', thirdMark: undefined,
-        }),
+          newVrm: 'TESTVRM1',
+          cherishedTransfer: false,
+          systemNumber: 'PSV',
+          createdTimestamp: 'now',
+          thirdMark: undefined,
+        })
       );
     }));
     it('should dispatch the action with the correct information', () => {
@@ -164,8 +174,12 @@ describe('TechRecordChangeVrmComponent', () => {
 
       expect(dispatchSpy).toHaveBeenCalledWith(
         amendVrm({
-          newVrm: 'TESTVRM1', cherishedTransfer: true, systemNumber: 'PSV', createdTimestamp: 'now', thirdMark: '3MARK',
-        }),
+          newVrm: 'TESTVRM1',
+          cherishedTransfer: true,
+          systemNumber: 'PSV',
+          createdTimestamp: 'now',
+          thirdMark: '3MARK',
+        })
       );
     });
   });

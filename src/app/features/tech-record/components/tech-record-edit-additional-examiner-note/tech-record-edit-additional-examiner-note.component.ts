@@ -1,20 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { ReplaySubject, take, takeUntil } from 'rxjs';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import {
-  CustomFormControl,
-  FormNodeEditTypes,
-  FormNodeTypes,
-  FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
 import { FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { CustomFormControl, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { Store } from '@ngrx/store';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { State } from '@store/index';
 import { updateExistingADRAdditionalExaminerNote } from '@store/technical-records';
-import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
+import { ReplaySubject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'tech-record-edit-additional-examiner-note',
@@ -24,8 +19,8 @@ import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tec
 export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   currentTechRecord!: TechRecordType<'hgv' | 'trl' | 'lgv'>;
   examinerNoteIndex!: number;
-  editedExaminerNote: string = '';
-  originalExaminerNote: string = '';
+  editedExaminerNote = '';
+  originalExaminerNote = '';
   examinerNoteObj!: AdditionalExaminerNotes;
   destroy$ = new ReplaySubject<boolean>(1);
   form!: FormGroup;
@@ -36,8 +31,8 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
     private route: ActivatedRoute,
     private technicalRecordService: TechnicalRecordService,
     private globalErrorService: GlobalErrorService,
-    private store: Store<State>,
-  ) { }
+    private store: Store<State>
+  ) {}
 
   ngOnInit() {
     this.getTechRecord();
@@ -67,9 +62,14 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   }
 
   setupForm() {
-    this.formControl = new CustomFormControl({
-      name: 'additionalExaminerNote', type: FormNodeTypes.CONTROL,
-    }, '', [Validators.required]);
+    this.formControl = new CustomFormControl(
+      {
+        name: 'additionalExaminerNote',
+        type: FormNodeTypes.CONTROL,
+      },
+      '',
+      [Validators.required]
+    );
     this.form = new FormGroup({
       additionalExaminerNote: this.formControl,
     });
@@ -87,7 +87,7 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
         updateExistingADRAdditionalExaminerNote({
           examinerNoteIndex: this.examinerNoteIndex,
           additionalExaminerNote: this.editedExaminerNote,
-        }),
+        })
       );
     }
     this.navigateBack();
@@ -104,5 +104,4 @@ export class TechRecordEditAdditionalExaminerNoteComponent implements OnInit {
   get width(): typeof FormNodeWidth {
     return FormNodeWidth;
   }
-
 }

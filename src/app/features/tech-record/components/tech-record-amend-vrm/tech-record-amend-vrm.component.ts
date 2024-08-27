@@ -1,6 +1,4 @@
-import {
-  Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren,
-} from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -32,6 +30,8 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
   formValidity = false;
   width: FormNodeWidth = FormNodeWidth.L;
 
+  private technicalRecordService = inject(TechnicalRecordService);
+
   cherishedTransferForm = new FormGroup({
     currentVrm: new CustomFormControl(
       {
@@ -41,7 +41,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
       },
       '',
       [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
-      this.technicalRecordService.validateVrmForCherishedTransfer(),
+      this.technicalRecordService.validateVrmForCherishedTransfer()
     ),
     previousVrm: new CustomFormControl({
       name: 'previous-Vrm',
@@ -56,7 +56,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
         type: FormNodeTypes.CONTROL,
       },
       undefined,
-      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
+      [CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)]
     ),
   });
   correctingAnErrorForm = new FormGroup({
@@ -67,7 +67,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
         type: FormNodeTypes.CONTROL,
       },
       '',
-      [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)],
+      [Validators.required, CustomValidators.alphanumeric(), CustomValidators.notZNumber, Validators.minLength(3), Validators.maxLength(9)]
     ),
   });
 
@@ -84,8 +84,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     private globalErrorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService,
+    private store: Store<TechnicalRecordServiceState>
   ) {}
 
   ngOnInit(): void {
@@ -109,10 +108,10 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
     this.cherishedTransferForm.controls['previousVrm'].setValue(this.techRecord?.primaryVrm ?? '');
     this.cherishedTransferForm.controls['previousVrm'].disable();
     this.cherishedTransferForm.controls['thirdMark'].setAsyncValidators(
-      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? ''),
+      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? '')
     );
     this.correctingAnErrorForm.controls['newVrm'].setAsyncValidators(
-      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? ''),
+      this.technicalRecordService.validateVrmDoesNotExist(this.techRecord?.primaryVrm ?? '')
     );
   }
 
@@ -148,7 +147,7 @@ export class AmendVrmComponent implements OnDestroy, OnInit {
         thirdMark: this.isCherishedTransfer ? this.cherishedTransferForm.value.thirdMark : undefined,
         systemNumber: (this.techRecord as TechRecordType<'get'>)?.systemNumber,
         createdTimestamp: (this.techRecord as TechRecordType<'get'>)?.createdTimestamp,
-      }),
+      })
     );
   }
 

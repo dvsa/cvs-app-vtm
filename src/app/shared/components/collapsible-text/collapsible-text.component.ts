@@ -6,9 +6,8 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./collapsible-text.component.scss'],
 })
 export class CollapsibleTextComponent {
-
-  @Input() text: string = '';
-  @Input() maxChars: number = 0;
+  @Input() text = '';
+  @Input() maxChars = 0;
   @Input() isCollapsed = true;
 
   open() {

@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/index';
 import { SharedModule } from '@shared/shared.module';
+import { State, initialAppState } from '@store/index';
 import { AdrTankDetailsM145ViewComponent } from '../adr-tank-details-m145-view/adr-tank-details-m145-view.component';
 import { AdrNewCertificateRequiredViewComponent } from './adr-new-certificate-required-view.component';
 
@@ -27,8 +27,7 @@ describe('AdrNewCertificateRequiredViewComponent', () => {
         { provide: NG_VALUE_ACCESSOR, useExisting: AdrTankDetailsM145ViewComponent, multi: true },
         { provide: NgControl, useValue: { control } },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AdrNewCertificateRequiredViewComponent);
     component = fixture.componentInstance;

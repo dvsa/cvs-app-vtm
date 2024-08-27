@@ -21,7 +21,10 @@ import {
 } from '../actions/batch-create.actions';
 import {
   addAxle,
-  addSectionState, amendVin, amendVinFailure, amendVinSuccess,
+  addSectionState,
+  amendVin,
+  amendVinFailure,
+  amendVinSuccess,
   amendVrm,
   amendVrmFailure,
   amendVrmSuccess,
@@ -57,11 +60,13 @@ import {
   removeSectionState,
   unarchiveTechRecord,
   unarchiveTechRecordFailure,
-  unarchiveTechRecordSuccess, updateADRAdditionalExaminerNotes,
+  unarchiveTechRecordSuccess,
+  updateADRAdditionalExaminerNotes,
   updateBody,
   updateBrakeForces,
   updateEditingTechRecord,
-  updateEditingTechRecordCancel, updateExistingADRAdditionalExaminerNote,
+  updateEditingTechRecordCancel,
+  updateExistingADRAdditionalExaminerNote,
   updateScrollPosition,
   updateTechRecord,
   updateTechRecordFailure,
@@ -102,7 +107,11 @@ export const vehicleTechRecordReducer = createReducer(
   on(createVehicleRecordFailure, (state) => ({ ...state, loading: false })),
 
   on(getBySystemNumber, (state) => ({ ...state, loading: true })),
-  on(getBySystemNumberSuccess, (state, action) => ({ ...state, loading: false, techRecordHistory: action.techRecordHistory })),
+  on(getBySystemNumberSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    techRecordHistory: action.techRecordHistory,
+  })),
   on(getBySystemNumberFailure, (state) => ({ ...state, loading: false, techRecordHistory: [] })),
 
   on(updateTechRecord, defaultArgs),
@@ -174,7 +183,7 @@ export const vehicleTechRecordReducer = createReducer(
     (state, action) => ({
       ...state,
       batchVehicles: vehicleBatchCreateReducer(state.batchVehicles, action),
-    }),
+    })
   ),
 
   on(getTechRecordV3Success, (state, action) => ({ ...state, vehicleTechRecord: action.vehicleTechRecord })),
@@ -182,7 +191,7 @@ export const vehicleTechRecordReducer = createReducer(
   on(updateScrollPosition, (state, action) => ({ ...state, scrollPosition: action.position })),
   on(clearScrollPosition, (state) => ({ ...state, scrollPosition: [0, 0] as [number, number] })),
 
-  on(clearADRDetailsBeforeUpdate, (state) => handleClearADRDetails(state)),
+  on(clearADRDetailsBeforeUpdate, (state) => handleClearADRDetails(state))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
@@ -199,13 +208,16 @@ function updateFailureArgs(state: TechnicalRecordServiceState, data: { error: un
 
 function failureArgs(state: TechnicalRecordServiceState, data: { error: unknown }) {
   return {
-    ...state, vehicleTechRecord: undefined, error: data.error, loading: false,
+    ...state,
+    vehicleTechRecord: undefined,
+    error: data.error,
+    loading: false,
   };
 }
 
 function handleUpdateBrakeForces(
   state: TechnicalRecordServiceState,
-  data: { grossLadenWeight?: number; grossKerbWeight?: number },
+  data: { grossLadenWeight?: number; grossKerbWeight?: number }
 ): TechnicalRecordServiceState {
   const newState = cloneDeep(state);
   if (!newState.editingTechRecord) return newState;
@@ -216,10 +228,11 @@ function handleUpdateBrakeForces(
   if (data.grossLadenWeight) {
     const prefix = `${Math.round(data.grossLadenWeight / 100)}`;
 
-    newState.editingTechRecord.techRecord_brakes_brakeCode = (prefix.length <= 2
-      ? `0${prefix}`
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      : prefix) + newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal!;
+    newState.editingTechRecord.techRecord_brakes_brakeCode =
+      (prefix.length <= 2
+        ? `0${prefix}`
+        : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          prefix) + newState.editingTechRecord.techRecord_brakes_brakeCodeOriginal!;
     newState.editingTechRecord.techRecord_brakes_brakeForceWheelsNotLocked_serviceBrakeForceA = Math.round((data.grossLadenWeight * 16) / 100);
     newState.editingTechRecord.techRecord_brakes_brakeForceWheelsNotLocked_secondaryBrakeForceA = Math.round((data.grossLadenWeight * 22.5) / 100);
     newState.editingTechRecord.techRecord_brakes_brakeForceWheelsNotLocked_parkingBrakeForceA = Math.round((data.grossLadenWeight * 45) / 100);
@@ -258,9 +271,9 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
 
   if (!newState.editingTechRecord) return newState;
   if (
-    newState.editingTechRecord.techRecord_vehicleType === 'car'
-    || newState.editingTechRecord.techRecord_vehicleType === 'lgv'
-    || newState.editingTechRecord.techRecord_vehicleType === 'motorcycle'
+    newState.editingTechRecord.techRecord_vehicleType === 'car' ||
+    newState.editingTechRecord.techRecord_vehicleType === 'lgv' ||
+    newState.editingTechRecord.techRecord_vehicleType === 'motorcycle'
   ) {
     return newState;
   }
@@ -280,8 +293,8 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
   };
 
   if (
-    newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.HGV
-    || newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL
+    newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+    newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL
   ) {
     newAxle.weights_eecWeight = null;
   }
@@ -296,12 +309,12 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
   newState.editingTechRecord.techRecord_noOfAxles = newState.editingTechRecord.techRecord_axles.length;
 
   if (
-    newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.HGV
-    || newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL
+    newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.HGV ||
+    newState.editingTechRecord.techRecord_vehicleType === VehicleTypes.TRL
   ) {
     newState.editingTechRecord.techRecord_dimensions_axleSpacing = new AxlesService().generateAxleSpacing(
       newState.editingTechRecord.techRecord_axles.length,
-      newState.editingTechRecord.techRecord_dimensions_axleSpacing,
+      newState.editingTechRecord.techRecord_dimensions_axleSpacing
     );
   }
 
@@ -311,12 +324,12 @@ function handleAddAxle(state: TechnicalRecordServiceState): TechnicalRecordServi
 function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: number }): TechnicalRecordServiceState {
   const newState = cloneDeep(state);
   if (
-    !newState.editingTechRecord
-    || newState.editingTechRecord.techRecord_vehicleType === 'car'
-    || newState.editingTechRecord.techRecord_vehicleType === 'lgv'
-    || newState.editingTechRecord.techRecord_vehicleType === 'motorcycle'
-    || !newState.editingTechRecord.techRecord_axles
-    || !newState.editingTechRecord.techRecord_axles.length
+    !newState.editingTechRecord ||
+    newState.editingTechRecord.techRecord_vehicleType === 'car' ||
+    newState.editingTechRecord.techRecord_vehicleType === 'lgv' ||
+    newState.editingTechRecord.techRecord_vehicleType === 'motorcycle' ||
+    !newState.editingTechRecord.techRecord_axles ||
+    !newState.editingTechRecord.techRecord_axles.length
   ) {
     return newState;
   }
@@ -329,11 +342,11 @@ function handleRemoveAxle(state: TechnicalRecordServiceState, action: { index: n
   newState.editingTechRecord.techRecord_noOfAxles = newState.editingTechRecord.techRecord_axles.length;
 
   if (
-    newState.editingTechRecord?.techRecord_vehicleType === VehicleTypes.HGV
-    || newState.editingTechRecord?.techRecord_vehicleType === VehicleTypes.TRL
+    newState.editingTechRecord?.techRecord_vehicleType === VehicleTypes.HGV ||
+    newState.editingTechRecord?.techRecord_vehicleType === VehicleTypes.TRL
   ) {
     newState.editingTechRecord.techRecord_dimensions_axleSpacing = new AxlesService().generateAxleSpacing(
-      newState.editingTechRecord.techRecord_axles.length,
+      newState.editingTechRecord.techRecord_axles.length
     );
   }
 
@@ -508,7 +521,9 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
       const { techRecord_adrDetails_vehicleDetails_type: vehicleDetailsType } = sanitisedEditingTechRecord;
       if (!vehicleDetailsType?.includes('battery')) {
         sanitisedEditingTechRecord = {
-          ...sanitisedEditingTechRecord, ...nulledBatteryListNumber, techRecord_adrDetails_listStatementApplicable: null,
+          ...sanitisedEditingTechRecord,
+          ...nulledBatteryListNumber,
+          techRecord_adrDetails_listStatementApplicable: null,
         };
       }
       // If manufacturer brake declaration is no, null dependent sections
@@ -525,7 +540,6 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 
       return { ...state, editingTechRecord: sanitisedEditingTechRecord };
     }
-
   }
 
   return { ...state };
@@ -533,8 +547,9 @@ function handleClearADRDetails(state: TechnicalRecordServiceState) {
 
 function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, username: string) {
   const { editingTechRecord } = state;
-  const additionalNoteTechRecord = editingTechRecord as unknown as
-    (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>) & { techRecord_adrDetails_additionalExaminerNotes_note: string };
+  const additionalNoteTechRecord = editingTechRecord as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'> & {
+    techRecord_adrDetails_additionalExaminerNotes_note: string;
+  };
   if (editingTechRecord) {
     if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes_note) {
       const additionalExaminerNotes = {
@@ -542,26 +557,27 @@ function handleADRExaminerNoteChanges(state: TechnicalRecordServiceState, userna
         lastUpdatedBy: username,
         createdAtDate: new Date().toISOString(),
       };
-      if (additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === null
-        || additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined) {
+      if (
+        additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === null ||
+        additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes === undefined
+      ) {
         additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes = [];
       }
       additionalNoteTechRecord.techRecord_adrDetails_additionalExaminerNotes?.unshift(additionalExaminerNotes);
     }
   }
-  return { ...state, editingTechRecord: additionalNoteTechRecord as unknown as (TechRecordType<'put'>) };
+  return { ...state, editingTechRecord: additionalNoteTechRecord as unknown as TechRecordType<'put'> };
 }
 
 function handleUpdateExistingADRExaminerNote(
   state: TechnicalRecordServiceState,
-  action: { additionalExaminerNote: string, examinerNoteIndex: number },
+  action: { additionalExaminerNote: string; examinerNoteIndex: number }
 ) {
   const { editingTechRecord } = state;
-  const editedTechRecord = editingTechRecord as unknown as
-    (NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>);
+  const editedTechRecord = editingTechRecord as unknown as NonVerbTechRecordType<'hgv' | 'lgv' | 'trl'>;
   if (editedTechRecord) {
     const examinerNotes = editedTechRecord.techRecord_adrDetails_additionalExaminerNotes;
     examinerNotes![action.examinerNoteIndex].note = action.additionalExaminerNote;
   }
-  return { ...state, editingTechRecord: editingTechRecord as unknown as (TechRecordType<'put'>) };
+  return { ...state, editingTechRecord: editingTechRecord as unknown as TechRecordType<'put'> };
 }

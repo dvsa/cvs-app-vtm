@@ -21,150 +21,157 @@ import { ChangeVehicleTypeComponent } from './tech-record-change-type.component'
 const mockGetVehicleType = jest.fn();
 
 const mockTechRecordService = {
-  get techRecord$() {
-    return of({});
-  },
-  getMakeAndModel: jest.fn(),
-  clearReasonForCreation: jest.fn(),
-  getVehicleTypeWithSmallTrl: mockGetVehicleType,
+	get techRecord$() {
+		return of({});
+	},
+	getMakeAndModel: jest.fn(),
+	clearReasonForCreation: jest.fn(),
+	getVehicleTypeWithSmallTrl: mockGetVehicleType,
 };
 
 const mockDynamicFormService = {
-  createForm: jest.fn(),
+	createForm: jest.fn(),
 };
 
 describe('TechRecordChangeTypeComponent', () => {
-  const actions$ = new ReplaySubject<Action>();
-  let component: ChangeVehicleTypeComponent;
-  let errorService: GlobalErrorService;
-  let expectedTechRecord = {} as V3TechRecordModel;
-  let fixture: ComponentFixture<ChangeVehicleTypeComponent>;
-  let route: ActivatedRoute;
-  let router: Router;
-  let store: MockStore;
+	const actions$ = new ReplaySubject<Action>();
+	let component: ChangeVehicleTypeComponent;
+	let errorService: GlobalErrorService;
+	let expectedTechRecord = {} as V3TechRecordModel;
+	let fixture: ComponentFixture<ChangeVehicleTypeComponent>;
+	let route: ActivatedRoute;
+	let router: Router;
+	let store: MockStore;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ChangeVehicleTypeComponent],
-      providers: [
-        GlobalErrorService,
-        provideMockActions(() => actions$),
-        provideMockStore({ initialState: initialAppState }),
-        { provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
-        { provide: DynamicFormService, useValue: mockDynamicFormService },
-        { provide: TechnicalRecordService, useValue: mockTechRecordService },
-      ],
-      imports: [DynamicFormsModule, RouterTestingModule, SharedModule, FixNavigationTriggeredOutsideAngularZoneNgModule],
-    }).compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [ChangeVehicleTypeComponent],
+			providers: [
+				GlobalErrorService,
+				provideMockActions(() => actions$),
+				provideMockStore({ initialState: initialAppState }),
+				{ provide: ActivatedRoute, useValue: { params: of([{ id: 1 }]) } },
+				{ provide: DynamicFormService, useValue: mockDynamicFormService },
+				{ provide: TechnicalRecordService, useValue: mockTechRecordService },
+			],
+			imports: [
+				DynamicFormsModule,
+				RouterTestingModule,
+				SharedModule,
+				FixNavigationTriggeredOutsideAngularZoneNgModule,
+			],
+		}).compileComponents();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ChangeVehicleTypeComponent);
-    errorService = TestBed.inject(GlobalErrorService);
-    route = TestBed.inject(ActivatedRoute);
-    router = TestBed.inject(Router);
-    store = TestBed.inject(MockStore);
-    component = fixture.componentInstance;
-    expectedTechRecord = {
-      systemNumber: 'foo',
-      createdTimestamp: 'bar',
-      vin: 'testVin',
-      techRecord_vehicleType: VehicleTypes.PSV,
-      techRecord_chassisMake: 'test-make',
-      techRecord_chassisModel: 'test-model',
-    } as V3TechRecordModel;
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(ChangeVehicleTypeComponent);
+		errorService = TestBed.inject(GlobalErrorService);
+		route = TestBed.inject(ActivatedRoute);
+		router = TestBed.inject(Router);
+		store = TestBed.inject(MockStore);
+		component = fixture.componentInstance;
+		expectedTechRecord = {
+			systemNumber: 'foo',
+			createdTimestamp: 'bar',
+			vin: 'testVin',
+			techRecord_vehicleType: VehicleTypes.PSV,
+			techRecord_chassisMake: 'test-make',
+			techRecord_chassisModel: 'test-model',
+		} as V3TechRecordModel;
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  describe('makeAndModel', () => {
-    it('should should return the make and model', () => {
-      const techRecord = expectedTechRecord as TechRecordType<'psv'>;
-      const expectedMakeModel = `${techRecord.techRecord_chassisMake} - ${techRecord.techRecord_chassisModel}`;
+	describe('makeAndModel', () => {
+		it('should should return the make and model', () => {
+			const techRecord = expectedTechRecord as TechRecordType<'psv'>;
+			const expectedMakeModel = `${techRecord.techRecord_chassisMake} - ${techRecord.techRecord_chassisModel}`;
 
-      jest.spyOn(mockTechRecordService, 'getMakeAndModel').mockReturnValueOnce(expectedMakeModel);
+			jest.spyOn(mockTechRecordService, 'getMakeAndModel').mockReturnValueOnce(expectedMakeModel);
 
-      component.techRecord = expectedTechRecord;
-      component.ngOnInit();
+			component.techRecord = expectedTechRecord;
+			component.ngOnInit();
 
-      expect(component.makeAndModel).toBe(expectedMakeModel);
-    });
+			expect(component.makeAndModel).toBe(expectedMakeModel);
+		});
 
-    it('should return an empty string when the current record is null', () => {
-      delete component.techRecord;
-      component.ngOnInit();
+		it('should return an empty string when the current record is null', () => {
+			delete component.techRecord;
+			component.ngOnInit();
 
-      expect(component.makeAndModel).toBeUndefined();
-    });
-  });
+			expect(component.makeAndModel).toBeUndefined();
+		});
+	});
 
-  describe('vehicleTypeOptions', () => {
-    it('should return all types except for the current one', () => {
-      component.techRecord = expectedTechRecord;
-      mockGetVehicleType.mockReturnValue('psv');
-      const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter((type) => type.value !== VehicleTypes.PSV);
-      expect(component.vehicleTypeOptions).toStrictEqual(expectedOptions);
-    });
-  });
+	describe('vehicleTypeOptions', () => {
+		it('should return all types except for the current one', () => {
+			component.techRecord = expectedTechRecord;
+			mockGetVehicleType.mockReturnValue('psv');
+			const expectedOptions = getOptionsFromEnumAcronym(VehicleTypes).filter((type) => type.value !== VehicleTypes.PSV);
+			expect(component.vehicleTypeOptions).toStrictEqual(expectedOptions);
+		});
+	});
 
-  describe('navigateBack', () => {
-    it('should clear all errors', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
+	describe('navigateBack', () => {
+		it('should clear all errors', () => {
+			jest.spyOn(router, 'navigate').mockImplementation();
 
-      const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
+			const clearErrorsSpy = jest.spyOn(errorService, 'clearErrors');
 
-      component.navigateBack();
+			component.navigateBack();
 
-      expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
-    });
+			expect(clearErrorsSpy).toHaveBeenCalledTimes(1);
+		});
 
-    it('should navigate back to the previous page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		it('should navigate back to the previous page', () => {
+			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.navigateBack();
+			component.navigateBack();
 
-      expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
-    });
-  });
+			expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: route });
+		});
+	});
 
-  describe('handleSubmit', () => {
-    it('should add an error when no vehicle type is selected', () => {
-      const addErrorSpy = jest.spyOn(errorService, 'addError');
+	describe('handleSubmit', () => {
+		it('should add an error when no vehicle type is selected', () => {
+			const setErrorsSpy = jest.spyOn(errorService, 'setErrors');
 
-      component.handleSubmit(null as unknown as VehicleTypes);
+			component.handleSubmit(null as unknown as VehicleTypes);
 
-      expect(addErrorSpy).toHaveBeenCalledWith({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
-    });
+			expect(setErrorsSpy).toHaveBeenCalledWith([
+				{ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' },
+			]);
+		});
 
-    it('should dispatch the changeVehicleType action', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
+		it('should dispatch the changeVehicleType action', () => {
+			jest.spyOn(router, 'navigate').mockImplementation();
 
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
+			const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-      component.handleSubmit(VehicleTypes.PSV);
+			component.handleSubmit(VehicleTypes.PSV);
 
-      expect(dispatchSpy).toHaveBeenCalledWith(changeVehicleType({ techRecord_vehicleType: VehicleTypes.PSV }));
-    });
+			expect(dispatchSpy).toHaveBeenCalledWith(changeVehicleType({ techRecord_vehicleType: VehicleTypes.PSV }));
+		});
 
-    it('should call clearReasonForCreation', () => {
-      jest.spyOn(router, 'navigate').mockImplementation();
+		it('should call clearReasonForCreation', () => {
+			jest.spyOn(router, 'navigate').mockImplementation();
 
-      const clearReasonForCreationSpy = jest.spyOn(mockTechRecordService, 'clearReasonForCreation');
+			const clearReasonForCreationSpy = jest.spyOn(mockTechRecordService, 'clearReasonForCreation');
 
-      jest.resetAllMocks();
-      component.handleSubmit(VehicleTypes.PSV);
+			jest.resetAllMocks();
+			component.handleSubmit(VehicleTypes.PSV);
 
-      expect(clearReasonForCreationSpy).toHaveBeenCalledTimes(1);
-    });
+			expect(clearReasonForCreationSpy).toHaveBeenCalledTimes(1);
+		});
 
-    it('navigate to the editing page', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+		it('navigate to the editing page', () => {
+			const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-      component.handleSubmit(VehicleTypes.PSV);
+			component.handleSubmit(VehicleTypes.PSV);
 
-      expect(navigateSpy).toHaveBeenCalledWith(['../amend-reason'], { relativeTo: route });
-    });
-  });
+			expect(navigateSpy).toHaveBeenCalledWith(['../amend-reason'], { relativeTo: route });
+		});
+	});
 });

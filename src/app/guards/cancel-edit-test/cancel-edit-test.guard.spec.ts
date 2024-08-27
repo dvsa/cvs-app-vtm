@@ -5,26 +5,26 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { CancelEditTestGuard } from './cancel-edit-test.guard';
 
 describe('NoEditGuard', () => {
-  let guard: CancelEditTestGuard;
+	let guard: CancelEditTestGuard;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      providers: [
-        CancelEditTestGuard,
-        provideMockStore({}),
-        { provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
-      ],
-    });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [RouterTestingModule],
+			providers: [
+				CancelEditTestGuard,
+				provideMockStore({}),
+				{ provide: RouterStateSnapshot, useValue: jest.fn().mockReturnValue({ url: '', toString: jest.fn() }) },
+			],
+		});
 
-    guard = TestBed.inject(CancelEditTestGuard);
-  });
+		guard = TestBed.inject(CancelEditTestGuard);
+	});
 
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(guard).toBeTruthy();
+	});
 
-  it('should return true', () => {
-    expect(guard.canDeactivate()).toBeTruthy();
-  });
+	it('should return true', () => {
+		expect(guard.canDeactivate()).toBeTruthy();
+	});
 });

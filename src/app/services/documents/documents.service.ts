@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class DocumentsService {
-  openDocumentFromResponse(fileName: string, responseBody: unknown, fileType: string = 'pdf'): void {
+  openDocumentFromResponse(fileName: string, responseBody: unknown, fileType = 'pdf'): void {
     if (fileType === 'zip') {
       const link: HTMLAnchorElement = document.createElement('a');
 
@@ -17,7 +17,6 @@ export class DocumentsService {
 
       this.simulateClick(link);
     }
-
   }
 
   convertToBlob(data: unknown, fileType?: string): Blob {
@@ -27,7 +26,7 @@ export class DocumentsService {
       window
         .atob(data)
         .split('')
-        .map((char) => char.charCodeAt(0)),
+        .map((char) => char.charCodeAt(0))
     );
 
     return new Blob([byteArray], { type: `application/${fileType}; charset=utf-8` });

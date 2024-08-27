@@ -83,7 +83,6 @@ import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
     GetControlLabelPipe,
     FormatVehicleTypePipe,
     CollapsibleTextComponent,
-
   ],
   providers: [DocumentRetrievalService],
 })

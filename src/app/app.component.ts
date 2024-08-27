@@ -3,91 +3,76 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import * as Sentry from '@sentry/angular-ivy';
-import { GoogleAnalyticsService } from '@services/google-analytics/google-analytics.service';
+import * as Sentry from '@sentry/angular';
 import { LoadingService } from '@services/loading/loading.service';
 import { UserService } from '@services/user-service/user-service';
 import { selectRouteData } from '@store/router/selectors/router.selectors';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { initAll } from 'govuk-frontend/govuk/all';
-import {
-  Subject,
-  map,
-  take,
-  takeUntil,
-} from 'rxjs';
+import { Subject, map, take, takeUntil } from 'rxjs';
 import packageInfo from '../../package.json';
 import { environment } from '../environments/environment';
 import { State } from './store';
 
-declare const gtag: Function;
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['app.component.scss'],
+	selector: 'app-root',
+	templateUrl: './app.component.html',
+	styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+	private destroy$ = new Subject<void>();
 
-  constructor(
-    public userService: UserService,
-    private loadingService: LoadingService,
-    private router: Router,
-    private store: Store<State>,
-    private googleAnalyticsService: GoogleAnalyticsService,
-  ) {
-    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-        this.googleAnalyticsService.pageView(document.title, event.urlAfterRedirects);
-      }
-    });
-  }
+	constructor(
+		public userService: UserService,
+		private loadingService: LoadingService,
+		private router: Router,
+		private gtmService: GoogleTagManagerService,
+		private store: Store<State>
+	) {}
 
-  ngOnInit() {
-    this.startSentry();
-    this.initGoogleTagManager();
-    initAll();
-  }
+	async ngOnInit() {
+		this.startSentry();
+		this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event: Event) => {
+			if (event instanceof NavigationEnd) {
+				const gtmTag = {
+					event: document.title,
+					pageName: event.urlAfterRedirects,
+				};
+				void this.gtmService.pushTag(gtmTag);
+			}
+		});
+		await this.gtmService.addGtmToDom();
+		initAll();
+	}
 
-  initGoogleTagManager() {
-    const scriptElement = document.createElement('script');
-    scriptElement.async = true;
-    scriptElement.src = `https://www.googletagmanager.com/gtag/js?id=${environment.VTM_GTM_MEASUREMENT_ID}`;
-    document.head.appendChild(scriptElement);
-    gtag('config', environment.VTM_GTM_MEASUREMENT_ID);
-  }
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+	get isStandardLayout() {
+		return this.store.pipe(
+			take(1),
+			select(selectRouteData),
+			map((routeData) => routeData && !routeData['isCustomLayout'])
+		);
+	}
 
-  get isStandardLayout() {
-    return this.store.pipe(
-      take(1),
-      select(selectRouteData),
-      map((routeData) => routeData && !routeData['isCustomLayout']),
-    );
-  }
+	get loading() {
+		return this.loadingService.showSpinner$;
+	}
 
-  get loading() {
-    return this.loadingService.showSpinner$;
-  }
-
-  startSentry() {
-    Sentry.init({
-      dsn: environment.SENTRY_DSN,
-      environment: environment.production ? 'production' : 'development',
-      release: packageInfo.version,
-      replaysSessionSampleRate: 0.1,
-      tracesSampleRate: 0.025,
-      replaysOnErrorSampleRate: 1.0,
-      enableTracing: false,
-      integrations: [
-        new Sentry.BrowserTracing({
-          routingInstrumentation: Sentry.routingInstrumentation,
-        }),
-        new Sentry.Replay(),
-      ],
-    });
-  }
+	startSentry() {
+		Sentry.init({
+			dsn: environment.SENTRY_DSN,
+			environment: environment.production ? 'production' : 'development',
+			release: packageInfo.version,
+			replaysSessionSampleRate: 0.1,
+			tracesSampleRate: 0.025,
+			replaysOnErrorSampleRate: 1.0,
+			enableTracing: false,
+			integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+		});
+	}
 }

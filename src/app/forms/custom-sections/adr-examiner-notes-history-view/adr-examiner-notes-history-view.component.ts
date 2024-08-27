@@ -1,15 +1,11 @@
-import {
-  Component, inject, OnDestroy, OnInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import {
-  map, Observable, Subject, takeUntil,
-} from 'rxjs';
+import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
 import { RouterService } from '@services/router/router.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { Observable, Subject, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-adr-examiner-notes-history-view',
@@ -47,8 +43,10 @@ export class AdrExaminerNotesHistoryViewComponent extends BaseControlComponent i
     this.cdr.detectChanges();
   }
 
-  get adrNotes(): AdditionalExaminerNotes[] {
-    return this.currentTechRecord?.techRecord_adrDetails_additionalExaminerNotes ?? [];
+  getAdditionalExaminerNotes(): AdditionalExaminerNotes[] {
+    return (this.currentTechRecord?.techRecord_adrDetails_additionalExaminerNotes ?? []).sort(
+      (a, b) => +new Date(b.createdAtDate ?? '') - +new Date(a.createdAtDate ?? '')
+    );
   }
 
   get currentAdrNotesPage(): AdditionalExaminerNotes[] {
