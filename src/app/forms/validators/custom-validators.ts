@@ -21,7 +21,6 @@ export class CustomValidators {
 		return (control: AbstractControl): ValidationErrors | null => {
 			if (control?.parent) {
 				const siblingControl = control.parent.get(sibling) as CustomFormControl;
-
 				siblingControl.meta.hide =
 					Array.isArray(value) && control.value ? value.includes(control.value) : control.value === value;
 			}
@@ -34,7 +33,6 @@ export class CustomValidators {
 		return (control: AbstractControl): ValidationErrors | null => {
 			if (control?.parent) {
 				const siblingControl = control.parent.get(sibling) as CustomFormControl;
-
 				siblingControl.meta.hide = Array.isArray(value) ? !value.includes(control.value) : control.value !== value;
 			}
 
@@ -76,7 +74,6 @@ export class CustomValidators {
 		return (control: AbstractControl): ValidationErrors | null => {
 			if (control?.parent && control.parent.parent) {
 				const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
-
 				siblingControl.meta.hide = Array.isArray(value) ? !value.includes(control.value) : control.value !== value;
 			}
 
@@ -86,7 +83,9 @@ export class CustomValidators {
 
 	static hideIfParentSiblingEquals = (parentSibling: string, value: unknown): ValidatorFn => {
 		return (control: AbstractControl): ValidationErrors | null => {
-			if (control?.parent && control.parent.parent) {
+			if (control && control.parent && control.parent.parent) {
+				if ((control.parent as CustomFormControl | CustomFormGroup).meta?.hide) return null;
+				if ((control.parent.parent as CustomFormControl | CustomFormGroup).meta?.hide) return null;
 				const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
 				siblingControl.meta.hide =
 					Array.isArray(value) && control.value ? value.includes(control.value) : control.value === value;

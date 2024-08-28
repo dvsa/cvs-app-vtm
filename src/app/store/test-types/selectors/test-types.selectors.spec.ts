@@ -1,13 +1,20 @@
 import { TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { StatusCodes, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { selectTestType, selectTestTypesByVehicleType, sortedTestTypes } from './test-types.selectors';
 
 describe('selectors', () => {
+	const techRecord = { techRecord_statusCode: 'current' } as V3TechRecordModel;
+
 	describe('selectTestTypesByVehicleType', () => {
 		it('test with no data', () => {
-			const selector = selectTestTypesByVehicleType.projector([], { vehicleType: 'psv' } as TestResultModel, []);
+			const selector = selectTestTypesByVehicleType.projector(
+				[],
+				{ vehicleType: 'psv' } as TestResultModel,
+				[],
+				techRecord
+			);
 			expect(selector).toHaveLength(0);
 		});
 
@@ -27,7 +34,12 @@ describe('selectors', () => {
 				{ forVehicleType: ['psv'], forEuVehicleCategory: ['m2'] },
 				{ forVehicleType: ['psv', 'hgv'], nextTestTypesOrCategories: [{ forVehicleType: ['psv', 'hgv'] }] },
 			] as TestTypesTaxonomy;
-			const selector = selectTestTypesByVehicleType.projector(testTypes, { vehicleType: 'psv' } as TestResultModel, []);
+			const selector = selectTestTypesByVehicleType.projector(
+				testTypes,
+				{ vehicleType: 'psv' } as TestResultModel,
+				[],
+				techRecord
+			);
 			expect(selector).toHaveLength(3);
 			expect(selector).toEqual(expectedTestTypes);
 		});
@@ -102,7 +114,8 @@ describe('selectors', () => {
 					vehicleType: VehicleTypes.TRL,
 					statusCode: StatusCodes.PROVISIONAL,
 				} as TestResultModel,
-				techRecordHistorys
+				techRecordHistorys,
+				{ ...techRecord, techRecord_statusCode: StatusCodes.PROVISIONAL }
 			);
 			expect(selector).toEqual(expectedTestTypes);
 
@@ -112,7 +125,8 @@ describe('selectors', () => {
 					vehicleType: VehicleTypes.TRL,
 					statusCode: StatusCodes.CURRENT,
 				} as TestResultModel,
-				techRecordHistorys
+				techRecordHistorys,
+				techRecord
 			);
 
 			expect(selectorAdditional).toEqual(additionalExpectedTestTypes);
@@ -140,7 +154,8 @@ describe('selectors', () => {
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ euVehicleCategory: 'm1' } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selector).toHaveLength(3);
 			expect(selector).toEqual(expectedTestTypes);
@@ -170,7 +185,8 @@ describe('selectors', () => {
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ vehicleSize: 'small' } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selector).toHaveLength(4);
 			expect(selector).toEqual(expectedTestTypes);
@@ -201,7 +217,8 @@ describe('selectors', () => {
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ vehicleConfiguration: 'rigid' } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selector).toHaveLength(4);
 			expect(selector).toEqual(expectedTestTypes);
@@ -209,7 +226,8 @@ describe('selectors', () => {
 			const selectorAdditional = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ vehicleConfiguration: 'articulated' } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selectorAdditional).toHaveLength(5);
 		});
@@ -236,14 +254,20 @@ describe('selectors', () => {
 				},
 			] as TestTypesTaxonomy;
 
-			const selector = selectTestTypesByVehicleType.projector(testTypes, { noOfAxles: 4 } as TestResultModel, []);
+			const selector = selectTestTypesByVehicleType.projector(
+				testTypes,
+				{ noOfAxles: 4 } as TestResultModel,
+				[],
+				techRecord
+			);
 			expect(selector).toHaveLength(4);
 			expect(selector).toEqual(expectedTestTypes);
 
 			const selectorAdditional = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ noOfAxles: 2 } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selectorAdditional).toHaveLength(5);
 		});
@@ -273,7 +297,8 @@ describe('selectors', () => {
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ vehicleClass: { code: 's' } } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selector).toHaveLength(4);
 			expect(selector).toEqual(expectedTestTypes);
@@ -281,7 +306,8 @@ describe('selectors', () => {
 			const selectorAdditional = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ vehicleClass: { code: 'n' } } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selectorAdditional).toHaveLength(5);
 		});
@@ -313,7 +339,8 @@ describe('selectors', () => {
 				{
 					vehicleClass: { description: 'motorbikes up to 200cc' },
 				} as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selector).toHaveLength(4);
 			expect(selector).toEqual(expectedTestTypes);
@@ -323,7 +350,8 @@ describe('selectors', () => {
 				{
 					vehicleClass: { description: '3 wheelers' },
 				} as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selectorAdditional).toHaveLength(5);
 		});
@@ -355,7 +383,8 @@ describe('selectors', () => {
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ vehicleSubclass: [VehicleSubclass.L] } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selector).toHaveLength(4);
 			expect(selector).toEqual(expectedTestTypes);
@@ -363,7 +392,8 @@ describe('selectors', () => {
 			const selectorAdditional = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ vehicleSubclass: [VehicleSubclass.C] } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selectorAdditional).toHaveLength(5);
 		});
@@ -395,7 +425,8 @@ describe('selectors', () => {
 			const selector = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ numberOfWheelsDriven: 4 } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selector).toHaveLength(5);
 			expect(selector).toEqual(expectedTestTypes);
@@ -403,7 +434,8 @@ describe('selectors', () => {
 			const selectorAdditional = selectTestTypesByVehicleType.projector(
 				testTypes,
 				{ numberOfWheelsDriven: 2 } as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selectorAdditional).toHaveLength(5);
 		});
@@ -450,7 +482,8 @@ describe('selectors', () => {
 					euVehicleCategory: 'm1',
 					vehicleSize: 'small',
 				} as TestResultModel,
-				[]
+				[],
+				techRecord
 			);
 			expect(selector).toHaveLength(3);
 			expect(selector).toEqual(expectedTestTypes);

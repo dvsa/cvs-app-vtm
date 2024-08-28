@@ -1,4 +1,8 @@
-import { TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
+import {
+	TEST_TYPES_GROUP1_SPEC_TEST,
+	TEST_TYPES_GROUP5_SPEC_TEST,
+	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
+} from '@forms/models/testTypeId.enum';
 // eslint-disable-next-line import/no-cycle
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/test-result-defect.model';
@@ -197,6 +201,11 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 		if (testType.centralDocs?.issueRequired) {
 			testType.certificateNumber = '000000';
 			testType.secondaryCertificateNumber = '000000';
+		}
+
+		// When abandoning a first test ensure certificate number is sent up
+		if (isAbandon && TEST_TYPES_GROUP9_10_CENTRAL_DOCS.includes(testType.testTypeId)) {
+			testType.certificateNumber = '';
 		}
 
 		return testType;
