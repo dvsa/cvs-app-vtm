@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestTypesService } from '@api/test-types';
+import { TestType } from '@models/test-types/test-type.model';
 import { V3TechRecordModel, VehicleConfigurations, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
@@ -95,5 +96,17 @@ describe('VehicleHeaderComponent', () => {
 			techRecord_chassisModel: 'testChassisModel',
 		} as unknown as V3TechRecordModel;
 		expect(component.getVehicleDescription(mockRecord, undefined)).toBe('Unknown Vehicle Type');
+	});
+
+	describe('isADRTest', () => {
+		it('should return true if the selected test type is an ADR test', () => {
+			jest.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '50' } as TestType);
+			expect(component.isADRTest).toBe(true);
+		});
+
+		it('should return false if the selected test type is not an ADR test', () => {
+			jest.spyOn(component, 'test', 'get').mockReturnValue({ testTypeId: '94' } as TestType);
+			expect(component.isADRTest).toBe(false);
+		});
 	});
 });

@@ -41,7 +41,7 @@
               {{ testResult?.vin }}
             </dd>
           </div>
-          <div class="govuk-summary-list__row guidance_notes_link">
+          <div *ngIf="isADRTest" class="govuk-summary-list__row guidance_notes_link">
             <a
               class="govuk-link--no-visited-state"
               target="_blank"
