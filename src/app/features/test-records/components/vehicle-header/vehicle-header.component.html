@@ -5,7 +5,7 @@
         <div class="vehicle_heading">
           <h1 class="govuk-heading-l">
             <span>
-              {{ test?.testTypeId ?? '' | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}
+              {{ test?.testTypeId ?? '' | testTypeName : (selectAllTestTypes$ | async) | defaultNullOrEmpty }}
               {{ testCode | uppercase }}
             </span>
             <app-icon [icon]="(techRecord$ | async)?.techRecord_vehicleType || ''"></app-icon>
@@ -41,12 +41,14 @@
               {{ testResult?.vin }}
             </dd>
           </div>
-          <div class="govuk-summary-list__row">
-            <span>
-              <a class="govuk-link--no-visited-state" target="_blank" href="https://dvsauk.sharepoint.com/sites/HVTPDVSA/SitePages/ADR-Assessor-Guidance-Notes.aspx">
-                View guidance notes (opens in new tab)
-              </a>
-            </span>
+          <div class="govuk-summary-list__row guidance_notes_link">
+            <a
+              class="govuk-link--no-visited-state"
+              target="_blank"
+              href="https://dvsauk.sharepoint.com/sites/HVTPDVSA/SitePages/ADR-Assessor-Guidance-Notes.aspx"
+            >
+              View guidance notes (opens in new tab)
+            </a>
           </div>
         </dl>
       </div>
@@ -57,10 +59,10 @@
     <div class="test_result_header">
       <div class="test_name_and_date">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">
-          <span>{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }} {{ testCode | uppercase }}</span>
+          <span>{{ test?.testTypeId || '' | testTypeName : (selectAllTestTypes$ | async) }} {{ testCode | uppercase }}</span>
         </h1>
         <div class="date_and_result">
-          <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
+          <span class="govuk-caption-l">{{ testResult?.createdAt | date : 'dd MMM yyyy' }}</span>
           <app-tag [type]="tagType">{{ resultOfTest | defaultNullOrEmpty }}</app-tag>
         </div>
       </div>
@@ -122,7 +124,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Country of registration</dt>
         <dd id="test-cor" class="govuk-summary-list__value">
-          {{ testResult?.countryOfRegistration | refDataDecode$: referenceDataType.CountryOfRegistration | async | defaultNullOrEmpty | uppercase }}
+          {{ testResult?.countryOfRegistration | refDataDecode$ : referenceDataType.CountryOfRegistration | async | defaultNullOrEmpty | uppercase }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">

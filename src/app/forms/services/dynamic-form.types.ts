@@ -103,7 +103,7 @@ export interface FormNode {
 	width?: FormNodeWidth;
 	label?: string;
 	hint?: string;
-  link?: string;
+	link?: string;
 	delimited?: { regex?: string; separator: string };
 	value?: unknown;
 	path?: string;
