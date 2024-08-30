@@ -254,6 +254,7 @@ export const AdrTemplate: FormNode = {
 			groups: ['adr_details', 'dangerous_goods'],
 			hide: true,
 			width: FormNodeWidth.XS,
+			link: 'https://dvsauk.sharepoint.com/sites/HVTPDVSA/SitePages/ADR-Assessor-Guidance-Notes.aspx',
 			value: [],
 			options: getOptionsFromEnum(ADRAdditionalNotesNumber),
 			validators: [

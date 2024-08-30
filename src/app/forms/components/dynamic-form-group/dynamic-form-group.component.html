@@ -69,16 +69,17 @@
   <ng-container [formGroup]="formGroup">
     <ng-container *ngIf="control.value.meta && !control.value.meta.hide" [ngSwitch]="edit">
       <ng-container *ngIf="control.value.meta.viewType !== 'hidden'">
-        <tr
-          *ngSwitchCase="false"
-          app-view-list-item
-          class="govuk-table__row"
-          [label]="control.value.meta.label"
-          [name]="control.value.meta.name"
-          [customId]="control.value.meta.customId ?? ''"
-          [viewType]="control.value.meta.viewType"
-          [formControlName]="control.key"
-        ></tr>
+          <tr
+            *ngSwitchCase="false"
+            app-view-list-item
+            class="govuk-table__row"
+            [label]="control.value.meta.label"
+            [name]="control.value.meta.name"
+            [customId]="control.value.meta.customId ?? ''"
+            [viewType]="control.value.meta.viewType"
+            [formControlName]="control.key"
+            [link]="control.value.meta.link"
+          ></tr>
       </ng-container>
       <app-dynamic-form-field
         *ngSwitchCase="true"
