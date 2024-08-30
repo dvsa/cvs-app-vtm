@@ -28,6 +28,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 	@Input() name = '';
 	@Input() customId?: string;
 	@Input() hint?: string;
+	@Input() link?: string;
 	@Input() label?: string;
 	@Input() width?: FormNodeWidth;
 	@Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;

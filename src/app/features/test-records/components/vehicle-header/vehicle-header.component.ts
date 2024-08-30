@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TestTypesTaxonomy } from '@api/test-types';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
+import { TEST_TYPES_GROUP7 } from '@forms/models/testTypeId.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -107,5 +108,9 @@ export class VehicleHeaderComponent {
 			default:
 				return 'Unknown Vehicle Type';
 		}
+	}
+
+	get isADRTest(): boolean {
+		return TEST_TYPES_GROUP7.includes(this.test?.testTypeId as string) || false;
 	}
 }
