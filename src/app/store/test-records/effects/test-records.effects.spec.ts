@@ -3,6 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
+import { TestTypesService } from '@api/test-types';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { EUVehicleCategory } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/euVehicleCategoryPsv.enum.js';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -176,6 +177,10 @@ describe('TestResultsEffects', () => {
 				RouterService,
 				DynamicFormService,
 				FeatureToggleService,
+				{
+					provide: TestTypesService,
+					useValue: { getTestTypesid: jest.fn().mockReturnValue(of(createMockTestType())) },
+				},
 			],
 		});
 
@@ -618,6 +623,7 @@ describe('TestResultsEffects', () => {
 							contingencyTestTemplates.psv['testTypesGroup1'] as Record<string, FormNode>
 						),
 						sectionsValue: {
+							bodyType: undefined,
 							contingencyTestNumber: undefined,
 							countryOfRegistration: '',
 							createdById: undefined,
@@ -627,6 +633,8 @@ describe('TestResultsEffects', () => {
 							lastUpdatedAt: undefined,
 							lastUpdatedById: undefined,
 							lastUpdatedByName: undefined,
+							make: undefined,
+							model: undefined,
 							noOfAxles: undefined,
 							numberOfSeats: undefined,
 							numberOfWheelsDriven: undefined,
@@ -663,6 +671,7 @@ describe('TestResultsEffects', () => {
 									reasonForAbandoning: '',
 									seatbeltInstallationCheckDate: false,
 									secondaryCertificateNumber: null,
+									testCode: 'undefined',
 									testExpiryDate: '',
 									testResult: resultOfTestEnum.fail,
 									testTypeEndTimestamp: '',
@@ -708,6 +717,7 @@ describe('TestResultsEffects', () => {
 							contingencyTestTemplates.psv['testTypesSpecialistGroup1OldIVAorMSVA'] as Record<string, FormNode>
 						),
 						sectionsValue: {
+							bodyType: undefined,
 							contingencyTestNumber: undefined,
 							countryOfRegistration: '',
 							createdById: undefined,
@@ -729,6 +739,8 @@ describe('TestResultsEffects', () => {
 							regnDate: undefined,
 							source: undefined,
 							shouldEmailCertificate: undefined,
+							make: undefined,
+							model: undefined,
 							systemNumber: '',
 							testEndTimestamp: '',
 							testResultId: '',
@@ -756,6 +768,7 @@ describe('TestResultsEffects', () => {
 									testResult: resultOfTestEnum.fail,
 									testTypeEndTimestamp: '',
 									testTypeId: '126',
+									testCode: 'undefined',
 									testTypeName: '',
 									testTypeStartTimestamp: '',
 								},
