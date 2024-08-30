@@ -180,9 +180,6 @@ function cleanTestResultPayload(testResult: TestResultModel | undefined) {
 	}
 
 	const testTypes = testResult.testTypes.map((testType, index) => {
-		// Always remove testCode
-		delete testType.testCode;
-
 		// Remove empty requiredStandards from pass/prs non-voluntary IVA/MVSA tests
 		if (index === 0) {
 			const { testTypeId, requiredStandards } = testType;

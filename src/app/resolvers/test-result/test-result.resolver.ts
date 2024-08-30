@@ -20,8 +20,6 @@ export const testResultResolver: ResolveFn<boolean> = () => {
 	return action$.pipe(
 		ofType(fetchSelectedTestResultSuccess, fetchSelectedTestResultFailed),
 		take(1),
-		map((action) => {
-			return action.type === fetchSelectedTestResultSuccess.type;
-		})
+		map((action) => action.type === fetchSelectedTestResultSuccess.type)
 	);
 };

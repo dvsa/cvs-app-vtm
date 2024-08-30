@@ -387,4 +387,23 @@ export class TechnicalRecordService {
 
 		return false;
 	}
+
+	getVehicleSize(techRecord: V3TechRecordModel) {
+		return techRecord.techRecord_vehicleType === 'psv' ? techRecord.techRecord_vehicleSize : undefined;
+	}
+
+	getVehicleClassDescription(techRecord: V3TechRecordModel) {
+		return techRecord.techRecord_vehicleType === 'psv' ||
+			techRecord.techRecord_vehicleType === 'hgv' ||
+			techRecord.techRecord_vehicleType === 'trl' ||
+			techRecord.techRecord_vehicleType === 'motorcycle'
+			? techRecord.techRecord_vehicleClass_description
+			: undefined;
+	}
+
+	getVehicleSubClass(techRecord: V3TechRecordModel) {
+		return techRecord.techRecord_vehicleType === 'car' || techRecord.techRecord_vehicleType === 'lgv'
+			? techRecord.techRecord_vehicleSubclass
+			: undefined;
+	}
 }

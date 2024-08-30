@@ -10,6 +10,7 @@ import { TestRecordCreateRoutes } from '@models/routes.enum';
 import { contingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
 import { defectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
 import { requiredStandardsResolver } from 'src/app/resolvers/required-standards/required-standards.resolver';
+import { testCodeResolver } from 'src/app/resolvers/test-code/test-code.resolver';
 import { testStationsResolver } from 'src/app/resolvers/test-stations/test-stations.resolver';
 import { testTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
 import { CreateTestRecordComponent } from './views/create-test-record/create-test-record.component';
@@ -38,6 +39,7 @@ const routes: Routes = [
 					TestTypeTaxonomy: testTypeTaxonomyResolver,
 					defectTaxonomy: defectsTaxonomyResolver,
 					testStations: testStationsResolver,
+					testCode: testCodeResolver,
 				},
 				data: { title: 'Test details', roles: Roles.TestResultCreateContingency, breadcrumbPreserveQueryParams: true },
 				canActivate: [RoleGuard],
