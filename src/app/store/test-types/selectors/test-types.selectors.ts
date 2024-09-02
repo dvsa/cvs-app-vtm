@@ -3,7 +3,7 @@ import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { StatusCodes, V3TechRecordModel, VehicleSubclass } from '@models/vehicle-tech-record.model';
+import { StatusCodes, V3TechRecordModel, VehicleSubclass, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { selectTechRecord, selectTechRecordHistory } from '@store/technical-records';
 import { toEditOrNotToEdit } from '@store/test-records';
@@ -124,8 +124,9 @@ function filterTestTypes(
 		vehicleSubclass,
 		numberOfWheelsDriven,
 	} = testResult;
+	const filterAllFirstTestIds = ['41', '119', '120', '67', '103', '104', '51', '95', '82', '83', '65', '66'];
+	const filterHgvFirstTestIds = ['41', '119', '120', '67', '103', '104'];
 	const { techRecord_statusCode: statusCode } = techRecord;
-	const filterFirstTestIds: string[] = ['41', '95', '82', '83', '119', '120', '65', '66', '67', '103', '104', '51'];
 	return (
 		testTypes
 			.filter((testType) => !vehicleType || !testType.forVehicleType || testType.forVehicleType.includes(vehicleType))
@@ -175,7 +176,9 @@ function filterTestTypes(
 					!statusCode ||
 					statusCode !== StatusCodes.PROVISIONAL ||
 					!hasCurrentRecordInHistory ||
-					!filterFirstTestIds.includes(testType.id)
+					!(vehicleType === VehicleTypes.HGV
+						? filterHgvFirstTestIds.includes(testType.id)
+						: filterAllFirstTestIds.includes(testType.id))
 			)
 			.map((testType: TestTypeCategory) => {
 				const newTestType = { ...testType } as TestTypeCategory;
