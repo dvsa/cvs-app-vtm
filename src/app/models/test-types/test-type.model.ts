@@ -6,7 +6,7 @@ export interface TestType {
 	testTypeId: string;
 	testNumber: string;
 	name: string;
-	testCode: string;
+	testCode?: string;
 	testTypeName: string;
 
 	testTypeStartTimestamp: string | Date;
