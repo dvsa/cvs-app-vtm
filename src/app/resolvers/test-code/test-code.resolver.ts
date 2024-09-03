@@ -24,7 +24,7 @@ export const testCodeResolver: ResolveFn<Observable<string | undefined>> = (rout
 				record!.techRecord_vehicleConfiguration!,
 				record!.techRecord_noOfAxles!,
 				record!.techRecord_euVehicleCategory!,
-				techRecordService.getVehicleClassDescription(record!) as string,
+				techRecordService.getVehicleClass(record!) as string,
 				techRecordService.getVehicleSubClass(record!)?.[0] as string
 			);
 		}),
