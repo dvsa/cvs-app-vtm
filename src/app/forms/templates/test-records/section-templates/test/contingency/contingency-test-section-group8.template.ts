@@ -8,7 +8,7 @@ import {
 	FormNodeWidth,
 } from '@forms/services/dynamic-form.types';
 
-export const ContingencyTestSectionGroup8Notifiable: FormNode = {
+export const ContingencyTestSectionGroup8: FormNode = {
 	name: 'testSection',
 	label: 'Test',
 	type: FormNodeTypes.GROUP,
@@ -59,33 +59,8 @@ export const ContingencyTestSectionGroup8Notifiable: FormNode = {
 								{ value: 'pass', label: 'Pass' },
 								{ value: 'fail', label: 'Fail' },
 							],
-							validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass'] } }],
 							asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
 							type: FormNodeTypes.CONTROL,
-						},
-						{
-							name: 'centralDocs',
-							type: FormNodeTypes.GROUP,
-							children: [
-								{
-									name: 'issueRequired',
-									type: FormNodeTypes.CONTROL,
-									label: 'Issue documents centrally',
-									editType: FormNodeEditTypes.RADIO,
-									value: false,
-									options: [
-										{ value: true, label: 'Yes' },
-										{ value: false, label: 'No' },
-									],
-								},
-								{
-									name: 'reasonsForIssue',
-									type: FormNodeTypes.CONTROL,
-									viewType: FormNodeViewTypes.HIDDEN,
-									editType: FormNodeEditTypes.HIDDEN,
-									value: [],
-								},
-							],
 						},
 						{
 							name: 'testTypeName',

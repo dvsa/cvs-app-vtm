@@ -9,7 +9,7 @@ import {
 } from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
 
-export const TestSectionGroup8Notifiable: FormNode = {
+export const TestSectionGroup8: FormNode = {
 	name: 'testSection',
 	label: 'Test',
 	type: FormNodeTypes.GROUP,
@@ -65,34 +65,9 @@ export const TestSectionGroup8Notifiable: FormNode = {
 									name: ValidatorNames.HideIfNotEqual,
 									args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' },
 								},
-								{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'centralDocs', value: ['pass'] } },
 							],
 							asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
 							type: FormNodeTypes.CONTROL,
-						},
-						{
-							name: 'centralDocs',
-							type: FormNodeTypes.GROUP,
-							children: [
-								{
-									name: 'issueRequired',
-									type: FormNodeTypes.CONTROL,
-									label: 'Issue documents centrally',
-									editType: FormNodeEditTypes.RADIO,
-									value: false,
-									options: [
-										{ value: true, label: 'Yes' },
-										{ value: false, label: 'No' },
-									],
-								},
-								{
-									name: 'reasonsForIssue',
-									type: FormNodeTypes.CONTROL,
-									viewType: FormNodeViewTypes.HIDDEN,
-									editType: FormNodeEditTypes.HIDDEN,
-									value: [],
-								},
-							],
 						},
 						{
 							name: 'testTypeName',

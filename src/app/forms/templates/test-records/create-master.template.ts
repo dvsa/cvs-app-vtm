@@ -29,7 +29,7 @@ import { ContingencyTestSectionGroup3And4And8 } from './section-templates/test/c
 import { ContingencyTestSectionGroup5And13 } from './section-templates/test/contingency/contingency-test-section-group5And13.template';
 import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency/contingency-test-section-group6And11.template';
 import { ContingencyTestSectionGroup7 } from './section-templates/test/contingency/contingency-test-section-group7.template';
-import { ContingencyTestSectionGroup8Notifiable } from './section-templates/test/contingency/contingency-test-section-group8Notifiable.template';
+import { ContingencyTestSectionGroup8 } from './section-templates/test/contingency/contingency-test-section-group8.template';
 import { ContingencyTestSectionGroup9And10 } from './section-templates/test/contingency/contingency-test-section-group9And10.template';
 import { ContingencyTestSectionGroup9And10CentralDocs } from './section-templates/test/contingency/contingency-test-section-group9And10CentralDocs.template';
 import { ContingencyTestSectionGroup12and14 } from './section-templates/test/contingency/contingency-test-section-group12and14.template';
@@ -102,9 +102,9 @@ export const contingencyTestTemplates: Record<
 			reasonForCreation: reasonForCreationSection,
 			required: CreateRequiredSection,
 		},
-		testTypesGroup8Notifiable: {
+		testTypesGroup8: {
 			vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
-			test: ContingencyTestSectionGroup8Notifiable,
+			test: ContingencyTestSectionGroup8,
 			visit: ContingencyVisitSection,
 			seatbelts: SeatbeltHiddenSection,
 			notes: NotesSection,
@@ -269,9 +269,9 @@ export const contingencyTestTemplates: Record<
 			reasonForCreation: reasonForCreationSection,
 			required: CreateRequiredSectionHgvTrl,
 		},
-		testTypesGroup8Notifiable: {
+		testTypesGroup8: {
 			vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
-			test: ContingencyTestSectionGroup8Notifiable,
+			test: ContingencyTestSectionGroup8,
 			visit: ContingencyVisitSection,
 			notes: NotesSection,
 			customDefects: CustomDefectsSection,
@@ -463,9 +463,9 @@ export const contingencyTestTemplates: Record<
 			reasonForCreation: reasonForCreationSection,
 			required: CreateRequiredSectionHgvTrl,
 		},
-		testTypesGroup8Notifiable: {
+		testTypesGroup8: {
 			vehicle: ContingencyVehicleSectionDefaultTrl,
-			test: ContingencyTestSectionGroup8Notifiable,
+			test: ContingencyTestSectionGroup8,
 			visit: ContingencyVisitSection,
 			notes: NotesSection,
 			customDefects: CustomDefectsSection,

@@ -32,11 +32,8 @@ export const TEST_TYPES_GROUP3_4_8: string[] = [
 	'85',
 ];
 
-// 47 - free notifiable alteration (HGV/TRL), 48 - paid notifiable alteration (HGV/TRL)
-export const TEST_TYPES_GROUP8_NOTIFABLE = ['47', '48'];
-
-// 87 through 85 - tests for HGV and TRL - voluntary shaker plate check, Free/Paid notifiable alteration, voluntary break test
-export const TEST_TYPES_GROUP8_VOLUNTARY = ['85', '87'];
+// HGV and TRL - free/paid notifiable alteration (47/48), voluntary shaker plate check (85), voluntary brake test (87)
+export const TEST_TYPES_GROUP8 = ['47', '48', '85', '87'];
 
 // 56 and 49 - tests for HGV and TRL - Paid TIR retest, TIR test
 // 57 - test for TRL - Free TIR retest
@@ -241,7 +238,7 @@ export const TEST_TYPES = {
 	testTypesGroup2: TEST_TYPES_GROUP2,
 	testTypesGroup3And4And8: TEST_TYPES_GROUP3_4_8,
 	testTypesGroup7: TEST_TYPES_GROUP7,
-	testTypesGroup8Notifiable: TEST_TYPES_GROUP8_NOTIFABLE,
+	testTypesGroup8: TEST_TYPES_GROUP8,
 	testTypesGroup9And10: TEST_TYPES_GROUP9_10,
 	testTypesGroup9And10CentralDocs: TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
 	testTypesGroup6And11: TEST_TYPES_GROUP6_11,

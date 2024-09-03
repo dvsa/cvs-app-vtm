@@ -42,7 +42,7 @@ import { TestSectionGroup3And4And8 } from './section-templates/test/test-section
 import { TestSectionGroup5And13 } from './section-templates/test/test-section-group5And13.template';
 import { TestSectionGroup6And11 } from './section-templates/test/test-section-group6And11.template';
 import { TestSectionGroup7 } from './section-templates/test/test-section-group7.template';
-import { TestSectionGroup8Notifiable } from './section-templates/test/test-section-group8Notifiable.template';
+import { TestSectionGroup8 } from './section-templates/test/test-section-group8.template';
 import { TestSectionGroup9And10 } from './section-templates/test/test-section-group9And10.template';
 import { TestSectionGroup9And10CentralDocs } from './section-templates/test/test-section-group9And10CentralDocs.template';
 import { TestSectionGroup12And14 } from './section-templates/test/test-section-group12And14.template';
@@ -111,9 +111,9 @@ export const masterTpl: Record<
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSection,
 		},
-		testTypesGroup8Notifiable: {
+		testTypesGroup8: {
 			vehicle: VehicleSectionDefaultPsvHgvLight,
-			test: TestSectionGroup8Notifiable,
+			test: TestSectionGroup8,
 			visit: VisitSection,
 			notes: NotesSection,
 			customDefects: CustomDefectsSection,
@@ -259,9 +259,9 @@ export const masterTpl: Record<
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSectionHGVTRL,
 		},
-		testTypesGroup8Notifiable: {
+		testTypesGroup8: {
 			vehicle: VehicleSectionDefaultPsvHgvLight,
-			test: TestSectionGroup8Notifiable,
+			test: TestSectionGroup8,
 			visit: VisitSection,
 			notes: NotesSection,
 			customDefects: CustomDefectsSection,
@@ -444,9 +444,9 @@ export const masterTpl: Record<
 			reasonForCreation: reasonForCreationSection,
 			required: RequiredSectionHGVTRL,
 		},
-		testTypesGroup8Notifiable: {
+		testTypesGroup8: {
 			vehicle: VehicleSectionDefaultTrl,
-			test: TestSectionGroup8Notifiable,
+			test: TestSectionGroup8,
 			visit: VisitSection,
 			notes: NotesSection,
 			customDefects: CustomDefectsSection,
