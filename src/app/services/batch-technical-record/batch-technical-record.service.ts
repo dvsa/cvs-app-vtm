@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import { CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
 import { SEARCH_TYPES } from '@models/search-types-enum';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store, select } from '@ngrx/store';

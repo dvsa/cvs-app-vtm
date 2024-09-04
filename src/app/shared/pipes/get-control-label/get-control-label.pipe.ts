@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FormNodeCombinationOptions, FormNodeOption } from '@forms/services/dynamic-form.types';
+import { FormNodeCombinationOptions, FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
 
 @Pipe({
 	name: 'getControlLabel',

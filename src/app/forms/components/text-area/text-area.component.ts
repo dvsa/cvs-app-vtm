@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({

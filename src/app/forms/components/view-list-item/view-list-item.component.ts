@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
-import { FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({

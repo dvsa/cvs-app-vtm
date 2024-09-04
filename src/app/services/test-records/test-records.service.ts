@@ -5,8 +5,8 @@ import {
 	GetTestResultsService,
 	UpdateTestResultsService,
 } from '@api/test-results';
-import { TEST_TYPES, TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@forms/models/testTypeId.enum';
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { TEST_TYPES, TEST_TYPES_GROUP1_SPEC_TEST, TEST_TYPES_GROUP5_SPEC_TEST } from '@models/testTypeId.enum';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultStatus } from '@models/test-results/test-result-status.enum';

@@ -9,8 +9,8 @@ import { TestStationsService } from '@services/test-stations/test-stations.servi
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
-import { DynamicFormService } from '../../services/dynamic-form.service';
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
 
 describe('DynamicFormGroupComponent', () => {

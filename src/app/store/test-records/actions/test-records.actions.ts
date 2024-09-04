@@ -1,6 +1,6 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 // eslint-disable-next-line import/no-cycle
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';

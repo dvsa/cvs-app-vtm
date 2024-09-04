@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { MultiOptions } from '@forms/models/options.model';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { MultiOptions } from '@models/options.model';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormGroup, FormNodeEditTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 

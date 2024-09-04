@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { initialAppState } from '@store/.';
-import { CustomFormControl, FormNodeOption, FormNodeTypes } from '../../services/dynamic-form.types';
+import { CustomFormControl, FormNodeOption, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { RadioGroupComponent } from './radio-group.component';

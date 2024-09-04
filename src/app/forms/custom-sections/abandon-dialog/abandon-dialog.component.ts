@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { TEST_TYPES_GROUP5_13 } from '@forms/models/testTypeId.enum';
-import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { SpecialRefData } from '@forms/services/multi-options.service';
+import { TEST_TYPES_GROUP5_13 } from '@models/testTypeId.enum';
+import { ValidatorNames } from '@models/validators.enum';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
+import { SpecialRefData } from '@services/multi-options/multi-options.service';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestRecordsService } from '@services/test-records/test-records.service';

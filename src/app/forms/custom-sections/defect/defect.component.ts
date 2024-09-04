@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/services/dynamic-form.types';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { AdditionalInfoSection } from '@models/defects/additional-information.model';
 import { Defect } from '@models/defects/defect.model';

@@ -12,7 +12,7 @@ import {
 	CustomFormGroup,
 	FormNodeTypes,
 	FormNodeViewTypes,
-} from '@forms/services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { AdrTankDetailsSubsequentInspectionsEditComponent } from './adr-tank-details-subsequent-inspections-edit.component';

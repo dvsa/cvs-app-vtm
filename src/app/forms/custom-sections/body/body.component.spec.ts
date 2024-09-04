@@ -3,14 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
 import { SimpleChanges } from '@angular/core';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { FormNodeEditTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { createMockHgv } from '@mocks/hgv-record.mock';

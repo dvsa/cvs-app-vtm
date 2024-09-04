@@ -5,7 +5,7 @@ import {
 	FormNodeTypes,
 	FormNodeViewTypes,
 	FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 

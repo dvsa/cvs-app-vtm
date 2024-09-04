@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordHttpService } from '@services/technical-record-http/technical-record-http.service';

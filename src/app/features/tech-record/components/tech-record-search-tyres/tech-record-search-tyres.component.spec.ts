@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { V3TechRecordModel } from '@models/vehicle-tech-record.model';

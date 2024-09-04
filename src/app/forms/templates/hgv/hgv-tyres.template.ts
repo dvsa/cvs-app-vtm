@@ -1,12 +1,12 @@
 import { TyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeTypes,
 	FormNodeWidth,
 	TagTypeLabels,
-} from '@forms/services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { TagType } from '@shared/components/tag/tag.component';
 

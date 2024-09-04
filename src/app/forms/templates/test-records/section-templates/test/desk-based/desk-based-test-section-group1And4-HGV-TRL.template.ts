@@ -4,7 +4,7 @@ import {
 	FormNodeTypes,
 	FormNodeViewTypes,
 	FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
 
 export const DeskBasedTestSectionGroup1And4HgvTrl: FormNode = {
 	name: 'requiredSection',

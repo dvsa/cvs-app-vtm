@@ -11,14 +11,14 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
-import { DynamicFormService } from '../../services/dynamic-form.service';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import {
 	CustomFormArray,
 	CustomFormGroup,
 	FormNode,
 	FormNodeTypes,
 	FormNodeViewTypes,
-} from '../../services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
 
 @Component({
 	selector: 'app-dynamic-form-group',

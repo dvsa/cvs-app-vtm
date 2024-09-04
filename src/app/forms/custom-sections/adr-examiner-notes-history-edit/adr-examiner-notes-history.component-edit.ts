@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdditionalExaminerNotes } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { BaseControlComponent } from '@forms/components/base-control/base-control.component';
-import { CustomControl, CustomFormControl } from '@forms/services/dynamic-form.types';
+import { CustomControl, CustomFormControl } from '@services/dynamic-forms/dynamic-form.types';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';

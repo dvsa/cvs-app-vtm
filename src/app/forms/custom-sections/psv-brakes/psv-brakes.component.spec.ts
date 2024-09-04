@@ -7,7 +7,7 @@ import {
 	TechRecordType,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { MultiOptionsService } from '@services/multi-options/multi-options.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';

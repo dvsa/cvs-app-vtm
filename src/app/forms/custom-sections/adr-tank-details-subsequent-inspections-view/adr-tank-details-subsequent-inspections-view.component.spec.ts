@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { State, initialAppState } from '@store/index';
 import { AdrTankDetailsSubsequentInspectionsViewComponent } from './adr-tank-details-subsequent-inspections-view.component';

@@ -1,4 +1,4 @@
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { CarTechRecord } from '@forms/templates/car/car-tech-record.template';
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';

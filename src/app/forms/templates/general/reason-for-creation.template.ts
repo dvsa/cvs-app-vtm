@@ -1,11 +1,11 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { ValidatorNames } from '@models/validators.enum';
 import {
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeTypes,
 	FormNodeViewTypes,
 	TagTypeLabels,
-} from '@forms/services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
 import { TagType } from '@shared/components/tag/tag.component';
 
 export const TechRecordReasonForCreationSection: FormNode = {

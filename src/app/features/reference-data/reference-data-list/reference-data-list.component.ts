@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormGroup, FormNode, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { Store, select } from '@ngrx/store';

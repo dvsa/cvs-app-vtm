@@ -2,9 +2,9 @@ import {
 	TEST_TYPES_GROUP1_SPEC_TEST,
 	TEST_TYPES_GROUP5_SPEC_TEST,
 	TEST_TYPES_GROUP9_10_CENTRAL_DOCS,
-} from '@forms/models/testTypeId.enum';
+} from '@models/testTypeId.enum';
 // eslint-disable-next-line import/no-cycle
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { DeficiencyCategoryEnum, TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { TestResultModel } from '@models/test-results/test-result.model';

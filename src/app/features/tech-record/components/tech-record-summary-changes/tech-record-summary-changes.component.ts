@@ -9,7 +9,7 @@ import {
 	TechRecordGETPSV,
 	TechRecordGETTRL,
 } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { FormNode, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeViewTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { VehicleSummary } from '@forms/templates/tech-records/vehicle-summary.template';
 import { vehicleTemplateMap } from '@forms/utils/tech-record-constants';
 import { Axles, VehicleTypes } from '@models/vehicle-tech-record.model';

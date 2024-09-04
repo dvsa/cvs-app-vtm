@@ -1,6 +1,6 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { ValidatorNames } from '@forms/models/validators.enum';
-import { CustomFormControl, FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { AsyncValidatorNames } from '@models/async-validators.enum';
+import { ValidatorNames } from '@models/validators.enum';
+import { CustomFormControl, FormNode, FormNodeEditTypes, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Store, select } from '@ngrx/store';
 import { State } from '@store/index';

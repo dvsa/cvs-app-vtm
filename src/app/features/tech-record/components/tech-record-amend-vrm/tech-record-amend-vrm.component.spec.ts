@@ -4,7 +4,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router'
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { VehiclesOtherThan } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';

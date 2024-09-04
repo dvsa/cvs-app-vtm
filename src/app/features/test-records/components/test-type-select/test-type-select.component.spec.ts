@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { createMockTestTypeCategory } from '@mocks/test-type-category.mock';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestTypesService } from '@services/test-types/test-types.service';

@@ -8,10 +8,10 @@ import {
 	UpdateTestResultsService,
 } from '@api/test-results';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { RoleRequiredDirective } from '@directives/app-role-required.directive';
+import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';

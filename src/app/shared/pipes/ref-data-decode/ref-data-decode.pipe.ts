@@ -1,5 +1,5 @@
 import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { SpecialRefData } from '@forms/services/multi-options.service';
+import { SpecialRefData } from '@services/multi-options/multi-options.service';
 import {
 	ReferenceDataModelBase,
 	ReferenceDataResourceType,

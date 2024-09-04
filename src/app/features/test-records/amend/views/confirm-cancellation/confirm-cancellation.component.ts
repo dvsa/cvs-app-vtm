@@ -3,7 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';

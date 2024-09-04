@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SuffixDirective } from '@forms/directives/suffix.directive';
-import { CustomFormControl, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { SuffixDirective } from '@directives/suffix/suffix.directive';
+import { CustomFormControl, FormNodeEditTypes, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { DateComponent } from '../date/date.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';

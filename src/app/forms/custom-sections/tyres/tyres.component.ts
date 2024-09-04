@@ -4,15 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TyreUseCode as HgvTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeHgv.enum.js';
 import { TyreUseCode as TrlTyreUseCode } from '@dvsa/cvs-type-definitions/types/v3/tech-record/enums/tyreUseCodeTrl.enum.js';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { MultiOptions } from '@forms/models/options.model';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { MultiOptions } from '@models/options.model';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
 import {
 	CustomFormArray,
 	CustomFormGroup,
 	FormNode,
 	FormNodeEditTypes,
 	FormNodeWidth,
-} from '@forms/services/dynamic-form.types';
+} from '@services/dynamic-forms/dynamic-form.types';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';

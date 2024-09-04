@@ -1,4 +1,4 @@
-import { FormNodeOption } from '@forms/services/dynamic-form.types';
+import { FormNodeOption } from '@services/dynamic-forms/dynamic-form.types';
 
 export const LETTER_TYPES: FormNodeOption<string>[] = [
 	{

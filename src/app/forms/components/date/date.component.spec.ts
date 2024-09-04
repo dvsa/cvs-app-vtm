@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { BaseControlComponent } from '../base-control/base-control.component';

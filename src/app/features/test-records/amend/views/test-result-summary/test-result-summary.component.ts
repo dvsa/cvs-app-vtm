@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, of, skipWhile, switchMap, take } from 'rxjs';

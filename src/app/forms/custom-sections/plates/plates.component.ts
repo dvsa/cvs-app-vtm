@@ -5,9 +5,9 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { HGVPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/hgv/complete';
 import { TRLPlates } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/trl/complete';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-vehicle-type';
-import { hgvRequiredFields, trlRequiredFields, tyreRequiredFields } from '@forms/models/plateRequiredFields.model';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { hgvRequiredFields, trlRequiredFields, tyreRequiredFields } from '@models/plateRequiredFields.model';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormGroup, FormNodeEditTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { Roles } from '@models/roles.enum';
 import { Axle, StatusCodes } from '@models/vehicle-tech-record.model';

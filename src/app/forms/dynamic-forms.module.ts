@@ -58,12 +58,12 @@ import { RequiredStandardsComponent } from './custom-sections/required-standards
 import { TrlBrakesComponent } from './custom-sections/trl-brakes/trl-brakes.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
-import { NoSpaceDirective } from './directives/app-no-space.directive';
-import { NumberOnlyDirective } from './directives/app-number-only.directive';
-import { ToUppercaseDirective } from './directives/app-to-uppercase.directive';
-import { TrimWhitespaceDirective } from './directives/app-trim-whitespace.directive';
-import { PrefixDirective } from './directives/prefix.directive';
-import { SuffixDirective } from './directives/suffix.directive';
+import { NoSpaceDirective } from '@directives/app-no-space/app-no-space.directive';
+import { NumberOnlyDirective } from '@directives/app-number-only/app-number-only.directive';
+import { ToUppercaseDirective } from '@directives/app-to-uppercase/app-to-uppercase.directive';
+import { TrimWhitespaceDirective } from '@directives/app-trim-whitespace/app-trim-whitespace.directive';
+import { PrefixDirective } from '@directives/prefix/prefix.directive';
+import { SuffixDirective } from '@directives/suffix/suffix.directive';
 
 @NgModule({
 	declarations: [

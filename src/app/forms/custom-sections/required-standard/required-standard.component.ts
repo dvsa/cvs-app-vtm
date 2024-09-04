@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup } from '@services/dynamic-forms/dynamic-form.types';
 import { RequiredStandardsTpl } from '@forms/templates/general/required-standards.template';
 import { INSPECTION_TYPE, TestResultRequiredStandard } from '@models/test-results/test-result-required-standard.model';
 import { Store, select } from '@ngrx/store';

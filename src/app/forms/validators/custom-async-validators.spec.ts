@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb-vehicle-type';
-import { operatorEnum } from '@forms/models/condition.model';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { operatorEnum } from '@models/condition.model';
+import { CustomFormControl, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { createMockCustomDefect } from '@mocks/custom-defect.mock';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { TestResultModel } from '@models/test-results/test-result.model';

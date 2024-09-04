@@ -1,5 +1,5 @@
-import { TEST_TYPES } from '@forms/models/testTypeId.enum';
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { TEST_TYPES } from '@models/testTypeId.enum';
+import { FormNode } from '@services/dynamic-forms/dynamic-form.types';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefectsTpl } from '../general/defect.template';
 import { RequiredStandardsTpl } from '../general/required-standards.template';

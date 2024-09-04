@@ -5,8 +5,8 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechRecordType } from '@dvsa/cvs-type-definitions/types/v3/tech-record/tech-record-verb';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { DynamicFormService } from '@services/dynamic-forms/dynamic-form.service';
+import { CustomFormControl, FormNodeTypes, FormNodeWidth } from '@services/dynamic-forms/dynamic-form.types';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { VehicleTypes, VehiclesOtherThan } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';

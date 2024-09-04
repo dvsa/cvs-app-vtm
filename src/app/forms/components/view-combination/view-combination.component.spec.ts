@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { SharedModule } from '@shared/shared.module';
-import { CustomFormControl, FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
+import { CustomFormControl, FormNode, FormNodeTypes } from '@services/dynamic-forms/dynamic-form.types';
 import { ViewCombinationComponent } from './view-combination.component';
 
 describe('ViewCombinationComponent', () => {
