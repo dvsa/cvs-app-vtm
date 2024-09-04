@@ -4,7 +4,7 @@ import { TestTypesService } from '@api/test-types';
 import { Store, select } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { techRecord } from '@store/technical-records';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, catchError, map, of, switchMap } from 'rxjs';
 
 export const testCodeResolver: ResolveFn<Observable<string | undefined>> = (route) => {
 	const store = inject(Store);
@@ -24,10 +24,11 @@ export const testCodeResolver: ResolveFn<Observable<string | undefined>> = (rout
 				record!.techRecord_vehicleConfiguration!,
 				record!.techRecord_noOfAxles!,
 				record!.techRecord_euVehicleCategory!,
-				techRecordService.getVehicleClassDescription(record!) as string,
+				techRecordService.getVehicleClass(record!) as string,
 				techRecordService.getVehicleSubClass(record!)?.[0] as string
 			);
 		}),
-		map((response) => response.defaultTestCode)
+		map((response) => response.defaultTestCode),
+		catchError(() => of('')) // ensure error response doesn't prevent test creation
 	);
 };

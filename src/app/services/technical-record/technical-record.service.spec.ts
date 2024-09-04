@@ -837,4 +837,211 @@ describe('TechnicalRecordService', () => {
 			expect(spy).toHaveBeenCalledWith(SEARCH_TYPES.VRM, 'new vrm');
 		});
 	});
+
+	describe('getVehicleSize', () => {
+		it('should return the vehicle size of the provided tech record, if the vehicle type is a PSV', () => {
+			const techRecord = {
+				techRecord_vehicleType: VehicleTypes.PSV,
+				techRecord_bodyType: 'body type',
+				techRecord_seatsLowerDeck: 10,
+				techRecord_seatsUpperDeck: 12,
+				techRecord_vehicleSize: 22,
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleSize(techRecord)).toBe(22);
+		});
+
+		it('should return undefined when the provided tech record is not a PSV', () => {
+			const techRecord = {
+				techRecord_vehicleType: VehicleTypes.HGV,
+				techRecord_bodyType: 'body type',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleSize(techRecord)).toBeUndefined();
+		});
+	});
+
+	describe('getVehicleClassDescription', () => {
+		it('should return the vehicle class description for PSV, HGV, TRL and Motorcycles', () => {
+			const psv = {
+				techRecord_vehicleType: VehicleTypes.PSV,
+				techRecord_bodyType: 'body type',
+				techRecord_seatsLowerDeck: 10,
+				techRecord_seatsUpperDeck: 12,
+				techRecord_vehicleSize: 22,
+				techRecord_vehicleClass_description: 'vehicle class description',
+			} as unknown as V3TechRecordModel;
+
+			const hgv = {
+				techRecord_vehicleType: VehicleTypes.HGV,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleClass_description: 'vehicle class description',
+			} as unknown as V3TechRecordModel;
+
+			const trl = {
+				techRecord_vehicleType: VehicleTypes.TRL,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleClass_description: 'vehicle class description',
+			} as unknown as V3TechRecordModel;
+
+			const motorcycle = {
+				techRecord_vehicleType: VehicleTypes.MOTORCYCLE,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleClass_description: 'vehicle class description',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleClassDescription(psv)).toBe('vehicle class description');
+			expect(service.getVehicleClassDescription(hgv)).toBe('vehicle class description');
+			expect(service.getVehicleClassDescription(trl)).toBe('vehicle class description');
+			expect(service.getVehicleClassDescription(motorcycle)).toBe('vehicle class description');
+		});
+
+		it('should return undefined when the vehicle type is not PSV, HGV, TRL or Motorcycle', () => {
+			const car = {
+				techRecord_vehicleType: VehicleTypes.CAR,
+				techRecord_bodyType: 'body type',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleClassDescription(car)).toBeUndefined();
+		});
+	});
+
+	describe('getVehicleClassCode', () => {
+		it('should return the vehicle class code for complete motorcycles', () => {
+			const motorcycle = {
+				techRecord_vehicleType: VehicleTypes.MOTORCYCLE,
+				techRecord_bodyType: 'body type',
+				techRecord_recordCompleteness: 'complete',
+				techRecord_vehicleClass_code: 'vehicle class code',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleClassCode(motorcycle)).toBe('vehicle class code');
+		});
+
+		it('should return undefined for incomplete motorcycles', () => {
+			const motorcycle = {
+				techRecord_vehicleType: VehicleTypes.MOTORCYCLE,
+				techRecord_bodyType: 'body type',
+				techRecord_recordCompleteness: 'incomplete',
+				techRecord_vehicleClass_code: 'vehicle class code',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleClassCode(motorcycle)).toBeUndefined();
+		});
+
+		it('should return undefined for non motorcycles', () => {
+			const car = {
+				techRecord_vehicleType: VehicleTypes.CAR,
+				techRecord_bodyType: 'body type',
+				techRecord_recordCompleteness: 'complete',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleClassCode(car)).toBeUndefined();
+		});
+	});
+
+	describe('getVehicleClass', () => {
+		it('should return the vehicle class code for a complete motorcycle', () => {
+			const motorcycle = {
+				techRecord_vehicleType: VehicleTypes.MOTORCYCLE,
+				techRecord_bodyType: 'body type',
+				techRecord_recordCompleteness: 'complete',
+				techRecord_vehicleClass_code: 'vehicle class code',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleClass(motorcycle)).toBe('vehicle class code');
+		});
+
+		it('should return the vehicle class description for PSVs, HGVs and TRLs', () => {
+			const psv = {
+				techRecord_vehicleType: VehicleTypes.PSV,
+				techRecord_bodyType: 'body type',
+				techRecord_seatsLowerDeck: 10,
+				techRecord_seatsUpperDeck: 12,
+				techRecord_vehicleSize: 22,
+				techRecord_vehicleClass_description: 'vehicle class description',
+			} as unknown as V3TechRecordModel;
+
+			const hgv = {
+				techRecord_vehicleType: VehicleTypes.HGV,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleClass_description: 'vehicle class description',
+			} as unknown as V3TechRecordModel;
+
+			const trl = {
+				techRecord_vehicleType: VehicleTypes.TRL,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleClass_description: 'vehicle class description',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleClass(psv)).toBe('vehicle class description');
+			expect(service.getVehicleClass(hgv)).toBe('vehicle class description');
+			expect(service.getVehicleClass(trl)).toBe('vehicle class description');
+		});
+
+		it('should return undefined for CARs and LGVs', () => {
+			const car = {
+				techRecord_vehicleType: VehicleTypes.CAR,
+				techRecord_bodyType: 'body type',
+			} as unknown as V3TechRecordModel;
+
+			const lgv = {
+				techRecord_vehicleType: VehicleTypes.LGV,
+				techRecord_bodyType: 'body type',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleClass(car)).toBeUndefined();
+			expect(service.getVehicleClass(lgv)).toBeUndefined();
+		});
+	});
+
+	describe('getVehicleSubClass', () => {
+		it('should return the vehicle sub class for a CARs and LGVs', () => {
+			const car = {
+				techRecord_vehicleType: VehicleTypes.CAR,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleSubclass: 'vehicle subclass',
+			} as unknown as V3TechRecordModel;
+
+			const lgv = {
+				techRecord_vehicleType: VehicleTypes.LGV,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleSubclass: 'vehicle subclass',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleSubClass(car)).toBe('vehicle subclass');
+			expect(service.getVehicleSubClass(lgv)).toBe('vehicle subclass');
+		});
+
+		it('should return undefined for non-CARs and non-LGVs', () => {
+			const psv = {
+				techRecord_vehicleType: VehicleTypes.PSV,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleSubclass: 'vehicle subclass',
+			} as unknown as V3TechRecordModel;
+
+			const hgv = {
+				techRecord_vehicleType: VehicleTypes.HGV,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleSubclass: 'vehicle subclass',
+			} as unknown as V3TechRecordModel;
+
+			const trl = {
+				techRecord_vehicleType: VehicleTypes.TRL,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleSubclass: 'vehicle subclass',
+			} as unknown as V3TechRecordModel;
+
+			const motorcycle = {
+				techRecord_vehicleType: VehicleTypes.MOTORCYCLE,
+				techRecord_bodyType: 'body type',
+				techRecord_vehicleSubclass: 'vehicle subclass',
+			} as unknown as V3TechRecordModel;
+
+			expect(service.getVehicleSubClass(psv)).toBeUndefined();
+			expect(service.getVehicleSubClass(hgv)).toBeUndefined();
+			expect(service.getVehicleSubClass(trl)).toBeUndefined();
+			expect(service.getVehicleSubClass(motorcycle)).toBeUndefined();
+		});
+	});
 });
