@@ -25,6 +25,7 @@
     "paths": {
       "@api/*": ["src/app/api/*"],
       "@core/*": ["src/app/core/*"],
+      "@environments/*": ["src/environments/*"],
       "@forms/*": ["src/app/forms/*"],
       "@guards/*": ["src/app/guards/*"],
       "@mocks/*": ["src/mocks/*"],
