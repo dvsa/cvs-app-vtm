@@ -4,20 +4,6 @@ import { RouterModule } from '@angular/router';
 import { DocumentRetrievalService } from '@api/document-retrieval';
 import { RoleRequiredDirective } from '@directives/app-role-required/app-role-required.directive';
 import { FeatureToggleDirective } from '@directives/feature-toggle/feature-toggle.directive';
-import { CollapsibleTextComponent } from '@shared/components/collapsible-text/collapsible-text.component';
-import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
-import { AccordionComponent } from './components/accordion/accordion.component';
-import { BannerComponent } from './components/banner/banner.component';
-import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
-import { ButtonGroupComponent } from './components/button-group/button-group.component';
-import { ButtonComponent } from './components/button/button.component';
-import { IconComponent } from './components/icon/icon.component';
-import { InputSpinnerComponent } from './components/input-spinner/input-spinner.component';
-import { NumberPlateComponent } from './components/number-plate/number-plate.component';
-import { PaginationComponent } from './components/pagination/pagination.component';
-import { RouterOutletComponent } from './components/router-outlet/router-outlet.component';
-import { TagComponent } from './components/tag/tag.component';
-import { TestCertificateComponent } from './components/test-certificate/test-certificate.component';
 import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
 import { RetrieveDocumentDirective } from './directives/retrieve-document/retrieve-document.directive';
 import { DefaultNullOrEmpty } from './pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -27,6 +13,20 @@ import { GetControlLabelPipe } from './pipes/get-control-label/get-control-label
 import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe';
 import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
 import { TyreAxleLoadPipe } from './pipes/tyre-axle-load/tyre-axle-load.pipe';
+import { TestCertificateComponent } from '../components/test-certificate/test-certificate.component';
+import { ButtonGroupComponent } from '../components/button-group/button-group.component';
+import { ButtonComponent } from '../components/button/button.component';
+import { BannerComponent } from '../components/banner/banner.component';
+import { TagComponent } from '../components/tag/tag.component';
+import { NumberPlateComponent } from '../components/number-plate/number-plate.component';
+import { IconComponent } from '../components/icon/icon.component';
+import { AccordionComponent } from '../components/accordion/accordion.component';
+import { AccordionControlComponent } from '../components/accordion-control/accordion-control.component';
+import { PaginationComponent } from '../components/pagination/pagination.component';
+import { BaseDialogComponent } from '../components/base-dialog/base-dialog.component';
+import { InputSpinnerComponent } from '../components/input-spinner/input-spinner.component';
+import { RouterOutletComponent } from '../components/router-outlet/router-outlet.component';
+import { CollapsibleTextComponent } from '../components/collapsible-text/collapsible-text.component';
 
 @NgModule({
 	declarations: [

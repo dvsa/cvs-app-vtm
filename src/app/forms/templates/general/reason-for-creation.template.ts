@@ -6,7 +6,7 @@ import {
 	FormNodeViewTypes,
 	TagTypeLabels,
 } from '@services/dynamic-forms/dynamic-form.types';
-import { TagType } from '@shared/components/tag/tag.component';
+import { TagType } from '../../../components/tag/tag.component';
 
 export const TechRecordReasonForCreationSection: FormNode = {
 	name: 'reasonForCreationSection',

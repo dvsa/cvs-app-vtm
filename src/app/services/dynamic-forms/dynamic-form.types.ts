@@ -17,13 +17,13 @@ import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ValidatorNames } from '@models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
-import { TagTypes } from '@shared/components/tag/tag.component';
 // eslint-disable-next-line import/no-cycle
 import { State } from '@store/index';
 import { Observable, map } from 'rxjs';
 // eslint-disable-next-line import/no-cycle
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from '@services/multi-options/multi-options.service';
+import { TagTypes } from '../../components/tag/tag.component';
 
 export enum FormNodeViewTypes {
 	DATE = 'date',

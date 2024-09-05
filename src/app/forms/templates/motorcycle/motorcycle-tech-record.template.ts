@@ -10,7 +10,7 @@ import {
 	TagTypeLabels,
 } from '@services/dynamic-forms/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { TagType } from '@shared/components/tag/tag.component';
+import { TagType } from '../../../components/tag/tag.component';
 
 export const MotorcycleTechRecord: FormNode = {
 	name: 'techRecordSummary',

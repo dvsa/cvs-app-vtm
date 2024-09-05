@@ -6,9 +6,9 @@ import { SpecialRefData } from '@services/multi-options/multi-options.service';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { BaseDialogComponent } from '@shared/components/base-dialog/base-dialog.component';
 import merge from 'lodash.merge';
 import { DynamicFormGroupComponent } from '../../components/dynamic-form-group/dynamic-form-group.component';
+import { BaseDialogComponent } from '../../../components/base-dialog/base-dialog.component';
 
 const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialRefData): FormNode => ({
 	name: 'abandonSection',

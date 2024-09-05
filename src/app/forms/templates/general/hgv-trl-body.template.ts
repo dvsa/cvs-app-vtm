@@ -1,6 +1,5 @@
 import { AsyncValidatorNames } from '@models/async-validators.enum';
 import { ValidatorNames } from '@models/validators.enum';
-import { TagType } from '@shared/components/tag/tag.component';
 import {
 	FormNode,
 	FormNodeEditTypes,
@@ -9,6 +8,7 @@ import {
 	FormNodeWidth,
 	TagTypeLabels,
 } from '@services/dynamic-forms/dynamic-form.types';
+import { TagType } from '../../../components/tag/tag.component';
 
 export const HgvAndTrlBodyTemplate: FormNode = {
 	name: 'bodySection',

@@ -10,9 +10,9 @@ import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
 import { V3TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TestTypesService } from '@services/test-types/test-types.service';
-import { TagType, TagTypes } from '@shared/components/tag/tag.component';
 import { techRecord } from '@store/technical-records';
 import { Observable } from 'rxjs';
+import { TagType, TagTypes } from '../../../../components/tag/tag.component';
 
 @Component({
 	selector: 'app-vehicle-header',
