@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
-import { GlobalErrorComponent } from './global-error.component';
-import { GlobalErrorService } from './global-error.service';
+import { initialAppState } from '@store/index';
+import { GlobalErrorComponent } from '../global-error.component';
+import { GlobalErrorService } from '../global-error.service';
 
 @Component({
 	selector: 'app-mock-component',

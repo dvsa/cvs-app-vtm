@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/index';
 import { addError, clearError, patchErrors, setErrors } from '@store/global-error/actions/global-error.actions';
-import { GlobalError } from './global-error.interface';
-import { GlobalErrorService } from './global-error.service';
+import { GlobalError } from '../global-error.interface';
+import { GlobalErrorService } from '../global-error.service';
 
 describe('GlobalErrorService', () => {
 	let service: GlobalErrorService;

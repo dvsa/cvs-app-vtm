@@ -1,19 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PageNotFoundComponent } from '../page-not-found.component';
 
-import { PhaseBannerComponent } from './phase-banner.component';
-
-describe('PhaseBannerComponent', () => {
-	let component: PhaseBannerComponent;
-	let fixture: ComponentFixture<PhaseBannerComponent>;
+describe('PageNotFoundComponent', () => {
+	let component: PageNotFoundComponent;
+	let fixture: ComponentFixture<PageNotFoundComponent>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [PhaseBannerComponent],
+			declarations: [PageNotFoundComponent],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(PhaseBannerComponent);
+		fixture = TestBed.createComponent(PageNotFoundComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

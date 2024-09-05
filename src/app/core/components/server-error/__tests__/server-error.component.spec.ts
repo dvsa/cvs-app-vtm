@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ServerErrorComponent } from './server-error.component';
+import { ServerErrorComponent } from '../server-error.component';
 
 describe('ServerErrorComponent', () => {
 	let component: ServerErrorComponent;

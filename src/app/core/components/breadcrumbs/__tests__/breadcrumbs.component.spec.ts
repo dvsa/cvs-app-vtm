@@ -3,10 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { RouterReducerState } from '@ngrx/router-store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
-import { State, initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/index';
 import { routerState } from '@store/router/selectors/router.selectors';
 import { firstValueFrom } from 'rxjs';
-import { BreadcrumbsComponent } from './breadcrumbs.component';
+import { BreadcrumbsComponent } from '../breadcrumbs.component';
 
 describe('BreadcrumbsComponent', () => {
 	let component: BreadcrumbsComponent;

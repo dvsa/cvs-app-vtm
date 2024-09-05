@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
-import { GlobalWarningComponent } from './global-warning.component';
-import { GlobalWarningService } from './global-warning.service';
+import { initialAppState } from '@store/index';
+import { GlobalWarningComponent } from '../global-warning.component';
+import { GlobalWarningService } from '../global-warning.service';
 
 @Component({
 	selector: 'app-mock-component',
