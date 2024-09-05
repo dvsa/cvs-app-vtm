@@ -1,19 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ButtonGroupComponent } from '../button-group.component';
 
-import { InputSpinnerComponent } from './input-spinner.component';
-
-describe('InputSpinnerComponent', () => {
-	let component: InputSpinnerComponent;
-	let fixture: ComponentFixture<InputSpinnerComponent>;
+describe('ButtonGroupComponent', () => {
+	let component: ButtonGroupComponent;
+	let fixture: ComponentFixture<ButtonGroupComponent>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [InputSpinnerComponent],
+			declarations: [ButtonGroupComponent],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(InputSpinnerComponent);
+		fixture = TestBed.createComponent(ButtonGroupComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

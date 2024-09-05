@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
-import { AccordionComponent } from '../accordion/accordion.component';
-import { AccordionControlComponent } from './accordion-control.component';
+import { AccordionComponent } from '../../accordion/accordion.component';
+import { AccordionControlComponent } from '../accordion-control.component';
 
 @Component({
 	selector: 'app-host',

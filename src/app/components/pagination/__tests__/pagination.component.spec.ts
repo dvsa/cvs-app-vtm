@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, map } from 'rxjs';
-import { PaginationComponent } from './pagination.component';
+import { PaginationComponent } from '../pagination.component';
 
 @Component({
 	selector: 'app-host',

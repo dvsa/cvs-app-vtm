@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CollapsibleTextComponent } from './collapsible-text.component';
+import { CollapsibleTextComponent } from '../collapsible-text.component';
 
 describe('CollapsibleTextComponent', () => {
 	let component: CollapsibleTextComponent;

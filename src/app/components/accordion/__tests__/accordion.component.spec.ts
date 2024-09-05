@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { State, initialAppState } from '@store/.';
+import { State, initialAppState } from '@store/index';
 import { addSectionState, removeSectionState } from '@store/technical-records';
-import { AccordionComponent } from './accordion.component';
+import { AccordionComponent } from '../accordion.component';
 
 @Component({
 	selector: 'app-host',

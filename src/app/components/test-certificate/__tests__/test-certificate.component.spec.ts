@@ -8,7 +8,7 @@ import { FeatureToggleService } from '@services/feature-toggle-service/feature-t
 import { RetrieveDocumentDirective } from '@shared/directives/retrieve-document/retrieve-document.directive';
 import { State, initialAppState } from '@store/index';
 import { isTestTypeOldIvaOrMsva, toEditOrNotToEdit } from '@store/test-records';
-import { TestCertificateComponent } from './test-certificate.component';
+import { TestCertificateComponent } from '../test-certificate.component';
 
 describe('TestCertificateComponent', () => {
 	let component: TestCertificateComponent;

@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ButtonGroupComponent } from './button-group.component';
 
-describe('ButtonGroupComponent', () => {
-	let component: ButtonGroupComponent;
-	let fixture: ComponentFixture<ButtonGroupComponent>;
+import { BannerComponent } from '../banner.component';
+
+describe('BannerComponent', () => {
+	let component: BannerComponent;
+	let fixture: ComponentFixture<BannerComponent>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ButtonGroupComponent],
+			declarations: [BannerComponent],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(ButtonGroupComponent);
+		fixture = TestBed.createComponent(BannerComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
